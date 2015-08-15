@@ -1,5 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Windows.Data;
+using System.Windows.Documents;
 using BFF.Helper;
 using MongoDB.Driver;
 using YNAB = BFF.Model.Conversion.YNAB;
@@ -43,15 +48,22 @@ namespace BFF.MongoDb
                     string header = streamReader.ReadLine();
                     if (header != YNAB.Transaction.CSVHeader)
                     {
-                        Output.WriteLine("The file of path '{0}' is not a valid YNAB transactions CSV.");
+                        Output.WriteLine(string.Format("The file of path '{0}' is not a valid YNAB transactions CSV.", filePath));
                         return;
                     }
+                    Output.WriteLine("Starting to import YNAB transactions from the CSV file.");
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
+                    List<YNAB.Transaction> transactions = new List<YNAB.Transaction>();
                     while (!streamReader.EndOfStream)
                     {
-                        string currentLine = streamReader.ReadLine();
-                        string[] entries = currentLine.Split();
-
+                        transactions.Add(streamReader.ReadLine());
                     }
+                    YNAB.Transaction.ToOutput(transactions.Last());
+                    stopwatch.Stop();
+                    TimeSpan ts = stopwatch.Elapsed;
+                    string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+                    Output.WriteLine(string.Format("End of transaction import. Elapsed time was: {0}", elapsedTime));
                 }
             }
             else
