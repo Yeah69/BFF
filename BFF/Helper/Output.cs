@@ -7,7 +7,15 @@ namespace BFF.Helper
     {
         public static void WriteLine(string text, [CallerMemberName] string callerName = null)
         {
-            Console.WriteLine("{0}: {1}", callerName, text);
+            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+            Console.Write("{0}:", callerName);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.WriteLine(" {0}", text);
+        }
+
+        public static void WriteYNABTransaction(string[] entries)
+        {
+
         }
     }
 }
