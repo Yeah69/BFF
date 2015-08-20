@@ -39,7 +39,7 @@ namespace BFF.MongoDb
 
         }
 
-        public static void ImportYNABTransactionsCSVToDB(string filePath)
+        public static void ImportYNABTransactionsCSVToDB(string filePath, string filePathBudget)
         {
             if (File.Exists(filePath))
             {
@@ -62,12 +62,41 @@ namespace BFF.MongoDb
                     YNAB.Transaction.ToOutput(transactions.Last());
                     stopwatch.Stop();
                     TimeSpan ts = stopwatch.Elapsed;
-                    string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+                    string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
                     Output.WriteLine(string.Format("End of transaction import. Elapsed time was: {0}", elapsedTime));
                 }
             }
             else
                 Output.WriteLine(string.Format("The file of path '{0}' does not exist!", filePath));
+            if (File.Exists(filePathBudget))
+            {
+                using (StreamReader streamReader = new StreamReader(new FileStream(filePathBudget, FileMode.Open)))
+                {
+                    string header = streamReader.ReadLine();
+                    if (header != YNAB.BudgetEntry.CSVHeader)
+                    {
+                        Output.WriteLine(string.Format("The file of path '{0}' is not a valid YNAB transactions CSV.", filePathBudget));
+                        return;
+                    }
+                    Output.WriteLine("Starting to import YNAB budget entries from the CSV file.");
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
+                    List<YNAB.BudgetEntry> budgetEntries = new List<YNAB.BudgetEntry>();
+                    while (!streamReader.EndOfStream)
+                    {
+                        string nextLine = streamReader.ReadLine();
+                        if (nextLine != "")
+                            budgetEntries.Add(nextLine);
+                    }
+                    YNAB.BudgetEntry.ToOutput(budgetEntries.Last());
+                    stopwatch.Stop();
+                    TimeSpan ts = stopwatch.Elapsed;
+                    string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+                    Output.WriteLine(string.Format("End of budget entry import. Elapsed time was: {0}", elapsedTime));
+                }
+            }
+            else
+                Output.WriteLine(string.Format("The file of path '{0}' does not exist!", filePathBudget));
         }
 
     }
