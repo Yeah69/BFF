@@ -6,6 +6,8 @@ namespace BFF.Model.Native
 {
     class Budget : DataModelBase
     {
+        #region Non-Static
+
         #region Properties
 
         [PrimaryKey]
@@ -21,5 +23,28 @@ namespace BFF.Model.Native
 
         #endregion
 
+        #region Methods
+
+
+
+        #endregion
+
+        #endregion
+
+        #region Static
+
+        #region Static Variables
+
+
+
+        #endregion
+
+        #region Static Methods
+
+
+
+        #endregion
+
+        #endregion
     }
 }

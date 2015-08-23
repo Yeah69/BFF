@@ -4,6 +4,7 @@ namespace BFF.Model.Native
 {
     class Payee : DataModelBase
     {
+        #region Non-Static
 
         #region Properties
 
@@ -15,6 +16,28 @@ namespace BFF.Model.Native
 
         #endregion
 
+        #region Methods
 
+
+
+        #endregion
+
+        #endregion
+
+        #region Static
+
+        #region Static Variables
+
+
+
+        #endregion
+
+        #region Static Methods
+
+
+
+        #endregion
+
+        #endregion
     }
 }

@@ -5,6 +5,7 @@ namespace BFF.Model.Native
 {
     class Transaction : DataModelBase
     {
+        #region Non-Static
 
         #region Properties
 
@@ -36,6 +37,29 @@ namespace BFF.Model.Native
         public bool Cleared { get; set; }
 
         #endregion
-        
+
+        #region Methods
+
+
+
+        #endregion
+
+        #endregion
+
+        #region Static
+
+        #region Static Variables
+
+
+
+        #endregion
+
+        #region Static Methods
+
+
+
+        #endregion
+
+        #endregion
     }
 }
