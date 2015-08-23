@@ -7,38 +7,73 @@ namespace BFF.Model.Conversion.YNAB
 {
     class Transaction
     {
+
+        #region Non-Static
+
+        #region Properties
+
+        public string Account { get; set; }
+
+        public Color Flag { get; set; }
+
+        public int CheckNumber { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public string Payee { get; set; }
+
+        public string Category { get; set; }
+
+        public string MasterCategory { get; set; }
+
+        public string SubCategory { get; set; }
+
+        public string Memo { get; set; }
+
+        public double Outflow { get; set; }
+
+        public double Inflow { get; set; }
+
+        public bool Cleared { get; set; }
+
+        public double RunningBalance { get; set; }
+
+        #endregion
+
+        #region Methods
+
+
+
+        #endregion
+
+        #endregion
+
+        #region Static
+
+        #region Static Variables
+
         public static readonly string CSVHeader = "\"Account\"	\"Flag\"	\"Check Number\"	\"Date\"	\"Payee\"	\"Category\"	\"Master Category\"	\"Sub Category\"	\"Memo\"	\"Outflow\"	\"Inflow\"	\"Cleared\"	\"Running Balance\"";
 
-        private string account;
-        private Color flag;
-        private int checkNumber;
-        private DateTime date;
-        private string payee;
-        private string category;
-        private string masterCategory;
-        private string subCategory;
-        private string memo;
-        private double outflow;
-        private double inflow;
-        private bool cleared;
-        private double runningBalance;
+        #endregion
+
+        #region Static Methods
 
         public static void ToOutput(Transaction transaction)
         {
             Output.WriteLine("BEGIN YNAB transaction");
-            Output.WriteLine("\tAccount: \t\t\t" + transaction.account);
-            Output.WriteLine("\tFlag: \t\t\t\t" + transaction.flag);
-            Output.WriteLine("\tCheckNumber: \t\t" + transaction.checkNumber);
-            Output.WriteLine("\tDate: \t\t\t\t" + transaction.date);
-            Output.WriteLine("\tPayee: \t\t\t\t" + transaction.payee);
-            Output.WriteLine("\tCategory: \t\t\t" + transaction.category);
-            Output.WriteLine("\tMaster Category: \t" + transaction.masterCategory);
-            Output.WriteLine("\tSub Category: \t\t" + transaction.subCategory);
-            Output.WriteLine("\tMemo: \t\t\t\t" + transaction.memo);
-            Output.WriteLine("\tOutflow: \t\t\t" + transaction.outflow);
-            Output.WriteLine("\tInflow: \t\t\t" + transaction.inflow);
-            Output.WriteLine("\tCleared: \t\t\t" + transaction.cleared);
-            Output.WriteLine("\tRunning Balance: \t" + transaction.runningBalance);
+            Output.WriteLine("\tAccount: \t\t\t" + transaction.Account);
+            Output.WriteLine("\tFlag: \t\t\t\t" + transaction.Flag);
+            Output.WriteLine("\tCheckNumber: \t\t" + transaction.CheckNumber);
+            Output.WriteLine("\tDate: \t\t\t\t" + transaction.Date);
+            Output.WriteLine("\tPayee: \t\t\t\t" + transaction.Payee);
+            Output.WriteLine("\tCategory: \t\t\t" + transaction.Category);
+            Output.WriteLine("\tMaster Category: \t" + transaction.MasterCategory);
+            Output.WriteLine("\tSub Category: \t\t" + transaction.SubCategory);
+            Output.WriteLine("\tMemo: \t\t\t\t" + transaction.Memo);
+            Output.WriteLine("\tOutflow: \t\t\t" + transaction.Outflow);
+            Output.WriteLine("\tInflow: \t\t\t" + transaction.Inflow);
+            Output.WriteLine("\tCleared: \t\t\t" + transaction.Cleared);
+            Output.WriteLine("\tRunning Balance: \t" + transaction.RunningBalance);
             Output.WriteLine("END YNAB transaction");
         }
 
@@ -47,44 +82,55 @@ namespace BFF.Model.Conversion.YNAB
             string[] entries = csvLine.Split('\t');
             //todo: adjust conversion to regional codes (date, outflow, inflow, runningBalance)
             Transaction ret = new Transaction();
-            ret.account = entries[0].Trim('"');
+            ret.Account = entries[0].Trim('"');
             switch (entries[1])
             {
                 case "Red":
-                    ret.flag = Colors.Red;
+                    ret.Flag = Colors.Red;
                     break;
                 case "Orange":
-                    ret.flag = Colors.Orange;
+                    ret.Flag = Colors.Orange;
                     break;
                 case "Yellow":
-                    ret.flag = Colors.Yellow;
+                    ret.Flag = Colors.Yellow;
                     break;
                 case "Green":
-                    ret.flag = Colors.Green;
+                    ret.Flag = Colors.Green;
                     break;
                 case "Blue":
-                    ret.flag = Colors.Blue;
+                    ret.Flag = Colors.Blue;
                     break;
                 case "Purple":
-                    ret.flag = Colors.Purple;
+                    ret.Flag = Colors.Purple;
                     break;
                 default:
-                    ret.flag = Colors.Transparent;
+                    ret.Flag = Colors.Transparent;
                     break;
             }
-            if(!int.TryParse(entries[2], out ret.checkNumber))
-                ret.checkNumber = -1;
-            ret.date = DateTime.ParseExact(entries[3], "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            ret.payee = entries[4].Trim('"');
-            ret.category = entries[5].Trim('"');
-            ret.masterCategory = entries[6].Trim('"');
-            ret.subCategory = entries[7].Trim('"');
-            ret.memo = entries[8].Trim('"');
-            ret.outflow = double.Parse(entries[9].TrimEnd('€'));
-            ret.inflow = double.Parse(entries[10].TrimEnd('€'));
-            ret.cleared = entries[11] == "C";
-            ret.runningBalance = double.Parse(entries[12].TrimEnd('€'));
+            if (!int.TryParse(entries[2], out ret.CheckNumber))
+                ret.CheckNumber = -1;
+            ret.Date = DateTime.ParseExact(entries[3], "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            ret.Payee = entries[4].Trim('"');
+            ret.Category = entries[5].Trim('"');
+            ret.MasterCategory = entries[6].Trim('"');
+            ret.SubCategory = entries[7].Trim('"');
+            ret.Memo = entries[8].Trim('"');
+            ret.Outflow = double.Parse(entries[9].TrimEnd('€'));
+            ret.Inflow = double.Parse(entries[10].TrimEnd('€'));
+            ret.Cleared = entries[11] == "C";
+            ret.RunningBalance = double.Parse(entries[12].TrimEnd('€'));
             return ret;
         }
+
+        #endregion
+
+        #endregion
+		
+	
+        
+
+        
+
+        
     }
 }
