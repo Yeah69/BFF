@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using BFF.MongoDb;
+using BFF.Helper.Conversion;
 
 namespace BFF
 {
@@ -12,8 +12,7 @@ namespace BFF
         {
             InitializeComponent();
 
-            MongoDbHelper.ConnectToMongoDb(null, null);
-            MongoDbHelper.ImportYNABTransactionsCSVToDB(@"D:\Dropbox\YNAB\Exports\Yeah as of 2015-08-14 640 PM-Register.csv", @"D:\Dropbox\YNAB\Exports\Yeah as of 2015-08-14 640 PM-Budget.csv");
+            YNABConversion.ImportYNABTransactionsCSVToDB(@"D:\Dropbox\YNAB\Exports\Yeah as of 2015-08-14 640 PM-Register.csv", @"D:\Dropbox\YNAB\Exports\Yeah as of 2015-08-14 640 PM-Budget.csv");
         }
     }
 }
