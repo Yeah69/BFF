@@ -1,12 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BFF.Model.Native.Structure;
 
 namespace BFF.Model.Native
 {
-    class Month
+    class Budget : DataModelBase
     {
+        #region Properties
+
+        [PrimaryKey]
+        public int ID { get; set; }
+
+        [DataField]
+        public DateTime MonthYear { get; set; }
+
+        [DataField]
+        public List<Transaction> Transactions { get; set; }
+
+        //Todo: budget relevant properties
+
+        #endregion
+
     }
 }

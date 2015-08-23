@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -79,6 +83,14 @@
     <Compile Include="Helper\Output.cs" />
     <Compile Include="Model\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="Model\Conversion\YNAB\Transaction.cs" />
+    <Compile Include="Model\Native\Account.cs" />
+    <Compile Include="Model\Native\Category.cs" />
+    <Compile Include="Model\Native\Budget.cs" />
+    <Compile Include="Model\Native\Structure\DataFieldAttribute.cs" />
+    <Compile Include="Model\Native\Structure\DataModelBase.cs" />
+    <Compile Include="Model\Native\Payee.cs" />
+    <Compile Include="Model\Native\Structure\PrimaryKeyAttribute.cs" />
+    <Compile Include="Model\Native\Transaction.cs" />
     <Compile Include="WPFStuff\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

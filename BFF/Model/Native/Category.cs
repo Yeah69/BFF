@@ -1,12 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using BFF.Model.Native.Structure;
 
 namespace BFF.Model.Native
 {
-    class Category
+    class Category : DataModelBase
     {
+        #region Properties
+
+        [PrimaryKey]
+        public int ID { get; set; }
+
+        [DataField]
+        public string Name { get; set; }
+
+        [DataField]
+        public List<Category> Categories { get; set; }
+
+        [DataField]
+        public Category ParentCategory { get; set; }
+
+        #endregion
+
     }
 }
