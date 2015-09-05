@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Reflection;
+using Dapper;
 
 namespace BFF.Model.Native.Structure
 {
@@ -11,7 +14,7 @@ namespace BFF.Model.Native.Structure
 
         public DataModelBase()
         {
-            PropertyInfo pkProp = this.GetType().GetProperties().Where(p => p.GetCustomAttributes(typeof(PrimaryKeyAttribute), false).Length > 0).FirstOrDefault();
+            PropertyInfo pkProp = this.GetType().GetProperties().FirstOrDefault(p => p.GetCustomAttributes(typeof(PrimaryKeyAttribute), false).Length > 0);
             if (pkProp != null)
             {
                 _primaryKeyField = pkProp.Name;
@@ -23,7 +26,7 @@ namespace BFF.Model.Native.Structure
             }
         }
 
-        public virtual string TableName { get { return this.GetType().Name; } }
+        public virtual string TableName { get { return string.Format("{0}_{1}", "BFF" ,this.GetType().Name); } }
 
         public virtual string InsertStatement
         {
@@ -68,6 +71,11 @@ namespace BFF.Model.Native.Structure
             }
         }
 
+        public virtual string CreateTableStatement
+        {
+            get { return string.Format("CREATE TABLE {0} ({1})", this.TableName, GetDelimitedCreateTableList(", ")); }
+        }
+
         protected string GetDelimitedSafeParamList(string delimiter)
         {
             return string.Join(delimiter, _props.Select(k => string.Format("@{0}", k)));
@@ -81,6 +89,17 @@ namespace BFF.Model.Native.Structure
         protected string GetDelimitedSafeSetList(string delimiter)
         {
             return string.Join(delimiter, _props.Select(k => string.Format("[{0}] = @{0}", k)));
+        }
+
+        protected abstract string GetDelimitedCreateTableList(string delimiter);
+
+        public virtual void InsertCommand(SQLiteConnection cnn)
+        {
+            string sql = this.InsertStatement + "; SELECT last_insert_rowid()";
+
+            PropertyInfo pkProp = this.GetType().GetProperties().FirstOrDefault(p => p.GetCustomAttributes(typeof(PrimaryKeyAttribute), false).Length > 0);
+
+            pkProp.SetValue(this, Convert.ChangeType(cnn.Query<int>(sql, this).Single(), pkProp.PropertyType), null);
         }
     }
 }

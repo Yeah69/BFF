@@ -107,8 +107,10 @@ namespace BFF.Model.Conversion.YNAB
                     ret.Flag = Colors.Transparent;
                     break;
             }
-            if (!int.TryParse(entries[2], out ret.CheckNumber))
-                ret.CheckNumber = -1;
+            int temp;
+            if (!int.TryParse(entries[2], out temp))
+                temp = -1;
+            ret.CheckNumber = temp;
             ret.Date = DateTime.ParseExact(entries[3], "dd.MM.yyyy", CultureInfo.InvariantCulture);
             ret.Payee = entries[4].Trim('"');
             ret.Category = entries[5].Trim('"');

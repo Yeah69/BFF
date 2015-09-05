@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using BFF.Model.Native.Structure;
 
 namespace BFF.Model.Native
@@ -25,7 +26,10 @@ namespace BFF.Model.Native
 
         #region Methods
 
-
+        protected override string GetDelimitedCreateTableList(string delimiter)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
 
