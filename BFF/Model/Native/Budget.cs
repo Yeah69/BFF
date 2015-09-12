@@ -17,7 +17,7 @@ namespace BFF.Model.Native
         public override string CreateTableStatement { get; }
 
         [Key]
-        public override int ID { get; set; }
+        public override long ID { get; set; }
         
         public DateTime MonthYear { get; set; }
         

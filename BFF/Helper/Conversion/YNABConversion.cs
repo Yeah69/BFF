@@ -10,6 +10,7 @@ using Dapper;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
 using Native = BFF.Model.Native;
+using static BFF.DB.SQLite.Helper;
 
 namespace BFF.Helper.Conversion
 {
@@ -22,53 +23,13 @@ namespace BFF.Helper.Conversion
             List<YNAB.BudgetEntry> budgets = parseBudgetCsv(filePathBudget);
 
             //Second step: Convert conversion objects into native models
-            //Todo: !!!
             List<Native.Transaction> nativeTransactions = transactions.Select(transaction => (Native.Transaction)transaction).ToList();
             //Todo: List<Native.Budget> nativeBudgets = budgets.Select(budget => (Native.Budget)budget).ToList();
             
             //Third step: Create new database for imported data
-            //Todo: !!!
-            SQLiteConnection.CreateFile(string.Format("{0}.sqlite", dbName));
-
-            using (var cnn = new SQLiteConnection(string.Format("Data Source={0}.sqlite;Version=3;", dbName)))
-            {
-                cnn.Open();
-
-                List<Native.Payee> payees = Native.Payee.GetAllCache();
-                List<Native.Category> categories = Native.Category.GetAllCache();
-                List<Native.Account> accounts = Native.Account.GetAllCache();
-
-                cnn.Execute(nativeTransactions.First().CreateTableStatement);
-                cnn.Execute(payees.First().CreateTableStatement);
-                cnn.Execute(categories.First().CreateTableStatement);
-                cnn.Execute(accounts.First().CreateTableStatement);
-
-                cnn.Insert(payees);
-                cnn.Insert(categories);
-                cnn.Insert(accounts);
-                cnn.Insert(nativeTransactions);
-
-                /*string sql = payees[0].CreateTableStatement;
-                SQLiteCommand cmd = new SQLiteCommand(sql, cnn);
-                cmd.ExecuteNonQuery();
-                sql = nativeTransactions[0].CreateTableStatement;
-                cmd = new SQLiteCommand(sql, cnn);
-                cmd.ExecuteNonQuery();
-                sql = categories[0].CreateTableStatement;
-                cmd = new SQLiteCommand(sql, cnn);
-                cmd.ExecuteNonQuery();
-                sql = accounts[0].CreateTableStatement;
-                cmd = new SQLiteCommand(sql, cnn);
-                cmd.ExecuteNonQuery();
-                foreach (Native.Transaction transaction in nativeTransactions)
-                    transaction.InsertCommand(cnn);
-                foreach (Native.Account account in accounts)
-                    account.InsertCommand(cnn);
-                foreach (Native.Category category in categories)
-                    category.InsertCommand(cnn);
-                foreach (Native.Payee payee in payees)
-                    payee.InsertCommand(cnn);*/
-            }
+            CurrentDBName = dbName;
+            SQLiteConnection.CreateFile(CurrentDBFileName());
+            populateDatabase(nativeTransactions);
         }
 
         private static List<YNAB.Transaction> parseTransactionCsv(string filePath)
@@ -81,7 +42,7 @@ namespace BFF.Helper.Conversion
                     string header = streamReader.ReadLine();
                     if (header != YNAB.Transaction.CSVHeader)
                     {
-                        Output.WriteLine(string.Format("The file of path '{0}' is not a valid YNAB transactions CSV.", filePath));
+                        Output.WriteLine($"The file of path '{filePath}' is not a valid YNAB transactions CSV.");
                         return null;
                     }
                     Output.WriteLine("Starting to import YNAB transactions from the CSV file.");
@@ -94,13 +55,13 @@ namespace BFF.Helper.Conversion
                     YNAB.Transaction.ToOutput(ret.Last());
                     stopwatch.Stop();
                     TimeSpan ts = stopwatch.Elapsed;
-                    string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
-                    Output.WriteLine(string.Format("End of transaction import. Elapsed time was: {0}", elapsedTime));
+                    string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds/10:00}";
+                    Output.WriteLine($"End of transaction import. Elapsed time was: {elapsedTime}");
                 }
             }
             else
             {
-                Output.WriteLine(string.Format("The file of path '{0}' does not exist!", filePath));
+                Output.WriteLine($"The file of path '{filePath}' does not exist!");
                 return null;
             }
             return ret;
@@ -116,7 +77,7 @@ namespace BFF.Helper.Conversion
                     string header = streamReader.ReadLine();
                     if (header != YNAB.Transaction.CSVHeader)
                     {
-                        Output.WriteLine(string.Format("The file of path '{0}' is not a valid YNAB transactions CSV.", filePath));
+                        Output.WriteLine($"The file of path '{filePath}' is not a valid YNAB transactions CSV.");
                         return null;
                     }
                     Output.WriteLine("Starting to import YNAB transactions from the CSV file.");
@@ -129,16 +90,48 @@ namespace BFF.Helper.Conversion
                     YNAB.BudgetEntry.ToOutput(ret.Last());
                     stopwatch.Stop();
                     TimeSpan ts = stopwatch.Elapsed;
-                    string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
-                    Output.WriteLine(string.Format("End of transaction import. Elapsed time was: {0}", elapsedTime));
+                    string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds/10:00}";
+                    Output.WriteLine($"End of transaction import. Elapsed time was: {elapsedTime}");
                 }
             }
             else
             {
-                Output.WriteLine(string.Format("The file of path '{0}' does not exist!", filePath));
+                Output.WriteLine($"The file of path '{filePath}' does not exist!");
                 return null;
             }
             return ret;
+        }
+
+        private static void populateDatabase(List<Native.Transaction> transactions)
+        {
+            Output.WriteLine($"Beginning to populate database.");
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            using (var cnn = new SQLiteConnection(CurrentDBConnectionString()))
+            {
+                cnn.Open();
+
+                List<Native.Payee> payees = Native.Payee.GetAllCache();
+                List<Native.Category> categories = Native.Category.GetAllCache();
+                List<Native.Account> accounts = Native.Account.GetAllCache();
+
+                cnn.Execute(transactions.First().CreateTableStatement);
+                cnn.Execute(payees.First().CreateTableStatement);
+                cnn.Execute(categories.First().CreateTableStatement);
+                cnn.Execute(accounts.First().CreateTableStatement);
+                
+                payees.ForEach(payee => payee.ID = (int) cnn.Insert<Native.Payee>(payee));
+                //ToDo: Hierarchical Category Inserting
+                categories.ForEach(category => category.ID = (int)cnn.Insert<Native.Category>(category));
+                accounts.ForEach(account => account.ID = (int)cnn.Insert<Native.Account>(account));
+                //ToDo: Split Transactions
+                cnn.InsertAsync<List<Native.Transaction>>(transactions); //Can be inserted as a whole list, because all IDs of the other models are set already
+
+            }
+            stopwatch.Stop();
+            TimeSpan ts = stopwatch.Elapsed;
+            string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds / 10:00}";
+            Output.WriteLine($"End of database population. Elapsed time was: {elapsedTime}");
         }
     }
 }

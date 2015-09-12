@@ -28,20 +28,20 @@ namespace BFF.DB.SQLite
 
         #region Static Variables
 
-        public static string CurrentDataBaseName;
+        public static string CurrentDBName { get; set; }
 
         #endregion
 
         #region Static Methods
 
-        public static string CurrentFileName()
+        public static string CurrentDBFileName()
         {
-            return string.Format("{0}.sqlite", CurrentDataBaseName);
+            return $"{CurrentDBName}.sqlite";
         }
 
-        public static string CurrentConnectionString()
+        public static string CurrentDBConnectionString()
         {
-            return string.Format("Data Source={0}.sqlite;Version=3;", CurrentDataBaseName);
+            return $"Data Source={CurrentDBName}.sqlite;Version=3;";
         }
 
         #endregion

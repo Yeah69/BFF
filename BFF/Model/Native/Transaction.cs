@@ -17,6 +17,8 @@ namespace BFF.Model.Native
         public override string CreateTableStatement => $@"CREATE TABLE [BFF_Tansaction](
                         {nameof(ID)} INTEGER PRIMARY KEY,
                         {nameof(AccountID)} INTEGER,
+                        {nameof(PayeeID)} INTEGER,
+                        {nameof(CategoryID)} INTEGER,
                         {nameof(Date)} DATE,
                         {nameof(Memo)} TEXT,
                         {nameof(Outflow)} FLOAT,
@@ -24,12 +26,12 @@ namespace BFF.Model.Native
                         {nameof(Cleared)} INTEGER);";
 
         [Key]
-        public override int ID { get; set; }
+        public override long ID { get; set; }
 
         [Write(false)]
         public Account Account { get; set; }
 
-        public int AccountID
+        public long AccountID
         {
             get { return Account?.ID ?? -1; }
             set { Account.ID = value; }
@@ -40,9 +42,21 @@ namespace BFF.Model.Native
         [Write(false)]
         public Payee Payee { get; set; }
 
+        public long PayeeID
+        {
+            get { return Payee?.ID ?? -1; }
+            set { Payee.ID = value; }
+        }
+
         [Write(false)]
         public Category Category { get; set; }
-        
+
+        public long CategoryID
+        {
+            get { return Category?.ID ?? -1; }
+            set { Category.ID = value; }
+        }
+
         public string Memo { get; set; }
         
         public double Outflow { get; set; }
@@ -81,7 +95,8 @@ namespace BFF.Model.Native
             if (ynabTransaction.SubCategory == string.Empty)
                 ret.Category = Native.Category.GetOrCreate(ynabTransaction.MasterCategory);
             else
-                ret.Category = Native.Category.GetOrCreate(string.Format("{0};{1}", ynabTransaction.MasterCategory, ynabTransaction.SubCategory));
+                ret.Category = Native.Category.GetOrCreate(
+                    $"{ynabTransaction.MasterCategory};{ynabTransaction.SubCategory}");
             ret.Memo = ynabTransaction.Memo;
             ret.Outflow = ynabTransaction.Outflow;
             ret.Inflow = ynabTransaction.Inflow;

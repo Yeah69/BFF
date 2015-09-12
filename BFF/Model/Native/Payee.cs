@@ -20,7 +20,7 @@ namespace BFF.Model.Native
                         {nameof(Name)} VARCHAR(100));";
 
         [Key]
-        public override int ID { get; set; }
+        public override long ID { get; set; }
         
         public string Name { get; set; }
 
