@@ -119,7 +119,11 @@ namespace BFF.Helper.Conversion
                 cnn.Execute(accounts.First().CreateTableStatement);
                 
                 payees.ForEach(payee => payee.Id = (int) cnn.Insert(payee));
-                //ToDo: Hierarchical Category Inserting
+                /*  
+                Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
+                because the structure of the imported csv-Entry of Categories allowes to get the master category first and
+                then the sub category. Thus, the parents id is known beforehand.
+                */               
                 categories.ForEach(category => category.Id = (int)cnn.Insert(category));
                 accounts.ForEach(account => account.Id = (int)cnn.Insert(account));
                 //ToDo: Split Transactions

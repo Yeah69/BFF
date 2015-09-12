@@ -14,6 +14,7 @@ namespace BFF.Model.Native
         [Write(false)]
         public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Category)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
+                        {nameof(ParentCategoryId)} INTEGER,
                         {nameof(Name)} VARCHAR(100));";
 
         [Key]
