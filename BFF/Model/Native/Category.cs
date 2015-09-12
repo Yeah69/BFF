@@ -6,7 +6,6 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
-    [Table(nameof(Category))]
     class Category : DataModelBase
     {
         #region Non-Static
@@ -14,12 +13,12 @@ namespace BFF.Model.Native
         #region Properties
 
         [Write(false)]
-        public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Category)}](
+        public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Category)}s](
                         {nameof(ID)} INTEGER PRIMARY KEY,
                         {nameof(Name)} VARCHAR(100));";
 
         [Key]
-        public override long ID { get; set; }
+        public override long ID { get; set; } = -1;
 
         public string Name { get; set; }
 
@@ -53,13 +52,11 @@ namespace BFF.Model.Native
         {
             if (Cache.ContainsKey(namePath))
                 return Cache[namePath];
-            //todo: Find out about converting the ID
             Stack<string> nameStack = new Stack<string>(namePath.Split(';'));
             string name = nameStack.Pop();
             Category parentCategory = GetOrCreate(nameStack);
-            Category category = new Category { ID = 69, Name = name, ParentCategory = parentCategory, Categories = new List<Category>() };
-            if(parentCategory != null)
-                parentCategory.Categories.Add(category);
+            Category category = new Category {Name = name, ParentCategory = parentCategory, Categories = new List<Category>() };
+            parentCategory?.Categories.Add(category);
             Cache.Add(namePath, category);
             return category;
         }
@@ -71,12 +68,10 @@ namespace BFF.Model.Native
             string namePath = string.Join(";", nameStack);
             if (Cache.ContainsKey(namePath))
                 return Cache[namePath];
-            //todo: Find out about converting the ID
             string name = nameStack.Pop();
             Category parentCategory = GetOrCreate(nameStack);
-            Category category = new Category { ID = 69, Name = name, ParentCategory = parentCategory, Categories = new List<Category>() };
-            if (parentCategory != null)
-                parentCategory.Categories.Add(category);
+            Category category = new Category { Name = name, ParentCategory = parentCategory, Categories = new List<Category>() };
+            parentCategory?.Categories.Add(category);
             Cache.Add(namePath, category);
             return category;
         }

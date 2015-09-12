@@ -6,7 +6,6 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
-    [Table(nameof(Budget))]
     class Budget : DataModelBase
     {
         #region Non-Static
@@ -17,8 +16,8 @@ namespace BFF.Model.Native
         public override string CreateTableStatement { get; }
 
         [Key]
-        public override long ID { get; set; }
-        
+        public override long ID { get; set; } = -1;
+
         public DateTime MonthYear { get; set; }
         
 

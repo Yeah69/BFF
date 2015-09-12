@@ -125,7 +125,7 @@ namespace BFF.Helper.Conversion
                 categories.ForEach(category => category.ID = (int)cnn.Insert<Native.Category>(category));
                 accounts.ForEach(account => account.ID = (int)cnn.Insert<Native.Account>(account));
                 //ToDo: Split Transactions
-                cnn.InsertAsync<List<Native.Transaction>>(transactions); //Can be inserted as a whole list, because all IDs of the other models are set already
+                cnn.Insert<List<Native.Transaction>>(transactions); //Can be inserted as a whole list, because all IDs of the other models are set already
 
             }
             stopwatch.Stop();

@@ -7,7 +7,6 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
-    [Table(nameof(Payee))]
     class Payee : DataModelBase
     {
         #region Non-Static
@@ -15,13 +14,13 @@ namespace BFF.Model.Native
         #region Properties
 
         [Write(false)]
-        public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Payee)}](
+        public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Payee)}s](
                         {nameof(ID)} INTEGER PRIMARY KEY,
                         {nameof(Name)} VARCHAR(100));";
 
         [Key]
-        public override long ID { get; set; }
-        
+        public override long ID { get; set; } = -1;
+
         public string Name { get; set; }
 
         #endregion
@@ -48,8 +47,7 @@ namespace BFF.Model.Native
         {
             if (Cache.ContainsKey(name))
                 return Cache[name];
-            //todo: Find out about converting the ID
-            Payee payee = new Payee { ID = 69, Name = name };
+            Payee payee = new Payee { Name = name };
             Cache.Add(name, payee);
             return payee;
         }

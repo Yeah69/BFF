@@ -5,7 +5,6 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
-    [Table(nameof(Account))]
     class Account : DataModelBase
     {
         #region Non-Static
@@ -13,13 +12,13 @@ namespace BFF.Model.Native
         #region Properties
 
         [Write(false)]
-        public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Account)}](
+        public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Account)}s](
                         {nameof(ID)} INTEGER PRIMARY KEY,
                         {nameof(Name)} VARCHAR(100));";
 
         [Key]
-        public override long ID { get; set; }
-        
+        public override long ID { get; set; } = -1;
+
         public string Name { get; set; }
 
         #endregion
@@ -46,9 +45,7 @@ namespace BFF.Model.Native
         {
             if (Cache.ContainsKey(name))
                 return Cache[name];
-            //todo: Find out about converting the ID
-            //RunningBalance has to be calculated later on
-            Account account = new Account {ID = 69, Name = name};
+            Account account = new Account {Name = name};
             Cache.Add(name, account);
             return account;
         }

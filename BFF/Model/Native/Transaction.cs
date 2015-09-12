@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
 
 namespace BFF.Model.Native
 {
-    [Table("BFF_Tansaction")]
     class Transaction : DataModelBase
     {
         #region Non-Static
@@ -14,7 +12,7 @@ namespace BFF.Model.Native
         #region Properties
 
         [Write(false)]
-        public override string CreateTableStatement => $@"CREATE TABLE [BFF_Tansaction](
+        public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
                         {nameof(ID)} INTEGER PRIMARY KEY,
                         {nameof(AccountID)} INTEGER,
                         {nameof(PayeeID)} INTEGER,
@@ -26,7 +24,7 @@ namespace BFF.Model.Native
                         {nameof(Cleared)} INTEGER);";
 
         [Key]
-        public override long ID { get; set; }
+        public override long ID { get; set; } = -1;
 
         [Write(false)]
         public Account Account { get; set; }
@@ -86,8 +84,6 @@ namespace BFF.Model.Native
         public static implicit operator Transaction(YNAB.Transaction ynabTransaction)
         {
             Transaction ret = new Transaction();
-            //todo: Find out about converting the ID
-            ret.ID = 69;
             ret.Account = Native.Account.GetOrCreate(ynabTransaction.Account);
             ret.Date = ynabTransaction.Date;
             ret.Payee = Native.Payee.GetOrCreate(ynabTransaction.Payee);
