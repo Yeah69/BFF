@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace BFF.DB.SQLite
 {
     class Helper
@@ -28,20 +23,20 @@ namespace BFF.DB.SQLite
 
         #region Static Variables
 
-        public static string CurrentDBName { get; set; }
+        public static string CurrentDbName { get; set; }
 
         #endregion
 
         #region Static Methods
 
-        public static string CurrentDBFileName()
+        public static string CurrentDbFileName()
         {
-            return $"{CurrentDBName}.sqlite";
+            return $"{CurrentDbName}.sqlite";
         }
 
-        public static string CurrentDBConnectionString()
+        public static string CurrentDbConnectionString()
         {
-            return $"Data Source={CurrentDBName}.sqlite;Version=3;";
+            return $"Data Source={CurrentDbName}.sqlite;Version=3;";
         }
 
         #endregion

@@ -52,7 +52,7 @@ namespace BFF.Model.Conversion.YNAB
 
         #region Static Variables
 
-        public static readonly string CSVHeader = "\"Account\"	\"Flag\"	\"Check Number\"	\"Date\"	\"Payee\"	\"Category\"	\"Master Category\"	\"Sub Category\"	\"Memo\"	\"Outflow\"	\"Inflow\"	\"Cleared\"	\"Running Balance\"";
+        public static readonly string CsvHeader = "\"Account\"	\"Flag\"	\"Check Number\"	\"Date\"	\"Payee\"	\"Category\"	\"Master Category\"	\"Sub Category\"	\"Memo\"	\"Outflow\"	\"Inflow\"	\"Cleared\"	\"Running Balance\"";
 
         #endregion
 
@@ -81,46 +81,50 @@ namespace BFF.Model.Conversion.YNAB
         {
             string[] entries = csvLine.Split('\t');
             //todo: adjust conversion to regional codes (date, outflow, inflow, runningBalance)
-            Transaction ret = new Transaction();
-            ret.Account = entries[0].Trim('"');
+            Color tempColor;
             switch (entries[1])
             {
                 case "Red":
-                    ret.Flag = Colors.Red;
+                    tempColor = Colors.Red;
                     break;
                 case "Orange":
-                    ret.Flag = Colors.Orange;
+                    tempColor = Colors.Orange;
                     break;
                 case "Yellow":
-                    ret.Flag = Colors.Yellow;
+                    tempColor = Colors.Yellow;
                     break;
                 case "Green":
-                    ret.Flag = Colors.Green;
+                    tempColor = Colors.Green;
                     break;
                 case "Blue":
-                    ret.Flag = Colors.Blue;
+                    tempColor = Colors.Blue;
                     break;
                 case "Purple":
-                    ret.Flag = Colors.Purple;
+                    tempColor = Colors.Purple;
                     break;
                 default:
-                    ret.Flag = Colors.Transparent;
+                    tempColor = Colors.Transparent;
                     break;
             }
             int temp;
             if (!int.TryParse(entries[2], out temp))
                 temp = -1;
-            ret.CheckNumber = temp;
-            ret.Date = DateTime.ParseExact(entries[3], "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            ret.Payee = entries[4].Trim('"');
-            ret.Category = entries[5].Trim('"');
-            ret.MasterCategory = entries[6].Trim('"');
-            ret.SubCategory = entries[7].Trim('"');
-            ret.Memo = entries[8].Trim('"');
-            ret.Outflow = double.Parse(entries[9].TrimEnd('€'));
-            ret.Inflow = double.Parse(entries[10].TrimEnd('€'));
-            ret.Cleared = entries[11] == "C";
-            ret.RunningBalance = double.Parse(entries[12].TrimEnd('€'));
+            Transaction ret = new Transaction
+            {
+                Account = entries[0].Trim('"'),
+                Flag = tempColor,
+                CheckNumber = temp,
+                Date = DateTime.ParseExact(entries[3], "dd.MM.yyyy", CultureInfo.InvariantCulture),
+                Payee = entries[4].Trim('"'),
+                Category = entries[5].Trim('"'),
+                MasterCategory = entries[6].Trim('"'),
+                SubCategory = entries[7].Trim('"'),
+                Memo = entries[8].Trim('"'),
+                Outflow = double.Parse(entries[9].TrimEnd('€')),
+                Inflow = double.Parse(entries[10].TrimEnd('€')),
+                Cleared = entries[11] == "C",
+                RunningBalance = double.Parse(entries[12].TrimEnd('€'))
+            };
             return ret;
         }
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Linq;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
@@ -14,11 +13,11 @@ namespace BFF.Model.Native
 
         [Write(false)]
         public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Category)}s](
-                        {nameof(ID)} INTEGER PRIMARY KEY,
+                        {nameof(Id)} INTEGER PRIMARY KEY,
                         {nameof(Name)} VARCHAR(100));";
 
         [Key]
-        public override long ID { get; set; } = -1;
+        public override long Id { get; set; } = -1;
 
         public string Name { get; set; }
 
@@ -27,6 +26,12 @@ namespace BFF.Model.Native
 
         [Write(false)]
         public Category ParentCategory { get; set; }
+
+        public long? ParentCategoryId
+        {
+            get { return ParentCategory?.Id; }
+            set { ParentCategory.Id = value ?? -1; } //todo: Okay like this? Investigate.
+        }
 
         #endregion
 

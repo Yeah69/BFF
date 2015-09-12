@@ -13,7 +13,7 @@ namespace BFF.Helper
             Console.WriteLine(" {0}", text);
         }
 
-        public static void WriteYNABTransaction(string[] entries)
+        public static void WriteYnabTransaction(string[] entries)
         {
 
         }

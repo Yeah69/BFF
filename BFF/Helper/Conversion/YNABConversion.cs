@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows.Documents;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
@@ -14,25 +12,25 @@ using static BFF.DB.SQLite.Helper;
 
 namespace BFF.Helper.Conversion
 {
-    class YNABConversion
+    class YnabConversion
     {
-        public static void ImportYNABTransactionsCSVToDB(string filePathTransaction, string filePathBudget, string dbName)
+        public static void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string dbName)
         {
             //First step: Parse CSV data into conversion objects
-            List<YNAB.Transaction> transactions = parseTransactionCsv(filePathTransaction);
-            List<YNAB.BudgetEntry> budgets = parseBudgetCsv(filePathBudget);
+            List<YNAB.Transaction> transactions = ParseTransactionCsv(filePathTransaction);
+            List<YNAB.BudgetEntry> budgets = ParseBudgetCsv(filePathBudget);
 
             //Second step: Convert conversion objects into native models
             List<Native.Transaction> nativeTransactions = transactions.Select(transaction => (Native.Transaction)transaction).ToList();
             //Todo: List<Native.Budget> nativeBudgets = budgets.Select(budget => (Native.Budget)budget).ToList();
             
             //Third step: Create new database for imported data
-            CurrentDBName = dbName;
-            SQLiteConnection.CreateFile(CurrentDBFileName());
-            populateDatabase(nativeTransactions);
+            CurrentDbName = dbName;
+            SQLiteConnection.CreateFile(CurrentDbFileName());
+            PopulateDatabase(nativeTransactions);
         }
 
-        private static List<YNAB.Transaction> parseTransactionCsv(string filePath)
+        private static List<YNAB.Transaction> ParseTransactionCsv(string filePath)
         {
             var ret = new List<YNAB.Transaction>();
             if (File.Exists(filePath))
@@ -40,7 +38,7 @@ namespace BFF.Helper.Conversion
                 using (StreamReader streamReader = new StreamReader(new FileStream(filePath, FileMode.Open)))
                 {
                     string header = streamReader.ReadLine();
-                    if (header != YNAB.Transaction.CSVHeader)
+                    if (header != YNAB.Transaction.CsvHeader)
                     {
                         Output.WriteLine($"The file of path '{filePath}' is not a valid YNAB transactions CSV.");
                         return null;
@@ -67,7 +65,7 @@ namespace BFF.Helper.Conversion
             return ret;
         }
 
-        private static List<YNAB.BudgetEntry> parseBudgetCsv(string filePath)
+        private static List<YNAB.BudgetEntry> ParseBudgetCsv(string filePath)
         {
             var ret = new List<YNAB.BudgetEntry>();
             if (File.Exists(filePath))
@@ -75,7 +73,7 @@ namespace BFF.Helper.Conversion
                 using (StreamReader streamReader = new StreamReader(new FileStream(filePath, FileMode.Open)))
                 {
                     string header = streamReader.ReadLine();
-                    if (header != YNAB.Transaction.CSVHeader)
+                    if (header != YNAB.Transaction.CsvHeader)
                     {
                         Output.WriteLine($"The file of path '{filePath}' is not a valid YNAB transactions CSV.");
                         return null;
@@ -102,12 +100,12 @@ namespace BFF.Helper.Conversion
             return ret;
         }
 
-        private static void populateDatabase(List<Native.Transaction> transactions)
+        private static void PopulateDatabase(List<Native.Transaction> transactions)
         {
-            Output.WriteLine($"Beginning to populate database.");
+            Output.WriteLine("Beginning to populate database.");
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            using (var cnn = new SQLiteConnection(CurrentDBConnectionString()))
+            using (var cnn = new SQLiteConnection(CurrentDbConnectionString()))
             {
                 cnn.Open();
 
@@ -120,12 +118,12 @@ namespace BFF.Helper.Conversion
                 cnn.Execute(categories.First().CreateTableStatement);
                 cnn.Execute(accounts.First().CreateTableStatement);
                 
-                payees.ForEach(payee => payee.ID = (int) cnn.Insert<Native.Payee>(payee));
+                payees.ForEach(payee => payee.Id = (int) cnn.Insert(payee));
                 //ToDo: Hierarchical Category Inserting
-                categories.ForEach(category => category.ID = (int)cnn.Insert<Native.Category>(category));
-                accounts.ForEach(account => account.ID = (int)cnn.Insert<Native.Account>(account));
+                categories.ForEach(category => category.Id = (int)cnn.Insert(category));
+                accounts.ForEach(account => account.Id = (int)cnn.Insert(account));
                 //ToDo: Split Transactions
-                cnn.Insert<List<Native.Transaction>>(transactions); //Can be inserted as a whole list, because all IDs of the other models are set already
+                cnn.Insert(transactions); //Can be inserted as a whole list, because all IDs of the other models are set already
 
             }
             stopwatch.Stop();

@@ -8,6 +8,6 @@ namespace BFF.Model.Native.Structure
         public abstract string CreateTableStatement { get; }
 
         [Key]
-        public abstract long ID { get; set; }
+        public abstract long Id { get; set; }
     }
 }

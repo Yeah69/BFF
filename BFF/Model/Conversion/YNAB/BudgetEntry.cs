@@ -36,7 +36,7 @@ namespace BFF.Model.Conversion.YNAB
 
         #region Static Variables
 
-        public static readonly string CSVHeader = "\"Month\"	\"Category\"	\"Master Category\"	\"Sub Category\"	\"Budgeted\"	\"Outflows\"	\"Category Balance\"";
+        public static readonly string CsvHeader = "\"Month\"	\"Category\"	\"Master Category\"	\"Sub Category\"	\"Budgeted\"	\"Outflows\"	\"Category Balance\"";
 
         #endregion
 
@@ -59,14 +59,16 @@ namespace BFF.Model.Conversion.YNAB
         {
             string[] entries = csvLine.Split('\t');
             //todo: adjust conversion to regional codes (month, budgeted, outflow, categoryBalance)
-            BudgetEntry ret = new BudgetEntry();
-            ret.Month = entries[0].Trim('"');
-            ret.Category = entries[1].Trim('"');
-            ret.MasterCategory = entries[2].Trim('"');
-            ret.SubCategory = entries[3].Trim('"');
-            ret.Budgeted = double.Parse(entries[4].TrimEnd('€'));
-            ret.Outflow = double.Parse(entries[5].TrimEnd('€'));
-            ret.CategoryBalance = double.Parse(entries[6].TrimEnd('€'));
+            BudgetEntry ret = new BudgetEntry
+            {
+                Month = entries[0].Trim('"'),
+                Category = entries[1].Trim('"'),
+                MasterCategory = entries[2].Trim('"'),
+                SubCategory = entries[3].Trim('"'),
+                Budgeted = double.Parse(entries[4].TrimEnd('€')),
+                Outflow = double.Parse(entries[5].TrimEnd('€')),
+                CategoryBalance = double.Parse(entries[6].TrimEnd('€'))
+            };
             return ret;
         }
 

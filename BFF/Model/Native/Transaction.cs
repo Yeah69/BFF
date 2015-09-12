@@ -13,10 +13,10 @@ namespace BFF.Model.Native
 
         [Write(false)]
         public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
-                        {nameof(ID)} INTEGER PRIMARY KEY,
-                        {nameof(AccountID)} INTEGER,
-                        {nameof(PayeeID)} INTEGER,
-                        {nameof(CategoryID)} INTEGER,
+                        {nameof(Id)} INTEGER PRIMARY KEY,
+                        {nameof(AccountId)} INTEGER,
+                        {nameof(PayeeId)} INTEGER,
+                        {nameof(CategoryId)} INTEGER,
                         {nameof(Date)} DATE,
                         {nameof(Memo)} TEXT,
                         {nameof(Outflow)} FLOAT,
@@ -24,15 +24,15 @@ namespace BFF.Model.Native
                         {nameof(Cleared)} INTEGER);";
 
         [Key]
-        public override long ID { get; set; } = -1;
+        public override long Id { get; set; } = -1;
 
         [Write(false)]
         public Account Account { get; set; }
 
-        public long AccountID
+        public long AccountId
         {
-            get { return Account?.ID ?? -1; }
-            set { Account.ID = value; }
+            get { return Account?.Id ?? -1; }
+            set { Account.Id = value; }
         }
 
         public DateTime Date { get; set; }
@@ -40,19 +40,19 @@ namespace BFF.Model.Native
         [Write(false)]
         public Payee Payee { get; set; }
 
-        public long PayeeID
+        public long PayeeId
         {
-            get { return Payee?.ID ?? -1; }
-            set { Payee.ID = value; }
+            get { return Payee?.Id ?? -1; }
+            set { Payee.Id = value; }
         }
 
         [Write(false)]
         public Category Category { get; set; }
 
-        public long CategoryID
+        public long CategoryId
         {
-            get { return Category?.ID ?? -1; }
-            set { Category.ID = value; }
+            get { return Category?.Id ?? -1; }
+            set { Category.Id = value; }
         }
 
         public string Memo { get; set; }
@@ -83,20 +83,20 @@ namespace BFF.Model.Native
 
         public static implicit operator Transaction(YNAB.Transaction ynabTransaction)
         {
-            Transaction ret = new Transaction();
-            ret.Account = Native.Account.GetOrCreate(ynabTransaction.Account);
-            ret.Date = ynabTransaction.Date;
-            ret.Payee = Native.Payee.GetOrCreate(ynabTransaction.Payee);
-            //todo: getOrCreate Category
-            if (ynabTransaction.SubCategory == string.Empty)
-                ret.Category = Native.Category.GetOrCreate(ynabTransaction.MasterCategory);
-            else
-                ret.Category = Native.Category.GetOrCreate(
-                    $"{ynabTransaction.MasterCategory};{ynabTransaction.SubCategory}");
-            ret.Memo = ynabTransaction.Memo;
-            ret.Outflow = ynabTransaction.Outflow;
-            ret.Inflow = ynabTransaction.Inflow;
-            ret.Cleared = ynabTransaction.Cleared;
+            Category tempCategory = (ynabTransaction.SubCategory == string.Empty) ?
+                Category.GetOrCreate(ynabTransaction.MasterCategory) :
+                Category.GetOrCreate($"{ynabTransaction.MasterCategory};{ynabTransaction.SubCategory}");
+            Transaction ret = new Transaction
+            {
+                Account = Account.GetOrCreate(ynabTransaction.Account),
+                Date = ynabTransaction.Date,
+                Payee = Payee.GetOrCreate(ynabTransaction.Payee),
+                Category = tempCategory,
+                Memo = ynabTransaction.Memo,
+                Outflow = ynabTransaction.Outflow,
+                Inflow = ynabTransaction.Inflow,
+                Cleared = ynabTransaction.Cleared
+            };
             return ret;
         }
 

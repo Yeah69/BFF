@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Linq;
 using BFF.Model.Native.Structure;
-using Dapper;
 using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
@@ -15,11 +13,11 @@ namespace BFF.Model.Native
 
         [Write(false)]
         public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Payee)}s](
-                        {nameof(ID)} INTEGER PRIMARY KEY,
+                        {nameof(Id)} INTEGER PRIMARY KEY,
                         {nameof(Name)} VARCHAR(100));";
 
         [Key]
-        public override long ID { get; set; } = -1;
+        public override long Id { get; set; } = -1;
 
         public string Name { get; set; }
 

@@ -13,11 +13,11 @@ namespace BFF.Model.Native
 
         [Write(false)]
         public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Account)}s](
-                        {nameof(ID)} INTEGER PRIMARY KEY,
+                        {nameof(Id)} INTEGER PRIMARY KEY,
                         {nameof(Name)} VARCHAR(100));";
 
         [Key]
-        public override long ID { get; set; } = -1;
+        public override long Id { get; set; } = -1;
 
         public string Name { get; set; }
 

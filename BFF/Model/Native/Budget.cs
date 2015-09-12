@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 
@@ -13,10 +11,12 @@ namespace BFF.Model.Native
         #region Properties
 
         [Write(false)]
-        public override string CreateTableStatement { get; }
+        public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
+                        {nameof(Id)} INTEGER PRIMARY KEY,
+                        {nameof(MonthYear)} DATE;";
 
         [Key]
-        public override long ID { get; set; } = -1;
+        public override long Id { get; set; } = -1;
 
         public DateTime MonthYear { get; set; }
         
