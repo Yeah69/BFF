@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Documents;
 using Dapper;
+using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
 using Native = BFF.Model.Native;
 
@@ -24,41 +25,50 @@ namespace BFF.Helper.Conversion
             //Todo: !!!
             List<Native.Transaction> nativeTransactions = transactions.Select(transaction => (Native.Transaction)transaction).ToList();
             //Todo: List<Native.Budget> nativeBudgets = budgets.Select(budget => (Native.Budget)budget).ToList();
-
-            int hallo = 1;
+            
             //Third step: Create new database for imported data
             //Todo: !!!
             SQLiteConnection.CreateFile(string.Format("{0}.sqlite", dbName));
 
-            var cnn = new SQLiteConnection(string.Format("Data Source={0}.sqlite;Version=3;", dbName));
-            cnn.Open();
+            using (var cnn = new SQLiteConnection(string.Format("Data Source={0}.sqlite;Version=3;", dbName)))
+            {
+                cnn.Open();
 
-            List<Native.Payee> payees = Native.Payee.GetAllCache();
-            List<Native.Category> categories = Native.Category.GetAllCache();
-            List<Native.Account> accounts = Native.Account.GetAllCache();
+                List<Native.Payee> payees = Native.Payee.GetAllCache();
+                List<Native.Category> categories = Native.Category.GetAllCache();
+                List<Native.Account> accounts = Native.Account.GetAllCache();
 
-            string sql = payees[0].CreateTableStatement;
-            SQLiteCommand cmd = new SQLiteCommand(sql, cnn);
-            cmd.ExecuteNonQuery();
-            sql = nativeTransactions[0].CreateTableStatement;
-            cmd = new SQLiteCommand(sql, cnn);
-            cmd.ExecuteNonQuery();
-            sql = categories[0].CreateTableStatement;
-            cmd = new SQLiteCommand(sql, cnn);
-            cmd.ExecuteNonQuery();
-            sql = accounts[0].CreateTableStatement;
-            cmd = new SQLiteCommand(sql, cnn);
-            cmd.ExecuteNonQuery();
-            foreach (Native.Transaction transaction in nativeTransactions)
-                transaction.InsertCommand(cnn);
-            foreach (Native.Account account in accounts)
-                account.InsertCommand(cnn);
-            foreach (Native.Category category in categories)
-                category.InsertCommand(cnn);
-            foreach (Native.Payee payee in payees)
-               payee.InsertCommand(cnn);
+                cnn.Execute(nativeTransactions.First().CreateTableStatement);
+                cnn.Execute(payees.First().CreateTableStatement);
+                cnn.Execute(categories.First().CreateTableStatement);
+                cnn.Execute(accounts.First().CreateTableStatement);
 
-            cnn.Close();
+                cnn.Insert(payees);
+                cnn.Insert(categories);
+                cnn.Insert(accounts);
+                cnn.Insert(nativeTransactions);
+
+                /*string sql = payees[0].CreateTableStatement;
+                SQLiteCommand cmd = new SQLiteCommand(sql, cnn);
+                cmd.ExecuteNonQuery();
+                sql = nativeTransactions[0].CreateTableStatement;
+                cmd = new SQLiteCommand(sql, cnn);
+                cmd.ExecuteNonQuery();
+                sql = categories[0].CreateTableStatement;
+                cmd = new SQLiteCommand(sql, cnn);
+                cmd.ExecuteNonQuery();
+                sql = accounts[0].CreateTableStatement;
+                cmd = new SQLiteCommand(sql, cnn);
+                cmd.ExecuteNonQuery();
+                foreach (Native.Transaction transaction in nativeTransactions)
+                    transaction.InsertCommand(cnn);
+                foreach (Native.Account account in accounts)
+                    account.InsertCommand(cnn);
+                foreach (Native.Category category in categories)
+                    category.InsertCommand(cnn);
+                foreach (Native.Payee payee in payees)
+                    payee.InsertCommand(cnn);*/
+            }
         }
 
         private static List<YNAB.Transaction> parseTransactionCsv(string filePath)

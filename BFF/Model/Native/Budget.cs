@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using BFF.Model.Native.Structure;
+using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
+    [Table(nameof(Budget))]
     class Budget : DataModelBase
     {
         #region Non-Static
 
         #region Properties
 
-        [PrimaryKey]
-        public int ID { get; set; }
+        [Write(false)]
+        public override string CreateTableStatement { get; }
 
-        [DataField]
+        [Key]
+        public override int ID { get; set; }
+        
         public DateTime MonthYear { get; set; }
-
-        [DataField]
-        public List<Transaction> Transactions { get; set; }
+        
 
         //Todo: budget relevant properties
 
@@ -26,10 +28,7 @@ namespace BFF.Model.Native
 
         #region Methods
 
-        protected override string GetDelimitedCreateTableList(string delimiter)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         #endregion
 

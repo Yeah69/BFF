@@ -3,32 +3,32 @@ using System.Data.SQLite;
 using System.Linq;
 using BFF.Model.Native.Structure;
 using Dapper;
+using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
+    [Table(nameof(Payee))]
     class Payee : DataModelBase
     {
         #region Non-Static
 
         #region Properties
 
-        [PrimaryKey]
-        public int ID { get; set; }
+        [Write(false)]
+        public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Payee)}](
+                        {nameof(ID)} INTEGER PRIMARY KEY,
+                        {nameof(Name)} VARCHAR(100));";
 
-        [DataField]
+        [Key]
+        public override int ID { get; set; }
+        
         public string Name { get; set; }
 
         #endregion
 
         #region Methods
 
-        protected override string GetDelimitedCreateTableList(string delimiter)
-        {
-            List<string> list = new List<string>{"ID INTEGER PRIMARY KEY AUTOINCREMENT",
-                "Name VARCHAR(100)"
-            };
-            return string.Join(delimiter, list);
-        }
+
 
         #endregion
 

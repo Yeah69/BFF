@@ -1,59 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using BFF.Model.Native.Structure;
+using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
 
 namespace BFF.Model.Native
 {
+    [Table("BFF_Tansaction")]
     class Transaction : DataModelBase
     {
         #region Non-Static
 
         #region Properties
 
-        [PrimaryKey]
-        public int ID { get; set; }
+        [Write(false)]
+        public override string CreateTableStatement => $@"CREATE TABLE [BFF_Tansaction](
+                        {nameof(ID)} INTEGER PRIMARY KEY,
+                        {nameof(AccountID)} INTEGER,
+                        {nameof(Date)} DATE,
+                        {nameof(Memo)} TEXT,
+                        {nameof(Outflow)} FLOAT,
+                        {nameof(Inflow)} FLOAT,
+                        {nameof(Cleared)} INTEGER);";
 
-        //todo: [DataField]
+        [Key]
+        public override int ID { get; set; }
+
+        [Write(false)]
         public Account Account { get; set; }
 
-        [DataField]
+        public int AccountID
+        {
+            get { return Account?.ID ?? -1; }
+            set { Account.ID = value; }
+        }
+
         public DateTime Date { get; set; }
 
-        //todo: [DataField]
+        [Write(false)]
         public Payee Payee { get; set; }
 
-        //todo: [DataField]
+        [Write(false)]
         public Category Category { get; set; }
-
-        [DataField]
+        
         public string Memo { get; set; }
-
-        [DataField]
+        
         public double Outflow { get; set; }
-
-        [DataField]
+        
         public double Inflow { get; set; }
-
-        [DataField]
+        
         public bool Cleared { get; set; }
 
         #endregion
 
         #region Methods
-
-        protected override string GetDelimitedCreateTableList(string delimiter)
-        {
-            List<string> list = new List<string>{"ID INTEGER PRIMARY KEY AUTOINCREMENT",
-                "Date DATE",
-                "Memo TEXT",
-                "Outflow FLOAT",
-                "Inflow FLOAT",
-                "Cleared INTEGER"
-            };
-            return string.Join(delimiter, list);
-        }
 
         #endregion
 
