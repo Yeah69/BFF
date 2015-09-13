@@ -14,7 +14,7 @@ namespace BFF.Model.Native
         [Write(false)]
         public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Category)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(ParentCategoryId)} INTEGER,
+                        {nameof(ParentId)} INTEGER,
                         {nameof(Name)} VARCHAR(100));";
 
         [Key]
@@ -26,12 +26,23 @@ namespace BFF.Model.Native
         public List<Category> Categories { get; set; }
 
         [Write(false)]
-        public Category ParentCategory { get; set; }
+        public Category Parent { get; set; }
 
-        public long? ParentCategoryId
+        public long? ParentId
         {
-            get { return ParentCategory?.Id; }
-            set { ParentCategory.Id = value ?? -1; } //todo: Okay like this? Investigate.
+            get { return Parent?.Id; }
+            set
+            {
+                if (value == null)
+                {
+                    Parent = null;
+                    ParentId = value;
+                }
+                else
+                {
+                    Parent.Id = value ?? -1;
+                }
+            }
         }
 
         #endregion
@@ -61,7 +72,7 @@ namespace BFF.Model.Native
             Stack<string> nameStack = new Stack<string>(namePath.Split(';'));
             string name = nameStack.Pop();
             Category parentCategory = GetOrCreate(nameStack);
-            Category category = new Category {Name = name, ParentCategory = parentCategory, Categories = new List<Category>() };
+            Category category = new Category {Name = name, Parent = parentCategory, Categories = new List<Category>() };
             parentCategory?.Categories.Add(category);
             Cache.Add(namePath, category);
             return category;
@@ -76,7 +87,7 @@ namespace BFF.Model.Native
                 return Cache[namePath];
             string name = nameStack.Pop();
             Category parentCategory = GetOrCreate(nameStack);
-            Category category = new Category { Name = name, ParentCategory = parentCategory, Categories = new List<Category>() };
+            Category category = new Category { Name = name, Parent = parentCategory, Categories = new List<Category>() };
             parentCategory?.Categories.Add(category);
             Cache.Add(namePath, category);
             return category;
