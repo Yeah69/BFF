@@ -55,6 +55,7 @@ namespace BFF.Model.Native
 
         private static readonly Dictionary<string, Category> Cache = new Dictionary<string, Category>();
         
+        //todo: Make ParentId a foreign key 
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Category)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
                         {nameof(ParentId)} INTEGER,

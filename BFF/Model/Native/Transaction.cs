@@ -63,6 +63,7 @@ namespace BFF.Model.Native
 
         #region Static Variables
 
+        //todo: Make IDs foreign keys?
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
                         {nameof(AccountId)} INTEGER,

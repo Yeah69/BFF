@@ -18,8 +18,8 @@ namespace BFF.Model.Native
 
         public long ParentId
         {
-            get { return Category?.Id ?? -1; }
-            set { Category.Id = value; }
+            get { return Parent?.Id ?? -1; }
+            set { Parent.Id = value; }
         }
 
         [Write(false)]
@@ -48,9 +48,11 @@ namespace BFF.Model.Native
         #region Static
 
         #region Static Variables
-
-        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
+        
+        //todo: Make ParentId a foreign key
+        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(SubTransaction)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
+                        {nameof(ParentId)} INTEGER,
                         {nameof(CategoryId)} INTEGER,
                         {nameof(Memo)} TEXT,
                         {nameof(Outflow)} FLOAT,

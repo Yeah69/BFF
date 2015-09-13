@@ -54,7 +54,8 @@ namespace BFF.Model.Native
 
         #region Static Variables
 
-        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
+        //todo: Make FromAccountId and ToAccountId foreign keys
+        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transfer)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
                         {nameof(FromAccountId)} INTEGER,
                         {nameof(ToAccountId)} INTEGER,
