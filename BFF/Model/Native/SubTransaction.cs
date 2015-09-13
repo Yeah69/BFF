@@ -1,5 +1,4 @@
-﻿using System;
-using BFF.Model.Native.Structure;
+﻿using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
 
@@ -14,14 +13,10 @@ namespace BFF.Model.Native
         [Write(false)]
         public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(AccountId)} INTEGER,
-                        {nameof(PayeeId)} INTEGER,
                         {nameof(CategoryId)} INTEGER,
-                        {nameof(Date)} DATE,
                         {nameof(Memo)} TEXT,
                         {nameof(Outflow)} FLOAT,
-                        {nameof(Inflow)} FLOAT,
-                        {nameof(Cleared)} INTEGER);";
+                        {nameof(Inflow)} FLOAT);";
 
         [Key]
         public override long Id { get; set; } = -1;
@@ -68,21 +63,17 @@ namespace BFF.Model.Native
 
         #region Static Methods
 
-        public static implicit operator Transaction(YNAB.Transaction ynabTransaction)
+        public static implicit operator SubTransaction(YNAB.Transaction ynabTransaction)
         {
             Category tempCategory = (ynabTransaction.SubCategory == string.Empty) ?
                 Category.GetOrCreate(ynabTransaction.MasterCategory) :
                 Category.GetOrCreate($"{ynabTransaction.MasterCategory};{ynabTransaction.SubCategory}");
-            Transaction ret = new Transaction
+            SubTransaction ret = new SubTransaction
             {
-                Account = Account.GetOrCreate(ynabTransaction.Account),
-                Date = ynabTransaction.Date,
-                Payee = Payee.GetOrCreate(ynabTransaction.Payee),
                 Category = tempCategory,
                 Memo = ynabTransaction.Memo,
                 Outflow = ynabTransaction.Outflow,
-                Inflow = ynabTransaction.Inflow,
-                Cleared = ynabTransaction.Cleared
+                Inflow = ynabTransaction.Inflow
             };
             return ret;
         }

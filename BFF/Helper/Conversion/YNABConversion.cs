@@ -126,7 +126,7 @@ namespace BFF.Helper.Conversion
                 */               
                 categories.ForEach(category => category.Id = (int)cnn.Insert(category));
                 accounts.ForEach(account => account.Id = (int)cnn.Insert(account));
-                //ToDo: Split Transactions
+                //ToDo: Subtransactions and Transfers
                 cnn.Insert(transactions); //Can be inserted as a whole list, because all IDs of the other models are set already
 
             }

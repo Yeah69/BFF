@@ -5,7 +5,7 @@ using YNAB = BFF.Model.Conversion.YNAB;
 
 namespace BFF.Model.Native
 {
-    class Transaction : DataModelBase
+    class Transfer : DataModelBase
     {
         #region Non-Static
 
@@ -14,9 +14,8 @@ namespace BFF.Model.Native
         [Write(false)]
         public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(AccountId)} INTEGER,
-                        {nameof(PayeeId)} INTEGER,
-                        {nameof(CategoryId)} INTEGER,
+                        {nameof(FromAccountId)} INTEGER,
+                        {nameof(ToAccountId)} INTEGER,
                         {nameof(Date)} DATE,
                         {nameof(Memo)} TEXT,
                         {nameof(Outflow)} FLOAT,
@@ -27,33 +26,24 @@ namespace BFF.Model.Native
         public override long Id { get; set; } = -1;
 
         [Write(false)]
-        public Account Account { get; set; }
+        public Account FromAccount { get; set; }
 
-        public long AccountId
+        public long FromAccountId
         {
-            get { return Account?.Id ?? -1; }
-            set { Account.Id = value; }
+            get { return FromAccount?.Id ?? -1; }
+            set { FromAccount.Id = value; }
+        }
+
+        [Write(false)]
+        public Account ToAccount { get; set; }
+
+        public long ToAccountId
+        {
+            get { return ToAccount?.Id ?? -1; }
+            set { ToAccount.Id = value; }
         }
 
         public DateTime Date { get; set; }
-
-        [Write(false)]
-        public Payee Payee { get; set; }
-
-        public long PayeeId
-        {
-            get { return Payee?.Id ?? -1; }
-            set { Payee.Id = value; }
-        }
-
-        [Write(false)]
-        public Category Category { get; set; }
-
-        public long CategoryId
-        {
-            get { return Category?.Id ?? -1; }
-            set { Category.Id = value; }
-        }
 
         public string Memo { get; set; }
         
@@ -81,17 +71,15 @@ namespace BFF.Model.Native
 
         #region Static Methods
 
-        public static implicit operator Transaction(YNAB.Transaction ynabTransaction)
+        public static implicit operator Transfer(YNAB.Transaction ynabTransaction)
         {
             Category tempCategory = (ynabTransaction.SubCategory == string.Empty) ?
                 Category.GetOrCreate(ynabTransaction.MasterCategory) :
                 Category.GetOrCreate($"{ynabTransaction.MasterCategory};{ynabTransaction.SubCategory}");
-            Transaction ret = new Transaction
+            Transfer ret = new Transfer
             {
-                Account = Account.GetOrCreate(ynabTransaction.Account),
+                //todo: From and To
                 Date = ynabTransaction.Date,
-                Payee = Payee.GetOrCreate(ynabTransaction.Payee),
-                Category = tempCategory,
                 Memo = ynabTransaction.Memo,
                 Outflow = ynabTransaction.Outflow,
                 Inflow = ynabTransaction.Inflow,
