@@ -11,18 +11,6 @@ namespace BFF.Model.Native
 
         #region Properties
 
-        [Write(false)]
-        public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
-                        {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(AccountId)} INTEGER,
-                        {nameof(PayeeId)} INTEGER,
-                        {nameof(CategoryId)} INTEGER,
-                        {nameof(Date)} DATE,
-                        {nameof(Memo)} TEXT,
-                        {nameof(Outflow)} FLOAT,
-                        {nameof(Inflow)} FLOAT,
-                        {nameof(Cleared)} INTEGER);";
-
         [Key]
         public override long Id { get; set; } = -1;
 
@@ -75,7 +63,16 @@ namespace BFF.Model.Native
 
         #region Static Variables
 
-
+        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
+                        {nameof(Id)} INTEGER PRIMARY KEY,
+                        {nameof(AccountId)} INTEGER,
+                        {nameof(PayeeId)} INTEGER,
+                        {nameof(CategoryId)} INTEGER,
+                        {nameof(Date)} DATE,
+                        {nameof(Memo)} TEXT,
+                        {nameof(Outflow)} FLOAT,
+                        {nameof(Inflow)} FLOAT,
+                        {nameof(Cleared)} INTEGER);";
 
         #endregion
 

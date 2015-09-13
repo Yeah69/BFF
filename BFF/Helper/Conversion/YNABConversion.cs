@@ -113,10 +113,10 @@ namespace BFF.Helper.Conversion
                 List<Native.Category> categories = Native.Category.GetAllCache();
                 List<Native.Account> accounts = Native.Account.GetAllCache();
 
-                cnn.Execute(transactions.First().CreateTableStatement);
-                cnn.Execute(payees.First().CreateTableStatement);
-                cnn.Execute(categories.First().CreateTableStatement);
-                cnn.Execute(accounts.First().CreateTableStatement);
+                cnn.Execute(Native.Transaction.CreateTableStatement);
+                cnn.Execute(Native.Payee.CreateTableStatement);
+                cnn.Execute(Native.Category.CreateTableStatement);
+                cnn.Execute(Native.Account.CreateTableStatement);
                 
                 payees.ForEach(payee => payee.Id = (int) cnn.Insert(payee));
                 /*  

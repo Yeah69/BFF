@@ -4,9 +4,6 @@ namespace BFF.Model.Native.Structure
 {
     public abstract class DataModelBase
     {
-        [Write(false)]
-        public abstract string CreateTableStatement { get; }
-
         [Key]
         public abstract long Id { get; set; }
     }

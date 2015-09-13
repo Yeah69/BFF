@@ -10,16 +10,11 @@ namespace BFF.Model.Native
 
         #region Properties
 
-        [Write(false)]
-        public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
-                        {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(MonthYear)} DATE;";
-
         [Key]
         public override long Id { get; set; } = -1;
 
         public DateTime MonthYear { get; set; }
-        
+
 
         //Todo: budget relevant properties
 
@@ -27,7 +22,7 @@ namespace BFF.Model.Native
 
         #region Methods
 
-        
+
 
         #endregion
 
@@ -37,8 +32,11 @@ namespace BFF.Model.Native
 
         #region Static Variables
 
-
-
+        [Write(false)]
+        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
+                        {nameof(Id)} INTEGER PRIMARY KEY,
+                        {nameof(MonthYear)} DATE;";
+        
         #endregion
 
         #region Static Methods

@@ -11,12 +11,6 @@ namespace BFF.Model.Native
 
         #region Properties
 
-        [Write(false)]
-        public override string CreateTableStatement => $@"CREATE TABLE [{nameof(Category)}s](
-                        {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(ParentId)} INTEGER,
-                        {nameof(Name)} VARCHAR(100));";
-
         [Key]
         public override long Id { get; set; } = -1;
 
@@ -60,6 +54,11 @@ namespace BFF.Model.Native
         #region Static Variables
 
         private static readonly Dictionary<string, Category> Cache = new Dictionary<string, Category>();
+        
+        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Category)}s](
+                        {nameof(Id)} INTEGER PRIMARY KEY,
+                        {nameof(ParentId)} INTEGER,
+                        {nameof(Name)} VARCHAR(100));";
 
         #endregion
 
