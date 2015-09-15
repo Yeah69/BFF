@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.Helper.Conversion;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
@@ -88,9 +89,9 @@ namespace BFF.Model.Native
             {
                 Account = Account.GetOrCreate(ynabTransaction.Account),
                 Date = ynabTransaction.Date,
-                Payee = Payee.GetOrCreate(ynabTransaction.Payee),
+                Payee = Payee.GetOrCreate(YnabConversion.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value),
                 Category = tempCategory,
-                Memo = ynabTransaction.Memo,
+                Memo = YnabConversion.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
                 Outflow = ynabTransaction.Outflow,
                 Inflow = ynabTransaction.Inflow,
                 Cleared = ynabTransaction.Cleared

@@ -1,4 +1,5 @@
-﻿using BFF.Model.Native.Structure;
+﻿using BFF.Helper.Conversion;
+using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
 
@@ -70,7 +71,7 @@ namespace BFF.Model.Native
             SubTransaction ret = new SubTransaction
             {
                 Category = tempCategory,
-                Memo = ynabTransaction.Memo,
+                Memo = YnabConversion.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["subTransMemo"].Value,
                 Outflow = ynabTransaction.Outflow,
                 Inflow = ynabTransaction.Inflow
             };

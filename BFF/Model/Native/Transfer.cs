@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.Helper.Conversion;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
@@ -74,11 +75,13 @@ namespace BFF.Model.Native
             Category tempCategory = (ynabTransaction.SubCategory == string.Empty) ?
                 Category.GetOrCreate(ynabTransaction.MasterCategory) :
                 Category.GetOrCreate($"{ynabTransaction.MasterCategory};{ynabTransaction.SubCategory}");
+            //todo: Match Memo with regex
             Transfer ret = new Transfer
             {
-                //todo: From and To
+                FromAccount = Account.GetOrCreate(ynabTransaction.Account),
+                ToAccount = Account.GetOrCreate(YnabConversion.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value),
                 Date = ynabTransaction.Date,
-                Memo = ynabTransaction.Memo,
+                Memo = YnabConversion.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
                 Outflow = ynabTransaction.Outflow,
                 Inflow = ynabTransaction.Inflow,
                 Cleared = ynabTransaction.Cleared

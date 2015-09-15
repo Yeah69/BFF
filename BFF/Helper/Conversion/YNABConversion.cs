@@ -4,6 +4,7 @@ using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
@@ -14,20 +15,96 @@ namespace BFF.Helper.Conversion
 {
     class YnabConversion
     {
+        internal static readonly Regex TransferPayeeRegex = new Regex(@"Transfer : (?<accountName>.+)$", RegexOptions.RightToLeft);
+        internal static readonly Regex PayeePartsRegex = new Regex(@"^(?<payeeStr>.+)?(( / )?Transfer : (?<accountName>.+))?$", RegexOptions.RightToLeft);
+        internal static readonly Regex SplitMemoRegex = new Regex(@"^\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) ");
+        internal static readonly Regex MemoPartsRegex = new Regex(@"^(\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) )?((?<subTransMemo>.+) / )?(?<parentTransMemo>.+)$", RegexOptions.RightToLeft);
+
+
         public static void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string dbName)
         {
             //First step: Parse CSV data into conversion objects
-            List<YNAB.Transaction> transactions = ParseTransactionCsv(filePathTransaction);
+            Queue<YNAB.Transaction> transactions = new Queue<YNAB.Transaction>(ParseTransactionCsv(filePathTransaction));
             List<YNAB.BudgetEntry> budgets = ParseBudgetCsv(filePathBudget);
 
             //Second step: Convert conversion objects into native models
-            List<Native.Transaction> nativeTransactions = transactions.Select(transaction => (Native.Transaction)transaction).ToList();
+            List<Native.Transaction> nativeTransactions = new List<Native.Transaction>();
+            List<Native.SubTransaction> subTransactions = new List<Native.SubTransaction>();
+            List<Native.Transfer> transfers = new List<Native.Transfer>();
+            while (transactions.Count > 0)
+            {
+                YNAB.Transaction ynabTransaction = transactions.Dequeue();
+                Match transferMatch = TransferPayeeRegex.Match(ynabTransaction.Payee);
+                Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Payee);
+                if (transferMatch.Success || splitMatch.Success)
+                {
+                    if (splitMatch.Success)
+                    {
+                        //Maybe both have a match, but definitly the split
+                        int splitCount = int.Parse(splitMatch.Groups[nameof(splitCount)].Value);
+                        if (splitCount > 1)
+                        {
+                            //todo: perform some grooming first (like cutting the spit-tag and exctracting the parent memo). Maybe first copy ynabTransaction!
+                            Native.Transaction parentTransaction = ynabTransaction;
+                            nativeTransactions.Add(parentTransaction);
+
+                            //todo: perform some grooming first (like cutting the spit-tag and exctracting the memo). Set the parentId.
+                            if (transferMatch.Success)
+                                transfers.Add(ynabTransaction);
+                            else
+                            {
+                                Native.SubTransaction subTransaction = ynabTransaction;
+                                subTransaction.Parent = parentTransaction;
+                                subTransactions.Add(subTransaction);
+                            }
+                            for (int i = 1; i < splitCount; i++)
+                            {
+                                //todo: check if it is a transfer
+                                YNAB.Transaction newYnabTransaction = transactions.Dequeue();
+                                Match newTrasferMatch = TransferPayeeRegex.Match(newYnabTransaction.Payee);
+                                if (transferMatch.Success)
+                                    transfers.Add(newYnabTransaction);
+                                else
+                                {
+                                    Native.SubTransaction subTransaction = newYnabTransaction;
+                                    subTransaction.Parent = parentTransaction;
+                                    //todo: perform some grooming first (like cutting the spit-tag and exctracting the memo). Set the parentId.
+                                    subTransactions.Add(subTransaction);
+                                }
+                                
+                            }
+                        }
+                        else if (transferMatch.Success)
+                        {
+                            //Only one split item and its a transfer
+                            //todo: Transform into transfer
+                            transfers.Add(ynabTransaction);
+                        }
+                        else
+                        {
+                            //Only one split item and its no transfer
+                            nativeTransactions.Add(ynabTransaction);
+                        }
+
+                    }
+                    else
+                    {
+                        //Only transfer has a match
+                        transfers.Add(ynabTransaction);
+                    }
+                }
+                else
+                {
+                    //No split and no transfer
+                    nativeTransactions.Add(ynabTransaction);
+                }
+            }
             //Todo: List<Native.Budget> nativeBudgets = budgets.Select(budget => (Native.Budget)budget).ToList();
             
             //Third step: Create new database for imported data
             CurrentDbName = dbName;
             SQLiteConnection.CreateFile(CurrentDbFileName());
-            PopulateDatabase(nativeTransactions);
+            PopulateDatabase(nativeTransactions, subTransactions, transfers);
         }
 
         private static List<YNAB.Transaction> ParseTransactionCsv(string filePath)
@@ -100,7 +177,7 @@ namespace BFF.Helper.Conversion
             return ret;
         }
 
-        private static void PopulateDatabase(List<Native.Transaction> transactions)
+        private static void PopulateDatabase(List<Native.Transaction> transactions, List<Native.SubTransaction> subTransactions, List<Native.Transfer> transfers)
         {
             Output.WriteLine("Beginning to populate database.");
             Stopwatch stopwatch = new Stopwatch();
@@ -114,21 +191,24 @@ namespace BFF.Helper.Conversion
                 List<Native.Account> accounts = Native.Account.GetAllCache();
 
                 cnn.Execute(Native.Transaction.CreateTableStatement);
+                //cnn.Execute(Native.Transfer.CreateTableStatement);
+                //cnn.Execute(Native.SubTransaction.CreateTableStatement);
                 cnn.Execute(Native.Payee.CreateTableStatement);
                 cnn.Execute(Native.Category.CreateTableStatement);
                 cnn.Execute(Native.Account.CreateTableStatement);
                 
-                payees.ForEach(payee => payee.Id = (int) cnn.Insert(payee));
                 /*  
                 Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
                 because the structure of the imported csv-Entry of Categories allowes to get the master category first and
                 then the sub category. Thus, the parents id is known beforehand.
                 */               
-                categories.ForEach(category => category.Id = (int)cnn.Insert(category));
-                accounts.ForEach(account => account.Id = (int)cnn.Insert(account));
+                categories.ForEach(category => category.Id = cnn.Insert(category));
+                payees.ForEach(payee => payee.Id = cnn.Insert(payee));
+                accounts.ForEach(account => account.Id = cnn.Insert(account));
                 //ToDo: Subtransactions and Transfers
-                cnn.Insert(transactions); //Can be inserted as a whole list, because all IDs of the other models are set already
-
+                transactions.ForEach(transaction => cnn.Insert(transaction));
+                cnn.Insert(subTransactions);
+                cnn.Insert(transfers);
             }
             stopwatch.Stop();
             TimeSpan ts = stopwatch.Elapsed;
