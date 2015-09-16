@@ -18,7 +18,7 @@ namespace BFF.Helper.Conversion
         internal static readonly Regex TransferPayeeRegex = new Regex(@"Transfer : (?<accountName>.+)$", RegexOptions.RightToLeft);
         internal static readonly Regex PayeePartsRegex = new Regex(@"^(?<payeeStr>.+)?(( / )?Transfer : (?<accountName>.+))?$", RegexOptions.RightToLeft);
         internal static readonly Regex SplitMemoRegex = new Regex(@"^\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) ");
-        internal static readonly Regex MemoPartsRegex = new Regex(@"^(\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) )?((?<subTransMemo>.+) / )?(?<parentTransMemo>.+)$", RegexOptions.RightToLeft);
+        internal static readonly Regex MemoPartsRegex = new Regex(@"^(\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) )?((?<subTransMemo>.*) / )?(?<parentTransMemo>.*)$");
 
 
         public static void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string dbName)
@@ -31,11 +31,12 @@ namespace BFF.Helper.Conversion
             List<Native.Transaction> nativeTransactions = new List<Native.Transaction>();
             List<Native.SubTransaction> subTransactions = new List<Native.SubTransaction>();
             List<Native.Transfer> transfers = new List<Native.Transfer>();
+            //todo: refactor following while loop into a method
             while (transactions.Count > 0)
             {
                 YNAB.Transaction ynabTransaction = transactions.Dequeue();
                 Match transferMatch = TransferPayeeRegex.Match(ynabTransaction.Payee);
-                Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Payee);
+                Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Memo);
                 if (transferMatch.Success || splitMatch.Success)
                 {
                     if (splitMatch.Success)
@@ -44,11 +45,9 @@ namespace BFF.Helper.Conversion
                         int splitCount = int.Parse(splitMatch.Groups[nameof(splitCount)].Value);
                         if (splitCount > 1)
                         {
-                            //todo: perform some grooming first (like cutting the spit-tag and exctracting the parent memo). Maybe first copy ynabTransaction!
                             Native.Transaction parentTransaction = ynabTransaction;
                             nativeTransactions.Add(parentTransaction);
-
-                            //todo: perform some grooming first (like cutting the spit-tag and exctracting the memo). Set the parentId.
+                            
                             if (transferMatch.Success)
                                 transfers.Add(ynabTransaction);
                             else
@@ -59,16 +58,14 @@ namespace BFF.Helper.Conversion
                             }
                             for (int i = 1; i < splitCount; i++)
                             {
-                                //todo: check if it is a transfer
                                 YNAB.Transaction newYnabTransaction = transactions.Dequeue();
                                 Match newTrasferMatch = TransferPayeeRegex.Match(newYnabTransaction.Payee);
-                                if (transferMatch.Success)
+                                if (newTrasferMatch.Success)
                                     transfers.Add(newYnabTransaction);
                                 else
                                 {
                                     Native.SubTransaction subTransaction = newYnabTransaction;
                                     subTransaction.Parent = parentTransaction;
-                                    //todo: perform some grooming first (like cutting the spit-tag and exctracting the memo). Set the parentId.
                                     subTransactions.Add(subTransaction);
                                 }
                                 
@@ -77,7 +74,6 @@ namespace BFF.Helper.Conversion
                         else if (transferMatch.Success)
                         {
                             //Only one split item and its a transfer
-                            //todo: Transform into transfer
                             transfers.Add(ynabTransaction);
                         }
                         else
@@ -89,6 +85,7 @@ namespace BFF.Helper.Conversion
                     }
                     else
                     {
+                        //todo: Fix the duplicated transfers problem
                         //Only transfer has a match
                         transfers.Add(ynabTransaction);
                     }
@@ -191,8 +188,8 @@ namespace BFF.Helper.Conversion
                 List<Native.Account> accounts = Native.Account.GetAllCache();
 
                 cnn.Execute(Native.Transaction.CreateTableStatement);
-                //cnn.Execute(Native.Transfer.CreateTableStatement);
-                //cnn.Execute(Native.SubTransaction.CreateTableStatement);
+                cnn.Execute(Native.Transfer.CreateTableStatement);
+                cnn.Execute(Native.SubTransaction.CreateTableStatement);
                 cnn.Execute(Native.Payee.CreateTableStatement);
                 cnn.Execute(Native.Category.CreateTableStatement);
                 cnn.Execute(Native.Account.CreateTableStatement);
@@ -205,10 +202,11 @@ namespace BFF.Helper.Conversion
                 categories.ForEach(category => category.Id = cnn.Insert(category));
                 payees.ForEach(payee => payee.Id = cnn.Insert(payee));
                 accounts.ForEach(account => account.Id = cnn.Insert(account));
-                //ToDo: Subtransactions and Transfers
                 transactions.ForEach(transaction => cnn.Insert(transaction));
                 cnn.Insert(subTransactions);
                 cnn.Insert(transfers);
+
+                cnn.Close();
             }
             stopwatch.Stop();
             TimeSpan ts = stopwatch.Elapsed;

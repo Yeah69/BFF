@@ -49,8 +49,10 @@ namespace BFF.Model.Native
         #region Static
 
         #region Static Variables
-        
+
         //todo: Make ParentId a foreign key
+        //todo: Merge Outflow and Inflow into Sum
+        [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(SubTransaction)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
                         {nameof(ParentId)} INTEGER,

@@ -35,7 +35,7 @@ namespace BFF.Model.Native
         [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(MonthYear)} DATE;";
+                        {nameof(MonthYear)} DATE);";
         
         #endregion
 

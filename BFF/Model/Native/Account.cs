@@ -31,7 +31,8 @@ namespace BFF.Model.Native
         #region Static Variables
 
         private static readonly Dictionary<string, Account> Cache = new Dictionary<string, Account>();
-        
+
+        [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Account)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
                         {nameof(Name)} VARCHAR(100));";

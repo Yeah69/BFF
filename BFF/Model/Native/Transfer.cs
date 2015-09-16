@@ -56,6 +56,8 @@ namespace BFF.Model.Native
         #region Static Variables
 
         //todo: Make FromAccountId and ToAccountId foreign keys
+        //todo: Merge Outflow and Inflow into Sum
+        [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transfer)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
                         {nameof(FromAccountId)} INTEGER,
@@ -75,7 +77,7 @@ namespace BFF.Model.Native
             Category tempCategory = (ynabTransaction.SubCategory == string.Empty) ?
                 Category.GetOrCreate(ynabTransaction.MasterCategory) :
                 Category.GetOrCreate($"{ynabTransaction.MasterCategory};{ynabTransaction.SubCategory}");
-            //todo: Match Memo with regex
+            //todo: Make FromAccount where the sum is taken from and ToAccount where the sum is going to
             Transfer ret = new Transfer
             {
                 FromAccount = Account.GetOrCreate(ynabTransaction.Account),
