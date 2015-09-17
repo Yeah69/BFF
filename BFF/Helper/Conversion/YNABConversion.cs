@@ -24,84 +24,20 @@ namespace BFF.Helper.Conversion
         public static void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string dbName)
         {
             //First step: Parse CSV data into conversion objects
-            Queue<YNAB.Transaction> transactions = new Queue<YNAB.Transaction>(ParseTransactionCsv(filePathTransaction));
+            Queue<YNAB.Transaction> ynabTransactions = new Queue<YNAB.Transaction>(ParseTransactionCsv(filePathTransaction));
             List<YNAB.BudgetEntry> budgets = ParseBudgetCsv(filePathBudget);
 
             //Second step: Convert conversion objects into native models
-            List<Native.Transaction> nativeTransactions = new List<Native.Transaction>();
+            List<Native.Transaction> transactions = new List<Native.Transaction>();
             List<Native.SubTransaction> subTransactions = new List<Native.SubTransaction>();
             List<Native.Transfer> transfers = new List<Native.Transfer>();
-            //todo: refactor following while loop into a method
-            while (transactions.Count > 0)
-            {
-                YNAB.Transaction ynabTransaction = transactions.Dequeue();
-                Match transferMatch = TransferPayeeRegex.Match(ynabTransaction.Payee);
-                Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Memo);
-                if (transferMatch.Success || splitMatch.Success)
-                {
-                    if (splitMatch.Success)
-                    {
-                        //Maybe both have a match, but definitly the split
-                        int splitCount = int.Parse(splitMatch.Groups[nameof(splitCount)].Value);
-                        if (splitCount > 1)
-                        {
-                            Native.Transaction parentTransaction = ynabTransaction;
-                            nativeTransactions.Add(parentTransaction);
-                            
-                            if (transferMatch.Success)
-                                transfers.Add(ynabTransaction);
-                            else
-                            {
-                                Native.SubTransaction subTransaction = ynabTransaction;
-                                subTransaction.Parent = parentTransaction;
-                                subTransactions.Add(subTransaction);
-                            }
-                            for (int i = 1; i < splitCount; i++)
-                            {
-                                YNAB.Transaction newYnabTransaction = transactions.Dequeue();
-                                Match newTrasferMatch = TransferPayeeRegex.Match(newYnabTransaction.Payee);
-                                if (newTrasferMatch.Success)
-                                    transfers.Add(newYnabTransaction);
-                                else
-                                {
-                                    Native.SubTransaction subTransaction = newYnabTransaction;
-                                    subTransaction.Parent = parentTransaction;
-                                    subTransactions.Add(subTransaction);
-                                }
-                                
-                            }
-                        }
-                        else if (transferMatch.Success)
-                        {
-                            //Only one split item and its a transfer
-                            transfers.Add(ynabTransaction);
-                        }
-                        else
-                        {
-                            //Only one split item and its no transfer
-                            nativeTransactions.Add(ynabTransaction);
-                        }
-
-                    }
-                    else
-                    {
-                        //todo: Fix the duplicated transfers problem
-                        //Only transfer has a match
-                        transfers.Add(ynabTransaction);
-                    }
-                }
-                else
-                {
-                    //No split and no transfer
-                    nativeTransactions.Add(ynabTransaction);
-                }
-            }
+            ConvertTransactionsToNative(ynabTransactions, transactions, transfers, subTransactions);
             //Todo: List<Native.Budget> nativeBudgets = budgets.Select(budget => (Native.Budget)budget).ToList();
             
             //Third step: Create new database for imported data
             CurrentDbName = dbName;
             SQLiteConnection.CreateFile(CurrentDbFileName());
-            PopulateDatabase(nativeTransactions, subTransactions, transfers);
+            PopulateDatabase(transactions, subTransactions, transfers);
         }
 
         private static List<YNAB.Transaction> ParseTransactionCsv(string filePath)
@@ -172,6 +108,74 @@ namespace BFF.Helper.Conversion
                 return null;
             }
             return ret;
+        }
+
+        private static void ConvertTransactionsToNative(Queue<YNAB.Transaction> ynabTransactions, List<Native.Transaction> transactions, List<Native.Transfer> transfers, List<Native.SubTransaction> subTransactions)
+        {
+            while (ynabTransactions.Count > 0)
+            {
+                YNAB.Transaction ynabTransaction = ynabTransactions.Dequeue();
+                Match transferMatch = TransferPayeeRegex.Match(ynabTransaction.Payee);
+                Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Memo);
+                if (transferMatch.Success || splitMatch.Success)
+                {
+                    if (splitMatch.Success)
+                    {
+                        //Maybe both have a match, but definitly the split
+                        int splitCount = int.Parse(splitMatch.Groups[nameof(splitCount)].Value);
+                        if (splitCount > 1)
+                        {
+                            Native.Transaction parentTransaction = ynabTransaction;
+                            transactions.Add(parentTransaction);
+
+                            if (transferMatch.Success)
+                                transfers.Add(ynabTransaction);
+                            else
+                            {
+                                Native.SubTransaction subTransaction = ynabTransaction;
+                                subTransaction.Parent = parentTransaction;
+                                subTransactions.Add(subTransaction);
+                            }
+                            for (int i = 1; i < splitCount; i++)
+                            {
+                                YNAB.Transaction newYnabTransaction = ynabTransactions.Dequeue();
+                                Match newTrasferMatch = TransferPayeeRegex.Match(newYnabTransaction.Payee);
+                                if (newTrasferMatch.Success)
+                                    transfers.Add(newYnabTransaction);
+                                else
+                                {
+                                    Native.SubTransaction subTransaction = newYnabTransaction;
+                                    subTransaction.Parent = parentTransaction;
+                                    subTransactions.Add(subTransaction);
+                                }
+
+                            }
+                        }
+                        else if (transferMatch.Success)
+                        {
+                            //Only one split item and its a transfer
+                            transfers.Add(ynabTransaction);
+                        }
+                        else
+                        {
+                            //Only one split item and its no transfer
+                            transactions.Add(ynabTransaction);
+                        }
+
+                    }
+                    else
+                    {
+                        //todo: Fix the duplicated transfers problem
+                        //Only transfer has a match
+                        transfers.Add(ynabTransaction);
+                    }
+                }
+                else
+                {
+                    //No split and no transfer
+                    transactions.Add(ynabTransaction);
+                }
+            }
         }
 
         private static void PopulateDatabase(List<Native.Transaction> transactions, List<Native.SubTransaction> subTransactions, List<Native.Transfer> transfers)
