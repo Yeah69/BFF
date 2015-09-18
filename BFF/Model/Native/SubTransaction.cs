@@ -34,9 +34,7 @@ namespace BFF.Model.Native
 
         public string Memo { get; set; }
         
-        public double Outflow { get; set; }
-        
-        public double Inflow { get; set; }
+        public double Sum { get; set; }
 
         #endregion
 
@@ -50,16 +48,14 @@ namespace BFF.Model.Native
 
         #region Static Variables
 
-        //todo: Make ParentId a foreign key
-        //todo: Merge Outflow and Inflow into Sum
+        //todo: foreign key: ParentId
         [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(SubTransaction)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
                         {nameof(ParentId)} INTEGER,
                         {nameof(CategoryId)} INTEGER,
                         {nameof(Memo)} TEXT,
-                        {nameof(Outflow)} FLOAT,
-                        {nameof(Inflow)} FLOAT);";
+                        {nameof(Sum)} FLOAT);";
 
         #endregion
 
@@ -74,8 +70,7 @@ namespace BFF.Model.Native
             {
                 Category = tempCategory,
                 Memo = YnabConversion.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["subTransMemo"].Value,
-                Outflow = ynabTransaction.Outflow,
-                Inflow = ynabTransaction.Inflow
+                Sum = ynabTransaction.Inflow - ynabTransaction.Outflow
             };
             return ret;
         }

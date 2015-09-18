@@ -53,8 +53,7 @@ namespace BFF.Model.Native
 
         #region Static Variables
 
-        //todo: Make FromAccountId and ToAccountId foreign keys
-        //todo: Merge Outflow and Inflow into Sum
+        //todo: foreign key: FromAccountId and ToAccountId
         [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transfer)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,

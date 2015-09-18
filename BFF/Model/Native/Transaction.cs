@@ -46,9 +46,7 @@ namespace BFF.Model.Native
 
         public string Memo { get; set; }
         
-        public double Outflow { get; set; }
-        
-        public double Inflow { get; set; }
+        public double? Sum { get; set; }
         
         public bool Cleared { get; set; }
 
@@ -64,8 +62,7 @@ namespace BFF.Model.Native
 
         #region Static Variables
 
-        //todo: Make IDs foreign keys?
-        //todo: Merge Outflow and Inflow into Sum
+        //todo: foreign key: Ids
         [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
@@ -74,8 +71,7 @@ namespace BFF.Model.Native
                         {nameof(CategoryId)} INTEGER,
                         {nameof(Date)} DATE,
                         {nameof(Memo)} TEXT,
-                        {nameof(Outflow)} FLOAT,
-                        {nameof(Inflow)} FLOAT,
+                        {nameof(Sum)} FLOAT,
                         {nameof(Cleared)} INTEGER);";
 
         #endregion
@@ -94,8 +90,7 @@ namespace BFF.Model.Native
                 Payee = Payee.GetOrCreate(YnabConversion.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value),
                 Category = tempCategory,
                 Memo = YnabConversion.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
-                Outflow = ynabTransaction.Outflow,
-                Inflow = ynabTransaction.Inflow,
+                Sum = ynabTransaction.Inflow - ynabTransaction.Outflow,
                 Cleared = ynabTransaction.Cleared
             };
             return ret;

@@ -128,6 +128,8 @@ namespace BFF.Helper.Conversion
                             Native.Transaction parentTransaction = ynabTransaction;
                             transactions.Add(parentTransaction);
 
+                            int count = 0;
+
                             if (transferMatch.Success)
                                 AddTransfer(transfers, ynabTransaction);
                             else
@@ -135,6 +137,7 @@ namespace BFF.Helper.Conversion
                                 Native.SubTransaction subTransaction = ynabTransaction;
                                 subTransaction.Parent = parentTransaction;
                                 subTransactions.Add(subTransaction);
+                                count++;
                             }
                             for (int i = 1; i < splitCount; i++)
                             {
@@ -147,9 +150,12 @@ namespace BFF.Helper.Conversion
                                     Native.SubTransaction subTransaction = newYnabTransaction;
                                     subTransaction.Parent = parentTransaction;
                                     subTransactions.Add(subTransaction);
+                                    count++;
                                 }
 
                             }
+                            if (count > 0)
+                                parentTransaction.Sum = null;
                         }
                         else if (transferMatch.Success)
                         {
