@@ -165,7 +165,6 @@ namespace BFF.Helper.Conversion
                     }
                     else
                     {
-                        //todo: Fix the duplicated transfers problem
                         //Only transfer has a match
                         AddTransfer(transfers, ynabTransaction);
                     }
@@ -178,24 +177,23 @@ namespace BFF.Helper.Conversion
             }
         }
 
-        private static readonly List<Native.Transfer> _duplicateList = new List<Native.Transfer>();
+        private static readonly List<string> ProcessedAccountsList = new List<string>();
 
-        private static void AddTransfer(List<Native.Transfer> transfers, Native.Transfer transfer)
+        private static void AddTransfer(List<Native.Transfer> transfers, YNAB.Transaction ynabTransfer)
         {
-            Native.Transfer duplicate = _duplicateList.FirstOrDefault(temp => temp.isYnabDuplicate(transfer));
-            if (duplicate != null)
+            if (ProcessedAccountsList.Count == 0)
             {
-                if (transfer.Memo != string.Empty)
-                {
-                    duplicate.Memo = (duplicate.Memo == string.Empty) ? 
-                        transfer.Memo : string.Join("; ", duplicate.Memo, transfer.Memo);
-                }
-                _duplicateList.Remove(duplicate);
+                ProcessedAccountsList.Add(ynabTransfer.Account);
             }
-            else
+            else if (ProcessedAccountsList.Last() != ynabTransfer.Account)
             {
-                transfers.Add(transfer);
-                _duplicateList.Add(transfer);
+                ProcessedAccountsList.Add(ynabTransfer.Account);
+            }
+
+            string otherAccount = PayeePartsRegex.Match(ynabTransfer.Payee).Groups["accountName"].Value;
+            if (!ProcessedAccountsList.Contains(otherAccount))
+            {
+                transfers.Add(ynabTransfer);
             }
         }
 

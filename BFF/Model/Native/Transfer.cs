@@ -45,14 +45,6 @@ namespace BFF.Model.Native
 
         #region Methods
 
-        public bool isYnabDuplicate(Transfer possibleDuplicate)
-        {
-            return FromAccount == possibleDuplicate.FromAccount &&
-                   ToAccount == possibleDuplicate.ToAccount &&
-                   Date == possibleDuplicate.Date &&
-                   Sum == possibleDuplicate.Sum;
-        }
-
         #endregion
 
         #endregion
