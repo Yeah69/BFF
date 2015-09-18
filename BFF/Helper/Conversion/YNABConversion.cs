@@ -129,7 +129,7 @@ namespace BFF.Helper.Conversion
                             transactions.Add(parentTransaction);
 
                             if (transferMatch.Success)
-                                transfers.Add(ynabTransaction);
+                                AddTransfer(transfers, ynabTransaction);
                             else
                             {
                                 Native.SubTransaction subTransaction = ynabTransaction;
@@ -141,7 +141,7 @@ namespace BFF.Helper.Conversion
                                 YNAB.Transaction newYnabTransaction = ynabTransactions.Dequeue();
                                 Match newTrasferMatch = TransferPayeeRegex.Match(newYnabTransaction.Payee);
                                 if (newTrasferMatch.Success)
-                                    transfers.Add(newYnabTransaction);
+                                    AddTransfer(transfers, newYnabTransaction);
                                 else
                                 {
                                     Native.SubTransaction subTransaction = newYnabTransaction;
@@ -154,7 +154,7 @@ namespace BFF.Helper.Conversion
                         else if (transferMatch.Success)
                         {
                             //Only one split item and its a transfer
-                            transfers.Add(ynabTransaction);
+                            AddTransfer(transfers, ynabTransaction);
                         }
                         else
                         {
@@ -167,7 +167,7 @@ namespace BFF.Helper.Conversion
                     {
                         //todo: Fix the duplicated transfers problem
                         //Only transfer has a match
-                        transfers.Add(ynabTransaction);
+                        AddTransfer(transfers, ynabTransaction);
                     }
                 }
                 else
@@ -175,6 +175,27 @@ namespace BFF.Helper.Conversion
                     //No split and no transfer
                     transactions.Add(ynabTransaction);
                 }
+            }
+        }
+
+        private static readonly List<Native.Transfer> _duplicateList = new List<Native.Transfer>();
+
+        private static void AddTransfer(List<Native.Transfer> transfers, Native.Transfer transfer)
+        {
+            Native.Transfer duplicate = _duplicateList.FirstOrDefault(temp => temp.isYnabDuplicate(transfer));
+            if (duplicate != null)
+            {
+                if (transfer.Memo != string.Empty)
+                {
+                    duplicate.Memo = (duplicate.Memo == string.Empty) ? 
+                        transfer.Memo : string.Join("; ", duplicate.Memo, transfer.Memo);
+                }
+                _duplicateList.Remove(duplicate);
+            }
+            else
+            {
+                transfers.Add(transfer);
+                _duplicateList.Add(transfer);
             }
         }
 

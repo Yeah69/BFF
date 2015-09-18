@@ -80,7 +80,6 @@ namespace BFF.Model.Conversion.YNAB
         public static implicit operator Transaction(string csvLine)
         {
             string[] entries = csvLine.Split('\t');
-            //todo: adjust conversion to regional codes (date, outflow, inflow, runningBalance)
             Color tempColor;
             switch (entries[1])
             {

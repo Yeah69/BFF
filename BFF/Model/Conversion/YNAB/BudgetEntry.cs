@@ -58,7 +58,6 @@ namespace BFF.Model.Conversion.YNAB
         public static implicit operator BudgetEntry(string csvLine)
         {
             string[] entries = csvLine.Split('\t');
-            //todo: adjust conversion to regional codes (month, budgeted, outflow, categoryBalance)
             BudgetEntry ret = new BudgetEntry
             {
                 Month = entries[0].Trim('"'),

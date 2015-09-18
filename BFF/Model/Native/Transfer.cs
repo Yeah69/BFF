@@ -37,15 +37,21 @@ namespace BFF.Model.Native
 
         public string Memo { get; set; }
         
-        public double Outflow { get; set; }
-        
-        public double Inflow { get; set; }
+        public double Sum { get; set; }
         
         public bool Cleared { get; set; }
 
         #endregion
 
         #region Methods
+
+        public bool isYnabDuplicate(Transfer possibleDuplicate)
+        {
+            return FromAccount == possibleDuplicate.FromAccount &&
+                   ToAccount == possibleDuplicate.ToAccount &&
+                   Date == possibleDuplicate.Date &&
+                   Sum == possibleDuplicate.Sum;
+        }
 
         #endregion
 
@@ -64,8 +70,7 @@ namespace BFF.Model.Native
                         {nameof(ToAccountId)} INTEGER,
                         {nameof(Date)} DATE,
                         {nameof(Memo)} TEXT,
-                        {nameof(Outflow)} FLOAT,
-                        {nameof(Inflow)} FLOAT,
+                        {nameof(Sum)} FLOAT,
                         {nameof(Cleared)} INTEGER);";
 
         #endregion
@@ -77,10 +82,10 @@ namespace BFF.Model.Native
             Category tempCategory = (ynabTransaction.SubCategory == string.Empty) ?
                 Category.GetOrCreate(ynabTransaction.MasterCategory) :
                 Category.GetOrCreate($"{ynabTransaction.MasterCategory};{ynabTransaction.SubCategory}");
-            double sum = ynabTransaction.Inflow - ynabTransaction.Outflow;
-            Account tempFromAccount = (sum < 0) ? Account.GetOrCreate(ynabTransaction.Account) 
+            double tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;
+            Account tempFromAccount = (tempSum < 0) ? Account.GetOrCreate(ynabTransaction.Account) 
                 : Account.GetOrCreate(YnabConversion.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value);
-            Account tempToAccount = (sum >= 0) ? Account.GetOrCreate(ynabTransaction.Account) 
+            Account tempToAccount = (tempSum >= 0) ? Account.GetOrCreate(ynabTransaction.Account) 
                 : Account.GetOrCreate(YnabConversion.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value);
             Transfer ret = new Transfer
             {
@@ -88,8 +93,7 @@ namespace BFF.Model.Native
                 ToAccount = tempToAccount,
                 Date = ynabTransaction.Date,
                 Memo = YnabConversion.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
-                Outflow = ynabTransaction.Outflow,
-                Inflow = ynabTransaction.Inflow,
+                Sum = Math.Abs(tempSum),
                 Cleared = ynabTransaction.Cleared
             };
             return ret;
