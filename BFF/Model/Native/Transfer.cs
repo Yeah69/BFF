@@ -77,11 +77,15 @@ namespace BFF.Model.Native
             Category tempCategory = (ynabTransaction.SubCategory == string.Empty) ?
                 Category.GetOrCreate(ynabTransaction.MasterCategory) :
                 Category.GetOrCreate($"{ynabTransaction.MasterCategory};{ynabTransaction.SubCategory}");
-            //todo: Make FromAccount where the sum is taken from and ToAccount where the sum is going to
+            double sum = ynabTransaction.Inflow - ynabTransaction.Outflow;
+            Account tempFromAccount = (sum < 0) ? Account.GetOrCreate(ynabTransaction.Account) 
+                : Account.GetOrCreate(YnabConversion.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value);
+            Account tempToAccount = (sum >= 0) ? Account.GetOrCreate(ynabTransaction.Account) 
+                : Account.GetOrCreate(YnabConversion.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value);
             Transfer ret = new Transfer
             {
-                FromAccount = Account.GetOrCreate(ynabTransaction.Account),
-                ToAccount = Account.GetOrCreate(YnabConversion.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value),
+                FromAccount = tempFromAccount,
+                ToAccount = tempToAccount,
                 Date = ynabTransaction.Date,
                 Memo = YnabConversion.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
                 Outflow = ynabTransaction.Outflow,
