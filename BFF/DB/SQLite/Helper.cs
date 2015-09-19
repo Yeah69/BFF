@@ -36,7 +36,7 @@ namespace BFF.DB.SQLite
 
         public static string CurrentDbConnectionString()
         {
-            return $"Data Source={CurrentDbName}.sqlite;Version=3;";
+            return $"Data Source={CurrentDbName}.sqlite;Version=3;foreign keys=true;";
         }
 
         #endregion

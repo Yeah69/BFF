@@ -47,15 +47,15 @@ namespace BFF.Model.Native
         #region Static
 
         #region Static Variables
-
-        //todo: foreign key: ParentId
+        
         [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(SubTransaction)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
                         {nameof(ParentId)} INTEGER,
                         {nameof(CategoryId)} INTEGER,
                         {nameof(Memo)} TEXT,
-                        {nameof(Sum)} FLOAT);";
+                        {nameof(Sum)} FLOAT,
+                        FOREIGN KEY({nameof(ParentId)}) REFERENCES {nameof(Transaction)}s({nameof(Transaction.Id)}) ON DELETE CASCADE);";
 
         #endregion
 

@@ -5,6 +5,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
+    //todo: starting balance column
     class Account : DataModelBase
     {
         #region Non-Static

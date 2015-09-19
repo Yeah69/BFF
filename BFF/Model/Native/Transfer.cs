@@ -52,8 +52,7 @@ namespace BFF.Model.Native
         #region Static
 
         #region Static Variables
-
-        //todo: foreign key: FromAccountId and ToAccountId
+        
         [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transfer)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
@@ -62,7 +61,9 @@ namespace BFF.Model.Native
                         {nameof(Date)} DATE,
                         {nameof(Memo)} TEXT,
                         {nameof(Sum)} FLOAT,
-                        {nameof(Cleared)} INTEGER);";
+                        {nameof(Cleared)} INTEGER,
+                        FOREIGN KEY({nameof(FromAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT,
+                        FOREIGN KEY({nameof(ToAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT);";
 
         #endregion
 

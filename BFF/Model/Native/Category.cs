@@ -55,12 +55,12 @@ namespace BFF.Model.Native
 
         private static readonly Dictionary<string, Category> Cache = new Dictionary<string, Category>();
         
-        //todo: foreign key: ParentId
         [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Category)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
                         {nameof(ParentId)} INTEGER,
-                        {nameof(Name)} VARCHAR(100));";
+                        {nameof(Name)} VARCHAR(100),
+                        FOREIGN KEY({nameof(ParentId)}) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
 
         #endregion
 
