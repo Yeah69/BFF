@@ -112,6 +112,7 @@ namespace BFF.Helper.Conversion
 
         private static void ConvertTransactionsToNative(Queue<YNAB.Transaction> ynabTransactions, List<Native.Transaction> transactions, List<Native.Transfer> transfers, List<Native.SubTransaction> subTransactions)
         {
+            //todo: Income Category into native Income
             while (ynabTransactions.Count > 0)
             {
                 YNAB.Transaction ynabTransaction = ynabTransactions.Dequeue();
