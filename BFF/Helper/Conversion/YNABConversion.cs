@@ -112,10 +112,14 @@ namespace BFF.Helper.Conversion
 
         private static void ConvertTransactionsToNative(Queue<YNAB.Transaction> ynabTransactions, List<Native.Transaction> transactions, List<Native.Transfer> transfers, List<Native.SubTransaction> subTransactions)
         {
-            //todo: Income Category into native Income
             while (ynabTransactions.Count > 0)
             {
                 YNAB.Transaction ynabTransaction = ynabTransactions.Dequeue();
+                if (ynabTransaction.Payee == "Starting Balance")
+                {
+                    Native.Account.GetOrCreate(ynabTransaction.Account).StartingBalance = ynabTransaction.Inflow - ynabTransaction.Outflow;
+                    continue;
+                }
                 Match transferMatch = TransferPayeeRegex.Match(ynabTransaction.Payee);
                 Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Memo);
                 if (transferMatch.Success || splitMatch.Success)

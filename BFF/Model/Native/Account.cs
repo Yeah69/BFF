@@ -17,11 +17,13 @@ namespace BFF.Model.Native
 
         public string Name { get; set; }
 
+        public double StartingBalance { get; set; } = 0.0;
+
         #endregion
 
         #region Methods
 
-        
+
 
         #endregion
 
@@ -36,7 +38,8 @@ namespace BFF.Model.Native
         [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Account)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(Name)} VARCHAR(100));";
+                        {nameof(Name)} VARCHAR(100),
+                        {nameof(StartingBalance)} FLOAT NOT NULL DEFAULT 0);";
 
         #endregion
 

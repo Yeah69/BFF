@@ -11,8 +11,8 @@ namespace BFF
         {
             InitializeComponent();
 
-            YnabConversion.ImportYnabTransactionsCsvtoDb(@"D:\Dropbox\YNAB\Exports\Yeah as of 2015-08-14 640 PM-Register.csv", 
-                                                        @"D:\Dropbox\YNAB\Exports\Yeah as of 2015-08-14 640 PM-Budget.csv",
+            YnabConversion.ImportYnabTransactionsCsvtoDb(@"D:\Private\YNABExports\Yeah as of 2015-08-14 640 PM-Register.csv",
+                                                        @"D:\Private\YNABExports\Yeah as of 2015-08-14 640 PM-Budget.csv",
                                                         @"testDatabase");
         }
     }
