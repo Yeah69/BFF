@@ -96,6 +96,7 @@
     <Compile Include="Model\Native\Structure\DataModelBase.cs" />
     <Compile Include="Model\Native\Payee.cs" />
     <Compile Include="Model\Native\SubTransaction.cs" />
+    <Compile Include="Model\Native\Income.cs" />
     <Compile Include="Model\Native\Transfer.cs" />
     <Compile Include="Model\Native\Transaction.cs" />
     <Compile Include="WPFStuff\ViewModelBase.cs" />

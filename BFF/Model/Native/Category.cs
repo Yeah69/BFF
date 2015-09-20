@@ -81,6 +81,7 @@ namespace BFF.Model.Native
 
         public static Category GetOrCreate(Stack<string> nameStack)
         {
+            //todo: empty Category
             if (nameStack.Count < 1)
                 return null;
             string namePath = string.Join(";", nameStack);
