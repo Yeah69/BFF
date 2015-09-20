@@ -68,6 +68,8 @@ namespace BFF.Model.Native
 
         public static Category GetOrCreate(string namePath)
         {
+            if (namePath == "")
+                return null;
             if (Cache.ContainsKey(namePath))
                 return Cache[namePath];
             Stack<string> nameStack = new Stack<string>(namePath.Split(';'));
@@ -81,7 +83,6 @@ namespace BFF.Model.Native
 
         public static Category GetOrCreate(Stack<string> nameStack)
         {
-            //todo: empty Category
             if (nameStack.Count < 1)
                 return null;
             string namePath = string.Join(";", nameStack);

@@ -71,9 +71,6 @@ namespace BFF.Model.Native
 
         public static implicit operator Transfer(YNAB.Transaction ynabTransaction)
         {
-            Category tempCategory = (ynabTransaction.SubCategory == string.Empty) ?
-                Category.GetOrCreate(ynabTransaction.MasterCategory) :
-                Category.GetOrCreate($"{ynabTransaction.MasterCategory};{ynabTransaction.SubCategory}");
             double tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;
             Account tempFromAccount = (tempSum < 0) ? Account.GetOrCreate(ynabTransaction.Account) 
                 : Account.GetOrCreate(YnabConversion.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value);

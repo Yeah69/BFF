@@ -38,10 +38,10 @@ namespace BFF.Model.Native
         [Write(false)]
         public Category Category { get; set; }
 
-        public long CategoryId
+        public long? CategoryId
         {
-            get { return Category?.Id ?? -1; }
-            set { Category.Id = value; }
+            get { return Category?.Id; }
+            set { if(Category != null) Category.Id = value ?? -1; }
         }
 
         public string Memo { get; set; }
