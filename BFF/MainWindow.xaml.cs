@@ -1,4 +1,4 @@
-﻿using BFF.Helper.Conversion;
+﻿using BFF.Helper.Import;
 
 namespace BFF
 {
@@ -11,7 +11,7 @@ namespace BFF
         {
             InitializeComponent();
 
-            YnabConversion.ImportYnabTransactionsCsvtoDb(@"D:\Private\YNABExports\Yeah as of 2015-08-14 640 PM-Register.csv",
+            YnabCsvImport.ImportYnabTransactionsCsvtoDb(@"D:\Private\YNABExports\Yeah as of 2015-08-14 640 PM-Register.csv",
                                                         @"D:\Private\YNABExports\Yeah as of 2015-08-14 640 PM-Budget.csv",
                                                         @"testDatabase");
         }

@@ -11,9 +11,9 @@ using YNAB = BFF.Model.Conversion.YNAB;
 using Native = BFF.Model.Native;
 using static BFF.DB.SQLite.Helper;
 
-namespace BFF.Helper.Conversion
+namespace BFF.Helper.Import
 {
-    class YnabConversion
+    class YnabCsvImport
     {
         internal static readonly Regex TransferPayeeRegex = new Regex(@"Transfer : (?<accountName>.+)$", RegexOptions.RightToLeft);
         internal static readonly Regex PayeePartsRegex = new Regex(@"^(?<payeeStr>.+)?(( / )?Transfer : (?<accountName>.+))?$", RegexOptions.RightToLeft);
@@ -121,76 +121,44 @@ namespace BFF.Helper.Conversion
                     Native.Account.GetOrCreate(ynabTransaction.Account).StartingBalance = ynabTransaction.Inflow - ynabTransaction.Outflow;
                     continue;
                 }
-                //todo: this assumes that Incomes will never be Subtransactions
-                if (ynabTransaction.MasterCategory == "Income")
-                {
-                    incomes.Add(ynabTransaction);
-                    continue;
-                }
-                Match transferMatch = TransferPayeeRegex.Match(ynabTransaction.Payee);
+                
                 Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Memo);
-                if (transferMatch.Success || splitMatch.Success)
+                if (splitMatch.Success)
                 {
-                    if (splitMatch.Success)
+                    Native.Transaction parent = ynabTransaction;
+                    int splitCount = int.Parse(splitMatch.Groups[nameof(splitCount)].Value);
+                    int count = 0;
+                    for (int i = 0; i < splitCount; i++)
                     {
-                        //Maybe both have a match, but definitly the split
-                        int splitCount = int.Parse(splitMatch.Groups[nameof(splitCount)].Value);
-                        if (splitCount > 1)
-                        {
-                            Native.Transaction parentTransaction = ynabTransaction;
-                            transactions.Add(parentTransaction);
-
-                            int count = 0;
-
-                            if (transferMatch.Success)
-                                AddTransfer(transfers, ynabTransaction);
-                            else
-                            {
-                                Native.SubTransaction subTransaction = ynabTransaction;
-                                subTransaction.Parent = parentTransaction;
-                                subTransactions.Add(subTransaction);
-                                count++;
-                            }
-                            for (int i = 1; i < splitCount; i++)
-                            {
-                                YNAB.Transaction newYnabTransaction = ynabTransactions.Dequeue();
-                                Match newTrasferMatch = TransferPayeeRegex.Match(newYnabTransaction.Payee);
-                                if (newTrasferMatch.Success)
-                                    AddTransfer(transfers, newYnabTransaction);
-                                else
-                                {
-                                    Native.SubTransaction subTransaction = newYnabTransaction;
-                                    subTransaction.Parent = parentTransaction;
-                                    subTransactions.Add(subTransaction);
-                                    count++;
-                                }
-
-                            }
-                            if (count > 0)
-                                parentTransaction.Sum = null;
-                        }
-                        else if (transferMatch.Success)
-                        {
-                            //Only one split item and its a transfer
-                            AddTransfer(transfers, ynabTransaction);
-                        }
+                        YNAB.Transaction newYnabTransaction = (i==0) ? ynabTransaction : ynabTransactions.Dequeue();
+                        Match transferMatch = TransferPayeeRegex.Match(newYnabTransaction.Payee);
+                        if (transferMatch.Success)
+                            AddTransfer(transfers, newYnabTransaction);
+                        else if (newYnabTransaction.MasterCategory == "Income")
+                            incomes.Add(newYnabTransaction);
                         else
                         {
-                            //Only one split item and its no transfer
-                            transactions.Add(ynabTransaction);
+                            Native.SubTransaction subTransaction = newYnabTransaction;
+                            subTransaction.Parent = parent;
+                            subTransactions.Add(subTransaction);
+                            count++;
                         }
-
                     }
-                    else
+                    if (count > 0)
                     {
-                        //Only transfer has a match
-                        AddTransfer(transfers, ynabTransaction);
+                        parent.Sum = null;
+                        transactions.Add(parent);
                     }
                 }
                 else
                 {
-                    //No split and no transfer
-                    transactions.Add(ynabTransaction);
+                    Match transferMatch = TransferPayeeRegex.Match(ynabTransaction.Payee);
+                    if (transferMatch.Success)
+                        AddTransfer(transfers, ynabTransaction);
+                    else if (ynabTransaction.MasterCategory == "Income")
+                        incomes.Add(ynabTransaction);
+                    else
+                        transactions.Add(ynabTransaction);
                 }
             }
         }

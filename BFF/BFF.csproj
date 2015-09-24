@@ -86,7 +86,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DB\SQLite\Helper.cs" />
-    <Compile Include="Helper\Conversion\YNABConversion.cs" />
+    <Compile Include="Helper\Import\YnabCsvImport.cs" />
     <Compile Include="Helper\Output.cs" />
     <Compile Include="Model\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="Model\Conversion\YNAB\Transaction.cs" />

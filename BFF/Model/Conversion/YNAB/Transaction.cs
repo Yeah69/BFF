@@ -119,8 +119,8 @@ namespace BFF.Model.Conversion.YNAB
                 MasterCategory = entries[6].Trim('"'),
                 SubCategory = entries[7].Trim('"'),
                 Memo = entries[8].Trim('"'),
-                Outflow = double.Parse(entries[9].TrimEnd('€')), //todo: Localize look into Humanizer
-                Inflow = double.Parse(entries[10].TrimEnd('€')), //todo: Localize look into Humanizer
+                Outflow = double.Parse(entries[9].TrimEnd('€')), //todo: Localize look into Humanizer or Regex
+                Inflow = double.Parse(entries[10].TrimEnd('€')), //todo: Localize look into Humanizer or Regex
                 Cleared = entries[11] == "C",
                 RunningBalance = double.Parse(entries[12].TrimEnd('€'))
             };

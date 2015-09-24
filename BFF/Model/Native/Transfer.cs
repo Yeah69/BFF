@@ -1,5 +1,5 @@
 ﻿using System;
-using BFF.Helper.Conversion;
+using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
@@ -73,15 +73,15 @@ namespace BFF.Model.Native
         {
             double tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;
             Account tempFromAccount = (tempSum < 0) ? Account.GetOrCreate(ynabTransaction.Account) 
-                : Account.GetOrCreate(YnabConversion.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value);
+                : Account.GetOrCreate(YnabCsvImport.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value);
             Account tempToAccount = (tempSum >= 0) ? Account.GetOrCreate(ynabTransaction.Account) 
-                : Account.GetOrCreate(YnabConversion.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value);
+                : Account.GetOrCreate(YnabCsvImport.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value);
             Transfer ret = new Transfer
             {
                 FromAccount = tempFromAccount,
                 ToAccount = tempToAccount,
                 Date = ynabTransaction.Date,
-                Memo = YnabConversion.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
+                Memo = YnabCsvImport.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
                 Sum = Math.Abs(tempSum),
                 Cleared = ynabTransaction.Cleared
             };
