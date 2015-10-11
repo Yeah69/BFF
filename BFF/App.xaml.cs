@@ -1,4 +1,6 @@
 ﻿
+using BFF.ViewModel;
+
 namespace BFF
 {
     /// <summary>
@@ -6,5 +8,12 @@ namespace BFF
     /// </summary>
     public partial class App
     {
+        public App()
+        {
+            MainWindow mainWindow = new MainWindow();
+            MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
+            mainWindow.DataContext = mainWindowViewModel;
+            mainWindow.Show();
+        }
     }
 }

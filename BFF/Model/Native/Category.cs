@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
+using static BFF.DB.SQLite.Helper;
 
 namespace BFF.Model.Native
 {
@@ -25,25 +27,17 @@ namespace BFF.Model.Native
         public long? ParentId
         {
             get { return Parent?.Id; }
-            set
-            {
-                if (value == null)
-                {
-                    Parent = null;
-                    ParentId = value;
-                }
-                else
-                {
-                    Parent.Id = value ?? -1;
-                }
-            }
+            set { Parent = GetFromDb(value); } //todo: Maybe set this as Parent's child
         }
 
         #endregion
 
         #region Methods
 
-        
+        public override string ToString()
+        {
+            return Name;
+        }
 
         #endregion
 
@@ -54,7 +48,8 @@ namespace BFF.Model.Native
         #region Static Variables
 
         private static readonly Dictionary<string, Category> Cache = new Dictionary<string, Category>();
-        
+        private static readonly Dictionary<long, Category> DbCache = new Dictionary<long, Category>();
+
         [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Category)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
@@ -99,6 +94,23 @@ namespace BFF.Model.Native
         public static List<Category> GetAllCache()
         {
             return Cache.Values.ToList();
+        }
+
+        public static Category GetFromDb(long? id)
+        {
+            if (id == null) return null;
+            if (DbCache.ContainsKey((long) id)) return DbCache[(long) id];
+            Category ret;
+            using (var cnn = new SQLiteConnection(CurrentDbConnectionString()))
+            {
+                cnn.Open();
+
+                ret = cnn.Get<Category>(id);
+
+                cnn.Close();
+            }
+            DbCache.Add((long)id, ret);
+            return ret;
         }
 
         #endregion

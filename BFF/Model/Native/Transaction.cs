@@ -21,7 +21,7 @@ namespace BFF.Model.Native
         public long AccountId
         {
             get { return Account?.Id ?? -1; }
-            set { Account.Id = value; }
+            set { Account = Account.GetFromDb(value); }
         }
 
         public DateTime Date { get; set; }
@@ -32,7 +32,7 @@ namespace BFF.Model.Native
         public long PayeeId
         {
             get { return Payee?.Id ?? -1; }
-            set { Payee.Id = value; }
+            set { Payee = Payee.GetFromDb(value); }
         }
 
         [Write(false)]
@@ -41,7 +41,7 @@ namespace BFF.Model.Native
         public long? CategoryId
         {
             get { return Category?.Id; }
-            set { if(Category != null) Category.Id = value ?? -1; }
+            set { Category = Category.GetFromDb(value);}
         }
 
         public string Memo { get; set; }

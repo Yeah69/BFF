@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
+using static BFF.DB.SQLite.Helper;
 
 namespace BFF.Model.Native
 {
@@ -22,7 +24,10 @@ namespace BFF.Model.Native
 
         #region Methods
 
-
+        public override string ToString()
+        {
+            return Name;
+        }
 
         #endregion
 
@@ -33,6 +38,7 @@ namespace BFF.Model.Native
         #region Static Variables
 
         private static readonly Dictionary<string, Account> Cache = new Dictionary<string, Account>();
+        private static readonly Dictionary<long, Account> DbCache = new Dictionary<long, Account>();
 
         [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Account)}s](
@@ -56,6 +62,22 @@ namespace BFF.Model.Native
         public static List<Account> GetAllCache()
         {
             return Cache.Values.ToList();
+        }
+
+        public static Account GetFromDb(long id)
+        {
+            if (DbCache.ContainsKey(id)) return DbCache[id];
+            Account ret;
+            using(var cnn = new SQLiteConnection(CurrentDbConnectionString()))
+            {
+                cnn.Open();
+
+                ret = cnn.Get<Account>(id);
+
+                cnn.Close();
+            }
+            DbCache.Add(id, ret);
+            return ret;
         }
 
         #endregion
