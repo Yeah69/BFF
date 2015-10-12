@@ -6,7 +6,7 @@ using YNAB = BFF.Model.Conversion.YNAB;
 
 namespace BFF.Model.Native
 {
-    class Income : DataModelBase
+    class Income : TransactionIncome, ITransactionLike
     {
         #region Non-Static
 
@@ -16,39 +16,39 @@ namespace BFF.Model.Native
         public override long Id { get; set; } = -1;
 
         [Write(false)]
-        public Account Account { get; set; }
+        public override Account Account { get; set; }
 
-        public long AccountId
+        public override long AccountId
         {
             get { return Account?.Id ?? -1; }
-            set { Account.Id = value; }
+            set { Account = Account.GetFromDb(value); }
         }
 
-        public DateTime Date { get; set; }
+        public override DateTime Date { get; set; }
 
         [Write(false)]
-        public Payee Payee { get; set; }
+        public override Payee Payee { get; set; }
 
-        public long PayeeId
+        public override long PayeeId
         {
             get { return Payee?.Id ?? -1; }
-            set { Payee.Id = value; }
+            set { Payee = Payee.GetFromDb(value); }
         }
 
         [Write(false)]
-        public Category Category { get; set; }
+        public override Category Category { get; set; }
 
-        public long CategoryId
+        public override long? CategoryId
         {
-            get { return Category?.Id ?? -1; }
-            set { Category.Id = value; }
+            get { return Category?.Id; }
+            set { Category = Category.GetFromDb(value); }
         }
 
-        public string Memo { get; set; }
+        public override string Memo { get; set; }
         
-        public double? Sum { get; set; }
+        public override double? Sum { get; set; }
         
-        public bool Cleared { get; set; }
+        public override bool Cleared { get; set; }
 
         #endregion
 

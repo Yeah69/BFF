@@ -6,7 +6,7 @@ using YNAB = BFF.Model.Conversion.YNAB;
 
 namespace BFF.Model.Native
 {
-    class Transfer : DataModelBase
+    class Transfer : DataModelBase, ITransactionLike
     {
         #region Non-Static
 
@@ -21,7 +21,7 @@ namespace BFF.Model.Native
         public long FromAccountId
         {
             get { return FromAccount?.Id ?? -1; }
-            set { FromAccount.Id = value; }
+            set { FromAccount = Account.GetFromDb(value); }
         }
 
         [Write(false)]
@@ -30,7 +30,7 @@ namespace BFF.Model.Native
         public long ToAccountId
         {
             get { return ToAccount?.Id ?? -1; }
-            set { ToAccount.Id = value; }
+            set { ToAccount = Account.GetFromDb(value); }
         }
 
         public DateTime Date { get; set; }

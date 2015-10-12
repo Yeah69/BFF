@@ -7,7 +7,7 @@
         lex:LocalizeDictionary.DesignCulture="en"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
-        Title="BFF" Height="600" Width="900" MinHeight="600" MinWidth="900" ShowIconOnTitleBar="True" Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" RightWindowCommandsOverlayBehavior="Never">
+        Title="BFF" Height="700" Width="1300" MinHeight="700" MinWidth="1300" ShowIconOnTitleBar="True" Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" RightWindowCommandsOverlayBehavior="Never">
     <controls:MetroWindow.Resources>
         <converters:SumToBrushConverter x:Key="SumToColor"/>
         <converters:SumFormatedConverter x:Key="SumFormat"/>
@@ -42,21 +42,32 @@
     <Grid>
         <DataGrid x:Name="DataGrid" Margin="10" ItemsSource="{Binding AllTransactions}" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{lex:Loc Account}" Binding="{Binding Account}"/>
+                <DataGridTextColumn Header="{lex:Loc Account}" SortMemberPath="Account.Name" Binding="{Binding Account}"/>
                 <DataGridTextColumn Header="{lex:Loc Date}" Binding="{Binding Date, StringFormat=\{0:yy/MM/dd\}}"/>
-                <DataGridTextColumn Header="{lex:Loc Payee}" Binding="{Binding Payee}"/>
-                <DataGridTextColumn Header="{lex:Loc Category}" Binding="{Binding Category}"/>
-                <DataGridTextColumn Header="{lex:Loc Memo}" Binding="{Binding Memo}" Width="*"/>
-                <DataGridTemplateColumn Header="{lex:Loc Sum}" Width="Auto" IsReadOnly="False">
+                <DataGridTextColumn Header="{lex:Loc Payee}" SortMemberPath="Payee.Name" Binding="{Binding Payee}"/>
+                <DataGridTextColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name" Binding="{Binding Category}"/>
+                <DataGridTextColumn Header="{lex:Loc Memo}" Binding="{Binding Memo}" Width="*">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="ToolTip" Value="{Binding Memo}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="{lex:Loc Sum}" SortMemberPath="Sum" Width="Auto" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Sum, Converter={StaticResource SumFormat}}" TextAlignment="Right" Foreground="{Binding Sum, Converter={StaticResource SumToColor}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridCheckBoxColumn Header="{lex:Loc Cleared}" Binding="{Binding Cleared}"/>
-                <!-- todo: (Cleared, better visibility in dark theme [maybe use checkmark- and x-icons])
-                     todo: (Memo, tooltip with whole text)
+                <DataGridTemplateColumn Header="{lex:Loc Cleared}" SortMemberPath="Cleared" Width="Auto" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Cleared, Mode=TwoWay}" HorizontalAlignment="Center"></CheckBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <!-- 
                      todo: (Payee, resolve problem with German Translation
                  -->
             </DataGrid.Columns>

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using BFF.Model.Native;
+using BFF.Model.Native.Structure;
 using BFF.WPFStuff;
 
 namespace BFF.ViewModel
 {
     class MainWindowViewModel : ViewModelBase
     {
-        public List<Transaction> AllTransactions => DB.SQLite.Helper.GetAllTransactions();
+        public List<ITransactionLike> AllTransactions => DB.SQLite.Helper.GetAllTransactions();
     }
 }

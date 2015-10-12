@@ -5,7 +5,7 @@ using YNAB = BFF.Model.Conversion.YNAB;
 
 namespace BFF.Model.Native
 {
-    class SubTransaction : DataModelBase
+    class SubTransaction : DataModelBase, ITransactionLike
     {
         #region Non-Static
 

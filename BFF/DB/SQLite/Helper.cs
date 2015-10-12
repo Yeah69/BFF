@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
 using BFF.Model.Native;
+using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 
 namespace BFF.DB.SQLite
@@ -44,10 +44,10 @@ namespace BFF.DB.SQLite
             return $"Data Source={CurrentDbName}.sqlite;Version=3;foreign keys=true;";
         }
 
-        public static List<Transaction> GetAllTransactions()
+        public static List<ITransactionLike> GetAllTransactions()
         {
             CurrentDbName = "testDatabase";
-            List<Transaction> list;
+            List<ITransactionLike> list = new List<ITransactionLike>();
             using (var cnn = new SQLiteConnection(CurrentDbConnectionString()))
             {
                 cnn.Open();
@@ -55,7 +55,11 @@ namespace BFF.DB.SQLite
                 //Stopwatch stopwatch = new Stopwatch();
                 //stopwatch.Start();
 
-                list = cnn.GetAll<Transaction>().ToList();
+                list.AddRange(cnn.GetAll<Transaction>());
+                list.AddRange(cnn.GetAll<Income>());
+                list.AddRange(cnn.GetAll<Transfer>());
+
+                //todo: Clear Cache
 
                 //stopwatch.Stop();
                 //TimeSpan ts = stopwatch.Elapsed;
