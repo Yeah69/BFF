@@ -4,13 +4,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        xmlns:native="clr-namespace:BFF.Model.Native"
+        xmlns:structure="clr-namespace:BFF.Model.Native.Structure"
         lex:LocalizeDictionary.DesignCulture="en"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
         Title="BFF" Height="700" Width="1300" MinHeight="700" MinWidth="1300" ShowIconOnTitleBar="True" Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" RightWindowCommandsOverlayBehavior="Never">
     <controls:MetroWindow.Resources>
-        <converters:SumToBrushConverter x:Key="SumToColor"/>
-        <converters:SumFormatedConverter x:Key="SumFormat"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:SumToBrushConverter x:Key="SumToColor"/>
+            <converters:SumFormatedConverter x:Key="SumFormat"/>
+        </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
@@ -42,10 +49,59 @@
     <Grid>
         <DataGrid x:Name="DataGrid" Margin="10" ItemsSource="{Binding AllTransactions}" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{lex:Loc Account}" SortMemberPath="Account.Name" Binding="{Binding Account}"/>
+                <DataGridTemplateColumn Header="{lex:Loc Account}" SortMemberPath="Account.Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}">
+                                <ContentControl.Resources>
+                                    <DataTemplate DataType="{x:Type structure:TransactionIncome}">
+                                        <TextBlock Text="{Binding Account}"></TextBlock>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type native:Transfer}">
+                                        <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" Width="15">
+                                            <Rectangle.Fill>
+                                                <VisualBrush Visual="{StaticResource appbar_arrow_left_right}" />
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </DataTemplate>
+                                </ContentControl.Resources>
+                            </ContentControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="{lex:Loc Date}" Binding="{Binding Date, StringFormat=\{0:yy/MM/dd\}}"/>
-                <DataGridTextColumn Header="{lex:Loc Payee}" SortMemberPath="Payee.Name" Binding="{Binding Payee}"/>
-                <DataGridTextColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name" Binding="{Binding Category}"/>
+                <DataGridTemplateColumn Header="{lex:Loc Payee}" SortMemberPath="Payee.Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}">
+                                <ContentControl.Resources>
+                                    <DataTemplate DataType="{x:Type structure:TransactionIncome}">
+                                        <TextBlock Text="{Binding Payee}"></TextBlock>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type native:Transfer}">
+                                        <TextBlock Text="{Binding FromAccount}"></TextBlock>
+                                    </DataTemplate>
+                                </ContentControl.Resources>
+                            </ContentControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}">
+                                <ContentControl.Resources>
+                                    <DataTemplate DataType="{x:Type structure:TransactionIncome}">
+                                        <TextBlock Text="{Binding Category}"></TextBlock>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type native:Transfer}">
+                                        <TextBlock Text="{Binding ToAccount}"></TextBlock>
+                                    </DataTemplate>
+                                </ContentControl.Resources>
+                            </ContentControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="{lex:Loc Memo}" Binding="{Binding Memo}" Width="*">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
@@ -68,7 +124,8 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <!-- 
-                     todo: (Payee, resolve problem with German Translation
+                    todo: (Payee, resolve problem with German Translation)
+                    todo: (Payee, FromAccount with Arrow when Transfer)
                  -->
             </DataGrid.Columns>
         </DataGrid>
