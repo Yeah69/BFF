@@ -14,8 +14,9 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
+                <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <converters:SumToBrushConverter x:Key="SumToColor"/>
+            <converters:SumToBrushConverter x:Key="SumToBrush" PositiveBrush="{StaticResource BrushPositive}" NegativeBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
             <converters:SumFormatedConverter x:Key="SumFormat"/>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
@@ -47,8 +48,60 @@
         </ContextMenu>
     </controls:MetroWindow.ContextMenu>
     <Grid>
-        <DataGrid x:Name="DataGrid" Margin="10" ItemsSource="{Binding AllTransactions}" AutoGenerateColumns="False">
+        <DataGrid x:Name="DataGrid" Margin="10" ItemsSource="{Binding AllTransactions}" AutoGenerateColumns="False" AlternationCount="2">
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Style.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="{DynamicResource GrayBrush10}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="{DynamicResource AccentColorBrush2}" />
+                            <Setter Property="Foreground" Value="#000" />
+                            <!-- todo: set the foreground dynamic -->
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                            <Setter Property="Foreground" Value="#000" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
+                <DataGridTemplateColumn Header="S">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}">
+                                <ContentControl.Resources>
+                                    <DataTemplate DataType="{x:Type native:Transaction}">
+                                        <Rectangle HorizontalAlignment="Left" VerticalAlignment="Center" Height="15" Width="15" Fill="{StaticResource BrushNegative}">
+                                            <Rectangle.OpacityMask>
+                                                <VisualBrush Visual="{StaticResource appbar_inbox_out}" />
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type native:Income}">
+                                        <Rectangle HorizontalAlignment="Left" VerticalAlignment="Center" Height="15" Width="15" Fill="{StaticResource BrushPositive}">
+                                            <Rectangle.OpacityMask>
+                                                <VisualBrush Visual="{StaticResource appbar_inbox_in}" />
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type native:Transfer}">
+                                        <Rectangle HorizontalAlignment="Left" VerticalAlignment="Center" Height="15" Width="15" Fill="{StaticResource BrushTransfer}">
+                                            <Rectangle.OpacityMask>
+                                                <VisualBrush Visual="{StaticResource appbar_arrow_left_right}" />
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    </DataTemplate>
+                                </ContentControl.Resources>
+                            </ContentControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="{lex:Loc Account}" SortMemberPath="Account.Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -58,18 +111,14 @@
                                         <TextBlock Text="{Binding Account}"></TextBlock>
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" Width="15">
-                                            <Rectangle.Fill>
-                                                <VisualBrush Visual="{StaticResource appbar_arrow_left_right}" />
-                                            </Rectangle.Fill>
-                                        </Rectangle>
+                                        <TextBlock Text="{lex:Loc Account_Transfer}"></TextBlock>
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="{lex:Loc Date}" Binding="{Binding Date, StringFormat=\{0:yy/MM/dd\}}"/>
+                <DataGridTextColumn Header="{lex:Loc Date}" SortDirection="Ascending" Binding="{Binding Date, StringFormat=\{0:yy/MM/dd\}}"/>
                 <DataGridTemplateColumn Header="{lex:Loc Payee}" SortMemberPath="Payee.Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -79,7 +128,14 @@
                                         <TextBlock Text="{Binding Payee}"></TextBlock>
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <TextBlock Text="{Binding FromAccount}"></TextBlock>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding FromAccount}"/>
+                                            <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{StaticResource BrushNeutral}">
+                                                <Rectangle.OpacityMask>
+                                                    <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
+                                                </Rectangle.OpacityMask>
+                                            </Rectangle>
+                                        </StackPanel>
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>
@@ -95,37 +151,60 @@
                                         <TextBlock Text="{Binding Category}"></TextBlock>
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <TextBlock Text="{Binding ToAccount}"></TextBlock>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding ToAccount}"></TextBlock>
+                                            <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{StaticResource BrushNeutral}">
+                                                <Rectangle.OpacityMask>
+                                                    <VisualBrush Visual="{DynamicResource appbar_layout_expand_right}"/>
+                                                </Rectangle.OpacityMask>
+                                            </Rectangle>
+                                        </StackPanel>
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="{lex:Loc Memo}" Binding="{Binding Memo}" Width="*">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="ToolTip" Value="{Binding Memo}" />
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="{lex:Loc Memo}" SortMemberPath="Memo" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Memo}" ToolTip="{Binding Memo}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="{lex:Loc Sum}" SortMemberPath="Sum" Width="Auto" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Sum, Converter={StaticResource SumFormat}}" TextAlignment="Right" Foreground="{Binding Sum, Converter={StaticResource SumToColor}}" />
+                            <ContentControl Content="{Binding}">
+                                <ContentControl.Resources>
+                                    <DataTemplate DataType="{x:Type structure:TransactionIncome}">
+                                        <TextBlock Text="{Binding Sum, Converter={StaticResource SumFormat}}" TextAlignment="Right" Foreground="{Binding Sum, Converter={StaticResource SumToBrush}, ConverterParameter={x:Type structure:TransactionIncome }}" />
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type native:Transfer}">
+                                        <TextBlock Text="{Binding Sum, Converter={StaticResource SumFormat}}" TextAlignment="Right" Foreground="{Binding Sum, Converter={StaticResource SumToBrush}, ConverterParameter={x:Type native:Transfer }}" />
+                                    </DataTemplate>
+                                </ContentControl.Resources>
+                            </ContentControl>
+                            <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="{lex:Loc Cleared}" SortMemberPath="Cleared" Width="Auto" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding Cleared, Mode=TwoWay}" HorizontalAlignment="Center"></CheckBox>
+                            <CheckBox IsChecked="{Binding Cleared, Mode=TwoWay}" HorizontalAlignment="Center">
+                                <!-- todo: Find out how to change the color of the checkmark
+                                <CheckBox.Style>
+                                    <Style TargetType="{x:Type CheckBox}" BasedOn="{DynamicResource MetroCheckBox}">
+                                        <Setter Property="Foreground" Value="DarkOrange"></Setter>
+                                    </Style>
+                                </CheckBox.Style> -->
+                            </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <!-- 
                     todo: (Payee, resolve problem with German Translation)
-                    todo: (Payee, FromAccount with Arrow when Transfer)
                  -->
             </DataGrid.Columns>
         </DataGrid>

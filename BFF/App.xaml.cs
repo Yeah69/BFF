@@ -12,8 +12,9 @@ namespace BFF
         {
             MainWindow mainWindow = new MainWindow();
             MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
-            mainWindow.DataContext = mainWindowViewModel;
             mainWindow.Show();
+            mainWindow.DataContext = mainWindowViewModel;
+
         }
     }
 }

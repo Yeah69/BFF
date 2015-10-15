@@ -46,6 +46,7 @@ namespace BFF.Model.Native
 
         public override string Memo { get; set; }
         
+        //todo: Resolve the issue with the Parent-Transactions => Get Sum from Child-Transactions
         public override double? Sum { get; set; }
         
         public override bool Cleared { get; set; }

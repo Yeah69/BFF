@@ -43,7 +43,7 @@ namespace BFF
 
         private void ThemeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Accent accent = ThemeManager.DetectAppStyle()?.Item2 ?? ThemeManager.GetAccent("Violet");
+            Accent accent = ThemeManager.GetAccent(Properties.Settings.Default.MahApps_Accent);// ThemeManager.DetectAppStyle()?.Item2 ?? ThemeManager.GetAccent("Violet");
             ThemeManager.ChangeAppStyle(this, accent, ((AppTheme)ThemeCombo.SelectedItem));
             Properties.Settings.Default.MahApps_AppTheme = ((AppTheme)ThemeCombo.SelectedItem).Name;
             Properties.Settings.Default.Save();
@@ -51,7 +51,7 @@ namespace BFF
 
         private void AccentCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            AppTheme theme = ThemeManager.DetectAppStyle()?.Item1 ?? ThemeManager.GetAppTheme("BaseDark");
+            AppTheme theme = ThemeManager.GetAppTheme(Properties.Settings.Default.MahApps_AppTheme);// ThemeManager.DetectAppStyle()?.Item1 ?? ThemeManager.GetAppTheme("BaseDark");
             ThemeManager.ChangeAppStyle(this, ((Accent)AccentCombo.SelectedItem), theme);
             Properties.Settings.Default.MahApps_Accent = ((Accent) AccentCombo.SelectedItem).Name;
             Properties.Settings.Default.Save();
