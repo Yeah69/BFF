@@ -13,6 +13,7 @@
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.datagrid.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -48,28 +49,14 @@
         </ContextMenu>
     </controls:MetroWindow.ContextMenu>
     <Grid>
-        <DataGrid x:Name="DataGrid" Margin="10" ItemsSource="{Binding AllTransactions}" AutoGenerateColumns="False" AlternationCount="2">
-            <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}">
-                    <Style.Triggers>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                            <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
-                        </Trigger>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                            <Setter Property="Background" Value="{DynamicResource GrayBrush10}" />
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" Value="{DynamicResource AccentColorBrush2}" />
-                            <Setter Property="Foreground" Value="#000" />
-                            <!-- todo: set the foreground dynamic -->
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
-                            <Setter Property="Foreground" Value="#000" />
-                        </Trigger>
-                    </Style.Triggers>
+        <DataGrid x:Name="DataGrid" Margin="10" ItemsSource="{Binding AllTransactions}" AutoGenerateColumns="False">
+            <DataGrid.Style>
+                <Style BasedOn="{StaticResource MetroDataGrid}"
+                       TargetType="{x:Type DataGrid}">
+                    <Setter Property="AlternatingRowBackground"
+                            Value="{DynamicResource GrayBrush10}" />
                 </Style>
-            </DataGrid.RowStyle>
+            </DataGrid.Style>
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="S">
                     <DataGridTemplateColumn.CellTemplate>
