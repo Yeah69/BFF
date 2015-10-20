@@ -48,9 +48,9 @@ namespace BFF.Model.Native
         public override double? Sum { get; set; }
 
         public override bool Cleared { get; set; }
-
+        
         [Write(false)]
-        public IEnumerable<SubTransaction> SubTransactions { get; set; } = null;
+        public override IEnumerable<SubTransInc> SubElements { get; set; } = null;
 
         public static implicit operator Transaction(YNAB.Transaction ynabTransaction)
         {

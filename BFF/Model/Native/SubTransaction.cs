@@ -6,28 +6,28 @@ using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class SubTransaction : DataModelBase, ITransactionLike
+    class SubTransaction : SubTransInc, ITransactionLike
     {
         [Key]
         public override long Id { get; set; } = -1;
 
         [Write(false)]
-        public Transaction Parent { get; set; }
+        public override TransactionIncome Parent { get; set; }
 
-        public long ParentId => Parent?.Id ?? -1;
+        public override long ParentId => Parent?.Id ?? -1;
 
         [Write(false)]
-        public Category Category { get; set; }
+        public override Category Category { get; set; }
 
-        public long CategoryId
+        public override long CategoryId
         {
             get { return Category?.Id ?? -1; }
             set { Category = GetCategory(value); }
         }
 
-        public string Memo { get; set; }
+        public override string Memo { get; set; }
         
-        public double Sum { get; set; }
+        public override double Sum { get; set; }
 
         public static implicit operator SubTransaction(YNAB.Transaction ynabTransaction)
         {

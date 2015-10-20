@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Linq;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
@@ -33,32 +35,31 @@ namespace BFF.DB.SQLite
             {
                 cnn.Open();
 
-                //Stopwatch stopwatch = new Stopwatch();
-                //stopwatch.Start();
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
 
                 IEnumerable<Transaction> transtactions = cnn.GetAll<Transaction>();
                 IEnumerable<Transaction> nullSumsTransactions = transtactions?.Where(t => t.Sum == null);
                 foreach (Transaction t in nullSumsTransactions)
                 {
-                    t.SubTransactions = GetSubTransactions(t.Id);
+                    t.SubElements = GetSubTransactions(t.Id);
                 }
                 IEnumerable<Income> incomes = cnn.GetAll<Income>();
-                //todo: Income need "SubIncome"s or else the ParentId may collide with the SubTransactions Table (will be needed to adjust in Import? Maybe not, because Income is a special category there, therefore cannot be split)
-                //IEnumerable<Income> nullSumIncomes = incomes?.Where(i => i.Sum == null);
-                //foreach (Income i in nullSumIncomes)
-                //{
-                //    SubTransaction.GetFromDb(i.Id);
-                //}
+                IEnumerable<Income> nullSumIncomes = incomes?.Where(i => i.Sum == null);
+                foreach (Income i in nullSumIncomes)
+                {
+                    i.SubElements = GetSubIncomes(i.Id);
+                }
                 IEnumerable<Transfer> transfers = cnn.GetAll<Transfer>();
 
                 list.AddRange(transtactions);
                 list.AddRange(incomes);
                 list.AddRange(transfers);
 
-                //stopwatch.Stop();
-                //TimeSpan ts = stopwatch.Elapsed;
-                //string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds / 10:00}";
-                //Console.WriteLine($"The elapsed time is {elapsedTime}");
+                stopwatch.Stop();
+                TimeSpan ts = stopwatch.Elapsed;
+                string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds / 10:00}";
+                Console.WriteLine($"The elapsed time is {elapsedTime}");
 
                 cnn.Close();
             }
@@ -139,11 +140,24 @@ namespace BFF.DB.SQLite
                 string query = $"SELECT * FROM [{nameof(SubTransaction)}s] WHERE ParentId = @id;";
                 ret = cnn.Query<SubTransaction>(query, new { id = parentId });
 
-                //ret = cnn.Get<Account>(id);
+                cnn.Close();
+            }
+            return ret;
+        }
+
+        public static IEnumerable<SubIncome> GetSubIncomes(long parentId)
+        {
+            IEnumerable<SubIncome> ret;
+            using (var cnn = new SQLiteConnection(CurrentDbConnectionString()))
+            {
+                cnn.Open();
+
+                string query = $"SELECT * FROM [{nameof(SubIncome)}s] WHERE ParentId = @id;";
+                ret = cnn.Query<SubIncome>(query, new { id = parentId });
 
                 cnn.Close();
             }
-            return null;
+            return ret;
         }
 
         public static string CreateAccountTableStatement => $@"CREATE TABLE [{nameof(Account)}s](
@@ -178,7 +192,7 @@ namespace BFF.DB.SQLite
         public static string CreatePayeeTableStatement => $@"CREATE TABLE [{nameof(Payee)}s](
                         {nameof(Payee.Id)} INTEGER PRIMARY KEY,
                         {nameof(Payee.Name)} VARCHAR(100));";
-        
+
         public static string CreateSubTransactionTableStatement => $@"CREATE TABLE [{nameof(SubTransaction)}s](
                         {nameof(SubTransaction.Id)} INTEGER PRIMARY KEY,
                         {nameof(SubTransaction.ParentId)} INTEGER,
@@ -186,7 +200,15 @@ namespace BFF.DB.SQLite
                         {nameof(SubTransaction.Memo)} TEXT,
                         {nameof(SubTransaction.Sum)} FLOAT,
                         FOREIGN KEY({nameof(SubTransaction.ParentId)}) REFERENCES {nameof(Transaction)}s({nameof(Transaction.Id)}) ON DELETE CASCADE);";
-        
+
+        public static string CreateSubIncomeTableStatement => $@"CREATE TABLE [{nameof(SubIncome)}s](
+                        {nameof(SubIncome.Id)} INTEGER PRIMARY KEY,
+                        {nameof(SubIncome.ParentId)} INTEGER,
+                        {nameof(SubIncome.CategoryId)} INTEGER,
+                        {nameof(SubIncome.Memo)} TEXT,
+                        {nameof(SubIncome.Sum)} FLOAT,
+                        FOREIGN KEY({nameof(SubIncome.ParentId)}) REFERENCES {nameof(Income)}s({nameof(Income.Id)}) ON DELETE CASCADE);";
+
         public static string CreateTransactionTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
                         {nameof(Transaction.Id)} INTEGER PRIMARY KEY,
                         {nameof(Transaction.AccountId)} INTEGER,

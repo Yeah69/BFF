@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
@@ -46,6 +47,9 @@ namespace BFF.Model.Native
         public override double? Sum { get; set; }
         
         public override bool Cleared { get; set; }
+
+        [Write(false)]
+        public override IEnumerable<SubTransInc> SubElements { get; set; } = null;
 
         public static implicit operator Income(YNAB.Transaction ynabTransaction)
         {

@@ -205,6 +205,7 @@ namespace BFF.Helper.Import
                 cnn.Execute(CreateTransferTableStatement);
                 cnn.Execute(CreateSubTransactionTableStatement);
                 cnn.Execute(CreateIncomeTableStatement);
+                cnn.Execute(CreateSubIncomeTableStatement);
 
                 /*  
                 Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
