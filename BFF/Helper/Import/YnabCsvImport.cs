@@ -147,6 +147,7 @@ namespace BFF.Helper.Import
                     if (count > 0)
                     {
                         parent.Sum = null;
+                        parent.Category = null;
                         transactions.Add(parent);
                     }
                 }

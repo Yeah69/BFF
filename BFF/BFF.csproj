@@ -119,7 +119,6 @@
     <Compile Include="Model\Native\Transfer.cs" />
     <Compile Include="Model\Native\Transaction.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="WPFStuff\Converters\SumFormatedConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
     <Compile Include="WPFStuff\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">

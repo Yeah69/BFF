@@ -14,11 +14,11 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.datagrid.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.checkbox.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:SumToBrushConverter x:Key="SumToBrush" PositiveBrush="{StaticResource BrushPositive}" NegativeBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
-            <converters:SumFormatedConverter x:Key="SumFormat"/>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
@@ -54,7 +54,7 @@
                 <Style BasedOn="{StaticResource MetroDataGrid}"
                        TargetType="{x:Type DataGrid}">
                     <Setter Property="AlternatingRowBackground"
-                            Value="{DynamicResource GrayBrush10}" />
+                            Value="{DynamicResource GrayBrush8}" />
                 </Style>
             </DataGrid.Style>
             <DataGrid.Columns>
@@ -98,14 +98,14 @@
                                         <TextBlock Text="{Binding Account}"></TextBlock>
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <TextBlock Text="{lex:Loc Account_Transfer}"></TextBlock>
+                                        <TextBlock Text="{lex:Loc Account_Transfer}" Foreground="{DynamicResource GrayBrush4}" />
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="{lex:Loc Date}" SortDirection="Ascending" Binding="{Binding Date, StringFormat=\{0:yy/MM/dd\}}"/>
+                <DataGridTextColumn Header="{lex:Loc Date}" Binding="{Binding Date, StringFormat=\{0:yy/MM/dd\}}"/>
                 <DataGridTemplateColumn Header="{lex:Loc Payee}" SortMemberPath="Payee.Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -116,8 +116,8 @@
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding FromAccount}"/>
-                                            <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{StaticResource BrushNeutral}">
+                                            <TextBlock Text="{Binding FromAccount}" Foreground="{DynamicResource GrayBrush4}"/>
+                                            <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
                                                 <Rectangle.OpacityMask>
                                                     <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
                                                 </Rectangle.OpacityMask>
@@ -139,8 +139,8 @@
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding ToAccount}"></TextBlock>
-                                            <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{StaticResource BrushNeutral}">
+                                            <TextBlock Text="{Binding ToAccount}" Foreground="{DynamicResource GrayBrush4}"></TextBlock>
+                                            <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
                                                 <Rectangle.OpacityMask>
                                                     <VisualBrush Visual="{DynamicResource appbar_layout_expand_right}"/>
                                                 </Rectangle.OpacityMask>
@@ -165,10 +165,17 @@
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type structure:TransactionIncome}">
-                                        <TextBlock Text="{Binding Sum, Converter={StaticResource SumFormat}}" TextAlignment="Right" Foreground="{Binding Sum, Converter={StaticResource SumToBrush}, ConverterParameter={x:Type structure:TransactionIncome }}" />
+                                        <TextBlock TextAlignment="Right" Foreground="{Binding Sum, Converter={StaticResource SumToBrush}, ConverterParameter={x:Type structure:TransactionIncome }}">
+                                            <TextBlock.Text>
+                                                <PriorityBinding>
+                                                    <Binding Path="Sum" StringFormat="N2" />
+                                                    <!-- todo: SubTransInc class for SubElements <Binding Path="SubTransactions" Converter="{StaticResource SubTransToBrush}" /> -->
+                                                </PriorityBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <TextBlock Text="{Binding Sum, Converter={StaticResource SumFormat}}" TextAlignment="Right" Foreground="{Binding Sum, Converter={StaticResource SumToBrush}, ConverterParameter={x:Type native:Transfer }}" />
+                                        <TextBlock Text="{Binding Sum, StringFormat=N2}" TextAlignment="Right" Foreground="{Binding Sum, Converter={StaticResource SumToBrush}, ConverterParameter={x:Type native:Transfer }}" />
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>

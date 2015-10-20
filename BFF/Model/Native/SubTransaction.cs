@@ -1,7 +1,11 @@
-﻿using BFF.Helper.Import;
+﻿using System.Collections.Generic;
+using System.Data.SQLite;
+using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
+using Dapper;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
+using static BFF.DB.SQLite.Helper;
 
 namespace BFF.Model.Native
 {
@@ -17,11 +21,7 @@ namespace BFF.Model.Native
         [Write(false)]
         public Transaction Parent { get; set; }
 
-        public long ParentId
-        {
-            get { return Parent?.Id ?? -1; }
-            set { Parent.Id = value; }
-        }
+        public long ParentId => Parent?.Id ?? -1;
 
         [Write(false)]
         public Category Category { get; set; }
@@ -29,7 +29,7 @@ namespace BFF.Model.Native
         public long CategoryId
         {
             get { return Category?.Id ?? -1; }
-            set { Category.Id = value; }
+            set { Category = Category.GetFromDb(value); }
         }
 
         public string Memo { get; set; }
@@ -73,6 +73,23 @@ namespace BFF.Model.Native
                 Sum = ynabTransaction.Inflow - ynabTransaction.Outflow
             };
             return ret;
+        }
+
+        public static IEnumerable<SubTransaction> GetFromDb(long parentId)
+        {
+            IEnumerable<SubTransaction> ret;
+            using (var cnn = new SQLiteConnection(CurrentDbConnectionString()))
+            {
+                cnn.Open();
+
+                string query = $"SELECT * FROM [{nameof(SubTransaction)}s] WHERE ParentId = @id;";
+                ret =  cnn.Query<SubTransaction>(query, new {id = parentId});
+
+                //ret = cnn.Get<Account>(id);
+
+                cnn.Close();
+            }
+            return null;
         }
 
         #endregion

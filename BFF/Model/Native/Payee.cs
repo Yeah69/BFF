@@ -77,6 +77,11 @@ namespace BFF.Model.Native
             return ret;
         }
 
+        public static void ClearCache()
+        {
+            DbCache.Clear();
+        }
+
         #endregion
 
         #endregion

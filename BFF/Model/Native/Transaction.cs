@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
@@ -45,11 +46,14 @@ namespace BFF.Model.Native
         }
 
         public override string Memo { get; set; }
-        
+
         //todo: Resolve the issue with the Parent-Transactions => Get Sum from Child-Transactions
         public override double? Sum { get; set; }
-        
+
         public override bool Cleared { get; set; }
+
+        [Write(false)]
+        public IEnumerable<SubTransaction> SubTransactions { get; set; } = null;
 
         #endregion
 

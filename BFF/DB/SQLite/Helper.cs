@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
@@ -55,11 +57,26 @@ namespace BFF.DB.SQLite
                 //Stopwatch stopwatch = new Stopwatch();
                 //stopwatch.Start();
 
-                list.AddRange(cnn.GetAll<Transaction>());
-                list.AddRange(cnn.GetAll<Income>());
-                list.AddRange(cnn.GetAll<Transfer>());
+                IEnumerable<Transaction> transtactions = cnn.GetAll<Transaction>();
+                IEnumerable<Transaction> nullSumsTransactions = transtactions.Where(t => t.Sum == null);
+                foreach (Transaction t in nullSumsTransactions)
+                {
+                    t.SubTransactions = SubTransaction.GetFromDb(t.Id);
+                }
+                IEnumerable<Income> incomes = cnn.GetAll<Income>();
+                //todo: Income need "SubIncome"s or else the ParentId may collide with the SubTransactions Table (will be needed to adjust in Import? Maybe not, because Income is a special category there, therefore cannot be split)
+                //IEnumerable<Income> nullSumIncomes = incomes.Where(i => i.Sum == null);
+                //foreach (Income i in nullSumIncomes)
+                //{
+                //    SubTransaction.GetFromDb(i.Id);
+                //}
+                IEnumerable<Transfer> transfers = cnn.GetAll<Transfer>();
 
-                //todo: Clear Cache
+                list.AddRange(transtactions);
+                list.AddRange(incomes);
+                list.AddRange(transfers);
+
+                ClearCache();
 
                 //stopwatch.Stop();
                 //TimeSpan ts = stopwatch.Elapsed;
@@ -69,6 +86,13 @@ namespace BFF.DB.SQLite
                 cnn.Close();
             }
             return list;
+        }
+
+        public static void ClearCache()
+        {
+            Account.ClearCache();
+            Category.ClearCache();
+            Payee.ClearCache();
         }
 
         #endregion
