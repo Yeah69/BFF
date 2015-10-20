@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Linq;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
-using static BFF.DB.SQLite.Helper;
+using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
@@ -23,7 +22,7 @@ namespace BFF.Model.Native
         public long? ParentId
         {
             get { return Parent?.Id; }
-            set { Parent = GetFromDb(value); } //todo: Maybe set this as Parent's child
+            set { Parent = GetCategory(value); } //todo: Maybe set this as Parent's child
         }
 
         public override string ToString()
@@ -32,14 +31,8 @@ namespace BFF.Model.Native
         }
 
         private static readonly Dictionary<string, Category> Cache = new Dictionary<string, Category>();
-        private static readonly Dictionary<long, Category> DbCache = new Dictionary<long, Category>();
 
-        [Write(false)]
-        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Category)}s](
-                        {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(ParentId)} INTEGER,
-                        {nameof(Name)} VARCHAR(100),
-                        FOREIGN KEY({nameof(ParentId)}) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
+        // todo: Refactor the GetOrCreate and GetAllCache into the Conversion/Import class
 
         public static Category GetOrCreate(string namePath)
         {
@@ -74,28 +67,6 @@ namespace BFF.Model.Native
         public static List<Category> GetAllCache()
         {
             return Cache.Values.ToList();
-        }
-
-        public static Category GetFromDb(long? id)
-        {
-            if (id == null) return null;
-            if (DbCache.ContainsKey((long) id)) return DbCache[(long) id];
-            Category ret;
-            using (var cnn = new SQLiteConnection(CurrentDbConnectionString()))
-            {
-                cnn.Open();
-
-                ret = cnn.Get<Category>(id);
-
-                cnn.Close();
-            }
-            DbCache.Add((long)id, ret);
-            return ret;
-        }
-
-        public static void ClearCache()
-        {
-            DbCache.Clear();
         }
     }
 }

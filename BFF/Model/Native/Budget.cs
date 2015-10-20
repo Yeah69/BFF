@@ -12,10 +12,5 @@ namespace BFF.Model.Native
         public DateTime MonthYear { get; set; }
 
         //Todo: budget relevant properties
-
-        [Write(false)]
-        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
-                        {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(MonthYear)} DATE);";
     }
 }

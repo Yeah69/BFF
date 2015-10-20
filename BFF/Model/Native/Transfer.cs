@@ -3,6 +3,7 @@ using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
+using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
@@ -17,7 +18,7 @@ namespace BFF.Model.Native
         public long FromAccountId
         {
             get { return FromAccount?.Id ?? -1; }
-            set { FromAccount = Account.GetFromDb(value); }
+            set { FromAccount = GetAccount(value); }
         }
 
         [Write(false)]
@@ -26,7 +27,7 @@ namespace BFF.Model.Native
         public long ToAccountId
         {
             get { return ToAccount?.Id ?? -1; }
-            set { ToAccount = Account.GetFromDb(value); }
+            set { ToAccount = GetAccount(value); }
         }
 
         public DateTime Date { get; set; }
@@ -36,18 +37,6 @@ namespace BFF.Model.Native
         public double Sum { get; set; }
         
         public bool Cleared { get; set; }
-        
-        [Write(false)]
-        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transfer)}s](
-                        {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(FromAccountId)} INTEGER,
-                        {nameof(ToAccountId)} INTEGER,
-                        {nameof(Date)} DATE,
-                        {nameof(Memo)} TEXT,
-                        {nameof(Sum)} FLOAT,
-                        {nameof(Cleared)} INTEGER,
-                        FOREIGN KEY({nameof(FromAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT,
-                        FOREIGN KEY({nameof(ToAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT);";
 
         public static implicit operator Transfer(YNAB.Transaction ynabTransaction)
         {

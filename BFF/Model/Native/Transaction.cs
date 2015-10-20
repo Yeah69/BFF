@@ -4,6 +4,7 @@ using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
+using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
@@ -18,7 +19,7 @@ namespace BFF.Model.Native
         public override long AccountId
         {
             get { return Account?.Id ?? -1; }
-            set { Account = Account.GetFromDb(value); }
+            set { Account = GetAccount(value); }
         }
 
         public override DateTime Date { get; set; }
@@ -29,7 +30,7 @@ namespace BFF.Model.Native
         public override long PayeeId
         {
             get { return Payee?.Id ?? -1; }
-            set { Payee = Payee.GetFromDb(value); }
+            set { Payee = GetPayee(value); }
         }
 
         [Write(false)]
@@ -38,7 +39,7 @@ namespace BFF.Model.Native
         public override long? CategoryId
         {
             get { return Category?.Id; }
-            set { Category = Category.GetFromDb(value);}
+            set { Category = GetCategory(value);}
         }
 
         public override string Memo { get; set; }
@@ -50,20 +51,6 @@ namespace BFF.Model.Native
 
         [Write(false)]
         public IEnumerable<SubTransaction> SubTransactions { get; set; } = null;
-        
-        [Write(false)]
-        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
-                        {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(AccountId)} INTEGER,
-                        {nameof(PayeeId)} INTEGER,
-                        {nameof(CategoryId)} INTEGER,
-                        {nameof(Date)} DATE,
-                        {nameof(Memo)} TEXT,
-                        {nameof(Sum)} FLOAT,
-                        {nameof(Cleared)} INTEGER,
-                        FOREIGN KEY({nameof(AccountId)}) REFERENCES {nameof(Native.Account)}s({nameof(Native.Account.Id)}) ON DELETE CASCADE,
-                        FOREIGN KEY({nameof(PayeeId)}) REFERENCES {nameof(Native.Payee)}s({nameof(Native.Payee.Id)}) ON DELETE SET NULL,
-                        FOREIGN KEY({nameof(CategoryId)}) REFERENCES {nameof(Native.Category)}s({nameof(Native.Category.Id)}) ON DELETE SET NULL);";
 
         public static implicit operator Transaction(YNAB.Transaction ynabTransaction)
         {
