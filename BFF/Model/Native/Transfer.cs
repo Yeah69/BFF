@@ -8,10 +8,6 @@ namespace BFF.Model.Native
 {
     class Transfer : DataModelBase, ITransactionLike
     {
-        #region Non-Static
-
-        #region Properties
-
         [Key]
         public override long Id { get; set; } = -1;
 
@@ -40,18 +36,6 @@ namespace BFF.Model.Native
         public double Sum { get; set; }
         
         public bool Cleared { get; set; }
-
-        #endregion
-
-        #region Methods
-
-        #endregion
-
-        #endregion
-
-        #region Static
-
-        #region Static Variables
         
         [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transfer)}s](
@@ -64,10 +48,6 @@ namespace BFF.Model.Native
                         {nameof(Cleared)} INTEGER,
                         FOREIGN KEY({nameof(FromAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT,
                         FOREIGN KEY({nameof(ToAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT);";
-
-        #endregion
-
-        #region Static Methods
 
         public static implicit operator Transfer(YNAB.Transaction ynabTransaction)
         {
@@ -87,9 +67,5 @@ namespace BFF.Model.Native
             };
             return ret;
         }
-
-        #endregion
-
-        #endregion
     }
 }

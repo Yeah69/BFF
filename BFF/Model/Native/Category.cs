@@ -9,10 +9,6 @@ namespace BFF.Model.Native
 {
     class Category : DataModelBase
     {
-        #region Non-Static
-
-        #region Properties
-
         [Key]
         public override long Id { get; set; } = -1;
 
@@ -30,22 +26,10 @@ namespace BFF.Model.Native
             set { Parent = GetFromDb(value); } //todo: Maybe set this as Parent's child
         }
 
-        #endregion
-
-        #region Methods
-
         public override string ToString()
         {
             return Name;
         }
-
-        #endregion
-
-        #endregion
-
-        #region Static
-
-        #region Static Variables
 
         private static readonly Dictionary<string, Category> Cache = new Dictionary<string, Category>();
         private static readonly Dictionary<long, Category> DbCache = new Dictionary<long, Category>();
@@ -56,10 +40,6 @@ namespace BFF.Model.Native
                         {nameof(ParentId)} INTEGER,
                         {nameof(Name)} VARCHAR(100),
                         FOREIGN KEY({nameof(ParentId)}) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
-
-        #endregion
-
-        #region Static Methods
 
         public static Category GetOrCreate(string namePath)
         {
@@ -117,9 +97,5 @@ namespace BFF.Model.Native
         {
             DbCache.Clear();
         }
-
-        #endregion
-
-        #endregion
     }
 }

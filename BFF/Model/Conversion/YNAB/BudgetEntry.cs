@@ -4,10 +4,6 @@ namespace BFF.Model.Conversion.YNAB
 {
     class BudgetEntry
     {
-        #region Non-Static
-
-        #region Properties
-
         public string Month { get; set; }
 
         public string Category { get; set; }
@@ -22,25 +18,7 @@ namespace BFF.Model.Conversion.YNAB
 
         public double CategoryBalance { get; set; }
 
-        #endregion
-
-        #region Methods
-
-
-
-        #endregion
-
-        #endregion
-
-        #region Static
-
-        #region Static Variables
-
         public static readonly string CsvHeader = "\"Month\"	\"Category\"	\"Master Category\"	\"Sub Category\"	\"Budgeted\"	\"Outflows\"	\"Category Balance\"";
-
-        #endregion
-
-        #region Static Methods
 
         public static void ToOutput(BudgetEntry budgetEntry)
         {
@@ -70,9 +48,5 @@ namespace BFF.Model.Conversion.YNAB
             };
             return ret;
         }
-
-        #endregion
-
-        #endregion
     }
 }

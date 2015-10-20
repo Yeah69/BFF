@@ -7,11 +7,6 @@ namespace BFF.Model.Conversion.YNAB
 {
     class Transaction
     {
-
-        #region Non-Static
-
-        #region Properties
-
         public string Account { get; set; }
 
         public Color Flag { get; set; }
@@ -38,26 +33,8 @@ namespace BFF.Model.Conversion.YNAB
 
         public double RunningBalance { get; set; }
 
-        #endregion
-
-        #region Methods
-
-
-
-        #endregion
-
-        #endregion
-
-        #region Static
-
-        #region Static Variables
-
         public static readonly string CsvHeader = "\"Account\"	\"Flag\"	\"Check Number\"	\"Date\"	\"Payee\"	\"Category\"	\"Master Category\"	\"Sub Category\"	\"Memo\"	\"Outflow\"	\"Inflow\"	\"Cleared\"	\"Running Balance\"";
-
-        #endregion
-
-        #region Static Methods
-
+        
         public static void ToOutput(Transaction transaction)
         {
             Output.WriteLine("BEGIN YNAB transaction");
@@ -127,15 +104,5 @@ namespace BFF.Model.Conversion.YNAB
             return ret;
         }
 
-        #endregion
-
-        #endregion
-		
-	
-        
-
-        
-
-        
     }
 }

@@ -9,10 +9,6 @@ namespace BFF.Model.Native
 {
     class Transaction : TransactionIncome, ITransactionLike
     {
-        #region Non-Static
-
-        #region Properties
-
         [Key]
         public override long Id { get; set; } = -1;
 
@@ -54,18 +50,6 @@ namespace BFF.Model.Native
 
         [Write(false)]
         public IEnumerable<SubTransaction> SubTransactions { get; set; } = null;
-
-        #endregion
-
-        #region Methods
-
-        #endregion
-
-        #endregion
-
-        #region Static
-
-        #region Static Variables
         
         [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
@@ -80,10 +64,6 @@ namespace BFF.Model.Native
                         FOREIGN KEY({nameof(AccountId)}) REFERENCES {nameof(Native.Account)}s({nameof(Native.Account.Id)}) ON DELETE CASCADE,
                         FOREIGN KEY({nameof(PayeeId)}) REFERENCES {nameof(Native.Payee)}s({nameof(Native.Payee.Id)}) ON DELETE SET NULL,
                         FOREIGN KEY({nameof(CategoryId)}) REFERENCES {nameof(Native.Category)}s({nameof(Native.Category.Id)}) ON DELETE SET NULL);";
-
-        #endregion
-
-        #region Static Methods
 
         public static implicit operator Transaction(YNAB.Transaction ynabTransaction)
         {
@@ -102,9 +82,5 @@ namespace BFF.Model.Native
             };
             return ret;
         }
-
-        #endregion
-
-        #endregion
     }
 }

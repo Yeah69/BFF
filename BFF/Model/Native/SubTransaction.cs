@@ -11,10 +11,6 @@ namespace BFF.Model.Native
 {
     class SubTransaction : DataModelBase, ITransactionLike
     {
-        #region Non-Static
-
-        #region Properties
-
         [Key]
         public override long Id { get; set; } = -1;
 
@@ -35,18 +31,6 @@ namespace BFF.Model.Native
         public string Memo { get; set; }
         
         public double Sum { get; set; }
-
-        #endregion
-
-        #region Methods
-
-        #endregion
-
-        #endregion
-
-        #region Static
-
-        #region Static Variables
         
         [Write(false)]
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(SubTransaction)}s](
@@ -56,10 +40,6 @@ namespace BFF.Model.Native
                         {nameof(Memo)} TEXT,
                         {nameof(Sum)} FLOAT,
                         FOREIGN KEY({nameof(ParentId)}) REFERENCES {nameof(Transaction)}s({nameof(Transaction.Id)}) ON DELETE CASCADE);";
-
-        #endregion
-
-        #region Static Methods
 
         public static implicit operator SubTransaction(YNAB.Transaction ynabTransaction)
         {
@@ -91,9 +71,5 @@ namespace BFF.Model.Native
             }
             return null;
         }
-
-        #endregion
-
-        #endregion
     }
 }

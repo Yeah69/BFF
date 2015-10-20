@@ -5,11 +5,6 @@ namespace BFF.Model.Native.Structure
 {
     abstract class TransactionIncome : DataModelBase
     {
-
-        #region Non-Static
-
-        #region Properties
-
         [Write(false)]
         public abstract Account Account { get; set; }
 
@@ -35,25 +30,5 @@ namespace BFF.Model.Native.Structure
         public abstract double? Sum { get; set; }
 
         public abstract bool Cleared { get; set; }
-
-        #endregion
-
-        #region Methods
-
-        #endregion
-
-        #endregion
-
-        #region Static
-
-        #region Static Variables
-
-        #endregion
-
-        #region Static Methods
-
-        #endregion
-
-        #endregion
     }
 }

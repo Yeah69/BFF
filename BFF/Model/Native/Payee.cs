@@ -9,32 +9,16 @@ namespace BFF.Model.Native
 {
     class Payee : DataModelBase
     {
-        #region Non-Static
-
-        #region Properties
-
         [Key]
         public override long Id { get; set; } = -1;
 
         public string Name { get; set; }
-
-        #endregion
-
-        #region Methods
-
+        
         public override string ToString()
         {
             return Name;
         }
-
-        #endregion
-
-        #endregion
-
-        #region Static
-
-        #region Static Variables
-
+        
         private static readonly Dictionary<string, Payee> Cache = new Dictionary<string, Payee>();
         private static readonly Dictionary<long, Payee> DbCache = new Dictionary<long, Payee>();
 
@@ -42,10 +26,6 @@ namespace BFF.Model.Native
         public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Payee)}s](
                         {nameof(Id)} INTEGER PRIMARY KEY,
                         {nameof(Name)} VARCHAR(100));";
-
-        #endregion
-
-        #region Static Methods
 
         public static Payee GetOrCreate(string name)
         {
@@ -81,9 +61,5 @@ namespace BFF.Model.Native
         {
             DbCache.Clear();
         }
-
-        #endregion
-
-        #endregion
     }
 }
