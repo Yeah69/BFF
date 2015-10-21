@@ -38,6 +38,8 @@ namespace BFF.Model.Native
         
         public bool Cleared { get; set; }
 
+        public Type Type => typeof(Transfer);
+
         public static implicit operator Transfer(YNAB.Transaction ynabTransaction)
         {
             double tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;

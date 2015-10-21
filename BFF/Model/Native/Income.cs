@@ -51,6 +51,8 @@ namespace BFF.Model.Native
         [Write(false)]
         public override IEnumerable<SubTransInc> SubElements { get; set; } = null;
 
+        public Type Type => typeof(Income);
+
         public static implicit operator Income(YNAB.Transaction ynabTransaction)
         {
             Category tempCategory = (ynabTransaction.SubCategory == string.Empty) ?

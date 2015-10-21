@@ -18,7 +18,11 @@
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <converters:SumToBrushConverter x:Key="SumToBrush" PositiveBrush="{StaticResource BrushPositive}" NegativeBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
+            <converters:SumMultiConverter x:Key="SumMulti" PositiveBrush="{StaticResource BrushPositive}" NegativeBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
+            <converters:TypeToBrushConverter x:Key="TypeToBrush" IncomeBrush="{StaticResource BrushPositive}" TransactionBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
+            <converters:TypeToCanvasConverter x:Key="TypeToCanvas" IncomeCanvas="{StaticResource appbar_inbox_in}" TransactionCanvas="{StaticResource appbar_inbox_out}" TransferCanvas="{StaticResource appbar_arrow_left_right}"/>
+            <converters:SubElementToSumConverter x:Key="SubElToSum"/>
+            <converters:DepPropToUnsetConverter x:Key="DepPropToUnset"/>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
@@ -61,31 +65,11 @@
                 <DataGridTemplateColumn Header="S">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}">
-                                <ContentControl.Resources>
-                                    <DataTemplate DataType="{x:Type native:Transaction}">
-                                        <Rectangle HorizontalAlignment="Left" VerticalAlignment="Center" Height="15" Width="15" Fill="{StaticResource BrushNegative}">
-                                            <Rectangle.OpacityMask>
-                                                <VisualBrush Visual="{StaticResource appbar_inbox_out}" />
-                                            </Rectangle.OpacityMask>
-                                        </Rectangle>
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type native:Income}">
-                                        <Rectangle HorizontalAlignment="Left" VerticalAlignment="Center" Height="15" Width="15" Fill="{StaticResource BrushPositive}">
-                                            <Rectangle.OpacityMask>
-                                                <VisualBrush Visual="{StaticResource appbar_inbox_in}" />
-                                            </Rectangle.OpacityMask>
-                                        </Rectangle>
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <Rectangle HorizontalAlignment="Left" VerticalAlignment="Center" Height="15" Width="15" Fill="{StaticResource BrushTransfer}">
-                                            <Rectangle.OpacityMask>
-                                                <VisualBrush Visual="{StaticResource appbar_arrow_left_right}" />
-                                            </Rectangle.OpacityMask>
-                                        </Rectangle>
-                                    </DataTemplate>
-                                </ContentControl.Resources>
-                            </ContentControl>
+                            <Rectangle HorizontalAlignment="Left" VerticalAlignment="Center" Height="15" Width="15" Fill="{Binding Type, Converter={StaticResource TypeToBrush}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Visual="{Binding Type, Converter={StaticResource TypeToCanvas}}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -162,23 +146,21 @@
                 <DataGridTemplateColumn Header="{lex:Loc Sum}" SortMemberPath="Sum" Width="Auto" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}">
-                                <ContentControl.Resources>
-                                    <DataTemplate DataType="{x:Type structure:TransactionIncome}">
-                                        <TextBlock TextAlignment="Right" Foreground="{Binding Sum, Converter={StaticResource SumToBrush}, ConverterParameter={x:Type structure:TransactionIncome }}">
-                                            <TextBlock.Text>
-                                                <PriorityBinding>
-                                                    <Binding Path="Sum" StringFormat="N2" />
-                                                    <!-- todo: SubTransInc class for SubElements <Binding Path="SubTransactions" Converter="{StaticResource SubTransToBrush}" /> -->
-                                                </PriorityBinding>
-                                            </TextBlock.Text>
-                                        </TextBlock>
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <TextBlock Text="{Binding Sum, StringFormat=N2}" TextAlignment="Right" Foreground="{Binding Sum, Converter={StaticResource SumToBrush}, ConverterParameter={x:Type native:Transfer }}" />
-                                    </DataTemplate>
-                                </ContentControl.Resources>
-                            </ContentControl>
+                            <TextBlock TextAlignment="Right">
+                                <TextBlock.Foreground>
+                                    <MultiBinding Converter="{StaticResource SumMulti}">
+                                        <Binding Path="Sum" />
+                                        <Binding Path="SubElements" Converter="{StaticResource SubElToSum}" />
+                                        <Binding Path="Type" />
+                                    </MultiBinding>
+                                </TextBlock.Foreground>
+                                <TextBlock.Text>
+                                    <PriorityBinding FallbackValue="NaN">
+                                        <Binding Path="Sum" Converter="{StaticResource DepPropToUnset}" StringFormat="N2" />
+                                        <Binding Path="SubElements" Converter="{StaticResource SubElToSum}" StringFormat="N2" />
+                                    </PriorityBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
                             <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

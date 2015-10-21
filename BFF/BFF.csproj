@@ -121,6 +121,12 @@
     <Compile Include="Model\Native\Transfer.cs" />
     <Compile Include="Model\Native\Transaction.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="WPFStuff\Converters\SumMultiConverter.cs" />
+    <Compile Include="WPFStuff\Converters\CoalesceConverter.cs" />
+    <Compile Include="WPFStuff\Converters\DepPropToUnsetConverter.cs" />
+    <Compile Include="WPFStuff\Converters\SubElementToSumConverter.cs" />
+    <Compile Include="WPFStuff\Converters\TypeToCanvasConverter.cs" />
+    <Compile Include="WPFStuff\Converters\TypeToBrushConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
     <Compile Include="WPFStuff\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">

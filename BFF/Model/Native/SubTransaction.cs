@@ -1,4 +1,5 @@
-﻿using BFF.Helper.Import;
+﻿using System;
+using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
@@ -28,6 +29,8 @@ namespace BFF.Model.Native
         public override string Memo { get; set; }
         
         public override double Sum { get; set; }
+
+        public Type Type => typeof(SubTransaction);
 
         public static implicit operator SubTransaction(YNAB.Transaction ynabTransaction)
         {
