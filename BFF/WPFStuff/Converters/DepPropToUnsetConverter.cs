@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace BFF.WPFStuff.Converters
 {
-    class SumFormatedConverter : IValueConverter
+    public class DepPropToUnsetConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return $"{value:N2}";
+            return value ?? DependencyProperty.UnsetValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

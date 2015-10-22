@@ -126,6 +126,12 @@
   <data name="Account" xml:space="preserve">
     <value />
   </data>
+  <data name="Account_Transfer" xml:space="preserve">
+    <value />
+  </data>
+  <data name="All_Accounts" xml:space="preserve">
+    <value />
+  </data>
   <data name="Category" xml:space="preserve">
     <value />
   </data>

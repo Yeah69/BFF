@@ -9,7 +9,7 @@ using Dapper;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
 using Native = BFF.Model.Native;
-using static BFF.DB.SQLite.Helper;
+using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Helper.Import
 {
@@ -147,6 +147,7 @@ namespace BFF.Helper.Import
                     if (count > 0)
                     {
                         parent.Sum = null;
+                        parent.Category = null;
                         transactions.Add(parent);
                     }
                 }
@@ -183,6 +184,7 @@ namespace BFF.Helper.Import
             }
         }
 
+        // todo: Refactor this into the SQLiteHelper
         private static void PopulateDatabase(List<Native.Transaction> transactions, List<Native.SubTransaction> subTransactions, List<Native.Transfer> transfers, List<Native.Income> incomes)
         {
             Output.WriteLine("Beginning to populate database.");
@@ -196,13 +198,14 @@ namespace BFF.Helper.Import
                 List<Native.Category> categories = Native.Category.GetAllCache();
                 List<Native.Account> accounts = Native.Account.GetAllCache();
 
-                cnn.Execute(Native.Payee.CreateTableStatement);
-                cnn.Execute(Native.Category.CreateTableStatement);
-                cnn.Execute(Native.Account.CreateTableStatement);
-                cnn.Execute(Native.Transaction.CreateTableStatement);
-                cnn.Execute(Native.Transfer.CreateTableStatement);
-                cnn.Execute(Native.SubTransaction.CreateTableStatement);
-                cnn.Execute(Native.Income.CreateTableStatement);
+                cnn.Execute(CreatePayeeTableStatement);
+                cnn.Execute(CreateCategoryTableStatement);
+                cnn.Execute(CreateAccountTableStatement);
+                cnn.Execute(CreateTransactionTableStatement);
+                cnn.Execute(CreateTransferTableStatement);
+                cnn.Execute(CreateSubTransactionTableStatement);
+                cnn.Execute(CreateIncomeTableStatement);
+                cnn.Execute(CreateSubIncomeTableStatement);
 
                 /*  
                 Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,

@@ -1,84 +1,58 @@
 ﻿using System;
+using System.Collections.Generic;
 using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
+using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class Transaction : DataModelBase
+    class Transaction : TransactionIncome, ITransactionLike
     {
-        #region Non-Static
-
-        #region Properties
-
         [Key]
         public override long Id { get; set; } = -1;
 
         [Write(false)]
-        public Account Account { get; set; }
+        public override Account Account { get; set; }
 
-        public long AccountId
+        public override long AccountId
         {
             get { return Account?.Id ?? -1; }
-            set { Account = Account.GetFromDb(value); }
+            set { Account = GetAccount(value); }
         }
 
-        public DateTime Date { get; set; }
+        public override DateTime Date { get; set; }
 
         [Write(false)]
-        public Payee Payee { get; set; }
+        public override Payee Payee { get; set; }
 
-        public long PayeeId
+        public override long PayeeId
         {
             get { return Payee?.Id ?? -1; }
-            set { Payee = Payee.GetFromDb(value); }
+            set { Payee = GetPayee(value); }
         }
 
         [Write(false)]
-        public Category Category { get; set; }
+        public override Category Category { get; set; }
 
-        public long? CategoryId
+        public override long? CategoryId
         {
             get { return Category?.Id; }
-            set { Category = Category.GetFromDb(value);}
+            set { Category = GetCategory(value);}
         }
 
-        public string Memo { get; set; }
-        
-        public double? Sum { get; set; }
-        
-        public bool Cleared { get; set; }
+        public override string Memo { get; set; }
 
-        #endregion
+        //todo: Resolve the issue with the Parent-Transactions => Get Sum from Child-Transactions
+        public override double? Sum { get; set; }
 
-        #region Methods
-
-        #endregion
-
-        #endregion
-
-        #region Static
-
-        #region Static Variables
+        public override bool Cleared { get; set; }
         
         [Write(false)]
-        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transaction)}s](
-                        {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(AccountId)} INTEGER,
-                        {nameof(PayeeId)} INTEGER,
-                        {nameof(CategoryId)} INTEGER,
-                        {nameof(Date)} DATE,
-                        {nameof(Memo)} TEXT,
-                        {nameof(Sum)} FLOAT,
-                        {nameof(Cleared)} INTEGER,
-                        FOREIGN KEY({nameof(AccountId)}) REFERENCES {nameof(Native.Account)}s({nameof(Native.Account.Id)}) ON DELETE CASCADE,
-                        FOREIGN KEY({nameof(PayeeId)}) REFERENCES {nameof(Native.Payee)}s({nameof(Native.Payee.Id)}) ON DELETE SET NULL,
-                        FOREIGN KEY({nameof(CategoryId)}) REFERENCES {nameof(Native.Category)}s({nameof(Native.Category.Id)}) ON DELETE SET NULL);";
+        public override IEnumerable<SubTransInc> SubElements { get; set; } = null;
 
-        #endregion
-
-        #region Static Methods
+        public Type Type => typeof(Transaction);
 
         public static implicit operator Transaction(YNAB.Transaction ynabTransaction)
         {
@@ -97,9 +71,5 @@ namespace BFF.Model.Native
             };
             return ret;
         }
-
-        #endregion
-
-        #endregion
     }
 }

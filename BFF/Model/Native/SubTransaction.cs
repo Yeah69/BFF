@@ -1,65 +1,36 @@
-﻿using BFF.Helper.Import;
+﻿using System;
+using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
+using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class SubTransaction : DataModelBase
+    class SubTransaction : SubTransInc, ITransactionLike
     {
-        #region Non-Static
-
-        #region Properties
-
         [Key]
         public override long Id { get; set; } = -1;
 
         [Write(false)]
-        public Transaction Parent { get; set; }
+        public override TransactionIncome Parent { get; set; }
 
-        public long ParentId
-        {
-            get { return Parent?.Id ?? -1; }
-            set { Parent.Id = value; }
-        }
+        public override long ParentId => Parent?.Id ?? -1;
 
         [Write(false)]
-        public Category Category { get; set; }
+        public override Category Category { get; set; }
 
-        public long CategoryId
+        public override long CategoryId
         {
             get { return Category?.Id ?? -1; }
-            set { Category.Id = value; }
+            set { Category = GetCategory(value); }
         }
 
-        public string Memo { get; set; }
+        public override string Memo { get; set; }
         
-        public double Sum { get; set; }
+        public override double Sum { get; set; }
 
-        #endregion
-
-        #region Methods
-
-        #endregion
-
-        #endregion
-
-        #region Static
-
-        #region Static Variables
-        
-        [Write(false)]
-        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(SubTransaction)}s](
-                        {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(ParentId)} INTEGER,
-                        {nameof(CategoryId)} INTEGER,
-                        {nameof(Memo)} TEXT,
-                        {nameof(Sum)} FLOAT,
-                        FOREIGN KEY({nameof(ParentId)}) REFERENCES {nameof(Transaction)}s({nameof(Transaction.Id)}) ON DELETE CASCADE);";
-
-        #endregion
-
-        #region Static Methods
+        public Type Type => typeof(SubTransaction);
 
         public static implicit operator SubTransaction(YNAB.Transaction ynabTransaction)
         {
@@ -74,9 +45,5 @@ namespace BFF.Model.Native
             };
             return ret;
         }
-
-        #endregion
-
-        #endregion
     }
 }

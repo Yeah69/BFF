@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="BrushTransfer" Color="RoyalBlue" />
+    <SolidColorBrush x:Key="BrushNegative" Color="DarkOrange" />
+    <SolidColorBrush x:Key="BrushPositive" Color="LimeGreen" />
+    <SolidColorBrush x:Key="BrushNeutral" Color="DimGray" />
+    <SolidColorBrush x:Key="BrushDataGridSecondRow" Color="#CF363636" />
+</ResourceDictionary>

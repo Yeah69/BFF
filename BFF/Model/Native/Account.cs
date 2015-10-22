@@ -1,18 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Linq;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
-using static BFF.DB.SQLite.Helper;
 
 namespace BFF.Model.Native
 {
     class Account : DataModelBase
     {
-        #region Non-Static
-
-        #region Properties
-
         [Key]
         public override long Id { get; set; } = -1;
 
@@ -20,36 +14,14 @@ namespace BFF.Model.Native
 
         public double StartingBalance { get; set; } = 0.0;
 
-        #endregion
-
-        #region Methods
-
         public override string ToString()
         {
             return Name;
         }
 
-        #endregion
-
-        #endregion
-
-        #region Static
-
-        #region Static Variables
-
         private static readonly Dictionary<string, Account> Cache = new Dictionary<string, Account>();
-        private static readonly Dictionary<long, Account> DbCache = new Dictionary<long, Account>();
 
-        [Write(false)]
-        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Account)}s](
-                        {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(Name)} VARCHAR(100),
-                        {nameof(StartingBalance)} FLOAT NOT NULL DEFAULT 0);";
-
-        #endregion
-
-        #region Static Methods
-
+        // todo: Refactor the GetOrCreate and GetAllCache into the Conversion/Import class
         public static Account GetOrCreate(string name)
         {
             if (Cache.ContainsKey(name))
@@ -63,25 +35,5 @@ namespace BFF.Model.Native
         {
             return Cache.Values.ToList();
         }
-
-        public static Account GetFromDb(long id)
-        {
-            if (DbCache.ContainsKey(id)) return DbCache[id];
-            Account ret;
-            using(var cnn = new SQLiteConnection(CurrentDbConnectionString()))
-            {
-                cnn.Open();
-
-                ret = cnn.Get<Account>(id);
-
-                cnn.Close();
-            }
-            DbCache.Add(id, ret);
-            return ret;
-        }
-
-        #endregion
-
-        #endregion
     }
 }

@@ -23,13 +23,14 @@ namespace BFF
             LanguageCombo.Items.Add("en");
             Accent initialAccent = ThemeManager.GetAccent(Properties.Settings.Default.MahApps_Accent);
             AppTheme initialAppTheme = ThemeManager.GetAppTheme(Properties.Settings.Default.MahApps_AppTheme);
+            string initialLocalization = Properties.Settings.Default.Localization_Language;
             ThemeCombo.SelectedItem = initialAppTheme;
             AccentCombo.SelectedItem = initialAccent;
-            LanguageCombo.SelectedItem = Properties.Settings.Default.Localization_Language;
+            LanguageCombo.SelectedItem = initialLocalization;
 
             ThemeManager.ChangeAppStyle(this, initialAccent, initialAppTheme);
 
-            WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo("de");
+            WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo(initialLocalization);
 
             //YnabCsvImport.ImportYnabTransactionsCsvtoDb(@"D:\Private\YNABExports\Yeah as of 2015-08-14 640 PM-Register.csv",
             //                                            @"D:\Private\YNABExports\Yeah as of 2015-08-14 640 PM-Budget.csv",
@@ -43,7 +44,7 @@ namespace BFF
 
         private void ThemeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Accent accent = ThemeManager.DetectAppStyle()?.Item2 ?? ThemeManager.GetAccent("Violet");
+            Accent accent = ThemeManager.GetAccent(Properties.Settings.Default.MahApps_Accent);
             ThemeManager.ChangeAppStyle(this, accent, ((AppTheme)ThemeCombo.SelectedItem));
             Properties.Settings.Default.MahApps_AppTheme = ((AppTheme)ThemeCombo.SelectedItem).Name;
             Properties.Settings.Default.Save();
@@ -51,7 +52,7 @@ namespace BFF
 
         private void AccentCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            AppTheme theme = ThemeManager.DetectAppStyle()?.Item1 ?? ThemeManager.GetAppTheme("BaseDark");
+            AppTheme theme = ThemeManager.GetAppTheme(Properties.Settings.Default.MahApps_AppTheme);
             ThemeManager.ChangeAppStyle(this, ((Accent)AccentCombo.SelectedItem), theme);
             Properties.Settings.Default.MahApps_Accent = ((Accent) AccentCombo.SelectedItem).Name;
             Properties.Settings.Default.Save();

@@ -3,15 +3,12 @@ using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
+using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class Transfer : DataModelBase
+    class Transfer : DataModelBase, ITransactionLike
     {
-        #region Non-Static
-
-        #region Properties
-
         [Key]
         public override long Id { get; set; } = -1;
 
@@ -21,7 +18,7 @@ namespace BFF.Model.Native
         public long FromAccountId
         {
             get { return FromAccount?.Id ?? -1; }
-            set { FromAccount.Id = value; }
+            set { FromAccount = GetAccount(value); }
         }
 
         [Write(false)]
@@ -30,7 +27,7 @@ namespace BFF.Model.Native
         public long ToAccountId
         {
             get { return ToAccount?.Id ?? -1; }
-            set { ToAccount.Id = value; }
+            set { ToAccount = GetAccount(value); }
         }
 
         public DateTime Date { get; set; }
@@ -41,33 +38,7 @@ namespace BFF.Model.Native
         
         public bool Cleared { get; set; }
 
-        #endregion
-
-        #region Methods
-
-        #endregion
-
-        #endregion
-
-        #region Static
-
-        #region Static Variables
-        
-        [Write(false)]
-        public static string CreateTableStatement => $@"CREATE TABLE [{nameof(Transfer)}s](
-                        {nameof(Id)} INTEGER PRIMARY KEY,
-                        {nameof(FromAccountId)} INTEGER,
-                        {nameof(ToAccountId)} INTEGER,
-                        {nameof(Date)} DATE,
-                        {nameof(Memo)} TEXT,
-                        {nameof(Sum)} FLOAT,
-                        {nameof(Cleared)} INTEGER,
-                        FOREIGN KEY({nameof(FromAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT,
-                        FOREIGN KEY({nameof(ToAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT);";
-
-        #endregion
-
-        #region Static Methods
+        public Type Type => typeof(Transfer);
 
         public static implicit operator Transfer(YNAB.Transaction ynabTransaction)
         {
@@ -87,9 +58,5 @@ namespace BFF.Model.Native
             };
             return ret;
         }
-
-        #endregion
-
-        #endregion
     }
 }
