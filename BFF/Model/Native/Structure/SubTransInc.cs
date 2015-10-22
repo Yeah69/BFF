@@ -1,7 +1,6 @@
-﻿using BFF.Model.Native.Structure;
-using Dapper.Contrib.Extensions;
+﻿using Dapper.Contrib.Extensions;
 
-namespace BFF.Model.Native
+namespace BFF.Model.Native.Structure
 {
     abstract class SubTransInc : DataModelBase
     {

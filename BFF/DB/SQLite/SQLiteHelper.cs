@@ -40,16 +40,18 @@ namespace BFF.DB.SQLite
 
                 IEnumerable<Transaction> transtactions = cnn.GetAll<Transaction>();
                 IEnumerable<Transaction> nullSumsTransactions = transtactions?.Where(t => t.Sum == null);
-                foreach (Transaction t in nullSumsTransactions)
-                {
-                    t.SubElements = GetSubTransactions(t.Id);
-                }
+                if (nullSumsTransactions != null)
+                    foreach (Transaction t in nullSumsTransactions)
+                    {
+                        t.SubElements = GetSubTransactions(t.Id);
+                    }
                 IEnumerable<Income> incomes = cnn.GetAll<Income>();
                 IEnumerable<Income> nullSumIncomes = incomes?.Where(i => i.Sum == null);
-                foreach (Income i in nullSumIncomes)
-                {
-                    i.SubElements = GetSubIncomes(i.Id);
-                }
+                if (nullSumIncomes != null)
+                    foreach (Income i in nullSumIncomes)
+                    {
+                        i.SubElements = GetSubIncomes(i.Id);
+                    }
                 IEnumerable<Transfer> transfers = cnn.GetAll<Transfer>();
 
                 list.AddRange(transtactions);

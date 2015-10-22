@@ -120,6 +120,7 @@
     <Compile Include="Model\Native\Income.cs" />
     <Compile Include="Model\Native\Transfer.cs" />
     <Compile Include="Model\Native\Transaction.cs" />
+    <Compile Include="ViewModel\AllAccsTransUCViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="WPFStuff\Converters\SumMultiConverter.cs" />
     <Compile Include="WPFStuff\Converters\CoalesceConverter.cs" />
@@ -128,6 +129,9 @@
     <Compile Include="WPFStuff\Converters\TypeToCanvasConverter.cs" />
     <Compile Include="WPFStuff\Converters\TypeToBrushConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
+    <Compile Include="WPFStuff\UserControls\TransactionDataGrid.xaml.cs">
+      <DependentUpon>TransactionDataGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPFStuff\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -146,6 +150,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="WPFStuff\Resources\BFF_ResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFStuff\Resources\TransUC_Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFStuff\UserControls\TransactionDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

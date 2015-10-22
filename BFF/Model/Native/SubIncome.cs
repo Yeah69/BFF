@@ -1,8 +1,6 @@
 ﻿using System;
-using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
-using YNAB = BFF.Model.Conversion.YNAB;
 using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
