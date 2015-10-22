@@ -120,8 +120,9 @@
     <Compile Include="Model\Native\Income.cs" />
     <Compile Include="Model\Native\Transfer.cs" />
     <Compile Include="Model\Native\Transaction.cs" />
-    <Compile Include="ViewModel\AllAccsTransUCViewModel.cs" />
+    <Compile Include="ViewModel\TransUcViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="WPFStuff\Converters\NullToLexConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumMultiConverter.cs" />
     <Compile Include="WPFStuff\Converters\CoalesceConverter.cs" />
     <Compile Include="WPFStuff\Converters\DepPropToUnsetConverter.cs" />

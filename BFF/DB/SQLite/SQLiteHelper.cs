@@ -26,7 +26,6 @@ namespace BFF.DB.SQLite
 
         public static List<ITransactionLike> GetAllTransactions()
         {
-            CurrentDbName = "testDatabase";
             List<ITransactionLike> list = new List<ITransactionLike>();
 
             ClearCache();
@@ -94,6 +93,29 @@ namespace BFF.DB.SQLite
                 cnn.Close();
             }
             AccountCache.Add(id, ret);
+            return ret;
+        }
+
+        public static IEnumerable<Account> GetAllAccounts()
+        {
+            IEnumerable<Account> ret;
+
+            using (var cnn = new SQLiteConnection(CurrentDbConnectionString()))
+            {
+                cnn.Open();
+
+                ret = cnn.GetAll<Account>();
+
+                if (_cachingMode)
+                {
+                    AccountCache.Clear();
+                    foreach(Account account in ret)
+                        AccountCache.Add(account.Id, account);
+                }
+
+                cnn.Close();
+            }
+
             return ret;
         }
 

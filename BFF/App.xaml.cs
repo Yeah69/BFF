@@ -1,4 +1,4 @@
-﻿
+﻿using BFF.DB.SQLite;
 using BFF.ViewModel;
 
 namespace BFF
@@ -10,6 +10,7 @@ namespace BFF
     {
         public App()
         {
+            SqLiteHelper.CurrentDbName = "testDatabase";
             MainWindow mainWindow = new MainWindow();
             MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
             mainWindow.Show();

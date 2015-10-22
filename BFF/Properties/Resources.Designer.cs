@@ -99,6 +99,15 @@ namespace BFF.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string All_Accounts {
+            get {
+                return ResourceManager.GetString("All_Accounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Category {
             get {
                 return ResourceManager.GetString("Category", resourceCulture);

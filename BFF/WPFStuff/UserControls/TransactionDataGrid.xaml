@@ -27,7 +27,7 @@
             <converters:DepPropToUnsetConverter x:Key="DepPropToUnset"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    <DataGrid x:Name="DataGrid" ItemsSource="{Binding AllTransactions}" AutoGenerateColumns="False"  Margin="10">
+    <DataGrid x:Name="DataGrid" ItemsSource="{Binding ViewSource.View}" AutoGenerateColumns="False" Margin="10">
         <DataGrid.Style>
             <Style BasedOn="{StaticResource MetroDataGrid}"
                        TargetType="{x:Type DataGrid}">
@@ -63,7 +63,7 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTextColumn Header="{lex:Loc Date}" Binding="{Binding Date, StringFormat=\{0:yy/MM/dd\}}"/>
+            <DataGridTextColumn Header="{lex:Loc Date}" Binding="{Binding Date, StringFormat=\{0:yy/MM/dd\}}" SortDirection="Ascending"/>
             <DataGridTemplateColumn Header="{lex:Loc Payee}" SortMemberPath="Payee.Name">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
