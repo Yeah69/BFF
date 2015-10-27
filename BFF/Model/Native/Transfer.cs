@@ -7,10 +7,12 @@ using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class Transfer : DataModelBase, ITransactionLike
+    class Transfer : TransItemBase, ITransactionLike
     {
         [Key]
         public override long Id { get; set; } = -1;
+
+        public long FillerId { get; set; } = -1;
 
         [Write(false)]
         public Account FromAccount { get; set; }
@@ -30,15 +32,15 @@ namespace BFF.Model.Native
             set { ToAccount = GetAccount(value); }
         }
 
-        public DateTime Date { get; set; }
+        public override DateTime Date { get; set; }
 
-        public string Memo { get; set; }
+        public override string Memo { get; set; }
         
-        public double Sum { get; set; }
+        public override double? Sum { get; set; }
         
-        public bool Cleared { get; set; }
+        public override bool Cleared { get; set; }
 
-        public Type Type => typeof(Transfer);
+        public override string Type { get; set; } = "Transfer";
 
         public static implicit operator Transfer(YNAB.Transaction ynabTransaction)
         {

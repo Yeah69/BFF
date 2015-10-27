@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
@@ -37,6 +39,83 @@ namespace BFF.DB.SQLite
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
 
+                string sql =
+                    $@"
+SELECT Id, AccountId, PayeeId, CategoryId, Date, Memo, Sum, Cleared, Type FROM [{nameof(Transaction)}s]
+UNION ALL
+SELECT Id, AccountId, PayeeId, CategoryId, Date, Memo, Sum, Cleared, Type FROM [{nameof(Income)}s]
+UNION ALL
+SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type FROM [{nameof(Transfer)}s];";
+
+                Type[] types =
+                {
+                    typeof (long), typeof (long), typeof (long), typeof (long),
+                    typeof (DateTime), typeof (string), typeof (double), typeof (bool), typeof(string)
+                };
+                IEnumerable<TransItemBase> blah = cnn.Query<TransItemBase>(sql, types, objArr =>
+                {
+                    string type = (string)objArr[8];
+                    DateTime date = DateTime.MinValue;
+                    if (objArr[4] is DateTime)
+                        date = (DateTime) objArr[4];
+                    else if (!DateTime.TryParseExact((string)objArr[4], "yyyy-MM-dd HH:mm:ss", null, DateTimeStyles.None, out date))
+                        throw new InvalidCastException();
+                    // todo: Maybe find out why in some cases the date is pre-casted to DateTime and in others it is still a string
+                    TransItemBase ret;
+                    switch (type)
+                    {
+                        case "SingleTrans":
+                        case "ParentTrans":
+                            ret = new Transaction
+                            {
+                                Id = (long)objArr[0],
+                                AccountId = (long)objArr[1],
+                                PayeeId = (long)objArr[2],
+                                CategoryId = (long?)objArr[3],
+                                Date = date,
+                                Memo = (string)objArr[5],
+                                Sum = (double?)objArr[6],
+                                Cleared = (long)objArr[7] == 1 ? true : false,
+                                Type = type
+                            };
+                            break;
+                        case "SingleIncome":
+                        case "ParentIncome":
+                            ret = new Income
+                            {
+                                Id = (long)objArr[0],
+                                AccountId = (long)objArr[1],
+                                PayeeId = (long)objArr[2],
+                                CategoryId = (long?)objArr[3],
+                                Date = date,
+                                Memo = (string)objArr[5],
+                                Sum = (double?)objArr[6],
+                                Cleared = (long)objArr[7] == 1 ? true : false,
+                                Type = type
+                            };
+                            break;
+                        case "Transfer":
+                            ret = new Transfer
+                            {
+                                Id = (long)objArr[0],
+                                FromAccountId = (long)objArr[2],
+                                ToAccountId = (long)objArr[3],
+                                Date = date,
+                                Memo = (string)objArr[5],
+                                Sum = (double)objArr[6],
+                                Cleared = (long)objArr[7] == 1 ? true : false,
+                                Type = type
+                            };
+                            break;
+                        default:
+                            ret = new Transaction { Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR" };
+                            break;
+                    }
+                    return ret;
+                }, splitOn: "*");
+                // todo: the construct above is still in idle mode. So get to work it productively
+
+                
                 IEnumerable<Transaction> transtactions = cnn.GetAll<Transaction>();
                 IEnumerable<Transaction> nullSumsTransactions = transtactions?.Where(t => t.Sum == null);
                 if (nullSumsTransactions != null)
@@ -209,10 +288,11 @@ namespace BFF.DB.SQLite
                         {nameof(Income.Memo)} TEXT,
                         {nameof(Income.Sum)} FLOAT,
                         {nameof(Income.Cleared)} INTEGER,
-                        FOREIGN KEY({nameof(Income.AccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE CASCADE,
-                        FOREIGN KEY({nameof(Income.PayeeId)}) REFERENCES {nameof(Payee)}s({nameof(Payee.Id)}) ON DELETE SET NULL,
-                        FOREIGN KEY({nameof(Income.CategoryId)}) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
-        
+                        {nameof(Income.Type)} VARCHAR(12),
+                        FOREIGN KEY({ nameof(Income.AccountId)}) REFERENCES {nameof(Account)}s({ nameof(Account.Id)}) ON DELETE CASCADE,
+                        FOREIGN KEY({ nameof(Income.PayeeId)}) REFERENCES {nameof(Payee)}s({ nameof(Payee.Id)}) ON DELETE SET NULL,
+                        FOREIGN KEY({ nameof(Income.CategoryId)}) REFERENCES {nameof(Category)}s({ nameof(Category.Id)}) ON DELETE SET NULL);";
+                
         public static string CreatePayeeTableStatement => $@"CREATE TABLE [{nameof(Payee)}s](
                         {nameof(Payee.Id)} INTEGER PRIMARY KEY,
                         {nameof(Payee.Name)} VARCHAR(100));";
@@ -242,19 +322,22 @@ namespace BFF.DB.SQLite
                         {nameof(Transaction.Memo)} TEXT,
                         {nameof(Transaction.Sum)} FLOAT,
                         {nameof(Transaction.Cleared)} INTEGER,
-                        FOREIGN KEY({nameof(Transaction.AccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE CASCADE,
-                        FOREIGN KEY({nameof(Transaction.PayeeId)}) REFERENCES {nameof(Payee)}s({nameof(Payee.Id)}) ON DELETE SET NULL,
-                        FOREIGN KEY({nameof(Transaction.CategoryId)}) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
-        
+                        {nameof(Transaction.Type)} VARCHAR(12),
+                        FOREIGN KEY({ nameof(Transaction.AccountId)}) REFERENCES {nameof(Account)}s({ nameof(Account.Id)}) ON DELETE CASCADE,
+                        FOREIGN KEY({ nameof(Transaction.PayeeId)}) REFERENCES {nameof(Payee)}s({ nameof(Payee.Id)}) ON DELETE SET NULL,
+                        FOREIGN KEY({ nameof(Transaction.CategoryId)}) REFERENCES {nameof(Category)}s({ nameof(Category.Id)}) ON DELETE SET NULL);";
+
         public static string CreateTransferTableStatement => $@"CREATE TABLE [{nameof(Transfer)}s](
                         {nameof(Transfer.Id)} INTEGER PRIMARY KEY,
+                        {nameof(Transfer.FillerId)} INTEGER DEFAULT -1,
                         {nameof(Transfer.FromAccountId)} INTEGER,
                         {nameof(Transfer.ToAccountId)} INTEGER,
                         {nameof(Transfer.Date)} DATE,
                         {nameof(Transfer.Memo)} TEXT,
                         {nameof(Transfer.Sum)} FLOAT,
                         {nameof(Transfer.Cleared)} INTEGER,
-                        FOREIGN KEY({nameof(Transfer.FromAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT,
-                        FOREIGN KEY({nameof(Transfer.ToAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT);";
+                        {nameof(Transfer.Type)} VARCHAR(12),
+                        FOREIGN KEY({ nameof(Transfer.FromAccountId)}) REFERENCES {nameof(Account)}s({ nameof(Account.Id)}) ON DELETE RESTRICT,
+                        FOREIGN KEY({ nameof(Transfer.ToAccountId)}) REFERENCES {nameof(Account)}s({ nameof(Account.Id)}) ON DELETE RESTRICT);";
     }
 }

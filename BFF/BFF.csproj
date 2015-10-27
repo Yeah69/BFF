@@ -38,8 +38,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Dapper.Contrib, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.Contrib.1.43\lib\net45\Dapper.Contrib.dll</HintPath>
@@ -114,7 +114,7 @@
     <Compile Include="Model\Native\Payee.cs" />
     <Compile Include="Model\Native\Structure\ITransactionLike.cs" />
     <Compile Include="Model\Native\Structure\SubTransInc.cs" />
-    <Compile Include="Model\Native\Structure\TransactionIncome.cs" />
+    <Compile Include="Model\Native\Structure\TransItemBase.cs" />
     <Compile Include="Model\Native\SubIncome.cs" />
     <Compile Include="Model\Native\SubTransaction.cs" />
     <Compile Include="Model\Native\Income.cs" />
@@ -210,7 +210,6 @@
   <ItemGroup>
     <Resource Include="Icons\logo_quadratic.png" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.98.1\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.98.1\build\net45\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

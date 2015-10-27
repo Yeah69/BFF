@@ -17,9 +17,9 @@ namespace BFF.WPFStuff.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return null;
-            if (typeof(Transfer) == (Type)value) return TransferCanvas;
-            if (typeof(Transaction) == (Type)value) return TransactionCanvas;
-            return typeof(Income) == (Type)value ? IncomeCanvas : null;
+            if ((string)value == "Transfer") return TransferCanvas;
+            if (((string)value).EndsWith("Trans")) return TransactionCanvas;
+            return ((string)value).EndsWith("Income") ? IncomeCanvas : null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

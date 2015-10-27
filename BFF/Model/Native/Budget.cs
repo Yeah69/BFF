@@ -7,7 +7,7 @@ namespace BFF.Model.Native
     class Budget : DataModelBase
     {
         [Key]
-        public override long Id { get; set; } = -1;
+        public long Id { get; set; } = -1;
 
         public DateTime MonthYear { get; set; }
 

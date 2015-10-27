@@ -52,7 +52,7 @@
                     <DataTemplate>
                         <ContentControl Content="{Binding}">
                             <ContentControl.Resources>
-                                <DataTemplate DataType="{x:Type structure:TransactionIncome}">
+                                <DataTemplate DataType="{x:Type structure:TransItemBase}">
                                     <TextBlock Text="{Binding Account}"></TextBlock>
                                 </DataTemplate>
                                 <DataTemplate DataType="{x:Type native:Transfer}">
@@ -69,7 +69,7 @@
                     <DataTemplate>
                         <ContentControl Content="{Binding}">
                             <ContentControl.Resources>
-                                <DataTemplate DataType="{x:Type structure:TransactionIncome}">
+                                <DataTemplate DataType="{x:Type structure:TransItemBase}">
                                     <TextBlock Text="{Binding Payee}"></TextBlock>
                                 </DataTemplate>
                                 <DataTemplate DataType="{x:Type native:Transfer}">
@@ -92,7 +92,7 @@
                     <DataTemplate>
                         <ContentControl Content="{Binding}">
                             <ContentControl.Resources>
-                                <DataTemplate DataType="{x:Type structure:TransactionIncome}">
+                                <DataTemplate DataType="{x:Type structure:TransItemBase}">
                                     <TextBlock Text="{Binding Category}"></TextBlock>
                                 </DataTemplate>
                                 <DataTemplate DataType="{x:Type native:Transfer}">

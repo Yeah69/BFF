@@ -16,8 +16,7 @@ namespace BFF.WPFStuff.Converters
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             double sum = (double?)values[0] ?? (double?)values[1] ?? 0.0;
-            Type type = (Type) values[2];
-            if (type == typeof (Transfer))
+            if ((string)values[2] == "Transfer")
             {
                 return TransferBrush;
             }

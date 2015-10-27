@@ -8,7 +8,7 @@ namespace BFF.Model.Native
     class Payee : DataModelBase
     {
         [Key]
-        public override long Id { get; set; } = -1;
+        public long Id { get; set; } = -1;
 
         public string Name { get; set; }
         

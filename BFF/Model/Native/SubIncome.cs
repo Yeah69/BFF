@@ -8,10 +8,10 @@ namespace BFF.Model.Native
     class SubIncome : SubTransInc, ITransactionLike
     {
         [Key]
-        public override long Id { get; set; } = -1;
+        public long Id { get; set; } = -1;
 
         [Write(false)]
-        public override TransactionIncome Parent { get; set; }
+        public override TransItemBase Parent { get; set; }
 
         public override long ParentId => Parent?.Id ?? -1;
 
@@ -28,6 +28,7 @@ namespace BFF.Model.Native
 
         public override double Sum { get; set; }
 
+        [Write(false)]
         public Type Type => typeof(SubIncome);
     }
 }

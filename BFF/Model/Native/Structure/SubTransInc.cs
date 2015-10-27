@@ -5,7 +5,7 @@ namespace BFF.Model.Native.Structure
     abstract class SubTransInc : DataModelBase
     {
         [Write(false)]
-        public abstract TransactionIncome Parent { get; set; }
+        public abstract TransItemBase Parent { get; set; }
 
         // todo: Find a way for setter of ParentId
         public abstract long ParentId { get; }

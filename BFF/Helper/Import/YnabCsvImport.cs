@@ -148,6 +148,7 @@ namespace BFF.Helper.Import
                     {
                         parent.Sum = null;
                         parent.Category = null;
+                        parent.Type = "ParentTrans";
                         transactions.Add(parent);
                     }
                 }
@@ -201,8 +202,8 @@ namespace BFF.Helper.Import
                 cnn.Execute(CreatePayeeTableStatement);
                 cnn.Execute(CreateCategoryTableStatement);
                 cnn.Execute(CreateAccountTableStatement);
-                cnn.Execute(CreateTransactionTableStatement);
                 cnn.Execute(CreateTransferTableStatement);
+                cnn.Execute(CreateTransactionTableStatement);
                 cnn.Execute(CreateSubTransactionTableStatement);
                 cnn.Execute(CreateIncomeTableStatement);
                 cnn.Execute(CreateSubIncomeTableStatement);

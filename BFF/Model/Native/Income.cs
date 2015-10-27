@@ -8,15 +8,15 @@ using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class Income : TransactionIncome, ITransactionLike
+    class Income : TransItemBase, ITransactionLike
     {
         [Key]
         public override long Id { get; set; } = -1;
 
         [Write(false)]
-        public override Account Account { get; set; }
+        public Account Account { get; set; }
 
-        public override long AccountId
+        public long AccountId
         {
             get { return Account?.Id ?? -1; }
             set { Account = GetAccount(value); }
@@ -25,18 +25,18 @@ namespace BFF.Model.Native
         public override DateTime Date { get; set; }
 
         [Write(false)]
-        public override Payee Payee { get; set; }
+        public Payee Payee { get; set; }
 
-        public override long PayeeId
+        public long PayeeId
         {
             get { return Payee?.Id ?? -1; }
             set { Payee = GetPayee(value); }
         }
 
         [Write(false)]
-        public override Category Category { get; set; }
+        public Category Category { get; set; }
 
-        public override long? CategoryId
+        public long? CategoryId
         {
             get { return Category?.Id; }
             set { Category = GetCategory(value); }
@@ -49,9 +49,9 @@ namespace BFF.Model.Native
         public override bool Cleared { get; set; }
 
         [Write(false)]
-        public override IEnumerable<SubTransInc> SubElements { get; set; } = null;
+        public IEnumerable<SubTransInc> SubElements { get; set; } = null;
 
-        public Type Type => typeof(Income);
+        public override string Type { get; set; } = "SingleIncome";
 
         public static implicit operator Income(YNAB.Transaction ynabTransaction)
         {
