@@ -63,7 +63,7 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTextColumn Header="{lex:Loc Date}" Binding="{Binding Date, StringFormat=\{0:yy/MM/dd\}}" SortDirection="Ascending"/>
+            <DataGridTextColumn Header="{lex:Loc Date}" Binding="{Binding Date, StringFormat=\{0:yy/MM/dd\}}"/>
             <DataGridTemplateColumn Header="{lex:Loc Payee}" SortMemberPath="Payee.Name">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>

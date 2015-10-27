@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Globalization;
@@ -26,9 +25,9 @@ namespace BFF.DB.SQLite
             return $"Data Source={CurrentDbName}.sqlite;Version=3;foreign keys=true;";
         }
 
-        public static List<ITransactionLike> GetAllTransactions()
+        public static IEnumerable<TransItemBase> GetAllTransactions()
         {
-            List<ITransactionLike> list = new List<ITransactionLike>();
+            IEnumerable<TransItemBase> results;
 
             ClearCache();
             _cachingMode = true;
@@ -39,20 +38,26 @@ namespace BFF.DB.SQLite
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
 
+                //Fill the caches
+                AccountCache = cnn.GetAll<Account>().ToDictionary(x => x.Id);
+                PayeeCache = cnn.GetAll<Payee>().ToDictionary(x => x.Id);
+                CategoryCache = cnn.GetAll<Category>().ToDictionary(x => x.Id);
+
                 string sql =
                     $@"
 SELECT Id, AccountId, PayeeId, CategoryId, Date, Memo, Sum, Cleared, Type FROM [{nameof(Transaction)}s]
 UNION ALL
 SELECT Id, AccountId, PayeeId, CategoryId, Date, Memo, Sum, Cleared, Type FROM [{nameof(Income)}s]
 UNION ALL
-SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type FROM [{nameof(Transfer)}s];";
+SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type FROM [{nameof(Transfer)}s]
+ORDER BY Date;";
 
                 Type[] types =
                 {
                     typeof (long), typeof (long), typeof (long), typeof (long),
                     typeof (DateTime), typeof (string), typeof (double), typeof (bool), typeof(string)
                 };
-                IEnumerable<TransItemBase> blah = cnn.Query<TransItemBase>(sql, types, objArr =>
+                results = cnn.Query(sql, types, objArr =>
                 {
                     string type = (string)objArr[8];
                     DateTime date = DateTime.MinValue;
@@ -113,28 +118,6 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                     }
                     return ret;
                 }, splitOn: "*");
-                // todo: the construct above is still in idle mode. So get to work it productively
-
-                
-                IEnumerable<Transaction> transtactions = cnn.GetAll<Transaction>();
-                IEnumerable<Transaction> nullSumsTransactions = transtactions?.Where(t => t.Sum == null);
-                if (nullSumsTransactions != null)
-                    foreach (Transaction t in nullSumsTransactions)
-                    {
-                        t.SubElements = GetSubTransactions(t.Id);
-                    }
-                IEnumerable<Income> incomes = cnn.GetAll<Income>();
-                IEnumerable<Income> nullSumIncomes = incomes?.Where(i => i.Sum == null);
-                if (nullSumIncomes != null)
-                    foreach (Income i in nullSumIncomes)
-                    {
-                        i.SubElements = GetSubIncomes(i.Id);
-                    }
-                IEnumerable<Transfer> transfers = cnn.GetAll<Transfer>();
-
-                list.AddRange(transtactions);
-                list.AddRange(incomes);
-                list.AddRange(transfers);
 
                 stopwatch.Stop();
                 TimeSpan ts = stopwatch.Elapsed;
@@ -145,7 +128,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
             }
             _cachingMode = false;
             ClearCache();
-            return list;
+            return results;
         }
 
 
@@ -158,7 +141,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
             PayeeCache.Clear();
         }
         
-        private static readonly Dictionary<long, Account> AccountCache = new Dictionary<long, Account>();
+        private static Dictionary<long, Account> AccountCache = new Dictionary<long, Account>();
         public static Account GetAccount(long id)
         {
             if (_cachingMode && AccountCache.ContainsKey(id)) return AccountCache[id];
@@ -198,7 +181,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
             return ret;
         }
 
-        private static readonly Dictionary<long, Category> CategoryCache = new Dictionary<long, Category>();
+        private static Dictionary<long, Category> CategoryCache = new Dictionary<long, Category>();
         public static Category GetCategory(long? id)
         {
             if (id == null) return null;
@@ -216,7 +199,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
             return ret;
         }
 
-        private static readonly Dictionary<long, Payee> PayeeCache = new Dictionary<long, Payee>();
+        private static Dictionary<long, Payee> PayeeCache = new Dictionary<long, Payee>();
         public static Payee GetPayee(long id)
         {
             if (_cachingMode && PayeeCache.ContainsKey(id)) return PayeeCache[id];
