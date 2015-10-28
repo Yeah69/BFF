@@ -27,7 +27,7 @@
             <converters:DepPropToUnsetConverter x:Key="DepPropToUnset"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    <DataGrid x:Name="DataGrid" ItemsSource="{Binding ViewSource.View}" AutoGenerateColumns="False" Margin="10">
+    <DataGrid ItemsSource="{Binding ViewSource.View}" AutoGenerateColumns="False" Margin="10">
         <DataGrid.Style>
             <Style BasedOn="{StaticResource MetroDataGrid}"
                        TargetType="{x:Type DataGrid}">

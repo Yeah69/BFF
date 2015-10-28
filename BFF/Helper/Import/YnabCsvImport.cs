@@ -4,7 +4,9 @@ using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using BFF.DB.SQLite;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
@@ -34,10 +36,11 @@ namespace BFF.Helper.Import
             List<Native.Income> incomes = new List<Native.Income>();
             ConvertTransactionsToNative(ynabTransactions, transactions, transfers, subTransactions, incomes);
             //Todo: List<Native.Budget> nativeBudgets = budgets.Select(budget => (Native.Budget)budget).ToList();
-            
+
             //Third step: Create new database for imported data
-            CurrentDbName = dbName;
-            SQLiteConnection.CreateFile(CurrentDbFileName());
+            string assemblyPath = Assembly.GetExecutingAssembly().Location;
+            assemblyPath = assemblyPath.Substring(0, assemblyPath.LastIndexOf('\\') + 1);
+            CreateNewDatabase($"{assemblyPath}testDatabase.sqlite"); //todo: refactor later (Name/Location choosable)
             PopulateDatabase(transactions, subTransactions, transfers, incomes);
         }
 
@@ -183,50 +186,6 @@ namespace BFF.Helper.Import
             {
                 transfers.Add(ynabTransfer);
             }
-        }
-
-        // todo: Refactor this into the SQLiteHelper
-        private static void PopulateDatabase(List<Native.Transaction> transactions, List<Native.SubTransaction> subTransactions, List<Native.Transfer> transfers, List<Native.Income> incomes)
-        {
-            Output.WriteLine("Beginning to populate database.");
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-            using (var cnn = new SQLiteConnection(CurrentDbConnectionString()))
-            {
-                cnn.Open();
-
-                List<Native.Payee> payees = Native.Payee.GetAllCache();
-                List<Native.Category> categories = Native.Category.GetAllCache();
-                List<Native.Account> accounts = Native.Account.GetAllCache();
-
-                cnn.Execute(CreatePayeeTableStatement);
-                cnn.Execute(CreateCategoryTableStatement);
-                cnn.Execute(CreateAccountTableStatement);
-                cnn.Execute(CreateTransferTableStatement);
-                cnn.Execute(CreateTransactionTableStatement);
-                cnn.Execute(CreateSubTransactionTableStatement);
-                cnn.Execute(CreateIncomeTableStatement);
-                cnn.Execute(CreateSubIncomeTableStatement);
-
-                /*  
-                Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
-                because the structure of the imported csv-Entry of Categories allowes to get the master category first and
-                then the sub category. Thus, the parents id is known beforehand.
-                */
-                categories.ForEach(category => category.Id = cnn.Insert(category));
-                payees.ForEach(payee => payee.Id = cnn.Insert(payee));
-                accounts.ForEach(account => account.Id = cnn.Insert(account));
-                transactions.ForEach(transaction => cnn.Insert(transaction));
-                cnn.Insert(subTransactions);
-                cnn.Insert(transfers);
-                cnn.Insert(incomes);
-
-                cnn.Close();
-            }
-            stopwatch.Stop();
-            TimeSpan ts = stopwatch.Elapsed;
-            string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds / 10:00}";
-            Output.WriteLine($"End of database population. Elapsed time was: {elapsedTime}");
         }
     }
 }

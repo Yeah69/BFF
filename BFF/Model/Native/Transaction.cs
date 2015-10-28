@@ -50,7 +50,9 @@ namespace BFF.Model.Native
         public override bool Cleared { get; set; }
 
         [Write(false)]
-        public IEnumerable<SubTransInc> SubElements { get; set; } = null;
+        public IEnumerable<SubTransInc> SubElements {
+            get { return GetSubTransactions(Id);}
+        }
 
         public override string Type { get; set; } = "SingleTrans";
 

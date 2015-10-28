@@ -1,4 +1,6 @@
-﻿using BFF.DB.SQLite;
+﻿using System.Reflection;
+using System.Windows;
+using BFF.DB.SQLite;
 using BFF.ViewModel;
 
 namespace BFF
@@ -10,7 +12,9 @@ namespace BFF
     {
         public App()
         {
-            SqLiteHelper.CurrentDbName = "testDatabase";
+            string assemblyPath = Assembly.GetExecutingAssembly().Location;
+            assemblyPath = assemblyPath.Substring(0, assemblyPath.LastIndexOf('\\') + 1);
+            SqLiteHelper.OpenDatabase($"{assemblyPath}testDatabase.sqlite");
             MainWindow mainWindow = new MainWindow();
             MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
             mainWindow.Show();

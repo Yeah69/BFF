@@ -24,7 +24,7 @@ namespace BFF.ViewModel
 
             foreach (Account account in accounts)
             {
-                TabItems.Add(new TabItem {Header = account.Name, ViewModel = viewModel});
+                TabItems.Add(new TabItem {Header = account.Name, ViewModel = new TransUcViewModel(account)});
                 // todo: Account specific viewModels
             }
         }
