@@ -141,10 +141,22 @@
   <data name="Date" xml:space="preserve">
     <value />
   </data>
+  <data name="File" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value />
+  </data>
   <data name="Language" xml:space="preserve">
     <value />
   </data>
   <data name="Memo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="New" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Open" xml:space="preserve">
     <value />
   </data>
   <data name="Payee" xml:space="preserve">

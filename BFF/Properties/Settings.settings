@@ -11,5 +11,8 @@
     <Setting Name="Localization_Language" Type="System.String" Scope="User">
       <Value Profile="(Default)">en</Value>
     </Setting>
+    <Setting Name="DBLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\\</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

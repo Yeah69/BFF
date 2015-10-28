@@ -58,5 +58,17 @@ namespace BFF.Properties {
                 this["Localization_Language"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\")]
+        public string DBLocation {
+            get {
+                return ((string)(this["DBLocation"]));
+            }
+            set {
+                this["DBLocation"] = value;
+            }
+        }
     }
 }

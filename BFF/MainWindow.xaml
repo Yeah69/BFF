@@ -8,7 +8,7 @@
         lex:LocalizeDictionary.DesignCulture="en"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
-        Title="BFF" Height="700" Width="1300" MinHeight="700" MinWidth="1300" ShowIconOnTitleBar="True" Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" RightWindowCommandsOverlayBehavior="Never">
+        Title="BFF" Height="700" Width="1300" MinHeight="700" MinWidth="1300" ShowIconOnTitleBar="True" Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" RightWindowCommandsOverlayBehavior="Never" LeftWindowCommandsOverlayBehavior="Never">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -32,19 +32,28 @@
                     </StackPanel>
                 </Grid>
             </controls:Flyout>
+            <controls:Flyout Name="FileFlyout" Header="{lex:Loc File}" Position="Left">
+                <Grid>
+                    <StackPanel Orientation="Vertical">
+                        <Button Content="{lex:Loc New}" Margin="10,5,10,5" />
+                        <Button Content="{lex:Loc Open}" Margin="10,5,10,5" />
+                        <Button Content="{lex:Loc Import}" Margin="10,5,10,5" />
+                    </StackPanel>
+                </Grid>
+            </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
+    <controls:MetroWindow.LeftWindowCommands>
+        <controls:WindowCommands>
+            <Button Name="FileButt" Content="{lex:Loc File}" Click="FileButt_Click" />
+        </controls:WindowCommands>
+    </controls:MetroWindow.LeftWindowCommands>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button Name="SettingsButt" Content="{lex:Loc Settings}" Click="SettingsButt_Click"/>
             <Button Content="{lex:Loc About}"/>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
-    <controls:MetroWindow.ContextMenu>
-        <ContextMenu>
-            <MenuItem Header="Send" />
-        </ContextMenu>
-    </controls:MetroWindow.ContextMenu>
     <Grid>
         <TabControl ItemsSource="{Binding TabItems}" Name="AccountsTabControl">
             <TabControl.ItemTemplate>

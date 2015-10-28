@@ -66,5 +66,10 @@ namespace BFF
             Properties.Settings.Default.Localization_Language = language;
             Properties.Settings.Default.Save();
         }
+
+        private void FileButt_Click(object sender, RoutedEventArgs e)
+        {
+            FileFlyout.IsOpen = true;
+        }
     }
 }
