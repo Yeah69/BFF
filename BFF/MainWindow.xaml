@@ -36,7 +36,7 @@
                 <Grid>
                     <StackPanel Orientation="Vertical">
                         <Button Content="{lex:Loc New}" Margin="10,5,10,5" />
-                        <Button Content="{lex:Loc Open}" Margin="10,5,10,5" />
+                        <Button Content="{lex:Loc Open}" Margin="10,5,10,5" Command="{Binding OpenBudgetPlanCommand}" Click="Close_FileFlyout" />
                         <Button Content="{lex:Loc Import}" Margin="10,5,10,5" />
                     </StackPanel>
                 </Grid>

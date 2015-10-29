@@ -71,5 +71,10 @@ namespace BFF
         {
             FileFlyout.IsOpen = true;
         }
+
+        private void Close_FileFlyout(object sender, RoutedEventArgs e)
+        {
+            FileFlyout.IsOpen = false;
+        }
     }
 }

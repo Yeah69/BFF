@@ -130,6 +130,7 @@
     <Compile Include="WPFStuff\Converters\TypeToCanvasConverter.cs" />
     <Compile Include="WPFStuff\Converters\TypeToBrushConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
+    <Compile Include="WPFStuff\RelayCommand.cs" />
     <Compile Include="WPFStuff\UserControls\TransactionDataGrid.xaml.cs">
       <DependentUpon>TransactionDataGrid.xaml</DependentUpon>
     </Compile>
