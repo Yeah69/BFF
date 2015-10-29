@@ -21,6 +21,7 @@ namespace BFF.ViewModel
             set { _tabItems = value; }
         }
 
+        public ICommand NewBudgetPlanCommand => new RelayCommand(param => NewBudgetPlan(), param => true);
         public ICommand OpenBudgetPlanCommand => new RelayCommand(param => OpenBudgetPlan(), param => true);
 
         public MainWindowViewModel()
@@ -32,6 +33,20 @@ namespace BFF.ViewModel
             {
                 SqLiteHelper.OpenDatabase(Settings.Default.DBLocation);
                 SetTabPages();
+            }
+        }
+
+        private void NewBudgetPlan()
+        {
+            SaveFileDialog openFileDialog = new SaveFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                this.Reset();
+                SqLiteHelper.CreateNewDatabase(openFileDialog.FileName);
+                SetTabPages();
+
+                Settings.Default.DBLocation = openFileDialog.FileName;
+                Settings.Default.Save();
             }
         }
 
