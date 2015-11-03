@@ -1,11 +1,11 @@
 ﻿namespace BFF.WPFStuff.UserControls
 {
     /// <summary>
-    /// Interaction logic for TransactionDataGrid.xaml
+    /// Interaction logic for TitDataGrid.xaml
     /// </summary>
-    public partial class TransactionDataGrid
+    public partial class TitDataGrid
     {
-        public TransactionDataGrid()
+        public TitDataGrid()
         {
             InitializeComponent();
         }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Reflection.Emit;
 using System.Windows.Input;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
@@ -14,13 +13,24 @@ namespace BFF.ViewModel
 {
     public class MainWindowViewModel : ObservableObject
     {
-        private ObservableCollection<TabItem> _tabItems;
+        private ObservableCollection<Account> _allAccounts;
         private bool _fileFlyoutIsOpen;
+        private TitViewModel _allAccountsViewModel;
 
-        public ObservableCollection<TabItem> TabItems
+        public ObservableCollection<Account> AllAccounts
         {
-            get { return _tabItems; }
-            set { _tabItems = value; }
+            get { return _allAccounts; }
+            set { _allAccounts = value; }
+        }
+
+        public TitViewModel AllAccountsViewModel
+        {
+            get { return _allAccountsViewModel; }
+            set
+            {
+                _allAccountsViewModel = value;
+                OnPropertyChanged();
+            }
         }
 
         public ICommand NewBudgetPlanCommand => new RelayCommand(param => NewBudgetPlan(), param => true);
@@ -29,9 +39,7 @@ namespace BFF.ViewModel
 
         public MainWindowViewModel()
         {
-            //NewBudgetPlanCommand = new RelayCommand(param => OpenBudgetPlan(), param => true);
-            //OnPropertyChanged(nameof(NewBudgetPlanCommand));
-            TabItems = new ObservableCollection<TabItem>();
+            AllAccounts = new ObservableCollection<Account>();
             if (File.Exists(Settings.Default.DBLocation))
             {
                 SqLiteHelper.OpenDatabase(Settings.Default.DBLocation);
@@ -80,19 +88,19 @@ namespace BFF.ViewModel
 
         private void Reset()
         {
-            TabItems.Clear();
+            AllAccountsViewModel = null;
+            AllAccounts.Clear();
         }
 
         private void SetTabPages()
         {
             IEnumerable<Account> accounts = SqLiteHelper.GetAllAccounts();
 
-            TransUcViewModel viewModel = new TransUcViewModel();
-            TabItems.Add(new TabItem { Header = null, ViewModel = viewModel });
+            AllAccountsViewModel = new TitViewModel();
 
             foreach (Account account in accounts)
             {
-                TabItems.Add(new TabItem { Header = account.Name, ViewModel = new TransUcViewModel(account) });
+                AllAccounts.Add(account);
             }
         }
     }
@@ -100,6 +108,6 @@ namespace BFF.ViewModel
     public class TabItem
     {
         public string Header { get; set; }
-        public TransUcViewModel ViewModel { get; set; }
+        public TitViewModel ViewModel { get; set; }
     }
 }

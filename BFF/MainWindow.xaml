@@ -73,27 +73,13 @@
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <Grid>
-        <TabControl ItemsSource="{Binding TabItems}" Name="AccountsTabControl">
-            <TabControl.ItemTemplate>
-                <!-- this is the header template-->
-                <DataTemplate>
-                    <TextBlock >
-                        <TextBlock.Text>
-                            <MultiBinding Converter="{StaticResource NullToLex}">
-                                <Binding Path="Header" />
-                                <Binding RelativeSource="{RelativeSource Self}" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-                </DataTemplate>
-            </TabControl.ItemTemplate>
-            <TabControl.ContentTemplate>
-                <!-- this is the body of the TabItem template-->
-                <DataTemplate>
-                    <usercontrols:TransactionDataGrid DataContext="{Binding ViewModel}" />
-                </DataTemplate>
-            </TabControl.ContentTemplate>
-        </TabControl>
-        <!--<usercontrols:TransactionDataGrid DataContext="{Binding AllAccsViewModel}" />-->
+        <!-- todo: try Padding for spacing between the Headers, should be in MahApps.Metro 1.2.0 -->
+        <!-- The Account-specific Tabs are added in the code behind throug the DependencyProperty AllAcountsProperty.
+             Sorry, I did not find another way for it. -->
+        <controls:MetroTabControl Name="AccountsTabControl" Margin="10">
+            <controls:MetroTabItem Header="{lex:Loc All_Accounts}">
+                <usercontrols:TitDataGrid DataContext="{Binding AllAccountsViewModel}" />
+            </controls:MetroTabItem>
+        </controls:MetroTabControl>
     </Grid>
 </controls:MetroWindow>

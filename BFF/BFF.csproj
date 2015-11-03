@@ -122,7 +122,7 @@
     <Compile Include="Model\Native\Transfer.cs" />
     <Compile Include="Model\Native\Transaction.cs" />
     <Compile Include="ViewModel\ImportDialogViewModel.cs" />
-    <Compile Include="ViewModel\TransUcViewModel.cs" />
+    <Compile Include="ViewModel\TitViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="WPFStuff\Converters\NullToLexConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumMultiConverter.cs" />
@@ -136,8 +136,8 @@
     <Compile Include="WPFStuff\UserControls\ImportDialog.xaml.cs">
       <DependentUpon>ImportDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPFStuff\UserControls\TransactionDataGrid.xaml.cs">
-      <DependentUpon>TransactionDataGrid.xaml</DependentUpon>
+    <Compile Include="WPFStuff\UserControls\TitDataGrid.xaml.cs">
+      <DependentUpon>TitDataGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPFStuff\ObservableObject.cs" />
     <Page Include="MainWindow.xaml">
@@ -168,7 +168,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPFStuff\UserControls\TransactionDataGrid.xaml">
+    <Page Include="WPFStuff\UserControls\TitDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

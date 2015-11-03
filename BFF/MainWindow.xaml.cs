@@ -1,20 +1,18 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using BFF.DB.SQLite;
 using BFF.Helper.Import;
+using BFF.Model.Native;
 using BFF.Properties;
 using BFF.ViewModel;
 using BFF.WPFStuff.UserControls;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-
 
 namespace BFF
 {
@@ -33,6 +31,55 @@ namespace BFF
                     var mw = (MainWindow) depObj;
                     mw.ImportCommand = (ICommand) args.NewValue;
                 }));
+        public static readonly DependencyProperty AllAccountsProperty =
+            DependencyProperty.Register(nameof(AllAccounts), typeof(ObservableCollection<Account>), typeof(MainWindow),
+                new PropertyMetadata((depObj, args) =>
+                {
+                    MetroTabControl accountsTabControl = ((MainWindow)depObj).AccountsTabControl;
+                    ObservableCollection<Account> oldAccounts = (ObservableCollection<Account>)args.OldValue;
+                    ObservableCollection<Account> newAccounts = (ObservableCollection<Account>)args.NewValue;
+                    if (newAccounts != null)
+                    {
+                        if (oldAccounts == null) // if oldAccounts not initialized
+                            foreach (Account account in newAccounts)
+                                accountsTabControl.Items.Insert(accountsTabControl.Items.Count, createMetroTabItem(account));
+                        else
+                        {
+                            foreach (Account account in newAccounts.Where(account => !oldAccounts.Contains(account)))
+                            {
+                                accountsTabControl.Items.Insert(accountsTabControl.Items.Count, createMetroTabItem(account));
+                            }
+                            foreach (Account account in oldAccounts.Where(account => !newAccounts.Contains(account)))
+                            {
+                                foreach (MetroTabItem metroTabItem in accountsTabControl.Items.Cast<MetroTabItem>().Where(metroTabItem => account == metroTabItem.DataContext))
+                                {
+                                    accountsTabControl.Items.Remove(metroTabItem);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (MetroTabItem metroTabItem in accountsTabControl.Items.Cast<MetroTabItem>().Where(metroTabItem => metroTabItem.DataContext is Account))
+                        {
+                            accountsTabControl.Items.Remove(metroTabItem);
+                            break;
+                        }
+                    }
+                    ((MainWindow) depObj).AllAccounts = newAccounts;
+                }));
+
+        private static MetroTabItem createMetroTabItem(Account account)
+        {
+            MetroTabItem tabItem = new MetroTabItem
+            {
+                DataContext = account,
+                Content = new TitDataGrid { DataContext = new TitViewModel(account) }
+            };
+            tabItem.SetBinding(HeaderedContentControl.HeaderProperty, nameof(Account.Name));
+            return tabItem;
+        }
 
         public ICommand ImportCommand
         {
@@ -40,11 +87,18 @@ namespace BFF
             set { SetValue(ImportCommandProperty, value); }
         }
 
+        public ObservableCollection<Account> AllAccounts
+        {
+            get { return (ObservableCollection<Account>)GetValue(AllAccountsProperty); }
+            set { SetValue(AllAccountsProperty, value); }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
 
             this.SetBinding(MainWindow.ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
+            this.SetBinding(MainWindow.AllAccountsProperty, nameof(MainWindowViewModel.AllAccounts));
 
             Accent initialAccent = ThemeManager.GetAccent(Properties.Settings.Default.MahApps_Accent);
             AppTheme initialAppTheme = ThemeManager.GetAppTheme(Properties.Settings.Default.MahApps_AppTheme);
