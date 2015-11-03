@@ -144,9 +144,54 @@ namespace BFF.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Import {
+        public static string General_Browse {
             get {
-                return ResourceManager.GetString("Import", resourceCulture);
+                return ResourceManager.GetString("General_Browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string General_Cancel {
+            get {
+                return ResourceManager.GetString("General_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string General_Import {
+            get {
+                return ResourceManager.GetString("General_Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ImpDiag_SaveToFile {
+            get {
+                return ResourceManager.GetString("ImpDiag_SaveToFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ImpDiag_YnabBudgLabel {
+            get {
+                return ResourceManager.GetString("ImpDiag_YnabBudgLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ImpDiag_YnabTransLabel {
+            get {
+                return ResourceManager.GetString("ImpDiag_YnabTransLabel", resourceCulture);
             }
         }
         

@@ -24,9 +24,27 @@
                 <Grid>
                     <StackPanel Orientation="Vertical">
                         <Label Content="{lex:Loc Theme}"/>
-                        <ComboBox Name="ThemeCombo" SelectionChanged="ThemeCombo_SelectionChanged" DisplayMemberPath="Name" />
+                        <ComboBox Name="ThemeCombo" SelectionChanged="ThemeCombo_SelectionChanged">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Fill="{Binding WhiteBrush}" Width="15" Height="15" />
+                                        <Label Content="{Binding Path=Theme.Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <Label Content="{lex:Loc Accents}"/>
-                        <ComboBox Name="AccentCombo" SelectionChanged="AccentCombo_SelectionChanged" DisplayMemberPath="Name" />
+                        <ComboBox Name="AccentCombo" SelectionChanged="AccentCombo_SelectionChanged">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Fill="{Binding AccentColorBrush}" Width="15" Height="15" />
+                                        <Label Content="{Binding Path=Accent.Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <Label Content="{lex:Loc Language}"/>
                         <ComboBox Name="LanguageCombo" SelectionChanged="LanguageCombo_SelectionChanged"/>
                     </StackPanel>
@@ -35,9 +53,9 @@
             <controls:Flyout Name="FileFlyout" Header="{lex:Loc File}" Position="Left">
                 <Grid>
                     <StackPanel Orientation="Vertical">
-                        <Button Content="{lex:Loc New}" Margin="10,5,10,5" Command="{Binding NewBudgetPlanCommand}" Click="Close_FileFlyout" />
-                        <Button Content="{lex:Loc Open}" Margin="10,5,10,5" Command="{Binding OpenBudgetPlanCommand}" Click="Close_FileFlyout" />
-                        <Button Content="{lex:Loc Import}" Margin="10,5,10,5" Click="Close_FileFlyout" />
+                        <Button Content="{lex:Loc New}" Margin="10,5,10,5" Command="{Binding NewBudgetPlanCommand}" Click="Close_FileFlyout" Style="{DynamicResource SquareButtonStyle}" />
+                        <Button Content="{lex:Loc Open}" Margin="10,5,10,5" Command="{Binding OpenBudgetPlanCommand}" Click="Close_FileFlyout" Style="{DynamicResource SquareButtonStyle}" />
+                        <Button Content="{lex:Loc General_Import}" Margin="10,5,10,5" Click="Open_ImportDialog" Style="{DynamicResource SquareButtonStyle}" />
                     </StackPanel>
                 </Grid>
             </controls:Flyout>

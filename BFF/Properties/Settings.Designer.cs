@@ -61,13 +61,49 @@ namespace BFF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
         public string DBLocation {
             get {
                 return ((string)(this["DBLocation"]));
             }
             set {
                 this["DBLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string Import_YnabCsvTransaction {
+            get {
+                return ((string)(this["Import_YnabCsvTransaction"]));
+            }
+            set {
+                this["Import_YnabCsvTransaction"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string Import_YnabCsvBudget {
+            get {
+                return ((string)(this["Import_YnabCsvBudget"]));
+            }
+            set {
+                this["Import_YnabCsvBudget"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string Import_SavePath {
+            get {
+                return ((string)(this["Import_SavePath"]));
+            }
+            set {
+                this["Import_SavePath"] = value;
             }
         }
     }

@@ -2,6 +2,7 @@
 using System.Windows;
 using BFF.DB.SQLite;
 using BFF.ViewModel;
+using MahApps.Metro;
 
 namespace BFF
 {
@@ -12,14 +13,17 @@ namespace BFF
     {
         public App()
         {
-            string assemblyPath = Assembly.GetExecutingAssembly().Location;
-            assemblyPath = assemblyPath.Substring(0, assemblyPath.LastIndexOf('\\') + 1);
-            SqLiteHelper.OpenDatabase($"{assemblyPath}testDatabase.sqlite");
-            MainWindow mainWindow = new MainWindow();
             MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
+            MainWindow mainWindow = new MainWindow {DataContext = mainWindowViewModel};
             mainWindow.Show();
-            mainWindow.DataContext = mainWindowViewModel;
 
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            Accent initialAccent = ThemeManager.GetAccent(BFF.Properties.Settings.Default.MahApps_Accent);
+            AppTheme initialAppTheme = ThemeManager.GetAppTheme(BFF.Properties.Settings.Default.MahApps_AppTheme);
+            ThemeManager.ChangeAppStyle(Current, initialAccent, initialAppTheme);
         }
     }
 }

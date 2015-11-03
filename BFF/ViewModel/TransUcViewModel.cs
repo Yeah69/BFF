@@ -8,7 +8,7 @@ using BFF.WPFStuff;
 
 namespace BFF.ViewModel
 {
-    class TransUcViewModel : ViewModelBase
+    public class TransUcViewModel : ObservableObject
     {
         public ObservableCollection<TransItemBase> AllTransactions { get; set; }
 

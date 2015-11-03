@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Reflection.Emit;
 using System.Windows.Input;
 using BFF.DB.SQLite;
+using BFF.Helper.Import;
 using BFF.Model.Native;
 using BFF.Properties;
 using BFF.WPFStuff;
@@ -10,7 +12,7 @@ using Microsoft.Win32;
 
 namespace BFF.ViewModel
 {
-    internal class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ObservableObject
     {
         private ObservableCollection<TabItem> _tabItems;
         private bool _fileFlyoutIsOpen;
@@ -23,6 +25,7 @@ namespace BFF.ViewModel
 
         public ICommand NewBudgetPlanCommand => new RelayCommand(param => NewBudgetPlan(), param => true);
         public ICommand OpenBudgetPlanCommand => new RelayCommand(param => OpenBudgetPlan(), param => true);
+        public ICommand ImportBudgetPlanCommand => new RelayCommand(ImportBudgetPlan, param => true);
 
         public MainWindowViewModel()
         {
@@ -38,14 +41,14 @@ namespace BFF.ViewModel
 
         private void NewBudgetPlan()
         {
-            SaveFileDialog openFileDialog = new SaveFileDialog();
-            if (openFileDialog.ShowDialog() == true)
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == true)
             {
                 this.Reset();
-                SqLiteHelper.CreateNewDatabase(openFileDialog.FileName);
+                SqLiteHelper.CreateNewDatabase(saveFileDialog.FileName);
                 SetTabPages();
 
-                Settings.Default.DBLocation = openFileDialog.FileName;
+                Settings.Default.DBLocation = saveFileDialog.FileName;
                 Settings.Default.Save();
             }
         }
@@ -62,6 +65,17 @@ namespace BFF.ViewModel
                 Settings.Default.DBLocation = openFileDialog.FileName;
                 Settings.Default.Save();
             }
+        }
+
+        private void ImportBudgetPlan(object importableObject)
+        {
+            this.Reset();
+            string savePath = ((IImportable) importableObject).Import();
+            SqLiteHelper.OpenDatabase(savePath);
+            SetTabPages();
+
+            Settings.Default.DBLocation = savePath;
+            Settings.Default.Save();
         }
 
         private void Reset()
@@ -83,7 +97,7 @@ namespace BFF.ViewModel
         }
     }
 
-    class TabItem
+    public class TabItem
     {
         public string Header { get; set; }
         public TransUcViewModel ViewModel { get; set; }

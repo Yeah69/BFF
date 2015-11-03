@@ -144,8 +144,23 @@
   <data name="File" xml:space="preserve">
     <value>File</value>
   </data>
-  <data name="Import" xml:space="preserve">
+  <data name="General_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="General_Import" xml:space="preserve">
     <value>Import</value>
+  </data>
+  <data name="ImpDiag_SaveToFile" xml:space="preserve">
+    <value>Import and save to this path:</value>
+  </data>
+  <data name="ImpDiag_YnabBudgLabel" xml:space="preserve">
+    <value>Path to the YNAB Budget CSV:</value>
+  </data>
+  <data name="ImpDiag_YnabTransLabel" xml:space="preserve">
+    <value>Path to the YNAB Transaction CSV:</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language:</value>

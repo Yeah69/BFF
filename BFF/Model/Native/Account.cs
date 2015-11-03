@@ -5,7 +5,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
-    class Account : DataModelBase
+    public class Account : DataModelBase
     {
         [Key]
         public long Id { get; set; } = -1;

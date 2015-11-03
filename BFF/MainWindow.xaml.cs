@@ -1,35 +1,72 @@
-﻿using System.Linq;
+﻿using System;
+using System.Drawing;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
+using BFF.DB.SQLite;
 using BFF.Helper.Import;
+using BFF.Properties;
+using BFF.ViewModel;
+using BFF.WPFStuff.UserControls;
 using MahApps.Metro;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 
 namespace BFF
 {
+
+
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
+        public static readonly DependencyProperty ImportCommandProperty =
+            DependencyProperty.Register(nameof(ImportCommand), typeof (ICommand), typeof (MainWindow),
+                new PropertyMetadata((depObj, args) => 
+                {
+                    var mw = (MainWindow) depObj;
+                    mw.ImportCommand = (ICommand) args.NewValue;
+                }));
+
+        public ICommand ImportCommand
+        {
+            get { return (ICommand) GetValue(ImportCommandProperty); }
+            set { SetValue(ImportCommandProperty, value); }
+        }
 
         public MainWindow()
         {
             InitializeComponent();
-            foreach (AppTheme theme in ThemeManager.AppThemes.OrderBy(x => x.Name))
-                ThemeCombo.Items.Add(theme);
-            foreach (Accent accent in ThemeManager.Accents.OrderBy(x => x.Name))
-                AccentCombo.Items.Add(accent);
-            LanguageCombo.Items.Add("de");
-            LanguageCombo.Items.Add("en");
+
+            this.SetBinding(MainWindow.ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
+
             Accent initialAccent = ThemeManager.GetAccent(Properties.Settings.Default.MahApps_Accent);
             AppTheme initialAppTheme = ThemeManager.GetAppTheme(Properties.Settings.Default.MahApps_AppTheme);
             string initialLocalization = Properties.Settings.Default.Localization_Language;
-            ThemeCombo.SelectedItem = initialAppTheme;
-            AccentCombo.SelectedItem = initialAccent;
-            LanguageCombo.SelectedItem = initialLocalization;
 
-            ThemeManager.ChangeAppStyle(this, initialAccent, initialAppTheme);
+            foreach (AppTheme theme in ThemeManager.AppThemes.OrderBy(x => x.Name))
+            {
+                ThemeWrap current = new ThemeWrap { Theme = theme, WhiteBrush = (SolidColorBrush) theme.Resources["WhiteBrush"] };
+                ThemeCombo.Items.Add(current);
+                if (theme == initialAppTheme)
+                    ThemeCombo.SelectedItem = current;
+            }
+            foreach (Accent accent in ThemeManager.Accents.OrderBy(x => x.Name))
+            {
+                AccentWrap current = new AccentWrap { Accent = accent, AccentColorBrush = (SolidColorBrush) accent.Resources["AccentColorBrush"] };
+                AccentCombo.Items.Add(current);
+                if (accent == initialAccent)
+                    AccentCombo.SelectedItem = current;
+            }
+            LanguageCombo.Items.Add("de");
+            LanguageCombo.Items.Add("en");
+            LanguageCombo.SelectedItem = initialLocalization;
 
             WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo(initialLocalization);
 
@@ -46,16 +83,16 @@ namespace BFF
         private void ThemeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Accent accent = ThemeManager.GetAccent(Properties.Settings.Default.MahApps_Accent);
-            ThemeManager.ChangeAppStyle(this, accent, ((AppTheme)ThemeCombo.SelectedItem));
-            Properties.Settings.Default.MahApps_AppTheme = ((AppTheme)ThemeCombo.SelectedItem).Name;
+            ThemeManager.ChangeAppStyle(Application.Current, accent, ((ThemeWrap)ThemeCombo.SelectedItem).Theme);
+            Properties.Settings.Default.MahApps_AppTheme = ((ThemeWrap)ThemeCombo.SelectedItem).Theme.Name;
             Properties.Settings.Default.Save();
         }
 
         private void AccentCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             AppTheme theme = ThemeManager.GetAppTheme(Properties.Settings.Default.MahApps_AppTheme);
-            ThemeManager.ChangeAppStyle(this, ((Accent)AccentCombo.SelectedItem), theme);
-            Properties.Settings.Default.MahApps_Accent = ((Accent) AccentCombo.SelectedItem).Name;
+            ThemeManager.ChangeAppStyle(Application.Current, ((AccentWrap)AccentCombo.SelectedItem).Accent, theme);
+            Properties.Settings.Default.MahApps_Accent = ((AccentWrap)AccentCombo.SelectedItem).Accent.Name;
             Properties.Settings.Default.Save();
         }
 
@@ -76,5 +113,54 @@ namespace BFF
         {
             FileFlyout.IsOpen = false;
         }
+
+        private void Open_ImportDialog(object sender, RoutedEventArgs e)
+        {
+            FileFlyout.IsOpen = false;
+
+            this.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
+            //this.ShowInputAsync("Input", "Blaha");
+            ImportDialogViewModel importDialogVM = new ImportDialogViewModel
+            {
+                Importable = new YnabCsvImport
+                {
+                    TransactionPath = Settings.Default.Import_YnabCsvTransaction,
+                    BudgetPath = Settings.Default.Import_YnabCsvBudget,
+                    SavePath = Settings.Default.Import_SavePath
+                }
+            };
+            ImportDialog importDialog = new ImportDialog{ DataContext = importDialogVM };
+            importDialog.ButtCancel.Click += (o, args) => this.HideMetroDialogAsync(importDialog);
+            importDialog.ButtImport.Click += (o, args) =>
+            {
+                Settings.Default.Import_YnabCsvTransaction = ((YnabCsvImport)importDialogVM.Importable).TransactionPath;
+                Settings.Default.Import_YnabCsvBudget = ((YnabCsvImport)importDialogVM.Importable).BudgetPath;
+                Settings.Default.Import_SavePath = importDialogVM.Importable.SavePath;
+                Settings.Default.Save();
+                this.HideMetroDialogAsync(importDialog);
+                //string savePath = importDialogVM.Importable.Import();
+                //SqLiteHelper.OpenDatabase(savePath);
+                if(ImportCommand.CanExecute(importDialogVM.Importable))
+                    this.Dispatcher.Invoke(() => ImportCommand.Execute(importDialogVM.Importable), DispatcherPriority.Background);
+            };
+            this.ShowMetroDialogAsync(importDialog);
+        }
+    }
+
+    internal class ThemeWrap
+    {
+        public AppTheme Theme { get; set; }
+        public SolidColorBrush WhiteBrush { get; set; }
+
+        public override string ToString()
+        {
+            return Theme.Name;
+        }
+    }
+
+    internal class AccentWrap
+    {
+        public Accent Accent { get; set; }
+        public SolidColorBrush AccentColorBrush { get; set; }
     }
 }
