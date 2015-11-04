@@ -162,6 +162,15 @@ namespace BFF.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string General_Create {
+            get {
+                return ResourceManager.GetString("General_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string General_Import {
             get {
                 return ResourceManager.GetString("General_Import", resourceCulture);
@@ -219,6 +228,33 @@ namespace BFF.Properties {
         public static string New {
             get {
                 return ResourceManager.GetString("New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string NewAccount_Name {
+            get {
+                return ResourceManager.GetString("NewAccount_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string NewAccount_StartingBalance {
+            get {
+                return ResourceManager.GetString("NewAccount_StartingBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string NewAccount_Title {
+            get {
+                return ResourceManager.GetString("NewAccount_Title", resourceCulture);
             }
         }
         

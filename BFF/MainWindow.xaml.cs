@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,8 @@ using BFF.WPFStuff.UserControls;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.SimpleChildWindow;
+using TabItem = System.Windows.Controls.TabItem;
 
 namespace BFF
 {
@@ -36,39 +39,43 @@ namespace BFF
                 new PropertyMetadata((depObj, args) =>
                 {
                     MetroTabControl accountsTabControl = ((MainWindow)depObj).AccountsTabControl;
-                    ObservableCollection<Account> oldAccounts = (ObservableCollection<Account>)args.OldValue;
                     ObservableCollection<Account> newAccounts = (ObservableCollection<Account>)args.NewValue;
+
+                    while (accountsTabControl.Items.Count > 2)
+                    {
+                        accountsTabControl.Items.RemoveAt(1);
+                    }
+
                     if (newAccounts != null)
                     {
-                        if (oldAccounts == null) // if oldAccounts not initialized
-                            foreach (Account account in newAccounts)
-                                accountsTabControl.Items.Insert(accountsTabControl.Items.Count, createMetroTabItem(account));
-                        else
-                        {
-                            foreach (Account account in newAccounts.Where(account => !oldAccounts.Contains(account)))
-                            {
-                                accountsTabControl.Items.Insert(accountsTabControl.Items.Count, createMetroTabItem(account));
-                            }
-                            foreach (Account account in oldAccounts.Where(account => !newAccounts.Contains(account)))
-                            {
-                                foreach (MetroTabItem metroTabItem in accountsTabControl.Items.Cast<MetroTabItem>().Where(metroTabItem => account == metroTabItem.DataContext))
-                                {
-                                    accountsTabControl.Items.Remove(metroTabItem);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (MetroTabItem metroTabItem in accountsTabControl.Items.Cast<MetroTabItem>().Where(metroTabItem => metroTabItem.DataContext is Account))
-                        {
-                            accountsTabControl.Items.Remove(metroTabItem);
-                            break;
-                        }
+                        foreach (Account account in newAccounts)
+                            accountsTabControl.Items.Insert(accountsTabControl.Items.Count - 1, createMetroTabItem(account));
+                        newAccounts.CollectionChanged += (obj, collectionArgs) => changeTabs(accountsTabControl, collectionArgs);
                     }
                     ((MainWindow) depObj).AllAccounts = newAccounts;
                 }));
+
+        private static void changeTabs(MetroTabControl accountsTabControl, NotifyCollectionChangedEventArgs args)
+        {
+            switch (args.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    foreach (Account account in args.NewItems)
+                        accountsTabControl.Items.Insert(accountsTabControl.Items.Count - 1, createMetroTabItem(account));
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    //todo: Check if this works
+                    foreach (Account account in args.OldItems)
+                    {
+                        foreach (TabItem tabItem in accountsTabControl.Items)
+                        {
+                            if(tabItem.DataContext == account)
+                                accountsTabControl.Items.Remove(tabItem);
+                        }
+                    }
+                    break;
+            }
+        }
 
         private static MetroTabItem createMetroTabItem(Account account)
         {

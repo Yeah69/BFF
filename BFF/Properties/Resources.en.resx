@@ -150,6 +150,9 @@
   <data name="General_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="General_Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
   <data name="General_Import" xml:space="preserve">
     <value>Import</value>
   </data>
@@ -170,6 +173,15 @@
   </data>
   <data name="New" xml:space="preserve">
     <value>New</value>
+  </data>
+  <data name="NewAccount_Name" xml:space="preserve">
+    <value>Account Name:</value>
+  </data>
+  <data name="NewAccount_StartingBalance" xml:space="preserve">
+    <value>Starting Balance:</value>
+  </data>
+  <data name="NewAccount_Title" xml:space="preserve">
+    <value>Create a new Account</value>
   </data>
   <data name="Open" xml:space="preserve">
     <value>Open</value>

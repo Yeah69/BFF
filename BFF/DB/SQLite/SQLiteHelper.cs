@@ -166,6 +166,18 @@ namespace BFF.DB.SQLite
             return results;
         }
 
+        public static void AddAccount(Account newAccount)
+        {
+            using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
+            {
+                cnn.Open();
+
+                newAccount.Id = cnn.Insert<Account>(newAccount);
+
+                cnn.Close();
+            }
+        }
+
 
         private static bool _cachingMode;
 
