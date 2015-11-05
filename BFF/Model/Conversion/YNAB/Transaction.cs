@@ -26,9 +26,9 @@ namespace BFF.Model.Conversion.YNAB
 
         public string Memo { get; set; }
 
-        public double Outflow { get; set; }
+        public long Outflow { get; set; }
 
-        public double Inflow { get; set; }
+        public long Inflow { get; set; }
 
         public bool Cleared { get; set; }
 
@@ -97,10 +97,10 @@ namespace BFF.Model.Conversion.YNAB
                 MasterCategory = entries[6].Trim('"'),
                 SubCategory = entries[7].Trim('"'),
                 Memo = entries[8].Trim('"'),
-                Outflow = YnabCsvImport.extractDouble(entries[9]), //double.Parse(entries[9].TrimEnd('€')), //todo: Localize look into Humanizer or Regex
-                Inflow = YnabCsvImport.extractDouble(entries[10]), //double.Parse(entries[10].TrimEnd('€')), //todo: Localize look into Humanizer or Regex
+                Outflow = YnabCsvImport.ExtractLong(entries[9]), //double.Parse(entries[9].TrimEnd('€')), //todo: Localize look into Humanizer or Regex
+                Inflow = YnabCsvImport.ExtractLong(entries[10]), //double.Parse(entries[10].TrimEnd('€')), //todo: Localize look into Humanizer or Regex
                 Cleared = entries[11] == "C",
-                RunningBalance = YnabCsvImport.extractDouble(entries[12]), //double.Parse(entries[12].TrimEnd('€'))
+                RunningBalance = YnabCsvImport.ExtractLong(entries[12]), //double.Parse(entries[12].TrimEnd('€'))
             };
             return ret;
         }

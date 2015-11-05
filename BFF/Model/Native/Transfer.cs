@@ -7,7 +7,7 @@ using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class Transfer : TransItemBase, ITransactionLike
+    class Transfer : TitBase, ITransactionLike
     {
         [Key]
         public override long Id { get; set; } = -1;
@@ -36,7 +36,7 @@ namespace BFF.Model.Native
 
         public override string Memo { get; set; }
         
-        public override double? Sum { get; set; }
+        public override long? Sum { get; set; }
         
         public override bool Cleared { get; set; }
 
@@ -44,7 +44,7 @@ namespace BFF.Model.Native
 
         public static implicit operator Transfer(YNAB.Transaction ynabTransaction)
         {
-            double tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;
+            long tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;
             Account tempFromAccount = (tempSum < 0) ? Account.GetOrCreate(ynabTransaction.Account) 
                 : Account.GetOrCreate(YnabCsvImport.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value);
             Account tempToAccount = (tempSum >= 0) ? Account.GetOrCreate(ynabTransaction.Account) 

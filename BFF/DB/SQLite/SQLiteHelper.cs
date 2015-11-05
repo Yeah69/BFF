@@ -22,7 +22,7 @@ namespace BFF.DB.SQLite
             get { return $"Data Source={CurrentDbFileName};Version=3;foreign keys=true;"; }
         }
 
-        private static Func<object[], TransItemBase> TheTitMap = objArr =>
+        private static Func<object[], TitBase> TheTitMap = objArr =>
         {
             string type = (string) objArr[8];
             DateTime date = DateTime.MinValue;
@@ -33,7 +33,7 @@ namespace BFF.DB.SQLite
                     out date))
                 throw new InvalidCastException();
             // todo: Maybe find out why in some cases the date is pre-casted to DateTime and in others it is still a string
-            TransItemBase ret;
+            TitBase ret;
             switch (type)
             {
                 case "SingleTrans":
@@ -46,7 +46,7 @@ namespace BFF.DB.SQLite
                         CategoryId = (long?) objArr[3],
                         Date = date,
                         Memo = (string) objArr[5],
-                        Sum = (double?) objArr[6],
+                        Sum = (long?) objArr[6],
                         Cleared = (long) objArr[7] == 1 ? true : false,
                         Type = type
                     };
@@ -61,7 +61,7 @@ namespace BFF.DB.SQLite
                         CategoryId = (long?) objArr[3],
                         Date = date,
                         Memo = (string) objArr[5],
-                        Sum = (double?) objArr[6],
+                        Sum = (long?) objArr[6],
                         Cleared = (long) objArr[7] == 1 ? true : false,
                         Type = type
                     };
@@ -74,7 +74,7 @@ namespace BFF.DB.SQLite
                         ToAccountId = (long) objArr[3],
                         Date = date,
                         Memo = (string) objArr[5],
-                        Sum = (double) objArr[6],
+                        Sum = (long) objArr[6],
                         Cleared = (long) objArr[7] == 1 ? true : false,
                         Type = type
                     };
@@ -88,9 +88,9 @@ namespace BFF.DB.SQLite
 
         private static readonly string TheTitName = "The Tit";
 
-        public static IEnumerable<TransItemBase> GetAllTransactions()
+        public static IEnumerable<TitBase> GetAllTransactions()
         {
-            IEnumerable<TransItemBase> results;
+            IEnumerable<TitBase> results;
 
             ClearCache();
             _cachingMode = true;
@@ -127,9 +127,9 @@ namespace BFF.DB.SQLite
             return results;
         }
 
-        public static IEnumerable<TransItemBase> GetAllTransactions(Account account)
+        public static IEnumerable<TitBase> GetAllTransactions(Account account)
         {
-            IEnumerable<TransItemBase> results;
+            IEnumerable<TitBase> results;
 
             ClearCache();
             _cachingMode = true;
@@ -150,7 +150,7 @@ namespace BFF.DB.SQLite
                 Type[] types =
                 {
                     typeof (long), typeof (long), typeof (long), typeof (long),
-                    typeof (DateTime), typeof (string), typeof (double), typeof (bool), typeof(string)
+                    typeof (DateTime), typeof (string), typeof (long), typeof (bool), typeof(string)
                 };
                 results = cnn.Query(sql, types, TheTitMap, new {accountId = account.Id}, splitOn: "*");
 
@@ -357,6 +357,47 @@ namespace BFF.DB.SQLite
             Output.WriteLine($"End of database population. Elapsed time was: {elapsedTime}");
         }
 
+        public static long GetAccountBalance(Account account = null)
+        {
+            long ret;
+
+            using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
+            {
+                cnn.Open();
+                
+                if(account == null)
+                    ret = cnn.Query<long>(AllAccountsBalanceStatement).First();
+                else
+                    ret = cnn.Query<long>(AccountSpecificBalanceStatement, new {accountId = account?.Id}).First();
+
+                cnn.Close();
+            }
+
+            return ret;
+        }
+
+        #region BalanceStatements
+
+        private static string AllAccountsBalanceStatement =>
+$@"SELECT Total({nameof(TitBase.Sum)}) FROM (
+SELECT {nameof(TitBase.Sum)} FROM {nameof(Transaction)}s UNION ALL 
+SELECT {nameof(TitBase.Sum)} FROM {nameof(Income)}s UNION ALL 
+SELECT {nameof(TitBase.Sum)} FROM {nameof(SubTransaction)}s UNION ALL 
+SELECT {nameof(TitBase.Sum)} FROM {nameof(SubIncome)}s UNION ALL 
+SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s);";
+
+        private static string AccountSpecificBalanceStatement =>
+$@"SELECT (SELECT Total({nameof(TitBase.Sum)}) FROM (
+SELECT {nameof(TitBase.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL 
+SELECT {nameof(TitBase.Sum)} FROM {nameof(Income)}s WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
+SELECT {nameof(TitBase.Sum)} FROM (SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)}, {nameof(Transaction)}s.{nameof(Transaction.AccountId)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Transaction)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Transaction)}s.{nameof(Transaction.Id)}) WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL
+SELECT {nameof(TitBase.Sum)} FROM (SELECT {nameof(SubIncome)}s.{nameof(SubIncome.Sum)}, {nameof(Income)}s.{nameof(Income.AccountId)} FROM {nameof(SubIncome)}s INNER JOIN {nameof(Income)}s ON {nameof(SubIncome)}s.{nameof(SubIncome.ParentId)} = {nameof(Income)}s.{nameof(Income.Id)}) WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
+SELECT {nameof(TitBase.Sum)} FROM {nameof(Transfer)}s WHERE {nameof(Transfer.ToAccountId)} = @accountId UNION ALL
+SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.Id)} = @accountId)) 
+- (SELECT Total({nameof(TitBase.Sum)}) FROM {nameof(Transfer)}s WHERE {nameof(Transfer.FromAccountId)} = @accountId);";
+
+        #endregion BalanceStatements
+
         #region CreateStatements
 
         private static string CreateTheTitViewStatement =>
@@ -375,7 +416,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                         {nameof(Account.Name)
                     } VARCHAR(100),
                         {nameof(Account.StartingBalance)
-                    } FLOAT NOT NULL DEFAULT 0);";
+                    } INTEGER NOT NULL DEFAULT 0);";
 
         // todo: Seems not legit the Budget Table Statement
         private static string CreateBudgetTableStatement
@@ -411,7 +452,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                     } DATE,
                         {nameof(Income.Memo)} TEXT,
                         {
-                    nameof(Income.Sum)} FLOAT,
+                    nameof(Income.Sum)} INTEGER,
                         {nameof(Income.Cleared)
                     } INTEGER,
                         {nameof(Income.Type)
@@ -442,7 +483,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                     } INTEGER,
                         {nameof(SubTransaction.Memo)} TEXT,
                         {
-                    nameof(SubTransaction.Sum)} FLOAT,
+                    nameof(SubTransaction.Sum)} INTEGER,
                         FOREIGN KEY({
                     nameof(SubTransaction.ParentId)}) REFERENCES {nameof(Transaction)}s({nameof(Transaction.Id)
                     }) ON DELETE CASCADE);";
@@ -458,7 +499,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                     } INTEGER,
                         {nameof(SubIncome.Memo)} TEXT,
                         {
-                    nameof(SubIncome.Sum)} FLOAT,
+                    nameof(SubIncome.Sum)} INTEGER,
                         FOREIGN KEY({nameof(SubIncome.ParentId)
                     }) REFERENCES {nameof(Income)}s({nameof(Income.Id)}) ON DELETE CASCADE);";
 
@@ -477,7 +518,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                         {
                     nameof(Transaction.Memo)} TEXT,
                         {nameof(Transaction.Sum)
-                    } FLOAT,
+                    } INTEGER,
                         {nameof(Transaction.Cleared)} INTEGER,
                         {
                     nameof(Transaction.Type)} VARCHAR(12),
@@ -505,7 +546,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                         {
                     nameof(Transfer.Memo)} TEXT,
                         {nameof(Transfer.Sum)
-                    } FLOAT,
+                    } INTEGER,
                         {nameof(Transfer.Cleared)} INTEGER,
                         {
                     nameof(Transfer.Type)} VARCHAR(12),

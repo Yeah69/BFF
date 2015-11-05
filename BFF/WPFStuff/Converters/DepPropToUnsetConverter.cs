@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using BFF.Helper;
 
 namespace BFF.WPFStuff.Converters
 {
@@ -9,7 +10,7 @@ namespace BFF.WPFStuff.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value ?? DependencyProperty.UnsetValue;
+            return value != null ? ((long) value).AsCurrency() : DependencyProperty.UnsetValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

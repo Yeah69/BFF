@@ -302,5 +302,14 @@ namespace BFF.Properties {
                 return ResourceManager.GetString("Theme", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TitView_BalanceDisplay {
+            get {
+                return ResourceManager.GetString("TitView_BalanceDisplay", resourceCulture);
+            }
+        }
     }
 }

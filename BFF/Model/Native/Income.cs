@@ -8,7 +8,7 @@ using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class Income : TransItemBase, ITransactionLike
+    class Income : TitBase, ITransactionLike
     {
         [Key]
         public override long Id { get; set; } = -1;
@@ -44,7 +44,7 @@ namespace BFF.Model.Native
 
         public override string Memo { get; set; }
         
-        public override double? Sum { get; set; }
+        public override long? Sum { get; set; }
         
         public override bool Cleared { get; set; }
 

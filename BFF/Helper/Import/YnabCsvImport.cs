@@ -63,14 +63,14 @@ namespace BFF.Helper.Import
         internal static readonly Regex MemoPartsRegex = new Regex(@"^(\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) )?((?<subTransMemo>.*) / )?(?<parentTransMemo>.*)$");
         internal static readonly Regex NumberExtractRegex = new Regex(@"\d+");
 
-        internal static double extractDouble(string text)
+        internal static long ExtractLong(string text)
         {
             if (NumberExtractRegex.IsMatch(text))
             {
                 string concatedNumber = NumberExtractRegex.Matches(text).Cast<Match>().Aggregate("", (current, match) => current + match.Value);
-                return double.Parse(concatedNumber)/100; // todo: there are exceptions to the divide through hundred
+                return long.Parse(concatedNumber); // todo: there are exceptions to the divide through hundred
             }
-            return 0.0;
+            return 0L;
         }
         
         public static void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string savePath)

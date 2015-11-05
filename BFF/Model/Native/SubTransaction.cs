@@ -13,7 +13,7 @@ namespace BFF.Model.Native
         public long Id { get; set; } = -1;
 
         [Write(false)]
-        public override TransItemBase Parent { get; set; }
+        public override TitBase Parent { get; set; }
 
         public override long ParentId => Parent?.Id ?? -1;
 
@@ -28,7 +28,7 @@ namespace BFF.Model.Native
 
         public override string Memo { get; set; }
         
-        public override double Sum { get; set; }
+        public override long Sum { get; set; }
 
         [Write(false)]
         public Type Type => typeof(SubTransaction);

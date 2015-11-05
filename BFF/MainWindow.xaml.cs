@@ -14,7 +14,6 @@ using BFF.WPFStuff.UserControls;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using MahApps.Metro.SimpleChildWindow;
 using TabItem = System.Windows.Controls.TabItem;
 
 namespace BFF
@@ -27,6 +26,7 @@ namespace BFF
     /// </summary>
     public partial class MainWindow
     {
+        //todo: Maybe not needed if gotten directly from DataContext (the ViewModel)
         public static readonly DependencyProperty ImportCommandProperty =
             DependencyProperty.Register(nameof(ImportCommand), typeof (ICommand), typeof (MainWindow),
                 new PropertyMetadata((depObj, args) => 
@@ -34,43 +34,23 @@ namespace BFF
                     var mw = (MainWindow) depObj;
                     mw.ImportCommand = (ICommand) args.NewValue;
                 }));
-        public static readonly DependencyProperty AllAccountsProperty =
-            DependencyProperty.Register(nameof(AllAccounts), typeof(ObservableCollection<Account>), typeof(MainWindow),
-                new PropertyMetadata((depObj, args) =>
-                {
-                    MetroTabControl accountsTabControl = ((MainWindow)depObj).AccountsTabControl;
-                    ObservableCollection<Account> newAccounts = (ObservableCollection<Account>)args.NewValue;
 
-                    while (accountsTabControl.Items.Count > 2)
-                    {
-                        accountsTabControl.Items.RemoveAt(1);
-                    }
-
-                    if (newAccounts != null)
-                    {
-                        foreach (Account account in newAccounts)
-                            accountsTabControl.Items.Insert(accountsTabControl.Items.Count - 1, createMetroTabItem(account));
-                        newAccounts.CollectionChanged += (obj, collectionArgs) => changeTabs(accountsTabControl, collectionArgs);
-                    }
-                    ((MainWindow) depObj).AllAccounts = newAccounts;
-                }));
-
-        private static void changeTabs(MetroTabControl accountsTabControl, NotifyCollectionChangedEventArgs args)
+        private void changeTabs(object param, NotifyCollectionChangedEventArgs args)
         {
             switch (args.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                     foreach (Account account in args.NewItems)
-                        accountsTabControl.Items.Insert(accountsTabControl.Items.Count - 1, createMetroTabItem(account));
+                        AccountsTabControl.Items.Insert(AccountsTabControl.Items.Count - 1, createMetroTabItem(account));
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     //todo: Check if this works
                     foreach (Account account in args.OldItems)
                     {
-                        foreach (TabItem tabItem in accountsTabControl.Items)
+                        foreach (TabItem tabItem in AccountsTabControl.Items)
                         {
                             if(tabItem.DataContext == account)
-                                accountsTabControl.Items.Remove(tabItem);
+                                AccountsTabControl.Items.Remove(tabItem);
                         }
                     }
                     break;
@@ -94,22 +74,24 @@ namespace BFF
             set { SetValue(ImportCommandProperty, value); }
         }
 
-        public ObservableCollection<Account> AllAccounts
+        private MainWindow()
         {
-            get { return (ObservableCollection<Account>)GetValue(AllAccountsProperty); }
-            set { SetValue(AllAccountsProperty, value); }
         }
 
-        public MainWindow()
+        public MainWindow(MainWindowViewModel viewModel)
         {
+            DataContext = viewModel;
             InitializeComponent();
 
-            this.SetBinding(MainWindow.ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
-            this.SetBinding(MainWindow.AllAccountsProperty, nameof(MainWindowViewModel.AllAccounts));
+            foreach (Account account in viewModel.AllAccounts)
+                AccountsTabControl.Items.Insert(AccountsTabControl.Items.Count - 1, createMetroTabItem(account));
+            viewModel.AllAccounts.CollectionChanged += changeTabs;
 
-            Accent initialAccent = ThemeManager.GetAccent(Properties.Settings.Default.MahApps_Accent);
-            AppTheme initialAppTheme = ThemeManager.GetAppTheme(Properties.Settings.Default.MahApps_AppTheme);
-            string initialLocalization = Properties.Settings.Default.Localization_Language;
+            SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
+
+            Accent initialAccent = ThemeManager.GetAccent(Settings.Default.MahApps_Accent);
+            AppTheme initialAppTheme = ThemeManager.GetAppTheme(Settings.Default.MahApps_AppTheme);
+            string initialLocalization = Settings.Default.Localization_Language;
 
             foreach (AppTheme theme in ThemeManager.AppThemes.OrderBy(x => x.Name))
             {
@@ -130,10 +112,6 @@ namespace BFF
             LanguageCombo.SelectedItem = initialLocalization;
 
             WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo(initialLocalization);
-
-            //YnabCsvImport.ImportYnabTransactionsCsvtoDb(@"D:\Private\YNABExports\Yeah as of 2015-08-14 640 PM-Register.csv",
-            //                                            @"D:\Private\YNABExports\Yeah as of 2015-08-14 640 PM-Budget.csv",
-            //                                            @"testDatabase");
         }
 
         private void SettingsButt_Click(object sender, RoutedEventArgs e)
@@ -143,26 +121,26 @@ namespace BFF
 
         private void ThemeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Accent accent = ThemeManager.GetAccent(Properties.Settings.Default.MahApps_Accent);
+            Accent accent = ThemeManager.GetAccent(Settings.Default.MahApps_Accent);
             ThemeManager.ChangeAppStyle(Application.Current, accent, ((ThemeWrap)ThemeCombo.SelectedItem).Theme);
-            Properties.Settings.Default.MahApps_AppTheme = ((ThemeWrap)ThemeCombo.SelectedItem).Theme.Name;
-            Properties.Settings.Default.Save();
+            Settings.Default.MahApps_AppTheme = ((ThemeWrap)ThemeCombo.SelectedItem).Theme.Name;
+            Settings.Default.Save();
         }
 
         private void AccentCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            AppTheme theme = ThemeManager.GetAppTheme(Properties.Settings.Default.MahApps_AppTheme);
+            AppTheme theme = ThemeManager.GetAppTheme(Settings.Default.MahApps_AppTheme);
             ThemeManager.ChangeAppStyle(Application.Current, ((AccentWrap)AccentCombo.SelectedItem).Accent, theme);
-            Properties.Settings.Default.MahApps_Accent = ((AccentWrap)AccentCombo.SelectedItem).Accent.Name;
-            Properties.Settings.Default.Save();
+            Settings.Default.MahApps_Accent = ((AccentWrap)AccentCombo.SelectedItem).Accent.Name;
+            Settings.Default.Save();
         }
 
         private void LanguageCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string language = (string) LanguageCombo.SelectedItem;
             WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo(language);
-            Properties.Settings.Default.Localization_Language = language;
-            Properties.Settings.Default.Save();
+            Settings.Default.Localization_Language = language;
+            Settings.Default.Save();
         }
 
         private void FileButt_Click(object sender, RoutedEventArgs e)
@@ -179,7 +157,7 @@ namespace BFF
         {
             FileFlyout.IsOpen = false;
 
-            this.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
+            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
             //this.ShowInputAsync("Input", "Blaha");
             ImportDialogViewModel importDialogVM = new ImportDialogViewModel
             {
@@ -202,7 +180,7 @@ namespace BFF
                 //string savePath = importDialogVM.Importable.Import();
                 //SqLiteHelper.OpenDatabase(savePath);
                 if(ImportCommand.CanExecute(importDialogVM.Importable))
-                    this.Dispatcher.Invoke(() => ImportCommand.Execute(importDialogVM.Importable), DispatcherPriority.Background);
+                    Dispatcher.Invoke(() => ImportCommand.Execute(importDialogVM.Importable), DispatcherPriority.Background);
             };
             this.ShowMetroDialogAsync(importDialog);
         }
