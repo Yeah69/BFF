@@ -4,7 +4,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native.Structure
 {
-    public abstract class TransItemBase : DataModelBase
+    public abstract class TitBase : DataModelBase
     {
         public abstract long Id { get; set; }
 
@@ -12,7 +12,7 @@ namespace BFF.Model.Native.Structure
 
         public abstract string Memo { get; set; }
 
-        public abstract double? Sum { get; set; }
+        public abstract long? Sum { get; set; }
 
         public abstract bool Cleared { get; set; }
 

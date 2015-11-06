@@ -27,7 +27,7 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Ellipse Fill="{Binding WhiteBrush}" Width="15" Height="15" />
+                                        <Ellipse Stroke="{DynamicResource BlackBrush}" StrokeThickness="1" Fill="{Binding WhiteBrush}" Width="15" Height="15" />
                                         <Label Content="{Binding Path=Theme.Name}" />
                                     </StackPanel>
                                 </DataTemplate>
@@ -38,7 +38,7 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Ellipse Fill="{Binding AccentColorBrush}" Width="15" Height="15" />
+                                        <Ellipse Stroke="{DynamicResource BlackBrush}" StrokeThickness="1" Fill="{Binding AccentColorBrush}" Width="15" Height="15" />
                                         <Label Content="{Binding Path=Accent.Name}" />
                                     </StackPanel>
                                 </DataTemplate>
@@ -84,7 +84,7 @@
                     <Label Content="{lex:Loc NewAccount_Name}"/>
                     <TextBox Text="{Binding Name, Mode=TwoWay}" />
                     <Label Content="{lex:Loc NewAccount_StartingBalance}"/>
-                    <controls:NumericUpDown Value="{Binding StartingBalance, Mode=TwoWay}" Interval="0.01" StringFormat="N2"/>
+                    <controls:NumericUpDown Value="{Binding StartingBalance, Mode=TwoWay}" Interval="1" StringFormat="N2"/>
                     <Button HorizontalAlignment="Right" Content="{lex:Loc General_Create}" Command="{Binding DataContext.NewAccountCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}"/>
                 </StackPanel>
             </controls:MetroTabItem>

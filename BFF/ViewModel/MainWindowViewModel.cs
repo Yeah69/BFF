@@ -33,14 +33,14 @@ namespace BFF.ViewModel
             }
         }
 
-        public Account NewAccount { get; set; } = new Account {Id = -1, Name = "", StartingBalance = 0.0};
+        public Account NewAccount { get; set; } = new Account {Id = -1, Name = "", StartingBalance = 0L};
 
         public ICommand NewAccountCommand => new RelayCommand(param =>
         {
             SqLiteHelper.AddAccount(NewAccount);
             AllAccounts.Add(NewAccount);
             OnPropertyChanged(nameof(AllAccounts));
-            NewAccount = new Account { Id = -1, Name = "", StartingBalance = 0.0 };
+            NewAccount = new Account { Id = -1, Name = "", StartingBalance = 0L };
             OnPropertyChanged(nameof(NewAccount));
         }
         , param => !string.IsNullOrEmpty(NewAccount.Name));

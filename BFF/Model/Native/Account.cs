@@ -12,7 +12,7 @@ namespace BFF.Model.Native
 
         public string Name { get; set; }
 
-        public double StartingBalance { get; set; } = 0.0;
+        public long StartingBalance { get; set; } = 0L;
 
         public override string ToString()
         {

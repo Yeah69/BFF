@@ -198,4 +198,7 @@
   <data name="Theme" xml:space="preserve">
     <value>Theme:</value>
   </data>
+  <data name="TitView_BalanceDisplay" xml:space="preserve">
+    <value>Account Balance:</value>
+  </data>
 </root>

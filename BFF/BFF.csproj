@@ -57,10 +57,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro.SimpleChildWindow, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.SimpleChildWindow.1.2.0.0\lib\net45\MahApps.Metro.SimpleChildWindow.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -119,7 +115,7 @@
     <Compile Include="Model\Native\Payee.cs" />
     <Compile Include="Model\Native\Structure\ITransactionLike.cs" />
     <Compile Include="Model\Native\Structure\SubTransInc.cs" />
-    <Compile Include="Model\Native\Structure\TransItemBase.cs" />
+    <Compile Include="Model\Native\Structure\TitBase.cs" />
     <Compile Include="Model\Native\SubIncome.cs" />
     <Compile Include="Model\Native\SubTransaction.cs" />
     <Compile Include="Model\Native\Income.cs" />
@@ -129,6 +125,7 @@
     <Compile Include="ViewModel\TitViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="WPFStuff\Converters\NullToLexConverter.cs" />
+    <Compile Include="WPFStuff\Converters\SubElementToSumPureConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumMultiConverter.cs" />
     <Compile Include="WPFStuff\Converters\CoalesceConverter.cs" />
     <Compile Include="WPFStuff\Converters\DepPropToUnsetConverter.cs" />

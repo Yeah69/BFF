@@ -14,7 +14,7 @@ namespace BFF
         public App()
         {
             MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
-            MainWindow mainWindow = new MainWindow {DataContext = mainWindowViewModel};
+            MainWindow mainWindow = new MainWindow (mainWindowViewModel);
             mainWindow.Show();
 
         }
