@@ -15,6 +15,18 @@ namespace BFF.DB.SQLite
 {
     class SqLiteHelper
     {
+        private static void ExecuteOnDb(Action executeAction)
+        {
+            using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
+            {
+                cnn.Open();
+
+                executeAction.Invoke();
+
+                cnn.Close();
+            }
+        }
+
         private static string CurrentDbFileName { get; set; }
 
         private static string CurrentDbConnectionString
@@ -293,7 +305,33 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public static void CreateNewDatabase(string fileName)
+        public static DbSetting GetDbSetting()
+        {
+            DbSetting ret;
+            using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
+            {
+                cnn.Open();
+
+                ret = cnn.Get<DbSetting>(1);
+
+                cnn.Close();
+            }
+            return ret;
+        }
+
+        public static void SetDbSetting(DbSetting dbSetting)
+        {
+            using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
+            {
+                cnn.Open();
+
+                cnn.Update<DbSetting>(dbSetting);
+
+                cnn.Close();
+            }
+        }
+
+        public static void CreateNewDatabase(string fileName, CultureInfo currencyFormat)
         {
             if (File.Exists(fileName))
                 File.Delete(fileName);
@@ -311,6 +349,9 @@ namespace BFF.DB.SQLite
                 cnn.Execute(CreateSubTransactionTableStatement);
                 cnn.Execute(CreateIncomeTableStatement);
                 cnn.Execute(CreateSubIncomeTableStatement);
+
+                cnn.Execute(CreateDbSettingTableStatement);
+                cnn.Insert(new DbSetting {CurrencyCultrureName = currencyFormat.Name});
 
                 cnn.Execute(CreateTheTitViewStatement);
                 
@@ -555,6 +596,10 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                     }) ON DELETE RESTRICT,
                         FOREIGN KEY({nameof(Transfer.ToAccountId)
                     }) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT);";
+
+        private static string CreateDbSettingTableStatement
+            =>
+                $@"CREATE TABLE [{nameof(DbSetting)}s]({nameof(DbSetting.Id)} INTEGER PRIMARY KEY, {nameof(DbSetting.CurrencyCultrureName)} VARCHAR(10));";
 
         #endregion
 

@@ -7,6 +7,8 @@ namespace BFF.Helper
 {
     static class Output
     {
+        public static CultureInfo CurrencyCulture = null;
+
         public static void WriteLine(string text, [CallerMemberName] string callerName = null)
         {
             Console.BackgroundColor = ConsoleColor.DarkMagenta;
@@ -34,7 +36,7 @@ namespace BFF.Helper
         public static long CurrencyAsLong(this string value, CultureInfo culture)
         {
             decimal decval;
-            bool convt = decimal.TryParse(value, NumberStyles.Currency,
+            bool convt = Decimal.TryParse(value, NumberStyles.Currency,
               culture.NumberFormat, out decval);
             if(!convt)
                 throw new ValidationException();

@@ -288,6 +288,15 @@ namespace BFF.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Settings_Currency {
+            get {
+                return ResourceManager.GetString("Settings_Currency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Sum {
             get {
                 return ResourceManager.GetString("Sum", resourceCulture);

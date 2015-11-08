@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Windows.Input;
 using BFF.DB.SQLite;
@@ -55,6 +56,7 @@ namespace BFF.ViewModel
             if (File.Exists(Settings.Default.DBLocation))
             {
                 SqLiteHelper.OpenDatabase(Settings.Default.DBLocation);
+
                 SetTabPages();
             }
         }
@@ -65,7 +67,7 @@ namespace BFF.ViewModel
             if (saveFileDialog.ShowDialog() == true)
             {
                 this.Reset();
-                SqLiteHelper.CreateNewDatabase(saveFileDialog.FileName);
+                SqLiteHelper.CreateNewDatabase(saveFileDialog.FileName, CultureInfo.CurrentCulture);
                 SetTabPages();
 
                 Settings.Default.DBLocation = saveFileDialog.FileName;

@@ -1,11 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.Model.Native;
 using BFF.Properties;
@@ -26,6 +28,8 @@ namespace BFF
     /// </summary>
     public partial class MainWindow
     {
+        public DbSetting DbSettings { get; set; }
+
         //todo: Maybe not needed if gotten directly from DataContext (the ViewModel)
         public static readonly DependencyProperty ImportCommandProperty =
             DependencyProperty.Register(nameof(ImportCommand), typeof (ICommand), typeof (MainWindow),
@@ -81,6 +85,8 @@ namespace BFF
         public MainWindow(MainWindowViewModel viewModel)
         {
             DataContext = viewModel;
+            DbSettings = SqLiteHelper.GetDbSetting();
+            Resources["CurrencyCulture"] = DbSettings.CurrencyCulture;
             InitializeComponent();
 
             foreach (Account account in viewModel.AllAccounts)
@@ -110,6 +116,13 @@ namespace BFF
             LanguageCombo.Items.Add("de-DE");
             LanguageCombo.Items.Add("en-US");
             LanguageCombo.SelectedItem = initialLocalization;
+
+            foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.DisplayName))
+            {
+                CurrencyCombo.Items.Add(culture);
+            }
+
+            CurrencyCombo.SelectedItem = DbSettings.CurrencyCulture;
 
             WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo(initialLocalization);
         }
@@ -188,6 +201,11 @@ namespace BFF
         private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             ((TextBox)sender).GetBindingExpression(TextBox.TextProperty).UpdateSource();
+        }
+
+        private void CurrencyCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DbSettings.CurrencyCulture = (CultureInfo) (((ComboBox) sender).SelectedItem);
         }
     }
 

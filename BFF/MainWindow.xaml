@@ -6,6 +6,9 @@
         xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
+        xmlns:native="clr-namespace:BFF.Model.Native"
+        xmlns:helper="clr-namespace:BFF.Helper"
+        xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
         lex:LocalizeDictionary.DesignCulture="en-US"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
@@ -17,6 +20,7 @@
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:LongToCurrencyConverter x:Key="CurrencyConverter"/>
+            <globalization:CultureInfo x:Key="CurrencyCulture" />
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
@@ -48,6 +52,8 @@
                         </ComboBox>
                         <Label Content="{lex:Loc Language}"/>
                         <ComboBox Name="LanguageCombo" SelectionChanged="LanguageCombo_SelectionChanged"/>
+                        <Label Content="{lex:Loc Settings_Currency}"/>
+                        <ComboBox Name="CurrencyCombo" DisplayMemberPath="Name" SelectionChanged="CurrencyCombo_OnSelectionChanged"/>
                     </StackPanel>
                 </Grid>
             </controls:Flyout>
@@ -89,7 +95,7 @@
                     <!-- Text="{Binding StartingBalance, Mode=TwoWay, Converter={StaticResource CurrencyConverter}, ValidatesOnDataErrors=True, ValidationRules={StaticResource CurrencyRule}}" -->
                     <TextBox MaxLength="30">
                         <TextBox.Text>
-                            <Binding Path="StartingBalance" Mode="TwoWay" Converter="{StaticResource CurrencyConverter}" ConverterCulture="en-US" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding Path="StartingBalance" Mode="TwoWay" Converter="{StaticResource CurrencyConverter}" ConverterCulture="{x:Static helper:Output.CurrencyCulture}" UpdateSourceTrigger="PropertyChanged" >
                                 <Binding.ValidationRules>
                                     <validationRules:CurrencyRule />
                                     <validationRules:CurrencyLongRangeRule />

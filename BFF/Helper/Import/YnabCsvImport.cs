@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -93,7 +94,7 @@ namespace BFF.Helper.Import
             //Third step: Create new database for imported data
             string assemblyPath = Assembly.GetExecutingAssembly().Location;
             assemblyPath = assemblyPath.Substring(0, assemblyPath.LastIndexOf('\\') + 1);
-            CreateNewDatabase(savePath);
+            CreateNewDatabase(savePath, CultureInfo.CurrentCulture);
             PopulateDatabase(transactions, subTransactions, transfers, incomes);
         }
 
