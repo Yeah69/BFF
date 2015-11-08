@@ -10,7 +10,7 @@ namespace BFF.WPFStuff.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value != null ? ((long) value).AsCurrency() : DependencyProperty.UnsetValue;
+            return value != null ? ((long) value).AsCurrency(Output.CurrencyCulture) : DependencyProperty.UnsetValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

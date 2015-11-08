@@ -114,9 +114,9 @@
                     <Label Content="{lex:Loc NewAccount_Name}"/>
                     <TextBox Text="{Binding Name, Mode=TwoWay}" />
                     <Label Content="{lex:Loc NewAccount_StartingBalance}"/>
-                    <TextBox MaxLength="30">
+                    <TextBox MaxLength="30" Name="NewAccount_StartingBalance">
                         <TextBox.Text>
-                            <Binding Path="StartingBalance" Mode="TwoWay" Converter="{StaticResource CurrencyConverter}" ConverterCulture="{x:Static helper:Output.CurrencyCulture}" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding Path="StartingBalance" Mode="TwoWay" Converter="{StaticResource CurrencyConverter}" UpdateSourceTrigger="PropertyChanged" >
                                 <Binding.ValidationRules>
                                     <validationRules:CurrencyRule />
                                     <validationRules:CurrencyLongRangeRule />

@@ -33,7 +33,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False">
+        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False">
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource MetroDataGrid}"
                            TargetType="{x:Type DataGrid}">
@@ -165,7 +165,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <GroupBox Grid.Row="1" Header="{lex:Loc TitView_BalanceDisplay}" HorizontalAlignment="Left">
-            <TextBlock Text="{Binding AccountBalance, Converter={StaticResource DepPropToUnset}}" />
+            <TextBlock Name="TotalBalanceTextBlock"  Text="{Binding AccountBalance, Converter={StaticResource DepPropToUnset}}" />
         </GroupBox>
     </Grid>
 </UserControl>
