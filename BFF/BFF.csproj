@@ -126,6 +126,7 @@
     <Compile Include="ViewModel\ImportDialogViewModel.cs" />
     <Compile Include="ViewModel\TitViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="WPFStuff\Converters\CurrencyComboConverter.cs" />
     <Compile Include="WPFStuff\Converters\LongToCurrencyConverter.cs" />
     <Compile Include="WPFStuff\Converters\NullToLexConverter.cs" />
     <Compile Include="WPFStuff\Converters\SubElementToSumPureConverter.cs" />

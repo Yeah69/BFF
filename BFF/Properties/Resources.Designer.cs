@@ -126,6 +126,24 @@ namespace BFF.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string CurrencyCombo_Negative {
+            get {
+                return ResourceManager.GetString("CurrencyCombo_Negative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CurrencyCombo_Positive {
+            get {
+                return ResourceManager.GetString("CurrencyCombo_Positive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Date {
             get {
                 return ResourceManager.GetString("Date", resourceCulture);

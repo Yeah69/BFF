@@ -138,6 +138,12 @@
   <data name="Cleared" xml:space="preserve">
     <value />
   </data>
+  <data name="CurrencyCombo_Negative" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CurrencyCombo_Positive" xml:space="preserve">
+    <value />
+  </data>
   <data name="Date" xml:space="preserve">
     <value />
   </data>

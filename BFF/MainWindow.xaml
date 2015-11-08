@@ -20,7 +20,7 @@
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:LongToCurrencyConverter x:Key="CurrencyConverter"/>
-            <globalization:CultureInfo x:Key="CurrencyCulture" />
+            <converters:CurrencyComboConverter x:Key="CurrencyComboConverter"/>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
@@ -53,7 +53,29 @@
                         <Label Content="{lex:Loc Language}"/>
                         <ComboBox Name="LanguageCombo" SelectionChanged="LanguageCombo_SelectionChanged"/>
                         <Label Content="{lex:Loc Settings_Currency}"/>
-                        <ComboBox Name="CurrencyCombo" DisplayMemberPath="Name" SelectionChanged="CurrencyCombo_OnSelectionChanged"/>
+                        <ComboBox Name="CurrencyCombo" SelectionChanged="CurrencyCombo_OnSelectionChanged">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="{Binding Name}" Grid.Row="0" Grid.Column="0" />
+                                        <Label Content="{Binding DisplayName}" Grid.Row="0" Grid.Column="1" />
+                                        <Label Content="{lex:Loc CurrencyCombo_Positive}" Grid.Row="1" Grid.Column="0" />
+                                        <Label Content="{Binding Name, Converter={StaticResource CurrencyComboConverter}, ConverterParameter=positive}" Foreground="{StaticResource BrushPositive}" Grid.Row="1" Grid.Column="1" />
+                                        <Label Content="{lex:Loc CurrencyCombo_Negative}" Grid.Row="2" Grid.Column="0" />
+                                        <Label Content="{Binding Name, Converter={StaticResource CurrencyComboConverter}, ConverterParameter=negative}" Foreground="{StaticResource BrushNegative}" Grid.Row="2" Grid.Column="1" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
                 </Grid>
             </controls:Flyout>
@@ -92,7 +114,6 @@
                     <Label Content="{lex:Loc NewAccount_Name}"/>
                     <TextBox Text="{Binding Name, Mode=TwoWay}" />
                     <Label Content="{lex:Loc NewAccount_StartingBalance}"/>
-                    <!-- Text="{Binding StartingBalance, Mode=TwoWay, Converter={StaticResource CurrencyConverter}, ValidatesOnDataErrors=True, ValidationRules={StaticResource CurrencyRule}}" -->
                     <TextBox MaxLength="30">
                         <TextBox.Text>
                             <Binding Path="StartingBalance" Mode="TwoWay" Converter="{StaticResource CurrencyConverter}" ConverterCulture="{x:Static helper:Output.CurrencyCulture}" UpdateSourceTrigger="PropertyChanged" >

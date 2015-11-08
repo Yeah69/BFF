@@ -117,7 +117,7 @@ namespace BFF
             LanguageCombo.Items.Add("en-US");
             LanguageCombo.SelectedItem = initialLocalization;
 
-            foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.DisplayName))
+            foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.Name))
             {
                 CurrencyCombo.Items.Add(culture);
             }
