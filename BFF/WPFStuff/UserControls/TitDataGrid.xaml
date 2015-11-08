@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
-             lex:LocalizeDictionary.DesignCulture="en"
+             lex:LocalizeDictionary.DesignCulture="en-US"
              lex:ResxLocalizationProvider.DefaultAssembly="BFF"
              lex:ResxLocalizationProvider.DefaultDictionary="Resources"
              xmlns:structure="clr-namespace:BFF.Model.Native.Structure"
@@ -164,7 +164,7 @@
                      -->
             </DataGrid.Columns>
         </DataGrid>
-        <GroupBox Grid.Row="1" Header="{lex:Loc TitView_BalanceDisplay}">
+        <GroupBox Grid.Row="1" Header="{lex:Loc TitView_BalanceDisplay}" HorizontalAlignment="Left">
             <TextBlock Text="{Binding AccountBalance, Converter={StaticResource DepPropToUnset}}" />
         </GroupBox>
     </Grid>

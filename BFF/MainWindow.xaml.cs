@@ -107,8 +107,8 @@ namespace BFF
                 if (accent == initialAccent)
                     AccentCombo.SelectedItem = current;
             }
-            LanguageCombo.Items.Add("de");
-            LanguageCombo.Items.Add("en");
+            LanguageCombo.Items.Add("de-DE");
+            LanguageCombo.Items.Add("en-US");
             LanguageCombo.SelectedItem = initialLocalization;
 
             WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo(initialLocalization);
@@ -183,6 +183,11 @@ namespace BFF
                     Dispatcher.Invoke(() => ImportCommand.Execute(importDialogVM.Importable), DispatcherPriority.Background);
             };
             this.ShowMetroDialogAsync(importDialog);
+        }
+
+        private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            ((TextBox)sender).GetBindingExpression(TextBox.TextProperty).UpdateSource();
         }
     }
 

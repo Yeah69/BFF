@@ -9,7 +9,7 @@
       <Value Profile="(Default)">Violet</Value>
     </Setting>
     <Setting Name="Localization_Language" Type="System.String" Scope="User">
-      <Value Profile="(Default)">en</Value>
+      <Value Profile="(Default)">en-US</Value>
     </Setting>
     <Setting Name="DBLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\</Value>

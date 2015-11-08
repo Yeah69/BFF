@@ -5,7 +5,8 @@
         xmlns:usercontrols="clr-namespace:BFF.WPFStuff.UserControls"
         xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        lex:LocalizeDictionary.DesignCulture="en"
+        xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
+        lex:LocalizeDictionary.DesignCulture="en-US"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
         Title="BFF" Height="700" Width="1300" MinHeight="700" MinWidth="1300" ShowIconOnTitleBar="True" Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" RightWindowCommandsOverlayBehavior="Never" LeftWindowCommandsOverlayBehavior="Never">
@@ -15,6 +16,7 @@
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <converters:LongToCurrencyConverter x:Key="CurrencyConverter"/>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
@@ -84,7 +86,17 @@
                     <Label Content="{lex:Loc NewAccount_Name}"/>
                     <TextBox Text="{Binding Name, Mode=TwoWay}" />
                     <Label Content="{lex:Loc NewAccount_StartingBalance}"/>
-                    <controls:NumericUpDown Value="{Binding StartingBalance, Mode=TwoWay}" Interval="1" StringFormat="N2"/>
+                    <!-- Text="{Binding StartingBalance, Mode=TwoWay, Converter={StaticResource CurrencyConverter}, ValidatesOnDataErrors=True, ValidationRules={StaticResource CurrencyRule}}" -->
+                    <TextBox MaxLength="30">
+                        <TextBox.Text>
+                            <Binding Path="StartingBalance" Mode="TwoWay" Converter="{StaticResource CurrencyConverter}" ConverterCulture="en-US" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding.ValidationRules>
+                                    <validationRules:CurrencyRule />
+                                    <validationRules:CurrencyLongRangeRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
                     <Button HorizontalAlignment="Right" Content="{lex:Loc General_Create}" Command="{Binding DataContext.NewAccountCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}"/>
                 </StackPanel>
             </controls:MetroTabItem>

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
-             lex:LocalizeDictionary.DesignCulture="en"
+             lex:LocalizeDictionary.DesignCulture="en-US"
              lex:ResxLocalizationProvider.DefaultAssembly="BFF"
              lex:ResxLocalizationProvider.DefaultDictionary="Resources"
              xmlns:Dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"

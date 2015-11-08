@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 
@@ -13,7 +14,7 @@ namespace BFF.Helper
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine(@" {0}", text);
         }
-        
+
         public static string AsCurrency(this long value)
         {
             return value.AsCurrency(CultureInfo.CurrentCulture);
@@ -23,6 +24,21 @@ namespace BFF.Helper
         {
             decimal result = value / 100m;
             return result.ToString("C", culture);
+        }
+
+        public static long CurrencyAsLong(this string value)
+        {
+            return value.CurrencyAsLong(CultureInfo.CurrentCulture);
+        }
+
+        public static long CurrencyAsLong(this string value, CultureInfo culture)
+        {
+            decimal decval;
+            bool convt = decimal.TryParse(value, NumberStyles.Currency,
+              culture.NumberFormat, out decval);
+            if(!convt)
+                throw new ValidationException();
+            return (long) (decval*100);
         }
 
         public static void WriteYnabTransaction(string[] entries)

@@ -49,7 +49,7 @@ namespace BFF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("en")]
+        [global::System.Configuration.DefaultSettingValueAttribute("en-US")]
         public string Localization_Language {
             get {
                 return ((string)(this["Localization_Language"]));
