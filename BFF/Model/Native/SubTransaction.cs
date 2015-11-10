@@ -35,9 +35,7 @@ namespace BFF.Model.Native
 
         public static implicit operator SubTransaction(YNAB.Transaction ynabTransaction)
         {
-            Category tempCategory = (ynabTransaction.SubCategory == string.Empty) ?
-                Category.GetOrCreate(ynabTransaction.MasterCategory) :
-                Category.GetOrCreate($"{ynabTransaction.MasterCategory};{ynabTransaction.SubCategory}");
+            Category tempCategory = Category.GetOrCreate(ynabTransaction.Category);
             SubTransaction ret = new SubTransaction
             {
                 Category = tempCategory,

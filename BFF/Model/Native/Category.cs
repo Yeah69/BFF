@@ -40,7 +40,7 @@ namespace BFF.Model.Native
                 return null;
             if (Cache.ContainsKey(namePath))
                 return Cache[namePath];
-            Stack<string> nameStack = new Stack<string>(namePath.Split(';'));
+            Stack<string> nameStack = new Stack<string>(namePath.Split(':'));
             string name = nameStack.Pop();
             Category parentCategory = GetOrCreate(nameStack);
             Category category = new Category {Name = name, Parent = parentCategory, Categories = new List<Category>() };
