@@ -23,12 +23,10 @@ namespace BFF.WPFStuff.UserControls
             TotalBalanceTextBlock.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
         }
 
-
-        string old_DataGrid_SumBox_Text = String.Empty;
+        
         private void TitGrid_SumBox_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             TextBox textBox = ((TextBox) sender);
-            old_DataGrid_SumBox_Text = textBox.Text;
             textBox.IsReadOnly = false;
             textBox.BorderThickness = new Thickness(1.0);
         }
@@ -39,11 +37,6 @@ namespace BFF.WPFStuff.UserControls
             textBox.IsReadOnly = true;
             textBox.BorderThickness = new Thickness(0.0);
             textBox.Select(0,0);
-            BindingExpression binding = textBox.GetBindingExpression(TextBox.TextProperty);
-            binding.ValidateWithoutUpdate();
-            if(!binding.HasError)
-                binding.UpdateSource();
-            //textBox.Text = old_DataGrid_SumBox_Text;
         }
     }
 }

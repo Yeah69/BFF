@@ -138,10 +138,10 @@
                                 <TextBox.Text>
                                     <PriorityBinding FallbackValue="NaN">
                                         <!-- todo: Very important! ValidationRules for Sums! -->
-                                        <Binding Path="Sum" Converter="{StaticResource DepPropToUnset}" Mode="TwoWay">
+                                        <Binding Path="Sum" Converter="{StaticResource DepPropToUnset}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                             <Binding.ValidationRules>
-                                                <validationRules:CurrencyLongRangeRule />
                                                 <validationRules:CurrencyRule />
+                                                <validationRules:CurrencyLongRangeRule />
                                             </Binding.ValidationRules>
                                         </Binding>
                                         <Binding Path="SubElements" Converter="{StaticResource SubElToSum}" Mode="TwoWay" StringFormat="C" />
@@ -155,7 +155,7 @@
                 <DataGridTemplateColumn Header="{lex:Loc Cleared}" SortMemberPath="Cleared" Width="Auto" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding Cleared, Mode=TwoWay}" HorizontalAlignment="Center">
+                            <CheckBox IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center">
                                 <!-- todo: Find out how to change the color of the checkmark
                                     <CheckBox.Style>
                                         <Style TargetType="{x:Type CheckBox}" BasedOn="{DynamicResource MetroCheckBox}">
