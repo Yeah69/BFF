@@ -15,6 +15,8 @@ namespace BFF.DB.SQLite
 {
     class SqLiteHelper
     {
+        private static bool PopulateDb = false;
+
         private static void ExecuteOnDb(Action executeAction)
         {
             using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
@@ -100,8 +102,10 @@ namespace BFF.DB.SQLite
 
         private static readonly string TheTitName = "The Tit";
 
+        //todo: Join both GetAllTransactions to GetAllTranstactions(Account account = null)
         public static IEnumerable<TitBase> GetAllTransactions()
         {
+            PopulateDb = true;
             IEnumerable<TitBase> results;
 
             ClearCache();
@@ -136,11 +140,13 @@ namespace BFF.DB.SQLite
             }
             _cachingMode = false;
             ClearCache();
+            PopulateDb = false;
             return results;
         }
 
         public static IEnumerable<TitBase> GetAllTransactions(Account account)
         {
+            PopulateDb = true;
             IEnumerable<TitBase> results;
 
             ClearCache();
@@ -175,6 +181,7 @@ namespace BFF.DB.SQLite
             }
             _cachingMode = false;
             ClearCache();
+            PopulateDb = false;
             return results;
         }
 
@@ -305,6 +312,58 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
+        public static void Insert<T>(T dataModelBase) where T : TransactionLike
+        {
+            if (!PopulateDb)
+            {
+                using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
+                {
+                    cnn.OpenAndReturn().Insert<T>(dataModelBase);
+                    cnn.Close();
+                }
+            }
+        }
+
+        public static T Get<T>(long i) where T : TransactionLike
+        {
+            if (!PopulateDb)
+            {
+                T ret;
+                using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
+                {
+                    ret = cnn.OpenAndReturn().Get<T>(i);
+                    cnn.Close();
+                }
+                return ret;
+            }
+            return null;
+        }
+
+        public static void Update<T>(T dataModelBase) where T : TransactionLike
+        {
+            if (!PopulateDb)
+            {
+                using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
+                {
+                    cnn.OpenAndReturn().Update<T>(dataModelBase);
+                    cnn.Close();
+                }
+            }
+        }
+
+        public static void Delete<T>(T dataModelBase) where T : TransactionLike
+        {
+            if (!PopulateDb)
+            {
+                using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
+                {
+                    cnn.OpenAndReturn().Delete<T>(dataModelBase);
+                    cnn.Close();
+                }
+            }
+        }
+
+
         public static DbSetting GetDbSetting()
         {
             DbSetting ret;
@@ -366,6 +425,7 @@ namespace BFF.DB.SQLite
 
         public static void PopulateDatabase(List<Transaction> transactions, List<SubTransaction> subTransactions, List<Transfer> transfers, List<Income> incomes)
         {
+            PopulateDb = true;
             Output.WriteLine("Beginning to populate database.");
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -396,6 +456,7 @@ namespace BFF.DB.SQLite
             TimeSpan ts = stopwatch.Elapsed;
             string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds / 10:00}";
             Output.WriteLine($"End of database population. Elapsed time was: {elapsedTime}");
+            PopulateDb = false;
         }
 
         public static long GetAccountBalance(Account account = null)

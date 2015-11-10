@@ -40,7 +40,7 @@ namespace BFF.Helper
               culture.NumberFormat, out decval);
             if(!convt)
                 throw new ValidationException();
-            return (long) (decval*100);
+            return (long) (decval*(decimal)Math.Pow(10, culture.NumberFormat.CurrencyDecimalDigits));
         }
 
         public static void WriteYnabTransaction(string[] entries)

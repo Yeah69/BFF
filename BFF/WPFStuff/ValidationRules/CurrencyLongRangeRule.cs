@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using BFF.Helper;
 
 namespace BFF.WPFStuff.ValidationRules
 {
@@ -13,17 +14,19 @@ namespace BFF.WPFStuff.ValidationRules
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             decimal outVar;
+            decimal factor = (decimal)Math.Pow(10, cultureInfo.NumberFormat.CurrencyDecimalDigits);
+            string message = $"Value is out of range: [ {(long.MinValue/factor).ToString("C", cultureInfo.NumberFormat)} .. {(long.MaxValue/factor).ToString("C", cultureInfo.NumberFormat)} ]";
             bool parsed = decimal.TryParse((string)value, NumberStyles.Currency,
-              cultureInfo.NumberFormat, out outVar);
+              Output.CurrencyCulture.NumberFormat, out outVar);
             if (parsed)
             {
-                decimal factor = (decimal)Math.Pow(10, cultureInfo.NumberFormat.CurrencyDecimalDigits);
                 outVar = outVar * factor;
                 if (outVar > long.MaxValue || outVar < long.MinValue)
-                    return new ValidationResult(false, $"Value is out of range: [ {(long.MinValue/factor).ToString("C", cultureInfo.NumberFormat)} .. {(long.MaxValue / factor).ToString("C", cultureInfo.NumberFormat)} ]");
+                    return new ValidationResult(false, message);
+                return new ValidationResult(true, null);
 
             }
-            return new ValidationResult(true, null); 
+            return new ValidationResult(false, message);
             // The "Invalid"-Message is only relevant if validate is false
         }
     }

@@ -7,7 +7,7 @@ using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class Transfer : TitBase, ITransactionLike
+    class Transfer : TitBase
     {
         [Key]
         public override long Id { get; set; } = -1;

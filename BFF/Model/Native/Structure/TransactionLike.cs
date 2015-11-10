@@ -2,7 +2,7 @@
 
 namespace BFF.Model.Native.Structure
 {
-    interface ITransactionLike
+    public class TransactionLike : DataModelBase
     {
     }
 }

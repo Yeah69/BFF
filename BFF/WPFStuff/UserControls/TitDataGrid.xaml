@@ -10,6 +10,7 @@
              xmlns:structure="clr-namespace:BFF.Model.Native.Structure"
              xmlns:native="clr-namespace:BFF.Model.Native"
              xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
+             xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700">
     <UserControl.Resources>
@@ -126,21 +127,27 @@
                 <DataGridTemplateColumn Header="{lex:Loc Sum}" SortMemberPath="Sum" Width="Auto" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock TextAlignment="Right">
-                                <TextBlock.Foreground>
+                            <TextBox Name="TitGrid_SumBox"  TextAlignment="Right" IsReadOnly="True" BorderThickness="0" Background="Transparent" LostFocus="TitGrid_SumBox_OnLostFocus" MouseDoubleClick="TitGrid_SumBox_OnMouseDoubleClick">
+                                <TextBox.Foreground>
                                     <MultiBinding Converter="{StaticResource SumMulti}">
                                         <Binding Path="Sum" />
                                         <Binding Path="SubElements" Converter="{StaticResource SubElToSumPure}" />
                                         <Binding Path="Type" />
                                     </MultiBinding>
-                                </TextBlock.Foreground>
-                                <TextBlock.Text>
+                                </TextBox.Foreground>
+                                <TextBox.Text>
                                     <PriorityBinding FallbackValue="NaN">
-                                        <Binding Path="Sum" Converter="{StaticResource DepPropToUnset}" />
-                                        <Binding Path="SubElements" Converter="{StaticResource SubElToSum}" StringFormat="C" />
+                                        <!-- todo: Very important! ValidationRules for Sums! -->
+                                        <Binding Path="Sum" Converter="{StaticResource DepPropToUnset}" Mode="TwoWay">
+                                            <Binding.ValidationRules>
+                                                <validationRules:CurrencyLongRangeRule />
+                                                <validationRules:CurrencyRule />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                        <Binding Path="SubElements" Converter="{StaticResource SubElToSum}" Mode="TwoWay" StringFormat="C" />
                                     </PriorityBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
+                                </TextBox.Text>
+                            </TextBox>
                             <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

@@ -8,7 +8,7 @@ using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class Income : TitBase, ITransactionLike
+    class Income : TitBase
     {
         [Key]
         public override long Id { get; set; } = -1;

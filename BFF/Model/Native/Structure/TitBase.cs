@@ -4,7 +4,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native.Structure
 {
-    public abstract class TitBase : DataModelBase
+    public abstract class TitBase : TransactionLike
     {
         public abstract long Id { get; set; }
 

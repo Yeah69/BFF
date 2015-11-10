@@ -1,8 +1,9 @@
-﻿using Dapper.Contrib.Extensions;
+﻿using BFF.WPFStuff;
+using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native.Structure
 {
-    public abstract class DataModelBase
+    public abstract class DataModelBase : ObservableObject
     {
     }
 }

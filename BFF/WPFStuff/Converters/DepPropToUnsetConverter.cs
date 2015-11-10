@@ -15,7 +15,7 @@ namespace BFF.WPFStuff.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return ((string)value).CurrencyAsLong(Output.CurrencyCulture);
         }
     }
 }
