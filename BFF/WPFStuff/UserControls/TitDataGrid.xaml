@@ -47,6 +47,7 @@
                 </Style>
             </DataGrid.Style>
             <DataGrid.Columns>
+                <!-- Symbol -->
                 <DataGridTemplateColumn Header="S">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -58,15 +59,14 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <!-- Account -->
                 <DataGridTemplateColumn Header="{lex:Loc Account}" SortMemberPath="Account.Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <ComboBox Style="{StaticResource BFFComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Account, UpdateSourceTrigger=PropertyChanged}">
-                                            
-                                        </ComboBox> 
+                                        <ComboBox Style="{StaticResource BFFComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Account, UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
                                         <TextBlock Text="{lex:Loc Account_Transfer}" Foreground="{DynamicResource GrayBrush4}" />
@@ -76,30 +76,39 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <!-- Date -->
                 <DataGridTextColumn Header="{lex:Loc Date}" Binding="{Binding Date, StringFormat=\{0:yy/MM/dd\}}"/>
+                <!-- Payee -->
                 <DataGridTemplateColumn Header="{lex:Loc Payee}" SortMemberPath="Payee.Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <TextBlock Text="{Binding Payee}"></TextBlock>
+                                        <ComboBox Style="{StaticResource BFFComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllPayees, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Payee, UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding FromAccount}" Foreground="{DynamicResource GrayBrush4}"/>
-                                            <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
-                                                <Rectangle.OpacityMask>
-                                                    <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
-                                                </Rectangle.OpacityMask>
-                                            </Rectangle>
-                                        </StackPanel>
+                                        <ComboBox Style="{StaticResource BFFComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding FromAccount, UpdateSourceTrigger=PropertyChanged}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding}" Foreground="{DynamicResource GrayBrush4}"/>
+                                                        <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
+                                                            <Rectangle.OpacityMask>
+                                                                <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
+                                                            </Rectangle.OpacityMask>
+                                                        </Rectangle>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <!-- Category -->
                 <DataGridTemplateColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -123,6 +132,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <!-- Memo -->
                 <DataGridTemplateColumn Header="{lex:Loc Memo}" SortMemberPath="Memo" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -130,6 +140,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <!-- Sum -->
                 <DataGridTemplateColumn Header="{lex:Loc Sum}" SortMemberPath="Sum" Width="Auto" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -143,7 +154,6 @@
                                 </TextBox.Foreground>
                                 <TextBox.Text>
                                     <PriorityBinding FallbackValue="NaN">
-                                        <!-- todo: Very important! ValidationRules for Sums! -->
                                         <Binding Path="Sum" Converter="{StaticResource DepPropToUnset}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                             <Binding.ValidationRules>
                                                 <validationRules:CurrencyRule />
@@ -158,17 +168,11 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <!-- Cleared -->
                 <DataGridTemplateColumn Header="{lex:Loc Cleared}" SortMemberPath="Cleared" Width="Auto" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox Style="{StaticResource BFFCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center">
-                                <!-- todo: Find out how to change the color of the checkmark
-                                    <CheckBox.Style>
-                                        <Style TargetType="{x:Type CheckBox}" BasedOn="{DynamicResource MetroCheckBox}">
-                                            <Setter Property="Foreground" Value="DarkOrange"></Setter>
-                                        </Style>
-                                    </CheckBox.Style> -->
-                            </CheckBox>
+                            <CheckBox Style="{StaticResource BFFCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -357,7 +357,7 @@ namespace BFF.DB.SQLite
                 AccountCache = cnn.GetAll<Account>().ToDictionary(account => account.Id);
                 AllAccounts = new ObservableCollection<Account>(AccountCache.Values);
                 PayeeCache = cnn.GetAll<Payee>().ToDictionary(payee => payee.Id);
-                AllPayees = new ObservableCollection<Payee>(cnn.GetAll<Payee>());
+                AllPayees = new ObservableCollection<Payee>(PayeeCache.Values.OrderBy(payee => payee.Name));
 
                 CategoryCache = cnn.GetAll<Category>().ToDictionary(category => category.Id);
                 foreach (Category category in CategoryCache.Values)
