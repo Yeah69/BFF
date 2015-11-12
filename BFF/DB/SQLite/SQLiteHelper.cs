@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Globalization;
@@ -15,6 +16,14 @@ namespace BFF.DB.SQLite
 {
     class SqLiteHelper
     {
+
+        private static Dictionary<long, Account> AccountCache = new Dictionary<long, Account>();
+        public static ObservableCollection<Account> AllAccounts = new ObservableCollection<Account>();
+        private static Dictionary<long, Payee> PayeeCache = new Dictionary<long, Payee>();
+        public static ObservableCollection<Payee> AllPayees = new ObservableCollection<Payee>();
+        public static ObservableCollection<Category> AllCategoryRoots = new ObservableCollection<Category>();
+        private static Dictionary<long, Category> CategoryCache = new Dictionary<long, Category>();
+
         private static bool PopulateDb = false;
 
         private static void ExecuteOnDb(Action executeAction)
@@ -31,10 +40,7 @@ namespace BFF.DB.SQLite
 
         private static string CurrentDbFileName { get; set; }
 
-        private static string CurrentDbConnectionString
-        {
-            get { return $"Data Source={CurrentDbFileName};Version=3;foreign keys=true;"; }
-        }
+        private static string CurrentDbConnectionString => $"Data Source={CurrentDbFileName};Version=3;foreign keys=true;";
 
         private static Func<object[], TitBase> TheTitMap = objArr =>
         {
@@ -107,9 +113,7 @@ namespace BFF.DB.SQLite
         {
             PopulateDb = true;
             IEnumerable<TitBase> results;
-
-            ClearCache();
-            _cachingMode = true;
+            
             using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
             {
                 cnn.Open();
@@ -118,9 +122,9 @@ namespace BFF.DB.SQLite
                 stopwatch.Start();
 
                 //Fill the caches
-                AccountCache = cnn.GetAll<Account>().ToDictionary(x => x.Id);
-                PayeeCache = cnn.GetAll<Payee>().ToDictionary(x => x.Id);
-                CategoryCache = cnn.GetAll<Category>().ToDictionary(x => x.Id);
+                //AccountCache = cnn.GetAll<Account>().ToDictionary(x => x.Id);
+                //PayeeCache = cnn.GetAll<Payee>().ToDictionary(x => x.Id);
+                //CategoryCache = cnn.GetAll<Category>().ToDictionary(x => x.Id);
 
                 string sql = $@"SELECT * FROM [{TheTitName}] ORDER BY Date;";
 
@@ -138,8 +142,7 @@ namespace BFF.DB.SQLite
 
                 cnn.Close();
             }
-            _cachingMode = false;
-            ClearCache();
+
             PopulateDb = false;
             return results;
         }
@@ -148,9 +151,7 @@ namespace BFF.DB.SQLite
         {
             PopulateDb = true;
             IEnumerable<TitBase> results;
-
-            ClearCache();
-            _cachingMode = true;
+            
             using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
             {
                 cnn.Open();
@@ -159,9 +160,9 @@ namespace BFF.DB.SQLite
                 stopwatch.Start();
 
                 //Fill the caches
-                AccountCache = cnn.GetAll<Account>().ToDictionary(x => x.Id);
-                PayeeCache = cnn.GetAll<Payee>().ToDictionary(x => x.Id);
-                CategoryCache = cnn.GetAll<Category>().ToDictionary(x => x.Id);
+                //AccountCache = cnn.GetAll<Account>().ToDictionary(x => x.Id);
+                //PayeeCache = cnn.GetAll<Payee>().ToDictionary(x => x.Id);
+                //CategoryCache = cnn.GetAll<Category>().ToDictionary(x => x.Id);
 
                 string sql = $@"SELECT * FROM [{TheTitName}] WHERE AccountId = @accountId OR AccountId = -1 AND (PayeeId = @accountId OR CategoryId = @accountId) ORDER BY Date;";
 
@@ -179,8 +180,7 @@ namespace BFF.DB.SQLite
 
                 cnn.Close();
             }
-            _cachingMode = false;
-            ClearCache();
+
             PopulateDb = false;
             return results;
         }
@@ -197,90 +197,11 @@ namespace BFF.DB.SQLite
             }
         }
 
+        public static Account GetAccount(long id) => AccountCache[id];
 
-        private static bool _cachingMode;
+        public static Category GetCategory(long? id) => id == null ? null : ((CategoryCache.ContainsKey((long)id)) ? CategoryCache[(long)id] : null);
 
-        private static void ClearCache()
-        {
-            AccountCache.Clear();
-            CategoryCache.Clear();
-            PayeeCache.Clear();
-        }
-        
-        private static Dictionary<long, Account> AccountCache = new Dictionary<long, Account>();
-        public static Account GetAccount(long id)
-        {
-            if (_cachingMode && AccountCache.ContainsKey(id)) return AccountCache[id];
-            Account ret;
-            using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
-            {
-                cnn.Open();
-
-                ret = cnn.Get<Account>(id);
-
-                cnn.Close();
-            }
-            if(_cachingMode) AccountCache.Add(id, ret);
-            return ret;
-        }
-
-        public static IEnumerable<Account> GetAllAccounts()
-        {
-            IEnumerable<Account> ret;
-
-            using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
-            {
-                cnn.Open();
-
-                ret = cnn.GetAll<Account>();
-
-                if (_cachingMode)
-                {
-                    AccountCache.Clear();
-                    foreach(Account account in ret)
-                        AccountCache.Add(account.Id, account);
-                }
-
-                cnn.Close();
-            }
-
-            return ret;
-        }
-
-        private static Dictionary<long, Category> CategoryCache = new Dictionary<long, Category>();
-        public static Category GetCategory(long? id)
-        {
-            if (id == null) return null;
-            if (_cachingMode && CategoryCache.ContainsKey((long)id)) return CategoryCache[(long)id];
-            Category ret;
-            using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
-            {
-                cnn.Open();
-
-                ret = cnn.Get<Category>(id);
-
-                cnn.Close();
-            }
-            if (_cachingMode) CategoryCache.Add((long)id, ret);
-            return ret;
-        }
-
-        private static Dictionary<long, Payee> PayeeCache = new Dictionary<long, Payee>();
-        public static Payee GetPayee(long id)
-        {
-            if (_cachingMode && PayeeCache.ContainsKey(id)) return PayeeCache[id];
-            Payee ret;
-            using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
-            {
-                cnn.Open();
-
-                ret = cnn.Get<Payee>(id);
-
-                cnn.Close();
-            }
-            if (_cachingMode) PayeeCache.Add(id, ret);
-            return ret;
-        }
+        public static Payee GetPayee(long id) => PayeeCache[id];
 
         public static IEnumerable<SubTransaction> GetSubTransactions(long parentId)
         {
@@ -421,6 +342,32 @@ namespace BFF.DB.SQLite
         public static void OpenDatabase(string fileName)
         {
             CurrentDbFileName = fileName;
+            
+            AccountCache.Clear();
+            PayeeCache.Clear();
+            CategoryCache.Clear();
+
+            AllAccounts.Clear();
+            AllPayees.Clear();
+            AllCategoryRoots.Clear();
+
+            using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
+            {
+                cnn.Open();
+                AccountCache = cnn.GetAll<Account>().ToDictionary(account => account.Id);
+                AllAccounts = new ObservableCollection<Account>(AccountCache.Values);
+                PayeeCache = cnn.GetAll<Payee>().ToDictionary(payee => payee.Id);
+                AllPayees = new ObservableCollection<Payee>(cnn.GetAll<Payee>());
+
+                CategoryCache = cnn.GetAll<Category>().ToDictionary(category => category.Id);
+                foreach (Category category in CategoryCache.Values)
+                {
+                    if (category.ParentId != null)
+                        category.Parent = CategoryCache[(long)category.ParentId];
+                }
+                AllCategoryRoots = new ObservableCollection<Category>(CategoryCache.Values.Where(category => category.ParentId == null));
+                cnn.Close();
+            }
         }
 
         public static void PopulateDatabase(List<Transaction> transactions, List<SubTransaction> subTransactions, List<Transfer> transfers, List<Income> incomes)

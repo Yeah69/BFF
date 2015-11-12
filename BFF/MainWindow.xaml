@@ -14,6 +14,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -51,7 +52,7 @@
                         <Label Content="{lex:Loc Language}"/>
                         <ComboBox Name="LanguageCombo" SelectionChanged="LanguageCombo_SelectionChanged"/>
                         <Label Content="{lex:Loc Settings_Currency}"/>
-                        <ComboBox Name="CurrencyCombo" SelectionChanged="CurrencyCombo_OnSelectionChanged">
+                        <ComboBox Name="CurrencyCombo" SelectionChanged="CurrencyCombo_OnSelectionChanged" Style="{StaticResource VirtualisedMetroComboBox}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>

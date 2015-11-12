@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace BFF.WPFStuff.UserControls
 {
@@ -24,14 +26,14 @@ namespace BFF.WPFStuff.UserControls
         }
 
         
-        private void TitGrid_SumBox_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void TitGrid_TextBox_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             TextBox textBox = ((TextBox) sender);
             textBox.IsReadOnly = false;
             textBox.BorderThickness = new Thickness(1.0);
         }
 
-        private void TitGrid_SumBox_OnLostFocus(object sender, RoutedEventArgs e)
+        private void TitGrid_TextBox_OnLostFocus(object sender, RoutedEventArgs e)
         {
             TextBox textBox = ((TextBox)sender);
             textBox.IsReadOnly = true;

@@ -1,7 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Data;
 using BFF.DB.SQLite;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;

@@ -14,15 +14,12 @@ namespace BFF.ViewModel
 {
     public class MainWindowViewModel : ObservableObject
     {
-        private ObservableCollection<Account> _allAccounts;
         private bool _fileFlyoutIsOpen;
         private TitViewModel _allAccountsViewModel;
 
-        public ObservableCollection<Account> AllAccounts
-        {
-            get { return _allAccounts; }
-            set { _allAccounts = value; }
-        }
+        public ObservableCollection<Account> AllAccounts => SqLiteHelper.AllAccounts;
+
+        public ObservableCollection<Payee> AllPayees => SqLiteHelper.AllPayees;
 
         public TitViewModel AllAccountsViewModel
         {
@@ -52,7 +49,7 @@ namespace BFF.ViewModel
 
         public MainWindowViewModel()
         {
-            AllAccounts = new ObservableCollection<Account>();
+            //AllAccounts = new ObservableCollection<Account>();
             if (File.Exists(Settings.Default.DBLocation))
             {
                 SqLiteHelper.OpenDatabase(Settings.Default.DBLocation);
@@ -108,20 +105,16 @@ namespace BFF.ViewModel
 
         private void SetTabPages()
         {
-            IEnumerable<Account> accounts = SqLiteHelper.GetAllAccounts();
+
+            //todo: maybe just ref to AllAccounts from SqlLiteHelper
+            //IEnumerable<Account> accounts = SqLiteHelper.AllAccounts;
 
             AllAccountsViewModel = new TitViewModel();
 
-            foreach (Account account in accounts)
+            /*foreach (Account account in accounts)
             {
                 AllAccounts.Add(account);
-            }
+            }*/
         }
-    }
-
-    public class TabItem
-    {
-        public string Header { get; set; }
-        public TitViewModel ViewModel { get; set; }
     }
 }

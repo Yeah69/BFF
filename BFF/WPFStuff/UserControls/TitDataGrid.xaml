@@ -11,6 +11,7 @@
              xmlns:native="clr-namespace:BFF.Model.Native"
              xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
              xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700">
     <UserControl.Resources>
@@ -18,7 +19,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.datagrid.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.checkbox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/TransUC_Icons.xaml" />
+                <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMComboBox.xaml" />
+                <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMCheckBox.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:SumMultiConverter x:Key="SumMulti" PositiveBrush="{StaticResource BrushPositive}" NegativeBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
@@ -60,7 +64,9 @@
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <TextBlock Text="{Binding Account}"></TextBlock>
+                                        <ComboBox Style="{StaticResource BFFComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Account, UpdateSourceTrigger=PropertyChanged}">
+                                            
+                                        </ComboBox> 
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
                                         <TextBlock Text="{lex:Loc Account_Transfer}" Foreground="{DynamicResource GrayBrush4}" />
@@ -120,14 +126,14 @@
                 <DataGridTemplateColumn Header="{lex:Loc Memo}" SortMemberPath="Memo" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Memo}" ToolTip="{Binding Memo}"/>
+                            <TextBox Text="{Binding Memo, UpdateSourceTrigger=LostFocus}" ToolTip="{Binding Memo}" IsReadOnly="True" BorderThickness="0" Background="Transparent" LostFocus="TitGrid_TextBox_OnLostFocus" MouseDoubleClick="TitGrid_TextBox_OnMouseDoubleClick" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="{lex:Loc Sum}" SortMemberPath="Sum" Width="Auto" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBox Name="TitGrid_SumBox"  TextAlignment="Right" IsReadOnly="True" BorderThickness="0" Background="Transparent" LostFocus="TitGrid_SumBox_OnLostFocus" MouseDoubleClick="TitGrid_SumBox_OnMouseDoubleClick">
+                            <TextBox Name="TitGrid_SumBox" TextAlignment="Right" IsReadOnly="True" BorderThickness="0" Background="Transparent" LostFocus="TitGrid_TextBox_OnLostFocus" MouseDoubleClick="TitGrid_TextBox_OnMouseDoubleClick">
                                 <TextBox.Foreground>
                                     <MultiBinding Converter="{StaticResource SumMulti}">
                                         <Binding Path="Sum" />
@@ -155,7 +161,7 @@
                 <DataGridTemplateColumn Header="{lex:Loc Cleared}" SortMemberPath="Cleared" Width="Auto" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center">
+                            <CheckBox Style="{StaticResource BFFCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center">
                                 <!-- todo: Find out how to change the color of the checkmark
                                     <CheckBox.Style>
                                         <Style TargetType="{x:Type CheckBox}" BasedOn="{DynamicResource MetroCheckBox}">
