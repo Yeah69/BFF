@@ -12,6 +12,7 @@
              xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
              xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:userControls="clr-namespace:BFF.WPFStuff.UserControls"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700">
     <UserControl.Resources>
@@ -66,10 +67,19 @@
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <ComboBox Style="{StaticResource BFFComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Account, UpdateSourceTrigger=PropertyChanged}" />
+                                        <userControls:BFFComboBox ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                            <userControls:BFFComboBox.SelectedItem>
+                                                <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <validationRules:AccountRule />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </userControls:BFFComboBox.SelectedItem>    
+                                        </userControls:BFFComboBox>
+                                        <!--<ComboBox Style="{StaticResource BFFComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Account, UpdateSourceTrigger=PropertyChanged}" />-->
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <TextBlock Text="{lex:Loc Account_Transfer}" Foreground="{DynamicResource GrayBrush4}" />
+                                        <TextBox Text="{lex:Loc Account_Transfer}" Foreground="{DynamicResource GrayBrush4}" IsReadOnly="True" BorderThickness="0" Background="Transparent" />
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>
@@ -85,7 +95,16 @@
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <ComboBox Style="{StaticResource BFFComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllPayees, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Payee, UpdateSourceTrigger=PropertyChanged}" />
+                                        <userControls:BFFComboBox CreateNamedInstanceFunc="{Binding DataContext.CreatePayeeFunc, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:MetroWindow}}" ItemsSource="{Binding DataContext.AllPayees, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                            <userControls:BFFComboBox.SelectedItem>
+                                                <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <validationRules:PayeeRule />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </userControls:BFFComboBox.SelectedItem>
+                                        </userControls:BFFComboBox>
+                                        <!-- <ComboBox Style="{StaticResource BFFComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllPayees, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Payee, UpdateSourceTrigger=PropertyChanged}" />-->
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
                                         <ComboBox Style="{StaticResource BFFComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding FromAccount, UpdateSourceTrigger=PropertyChanged}">
@@ -115,7 +134,32 @@
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <TextBlock Text="{Binding Category}"></TextBlock>
+                                        <ComboBox Style="{StaticResource BFFTreeComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllCategoryRoots, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Category, UpdateSourceTrigger=PropertyChanged}">
+                                            <ComboBox.Resources>
+                                                <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
+                                                    <TextBlock Text="{Binding Name}" />
+                                                </HierarchicalDataTemplate>
+                                            </ComboBox.Resources>
+                                            <!--<ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <TextBlock Margin="3" Foreground="Blue" FontWeight="Bold" Text="{Binding Name}"/>
+                                                        <TreeView Margin="5" ItemsSource="{Binding Categories}">
+                                                            <TreeView.ItemTemplate>
+                                                                <HierarchicalDataTemplate ItemsSource="{Binding Categories}">
+                                                                    <TextBlock Text="{Binding Name}"/>
+                                                                    <HierarchicalDataTemplate.ItemTemplate>
+                                                                        <DataTemplate>
+                                                                            <TextBlock Text="{Binding}"/>
+                                                                        </DataTemplate>
+                                                                    </HierarchicalDataTemplate.ItemTemplate>
+                                                                </HierarchicalDataTemplate>
+                                                            </TreeView.ItemTemplate>
+                                                        </TreeView>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate> -->
+                                        </ComboBox>
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">

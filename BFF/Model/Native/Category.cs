@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
@@ -6,7 +7,7 @@ using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class Category : DataModelBase
+    public class Category : DataModelBase
     {
         [Key]
         public long Id { get; set; } = -1;
@@ -14,7 +15,7 @@ namespace BFF.Model.Native
         public string Name { get; set; }
 
         [Write(false)]
-        public List<Category> Categories { get; set; }
+        public ObservableCollection<Category> Categories { get; set; } = new ObservableCollection<Category>();
 
         [Write(false)]
         public Category Parent { get; set; }
@@ -43,7 +44,7 @@ namespace BFF.Model.Native
             Stack<string> nameStack = new Stack<string>(namePath.Split(':'));
             string name = nameStack.Pop();
             Category parentCategory = GetOrCreate(nameStack);
-            Category category = new Category {Name = name, Parent = parentCategory, Categories = new List<Category>() };
+            Category category = new Category {Name = name, Parent = parentCategory, Categories = new ObservableCollection<Category>() };
             parentCategory?.Categories.Add(category);
             Cache.Add(namePath, category);
             return category;
@@ -58,7 +59,7 @@ namespace BFF.Model.Native
                 return Cache[namePath];
             string name = nameStack.Pop();
             Category parentCategory = GetOrCreate(nameStack);
-            Category category = new Category { Name = name, Parent = parentCategory, Categories = new List<Category>() };
+            Category category = new Category { Name = name, Parent = parentCategory, Categories = new ObservableCollection<Category>() };
             parentCategory?.Categories.Add(category);
             Cache.Add(namePath, category);
             return category;
