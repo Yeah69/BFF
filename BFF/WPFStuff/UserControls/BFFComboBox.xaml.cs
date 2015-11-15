@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace BFF.WPFStuff.UserControls
 {
@@ -128,16 +126,9 @@ namespace BFF.WPFStuff.UserControls
             }
         }
 
-        private void SelectedBox_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void SelectedBox_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             StartEdit();
-        }
-
-        private void SelectionList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!inEditMode) return;
-            SelectionList.GetBindingExpression(ListBox.SelectedItemProperty).UpdateSource();
-            FinishEdit();
         }
 
         private void SelectedBox_OnLostFocus(object sender, RoutedEventArgs e)
@@ -146,7 +137,7 @@ namespace BFF.WPFStuff.UserControls
             FinishEdit();
         }
 
-        private void SelectedBox_OnKeyDown(object sender, KeyEventArgs e)
+        private void SelectedBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             int index;
             switch (e.Key)
@@ -160,29 +151,33 @@ namespace BFF.WPFStuff.UserControls
                     }
                     if (AddButt.Visibility == Visibility.Visible)
                         AddObject();
+                    e.Handled = true;
                     break;
                 case Key.Escape:
                     SelectedItem = oldSelectedItem;
                     FinishEdit();
+                    e.Handled = true;
                     break;
-                /*case Key.Down:
+                case Key.Down:
                         if (SelectionList.Items.Count > 0 && SelectionList.SelectedItem != null)
                         {
                             index = SelectionList.SelectedIndex + 1;
                             if (index >= SelectionList.Items.Count)
                                 index = 0;
                             SelectionList.SelectedIndex = index;
-                        }
-                        break;
-                    case Key.Up:
-                        if (SelectionList.Items.Count > 0 && SelectionList.SelectedItem != null)
-                        {
-                            index = SelectionList.SelectedIndex - 1;
-                            if (index < 0)
-                                index = SelectionList.Items.Count - 1;
-                            SelectionList.SelectedIndex = index;
-                        }
-                        break;*/
+                    }
+                    e.Handled = true;
+                    break;
+                case Key.Up:
+                    if (SelectionList.Items.Count > 0 && SelectionList.SelectedItem != null)
+                    {
+                        index = SelectionList.SelectedIndex - 1;
+                        if (index < 0)
+                            index = SelectionList.Items.Count - 1;
+                        SelectionList.SelectedIndex = index;
+                }
+                e.Handled = true;
+                break;
             }
         }
 
@@ -215,6 +210,18 @@ namespace BFF.WPFStuff.UserControls
         {
             SelectedItem = SelectionList.SelectedItem;
             FinishEdit();
+        }
+
+        private void SelectedBox_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            if(!inEditMode)
+                SelectedBox.BorderThickness = new Thickness(1.0);
+        }
+
+        private void SelectedBox_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            if(!inEditMode)
+                SelectedBox.BorderThickness = new Thickness(0.0);
         }
     }
 }

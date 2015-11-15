@@ -92,10 +92,10 @@
                 <DataGridTemplateColumn Header="{lex:Loc Payee}" SortMemberPath="Payee.Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}">
+                            <ContentControl HorizontalAlignment="Stretch"  Content="{Binding}">
                                 <ContentControl.Resources>
-                                    <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <userControls:BFFComboBox CreateNamedInstanceFunc="{Binding DataContext.CreatePayeeFunc, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:MetroWindow}}" ItemsSource="{Binding DataContext.AllPayees, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                    <DataTemplate DataType="{x:Type structure:TitBase}" >
+                                        <userControls:BFFComboBox HorizontalAlignment="Stretch" CreateNamedInstanceFunc="{Binding DataContext.CreatePayeeFunc, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:MetroWindow}}" ItemsSource="{Binding DataContext.AllPayees, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
                                             <userControls:BFFComboBox.SelectedItem>
                                                 <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
