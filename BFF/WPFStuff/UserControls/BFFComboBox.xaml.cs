@@ -21,7 +21,10 @@ namespace BFF.WPFStuff.UserControls
 
         private static void SelectedItemChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue != e.OldValue) ((BFFComboBox)dependencyObject).SelectedItem = e.NewValue;
+            if (e.NewValue != e.OldValue)
+            {
+                ((BFFComboBox)dependencyObject).SelectedItem = e.NewValue;
+            }
         }
 
         private static void ItemsSourceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
@@ -34,17 +37,35 @@ namespace BFF.WPFStuff.UserControls
             if (e.NewValue != e.OldValue) ((BFFComboBox)dependencyObject).CreateNamedInstanceFunc = (Func<string, object>)e.NewValue;
         }
 
-        public object SelectedItem { get; set; }
+        public object SelectedItem
+        {
+            get { return GetValue(SelectedItemProperty); }
+            set
+            {
+                SetValue(SelectedItemProperty, value);
+                if(!inEditMode) SelectedBox.Text = value?.ToString();
+            }
+        }
 
-        public IList ItemsSource { get; set; }
+        public IList ItemsSource
+        {
+            get { return (IList)GetValue(ItemsSourceProperty); }
+            set { SetValue(ItemsSourceProperty, value); }
+        }
 
-        public Func<string, object> CreateNamedInstanceFunc { get; set; }
+        public Func<string, object> CreateNamedInstanceFunc
+        {
+            get { return (Func<string, object>)GetValue(CreateNamedInstanceFuncProperty); }
+            set { SetValue(CreateNamedInstanceFuncProperty, value); }
+        }
 
         private bool inEditMode = false;
 
-        private bool textChanged = false;
-
         private bool focusedLostDisabled = false;
+
+        private bool inListBox = false;
+
+        private object oldSelectedItem;
 
         public BFFComboBox()
         {
@@ -55,9 +76,11 @@ namespace BFF.WPFStuff.UserControls
         {
             if (!inEditMode)
             {
+                oldSelectedItem = SelectedItem;
                 SelectedBox.BorderThickness = new Thickness(1.0);
                 SelectedBox.IsReadOnly = false;
                 SelectionList.ItemsSource = ItemsSource;
+                SelectionList.SelectedItem = SelectedItem;
                 SelectionPopup.IsOpen = true;
                 inEditMode = true;
             }
@@ -67,12 +90,13 @@ namespace BFF.WPFStuff.UserControls
         {
             if (inEditMode)
             {
-                SelectedBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                 SelectedBox.BorderThickness = new Thickness(0.0);
                 SelectedBox.IsReadOnly = true;
                 SelectionPopup.IsOpen = false;
                 AddButt.Visibility = Visibility.Collapsed;
                 inEditMode = false;
+                SelectedBox.Text = SelectedItem.ToString();
+                GetBindingExpression(BFFComboBox.SelectedItemProperty).UpdateSource();
             }
         }
 
@@ -80,7 +104,6 @@ namespace BFF.WPFStuff.UserControls
         {
             object addedObject = CreateNamedInstanceFunc?.Invoke(SelectedBox.Text);
             SelectedItem = addedObject;
-            GetBindingExpression(BFFComboBox.SelectedItemProperty).UpdateSource();
             FinishEdit();
         }
 
@@ -110,32 +133,16 @@ namespace BFF.WPFStuff.UserControls
             StartEdit();
         }
 
-        private void AddButt_OnClick(object sender, RoutedEventArgs e)
-        {
-            AddObject();
-        }
-
         private void SelectionList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (textChanged)
-            {
-                e.Handled = true;
-                return;
-            }
+            if (!inEditMode) return;
             SelectionList.GetBindingExpression(ListBox.SelectedItemProperty).UpdateSource();
             FinishEdit();
         }
 
         private void SelectedBox_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            textChanged = false;
-            e.Handled = true;
-        }
-
-        private void SelectedBox_OnGotFocus(object sender, RoutedEventArgs e)
-        {
             if (focusedLostDisabled) return;
-            textChanged = true;
             FinishEdit();
         }
 
@@ -147,7 +154,7 @@ namespace BFF.WPFStuff.UserControls
                 case Key.Enter:
                     if (SelectionList.Items.Count > 0 && SelectionList.SelectedItem != null)
                     {
-                        SelectionList.GetBindingExpression(ListBox.SelectedItemProperty).UpdateSource();
+                        SelectedItem = SelectionList.SelectedItem;
                         FinishEdit();
                         break;
                     }
@@ -155,6 +162,7 @@ namespace BFF.WPFStuff.UserControls
                         AddObject();
                     break;
                 case Key.Escape:
+                    SelectedItem = oldSelectedItem;
                     FinishEdit();
                     break;
                 /*case Key.Down:
@@ -178,9 +186,9 @@ namespace BFF.WPFStuff.UserControls
             }
         }
 
-        private void BFFComboBox_OnLostFocus(object sender, RoutedEventArgs e)
+        private void AddButt_OnClick(object sender, RoutedEventArgs e)
         {
-            FinishEdit();
+            AddObject();
         }
 
         private void AddButt_OnMouseEnter(object sender, MouseEventArgs e)
@@ -191,6 +199,22 @@ namespace BFF.WPFStuff.UserControls
         private void AddButt_OnMouseLeave(object sender, MouseEventArgs e)
         {
             focusedLostDisabled = false;
+        }
+
+        private void SelectionList_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            focusedLostDisabled = true;
+        }
+
+        private void SelectionList_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            focusedLostDisabled = false;
+        }
+
+        private void UIElement_OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            SelectedItem = SelectionList.SelectedItem;
+            FinishEdit();
         }
     }
 }

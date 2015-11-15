@@ -9,7 +9,6 @@
              lex:LocalizeDictionary.DesignCulture="en-US"
              lex:ResxLocalizationProvider.DefaultAssembly="BFF"
              lex:ResxLocalizationProvider.DefaultDictionary="Resources"
-             LostFocus="BFFComboBox_OnLostFocus"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700">
     <UserControl.Resources>
@@ -17,19 +16,18 @@
     </UserControl.Resources>
     <Grid>
         <StackPanel Orientation="Horizontal">
-            <TextBox Name="SelectedBox" 
+            <TextBox x:Name="SelectedBox" 
                      MouseDoubleClick="SelectedBox_OnMouseDoubleClick"
                      TextChanged="SelectedBox_OnTextChanged"
                      LostFocus="SelectedBox_OnLostFocus"
-                     GotFocus="SelectedBox_OnGotFocus"
                      KeyDown="SelectedBox_OnKeyDown"
                      BorderThickness="0"
                      Margin="0"
                      Padding="0"
                      IsReadOnly="True"
                      Background="Transparent"
-                     MaxLines="1"
-                     Text="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type userControls:BFFComboBox}}, Mode=OneWay}"/>
+                     MaxLines="1"/>
+                     <!-- Text="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type userControls:BFFComboBox}}, Mode=OneWay}" -->
             <Button Name="AddButt"
                     Click="AddButt_OnClick"
                     MouseEnter="AddButt_OnMouseEnter"
@@ -44,13 +42,13 @@
                PlacementTarget="{Binding ElementName=SelectedBox}"
                MinWidth="{Binding ElementName=SelectedBox, Path=ActualWidth}"
                MaxHeight="200">
-            <ListBox Name="SelectionList" 
-                     SelectionChanged="SelectionList_OnSelectionChanged"
-                     SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type userControls:BFFComboBox}}, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
-                     BorderThickness="1"><!-- ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type userControls:BFFComboBox}}}" -->
+            <ListBox x:Name="SelectionList"
+                     MouseEnter="SelectionList_OnMouseEnter"
+                     MouseLeave="SelectionList_OnMouseLeave"
+                     BorderThickness="1">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Margin="0,0,5,0" Text="{Binding}" />
+                        <TextBlock Margin="0,0,5,0" Text="{Binding}" MouseUp="UIElement_OnMouseUp" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
