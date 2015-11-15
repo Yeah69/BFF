@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
@@ -195,6 +196,8 @@ namespace BFF.DB.SQLite
 
                 cnn.Close();
             }
+            AllAccounts.Add(newAccount);
+            AccountCache.Add(newAccount.Id, newAccount);
         }
 
         public static Account GetAccount(long id) => AccountCache[id];
@@ -202,6 +205,20 @@ namespace BFF.DB.SQLite
         public static Category GetCategory(long? id) => id == null ? null : ((CategoryCache.ContainsKey((long)id)) ? CategoryCache[(long)id] : null);
 
         public static Payee GetPayee(long id) => PayeeCache[id];
+
+        public static void InsertPayee(Payee newPayee)
+        {
+            using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
+            {
+                cnn.Open();
+
+                newPayee.Id = cnn.Insert<Payee>(newPayee);
+
+                cnn.Close();
+            }
+            AllPayees.Add(newPayee);
+            PayeeCache.Add(newPayee.Id, newPayee);
+        }
 
         public static IEnumerable<SubTransaction> GetSubTransactions(long parentId)
         {
@@ -341,6 +358,7 @@ namespace BFF.DB.SQLite
 
         public static void OpenDatabase(string fileName)
         {
+            PopulateDb = true;
             CurrentDbFileName = fileName;
             
             AccountCache.Clear();
@@ -358,16 +376,28 @@ namespace BFF.DB.SQLite
                 AllAccounts = new ObservableCollection<Account>(AccountCache.Values);
                 PayeeCache = cnn.GetAll<Payee>().ToDictionary(payee => payee.Id);
                 AllPayees = new ObservableCollection<Payee>(PayeeCache.Values.OrderBy(payee => payee.Name));
+                
+                IEnumerable<Category> categories = cnn.Query<Category>($"SELECT * FROM [{nameof(Category)}s]",new[] { typeof(long), typeof(long?), typeof(string) },
+                    objArray =>
+                    {
+                        Category ret = new Category {Id = (long)objArray[0], Parent = (objArray[1] == null) ? null : new Category {Id = (long)objArray[1]} /*dummy*/, Name = (string)objArray[2]};
+                        CategoryCache.Add(ret.Id, ret);
+                        return ret;
+                    }, splitOn: "*");
 
-                CategoryCache = cnn.GetAll<Category>().ToDictionary(category => category.Id);
-                foreach (Category category in CategoryCache.Values)
+                /*CategoryCache = cnn.GetAll<Category>().ToDictionary(category => category.Id);*/
+                foreach (Category category in categories)
                 {
                     if (category.ParentId != null)
-                        category.Parent = CategoryCache[(long)category.ParentId];
+                    {
+                        category.Parent = CategoryCache[(long) category.ParentId];
+                        category.Parent.Categories.Add(category);
+                    }
                 }
-                AllCategoryRoots = new ObservableCollection<Category>(CategoryCache.Values.Where(category => category.ParentId == null));
+                AllCategoryRoots = new ObservableCollection<Category>(categories.Where(category => category.ParentId == null));
                 cnn.Close();
             }
+            PopulateDb = false;
         }
 
         public static void PopulateDatabase(List<Transaction> transactions, List<SubTransaction> subTransactions, List<Transfer> transfers, List<Income> incomes)

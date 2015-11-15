@@ -74,6 +74,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -126,6 +127,8 @@
     <Compile Include="ViewModel\ImportDialogViewModel.cs" />
     <Compile Include="ViewModel\TitViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="WPFStuff\Behaviors\ScrollIntoViewForListBox.cs" />
+    <Compile Include="WPFStuff\Converters\SearchToVisibilityConverter.cs" />
     <Compile Include="WPFStuff\Converters\CurrencyComboConverter.cs" />
     <Compile Include="WPFStuff\Converters\LongToCurrencyConverter.cs" />
     <Compile Include="WPFStuff\Converters\NullToLexConverter.cs" />
@@ -138,6 +141,9 @@
     <Compile Include="WPFStuff\Converters\TypeToBrushConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
     <Compile Include="WPFStuff\RelayCommand.cs" />
+    <Compile Include="WPFStuff\UserControls\BFFComboBox.xaml.cs">
+      <DependentUpon>BFFComboBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPFStuff\UserControls\ImportDialog.xaml.cs">
       <DependentUpon>ImportDialog.xaml</DependentUpon>
     </Compile>
@@ -145,7 +151,9 @@
       <DependentUpon>TitDataGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPFStuff\ObservableObject.cs" />
+    <Compile Include="WPFStuff\ValidationRules\PayeeRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\CurrencyLongRangeRule.cs" />
+    <Compile Include="WPFStuff\ValidationRules\AccountRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\NoEmptyNullStringRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\CurrencyRule.cs" />
     <Page Include="MainWindow.xaml">
@@ -177,6 +185,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPFStuff\Resources\TransUC_Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFStuff\UserControls\BFFComboBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

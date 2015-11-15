@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
@@ -21,6 +22,8 @@ namespace BFF.ViewModel
 
         public ObservableCollection<Payee> AllPayees => SqLiteHelper.AllPayees;
 
+        public ObservableCollection<Category> AllCategoryRoots => SqLiteHelper.AllCategoryRoots; 
+
         public TitViewModel AllAccountsViewModel
         {
             get { return _allAccountsViewModel; }
@@ -36,8 +39,6 @@ namespace BFF.ViewModel
         public ICommand NewAccountCommand => new RelayCommand(param =>
         {
             SqLiteHelper.AddAccount(NewAccount);
-            AllAccounts.Add(NewAccount);
-            OnPropertyChanged(nameof(AllAccounts));
             NewAccount = new Account { Id = -1, Name = "", StartingBalance = 0L };
             OnPropertyChanged(nameof(NewAccount));
         }
@@ -46,6 +47,13 @@ namespace BFF.ViewModel
         public ICommand NewBudgetPlanCommand => new RelayCommand(param => NewBudgetPlan(), param => true);
         public ICommand OpenBudgetPlanCommand => new RelayCommand(param => OpenBudgetPlan(), param => true);
         public ICommand ImportBudgetPlanCommand => new RelayCommand(ImportBudgetPlan, param => true);
+
+        public Func<string, Payee> CreatePayeeFunc => name => 
+        {
+            Payee ret = new Payee {Name = name};
+            SqLiteHelper.InsertPayee(ret);
+            return ret;
+        }; 
 
         public MainWindowViewModel()
         {
