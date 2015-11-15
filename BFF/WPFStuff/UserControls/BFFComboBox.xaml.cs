@@ -119,7 +119,7 @@ namespace BFF.WPFStuff.UserControls
                         if (item.ToString() == SelectedBox.Text) fullMatch = true;
                     }
                 }
-                AddButt.Visibility = fullMatch || string.IsNullOrEmpty(SelectedBox.Text) ? Visibility.Collapsed : Visibility.Visible;
+                AddButt.Visibility = CreateNamedInstanceFunc == null || fullMatch || string.IsNullOrEmpty(SelectedBox.Text)  ? Visibility.Collapsed : Visibility.Visible;
                 SelectionList.ItemsSource = filtered;
                 if (SelectionList.SelectedItems.Count == 0 && filtered.Count > 0)
                     SelectionList.SelectedIndex = 0;
