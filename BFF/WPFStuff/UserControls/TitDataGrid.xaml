@@ -104,23 +104,24 @@
                                                 </Binding>
                                             </userControls:BFFComboBox.SelectedItem>
                                         </userControls:BFFComboBox>
-                                        <!-- <ComboBox Style="{StaticResource BFFComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllPayees, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Payee, UpdateSourceTrigger=PropertyChanged}" />-->
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <ComboBox Style="{StaticResource BFFComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding FromAccount, UpdateSourceTrigger=PropertyChanged}">
-                                            <ComboBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding}" Foreground="{DynamicResource GrayBrush4}"/>
-                                                        <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
-                                                            <Rectangle.OpacityMask>
-                                                                <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
-                                                            </Rectangle.OpacityMask>
-                                                        </Rectangle>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ComboBox.ItemTemplate>
-                                        </ComboBox>
+                                        <userControls:BFFComboBox ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" Foreground="{DynamicResource GrayBrush4}">
+                                            <userControls:BFFComboBox.SelectedItem>
+                                                <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <validationRules:AccountRule />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </userControls:BFFComboBox.SelectedItem>
+                                            <userControls:BFFComboBox.SymbolRectangle>
+                                                <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{Binding Foreground, ElementName=BFFComboBox_Control}">
+                                                    <Rectangle.OpacityMask>
+                                                        <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
+                                                    </Rectangle.OpacityMask>
+                                                </Rectangle>
+                                            </userControls:BFFComboBox.SymbolRectangle>
+                                        </userControls:BFFComboBox>
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>
@@ -162,14 +163,22 @@
                                         </ComboBox>
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding ToAccount}" Foreground="{DynamicResource GrayBrush4}"></TextBlock>
-                                            <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
-                                                <Rectangle.OpacityMask>
-                                                    <VisualBrush Visual="{DynamicResource appbar_layout_expand_right}"/>
-                                                </Rectangle.OpacityMask>
-                                            </Rectangle>
-                                        </StackPanel>
+                                        <userControls:BFFComboBox ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" Foreground="{DynamicResource GrayBrush4}">
+                                            <userControls:BFFComboBox.SelectedItem>
+                                                <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <validationRules:AccountRule />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </userControls:BFFComboBox.SelectedItem>
+                                            <userControls:BFFComboBox.SymbolRectangle>
+                                                <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{Binding Foreground, ElementName=BFFComboBox_Control}">
+                                                    <Rectangle.OpacityMask>
+                                                        <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
+                                                    </Rectangle.OpacityMask>
+                                                </Rectangle>
+                                            </userControls:BFFComboBox.SymbolRectangle>
+                                        </userControls:BFFComboBox>
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>

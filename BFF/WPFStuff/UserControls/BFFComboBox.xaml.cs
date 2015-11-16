@@ -3,6 +3,7 @@ using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Shapes;
 
 namespace BFF.WPFStuff.UserControls
 {
@@ -17,12 +18,11 @@ namespace BFF.WPFStuff.UserControls
 
         public static DependencyProperty CreateNamedInstanceFuncProperty = DependencyProperty.Register(nameof(CreateNamedInstanceFunc), typeof(Func<string, object>), typeof(BFFComboBox), new PropertyMetadata(null, CreateNamedInstanceFunctionChanged));
 
+        public static DependencyProperty SymbolRectangleProperty = DependencyProperty.Register(nameof(SymbolRectangle), typeof(Rectangle), typeof(BFFComboBox), new PropertyMetadata(null, SymbolRectangelChanged));
+
         private static void SelectedItemChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue != e.OldValue)
-            {
-                ((BFFComboBox)dependencyObject).SelectedItem = e.NewValue;
-            }
+            if (e.NewValue != e.OldValue) ((BFFComboBox)dependencyObject).SelectedItem = e.NewValue;
         }
 
         private static void ItemsSourceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
@@ -33,6 +33,12 @@ namespace BFF.WPFStuff.UserControls
         private static void CreateNamedInstanceFunctionChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != e.OldValue) ((BFFComboBox)dependencyObject).CreateNamedInstanceFunc = (Func<string, object>)e.NewValue;
+        }
+
+        private static void SymbolRectangelChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue != e.OldValue)
+                ((BFFComboBox)dependencyObject).SymbolRectangle = (Rectangle)e.NewValue;
         }
 
         public object SelectedItem
@@ -57,6 +63,12 @@ namespace BFF.WPFStuff.UserControls
             set { SetValue(CreateNamedInstanceFuncProperty, value); }
         }
 
+        public Rectangle SymbolRectangle
+        {
+            get { return (Rectangle)GetValue(SymbolRectangleProperty); }
+            set { SetValue(SymbolRectangleProperty, value); }
+        }
+
         private bool inEditMode = false;
 
         private bool focusedLostDisabled = false;
@@ -75,7 +87,7 @@ namespace BFF.WPFStuff.UserControls
             if (!inEditMode)
             {
                 oldSelectedItem = SelectedItem;
-                SelectedBox.BorderThickness = new Thickness(1.0);
+                SelectedBoxBorder.Visibility = Visibility.Visible;
                 SelectedBox.IsReadOnly = false;
                 SelectionList.ItemsSource = ItemsSource;
                 SelectionList.SelectedItem = SelectedItem;
@@ -88,13 +100,13 @@ namespace BFF.WPFStuff.UserControls
         {
             if (inEditMode)
             {
-                SelectedBox.BorderThickness = new Thickness(0.0);
+                SelectedBoxBorder.Visibility = Visibility.Hidden;
                 SelectedBox.IsReadOnly = true;
                 SelectionPopup.IsOpen = false;
                 AddButt.Visibility = Visibility.Collapsed;
                 inEditMode = false;
                 SelectedBox.Text = SelectedItem.ToString();
-                GetBindingExpression(BFFComboBox.SelectedItemProperty).UpdateSource();
+                GetBindingExpression(SelectedItemProperty)?.UpdateSource();
             }
         }
 
@@ -215,13 +227,13 @@ namespace BFF.WPFStuff.UserControls
         private void SelectedBox_OnMouseEnter(object sender, MouseEventArgs e)
         {
             if(!inEditMode)
-                SelectedBox.BorderThickness = new Thickness(1.0);
+                SelectedBoxBorder.Visibility= Visibility.Visible;
         }
 
         private void SelectedBox_OnMouseLeave(object sender, MouseEventArgs e)
         {
             if(!inEditMode)
-                SelectedBox.BorderThickness = new Thickness(0.0);
+                SelectedBoxBorder.Visibility = Visibility.Hidden;
         }
     }
 }
