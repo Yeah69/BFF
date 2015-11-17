@@ -11,9 +11,9 @@
              lex:ResxLocalizationProvider.DefaultDictionary="Resources"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700"
-             Name="BffComboBoxControl">
+             Name="BffTreeComboBoxControl">
     <UserControl.Resources>
-        <ResourceDictionary Source="/WPFStuff/Resources/TransUC_Icons.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.treeview.xaml" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -36,8 +36,8 @@
                          IsReadOnly="True"
                          Background="Transparent"
                          MaxLines="1"
-                         Foreground="{Binding Foreground, ElementName=BffComboBoxControl}"/>
-            <ContentPresenter Content="{Binding SymbolRectangle, ElementName=BffComboBoxControl}" Margin="0,0,2,0" />
+                         Foreground="{Binding Foreground, ElementName=BffTreeComboBoxControl}"/>
+            <ContentPresenter Content="{Binding SymbolRectangle, ElementName=BffTreeComboBoxControl}" Margin="0,0,2,0" />
         </StackPanel>
         <Button Name="AddButt"
                     Click="AddButt_OnClick"
@@ -52,12 +52,21 @@
                Placement="Bottom"
                PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
                PlacementTarget="{Binding ElementName=SelectedBox}"
-               MinWidth="{Binding ElementName=BffComboBoxControl, Path=ActualWidth}"
+               MinWidth="{Binding ElementName=BffTreeComboBoxControl, Path=ActualWidth}"
                MaxHeight="200">
             <TreeView Name="SelectionTree"
                      MouseEnter="SelectionList_OnMouseEnter"
                      MouseLeave="SelectionList_OnMouseLeave"
                      BorderThickness="1">
+                <i:Interaction.Behaviors>
+                    <behaviors:BindableSelectedItemBehavior SelectedItem="{Binding SelectedItem, ElementName=BffTreeComboBoxControl, Mode=TwoWay}" />
+                </i:Interaction.Behaviors>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MetroTreeViewItem}">
+                        <Setter Property="IsExpanded" Value="True"/>
+                        <EventSetter Event="MouseLeftButtonUp" Handler="UIElement_OnMouseUp" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
             </TreeView>
         </Popup>
     </Grid>

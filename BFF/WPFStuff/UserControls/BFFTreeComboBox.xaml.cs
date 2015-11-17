@@ -3,7 +3,9 @@ using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interactivity;
 using System.Windows.Shapes;
+using BFF.WPFStuff.Behaviors;
 
 namespace BFF.WPFStuff.UserControls
 {
@@ -90,7 +92,8 @@ namespace BFF.WPFStuff.UserControls
                 SelectedBoxBorder.Visibility = Visibility.Visible;
                 SelectedBox.IsReadOnly = false;
                 SelectionTree.ItemsSource = ItemsSource;
-                // todo => SelectionTree.SelectedItem = SelectedItem;
+                Interaction.GetBehaviors(SelectionTree);
+                ((BindableSelectedItemBehavior) Interaction.GetBehaviors(SelectionTree)[0]).SelectedItem = SelectedItem;
                 SelectionPopup.IsOpen = true;
                 inEditMode = true;
             }
