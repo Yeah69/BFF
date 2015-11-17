@@ -74,9 +74,8 @@
                                                         <validationRules:AccountRule />
                                                     </Binding.ValidationRules>
                                                 </Binding>
-                                            </userControls:BFFComboBox.SelectedItem>    
+                                            </userControls:BFFComboBox.SelectedItem>
                                         </userControls:BFFComboBox>
-                                        <!--<ComboBox Style="{StaticResource BFFComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Account, UpdateSourceTrigger=PropertyChanged}" />-->
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
                                         <TextBox Text="{lex:Loc Account_Transfer}" Foreground="{DynamicResource GrayBrush4}" IsReadOnly="True" BorderThickness="0" Background="Transparent" />
@@ -115,7 +114,7 @@
                                                 </Binding>
                                             </userControls:BFFComboBox.SelectedItem>
                                             <userControls:BFFComboBox.SymbolRectangle>
-                                                <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{Binding Foreground, ElementName=BFFComboBox_Control}">
+                                                <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
                                                     <Rectangle.OpacityMask>
                                                         <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
                                                     </Rectangle.OpacityMask>
@@ -135,13 +134,27 @@
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <ComboBox Style="{StaticResource BFFTreeComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllCategoryRoots, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Category, UpdateSourceTrigger=PropertyChanged}">
+                                        <userControls:BFFTreeComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding DataContext.AllCategoryRoots, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                            <userControls:BFFTreeComboBox.SelectedItem>
+                                                <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                                    <!-- <Binding.ValidationRules>
+                                                        <validationRules:PayeeRule />
+                                                    </Binding.ValidationRules> -->
+                                                </Binding> 
+                                            </userControls:BFFTreeComboBox.SelectedItem>
+                                            <userControls:BFFTreeComboBox.Resources>
+                                                <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
+                                                    <TextBlock Text="{Binding Name}" />
+                                                </HierarchicalDataTemplate>
+                                            </userControls:BFFTreeComboBox.Resources>
+                                        </userControls:BFFTreeComboBox>
+                                        <!--<ComboBox Style="{StaticResource BFFTreeComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllCategoryRoots, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Category, UpdateSourceTrigger=PropertyChanged}">
                                             <ComboBox.Resources>
                                                 <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
                                                     <TextBlock Text="{Binding Name}" />
                                                 </HierarchicalDataTemplate>
                                             </ComboBox.Resources>
-                                            <!--<ComboBox.ItemTemplate>
+                                            <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel>
                                                         <TextBlock Margin="3" Foreground="Blue" FontWeight="Bold" Text="{Binding Name}"/>
@@ -159,8 +172,8 @@
                                                         </TreeView>
                                                     </StackPanel>
                                                 </DataTemplate>
-                                            </ComboBox.ItemTemplate> -->
-                                        </ComboBox>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox> -->
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
                                         <userControls:BFFComboBox ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" Foreground="{DynamicResource GrayBrush4}">
@@ -172,7 +185,7 @@
                                                 </Binding>
                                             </userControls:BFFComboBox.SelectedItem>
                                             <userControls:BFFComboBox.SymbolRectangle>
-                                                <Rectangle Margin="5,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{Binding Foreground, ElementName=BFFComboBox_Control}">
+                                                <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
                                                     <Rectangle.OpacityMask>
                                                         <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
                                                     </Rectangle.OpacityMask>
