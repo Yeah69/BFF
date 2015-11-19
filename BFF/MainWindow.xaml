@@ -20,6 +20,7 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:LongToCurrencyConverter x:Key="CurrencyConverter"/>
             <converters:CurrencyComboConverter x:Key="CurrencyComboConverter"/>
+            <converters:DateComboConverter x:Key="DateComboConverter"/>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
@@ -71,6 +72,30 @@
                                         <Label Content="{Binding Name, Converter={StaticResource CurrencyComboConverter}, ConverterParameter=positive}" Foreground="{StaticResource BrushPositive}" Grid.Row="1" Grid.Column="1" />
                                         <Label Content="{lex:Loc CurrencyCombo_Negative}" Grid.Row="2" Grid.Column="0" />
                                         <Label Content="{Binding Name, Converter={StaticResource CurrencyComboConverter}, ConverterParameter=negative}" Foreground="{StaticResource BrushNegative}" Grid.Row="2" Grid.Column="1" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Label Content="{lex:Loc Settings_Date}"/>
+                        <ComboBox Name="DateCombo" SelectionChanged="DateCombo_OnSelectionChanged" Style="{StaticResource VirtualisedMetroComboBox}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="{Binding Name}" Grid.Row="0" Grid.Column="0" />
+                                        <Label Content="{Binding DisplayName}" Grid.Row="0" Grid.Column="1" />
+                                        <Label Content="{lex:Loc DateCombo_Short}" Grid.Row="1" Grid.Column="0" />
+                                        <Label Content="{Binding Name, Converter={StaticResource DateComboConverter}, ConverterParameter=short}"  Grid.Row="1" Grid.Column="1" />
+                                        <Label Content="{lex:Loc DateCombo_Long}" Grid.Row="2" Grid.Column="0" />
+                                        <Label Content="{Binding Name, Converter={StaticResource DateComboConverter}, ConverterParameter=long}"  Grid.Row="2" Grid.Column="1" />
                                     </Grid>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>

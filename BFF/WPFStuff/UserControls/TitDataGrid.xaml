@@ -13,6 +13,7 @@
              xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:userControls="clr-namespace:BFF.WPFStuff.UserControls"
+             xmlns:attachedProperties="clr-namespace:BFF.WPFStuff.AttachedProperties"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700">
     <UserControl.Resources>
@@ -40,6 +41,10 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False">
+            <DataGrid.Resources>
+                <Style TargetType="ComboBox" BasedOn="{StaticResource MetroComboBox}">
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource MetroDataGrid}"
                            TargetType="{x:Type DataGrid}">
@@ -52,7 +57,7 @@
                 <DataGridTemplateColumn Header="S">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Rectangle HorizontalAlignment="Left" VerticalAlignment="Center" Height="15" Width="15" Fill="{Binding Type, Converter={StaticResource TypeToBrush}}">
+                            <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" Width="15" Fill="{Binding Type, Converter={StaticResource TypeToBrush}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Visual="{Binding Type, Converter={StaticResource TypeToCanvas}}" />
                                 </Rectangle.OpacityMask>
@@ -67,7 +72,25 @@
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <userControls:BFFComboBox ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                        <ComboBox TextSearch.TextPath="Name"
+                                                  MouseEnter="CheckBox_OnMouseEnter"
+                                                  MouseLeave="CheckBox_OnMouseLeave"
+                                                  Background="Transparent"
+                                                  BorderThickness="0"
+                                                  IsEditable="True"
+                                                  IsTextSearchCaseSensitive="False"
+                                                  IsTextSearchEnabled="True"
+                                                  attachedProperties:CTB.CollapseToggleButtonsProperty="True"
+                                                  ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                            <ComboBox.SelectedItem>
+                                                <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <validationRules:AccountRule />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </ComboBox.SelectedItem>
+                                        </ComboBox>
+                                        <!-- <userControls:BFFComboBox ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
                                             <userControls:BFFComboBox.SelectedItem>
                                                 <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
@@ -75,7 +98,7 @@
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </userControls:BFFComboBox.SelectedItem>
-                                        </userControls:BFFComboBox>
+                                        </userControls:BFFComboBox> -->
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
                                         <TextBox Text="{lex:Loc Account_Transfer}" Foreground="{DynamicResource GrayBrush4}" IsReadOnly="True" BorderThickness="0" Background="Transparent" />

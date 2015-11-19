@@ -8,6 +8,7 @@ namespace BFF.Model.Native
 {
     public class DbSetting : DataModelBase
     {
+        private string _dateCultureName;
         public long Id { get; set; } = 1;
 
         public string CurrencyCultrureName { get; set; }
@@ -25,6 +26,16 @@ namespace BFF.Model.Native
                 CurrencyCultrureName = value.Name;
                 SqLiteHelper.SetDbSetting(this);
                 Output.CurrencyCulture = value;
+            }
+        }
+
+        public string DateCultureName
+        {
+            get { return _dateCultureName; }
+            set
+            {
+                _dateCultureName = value;
+                SqLiteHelper.SetDbSetting(this);
             }
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -85,10 +86,10 @@ namespace BFF
         public MainWindow(MainWindowViewModel viewModel)
         {
             DataContext = viewModel;
-            DbSettings = SqLiteHelper.GetDbSetting();
-            Resources["CurrencyCulture"] = DbSettings.CurrencyCulture;
+            //DbSettings = SqLiteHelper.GetDbSetting();
+            //Resources["CurrencyCulture"] = DbSettings.CurrencyCulture;
             InitializeComponent();
-
+            
             foreach (Account account in viewModel.AllAccounts)
                 AccountsTabControl.Items.Insert(AccountsTabControl.Items.Count - 1, createMetroTabItem(account));
             viewModel.AllAccounts.CollectionChanged += changeTabs;
@@ -120,11 +121,19 @@ namespace BFF
             foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.Name))
             {
                 CurrencyCombo.Items.Add(culture);
+                DateCombo.Items.Add(culture);
             }
 
-            CurrencyCombo.SelectedItem = DbSettings.CurrencyCulture;
+            //CurrencyCombo.SelectedItem = DbSettings.CurrencyCulture;
+            //CultureInfo dateCulture = CultureInfo.GetCultureInfo(DbSettings.DateCultureName);
+            //DateCombo.SelectedItem = dateCulture;
+            
+            CultureInfo customCultureInfo = new CultureInfo(initialLocalization);
+            //customCultureInfo.DateTimeFormat = dateCulture.DateTimeFormat;
 
-            WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo(initialLocalization);
+            WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = customCultureInfo;
+            Thread.CurrentThread.CurrentCulture = customCultureInfo;
+            Thread.CurrentThread.CurrentUICulture = customCultureInfo;
         }
 
         private void SettingsButt_Click(object sender, RoutedEventArgs e)
@@ -151,7 +160,13 @@ namespace BFF
         private void LanguageCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string language = (string) LanguageCombo.SelectedItem;
-            WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo(language);
+
+            CultureInfo customCultureInfo = new CultureInfo(language);
+            customCultureInfo.DateTimeFormat = CultureInfo.GetCultureInfo(DbSettings?.DateCultureName ?? "").DateTimeFormat;
+
+            WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = customCultureInfo;
+            Thread.CurrentThread.CurrentCulture = customCultureInfo;
+            Thread.CurrentThread.CurrentUICulture = customCultureInfo;
             Settings.Default.Localization_Language = language;
             Settings.Default.Save();
         }
@@ -210,8 +225,18 @@ namespace BFF
             for (int i = 0; i < AccountsTabControl.Items.Count - 1; i++)
             {
                 TitDataGrid titDataGrid = (TitDataGrid)((MetroTabItem)AccountsTabControl.Items[i]).Content;
-                titDataGrid.refreshCurrencyVisuals();
+                titDataGrid.RefreshCurrencyVisuals();
             }
+        }
+
+        private void DateCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DbSettings.DateCultureName = ((CultureInfo)(((ComboBox)sender).SelectedItem)).Name;
+
+            DateTimeFormatInfo dateFormat = ((CultureInfo) (((ComboBox) sender).SelectedItem)).DateTimeFormat;
+
+            Thread.CurrentThread.CurrentCulture.DateTimeFormat = dateFormat;
+            Thread.CurrentThread.CurrentUICulture.DateTimeFormat = dateFormat;
         }
     }
 

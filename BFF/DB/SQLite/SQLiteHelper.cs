@@ -25,7 +25,7 @@ namespace BFF.DB.SQLite
         public static ObservableCollection<Category> AllCategoryRoots = new ObservableCollection<Category>();
         private static Dictionary<long, Category> CategoryCache = new Dictionary<long, Category>();
 
-        private static bool PopulateDb = false;
+        public static bool DbLockFlag = false;
 
         private static void ExecuteOnDb(Action executeAction)
         {
@@ -112,7 +112,7 @@ namespace BFF.DB.SQLite
         //todo: Join both GetAllTransactions to GetAllTranstactions(Account account = null)
         public static IEnumerable<TitBase> GetAllTransactions()
         {
-            PopulateDb = true;
+            DbLockFlag = true;
             IEnumerable<TitBase> results;
             
             using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
@@ -144,13 +144,13 @@ namespace BFF.DB.SQLite
                 cnn.Close();
             }
 
-            PopulateDb = false;
+            DbLockFlag = false;
             return results;
         }
 
         public static IEnumerable<TitBase> GetAllTransactions(Account account)
         {
-            PopulateDb = true;
+            DbLockFlag = true;
             IEnumerable<TitBase> results;
             
             using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
@@ -182,7 +182,7 @@ namespace BFF.DB.SQLite
                 cnn.Close();
             }
 
-            PopulateDb = false;
+            DbLockFlag = false;
             return results;
         }
 
@@ -252,7 +252,7 @@ namespace BFF.DB.SQLite
 
         public static void Insert<T>(T dataModelBase) where T : TransactionLike
         {
-            if (!PopulateDb)
+            if (!DbLockFlag)
             {
                 using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
                 {
@@ -264,7 +264,7 @@ namespace BFF.DB.SQLite
 
         public static T Get<T>(long i) where T : TransactionLike
         {
-            if (!PopulateDb)
+            if (!DbLockFlag)
             {
                 T ret;
                 using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
@@ -279,7 +279,7 @@ namespace BFF.DB.SQLite
 
         public static void Update<T>(T dataModelBase) where T : TransactionLike
         {
-            if (!PopulateDb)
+            if (!DbLockFlag)
             {
                 using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
                 {
@@ -291,7 +291,7 @@ namespace BFF.DB.SQLite
 
         public static void Delete<T>(T dataModelBase) where T : TransactionLike
         {
-            if (!PopulateDb)
+            if (!DbLockFlag)
             {
                 using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
                 {
@@ -310,6 +310,8 @@ namespace BFF.DB.SQLite
                 cnn.Open();
 
                 ret = cnn.Get<DbSetting>(1);
+
+                ret.DateCultureName = "de-DE";
 
                 cnn.Close();
             }
@@ -358,7 +360,7 @@ namespace BFF.DB.SQLite
 
         public static void OpenDatabase(string fileName)
         {
-            PopulateDb = true;
+            DbLockFlag = true;
             CurrentDbFileName = fileName;
             
             AccountCache.Clear();
@@ -397,12 +399,12 @@ namespace BFF.DB.SQLite
                 AllCategoryRoots = new ObservableCollection<Category>(categories.Where(category => category.ParentId == null));
                 cnn.Close();
             }
-            PopulateDb = false;
+            DbLockFlag = false;
         }
 
         public static void PopulateDatabase(List<Transaction> transactions, List<SubTransaction> subTransactions, List<Transfer> transfers, List<Income> incomes)
         {
-            PopulateDb = true;
+            DbLockFlag = true;
             Output.WriteLine("Beginning to populate database.");
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -433,7 +435,7 @@ namespace BFF.DB.SQLite
             TimeSpan ts = stopwatch.Elapsed;
             string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds / 10:00}";
             Output.WriteLine($"End of database population. Elapsed time was: {elapsedTime}");
-            PopulateDb = false;
+            DbLockFlag = false;
         }
 
         public static long GetAccountBalance(Account account = null)
@@ -637,7 +639,8 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
 
         private static string CreateDbSettingTableStatement
             =>
-                $@"CREATE TABLE [{nameof(DbSetting)}s]({nameof(DbSetting.Id)} INTEGER PRIMARY KEY, {nameof(DbSetting.CurrencyCultrureName)} VARCHAR(10));";
+                $@"CREATE TABLE [{nameof(DbSetting)}s]({nameof(DbSetting.Id)} INTEGER PRIMARY KEY, {nameof(DbSetting.CurrencyCultrureName)} VARCHAR(10),
+{nameof(DbSetting.DateCultureName)} VARCHAR(10));";
 
         #endregion
 

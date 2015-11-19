@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using BFF.DB.SQLite;
 using BFF.WPFStuff;
 using YNAB = BFF.Model.Conversion.YNAB;
 using Native = BFF.Model.Native;
@@ -77,6 +78,7 @@ namespace BFF.Helper.Import
         public static void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string savePath)
         {
             //Initialization
+            SqLiteHelper.DbLockFlag = true;
             ProcessedAccountsList.Clear();
 
             //First step: Parse CSV data into conversion objects
@@ -96,6 +98,7 @@ namespace BFF.Helper.Import
             assemblyPath = assemblyPath.Substring(0, assemblyPath.LastIndexOf('\\') + 1);
             CreateNewDatabase(savePath, CultureInfo.CurrentCulture);
             PopulateDatabase(transactions, subTransactions, transfers, incomes);
+            SqLiteHelper.DbLockFlag = false;
         }
 
         private static List<YNAB.Transaction> ParseTransactionCsv(string filePath)

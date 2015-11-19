@@ -1,10 +1,9 @@
-﻿using System;
+﻿using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
+using BFF.WPFStuff.AttachedProperties;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace BFF.WPFStuff.UserControls
 {
@@ -19,10 +18,10 @@ namespace BFF.WPFStuff.UserControls
             InitializeComponent();
         }
 
-        public void refreshCurrencyVisuals()
+        public void RefreshCurrencyVisuals()
         {
             TitGrid.Items.Refresh();
-            TotalBalanceTextBlock.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
+            TotalBalanceTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
         }
 
         
@@ -39,6 +38,22 @@ namespace BFF.WPFStuff.UserControls
             textBox.IsReadOnly = true;
             textBox.BorderThickness = new Thickness(0.0);
             textBox.Select(0,0);
+        }
+
+        private void CheckBox_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            comboBox?.SetValue(CTB.CollapseToggleButtonsProperty, false);
+            comboBox?.SetValue(ComboBox.BackgroundProperty, Resources["ControlBackgroundBrush"]);
+            comboBox?.SetValue(ComboBox.BorderThicknessProperty, new Thickness(1.0));
+        }
+
+        private void CheckBox_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            comboBox?.SetValue(CTB.CollapseToggleButtonsProperty, true);
+            comboBox?.SetValue(ComboBox.BackgroundProperty, Brushes.Transparent);
+            comboBox?.SetValue(ComboBox.BorderThicknessProperty, new Thickness(0.0));
         }
     }
 }
