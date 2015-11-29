@@ -13,7 +13,6 @@
              xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:userControls="clr-namespace:BFF.WPFStuff.UserControls"
-             xmlns:attachedProperties="clr-namespace:BFF.WPFStuff.AttachedProperties"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700">
     <UserControl.Resources>
@@ -72,16 +71,25 @@
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
+                                        <TextBlock Text="{Binding Account}" />
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type native:Transfer}">
+                                        <TextBlock Text="{lex:Loc Account_Transfer}" Foreground="{DynamicResource GrayBrush4}" />
+                                    </DataTemplate>
+                                </ContentControl.Resources>
+                            </ContentControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}">
+                                <ContentControl.Resources> 
+                                    <DataTemplate DataType="{x:Type structure:TitBase}">
                                         <ComboBox TextSearch.TextPath="Name"
-                                                  MouseEnter="CheckBox_OnMouseEnter"
-                                                  MouseLeave="CheckBox_OnMouseLeave"
-                                                  Background="Transparent"
-                                                  BorderThickness="0"
-                                                  IsEditable="True"
-                                                  IsTextSearchCaseSensitive="False"
-                                                  IsTextSearchEnabled="True"
-                                                  attachedProperties:CTB.CollapseToggleButtonsProperty="True"
-                                                  ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                                              IsEditable="True"
+                                                              IsTextSearchCaseSensitive="False"
+                                                              IsTextSearchEnabled="True"
+                                                              ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
                                             <ComboBox.SelectedItem>
                                                 <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
@@ -90,23 +98,14 @@
                                                 </Binding>
                                             </ComboBox.SelectedItem>
                                         </ComboBox>
-                                        <!-- <userControls:BFFComboBox ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
-                                            <userControls:BFFComboBox.SelectedItem>
-                                                <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                                    <Binding.ValidationRules>
-                                                        <validationRules:AccountRule />
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </userControls:BFFComboBox.SelectedItem>
-                                        </userControls:BFFComboBox> -->
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <TextBox Text="{lex:Loc Account_Transfer}" Foreground="{DynamicResource GrayBrush4}" IsReadOnly="True" BorderThickness="0" Background="Transparent" />
+                                        <TextBlock Text="{lex:Loc Account_Transfer}" Foreground="{DynamicResource GrayBrush4}" />
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>
                         </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <!-- Date -->
                 <DataGridTextColumn Header="{lex:Loc Date}" Binding="{Binding Date, StringFormat=\{0:yy/MM/dd\}}"/>
@@ -117,38 +116,60 @@
                             <ContentControl HorizontalAlignment="Stretch"  Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type structure:TitBase}" >
-                                        <userControls:BFFComboBox HorizontalAlignment="Stretch" CreateNamedInstanceFunc="{Binding DataContext.CreatePayeeFunc, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:MetroWindow}}" ItemsSource="{Binding DataContext.AllPayees, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
-                                            <userControls:BFFComboBox.SelectedItem>
-                                                <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                                    <Binding.ValidationRules>
-                                                        <validationRules:PayeeRule />
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </userControls:BFFComboBox.SelectedItem>
-                                        </userControls:BFFComboBox>
+                                        <TextBlock Text="{Binding Payee}" />
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <userControls:BFFComboBox ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" Foreground="{DynamicResource GrayBrush4}">
-                                            <userControls:BFFComboBox.SelectedItem>
-                                                <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                                    <Binding.ValidationRules>
-                                                        <validationRules:AccountRule />
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </userControls:BFFComboBox.SelectedItem>
-                                            <userControls:BFFComboBox.SymbolRectangle>
-                                                <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
-                                                    <Rectangle.OpacityMask>
-                                                        <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
-                                                    </Rectangle.OpacityMask>
-                                                </Rectangle>
-                                            </userControls:BFFComboBox.SymbolRectangle>
-                                        </userControls:BFFComboBox>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding FromAccount}" Foreground="{DynamicResource GrayBrush4}" />
+                                            <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
+                                                <Rectangle.OpacityMask>
+                                                    <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
+                                                </Rectangle.OpacityMask>
+                                            </Rectangle>
+                                        </StackPanel>
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ContentControl HorizontalAlignment="Stretch"  Content="{Binding}">
+                                <ContentControl.Resources>
+                                    <DataTemplate DataType="{x:Type structure:TitBase}" >
+                                        <ComboBox TextSearch.TextPath="Name"
+                                                              IsEditable="True"
+                                                              IsTextSearchCaseSensitive="False"
+                                                              IsTextSearchEnabled="True"
+                                                              ItemsSource="{Binding DataContext.AllPayees, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                            <ComboBox.SelectedItem>
+                                                <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <validationRules:PayeeRule />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </ComboBox.SelectedItem>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type native:Transfer}">
+                                        <ComboBox TextSearch.TextPath="Name"
+                                                              IsEditable="True"
+                                                              IsTextSearchCaseSensitive="False"
+                                                              IsTextSearchEnabled="True"
+                                                              ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                            <ComboBox.SelectedItem>
+                                                <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <validationRules:AccountRule />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </ComboBox.SelectedItem>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </ContentControl.Resources>
+                            </ContentControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <!-- Category -->
                 <DataGridTemplateColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name">
@@ -157,69 +178,60 @@
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <userControls:BFFTreeComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding DataContext.AllCategoryRoots, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
-                                            <userControls:BFFTreeComboBox.SelectedItem>
-                                                <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                                    <!-- <Binding.ValidationRules>
-                                                        <validationRules:PayeeRule />
-                                                    </Binding.ValidationRules> -->
-                                                </Binding> 
-                                            </userControls:BFFTreeComboBox.SelectedItem>
-                                            <userControls:BFFTreeComboBox.Resources>
-                                                <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
-                                                    <TextBlock Text="{Binding Name}" />
-                                                </HierarchicalDataTemplate>
-                                            </userControls:BFFTreeComboBox.Resources>
-                                        </userControls:BFFTreeComboBox>
-                                        <!--<ComboBox Style="{StaticResource BFFTreeComboBox}" BorderThickness="0" Background="Transparent" ItemsSource="{Binding DataContext.AllCategoryRoots, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" SelectedItem="{Binding Category, UpdateSourceTrigger=PropertyChanged}">
-                                            <ComboBox.Resources>
-                                                <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
-                                                    <TextBlock Text="{Binding Name}" />
-                                                </HierarchicalDataTemplate>
-                                            </ComboBox.Resources>
-                                            <ComboBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel>
-                                                        <TextBlock Margin="3" Foreground="Blue" FontWeight="Bold" Text="{Binding Name}"/>
-                                                        <TreeView Margin="5" ItemsSource="{Binding Categories}">
-                                                            <TreeView.ItemTemplate>
-                                                                <HierarchicalDataTemplate ItemsSource="{Binding Categories}">
-                                                                    <TextBlock Text="{Binding Name}"/>
-                                                                    <HierarchicalDataTemplate.ItemTemplate>
-                                                                        <DataTemplate>
-                                                                            <TextBlock Text="{Binding}"/>
-                                                                        </DataTemplate>
-                                                                    </HierarchicalDataTemplate.ItemTemplate>
-                                                                </HierarchicalDataTemplate>
-                                                            </TreeView.ItemTemplate>
-                                                        </TreeView>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ComboBox.ItemTemplate>
-                                        </ComboBox> -->
+                                        <TextBlock Text="{Binding Category}" />
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <userControls:BFFComboBox ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}" Foreground="{DynamicResource GrayBrush4}">
-                                            <userControls:BFFComboBox.SelectedItem>
-                                                <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                                    <Binding.ValidationRules>
-                                                        <validationRules:AccountRule />
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </userControls:BFFComboBox.SelectedItem>
-                                            <userControls:BFFComboBox.SymbolRectangle>
-                                                <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
-                                                    <Rectangle.OpacityMask>
-                                                        <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
-                                                    </Rectangle.OpacityMask>
-                                                </Rectangle>
-                                            </userControls:BFFComboBox.SymbolRectangle>
-                                        </userControls:BFFComboBox>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding ToAccount}" Foreground="{DynamicResource GrayBrush4}" />
+                                            <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
+                                                <Rectangle.OpacityMask>
+                                                    <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
+                                                </Rectangle.OpacityMask>
+                                            </Rectangle>
+                                        </StackPanel>
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}">
+                                <ContentControl.Resources>
+                                    <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
+                                        <TextBlock Text="{Binding}" />
+                                    </HierarchicalDataTemplate>
+                                    <DataTemplate DataType="{x:Type structure:TitBase}">
+                                        <userControls:BFFTreeComboBox TextSearch.TextPath="Name"
+                                                              ItemsSource="{Binding DataContext.AllCategoryRoots, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                            <userControls:BFFTreeComboBox.SelectedItem>
+                                                <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                                    <!-- <Binding.ValidationRules>
+                                                        <validationRules:AccountRule />
+                                                    </Binding.ValidationRules> -->
+                                                </Binding>
+                                            </userControls:BFFTreeComboBox.SelectedItem>
+                                        </userControls:BFFTreeComboBox>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type native:Transfer}">
+                                        <ComboBox TextSearch.TextPath="Name"
+                                                              IsEditable="True"
+                                                              IsTextSearchCaseSensitive="False"
+                                                              IsTextSearchEnabled="True"
+                                                              ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                            <ComboBox.SelectedItem>
+                                                <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <validationRules:AccountRule />
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </ComboBox.SelectedItem>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </ContentControl.Resources>
+                            </ContentControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <!-- Memo -->
                 <DataGridTemplateColumn Header="{lex:Loc Memo}" SortMemberPath="Memo" Width="*">
