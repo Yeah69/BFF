@@ -10,11 +10,28 @@ namespace BFF.Model.Native
 {
     class Income : TitBase
     {
+        private Account _account;
+        private DateTime _date;
+        private Payee _payee;
+        private Category _category;
+        private string _memo;
+        private long? _sum;
+        private bool _cleared;
+
         [Key]
         public override long Id { get; set; } = -1;
 
         [Write(false)]
-        public Account Account { get; set; }
+        public Account Account
+        {
+            get { return _account; }
+            set
+            {
+                _account = value;
+                OnPropertyChanged();
+                Update(this);
+            }
+        }
 
         public long AccountId
         {
@@ -22,10 +39,28 @@ namespace BFF.Model.Native
             set { Account = GetAccount(value); }
         }
 
-        public override DateTime Date { get; set; }
+        public override DateTime Date
+        {
+            get { return _date; }
+            set
+            {
+                _date = value;
+                OnPropertyChanged();
+                Update(this);
+            }
+        }
 
         [Write(false)]
-        public Payee Payee { get; set; }
+        public Payee Payee
+        {
+            get { return _payee; }
+            set
+            {
+                _payee = value;
+                OnPropertyChanged();
+                Update(this);
+            }
+        }
 
         public long PayeeId
         {
@@ -34,7 +69,16 @@ namespace BFF.Model.Native
         }
 
         [Write(false)]
-        public Category Category { get; set; }
+        public Category Category
+        {
+            get { return _category; }
+            set
+            {
+                _category = value;
+                OnPropertyChanged();
+                Update(this);
+            }
+        }
 
         public long? CategoryId
         {
@@ -42,11 +86,38 @@ namespace BFF.Model.Native
             set { Category = GetCategory(value); }
         }
 
-        public override string Memo { get; set; }
-        
-        public override long? Sum { get; set; }
-        
-        public override bool Cleared { get; set; }
+        public override string Memo
+        {
+            get { return _memo; }
+            set
+            {
+                _memo = value;
+                OnPropertyChanged();
+                Update(this);
+            }
+        }
+
+        public override long? Sum
+        {
+            get { return _sum; }
+            set
+            {
+                _sum = value;
+                OnPropertyChanged();
+                Update(this);
+            }
+        }
+
+        public override bool Cleared
+        {
+            get { return _cleared; }
+            set
+            {
+                _cleared = value;
+                OnPropertyChanged();
+                Update(this);
+            }
+        }
 
         [Write(false)]
         public IEnumerable<SubTransInc> SubElements

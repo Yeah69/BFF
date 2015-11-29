@@ -237,9 +237,14 @@
                 <DataGridTemplateColumn Header="{lex:Loc Memo}" SortMemberPath="Memo" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding Memo, UpdateSourceTrigger=LostFocus}" ToolTip="{Binding Memo}" IsReadOnly="True" BorderThickness="0" Background="Transparent" LostFocus="TitGrid_TextBox_OnLostFocus" MouseDoubleClick="TitGrid_TextBox_OnMouseDoubleClick" />
+                            <TextBlock Text="{Binding Memo}" ToolTip="{Binding Memo}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Memo, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <!-- Sum -->
                 <DataGridTemplateColumn Header="{lex:Loc Sum}" SortMemberPath="Sum" Width="Auto" IsReadOnly="False">
