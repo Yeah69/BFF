@@ -9,7 +9,9 @@
         lex:LocalizeDictionary.DesignCulture="en-US"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
-        Title="BFF" Height="700" Width="1300" MinHeight="700" MinWidth="1300" ShowIconOnTitleBar="True" Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" RightWindowCommandsOverlayBehavior="Never" LeftWindowCommandsOverlayBehavior="Never">
+        Title="{Binding Title}" Height="700" Width="1300" MinHeight="700" MinWidth="1300" ShowIconOnTitleBar="True" Icon="Icons/logo_quadratic.png" 
+        ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" 
+        RightWindowCommandsOverlayBehavior="Never" LeftWindowCommandsOverlayBehavior="Never">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -8,7 +7,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.Model.Native;
 using BFF.Properties;
@@ -21,9 +19,6 @@ using TabItem = System.Windows.Controls.TabItem;
 
 namespace BFF
 {
-
-
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -52,22 +47,19 @@ namespace BFF
                     //todo: Check if this works
                     foreach (Account account in args.OldItems)
                     {
-                        foreach (TabItem tabItem in AccountsTabControl.Items)
-                        {
-                            if(tabItem.DataContext == account)
-                                AccountsTabControl.Items.Remove(tabItem);
-                        }
+                        TabItem toBeRemoved = AccountsTabControl.Items.Cast<TabItem>().FirstOrDefault(tabItem => tabItem.DataContext == account);
+                        if(toBeRemoved != null) AccountsTabControl.Items.Remove(toBeRemoved);
                     }
                     break;
             }
         }
 
-        private static MetroTabItem createMetroTabItem(Account account)
+        private MetroTabItem createMetroTabItem(Account account)
         {
             MetroTabItem tabItem = new MetroTabItem
             {
                 DataContext = account,
-                Content = new TitDataGrid { DataContext = new TitViewModel(account) }
+                Content = new TitDataGrid (new TitViewModel(((MainWindowViewModel)DataContext)?.AllAccounts, ((MainWindowViewModel)DataContext)?.AllPayees, ((MainWindowViewModel)DataContext)?.AllCategoryRoots, account))
             };
             tabItem.SetBinding(HeaderedContentControl.HeaderProperty, nameof(Account.Name));
             return tabItem;
@@ -81,15 +73,14 @@ namespace BFF
 
         private MainWindow()
         {
+            InitializeComponent();
         }
 
-        public MainWindow(MainWindowViewModel viewModel)
+        public MainWindow(MainWindowViewModel viewModel) : this()
         {
-            DataContext = viewModel;
             //DbSettings = SqLiteHelper.GetDbSetting();
             //Resources["CurrencyCulture"] = DbSettings.CurrencyCulture;
-            InitializeComponent();
-            
+            DataContext = viewModel;
             foreach (Account account in viewModel.AllAccounts)
                 AccountsTabControl.Items.Insert(AccountsTabControl.Items.Count - 1, createMetroTabItem(account));
             viewModel.AllAccounts.CollectionChanged += changeTabs;
@@ -102,14 +93,22 @@ namespace BFF
 
             foreach (AppTheme theme in ThemeManager.AppThemes.OrderBy(x => x.Name))
             {
-                ThemeWrap current = new ThemeWrap { Theme = theme, WhiteBrush = (SolidColorBrush) theme.Resources["WhiteBrush"] };
+                ThemeWrap current = new ThemeWrap
+                {
+                    Theme = theme,
+                    WhiteBrush = (SolidColorBrush) theme.Resources["WhiteBrush"]
+                };
                 ThemeCombo.Items.Add(current);
                 if (theme == initialAppTheme)
                     ThemeCombo.SelectedItem = current;
             }
             foreach (Accent accent in ThemeManager.Accents.OrderBy(x => x.Name))
             {
-                AccentWrap current = new AccentWrap { Accent = accent, AccentColorBrush = (SolidColorBrush) accent.Resources["AccentColorBrush"] };
+                AccentWrap current = new AccentWrap
+                {
+                    Accent = accent,
+                    AccentColorBrush = (SolidColorBrush) accent.Resources["AccentColorBrush"]
+                };
                 AccentCombo.Items.Add(current);
                 if (accent == initialAccent)
                     AccentCombo.SelectedItem = current;
@@ -118,7 +117,9 @@ namespace BFF
             LanguageCombo.Items.Add("en-US");
             LanguageCombo.SelectedItem = initialLocalization;
 
-            foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.Name))
+            foreach (
+                CultureInfo culture in
+                    CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.Name))
             {
                 CurrencyCombo.Items.Add(culture);
                 DateCombo.Items.Add(culture);
@@ -127,7 +128,7 @@ namespace BFF
             //CurrencyCombo.SelectedItem = DbSettings.CurrencyCulture;
             //CultureInfo dateCulture = CultureInfo.GetCultureInfo(DbSettings.DateCultureName);
             //DateCombo.SelectedItem = dateCulture;
-            
+
             CultureInfo customCultureInfo = new CultureInfo(initialLocalization);
             //customCultureInfo.DateTimeFormat = dateCulture.DateTimeFormat;
 
@@ -161,8 +162,10 @@ namespace BFF
         {
             string language = (string) LanguageCombo.SelectedItem;
 
-            CultureInfo customCultureInfo = new CultureInfo(language);
-            customCultureInfo.DateTimeFormat = CultureInfo.GetCultureInfo(DbSettings?.DateCultureName ?? "").DateTimeFormat;
+            CultureInfo customCultureInfo = new CultureInfo(language)
+            {
+                DateTimeFormat = CultureInfo.GetCultureInfo(DbSettings?.DateCultureName ?? "").DateTimeFormat
+            };
 
             WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = customCultureInfo;
             Thread.CurrentThread.CurrentCulture = customCultureInfo;

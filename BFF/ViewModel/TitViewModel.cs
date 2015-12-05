@@ -12,12 +12,48 @@ namespace BFF.ViewModel
 
         public long AccountBalance => SqLiteHelper.GetAccountBalance(_account);
 
-        private readonly Account _account;
-
-        public TitViewModel(Account account = null)
+        public ObservableCollection<Account> AllAccounts
         {
+            get { return _allAccounts; }
+            set
+            {
+                _allAccounts = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<Payee> AllPayees
+        {
+            get { return _allPayees; }
+            set
+            {
+                _allPayees = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<Category> AllCategoryRoots
+        {
+            get { return _allCategoryRoots; }
+            set
+            {
+                _allCategoryRoots = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private readonly Account _account;
+        private ObservableCollection<Account> _allAccounts;
+        private ObservableCollection<Payee> _allPayees;
+        private ObservableCollection<Category> _allCategoryRoots;
+
+        public TitViewModel(ObservableCollection<Account> allAccounts, ObservableCollection<Payee> allPayees, ObservableCollection<Category> allCategoryRoots, Account account = null)
+        {
+            AllAccounts = allAccounts;
+            AllPayees = allPayees;
+            AllCategoryRoots = allCategoryRoots;
             _account = account;
-            Tits = new ObservableCollection<TitBase>((account == null) ? DB.SQLite.SqLiteHelper.GetAllTransactions(): DB.SQLite.SqLiteHelper.GetAllTransactions(account));
+            Tits = new ObservableCollection<TitBase>((account == null) ? SqLiteHelper.GetAllTransactions(): SqLiteHelper.GetAllTransactions(account));
         }
     }
 }

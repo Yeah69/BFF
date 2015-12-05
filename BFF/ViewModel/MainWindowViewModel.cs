@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
@@ -17,6 +16,7 @@ namespace BFF.ViewModel
     {
         private bool _fileFlyoutIsOpen;
         private TitViewModel _allAccountsViewModel;
+        private string _title;
 
         public ObservableCollection<Account> AllAccounts => SqLiteHelper.AllAccounts;
 
@@ -35,6 +35,16 @@ namespace BFF.ViewModel
         }
 
         public Account NewAccount { get; set; } = new Account {Id = -1, Name = "", StartingBalance = 0L};
+
+        public string Title
+        {
+            get { return _title; }
+            set
+            {
+                _title = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ICommand NewAccountCommand => new RelayCommand(param =>
         {
@@ -62,18 +72,23 @@ namespace BFF.ViewModel
             {
                 SqLiteHelper.OpenDatabase(Settings.Default.DBLocation);
 
-                SetTabPages();
+                SetTabPages(Settings.Default.DBLocation);
             }
         }
 
         private void NewBudgetPlan()
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Title = "Create a new Budget Plan", /* todo: Localize */
+                Filter = "BFF Budget Plan (*.sqlite)|*.sqlite", /* todo: Localize? */
+                DefaultExt = "*.sqlite"
+            };
             if (saveFileDialog.ShowDialog() == true)
             {
-                this.Reset();
+                Reset();
                 SqLiteHelper.CreateNewDatabase(saveFileDialog.FileName, CultureInfo.CurrentCulture);
-                SetTabPages();
+                SetTabPages(saveFileDialog.FileName);
 
                 Settings.Default.DBLocation = saveFileDialog.FileName;
                 Settings.Default.Save();
@@ -82,12 +97,17 @@ namespace BFF.ViewModel
 
         private void OpenBudgetPlan()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Title = "Open an existing Budget Plan", /* todo: Localize */
+                Filter = "BFF Budget Plan (*.sqlite)|*.sqlite", /* todo: Localize? */
+                DefaultExt = "*.sqlite"
+            }; ;
             if (openFileDialog.ShowDialog() == true)
             {
-                this.Reset();
+                Reset();
                 SqLiteHelper.OpenDatabase(openFileDialog.FileName);
-                SetTabPages();
+                SetTabPages(openFileDialog.FileName);
 
                 Settings.Default.DBLocation = openFileDialog.FileName;
                 Settings.Default.Save();
@@ -96,10 +116,10 @@ namespace BFF.ViewModel
 
         private void ImportBudgetPlan(object importableObject)
         {
-            this.Reset();
+            Reset();
             string savePath = ((IImportable) importableObject).Import();
             SqLiteHelper.OpenDatabase(savePath);
-            SetTabPages();
+            SetTabPages(savePath);
 
             Settings.Default.DBLocation = savePath;
             Settings.Default.Save();
@@ -108,16 +128,19 @@ namespace BFF.ViewModel
         private void Reset()
         {
             AllAccountsViewModel = null;
-            AllAccounts.Clear();
+            while(AllAccounts.Count > 0)
+                AllAccounts.RemoveAt(0);
+            Title = "BFF";
         }
 
-        private void SetTabPages()
+        private void SetTabPages(string dbPath)
         {
-
+            FileInfo fi = new FileInfo(dbPath);
+            Title = $"BFF - {fi.Name}";
             //todo: maybe just ref to AllAccounts from SqlLiteHelper
             //IEnumerable<Account> accounts = SqLiteHelper.AllAccounts;
 
-            AllAccountsViewModel = new TitViewModel();
+            AllAccountsViewModel = new TitViewModel(AllAccounts, AllPayees, AllCategoryRoots);
 
             /*foreach (Account account in accounts)
             {

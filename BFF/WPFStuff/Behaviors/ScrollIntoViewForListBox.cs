@@ -34,7 +34,7 @@ namespace BFF.WPFStuff.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            this.AssociatedObject.SelectionChanged += AssociatedObject_SelectionChanged;
+            AssociatedObject.SelectionChanged += AssociatedObject_SelectionChanged;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace BFF.WPFStuff.Behaviors
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            this.AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
+            AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
         }
     }
 }

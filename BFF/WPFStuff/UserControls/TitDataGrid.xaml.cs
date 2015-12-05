@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using BFF.ViewModel;
 using BFF.WPFStuff.AttachedProperties;
 using Brushes = System.Windows.Media.Brushes;
 
@@ -12,10 +13,14 @@ namespace BFF.WPFStuff.UserControls
     /// </summary>
     public partial class TitDataGrid
     {
-
         public TitDataGrid()
         {
             InitializeComponent();
+        }
+
+        public TitDataGrid(TitViewModel titViewModel) : this()
+        {
+            DataContext = titViewModel;
         }
 
         public void RefreshCurrencyVisuals()
@@ -38,22 +43,6 @@ namespace BFF.WPFStuff.UserControls
             textBox.IsReadOnly = true;
             textBox.BorderThickness = new Thickness(0.0);
             textBox.Select(0,0);
-        }
-
-        private void CheckBox_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            ComboBox comboBox = sender as ComboBox;
-            comboBox?.SetValue(CTB.CollapseToggleButtonsProperty, false);
-            comboBox?.SetValue(ComboBox.BackgroundProperty, Resources["ControlBackgroundBrush"]);
-            comboBox?.SetValue(ComboBox.BorderThicknessProperty, new Thickness(1.0));
-        }
-
-        private void CheckBox_OnMouseLeave(object sender, MouseEventArgs e)
-        {
-            ComboBox comboBox = sender as ComboBox;
-            comboBox?.SetValue(CTB.CollapseToggleButtonsProperty, true);
-            comboBox?.SetValue(ComboBox.BackgroundProperty, Brushes.Transparent);
-            comboBox?.SetValue(ComboBox.BorderThicknessProperty, new Thickness(0.0));
         }
     }
 }

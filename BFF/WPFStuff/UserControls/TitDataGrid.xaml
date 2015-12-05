@@ -11,10 +11,10 @@
              xmlns:native="clr-namespace:BFF.Model.Native"
              xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
              xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:userControls="clr-namespace:BFF.WPFStuff.UserControls"
              mc:Ignorable="d" 
-             d:DesignWidth="1300" d:DesignHeight="700">
+             d:DesignWidth="1300" d:DesignHeight="700"
+             Name="TitView">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -89,7 +89,7 @@
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
                                                               IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
                                             <ComboBox.SelectedItem>
                                                 <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
@@ -141,7 +141,7 @@
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
                                                               IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllPayees, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                                              ItemsSource="{Binding DataContext.AllPayees, ElementName=TitView}">
                                             <ComboBox.SelectedItem>
                                                 <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
@@ -156,7 +156,7 @@
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
                                                               IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
                                             <ComboBox.SelectedItem>
                                                 <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
@@ -203,7 +203,7 @@
                                     </HierarchicalDataTemplate>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
                                         <userControls:BFFTreeComboBox TextSearch.TextPath="Name"
-                                                              ItemsSource="{Binding DataContext.AllCategoryRoots, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                                              ItemsSource="{Binding DataContext.AllCategoryRoots, ElementName=TitView}">
                                             <userControls:BFFTreeComboBox.SelectedItem>
                                                 <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                                     <!-- <Binding.ValidationRules>
@@ -218,7 +218,7 @@
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
                                                               IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllAccounts, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
                                             <ComboBox.SelectedItem>
                                                 <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
@@ -250,7 +250,32 @@
                 <DataGridTemplateColumn Header="{lex:Loc Sum}" SortMemberPath="Sum" Width="Auto" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBox Name="TitGrid_SumBox" TextAlignment="Right" IsReadOnly="True" BorderThickness="0" Background="Transparent" LostFocus="TitGrid_TextBox_OnLostFocus" MouseDoubleClick="TitGrid_TextBox_OnMouseDoubleClick">
+                            <TextBlock Name="TitGrid_SumBox" TextAlignment="Right">
+                                <TextBlock.Foreground>
+                                    <MultiBinding Converter="{StaticResource SumMulti}">
+                                        <Binding Path="Sum" />
+                                        <Binding Path="SubElements" Converter="{StaticResource SubElToSumPure}" />
+                                        <Binding Path="Type" />
+                                    </MultiBinding>
+                                </TextBlock.Foreground>
+                                <TextBlock.Text>
+                                    <PriorityBinding FallbackValue="NaN">
+                                        <Binding Path="Sum" Converter="{StaticResource DepPropToUnset}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                            <Binding.ValidationRules>
+                                                <validationRules:CurrencyRule />
+                                                <validationRules:CurrencyLongRangeRule />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                        <Binding Path="SubElements" Converter="{StaticResource SubElToSum}" Mode="TwoWay" StringFormat="C" />
+                                    </PriorityBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Name="TitGrid_SumBox" TextAlignment="Right">
                                 <TextBox.Foreground>
                                     <MultiBinding Converter="{StaticResource SumMulti}">
                                         <Binding Path="Sum" />
@@ -272,7 +297,7 @@
                             </TextBox>
                             <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
                         </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <!-- Cleared -->
                 <DataGridTemplateColumn Header="{lex:Loc Cleared}" SortMemberPath="Cleared" Width="Auto" IsReadOnly="True">
@@ -282,9 +307,6 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <!-- 
-                        todo: (Payee, resolve problem with German Translation)
-                     -->
             </DataGrid.Columns>
         </DataGrid>
         <GroupBox Grid.Row="1" Header="{lex:Loc TitView_BalanceDisplay}" HorizontalAlignment="Left">
