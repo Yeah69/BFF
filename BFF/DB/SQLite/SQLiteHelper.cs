@@ -22,7 +22,7 @@ namespace BFF.DB.SQLite
         public static ObservableCollection<Account> AllAccounts = new ObservableCollection<Account>();
         private static Dictionary<long, Payee> PayeeCache = new Dictionary<long, Payee>();
         public static ObservableCollection<Payee> AllPayees = new ObservableCollection<Payee>();
-        public static ObservableCollection<Category> AllCategoryRoots = new ObservableCollection<Category>();
+        public static ObservableCollection<Category> AllCategories = new ObservableCollection<Category>();
         private static Dictionary<long, Category> CategoryCache = new Dictionary<long, Category>();
 
         public static bool DbLockFlag = false;
@@ -369,7 +369,7 @@ namespace BFF.DB.SQLite
 
             AllAccounts.Clear();
             AllPayees.Clear();
-            AllCategoryRoots.Clear();
+            AllCategories.Clear();
 
             using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
             {
@@ -396,7 +396,7 @@ namespace BFF.DB.SQLite
                         category.Parent.Categories.Add(category);
                     }
                 }
-                AllCategoryRoots = new ObservableCollection<Category>(categories.Where(category => category.ParentId == null));
+                AllCategories = new ObservableCollection<Category>(categories);//categories.Where(category => category.ParentId == null));
                 cnn.Close();
             }
             DbLockFlag = false;

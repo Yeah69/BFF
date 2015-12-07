@@ -74,7 +74,7 @@
                                         <TextBlock Text="{Binding Account}" />
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <TextBlock Text="{lex:Loc Account_Transfer}" Foreground="{DynamicResource GrayBrush4}" />
+                                        <TextBlock Text="{lex:Loc Account_Transfer}" />
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>
@@ -100,7 +100,7 @@
                                         </ComboBox>
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <TextBlock Text="{lex:Loc Account_Transfer}" Foreground="{DynamicResource GrayBrush4}" />
+                                        <TextBlock Text="{lex:Loc Account_Transfer}" />
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>
@@ -120,7 +120,7 @@
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding FromAccount}" Foreground="{DynamicResource GrayBrush4}" />
+                                            <TextBlock Text="{Binding FromAccount}" />
                                             <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
                                                 <Rectangle.OpacityMask>
                                                     <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
@@ -182,10 +182,10 @@
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding ToAccount}" Foreground="{DynamicResource GrayBrush4}" />
+                                            <TextBlock Text="{Binding ToAccount}" />
                                             <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
                                                 <Rectangle.OpacityMask>
-                                                    <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
+                                                    <VisualBrush Visual="{DynamicResource appbar_layout_expand_right}"/>
                                                 </Rectangle.OpacityMask>
                                             </Rectangle>
                                         </StackPanel>
@@ -202,16 +202,16 @@
                                         <TextBlock Text="{Binding}" />
                                     </HierarchicalDataTemplate>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <userControls:BFFTreeComboBox TextSearch.TextPath="Name"
-                                                              ItemsSource="{Binding DataContext.AllCategoryRoots, ElementName=TitView}">
-                                            <userControls:BFFTreeComboBox.SelectedItem>
+                                        <ComboBox Style="{StaticResource BFFTreeComboBox}" IsEditable="True" TextSearch.TextPath="Name"
+                                                              ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView}">
+                                            <ComboBox.SelectedItem>
                                                 <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                                     <!-- <Binding.ValidationRules>
                                                         <validationRules:AccountRule />
                                                     </Binding.ValidationRules> -->
                                                 </Binding>
-                                            </userControls:BFFTreeComboBox.SelectedItem>
-                                        </userControls:BFFTreeComboBox>
+                                            </ComboBox.SelectedItem>
+                                        </ComboBox>
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type native:Transfer}">
                                         <ComboBox TextSearch.TextPath="Name"

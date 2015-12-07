@@ -59,7 +59,7 @@ namespace BFF
             MetroTabItem tabItem = new MetroTabItem
             {
                 DataContext = account,
-                Content = new TitDataGrid (new TitViewModel(((MainWindowViewModel)DataContext)?.AllAccounts, ((MainWindowViewModel)DataContext)?.AllPayees, ((MainWindowViewModel)DataContext)?.AllCategoryRoots, account))
+                Content = new TitDataGrid (new TitViewModel(((MainWindowViewModel)DataContext)?.AllAccounts, ((MainWindowViewModel)DataContext)?.AllPayees, ((MainWindowViewModel)DataContext)?.AllCategories, account))
             };
             tabItem.SetBinding(HeaderedContentControl.HeaderProperty, nameof(Account.Name));
             return tabItem;

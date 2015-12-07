@@ -22,7 +22,7 @@ namespace BFF.ViewModel
 
         public ObservableCollection<Payee> AllPayees => SqLiteHelper.AllPayees;
 
-        public ObservableCollection<Category> AllCategoryRoots => SqLiteHelper.AllCategoryRoots; 
+        public ObservableCollection<Category> AllCategories => SqLiteHelper.AllCategories; 
 
         public TitViewModel AllAccountsViewModel
         {
@@ -140,7 +140,7 @@ namespace BFF.ViewModel
             //todo: maybe just ref to AllAccounts from SqlLiteHelper
             //IEnumerable<Account> accounts = SqLiteHelper.AllAccounts;
 
-            AllAccountsViewModel = new TitViewModel(AllAccounts, AllPayees, AllCategoryRoots);
+            AllAccountsViewModel = new TitViewModel(AllAccounts, AllPayees, AllCategories);
 
             /*foreach (Account account in accounts)
             {

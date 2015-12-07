@@ -32,12 +32,12 @@ namespace BFF.ViewModel
             }
         }
 
-        public ObservableCollection<Category> AllCategoryRoots
+        public ObservableCollection<Category> AllCategories
         {
-            get { return _allCategoryRoots; }
+            get { return _allCategories; }
             set
             {
-                _allCategoryRoots = value;
+                _allCategories = value;
                 OnPropertyChanged();
             }
         }
@@ -45,13 +45,13 @@ namespace BFF.ViewModel
         private readonly Account _account;
         private ObservableCollection<Account> _allAccounts;
         private ObservableCollection<Payee> _allPayees;
-        private ObservableCollection<Category> _allCategoryRoots;
+        private ObservableCollection<Category> _allCategories;
 
-        public TitViewModel(ObservableCollection<Account> allAccounts, ObservableCollection<Payee> allPayees, ObservableCollection<Category> allCategoryRoots, Account account = null)
+        public TitViewModel(ObservableCollection<Account> allAccounts, ObservableCollection<Payee> allPayees, ObservableCollection<Category> allCategories, Account account = null)
         {
             AllAccounts = allAccounts;
             AllPayees = allPayees;
-            AllCategoryRoots = allCategoryRoots;
+            AllCategories = allCategories;
             _account = account;
             Tits = new ObservableCollection<TitBase>((account == null) ? SqLiteHelper.GetAllTransactions(): SqLiteHelper.GetAllTransactions(account));
         }

@@ -131,6 +131,7 @@
     <Compile Include="WPFStuff\Behaviors\BindableSelectedItemBehavior.cs" />
     <Compile Include="WPFStuff\Behaviors\ScrollIntoViewForListBox.cs" />
     <Compile Include="WPFStuff\Converters\DateComboConverter.cs" />
+    <Compile Include="WPFStuff\Converters\RootCategoriesOnlyConverter.cs" />
     <Compile Include="WPFStuff\Converters\SearchToVisibilityConverter.cs" />
     <Compile Include="WPFStuff\Converters\CurrencyComboConverter.cs" />
     <Compile Include="WPFStuff\Converters\LongToCurrencyConverter.cs" />
