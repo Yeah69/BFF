@@ -11,6 +11,7 @@
              xmlns:native="clr-namespace:BFF.Model.Native"
              xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
              xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
+             xmlns:attachedProperties="clr-namespace:BFF.WPFStuff.AttachedProperties"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700"
              Name="TitView">
@@ -219,7 +220,8 @@
                                             </ComboBox.SelectedItem>
                                         </ComboBox> -->
                                         <ComboBox Style="{StaticResource BFFTreeComboBox}" IsEditable="True" TextSearch.TextPath="Name"
-                                                              ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView}">
+                                                              ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView}"
+                                                  attachedProperties:ParentPathHelper.ParentPath="Parent">
                                             <ComboBox.SelectedItem>
                                                 <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                                 </Binding>

@@ -4,7 +4,7 @@
                     xmlns:behaviors="clr-namespace:BFF.WPFStuff.Behaviors"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
-                    xmlns:helper="clr-namespace:BFF.Helper" x:Class="TreeComboBoxResourceDictionary">
+                    xmlns:attachedProperties="clr-namespace:BFF.WPFStuff.AttachedProperties">
 
     <!-- ********************************** ComboBoxStyle **********************************-->
     <!-- adapted form MahApps.Metro-->
@@ -13,7 +13,7 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TreeView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.ComboBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    <converters:RootCategoriesOnlyConverter x:Key="RootCategoriesOnly"/>
+    <converters:RootNodesOnlyConverter x:Key="RootNodesOnly"/>
 
     <Style TargetType="{x:Type ComboBox}" x:Key="BFFTreeComboBox" BasedOn="{StaticResource MetroComboBox}">
         <Setter Property="Template">
@@ -221,13 +221,19 @@
                                 <ScrollViewer x:Name="DropDownScrollViewer"
                                               BorderThickness="0"
                                               Margin="2"
-                                              Padding="1">
-                                    <TreeView ItemsSource="{TemplateBinding ItemsSource, Converter={StaticResource RootCategoriesOnly}}" KeyboardNavigation.DirectionalNavigation="Contained">
+                                              Padding="1"><!--ItemsSource="{TemplateBinding ItemsSource, Converter={StaticResource RootCategoriesOnly}}"-->
+                                    <TreeView  KeyboardNavigation.DirectionalNavigation="Contained">
                                         <i:Interaction.Behaviors>
                                             <behaviors:ClosingOnSelectBevavior
                                                 IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                                 SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=TwoWay}"/>
                                         </i:Interaction.Behaviors>
+                                        <TreeView.ItemsSource>
+                                            <MultiBinding Converter="{StaticResource RootNodesOnly}">
+                                                <Binding Path="ItemsSource" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                <Binding Path="(attachedProperties:ParentPathHelper.ParentPath)" RelativeSource="{RelativeSource TemplatedParent}" />
+                                            </MultiBinding>
+                                        </TreeView.ItemsSource>
                                         <TreeView.ItemContainerStyle>
                                             <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MetroTreeViewItem}">
                                                 <Setter Property="IsExpanded" Value="True"/>

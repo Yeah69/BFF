@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace BFF.WPFStuff.AttachedProperties
 {
-    class ParentPathHelper
+    class ParentPathHelper : ComboBox
     {
         public static DependencyProperty ParentPathProperty = DependencyProperty.RegisterAttached("ParentPath", typeof(string), typeof(ComboBox), new PropertyMetadata("Parent", ParentPathChanged));
 
