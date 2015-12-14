@@ -42,7 +42,7 @@ namespace BFF.WPFStuff.Behaviors
             }
         }
 
-        private void OnTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        protected virtual void OnTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             SelectedItem = e.NewValue;
         }

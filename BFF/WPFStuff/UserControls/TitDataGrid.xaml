@@ -11,7 +11,6 @@
              xmlns:native="clr-namespace:BFF.Model.Native"
              xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
              xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
-             xmlns:userControls="clr-namespace:BFF.WPFStuff.UserControls"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700"
              Name="TitView">
@@ -37,6 +36,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False">
@@ -202,13 +202,26 @@
                                         <TextBlock Text="{Binding}" />
                                     </HierarchicalDataTemplate>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
+                                        <!--<comboBoxTreeViewSample:ComboBoxTreeView ItemTemplate="{StaticResource categoryDataTemplate}" ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView}" SelectedItem="{Binding Category, Mode=TwoWay}">
+                                            
+                                        </comboBoxTreeViewSample:ComboBoxTreeView>-->
+                                        <!-- <ComboBox IsEditable="True" TextSearch.TextPath="Name"
+                                                              ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView}">
+                                            <ComboBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel>
+                                                    </StackPanel>
+                                                </ItemsPanelTemplate>
+                                            </ComboBox.ItemsPanel>
+                                            <ComboBox.SelectedItem>
+                                                <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                                </Binding>
+                                            </ComboBox.SelectedItem>
+                                        </ComboBox> -->
                                         <ComboBox Style="{StaticResource BFFTreeComboBox}" IsEditable="True" TextSearch.TextPath="Name"
                                                               ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView}">
                                             <ComboBox.SelectedItem>
                                                 <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                                    <!-- <Binding.ValidationRules>
-                                                        <validationRules:AccountRule />
-                                                    </Binding.ValidationRules> -->
                                                 </Binding>
                                             </ComboBox.SelectedItem>
                                         </ComboBox>
@@ -312,5 +325,12 @@
         <GroupBox Grid.Row="1" Header="{lex:Loc TitView_BalanceDisplay}" HorizontalAlignment="Left">
             <TextBlock Name="TotalBalanceTextBlock"  Text="{Binding AccountBalance, Converter={StaticResource DepPropToUnset}}" />
         </GroupBox>
+        <!--<comboBoxTreeViewSample:ComboBoxTreeView Grid.Row="2" ItemsSource="{Binding AllCategories, ElementName=TitView}">
+            <comboBoxTreeViewSample:ComboBoxTreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
+                    <TextBlock Text="{Binding}" />
+                </HierarchicalDataTemplate>
+            </comboBoxTreeViewSample:ComboBoxTreeView.ItemTemplate>
+        </comboBoxTreeViewSample:ComboBoxTreeView>-->
     </Grid>
 </UserControl>
