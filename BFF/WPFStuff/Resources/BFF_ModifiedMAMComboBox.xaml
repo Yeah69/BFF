@@ -221,7 +221,7 @@
                                 <ScrollViewer x:Name="DropDownScrollViewer"
                                               BorderThickness="0"
                                               Margin="2"
-                                              Padding="1"><!--ItemsSource="{TemplateBinding ItemsSource, Converter={StaticResource RootCategoriesOnly}}"-->
+                                              Padding="1">
                                     <TreeView  KeyboardNavigation.DirectionalNavigation="Contained">
                                         <i:Interaction.Behaviors>
                                             <behaviors:ClosingOnSelectBevavior
@@ -237,7 +237,6 @@
                                         <TreeView.ItemContainerStyle>
                                             <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MetroTreeViewItem}">
                                                 <Setter Property="IsExpanded" Value="True"/>
-                                                <!--<EventSetter Event="MouseLeftButtonDown" Handler="{x:Static helper:TreeComboBoxHelper.blah}"></EventSetter>-->
                                             </Style>
                                         </TreeView.ItemContainerStyle>
                                     </TreeView>

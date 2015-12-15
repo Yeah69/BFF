@@ -203,22 +203,6 @@
                                         <TextBlock Text="{Binding}" />
                                     </HierarchicalDataTemplate>
                                     <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <!--<comboBoxTreeViewSample:ComboBoxTreeView ItemTemplate="{StaticResource categoryDataTemplate}" ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView}" SelectedItem="{Binding Category, Mode=TwoWay}">
-                                            
-                                        </comboBoxTreeViewSample:ComboBoxTreeView>-->
-                                        <!-- <ComboBox IsEditable="True" TextSearch.TextPath="Name"
-                                                              ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView}">
-                                            <ComboBox.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel>
-                                                    </StackPanel>
-                                                </ItemsPanelTemplate>
-                                            </ComboBox.ItemsPanel>
-                                            <ComboBox.SelectedItem>
-                                                <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                                </Binding>
-                                            </ComboBox.SelectedItem>
-                                        </ComboBox> -->
                                         <ComboBox Style="{StaticResource BFFTreeComboBox}" IsEditable="True" TextSearch.TextPath="Name"
                                                               ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView}"
                                                   attachedProperties:ParentPathHelper.ParentPath="Parent">
@@ -327,12 +311,5 @@
         <GroupBox Grid.Row="1" Header="{lex:Loc TitView_BalanceDisplay}" HorizontalAlignment="Left">
             <TextBlock Name="TotalBalanceTextBlock"  Text="{Binding AccountBalance, Converter={StaticResource DepPropToUnset}}" />
         </GroupBox>
-        <!--<comboBoxTreeViewSample:ComboBoxTreeView Grid.Row="2" ItemsSource="{Binding AllCategories, ElementName=TitView}">
-            <comboBoxTreeViewSample:ComboBoxTreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
-                    <TextBlock Text="{Binding}" />
-                </HierarchicalDataTemplate>
-            </comboBoxTreeViewSample:ComboBoxTreeView.ItemTemplate>
-        </comboBoxTreeViewSample:ComboBoxTreeView>-->
     </Grid>
 </UserControl>

@@ -126,7 +126,6 @@
     <Compile Include="ViewModel\TitViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="WPFStuff\AttachedProperties\ParentPathHelper.cs" />
-    <Compile Include="WPFStuff\AttachedProperties\CTB.cs" />
     <Compile Include="WPFStuff\Behaviors\ClosingOnSelectBevavior.cs" />
     <Compile Include="WPFStuff\Behaviors\ClosingOnMouseSelectBehavior.cs" />
     <Compile Include="WPFStuff\Behaviors\BindableSelectedItemBehavior.cs" />
@@ -146,12 +145,6 @@
     <Compile Include="WPFStuff\Converters\TypeToBrushConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
     <Compile Include="WPFStuff\RelayCommand.cs" />
-    <Compile Include="WPFStuff\UserControls\BFFTreeComboBox.xaml.cs">
-      <DependentUpon>BFFTreeComboBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WPFStuff\UserControls\BFFComboBox.xaml.cs">
-      <DependentUpon>BFFComboBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WPFStuff\UserControls\ImportDialog.xaml.cs">
       <DependentUpon>ImportDialog.xaml</DependentUpon>
     </Compile>
@@ -193,14 +186,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPFStuff\Resources\TransUC_Icons.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WPFStuff\UserControls\BFFTreeComboBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WPFStuff\UserControls\BFFComboBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
