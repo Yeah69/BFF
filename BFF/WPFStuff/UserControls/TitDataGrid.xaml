@@ -32,6 +32,227 @@
             <converters:SubElementToSumConverter x:Key="SubElToSum"/>
             <converters:SubElementToSumPureConverter x:Key="SubElToSumPure"/>
             <converters:DepPropToUnsetConverter x:Key="DepPropToUnset"/>
+
+            <!-- Symbol -->
+            <DataTemplate x:Key="SymbolDataTemplate">
+                <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" Width="15" Fill="{Binding Type, Converter={StaticResource TypeToBrush}}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Visual="{Binding Type, Converter={StaticResource TypeToCanvas}}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </DataTemplate>
+            <!-- Account -->
+            <DataTemplate x:Key="AccountDataTemplate">
+                <ContentControl Content="{Binding}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type structure:TitBase}">
+                            <TextBlock Text="{Binding Account}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:Transfer}">
+                            <TextBlock Text="{lex:Loc Account_Transfer}" />
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
+            </DataTemplate>
+            <DataTemplate  x:Key="AccountEditingDataTemplate">
+                <ContentControl Content="{Binding}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type structure:TitBase}">
+                            <ComboBox TextSearch.TextPath="Name"
+                                                              IsEditable="True"
+                                                              IsTextSearchCaseSensitive="False"
+                                                              IsTextSearchEnabled="True"
+                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
+                                <ComboBox.SelectedItem>
+                                    <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <validationRules:AccountRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </ComboBox.SelectedItem>
+                            </ComboBox>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:Transfer}">
+                            <TextBlock Text="{lex:Loc Account_Transfer}" />
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
+            </DataTemplate>
+            <!-- Date -->
+            <DataTemplate x:Key="DateDataTemplate">
+                <TextBlock Text="{Binding Date, StringFormat=\{0:yy/MM/dd\}}" />
+            </DataTemplate>
+            <DataTemplate x:Key="DateEditingDataTemplate">
+                <DatePicker Text="{Binding Date, Mode=TwoWay}"></DatePicker>
+            </DataTemplate>
+            <!-- Payee -->
+            <DataTemplate x:Key="PayeeDataTemplate">
+                <ContentControl HorizontalAlignment="Stretch"  Content="{Binding}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type structure:TitBase}" >
+                            <TextBlock Text="{Binding Payee}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:Transfer}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding FromAccount}" />
+                                <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
+            </DataTemplate>
+            <DataTemplate x:Key="PayeeEditingDataTemplate">
+                <ContentControl HorizontalAlignment="Stretch"  Content="{Binding}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type structure:TitBase}" >
+                            <ComboBox TextSearch.TextPath="Name"
+                                                              IsEditable="True"
+                                                              IsTextSearchCaseSensitive="False"
+                                                              IsTextSearchEnabled="True"
+                                                              ItemsSource="{Binding DataContext.AllPayees, ElementName=TitView}">
+                                <ComboBox.SelectedItem>
+                                    <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <validationRules:PayeeRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </ComboBox.SelectedItem>
+                            </ComboBox>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:Transfer}">
+                            <ComboBox TextSearch.TextPath="Name"
+                                                              IsEditable="True"
+                                                              IsTextSearchCaseSensitive="False"
+                                                              IsTextSearchEnabled="True"
+                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
+                                <ComboBox.SelectedItem>
+                                    <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <validationRules:AccountRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </ComboBox.SelectedItem>
+                            </ComboBox>
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
+            </DataTemplate>
+            <!-- Category -->
+            <DataTemplate x:Key="CategoryDataTemplate">
+                <ContentControl Content="{Binding}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type structure:TitBase}">
+                            <TextBlock Text="{Binding Category}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:Transfer}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding ToAccount}" />
+                                <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Visual="{DynamicResource appbar_layout_expand_right}"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
+            </DataTemplate>
+            <DataTemplate x:Key="CategoryEditingDataTemplate">
+                <ContentControl Content="{Binding}">
+                    <ContentControl.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
+                            <TextBlock Text="{Binding}" />
+                        </HierarchicalDataTemplate>
+                        <DataTemplate DataType="{x:Type structure:TitBase}">
+                            <ComboBox Style="{StaticResource BFFTreeComboBox}" IsEditable="True" TextSearch.TextPath="Name"
+                                                              ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView}"
+                                                  attachedProperties:ParentPathHelper.ParentPath="Parent">
+                                <ComboBox.SelectedItem>
+                                    <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                    </Binding>
+                                </ComboBox.SelectedItem>
+                            </ComboBox>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:Transfer}">
+                            <ComboBox TextSearch.TextPath="Name"
+                                                              IsEditable="True"
+                                                              IsTextSearchCaseSensitive="False"
+                                                              IsTextSearchEnabled="True"
+                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
+                                <ComboBox.SelectedItem>
+                                    <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <validationRules:AccountRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </ComboBox.SelectedItem>
+                            </ComboBox>
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
+            </DataTemplate>
+            <!-- Memo -->
+            <DataTemplate x:Key="MemoDataTemplate">
+                <TextBlock Text="{Binding Memo}" ToolTip="{Binding Memo}" />
+            </DataTemplate>
+            <DataTemplate x:Key="MemoEditingDataTemplate">
+                <TextBox Text="{Binding Memo, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" />
+            </DataTemplate>
+            <!-- Sum -->
+            <DataTemplate x:Key="SumDataTemplate">
+                <TextBlock Name="TitGrid_SumBox" TextAlignment="Right">
+                    <TextBlock.Foreground>
+                        <MultiBinding Converter="{StaticResource SumMulti}">
+                            <Binding Path="Sum" />
+                            <Binding Path="SubElements" Converter="{StaticResource SubElToSumPure}" />
+                            <Binding Path="Type" />
+                        </MultiBinding>
+                    </TextBlock.Foreground>
+                    <TextBlock.Text>
+                        <PriorityBinding FallbackValue="NaN">
+                            <Binding Path="Sum" Converter="{StaticResource DepPropToUnset}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                <Binding.ValidationRules>
+                                    <validationRules:CurrencyRule />
+                                    <validationRules:CurrencyLongRangeRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                            <Binding Path="SubElements" Converter="{StaticResource SubElToSum}" Mode="TwoWay" StringFormat="C" />
+                        </PriorityBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
+            </DataTemplate>
+            <DataTemplate  x:Key="SumEditingDataTemplate">
+                <TextBox Name="TitGrid_SumBox" TextAlignment="Right">
+                    <TextBox.Foreground>
+                        <MultiBinding Converter="{StaticResource SumMulti}">
+                            <Binding Path="Sum" />
+                            <Binding Path="SubElements" Converter="{StaticResource SubElToSumPure}" />
+                            <Binding Path="Type" />
+                        </MultiBinding>
+                    </TextBox.Foreground>
+                    <TextBox.Text>
+                        <PriorityBinding FallbackValue="NaN">
+                            <Binding Path="Sum" Converter="{StaticResource DepPropToUnset}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                <Binding.ValidationRules>
+                                    <validationRules:CurrencyRule />
+                                    <validationRules:CurrencyLongRangeRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                            <Binding Path="SubElements" Converter="{StaticResource SubElToSum}" Mode="TwoWay" StringFormat="C" />
+                        </PriorityBinding>
+                    </TextBox.Text>
+                </TextBox>
+                <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
+            </DataTemplate>
+            <!-- Cleared -->
+            <DataTemplate x:Key="ClearedDataTemplate">
+                <CheckBox Style="{StaticResource BFFCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -41,10 +262,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False">
-            <DataGrid.Resources>
-                <Style TargetType="ComboBox" BasedOn="{StaticResource MetroComboBox}">
-                </Style>
-            </DataGrid.Resources>
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource MetroDataGrid}"
                            TargetType="{x:Type DataGrid}">
@@ -57,11 +274,7 @@
                 <DataGridTemplateColumn Header="S">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" Width="15" Fill="{Binding Type, Converter={StaticResource TypeToBrush}}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Visual="{Binding Type, Converter={StaticResource TypeToCanvas}}" />
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SymbolDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -69,55 +282,25 @@
                 <DataGridTemplateColumn Header="{lex:Loc Account}" SortMemberPath="Account.Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}">
-                                <ContentControl.Resources>
-                                    <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <TextBlock Text="{Binding Account}" />
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <TextBlock Text="{lex:Loc Account_Transfer}" />
-                                    </DataTemplate>
-                                </ContentControl.Resources>
-                            </ContentControl>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}">
-                                <ContentControl.Resources> 
-                                    <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <ComboBox TextSearch.TextPath="Name"
-                                                              IsEditable="True"
-                                                              IsTextSearchCaseSensitive="False"
-                                                              IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
-                                            <ComboBox.SelectedItem>
-                                                <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                                    <Binding.ValidationRules>
-                                                        <validationRules:AccountRule />
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </ComboBox.SelectedItem>
-                                        </ComboBox>
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <TextBlock Text="{lex:Loc Account_Transfer}" />
-                                    </DataTemplate>
-                                </ContentControl.Resources>
-                            </ContentControl>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountEditingDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <!-- Date -->
-                <DataGridTemplateColumn Header="{lex:Loc Date}" SortMemberPath="Payee.Name">
+                <DataGridTemplateColumn Header="{lex:Loc Date}" SortMemberPath="Date">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Date, StringFormat=\{0:yy/MM/dd\}}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <DatePicker Text="{Binding Date, Mode=TwoWay}"></DatePicker>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateEditingDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -125,61 +308,12 @@
                 <DataGridTemplateColumn Header="{lex:Loc Payee}" SortMemberPath="Payee.Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl HorizontalAlignment="Stretch"  Content="{Binding}">
-                                <ContentControl.Resources>
-                                    <DataTemplate DataType="{x:Type structure:TitBase}" >
-                                        <TextBlock Text="{Binding Payee}" />
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding FromAccount}" />
-                                            <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
-                                                <Rectangle.OpacityMask>
-                                                    <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
-                                                </Rectangle.OpacityMask>
-                                            </Rectangle>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ContentControl.Resources>
-                            </ContentControl>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ContentControl HorizontalAlignment="Stretch"  Content="{Binding}">
-                                <ContentControl.Resources>
-                                    <DataTemplate DataType="{x:Type structure:TitBase}" >
-                                        <ComboBox TextSearch.TextPath="Name"
-                                                              IsEditable="True"
-                                                              IsTextSearchCaseSensitive="False"
-                                                              IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllPayees, ElementName=TitView}">
-                                            <ComboBox.SelectedItem>
-                                                <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                                    <Binding.ValidationRules>
-                                                        <validationRules:PayeeRule />
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </ComboBox.SelectedItem>
-                                        </ComboBox>
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <ComboBox TextSearch.TextPath="Name"
-                                                              IsEditable="True"
-                                                              IsTextSearchCaseSensitive="False"
-                                                              IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
-                                            <ComboBox.SelectedItem>
-                                                <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                                    <Binding.ValidationRules>
-                                                        <validationRules:AccountRule />
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </ComboBox.SelectedItem>
-                                        </ComboBox>
-                                    </DataTemplate>
-                                </ContentControl.Resources>
-                            </ContentControl>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeEditingDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -187,59 +321,12 @@
                 <DataGridTemplateColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}">
-                                <ContentControl.Resources>
-                                    <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <TextBlock Text="{Binding Category}" />
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding ToAccount}" />
-                                            <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
-                                                <Rectangle.OpacityMask>
-                                                    <VisualBrush Visual="{DynamicResource appbar_layout_expand_right}"/>
-                                                </Rectangle.OpacityMask>
-                                            </Rectangle>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ContentControl.Resources>
-                            </ContentControl>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}">
-                                <ContentControl.Resources>
-                                    <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
-                                        <TextBlock Text="{Binding}" />
-                                    </HierarchicalDataTemplate>
-                                    <DataTemplate DataType="{x:Type structure:TitBase}">
-                                        <ComboBox Style="{StaticResource BFFTreeComboBox}" IsEditable="True" TextSearch.TextPath="Name"
-                                                              ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView}"
-                                                  attachedProperties:ParentPathHelper.ParentPath="Parent">
-                                            <ComboBox.SelectedItem>
-                                                <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                                </Binding>
-                                            </ComboBox.SelectedItem>
-                                        </ComboBox>
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type native:Transfer}">
-                                        <ComboBox TextSearch.TextPath="Name"
-                                                              IsEditable="True"
-                                                              IsTextSearchCaseSensitive="False"
-                                                              IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
-                                            <ComboBox.SelectedItem>
-                                                <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                                    <Binding.ValidationRules>
-                                                        <validationRules:AccountRule />
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </ComboBox.SelectedItem>
-                                        </ComboBox>
-                                    </DataTemplate>
-                                </ContentControl.Resources>
-                            </ContentControl>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -247,12 +334,12 @@
                 <DataGridTemplateColumn Header="{lex:Loc Memo}" SortMemberPath="Memo" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Memo}" ToolTip="{Binding Memo}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding Memo, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -260,52 +347,12 @@
                 <DataGridTemplateColumn Header="{lex:Loc Sum}" SortMemberPath="Sum" Width="Auto" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Name="TitGrid_SumBox" TextAlignment="Right">
-                                <TextBlock.Foreground>
-                                    <MultiBinding Converter="{StaticResource SumMulti}">
-                                        <Binding Path="Sum" />
-                                        <Binding Path="SubElements" Converter="{StaticResource SubElToSumPure}" />
-                                        <Binding Path="Type" />
-                                    </MultiBinding>
-                                </TextBlock.Foreground>
-                                <TextBlock.Text>
-                                    <PriorityBinding FallbackValue="NaN">
-                                        <Binding Path="Sum" Converter="{StaticResource DepPropToUnset}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
-                                            <Binding.ValidationRules>
-                                                <validationRules:CurrencyRule />
-                                                <validationRules:CurrencyLongRangeRule />
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                        <Binding Path="SubElements" Converter="{StaticResource SubElToSum}" Mode="TwoWay" StringFormat="C" />
-                                    </PriorityBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                            <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox Name="TitGrid_SumBox" TextAlignment="Right">
-                                <TextBox.Foreground>
-                                    <MultiBinding Converter="{StaticResource SumMulti}">
-                                        <Binding Path="Sum" />
-                                        <Binding Path="SubElements" Converter="{StaticResource SubElToSumPure}" />
-                                        <Binding Path="Type" />
-                                    </MultiBinding>
-                                </TextBox.Foreground>
-                                <TextBox.Text>
-                                    <PriorityBinding FallbackValue="NaN">
-                                        <Binding Path="Sum" Converter="{StaticResource DepPropToUnset}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
-                                            <Binding.ValidationRules>
-                                                <validationRules:CurrencyRule />
-                                                <validationRules:CurrencyLongRangeRule />
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                        <Binding Path="SubElements" Converter="{StaticResource SubElToSum}" Mode="TwoWay" StringFormat="C" />
-                                    </PriorityBinding>
-                                </TextBox.Text>
-                            </TextBox>
-                            <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -313,7 +360,7 @@
                 <DataGridTemplateColumn Header="{lex:Loc Cleared}" SortMemberPath="Cleared" Width="Auto" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox Style="{StaticResource BFFCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ClearedDataTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
