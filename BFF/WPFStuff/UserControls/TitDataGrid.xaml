@@ -109,7 +109,18 @@
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <!-- Date -->
-                <DataGridTextColumn Header="{lex:Loc Date}" Binding="{Binding Date, StringFormat=\{0:yy/MM/dd\}}"/>
+                <DataGridTemplateColumn Header="{lex:Loc Date}" SortMemberPath="Payee.Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Date, StringFormat=\{0:yy/MM/dd\}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <DatePicker Text="{Binding Date, Mode=TwoWay}"></DatePicker>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
                 <!-- Payee -->
                 <DataGridTemplateColumn Header="{lex:Loc Payee}" SortMemberPath="Payee.Name">
                     <DataGridTemplateColumn.CellTemplate>
