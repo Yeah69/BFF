@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Windows;
+using BFF.DB;
 using BFF.DB.SQLite;
+using BFF.Properties;
 using BFF.ViewModel;
 using MahApps.Metro;
 
@@ -13,7 +15,8 @@ namespace BFF
     {
         public App()
         {
-            MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
+            IDb database = new SqLiteDb(Settings.Default.DBLocation);
+            MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(database);
             MainWindow mainWindow = new MainWindow (mainWindowViewModel);
             mainWindow.Show();
 

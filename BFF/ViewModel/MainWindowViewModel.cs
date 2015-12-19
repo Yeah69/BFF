@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Windows.Input;
+using BFF.DB;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.Model.Native;
@@ -17,6 +18,8 @@ namespace BFF.ViewModel
         private bool _fileFlyoutIsOpen;
         private TitViewModel _allAccountsViewModel;
         private string _title;
+
+        private IDb _database;
 
         public ObservableCollection<Account> AllAccounts => SqLiteHelper.AllAccounts;
 
@@ -65,9 +68,9 @@ namespace BFF.ViewModel
             return ret;
         }; 
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IDb database)
         {
-            //AllAccounts = new ObservableCollection<Account>();
+            _database = database;
             if (File.Exists(Settings.Default.DBLocation))
             {
                 SqLiteHelper.OpenDatabase(Settings.Default.DBLocation);
@@ -137,15 +140,8 @@ namespace BFF.ViewModel
         {
             FileInfo fi = new FileInfo(dbPath);
             Title = $"BFF - {fi.Name}";
-            //todo: maybe just ref to AllAccounts from SqlLiteHelper
-            //IEnumerable<Account> accounts = SqLiteHelper.AllAccounts;
 
             AllAccountsViewModel = new TitViewModel(AllAccounts, AllPayees, AllCategories);
-
-            /*foreach (Account account in accounts)
-            {
-                AllAccounts.Add(account);
-            }*/
         }
     }
 }

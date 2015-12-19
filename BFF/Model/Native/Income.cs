@@ -8,7 +8,7 @@ using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class Income : TitBase
+    public class Income : TitBase
     {
         private Account _account;
         private DateTime _date;

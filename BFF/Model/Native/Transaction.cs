@@ -8,7 +8,7 @@ using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class Transaction : TitBase
+    public class Transaction : TitBase
     {
         private bool _cleared;
         private long? _sum;

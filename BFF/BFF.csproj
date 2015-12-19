@@ -101,7 +101,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DB\IDb.cs" />
+    <Compile Include="DB\SQLite\SQLiteDB.cs" />
     <Compile Include="DB\SQLite\SQLiteHelper.cs" />
+    <Compile Include="Helper\DataProviders\BudgetElementsProvider.cs" />
+    <Compile Include="Helper\DataProviders\IProvideBudgetElements.cs" />
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />
     <Compile Include="Helper\Output.cs" />

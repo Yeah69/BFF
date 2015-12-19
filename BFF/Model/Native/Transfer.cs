@@ -7,7 +7,7 @@ using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class Transfer : TitBase
+    public class Transfer : TitBase
     {
         private Account _fromAccount;
         private Account _toAccount;
@@ -27,6 +27,11 @@ namespace BFF.Model.Native
             get { return _fromAccount; }
             set
             {
+                if (_toAccount == value)
+                {
+                    _toAccount = _fromAccount;
+                    OnPropertyChanged(nameof(ToAccount));
+                }
                 _fromAccount = value;
                 OnPropertyChanged();
                 Update(this);
@@ -45,6 +50,11 @@ namespace BFF.Model.Native
             get { return _toAccount; }
             set
             {
+                if (_fromAccount == value)
+                {
+                    _fromAccount = _toAccount;
+                    OnPropertyChanged(nameof(FromAccount));
+                }
                 _toAccount = value;
                 OnPropertyChanged();
                 Update(this);

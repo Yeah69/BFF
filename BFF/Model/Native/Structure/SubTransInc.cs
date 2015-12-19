@@ -2,7 +2,7 @@
 
 namespace BFF.Model.Native.Structure
 {
-    abstract class SubTransInc : TransactionLike
+    public abstract class SubTransInc : TransactionLike
     {
         [Write(false)]
         public abstract TitBase Parent { get; set; }

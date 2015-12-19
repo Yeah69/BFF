@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
@@ -25,19 +24,7 @@ namespace BFF.DB.SQLite
         public static ObservableCollection<Category> AllCategories = new ObservableCollection<Category>();
         private static Dictionary<long, Category> CategoryCache = new Dictionary<long, Category>();
 
-        public static bool DbLockFlag = false;
-
-        private static void ExecuteOnDb(Action executeAction)
-        {
-            using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
-            {
-                cnn.Open();
-
-                executeAction.Invoke();
-
-                cnn.Close();
-            }
-        }
+        public static bool DbLockFlag;
 
         private static string CurrentDbFileName { get; set; }
 
@@ -68,7 +55,7 @@ namespace BFF.DB.SQLite
                         Date = date,
                         Memo = (string) objArr[5],
                         Sum = (long?) objArr[6],
-                        Cleared = (long) objArr[7] == 1 ? true : false,
+                        Cleared = (long) objArr[7] == 1,
                         Type = type
                     };
                     break;
@@ -83,7 +70,7 @@ namespace BFF.DB.SQLite
                         Date = date,
                         Memo = (string) objArr[5],
                         Sum = (long?) objArr[6],
-                        Cleared = (long) objArr[7] == 1 ? true : false,
+                        Cleared = (long) objArr[7] == 1,
                         Type = type
                     };
                     break;
@@ -96,7 +83,7 @@ namespace BFF.DB.SQLite
                         Date = date,
                         Memo = (string) objArr[5],
                         Sum = (long) objArr[6],
-                        Cleared = (long) objArr[7] == 1 ? true : false,
+                        Cleared = (long) objArr[7] == 1,
                         Type = type
                     };
                     break;
@@ -459,7 +446,7 @@ namespace BFF.DB.SQLite
 
         #region BalanceStatements
 
-        private static string AllAccountsBalanceStatement =>
+        internal static string AllAccountsBalanceStatement =>
 $@"SELECT Total({nameof(TitBase.Sum)}) FROM (
 SELECT {nameof(TitBase.Sum)} FROM {nameof(Transaction)}s UNION ALL 
 SELECT {nameof(TitBase.Sum)} FROM {nameof(Income)}s UNION ALL 
@@ -467,7 +454,7 @@ SELECT {nameof(TitBase.Sum)} FROM {nameof(SubTransaction)}s UNION ALL
 SELECT {nameof(TitBase.Sum)} FROM {nameof(SubIncome)}s UNION ALL 
 SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s);";
 
-        private static string AccountSpecificBalanceStatement =>
+        internal static string AccountSpecificBalanceStatement =>
 $@"SELECT (SELECT Total({nameof(TitBase.Sum)}) FROM (
 SELECT {nameof(TitBase.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL 
 SELECT {nameof(TitBase.Sum)} FROM {nameof(Income)}s WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
@@ -481,7 +468,7 @@ SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(A
 
         #region CreateStatements
 
-        private static string CreateTheTitViewStatement =>
+        internal static string CreateTheTitViewStatement =>
                     $@"CREATE VIEW IF NOT EXISTS [{TheTitName}] AS
 SELECT Id, AccountId, PayeeId, CategoryId, Date, Memo, Sum, Cleared, Type FROM [{nameof(Transaction)}s]
 UNION ALL
@@ -489,7 +476,7 @@ SELECT Id, AccountId, PayeeId, CategoryId, Date, Memo, Sum, Cleared, Type FROM [
 UNION ALL
 SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type FROM [{nameof(Transfer)}s];";
 
-        private static string CreateAccountTableStatement
+        internal static string CreateAccountTableStatement
             =>
                 $@"CREATE TABLE [{nameof(Account)}s](
                         {nameof(Account.Id)
@@ -507,7 +494,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                     } INTEGER PRIMARY KEY,
                         {nameof(Budget.MonthYear)} DATE);";
 
-        private static string CreateCategoryTableStatement
+        internal static string CreateCategoryTableStatement
             =>
                 $@"CREATE TABLE [{nameof(Category)}s](
                         {nameof(Category.Id)
@@ -519,7 +506,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                         FOREIGN KEY({nameof(Category.ParentId)}) REFERENCES {
                     nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
 
-        private static string CreateIncomeTableStatement
+        internal static string CreateIncomeTableStatement
             =>
                 $@"CREATE TABLE [{nameof(Income)}s](
                         {nameof(Income.Id)
@@ -546,14 +533,14 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                         FOREIGN KEY({nameof(Income.CategoryId)
                     }) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
 
-        private static string CreatePayeeTableStatement
+        internal static string CreatePayeeTableStatement
             =>
                 $@"CREATE TABLE [{nameof(Payee)}s](
                         {nameof(Payee.Id)
                     } INTEGER PRIMARY KEY,
                         {nameof(Payee.Name)} VARCHAR(100));";
 
-        private static string CreateSubTransactionTableStatement
+        internal static string CreateSubTransactionTableStatement
             =>
                 $@"CREATE TABLE [{nameof(SubTransaction)}s](
                         {nameof(SubTransaction.Id)
@@ -569,7 +556,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                     nameof(SubTransaction.ParentId)}) REFERENCES {nameof(Transaction)}s({nameof(Transaction.Id)
                     }) ON DELETE CASCADE);";
 
-        private static string CreateSubIncomeTableStatement
+        internal static string CreateSubIncomeTableStatement
             =>
                 $@"CREATE TABLE [{nameof(SubIncome)}s](
                         {nameof(SubIncome.Id)
@@ -584,7 +571,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                         FOREIGN KEY({nameof(SubIncome.ParentId)
                     }) REFERENCES {nameof(Income)}s({nameof(Income.Id)}) ON DELETE CASCADE);";
 
-        private static string CreateTransactionTableStatement
+        internal static string CreateTransactionTableStatement
             =>
                 $@"CREATE TABLE [{nameof(Transaction)}s](
                         {nameof(Transaction.Id)
@@ -612,7 +599,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                         FOREIGN KEY({nameof(Transaction.CategoryId)
                     }) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
 
-        private static string CreateTransferTableStatement
+        internal static string CreateTransferTableStatement
             =>
                 $@"CREATE TABLE [{nameof(Transfer)}s](
                         {nameof(Transfer.Id)
@@ -637,7 +624,7 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                         FOREIGN KEY({nameof(Transfer.ToAccountId)
                     }) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT);";
 
-        private static string CreateDbSettingTableStatement
+        internal static string CreateDbSettingTableStatement
             =>
                 $@"CREATE TABLE [{nameof(DbSetting)}s]({nameof(DbSetting.Id)} INTEGER PRIMARY KEY, {nameof(DbSetting.CurrencyCultrureName)} VARCHAR(10),
 {nameof(DbSetting.DateCultureName)} VARCHAR(10));";

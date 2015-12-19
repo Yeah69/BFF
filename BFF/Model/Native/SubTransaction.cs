@@ -7,7 +7,7 @@ using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    class SubTransaction : SubTransInc
+    public class SubTransaction : SubTransInc
     {
         [Key]
         public long Id { get; set; } = -1;

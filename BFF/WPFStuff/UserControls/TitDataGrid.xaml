@@ -200,7 +200,7 @@
                 <TextBlock Text="{Binding Memo}" ToolTip="{Binding Memo}" />
             </DataTemplate>
             <DataTemplate x:Key="MemoEditingDataTemplate">
-                <TextBox Text="{Binding Memo, UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" />
+                <TextBox Text="{Binding Memo, UpdateSourceTrigger=LostFocus}" TextWrapping="NoWrap" />
             </DataTemplate>
             <!-- Sum -->
             <DataTemplate x:Key="SumDataTemplate">
@@ -260,7 +260,9 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <!-- The DataGrid, which shows all saved Tits -->
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False">
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource MetroDataGrid}"
@@ -271,7 +273,7 @@
             </DataGrid.Style>
             <DataGrid.Columns>
                 <!-- Symbol -->
-                <DataGridTemplateColumn Header="S">
+                <DataGridTemplateColumn Header="S" x:Name="SymbolColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SymbolDataTemplate}" />
@@ -279,7 +281,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <!-- Account -->
-                <DataGridTemplateColumn Header="{lex:Loc Account}" SortMemberPath="Account.Name">
+                <DataGridTemplateColumn Header="{lex:Loc Account}" SortMemberPath="Account.Name" x:Name="AccountColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountDataTemplate}" />
@@ -292,7 +294,7 @@
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <!-- Date -->
-                <DataGridTemplateColumn Header="{lex:Loc Date}" SortMemberPath="Date">
+                <DataGridTemplateColumn Header="{lex:Loc Date}" SortMemberPath="Date" x:Name="DateColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateDataTemplate}" />
@@ -305,7 +307,7 @@
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <!-- Payee -->
-                <DataGridTemplateColumn Header="{lex:Loc Payee}" SortMemberPath="Payee.Name">
+                <DataGridTemplateColumn Header="{lex:Loc Payee}" SortMemberPath="Payee.Name" x:Name="PayeeColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeDataTemplate}" />
@@ -318,7 +320,7 @@
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <!-- Category -->
-                <DataGridTemplateColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name">
+                <DataGridTemplateColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name" x:Name="CategoryColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryDataTemplate}" />
@@ -331,7 +333,7 @@
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <!-- Memo -->
-                <DataGridTemplateColumn Header="{lex:Loc Memo}" SortMemberPath="Memo" Width="*">
+                <DataGridTemplateColumn Header="{lex:Loc Memo}" SortMemberPath="Memo" Width="*" x:Name="MemoColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoDataTemplate}" />
@@ -344,7 +346,7 @@
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <!-- Sum -->
-                <DataGridTemplateColumn Header="{lex:Loc Sum}" SortMemberPath="Sum" Width="Auto" IsReadOnly="False">
+                <DataGridTemplateColumn Header="{lex:Loc Sum}" SortMemberPath="Sum" IsReadOnly="False" x:Name="SumColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumDataTemplate}" />
@@ -357,7 +359,7 @@
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
                 <!-- Cleared -->
-                <DataGridTemplateColumn Header="{lex:Loc Cleared}" SortMemberPath="Cleared" Width="Auto" IsReadOnly="True">
+                <DataGridTemplateColumn Header="{lex:Loc Cleared}" SortMemberPath="Cleared" IsReadOnly="True" x:Name="ClearedColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ClearedDataTemplate}" />
@@ -366,7 +368,142 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <GroupBox Grid.Row="1" Header="{lex:Loc TitView_BalanceDisplay}" HorizontalAlignment="Left">
+        <!-- The Editing-Form -->
+        <StackPanel Grid.Row="1">
+            <DataGrid Name="NewTitGrid" ItemsSource="{Binding NewTits}" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0,2,0,0">
+                <DataGrid.Style>
+                    <Style BasedOn="{StaticResource MetroDataGrid}"
+                               TargetType="{x:Type DataGrid}">
+                        <Setter Property="AlternatingRowBackground"
+                                    Value="{DynamicResource GrayBrush8}" />
+                    </Style>
+                </DataGrid.Style>
+                <DataGrid.Columns>
+                    <!-- Symbol -->
+                    <DataGridTemplateColumn Header="S" Width="{Binding Width, Source={x:Reference SymbolColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SymbolDataTemplate}" />
+                                <!-- Width="{Binding ActualWidth, ElementName=SymbolColumn}"-->
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Account -->
+                    <DataGridTemplateColumn Header="{lex:Loc Account}" Width="{Binding Width, Source={x:Reference AccountColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountEditingDataTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Date -->
+                    <DataGridTemplateColumn Header="{lex:Loc Date}" Width="{Binding Width, Source={x:Reference DateColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateEditingDataTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Payee -->
+                    <DataGridTemplateColumn Header="{lex:Loc Payee}" Width="{Binding Width, Source={x:Reference PayeeColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeEditingDataTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Category -->
+                    <DataGridTemplateColumn Header="{lex:Loc Category}" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingDataTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Memo -->
+                    <DataGridTemplateColumn Header="{lex:Loc Memo}" Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingDataTemplate}">
+                                </ContentControl>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Sum -->
+                    <DataGridTemplateColumn Header="{lex:Loc Sum}" IsReadOnly="False" Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingDataTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Cleared -->
+                    <DataGridTemplateColumn Header="{lex:Loc Cleared}" IsReadOnly="True" Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ClearedDataTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DockPanel>
+                <Button ToolTip="New Transaction" Command="{Binding NewTransactionCommand}">
+                    <!-- todo: Localize / Style with logo etc -->
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{StaticResource appbar_edit_add}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushNegative}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{StaticResource appbar_inbox_out}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="New Income" Command="{Binding NewIncomeCommand}">
+                    <!-- todo: Localize / Style with logo etc -->
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{StaticResource appbar_edit_add}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushPositive}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{StaticResource appbar_inbox_in}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="New Transfer" Command="{Binding NewTransferCommand}">
+                    <!-- todo: Localize / Style with logo etc-->
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{StaticResource appbar_edit_add}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushTransfer}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{StaticResource appbar_arrow_left_right}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="Add to the table" Command="{Binding ApplyCommand}" HorizontalAlignment="Right">
+                    <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Visual="{StaticResource appbar_table_add}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </Button>
+            </DockPanel>
+        </StackPanel>
+        <!-- "Status bar" -->
+        <GroupBox Grid.Row="2" Header="{lex:Loc TitView_BalanceDisplay}" HorizontalAlignment="Left">
             <TextBlock Name="TotalBalanceTextBlock"  Text="{Binding AccountBalance, Converter={StaticResource DepPropToUnset}}" />
         </GroupBox>
     </Grid>

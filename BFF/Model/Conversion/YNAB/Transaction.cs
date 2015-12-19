@@ -6,7 +6,7 @@ using BFF.Helper.Import;
 
 namespace BFF.Model.Conversion.YNAB
 {
-    class Transaction
+    public class Transaction
     {
         public string Account { get; set; }
 

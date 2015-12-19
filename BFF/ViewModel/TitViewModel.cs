@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 using BFF.DB.SQLite;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
@@ -8,7 +10,8 @@ namespace BFF.ViewModel
 {
     public class TitViewModel : ObservableObject
     {
-        public ObservableCollection<TitBase> Tits { get; set; }
+        public ObservableCollection<TitBase> Tits { get; set; } = new ObservableCollection<TitBase>();
+        public ObservableCollection<TitBase> NewTits { get; set; } = new ObservableCollection<TitBase>();
 
         public long AccountBalance => SqLiteHelper.GetAccountBalance(_account);
 
@@ -41,6 +44,31 @@ namespace BFF.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        public ICommand NewTransactionCommand => new RelayCommand((obj) =>
+        {
+            NewTits.Add(new Transaction { Date = DateTime.Today, Memo = "", Sum=0L, Cleared = false, Account = _account});
+        });
+
+        public ICommand NewIncomeCommand => new RelayCommand((obj) =>
+        {
+            NewTits.Add(new Income { Date = DateTime.Today, Memo = "", Sum = 0L, Cleared = false, Account = _account });
+        });
+
+        public ICommand NewTransferCommand => new RelayCommand((obj) =>
+        {
+            NewTits.Add(new Transfer { Date = DateTime.Today, Memo = "", Sum = 0L, Cleared = false });
+        });
+
+        public ICommand ApplyCommand => new RelayCommand((obj) =>
+        {
+            foreach (TitBase tit in NewTits)
+            {
+                Tits.Add(tit);
+            }
+            OnPropertyChanged(nameof(Tits));//todo:Validate correctness and Save in DB, too
+            NewTits.Clear(); 
+        }, (obj) => NewTits.Count > 0);
 
         private readonly Account _account;
         private ObservableCollection<Account> _allAccounts;
