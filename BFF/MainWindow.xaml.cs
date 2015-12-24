@@ -1,5 +1,6 @@
 ﻿using System.Collections.Specialized;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -7,6 +8,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using BFF.DB;
+using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.Model.Native;
 using BFF.Properties;
@@ -24,6 +27,8 @@ namespace BFF
     /// </summary>
     public partial class MainWindow
     {
+        private IBffOrm _orm;
+
         public DbSetting DbSettings { get; set; }
 
         //todo: Maybe not needed if gotten directly from DataContext (the ViewModel)
@@ -59,7 +64,7 @@ namespace BFF
             MetroTabItem tabItem = new MetroTabItem
             {
                 DataContext = account,
-                Content = new TitDataGrid (new TitViewModel(((MainWindowViewModel)DataContext)?.AllAccounts, ((MainWindowViewModel)DataContext)?.AllPayees, ((MainWindowViewModel)DataContext)?.AllCategories, account))
+                Content = new TitDataGrid (new TitViewModel(((MainWindowViewModel)DataContext)?.AllAccounts, ((MainWindowViewModel)DataContext)?.AllPayees, ((MainWindowViewModel)DataContext)?.AllCategories, _orm, account))
             };
             tabItem.SetBinding(HeaderedContentControl.HeaderProperty, nameof(Account.Name));
             return tabItem;
@@ -71,48 +76,37 @@ namespace BFF
             set { SetValue(ImportCommandProperty, value); }
         }
 
-        private MainWindow()
+        public MainWindow()
         {
             InitializeComponent();
+
+            string dbLocation = Settings.Default.DBLocation;
+
+            if (string.IsNullOrEmpty(dbLocation) || !File.Exists(dbLocation))
+            {
+                DataContext = null;
+                _orm = null;
+            }
+            else
+            {
+                IBffOrm database = new SqLiteBffOrm(Settings.Default.DBLocation);
+                _orm = database;
+                MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(_orm);
+                DataContext = mainWindowViewModel;
+                foreach (Account account in mainWindowViewModel.AllAccounts)
+                    AccountsTabControl.Items.Insert(AccountsTabControl.Items.Count - 1, createMetroTabItem(account));
+                mainWindowViewModel.AllAccounts.CollectionChanged += changeTabs;
+
+                SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
+
+                InitializeAppThemeAndAccentComboBoxes();
+                InitializeCultureComboBoxes();
+            }
         }
 
-        public MainWindow(MainWindowViewModel viewModel) : this()
+        private void InitializeCultureComboBoxes()
         {
-            //DbSettings = SqLiteHelper.GetDbSetting();
-            //Resources["CurrencyCulture"] = DbSettings.CurrencyCulture;
-            DataContext = viewModel;
-            foreach (Account account in viewModel.AllAccounts)
-                AccountsTabControl.Items.Insert(AccountsTabControl.Items.Count - 1, createMetroTabItem(account));
-            viewModel.AllAccounts.CollectionChanged += changeTabs;
-
-            SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
-
-            Accent initialAccent = ThemeManager.GetAccent(Settings.Default.MahApps_Accent);
-            AppTheme initialAppTheme = ThemeManager.GetAppTheme(Settings.Default.MahApps_AppTheme);
             string initialLocalization = Settings.Default.Localization_Language;
-
-            foreach (AppTheme theme in ThemeManager.AppThemes.OrderBy(x => x.Name))
-            {
-                ThemeWrap current = new ThemeWrap
-                {
-                    Theme = theme,
-                    WhiteBrush = (SolidColorBrush) theme.Resources["WhiteBrush"]
-                };
-                ThemeCombo.Items.Add(current);
-                if (theme == initialAppTheme)
-                    ThemeCombo.SelectedItem = current;
-            }
-            foreach (Accent accent in ThemeManager.Accents.OrderBy(x => x.Name))
-            {
-                AccentWrap current = new AccentWrap
-                {
-                    Accent = accent,
-                    AccentColorBrush = (SolidColorBrush) accent.Resources["AccentColorBrush"]
-                };
-                AccentCombo.Items.Add(current);
-                if (accent == initialAccent)
-                    AccentCombo.SelectedItem = current;
-            }
             LanguageCombo.Items.Add("de-DE");
             LanguageCombo.Items.Add("en-US");
             LanguageCombo.SelectedItem = initialLocalization;
@@ -135,6 +129,34 @@ namespace BFF
             WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = customCultureInfo;
             Thread.CurrentThread.CurrentCulture = customCultureInfo;
             Thread.CurrentThread.CurrentUICulture = customCultureInfo;
+        }
+
+        private void InitializeAppThemeAndAccentComboBoxes()
+        {
+            AppTheme initialAppTheme = ThemeManager.GetAppTheme(Settings.Default.MahApps_AppTheme);
+            Accent initialAccent = ThemeManager.GetAccent(Settings.Default.MahApps_Accent);
+            foreach (AppTheme theme in ThemeManager.AppThemes.OrderBy(x => x.Name))
+            {
+                ThemeWrap current = new ThemeWrap
+                {
+                    Theme = theme,
+                    WhiteBrush = (SolidColorBrush)theme.Resources["WhiteBrush"]
+                };
+                ThemeCombo.Items.Add(current);
+                if (theme == initialAppTheme)
+                    ThemeCombo.SelectedItem = current;
+            }
+            foreach (Accent accent in ThemeManager.Accents.OrderBy(x => x.Name))
+            {
+                AccentWrap current = new AccentWrap
+                {
+                    Accent = accent,
+                    AccentColorBrush = (SolidColorBrush)accent.Resources["AccentColorBrush"]
+                };
+                AccentCombo.Items.Add(current);
+                if (accent == initialAccent)
+                    AccentCombo.SelectedItem = current;
+            }
         }
 
         private void SettingsButt_Click(object sender, RoutedEventArgs e)

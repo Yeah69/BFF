@@ -19,13 +19,13 @@ namespace BFF.ViewModel
         private TitViewModel _allAccountsViewModel;
         private string _title;
 
-        private IDb _database;
+        private IBffOrm _orm;
 
-        public ObservableCollection<Account> AllAccounts => SqLiteHelper.AllAccounts;
+        public ObservableCollection<Account> AllAccounts => _orm.AllAccounts;
 
-        public ObservableCollection<Payee> AllPayees => SqLiteHelper.AllPayees;
+        public ObservableCollection<Payee> AllPayees => _orm.AllPayees;
 
-        public ObservableCollection<Category> AllCategories => SqLiteHelper.AllCategories; 
+        public ObservableCollection<Category> AllCategories => _orm.AllCategories; 
 
         public TitViewModel AllAccountsViewModel
         {
@@ -51,7 +51,7 @@ namespace BFF.ViewModel
 
         public ICommand NewAccountCommand => new RelayCommand(param =>
         {
-            SqLiteHelper.AddAccount(NewAccount);
+            _orm.Insert(NewAccount);
             NewAccount = new Account { Id = -1, Name = "", StartingBalance = 0L };
             OnPropertyChanged(nameof(NewAccount));
         }
@@ -64,16 +64,16 @@ namespace BFF.ViewModel
         public Func<string, Payee> CreatePayeeFunc => name => 
         {
             Payee ret = new Payee {Name = name};
-            SqLiteHelper.InsertPayee(ret);
+            _orm.Insert(ret);
             return ret;
         }; 
 
-        public MainWindowViewModel(IDb database)
+        public MainWindowViewModel(IBffOrm orm)
         {
-            _database = database;
+            _orm = orm;
             if (File.Exists(Settings.Default.DBLocation))
             {
-                SqLiteHelper.OpenDatabase(Settings.Default.DBLocation);
+                //SqLiteHelper.OpenDatabase(Settings.Default.DBLocation); todo
 
                 SetTabPages(Settings.Default.DBLocation);
             }
@@ -90,7 +90,7 @@ namespace BFF.ViewModel
             if (saveFileDialog.ShowDialog() == true)
             {
                 Reset();
-                SqLiteHelper.CreateNewDatabase(saveFileDialog.FileName, CultureInfo.CurrentCulture);
+                //SqLiteHelper.CreateNewDatabase(saveFileDialog.FileName, CultureInfo.CurrentCulture); todo
                 SetTabPages(saveFileDialog.FileName);
 
                 Settings.Default.DBLocation = saveFileDialog.FileName;
@@ -109,7 +109,7 @@ namespace BFF.ViewModel
             if (openFileDialog.ShowDialog() == true)
             {
                 Reset();
-                SqLiteHelper.OpenDatabase(openFileDialog.FileName);
+                //SqLiteHelper.OpenDatabase(openFileDialog.FileName); todo
                 SetTabPages(openFileDialog.FileName);
 
                 Settings.Default.DBLocation = openFileDialog.FileName;
@@ -121,7 +121,7 @@ namespace BFF.ViewModel
         {
             Reset();
             string savePath = ((IImportable) importableObject).Import();
-            SqLiteHelper.OpenDatabase(savePath);
+            //SqLiteHelper.OpenDatabase(savePath); todo
             SetTabPages(savePath);
 
             Settings.Default.DBLocation = savePath;
@@ -141,7 +141,7 @@ namespace BFF.ViewModel
             FileInfo fi = new FileInfo(dbPath);
             Title = $"BFF - {fi.Name}";
 
-            AllAccountsViewModel = new TitViewModel(AllAccounts, AllPayees, AllCategories);
+            AllAccountsViewModel = new TitViewModel(AllAccounts, AllPayees, AllCategories, _orm);
         }
     }
 }

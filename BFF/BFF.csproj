@@ -54,6 +54,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -101,11 +105,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DB\IDb.cs" />
-    <Compile Include="DB\SQLite\SQLiteDB.cs" />
+    <Compile Include="DB\IBffOrm.cs" />
+    <Compile Include="DB\SQLite\SqLiteBffOrm.cs" />
     <Compile Include="DB\SQLite\SQLiteHelper.cs" />
-    <Compile Include="Helper\DataProviders\BudgetElementsProvider.cs" />
-    <Compile Include="Helper\DataProviders\IProvideBudgetElements.cs" />
+    <Compile Include="Helper\BFFNinjectModule.cs" />
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />
     <Compile Include="Helper\Output.cs" />
@@ -116,10 +119,10 @@
     <Compile Include="Model\Native\Category.cs" />
     <Compile Include="Model\Native\Budget.cs" />
     <Compile Include="Model\Native\DbSetting.cs" />
-    <Compile Include="Model\Native\Structure\DataModelBase.cs" />
     <Compile Include="Model\Native\Payee.cs" />
-    <Compile Include="Model\Native\Structure\TransactionLike.cs" />
-    <Compile Include="Model\Native\Structure\SubTransInc.cs" />
+    <Compile Include="Model\Native\Structure\DataModelBase.cs" />
+    <Compile Include="Model\Native\Structure\TitLike.cs" />
+    <Compile Include="Model\Native\Structure\SubTitBase.cs" />
     <Compile Include="Model\Native\Structure\TitBase.cs" />
     <Compile Include="Model\Native\SubIncome.cs" />
     <Compile Include="Model\Native\SubTransaction.cs" />
@@ -156,9 +159,7 @@
       <DependentUpon>TitDataGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPFStuff\ObservableObject.cs" />
-    <Compile Include="WPFStuff\ValidationRules\PayeeRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\CurrencyLongRangeRule.cs" />
-    <Compile Include="WPFStuff\ValidationRules\AccountRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\NoEmptyNullStringRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\CurrencyRule.cs" />
     <Page Include="MainWindow.xaml">

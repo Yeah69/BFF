@@ -3,11 +3,10 @@ using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
-using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    public class SubTransaction : SubTransInc
+    public class SubTransaction : SubTitBase
     {
         [Key]
         public long Id { get; set; } = -1;
@@ -23,7 +22,7 @@ namespace BFF.Model.Native
         public override long CategoryId
         {
             get { return Category?.Id ?? -1; }
-            set { Category = GetCategory(value); }
+            set { Category = Database?.GetCategory(value); }
         }
 
         public override string Memo { get; set; }

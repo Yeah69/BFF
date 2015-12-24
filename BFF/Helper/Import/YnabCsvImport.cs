@@ -78,7 +78,7 @@ namespace BFF.Helper.Import
         public static void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string savePath)
         {
             //Initialization
-            DbLockFlag = true;
+            //DbLockFlag = true; todo
             ProcessedAccountsList.Clear();
 
             //First step: Parse CSV data into conversion objects
@@ -96,9 +96,9 @@ namespace BFF.Helper.Import
             //Third step: Create new database for imported data
             string assemblyPath = Assembly.GetExecutingAssembly().Location;
             assemblyPath = assemblyPath.Substring(0, assemblyPath.LastIndexOf('\\') + 1);
-            CreateNewDatabase(savePath, CultureInfo.CurrentCulture);
-            PopulateDatabase(transactions, subTransactions, transfers, incomes);
-            DbLockFlag = false;
+            //CreateNewDatabase(savePath, CultureInfo.CurrentCulture); todo
+            //PopulateDatabase(transactions, subTransactions, transfers, incomes); todo
+            //DbLockFlag = false; todo
         }
 
         private static List<YNAB.Transaction> ParseTransactionCsv(string filePath)

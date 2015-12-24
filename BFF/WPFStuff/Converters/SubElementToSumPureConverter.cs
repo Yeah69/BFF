@@ -11,7 +11,7 @@ namespace BFF.WPFStuff.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            IEnumerable<SubTransInc> list = (IEnumerable<SubTransInc>) value;
+            IEnumerable<SubTitBase> list = (IEnumerable<SubTitBase>) value;
             return list?.Sum(element => element.Sum);
         }
 

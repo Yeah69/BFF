@@ -3,7 +3,6 @@ using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
-using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
@@ -34,14 +33,14 @@ namespace BFF.Model.Native
                 }
                 _fromAccount = value;
                 OnPropertyChanged();
-                Update(this);
+                Database?.Update(this);
             }
         }
 
         public long FromAccountId
         {
             get { return FromAccount?.Id ?? -1; }
-            set { FromAccount = GetAccount(value); }
+            set { FromAccount = Database?.GetAccount(value); }
         }
 
         [Write(false)]
@@ -57,14 +56,14 @@ namespace BFF.Model.Native
                 }
                 _toAccount = value;
                 OnPropertyChanged();
-                Update(this);
+                Database?.Update(this);
             }
         }
 
         public long ToAccountId
         {
             get { return ToAccount?.Id ?? -1; }
-            set { ToAccount = GetAccount(value); }
+            set { ToAccount = Database?.GetAccount(value); }
         }
 
         public override DateTime Date
@@ -74,7 +73,7 @@ namespace BFF.Model.Native
             {
                 _date = value;
                 OnPropertyChanged();
-                Update(this);
+                Database?.Update(this);
             }
         }
 
@@ -85,7 +84,7 @@ namespace BFF.Model.Native
             {
                 _memo = value;
                 OnPropertyChanged();
-                Update(this);
+                Database?.Update(this);
             }
         }
 
@@ -96,7 +95,7 @@ namespace BFF.Model.Native
             {
                 _sum = value;
                 OnPropertyChanged();
-                Update(this);
+                Database?.Update(this);
             }
         }
 
@@ -107,7 +106,7 @@ namespace BFF.Model.Native
             {
                 _cleared = value;
                 OnPropertyChanged();
-                Update(this);
+                Database?.Update(this);
             }
         }
 

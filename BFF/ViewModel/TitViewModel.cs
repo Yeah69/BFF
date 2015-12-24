@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using BFF.DB;
 using BFF.DB.SQLite;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
@@ -13,37 +14,13 @@ namespace BFF.ViewModel
         public ObservableCollection<TitBase> Tits { get; set; } = new ObservableCollection<TitBase>();
         public ObservableCollection<TitBase> NewTits { get; set; } = new ObservableCollection<TitBase>();
 
-        public long AccountBalance => SqLiteHelper.GetAccountBalance(_account);
+        public long AccountBalance => _orm.GetAccountBalance(_account);
 
-        public ObservableCollection<Account> AllAccounts
-        {
-            get { return _allAccounts; }
-            set
-            {
-                _allAccounts = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<Account> AllAccounts => _orm.AllAccounts;
 
-        public ObservableCollection<Payee> AllPayees
-        {
-            get { return _allPayees; }
-            set
-            {
-                _allPayees = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<Payee> AllPayees => _orm.AllPayees;
 
-        public ObservableCollection<Category> AllCategories
-        {
-            get { return _allCategories; }
-            set
-            {
-                _allCategories = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<Category> AllCategories => _orm.AllCategories;
 
         public ICommand NewTransactionCommand => new RelayCommand((obj) =>
         {
@@ -74,14 +51,14 @@ namespace BFF.ViewModel
         private ObservableCollection<Account> _allAccounts;
         private ObservableCollection<Payee> _allPayees;
         private ObservableCollection<Category> _allCategories;
+        private IBffOrm _orm;
 
-        public TitViewModel(ObservableCollection<Account> allAccounts, ObservableCollection<Payee> allPayees, ObservableCollection<Category> allCategories, Account account = null)
+
+        public TitViewModel(ObservableCollection<Account> allAccounts, ObservableCollection<Payee> allPayees, ObservableCollection<Category> allCategories, IBffOrm orm, Account account = null)
         {
-            AllAccounts = allAccounts;
-            AllPayees = allPayees;
-            AllCategories = allCategories;
+             _orm = orm;
             _account = account;
-            Tits = new ObservableCollection<TitBase>((account == null) ? SqLiteHelper.GetAllTransactions(): SqLiteHelper.GetAllTransactions(account));
+            Tits = new ObservableCollection<TitBase>((account == null) ? orm.GetAllTits(): orm.GetAllTits(account));
         }
     }
 }

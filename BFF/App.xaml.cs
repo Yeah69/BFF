@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿using System.IO;
 using System.Windows;
 using BFF.DB;
 using BFF.DB.SQLite;
@@ -15,9 +15,7 @@ namespace BFF
     {
         public App()
         {
-            IDb database = new SqLiteDb(Settings.Default.DBLocation);
-            MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(database);
-            MainWindow mainWindow = new MainWindow (mainWindowViewModel);
+            MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
 
         }

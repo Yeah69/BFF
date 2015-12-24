@@ -65,9 +65,6 @@
                                                               ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <validationRules:AccountRule />
-                                        </Binding.ValidationRules>
                                     </Binding>
                                 </ComboBox.SelectedItem>
                             </ComboBox>
@@ -116,9 +113,6 @@
                                                               ItemsSource="{Binding DataContext.AllPayees, ElementName=TitView}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <validationRules:PayeeRule />
-                                        </Binding.ValidationRules>
                                     </Binding>
                                 </ComboBox.SelectedItem>
                             </ComboBox>
@@ -131,9 +125,6 @@
                                                               ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <validationRules:AccountRule />
-                                        </Binding.ValidationRules>
                                     </Binding>
                                 </ComboBox.SelectedItem>
                             </ComboBox>
@@ -185,9 +176,6 @@
                                                               ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <validationRules:AccountRule />
-                                        </Binding.ValidationRules>
                                     </Binding>
                                 </ComboBox.SelectedItem>
                             </ComboBox>
@@ -263,7 +251,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!-- The DataGrid, which shows all saved Tits -->
-        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False">
+        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource MetroDataGrid}"
                            TargetType="{x:Type DataGrid}">
@@ -370,7 +358,7 @@
         </DataGrid>
         <!-- The Editing-Form -->
         <StackPanel Grid.Row="1">
-            <DataGrid Name="NewTitGrid" ItemsSource="{Binding NewTits}" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0,2,0,0">
+            <DataGrid Name="NewTitGrid" ItemsSource="{Binding NewTits}" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0,2,0,0" CanUserAddRows="False">
                 <DataGrid.Style>
                     <Style BasedOn="{StaticResource MetroDataGrid}"
                                TargetType="{x:Type DataGrid}">

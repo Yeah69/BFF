@@ -9,6 +9,7 @@ namespace BFF.Model.Native
 {
     public class Category : DataModelBase
     {
+        //todo: Db Updates
         [Key]
         public long Id { get; set; } = -1;
 
@@ -23,7 +24,8 @@ namespace BFF.Model.Native
         public long? ParentId
         {
             get { return Parent?.Id; }
-            set { Parent = GetCategory(value); } //todo: Maybe set this as Parent's child
+            set { //Parent = Database?.GetCategory(value ?? -1L); 
+            } //todo: Maybe set this as Parent's child
         }
 
         public override string ToString()

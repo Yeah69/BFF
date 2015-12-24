@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using BFF.Model.Native;
@@ -15,6 +16,8 @@ namespace BFF.WPFStuff.Converters
 
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            if(values[0] == DependencyProperty.UnsetValue)
+                return Brushes.Gold;
             long sum = (long?)values[0] ?? (long?)values[1] ?? 0L;
             if ((string)values[2] == "Transfer")
             {

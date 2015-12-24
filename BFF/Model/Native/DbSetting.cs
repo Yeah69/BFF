@@ -24,7 +24,8 @@ namespace BFF.Model.Native
             set
             {
                 CurrencyCultrureName = value.Name;
-                SqLiteHelper.SetDbSetting(this);
+                Database.Update(this);
+                //SqLiteHelper.SetDbSetting(this);
                 Output.CurrencyCulture = value;
             }
         }
@@ -35,7 +36,8 @@ namespace BFF.Model.Native
             set
             {
                 _dateCultureName = value;
-                SqLiteHelper.SetDbSetting(this);
+                Database?.Update(this);
+                //SqLiteHelper.SetDbSetting(this);
             }
         }
     }
