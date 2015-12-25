@@ -18,7 +18,7 @@
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -130,8 +130,9 @@
     <Compile Include="Model\Native\Transfer.cs" />
     <Compile Include="Model\Native\Transaction.cs" />
     <Compile Include="ViewModel\ImportDialogViewModel.cs" />
-    <Compile Include="ViewModel\TitViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\TitViewModel.cs" />
+    <Compile Include="ViewModel\MainWindowEmptyViewModel.cs" />
     <Compile Include="WPFStuff\AttachedProperties\ParentPathHelper.cs" />
     <Compile Include="WPFStuff\Behaviors\ClosingOnSelectBevavior.cs" />
     <Compile Include="WPFStuff\Behaviors\ClosingOnMouseSelectBehavior.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="WPFStuff\Converters\CoalesceConverter.cs" />
     <Compile Include="WPFStuff\Converters\DepPropToUnsetConverter.cs" />
     <Compile Include="WPFStuff\Converters\SubElementToSumConverter.cs" />
+    <Compile Include="WPFStuff\Converters\AccountToTitViewModelConverter.cs" />
     <Compile Include="WPFStuff\Converters\TypeToCanvasConverter.cs" />
     <Compile Include="WPFStuff\Converters\TypeToBrushConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />

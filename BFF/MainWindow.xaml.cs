@@ -7,9 +7,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using BFF.DB;
 using BFF.DB.SQLite;
+using BFF.Helper;
 using BFF.Helper.Import;
 using BFF.Model.Native;
 using BFF.Properties;
@@ -18,6 +20,8 @@ using BFF.WPFStuff.UserControls;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Ninject;
+using Ninject.Parameters;
 using TabItem = System.Windows.Controls.TabItem;
 
 namespace BFF
@@ -27,7 +31,6 @@ namespace BFF
     /// </summary>
     public partial class MainWindow
     {
-        private IBffOrm _orm;
 
         public DbSetting DbSettings { get; set; }
 
@@ -61,11 +64,15 @@ namespace BFF
 
         private MetroTabItem createMetroTabItem(Account account)
         {
-            MetroTabItem tabItem = new MetroTabItem
+            MetroTabItem tabItem;
+            using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
             {
-                DataContext = account,
-                Content = new TitDataGrid (new TitViewModel(((MainWindowViewModel)DataContext)?.AllAccounts, ((MainWindowViewModel)DataContext)?.AllPayees, ((MainWindowViewModel)DataContext)?.AllCategories, _orm, account))
-            };
+                tabItem = new MetroTabItem
+                {
+                    DataContext = account,
+                    Content = new TitDataGrid(kernel.Get<TitViewModel>(new ConstructorArgument("account", account)))//new TitViewModel(_orm, account))
+                };
+            }
             tabItem.SetBinding(HeaderedContentControl.HeaderProperty, nameof(Account.Name));
             return tabItem;
         }
@@ -85,13 +92,14 @@ namespace BFF
             if (string.IsNullOrEmpty(dbLocation) || !File.Exists(dbLocation))
             {
                 DataContext = null;
-                _orm = null;
             }
             else
             {
-                IBffOrm database = new SqLiteBffOrm(Settings.Default.DBLocation);
-                _orm = database;
-                MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(_orm);
+                MainWindowViewModel mainWindowViewModel;
+                using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
+                { 
+                    mainWindowViewModel = kernel.Get<MainWindowViewModel>(); //new MainWindowViewModel(_orm);
+                }
                 DataContext = mainWindowViewModel;
                 foreach (Account account in mainWindowViewModel.AllAccounts)
                     AccountsTabControl.Items.Insert(AccountsTabControl.Items.Count - 1, createMetroTabItem(account));

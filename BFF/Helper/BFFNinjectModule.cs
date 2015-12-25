@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BFF.DB;
+using BFF.DB.SQLite;
+using BFF.Properties;
 using Ninject.Modules;
 
 namespace BFF.Helper
 {
-    class BFFNinjectModule : NinjectModule
+    class BffNinjectModule : NinjectModule
     {
         public override void Load()
         {
-            throw new NotImplementedException();
+            Bind<IBffOrm>()
+                .To<SqLiteBffOrm>()
+                .InSingletonScope()
+                .WithConstructorArgument("dbPath", Settings.Default.DBLocation);
         }
     }
 }

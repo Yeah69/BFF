@@ -1,10 +1,7 @@
-﻿using System.IO;
-using System.Windows;
-using BFF.DB;
-using BFF.DB.SQLite;
-using BFF.Properties;
-using BFF.ViewModel;
+﻿using System.Windows;
+using BFF.Helper;
 using MahApps.Metro;
+using Ninject;
 
 namespace BFF
 {

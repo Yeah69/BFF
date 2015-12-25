@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using BFF.DB;
-using BFF.DB.SQLite;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
 using BFF.WPFStuff;
@@ -13,6 +12,8 @@ namespace BFF.ViewModel
     {
         public ObservableCollection<TitBase> Tits { get; set; } = new ObservableCollection<TitBase>();
         public ObservableCollection<TitBase> NewTits { get; set; } = new ObservableCollection<TitBase>();
+
+        public string Header => _account?.Name ?? "All Accounts"; //todo: Localize "All Accounts"
 
         public long AccountBalance => _orm.GetAccountBalance(_account);
 
@@ -51,10 +52,10 @@ namespace BFF.ViewModel
         private ObservableCollection<Account> _allAccounts;
         private ObservableCollection<Payee> _allPayees;
         private ObservableCollection<Category> _allCategories;
-        private IBffOrm _orm;
+        private readonly IBffOrm _orm;
 
 
-        public TitViewModel(ObservableCollection<Account> allAccounts, ObservableCollection<Payee> allPayees, ObservableCollection<Category> allCategories, IBffOrm orm, Account account = null)
+        public TitViewModel(IBffOrm orm, Account account = null)
         {
              _orm = orm;
             _account = account;
