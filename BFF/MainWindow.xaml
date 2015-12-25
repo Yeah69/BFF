@@ -6,6 +6,8 @@
         xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:BFF.WPFStuff.Behaviors"
         lex:LocalizeDictionary.DesignCulture="en-US"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
@@ -23,6 +25,7 @@
             <converters:LongToCurrencyConverter x:Key="CurrencyConverter"/>
             <converters:CurrencyComboConverter x:Key="CurrencyComboConverter"/>
             <converters:DateComboConverter x:Key="DateComboConverter"/>
+            <converters:AccountToTitViewModelConverter x:Key="AccountToTitViewModelConverter"/>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
@@ -132,6 +135,15 @@
         <!-- The Account-specific Tabs are added in the code behind through the DependencyProperty AllAcountsProperty.
              Sorry, I did not find another way for it. -->
         <controls:MetroTabControl Name="AccountsTabControl" Margin="10">
+            <i:Interaction.Behaviors>
+                <behaviors:AdditionalTabItemsBehavior ItemsSource="{Binding AllAccounts}">
+                    <behaviors:AdditionalTabItemsBehavior.ContentTemplate>
+                        <DataTemplate>
+                            <usercontrols:TitDataGrid DataContext="{Binding Converter={StaticResource AccountToTitViewModelConverter}}" />
+                        </DataTemplate>
+                    </behaviors:AdditionalTabItemsBehavior.ContentTemplate>
+                </behaviors:AdditionalTabItemsBehavior>
+            </i:Interaction.Behaviors>
             <controls:MetroTabItem Header="{lex:Loc All_Accounts}">
                 <usercontrols:TitDataGrid DataContext="{Binding AllAccountsViewModel}" />
             </controls:MetroTabItem>

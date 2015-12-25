@@ -7,10 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using BFF.DB;
-using BFF.DB.SQLite;
 using BFF.Helper;
 using BFF.Helper.Import;
 using BFF.Model.Native;
@@ -43,40 +40,6 @@ namespace BFF
                     mw.ImportCommand = (ICommand) args.NewValue;
                 }));
 
-        private void changeTabs(object param, NotifyCollectionChangedEventArgs args)
-        {
-            switch (args.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    foreach (Account account in args.NewItems)
-                        AccountsTabControl.Items.Insert(AccountsTabControl.Items.Count - 1, createMetroTabItem(account));
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    //todo: Check if this works
-                    foreach (Account account in args.OldItems)
-                    {
-                        TabItem toBeRemoved = AccountsTabControl.Items.Cast<TabItem>().FirstOrDefault(tabItem => tabItem.DataContext == account);
-                        if(toBeRemoved != null) AccountsTabControl.Items.Remove(toBeRemoved);
-                    }
-                    break;
-            }
-        }
-
-        private MetroTabItem createMetroTabItem(Account account)
-        {
-            MetroTabItem tabItem;
-            using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
-            {
-                tabItem = new MetroTabItem
-                {
-                    DataContext = account,
-                    Content = new TitDataGrid(kernel.Get<TitViewModel>(new ConstructorArgument("account", account)))//new TitViewModel(_orm, account))
-                };
-            }
-            tabItem.SetBinding(HeaderedContentControl.HeaderProperty, nameof(Account.Name));
-            return tabItem;
-        }
-
         public ICommand ImportCommand
         {
             get { return (ICommand) GetValue(ImportCommandProperty); }
@@ -91,7 +54,7 @@ namespace BFF
 
             if (string.IsNullOrEmpty(dbLocation) || !File.Exists(dbLocation))
             {
-                DataContext = null;
+                DataContext = new MainWindowEmptyViewModel();
             }
             else
             {
@@ -101,9 +64,6 @@ namespace BFF
                     mainWindowViewModel = kernel.Get<MainWindowViewModel>(); //new MainWindowViewModel(_orm);
                 }
                 DataContext = mainWindowViewModel;
-                foreach (Account account in mainWindowViewModel.AllAccounts)
-                    AccountsTabControl.Items.Insert(AccountsTabControl.Items.Count - 1, createMetroTabItem(account));
-                mainWindowViewModel.AllAccounts.CollectionChanged += changeTabs;
 
                 SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
 
