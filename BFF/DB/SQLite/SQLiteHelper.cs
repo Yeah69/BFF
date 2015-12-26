@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.SQLite;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using BFF.Helper;
-using BFF.Model.Native;
+﻿using BFF.Model.Native;
 using BFF.Model.Native.Structure;
-using Dapper;
-using Dapper.Contrib.Extensions;
-using System.IO;
 
 namespace BFF.DB.SQLite
 {

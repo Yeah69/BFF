@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BFF.DB;
+﻿using BFF.DB;
 using BFF.DB.SQLite;
 using BFF.Properties;
 using Ninject.Modules;

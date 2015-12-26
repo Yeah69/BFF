@@ -1,5 +1,4 @@
-﻿using System.Collections.Specialized;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -15,11 +14,8 @@ using BFF.Properties;
 using BFF.ViewModel;
 using BFF.WPFStuff.UserControls;
 using MahApps.Metro;
-using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Ninject;
-using Ninject.Parameters;
-using TabItem = System.Windows.Controls.TabItem;
 
 namespace BFF
 {
@@ -49,6 +45,8 @@ namespace BFF
         public MainWindow()
         {
             InitializeComponent();
+            InitializeCultureComboBoxes();
+            InitializeAppThemeAndAccentComboBoxes();
 
             string dbLocation = Settings.Default.DBLocation;
 
@@ -64,12 +62,9 @@ namespace BFF
                     mainWindowViewModel = kernel.Get<MainWindowViewModel>(); //new MainWindowViewModel(_orm);
                 }
                 DataContext = mainWindowViewModel;
-
-                SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
-
-                InitializeAppThemeAndAccentComboBoxes();
                 InitializeCultureComboBoxes();
             }
+            SetBinding(ImportCommandProperty, nameof(MainWindowEmptyViewModel.ImportBudgetPlanCommand));
         }
 
         private void InitializeCultureComboBoxes()
@@ -94,6 +89,7 @@ namespace BFF
             CultureInfo customCultureInfo = new CultureInfo(initialLocalization);
             //customCultureInfo.DateTimeFormat = dateCulture.DateTimeFormat;
 
+            //Following statement is crucial as it initializes the Localization
             WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = customCultureInfo;
             Thread.CurrentThread.CurrentCulture = customCultureInfo;
             Thread.CurrentThread.CurrentUICulture = customCultureInfo;
@@ -214,19 +210,14 @@ namespace BFF
 
         private void refreshCurrencyVisuals()
         {
-            NewAccount_StartingBalance.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-            for (int i = 0; i < AccountsTabControl.Items.Count - 1; i++)
-            {
-                TitDataGrid titDataGrid = (TitDataGrid)((MetroTabItem)AccountsTabControl.Items[i]).Content;
-                titDataGrid.RefreshCurrencyVisuals();
-            }
+            //this.MainContent.refreshCurrencyVisuals();
         }
 
         private void DateCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DbSettings.DateCultureName = ((CultureInfo)(((ComboBox)sender).SelectedItem)).Name;
+            DbSettings.DateCultureName = ((CultureInfo)((ComboBox)sender).SelectedItem).Name;
 
-            DateTimeFormatInfo dateFormat = ((CultureInfo) (((ComboBox) sender).SelectedItem)).DateTimeFormat;
+            DateTimeFormatInfo dateFormat = ((CultureInfo) ((ComboBox) sender).SelectedItem).DateTimeFormat;
 
             Thread.CurrentThread.CurrentCulture.DateTimeFormat = dateFormat;
             Thread.CurrentThread.CurrentUICulture.DateTimeFormat = dateFormat;

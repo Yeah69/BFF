@@ -5,15 +5,14 @@
         xmlns:usercontrols="clr-namespace:BFF.WPFStuff.UserControls"
         xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:behaviors="clr-namespace:BFF.WPFStuff.Behaviors"
+        xmlns:viewModel="clr-namespace:BFF.ViewModel"
         lex:LocalizeDictionary.DesignCulture="en-US"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
-        Title="{Binding Title}" Height="700" Width="1300" MinHeight="700" MinWidth="1300" ShowIconOnTitleBar="True" Icon="Icons/logo_quadratic.png" 
-        ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" 
-        RightWindowCommandsOverlayBehavior="Never" LeftWindowCommandsOverlayBehavior="Never">
+        Title="{Binding Title}" Height="700" Width="1300" MinHeight="700" MinWidth="1300" ShowIconOnTitleBar="True"
+        Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" 
+        RightWindowCommandsOverlayBehavior="Never" LeftWindowCommandsOverlayBehavior="Never" BorderThickness="2"
+        BorderBrush="{DynamicResource AccentColorBrush}">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -22,10 +21,8 @@
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <converters:LongToCurrencyConverter x:Key="CurrencyConverter"/>
             <converters:CurrencyComboConverter x:Key="CurrencyComboConverter"/>
             <converters:DateComboConverter x:Key="DateComboConverter"/>
-            <converters:AccountToTitViewModelConverter x:Key="AccountToTitViewModelConverter"/>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
@@ -131,63 +128,15 @@
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <Grid>
-        <!-- todo: try Padding for spacing between the Headers, should be in MahApps.Metro 1.2.0 -->
-        <!-- The Account-specific Tabs are added in the code behind through the DependencyProperty AllAcountsProperty.
-             Sorry, I did not find another way for it. -->
-        <controls:MetroTabControl Name="AccountsTabControl" Margin="10">
-            <i:Interaction.Behaviors>
-                <behaviors:AdditionalTabItemsBehavior ItemsSource="{Binding AllAccounts}">
-                    <behaviors:AdditionalTabItemsBehavior.ContentTemplate>
-                        <DataTemplate>
-                            <usercontrols:TitDataGrid DataContext="{Binding Converter={StaticResource AccountToTitViewModelConverter}}" />
-                        </DataTemplate>
-                    </behaviors:AdditionalTabItemsBehavior.ContentTemplate>
-                </behaviors:AdditionalTabItemsBehavior>
-            </i:Interaction.Behaviors>
-            <controls:MetroTabItem Header="{lex:Loc All_Accounts}">
-                <usercontrols:TitDataGrid DataContext="{Binding AllAccountsViewModel}" />
-            </controls:MetroTabItem>
-            <controls:MetroTabItem Name="NewAccount_Tab"  Header="+">
-                <StackPanel Width="500" DataContext="{Binding NewAccount}">
-                    <Label Content="{lex:Loc NewAccount_Name}"/>
-                    <TextBox Name="NewAccount_Name">
-                        <TextBox.Text>
-                            <Binding Path="Name" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <validationRules:NoEmptyNullStringRule />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                    <Label Content="{lex:Loc NewAccount_StartingBalance}"/>
-                    <TextBox MaxLength="30" Name="NewAccount_StartingBalance">
-                        <TextBox.Text>
-                            <Binding Path="StartingBalance" Mode="TwoWay" Converter="{StaticResource CurrencyConverter}" UpdateSourceTrigger="PropertyChanged" >
-                                <Binding.ValidationRules>
-                                    <validationRules:CurrencyRule />
-                                    <validationRules:CurrencyLongRangeRule />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                    <Button HorizontalAlignment="Right" Content="{lex:Loc General_Create}" Command="{Binding DataContext.NewAccountCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
-                        <Button.Style>
-                            <Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
-                                <Setter Property="IsEnabled" Value="False"/>
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=NewAccount_StartingBalance}" Value="False"/>
-                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=NewAccount_Name}" Value="False"/>
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="IsEnabled" Value="True"/>
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-                </StackPanel>
-            </controls:MetroTabItem>
-        </controls:MetroTabControl>
+        <ContentControl Content="{Binding}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewModel:MainWindowViewModel}">
+                    <usercontrols:FilledMainWindow x:Name="MainContent" />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModel:MainWindowEmptyViewModel}">
+                    <!-- todo: Something like a StartPage here -->
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </controls:MetroWindow>

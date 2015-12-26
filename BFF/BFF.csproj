@@ -131,6 +131,7 @@
     <Compile Include="Model\Native\Transaction.cs" />
     <Compile Include="ViewModel\ImportDialogViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\FilledMainWindowViewModel.cs" />
     <Compile Include="ViewModel\TitViewModel.cs" />
     <Compile Include="ViewModel\MainWindowEmptyViewModel.cs" />
     <Compile Include="WPFStuff\AttachedProperties\ParentPathHelper.cs" />
@@ -154,6 +155,9 @@
     <Compile Include="WPFStuff\Converters\TypeToBrushConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
     <Compile Include="WPFStuff\RelayCommand.cs" />
+    <Compile Include="WPFStuff\UserControls\FilledMainWindow.xaml.cs">
+      <DependentUpon>FilledMainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPFStuff\UserControls\ImportDialog.xaml.cs">
       <DependentUpon>ImportDialog.xaml</DependentUpon>
     </Compile>
@@ -193,6 +197,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPFStuff\Resources\TransUC_Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFStuff\UserControls\FilledMainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,10 +1,7 @@
-﻿using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using BFF.ViewModel;
-using BFF.WPFStuff.AttachedProperties;
-using Brushes = System.Windows.Media.Brushes;
 
 namespace BFF.WPFStuff.UserControls
 {

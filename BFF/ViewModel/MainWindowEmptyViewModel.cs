@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.IO;
-using System.Windows.Input;
-using BFF.DB;
-using BFF.DB.SQLite;
+﻿using System.Windows.Input;
 using BFF.Helper.Import;
-using BFF.Model.Native;
 using BFF.Properties;
 using BFF.WPFStuff;
 using Microsoft.Win32;
@@ -34,7 +27,7 @@ namespace BFF.ViewModel
 
         public MainWindowEmptyViewModel()
         {
-
+            Reset();
         }
 
         protected void NewBudgetPlan()

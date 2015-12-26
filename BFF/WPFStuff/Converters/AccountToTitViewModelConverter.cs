@@ -6,7 +6,6 @@ using BFF.Helper;
 using BFF.Model.Native;
 using BFF.ViewModel;
 using Ninject;
-using Ninject.Parameters;
 
 namespace BFF.WPFStuff.Converters
 {

@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
-using BFF.Model.Native;
 
 namespace BFF.WPFStuff.Converters
 {

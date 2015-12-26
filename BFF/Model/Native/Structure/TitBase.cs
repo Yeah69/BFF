@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native.Structure
 {

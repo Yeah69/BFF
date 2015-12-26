@@ -1,7 +1,5 @@
 ﻿using System.Windows;
-using BFF.Helper;
 using MahApps.Metro;
-using Ninject;
 
 namespace BFF
 {
