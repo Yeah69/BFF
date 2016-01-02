@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using BFF.DB;
 using BFF.Helper;
 using BFF.Helper.Import;
 using BFF.Model.Native;
@@ -15,6 +16,7 @@ using BFF.ViewModel;
 using BFF.WPFStuff.UserControls;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Win32;
 using Ninject;
 
 namespace BFF
@@ -27,19 +29,32 @@ namespace BFF
 
         public DbSetting DbSettings { get; set; }
 
-        //todo: Maybe not needed if gotten directly from DataContext (the ViewModel)
         public static readonly DependencyProperty ImportCommandProperty =
-            DependencyProperty.Register(nameof(ImportCommand), typeof (ICommand), typeof (MainWindow),
-                new PropertyMetadata((depObj, args) => 
+            DependencyProperty.Register(nameof(ImportCommand), typeof(ICommand), typeof(MainWindow),
+                new PropertyMetadata((depObj, args) =>
                 {
-                    var mw = (MainWindow) depObj;
-                    mw.ImportCommand = (ICommand) args.NewValue;
+                    var mw = (MainWindow)depObj;
+                    mw.ImportCommand = (ICommand)args.NewValue;
                 }));
 
         public ICommand ImportCommand
         {
-            get { return (ICommand) GetValue(ImportCommandProperty); }
+            get { return (ICommand)GetValue(ImportCommandProperty); }
             set { SetValue(ImportCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty OpenCommandProperty =
+            DependencyProperty.Register(nameof(OpenCommand), typeof(ICommand), typeof(MainWindow),
+                new PropertyMetadata((depObj, args) =>
+                {
+                    var mw = (MainWindow)depObj;
+                    mw.OpenCommand = (ICommand)args.NewValue;
+                }));
+
+        public ICommand OpenCommand
+        {
+            get { return (ICommand)GetValue(OpenCommandProperty); }
+            set { SetValue(OpenCommandProperty, value); }
         }
 
         public MainWindow()
@@ -47,24 +62,29 @@ namespace BFF
             InitializeComponent();
             InitializeCultureComboBoxes();
             InitializeAppThemeAndAccentComboBoxes();
+            SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
 
-            string dbLocation = Settings.Default.DBLocation;
+            DataContext = new MainWindowViewModel();
 
-            if (string.IsNullOrEmpty(dbLocation) || !File.Exists(dbLocation))
+            //Reset();
+        }
+
+        private void Reset()
+        {
+            using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
             {
-                DataContext = new MainWindowEmptyViewModel();
-            }
-            else
-            {
-                MainWindowViewModel mainWindowViewModel;
-                using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
-                { 
-                    mainWindowViewModel = kernel.Get<MainWindowViewModel>(); //new MainWindowViewModel(_orm);
+                string dbLocation = kernel.Get<IBffOrm>().DbPath;
+
+                if (string.IsNullOrEmpty(dbLocation) || !File.Exists(dbLocation))
+                {
+                    //DataContext = new MainWindowEmptyViewModel();
                 }
-                DataContext = mainWindowViewModel;
-                InitializeCultureComboBoxes();
+                else
+                {
+                    //MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(kernel.Get<IBffOrm>()); //kernel.Get<MainWindowViewModel>();
+                    //DataContext = mainWindowViewModel;
+                }
             }
-            SetBinding(ImportCommandProperty, nameof(MainWindowEmptyViewModel.ImportBudgetPlanCommand));
         }
 
         private void InitializeCultureComboBoxes()
@@ -200,6 +220,27 @@ namespace BFF
                     Dispatcher.Invoke(() => ImportCommand.Execute(importDialogVM.Importable), DispatcherPriority.Background);
             };
             this.ShowMetroDialogAsync(importDialog);
+        }
+
+        private void OpenBudgetPlan(object sender, RoutedEventArgs e)
+        {
+            FileFlyout.IsOpen = false;
+
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Title = "Open an existing Budget Plan", /* todo: Localize */
+                Filter = "BFF Budget Plan (*.sqlite)|*.sqlite", /* todo: Localize? */
+                DefaultExt = "*.sqlite"
+            }; ;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
+                {
+                    kernel.Get<IBffOrm>().DbPath = openFileDialog.FileName;
+                }
+
+                Reset();
+            }
         }
 
         private void CurrencyCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

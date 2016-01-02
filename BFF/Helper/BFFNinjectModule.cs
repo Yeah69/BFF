@@ -9,10 +9,7 @@ namespace BFF.Helper
     {
         public override void Load()
         {
-            Bind<IBffOrm>()
-                .To<SqLiteBffOrm>()
-                .InSingletonScope()
-                .WithConstructorArgument("dbPath", Settings.Default.DBLocation);
+            Bind<IBffOrm>().To<SqLiteBffOrm>().InSingletonScope();
         }
     }
 }

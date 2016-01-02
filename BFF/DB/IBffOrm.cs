@@ -7,7 +7,7 @@ namespace BFF.DB
 {
     public interface IBffOrm
     {
-        string DbPath { get; }
+        string DbPath { get; set; }
         void CreateNewDatabase();
         void OpenDatabase();
         void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
+using BFF.Properties;
 using Dapper;
 using Dapper.Contrib.Extensions;
 
@@ -14,7 +15,15 @@ namespace BFF.DB.SQLite
 {
     class SqLiteBffOrm : IBffOrm
     {
-        public string DbPath { get; }
+        public string DbPath {
+            get { return Settings.Default.DBLocation; }
+            set
+            {
+                Settings.Default.DBLocation = value;
+                Settings.Default.Save();
+                Reset();
+            }
+        }
 
         public void CreateNewDatabase()
         {
@@ -283,11 +292,10 @@ namespace BFF.DB.SQLite
             return ret;
         };
 
-        public SqLiteBffOrm(string dbPath)
+        public SqLiteBffOrm()
         {
-            DbPath = dbPath;
             DataModelBase.Database = this;
-            if(File.Exists(dbPath)) Reset();
+            if(File.Exists(DbPath)) Reset();
         }
 
         public ObservableCollection<Account> AllAccounts { get; private set; }
@@ -300,7 +308,7 @@ namespace BFF.DB.SQLite
             AllPayees = new ObservableCollection<Payee>(GetAll<Payee>());
             AllCategories = new ObservableCollection<Category>(GetAll<Category>());
             Dictionary<long, Category> catagoryDictionary = AllCategories.ToDictionary(category => category.Id);
-            foreach (Category category in AllCategories)
+            foreach (Category category in AllCategories) //todo: this still does not work right
             {
                 if (category.ParentId != null)
                 {

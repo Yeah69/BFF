@@ -128,12 +128,12 @@
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <Grid>
-        <ContentControl Content="{Binding}">
+        <ContentControl Content="{Binding ContentViewModel}">
             <ContentControl.Resources>
-                <DataTemplate DataType="{x:Type viewModel:MainWindowViewModel}">
+                <DataTemplate DataType="{x:Type viewModel:TitContentViewModel}">
                     <usercontrols:FilledMainWindow x:Name="MainContent" />
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type viewModel:MainWindowEmptyViewModel}">
+                <DataTemplate DataType="{x:Type viewModel:EmptyContentViewModel}">
                     <!-- todo: Something like a StartPage here -->
                 </DataTemplate>
             </ContentControl.Resources>

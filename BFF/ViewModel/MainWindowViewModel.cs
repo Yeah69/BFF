@@ -1,78 +1,115 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
+﻿using System.IO;
+using System.Threading;
 using System.Windows.Input;
 using BFF.DB;
-using BFF.Model.Native;
+using BFF.Helper;
+using BFF.Helper.Import;
 using BFF.Properties;
 using BFF.WPFStuff;
+using Microsoft.Win32;
+using Ninject;
 
 namespace BFF.ViewModel
 {
-    public class MainWindowViewModel : MainWindowEmptyViewModel
+    public class MainWindowViewModel : ObservableObject
     {
-        protected TitViewModel _allAccountsViewModel;
+        protected bool _fileFlyoutIsOpen;
+        protected string _title;
+        private EmptyContentViewModel _contentViewModel;
 
-        protected IBffOrm _orm;
-
-        public ObservableCollection<Account> AllAccounts => _orm.AllAccounts;
-
-        public ObservableCollection<Payee> AllPayees => _orm.AllPayees;
-
-        public ObservableCollection<Category> AllCategories => _orm.AllCategories; 
-
-        public TitViewModel AllAccountsViewModel
+        public string Title
         {
-            get { return _allAccountsViewModel; }
+            get { return _title; }
             set
             {
-                _allAccountsViewModel = value;
+                _title = value;
                 OnPropertyChanged();
             }
         }
 
-        public Account NewAccount { get; set; } = new Account {Id = -1, Name = "", StartingBalance = 0L};
-        
-        public ICommand NewAccountCommand => new RelayCommand(param =>
-        {
-            _orm.Insert(NewAccount);
-            NewAccount = new Account { Id = -1, Name = "", StartingBalance = 0L };
-            OnPropertyChanged(nameof(NewAccount));
-        }
-        , param => !string.IsNullOrEmpty(NewAccount.Name));
-        
-        public Func<string, Payee> CreatePayeeFunc => name => 
-        {
-            Payee ret = new Payee {Name = name};
-            _orm.Insert(ret);
-            return ret;
-        }; 
+        public ICommand NewBudgetPlanCommand => new RelayCommand(param => NewBudgetPlan(), param => true);
+        public ICommand OpenBudgetPlanCommand => new RelayCommand(param => OpenBudgetPlan(), param => true);
+        public ICommand ImportBudgetPlanCommand => new RelayCommand(ImportBudgetPlan, param => true);
 
-        public MainWindowViewModel(IBffOrm orm) : base()
+        public EmptyContentViewModel ContentViewModel
         {
-            _orm = orm;
-            if (File.Exists(Settings.Default.DBLocation))
+            get { return _contentViewModel; }
+            set
             {
-                //SqLiteHelper.OpenDatabase(Settings.Default.DBLocation); todo
-
-                SetTabPages(Settings.Default.DBLocation);
+                _contentViewModel = value;
+                OnPropertyChanged();
             }
         }
 
-        private void Reset()
+        public MainWindowViewModel()
         {
-            base.Reset();
-            AllAccountsViewModel = null;
-            while(AllAccounts.Count > 0)
-                AllAccounts.RemoveAt(0);
+            Reset();
         }
 
-        private void SetTabPages(string dbPath)
+        protected void NewBudgetPlan()
         {
-            FileInfo fi = new FileInfo(dbPath);
-            Title = $"BFF - {fi.Name}";
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Title = "Create a new Budget Plan", /* todo: Localize */
+                Filter = "BFF Budget Plan (*.sqlite)|*.sqlite", /* todo: Localize? */
+                DefaultExt = "*.sqlite"
+            };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                Reset();
+                //SqLiteHelper.CreateNewDatabase(saveFileDialog.FileName, CultureInfo.CurrentCulture); todo
 
-            AllAccountsViewModel = new TitViewModel(_orm);
+                Settings.Default.DBLocation = saveFileDialog.FileName;
+                Settings.Default.Save();
+            }
+        }
+
+        protected void OpenBudgetPlan()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Title = "Open an existing Budget Plan", /* todo: Localize */
+                Filter = "BFF Budget Plan (*.sqlite)|*.sqlite", /* todo: Localize? */
+                DefaultExt = "*.sqlite"
+            }; ;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
+                {
+                    kernel.Get<IBffOrm>().DbPath = openFileDialog.FileName;
+                }
+
+                Reset();
+                //SqLiteHelper.OpenDatabase(openFileDialog.FileName); todo
+            }
+        }
+
+        protected void ImportBudgetPlan(object importableObject)
+        {
+            Reset();
+            string savePath = ((IImportable) importableObject).Import();
+            //SqLiteHelper.OpenDatabase(savePath); todo
+
+            Settings.Default.DBLocation = savePath;
+            Settings.Default.Save();
+        }
+
+        protected void Reset()
+        {
+            using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
+            {
+                IBffOrm orm = kernel.Get<IBffOrm>();
+                if (File.Exists(orm.DbPath))
+                {
+                    ContentViewModel = new TitContentViewModel(orm);
+                    Title = $"{(new FileInfo(orm.DbPath)).Name} - BFF";
+                }
+                else
+                {
+                    ContentViewModel = new EmptyContentViewModel();
+                    Title = "BFF";
+                }
+            }
         }
     }
 }

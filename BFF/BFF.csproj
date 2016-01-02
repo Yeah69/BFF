@@ -130,10 +130,11 @@
     <Compile Include="Model\Native\Transfer.cs" />
     <Compile Include="Model\Native\Transaction.cs" />
     <Compile Include="ViewModel\ImportDialogViewModel.cs" />
-    <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\EmptyContentViewModel.cs" />
+    <Compile Include="ViewModel\TitContentViewModel.cs" />
     <Compile Include="ViewModel\FilledMainWindowViewModel.cs" />
     <Compile Include="ViewModel\TitViewModel.cs" />
-    <Compile Include="ViewModel\MainWindowEmptyViewModel.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="WPFStuff\AttachedProperties\ParentPathHelper.cs" />
     <Compile Include="WPFStuff\Behaviors\AdditionalTabItemsBehavior.cs" />
     <Compile Include="WPFStuff\Behaviors\ClosingOnSelectBevavior.cs" />
