@@ -30,7 +30,7 @@
              Sorry, I did not find another way for it. -->
         <controls:MetroTabControl Name="AccountsTabControl" Margin="10">
             <i:Interaction.Behaviors>
-                <behaviors:AdditionalTabItemsBehavior ItemsSource="{Binding AllAccounts}">
+                <behaviors:AdditionalTabItemsBehavior ItemsSource="{Binding AllAccounts}" StartingIndex="1">
                     <behaviors:AdditionalTabItemsBehavior.ContentTemplate>
                         <DataTemplate>
                             <local:TitDataGrid >
