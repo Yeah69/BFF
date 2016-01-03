@@ -13,7 +13,7 @@ namespace BFF.ViewModel
     {
         protected TitViewModel _allAccountsViewModel;
 
-        protected IBffOrm _orm;
+        protected readonly IBffOrm _orm;
         protected string _title;
 
         public string Title

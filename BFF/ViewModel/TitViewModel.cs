@@ -8,7 +8,7 @@ using BFF.WPFStuff;
 
 namespace BFF.ViewModel
 {
-    public class TitViewModel : ObservableObject
+    public class TitViewModel : ViewModelBase
     {
         public ObservableCollection<TitBase> Tits { get; set; } = new ObservableCollection<TitBase>();
         public ObservableCollection<TitBase> NewTits { get; set; } = new ObservableCollection<TitBase>();
@@ -23,22 +23,22 @@ namespace BFF.ViewModel
 
         public ObservableCollection<Category> AllCategories => _orm.AllCategories;
 
-        public ICommand NewTransactionCommand => new RelayCommand((obj) =>
+        public ICommand NewTransactionCommand => new RelayCommand(obj =>
         {
             NewTits.Add(new Transaction { Date = DateTime.Today, Memo = "", Sum=0L, Cleared = false, Account = _account});
         });
 
-        public ICommand NewIncomeCommand => new RelayCommand((obj) =>
+        public ICommand NewIncomeCommand => new RelayCommand(obj =>
         {
             NewTits.Add(new Income { Date = DateTime.Today, Memo = "", Sum = 0L, Cleared = false, Account = _account });
         });
 
-        public ICommand NewTransferCommand => new RelayCommand((obj) =>
+        public ICommand NewTransferCommand => new RelayCommand(obj =>
         {
             NewTits.Add(new Transfer { Date = DateTime.Today, Memo = "", Sum = 0L, Cleared = false });
         });
 
-        public ICommand ApplyCommand => new RelayCommand((obj) =>
+        public ICommand ApplyCommand => new RelayCommand(obj =>
         {
             foreach (TitBase tit in NewTits)
             {
@@ -46,12 +46,9 @@ namespace BFF.ViewModel
             }
             OnPropertyChanged(nameof(Tits));//todo:Validate correctness and Save in DB, too
             NewTits.Clear(); 
-        }, (obj) => NewTits.Count > 0);
+        }, obj => NewTits.Count > 0);
 
         private readonly Account _account;
-        private ObservableCollection<Account> _allAccounts;
-        private ObservableCollection<Payee> _allPayees;
-        private ObservableCollection<Category> _allCategories;
         private readonly IBffOrm _orm;
 
 
@@ -59,7 +56,15 @@ namespace BFF.ViewModel
         {
              _orm = orm;
             _account = account;
-            Tits = new ObservableCollection<TitBase>((account == null) ? orm.GetAllTits(): orm.GetAllTits(account));
+            Refresh();
+        }
+
+        public override void Refresh()
+        {
+            Tits.Clear();
+            NewTits.Clear();
+            foreach(TitBase titBase in _account == null ? _orm.GetAllTits() : _orm.GetAllTits(_account))
+                Tits.Add(titBase);
         }
     }
 }

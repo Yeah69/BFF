@@ -186,7 +186,7 @@ namespace BFF.Helper.Import
                     int count = 0;
                     for (int i = 0; i < splitCount; i++)
                     {
-                        YNAB.Transaction newYnabTransaction = (i==0) ? ynabTransaction : ynabTransactions.Dequeue();
+                        YNAB.Transaction newYnabTransaction = i==0 ? ynabTransaction : ynabTransactions.Dequeue();
                         Match transferMatch = TransferPayeeRegex.Match(newYnabTransaction.Payee);
                         if (transferMatch.Success)
                             AddTransfer(transfers, newYnabTransaction);

@@ -1,18 +1,16 @@
 ﻿using System.IO;
-using System.Threading;
 using System.Windows.Input;
 using BFF.DB;
-using BFF.Helper;
 using BFF.Helper.Import;
 using BFF.Properties;
 using BFF.WPFStuff;
 using Microsoft.Win32;
-using Ninject;
 
 namespace BFF.ViewModel
 {
     public class MainWindowViewModel : ObservableObject
     {
+        private readonly IBffOrm _orm;
         protected bool _fileFlyoutIsOpen;
         protected string _title;
         private EmptyContentViewModel _contentViewModel;
@@ -41,8 +39,9 @@ namespace BFF.ViewModel
             }
         }
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IBffOrm orm)
         {
+            _orm = orm;
             Reset();
         }
 
@@ -74,10 +73,7 @@ namespace BFF.ViewModel
             }; ;
             if (openFileDialog.ShowDialog() == true)
             {
-                using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
-                {
-                    kernel.Get<IBffOrm>().DbPath = openFileDialog.FileName;
-                }
+                _orm.DbPath = openFileDialog.FileName;
 
                 Reset();
                 //SqLiteHelper.OpenDatabase(openFileDialog.FileName); todo
@@ -96,19 +92,20 @@ namespace BFF.ViewModel
 
         protected void Reset()
         {
-            using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
+            if (File.Exists(_orm.DbPath) && ContentViewModel is TitContentViewModel)
             {
-                IBffOrm orm = kernel.Get<IBffOrm>();
-                if (File.Exists(orm.DbPath))
-                {
-                    ContentViewModel = new TitContentViewModel(orm);
-                    Title = $"{(new FileInfo(orm.DbPath)).Name} - BFF";
-                }
-                else
-                {
-                    ContentViewModel = new EmptyContentViewModel();
-                    Title = "BFF";
-                }
+                ContentViewModel.Refresh();
+                Title = $"{new FileInfo(_orm.DbPath).Name} - BFF";
+            }
+            else if (File.Exists(_orm.DbPath) && !(ContentViewModel is TitContentViewModel))
+            {
+                ContentViewModel = new TitContentViewModel(_orm);
+                Title = $"{new FileInfo(_orm.DbPath).Name} - BFF";
+            }
+            else
+            {
+                ContentViewModel = new EmptyContentViewModel();
+                Title = "BFF";
             }
         }
     }

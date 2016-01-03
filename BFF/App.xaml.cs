@@ -1,5 +1,7 @@
 ﻿using System.Windows;
+using BFF.Helper;
 using MahApps.Metro;
+using Ninject;
 
 namespace BFF
 {
@@ -10,8 +12,11 @@ namespace BFF
     {
         public App()
         {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
+            using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
+            {
+                MainWindow mainWindow = kernel.Get<MainWindow>();
+                mainWindow.Show();
+            }
 
         }
 

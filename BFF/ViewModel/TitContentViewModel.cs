@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows.Input;
 using BFF.DB;
 using BFF.Model.Native;
-using BFF.Properties;
 using BFF.WPFStuff;
 
 namespace BFF.ViewModel
@@ -13,7 +11,12 @@ namespace BFF.ViewModel
     {
         protected TitViewModel _allAccountsViewModel;
 
-        protected IBffOrm _orm;
+        protected readonly IBffOrm _orm;
+
+        public IBffOrm Orm
+        {
+            get { return _orm; }
+        }
 
         public ObservableCollection<Account> AllAccounts => _orm.AllAccounts;
 
@@ -51,7 +54,13 @@ namespace BFF.ViewModel
         public TitContentViewModel(IBffOrm orm)
         {
             _orm = orm;
-            AllAccountsViewModel = new TitViewModel(_orm);
+            AllAccountsViewModel = new TitViewModel(Orm);
+        }
+
+        public override void Refresh()
+        {
+            base.Refresh();
+            AllAccountsViewModel.Refresh();
         }
     }
 }

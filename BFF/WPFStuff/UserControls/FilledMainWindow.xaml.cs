@@ -1,8 +1,6 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿using System.Windows.Controls;
+using BFF.DB;
 using BFF.Helper;
-using BFF.Model.Native;
 using BFF.ViewModel;
 using MahApps.Metro.Controls;
 using Ninject;
@@ -17,13 +15,6 @@ namespace BFF.WPFStuff.UserControls
         public FilledMainWindow()
         {
             InitializeComponent();
-
-            FilledMainWindowViewModel mainWindowViewModel;
-            using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
-            {
-                mainWindowViewModel = kernel.Get<FilledMainWindowViewModel>(); //new MainWindowViewModel(_orm);
-            }
-            DataContext = mainWindowViewModel;
         }
         
         public void refreshCurrencyVisuals()

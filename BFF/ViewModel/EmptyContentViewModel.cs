@@ -1,13 +1,11 @@
-﻿using System.Windows.Input;
-using BFF.Helper.Import;
-using BFF.Properties;
-using BFF.WPFStuff;
-using Microsoft.Win32;
-
-namespace BFF.ViewModel
+﻿namespace BFF.ViewModel
 {
-    public class EmptyContentViewModel : ObservableObject
+    public class EmptyContentViewModel : ViewModelBase
     {
         //todo: Maybe later startpage content here
+        public override void Refresh()
+        {
+            //therer is nothing to refresh yet. When modified, update this.
+        }
     }
 }

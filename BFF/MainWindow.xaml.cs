@@ -8,7 +8,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using BFF.DB;
-using BFF.Helper;
 using BFF.Helper.Import;
 using BFF.Model.Native;
 using BFF.Properties;
@@ -17,7 +16,6 @@ using BFF.WPFStuff.UserControls;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
-using Ninject;
 
 namespace BFF
 {
@@ -57,34 +55,17 @@ namespace BFF
             set { SetValue(OpenCommandProperty, value); }
         }
 
-        public MainWindow()
+        private readonly IBffOrm _orm;
+
+        public MainWindow(IBffOrm orm)
         {
+            _orm = orm;
             InitializeComponent();
             InitializeCultureComboBoxes();
             InitializeAppThemeAndAccentComboBoxes();
             SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
 
-            DataContext = new MainWindowViewModel();
-
-            //Reset();
-        }
-
-        private void Reset()
-        {
-            using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
-            {
-                string dbLocation = kernel.Get<IBffOrm>().DbPath;
-
-                if (string.IsNullOrEmpty(dbLocation) || !File.Exists(dbLocation))
-                {
-                    //DataContext = new MainWindowEmptyViewModel();
-                }
-                else
-                {
-                    //MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(kernel.Get<IBffOrm>()); //kernel.Get<MainWindowViewModel>();
-                    //DataContext = mainWindowViewModel;
-                }
-            }
+            DataContext = new MainWindowViewModel(_orm);
         }
 
         private void InitializeCultureComboBoxes()
@@ -234,18 +215,13 @@ namespace BFF
             }; ;
             if (openFileDialog.ShowDialog() == true)
             {
-                using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
-                {
-                    kernel.Get<IBffOrm>().DbPath = openFileDialog.FileName;
-                }
-
-                Reset();
+                _orm.DbPath = openFileDialog.FileName;
             }
         }
 
         private void CurrencyCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DbSettings.CurrencyCulture = (CultureInfo) (((ComboBox) sender).SelectedItem);
+            DbSettings.CurrencyCulture = (CultureInfo) ((ComboBox) sender).SelectedItem;
             refreshCurrencyVisuals();
         }
 

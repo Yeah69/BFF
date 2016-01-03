@@ -1,6 +1,5 @@
 ﻿using BFF.DB;
 using BFF.DB.SQLite;
-using BFF.Properties;
 using Ninject.Modules;
 
 namespace BFF.Helper

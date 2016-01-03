@@ -93,7 +93,7 @@ namespace BFF.DB.SQLite
             {
                 cnn.Open();
 
-                string accountAddition = (account == null)
+                string accountAddition = account == null
                     ? ""
                     : "WHERE AccountId = @accountId OR AccountId = -1 AND (PayeeId = @accountId OR CategoryId = @accountId)";
                 string sql = $"SELECT * FROM [{TheTitName}] {accountAddition} ORDER BY Date;";
@@ -103,7 +103,7 @@ namespace BFF.DB.SQLite
                     typeof (long), typeof (long), typeof (long), typeof (long),
                     typeof (DateTime), typeof (string), typeof (long), typeof (bool), typeof(string)
                 };
-                results = cnn.Query(sql, types, _theTitMap, (account == null) ? null : new { accountId = account.Id }, splitOn: "*");
+                results = cnn.Query(sql, types, _theTitMap, account == null ? null : new { accountId = account.Id }, splitOn: "*");
                 //foreach (TitBase result in results) result.Database = this;
                 
                 cnn.Close();
@@ -298,25 +298,34 @@ namespace BFF.DB.SQLite
             if(File.Exists(DbPath)) Reset();
         }
 
-        public ObservableCollection<Account> AllAccounts { get; private set; }
-        public ObservableCollection<Payee> AllPayees { get; private set; }
-        public ObservableCollection<Category> AllCategories { get; private set; }
+        public ObservableCollection<Account> AllAccounts { get; private set; } = new ObservableCollection<Account>();
+        public ObservableCollection<Payee> AllPayees { get; private set; } = new ObservableCollection<Payee>();
+        public ObservableCollection<Category> AllCategories { get; private set; } = new ObservableCollection<Category>(); 
 
         public void Reset()
         {
-            AllAccounts = new ObservableCollection<Account>(GetAll<Account>());
-            AllPayees = new ObservableCollection<Payee>(GetAll<Payee>());
-            AllCategories = new ObservableCollection<Category>(GetAll<Category>());
-            Dictionary<long, Category> catagoryDictionary = AllCategories.ToDictionary(category => category.Id);
-            foreach (Category category in AllCategories) //todo: this still does not work right
+            AllAccounts.Clear();
+            AllPayees.Clear();
+            AllCategories.Clear();
+            if (File.Exists(DbPath))
             {
-                if (category.ParentId != null)
+                foreach (Account account in GetAll<Account>())
+                    AllAccounts.Add(account);
+                foreach (Payee payee in GetAll<Payee>())
+                    AllPayees.Add(payee);
+                foreach (Category category in GetAll<Category>())
+                    AllCategories.Add(category);
+                Dictionary<long, Category> catagoryDictionary = AllCategories.ToDictionary(category => category.Id);
+                foreach (Category category in AllCategories) //todo: this still does not work right
                 {
-                    Category parent = catagoryDictionary[category.ParentId ?? -1L];
-                    parent.Categories.Add(category);
-                    category.Parent = parent;
-                }
+                    if (category.ParentId != null)
+                    {
+                        Category parent = catagoryDictionary[category.ParentId ?? -1L];
+                        parent.Categories.Add(category);
+                        category.Parent = parent;
+                    }
 
+                }
             }
         }
 
