@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using BFF.DB.SQLite;
 using BFF.WPFStuff;
 using YNAB = BFF.Model.Conversion.YNAB;
 using Native = BFF.Model.Native;
-using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Helper.Import
 {
@@ -78,7 +74,7 @@ namespace BFF.Helper.Import
         public static void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string savePath)
         {
             //Initialization
-            DbLockFlag = true;
+            //DbLockFlag = true; todo
             ProcessedAccountsList.Clear();
 
             //First step: Parse CSV data into conversion objects
@@ -96,9 +92,9 @@ namespace BFF.Helper.Import
             //Third step: Create new database for imported data
             string assemblyPath = Assembly.GetExecutingAssembly().Location;
             assemblyPath = assemblyPath.Substring(0, assemblyPath.LastIndexOf('\\') + 1);
-            CreateNewDatabase(savePath, CultureInfo.CurrentCulture);
-            PopulateDatabase(transactions, subTransactions, transfers, incomes);
-            DbLockFlag = false;
+            //CreateNewDatabase(savePath, CultureInfo.CurrentCulture); todo
+            //PopulateDatabase(transactions, subTransactions, transfers, incomes); todo
+            //DbLockFlag = false; todo
         }
 
         private static List<YNAB.Transaction> ParseTransactionCsv(string filePath)
@@ -190,7 +186,7 @@ namespace BFF.Helper.Import
                     int count = 0;
                     for (int i = 0; i < splitCount; i++)
                     {
-                        YNAB.Transaction newYnabTransaction = (i==0) ? ynabTransaction : ynabTransactions.Dequeue();
+                        YNAB.Transaction newYnabTransaction = i==0 ? ynabTransaction : ynabTransactions.Dequeue();
                         Match transferMatch = TransferPayeeRegex.Match(newYnabTransaction.Payee);
                         if (transferMatch.Success)
                             AddTransfer(transfers, newYnabTransaction);

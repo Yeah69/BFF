@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using BFF.DB.SQLite;
 using BFF.Helper;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
@@ -24,7 +23,8 @@ namespace BFF.Model.Native
             set
             {
                 CurrencyCultrureName = value.Name;
-                SqLiteHelper.SetDbSetting(this);
+                Database.Update(this);
+                //SqLiteHelper.SetDbSetting(this);
                 Output.CurrencyCulture = value;
             }
         }
@@ -35,7 +35,8 @@ namespace BFF.Model.Native
             set
             {
                 _dateCultureName = value;
-                SqLiteHelper.SetDbSetting(this);
+                Database?.Update(this);
+                //SqLiteHelper.SetDbSetting(this);
             }
         }
     }

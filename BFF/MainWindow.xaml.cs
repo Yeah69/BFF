@@ -1,5 +1,5 @@
-﻿using System.Collections.Specialized;
-using System.Globalization;
+﻿using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -7,15 +7,15 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using BFF.DB;
 using BFF.Helper.Import;
 using BFF.Model.Native;
 using BFF.Properties;
 using BFF.ViewModel;
 using BFF.WPFStuff.UserControls;
 using MahApps.Metro;
-using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using TabItem = System.Windows.Controls.TabItem;
+using Microsoft.Win32;
 
 namespace BFF
 {
@@ -24,95 +24,53 @@ namespace BFF
     /// </summary>
     public partial class MainWindow
     {
+
         public DbSetting DbSettings { get; set; }
 
-        //todo: Maybe not needed if gotten directly from DataContext (the ViewModel)
         public static readonly DependencyProperty ImportCommandProperty =
-            DependencyProperty.Register(nameof(ImportCommand), typeof (ICommand), typeof (MainWindow),
-                new PropertyMetadata((depObj, args) => 
+            DependencyProperty.Register(nameof(ImportCommand), typeof(ICommand), typeof(MainWindow),
+                new PropertyMetadata((depObj, args) =>
                 {
-                    var mw = (MainWindow) depObj;
-                    mw.ImportCommand = (ICommand) args.NewValue;
+                    var mw = (MainWindow)depObj;
+                    mw.ImportCommand = (ICommand)args.NewValue;
                 }));
-
-        private void changeTabs(object param, NotifyCollectionChangedEventArgs args)
-        {
-            switch (args.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    foreach (Account account in args.NewItems)
-                        AccountsTabControl.Items.Insert(AccountsTabControl.Items.Count - 1, createMetroTabItem(account));
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    //todo: Check if this works
-                    foreach (Account account in args.OldItems)
-                    {
-                        TabItem toBeRemoved = AccountsTabControl.Items.Cast<TabItem>().FirstOrDefault(tabItem => tabItem.DataContext == account);
-                        if(toBeRemoved != null) AccountsTabControl.Items.Remove(toBeRemoved);
-                    }
-                    break;
-            }
-        }
-
-        private MetroTabItem createMetroTabItem(Account account)
-        {
-            MetroTabItem tabItem = new MetroTabItem
-            {
-                DataContext = account,
-                Content = new TitDataGrid (new TitViewModel(((MainWindowViewModel)DataContext)?.AllAccounts, ((MainWindowViewModel)DataContext)?.AllPayees, ((MainWindowViewModel)DataContext)?.AllCategories, account))
-            };
-            tabItem.SetBinding(HeaderedContentControl.HeaderProperty, nameof(Account.Name));
-            return tabItem;
-        }
 
         public ICommand ImportCommand
         {
-            get { return (ICommand) GetValue(ImportCommandProperty); }
+            get { return (ICommand)GetValue(ImportCommandProperty); }
             set { SetValue(ImportCommandProperty, value); }
         }
 
-        private MainWindow()
+        public static readonly DependencyProperty OpenCommandProperty =
+            DependencyProperty.Register(nameof(OpenCommand), typeof(ICommand), typeof(MainWindow),
+                new PropertyMetadata((depObj, args) =>
+                {
+                    var mw = (MainWindow)depObj;
+                    mw.OpenCommand = (ICommand)args.NewValue;
+                }));
+
+        public ICommand OpenCommand
         {
-            InitializeComponent();
+            get { return (ICommand)GetValue(OpenCommandProperty); }
+            set { SetValue(OpenCommandProperty, value); }
         }
 
-        public MainWindow(MainWindowViewModel viewModel) : this()
-        {
-            //DbSettings = SqLiteHelper.GetDbSetting();
-            //Resources["CurrencyCulture"] = DbSettings.CurrencyCulture;
-            DataContext = viewModel;
-            foreach (Account account in viewModel.AllAccounts)
-                AccountsTabControl.Items.Insert(AccountsTabControl.Items.Count - 1, createMetroTabItem(account));
-            viewModel.AllAccounts.CollectionChanged += changeTabs;
+        private readonly IBffOrm _orm;
 
+        public MainWindow(IBffOrm orm)
+        {
+            _orm = orm;
+            InitializeComponent();
+            InitializeCultureComboBoxes();
+            InitializeAppThemeAndAccentComboBoxes();
             SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
 
-            Accent initialAccent = ThemeManager.GetAccent(Settings.Default.MahApps_Accent);
-            AppTheme initialAppTheme = ThemeManager.GetAppTheme(Settings.Default.MahApps_AppTheme);
-            string initialLocalization = Settings.Default.Localization_Language;
+            DataContext = new MainWindowViewModel(_orm);
+        }
 
-            foreach (AppTheme theme in ThemeManager.AppThemes.OrderBy(x => x.Name))
-            {
-                ThemeWrap current = new ThemeWrap
-                {
-                    Theme = theme,
-                    WhiteBrush = (SolidColorBrush) theme.Resources["WhiteBrush"]
-                };
-                ThemeCombo.Items.Add(current);
-                if (theme == initialAppTheme)
-                    ThemeCombo.SelectedItem = current;
-            }
-            foreach (Accent accent in ThemeManager.Accents.OrderBy(x => x.Name))
-            {
-                AccentWrap current = new AccentWrap
-                {
-                    Accent = accent,
-                    AccentColorBrush = (SolidColorBrush) accent.Resources["AccentColorBrush"]
-                };
-                AccentCombo.Items.Add(current);
-                if (accent == initialAccent)
-                    AccentCombo.SelectedItem = current;
-            }
+        private void InitializeCultureComboBoxes()
+        {
+            string initialLocalization = Settings.Default.Localization_Language;
             LanguageCombo.Items.Add("de-DE");
             LanguageCombo.Items.Add("en-US");
             LanguageCombo.SelectedItem = initialLocalization;
@@ -132,9 +90,38 @@ namespace BFF
             CultureInfo customCultureInfo = new CultureInfo(initialLocalization);
             //customCultureInfo.DateTimeFormat = dateCulture.DateTimeFormat;
 
+            //Following statement is crucial as it initializes the Localization
             WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = customCultureInfo;
             Thread.CurrentThread.CurrentCulture = customCultureInfo;
             Thread.CurrentThread.CurrentUICulture = customCultureInfo;
+        }
+
+        private void InitializeAppThemeAndAccentComboBoxes()
+        {
+            AppTheme initialAppTheme = ThemeManager.GetAppTheme(Settings.Default.MahApps_AppTheme);
+            Accent initialAccent = ThemeManager.GetAccent(Settings.Default.MahApps_Accent);
+            foreach (AppTheme theme in ThemeManager.AppThemes.OrderBy(x => x.Name))
+            {
+                ThemeWrap current = new ThemeWrap
+                {
+                    Theme = theme,
+                    WhiteBrush = (SolidColorBrush)theme.Resources["WhiteBrush"]
+                };
+                ThemeCombo.Items.Add(current);
+                if (theme == initialAppTheme)
+                    ThemeCombo.SelectedItem = current;
+            }
+            foreach (Accent accent in ThemeManager.Accents.OrderBy(x => x.Name))
+            {
+                AccentWrap current = new AccentWrap
+                {
+                    Accent = accent,
+                    AccentColorBrush = (SolidColorBrush)accent.Resources["AccentColorBrush"]
+                };
+                AccentCombo.Items.Add(current);
+                if (accent == initialAccent)
+                    AccentCombo.SelectedItem = current;
+            }
         }
 
         private void SettingsButt_Click(object sender, RoutedEventArgs e)
@@ -216,27 +203,38 @@ namespace BFF
             this.ShowMetroDialogAsync(importDialog);
         }
 
+        private void OpenBudgetPlan(object sender, RoutedEventArgs e)
+        {
+            FileFlyout.IsOpen = false;
+
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Title = "Open an existing Budget Plan", /* todo: Localize */
+                Filter = "BFF Budget Plan (*.sqlite)|*.sqlite", /* todo: Localize? */
+                DefaultExt = "*.sqlite"
+            }; ;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                _orm.DbPath = openFileDialog.FileName;
+            }
+        }
+
         private void CurrencyCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DbSettings.CurrencyCulture = (CultureInfo) (((ComboBox) sender).SelectedItem);
+            DbSettings.CurrencyCulture = (CultureInfo) ((ComboBox) sender).SelectedItem;
             refreshCurrencyVisuals();
         }
 
         private void refreshCurrencyVisuals()
         {
-            NewAccount_StartingBalance.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-            for (int i = 0; i < AccountsTabControl.Items.Count - 1; i++)
-            {
-                TitDataGrid titDataGrid = (TitDataGrid)((MetroTabItem)AccountsTabControl.Items[i]).Content;
-                titDataGrid.RefreshCurrencyVisuals();
-            }
+            //this.MainContent.refreshCurrencyVisuals();
         }
 
         private void DateCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DbSettings.DateCultureName = ((CultureInfo)(((ComboBox)sender).SelectedItem)).Name;
+            DbSettings.DateCultureName = ((CultureInfo)((ComboBox)sender).SelectedItem).Name;
 
-            DateTimeFormatInfo dateFormat = ((CultureInfo) (((ComboBox) sender).SelectedItem)).DateTimeFormat;
+            DateTimeFormatInfo dateFormat = ((CultureInfo) ((ComboBox) sender).SelectedItem).DateTimeFormat;
 
             Thread.CurrentThread.CurrentCulture.DateTimeFormat = dateFormat;
             Thread.CurrentThread.CurrentUICulture.DateTimeFormat = dateFormat;

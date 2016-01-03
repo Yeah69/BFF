@@ -1,11 +1,10 @@
 ﻿using System;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
-using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
-    public class SubIncome : SubTransInc
+    public class SubIncome : SubTitBase
     {
         [Key]
         public long Id { get; set; } = -1;
@@ -21,7 +20,7 @@ namespace BFF.Model.Native
         public override long CategoryId
         {
             get { return Category?.Id ?? -1; }
-            set { Category = GetCategory(value); }
+            set { Category = Database?.GetCategory(value); }
         }
 
         public override string Memo { get; set; }

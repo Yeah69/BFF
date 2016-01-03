@@ -7,6 +7,7 @@ namespace BFF.Model.Native
 {
     public class Account : DataModelBase
     {
+        //todo: DB updates
         [Key]
         public long Id { get; set; } = -1;
 

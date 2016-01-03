@@ -1,19 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
+using BFF.Properties;
 using Dapper;
 using Dapper.Contrib.Extensions;
 
 namespace BFF.DB.SQLite
 {
-    class SqLiteDb : IDb
+    class SqLiteBffOrm : IBffOrm
     {
-        public string DbPath { get; }
+        public string DbPath {
+            get { return Settings.Default.DBLocation; }
+            set
+            {
+                Settings.Default.DBLocation = value;
+                Settings.Default.Save();
+                Reset();
+            }
+        }
 
         public void CreateNewDatabase()
         {
@@ -83,7 +93,7 @@ namespace BFF.DB.SQLite
             {
                 cnn.Open();
 
-                string accountAddition = (account == null)
+                string accountAddition = account == null
                     ? ""
                     : "WHERE AccountId = @accountId OR AccountId = -1 AND (PayeeId = @accountId OR CategoryId = @accountId)";
                 string sql = $"SELECT * FROM [{TheTitName}] {accountAddition} ORDER BY Date;";
@@ -93,13 +103,19 @@ namespace BFF.DB.SQLite
                     typeof (long), typeof (long), typeof (long), typeof (long),
                     typeof (DateTime), typeof (string), typeof (long), typeof (bool), typeof(string)
                 };
-                results = cnn.Query(sql, types, _theTitMap, (account == null) ? null : new { accountId = account.Id }, splitOn: "*");
+                results = cnn.Query(sql, types, _theTitMap, account == null ? null : new { accountId = account.Id }, splitOn: "*");
+                //foreach (TitBase result in results) result.Database = this;
                 
                 cnn.Close();
             }
 
             _dbLockFlag = false;
             return results;
+        }
+
+        public IEnumerable<Category> GetAllCache()
+        {
+            throw new NotImplementedException();
         }
 
         public long GetAccountBalance(Account account = null)
@@ -120,16 +136,16 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public IEnumerable<T> GetSubTransInc<T>(long parentId) where T : SubTransInc
+        public IEnumerable<T> GetSubTransInc<T>(long parentId) where T : SubTitBase
         {
-            IEnumerable<T> ret;
+            IEnumerable<T> ret = new List<T>();
             using (var cnn = new SQLiteConnection(ConnectionString))
             {
                 cnn.Open();
 
-                string query = $"SELECT * FROM [{nameof(T)}s] WHERE {nameof(SubTransInc.ParentId)} = @id;";
+                string query = $"SELECT * FROM [{typeof(T).Name}s] WHERE {nameof(SubTitBase.ParentId)} = @id;";
                 ret = cnn.Query<T>(query, new { id = parentId });
-
+                //foreach (T element in ret) element.Database = this;
                 cnn.Close();
             }
             return ret;
@@ -143,6 +159,7 @@ namespace BFF.DB.SQLite
                 using (var cnn = new SQLiteConnection(ConnectionString))
                 {
                     ret = cnn.OpenAndReturn().GetAll<T>();
+                    //foreach (T element in ret) element.Database = this;
                     cnn.Close();
                 }
                 return ret;
@@ -157,7 +174,8 @@ namespace BFF.DB.SQLite
             {
                 using (var cnn = new SQLiteConnection(ConnectionString))
                 {
-                    ret = cnn.OpenAndReturn().Insert(dataModelBase);
+                    ret = cnn.OpenAndReturn().Insert<T>(dataModelBase);
+                    //dataModelBase.Database = this;
                     cnn.Close();
                 }
             }
@@ -172,6 +190,7 @@ namespace BFF.DB.SQLite
                 using (var cnn = new SQLiteConnection(ConnectionString))
                 {
                     ret = cnn.OpenAndReturn().Get<T>(id);
+                    //ret.Database = this;
                     cnn.Close();
                 }
                 return ret;
@@ -273,9 +292,46 @@ namespace BFF.DB.SQLite
             return ret;
         };
 
-        public SqLiteDb(string dbPath)
+        public SqLiteBffOrm()
         {
-            DbPath = dbPath;
+            DataModelBase.Database = this;
+            if(File.Exists(DbPath)) Reset();
         }
+
+        public ObservableCollection<Account> AllAccounts { get; private set; } = new ObservableCollection<Account>();
+        public ObservableCollection<Payee> AllPayees { get; private set; } = new ObservableCollection<Payee>();
+        public ObservableCollection<Category> AllCategories { get; private set; } = new ObservableCollection<Category>(); 
+
+        public void Reset()
+        {
+            AllAccounts.Clear();
+            AllPayees.Clear();
+            AllCategories.Clear();
+            if (File.Exists(DbPath))
+            {
+                foreach (Account account in GetAll<Account>())
+                    AllAccounts.Add(account);
+                foreach (Payee payee in GetAll<Payee>())
+                    AllPayees.Add(payee);
+                foreach (Category category in GetAll<Category>())
+                    AllCategories.Add(category);
+                Dictionary<long, Category> catagoryDictionary = AllCategories.ToDictionary(category => category.Id);
+                foreach (Category category in AllCategories) //todo: this still does not work right
+                {
+                    if (category.ParentId != null)
+                    {
+                        Category parent = catagoryDictionary[category.ParentId ?? -1L];
+                        parent.Categories.Add(category);
+                        category.Parent = parent;
+                    }
+
+                }
+            }
+        }
+
+        public Account GetAccount(long id) => AllAccounts.FirstOrDefault(account => account.Id == id);
+        public Payee GetPayee(long id) => AllPayees.FirstOrDefault(payee => payee.Id == id);
+        public Category GetCategory(long id) => AllCategories.FirstOrDefault(category => category.Id == id);
+
     }
 }

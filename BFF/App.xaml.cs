@@ -1,10 +1,7 @@
-﻿using System.Reflection;
-using System.Windows;
-using BFF.DB;
-using BFF.DB.SQLite;
-using BFF.Properties;
-using BFF.ViewModel;
+﻿using System.Windows;
+using BFF.Helper;
 using MahApps.Metro;
+using Ninject;
 
 namespace BFF
 {
@@ -15,10 +12,11 @@ namespace BFF
     {
         public App()
         {
-            IDb database = new SqLiteDb(Settings.Default.DBLocation);
-            MainWindowViewModel mainWindowViewModel = new MainWindowViewModel(database);
-            MainWindow mainWindow = new MainWindow (mainWindowViewModel);
-            mainWindow.Show();
+            using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
+            {
+                MainWindow mainWindow = kernel.Get<MainWindow>();
+                mainWindow.Show();
+            }
 
         }
 

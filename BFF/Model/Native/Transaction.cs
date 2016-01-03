@@ -4,7 +4,6 @@ using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
-using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Model.Native
 {
@@ -29,14 +28,14 @@ namespace BFF.Model.Native
             {
                 _account = value;
                 OnPropertyChanged();
-                Update(this);
+                Database?.Update(this);
             }
         }
 
         public long AccountId
         {
             get { return Account?.Id ?? -1; }
-            set { Account = GetAccount(value); }
+            set { Account = Database?.GetAccount(value); }
         }
 
         public override DateTime Date
@@ -46,7 +45,7 @@ namespace BFF.Model.Native
             {
                 _date = value;
                 OnPropertyChanged();
-                Update(this);
+                Database?.Update(this);
             }
         }
 
@@ -58,14 +57,14 @@ namespace BFF.Model.Native
             {
                 _payee = value;
                 OnPropertyChanged();
-                Update(this);
+                Database?.Update(this);
             }
         }
 
         public long PayeeId
         {
             get { return Payee?.Id ?? -1; }
-            set { Payee = GetPayee(value); }
+            set { Payee = Database?.GetPayee(value); }
         }
 
         [Write(false)]
@@ -76,14 +75,14 @@ namespace BFF.Model.Native
             {
                 _category = value;
                 OnPropertyChanged();
-                Update(this);
+                Database?.Update(this);
             }
         }
 
         public long? CategoryId
         {
             get { return Category?.Id; }
-            set { Category = GetCategory(value);}
+            set { Category = Database?.GetCategory(value ?? -1L);}
         }
 
         public override string Memo
@@ -93,7 +92,7 @@ namespace BFF.Model.Native
             {
                 _memo = value;
                 OnPropertyChanged();
-                Update(this);
+                Database?.Update(this);
             }
         }
 
@@ -105,7 +104,7 @@ namespace BFF.Model.Native
             {
                 _sum = value;
                 OnPropertyChanged();
-                Update(this);
+                Database?.Update(this);
             }
         }
 
@@ -116,13 +115,13 @@ namespace BFF.Model.Native
             {
                 _cleared = value;
                 OnPropertyChanged();
-                Update(this);
+                Database?.Update(this);
             }
         }
 
         [Write(false)]
-        public IEnumerable<SubTransInc> SubElements {
-            get { return GetSubTransactions(Id);}
+        public IEnumerable<SubTransaction> SubElements {
+            get { return Database?.GetSubTransInc<SubTransaction>(Id);}
             set { }
         }
 

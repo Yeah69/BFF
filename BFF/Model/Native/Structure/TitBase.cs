@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native.Structure
 {
-    public abstract class TitBase : TransactionLike
+    public abstract class TitBase : TitLike
     {
         public abstract long Id { get; set; }
 
@@ -17,5 +15,9 @@ namespace BFF.Model.Native.Structure
         public abstract bool Cleared { get; set; }
 
         public abstract string Type { get; set; }
+
+        public TitBase()
+        {
+        }
     }
 }
