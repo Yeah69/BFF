@@ -9,12 +9,12 @@ namespace BFF.WPFStuff.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((long) value).AsCurrency(Output.CurrencyCulture);
+            return ((long) value).AsCurrency(culture);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-           decimal decval = decimal.Parse((string)value, NumberStyles.Currency, Output.CurrencyCulture.NumberFormat);
+           decimal decval = decimal.Parse((string)value, NumberStyles.Currency, culture.NumberFormat);
             return (long)(decval * 100);
             //return ((string) value).CurrencyAsLong();
         }

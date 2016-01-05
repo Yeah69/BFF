@@ -175,8 +175,17 @@ namespace BFF.DB.SQLite
                 using (var cnn = new SQLiteConnection(ConnectionString))
                 {
                     ret = cnn.OpenAndReturn().Insert<T>(dataModelBase);
-                    //dataModelBase.Database = this;
+                    dataModelBase.Id = ret;
                     cnn.Close();
+                }
+                if (dataModelBase is CommonProperties)
+                {
+                    if(dataModelBase is Account)
+                        AllAccounts.Add(dataModelBase as Account);
+                    else if (dataModelBase is Payee)
+                        AllPayees.Add(dataModelBase as Payee);
+                    else if (dataModelBase is Category)
+                        AllCategories.Add(dataModelBase as Category);
                 }
             }
             return ret;
@@ -190,7 +199,6 @@ namespace BFF.DB.SQLite
                 using (var cnn = new SQLiteConnection(ConnectionString))
                 {
                     ret = cnn.OpenAndReturn().Get<T>(id);
-                    //ret.Database = this;
                     cnn.Close();
                 }
                 return ret;
@@ -218,6 +226,15 @@ namespace BFF.DB.SQLite
                 {
                     cnn.OpenAndReturn().Delete(dataModelBase);
                     cnn.Close();
+                }
+                if (dataModelBase is CommonProperties)
+                {
+                    if (dataModelBase is Account && AllAccounts.Contains(dataModelBase as Account))
+                        AllAccounts.Remove(dataModelBase as Account);
+                    else if (dataModelBase is Payee && AllPayees.Contains(dataModelBase as Payee))
+                        AllPayees.Remove(dataModelBase as Payee);
+                    else if (dataModelBase is Category && AllCategories.Contains(dataModelBase as Category))
+                        AllCategories.Remove(dataModelBase as Category);
                 }
             }
         }

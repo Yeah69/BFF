@@ -5,7 +5,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
-    public class Account : DataModelBase
+    public class Account : CommonProperties
     {
         //todo: DB updates
         [Key]

@@ -11,7 +11,7 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" x:Name="filledMainWindow">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -71,7 +71,7 @@
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
-                    <Button HorizontalAlignment="Right" Content="{lex:Loc General_Create}" Command="{Binding DataContext.NewAccountCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:MetroWindow}}}">
+                    <Button HorizontalAlignment="Right" Content="{lex:Loc General_Create}" Command="{Binding DataContext.NewAccountCommand, ElementName=filledMainWindow}">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
                                 <Setter Property="IsEnabled" Value="False"/>

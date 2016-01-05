@@ -6,6 +6,8 @@ namespace BFF.Model.Native.Structure
 {
     public abstract class DataModelBase : ObservableObject
     {
+        public virtual long Id { get; set; }
+
         [Write(false)]
         public static IBffOrm Database { get; set; }
     }

@@ -11,9 +11,9 @@ namespace BFF.WPFStuff.ValidationRules
         {
             decimal outVar;
             decimal factor = (decimal)Math.Pow(10, cultureInfo.NumberFormat.CurrencyDecimalDigits);
-            string message = $"Value is out of range: [ {(long.MinValue/factor).ToString("C", Output.CurrencyCulture.NumberFormat)} .. {(long.MaxValue/factor).ToString("C", Output.CurrencyCulture.NumberFormat)} ]";
+            string message = $"Value is out of range: [ {(long.MinValue/factor).ToString("C", cultureInfo.NumberFormat)} .. {(long.MaxValue/factor).ToString("C", cultureInfo.NumberFormat)} ]"; //Output.CurrencyCulture.NumberFormat)} ]";
             bool parsed = decimal.TryParse((string)value, NumberStyles.Currency,
-              Output.CurrencyCulture.NumberFormat, out outVar);
+              cultureInfo.NumberFormat, out outVar);
             if (parsed)
             {
                 outVar = outVar * factor;
