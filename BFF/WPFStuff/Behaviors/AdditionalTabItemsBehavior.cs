@@ -82,10 +82,8 @@ namespace BFF.WPFStuff.Behaviors
                                 break;
                             case NotifyCollectionChangedAction.Move:
                                 throw new NotImplementedException("Creator did not think of this case.");
-                                break;
                             case NotifyCollectionChangedAction.Replace:
                                 throw new NotImplementedException("Creator did not think of this case.");
-                                break;
                         }
                         //todo
                     };

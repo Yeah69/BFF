@@ -9,9 +9,6 @@ namespace BFF.Model.Native
     public class Category : CommonProperties
     {
         //todo: Db Updates
-        [Key]
-        public long Id { get; set; } = -1;
-
         public string Name { get; set; }
 
         [Write(false)]

@@ -8,8 +8,6 @@ namespace BFF.Model.Native
     public class DbSetting : DataModelBase
     {
         private string _dateCultureName;
-        public long Id { get; set; } = 1;
-
         public string CurrencyCultrureName { get; set; }
 
         [Write(false)]

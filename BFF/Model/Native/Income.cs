@@ -17,9 +17,6 @@ namespace BFF.Model.Native
         private long? _sum;
         private bool _cleared;
 
-        [Key]
-        public override long Id { get; set; } = -1;
-
         [Write(false)]
         public Account Account
         {

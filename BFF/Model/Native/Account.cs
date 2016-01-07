@@ -8,9 +8,6 @@ namespace BFF.Model.Native
     public class Account : CommonProperties
     {
         //todo: DB updates
-        [Key]
-        public long Id { get; set; } = -1;
-
         public string Name { get; set; }
 
         public long StartingBalance { get; set; } = 0L;

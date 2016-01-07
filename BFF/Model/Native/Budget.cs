@@ -6,9 +6,6 @@ namespace BFF.Model.Native
 {
     class Budget : DataModelBase
     {
-        [Key]
-        public long Id { get; set; } = -1;
-
         public DateTime MonthYear { get; set; }
 
         //Todo: budget relevant properties

@@ -4,8 +4,6 @@ namespace BFF.Model.Native.Structure
 {
     public abstract class TitBase : TitLike
     {
-        public abstract long Id { get; set; }
-
         public abstract DateTime Date { get; set; }
 
         public abstract string Memo { get; set; }

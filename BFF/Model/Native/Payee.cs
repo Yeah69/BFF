@@ -7,8 +7,6 @@ namespace BFF.Model.Native
 {
     public class Payee : CommonProperties
     {
-        [Key]
-        public long Id { get; set; } = -1;
 
         public string Name { get; set; }
         

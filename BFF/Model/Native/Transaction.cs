@@ -17,9 +17,6 @@ namespace BFF.Model.Native
         private DateTime _date;
         private Account _account;
 
-        [Key]
-        public override long Id { get; set; } = -1;
-
         [Write(false)]
         public Account Account
         {

@@ -8,9 +8,6 @@ namespace BFF.Model.Native
 {
     public class SubTransaction : SubTitBase
     {
-        [Key]
-        public long Id { get; set; } = -1;
-
         [Write(false)]
         public override TitBase Parent { get; set; }
 
