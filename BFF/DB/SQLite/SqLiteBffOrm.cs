@@ -70,14 +70,22 @@ namespace BFF.DB.SQLite
                 because the structure of the imported csv-Entry of Categories allowes to get the master category first and
                 then the sub category. Thus, the parents id is known beforehand.
                 */
-                cnn.Insert(categories);
-                cnn.Insert(payees);
-                cnn.Insert(accounts);
-                cnn.Insert(transactions);
-                cnn.Insert(subTransactions);
-                cnn.Insert(incomes);
-                cnn.Insert(subIncomes);
-                cnn.Insert(transfers);
+                foreach (Category category in categories)
+                    category.Id = cnn.Insert(category);
+                foreach (Payee payee in payees)
+                    payee.Id = cnn.Insert(payee);
+                foreach (Account account in accounts)
+                    account.Id = cnn.Insert(account);
+                foreach (Transaction transaction in transactions)
+                    transaction.Id = cnn.Insert(transaction);
+                foreach (SubTransaction subTransaction in subTransactions)
+                    subTransaction.Id = cnn.Insert(subTransaction);
+                foreach (Income income in incomes)
+                    income.Id = cnn.Insert(income);
+                foreach (SubIncome subIncome in subIncomes)
+                    subIncome.Id = cnn.Insert(subIncome);
+                foreach (Transfer transfer in transfers)
+                    transfer.Id = cnn.Insert(transfer);
 
                 cnn.Close();
             }

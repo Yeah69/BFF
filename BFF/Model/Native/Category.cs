@@ -28,7 +28,7 @@ namespace BFF.Model.Native
         {
             return Name;
         }
-
+        
         private static readonly Dictionary<string, Category> Cache = new Dictionary<string, Category>();
 
         // todo: Refactor the GetOrCreate and GetAllCache into the Conversion/Import class
@@ -66,6 +66,11 @@ namespace BFF.Model.Native
         public static List<Category> GetAllCache()
         {
             return Cache.Values.ToList();
+        }
+
+        public static void ClearCache()
+        {
+            Cache.Clear();
         }
     }
 }

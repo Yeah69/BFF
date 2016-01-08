@@ -57,7 +57,6 @@ namespace BFF.ViewModel
             {
                 _orm.DbPath = saveFileDialog.FileName;
                 _orm.CreateNewDatabase();
-
                 Reset();
             }
         }
@@ -73,19 +72,15 @@ namespace BFF.ViewModel
             if (openFileDialog.ShowDialog() == true)
             {
                 _orm.DbPath = openFileDialog.FileName;
-
                 Reset();
             }
         }
 
         protected void ImportBudgetPlan(object importableObject)
         {
+            string savePath = ((IImportable)importableObject).Import();
+            _orm.DbPath = savePath; //todo: maybe remove, because the import does that already
             Reset();
-            string savePath = ((IImportable) importableObject).Import();
-            //SqLiteHelper.OpenDatabase(savePath); todo
-
-            Settings.Default.DBLocation = savePath;
-            Settings.Default.Save();
         }
 
         protected void Reset()

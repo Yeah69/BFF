@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using BFF.DB;
+using BFF.Model.Native.Structure;
 using BFF.WPFStuff;
 using YNAB = BFF.Model.Conversion.YNAB;
 using Native = BFF.Model.Native;
@@ -13,6 +15,8 @@ namespace BFF.Helper.Import
 {
     class YnabCsvImport : ObservableObject, IImportable
     {
+        private readonly IBffOrm _orm;
+
         public string TransactionPath
         {
             get { return _transactionPath; }
@@ -70,12 +74,21 @@ namespace BFF.Helper.Import
             }
             return 0L;
         }
-        
-        public static void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string savePath)
+
+        public YnabCsvImport(IBffOrm orm)
+        {
+            _orm = orm;
+        }
+
+        public void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string savePath)
         {
             //Initialization
-            //DbLockFlag = true; todo
             ProcessedAccountsList.Clear();
+            Native.Account.ClearCache();
+            Native.Payee.ClearCache();
+            Native.Category.ClearCache();
+
+            DataModelBase.Database = null; //switches off OR mapping
 
             //First step: Parse CSV data into conversion objects
             Queue<YNAB.Transaction> ynabTransactions = new Queue<YNAB.Transaction>(ParseTransactionCsv(filePathTransaction));
@@ -90,11 +103,11 @@ namespace BFF.Helper.Import
             //Todo: List<Native.Budget> nativeBudgets = budgets.Select(budget => (Native.Budget)budget).ToList();
 
             //Third step: Create new database for imported data
-            string assemblyPath = Assembly.GetExecutingAssembly().Location;
-            assemblyPath = assemblyPath.Substring(0, assemblyPath.LastIndexOf('\\') + 1);
-            //CreateNewDatabase(savePath, CultureInfo.CurrentCulture); todo
-            //PopulateDatabase(transactions, subTransactions, transfers, incomes); todo
-            //DbLockFlag = false; todo
+            DataModelBase.Database = _orm; //turn on OR mapping
+            _orm.DbPath = savePath;
+            _orm.CreateNewDatabase();
+            _orm.PopulateDatabase(transactions, subTransactions, incomes, new List<Native.SubIncome>(), 
+                transfers, Native.Account.GetAllCache(), Native.Payee.GetAllCache(), Native.Category.GetAllCache());
         }
 
         private static List<YNAB.Transaction> ParseTransactionCsv(string filePath)

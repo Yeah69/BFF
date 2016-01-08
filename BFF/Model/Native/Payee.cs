@@ -30,5 +30,10 @@ namespace BFF.Model.Native
         {
             return Cache.Values.ToList();
         }
+
+        public static void ClearCache()
+        {
+            Cache.Clear();
+        }
     }
 }

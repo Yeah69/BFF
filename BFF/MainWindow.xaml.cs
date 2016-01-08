@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -179,7 +178,7 @@ namespace BFF
             //this.ShowInputAsync("Input", "Blaha");
             ImportDialogViewModel importDialogVM = new ImportDialogViewModel
             {
-                Importable = new YnabCsvImport
+                Importable = new YnabCsvImport(_orm)
                 {
                     TransactionPath = Settings.Default.Import_YnabCsvTransaction,
                     BudgetPath = Settings.Default.Import_YnabCsvBudget,
@@ -201,22 +200,6 @@ namespace BFF
                     Dispatcher.Invoke(() => ImportCommand.Execute(importDialogVM.Importable), DispatcherPriority.Background);
             };
             this.ShowMetroDialogAsync(importDialog);
-        }
-
-        private void OpenBudgetPlan(object sender, RoutedEventArgs e)
-        {
-            FileFlyout.IsOpen = false;
-
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                Title = "Open an existing Budget Plan", /* todo: Localize */
-                Filter = "BFF Budget Plan (*.sqlite)|*.sqlite", /* todo: Localize? */
-                DefaultExt = "*.sqlite"
-            }; ;
-            if (openFileDialog.ShowDialog() == true)
-            {
-                _orm.DbPath = openFileDialog.FileName;
-            }
         }
 
         private void CurrencyCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
