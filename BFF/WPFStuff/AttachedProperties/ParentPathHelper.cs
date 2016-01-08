@@ -5,7 +5,7 @@ namespace BFF.WPFStuff.AttachedProperties
 {
     class ParentPathHelper : ComboBox
     {
-        public static DependencyProperty ParentPathProperty = DependencyProperty.RegisterAttached("ParentPath", typeof(string), typeof(ComboBox), new PropertyMetadata("Parent", ParentPathChanged));
+        public static DependencyProperty ParentPathProperty = DependencyProperty.RegisterAttached("ParentPath", typeof(string), typeof(ParentPathHelper), new PropertyMetadata("Parent", ParentPathChanged));
 
         public static string GetParentPath(DependencyObject d)
         {
