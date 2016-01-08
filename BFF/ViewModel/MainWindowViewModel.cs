@@ -55,11 +55,10 @@ namespace BFF.ViewModel
             };
             if (saveFileDialog.ShowDialog() == true)
             {
-                Reset();
-                //SqLiteHelper.CreateNewDatabase(saveFileDialog.FileName, CultureInfo.CurrentCulture); todo
+                _orm.DbPath = saveFileDialog.FileName;
+                _orm.CreateNewDatabase();
 
-                Settings.Default.DBLocation = saveFileDialog.FileName;
-                Settings.Default.Save();
+                Reset();
             }
         }
 
@@ -76,7 +75,6 @@ namespace BFF.ViewModel
                 _orm.DbPath = openFileDialog.FileName;
 
                 Reset();
-                //SqLiteHelper.OpenDatabase(openFileDialog.FileName); todo
             }
         }
 
