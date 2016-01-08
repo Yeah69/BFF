@@ -20,7 +20,7 @@ namespace BFF.Model.Native
         public long? ParentId
         {
             get { return Parent?.Id; }
-            set { //Parent = Database?.GetCategory(value ?? -1L); 
+            set { Parent = Database?.GetCategory(value ?? -1L); 
             } //todo: Maybe set this as Parent's child
         }
 

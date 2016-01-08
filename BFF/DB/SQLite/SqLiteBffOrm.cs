@@ -338,18 +338,32 @@ namespace BFF.DB.SQLite
                     AllAccounts.Add(account);
                 foreach (Payee payee in GetAll<Payee>())
                     AllPayees.Add(payee);
-                foreach (Category category in GetAll<Category>())
-                    AllCategories.Add(category);
-                Dictionary<long, Category> catagoryDictionary = AllCategories.ToDictionary(category => category.Id);
-                foreach (Category category in AllCategories) //todo: this still does not work right
+                Dictionary<long, Category> catagoryDictionary = new Dictionary<long, Category>();
+                using (var cnn = new SQLiteConnection(ConnectionString))
                 {
-                    if (category.ParentId != null)
+                    //Catagories may reference itself, so a custom mapping is responsible for delaying referencing the Parent per dummy with the Parent-Id
+                    //This is mandatory because the Parent may not be loaded first
+                    IEnumerable<Category> categories = cnn.OpenAndReturn().Query($"SELECT * FROM [{nameof(Category)}s];", 
+                        new[] { typeof(long), typeof(long?), typeof(string) },
+                        objArray =>
+                        {
+                            Category ret = new Category { Id = (long)objArray[0], Parent = (objArray[1] == null) ? null : new Category { Id = (long)objArray[1] } /*dummy*/, Name = (string)objArray[2] };
+                            catagoryDictionary.Add(ret.Id, ret);
+                            return ret;
+                        }, splitOn: "*");
+                    //Now after every Category is loaded the Parent-Child relations are established
+                    foreach (Category category in categories)
                     {
-                        Category parent = catagoryDictionary[category.ParentId ?? -1L];
-                        parent.Categories.Add(category);
-                        category.Parent = parent;
+                        if (category.ParentId != null)
+                        {
+                            category.Parent = catagoryDictionary[(long)category.ParentId];
+                            category.Parent.Categories.Add(category);
+                        }
                     }
+                    foreach(Category category in categories)
+                        AllCategories.Add(category);
 
+                    cnn.Close();
                 }
             }
         }
