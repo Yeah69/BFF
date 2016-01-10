@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace BFF.WPFStuff.Converters
 {
-    public class SumMultiConverter : IMultiValueConverter
+    public class SumColorMultiConverter : IMultiValueConverter
     {
         public SolidColorBrush PositiveBrush { get; set; } = Brushes.LimeGreen;
 

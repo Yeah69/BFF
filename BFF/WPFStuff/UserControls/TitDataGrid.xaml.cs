@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using BFF.Helper;
 using BFF.ViewModel;
 
 namespace BFF.WPFStuff.UserControls
@@ -8,7 +9,7 @@ namespace BFF.WPFStuff.UserControls
     /// <summary>
     /// Interaction logic for TitDataGrid.xaml
     /// </summary>
-    public partial class TitDataGrid
+    public partial class TitDataGrid : IRefreshCurrencyVisuals
     {
         public TitDataGrid()
         {

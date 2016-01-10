@@ -112,9 +112,12 @@
     <Compile Include="DB\IBffOrm.cs" />
     <Compile Include="DB\SQLite\SqLiteBffOrm.cs" />
     <Compile Include="DB\SQLite\SQLiteHelper.cs" />
-    <Compile Include="Helper\BFFNinjectModule.cs" />
+    <Compile Include="Helper\BffCultureProvider.cs" />
+    <Compile Include="Helper\BffEnvironment.cs" />
+    <Compile Include="Helper\IBffCultureProvider.cs" />
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />
+    <Compile Include="Helper\IRefreshCurrencyVisuals.cs" />
     <Compile Include="Helper\Output.cs" />
     <Compile Include="Model\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="Model\Conversion\YNAB\Transaction.cs" />
@@ -152,7 +155,8 @@
     <Compile Include="WPFStuff\Converters\LongToCurrencyConverter.cs" />
     <Compile Include="WPFStuff\Converters\NullToLexConverter.cs" />
     <Compile Include="WPFStuff\Converters\SubElementToSumPureConverter.cs" />
-    <Compile Include="WPFStuff\Converters\SumMultiConverter.cs" />
+    <Compile Include="WPFStuff\Converters\SumConverter.cs" />
+    <Compile Include="WPFStuff\Converters\SumColorMultiConverter.cs" />
     <Compile Include="WPFStuff\Converters\CoalesceConverter.cs" />
     <Compile Include="WPFStuff\Converters\DepPropToUnsetConverter.cs" />
     <Compile Include="WPFStuff\Converters\SubElementToSumConverter.cs" />

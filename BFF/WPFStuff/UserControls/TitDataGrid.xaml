@@ -26,10 +26,10 @@
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMCheckBox.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <converters:SumMultiConverter x:Key="SumMulti" PositiveBrush="{StaticResource BrushPositive}" NegativeBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
+            <converters:SumColorMultiConverter x:Key="SumColorMulti" PositiveBrush="{StaticResource BrushPositive}" NegativeBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
+            <converters:SumConverter x:Key="SumConverter" />
             <converters:TypeToBrushConverter x:Key="TypeToBrush" IncomeBrush="{StaticResource BrushPositive}" TransactionBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
             <converters:TypeToCanvasConverter x:Key="TypeToCanvas" IncomeCanvas="{StaticResource appbar_inbox_in}" TransactionCanvas="{StaticResource appbar_inbox_out}" TransferCanvas="{StaticResource appbar_arrow_left_right}"/>
-            <converters:SubElementToSumConverter x:Key="SubElToSum"/>
             <converters:SubElementToSumPureConverter x:Key="SubElToSumPure"/>
             <converters:DepPropToUnsetConverter x:Key="DepPropToUnset"/>
 
@@ -194,22 +194,14 @@
             <DataTemplate x:Key="SumDataTemplate">
                 <TextBlock Name="TitGrid_SumBox" TextAlignment="Right">
                     <TextBlock.Foreground>
-                        <MultiBinding Converter="{StaticResource SumMulti}">
+                        <MultiBinding Converter="{StaticResource SumColorMulti}">
                             <Binding Path="Sum" />
                             <Binding Path="SubElements" Converter="{StaticResource SubElToSumPure}" />
                             <Binding Path="Type" />
                         </MultiBinding>
                     </TextBlock.Foreground>
                     <TextBlock.Text>
-                        <PriorityBinding FallbackValue="NaN">
-                            <Binding Path="Sum" Converter="{StaticResource DepPropToUnset}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
-                                <Binding.ValidationRules>
-                                    <validationRules:CurrencyRule />
-                                    <validationRules:CurrencyLongRangeRule />
-                                </Binding.ValidationRules>
-                            </Binding>
-                            <Binding Path="SubElements" Converter="{StaticResource SubElToSum}" Mode="TwoWay" StringFormat="C" />
-                        </PriorityBinding>
+                        <Binding Path="Sum" Converter="{StaticResource SumConverter}" FallbackValue="NaN"/>
                     </TextBlock.Text>
                 </TextBlock>
                 <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
@@ -217,22 +209,22 @@
             <DataTemplate  x:Key="SumEditingDataTemplate">
                 <TextBox Name="TitGrid_SumBox" TextAlignment="Right">
                     <TextBox.Foreground>
-                        <MultiBinding Converter="{StaticResource SumMulti}">
+                        <MultiBinding Converter="{StaticResource SumColorMulti}">
                             <Binding Path="Sum" />
                             <Binding Path="SubElements" Converter="{StaticResource SubElToSumPure}" />
                             <Binding Path="Type" />
                         </MultiBinding>
                     </TextBox.Foreground>
                     <TextBox.Text>
-                        <PriorityBinding FallbackValue="NaN">
-                            <Binding Path="Sum" Converter="{StaticResource DepPropToUnset}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                        <MultiBinding Converter="{StaticResource SumMulti}" FallbackValue="NaN" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                            <Binding Path="Sum" >
                                 <Binding.ValidationRules>
                                     <validationRules:CurrencyRule />
                                     <validationRules:CurrencyLongRangeRule />
                                 </Binding.ValidationRules>
                             </Binding>
-                            <Binding Path="SubElements" Converter="{StaticResource SubElToSum}" Mode="TwoWay" StringFormat="C" />
-                        </PriorityBinding>
+                            <Binding Path="DataContext.CultureProvider" ElementName="TitView" />
+                        </MultiBinding>
                     </TextBox.Text>
                 </TextBox>
                 <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
@@ -492,7 +484,7 @@
         </StackPanel>
         <!-- "Status bar" -->
         <GroupBox Grid.Row="2" Header="{lex:Loc TitView_BalanceDisplay}" HorizontalAlignment="Left">
-            <TextBlock Name="TotalBalanceTextBlock"  Text="{Binding AccountBalance, Converter={StaticResource DepPropToUnset}}" />
+            <TextBlock Name="TotalBalanceTextBlock"  Text="{Binding AccountBalance, Converter={StaticResource SumConverter}}" />
         </GroupBox>
     </Grid>
 </UserControl>

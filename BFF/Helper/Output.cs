@@ -19,18 +19,18 @@ namespace BFF.Helper
 
         public static string AsCurrency(this long value)
         {
-            return value.AsCurrency(CultureInfo.CurrentCulture);
+            return value.AsCurrency(BffEnvironment.CultureProvider.CurrencyCulture ?? CultureInfo.CurrentCulture);
         }
 
         public static string AsCurrency(this long value, CultureInfo culture)
         {
-            decimal result = value / 100m;
+            decimal result = value / (decimal)Math.Pow(10, culture.NumberFormat.CurrencyDecimalDigits);
             return result.ToString("C", culture);
         }
 
         public static long CurrencyAsLong(this string value)
         {
-            return value.CurrencyAsLong(CultureInfo.CurrentCulture);
+            return value.CurrencyAsLong(BffEnvironment.CultureProvider.CurrencyCulture ?? CultureInfo.CurrentCulture);
         }
 
         public static long CurrencyAsLong(this string value, CultureInfo culture)
@@ -41,11 +41,6 @@ namespace BFF.Helper
             if(!convt)
                 throw new ValidationException();
             return (long) (decval*(decimal)Math.Pow(10, culture.NumberFormat.CurrencyDecimalDigits));
-        }
-
-        public static void WriteYnabTransaction(string[] entries)
-        {
-
         }
     }
 }

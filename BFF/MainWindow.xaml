@@ -53,9 +53,9 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                         <Label Content="{lex:Loc Language}"/>
-                        <ComboBox Name="LanguageCombo" SelectionChanged="LanguageCombo_SelectionChanged"/>
+                        <ComboBox Name="LanguageCombo" SelectionChanged="LanguageCombo_SelectionChanged" />
                         <Label Content="{lex:Loc Settings_Currency}"/>
-                        <ComboBox Name="CurrencyCombo" SelectionChanged="CurrencyCombo_OnSelectionChanged" Style="{StaticResource VirtualisedMetroComboBox}">
+                        <ComboBox Name="CurrencyCombo" SelectedItem="{Binding CurrencyCulture, Mode=OneWay}" SelectionChanged="CurrencyCombo_OnSelectionChanged" Style="{StaticResource VirtualisedMetroComboBox}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -79,7 +79,7 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                         <Label Content="{lex:Loc Settings_Date}"/>
-                        <ComboBox Name="DateCombo" SelectionChanged="DateCombo_OnSelectionChanged" Style="{StaticResource VirtualisedMetroComboBox}">
+                        <ComboBox Name="DateCombo" SelectedItem="{Binding DateCulture, Mode=OneWay}" SelectionChanged="DateCombo_OnSelectionChanged" Style="{StaticResource VirtualisedMetroComboBox}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -128,7 +128,7 @@
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <Grid>
-        <ContentControl Content="{Binding ContentViewModel}">
+        <ContentControl Name="ContentControl"  Content="{Binding ContentViewModel}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type viewModel:TitContentViewModel}">
                     <usercontrols:FilledMainWindow x:Name="MainContent" />

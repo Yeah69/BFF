@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
 using System.Windows.Input;
 using BFF.DB;
+using BFF.Helper;
 using BFF.Helper.Import;
-using BFF.Properties;
+using BFF.Model.Native;
 using BFF.WPFStuff;
 using Microsoft.Win32;
 
@@ -38,6 +40,9 @@ namespace BFF.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        public CultureInfo CurrencyCulture => BffEnvironment.CultureProvider.CurrencyCulture;
+        public CultureInfo DateCulture => BffEnvironment.CultureProvider.DateCulture;
 
         public MainWindowViewModel(IBffOrm orm)
         {
@@ -87,19 +92,39 @@ namespace BFF.ViewModel
         {
             if (File.Exists(_orm.DbPath) && ContentViewModel is TitContentViewModel)
             {
+                ResetCultures();
                 ContentViewModel.Refresh();
                 Title = $"{new FileInfo(_orm.DbPath).Name} - BFF";
             }
             else if (File.Exists(_orm.DbPath) && !(ContentViewModel is TitContentViewModel))
             {
+                ResetCultures();
                 ContentViewModel = new TitContentViewModel(_orm);
                 Title = $"{new FileInfo(_orm.DbPath).Name} - BFF";
             }
             else
             {
+                ResetCultures(true);
                 ContentViewModel = new EmptyContentViewModel();
                 Title = "BFF";
             }
+        }
+
+        protected void ResetCultures(bool noDb = false)
+        {
+            if (noDb)
+            {
+                BffEnvironment.CultureProvider.CurrencyCulture = CultureInfo.GetCultureInfo("de-DE");
+                BffEnvironment.CultureProvider.DateCulture = CultureInfo.GetCultureInfo("de-DE");
+            }
+            else
+            {
+                DbSetting dbSetting = _orm.Get<DbSetting>(1);
+                BffEnvironment.CultureProvider.CurrencyCulture = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultrureName);
+                BffEnvironment.CultureProvider.DateCulture = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
+            }
+            OnPropertyChanged(nameof(CurrencyCulture));
+            OnPropertyChanged(nameof(DateCulture));
         }
     }
 }

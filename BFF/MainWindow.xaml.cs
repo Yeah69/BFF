@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -7,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using BFF.DB;
+using BFF.Helper;
 using BFF.Helper.Import;
 using BFF.Model.Native;
 using BFF.Properties;
@@ -14,18 +16,14 @@ using BFF.ViewModel;
 using BFF.WPFStuff.UserControls;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Win32;
 
 namespace BFF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : IRefreshCurrencyVisuals
     {
-
-        public DbSetting DbSettings { get; set; }
-
         public static readonly DependencyProperty ImportCommandProperty =
             DependencyProperty.Register(nameof(ImportCommand), typeof(ICommand), typeof(MainWindow),
                 new PropertyMetadata((depObj, args) =>
@@ -38,20 +36,6 @@ namespace BFF
         {
             get { return (ICommand)GetValue(ImportCommandProperty); }
             set { SetValue(ImportCommandProperty, value); }
-        }
-
-        public static readonly DependencyProperty OpenCommandProperty =
-            DependencyProperty.Register(nameof(OpenCommand), typeof(ICommand), typeof(MainWindow),
-                new PropertyMetadata((depObj, args) =>
-                {
-                    var mw = (MainWindow)depObj;
-                    mw.OpenCommand = (ICommand)args.NewValue;
-                }));
-
-        public ICommand OpenCommand
-        {
-            get { return (ICommand)GetValue(OpenCommandProperty); }
-            set { SetValue(OpenCommandProperty, value); }
         }
 
         private readonly IBffOrm _orm;
@@ -73,6 +57,7 @@ namespace BFF
             LanguageCombo.Items.Add("de-DE");
             LanguageCombo.Items.Add("en-US");
             LanguageCombo.SelectedItem = initialLocalization;
+            BffEnvironment.CultureProvider.LanguageCulture = CultureInfo.GetCultureInfo(initialLocalization);
 
             foreach (
                 CultureInfo culture in
@@ -82,17 +67,13 @@ namespace BFF
                 DateCombo.Items.Add(culture);
             }
 
-            //CurrencyCombo.SelectedItem = DbSettings.CurrencyCulture;
-            //CultureInfo dateCulture = CultureInfo.GetCultureInfo(DbSettings.DateCultureName);
-            //DateCombo.SelectedItem = dateCulture;
-
-            CultureInfo customCultureInfo = new CultureInfo(initialLocalization);
-            //customCultureInfo.DateTimeFormat = dateCulture.DateTimeFormat;
+            //CurrencyCombo.SelectedItem = BffEnvironment.CultureProvider.CurrencyCulture;
+            //DateCombo.SelectedItem = BffEnvironment.CultureProvider.DateCulture;
 
             //Following statement is crucial as it initializes the Localization
-            WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = customCultureInfo;
-            Thread.CurrentThread.CurrentCulture = customCultureInfo;
-            Thread.CurrentThread.CurrentUICulture = customCultureInfo;
+            WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = BffEnvironment.CultureProvider.LanguageCulture;
+            Thread.CurrentThread.CurrentCulture = BffEnvironment.CultureProvider.LanguageCulture;
+            Thread.CurrentThread.CurrentUICulture = BffEnvironment.CultureProvider.LanguageCulture;
         }
 
         private void InitializeAppThemeAndAccentComboBoxes()
@@ -148,14 +129,11 @@ namespace BFF
         {
             string language = (string) LanguageCombo.SelectedItem;
 
-            CultureInfo customCultureInfo = new CultureInfo(language)
-            {
-                DateTimeFormat = CultureInfo.GetCultureInfo(DbSettings?.DateCultureName ?? "").DateTimeFormat
-            };
+            BffEnvironment.CultureProvider.LanguageCulture = CultureInfo.GetCultureInfo(language);
 
-            WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = customCultureInfo;
-            Thread.CurrentThread.CurrentCulture = customCultureInfo;
-            Thread.CurrentThread.CurrentUICulture = customCultureInfo;
+            WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = BffEnvironment.CultureProvider.LanguageCulture;
+            Thread.CurrentThread.CurrentCulture = BffEnvironment.CultureProvider.LanguageCulture;
+            Thread.CurrentThread.CurrentUICulture = BffEnvironment.CultureProvider.LanguageCulture;
             Settings.Default.Localization_Language = language;
             Settings.Default.Save();
         }
@@ -175,7 +153,6 @@ namespace BFF
             FileFlyout.IsOpen = false;
 
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
-            //this.ShowInputAsync("Input", "Blaha");
             ImportDialogViewModel importDialogVM = new ImportDialogViewModel
             {
                 Importable = new YnabCsvImport(_orm)
@@ -194,8 +171,6 @@ namespace BFF
                 Settings.Default.Import_SavePath = importDialogVM.Importable.SavePath;
                 Settings.Default.Save();
                 this.HideMetroDialogAsync(importDialog);
-                //string savePath = importDialogVM.Importable.Import();
-                //SqLiteHelper.OpenDatabase(savePath);
                 if(ImportCommand.CanExecute(importDialogVM.Importable))
                     Dispatcher.Invoke(() => ImportCommand.Execute(importDialogVM.Importable), DispatcherPriority.Background);
             };
@@ -204,23 +179,24 @@ namespace BFF
 
         private void CurrencyCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DbSettings.CurrencyCulture = (CultureInfo) ((ComboBox) sender).SelectedItem;
-            refreshCurrencyVisuals();
+            BffEnvironment.CultureProvider.CurrencyCulture = (CultureInfo) ((ComboBox) sender).SelectedItem;
+            if(File.Exists(_orm.DbPath)) _orm.Get<DbSetting>(1).CurrencyCulture = BffEnvironment.CultureProvider.CurrencyCulture;
+            RefreshCurrencyVisuals();
         }
 
-        private void refreshCurrencyVisuals()
+        public void RefreshCurrencyVisuals()
         {
-            //this.MainContent.refreshCurrencyVisuals();
+            if(ContentControl.Content != null)
+            {
+                IRefreshCurrencyVisuals rcv = VisualTreeHelper.GetChild(VisualTreeHelper.GetChild(ContentControl, 0), 0) as IRefreshCurrencyVisuals;
+                rcv?.RefreshCurrencyVisuals();
+            }
         }
 
         private void DateCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DbSettings.DateCultureName = ((CultureInfo)((ComboBox)sender).SelectedItem).Name;
-
-            DateTimeFormatInfo dateFormat = ((CultureInfo) ((ComboBox) sender).SelectedItem).DateTimeFormat;
-
-            Thread.CurrentThread.CurrentCulture.DateTimeFormat = dateFormat;
-            Thread.CurrentThread.CurrentUICulture.DateTimeFormat = dateFormat;
+            BffEnvironment.CultureProvider.DateCulture = (CultureInfo)((ComboBox)sender).SelectedItem;
+            if (File.Exists(_orm.DbPath)) _orm.Get<DbSetting>(1).DateCulture = BffEnvironment.CultureProvider.DateCulture;
         }
     }
 

@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using BFF.DB;
+using BFF.DB.SQLite;
 using BFF.Helper;
 using MahApps.Metro;
 using Ninject;
@@ -12,12 +14,11 @@ namespace BFF
     {
         public App()
         {
-            using (StandardKernel kernel = new StandardKernel(new BffNinjectModule()))
-            {
-                MainWindow mainWindow = kernel.Get<MainWindow>();
-                mainWindow.Show();
-            }
-
+            IBffOrm orm = new SqLiteBffOrm();
+            IBffCultureProvider cultureProvider = new BffCultureProvider();
+            BffEnvironment.CultureProvider = cultureProvider;
+            MainWindow mainWindow = new MainWindow(orm);
+            mainWindow.Show();
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)

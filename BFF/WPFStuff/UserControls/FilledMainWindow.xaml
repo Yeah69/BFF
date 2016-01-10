@@ -20,7 +20,7 @@
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <converters:LongToCurrencyConverter x:Key="CurrencyConverter"/>
+            <converters:SumConverter x:Key="SumConverter"/>
             <converters:AccountToTitViewModelConverter x:Key="AccountToTitViewModelConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -63,7 +63,7 @@
                     <Label Content="{lex:Loc NewAccount_StartingBalance}"/>
                     <TextBox MaxLength="30" Name="NewAccount_StartingBalance">
                         <TextBox.Text>
-                            <Binding Path="StartingBalance" Mode="TwoWay" Converter="{StaticResource CurrencyConverter}" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding Path="StartingBalance" Mode="TwoWay" Converter="{StaticResource SumConverter}" UpdateSourceTrigger="PropertyChanged" >
                                 <Binding.ValidationRules>
                                     <validationRules:CurrencyRule />
                                     <validationRules:CurrencyLongRangeRule />

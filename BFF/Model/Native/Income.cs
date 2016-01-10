@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
@@ -95,12 +96,18 @@ namespace BFF.Model.Native
 
         public override long? Sum
         {
-            get { return _sum; }
+            get
+            {
+                return _sum ?? SubElements.Sum(subIncome => subIncome.Sum);
+            }
             set
             {
-                _sum = value;
+                if (Type == "SingleIncome")
+                {
+                    _sum = value;
+                    Database?.Update(this);
+                }
                 OnPropertyChanged();
-                Database?.Update(this);
             }
         }
 
@@ -118,7 +125,8 @@ namespace BFF.Model.Native
         [Write(false)]
         public IEnumerable<SubIncome> SubElements
         {
-            get { return Database?.GetSubTransInc<SubIncome>(Id); }
+            get { return Type == "SingleIncome" ? new List<SubIncome>(0) : Database?.GetSubTransInc<SubIncome>(Id); }
+            set { }
         }
 
         public override string Type { get; set; } = "SingleIncome";

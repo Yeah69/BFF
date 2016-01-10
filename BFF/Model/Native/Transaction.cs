@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
@@ -96,12 +97,18 @@ namespace BFF.Model.Native
         //todo: Resolve the issue with the Parent-Transactions => Get Sum from Child-Transactions
         public override long? Sum
         {
-            get { return _sum; }
+            get
+            {
+                return _sum ?? SubElements.Sum(subTransaction => subTransaction.Sum);
+            }
             set
             {
-                _sum = value;
+                if (Type == "SingleTrans")
+                {
+                    _sum = value;
+                    Database?.Update(this);
+                }
                 OnPropertyChanged();
-                Database?.Update(this);
             }
         }
 
@@ -118,7 +125,7 @@ namespace BFF.Model.Native
 
         [Write(false)]
         public IEnumerable<SubTransaction> SubElements {
-            get { return Database?.GetSubTransInc<SubTransaction>(Id);}
+            get { return Type == "SingleTrans" ? new List<SubTransaction>(0) : Database?.GetSubTransInc<SubTransaction>(Id);}
             set { }
         }
 
