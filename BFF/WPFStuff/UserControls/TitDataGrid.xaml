@@ -31,7 +31,7 @@
             <converters:TypeToBrushConverter x:Key="TypeToBrush" IncomeBrush="{StaticResource BrushPositive}" TransactionBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
             <converters:TypeToCanvasConverter x:Key="TypeToCanvas" IncomeCanvas="{StaticResource appbar_inbox_in}" TransactionCanvas="{StaticResource appbar_inbox_out}" TransferCanvas="{StaticResource appbar_arrow_left_right}"/>
             <converters:SubElementToSumPureConverter x:Key="SubElToSumPure"/>
-            <converters:DepPropToUnsetConverter x:Key="DepPropToUnset"/>
+            <converters:DateToStringConverter x:Key="DateToString"/>
 
             <!-- Symbol -->
             <DataTemplate x:Key="SymbolDataTemplate">
@@ -77,10 +77,11 @@
             </DataTemplate>
             <!-- Date -->
             <DataTemplate x:Key="DateDataTemplate">
-                <TextBlock Text="{Binding Date, StringFormat=\{0:yy/MM/dd\}}" />
+                <TextBlock Text="{Binding Date, Converter={StaticResource DateToString}}" />
             </DataTemplate>
             <DataTemplate x:Key="DateEditingDataTemplate">
-                <DatePicker Text="{Binding Date, Mode=TwoWay}"></DatePicker>
+                <DatePicker Text="{Binding Date, Converter={StaticResource DateToString}, Mode=TwoWay}">
+                </DatePicker>
             </DataTemplate>
             <!-- Payee -->
             <DataTemplate x:Key="PayeeDataTemplate">

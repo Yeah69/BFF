@@ -15,7 +15,7 @@ namespace BFF
         public App()
         {
             IBffOrm orm = new SqLiteBffOrm();
-            IBffCultureProvider cultureProvider = new BffCultureProvider();
+            IBffCultureProvider cultureProvider = new BffCultureProvider(orm);
             BffEnvironment.CultureProvider = cultureProvider;
             MainWindow mainWindow = new MainWindow(orm);
             mainWindow.Show();

@@ -148,6 +148,7 @@
     <Compile Include="WPFStuff\Behaviors\ClosingOnSelectBevavior.cs" />
     <Compile Include="WPFStuff\Behaviors\ClosingOnMouseSelectBehavior.cs" />
     <Compile Include="WPFStuff\Behaviors\BindableSelectedItemBehavior.cs" />
+    <Compile Include="WPFStuff\Converters\DateConverter.cs" />
     <Compile Include="WPFStuff\Converters\DateComboConverter.cs" />
     <Compile Include="WPFStuff\Converters\RootNodesOnlyConverter.cs" />
     <Compile Include="WPFStuff\Converters\SearchToVisibilityConverter.cs" />

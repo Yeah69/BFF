@@ -1,7 +1,5 @@
 ﻿using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,7 +8,6 @@ using System.Windows.Threading;
 using BFF.DB;
 using BFF.Helper;
 using BFF.Helper.Import;
-using BFF.Model.Native;
 using BFF.Properties;
 using BFF.ViewModel;
 using BFF.WPFStuff.UserControls;
@@ -59,21 +56,11 @@ namespace BFF
             LanguageCombo.SelectedItem = initialLocalization;
             BffEnvironment.CultureProvider.LanguageCulture = CultureInfo.GetCultureInfo(initialLocalization);
 
-            foreach (
-                CultureInfo culture in
-                    CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.Name))
+            foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.Name))
             {
                 CurrencyCombo.Items.Add(culture);
                 DateCombo.Items.Add(culture);
             }
-
-            //CurrencyCombo.SelectedItem = BffEnvironment.CultureProvider.CurrencyCulture;
-            //DateCombo.SelectedItem = BffEnvironment.CultureProvider.DateCulture;
-
-            //Following statement is crucial as it initializes the Localization
-            WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = BffEnvironment.CultureProvider.LanguageCulture;
-            Thread.CurrentThread.CurrentCulture = BffEnvironment.CultureProvider.LanguageCulture;
-            Thread.CurrentThread.CurrentUICulture = BffEnvironment.CultureProvider.LanguageCulture;
         }
 
         private void InitializeAppThemeAndAccentComboBoxes()
@@ -130,12 +117,6 @@ namespace BFF
             string language = (string) LanguageCombo.SelectedItem;
 
             BffEnvironment.CultureProvider.LanguageCulture = CultureInfo.GetCultureInfo(language);
-
-            WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = BffEnvironment.CultureProvider.LanguageCulture;
-            Thread.CurrentThread.CurrentCulture = BffEnvironment.CultureProvider.LanguageCulture;
-            Thread.CurrentThread.CurrentUICulture = BffEnvironment.CultureProvider.LanguageCulture;
-            Settings.Default.Localization_Language = language;
-            Settings.Default.Save();
         }
 
         private void FileButt_Click(object sender, RoutedEventArgs e)
@@ -180,7 +161,6 @@ namespace BFF
         private void CurrencyCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             BffEnvironment.CultureProvider.CurrencyCulture = (CultureInfo) ((ComboBox) sender).SelectedItem;
-            if(File.Exists(_orm.DbPath)) _orm.Get<DbSetting>(1).CurrencyCulture = BffEnvironment.CultureProvider.CurrencyCulture;
             RefreshCurrencyVisuals();
         }
 
@@ -188,6 +168,8 @@ namespace BFF
         {
             if(ContentControl.Content != null)
             {
+                //When the ContentControl has Content, then the first child is the ContentPresenter 
+                //and its first child is the root of the DataTemplates generated content
                 IRefreshCurrencyVisuals rcv = VisualTreeHelper.GetChild(VisualTreeHelper.GetChild(ContentControl, 0), 0) as IRefreshCurrencyVisuals;
                 rcv?.RefreshCurrencyVisuals();
             }
@@ -196,7 +178,6 @@ namespace BFF
         private void DateCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             BffEnvironment.CultureProvider.DateCulture = (CultureInfo)((ComboBox)sender).SelectedItem;
-            if (File.Exists(_orm.DbPath)) _orm.Get<DbSetting>(1).DateCulture = BffEnvironment.CultureProvider.DateCulture;
         }
     }
 

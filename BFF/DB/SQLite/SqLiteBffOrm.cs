@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
@@ -22,8 +23,11 @@ namespace BFF.DB.SQLite
                 Settings.Default.DBLocation = value;
                 Settings.Default.Save();
                 Reset();
+                DbPathChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DbPath)));
             }
         }
+
+        public event PropertyChangedEventHandler DbPathChanged;
 
         public void CreateNewDatabase()
         {
