@@ -131,6 +131,7 @@
     <Compile Include="Model\Native\Structure\TitLike.cs" />
     <Compile Include="Model\Native\Structure\SubTitBase.cs" />
     <Compile Include="Model\Native\Structure\TitBase.cs" />
+    <Compile Include="Model\Native\Structure\TitNoTransfer.cs" />
     <Compile Include="Model\Native\SubIncome.cs" />
     <Compile Include="Model\Native\SubTransaction.cs" />
     <Compile Include="Model\Native\Income.cs" />

@@ -106,17 +106,20 @@
             <DataTemplate x:Key="PayeeEditingDataTemplate">
                 <ContentControl HorizontalAlignment="Stretch"  Content="{Binding}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitBase}" >
-                            <ComboBox TextSearch.TextPath="Name"
-                                                              IsEditable="True"
-                                                              IsTextSearchCaseSensitive="False"
-                                                              IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllPayees, ElementName=TitView}">
-                                <ComboBox.SelectedItem>
-                                    <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                    </Binding>
-                                </ComboBox.SelectedItem>
-                            </ComboBox>
+                        <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox TextSearch.TextPath="Name" Text="{Binding PayeeText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                                                  IsEditable="True"
+                                                                  IsTextSearchCaseSensitive="False"
+                                                                  IsTextSearchEnabled="True"
+                                                                  ItemsSource="{Binding DataContext.AllPayees, ElementName=TitView}">
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        </Binding>
+                                    </ComboBox.SelectedItem>
+                                </ComboBox>
+                                <Button Content="+" Command="{Binding AddPayeeCommand}" />
+                            </StackPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <ComboBox TextSearch.TextPath="Name"

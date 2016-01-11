@@ -8,7 +8,7 @@ using YNAB = BFF.Model.Conversion.YNAB;
 
 namespace BFF.Model.Native
 {
-    public class Income : TitBase
+    public class Income : TitNoTransfer
     {
         private Account _account;
         private DateTime _date;

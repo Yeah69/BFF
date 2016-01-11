@@ -8,7 +8,7 @@ using YNAB = BFF.Model.Conversion.YNAB;
 
 namespace BFF.Model.Native
 {
-    public class Transaction : TitBase
+    public class Transaction : TitNoTransfer
     {
         private bool _cleared;
         private long? _sum;
