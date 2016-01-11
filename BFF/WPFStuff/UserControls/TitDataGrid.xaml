@@ -217,15 +217,12 @@
                         </MultiBinding>
                     </TextBox.Foreground>
                     <TextBox.Text>
-                        <MultiBinding Converter="{StaticResource SumMulti}" FallbackValue="NaN" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
-                            <Binding Path="Sum" >
-                                <Binding.ValidationRules>
-                                    <validationRules:CurrencyRule />
-                                    <validationRules:CurrencyLongRangeRule />
-                                </Binding.ValidationRules>
-                            </Binding>
-                            <Binding Path="DataContext.CultureProvider" ElementName="TitView" />
-                        </MultiBinding>
+                        <Binding Path="Sum" Converter="{StaticResource SumConverter}" Mode="TwoWay" UpdateSourceTrigger="LostFocus" FallbackValue="NaN">
+                            <Binding.ValidationRules>
+                                <validationRules:CurrencyRule />
+                                <validationRules:CurrencyLongRangeRule />
+                            </Binding.ValidationRules>
+                        </Binding>
                     </TextBox.Text>
                 </TextBox>
                 <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
@@ -244,7 +241,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!-- The DataGrid, which shows all saved Tits -->
-        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" 
+                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False">
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource MetroDataGrid}"
                            TargetType="{x:Type DataGrid}">

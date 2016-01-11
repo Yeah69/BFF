@@ -10,10 +10,11 @@ namespace BFF.WPFStuff.ValidationRules
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             decimal outVar;
-            decimal factor = (decimal)Math.Pow(10, cultureInfo.NumberFormat.CurrencyDecimalDigits);
-            string message = $"Value is out of range: [ {(long.MinValue/factor).ToString("C", cultureInfo.NumberFormat)} .. {(long.MaxValue/factor).ToString("C", cultureInfo.NumberFormat)} ]"; //Output.CurrencyCulture.NumberFormat)} ]";
+            CultureInfo currencyCulture = BffEnvironment.CultureProvider.CurrencyCulture;
+            decimal factor = (decimal)Math.Pow(10, currencyCulture.NumberFormat.CurrencyDecimalDigits);
+            string message = $"Value is out of range: [ {(long.MinValue/factor).ToString("C", currencyCulture.NumberFormat)} .. {(long.MaxValue/factor).ToString("C", currencyCulture.NumberFormat)} ]"; 
             bool parsed = decimal.TryParse((string)value, NumberStyles.Currency,
-              cultureInfo.NumberFormat, out outVar);
+              currencyCulture.NumberFormat, out outVar);
             if (parsed)
             {
                 outVar = outVar * factor;
