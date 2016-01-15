@@ -21,7 +21,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.datagrid.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.checkbox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
-                <ResourceDictionary Source="/WPFStuff/Resources/TransUC_Icons.xaml" />
+                <!--<ResourceDictionary Source="/WPFStuff/Resources/TransUC_Icons.xaml" />-->
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMComboBox.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMCheckBox.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
@@ -114,11 +115,17 @@
                                                                   IsTextSearchEnabled="True"
                                                                   ItemsSource="{Binding DataContext.AllPayees, ElementName=TitView}">
                                     <ComboBox.SelectedItem>
-                                        <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         </Binding>
                                     </ComboBox.SelectedItem>
                                 </ComboBox>
-                                <Button Content="+" Command="{Binding AddPayeeCommand}" />
+                                <Button Command="{Binding AddPayeeCommand}">
+                                    <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Visual="{StaticResource appbar_add}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </Button>
                             </StackPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
