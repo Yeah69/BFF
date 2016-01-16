@@ -12,6 +12,7 @@
              xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
              xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
              xmlns:attachedProperties="clr-namespace:BFF.WPFStuff.AttachedProperties"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700"
              Name="TitView">
@@ -21,7 +22,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.datagrid.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.checkbox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
-                <!--<ResourceDictionary Source="/WPFStuff/Resources/TransUC_Icons.xaml" />-->
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMComboBox.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMCheckBox.xaml" />
@@ -29,6 +29,7 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:SumColorMultiConverter x:Key="SumColorMulti" PositiveBrush="{StaticResource BrushPositive}" NegativeBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
             <converters:SumConverter x:Key="SumConverter" />
+            <converters:CategoriesToHierarchicalItemsSourceConverter x:Key="CategoriesToHierarchicalItemsSource" />
             <converters:TypeToBrushConverter x:Key="TypeToBrush" IncomeBrush="{StaticResource BrushPositive}" TransactionBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
             <converters:TypeToCanvasConverter x:Key="TypeToCanvas" IncomeCanvas="{StaticResource appbar_inbox_in}" TransactionCanvas="{StaticResource appbar_inbox_out}" TransferCanvas="{StaticResource appbar_arrow_left_right}"/>
             <converters:SubElementToSumPureConverter x:Key="SubElToSumPure"/>
@@ -46,7 +47,7 @@
             <DataTemplate x:Key="AccountDataTemplate">
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitBase}">
+                        <DataTemplate DataType="{x:Type structure:TitNoTransfer}">
                             <TextBlock Text="{Binding Account}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
@@ -58,7 +59,7 @@
             <DataTemplate  x:Key="AccountEditingDataTemplate">
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitBase}">
+                        <DataTemplate DataType="{x:Type structure:TitNoTransfer}">
                             <ComboBox TextSearch.TextPath="Name"
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
@@ -88,7 +89,7 @@
             <DataTemplate x:Key="PayeeDataTemplate">
                 <ContentControl HorizontalAlignment="Stretch"  Content="{Binding}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitBase}" >
+                        <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
                             <TextBlock Text="{Binding Payee}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
@@ -147,8 +148,8 @@
             <DataTemplate x:Key="CategoryDataTemplate">
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitBase}">
-                            <TextBlock Text="{Binding Category}" />
+                        <DataTemplate DataType="{x:Type structure:TitNoTransfer}">
+                            <TextBlock Text="{Binding Category.Name}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <StackPanel Orientation="Horizontal">
@@ -167,17 +168,31 @@
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
                         <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
-                            <TextBlock Text="{Binding}" />
+                            <TextBlock Text="{Binding}" FontSize="12" />
                         </HierarchicalDataTemplate>
-                        <DataTemplate DataType="{x:Type structure:TitBase}">
-                            <ComboBox Style="{StaticResource BFFTreeComboBox}" IsEditable="True" TextSearch.TextPath="Name"
-                                                              ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView}"
-                                                  attachedProperties:ParentPathHelper.ParentPath="Parent">
-                                <ComboBox.SelectedItem>
-                                    <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                    </Binding>
-                                </ComboBox.SelectedItem>
-                            </ComboBox>
+                        <DataTemplate DataType="{x:Type structure:TitNoTransfer}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                <ComboBox IsEditable="True" TextSearch.TextPath="Name" ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSource}}"
+                                           Text="{Binding CategoryText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                           IsTextSearchEnabled="True">
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        </Binding>
+                                    </ComboBox.SelectedItem>
+                                </ComboBox>
+                                <controls:SplitButton Orientation="Horizontal" Command="{Binding AddCategoryCommand}" SelectedItem="{Binding AddingCategoryParent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView, Converter={StaticResource CategoriesToHierarchicalItemsSource}}">
+                                    <controls:SplitButton.IconTemplate>
+                                        <DataTemplate>
+                                            <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
+                                                <Rectangle.OpacityMask>
+                                                    <VisualBrush Visual="{StaticResource appbar_add}" />
+                                                </Rectangle.OpacityMask>
+                                            </Rectangle>
+                                        </DataTemplate>
+                                    </controls:SplitButton.IconTemplate>
+                                </controls:SplitButton>
+                            </StackPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <ComboBox TextSearch.TextPath="Name"

@@ -351,7 +351,7 @@ namespace BFF.DB.SQLite
                         new[] { typeof(long), typeof(long?), typeof(string) },
                         objArray =>
                         {
-                            Category ret = new Category { Id = (long)objArray[0], Parent = (objArray[1] == null) ? null : new Category { Id = (long)objArray[1] } /*dummy*/, Name = (string)objArray[2] };
+                            Category ret = new Category((objArray[1] == null) ? null : new Category { Id = (long)objArray[1] } /*dummy*/) { Id = (long)objArray[0], Name = (string)objArray[2] };
                             catagoryDictionary.Add(ret.Id, ret);
                             return ret;
                         }, splitOn: "*");

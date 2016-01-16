@@ -15,21 +15,40 @@ namespace BFF.Model.Native
         public ObservableCollection<Category> Categories { get; set; } = new ObservableCollection<Category>();
 
         [Write(false)]
-        public Category Parent { get; set; }
+        public Category Parent
+        {
+            get { return _parent; }
+            set
+            {
+                _parent = value;
+                Database?.Update(this);
+            }
+        }
 
         public long? ParentId
         {
             get { return Parent?.Id; }
-            set { Parent = Database?.GetCategory(value ?? -1L); 
+            set { _parent = Database?.GetCategory(value ?? -1L); 
             } //todo: Maybe set this as Parent's child
+        }
+
+        public Category(Category parent = null)
+        {
+            _parent = parent ?? _parent;
         }
 
         public override string ToString()
         {
-            return Name;
+            return $"{Parent?.getIndent()}{Name}";
         }
-        
+
+        private string getIndent()
+        {
+            return $"{Parent?.getIndent()}. ";
+        }
+
         private static readonly Dictionary<string, Category> Cache = new Dictionary<string, Category>();
+        private Category _parent;
 
         // todo: Refactor the GetOrCreate and GetAllCache into the Conversion/Import class
 
