@@ -190,7 +190,7 @@ namespace BFF.DB.SQLite
                     dataModelBase.Id = ret;
                     cnn.Close();
                 }
-                if (dataModelBase is CommonProperties)
+                if (dataModelBase is CommonProperty)
                 {
                     if(dataModelBase is Account)
                         AllAccounts.Add(dataModelBase as Account);
@@ -239,7 +239,7 @@ namespace BFF.DB.SQLite
                     cnn.OpenAndReturn().Delete(dataModelBase);
                     cnn.Close();
                 }
-                if (dataModelBase is CommonProperties)
+                if (dataModelBase is CommonProperty)
                 {
                     if (dataModelBase is Account && AllAccounts.Contains(dataModelBase as Account))
                         AllAccounts.Remove(dataModelBase as Account);
@@ -273,13 +273,12 @@ namespace BFF.DB.SQLite
             {
                 case "SingleTrans":
                 case "ParentTrans":
-                    ret = new Transaction
+                    ret = new Transaction(date)
                     {
                         Id = (long)objArr[0],
                         AccountId = (long)objArr[1],
                         PayeeId = (long)objArr[2],
                         CategoryId = (long?)objArr[3],
-                        Date = date,
                         Memo = (string)objArr[5],
                         Sum = (long?)objArr[6],
                         Cleared = (long)objArr[7] == 1,
@@ -288,13 +287,12 @@ namespace BFF.DB.SQLite
                     break;
                 case "SingleIncome":
                 case "ParentIncome":
-                    ret = new Income
+                    ret = new Income (date)
                     {
                         Id = (long)objArr[0],
                         AccountId = (long)objArr[1],
                         PayeeId = (long)objArr[2],
                         CategoryId = (long?)objArr[3],
-                        Date = date,
                         Memo = (string)objArr[5],
                         Sum = (long?)objArr[6],
                         Cleared = (long)objArr[7] == 1,
@@ -302,12 +300,11 @@ namespace BFF.DB.SQLite
                     };
                     break;
                 case "Transfer":
-                    ret = new Transfer
+                    ret = new Transfer(date)
                     {
                         Id = (long)objArr[0],
                         FromAccountId = (long)objArr[2],
                         ToAccountId = (long)objArr[3],
-                        Date = date,
                         Memo = (string)objArr[5],
                         Sum = (long)objArr[6],
                         Cleared = (long)objArr[7] == 1,
@@ -315,7 +312,7 @@ namespace BFF.DB.SQLite
                     };
                     break;
                 default:
-                    ret = new Transaction { Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR" };
+                    ret = new Transaction (DateTime.Today) { Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR" };
                     break;
             }
             return ret;
@@ -351,7 +348,7 @@ namespace BFF.DB.SQLite
                         new[] { typeof(long), typeof(long?), typeof(string) },
                         objArray =>
                         {
-                            Category ret = new Category((objArray[1] == null) ? null : new Category { Id = (long)objArray[1] } /*dummy*/) { Id = (long)objArray[0], Name = (string)objArray[2] };
+                            Category ret = new Category(objArray[1] == null ? null : new Category { Id = (long)objArray[1] } /*dummy*/, (string)objArray[2]) { Id = (long)objArray[0]};
                             catagoryDictionary.Add(ret.Id, ret);
                             return ret;
                         }, splitOn: "*");

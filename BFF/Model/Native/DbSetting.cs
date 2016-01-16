@@ -19,7 +19,7 @@ namespace BFF.Model.Native
             set
             {
                 CurrencyCultrureName = value.Name;
-                Database?.Update(this);
+                Update();
             }
         }
 
@@ -35,8 +35,13 @@ namespace BFF.Model.Native
             set
             {
                 DateCultureName = value.Name;
-                Database?.Update(this);
+                Update();
             }
+        }
+
+        protected override void DbUpdate()
+        {
+            Database?.Update(this);
         }
     }
 }

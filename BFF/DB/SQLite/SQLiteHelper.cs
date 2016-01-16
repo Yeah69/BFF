@@ -1,74 +1,28 @@
 ﻿using BFF.Model.Native;
-using BFF.Model.Native.Structure;
 
 namespace BFF.DB.SQLite
 {
     class SqLiteHelper
     {
-        
-        /*public static void OpenDatabase(string fileName)
-        {
-            DbLockFlag = true;
-            CurrentDbFileName = fileName;
-            
-            AccountCache.Clear();
-            PayeeCache.Clear();
-            CategoryCache.Clear();
-
-            AllAccounts.Clear();
-            AllPayees.Clear();
-            AllCategories.Clear();
-
-            using (var cnn = new SQLiteConnection(CurrentDbConnectionString))
-            {
-                cnn.Open();
-                AccountCache = cnn.GetAll<Account>().ToDictionary(account => account.Id);
-                AllAccounts = new ObservableCollection<Account>(AccountCache.Values);
-                PayeeCache = cnn.GetAll<Payee>().ToDictionary(payee => payee.Id);
-                AllPayees = new ObservableCollection<Payee>(PayeeCache.Values.OrderBy(payee => payee.Name));
-                
-                IEnumerable<Category> categories = cnn.Query<Category>($"SELECT * FROM [{nameof(Category)}s]",new[] { typeof(long), typeof(long?), typeof(string) },
-                    objArray =>
-                    {
-                        Category ret = new Category {Id = (long)objArray[0], Parent = (objArray[1] == null) ? null : new Category {Id = (long)objArray[1]}, Name = (string)objArray[2]};
-                        CategoryCache.Add(ret.Id, ret);
-                        return ret;
-                    }, splitOn: "*");
-
-                CategoryCache = cnn.GetAll<Category>().ToDictionary(category => category.Id);
-                foreach (Category category in categories)
-                {
-                    if (category.ParentId != null)
-                    {
-                        category.Parent = CategoryCache[(long) category.ParentId];
-                        category.Parent.Categories.Add(category);
-                    }
-                }
-                AllCategories = new ObservableCollection<Category>(categories);//categories.Where(category => category.ParentId == null));
-                cnn.Close();
-            }
-            DbLockFlag = false;
-        }*/
-
         #region BalanceStatements
 
         internal static string AllAccountsBalanceStatement =>
-$@"SELECT Total({nameof(TitBase.Sum)}) FROM (
-SELECT {nameof(TitBase.Sum)} FROM {nameof(Transaction)}s UNION ALL 
-SELECT {nameof(TitBase.Sum)} FROM {nameof(Income)}s UNION ALL 
-SELECT {nameof(TitBase.Sum)} FROM {nameof(SubTransaction)}s UNION ALL 
-SELECT {nameof(TitBase.Sum)} FROM {nameof(SubIncome)}s UNION ALL 
+$@"SELECT Total({nameof(Transaction.Sum)}) FROM (
+SELECT {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s UNION ALL 
+SELECT {nameof(Transaction.Sum)} FROM {nameof(Income)}s UNION ALL 
+SELECT {nameof(Transaction.Sum)} FROM {nameof(SubTransaction)}s UNION ALL 
+SELECT {nameof(Transaction.Sum)} FROM {nameof(SubIncome)}s UNION ALL 
 SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s);";
 
         internal static string AccountSpecificBalanceStatement =>
-$@"SELECT (SELECT Total({nameof(TitBase.Sum)}) FROM (
-SELECT {nameof(TitBase.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL 
-SELECT {nameof(TitBase.Sum)} FROM {nameof(Income)}s WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
-SELECT {nameof(TitBase.Sum)} FROM (SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)}, {nameof(Transaction)}s.{nameof(Transaction.AccountId)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Transaction)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Transaction)}s.{nameof(Transaction.Id)}) WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL
-SELECT {nameof(TitBase.Sum)} FROM (SELECT {nameof(SubIncome)}s.{nameof(SubIncome.Sum)}, {nameof(Income)}s.{nameof(Income.AccountId)} FROM {nameof(SubIncome)}s INNER JOIN {nameof(Income)}s ON {nameof(SubIncome)}s.{nameof(SubIncome.ParentId)} = {nameof(Income)}s.{nameof(Income.Id)}) WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
-SELECT {nameof(TitBase.Sum)} FROM {nameof(Transfer)}s WHERE {nameof(Transfer.ToAccountId)} = @accountId UNION ALL
+$@"SELECT (SELECT Total({nameof(Transaction.Sum)}) FROM (
+SELECT {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL 
+SELECT {nameof(Transaction.Sum)} FROM {nameof(Income)}s WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
+SELECT {nameof(Transaction.Sum)} FROM (SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)}, {nameof(Transaction)}s.{nameof(Transaction.AccountId)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Transaction)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Transaction)}s.{nameof(Transaction.Id)}) WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL
+SELECT {nameof(Transaction.Sum)} FROM (SELECT {nameof(SubIncome)}s.{nameof(SubIncome.Sum)}, {nameof(Income)}s.{nameof(Income.AccountId)} FROM {nameof(SubIncome)}s INNER JOIN {nameof(Income)}s ON {nameof(SubIncome)}s.{nameof(SubIncome.ParentId)} = {nameof(Income)}s.{nameof(Income.Id)}) WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
+SELECT {nameof(Transaction.Sum)} FROM {nameof(Transfer)}s WHERE {nameof(Transfer.ToAccountId)} = @accountId UNION ALL
 SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.Id)} = @accountId)) 
-- (SELECT Total({nameof(TitBase.Sum)}) FROM {nameof(Transfer)}s WHERE {nameof(Transfer.FromAccountId)} = @accountId);";
+- (SELECT Total({nameof(Transaction.Sum)}) FROM {nameof(Transfer)}s WHERE {nameof(Transfer.FromAccountId)} = @accountId);";
 
         #endregion BalanceStatements
 
@@ -236,6 +190,5 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
 {nameof(DbSetting.DateCultureName)} VARCHAR(10));";
 
         #endregion
-
     }
 }

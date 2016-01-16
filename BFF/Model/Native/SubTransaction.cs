@@ -6,28 +6,12 @@ using YNAB = BFF.Model.Conversion.YNAB;
 
 namespace BFF.Model.Native
 {
+    /// <summary>
+    /// A SubElement of a Transaction
+    /// </summary>
     public class SubTransaction : SubTitBase
     {
-        [Write(false)]
-        public override TitBase Parent { get; set; }
-
-        public override long ParentId => Parent?.Id ?? -1;
-
-        [Write(false)]
-        public override Category Category { get; set; }
-
-        public override long CategoryId
-        {
-            get { return Category?.Id ?? -1; }
-            set { Category = Database?.GetCategory(value); }
-        }
-
-        public override string Memo { get; set; }
-        
-        public override long Sum { get; set; }
-
-        [Write(false)]
-        public Type Type => typeof(SubTransaction);
+        private TitNoTransfer _parent;
 
         public static implicit operator SubTransaction(YNAB.Transaction ynabTransaction)
         {
@@ -39,6 +23,61 @@ namespace BFF.Model.Native
                 Sum = ynabTransaction.Inflow - ynabTransaction.Outflow
             };
             return ret;
+        }
+
+        /// <summary>
+        /// This instance is a SubElement of the Parent (has to be a Transaction)
+        /// </summary>
+        [Write(false)]
+        public override TitNoTransfer Parent
+        {
+            get { return _parent; }
+            set
+            {
+                if (value is Transaction)
+                {
+                    _parent = value;
+                    Update();
+                    OnPropertyChanged();
+                }
+                else
+                    throw new ArgumentException($"{nameof(Parent)} of a {nameof(SubTransaction)} has to be of Type {nameof(Transaction)}!");
+            }
+        }
+
+        /// <summary>
+        /// Initializes the object
+        /// </summary>
+        /// <param name="parent">This instance is a SubElement of the parent</param>
+        /// <param name="category">Category of the SubElement</param>
+        /// <param name="sum">The Sum of the SubElement</param>
+        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
+        public SubTransaction(Transaction parent = null, Category category = null, long? sum = null, string memo = null) 
+            : base(category, sum, memo)
+        {
+            ConstrDbLock = true;
+            _parent = parent ?? _parent;
+            ConstrDbLock = false;
+        }
+
+        /// <summary>
+        /// Safe ORM-constructor
+        /// </summary>
+        /// <param name="id">This objects Id</param>
+        /// <param name="parentId">Id of the Parent</param>
+        /// <param name="categoryId">Id of the Category</param>
+        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
+        /// <param name="sum">The Sum of the SubElement</param>
+        public SubTransaction(long id, long parentId, long categoryId, string memo, long sum) : base(parentId, categoryId, sum, memo)
+        {
+            ConstrDbLock = true;
+            Id = id;
+            ConstrDbLock = false;
+        }
+
+        protected override void DbUpdate()
+        {
+            Database?.Update(this);
         }
     }
 }

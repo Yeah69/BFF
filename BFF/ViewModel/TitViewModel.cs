@@ -25,17 +25,17 @@ namespace BFF.ViewModel
 
         public ICommand NewTransactionCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Transaction { Date = DateTime.Today, Memo = "", Sum=0L, Cleared = false, Account = _account});
+            NewTits.Add(new Transaction (DateTime.Today) { Date = DateTime.Today, Memo = "", Sum=0L, Cleared = false, Account = _account});
         });
 
         public ICommand NewIncomeCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Income { Date = DateTime.Today, Memo = "", Sum = 0L, Cleared = false, Account = _account });
+            NewTits.Add(new Income (DateTime.Today) { Date = DateTime.Today, Memo = "", Sum = 0L, Cleared = false, Account = _account });
         });
 
         public ICommand NewTransferCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Transfer { Date = DateTime.Today, Memo = "", Sum = 0L, Cleared = false });
+            NewTits.Add(new Transfer(DateTime.Today) { Memo = "", Sum = 0L, Cleared = false });
         });
 
         public ICommand ApplyCommand => new RelayCommand(obj =>

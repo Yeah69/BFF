@@ -9,5 +9,9 @@ namespace BFF.Model.Native
         public DateTime MonthYear { get; set; }
 
         //Todo: budget relevant properties
+        protected override void DbUpdate()
+        {
+            Database?.Update(this);
+        }
     }
 }

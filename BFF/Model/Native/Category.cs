@@ -6,14 +6,20 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
-    public class Category : CommonProperties
+    /// <summary>
+    /// This CommonProperty is used to categorize Tits
+    /// </summary>
+    public class Category : CommonProperty
     {
-        //todo: Db Updates
-        public string Name { get; set; }
-
+        /// <summary>
+        /// The Child-Categories
+        /// </summary>
         [Write(false)]
         public ObservableCollection<Category> Categories { get; set; } = new ObservableCollection<Category>();
 
+        /// <summary>
+        /// The Parent
+        /// </summary>
         [Write(false)]
         public Category Parent
         {
@@ -21,22 +27,55 @@ namespace BFF.Model.Native
             set
             {
                 _parent = value;
-                Database?.Update(this);
+                Update();
+                OnPropertyChanged();
             }
         }
 
+        /// <summary>
+        /// Id of Parent
+        /// </summary>
         public long? ParentId
         {
             get { return Parent?.Id; }
             set { _parent = Database?.GetCategory(value ?? -1L); 
-            } //todo: Maybe set this as Parent's child
+            }
         }
 
-        public Category(Category parent = null)
+        /// <summary>
+        /// Initializes the Object
+        /// </summary>
+        /// <param name="parent">The Parent</param>
+        /// <param name="name">Name of the Category</param>
+        public Category(Category parent = null, string name = null) : base(name)
         {
+            ConstrDbLock = true;
+
             _parent = parent ?? _parent;
+
+            ConstrDbLock = false;
         }
 
+        /// <summary>
+        /// Safe ORM-constructor
+        /// </summary>
+        /// <param name="id">The objects Id</param>
+        /// <param name="parentId">Id of Parent</param>
+        /// <param name="name">Name of the Category</param>
+        public Category(long id, long parentId, string name) : base(name)
+        {
+            ConstrDbLock = true;
+
+            Id = id;
+            ParentId = parentId;
+
+            ConstrDbLock = false;
+        }
+
+        /// <summary>
+        /// Representing string
+        /// </summary>
+        /// <returns>Name with preceding dots (foreach Ancestor one)</returns>
         public override string ToString()
         {
             return $"{Parent?.getIndent()}{Name}";
@@ -90,6 +129,11 @@ namespace BFF.Model.Native
         public static void ClearCache()
         {
             Cache.Clear();
+        }
+
+        protected override void DbUpdate()
+        {
+            Database?.Update(this);
         }
     }
 }
