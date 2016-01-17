@@ -110,13 +110,17 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
                             <StackPanel Orientation="Horizontal">
-                                <ComboBox TextSearch.TextPath="Name" Text="{Binding PayeeText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                                                                  IsEditable="True"
-                                                                  IsTextSearchCaseSensitive="False"
-                                                                  IsTextSearchEnabled="True"
-                                                                  ItemsSource="{Binding DataContext.AllPayees, ElementName=TitView}">
+                                <ComboBox TextSearch.TextPath="Name" 
+                                          Text="{Binding PayeeText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                          IsEditable="True"
+                                          IsTextSearchEnabled="True"
+                                          IsTextSearchCaseSensitive="False"
+                                          ItemsSource="{Binding AllPayees}">
                                     <ComboBox.SelectedItem>
-                                        <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                        <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <validationRules:NoNullRule />
+                                            </Binding.ValidationRules>
                                         </Binding>
                                     </ComboBox.SelectedItem>
                                 </ComboBox>
@@ -172,16 +176,19 @@
                         </HierarchicalDataTemplate>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                                <ComboBox IsEditable="True" TextSearch.TextPath="Name" ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSource}}"
-                                           Text="{Binding CategoryText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                                           IsTextSearchEnabled="True">
+                                <ComboBox TextSearch.TextPath="Name"
+                                          Text="{Binding CategoryText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
+                                          IsEditable="True" 
+                                          IsTextSearchCaseSensitive="False"
+                                          IsTextSearchEnabled="True"
+                                          ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSource}}">
                                     <ComboBox.SelectedItem>
                                         <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                         </Binding>
                                     </ComboBox.SelectedItem>
                                 </ComboBox>
                                 <controls:SplitButton Orientation="Horizontal" Command="{Binding AddCategoryCommand}" SelectedItem="{Binding AddingCategoryParent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      ItemsSource="{Binding DataContext.AllCategories, ElementName=TitView, Converter={StaticResource CategoriesToHierarchicalItemsSource}}">
+                                                      ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSource}}">
                                     <controls:SplitButton.IconTemplate>
                                         <DataTemplate>
                                             <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">

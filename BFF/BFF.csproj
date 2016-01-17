@@ -180,6 +180,7 @@
     </Compile>
     <Compile Include="WPFStuff\ObservableObject.cs" />
     <Compile Include="WPFStuff\ValidationRules\CurrencyLongRangeRule.cs" />
+    <Compile Include="WPFStuff\ValidationRules\NoNullRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\NoEmptyNullStringRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\CurrencyRule.cs" />
     <Page Include="MainWindow.xaml">

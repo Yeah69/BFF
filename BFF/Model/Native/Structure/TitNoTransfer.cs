@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using BFF.DB.SQLite;
 using BFF.WPFStuff;
 using Dapper.Contrib.Extensions;
 
@@ -170,12 +170,18 @@ namespace BFF.Model.Native.Structure
         [Write(false)]
         public ICommand AddPayeeCommand => new RelayCommand(obj =>
         {
-            Database?.Insert(new Payee {Name = PayeeText.Trim()});
+            Payee newPayee = new Payee {Name = PayeeText.Trim()};
+            Database?.Insert(newPayee);
+            OnPropertyChanged();
+            Payee = newPayee;
         }, obj =>
         {
             string trimmedPayeeText = PayeeText.Trim();
             return trimmedPayeeText != "" && Database?.AllPayees?.Count(payee => payee.Name == trimmedPayeeText) == 0;
         });
+
+        [Write(false)]
+        public ObservableCollection<Payee> AllPayees => Database?.AllPayees;
 
         [Write(false)]
         public string CategoryText { get; set; }
@@ -194,6 +200,7 @@ namespace BFF.Model.Native.Structure
                 AddingCategoryParent.Categories.Add(newCategory);
             }
             OnPropertyChanged(nameof(AllCategories));
+            Category = newCategory;
         }, obj =>
         {
             string trimmedCategoryText = CategoryText.Trim();
