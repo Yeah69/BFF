@@ -7,6 +7,9 @@ using YNAB = BFF.Model.Conversion.YNAB;
 
 namespace BFF.Model.Native
 {
+    /// <summary>
+    /// A Transaction, which is split into several SubTransactions
+    /// </summary>
     public class ParentTransaction : Transaction
     {
         /// <summary>
@@ -15,7 +18,7 @@ namespace BFF.Model.Native
         [Write(false)]
         public  IEnumerable<SubTransaction> SubElements => Database?.GetSubTransInc<SubTransaction>(Id);
 
-        public override long? Sum
+        public override long Sum
         {
             get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
             set { }
@@ -32,7 +35,7 @@ namespace BFF.Model.Native
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public ParentTransaction(DateTime date, Account account = null, Payee payee = null,
             Category category = null, string memo = null, bool? cleared = null)
-            : base(date, account, payee, category, memo, cleared)
+            : base(date, account, payee, category, memo, 0L, cleared)
         {
             ConstrDbLock = true;
 
@@ -44,14 +47,15 @@ namespace BFF.Model.Native
         /// </summary>
         /// <param name="id">This objects Id</param>
         /// <param name="accountId">Id of Account</param>
+        /// <param name="date">Marks when the Tit happened</param>
         /// <param name="payeeId">Id of Payee</param>
         /// <param name="categoryId">Id of Category</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public ParentTransaction(long id, long accountId, long payeeId, long categoryId, DateTime date, string memo,
-            long? sum, bool cleared)
-            : base(id, accountId, payeeId, categoryId, date, memo, sum, cleared)
+        public ParentTransaction(long id, long accountId, DateTime date, long payeeId, long categoryId, string memo,
+            long sum, bool cleared)
+            : base(id, accountId, date, payeeId, categoryId, memo, sum, cleared)
         {
             ConstrDbLock = true;
 
@@ -70,7 +74,7 @@ namespace BFF.Model.Native
                 Payee = Payee.GetOrCreate(YnabCsvImport.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value),
                 Category = null,
                 Memo = YnabCsvImport.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
-                Sum = null,
+                Sum = 0L,
                 Cleared = ynabTransaction.Cleared
             };
             return ret;

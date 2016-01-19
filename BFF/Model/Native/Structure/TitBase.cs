@@ -2,6 +2,9 @@
 
 namespace BFF.Model.Native.Structure
 {
+    /// <summary>
+    /// Enumerates all Types of Tits
+    /// </summary>
     public enum TitType
     {
         Transaction = 1,
@@ -48,12 +51,18 @@ namespace BFF.Model.Native.Structure
         /// <summary>
         /// Initializes the TitBase-parts of the object
         /// </summary>
+        /// <param name="id">Identification number for the database</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
+        /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TitBase(string memo = null, bool? cleared = null) : base(memo)
+        /// <param name="date">Marks when the Tit happened</param>
+        protected TitBase(DateTime date, long id = -1L, string memo = null, long sum = 0L, bool? cleared = null) : base(id, memo, sum)
         {
             ConstrDbLock = true;
+
+            _date = date;
             _cleared = cleared ?? _cleared;
+            
             ConstrDbLock = false;
         }
     }

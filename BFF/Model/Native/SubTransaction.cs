@@ -52,11 +52,13 @@ namespace BFF.Model.Native
         /// <param name="category">Category of the SubElement</param>
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        public SubTransaction(Transaction parent = null, Category category = null, long? sum = null, string memo = null) 
-            : base(category, sum, memo)
+        public SubTransaction(Transaction parent = null, Category category = null, long sum = 0L, string memo = null) 
+            : base(category, memo, sum)
         {
             ConstrDbLock = true;
+
             _parent = parent ?? _parent;
+
             ConstrDbLock = false;
         }
 
@@ -68,10 +70,10 @@ namespace BFF.Model.Native
         /// <param name="categoryId">Id of the Category</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The Sum of the SubElement</param>
-        public SubTransaction(long id, long parentId, long categoryId, string memo, long sum) : base(parentId, categoryId, sum, memo)
+        public SubTransaction(long id, long parentId, long categoryId, string memo, long sum) : base(id, parentId, categoryId, sum, memo)
         {
             ConstrDbLock = true;
-            Id = id;
+
             ConstrDbLock = false;
         }
 

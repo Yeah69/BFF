@@ -5,6 +5,9 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
+    /// <summary>
+    /// An Income, which is split into several SubIncomes
+    /// </summary>
     public class ParentIncome : Income
     {
         /// <summary>
@@ -13,7 +16,7 @@ namespace BFF.Model.Native
         [Write(false)]
         public IEnumerable<SubIncome> SubElements => Database?.GetSubTransInc<SubIncome>(Id);
 
-        public override long? Sum
+        public override long Sum
         {
             get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
             set { }
@@ -30,7 +33,7 @@ namespace BFF.Model.Native
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public ParentIncome(DateTime date, Account account = null, Payee payee = null,
             Category category = null, string memo = null, bool? cleared = null)
-            : base(date, account, payee, category, memo, cleared)
+            : base(date, account, payee, category, memo, 0L, cleared)
         {
             ConstrDbLock = true;
 
@@ -48,9 +51,9 @@ namespace BFF.Model.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public ParentIncome(long id, long accountId, long payeeId, long categoryId, DateTime date, string memo,
-            long? sum, bool cleared)
-            : base(id, accountId, payeeId, categoryId, date, memo, sum, cleared)
+        public ParentIncome(long id, long accountId, DateTime date, long payeeId, long categoryId, string memo,
+            long sum, bool cleared)
+            : base(id, accountId, date, payeeId, categoryId, memo, sum, cleared)
         {
             ConstrDbLock = true;
 

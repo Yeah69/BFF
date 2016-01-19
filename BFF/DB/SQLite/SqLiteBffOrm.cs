@@ -276,7 +276,7 @@ namespace BFF.DB.SQLite
                             PayeeId = (long)objArr[2],
                             CategoryId = categoryId,
                             Memo = (string)objArr[5],
-                            Sum = (long?)objArr[6],
+                            Sum = (long)objArr[6],
                             Cleared = (long)objArr[7] == 1,
                         };
                     else
@@ -300,7 +300,7 @@ namespace BFF.DB.SQLite
                             PayeeId = (long)objArr[2],
                             CategoryId = categoryId,
                             Memo = (string)objArr[5],
-                            Sum = (long?)objArr[6],
+                            Sum = (long)objArr[6],
                             Cleared = (long)objArr[7] == 1
                         };
                     else

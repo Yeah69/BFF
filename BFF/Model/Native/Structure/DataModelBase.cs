@@ -9,13 +9,13 @@ namespace BFF.Model.Native.Structure
     /// </summary>
     public abstract class DataModelBase : ObservableObject
     {
-        protected bool ConstrDbLock = false;
+        protected bool ConstrDbLock;
 
         /// <summary>
         /// Identification number for the database
         /// </summary>
         [Key]
-        public long Id { get; set; } = -1;
+        public long Id { get; set; } = -1L;
 
         /// <summary>
         /// Reference to current ORM class
@@ -23,8 +23,24 @@ namespace BFF.Model.Native.Structure
         [Write(false)]
         public static IBffOrm Database { get; set; }
 
+        /// <summary>
+        /// Initializes the object
+        /// </summary>
+        /// <param name="id">Identification number for the database</param>
+        protected DataModelBase(long id = -1L)
+        {
+            ConstrDbLock = true;
+
+            if (Id == -1L || id > 0L) Id = id;
+
+            ConstrDbLock = false;
+        }
+
         protected abstract void InsertToDb();
 
+        /// <summary>
+        /// Inserts this object to the database
+        /// </summary>
         public void Insert()
         {
             if(Id == -1L) InsertToDb();
@@ -32,6 +48,9 @@ namespace BFF.Model.Native.Structure
 
         protected abstract void UpdateToDb();
 
+        /// <summary>
+        /// Updates this object in the database
+        /// </summary>
         protected void Update()
         {
             if(!ConstrDbLock) UpdateToDb();
@@ -39,6 +58,9 @@ namespace BFF.Model.Native.Structure
 
         protected abstract void DeleteFromDb();
 
+        /// <summary>
+        /// Deletes this object from the database
+        /// </summary>
         public void Delete()
         {
             if(Id > 0L) DeleteFromDb();

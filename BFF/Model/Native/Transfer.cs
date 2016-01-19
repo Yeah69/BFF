@@ -13,7 +13,6 @@ namespace BFF.Model.Native
     {
         private Account _fromAccount;
         private Account _toAccount;
-        private long _sum;
 
         /// <summary>
         /// The Sum is transfered from this Account
@@ -75,20 +74,6 @@ namespace BFF.Model.Native
         }
 
         /// <summary>
-        /// The Sum, which is transfered from FromAccount to ToAccount
-        /// </summary>
-        public long Sum
-        {
-            get { return _sum; }
-            set
-            {
-                _sum = value;
-                Update();
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
         /// Initializes the object
         /// </summary>
         /// <param name="date">Marks when the Tit happened</param>
@@ -97,16 +82,14 @@ namespace BFF.Model.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The transfered Sum</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public Transfer(DateTime date, Account fromAccount = null, Account toAccount = null, string memo = null, long? sum = null,
-            bool? cleared = null)
-            : base(memo, cleared)
+        public Transfer(DateTime date, Account fromAccount = null, Account toAccount = null, string memo = null,
+            long sum = 0L, bool? cleared = null)
+            : base(date, memo: memo, sum: sum, cleared: cleared)
         {
             ConstrDbLock = true;
 
-            Date = date;
             _fromAccount = fromAccount ?? _fromAccount;
             _toAccount = toAccount ?? _toAccount;
-            _sum = sum ?? _sum;
 
             ConstrDbLock = false;
         }
@@ -115,7 +98,6 @@ namespace BFF.Model.Native
         /// Safe ORM-constructor
         /// </summary>
         /// <param name="id">This objects Id</param>
-        /// <param name="fillerId">Please ignore and never use this! In doubt set it to "-1L"</param>
         /// <param name="fromAccountId">Id of FromAccount</param>
         /// <param name="toAccountId">Id of ToAccount</param>
         /// <param name="date">Marks when the Tit happened</param>
@@ -123,17 +105,14 @@ namespace BFF.Model.Native
         /// <param name="sum">The transfered Sum</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         /// <param name="type">Indicates the Tit-Type and if it is a Single or Parent</param>
-        public Transfer(long id, long fillerId, long fromAccountId, long toAccountId, DateTime date, string memo,
+        public Transfer(long id, long fromAccountId, long toAccountId, DateTime date, string memo,
             long sum, bool cleared)
-            : base(memo, cleared)
+            : base(date, id, memo, sum, cleared)
         {
             ConstrDbLock = true;
 
-            Id = id;
             FromAccountId = fromAccountId;
             ToAccountId = toAccountId;
-            Date = date;
-            _sum = sum;
 
             ConstrDbLock = false;
         }
