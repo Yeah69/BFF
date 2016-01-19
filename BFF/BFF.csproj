@@ -125,6 +125,7 @@
     <Compile Include="Model\Native\Category.cs" />
     <Compile Include="Model\Native\Budget.cs" />
     <Compile Include="Model\Native\DbSetting.cs" />
+    <Compile Include="Model\Native\ParentIncome.cs" />
     <Compile Include="Model\Native\Payee.cs" />
     <Compile Include="Model\Native\Structure\CommonProperty.cs" />
     <Compile Include="Model\Native\Structure\DataModelBase.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Model\Native\SubIncome.cs" />
     <Compile Include="Model\Native\SubTransaction.cs" />
     <Compile Include="Model\Native\Income.cs" />
+    <Compile Include="Model\Native\ParentTransaction.cs" />
     <Compile Include="Model\Native\Transfer.cs" />
     <Compile Include="Model\Native\Transaction.cs" />
     <Compile Include="ViewModel\ImportDialogViewModel.cs" />
@@ -165,8 +167,6 @@
     <Compile Include="WPFStuff\Converters\DepPropToUnsetConverter.cs" />
     <Compile Include="WPFStuff\Converters\SubElementToSumConverter.cs" />
     <Compile Include="WPFStuff\Converters\AccountToTitViewModelConverter.cs" />
-    <Compile Include="WPFStuff\Converters\TypeToCanvasConverter.cs" />
-    <Compile Include="WPFStuff\Converters\TypeToBrushConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
     <Compile Include="WPFStuff\RelayCommand.cs" />
     <Compile Include="WPFStuff\UserControls\FilledMainWindow.xaml.cs">

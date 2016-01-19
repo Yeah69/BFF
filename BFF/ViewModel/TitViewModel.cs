@@ -23,6 +23,8 @@ namespace BFF.ViewModel
 
         public ObservableCollection<Category> AllCategories => _orm.AllCategories;
 
+        public Account Account => _account;
+
         public ICommand NewTransactionCommand => new RelayCommand(obj =>
         {
             NewTits.Add(new Transaction (DateTime.Today) { Date = DateTime.Today, Memo = "", Sum=0L, Cleared = false, Account = _account});
@@ -43,6 +45,7 @@ namespace BFF.ViewModel
             foreach (TitBase tit in NewTits)
             {
                 Tits.Add(tit);
+                tit.Insert();
             }
             OnPropertyChanged(nameof(Tits));//todo:Validate correctness and Save in DB, too
             NewTits.Clear(); 
@@ -63,7 +66,7 @@ namespace BFF.ViewModel
         {
             Tits.Clear();
             NewTits.Clear();
-            foreach(TitBase titBase in _account == null ? _orm.GetAllTits() : _orm.GetAllTits(_account))
+            foreach(TitBase titBase in _orm.GetAllTits(_account))
                 Tits.Add(titBase);
         }
     }

@@ -56,11 +56,6 @@ namespace BFF.DB.SQLite
             }
         }
 
-        public void OpenDatabase()
-        {
-            throw new NotImplementedException();
-        }
-
         public void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
             IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories)
         {
@@ -107,8 +102,8 @@ namespace BFF.DB.SQLite
 
                 string accountAddition = account == null
                     ? ""
-                    : "WHERE AccountId = @accountId OR AccountId = -1 AND (PayeeId = @accountId OR CategoryId = @accountId)";
-                string sql = $"SELECT * FROM [{TheTitName}] {accountAddition} ORDER BY Date;";
+                    : $"WHERE {nameof(TitNoTransfer.AccountId)} = @accountId OR {nameof(TitNoTransfer.AccountId)} = -69 AND ({nameof(TitNoTransfer.PayeeId)} = @accountId OR {nameof(TitNoTransfer.CategoryId)} = @accountId)";
+                string sql = $"SELECT * FROM [{TheTitName}] {accountAddition} ORDER BY {nameof(TitBase.Date)};";
 
                 Type[] types =
                 {
@@ -116,7 +111,6 @@ namespace BFF.DB.SQLite
                     typeof (DateTime), typeof (string), typeof (long), typeof (bool), typeof(string)
                 };
                 results = cnn.Query(sql, types, _theTitMap, account == null ? null : new { accountId = account.Id }, splitOn: "*");
-                //foreach (TitBase result in results) result.Database = this;
                 
                 cnn.Close();
             }
@@ -259,7 +253,8 @@ namespace BFF.DB.SQLite
 
         private readonly Func<object[], TitBase> _theTitMap = objArr =>
         {
-            string type = (string)objArr[8];
+            TitType type;
+            TitType.TryParse((string)objArr[8], true, out type);
             DateTime date;
             if (objArr[4] is DateTime)
                 date = (DateTime)objArr[4];
@@ -268,38 +263,58 @@ namespace BFF.DB.SQLite
                     out date))
                 throw new InvalidCastException();
             // todo: Maybe find out why in some cases the date is pre-casted to DateTime and in others it is still a string
+            long? categoryId = (long?) objArr[3];
             TitBase ret;
             switch (type)
             {
-                case "SingleTrans":
-                case "ParentTrans":
-                    ret = new Transaction(date)
-                    {
-                        Id = (long)objArr[0],
-                        AccountId = (long)objArr[1],
-                        PayeeId = (long)objArr[2],
-                        CategoryId = (long?)objArr[3],
-                        Memo = (string)objArr[5],
-                        Sum = (long?)objArr[6],
-                        Cleared = (long)objArr[7] == 1,
-                        Type = type
-                    };
+                case TitType.Transaction:
+                    if (categoryId != null)
+                        ret = new Transaction(date)
+                        {
+                            Id = (long)objArr[0],
+                            AccountId = (long)objArr[1],
+                            PayeeId = (long)objArr[2],
+                            CategoryId = categoryId,
+                            Memo = (string)objArr[5],
+                            Sum = (long?)objArr[6],
+                            Cleared = (long)objArr[7] == 1,
+                        };
+                    else
+                        ret = new ParentTransaction(date)
+                        {
+                            Id = (long)objArr[0],
+                            AccountId = (long)objArr[1],
+                            PayeeId = (long)objArr[2],
+                            CategoryId = null,
+                            Memo = (string)objArr[5],
+                            Cleared = (long)objArr[7] == 1,
+                        };
+
                     break;
-                case "SingleIncome":
-                case "ParentIncome":
-                    ret = new Income (date)
-                    {
-                        Id = (long)objArr[0],
-                        AccountId = (long)objArr[1],
-                        PayeeId = (long)objArr[2],
-                        CategoryId = (long?)objArr[3],
-                        Memo = (string)objArr[5],
-                        Sum = (long?)objArr[6],
-                        Cleared = (long)objArr[7] == 1,
-                        Type = type
-                    };
+                case TitType.Income:
+                    if(categoryId != null)
+                        ret = new Income (date)
+                        {
+                            Id = (long)objArr[0],
+                            AccountId = (long)objArr[1],
+                            PayeeId = (long)objArr[2],
+                            CategoryId = categoryId,
+                            Memo = (string)objArr[5],
+                            Sum = (long?)objArr[6],
+                            Cleared = (long)objArr[7] == 1
+                        };
+                    else
+                        ret = new ParentIncome(date)
+                        {
+                            Id = (long)objArr[0],
+                            AccountId = (long)objArr[1],
+                            PayeeId = (long)objArr[2],
+                            CategoryId = categoryId,
+                            Memo = (string)objArr[5],
+                            Cleared = (long)objArr[7] == 1
+                        };
                     break;
-                case "Transfer":
+                case TitType.Transfer:
                     ret = new Transfer(date)
                     {
                         Id = (long)objArr[0],
@@ -307,8 +322,7 @@ namespace BFF.DB.SQLite
                         ToAccountId = (long)objArr[3],
                         Memo = (string)objArr[5],
                         Sum = (long)objArr[6],
-                        Cleared = (long)objArr[7] == 1,
-                        Type = type
+                        Cleared = (long)objArr[7] == 1
                     };
                     break;
                 default:
@@ -324,9 +338,9 @@ namespace BFF.DB.SQLite
             if(File.Exists(DbPath)) Reset();
         }
 
-        public ObservableCollection<Account> AllAccounts { get; private set; } = new ObservableCollection<Account>();
-        public ObservableCollection<Payee> AllPayees { get; private set; } = new ObservableCollection<Payee>();
-        public ObservableCollection<Category> AllCategories { get; private set; } = new ObservableCollection<Category>(); 
+        public ObservableCollection<Account> AllAccounts { get; } = new ObservableCollection<Account>();
+        public ObservableCollection<Payee> AllPayees { get; } = new ObservableCollection<Payee>();
+        public ObservableCollection<Category> AllCategories { get; } = new ObservableCollection<Category>(); 
 
         public void Reset()
         {

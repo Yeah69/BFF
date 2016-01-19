@@ -16,11 +16,6 @@ namespace BFF.Model.Native
         private long _sum;
 
         /// <summary>
-        /// Please ignore and never use this!
-        /// </summary>
-        public long FillerId { get; set; } = -1;
-
-        /// <summary>
         /// The Sum is transfered from this Account
         /// </summary>
         [Write(false)]
@@ -94,11 +89,6 @@ namespace BFF.Model.Native
         }
 
         /// <summary>
-        /// Indicates the Tit-Type and if it is a Single or Parent
-        /// </summary>
-        public override string Type { get; set; } = "Transfer";
-
-        /// <summary>
         /// Initializes the object
         /// </summary>
         /// <param name="date">Marks when the Tit happened</param>
@@ -134,18 +124,16 @@ namespace BFF.Model.Native
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         /// <param name="type">Indicates the Tit-Type and if it is a Single or Parent</param>
         public Transfer(long id, long fillerId, long fromAccountId, long toAccountId, DateTime date, string memo,
-            long sum, bool cleared, string type)
+            long sum, bool cleared)
             : base(memo, cleared)
         {
             ConstrDbLock = true;
 
             Id = id;
-            FillerId = fillerId;
             FromAccountId = fromAccountId;
             ToAccountId = toAccountId;
             Date = date;
             _sum = sum;
-            Type = type;
 
             ConstrDbLock = false;
         }
@@ -172,9 +160,19 @@ namespace BFF.Model.Native
             return ret;
         }
 
-        protected override void DbUpdate()
+        protected override void InsertToDb()
+        {
+            Database?.Insert(this);
+        }
+
+        protected override void UpdateToDb()
         {
             Database?.Update(this);
+        }
+
+        protected override void DeleteFromDb()
+        {
+            Database?.Delete(this);
         }
     }
 }

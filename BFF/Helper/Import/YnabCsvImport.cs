@@ -194,7 +194,7 @@ namespace BFF.Helper.Import
                 Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Memo);
                 if (splitMatch.Success)
                 {
-                    Native.Transaction parent = ynabTransaction;
+                    Native.ParentTransaction parent = (Native.ParentTransaction)ynabTransaction;
                     int splitCount = int.Parse(splitMatch.Groups[nameof(splitCount)].Value);
                     int count = 0;
                     for (int i = 0; i < splitCount; i++)
@@ -215,9 +215,6 @@ namespace BFF.Helper.Import
                     }
                     if (count > 0)
                     {
-                        parent.Sum = null;
-                        parent.Category = null;
-                        parent.Type = "ParentTrans";
                         transactions.Add(parent);
                     }
                 }

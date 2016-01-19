@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using BFF.Helper;
 using BFF.Model.Native.Structure;
 using Dapper.Contrib.Extensions;
 
@@ -38,10 +37,20 @@ namespace BFF.Model.Native
                 Update();
             }
         }
+        
+        protected override void InsertToDb()
+        {
+            Database?.Insert(this);
+        }
 
-        protected override void DbUpdate()
+        protected override void UpdateToDb()
         {
             Database?.Update(this);
+        }
+
+        protected override void DeleteFromDb()
+        {
+            Database?.Delete(this);
         }
     }
 }

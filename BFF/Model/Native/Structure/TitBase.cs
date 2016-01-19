@@ -2,6 +2,13 @@
 
 namespace BFF.Model.Native.Structure
 {
+    public enum TitType
+    {
+        Transaction = 1,
+        Income = 2,
+        Transfer = 3
+    }
+
     /// <summary>
     /// Base class for all Tit classes, which are not SubElements
     /// </summary>
@@ -37,11 +44,6 @@ namespace BFF.Model.Native.Structure
                 OnPropertyChanged();
             }
         }
-
-        /// <summary>
-        /// Indicates the Tit-Type and if it is a Single or Parent
-        /// </summary>
-        public abstract string Type { get; set; }
 
         /// <summary>
         /// Initializes the TitBase-parts of the object

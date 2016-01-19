@@ -1,25 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
-using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
 
 namespace BFF.Model.Native
 {
     public class Transaction : TitNoTransfer
     {
-        /// <summary>
-        /// SubElements if this is a Parent
-        /// </summary>
-        [Write(false)]
-        public override IEnumerable<SubTitBase> SubElements => Type == "SingleTrans" ? new List<SubTransaction>(0) : Database?.GetSubTransInc<SubTransaction>(Id);
-
-        /// <summary>
-        /// Indicates if it is a Single or Parent
-        /// </summary>
-        public override string Type { get; set; } = "SingleTrans";
-        
         /// <summary>
         /// Initializes the object
         /// </summary>
@@ -29,15 +16,13 @@ namespace BFF.Model.Native
         /// <param name="category">Categorizes this</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        /// <param name="type"></param>
         public Transaction(DateTime date, Account account = null, Payee payee = null,
-            Category category = null, string memo = null, bool? cleared = null, string type = "SingleTrans")
+            Category category = null, string memo = null, bool? cleared = null)
             : base(account, payee, category, memo, cleared)
         {
             ConstrDbLock = true;
 
             Date = date;
-            Type = type;
 
             ConstrDbLock = false;
         }
@@ -53,13 +38,12 @@ namespace BFF.Model.Native
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public Transaction(long id, long accountId, long payeeId, long categoryId, DateTime date, string memo,
-            long? sum, bool cleared, string type)
+            long? sum, bool cleared)
             : base(id, accountId, payeeId, categoryId, memo, sum, cleared)
         {
             ConstrDbLock = true;
 
             Date = date;
-            Type = type;
 
             ConstrDbLock = false;
         }
@@ -83,9 +67,19 @@ namespace BFF.Model.Native
             return ret;
         }
 
-        protected override void DbUpdate()
+        protected override void InsertToDb()
+        {
+            Database?.Insert(this);
+        }
+
+        protected override void UpdateToDb()
         {
             Database?.Update(this);
+        }
+
+        protected override void DeleteFromDb()
+        {
+            Database?.Delete(this);
         }
     }
 }

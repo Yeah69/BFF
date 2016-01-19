@@ -11,7 +11,6 @@
              xmlns:native="clr-namespace:BFF.Model.Native"
              xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
              xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
-             xmlns:attachedProperties="clr-namespace:BFF.WPFStuff.AttachedProperties"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700"
@@ -30,18 +29,36 @@
             <converters:SumColorMultiConverter x:Key="SumColorMulti" PositiveBrush="{StaticResource BrushPositive}" NegativeBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
             <converters:SumConverter x:Key="SumConverter" />
             <converters:CategoriesToHierarchicalItemsSourceConverter x:Key="CategoriesToHierarchicalItemsSource" />
-            <converters:TypeToBrushConverter x:Key="TypeToBrush" IncomeBrush="{StaticResource BrushPositive}" TransactionBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
-            <converters:TypeToCanvasConverter x:Key="TypeToCanvas" IncomeCanvas="{StaticResource appbar_inbox_in}" TransactionCanvas="{StaticResource appbar_inbox_out}" TransferCanvas="{StaticResource appbar_arrow_left_right}"/>
             <converters:SubElementToSumPureConverter x:Key="SubElToSumPure"/>
             <converters:DateToStringConverter x:Key="DateToString"/>
 
             <!-- Symbol -->
             <DataTemplate x:Key="SymbolDataTemplate">
-                <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" Width="15" Fill="{Binding Type, Converter={StaticResource TypeToBrush}}">
-                    <Rectangle.OpacityMask>
-                        <VisualBrush Visual="{Binding Type, Converter={StaticResource TypeToCanvas}}" />
-                    </Rectangle.OpacityMask>
-                </Rectangle>
+                <ContentControl Content="{Binding}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type native:Transaction}">
+                            <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushNegative}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Visual="{StaticResource appbar_inbox_out}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:Income}">
+                            <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushPositive}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Visual="{StaticResource appbar_inbox_in}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:Transfer}">
+                            <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushTransfer}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Visual="{StaticResource appbar_arrow_left_right}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
             </DataTemplate>
             <!-- Account -->
             <DataTemplate x:Key="AccountDataTemplate">
@@ -229,23 +246,24 @@
                     <TextBlock.Foreground>
                         <MultiBinding Converter="{StaticResource SumColorMulti}">
                             <Binding Path="Sum" />
-                            <Binding Path="SubElements" Converter="{StaticResource SubElToSumPure}" />
-                            <Binding Path="Type" />
+                            <Binding Path="DataContext.Account" ElementName="TitView" />
+                            <Binding Path="FromAccount" />
+                            <Binding Path="ToAccount" />
                         </MultiBinding>
                     </TextBlock.Foreground>
                     <TextBlock.Text>
                         <Binding Path="Sum" Converter="{StaticResource SumConverter}" FallbackValue="NaN"/>
                     </TextBlock.Text>
                 </TextBlock>
-                <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
             </DataTemplate>
             <DataTemplate  x:Key="SumEditingDataTemplate">
                 <TextBox Name="TitGrid_SumBox" TextAlignment="Right">
                     <TextBox.Foreground>
                         <MultiBinding Converter="{StaticResource SumColorMulti}">
                             <Binding Path="Sum" />
-                            <Binding Path="SubElements" Converter="{StaticResource SubElToSumPure}" />
-                            <Binding Path="Type" />
+                            <Binding Path="DataContext.Account" ElementName="TitView" />
+                            <Binding Path="FromAccount" />
+                            <Binding Path="ToAccount" />
                         </MultiBinding>
                     </TextBox.Foreground>
                     <TextBox.Text>
@@ -257,7 +275,6 @@
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-                <!-- todo: Maybe there is a better solution to the ConverterParameter problem -->
             </DataTemplate>
             <!-- Cleared -->
             <DataTemplate x:Key="ClearedDataTemplate">

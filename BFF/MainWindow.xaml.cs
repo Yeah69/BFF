@@ -170,8 +170,16 @@ namespace BFF
             {
                 //When the ContentControl has Content, then the first child is the ContentPresenter 
                 //and its first child is the root of the DataTemplates generated content
-                IRefreshCurrencyVisuals rcv = VisualTreeHelper.GetChild(VisualTreeHelper.GetChild(ContentControl, 0), 0) as IRefreshCurrencyVisuals;
-                rcv?.RefreshCurrencyVisuals();
+                DependencyObject depObj = VisualTreeHelper.GetChild(ContentControl, 0);
+                if (VisualTreeHelper.GetChildrenCount(depObj) > 0)
+                {
+                    depObj = VisualTreeHelper.GetChild(depObj, 0);
+                    if (depObj is IRefreshCurrencyVisuals)
+                    {
+                        IRefreshCurrencyVisuals rcv = depObj as IRefreshCurrencyVisuals;
+                        rcv?.RefreshCurrencyVisuals();
+                    }
+                }
             }
         }
 

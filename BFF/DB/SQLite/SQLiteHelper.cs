@@ -1,4 +1,5 @@
 ﻿using BFF.Model.Native;
+using BFF.Model.Native.Structure;
 
 namespace BFF.DB.SQLite
 {
@@ -8,21 +9,21 @@ namespace BFF.DB.SQLite
 
         internal static string AllAccountsBalanceStatement =>
 $@"SELECT Total({nameof(Transaction.Sum)}) FROM (
-SELECT {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s UNION ALL 
-SELECT {nameof(Transaction.Sum)} FROM {nameof(Income)}s UNION ALL 
-SELECT {nameof(Transaction.Sum)} FROM {nameof(SubTransaction)}s UNION ALL 
-SELECT {nameof(Transaction.Sum)} FROM {nameof(SubIncome)}s UNION ALL 
+SELECT {nameof(TitNoTransfer.Sum)} FROM {nameof(Transaction)}s UNION ALL 
+SELECT {nameof(TitNoTransfer.Sum)} FROM {nameof(Income)}s UNION ALL 
+SELECT {nameof(SubTitBase.Sum)} FROM {nameof(SubTransaction)}s UNION ALL 
+SELECT {nameof(SubTitBase.Sum)} FROM {nameof(SubIncome)}s UNION ALL 
 SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s);";
 
         internal static string AccountSpecificBalanceStatement =>
 $@"SELECT (SELECT Total({nameof(Transaction.Sum)}) FROM (
-SELECT {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL 
-SELECT {nameof(Transaction.Sum)} FROM {nameof(Income)}s WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
-SELECT {nameof(Transaction.Sum)} FROM (SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)}, {nameof(Transaction)}s.{nameof(Transaction.AccountId)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Transaction)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Transaction)}s.{nameof(Transaction.Id)}) WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL
-SELECT {nameof(Transaction.Sum)} FROM (SELECT {nameof(SubIncome)}s.{nameof(SubIncome.Sum)}, {nameof(Income)}s.{nameof(Income.AccountId)} FROM {nameof(SubIncome)}s INNER JOIN {nameof(Income)}s ON {nameof(SubIncome)}s.{nameof(SubIncome.ParentId)} = {nameof(Income)}s.{nameof(Income.Id)}) WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
-SELECT {nameof(Transaction.Sum)} FROM {nameof(Transfer)}s WHERE {nameof(Transfer.ToAccountId)} = @accountId UNION ALL
+SELECT {nameof(TitNoTransfer.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL 
+SELECT {nameof(TitNoTransfer.Sum)} FROM {nameof(Income)}s WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
+SELECT {nameof(SubTitBase.Sum)} FROM (SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)}, {nameof(Transaction)}s.{nameof(Transaction.AccountId)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Transaction)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Transaction)}s.{nameof(Transaction.Id)}) WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL
+SELECT {nameof(SubTitBase.Sum)} FROM (SELECT {nameof(SubIncome)}s.{nameof(SubIncome.Sum)}, {nameof(Income)}s.{nameof(Income.AccountId)} FROM {nameof(SubIncome)}s INNER JOIN {nameof(Income)}s ON {nameof(SubIncome)}s.{nameof(SubIncome.ParentId)} = {nameof(Income)}s.{nameof(Income.Id)}) WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
+SELECT {nameof(Transfer.Sum)} FROM {nameof(Transfer)}s WHERE {nameof(Transfer.ToAccountId)} = @accountId UNION ALL
 SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.Id)} = @accountId)) 
-- (SELECT Total({nameof(Transaction.Sum)}) FROM {nameof(Transfer)}s WHERE {nameof(Transfer.FromAccountId)} = @accountId);";
+- (SELECT Total({nameof(Transfer.Sum)}) FROM {nameof(Transfer)}s WHERE {nameof(Transfer.FromAccountId)} = @accountId);";
 
         #endregion BalanceStatements
 
@@ -30,11 +31,11 @@ SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(A
 
         internal static string CreateTheTitViewStatement =>
                     $@"CREATE VIEW IF NOT EXISTS [The Tit] AS
-SELECT Id, AccountId, PayeeId, CategoryId, Date, Memo, Sum, Cleared, Type FROM [{nameof(Transaction)}s]
+SELECT {nameof(DataModelBase.Id)}, {nameof(TitNoTransfer.AccountId)}, {nameof(TitNoTransfer.PayeeId)}, {nameof(TitNoTransfer.CategoryId)}, {nameof(TitBase.Date)}, {nameof(TitLike.Memo)}, {nameof(TitNoTransfer.Sum)}, {nameof(TitBase.Cleared)}, '{TitType.Transaction}' AS Type FROM [{nameof(Transaction)}s]
 UNION ALL
-SELECT Id, AccountId, PayeeId, CategoryId, Date, Memo, Sum, Cleared, Type FROM [{nameof(Income)}s]
+SELECT {nameof(DataModelBase.Id)}, {nameof(TitNoTransfer.AccountId)}, {nameof(TitNoTransfer.PayeeId)}, {nameof(TitNoTransfer.CategoryId)}, {nameof(TitBase.Date)}, {nameof(TitLike.Memo)}, {nameof(TitNoTransfer.Sum)}, {nameof(TitBase.Cleared)}, '{TitType.Income}' AS Type FROM [{nameof(Income)}s]
 UNION ALL
-SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type FROM [{nameof(Transfer)}s];";
+SELECT {nameof(DataModelBase.Id)}, -69 AS Filler, {nameof(Transfer.FromAccountId)}, {nameof(Transfer.ToAccountId)}, {nameof(TitBase.Date)}, {nameof(TitLike.Memo)}, {nameof(Transfer.Sum)}, {nameof(TitBase.Cleared)}, '{TitType.Transfer}' AS Type FROM [{nameof(Transfer)}s];";
 
         internal static string CreateAccountTableStatement
             =>
@@ -83,8 +84,6 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                     nameof(Income.Sum)} INTEGER,
                         {nameof(Income.Cleared)
                     } INTEGER,
-                        {nameof(Income.Type)
-                    } VARCHAR(12),
                         FOREIGN KEY({nameof(Income.AccountId)}) REFERENCES {
                     nameof(Account)}s({nameof(Account.Id)}) ON DELETE CASCADE,
                         FOREIGN KEY({
@@ -148,8 +147,6 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                         {nameof(Transaction.Sum)
                     } INTEGER,
                         {nameof(Transaction.Cleared)} INTEGER,
-                        {
-                    nameof(Transaction.Type)} VARCHAR(12),
                         FOREIGN KEY({
                     nameof(Transaction.AccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)
                     }) ON DELETE CASCADE,
@@ -164,8 +161,6 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                 $@"CREATE TABLE [{nameof(Transfer)}s](
                         {nameof(Transfer.Id)
                     } INTEGER PRIMARY KEY,
-                        {nameof(Transfer.FillerId)
-                    } INTEGER DEFAULT -1,
                         {nameof(Transfer.FromAccountId)
                     } INTEGER,
                         {nameof(Transfer.ToAccountId)
@@ -176,8 +171,6 @@ SELECT Id, FillerId, FromAccountId, ToAccountId, Date, Memo, Sum, Cleared, Type 
                         {nameof(Transfer.Sum)
                     } INTEGER,
                         {nameof(Transfer.Cleared)} INTEGER,
-                        {
-                    nameof(Transfer.Type)} VARCHAR(12),
                         FOREIGN KEY({
                     nameof(Transfer.FromAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)
                     }) ON DELETE RESTRICT,

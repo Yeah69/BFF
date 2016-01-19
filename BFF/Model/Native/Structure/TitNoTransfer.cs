@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using BFF.DB.SQLite;
 using BFF.WPFStuff;
 using Dapper.Contrib.Extensions;
 
@@ -93,28 +91,19 @@ namespace BFF.Model.Native.Structure
         /// <summary>
         /// The amount of money, which was payeed or recieved
         /// </summary>
-        public long? Sum
+        public virtual long? Sum
         {
             get
             {
-                return _sum ?? SubElements.Sum(subTransaction => subTransaction.Sum);
+                return _sum;
             }
             set
             {
-                if (Type == "SingleTrans")
-                {
-                    _sum = value;
-                    Update();
-                }
+                _sum = value;
+                Update();
                 OnPropertyChanged();
             }
         }
-
-        /// <summary>
-        /// SubElements if this is a Parent
-        /// </summary>
-        [Write(false)]
-        public abstract IEnumerable<SubTitBase> SubElements { get; }
 
         /// <summary>
         /// Initializes the object

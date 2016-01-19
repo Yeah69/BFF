@@ -73,9 +73,19 @@ namespace BFF.Model.Native
             Cache.Clear();
         }
 
-        protected override void DbUpdate()
+        protected override void InsertToDb()
+        {
+            Database?.Insert(this);
+        }
+
+        protected override void UpdateToDb()
         {
             Database?.Update(this);
+        }
+
+        protected override void DeleteFromDb()
+        {
+            Database?.Delete(this);
         }
     }
 }
