@@ -291,7 +291,7 @@
         </Grid.RowDefinitions>
         <!-- The DataGrid, which shows all saved Tits -->
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" 
-                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False">
+                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource MetroDataGrid}"
                            TargetType="{x:Type DataGrid}">
@@ -395,6 +395,11 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Memo}"/>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
         </DataGrid>
         <!-- The Editing-Form -->
         <StackPanel Grid.Row="1">
