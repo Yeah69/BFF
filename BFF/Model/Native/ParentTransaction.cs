@@ -16,12 +16,22 @@ namespace BFF.Model.Native
         /// SubElements if this is a Parent
         /// </summary>
         [Write(false)]
-        public  IEnumerable<SubTransaction> SubElements => Database?.GetSubTransInc<SubTransaction>(Id);
+        public  IEnumerable<SubTransaction> SubElements
+        {
+            get
+            {
+                IEnumerable<SubTransaction> ret = Database?.GetSubTransInc<SubTransaction>(Id);
+                foreach (SubTransaction subTransaction in ret)
+                    subTransaction.Parent = this;
+                return ret;
+            }
+            set {  }
+        }
 
         public override long Sum
         {
             get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
-            set { }
+            set{ OnPropertyChanged(); }
         }
 
         /// <summary>
