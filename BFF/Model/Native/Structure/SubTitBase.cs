@@ -12,6 +12,7 @@ namespace BFF.Model.Native.Structure
     public abstract class SubTitBase : TitLike
     {
         private Category _category;
+        private long _sum;
 
         /// <summary>
         /// This instance is a SubElement of the Parent
@@ -53,16 +54,33 @@ namespace BFF.Model.Native.Structure
         }
 
         /// <summary>
+        /// The amount of money, which was payeed or recieved
+        /// </summary>
+        public override long Sum
+        {
+            get { return _sum; }
+            set
+            {
+                Parent.Sum -= _sum;
+                _sum = value;
+                Update();
+                OnPropertyChanged();
+                Parent.Sum += _sum;
+            }
+        }
+
+        /// <summary>
         /// Initializes the SubTitBase-parts of the object
         /// </summary>
         /// <param name="category">Category of the SubElement</param>
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        protected SubTitBase(Category category = null, string memo = null, long sum = 0L) : base(memo: memo, sum: sum)
+        protected SubTitBase(Category category = null, string memo = null, long sum = 0L) : base(memo: memo)
         {
             ConstrDbLock = true;
 
             _category = category ?? _category;
+            _sum = sum;
 
             ConstrDbLock = false;
         }
@@ -75,12 +93,13 @@ namespace BFF.Model.Native.Structure
         /// <param name="categoryId">Id of the Category</param>
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        protected SubTitBase(long id, long parentId, long categoryId, long sum, string memo) : base(id, memo, sum)
+        protected SubTitBase(long id, long parentId, long categoryId, long sum, string memo) : base(id, memo)
         {
             ConstrDbLock = true;
 
             ParentId = parentId;
             CategoryId = categoryId;
+            _sum = sum;
 
             ConstrDbLock = false;
         }
