@@ -27,10 +27,12 @@
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:SumColorMultiConverter x:Key="SumColorMulti" PositiveBrush="{StaticResource BrushPositive}" NegativeBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
+            <converters:SumToBrushConverter x:Key="SumToBrush" PositiveBrush="{StaticResource BrushPositive}" NegativeBrush="{StaticResource BrushNegative}"/>
             <converters:SumConverter x:Key="SumConverter" />
             <converters:CategoriesToHierarchicalItemsSourceConverter x:Key="CategoriesToHierarchicalItemsSource" />
             <converters:DateToStringConverter x:Key="DateToString"/>
 
+            <!--#region ColumnTemplates -->
             <!-- Symbol -->
             <DataTemplate x:Key="SymbolDataTemplate">
                 <ContentControl Content="{Binding}">
@@ -269,44 +271,72 @@
             </DataTemplate>
             <!-- Sum -->
             <DataTemplate x:Key="SumDataTemplate">
-                <TextBlock Name="TitGrid_SumBox" TextAlignment="Right">
-                    <TextBlock.Foreground>
-                        <MultiBinding Converter="{StaticResource SumColorMulti}">
-                            <Binding Path="Sum" />
-                            <Binding Path="DataContext.Account" ElementName="TitView" />
-                            <Binding Path="FromAccount" />
-                            <Binding Path="ToAccount" />
-                        </MultiBinding>
-                    </TextBlock.Foreground>
-                    <TextBlock.Text>
-                        <Binding Path="Sum" Converter="{StaticResource SumConverter}" FallbackValue="NaN"/>
-                    </TextBlock.Text>
-                </TextBlock>
+                <ContentControl Content="{Binding}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type native:Transfer}"> <!-- todo: In Account-specific tabs the Sum has to be negated in special cases -->
+                            <TextBlock Name="TitGrid_SumBox" TextAlignment="Right"
+                                       Text="{Binding Sum, Converter={StaticResource SumConverter}}">
+                                <TextBlock.Foreground>
+                                    <MultiBinding Converter="{StaticResource SumColorMulti}">
+                                        <Binding Path="DataContext.Account" ElementName="TitView" />
+                                        <Binding Path="FromAccount" />
+                                        <Binding Path="ToAccount" />
+                                    </MultiBinding>
+                                </TextBlock.Foreground>
+                            </TextBlock>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type structure:TitLike}">
+                            <TextBlock Name="TitGrid_SumBox" TextAlignment="Right" 
+                                       Foreground="{Binding Sum, Converter={StaticResource SumToBrush}}"
+                                       Text="{Binding Sum, Converter={StaticResource SumConverter}}">
+                            </TextBlock>
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
             </DataTemplate>
             <DataTemplate  x:Key="SumEditingDataTemplate">
-                <TextBox Name="TitGrid_SumBox" TextAlignment="Right">
-                    <TextBox.Foreground>
-                        <MultiBinding Converter="{StaticResource SumColorMulti}">
-                            <Binding Path="Sum" />
-                            <Binding Path="DataContext.Account" ElementName="TitView" />
-                            <Binding Path="FromAccount" />
-                            <Binding Path="ToAccount" />
-                        </MultiBinding>
-                    </TextBox.Foreground>
-                    <TextBox.Text>
-                        <Binding Path="Sum" Converter="{StaticResource SumConverter}" Mode="TwoWay" UpdateSourceTrigger="LostFocus" FallbackValue="NaN">
-                            <Binding.ValidationRules>
-                                <validationRules:CurrencyRule />
-                                <validationRules:CurrencyLongRangeRule />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                <ContentControl Content="{Binding}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type native:Transfer}">
+                            <TextBox Name="TitGrid_SumBox" TextAlignment="Right">
+                                <TextBox.Foreground>
+                                    <MultiBinding Converter="{StaticResource SumColorMulti}">
+                                        <Binding Path="DataContext.Account" ElementName="TitView" />
+                                        <Binding Path="FromAccount" />
+                                        <Binding Path="ToAccount" />
+                                    </MultiBinding>
+                                </TextBox.Foreground>
+                                <TextBox.Text>
+                                    <Binding Path="Sum" Converter="{StaticResource SumConverter}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                        <Binding.ValidationRules>
+                                            <validationRules:CurrencyRule />
+                                            <validationRules:CurrencyLongRangeRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type structure:TitLike}">
+                            <TextBox Name="TitGrid_SumBox" TextAlignment="Right" 
+                                       Foreground="{Binding Sum, Converter={StaticResource SumToBrush}}">
+                                <TextBox.Text>
+                                    <Binding Path="Sum" Converter="{StaticResource SumConverter}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                        <Binding.ValidationRules>
+                                            <validationRules:CurrencyRule />
+                                            <validationRules:CurrencyLongRangeRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
             </DataTemplate>
             <!-- Cleared -->
             <DataTemplate x:Key="ClearedDataTemplate">
                 <CheckBox Style="{StaticResource BFFCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
             </DataTemplate>
+            <!--#endregion -->
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -316,6 +346,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <!--#region TitsDataGrid -->
         <!-- The DataGrid, which shows all saved Tits -->
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" 
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
@@ -477,6 +508,8 @@
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
         </DataGrid>
+        <!--#endregion -->
+        <!--#region EditingForm -->
         <!-- The Editing-Form -->
         <StackPanel Grid.Row="1">
             <DataGrid Name="NewTitGrid" ItemsSource="{Binding NewTits}" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0,2,0,0" CanUserAddRows="False">
@@ -610,6 +643,7 @@
                 </Button>
             </DockPanel>
         </StackPanel>
+        <!--#endregion -->
         <!-- "Status bar" -->
         <GroupBox Grid.Row="2" Header="{lex:Loc TitView_BalanceDisplay}" HorizontalAlignment="Left">
             <TextBlock Name="TotalBalanceTextBlock"  Text="{Binding AccountBalance, Converter={StaticResource SumConverter}}" />

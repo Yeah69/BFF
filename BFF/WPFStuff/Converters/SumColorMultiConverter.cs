@@ -16,21 +16,17 @@ namespace BFF.WPFStuff.Converters
 
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            //Not a Transfer
-            if(values[2] == DependencyProperty.UnsetValue && values[3] == DependencyProperty.UnsetValue)
-                return (long)values[0] < 0L ? NegativeBrush : PositiveBrush;
             //Transfer in "All Accounts"-Tab
-            if (values[1] == null)
+            if (values[0] == null)
                 return TransferBrush;
-            Account account = (Account)values[1];
+            Account account = (Account)values[0];
             //Transfer in FromAccount-Tab
-            if(account == (Account)values[2])
+            if(account == (Account)values[1])
                 return NegativeBrush;
             //Transfer in ToAccount-Tab
-            if (account == (Account)values[3])
+            if (account == (Account)values[2])
                 return PositiveBrush;
             return Brushes.Transparent;
-            //todo: Enhance possibility of Acount-specific conversion; Transfer: if specific Account is FromAccount then negative color, else positive
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
