@@ -391,7 +391,6 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </DataTemplate>
-            <converters:SubElementsFormDataTemplateSelector x:Key="SubElementsFormSelector" EmptyTemplate="{StaticResource EmptyDataTemplate}" SubElementsFormTemplate="{StaticResource SubElementsFormTemplate}"/>
             <!--#endregion -->
         </ResourceDictionary>
     </UserControl.Resources>

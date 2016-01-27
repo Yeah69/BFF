@@ -172,7 +172,6 @@
     <Compile Include="WPFStuff\Converters\SubElementToSumConverter.cs" />
     <Compile Include="WPFStuff\Converters\AccountToTitViewModelConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
-    <Compile Include="WPFStuff\DataTemplateSelectors\SubElementsFormDataTemplateSelector.cs" />
     <Compile Include="WPFStuff\RelayCommand.cs" />
     <Compile Include="WPFStuff\UserControls\FilledMainWindow.xaml.cs">
       <DependentUpon>FilledMainWindow.xaml</DependentUpon>
