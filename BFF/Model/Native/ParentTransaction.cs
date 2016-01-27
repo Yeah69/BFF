@@ -1,7 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using BFF.Helper.Import;
+using BFF.Model.Native.Structure;
+using BFF.WPFStuff;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
 
@@ -10,22 +13,27 @@ namespace BFF.Model.Native
     /// <summary>
     /// A Transaction, which is split into several SubTransactions
     /// </summary>
-    public class ParentTransaction : Transaction
+    public class ParentTransaction : Transaction, IParentTitNoTransfer<SubTransaction>
     {
+        private ObservableCollection<SubTransaction> _subElements;
+
         /// <summary>
         /// SubElements if this is a Parent
         /// </summary>
         [Write(false)]
-        public  IEnumerable<SubTransaction> SubElements
+        public ObservableCollection<SubTransaction> SubElements
         {
             get
             {
-                IEnumerable<SubTransaction> ret = Database?.GetSubTransInc<SubTransaction>(Id);
-                foreach (SubTransaction subTransaction in ret)
-                    subTransaction.Parent = this;
-                return ret;
+                if (_subElements == null)
+                {
+                    _subElements = new ObservableCollection<SubTransaction>(Database?.GetSubTransInc<SubTransaction>(Id));
+                    foreach (SubTransaction subTransaction in _subElements)
+                        subTransaction.Parent = this;
+                }
+                return _subElements;
             }
-            set {  }
+            set { }
         }
 
         public override long Sum
@@ -89,5 +97,39 @@ namespace BFF.Model.Native
             };
             return ret;
         }
+
+        #region SubElementStuff
+
+        private readonly ObservableCollection<SubTransaction> _newSubElements = new ObservableCollection<SubTransaction>();
+
+        /// <summary>
+        /// New SubElements, which have to be edited before addition 
+        /// </summary>
+        [Write(false)]
+        public ObservableCollection<SubTransaction> NewSubElements
+        {
+            get
+            {
+                return _newSubElements;
+            }
+            set { }
+        }
+
+        [Write(false)]
+        public ICommand NewSubElementCommand => new RelayCommand(obj => _newSubElements.Add(new SubTransaction(this)));
+
+        [Write(false)]
+        public ICommand ApplyCommand => new RelayCommand(obj =>
+        {
+            foreach (SubTransaction subTransaction in _newSubElements)
+            {
+                if(Id > 0L)
+                    subTransaction.Insert();
+                _subElements.Add(subTransaction);
+            }
+            _newSubElements.Clear();
+        });
+
+        #endregion
     }
 }

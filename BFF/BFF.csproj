@@ -133,6 +133,7 @@
     <Compile Include="Model\Native\Payee.cs" />
     <Compile Include="Model\Native\Structure\CommonProperty.cs" />
     <Compile Include="Model\Native\Structure\DataModelBase.cs" />
+    <Compile Include="Model\Native\Structure\IParentTitNoTransfer.cs" />
     <Compile Include="Model\Native\Structure\TitLike.cs" />
     <Compile Include="Model\Native\Structure\SubTitBase.cs" />
     <Compile Include="Model\Native\Structure\TitBase.cs" />

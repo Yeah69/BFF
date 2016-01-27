@@ -1,6 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
+using BFF.Model.Native.Structure;
+using BFF.WPFStuff;
 using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
@@ -8,20 +11,25 @@ namespace BFF.Model.Native
     /// <summary>
     /// An Income, which is split into several SubIncomes
     /// </summary>
-    public class ParentIncome : Income
+    public class ParentIncome : Income, IParentTitNoTransfer<SubIncome>
     {
+        private ObservableCollection<SubIncome> _subElements;
+
         /// <summary>
         /// SubElements if this is a Parent
         /// </summary>
         [Write(false)]
-        public IEnumerable<SubIncome> SubElements
+        public ObservableCollection<SubIncome> SubElements
         {
             get
             {
-                IEnumerable<SubIncome> ret = Database?.GetSubTransInc<SubIncome>(Id);
-                foreach (SubIncome subIncome in ret)
-                    subIncome.Parent = this;
-                return ret;
+                if (_subElements == null)
+                {
+                    _subElements = new ObservableCollection<SubIncome>(Database?.GetSubTransInc<SubIncome>(Id));
+                    foreach (SubIncome subIncome in _subElements)
+                        subIncome.Parent = this;
+                }
+                return _subElements;
             }
             set { }
         }
@@ -69,5 +77,39 @@ namespace BFF.Model.Native
 
             ConstrDbLock = false;
         }
+
+        #region SubElementStuff
+
+        private readonly ObservableCollection<SubIncome> _newSubElements = new ObservableCollection<SubIncome>();
+
+        /// <summary>
+        /// New SubElements, which have to be edited before addition 
+        /// </summary>
+        [Write(false)]
+        public ObservableCollection<SubIncome> NewSubElements
+        {
+            get
+            {
+                return _newSubElements;
+            }
+            set { }
+        }
+
+        [Write(false)]
+        public ICommand NewSubElementCommand => new RelayCommand(obj => _newSubElements.Add(new SubIncome(this)));
+
+        [Write(false)]
+        public ICommand ApplyCommand => new RelayCommand(obj =>
+        {
+            foreach (SubIncome subIncome in _newSubElements)
+            {
+                if (Id > 0L)
+                    subIncome.Insert();
+                _subElements.Add(subIncome);
+            }
+            _newSubElements.Clear();
+        });
+
+        #endregion
     }
 }
