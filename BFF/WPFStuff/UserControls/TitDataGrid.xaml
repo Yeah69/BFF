@@ -337,6 +337,62 @@
                 <CheckBox Style="{StaticResource BFFCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
             </DataTemplate>
             <!--#endregion -->
+            <!--#region SubElementsFormTemplate -->
+            <DataTemplate x:Key="EmptyDataTemplate"/>
+            <DataTemplate x:Key="SubElementsFormTemplate">
+                <DataGrid ItemsSource="{Binding SubElements}" AutoGenerateColumns="False" HeadersVisibility="None" CanUserAddRows="False" HorizontalAlignment="Right">
+                    <DataGrid.Columns>
+                        <!-- Category -->
+                        <DataGridTemplateColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryDataTemplate}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingDataTemplate}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <!-- Memo -->
+                        <DataGridTemplateColumn Header="{lex:Loc Memo}" SortMemberPath="Memo" Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoDataTemplate}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingDataTemplate}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <!-- Sum -->
+                        <DataGridTemplateColumn Header="{lex:Loc Sum}" SortMemberPath="Sum" IsReadOnly="False" Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumDataTemplate}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingDataTemplate}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <!-- Cleared -->
+                        <DataGridTemplateColumn Header="{lex:Loc Cleared}" SortMemberPath="Cleared" IsReadOnly="True" Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DataTemplate>
+            <converters:SubElementsFormDataTemplateSelector x:Key="SubElementsFormSelector" EmptyTemplate="{StaticResource EmptyDataTemplate}" SubElementsFormTemplate="{StaticResource SubElementsFormTemplate}"/>
+            <!--#endregion -->
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -455,56 +511,19 @@
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
-                    <DataGrid ItemsSource="{Binding SubElements}" AutoGenerateColumns="False" HeadersVisibility="None" CanUserAddRows="False" HorizontalAlignment="Right">
-                        <DataGrid.Columns>
-                            <!-- Category -->
-                            <DataGridTemplateColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryDataTemplate}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingDataTemplate}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
-                            <!-- Memo -->
-                            <DataGridTemplateColumn Header="{lex:Loc Memo}" SortMemberPath="Memo" Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoDataTemplate}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingDataTemplate}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
-                            <!-- Sum -->
-                            <DataGridTemplateColumn Header="{lex:Loc Sum}" SortMemberPath="Sum" IsReadOnly="False" Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumDataTemplate}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingDataTemplate}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
-                            <!-- Cleared -->
-                            <DataGridTemplateColumn Header="{lex:Loc Cleared}" SortMemberPath="Cleared" IsReadOnly="True" Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <ContentControl Content="{Binding}" >
+                        <ContentControl.Resources>
+                            <DataTemplate DataType="{x:Type native:ParentTransaction}">
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsFormTemplate}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type native:ParentIncome}">
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsFormTemplate}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type structure:TitLike}">
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource EmptyDataTemplate}"/>
+                            </DataTemplate>
+                        </ContentControl.Resources>
+                    </ContentControl>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
         </DataGrid>
