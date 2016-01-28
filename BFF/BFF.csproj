@@ -159,6 +159,7 @@
     <Compile Include="WPFStuff\Converters\CategoriesToHierarchicalItemsSourceConverter.cs" />
     <Compile Include="WPFStuff\Converters\DateConverter.cs" />
     <Compile Include="WPFStuff\Converters\DateComboConverter.cs" />
+    <Compile Include="WPFStuff\Converters\DataGridLengthsToDoubleConverter.cs" />
     <Compile Include="WPFStuff\Converters\RootNodesOnlyConverter.cs" />
     <Compile Include="WPFStuff\Converters\SearchToVisibilityConverter.cs" />
     <Compile Include="WPFStuff\Converters\CurrencyComboConverter.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="WPFStuff\Converters\NullToLexConverter.cs" />
     <Compile Include="WPFStuff\Converters\SubElementToSumPureConverter.cs" />
     <Compile Include="WPFStuff\Converters\CategoriesToParentsOnlyConverter.cs" />
+    <Compile Include="WPFStuff\Converters\DataGridWidthsToLeftMarginConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumColorMultiConverter.cs" />
     <Compile Include="WPFStuff\Converters\CoalesceConverter.cs" />

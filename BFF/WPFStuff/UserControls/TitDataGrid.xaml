@@ -31,6 +31,8 @@
             <converters:SumConverter x:Key="SumConverter" />
             <converters:CategoriesToHierarchicalItemsSourceConverter x:Key="CategoriesToHierarchicalItemsSource" />
             <converters:DateToStringConverter x:Key="DateToString"/>
+            <converters:DataGridWidthsToLeftMarginConverter x:Key="DataGridWidthsToLeftMargin" />
+            <converters:DataGridLengthsToDoubleConverter x:Key="DataGridLengthsToDouble" />
 
             <!--#region ColumnTemplates -->
             <!-- Symbol -->
@@ -340,7 +342,7 @@
             <!--#region SubElementsFormTemplate -->
             <DataTemplate x:Key="EmptyDataTemplate"/>
             <DataTemplate x:Key="SubElementsEditingPart">
-                <DataGrid ItemsSource="{Binding NewSubElements}" AutoGenerateColumns="False" HeadersVisibility="None" CanUserAddRows="False" HorizontalAlignment="Right" BorderThickness="0,2,0,0">
+                <DataGrid ItemsSource="{Binding NewSubElements}" AutoGenerateColumns="False" HeadersVisibility="None" CanUserAddRows="False" HorizontalAlignment="Right">
                     <DataGrid.Columns>
                         <!-- Category -->
                         <DataGridTemplateColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
@@ -374,7 +376,7 @@
             </DataTemplate>
             <DataTemplate x:Key="SubElementsShowFormTemplate">
                 <StackPanel>
-                    <DataGrid ItemsSource="{Binding SubElements}" AutoGenerateColumns="False" HeadersVisibility="None" CanUserAddRows="False" HorizontalAlignment="Right">
+                    <DataGrid ItemsSource="{Binding SubElements}" AutoGenerateColumns="False" HeadersVisibility="None" CanUserAddRows="False" BorderThickness="0,0,0,2">
                         <DataGrid.Columns>
                             <!-- Category -->
                             <DataGridTemplateColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
@@ -421,7 +423,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingPart}" />
-                    <DockPanel>
+                    <DockPanel Background="{DynamicResource WhiteBrush}">
                         <Button ToolTip="New Subelement" Command="{Binding NewSubElementCommand}">
                             <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
                                 <Rectangle.OpacityMask>
@@ -442,7 +444,7 @@
             <DataTemplate x:Key="SubElementsEditingFormTemplate">
                 <StackPanel>
                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingPart}" />
-                    <Button ToolTip="New Subelement" Command="{Binding NewSubElementCommand}">
+                    <Button ToolTip="New Subelement" Command="{Binding NewSubElementCommand}" HorizontalAlignment="Left">
                         <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
                             <Rectangle.OpacityMask>
                                 <VisualBrush Visual="{StaticResource appbar_edit_add}" />
@@ -570,7 +572,23 @@
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
-                    <ContentControl Content="{Binding}" >
+                    <ContentControl Content="{Binding}" HorizontalAlignment="Left">
+                        <ContentControl.Margin>
+                            <MultiBinding Converter="{StaticResource DataGridWidthsToLeftMargin}">
+                                <Binding Path="Width" Source="{x:Reference SymbolColumn}"/>
+                                <Binding Path="Width" Source="{x:Reference AccountColumn}"/>
+                                <Binding Path="Width" Source="{x:Reference DateColumn}"/>
+                                <Binding Path="Width" Source="{x:Reference PayeeColumn}"/>
+                            </MultiBinding>
+                        </ContentControl.Margin>
+                        <ContentControl.Width>
+                            <MultiBinding Converter="{StaticResource DataGridLengthsToDouble}">
+                                <Binding Path="Width" Source="{x:Reference CategoryColumn}"/>
+                                <Binding Path="Width" Source="{x:Reference MemoColumn}"/>
+                                <Binding Path="Width" Source="{x:Reference SumColumn}"/>
+                                <Binding Path="Width" Source="{x:Reference ClearedColumn}"/>
+                            </MultiBinding>
+                        </ContentControl.Width>
                         <ContentControl.Resources>
                             <DataTemplate DataType="{x:Type native:ParentTransaction}">
                                 <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsShowFormTemplate}"/>
@@ -590,7 +608,8 @@
         <!--#region EditingForm -->
         <!-- The Editing-Form -->
         <StackPanel Grid.Row="1">
-            <DataGrid Name="NewTitGrid" ItemsSource="{Binding NewTits}" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0,2,0,0" CanUserAddRows="False">
+            <DataGrid Name="NewTitGrid" ItemsSource="{Binding NewTits}" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0,2,0,0" CanUserAddRows="False"
+                      Width="{Binding ActualWidth ,ElementName=TitGrid}">
                 <DataGrid.Style>
                     <Style BasedOn="{StaticResource MetroDataGrid}"
                                TargetType="{x:Type DataGrid}">
@@ -667,7 +686,23 @@
                 </DataGrid.Columns>
                 <DataGrid.RowDetailsTemplate>
                     <DataTemplate>
-                        <ContentControl Content="{Binding}" >
+                        <ContentControl Content="{Binding}" HorizontalAlignment="Left">
+                            <ContentControl.Margin>
+                                <MultiBinding Converter="{StaticResource DataGridWidthsToLeftMargin}">
+                                    <Binding Path="Width" Source="{x:Reference SymbolColumn}"/>
+                                    <Binding Path="Width" Source="{x:Reference AccountColumn}"/>
+                                    <Binding Path="Width" Source="{x:Reference DateColumn}"/>
+                                    <Binding Path="Width" Source="{x:Reference PayeeColumn}"/>
+                                </MultiBinding>
+                            </ContentControl.Margin>
+                            <ContentControl.Width>
+                                <MultiBinding Converter="{StaticResource DataGridLengthsToDouble}">
+                                    <Binding Path="Width" Source="{x:Reference CategoryColumn}"/>
+                                    <Binding Path="Width" Source="{x:Reference MemoColumn}"/>
+                                    <Binding Path="Width" Source="{x:Reference SumColumn}"/>
+                                    <Binding Path="Width" Source="{x:Reference ClearedColumn}"/>
+                                </MultiBinding>
+                            </ContentControl.Width>
                             <ContentControl.Resources>
                                 <DataTemplate DataType="{x:Type native:ParentTransaction}">
                                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingFormTemplate}"/>

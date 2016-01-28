@@ -77,7 +77,7 @@ namespace BFF.ViewModel
                     parentIncome.NewSubElements.Clear();
                 }
             }
-            OnPropertyChanged(nameof(Tits));//todo:Validate correctness and Save in DB, too
+            OnPropertyChanged(nameof(Tits));//todo:Validate correctness
             NewTits.Clear(); 
         }, obj => NewTits.Count > 0);
 
