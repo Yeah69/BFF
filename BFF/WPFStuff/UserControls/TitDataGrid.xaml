@@ -343,7 +343,7 @@
             <!--#region SubElementsFormTemplate -->
             <DataTemplate x:Key="EmptyDataTemplate"/>
             <DataTemplate x:Key="SubElementsEditingPart">
-                <DataGrid ItemsSource="{Binding NewSubElements}" AutoGenerateColumns="False" HeadersVisibility="None" CanUserAddRows="False">
+                <DataGrid ItemsSource="{Binding NewSubElements}" AutoGenerateColumns="False" HeadersVisibility="None" CanUserAddRows="False" CanUserSortColumns="False">
                     <DataGrid.Columns>
                         <!-- Category -->
                         <DataGridTemplateColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
@@ -377,7 +377,7 @@
             </DataTemplate>
             <DataTemplate x:Key="SubElementsShowFormTemplate">
                 <StackPanel>
-                    <DataGrid ItemsSource="{Binding SubElements}" AutoGenerateColumns="False" HeadersVisibility="None" CanUserAddRows="False" BorderThickness="0,0,0,2">
+                    <DataGrid ItemsSource="{Binding SubElements}" AutoGenerateColumns="False" HeadersVisibility="None" CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" BorderThickness="0,0,0,2">
                         <DataGrid.Columns>
                             <!-- Category -->
                             <DataGridTemplateColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
@@ -466,7 +466,7 @@
         </Grid.RowDefinitions>
         <!--#region TitsDataGrid -->
         <!-- The DataGrid, which shows all saved Tits -->
-        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" 
+        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False"
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource MetroDataGrid}"
@@ -609,7 +609,7 @@
         <!--#region EditingForm -->
         <!-- The Editing-Form -->
         <StackPanel Grid.Row="1">
-            <DataGrid Name="NewTitGrid" ItemsSource="{Binding NewTits}" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0,2,0,0" CanUserAddRows="False"
+            <DataGrid Name="NewTitGrid" ItemsSource="{Binding NewTits}" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0,2,0,0" CanUserAddRows="False" CanUserSortColumns="False"
                       Width="{Binding ActualWidth ,ElementName=TitGrid}">
                 <DataGrid.Style>
                     <Style BasedOn="{StaticResource MetroDataGrid}"
@@ -816,8 +816,13 @@
         </StackPanel>
         <!--#endregion -->
         <!-- "Status bar" -->
-        <GroupBox Grid.Row="2" Header="{lex:Loc TitView_BalanceDisplay}" HorizontalAlignment="Left">
-            <TextBlock Name="TotalBalanceTextBlock"  Text="{Binding AccountBalance, Converter={StaticResource SumConverter}}" />
-        </GroupBox>
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <GroupBox Header="{lex:Loc TitView_StartingBalance}" HorizontalAlignment="Left">
+                <TextBlock Name="StartingBalanceTextBlock" Text="{Binding AccountStartingBalance, Converter={StaticResource SumConverter}}" />
+            </GroupBox>
+            <GroupBox Header="{lex:Loc TitView_BalanceDisplay}" HorizontalAlignment="Left">
+                <TextBlock Name="TotalBalanceTextBlock"  Text="{Binding AccountBalance, Converter={StaticResource SumConverter}}" />
+            </GroupBox>
+        </StackPanel>
     </Grid>
 </UserControl>

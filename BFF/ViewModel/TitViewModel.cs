@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using BFF.DB;
 using BFF.Model.Native;
@@ -16,6 +17,8 @@ namespace BFF.ViewModel
         public string Header => _account?.Name ?? "All Accounts"; //todo: Localize "All Accounts"
 
         public long AccountBalance => _orm.GetAccountBalance(_account);
+
+        public long AccountStartingBalance => _account?.StartingBalance ?? _orm.AllAccounts.Sum(account => account.StartingBalance);
 
         public ObservableCollection<Account> AllAccounts => _orm.AllAccounts;
 
