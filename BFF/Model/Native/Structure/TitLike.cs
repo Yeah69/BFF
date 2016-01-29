@@ -1,4 +1,8 @@
-﻿namespace BFF.Model.Native.Structure
+﻿using System.Windows.Input;
+using BFF.WPFStuff;
+using Dapper.Contrib.Extensions;
+
+namespace BFF.Model.Native.Structure
 {
     /// <summary>
     /// Base class for all classes which can be shown in the TitDataGrid
@@ -51,5 +55,12 @@
 
             ConstrDbLock = false;
         }
+
+        [Write(false)]
+        public virtual ICommand DeleteCommand => new RelayCommand(obj =>
+        {
+            Delete();
+        });
+
     }
 }

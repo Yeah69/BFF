@@ -40,6 +40,15 @@ namespace BFF.Model.Native
             set { OnPropertyChanged(); }
         }
 
+        [Write(false)]
+        public override ICommand DeleteCommand => new RelayCommand(obj =>
+        {
+            foreach (SubIncome subIncome in SubElements)
+                subIncome.Delete();
+            SubElements.Clear();
+            Delete();
+        });
+
         /// <summary>
         /// Initializes the object
         /// </summary>

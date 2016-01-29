@@ -454,6 +454,12 @@
                 </StackPanel>
             </DataTemplate>
             <!--#endregion -->
+            <ContextMenu  x:Key="RowMenu">
+                <MenuItem Header="Delete" Command="{Binding DeleteCommand}"/>
+            </ContextMenu>
+            <Style x:Key="DefaultRowStyle" TargetType="{x:Type DataGridRow}">
+                <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -465,7 +471,7 @@
         </Grid.RowDefinitions>
         <!--#region TitsDataGrid -->
         <!-- The DataGrid, which shows all saved Tits -->
-        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False"
+        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" RowStyle="{StaticResource DefaultRowStyle}"
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource MetroDataGrid}"
