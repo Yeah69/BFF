@@ -126,16 +126,24 @@
                 </ContentControl>
             </DataTemplate>
             <DataTemplate x:Key="PayeeEditingDataTemplate">
-                <ContentControl HorizontalAlignment="Stretch"  Content="{Binding}">
+                <ContentControl HorizontalAlignment="Stretch" Content="{Binding}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
-                            <StackPanel Orientation="Horizontal">
+                            <DockPanel LastChildFill="True">
+                                <Button DockPanel.Dock="Right" Command="{Binding AddPayeeCommand}">
+                                    <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Visual="{StaticResource appbar_add}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </Button>
                                 <ComboBox TextSearch.TextPath="Name" 
                                           Text="{Binding PayeeText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                                           IsEditable="True"
                                           IsTextSearchEnabled="True"
                                           IsTextSearchCaseSensitive="False"
-                                          ItemsSource="{Binding AllPayees}">
+                                          ItemsSource="{Binding AllPayees}"
+                                          HorizontalAlignment="Stretch">
                                     <ComboBox.SelectedItem>
                                         <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                             <Binding.ValidationRules>
@@ -144,14 +152,7 @@
                                         </Binding>
                                     </ComboBox.SelectedItem>
                                 </ComboBox>
-                                <Button Command="{Binding AddPayeeCommand}">
-                                    <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                                        <Rectangle.OpacityMask>
-                                            <VisualBrush Visual="{StaticResource appbar_add}" />
-                                        </Rectangle.OpacityMask>
-                                    </Rectangle>
-                                </Button>
-                            </StackPanel>
+                            </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <ComboBox TextSearch.TextPath="Name"
@@ -209,19 +210,8 @@
                             <TextBlock Text="{Binding}" FontSize="12" />
                         </HierarchicalDataTemplate>
                         <DataTemplate DataType="{x:Type structure:TitLike}">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                                <ComboBox TextSearch.TextPath="Name"
-                                          Text="{Binding CategoryText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
-                                          IsEditable="True" 
-                                          IsTextSearchCaseSensitive="False"
-                                          IsTextSearchEnabled="True"
-                                          ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSource}}">
-                                    <ComboBox.SelectedItem>
-                                        <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                        </Binding>
-                                    </ComboBox.SelectedItem>
-                                </ComboBox>
-                                <controls:SplitButton Orientation="Horizontal" Command="{Binding AddCategoryCommand}" SelectedItem="{Binding AddingCategoryParent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            <DockPanel LastChildFill="True">
+                                <controls:SplitButton DockPanel.Dock="Right" Orientation="Horizontal" Command="{Binding AddCategoryCommand}" SelectedItem="{Binding AddingCategoryParent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSource}}">
                                     <controls:SplitButton.IconTemplate>
                                         <DataTemplate>
@@ -233,7 +223,18 @@
                                         </DataTemplate>
                                     </controls:SplitButton.IconTemplate>
                                 </controls:SplitButton>
-                            </StackPanel>
+                                <ComboBox TextSearch.TextPath="Name"
+                                          Text="{Binding CategoryText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
+                                          IsEditable="True" 
+                                          IsTextSearchCaseSensitive="False"
+                                          IsTextSearchEnabled="True"
+                                          ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSource}}">
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        </Binding>
+                                    </ComboBox.SelectedItem>
+                                </ComboBox>
+                            </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:ParentTransaction}">
                             <Rectangle VerticalAlignment="Center" HorizontalAlignment="Left" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
@@ -342,7 +343,7 @@
             <!--#region SubElementsFormTemplate -->
             <DataTemplate x:Key="EmptyDataTemplate"/>
             <DataTemplate x:Key="SubElementsEditingPart">
-                <DataGrid ItemsSource="{Binding NewSubElements}" AutoGenerateColumns="False" HeadersVisibility="None" CanUserAddRows="False" HorizontalAlignment="Right">
+                <DataGrid ItemsSource="{Binding NewSubElements}" AutoGenerateColumns="False" HeadersVisibility="None" CanUserAddRows="False">
                     <DataGrid.Columns>
                         <!-- Category -->
                         <DataGridTemplateColumn Header="{lex:Loc Category}" SortMemberPath="Category.Name" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">

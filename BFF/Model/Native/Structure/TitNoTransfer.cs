@@ -149,8 +149,8 @@ namespace BFF.Model.Native.Structure
             Payee = newPayee;
         }, obj =>
         {
-            string trimmedPayeeText = PayeeText.Trim();
-            return trimmedPayeeText != "" && Database?.AllPayees?.Count(payee => payee.Name == trimmedPayeeText) == 0;
+            string trimmedPayeeText = PayeeText?.Trim();
+            return !string.IsNullOrEmpty(trimmedPayeeText) && Database?.AllPayees?.Count(payee => payee.Name == trimmedPayeeText) == 0;
         });
 
         [Write(false)]
@@ -176,8 +176,8 @@ namespace BFF.Model.Native.Structure
             Category = newCategory;
         }, obj =>
         {
-            string trimmedCategoryText = CategoryText.Trim();
-            return trimmedCategoryText != "" && 
+            string trimmedCategoryText = CategoryText?.Trim();
+            return !string.IsNullOrEmpty(trimmedCategoryText) && 
                 (AddingCategoryParent == null && Database?.AllCategories?.Count(category => category.Parent == null && category.Name == trimmedCategoryText) == 0 ||
                 AddingCategoryParent != null && AddingCategoryParent.Categories.Count(category => category.Name == trimmedCategoryText) == 0);
         });
