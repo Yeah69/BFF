@@ -91,7 +91,7 @@ namespace BFF.DB.SQLite
             _dbLockFlag = false;
         }
 
-        public IEnumerable<TitBase> GetAllTits(Account account = null)
+        public IEnumerable<TitBase> GetAllTits(DateTime startDate, DateTime endDate, Account account = null)
         {
             _dbLockFlag = true;
             IEnumerable<TitBase> results;
@@ -100,9 +100,10 @@ namespace BFF.DB.SQLite
             {
                 cnn.Open();
 
-                string accountAddition = account == null
+                string accountAddition = $"WHERE date({nameof(TitBase.Date)}) BETWEEN date('{startDate.ToString("yyyy-MM-dd")}') AND date('{endDate.ToString("yyyy-MM-dd")}') ";
+                accountAddition += account == null
                     ? ""
-                    : $"WHERE {nameof(TitNoTransfer.AccountId)} = @accountId OR {nameof(TitNoTransfer.AccountId)} = -69 AND ({nameof(TitNoTransfer.PayeeId)} = @accountId OR {nameof(TitNoTransfer.CategoryId)} = @accountId)";
+                    : $"AND ({nameof(TitNoTransfer.AccountId)} = @accountId OR {nameof(TitNoTransfer.AccountId)} = -69 AND ({nameof(TitNoTransfer.PayeeId)} = @accountId OR {nameof(TitNoTransfer.CategoryId)} = @accountId))";
                 string sql = $"SELECT * FROM [{TheTitName}] {accountAddition} ORDER BY {nameof(TitBase.Date)};";
 
                 Type[] types =
@@ -111,7 +112,7 @@ namespace BFF.DB.SQLite
                     typeof (DateTime), typeof (string), typeof (long), typeof (bool), typeof(string)
                 };
                 results = cnn.Query(sql, types, _theTitMap, account == null ? null : new { accountId = account.Id }, splitOn: "*");
-                
+
                 cnn.Close();
             }
 

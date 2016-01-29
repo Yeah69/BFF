@@ -102,8 +102,7 @@
                 <TextBlock Text="{Binding Date, Converter={StaticResource DateToString}}" />
             </DataTemplate>
             <DataTemplate x:Key="DateEditingDataTemplate">
-                <DatePicker Text="{Binding Date, Converter={StaticResource DateToString}, Mode=TwoWay}">
-                </DatePicker>
+                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}" />
             </DataTemplate>
             <!-- Payee -->
             <DataTemplate x:Key="PayeeDataTemplate">
@@ -822,6 +821,13 @@
             </GroupBox>
             <GroupBox Header="{lex:Loc TitView_BalanceDisplay}" HorizontalAlignment="Left">
                 <TextBlock Name="TotalBalanceTextBlock"  Text="{Binding AccountBalance, Converter={StaticResource SumConverter}}" />
+            </GroupBox>
+            <GroupBox Header="{lex:Loc TitView_Filter}" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}" />
+                    <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}" />
+                    <CheckBox IsChecked="{Binding IsFilterOn, Mode=TwoWay}" Margin="5,0,0,0" /> <!-- todo: Localize -->
+                </StackPanel>
             </GroupBox>
         </StackPanel>
     </Grid>

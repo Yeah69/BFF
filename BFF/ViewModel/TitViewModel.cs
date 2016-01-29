@@ -20,6 +20,48 @@ namespace BFF.ViewModel
 
         public long AccountStartingBalance => _account?.StartingBalance ?? _orm.AllAccounts.Sum(account => account.StartingBalance);
 
+        public DateTime StartDate
+        {
+            get
+            {
+                return _startDate;
+            }
+            set
+            {
+                _startDate = value;
+                OnPropertyChanged();
+                if (_isFilterOn) Refresh();
+            }
+        }
+
+        public DateTime EndDate
+        {
+            get
+            {
+                return _endDate;
+            }
+            set
+            {
+                _endDate = value;
+                OnPropertyChanged();
+                if (_isFilterOn) Refresh();
+            }
+        }
+
+        public bool IsFilterOn
+        {
+            get
+            {
+                return _isFilterOn;
+            }
+            set
+            {
+                _isFilterOn = value;
+                OnPropertyChanged();
+                Refresh();
+            }
+        }
+
         public ObservableCollection<Account> AllAccounts => _orm.AllAccounts;
 
         public ObservableCollection<Payee> AllPayees => _orm.AllPayees;
@@ -86,6 +128,9 @@ namespace BFF.ViewModel
 
         private readonly Account _account;
         private readonly IBffOrm _orm;
+        private DateTime _startDate = new DateTime(2015, 6, 9);
+        private DateTime _endDate = new DateTime(2016, 9, 6);
+        private bool _isFilterOn;
 
 
         public TitViewModel(IBffOrm orm, Account account = null)
@@ -99,7 +144,7 @@ namespace BFF.ViewModel
         {
             Tits.Clear();
             NewTits.Clear();
-            foreach(TitBase titBase in _orm.GetAllTits(_account))
+            foreach(TitBase titBase in _isFilterOn ? _orm.GetAllTits(_startDate, _endDate, _account) : _orm.GetAllTits(DateTime.MinValue, DateTime.MaxValue, _account))
                 Tits.Add(titBase);
         }
     }

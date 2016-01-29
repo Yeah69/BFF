@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using BFF.Model.Native;
@@ -13,7 +14,7 @@ namespace BFF.DB
         void CreateNewDatabase();
         void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
             IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories);
-        IEnumerable<TitBase> GetAllTits(Account account = null);
+        IEnumerable<TitBase> GetAllTits(DateTime startTime, DateTime endTime, Account account = null);
         IEnumerable<Category> GetAllCache();
         long GetAccountBalance(Account account = null);
         IEnumerable<T> GetSubTransInc<T>(long parentId) where T : SubTitBase;
