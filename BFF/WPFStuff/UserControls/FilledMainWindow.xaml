@@ -10,6 +10,7 @@
              xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
+             xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" x:Name="filledMainWindow">
     <UserControl.Resources>
@@ -18,7 +19,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
-                <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:SumConverter x:Key="SumConverter"/>
             <converters:AccountToTitViewModelConverter x:Key="AccountToTitViewModelConverter"/>
@@ -31,13 +31,21 @@
         <controls:MetroTabControl Name="AccountsTabControl" Margin="10">
             <i:Interaction.Behaviors>
                 <behaviors:AdditionalTabItemsBehavior ItemsSource="{Binding AllAccounts}" StartingIndex="1">
+                    <!-- todo: <behaviors:AdditionalTabItemsBehavior.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <metro:PackIconMaterial Kind="CreditCard" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
+                                <TextBlock Text="{Binding Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </behaviors:AdditionalTabItemsBehavior.HeaderTemplate>-->
                     <behaviors:AdditionalTabItemsBehavior.ContentTemplate>
                         <DataTemplate>
                             <local:TitDataGrid >
                                 <local:TitDataGrid.DataContext>
                                     <MultiBinding Converter="{StaticResource AccountToTitViewModelConverter}">
                                         <Binding />
-                                        <Binding Path="DataContext.Orm" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/>
+                                        <Binding Path="DataContext.Orm" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}"/> <!-- todo: Refactor this. Orm not used like this anymore -->
                                     </MultiBinding>
                                 </local:TitDataGrid.DataContext>    
                             </local:TitDataGrid>
@@ -45,10 +53,26 @@
                     </behaviors:AdditionalTabItemsBehavior.ContentTemplate>
                 </behaviors:AdditionalTabItemsBehavior>
             </i:Interaction.Behaviors>
-            <controls:MetroTabItem Header="{lex:Loc All_Accounts}">
+            <controls:MetroTabItem>
+                <controls:MetroTabItem.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <metro:PackIconMaterial Kind="{StaticResource AllAccountsIcon}" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
+                            <TextBlock Text="{lex:Loc All_Accounts}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </controls:MetroTabItem.HeaderTemplate>
                 <local:TitDataGrid DataContext="{Binding AllAccountsViewModel}" />
             </controls:MetroTabItem>
-            <controls:MetroTabItem Name="NewAccount_Tab"  Header="+">
+            <controls:MetroTabItem Name="NewAccount_Tab">
+                <controls:MetroTabItem.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
+                            <metro:PackIconMaterial Kind="{StaticResource AccountIcon}" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </controls:MetroTabItem.HeaderTemplate>
                 <StackPanel Width="500" DataContext="{Binding NewAccount}">
                     <Label Content="{lex:Loc NewAccount_Name}"/>
                     <TextBox Name="NewAccount_Name">

@@ -25,15 +25,26 @@
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMComboBox.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMCheckBox.xaml" />
-                <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <converters:SumColorMultiConverter x:Key="SumColorMulti" PositiveBrush="{StaticResource BrushPositive}" NegativeBrush="{StaticResource BrushNegative}" TransferBrush="{StaticResource BrushTransfer}"/>
-            <converters:SumToBrushConverter x:Key="SumToBrush" PositiveBrush="{StaticResource BrushPositive}" NegativeBrush="{StaticResource BrushNegative}"/>
+            
+            <!--#region Converters -->
+            <converters:SumColorMultiConverter x:Key="SumColorMulti" PositiveBrush="{StaticResource IncomeBrush}" NegativeBrush="{StaticResource TransactionBrush}" TransferBrush="{StaticResource TransferBrush}"/>
+            <converters:SumToBrushConverter x:Key="SumToBrush" PositiveBrush="{StaticResource IncomeBrush}" NegativeBrush="{StaticResource TransactionBrush}"/>
             <converters:SumConverter x:Key="SumConverter" />
             <converters:CategoriesToHierarchicalItemsSourceConverter x:Key="CategoriesToHierarchicalItemsSource" />
             <converters:DateToStringConverter x:Key="DateToString"/>
             <converters:DataGridWidthsToLeftMarginConverter x:Key="DataGridWidthsToLeftMargin" />
             <converters:DataGridLengthsToDoubleConverter x:Key="DataGridLengthsToDouble" />
+            <!--#endregion -->
+
+            <!--#region Icons -->
+            <metro:PackIconMaterialKind x:Key="TransactionIcon">Logout</metro:PackIconMaterialKind>
+            <metro:PackIconMaterialKind x:Key="IncomeIcon">Login</metro:PackIconMaterialKind>
+            <metro:PackIconMaterialKind x:Key="TransferIcon">ShuffleVariant</metro:PackIconMaterialKind>
+            <metro:PackIconMaterialKind x:Key="ParentIcon">Sitemap</metro:PackIconMaterialKind>
+            <metro:PackIconMaterialKind x:Key="AddToTableIcon">TableRowPlusAfter</metro:PackIconMaterialKind>
+            <metro:PackIconMaterialKind x:Key="RemoveFromTableIcon">TableRowRemove</metro:PackIconMaterialKind>
+            <!--#endregion -->
 
             <!--#region ColumnTemplates -->
             <!-- Symbol -->
@@ -41,13 +52,13 @@
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type native:Transaction}">
-                            <metro:PackIconMaterial Kind="Logout" Height="20" Width="20" Margin="0" Foreground="{DynamicResource BrushNegative}" />
+                            <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Income}">
-                            <metro:PackIconMaterial Kind="Login" Height="20" Width="20" Margin="0" Foreground="{DynamicResource BrushPositive}" />
+                            <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
-                            <metro:PackIconMaterial Kind="ShuffleVariant" Height="20" Width="20" Margin="0" Foreground="{DynamicResource BrushTransfer}" />
+                            <metro:PackIconMaterial Kind="{StaticResource TransferIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransferBrush}" />
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
@@ -102,12 +113,8 @@
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding FromAccount}" />
-                                <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
-                                    <Rectangle.OpacityMask>
-                                        <VisualBrush Visual="{DynamicResource appbar_layout_expand_right_variant}"/>
-                                    </Rectangle.OpacityMask>
-                                </Rectangle>
+                                <TextBlock Text="{Binding FromAccount}" VerticalAlignment="Center" />
+                                <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
                             </StackPanel>
                         </DataTemplate>
                     </ContentControl.Resources>
@@ -119,11 +126,7 @@
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
                             <DockPanel LastChildFill="True">
                                 <Button DockPanel.Dock="Right" Command="{Binding AddPayeeCommand}">
-                                    <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                                        <Rectangle.OpacityMask>
-                                            <VisualBrush Visual="{StaticResource appbar_add}" />
-                                        </Rectangle.OpacityMask>
-                                    </Rectangle>
+                                    <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                                 </Button>
                                 <ComboBox TextSearch.TextPath="Name" 
                                           Text="{Binding PayeeText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
@@ -165,27 +168,15 @@
                             <TextBlock Text="{Binding Category.Name}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:ParentTransaction}">
-                            <Rectangle VerticalAlignment="Center" HorizontalAlignment="Left" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Visual="{StaticResource appbar_diagram}" />
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
+                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:ParentIncome}">
-                            <Rectangle VerticalAlignment="Center" HorizontalAlignment="Left" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Visual="{StaticResource appbar_diagram}" />
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
+                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding ToAccount}" />
-                                <Rectangle Margin="2,0,0,0" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
-                                    <Rectangle.OpacityMask>
-                                        <VisualBrush Visual="{DynamicResource appbar_layout_expand_right}"/>
-                                    </Rectangle.OpacityMask>
-                                </Rectangle>
+                                <TextBlock Text="{Binding ToAccount}" VerticalAlignment="Center" />
+                                <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
                             </StackPanel>
                         </DataTemplate>
                     </ContentControl.Resources>
@@ -203,11 +194,7 @@
                                                       ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSource}}">
                                     <controls:SplitButton.IconTemplate>
                                         <DataTemplate>
-                                            <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                                                <Rectangle.OpacityMask>
-                                                    <VisualBrush Visual="{StaticResource appbar_add}" />
-                                                </Rectangle.OpacityMask>
-                                            </Rectangle>
+                                            <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                                         </DataTemplate>
                                     </controls:SplitButton.IconTemplate>
                                 </controls:SplitButton>
@@ -225,18 +212,10 @@
                             </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:ParentTransaction}">
-                            <Rectangle VerticalAlignment="Center" HorizontalAlignment="Left" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Visual="{StaticResource appbar_diagram}" />
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
+                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:ParentIncome}">
-                            <Rectangle VerticalAlignment="Center" HorizontalAlignment="Left" Height="15" Width="15" Fill="{DynamicResource GrayBrush4}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Visual="{StaticResource appbar_diagram}" />
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
+                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <ComboBox TextSearch.TextPath="Name"
@@ -414,18 +393,10 @@
                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingPart}" />
                     <DockPanel Background="{DynamicResource WhiteBrush}">
                         <Button ToolTip="New Subelement" Command="{Binding NewSubElementCommand}">
-                            <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Visual="{StaticResource appbar_edit_add}" />
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
+                            <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                         </Button>
                         <Button ToolTip="Add to the table" Command="{Binding ApplyCommand}" HorizontalAlignment="Right">
-                            <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Visual="{StaticResource appbar_table_add}" />
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
+                            <metro:PackIconMaterial Kind="{StaticResource AddToTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                         </Button>
                     </DockPanel>
                 </StackPanel>
@@ -434,17 +405,17 @@
                 <StackPanel>
                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingPart}" />
                     <Button ToolTip="New Subelement" Command="{Binding NewSubElementCommand}" HorizontalAlignment="Left">
-                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{StaticResource appbar_edit_add}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
+                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                     </Button>
                 </StackPanel>
             </DataTemplate>
             <!--#endregion -->
             <ContextMenu  x:Key="RowMenu">
-                <MenuItem Header="Delete" Command="{Binding DeleteCommand}"/>
+                <MenuItem Header="Delete" Command="{Binding DeleteCommand}">
+                    <MenuItem.Icon>
+                        <metro:PackIconMaterial Kind="{StaticResource RemoveFromTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{StaticResource BlackBrush}" />
+                    </MenuItem.Icon>   
+                </MenuItem>
             </ContextMenu>
             <Style x:Key="DefaultRowStyle" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource MetroDataGridRow}">
                 <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
@@ -717,94 +688,42 @@
                 <Button ToolTip="New Transaction" Command="{Binding NewTransactionCommand}">
                     <!-- todo: Localize / Style with logo etc -->
                     <StackPanel Orientation="Horizontal">
-                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{StaticResource appbar_edit_add}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushNegative}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{StaticResource appbar_inbox_out}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
+                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
                     </StackPanel>
                 </Button>
                 <Button ToolTip="New Income" Command="{Binding NewIncomeCommand}">
                     <!-- todo: Localize / Style with logo etc -->
                     <StackPanel Orientation="Horizontal">
-                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{StaticResource appbar_edit_add}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushPositive}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{StaticResource appbar_inbox_in}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
+                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
                     </StackPanel>
                 </Button>
                 <Button ToolTip="New Transfer" Command="{Binding NewTransferCommand}">
                     <!-- todo: Localize / Style with logo etc-->
                     <StackPanel Orientation="Horizontal">
-                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{StaticResource appbar_edit_add}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushTransfer}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{StaticResource appbar_arrow_left_right}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
+                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource TransferIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransferBrush}" />
                     </StackPanel>
                 </Button>
                 <Button ToolTip="New Parent-Transaction" Command="{Binding NewParentTransactionCommand}">
                     <!-- todo: Localize / Style with logo etc -->
                     <StackPanel Orientation="Horizontal">
-                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{StaticResource appbar_edit_add}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{StaticResource appbar_diagram}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushNegative}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{StaticResource appbar_inbox_out}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
+                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
                     </StackPanel>
                 </Button>
                 <Button ToolTip="New Parent-Income" Command="{Binding NewParentIncomeCommand}">
                     <!-- todo: Localize / Style with logo etc -->
                     <StackPanel Orientation="Horizontal">
-                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{StaticResource appbar_edit_add}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{StaticResource appbar_diagram}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                        <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushPositive}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{StaticResource appbar_inbox_in}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
+                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
                     </StackPanel>
                 </Button>
                 <Button ToolTip="Add to the table" Command="{Binding ApplyCommand}" HorizontalAlignment="Right">
-                    <Rectangle VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BlackColorBrush}">
-                        <Rectangle.OpacityMask>
-                            <VisualBrush Visual="{StaticResource appbar_table_add}" />
-                        </Rectangle.OpacityMask>
-                    </Rectangle>
+                    <metro:PackIconMaterial Kind="{StaticResource AddToTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                 </Button>
             </DockPanel>
         </StackPanel>

@@ -3,7 +3,6 @@ using BFF.DB;
 using BFF.DB.SQLite;
 using BFF.Helper;
 using MahApps.Metro;
-using Ninject;
 
 namespace BFF
 {
@@ -14,6 +13,7 @@ namespace BFF
     {
         public App()
         {
+            InitializeComponent();
             IBffOrm orm = new SqLiteBffOrm();
             IBffCultureProvider cultureProvider = new BffCultureProvider(orm);
             BffEnvironment.CultureProvider = cultureProvider;

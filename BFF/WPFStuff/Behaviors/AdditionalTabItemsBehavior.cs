@@ -26,7 +26,8 @@ namespace BFF.WPFStuff.Behaviors
         private static void OnItemsSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             TabControl tabControl = ((AdditionalTabItemsBehavior) sender).AssociatedObject;
-            DataTemplate contenTemplate = ((AdditionalTabItemsBehavior) sender).ContentTemplate;
+            DataTemplate headerTemplate = ((AdditionalTabItemsBehavior)sender).HeaderTemplate;
+            DataTemplate contentTemplate = ((AdditionalTabItemsBehavior) sender).ContentTemplate;
             int startingIndex = ((AdditionalTabItemsBehavior) sender).StartingIndex;
             Dictionary<object, TabItem> objectToTabItem = ((AdditionalTabItemsBehavior) sender)._objectToTabItem;
             if (e.NewValue != null)
@@ -35,7 +36,7 @@ namespace BFF.WPFStuff.Behaviors
                 int i = 0;
                 foreach (object obj in newEnumerable)
                 {
-                    AddTabItem(tabControl, obj, contenTemplate, startingIndex + i, objectToTabItem);
+                    AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + i, objectToTabItem);
                     i++;
                 }
                 if (newEnumerable is INotifyCollectionChanged)
@@ -50,7 +51,7 @@ namespace BFF.WPFStuff.Behaviors
                                 j = 0;
                                 foreach (object obj in args.NewItems)
                                 {
-                                    AddTabItem(tabControl, obj, contenTemplate, startingIndex + args.NewStartingIndex + j, objectToTabItem);
+                                    AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + args.NewStartingIndex + j, objectToTabItem);
                                     j++;
                                 }
                                 break;
@@ -75,7 +76,7 @@ namespace BFF.WPFStuff.Behaviors
                                     j = 0;
                                     foreach (object obj in collection)
                                     {
-                                        AddTabItem(tabControl, obj, contenTemplate, startingIndex + j, objectToTabItem);
+                                        AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + j, objectToTabItem);
                                         j++;
                                     }
                                 }
@@ -92,14 +93,17 @@ namespace BFF.WPFStuff.Behaviors
 
         }
 
-        private static void AddTabItem(TabControl tabControl, object obj, DataTemplate contenTemplate, int index, Dictionary<object, TabItem> objectToTabItem)
+        private static void AddTabItem(TabControl tabControl, object obj, DataTemplate headerTemplate, DataTemplate contenTemplate, int index, Dictionary<object, TabItem> objectToTabItem)
         {
             TabItem newTabItem = new TabItem
             {
-                Header = obj?.ToString() ?? "NULL",
                 DataContext = obj,
                 Content = contenTemplate.LoadContent()
             };
+            if (headerTemplate != null)
+                newTabItem.HeaderTemplate = headerTemplate;
+            else
+                newTabItem.Header = obj?.ToString() ?? "NULL";
             tabControl.Items.Insert(index, newTabItem);
             objectToTabItem.Add(obj, newTabItem);
         }
@@ -118,6 +122,24 @@ namespace BFF.WPFStuff.Behaviors
             DependencyProperty.Register("ContentTemplate", typeof(DataTemplate), typeof(AdditionalTabItemsBehavior), new UIPropertyMetadata(null, OnContentTemplateChanged));
 
         private static void OnContentTemplateChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            //todo if this is bound dynamically
+        }
+
+        #endregion
+
+        #region HeaderTemplate Property
+
+        public DataTemplate HeaderTemplate
+        {
+            get { return (DataTemplate)GetValue(HeaderTemplateProperty); }
+            set { SetValue(HeaderTemplateProperty, value); }
+        }
+
+        public static readonly DependencyProperty HeaderTemplateProperty =
+            DependencyProperty.Register("HeaderTemplate", typeof(DataTemplate), typeof(AdditionalTabItemsBehavior), new UIPropertyMetadata(null, OnHeaderTemplateChanged));
+
+        private static void OnHeaderTemplateChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             //todo if this is bound dynamically
         }

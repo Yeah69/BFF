@@ -6,6 +6,7 @@
         xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:viewModel="clr-namespace:BFF.ViewModel"
+        xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
         lex:LocalizeDictionary.DesignCulture="en-US"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
@@ -19,7 +20,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
-                <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:CurrencyComboConverter x:Key="CurrencyComboConverter"/>
             <converters:DateComboConverter x:Key="DateComboConverter"/>
@@ -71,9 +71,9 @@
                                         <Label Content="{Binding Name}" Grid.Row="0" Grid.Column="0" />
                                         <Label Content="{Binding DisplayName}" Grid.Row="0" Grid.Column="1" />
                                         <Label Content="{lex:Loc CurrencyCombo_Positive}" Grid.Row="1" Grid.Column="0" />
-                                        <Label Content="{Binding Name, Converter={StaticResource CurrencyComboConverter}, ConverterParameter=positive}" Foreground="{StaticResource BrushPositive}" Grid.Row="1" Grid.Column="1" />
+                                        <Label Content="{Binding Name, Converter={StaticResource CurrencyComboConverter}, ConverterParameter=positive}" Foreground="{StaticResource IncomeBrush}" Grid.Row="1" Grid.Column="1" />
                                         <Label Content="{lex:Loc CurrencyCombo_Negative}" Grid.Row="2" Grid.Column="0" />
-                                        <Label Content="{Binding Name, Converter={StaticResource CurrencyComboConverter}, ConverterParameter=negative}" Foreground="{StaticResource BrushNegative}" Grid.Row="2" Grid.Column="1" />
+                                        <Label Content="{Binding Name, Converter={StaticResource CurrencyComboConverter}, ConverterParameter=negative}" Foreground="{StaticResource TransactionBrush}" Grid.Row="2" Grid.Column="1" />
                                     </Grid>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -123,7 +123,9 @@
     </controls:MetroWindow.LeftWindowCommands>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Name="SettingsButt" Content="{lex:Loc Settings}" Click="SettingsButt_Click"/>
+            <Button Name="SettingsButt" Click="SettingsButt_Click">
+                <metro:PackIconMaterial Kind="{StaticResource SettingsIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" />
+            </Button>
             <Button Content="{lex:Loc About}"/>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
