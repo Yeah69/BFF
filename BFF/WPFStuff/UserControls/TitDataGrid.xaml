@@ -12,6 +12,7 @@
              xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
              xmlns:validationRules="clr-namespace:BFF.WPFStuff.ValidationRules"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700"
              Name="TitView">
@@ -40,25 +41,13 @@
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type native:Transaction}">
-                            <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushNegative}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Visual="{StaticResource appbar_inbox_out}" />
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
+                            <metro:PackIconMaterial Kind="Logout" Height="20" Width="20" Margin="0" Foreground="{DynamicResource BrushNegative}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Income}">
-                            <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushPositive}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Visual="{StaticResource appbar_inbox_in}" />
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
+                            <metro:PackIconMaterial Kind="Login" Height="20" Width="20" Margin="0" Foreground="{DynamicResource BrushPositive}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
-                            <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" Width="15" Fill="{DynamicResource BrushTransfer}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Visual="{StaticResource appbar_arrow_left_right}" />
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
+                            <metro:PackIconMaterial Kind="ShuffleVariant" Height="20" Width="20" Margin="0" Foreground="{DynamicResource BrushTransfer}" />
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
@@ -457,7 +446,7 @@
             <ContextMenu  x:Key="RowMenu">
                 <MenuItem Header="Delete" Command="{Binding DeleteCommand}"/>
             </ContextMenu>
-            <Style x:Key="DefaultRowStyle" TargetType="{x:Type DataGridRow}">
+            <Style x:Key="DefaultRowStyle" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource MetroDataGridRow}">
                 <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
             </Style>
         </ResourceDictionary>
@@ -471,7 +460,7 @@
         </Grid.RowDefinitions>
         <!--#region TitsDataGrid -->
         <!-- The DataGrid, which shows all saved Tits -->
-        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" RowStyle="{StaticResource DefaultRowStyle}"
+        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" RowStyle="{StaticResource DefaultRowStyle}" SelectionMode="Single" SelectionUnit="FullRow"
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource MetroDataGrid}"
