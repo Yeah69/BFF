@@ -14,7 +14,7 @@ namespace BFF.Model.Native
     /// </summary>
     public class Account : CommonProperty
     {
-        protected static AllAccounts allAccounts;
+        public static AllAccounts allAccounts;
 
         private long _startingBalance;
 

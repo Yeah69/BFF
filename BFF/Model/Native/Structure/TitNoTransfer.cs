@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.ExceptionServices;
+using System.Windows;
 using System.Windows.Input;
 using BFF.WPFStuff;
 using Dapper.Contrib.Extensions;
@@ -149,6 +151,22 @@ namespace BFF.Model.Native.Structure
         {
             Delete();
             Account.RefreshBalance();
+            for (int i = Account.Tits.Count - 1; i >= 0; i--)
+            {
+                if (Account.Tits[i].GetType() == GetType() && Account.Tits[i].Id == Id)
+                {
+                    Account.Tits.Remove(Account.Tits[i]);
+                    break;
+                }
+            }
+            for (int i = Account.allAccounts.Tits.Count - 1; i >= 0; i--)
+            {
+                if (Account.allAccounts.Tits[i].GetType() == GetType() && Account.allAccounts.Tits[i].Id == Id)
+                {
+                    Account.allAccounts.Tits.Remove(Account.allAccounts.Tits[i]);
+                    break;
+                }
+            }
         });
 
         #region EditingPayeeAndCategory
