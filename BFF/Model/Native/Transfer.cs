@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Windows.Input;
 using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
+using BFF.WPFStuff;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
 
@@ -153,5 +155,13 @@ namespace BFF.Model.Native
         {
             Database?.Delete(this);
         }
+
+        [Write(false)]
+        public override ICommand DeleteCommand => new RelayCommand(obj =>
+        {
+            Delete();
+            FromAccount.RefreshBalance();
+            ToAccount.RefreshBalance();
+        });
     }
 }

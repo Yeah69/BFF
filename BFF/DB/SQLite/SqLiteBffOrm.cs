@@ -166,7 +166,6 @@ namespace BFF.DB.SQLite
                 using (var cnn = new SQLiteConnection(ConnectionString))
                 {
                     ret = cnn.OpenAndReturn().GetAll<T>();
-                    //foreach (T element in ret) element.Database = this;
                     cnn.Close();
                 }
                 return ret;

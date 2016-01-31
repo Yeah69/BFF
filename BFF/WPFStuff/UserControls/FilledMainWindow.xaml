@@ -21,7 +21,6 @@
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converters:SumConverter x:Key="SumConverter"/>
-            <converters:AccountToTitViewModelConverter x:Key="AccountToTitViewModelConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>

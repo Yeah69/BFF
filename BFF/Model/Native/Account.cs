@@ -14,6 +14,8 @@ namespace BFF.Model.Native
     /// </summary>
     public class Account : CommonProperty
     {
+        protected static AllAccounts allAccounts;
+
         private long _startingBalance;
 
         /// <summary>
@@ -92,6 +94,13 @@ namespace BFF.Model.Native
             Database?.Delete(this);
         }
 
+        public virtual void RefreshBalance()
+        {
+            _balance = Database?.GetAccountBalance(this) ?? 0L;
+            OnPropertyChanged(nameof(Balance));
+            allAccounts?.RefreshBalance();
+        }
+
         #region ViewModel_Part
 
         private ObservableCollection<TitBase> _tits; 
@@ -112,8 +121,14 @@ namespace BFF.Model.Native
         [Write(false)]
         public ObservableCollection<TitBase> NewTits { get; set; } = new ObservableCollection<TitBase>();
 
+        private long? _balance;
+
         [Write(false)]
-        public virtual long Balance => Database?.GetAccountBalance(this) ?? 0L;
+        public virtual long Balance
+        {
+            get { return _balance ?? Database?.GetAccountBalance(this) ?? 0L; }
+            set { OnPropertyChanged(); }
+        }
 
         [Write(false)]
         public DateTime FilterStartDate
@@ -200,8 +215,14 @@ namespace BFF.Model.Native
         });
 
         [Write(false)]
-        public ICommand ApplyCommand => new RelayCommand(obj =>
+        public virtual ICommand ApplyCommand => new RelayCommand(obj =>
         {
+            ApplyTits();
+        }, obj => NewTits.Count > 0);
+
+        protected void ApplyTits()
+        {
+            List<Account> accounts = new List<Account>();
             foreach (TitBase tit in NewTits)
             {
                 Tits.Add(tit);
@@ -226,10 +247,20 @@ namespace BFF.Model.Native
                     }
                     parentIncome.NewSubElements.Clear();
                 }
+                if(tit is TitNoTransfer && !accounts.Contains((tit as TitNoTransfer).Account))
+                    accounts.Add((tit as TitNoTransfer).Account);
+                if (tit is Transfer)
+                {
+                    Transfer transfer = tit as Transfer;
+                    if(!accounts.Contains(transfer.FromAccount)) accounts.Add(transfer.FromAccount);
+                    if(!accounts.Contains(transfer.ToAccount)) accounts.Add(transfer.ToAccount);
+                }
             }
             OnPropertyChanged(nameof(Tits));//todo:Validate correctness
             NewTits.Clear();
-        }, obj => NewTits.Count > 0);
+            foreach(Account account in accounts)
+                account.RefreshBalance();
+        }
 
         private DateTime _filterStartDate = new DateTime(2015, 6, 9);
         private DateTime _filterEndDate = new DateTime(2016, 9, 6);

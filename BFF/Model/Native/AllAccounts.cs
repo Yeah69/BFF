@@ -18,10 +18,7 @@ namespace BFF.Model.Native
         public override long StartingBalance
         {
             get { return Database?.AllAccounts.Sum(account => account.StartingBalance) ?? 0L; }
-            set
-            {
-                OnPropertyChanged();
-            }
+            set { OnPropertyChanged(); }
         }
         
         /// <summary>
@@ -32,6 +29,7 @@ namespace BFF.Model.Native
             ConstrDbLock = true;
 
             Name = "All Accounts";
+            allAccounts = this;
 
             ConstrDbLock = false;
         }
@@ -48,10 +46,19 @@ namespace BFF.Model.Native
         {
         }
 
+        public override void RefreshBalance()
+        {
+            OnPropertyChanged(nameof(Balance));
+        }
+
         #region ViewModel_Part
 
         [Write(false)]
-        public override long Balance => AllAccounts.Sum(account => account.Balance);
+        public override long Balance
+        {
+            get { return AllAccounts.Sum(account => account.Balance); }
+            set { OnPropertyChanged(); }
+        }
 
         [Write(false)]
         public override ICommand NewTransactionCommand => new RelayCommand(obj =>
@@ -76,6 +83,13 @@ namespace BFF.Model.Native
         {
             NewTits.Add(new ParentIncome(DateTime.Today) { Memo = "", Cleared = false, Account = null });
         });
+
+        [Write(false)]
+        public override ICommand ApplyCommand => new RelayCommand(obj =>
+        {
+            ApplyTits();
+            OnPropertyChanged(nameof(Balance));
+        }, obj => NewTits.Count > 0);
 
         public override void RefreshTits()
         {

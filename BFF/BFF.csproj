@@ -173,7 +173,6 @@
     <Compile Include="WPFStuff\Converters\CoalesceConverter.cs" />
     <Compile Include="WPFStuff\Converters\DepPropToUnsetConverter.cs" />
     <Compile Include="WPFStuff\Converters\SubElementToSumConverter.cs" />
-    <Compile Include="WPFStuff\Converters\AccountToTitViewModelConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
     <Compile Include="WPFStuff\RelayCommand.cs" />
     <Compile Include="WPFStuff\UserControls\FilledMainWindow.xaml.cs">

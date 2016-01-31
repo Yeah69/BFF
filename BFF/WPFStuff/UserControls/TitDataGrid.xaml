@@ -270,7 +270,7 @@
                             <TextBox Name="TitGrid_SumBox" TextAlignment="Right">
                                 <TextBox.Foreground>
                                     <MultiBinding Converter="{StaticResource SumColorMulti}">
-                                        <Binding Path="DataContext.Account" ElementName="TitView" />
+                                        <Binding Path="DataContext" ElementName="TitView" />
                                         <Binding Path="FromAccount" />
                                         <Binding Path="ToAccount" />
                                     </MultiBinding>

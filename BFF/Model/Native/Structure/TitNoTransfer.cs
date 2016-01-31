@@ -88,6 +88,15 @@ namespace BFF.Model.Native.Structure
             set { Category = Database?.GetCategory(value ?? -1L); }
         }
 
+        public override long Sum {
+            get { return base.Sum; }
+            set
+            {
+                base.Sum = value;
+                _account?.RefreshBalance();
+            }
+        }
+
         /// <summary>
         /// Initializes the object
         /// </summary>
@@ -134,6 +143,13 @@ namespace BFF.Model.Native.Structure
 
             ConstrDbLock = false;
         }
+
+        [Write(false)]
+        public override ICommand DeleteCommand => new RelayCommand(obj =>
+        {
+            Delete();
+            Account.RefreshBalance();
+        });
 
         #region EditingPayeeAndCategory
 
