@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using BFF.Helper;
 using BFF.ViewModel;
 
@@ -18,6 +19,11 @@ namespace BFF.WPFStuff.UserControls
         {
             TitGrid.Items.Refresh();
             TotalBalanceTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
+        }
+
+        private void TitDataGrid_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            TitGrid.Items.Refresh();
         }
     }
 }
