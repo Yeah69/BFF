@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using BFF.Model.Native;
+using BFF.ViewModel;
 
 namespace BFF.WPFStuff.Converters
 {
@@ -17,7 +17,7 @@ namespace BFF.WPFStuff.Converters
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             //Transfer in "All Accounts"-Tab
-            if (values[0] == null)
+            if (values[0] is AllAccounts)
                 return TransferBrush;
             Account account = (Account)values[0];
             //Transfer in FromAccount-Tab

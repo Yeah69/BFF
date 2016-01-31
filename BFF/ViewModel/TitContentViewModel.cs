@@ -9,7 +9,7 @@ namespace BFF.ViewModel
 {
     public class TitContentViewModel : EmptyContentViewModel
     {
-        protected TitViewModel _allAccountsViewModel;
+        protected AllAccounts _allAccountsViewModel;
 
         protected readonly IBffOrm _orm;
 
@@ -24,7 +24,7 @@ namespace BFF.ViewModel
 
         public ObservableCollection<Category> AllCategories => _orm.AllCategories; 
 
-        public TitViewModel AllAccountsViewModel
+        public AllAccounts AllAccountsViewModel
         {
             get { return _allAccountsViewModel; }
             set
@@ -54,13 +54,7 @@ namespace BFF.ViewModel
         public TitContentViewModel(IBffOrm orm)
         {
             _orm = orm;
-            AllAccountsViewModel = new TitViewModel(Orm);
-        }
-
-        public override void Refresh()
-        {
-            base.Refresh();
-            AllAccountsViewModel.Refresh();
+            AllAccountsViewModel = new AllAccounts();
         }
     }
 }

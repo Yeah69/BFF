@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using BFF.Model.Native.Structure;
+using BFF.WPFStuff;
+using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
@@ -14,7 +19,7 @@ namespace BFF.Model.Native
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        public long StartingBalance
+        public virtual long StartingBalance
         {
             get { return _startingBalance; }
             set
@@ -33,8 +38,7 @@ namespace BFF.Model.Native
         {
             return Name;
         }
-
-
+        
         /// <summary>
         /// Initializes the object
         /// </summary>
@@ -87,5 +91,157 @@ namespace BFF.Model.Native
         {
             Database?.Delete(this);
         }
+
+        #region ViewModel_Part
+
+        private ObservableCollection<TitBase> _tits; 
+
+        [Write(false)]
+        public ObservableCollection<TitBase> Tits
+        {
+            get
+            {
+                if (_tits == null)
+                {
+                    _tits = new ObservableCollection<TitBase>();
+                    RefreshTits();
+                }
+                return _tits;
+            }
+        }
+        [Write(false)]
+        public ObservableCollection<TitBase> NewTits { get; set; } = new ObservableCollection<TitBase>();
+
+        [Write(false)]
+        public virtual long Balance => Database?.GetAccountBalance(this) ?? 0L;
+
+        [Write(false)]
+        public DateTime FilterStartDate
+        {
+            get
+            {
+                return _filterStartDate;
+            }
+            set
+            {
+                _filterStartDate = value;
+                OnPropertyChanged();
+                if (_isFilterOn) RefreshTits();
+            }
+        }
+
+        [Write(false)]
+        public DateTime FilterEndDate
+        {
+            get
+            {
+                return _filterEndDate;
+            }
+            set
+            {
+                _filterEndDate = value;
+                OnPropertyChanged();
+                if (_isFilterOn) RefreshTits();
+            }
+        }
+
+        [Write(false)]
+        public bool IsFilterOn
+        {
+            get
+            {
+                return _isFilterOn;
+            }
+            set
+            {
+                _isFilterOn = value;
+                OnPropertyChanged();
+                RefreshTits();
+            }
+        }
+
+        [Write(false)]
+        public ObservableCollection<Account> AllAccounts => Database?.AllAccounts;
+
+        [Write(false)]
+        public ObservableCollection<Payee> AllPayees => Database?.AllPayees;
+
+        [Write(false)]
+        public ObservableCollection<Category> AllCategories => Database?.AllCategories;
+
+        [Write(false)]
+        public virtual ICommand NewTransactionCommand => new RelayCommand(obj =>
+        {
+            NewTits.Add(new Transaction(DateTime.Today) { Memo = "", Sum = 0L, Cleared = false, Account = this });
+        });
+
+        [Write(false)]
+        public virtual ICommand NewIncomeCommand => new RelayCommand(obj =>
+        {
+            NewTits.Add(new Income(DateTime.Today) { Memo = "", Sum = 0L, Cleared = false, Account = this });
+        });
+
+        [Write(false)]
+        public ICommand NewTransferCommand => new RelayCommand(obj =>
+        {
+            NewTits.Add(new Transfer(DateTime.Today) { Memo = "", Sum = 0L, Cleared = false });
+        });
+
+        [Write(false)]
+        public virtual ICommand NewParentTransactionCommand => new RelayCommand(obj =>
+        {
+            NewTits.Add(new ParentTransaction(DateTime.Today) { Memo = "", Cleared = false, Account = this });
+        });
+
+        [Write(false)]
+        public virtual ICommand NewParentIncomeCommand => new RelayCommand(obj =>
+        {
+            NewTits.Add(new ParentIncome(DateTime.Today) { Memo = "", Cleared = false, Account = this });
+        });
+
+        [Write(false)]
+        public ICommand ApplyCommand => new RelayCommand(obj =>
+        {
+            foreach (TitBase tit in NewTits)
+            {
+                Tits.Add(tit);
+                tit.Insert();
+                if (tit is IParentTitNoTransfer<SubTransaction>)
+                {
+                    IParentTitNoTransfer<SubTransaction> parentTransaction = tit as IParentTitNoTransfer<SubTransaction>;
+                    foreach (SubTransaction subTransaction in parentTransaction.NewSubElements)
+                    {
+                        subTransaction.Insert();
+                        parentTransaction.SubElements.Add(subTransaction);
+                    }
+                    parentTransaction.NewSubElements.Clear();
+                }
+                if (tit is IParentTitNoTransfer<SubIncome>)
+                {
+                    IParentTitNoTransfer<SubIncome> parentIncome = tit as IParentTitNoTransfer<SubIncome>;
+                    foreach (SubIncome subIncome in parentIncome.NewSubElements)
+                    {
+                        subIncome.Insert();
+                        parentIncome.SubElements.Add(subIncome);
+                    }
+                    parentIncome.NewSubElements.Clear();
+                }
+            }
+            OnPropertyChanged(nameof(Tits));//todo:Validate correctness
+            NewTits.Clear();
+        }, obj => NewTits.Count > 0);
+
+        private DateTime _filterStartDate = new DateTime(2015, 6, 9);
+        private DateTime _filterEndDate = new DateTime(2016, 9, 6);
+        private bool _isFilterOn;
+
+        public virtual void RefreshTits()
+        {
+            _tits.Clear();
+            foreach (TitBase titBase in _isFilterOn ? Database?.GetAllTits(_filterStartDate, _filterEndDate, this) : Database?.GetAllTits(DateTime.MinValue, DateTime.MaxValue, this))
+                _tits.Add(titBase);
+        }
+
+        #endregion
     }
 }

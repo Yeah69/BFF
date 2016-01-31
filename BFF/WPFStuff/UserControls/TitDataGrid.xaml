@@ -248,7 +248,7 @@
                                        Text="{Binding Sum, Converter={StaticResource SumConverter}}">
                                 <TextBlock.Foreground>
                                     <MultiBinding Converter="{StaticResource SumColorMulti}">
-                                        <Binding Path="DataContext.Account" ElementName="TitView" />
+                                        <Binding Path="DataContext" ElementName="TitView" />
                                         <Binding Path="FromAccount" />
                                         <Binding Path="ToAccount" />
                                     </MultiBinding>
@@ -258,8 +258,7 @@
                         <DataTemplate DataType="{x:Type structure:TitLike}">
                             <TextBlock Name="TitGrid_SumBox" TextAlignment="Right" 
                                        Foreground="{Binding Sum, Converter={StaticResource SumToBrush}}"
-                                       Text="{Binding Sum, Converter={StaticResource SumConverter}}">
-                            </TextBlock>
+                                       Text="{Binding Sum, Converter={StaticResource SumConverter}}" />
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
@@ -686,28 +685,28 @@
             </DataGrid>
             <DockPanel>
                 <Button ToolTip="New Transaction" Command="{Binding NewTransactionCommand}">
-                    <!-- todo: Localize / Style with logo etc -->
+                    <!-- todo: Localize -->
                     <StackPanel Orientation="Horizontal">
                         <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                         <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
                     </StackPanel>
                 </Button>
                 <Button ToolTip="New Income" Command="{Binding NewIncomeCommand}">
-                    <!-- todo: Localize / Style with logo etc -->
+                    <!-- todo: Localize -->
                     <StackPanel Orientation="Horizontal">
                         <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                         <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
                     </StackPanel>
                 </Button>
                 <Button ToolTip="New Transfer" Command="{Binding NewTransferCommand}">
-                    <!-- todo: Localize / Style with logo etc-->
+                    <!-- todo: Localize -->
                     <StackPanel Orientation="Horizontal">
                         <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                         <metro:PackIconMaterial Kind="{StaticResource TransferIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransferBrush}" />
                     </StackPanel>
                 </Button>
                 <Button ToolTip="New Parent-Transaction" Command="{Binding NewParentTransactionCommand}">
-                    <!-- todo: Localize / Style with logo etc -->
+                    <!-- todo: Localize -->
                     <StackPanel Orientation="Horizontal">
                         <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                         <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
@@ -715,7 +714,7 @@
                     </StackPanel>
                 </Button>
                 <Button ToolTip="New Parent-Income" Command="{Binding NewParentIncomeCommand}">
-                    <!-- todo: Localize / Style with logo etc -->
+                    <!-- todo: Localize -->
                     <StackPanel Orientation="Horizontal">
                         <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                         <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
@@ -731,15 +730,15 @@
         <!-- "Status bar" -->
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <GroupBox Header="{lex:Loc TitView_StartingBalance}" HorizontalAlignment="Left">
-                <TextBlock Name="StartingBalanceTextBlock" Text="{Binding AccountStartingBalance, Converter={StaticResource SumConverter}}" />
+                <TextBlock Name="StartingBalanceTextBlock" Text="{Binding StartingBalance, Converter={StaticResource SumConverter}}" />
             </GroupBox>
             <GroupBox Header="{lex:Loc TitView_BalanceDisplay}" HorizontalAlignment="Left">
-                <TextBlock Name="TotalBalanceTextBlock"  Text="{Binding AccountBalance, Converter={StaticResource SumConverter}}" />
+                <TextBlock Name="TotalBalanceTextBlock"  Text="{Binding Balance, Converter={StaticResource SumConverter}}" />
             </GroupBox>
             <GroupBox Header="{lex:Loc TitView_Filter}" HorizontalAlignment="Left">
                 <StackPanel Orientation="Horizontal">
-                    <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}" />
-                    <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay}" />
+                    <DatePicker SelectedDate="{Binding FilterStartDate, Mode=TwoWay}" />
+                    <DatePicker SelectedDate="{Binding FilterEndDate, Mode=TwoWay}" />
                     <CheckBox IsChecked="{Binding IsFilterOn, Mode=TwoWay}" Margin="5,0,0,0" /> <!-- todo: Localize -->
                 </StackPanel>
             </GroupBox>

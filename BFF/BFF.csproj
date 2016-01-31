@@ -125,6 +125,7 @@
     <Compile Include="Helper\Output.cs" />
     <Compile Include="Model\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="Model\Conversion\YNAB\Transaction.cs" />
+    <Compile Include="Model\Native\AllAccounts.cs" />
     <Compile Include="Model\Native\Account.cs" />
     <Compile Include="Model\Native\Category.cs" />
     <Compile Include="Model\Native\Budget.cs" />
@@ -147,7 +148,6 @@
     <Compile Include="ViewModel\ImportDialogViewModel.cs" />
     <Compile Include="ViewModel\EmptyContentViewModel.cs" />
     <Compile Include="ViewModel\TitContentViewModel.cs" />
-    <Compile Include="ViewModel\FilledMainWindowViewModel.cs" />
     <Compile Include="ViewModel\TitViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
