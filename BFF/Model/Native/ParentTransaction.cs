@@ -145,6 +145,12 @@ namespace BFF.Model.Native
             Account?.RefreshBalance();
         });
 
+        public void RemoveSubElement(SubTitBase toRemove)
+        {
+            if (SubElements.Contains(toRemove))
+                SubElements.Remove(toRemove as SubTransaction);
+        }
+
         #endregion
     }
 }

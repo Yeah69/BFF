@@ -105,6 +105,15 @@ namespace BFF.Model.Native.Structure
         }
 
         [Write(false)]
+        public virtual ICommand DeleteCommand => new RelayCommand(obj =>
+        {
+            Delete();
+            (Parent as ParentTransaction)?.RemoveSubElement(this);
+            (Parent as ParentIncome)?.RemoveSubElement(this);
+            Parent.Sum -= _sum;
+        });
+
+        [Write(false)]
         public string CategoryText { get; set; }
 
         [Write(false)]
