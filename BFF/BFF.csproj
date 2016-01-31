@@ -148,7 +148,6 @@
     <Compile Include="ViewModel\ImportDialogViewModel.cs" />
     <Compile Include="ViewModel\EmptyContentViewModel.cs" />
     <Compile Include="ViewModel\TitContentViewModel.cs" />
-    <Compile Include="ViewModel\TitViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="WPFStuff\AttachedProperties\ParentPathHelper.cs" />

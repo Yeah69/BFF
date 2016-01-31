@@ -14,11 +14,6 @@ namespace BFF.WPFStuff.UserControls
             InitializeComponent();
         }
 
-        public TitDataGrid(TitViewModel titViewModel) : this()
-        {
-            DataContext = titViewModel;
-        }
-
         public void RefreshCurrencyVisuals()
         {
             TitGrid.Items.Refresh();

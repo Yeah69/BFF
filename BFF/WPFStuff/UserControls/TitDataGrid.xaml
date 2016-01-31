@@ -409,6 +409,12 @@
                 </StackPanel>
             </DataTemplate>
             <!--#endregion -->
+
+
+            <Style BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
+                <Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush8}" />
+            </Style>
+
             <ContextMenu  x:Key="RowMenu">
                 <MenuItem Header="Delete" Command="{Binding DeleteCommand}">
                     <MenuItem.Icon>
@@ -432,13 +438,6 @@
         <!-- The DataGrid, which shows all saved Tits -->
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" RowStyle="{StaticResource DefaultRowStyle}" SelectionMode="Single" SelectionUnit="FullRow"
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
-            <DataGrid.Style>
-                <Style BasedOn="{StaticResource MetroDataGrid}"
-                           TargetType="{x:Type DataGrid}">
-                    <Setter Property="AlternatingRowBackground"
-                                Value="{DynamicResource GrayBrush8}" />
-                </Style>
-            </DataGrid.Style>
             <DataGrid.Columns>
                 <!-- Symbol -->
                 <DataGridTemplateColumn Header="S" x:Name="SymbolColumn">
@@ -575,13 +574,6 @@
         <StackPanel Grid.Row="1">
             <DataGrid Name="NewTitGrid" ItemsSource="{Binding NewTits}" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0,2,0,0" CanUserAddRows="False" CanUserSortColumns="False"
                       Width="{Binding ActualWidth ,ElementName=TitGrid}">
-                <DataGrid.Style>
-                    <Style BasedOn="{StaticResource MetroDataGrid}"
-                               TargetType="{x:Type DataGrid}">
-                        <Setter Property="AlternatingRowBackground"
-                                    Value="{DynamicResource GrayBrush8}" />
-                    </Style>
-                </DataGrid.Style>
                 <DataGrid.Columns>
                     <!-- Symbol -->
                     <DataGridTemplateColumn Header="S" Width="{Binding Width, Source={x:Reference SymbolColumn}, Mode=TwoWay}">

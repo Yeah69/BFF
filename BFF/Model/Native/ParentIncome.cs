@@ -37,7 +37,11 @@ namespace BFF.Model.Native
         public override long Sum
         {
             get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
-            set { OnPropertyChanged(); }
+            set
+            {
+                OnPropertyChanged();
+                Account?.RefreshBalance();
+            }
         }
 
         [Write(false)]
@@ -117,6 +121,8 @@ namespace BFF.Model.Native
                 _subElements.Add(subIncome);
             }
             _newSubElements.Clear();
+            OnPropertyChanged(nameof(Sum));
+            Account?.RefreshBalance();
         });
 
         #endregion
