@@ -90,16 +90,16 @@ namespace BFF.ViewModel
 
         protected void Reset()
         {
-            if (File.Exists(_orm.DbPath) && ContentViewModel is TitContentViewModel)
+            if (File.Exists(_orm.DbPath) && ContentViewModel is AccountTabsViewModel)
             {
                 ResetCultures();
                 ContentViewModel.Refresh();
                 Title = $"{new FileInfo(_orm.DbPath).Name} - BFF";
             }
-            else if (File.Exists(_orm.DbPath) && !(ContentViewModel is TitContentViewModel))
+            else if (File.Exists(_orm.DbPath) && !(ContentViewModel is AccountTabsViewModel))
             {
                 ResetCultures();
-                ContentViewModel = new TitContentViewModel(_orm);
+                ContentViewModel = new AccountTabsViewModel(_orm);
                 Title = $"{new FileInfo(_orm.DbPath).Name} - BFF";
             }
             else

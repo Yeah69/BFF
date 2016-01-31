@@ -7,7 +7,7 @@ using BFF.WPFStuff;
 
 namespace BFF.ViewModel
 {
-    public class TitContentViewModel : EmptyContentViewModel
+    public class AccountTabsViewModel : EmptyContentViewModel
     {
         protected AllAccounts _allAccountsViewModel;
 
@@ -19,8 +19,6 @@ namespace BFF.ViewModel
         }
 
         public ObservableCollection<Account> AllAccounts => _orm.AllAccounts;
-
-        public ObservableCollection<Payee> AllPayees => _orm.AllPayees;
 
         public ObservableCollection<Category> AllCategories => _orm.AllCategories; 
 
@@ -52,7 +50,7 @@ namespace BFF.ViewModel
             return ret;
         }; 
 
-        public TitContentViewModel(IBffOrm orm)
+        public AccountTabsViewModel(IBffOrm orm)
         {
             _orm = orm;
             AllAccountsViewModel = new AllAccounts();

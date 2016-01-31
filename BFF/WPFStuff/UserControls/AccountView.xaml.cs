@@ -1,16 +1,15 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using BFF.Helper;
-using BFF.ViewModel;
 
 namespace BFF.WPFStuff.UserControls
 {
     /// <summary>
     /// Interaction logic for TitDataGrid.xaml
     /// </summary>
-    public partial class TitDataGrid : IRefreshCurrencyVisuals
+    public partial class AccountView : IRefreshCurrencyVisuals
     {
-        public TitDataGrid()
+        public AccountView()
         {
             InitializeComponent();
         }

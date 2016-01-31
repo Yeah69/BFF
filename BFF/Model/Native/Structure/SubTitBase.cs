@@ -105,7 +105,7 @@ namespace BFF.Model.Native.Structure
         }
 
         [Write(false)]
-        public virtual ICommand DeleteCommand => new RelayCommand(obj =>
+        public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
             (Parent as ParentTransaction)?.RemoveSubElement(this);

@@ -19,7 +19,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
-                <ResourceDictionary Source="/Resources/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converters:CurrencyComboConverter x:Key="CurrencyComboConverter"/>
             <converters:DateComboConverter x:Key="DateComboConverter"/>
@@ -132,8 +131,8 @@
     <Grid>
         <ContentControl Name="ContentControl"  Content="{Binding ContentViewModel}">
             <ContentControl.Resources>
-                <DataTemplate DataType="{x:Type viewModel:TitContentViewModel}">
-                    <usercontrols:FilledMainWindow x:Name="MainContent" />
+                <DataTemplate DataType="{x:Type viewModel:AccountTabsViewModel}">
+                    <usercontrols:AccountTabsView x:Name="MainContent" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewModel:EmptyContentViewModel}">
                     <!-- todo: Something like a StartPage here -->

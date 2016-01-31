@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="BFF.WPFStuff.UserControls.TitDataGrid"
+﻿<UserControl x:Class="BFF.WPFStuff.UserControls.AccountView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -23,7 +23,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.checkbox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
-                <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMComboBox.xaml" />
                 <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMCheckBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
             

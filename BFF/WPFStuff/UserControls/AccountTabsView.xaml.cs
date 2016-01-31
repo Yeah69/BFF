@@ -1,18 +1,14 @@
 ﻿using System.Windows.Controls;
-using BFF.DB;
 using BFF.Helper;
-using BFF.ViewModel;
-using MahApps.Metro.Controls;
-using Ninject;
 
 namespace BFF.WPFStuff.UserControls
 {
     /// <summary>
     /// Interaction logic for FilledMainWindow.xaml
     /// </summary>
-    public partial class FilledMainWindow : UserControl, IRefreshCurrencyVisuals
+    public partial class AccountTabsView : UserControl, IRefreshCurrencyVisuals
     {
-        public FilledMainWindow()
+        public AccountTabsView()
         {
             InitializeComponent();
         }

@@ -147,41 +147,28 @@
     <Compile Include="Model\Native\Transaction.cs" />
     <Compile Include="ViewModel\ImportDialogViewModel.cs" />
     <Compile Include="ViewModel\EmptyContentViewModel.cs" />
-    <Compile Include="ViewModel\TitContentViewModel.cs" />
+    <Compile Include="ViewModel\AccountTabsViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
-    <Compile Include="WPFStuff\AttachedProperties\ParentPathHelper.cs" />
     <Compile Include="WPFStuff\Behaviors\AdditionalTabItemsBehavior.cs" />
-    <Compile Include="WPFStuff\Behaviors\ClosingOnSelectBevavior.cs" />
-    <Compile Include="WPFStuff\Behaviors\ClosingOnMouseSelectBehavior.cs" />
-    <Compile Include="WPFStuff\Behaviors\BindableSelectedItemBehavior.cs" />
     <Compile Include="WPFStuff\Converters\CategoriesToHierarchicalItemsSourceConverter.cs" />
-    <Compile Include="WPFStuff\Converters\DateConverter.cs" />
+    <Compile Include="WPFStuff\Converters\DateToStringConverter.cs" />
     <Compile Include="WPFStuff\Converters\DateComboConverter.cs" />
     <Compile Include="WPFStuff\Converters\DataGridLengthsToDoubleConverter.cs" />
-    <Compile Include="WPFStuff\Converters\RootNodesOnlyConverter.cs" />
-    <Compile Include="WPFStuff\Converters\SearchToVisibilityConverter.cs" />
     <Compile Include="WPFStuff\Converters\CurrencyComboConverter.cs" />
-    <Compile Include="WPFStuff\Converters\LongToCurrencyConverter.cs" />
-    <Compile Include="WPFStuff\Converters\NullToLexConverter.cs" />
-    <Compile Include="WPFStuff\Converters\SubElementToSumPureConverter.cs" />
-    <Compile Include="WPFStuff\Converters\CategoriesToParentsOnlyConverter.cs" />
     <Compile Include="WPFStuff\Converters\DataGridWidthsToLeftMarginConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumColorMultiConverter.cs" />
-    <Compile Include="WPFStuff\Converters\CoalesceConverter.cs" />
-    <Compile Include="WPFStuff\Converters\DepPropToUnsetConverter.cs" />
-    <Compile Include="WPFStuff\Converters\SubElementToSumConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
     <Compile Include="WPFStuff\RelayCommand.cs" />
-    <Compile Include="WPFStuff\UserControls\FilledMainWindow.xaml.cs">
-      <DependentUpon>FilledMainWindow.xaml</DependentUpon>
+    <Compile Include="WPFStuff\UserControls\AccountTabsView.xaml.cs">
+      <DependentUpon>AccountTabsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPFStuff\UserControls\ImportDialog.xaml.cs">
       <DependentUpon>ImportDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPFStuff\UserControls\TitDataGrid.xaml.cs">
-      <DependentUpon>TitDataGrid.xaml</DependentUpon>
+    <Compile Include="WPFStuff\UserControls\AccountView.xaml.cs">
+      <DependentUpon>AccountView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPFStuff\ObservableObject.cs" />
     <Compile Include="WPFStuff\ValidationRules\CurrencyLongRangeRule.cs" />
@@ -208,11 +195,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WPFStuff\Resources\BFF_ModifiedMAMComboBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WPFStuff\UserControls\FilledMainWindow.xaml">
+    <Page Include="WPFStuff\UserControls\AccountTabsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -220,7 +203,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPFStuff\UserControls\TitDataGrid.xaml">
+    <Page Include="WPFStuff\UserControls\AccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -271,6 +254,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\logo_quadratic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="WPFStuff\AttachedProperties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets')" />
