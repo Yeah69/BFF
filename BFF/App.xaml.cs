@@ -2,6 +2,7 @@
 using BFF.DB;
 using BFF.DB.SQLite;
 using BFF.Helper;
+using BFF.Model.Native;
 using MahApps.Metro;
 
 namespace BFF
@@ -14,6 +15,7 @@ namespace BFF
         public App()
         {
             InitializeComponent();
+            new AllAccounts(); //todo: Find more elegant way
             IBffOrm orm = new SqLiteBffOrm();
             IBffCultureProvider cultureProvider = new BffCultureProvider(orm);
             BffEnvironment.CultureProvider = cultureProvider;

@@ -53,7 +53,7 @@ namespace BFF.ViewModel
         public AccountTabsViewModel(IBffOrm orm)
         {
             _orm = orm;
-            AllAccountsViewModel = new AllAccounts();
+            AllAccountsViewModel = Account.allAccounts;
         }
     }
 }

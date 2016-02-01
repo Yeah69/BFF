@@ -193,6 +193,19 @@ namespace BFF.DB.SQLite
                     else if (dataModelBase is Category)
                         AllCategories.Add(dataModelBase as Category);
                 }
+                if (dataModelBase is TitNoTransfer)
+                {
+                    TitNoTransfer titNoTransfer = dataModelBase as TitNoTransfer;
+                    titNoTransfer.Account?.Tits.Add(titNoTransfer);
+                    Account.allAccounts?.Tits.Add(titNoTransfer);
+                }
+                if (dataModelBase is Transfer)
+                {
+                    Transfer transfer = dataModelBase as Transfer;
+                    transfer.FromAccount?.Tits.Add(transfer);
+                    transfer.ToAccount?.Tits.Add(transfer);
+                    Account.allAccounts?.Tits.Add(transfer);
+                }
             }
             return ret;
         }
@@ -242,6 +255,24 @@ namespace BFF.DB.SQLite
                     else if (dataModelBase is Category && AllCategories.Contains(dataModelBase as Category))
                         AllCategories.Remove(dataModelBase as Category);
                 }
+                if (dataModelBase is TitNoTransfer)
+                {
+                    TitNoTransfer titNoTransfer = dataModelBase as TitNoTransfer;
+                    if (titNoTransfer.Account?.Tits.Contains(titNoTransfer) ?? false)
+                        titNoTransfer.Account.Tits.Remove(titNoTransfer);
+                    if (Account.allAccounts?.Tits.Contains(titNoTransfer) ?? false)
+                        Account.allAccounts.Tits.Remove(titNoTransfer);
+                }
+                if (dataModelBase is Transfer)
+                {
+                    Transfer transfer = dataModelBase as Transfer;
+                    if (transfer.FromAccount?.Tits.Contains(transfer) ?? false)
+                        transfer.FromAccount.Tits.Remove(transfer);
+                    if (transfer.ToAccount?.Tits.Contains(transfer) ?? false)
+                        transfer.ToAccount.Tits.Remove(transfer);
+                    if (Account.allAccounts?.Tits.Contains(transfer) ?? false)
+                        Account.allAccounts.Tits.Remove(transfer);
+                }
             }
         }
 
@@ -289,7 +320,8 @@ namespace BFF.DB.SQLite
                             Memo = (string)objArr[5],
                             Cleared = (long)objArr[7] == 1,
                         };
-
+                    ((Transaction) ret).Account?.Tits.Add(ret);
+                    Account.allAccounts?.Tits.Add(ret);
                     break;
                 case TitType.Income:
                     if(categoryId != null)
@@ -313,6 +345,8 @@ namespace BFF.DB.SQLite
                             Memo = (string)objArr[5],
                             Cleared = (long)objArr[7] == 1
                         };
+                    ((Income) ret).Account.Tits?.Add(ret);
+                    Account.allAccounts?.Tits.Add(ret);
                     break;
                 case TitType.Transfer:
                     ret = new Transfer(date)
@@ -324,6 +358,9 @@ namespace BFF.DB.SQLite
                         Sum = (long)objArr[6],
                         Cleared = (long)objArr[7] == 1
                     };
+                    ((Transfer)ret).FromAccount?.Tits.Add(ret);
+                    ((Transfer)ret).ToAccount?.Tits.Add(ret);
+                    Account.allAccounts?.Tits.Add(ret);
                     break;
                 default:
                     ret = new Transaction (DateTime.Today) { Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR" };
@@ -347,6 +384,8 @@ namespace BFF.DB.SQLite
             AllAccounts.Clear();
             AllPayees.Clear();
             AllCategories.Clear();
+            Account.allAccounts?.Tits.Clear();
+            Account.allAccounts?.NewTits.Clear();
             if (File.Exists(DbPath))
             {
                 foreach (Account account in GetAll<Account>())
@@ -380,6 +419,7 @@ namespace BFF.DB.SQLite
 
                     cnn.Close();
                 }
+                GetAllTits(DateTime.MinValue, DateTime.MaxValue);
             }
         }
 

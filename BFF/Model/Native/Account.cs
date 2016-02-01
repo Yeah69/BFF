@@ -106,18 +106,8 @@ namespace BFF.Model.Native
         private ObservableCollection<TitBase> _tits; 
 
         [Write(false)]
-        public ObservableCollection<TitBase> Tits
-        {
-            get
-            {
-                if (_tits == null)
-                {
-                    _tits = new ObservableCollection<TitBase>();
-                    RefreshTits();
-                }
-                return _tits;
-            }
-        }
+        public ObservableCollection<TitBase> Tits => _tits ?? (_tits = new ObservableCollection<TitBase>());
+
         [Write(false)]
         public ObservableCollection<TitBase> NewTits { get; set; } = new ObservableCollection<TitBase>();
 
@@ -128,51 +118,6 @@ namespace BFF.Model.Native
         {
             get { return _balance ?? Database?.GetAccountBalance(this) ?? 0L; }
             set { OnPropertyChanged(); }
-        }
-
-        [Write(false)]
-        public DateTime FilterStartDate
-        {
-            get
-            {
-                return _filterStartDate;
-            }
-            set
-            {
-                _filterStartDate = value;
-                OnPropertyChanged();
-                if (_isFilterOn) RefreshTits();
-            }
-        }
-
-        [Write(false)]
-        public DateTime FilterEndDate
-        {
-            get
-            {
-                return _filterEndDate;
-            }
-            set
-            {
-                _filterEndDate = value;
-                OnPropertyChanged();
-                if (_isFilterOn) RefreshTits();
-            }
-        }
-
-        [Write(false)]
-        public bool IsFilterOn
-        {
-            get
-            {
-                return _isFilterOn;
-            }
-            set
-            {
-                _isFilterOn = value;
-                OnPropertyChanged();
-                RefreshTits();
-            }
         }
 
         [Write(false)]
@@ -225,7 +170,6 @@ namespace BFF.Model.Native
             List<Account> accounts = new List<Account>();
             foreach (TitBase tit in NewTits)
             {
-                Tits.Add(tit);
                 tit.Insert();
                 if (tit is IParentTitNoTransfer<SubTransaction>)
                 {
@@ -265,13 +209,6 @@ namespace BFF.Model.Native
         private DateTime _filterStartDate = new DateTime(2015, 6, 9);
         private DateTime _filterEndDate = new DateTime(2016, 9, 6);
         private bool _isFilterOn;
-
-        public virtual void RefreshTits()
-        {
-            _tits.Clear();
-            foreach (TitBase titBase in _isFilterOn ? Database?.GetAllTits(_filterStartDate, _filterEndDate, this) : Database?.GetAllTits(DateTime.MinValue, DateTime.MaxValue, this))
-                _tits.Add(titBase);
-        }
 
         #endregion
     }

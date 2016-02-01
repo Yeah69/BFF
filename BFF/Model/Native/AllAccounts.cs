@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Input;
-using BFF.Model.Native.Structure;
 using BFF.WPFStuff;
 using Dapper.Contrib.Extensions;
 
@@ -90,13 +89,6 @@ namespace BFF.Model.Native
             ApplyTits();
             OnPropertyChanged(nameof(Balance));
         }, obj => NewTits.Count > 0);
-
-        public override void RefreshTits()
-        {
-            Tits.Clear();
-            foreach (TitBase titBase in IsFilterOn ? Database?.GetAllTits(FilterStartDate, FilterEndDate) : Database?.GetAllTits(DateTime.MinValue, DateTime.MaxValue))
-                Tits.Add(titBase);
-        }
 
         #endregion
     }
