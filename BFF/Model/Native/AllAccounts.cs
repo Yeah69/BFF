@@ -55,7 +55,7 @@ namespace BFF.Model.Native
         [Write(false)]
         public override long Balance
         {
-            get { return AllAccounts.Sum(account => account.Balance); }
+            get { return AllAccounts?.Sum(account => account.Balance) ?? 0L; }
             set { OnPropertyChanged(); }
         }
 

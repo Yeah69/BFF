@@ -61,11 +61,11 @@ namespace BFF.Model.Native.Structure
             get { return _sum; }
             set
             {
-                Parent.Sum -= _sum;
+                if(Parent != null) Parent.Sum -= _sum;
                 _sum = value;
                 Update();
                 OnPropertyChanged();
-                Parent.Sum += _sum;
+                if(Parent != null) Parent.Sum += _sum;
             }
         }
 
