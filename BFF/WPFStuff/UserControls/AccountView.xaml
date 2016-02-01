@@ -176,7 +176,7 @@
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitLike}">
-                            <TextBlock Text="{Binding Category.Name}" />
+                            <TextBlock Text="{Binding Category.Name}" ToolTip="{Binding Category.FullName}"/>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:ParentTransaction}">
                             <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />

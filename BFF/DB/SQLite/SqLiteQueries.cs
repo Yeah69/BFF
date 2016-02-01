@@ -3,7 +3,7 @@ using BFF.Model.Native.Structure;
 
 namespace BFF.DB.SQLite
 {
-    class SqLiteHelper
+    static class SqLiteQueries
     {
         #region BalanceStatements
 

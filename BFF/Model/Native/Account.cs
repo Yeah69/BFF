@@ -206,10 +206,6 @@ namespace BFF.Model.Native
                 account.RefreshBalance();
         }
 
-        private DateTime _filterStartDate = new DateTime(2015, 6, 9);
-        private DateTime _filterEndDate = new DateTime(2016, 9, 6);
-        private bool _isFilterOn;
-
         #endregion
     }
 }

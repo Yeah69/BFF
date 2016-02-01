@@ -38,19 +38,19 @@ namespace BFF.DB.SQLite
             {
                 cnn.Open();
 
-                cnn.Execute(SqLiteHelper.CreatePayeeTableStatement);
-                cnn.Execute(SqLiteHelper.CreateCategoryTableStatement);
-                cnn.Execute(SqLiteHelper.CreateAccountTableStatement);
-                cnn.Execute(SqLiteHelper.CreateTransferTableStatement);
-                cnn.Execute(SqLiteHelper.CreateTransactionTableStatement);
-                cnn.Execute(SqLiteHelper.CreateSubTransactionTableStatement);
-                cnn.Execute(SqLiteHelper.CreateIncomeTableStatement);
-                cnn.Execute(SqLiteHelper.CreateSubIncomeTableStatement);
+                cnn.Execute(SqLiteQueries.CreatePayeeTableStatement);
+                cnn.Execute(SqLiteQueries.CreateCategoryTableStatement);
+                cnn.Execute(SqLiteQueries.CreateAccountTableStatement);
+                cnn.Execute(SqLiteQueries.CreateTransferTableStatement);
+                cnn.Execute(SqLiteQueries.CreateTransactionTableStatement);
+                cnn.Execute(SqLiteQueries.CreateSubTransactionTableStatement);
+                cnn.Execute(SqLiteQueries.CreateIncomeTableStatement);
+                cnn.Execute(SqLiteQueries.CreateSubIncomeTableStatement);
 
-                cnn.Execute(SqLiteHelper.CreateDbSettingTableStatement);
+                cnn.Execute(SqLiteQueries.CreateDbSettingTableStatement);
                 cnn.Insert(new DbSetting { CurrencyCultrureName = "en-US", DateCultureName = "en-US"});
 
-                cnn.Execute(SqLiteHelper.CreateTheTitViewStatement);
+                cnn.Execute(SqLiteQueries.CreateTheTitViewStatement);
 
                 cnn.Close();
             }
@@ -134,8 +134,8 @@ namespace BFF.DB.SQLite
                 cnn.Open();
 
                 ret = account == null 
-                    ? cnn.Query<long>(SqLiteHelper.AllAccountsBalanceStatement).First() 
-                    : cnn.Query<long>(SqLiteHelper.AccountSpecificBalanceStatement, new { accountId = account.Id }).First();
+                    ? cnn.Query<long>(SqLiteQueries.AllAccountsBalanceStatement).First() 
+                    : cnn.Query<long>(SqLiteQueries.AccountSpecificBalanceStatement, new { accountId = account.Id }).First();
 
                 cnn.Close();
             }

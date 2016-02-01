@@ -42,6 +42,9 @@ namespace BFF.Model.Native
             }
         }
 
+        [Write(false)]
+        public string FullName => $"{(_parent != null ? $"{_parent.FullName}." : "")}{Name}";
+
         /// <summary>
         /// Initializes the Object
         /// </summary>
