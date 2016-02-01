@@ -30,6 +30,7 @@
             <converters:SumColorMultiConverter x:Key="SumColorMulti" PositiveBrush="{StaticResource IncomeBrush}" NegativeBrush="{StaticResource TransactionBrush}" TransferBrush="{StaticResource TransferBrush}"/>
             <converters:SumToBrushConverter x:Key="SumToBrush" PositiveBrush="{StaticResource IncomeBrush}" NegativeBrush="{StaticResource TransactionBrush}"/>
             <converters:SumConverter x:Key="SumConverter" />
+            <converters:NegativeTransferMultiConverter x:Key="NegativeTransferConverter" />
             <converters:CategoriesToHierarchicalItemsSourceConverter x:Key="CategoriesToHierarchicalItemsSource" />
             <converters:DateToStringConverter x:Key="DateToString"/>
             <converters:DataGridWidthsToLeftMarginConverter x:Key="DataGridWidthsToLeftMargin" />
@@ -255,8 +256,14 @@
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type native:Transfer}"> <!-- todo: In Account-specific tabs the Sum has to be negated in special cases -->
-                            <TextBlock Name="TitGrid_SumBox" TextAlignment="Right"
-                                       Text="{Binding Sum, Converter={StaticResource SumConverter}}">
+                            <TextBlock Name="TitGrid_SumBox" TextAlignment="Right">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource NegativeTransferConverter}">
+                                        <Binding Path="DataContext" ElementName="TitView" />
+                                        <Binding Path="FromAccount" />
+                                        <Binding Path="Sum" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
                                 <TextBlock.Foreground>
                                     <MultiBinding Converter="{StaticResource SumColorMulti}">
                                         <Binding Path="DataContext" ElementName="TitView" />
