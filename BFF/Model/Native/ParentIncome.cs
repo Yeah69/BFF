@@ -95,7 +95,8 @@ namespace BFF.Model.Native
 
         public override bool ValidToInsert()
         {
-            return base.ValidToInsert() && NewSubElements.All(subElement => subElement.ValidToInsert());
+            return Account != null && (Database?.AllAccounts.Contains(Account) ?? false) &&
+                Payee != null && (Database?.AllPayees.Contains(Payee) ?? false) && NewSubElements.All(subElement => subElement.ValidToInsert());
         }
 
         private readonly ObservableCollection<SubIncome> _newSubElements = new ObservableCollection<SubIncome>();
