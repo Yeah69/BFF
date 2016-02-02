@@ -50,6 +50,11 @@ namespace BFF.Model.Native
             OnPropertyChanged(nameof(Balance));
         }
 
+        public void RefreshStartingBalance()
+        {
+            OnPropertyChanged(nameof(StartingBalance));
+        }
+
         #region ViewModel_Part
 
         [Write(false)]

@@ -40,6 +40,12 @@ namespace BFF.ViewModel
             NewAccount = new Account { Id = -1, Name = "", StartingBalance = 0L };
             OnPropertyChanged(nameof(NewAccount));
             NewAccount.RefreshBalance();
+            NewAccount.RefreshBalance();
+            if (Account.allAccounts != null)
+            {
+                Account.allAccounts.RefreshBalance();
+                Account.allAccounts.RefreshStartingBalance();
+            }
         }
         , param => !string.IsNullOrEmpty(NewAccount.Name));
         

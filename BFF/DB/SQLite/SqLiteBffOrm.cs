@@ -22,7 +22,7 @@ namespace BFF.DB.SQLite
             {
                 Settings.Default.DBLocation = value;
                 Settings.Default.Save();
-                Reset();
+                //Reset();
                 DbPathChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DbPath)));
             }
         }
@@ -420,6 +420,8 @@ namespace BFF.DB.SQLite
                     cnn.Close();
                 }
                 GetAllTits(DateTime.MinValue, DateTime.MaxValue);
+                Account.allAccounts?.RefreshStartingBalance(); //todo: Rather use the DbPathChanged event in AllAccounts
+                Account.allAccounts?.RefreshBalance();
             }
         }
 

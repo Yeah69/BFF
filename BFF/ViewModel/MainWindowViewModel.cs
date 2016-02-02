@@ -94,12 +94,14 @@ namespace BFF.ViewModel
             {
                 ResetCultures();
                 ContentViewModel.Refresh();
+                _orm.Reset();
                 Title = $"{new FileInfo(_orm.DbPath).Name} - BFF";
             }
             else if (File.Exists(_orm.DbPath) && !(ContentViewModel is AccountTabsViewModel))
             {
                 ResetCultures();
                 ContentViewModel = new AccountTabsViewModel(_orm);
+                _orm.Reset();
                 Title = $"{new FileInfo(_orm.DbPath).Name} - BFF";
             }
             else

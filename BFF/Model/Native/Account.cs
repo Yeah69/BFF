@@ -29,6 +29,7 @@ namespace BFF.Model.Native
                 _startingBalance = value;
                 Update();
                 OnPropertyChanged();
+                allAccounts?.RefreshStartingBalance();
             }
         }
 
