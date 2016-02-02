@@ -48,11 +48,13 @@ namespace BFF.Helper.Import
         }
 
         public string Import()
-         {
-            if(!File.Exists(TransactionPath))
-                throw new FileNotFoundException($"Localize this!!!!!"); //todo: Localize error message
+        {
+
+            string exceptionTemplate = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("Exception_FileNotFound", null, BffEnvironment.CultureProvider.LanguageCulture);
+            if (!File.Exists(TransactionPath))
+                throw new FileNotFoundException(string.Format(exceptionTemplate, TransactionPath));
             if(!File.Exists(BudgetPath))
-                throw new FileNotFoundException($"Localize this!!!!!"); //todo: Localize error message
+                throw new FileNotFoundException(string.Format(exceptionTemplate, BudgetPath));
             if (File.Exists(SavePath))
                 File.Delete(SavePath); //todo: Exception handling
             ImportYnabTransactionsCsvtoDb(TransactionPath, BudgetPath, SavePath);
@@ -70,7 +72,7 @@ namespace BFF.Helper.Import
             if (NumberExtractRegex.IsMatch(text))
             {
                 string concatedNumber = NumberExtractRegex.Matches(text).Cast<Match>().Aggregate("", (current, match) => current + match.Value);
-                return long.Parse(concatedNumber); // todo: there are exceptions to the divide through hundred
+                return long.Parse(concatedNumber);
             }
             return 0L;
         }

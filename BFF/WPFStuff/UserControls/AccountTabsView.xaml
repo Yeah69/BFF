@@ -49,7 +49,7 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <metro:PackIconMaterial Kind="{StaticResource AllAccountsIcon}" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
-                            <TextBlock Text="{lex:Loc All_Accounts}" />
+                            <TextBlock Text="{lex:Loc AccountTabsView_AllAccounts}" />
                         </StackPanel>
                     </DataTemplate>
                 </controls:MetroTabItem.HeaderTemplate>
@@ -65,7 +65,7 @@
                     </DataTemplate>
                 </controls:MetroTabItem.HeaderTemplate>
                 <StackPanel Width="500" DataContext="{Binding NewAccount}">
-                    <Label Content="{lex:Loc NewAccount_Name}"/>
+                    <Label Content="{lex:Loc AccountTabsView_NewAccount_Name}"/>
                     <TextBox Name="NewAccount_Name">
                         <TextBox.Text>
                             <Binding Path="Name" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
@@ -75,7 +75,7 @@
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
-                    <Label Content="{lex:Loc NewAccount_StartingBalance}"/>
+                    <Label Content="{lex:Loc AccountTabsView_NewAccount_StartingBalance}"/>
                     <TextBox MaxLength="30" Name="NewAccount_StartingBalance">
                         <TextBox.Text>
                             <Binding Path="StartingBalance" Mode="TwoWay" Converter="{StaticResource SumConverter}" UpdateSourceTrigger="PropertyChanged" >
@@ -86,7 +86,7 @@
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
-                    <Button HorizontalAlignment="Right" Content="{lex:Loc General_Create}" Command="{Binding DataContext.NewAccountCommand, ElementName=filledMainWindow}">
+                    <Button HorizontalAlignment="Right" Content="{lex:Loc AccountTabsView_NewAccount_Create}" Command="{Binding DataContext.NewAccountCommand, ElementName=filledMainWindow}">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
                                 <Setter Property="IsEnabled" Value="False"/>

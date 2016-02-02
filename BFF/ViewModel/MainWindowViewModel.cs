@@ -54,8 +54,8 @@ namespace BFF.ViewModel
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Title = "Create a new Budget Plan", /* todo: Localize */
-                Filter = "BFF Budget Plan (*.sqlite)|*.sqlite", /* todo: Localize? */
+                Title = (string) WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_TitleNew", null, BffEnvironment.CultureProvider.LanguageCulture), 
+                Filter = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_Filter", null, BffEnvironment.CultureProvider.LanguageCulture), 
                 DefaultExt = "*.sqlite"
             };
             if (saveFileDialog.ShowDialog() == true)
@@ -70,8 +70,8 @@ namespace BFF.ViewModel
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Title = "Open an existing Budget Plan", /* todo: Localize */
-                Filter = "BFF Budget Plan (*.sqlite)|*.sqlite", /* todo: Localize? */
+                Title = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_TitleOpen", null, BffEnvironment.CultureProvider.LanguageCulture),
+                Filter = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_Filter", null, BffEnvironment.CultureProvider.LanguageCulture),
                 DefaultExt = "*.sqlite"
             }; ;
             if (openFileDialog.ShowDialog() == true)

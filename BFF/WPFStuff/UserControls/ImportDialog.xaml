@@ -9,7 +9,7 @@
              lex:ResxLocalizationProvider.DefaultDictionary="Resources"
              xmlns:Dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Title="{lex:Loc General_Import}">
+             d:DesignHeight="300" d:DesignWidth="300" Title="{lex:Loc ImportView_YNAB4}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -24,16 +24,16 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Label Content="{lex:Loc ImpDiag_YnabTransLabel}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" />
+        <Label Content="{lex:Loc ImportView_YNAB4_Transaction}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" />
         <TextBox Text="{Binding Path=Importable.TransactionPath, Mode=TwoWay}" Grid.Row="1" Grid.Column="0" Margin="5" />
-        <Button Content="{lex:Loc General_Browse}" Command="{Binding BrowseYnabCsvTransactionCommand}" Grid.Row="1" Grid.Column="1" Margin="5" />
-        <Label Content="{lex:Loc ImpDiag_YnabBudgLabel}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
+        <Button Content="{lex:Loc ImportView_Browse}" Command="{Binding BrowseYnabCsvTransactionCommand}" Grid.Row="1" Grid.Column="1" Margin="5" />
+        <Label Content="{lex:Loc ImportView_YNAB4_Budget}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
         <TextBox Text="{Binding Path=Importable.BudgetPath, Mode=TwoWay}" Grid.Row="3" Grid.Column="0" Margin="5" />
-        <Button Content="{lex:Loc General_Browse}" Command="{Binding BrowseYnabCsvBudgetCommand}" Grid.Row="3" Grid.Column="1" Margin="5"  />
-        <Label Content="{lex:Loc ImpDiag_SaveToFile}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" />
+        <Button Content="{lex:Loc ImportView_Browse}" Command="{Binding BrowseYnabCsvBudgetCommand}" Grid.Row="3" Grid.Column="1" Margin="5"  />
+        <Label Content="{lex:Loc ImportView_SaveFile}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" />
         <TextBox Text="{Binding Path=Importable.SavePath, Mode=TwoWay}" Grid.Row="5" Grid.Column="0" Margin="5" />
-        <Button Content="{lex:Loc General_Browse}" Command="{Binding BrowseSaveCommand}" Grid.Row="5" Grid.Column="1" Margin="5" />
-        <Button Name="ButtCancel"  Content="{lex:Loc General_Cancel}" Grid.Row="6" Grid.Column="0" Margin="5" HorizontalAlignment="Right" />
-        <Button Name="ButtImport" Content="{lex:Loc General_Import}" Grid.Row="6" Grid.Column="1" Margin="5"  />
+        <Button Content="{lex:Loc ImportView_Browse}" Command="{Binding BrowseSaveCommand}" Grid.Row="5" Grid.Column="1" Margin="5" />
+        <Button Name="ButtCancel"  Content="{lex:Loc ImportView_Import}" Grid.Row="6" Grid.Column="0" Margin="5" HorizontalAlignment="Right" />
+        <Button Name="ButtImport" Content="{lex:Loc ImportView_Cancel}" Grid.Row="6" Grid.Column="1" Margin="5"  />
     </Grid>
 </Dialogs:BaseMetroDialog>
