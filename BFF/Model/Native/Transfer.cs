@@ -141,6 +141,12 @@ namespace BFF.Model.Native
             return ret;
         }
 
+        public override bool ValidToInsert()
+        {
+            return FromAccount != null && (Database?.AllAccounts.Contains(FromAccount) ?? false) &&
+                ToAccount != null && (Database?.AllAccounts.Contains(ToAccount) ?? false);
+        }
+
         protected override void InsertToDb()
         {
             Database?.Insert(this);

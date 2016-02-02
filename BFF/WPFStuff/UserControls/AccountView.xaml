@@ -92,12 +92,15 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}">
                             <ComboBox TextSearch.TextPath="Name"
-                                                              IsEditable="True"
-                                                              IsTextSearchCaseSensitive="False"
-                                                              IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
+                                      IsEditable="True"
+                                      IsTextSearchCaseSensitive="False"
+                                      IsTextSearchEnabled="True"
+                                      ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <validationRules:NoNullRule />
+                                        </Binding.ValidationRules>
                                     </Binding>
                                 </ComboBox.SelectedItem>
                             </ComboBox>

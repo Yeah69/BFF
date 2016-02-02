@@ -113,6 +113,11 @@ namespace BFF.Model.Native
 
         #region SubElementStuff
 
+        public override bool ValidToInsert()
+        {
+            return base.ValidToInsert() && NewSubElements.All(subElement => subElement.ValidToInsert());
+        }
+
         private readonly ObservableCollection<SubTransaction> _newSubElements = new ObservableCollection<SubTransaction>();
 
         /// <summary>

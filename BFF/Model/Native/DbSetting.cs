@@ -43,6 +43,11 @@ namespace BFF.Model.Native
             Database?.Insert(this);
         }
 
+        public override bool ValidToInsert()
+        {
+            return true;
+        }
+
         protected override void UpdateToDb()
         {
             Database?.Update(this);

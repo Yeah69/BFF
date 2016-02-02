@@ -55,6 +55,11 @@ namespace BFF.Model.Native
             OnPropertyChanged(nameof(StartingBalance));
         }
 
+        public override bool ValidToInsert()
+        {
+            return false;
+        }
+
         #region ViewModel_Part
 
         [Write(false)]

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.ExceptionServices;
-using System.Windows;
 using System.Windows.Input;
 using BFF.WPFStuff;
 using Dapper.Contrib.Extensions;
@@ -168,6 +166,13 @@ namespace BFF.Model.Native.Structure
                 }
             }
         });
+
+        public override bool ValidToInsert()
+        {
+            return Account != null && (Database?.AllAccounts.Contains(Account) ?? false) && 
+                Payee != null && (Database?.AllPayees.Contains(Payee) ?? false) && 
+                Category != null && (Database?.AllCategories.Contains(Category) ?? false);
+        }
 
         #region EditingPayeeAndCategory
 

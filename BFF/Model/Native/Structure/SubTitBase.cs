@@ -104,6 +104,11 @@ namespace BFF.Model.Native.Structure
             ConstrDbLock = false;
         }
 
+        public override bool ValidToInsert()
+        {
+            return Category != null && (Database?.AllCategories.Contains(Category) ?? false) && Parent != null;
+        }
+
         [Write(false)]
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {

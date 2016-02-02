@@ -29,5 +29,10 @@
 
             ConstrDbLock = false;
         }
+
+        public override bool ValidToInsert()
+        {
+            return !string.IsNullOrEmpty(Name);
+        }
     }
 }

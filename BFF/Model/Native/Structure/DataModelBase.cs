@@ -37,13 +37,14 @@ namespace BFF.Model.Native.Structure
         }
 
         protected abstract void InsertToDb();
+        public abstract bool ValidToInsert();
 
         /// <summary>
         /// Inserts this object to the database
         /// </summary>
         public void Insert()
         {
-            if(Id == -1L) InsertToDb();
+            if(Id == -1L && ValidToInsert()) InsertToDb();
         }
 
         protected abstract void UpdateToDb();

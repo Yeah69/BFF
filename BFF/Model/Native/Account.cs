@@ -169,9 +169,11 @@ namespace BFF.Model.Native
         protected void ApplyTits()
         {
             List<Account> accounts = new List<Account>();
-            foreach (TitBase tit in NewTits)
+            List<TitBase> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
+            foreach (TitBase tit in insertTits)
             {
                 tit.Insert();
+                NewTits.Remove(tit);
                 if (tit is IParentTitNoTransfer<SubTransaction>)
                 {
                     IParentTitNoTransfer<SubTransaction> parentTransaction = tit as IParentTitNoTransfer<SubTransaction>;
@@ -201,8 +203,7 @@ namespace BFF.Model.Native
                     if(!accounts.Contains(transfer.ToAccount)) accounts.Add(transfer.ToAccount);
                 }
             }
-            OnPropertyChanged(nameof(Tits));//todo:Validate correctness
-            NewTits.Clear();
+            OnPropertyChanged(nameof(Tits));
             foreach(Account account in accounts)
                 account.RefreshBalance();
         }

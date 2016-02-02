@@ -22,5 +22,10 @@ namespace BFF.Model.Native
         {
             Database?.Delete(this);
         }
+
+        public override bool ValidToInsert()
+        {
+            return false; //... , because Budgets are not a feature, yet. todo: Update this when the time comes
+        }
     }
 }
