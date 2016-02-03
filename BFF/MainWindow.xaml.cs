@@ -134,7 +134,7 @@ namespace BFF
             FileFlyout.IsOpen = false;
 
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
-            ImportDialogViewModel importDialogVM = new ImportDialogViewModel
+            ImportDialogViewModel importDialogVm = new ImportDialogViewModel
             {
                 Importable = new YnabCsvImport(_orm)
                 {
@@ -143,17 +143,17 @@ namespace BFF
                     SavePath = Settings.Default.Import_SavePath
                 }
             };
-            ImportDialog importDialog = new ImportDialog{ DataContext = importDialogVM };
+            ImportDialog importDialog = new ImportDialog{ DataContext = importDialogVm };
             importDialog.ButtCancel.Click += (o, args) => this.HideMetroDialogAsync(importDialog);
             importDialog.ButtImport.Click += (o, args) =>
             {
-                Settings.Default.Import_YnabCsvTransaction = ((YnabCsvImport)importDialogVM.Importable).TransactionPath;
-                Settings.Default.Import_YnabCsvBudget = ((YnabCsvImport)importDialogVM.Importable).BudgetPath;
-                Settings.Default.Import_SavePath = importDialogVM.Importable.SavePath;
+                Settings.Default.Import_YnabCsvTransaction = ((YnabCsvImport)importDialogVm.Importable).TransactionPath;
+                Settings.Default.Import_YnabCsvBudget = ((YnabCsvImport)importDialogVm.Importable).BudgetPath;
+                Settings.Default.Import_SavePath = importDialogVm.Importable.SavePath;
                 Settings.Default.Save();
                 this.HideMetroDialogAsync(importDialog);
-                if(ImportCommand.CanExecute(importDialogVM.Importable))
-                    Dispatcher.Invoke(() => ImportCommand.Execute(importDialogVM.Importable), DispatcherPriority.Background);
+                if(ImportCommand.CanExecute(importDialogVm.Importable))
+                    Dispatcher.Invoke(() => ImportCommand.Execute(importDialogVm.Importable), DispatcherPriority.Background);
             };
             this.ShowMetroDialogAsync(importDialog);
         }
@@ -177,7 +177,7 @@ namespace BFF
                     if (depObj is IRefreshCurrencyVisuals)
                     {
                         IRefreshCurrencyVisuals rcv = depObj as IRefreshCurrencyVisuals;
-                        rcv?.RefreshCurrencyVisuals();
+                        rcv.RefreshCurrencyVisuals();
                     }
                 }
             }
@@ -202,10 +202,15 @@ namespace BFF
                     if (depObj is IRefreshDateVisuals)
                     {
                         IRefreshDateVisuals rcv = depObj as IRefreshDateVisuals;
-                        rcv?.RefreshDateVisuals();
+                        rcv.RefreshDateVisuals();
                     }
                 }
             }
+        }
+
+        private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
+        {
+            RefreshDateVisuals();
         }
     }
 

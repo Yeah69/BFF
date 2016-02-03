@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.IO;
-using System.Runtime.Remoting.Channels;
 using System.Threading;
 using BFF.DB;
 using BFF.Model.Native;
@@ -15,6 +14,7 @@ namespace BFF.Helper
         private CultureInfo _languageCulture = CultureInfo.GetCultureInfo("en-US");
         private CultureInfo _currencyCulture = CultureInfo.GetCultureInfo("de-DE");
         private CultureInfo _dateCulture = CultureInfo.GetCultureInfo("de-DE");
+        private bool _dateLong;
 
         public CultureInfo LanguageCulture
         {
@@ -58,10 +58,22 @@ namespace BFF.Helper
             }
         }
 
+        public bool DateLong
+        {
+            get { return _dateLong; }
+            set
+            {
+                Settings.Default.Localization_Date_Long = value;
+                Settings.Default.Save();
+                _dateLong = value;
+            }
+        }
+
         public BffCultureProvider(IBffOrm orm)
         {
             _orm = orm;
             _orm.DbPathChanged += (sender, args) => applyNewDatabase();
+            _dateLong = Settings.Default.Localization_Date_Long;
             LanguageCulture = CultureInfo.GetCultureInfo(Settings.Default.Localization_Language);
             if (File.Exists(_orm.DbPath))
             {

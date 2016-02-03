@@ -48,7 +48,7 @@ namespace BFF.DB.SQLite
                 cnn.Execute(SqLiteQueries.CreateSubIncomeTableStatement);
 
                 cnn.Execute(SqLiteQueries.CreateDbSettingTableStatement);
-                cnn.Insert(new DbSetting { CurrencyCultrureName = "en-US", DateCultureName = "en-US"});
+                cnn.Insert(new DbSetting { CurrencyCultrureName = "de-DE", DateCultureName = "de-DE"});
 
                 cnn.Execute(SqLiteQueries.CreateTheTitViewStatement);
 

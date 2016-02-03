@@ -441,6 +441,15 @@ namespace BFF.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string MainWindow_Settings_Date_Long_Inverted {
+            get {
+                return ResourceManager.GetString("MainWindow_Settings_Date_Long_Inverted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string MainWindow_Settings_Date_Short {
             get {
                 return ResourceManager.GetString("MainWindow_Settings_Date_Short", resourceCulture);

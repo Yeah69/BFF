@@ -106,5 +106,17 @@ namespace BFF.Properties {
                 this["Import_SavePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Localization_Date_Long {
+            get {
+                return ((bool)(this["Localization_Date_Long"]));
+            }
+            set {
+                this["Localization_Date_Long"] = value;
+            }
+        }
     }
 }

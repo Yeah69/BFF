@@ -243,6 +243,9 @@
   <data name="MainWindow_Settings_Date_Long" xml:space="preserve">
     <value />
   </data>
+  <data name="MainWindow_Settings_Date_Long_Inverted" xml:space="preserve">
+    <value />
+  </data>
   <data name="MainWindow_Settings_Date_Short" xml:space="preserve">
     <value />
   </data>

@@ -11,7 +11,8 @@ namespace BFF.WPFStuff.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var itemCulture = CultureInfo.GetCultureInfo((string) value);
-            return (string) parameter == "long" ? SampleValue.ToString(itemCulture.DateTimeFormat.LongDatePattern) : SampleValue.ToString(itemCulture.DateTimeFormat.ShortDatePattern);
+            return (string) parameter == "long" ? SampleValue.ToString(itemCulture.DateTimeFormat.LongDatePattern, itemCulture.DateTimeFormat) 
+                : SampleValue.ToString(itemCulture.DateTimeFormat.ShortDatePattern, itemCulture.DateTimeFormat);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

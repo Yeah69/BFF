@@ -152,6 +152,7 @@
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="WPFStuff\Behaviors\AdditionalTabItemsBehavior.cs" />
+    <Compile Include="WPFStuff\Converters\BooleanToNullableBooleanConverter.cs" />
     <Compile Include="WPFStuff\Converters\CategoriesToHierarchicalItemsSourceConverter.cs" />
     <Compile Include="WPFStuff\Converters\DateToStringConverter.cs" />
     <Compile Include="WPFStuff\Converters\DateComboConverter.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="WPFStuff\Converters\CurrencyComboConverter.cs" />
     <Compile Include="WPFStuff\Converters\DataGridWidthsToLeftMarginConverter.cs" />
     <Compile Include="WPFStuff\Converters\NegativeTransferMultiConverter.cs" />
+    <Compile Include="WPFStuff\Converters\BooleanToDatePickerFormatConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumColorMultiConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />

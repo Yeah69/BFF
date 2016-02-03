@@ -35,6 +35,7 @@
             <converters:DateToStringConverter x:Key="DateToString"/>
             <converters:DataGridWidthsToLeftMarginConverter x:Key="DataGridWidthsToLeftMargin" />
             <converters:DataGridLengthsToDoubleConverter x:Key="DataGridLengthsToDouble" />
+            <converters:BooleanToDatePickerFormatConverter x:Key="BooleanToDatePickerFormatConverter"/>
             <!--#endregion -->
 
             <!--#region Icons -->
@@ -116,7 +117,7 @@
                 <TextBlock Text="{Binding Date, Converter={StaticResource DateToString}}" />
             </DataTemplate>
             <DataTemplate x:Key="DateEditingDataTemplate">
-                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}" />
+                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}" SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitView, Converter={StaticResource BooleanToDatePickerFormatConverter}}"/>
             </DataTemplate>
             <!-- Payee -->
             <DataTemplate x:Key="PayeeDataTemplate">

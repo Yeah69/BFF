@@ -43,6 +43,11 @@ namespace BFF.ViewModel
 
         public CultureInfo CurrencyCulture => BffEnvironment.CultureProvider.CurrencyCulture;
         public CultureInfo DateCulture => BffEnvironment.CultureProvider.DateCulture;
+        public bool DateLong
+        {
+            get { return BffEnvironment.CultureProvider.DateLong; }
+            set { BffEnvironment.CultureProvider.DateLong = value; }
+        }
 
         public MainWindowViewModel(IBffOrm orm)
         {

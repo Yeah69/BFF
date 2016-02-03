@@ -22,6 +22,7 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:CurrencyComboConverter x:Key="CurrencyComboConverter"/>
             <converters:DateComboConverter x:Key="DateComboConverter"/>
+            <converters:BooleanToNullableBooleanConverter x:Key="BooleanToNullableBooleanConverter"/>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
@@ -77,7 +78,7 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <Label Content="{lex:Loc MainWindow_Settings_Date}"/>
+                        <Label Content="{lex:Loc MainWindow_Settings_Date}" />
                         <ComboBox Name="DateCombo" SelectedItem="{Binding DateCulture, Mode=OneWay}" SelectionChanged="DateCombo_OnSelectionChanged" Style="{StaticResource VirtualisedMetroComboBox}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -101,6 +102,11 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+                        <CheckBox Content="{lex:Loc MainWindow_Settings_Date_Long_Inverted}" Margin="5" 
+                                  FlowDirection="RightToLeft" HorizontalAlignment="Right"
+                                  IsChecked="{Binding DateLong, Mode=TwoWay, Converter={StaticResource BooleanToNullableBooleanConverter}}"
+                                  Checked="ToggleButton_OnChecked"
+                                  Unchecked="ToggleButton_OnChecked"/>
                     </StackPanel>
                 </Grid>
             </controls:Flyout>

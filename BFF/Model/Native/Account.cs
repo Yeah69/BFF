@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using BFF.Helper;
 using BFF.Model.Native.Structure;
 using BFF.WPFStuff;
 using Dapper.Contrib.Extensions;
@@ -207,6 +208,9 @@ namespace BFF.Model.Native
             foreach(Account account in accounts)
                 account.RefreshBalance();
         }
+
+        [Write(false)]
+        public bool IsDateFormatLong => BffEnvironment.CultureProvider?.DateLong ?? false;
 
         #endregion
     }
