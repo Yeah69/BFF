@@ -13,7 +13,7 @@ namespace BFF.ViewModel
     public class MainWindowViewModel : ObservableObject
     {
         private readonly IBffOrm _orm;
-        protected bool _fileFlyoutIsOpen;
+        protected bool FileFlyoutIsOpen;
         protected string _title;
         private EmptyContentViewModel _contentViewModel;
 
@@ -78,7 +78,7 @@ namespace BFF.ViewModel
                 Title = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_TitleOpen", null, BffEnvironment.CultureProvider.LanguageCulture),
                 Filter = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_Filter", null, BffEnvironment.CultureProvider.LanguageCulture),
                 DefaultExt = "*.sqlite"
-            }; ;
+            };
             if (openFileDialog.ShowDialog() == true)
             {
                 _orm.DbPath = openFileDialog.FileName;

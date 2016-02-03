@@ -10,7 +10,7 @@ namespace BFF.WPFStuff.Behaviors
 {
     public class AdditionalTabItemsBehavior : Behavior<TabControl>
     {
-        private Dictionary<object, TabItem> _objectToTabItem = new Dictionary<object, TabItem>();
+        private readonly Dictionary<object, TabItem> _objectToTabItem = new Dictionary<object, TabItem>();
 
         #region ItemsSource Property
 
@@ -105,7 +105,7 @@ namespace BFF.WPFStuff.Behaviors
             else
                 newTabItem.Header = obj?.ToString() ?? "NULL";
             tabControl.Items.Insert(index, newTabItem);
-            objectToTabItem.Add(obj, newTabItem);
+            if(obj != null) objectToTabItem.Add(obj, newTabItem);
         }
 
         #endregion
@@ -123,7 +123,6 @@ namespace BFF.WPFStuff.Behaviors
 
         private static void OnContentTemplateChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            //todo if this is bound dynamically
         }
 
         #endregion
@@ -141,7 +140,6 @@ namespace BFF.WPFStuff.Behaviors
 
         private static void OnHeaderTemplateChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            //todo if this is bound dynamically
         }
 
         #endregion
@@ -159,7 +157,6 @@ namespace BFF.WPFStuff.Behaviors
 
         private static void OnStartingIndexChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            //todo if this is bound dynamically
         }
 
         #endregion

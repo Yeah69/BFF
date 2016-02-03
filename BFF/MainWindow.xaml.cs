@@ -166,11 +166,11 @@ namespace BFF
 
         public void RefreshCurrencyVisuals()
         {
-            if(ContentControl.Content != null)
+            if(MainContentControl.Content != null)
             {
-                //When the ContentControl has Content, then the first child is the ContentPresenter 
+                //When the MainContentControl has Content, then the first child is the ContentPresenter 
                 //and its first child is the root of the DataTemplates generated content
-                DependencyObject depObj = VisualTreeHelper.GetChild(ContentControl, 0);
+                DependencyObject depObj = VisualTreeHelper.GetChild(MainContentControl, 0);
                 if (VisualTreeHelper.GetChildrenCount(depObj) > 0)
                 {
                     depObj = VisualTreeHelper.GetChild(depObj, 0);
@@ -191,11 +191,11 @@ namespace BFF
 
         public void RefreshDateVisuals()
         {
-            if(ContentControl.Content != null)
+            if(MainContentControl.Content != null)
             {
-                //When the ContentControl has Content, then the first child is the ContentPresenter 
+                //When the MainContentControl has Content, then the first child is the ContentPresenter 
                 //and its first child is the root of the DataTemplates generated content
-                DependencyObject depObj = VisualTreeHelper.GetChild(ContentControl, 0);
+                DependencyObject depObj = VisualTreeHelper.GetChild(MainContentControl, 0);
                 if (VisualTreeHelper.GetChildrenCount(depObj) > 0)
                 {
                     depObj = VisualTreeHelper.GetChild(depObj, 0);

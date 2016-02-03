@@ -106,7 +106,6 @@ namespace BFF.Model.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The transfered Sum</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        /// <param name="type">Indicates the Tit-Type and if it is a Single or Parent</param>
         public Transfer(long id, long fromAccountId, long toAccountId, DateTime date, string memo,
             long sum, bool cleared)
             : base(date, id, memo, sum, cleared)

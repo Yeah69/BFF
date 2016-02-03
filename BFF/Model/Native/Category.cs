@@ -81,12 +81,12 @@ namespace BFF.Model.Native
         /// <returns>Name with preceding dots (foreach Ancestor one)</returns>
         public override string ToString()
         {
-            return $"{Parent?.getIndent()}{Name}";
+            return $"{Parent?.GetIndent()}{Name}";
         }
 
-        private string getIndent()
+        private string GetIndent()
         {
-            return $"{Parent?.getIndent()}. ";
+            return $"{Parent?.GetIndent()}. ";
         }
 
         private static readonly Dictionary<string, Category> Cache = new Dictionary<string, Category>();

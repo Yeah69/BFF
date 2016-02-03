@@ -5,7 +5,7 @@
     <!-- ********************************** CheckBoxStyle **********************************-->
     <!-- adapted form MahApps.Metro, which on their side was ...-->
     <!-- adapted from http://brianlagunas.com/free-metro-light-and-dark-themes-for-wpf-and-silverlight-microsoft-controls/ -->
-    <Style x:Key="BFFCheckBox"
+    <Style x:Key="BffCheckBox"
            TargetType="CheckBox">
         <Setter Property="Foreground"
                 Value="{DynamicResource LabelTextBrush}" />

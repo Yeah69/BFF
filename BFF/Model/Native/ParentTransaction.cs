@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -27,7 +28,7 @@ namespace BFF.Model.Native
             {
                 if (_subElements == null)
                 {
-                    _subElements = new ObservableCollection<SubTransaction>(Database?.GetSubTransInc<SubTransaction>(Id));
+                    _subElements = new ObservableCollection<SubTransaction>(Database?.GetSubTransInc<SubTransaction>(Id) ?? new List<SubTransaction>());
                     foreach (SubTransaction subTransaction in _subElements)
                         subTransaction.Parent = this;
                 }

@@ -13,10 +13,7 @@ namespace BFF.ViewModel
 
         protected readonly IBffOrm _orm;
 
-        public IBffOrm Orm
-        {
-            get { return _orm; }
-        }
+        public IBffOrm Orm => _orm;
 
         public ObservableCollection<Account> AllAccounts => _orm.AllAccounts;
 

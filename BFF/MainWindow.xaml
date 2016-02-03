@@ -131,11 +131,11 @@
             <Button Name="SettingsButt" Click="SettingsButt_Click">
                 <metro:PackIconMaterial Kind="{StaticResource SettingsIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" />
             </Button>
-            <Button Content="{lex:Loc MainWindow_About}"/>
+            <Button Name="AboutButt" Content="{lex:Loc MainWindow_About}"/>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <Grid>
-        <ContentControl Name="ContentControl"  Content="{Binding ContentViewModel}">
+        <ContentControl Name="MainContentControl"  Content="{Binding ContentViewModel}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type viewModel:AccountTabsViewModel}">
                     <usercontrols:AccountTabsView x:Name="MainContent" />

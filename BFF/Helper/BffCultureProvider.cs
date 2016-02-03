@@ -22,7 +22,7 @@ namespace BFF.Helper
             set
             {
                 _languageCulture = value;
-                createAndApplyCustomCulture();
+                CreateAndApplyCustomCulture();
                 Settings.Default.Localization_Language = value.Name;
                 Settings.Default.Save();
             }
@@ -34,7 +34,7 @@ namespace BFF.Helper
             set
             {
                 _currencyCulture = value;
-                createAndApplyCustomCulture();
+                CreateAndApplyCustomCulture();
                 if (File.Exists(_orm.DbPath))
                 {
                     DbSetting dbSetting = _orm.Get<DbSetting>(1);
@@ -49,7 +49,7 @@ namespace BFF.Helper
             set
             {
                 _dateCulture = value;
-                createAndApplyCustomCulture();
+                CreateAndApplyCustomCulture();
                 if (File.Exists(_orm.DbPath))
                 {
                     DbSetting dbSetting = _orm.Get<DbSetting>(1);
@@ -72,20 +72,20 @@ namespace BFF.Helper
         public BffCultureProvider(IBffOrm orm)
         {
             _orm = orm;
-            _orm.DbPathChanged += (sender, args) => applyNewDatabase();
+            _orm.DbPathChanged += (sender, args) => ApplyNewDatabase();
             _dateLong = Settings.Default.Localization_Date_Long;
             LanguageCulture = CultureInfo.GetCultureInfo(Settings.Default.Localization_Language);
             if (File.Exists(_orm.DbPath))
             {
-                applyNewDatabase();
+                ApplyNewDatabase();
             }
             else
             {
-                createAndApplyCustomCulture();
+                CreateAndApplyCustomCulture();
             }
         }
 
-        private void createAndApplyCustomCulture()
+        private void CreateAndApplyCustomCulture()
         {
             _customCulture = CultureInfo.CreateSpecificCulture(LanguageCulture.Name);
             _customCulture.NumberFormat = CurrencyCulture.NumberFormat;
@@ -95,14 +95,14 @@ namespace BFF.Helper
             Thread.CurrentThread.CurrentUICulture = _customCulture;
         }
 
-        private void applyNewDatabase()
+        private void ApplyNewDatabase()
         {
             if (File.Exists(_orm.DbPath))
             {
                 DbSetting dbSetting = _orm.Get<DbSetting>(1);
                 CurrencyCulture = dbSetting.CurrencyCulture;
                 DateCulture = dbSetting.DateCulture;
-                createAndApplyCustomCulture();
+                CreateAndApplyCustomCulture();
             }
         }
     }

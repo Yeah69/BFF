@@ -15,7 +15,7 @@
              xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700"
-             Name="TitView" Loaded="TitDataGrid_OnLoaded">
+             Name="TitsView" Loaded="AccountView_OnLoaded">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -27,14 +27,14 @@
             </ResourceDictionary.MergedDictionaries>
             
             <!--#region Converters -->
-            <converters:SumColorMultiConverter x:Key="SumColorMulti" PositiveBrush="{StaticResource IncomeBrush}" NegativeBrush="{StaticResource TransactionBrush}" TransferBrush="{StaticResource TransferBrush}"/>
-            <converters:SumToBrushConverter x:Key="SumToBrush" PositiveBrush="{StaticResource IncomeBrush}" NegativeBrush="{StaticResource TransactionBrush}"/>
+            <converters:SumColorMultiConverter x:Key="SumColorMultiConverter" PositiveBrush="{StaticResource IncomeBrush}" NegativeBrush="{StaticResource TransactionBrush}" TransferBrush="{StaticResource TransferBrush}"/>
+            <converters:SumToBrushConverter x:Key="SumToBrushConverter" PositiveBrush="{StaticResource IncomeBrush}" NegativeBrush="{StaticResource TransactionBrush}"/>
             <converters:SumConverter x:Key="SumConverter" />
-            <converters:NegativeTransferMultiConverter x:Key="NegativeTransferConverter" />
-            <converters:CategoriesToHierarchicalItemsSourceConverter x:Key="CategoriesToHierarchicalItemsSource" />
-            <converters:DateToStringConverter x:Key="DateToString"/>
-            <converters:DataGridWidthsToLeftMarginConverter x:Key="DataGridWidthsToLeftMargin" />
-            <converters:DataGridLengthsToDoubleConverter x:Key="DataGridLengthsToDouble" />
+            <converters:NegativeTransferMultiConverter x:Key="NegativeTransferMultiConverter" />
+            <converters:CategoriesToHierarchicalItemsSourceConverter x:Key="CategoriesToHierarchicalItemsSourceConverter" />
+            <converters:DateToStringConverter x:Key="DateToStringConverter"/>
+            <converters:DataGridWidthsToLeftMarginConverter x:Key="DataGridWidthsToLeftMarginConverter" />
+            <converters:DataGridLengthsToDoubleConverter x:Key="DataGridLengthsToDoubleConverter" />
             <converters:BooleanToDatePickerFormatConverter x:Key="BooleanToDatePickerFormatConverter"/>
             <!--#endregion -->
 
@@ -47,7 +47,7 @@
             <metro:PackIconMaterialKind x:Key="RemoveFromTableIcon">TableRowRemove</metro:PackIconMaterialKind>
             <!--#endregion -->
 
-            <ContextMenu  x:Key="RowMenu">
+            <ContextMenu x:Key="RowMenu">
                 <MenuItem Header="{lex:Loc AccountView_ConMenu_Delete}" Command="{Binding DeleteCommand}">
                     <MenuItem.Icon>
                         <metro:PackIconMaterial Kind="{StaticResource RemoveFromTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{StaticResource BlackBrush}" />
@@ -60,7 +60,7 @@
 
             <!--#region ColumnTemplates -->
             <!-- Symbol -->
-            <DataTemplate x:Key="SymbolDataTemplate">
+            <DataTemplate x:Key="SymbolColumnTemplate">
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type native:Transaction}">
@@ -76,7 +76,7 @@
                 </ContentControl>
             </DataTemplate>
             <!-- Account -->
-            <DataTemplate x:Key="AccountDataTemplate">
+            <DataTemplate x:Key="AccountColumnTemplate">
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}">
@@ -88,7 +88,7 @@
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
-            <DataTemplate  x:Key="AccountEditingDataTemplate">
+            <DataTemplate  x:Key="AccountEditingColumnTemplate">
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}">
@@ -96,7 +96,7 @@
                                       IsEditable="True"
                                       IsTextSearchCaseSensitive="False"
                                       IsTextSearchEnabled="True"
-                                      ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
+                                      ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitsView}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
@@ -113,14 +113,14 @@
                 </ContentControl>
             </DataTemplate>
             <!-- Date -->
-            <DataTemplate x:Key="DateDataTemplate">
-                <TextBlock Text="{Binding Date, Converter={StaticResource DateToString}}" />
+            <DataTemplate x:Key="DateColumnTemplate">
+                <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringConverter}}" />
             </DataTemplate>
-            <DataTemplate x:Key="DateEditingDataTemplate">
-                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}" SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitView, Converter={StaticResource BooleanToDatePickerFormatConverter}}"/>
+            <DataTemplate x:Key="DateEditingColumnTemplate">
+                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}" SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitsView, Converter={StaticResource BooleanToDatePickerFormatConverter}}"/>
             </DataTemplate>
             <!-- Payee -->
-            <DataTemplate x:Key="PayeeDataTemplate">
+            <DataTemplate x:Key="PayeeColumnTemplate">
                 <ContentControl HorizontalAlignment="Stretch"  Content="{Binding}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
@@ -135,7 +135,7 @@
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
-            <DataTemplate x:Key="PayeeEditingDataTemplate">
+            <DataTemplate x:Key="PayeeEditingColumnTemplate">
                 <ContentControl HorizontalAlignment="Stretch" Content="{Binding}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
@@ -165,7 +165,7 @@
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
                                                               IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
+                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitsView}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     </Binding>
@@ -176,7 +176,7 @@
                 </ContentControl>
             </DataTemplate>
             <!-- Category -->
-            <DataTemplate x:Key="CategoryDataTemplate">
+            <DataTemplate x:Key="CategoryColumnTemplate">
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitLike}">
@@ -197,7 +197,7 @@
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
-            <DataTemplate x:Key="CategoryEditingDataTemplate">
+            <DataTemplate x:Key="CategoryEditingColumnTemplate">
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
                         <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
@@ -206,7 +206,8 @@
                         <DataTemplate DataType="{x:Type structure:TitLike}">
                             <DockPanel LastChildFill="True">
                                 <controls:SplitButton DockPanel.Dock="Right" Orientation="Horizontal" Command="{Binding AddCategoryCommand}" SelectedItem="{Binding AddingCategoryParent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSource}}">
+                                                      ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSourceConverter}}"
+                                                      Click="CategoryButton_OnClick">
                                     <controls:SplitButton.IconTemplate>
                                         <DataTemplate>
                                             <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
@@ -218,7 +219,7 @@
                                           IsEditable="True" 
                                           IsTextSearchCaseSensitive="False"
                                           IsTextSearchEnabled="True"
-                                          ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSource}}">
+                                          ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSourceConverter}}">
                                     <ComboBox.SelectedItem>
                                         <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                         </Binding>
@@ -237,7 +238,7 @@
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
                                                               IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitView}">
+                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitsView}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     </Binding>
@@ -248,28 +249,28 @@
                 </ContentControl>
             </DataTemplate>
             <!-- Memo -->
-            <DataTemplate x:Key="MemoDataTemplate">
+            <DataTemplate x:Key="MemoColumnTemplate">
                 <TextBlock Text="{Binding Memo}" ToolTip="{Binding Memo}" />
             </DataTemplate>
-            <DataTemplate x:Key="MemoEditingDataTemplate">
+            <DataTemplate x:Key="MemoEditingColumnTemplate">
                 <TextBox Text="{Binding Memo, UpdateSourceTrigger=LostFocus}" TextWrapping="NoWrap" />
             </DataTemplate>
             <!-- Sum -->
-            <DataTemplate x:Key="SumDataTemplate">
+            <DataTemplate x:Key="SumColumnTemplate">
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <TextBlock Name="TitGrid_SumBox" TextAlignment="Right">
                                 <TextBlock.Text>
-                                    <MultiBinding Converter="{StaticResource NegativeTransferConverter}">
-                                        <Binding Path="DataContext" ElementName="TitView" />
+                                    <MultiBinding Converter="{StaticResource NegativeTransferMultiConverter}">
+                                        <Binding Path="DataContext" ElementName="TitsView" />
                                         <Binding Path="FromAccount" />
                                         <Binding Path="Sum" />
                                     </MultiBinding>
                                 </TextBlock.Text>
                                 <TextBlock.Foreground>
-                                    <MultiBinding Converter="{StaticResource SumColorMulti}">
-                                        <Binding Path="DataContext" ElementName="TitView" />
+                                    <MultiBinding Converter="{StaticResource SumColorMultiConverter}">
+                                        <Binding Path="DataContext" ElementName="TitsView" />
                                         <Binding Path="FromAccount" />
                                         <Binding Path="ToAccount" />
                                     </MultiBinding>
@@ -278,20 +279,20 @@
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type structure:TitLike}">
                             <TextBlock Name="TitGrid_SumBox" TextAlignment="Right" 
-                                       Foreground="{Binding Sum, Converter={StaticResource SumToBrush}}"
+                                       Foreground="{Binding Sum, Converter={StaticResource SumToBrushConverter}}"
                                        Text="{Binding Sum, Converter={StaticResource SumConverter}}" />
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
-            <DataTemplate  x:Key="SumEditingDataTemplate">
+            <DataTemplate  x:Key="SumEditingColumnTemplate">
                 <ContentControl Content="{Binding}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <TextBox Name="TitGrid_SumBox" TextAlignment="Right">
                                 <TextBox.Foreground>
-                                    <MultiBinding Converter="{StaticResource SumColorMulti}">
-                                        <Binding Path="DataContext" ElementName="TitView" />
+                                    <MultiBinding Converter="{StaticResource SumColorMultiConverter}">
+                                        <Binding Path="DataContext" ElementName="TitsView" />
                                         <Binding Path="FromAccount" />
                                         <Binding Path="ToAccount" />
                                     </MultiBinding>
@@ -308,7 +309,7 @@
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type structure:TitLike}">
                             <TextBox Name="TitGrid_SumBox" TextAlignment="Right" 
-                                       Foreground="{Binding Sum, Converter={StaticResource SumToBrush}}">
+                                       Foreground="{Binding Sum, Converter={StaticResource SumToBrushConverter}}">
                                 <TextBox.Text>
                                     <Binding Path="Sum" Converter="{StaticResource SumConverter}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>
@@ -323,20 +324,20 @@
                 </ContentControl>
             </DataTemplate>
             <!-- Cleared -->
-            <DataTemplate x:Key="ClearedDataTemplate">
-                <CheckBox Style="{StaticResource BFFCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
+            <DataTemplate x:Key="ClearedColumnTemplate">
+                <CheckBox Style="{StaticResource BffCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
             </DataTemplate>
             <!--#endregion -->
             <!--#region SubElementsFormTemplate -->
             <DataTemplate x:Key="EmptyDataTemplate"/>
-            <DataTemplate x:Key="SubElementsEditingPart">
+            <DataTemplate x:Key="SubElementsEditingTemplatePart">
                 <DataGrid ItemsSource="{Binding NewSubElements}" AutoGenerateColumns="False" HeadersVisibility="None" CanUserAddRows="False" CanUserSortColumns="False">
                     <DataGrid.Columns>
                         <!-- Category -->
                         <DataGridTemplateColumn SortMemberPath="Category.Name" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingDataTemplate}" />
+                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingColumnTemplate}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -344,7 +345,7 @@
                         <DataGridTemplateColumn SortMemberPath="Memo" Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingDataTemplate}" />
+                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingColumnTemplate}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -352,7 +353,7 @@
                         <DataGridTemplateColumn SortMemberPath="Sum" IsReadOnly="False" Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingDataTemplate}" />
+                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingColumnTemplate}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -370,12 +371,12 @@
                             <DataGridTemplateColumn SortMemberPath="Category.Name" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryDataTemplate}" />
+                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryColumnTemplate}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingDataTemplate}" />
+                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingColumnTemplate}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -383,12 +384,12 @@
                             <DataGridTemplateColumn SortMemberPath="Memo" Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoDataTemplate}" />
+                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoColumnTemplate}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingDataTemplate}" />
+                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingColumnTemplate}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -396,12 +397,12 @@
                             <DataGridTemplateColumn SortMemberPath="Sum" IsReadOnly="False" Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumDataTemplate}" />
+                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumColumnTemplate}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingDataTemplate}" />
+                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingColumnTemplate}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -410,7 +411,7 @@
                                                     CellTemplate="{StaticResource EmptyDataTemplate}" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingPart}" />
+                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingTemplatePart}" />
                     <DockPanel Background="{DynamicResource WhiteBrush}">
                         <Button ToolTip="New Subelement" Command="{Binding NewSubElementCommand}">
                             <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
@@ -423,7 +424,7 @@
             </DataTemplate>
             <DataTemplate x:Key="SubElementsEditingFormTemplate">
                 <StackPanel>
-                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingPart}" />
+                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingTemplatePart}" />
                     <Button ToolTip="New Subelement" Command="{Binding NewSubElementCommand}" HorizontalAlignment="Left">
                         <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                     </Button>
@@ -453,7 +454,7 @@
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_SymbolAbbr}" x:Name="SymbolColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SymbolDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SymbolColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -461,12 +462,12 @@
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Account}" SortMemberPath="Account.Name" x:Name="AccountColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountEditingDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountEditingColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -474,12 +475,12 @@
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Date}" SortMemberPath="Date" x:Name="DateColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateEditingDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateEditingColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -487,12 +488,12 @@
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Payee}" SortMemberPath="Payee.Name" x:Name="PayeeColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeEditingDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeEditingColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -500,12 +501,12 @@
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Category}" SortMemberPath="Category.Name" x:Name="CategoryColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -513,12 +514,12 @@
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Memo}" SortMemberPath="Memo" Width="*" x:Name="MemoColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -526,12 +527,12 @@
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Sum}" SortMemberPath="Sum" IsReadOnly="False" x:Name="SumColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -539,7 +540,7 @@
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Cleared}" SortMemberPath="Cleared" IsReadOnly="True" x:Name="ClearedColumn">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ClearedDataTemplate}" />
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ClearedColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -548,7 +549,7 @@
                 <DataTemplate>
                     <ContentControl Content="{Binding}" HorizontalAlignment="Left">
                         <ContentControl.Margin>
-                            <MultiBinding Converter="{StaticResource DataGridWidthsToLeftMargin}">
+                            <MultiBinding Converter="{StaticResource DataGridWidthsToLeftMarginConverter}">
                                 <Binding Path="Width" Source="{x:Reference SymbolColumn}"/>
                                 <Binding Path="Width" Source="{x:Reference AccountColumn}"/>
                                 <Binding Path="Width" Source="{x:Reference DateColumn}"/>
@@ -556,7 +557,7 @@
                             </MultiBinding>
                         </ContentControl.Margin>
                         <ContentControl.Width>
-                            <MultiBinding Converter="{StaticResource DataGridLengthsToDouble}">
+                            <MultiBinding Converter="{StaticResource DataGridLengthsToDoubleConverter}">
                                 <Binding Path="Width" Source="{x:Reference CategoryColumn}"/>
                                 <Binding Path="Width" Source="{x:Reference MemoColumn}"/>
                                 <Binding Path="Width" Source="{x:Reference SumColumn}"/>
@@ -589,7 +590,7 @@
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SymbolColumn}, Mode=TwoWay}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SymbolDataTemplate}" />
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SymbolColumnTemplate}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -597,7 +598,7 @@
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference AccountColumn}, Mode=TwoWay}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountEditingDataTemplate}" />
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountEditingColumnTemplate}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -605,7 +606,7 @@
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference DateColumn}, Mode=TwoWay}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateEditingDataTemplate}" />
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateEditingColumnTemplate}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -613,7 +614,7 @@
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference PayeeColumn}, Mode=TwoWay}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeEditingDataTemplate}" />
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeEditingColumnTemplate}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -621,7 +622,7 @@
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingDataTemplate}" />
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingColumnTemplate}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -629,7 +630,7 @@
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingDataTemplate}">
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingColumnTemplate}">
                                 </ContentControl>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -638,7 +639,7 @@
                     <DataGridTemplateColumn IsReadOnly="False" Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingDataTemplate}" />
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingColumnTemplate}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -646,7 +647,7 @@
                     <DataGridTemplateColumn IsReadOnly="True" Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ClearedDataTemplate}" />
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ClearedColumnTemplate}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -655,7 +656,7 @@
                     <DataTemplate>
                         <ContentControl Content="{Binding}" HorizontalAlignment="Left">
                             <ContentControl.Margin>
-                                <MultiBinding Converter="{StaticResource DataGridWidthsToLeftMargin}">
+                                <MultiBinding Converter="{StaticResource DataGridWidthsToLeftMarginConverter}">
                                     <Binding Path="Width" Source="{x:Reference SymbolColumn}"/>
                                     <Binding Path="Width" Source="{x:Reference AccountColumn}"/>
                                     <Binding Path="Width" Source="{x:Reference DateColumn}"/>
@@ -663,7 +664,7 @@
                                 </MultiBinding>
                             </ContentControl.Margin>
                             <ContentControl.Width>
-                                <MultiBinding Converter="{StaticResource DataGridLengthsToDouble}">
+                                <MultiBinding Converter="{StaticResource DataGridLengthsToDoubleConverter}">
                                     <Binding Path="Width" Source="{x:Reference CategoryColumn}"/>
                                     <Binding Path="Width" Source="{x:Reference MemoColumn}"/>
                                     <Binding Path="Width" Source="{x:Reference SumColumn}"/>
@@ -730,7 +731,7 @@
                 <TextBlock Name="StartingBalanceTextBlock" Text="{Binding StartingBalance, Converter={StaticResource SumConverter}}" />
             </GroupBox>
             <GroupBox Header="{lex:Loc AccountView_Balance}" HorizontalAlignment="Left">
-                <TextBlock Name="TotalBalanceTextBlock"  Text="{Binding Balance, Converter={StaticResource SumConverter}}" />
+                <TextBlock Name="BalanceTextBlock"  Text="{Binding Balance, Converter={StaticResource SumConverter}}" />
             </GroupBox>
         </StackPanel>
     </Grid>

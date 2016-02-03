@@ -14,23 +14,32 @@ namespace BFF.WPFStuff.UserControls
             InitializeComponent();
         }
 
-        public void RefreshCurrencyVisuals()
+        private void RefreshDataGrids()
         {
             TitGrid.Items.Refresh();
             NewTitGrid.Items.Refresh();
-            TotalBalanceTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
+        }
+
+        public void RefreshCurrencyVisuals()
+        {
+            RefreshDataGrids();
+            BalanceTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
             StartingBalanceTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
         }
 
         public void RefreshDateVisuals()
         {
-            TitGrid.Items.Refresh();
-            NewTitGrid.Items.Refresh();
+            RefreshDataGrids();
         }
 
-        private void TitDataGrid_OnLoaded(object sender, RoutedEventArgs e)
+        private void AccountView_OnLoaded(object sender, RoutedEventArgs e)
         {
             TitGrid.Items.Refresh();
+        }
+
+        private void CategoryButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            RefreshDataGrids();
         }
     }
 }

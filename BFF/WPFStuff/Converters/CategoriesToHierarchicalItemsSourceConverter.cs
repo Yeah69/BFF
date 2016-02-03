@@ -10,7 +10,7 @@ namespace BFF.WPFStuff.Converters
 {
     public class CategoriesToHierarchicalItemsSourceConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             IEnumerable<Category> enumerable = (IEnumerable<Category>)value;
             IEnumerable<Category> parentCategories = enumerable.Where(category => category.Parent == null);
@@ -18,17 +18,17 @@ namespace BFF.WPFStuff.Converters
             foreach (Category parentCategory in parentCategories)
             {
                 ret.Add(parentCategory);
-                fillWithDescandents(parentCategory, ret);
+                FillWithDescandents(parentCategory, ret);
             }
             return ret;
         }
 
-        private void fillWithDescandents(Category parentCategory, IList<Category> list)
+        private void FillWithDescandents(Category parentCategory, IList<Category> list)
         {
             foreach (Category childCategory in parentCategory.Categories)
             {
                 list.Add(childCategory);
-                fillWithDescandents(childCategory, list);
+                FillWithDescandents(childCategory, list);
             }
         }
 

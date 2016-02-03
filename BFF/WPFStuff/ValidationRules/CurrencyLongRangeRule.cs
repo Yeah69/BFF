@@ -12,7 +12,7 @@ namespace BFF.WPFStuff.ValidationRules
             decimal outVar;
             CultureInfo currencyCulture = BffEnvironment.CultureProvider.CurrencyCulture;
             decimal factor = (decimal)Math.Pow(10, currencyCulture.NumberFormat.CurrencyDecimalDigits);
-            string message = $"Value is out of range: [ {(long.MinValue/factor).ToString("C", currencyCulture.NumberFormat)} .. {(long.MaxValue/factor).ToString("C", currencyCulture.NumberFormat)} ]"; 
+            string message = $"Value is out of range: [ {(long.MinValue/factor).ToString("C", currencyCulture.NumberFormat)} .. {(long.MaxValue/factor).ToString("C", currencyCulture.NumberFormat)} ]"; //todo: Localize
             bool parsed = decimal.TryParse((string)value, NumberStyles.Currency,
               currencyCulture.NumberFormat, out outVar);
             if (parsed)

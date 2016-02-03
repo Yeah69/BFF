@@ -12,7 +12,7 @@
              xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
              xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" x:Name="filledMainWindow">
+             d:DesignHeight="300" d:DesignWidth="300" x:Name="AccountTabsUserControl">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -55,7 +55,7 @@
                 </controls:MetroTabItem.HeaderTemplate>
                 <local:AccountView DataContext="{Binding AllAccountsViewModel}" />
             </controls:MetroTabItem>
-            <controls:MetroTabItem Name="NewAccount_Tab">
+            <controls:MetroTabItem Name="NewAccountTab">
                 <controls:MetroTabItem.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -66,7 +66,7 @@
                 </controls:MetroTabItem.HeaderTemplate>
                 <StackPanel Width="500" DataContext="{Binding NewAccount}">
                     <Label Content="{lex:Loc AccountTabsView_NewAccount_Name}"/>
-                    <TextBox Name="NewAccount_Name">
+                    <TextBox Name="NewAccountName">
                         <TextBox.Text>
                             <Binding Path="Name" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
@@ -76,7 +76,7 @@
                         </TextBox.Text>
                     </TextBox>
                     <Label Content="{lex:Loc AccountTabsView_NewAccount_StartingBalance}"/>
-                    <TextBox MaxLength="30" Name="NewAccount_StartingBalance">
+                    <TextBox MaxLength="30" Name="NewAccountStartingBalance">
                         <TextBox.Text>
                             <Binding Path="StartingBalance" Mode="TwoWay" Converter="{StaticResource SumConverter}" UpdateSourceTrigger="LostFocus" >
                                 <Binding.ValidationRules>
@@ -86,15 +86,15 @@
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
-                    <Button HorizontalAlignment="Right" Content="{lex:Loc AccountTabsView_NewAccount_Create}" Command="{Binding DataContext.NewAccountCommand, ElementName=filledMainWindow}">
+                    <Button HorizontalAlignment="Right" Content="{lex:Loc AccountTabsView_NewAccount_Create}" Command="{Binding DataContext.NewAccountCommand, ElementName=AccountTabsUserControl}">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
                                 <Setter Property="IsEnabled" Value="False"/>
                                 <Style.Triggers>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=NewAccount_StartingBalance}" Value="False"/>
-                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=NewAccount_Name}" Value="False"/>
+                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=NewAccountStartingBalance}" Value="False"/>
+                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=NewAccountName}" Value="False"/>
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="IsEnabled" Value="True"/>
                                     </MultiDataTrigger>

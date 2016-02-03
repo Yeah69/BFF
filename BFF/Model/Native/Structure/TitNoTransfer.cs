@@ -8,7 +8,7 @@ using Dapper.Contrib.Extensions;
 namespace BFF.Model.Native.Structure
 {
     /// <summary>
-    /// Base of all Tit-classes except Transfer
+    /// Base of all Tit-classes except Transfer (TIT := Transaction Income Transfer)
     /// </summary>
     public abstract class TitNoTransfer : TitBase
     {

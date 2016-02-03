@@ -2,7 +2,6 @@
 using System.Windows.Data;
 using System.Windows.Media;
 using BFF.Model.Native;
-using BFF.ViewModel;
 
 namespace BFF.WPFStuff.Converters
 {

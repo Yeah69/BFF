@@ -145,7 +145,7 @@ namespace BFF.DB.SQLite
 
         public IEnumerable<T> GetSubTransInc<T>(long parentId) where T : SubTitBase
         {
-            IEnumerable<T> ret = new List<T>();
+            IEnumerable<T> ret;
             using (var cnn = new SQLiteConnection(ConnectionString))
             {
                 cnn.Open();
@@ -285,7 +285,7 @@ namespace BFF.DB.SQLite
         private readonly Func<object[], TitBase> _theTitMap = objArr =>
         {
             TitType type;
-            TitType.TryParse((string)objArr[8], true, out type);
+            Enum.TryParse((string)objArr[8], true, out type);
             DateTime date;
             if (objArr[4] is DateTime)
                 date = (DateTime)objArr[4];

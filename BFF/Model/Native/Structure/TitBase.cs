@@ -13,7 +13,7 @@ namespace BFF.Model.Native.Structure
     }
 
     /// <summary>
-    /// Base class for all Tit classes, which are not SubElements
+    /// Base class for all Tit classes, which are not SubElements (TIT := Transaction Income Transfer)
     /// </summary>
     public abstract class TitBase : TitLike
     {

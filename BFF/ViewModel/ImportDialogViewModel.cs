@@ -19,7 +19,6 @@ namespace BFF.ViewModel
             OpenFileDialog openFileDialog = new OpenFileDialog { Multiselect = false, DefaultExt = "csv", Filter = "YNAB Transaction Export (*.csv)|*.csv", FileName = ((YnabCsvImport)Importable).TransactionPath };
             if (openFileDialog.ShowDialog() == true)
             {
-                FileInfo fi = new FileInfo(openFileDialog.FileName);
                 ((YnabCsvImport)Importable).TransactionPath = openFileDialog.FileName;
             }
         }

@@ -5,7 +5,7 @@ using Dapper.Contrib.Extensions;
 namespace BFF.Model.Native.Structure
 {
     /// <summary>
-    /// Base class for all classes which can be shown in the TitDataGrid
+    /// Base class for all classes which can be shown in the TitDataGrid (TIT := Transaction Income Transfer)
     /// </summary>
     public abstract class TitLike : DataModelBase
     {
