@@ -121,6 +121,7 @@
     <Compile Include="Helper\IBffCultureProvider.cs" />
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />
+    <Compile Include="Helper\IRefreshDateVisuals.cs" />
     <Compile Include="Helper\IRefreshCurrencyVisuals.cs" />
     <Compile Include="Helper\Output.cs" />
     <Compile Include="Model\Conversion\YNAB\BudgetEntry.cs" />

@@ -6,20 +6,29 @@ namespace BFF.WPFStuff.UserControls
     /// <summary>
     /// Interaction logic for FilledMainWindow.xaml
     /// </summary>
-    public partial class AccountTabsView : UserControl, IRefreshCurrencyVisuals
+    public partial class AccountTabsView : IRefreshCurrencyVisuals, IRefreshDateVisuals
     {
         public AccountTabsView()
         {
             InitializeComponent();
         }
-        
+
         public void RefreshCurrencyVisuals()
         {
             NewAccount_StartingBalance.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
             foreach (object t in AccountsTabControl.Items)
             {
-                IRefreshCurrencyVisuals grid = ((TabItem) t).Content as IRefreshCurrencyVisuals;
+                IRefreshCurrencyVisuals grid = ((TabItem)t).Content as IRefreshCurrencyVisuals;
                 grid?.RefreshCurrencyVisuals();
+            }
+        }
+
+        public void RefreshDateVisuals()
+        {
+            foreach (object t in AccountsTabControl.Items)
+            {
+                IRefreshDateVisuals grid = ((TabItem)t).Content as IRefreshDateVisuals;
+                grid?.RefreshDateVisuals();
             }
         }
     }

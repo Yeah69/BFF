@@ -19,7 +19,7 @@ namespace BFF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : IRefreshCurrencyVisuals
+    public partial class MainWindow : IRefreshCurrencyVisuals, IRefreshDateVisuals
     {
         public static readonly DependencyProperty ImportCommandProperty =
             DependencyProperty.Register(nameof(ImportCommand), typeof(ICommand), typeof(MainWindow),
@@ -186,6 +186,26 @@ namespace BFF
         private void DateCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             BffEnvironment.CultureProvider.DateCulture = (CultureInfo)((ComboBox)sender).SelectedItem;
+            RefreshDateVisuals();
+        }
+
+        public void RefreshDateVisuals()
+        {
+            if(ContentControl.Content != null)
+            {
+                //When the ContentControl has Content, then the first child is the ContentPresenter 
+                //and its first child is the root of the DataTemplates generated content
+                DependencyObject depObj = VisualTreeHelper.GetChild(ContentControl, 0);
+                if (VisualTreeHelper.GetChildrenCount(depObj) > 0)
+                {
+                    depObj = VisualTreeHelper.GetChild(depObj, 0);
+                    if (depObj is IRefreshDateVisuals)
+                    {
+                        IRefreshDateVisuals rcv = depObj as IRefreshDateVisuals;
+                        rcv?.RefreshDateVisuals();
+                    }
+                }
+            }
         }
     }
 
