@@ -6,6 +6,7 @@ using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
 using BFF.Properties;
@@ -49,6 +50,8 @@ namespace BFF.DB.SQLite
 
                 cnn.Execute(SqLiteQueries.CreateDbSettingTableStatement);
                 cnn.Insert(new DbSetting { CurrencyCultrureName = "de-DE", DateCultureName = "de-DE"});
+
+                cnn.Execute($"PRAGMA user_version = {Assembly.GetExecutingAssembly().GetName().Version.Build};");
 
                 cnn.Execute(SqLiteQueries.CreateTheTitViewStatement);
 
