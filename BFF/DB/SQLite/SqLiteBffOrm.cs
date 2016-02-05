@@ -358,8 +358,8 @@ namespace BFF.DB.SQLite
                         Sum = (long)objArr[6],
                         Cleared = (long)objArr[7] == 1
                     };
-                    ((Transfer)ret).FromAccount?.Tits.Add(ret);
-                    ((Transfer)ret).ToAccount?.Tits.Add(ret);
+                    if(!(((Transfer)ret).FromAccount?.Tits.Contains(ret) ?? true)) ((Transfer)ret).FromAccount?.Tits.Add(ret);
+                    if (!(((Transfer)ret).ToAccount?.Tits.Contains(ret) ?? true)) ((Transfer)ret).ToAccount?.Tits.Add(ret);
                     Account.allAccounts?.Tits.Add(ret);
                     break;
                 default:

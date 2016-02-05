@@ -25,9 +25,15 @@ namespace BFF.Model.Native.Structure
             get { return _account; }
             set
             {
+                Account temp = _account;
                 _account = value;
                 Update();
                 OnPropertyChanged();
+                if (temp != null && temp != _account)
+                {
+                    if (temp.Tits.Contains(this)) temp.Tits.Remove(this);
+                    if (!_account.Tits.Contains(this)) _account.Tits.Add(this);
+                }
             }
         }
 
