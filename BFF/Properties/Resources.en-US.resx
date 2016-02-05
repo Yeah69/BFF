@@ -264,4 +264,16 @@
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Open a Budget Plan</value>
   </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>This text could not be parsed as a currency!</value>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>The value is out of range: [ {0} .. {1} ]!</value>
+  </data>
+  <data name="ValidationRule_NoEmptyNull" xml:space="preserve">
+    <value>This text may not be empty!</value>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>This property may not be empty!</value>
+  </data>
 </root>

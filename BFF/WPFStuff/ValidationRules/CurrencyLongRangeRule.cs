@@ -12,7 +12,8 @@ namespace BFF.WPFStuff.ValidationRules
             decimal outVar;
             CultureInfo currencyCulture = BffEnvironment.CultureProvider.CurrencyCulture;
             decimal factor = (decimal)Math.Pow(10, currencyCulture.NumberFormat.CurrencyDecimalDigits);
-            string message = $"Value is out of range: [ {(long.MinValue/factor).ToString("C", currencyCulture.NumberFormat)} .. {(long.MaxValue/factor).ToString("C", currencyCulture.NumberFormat)} ]"; //todo: Localize
+            string message = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("ValidationRule_CurrencyLongRange", null, BffEnvironment.CultureProvider.LanguageCulture);
+            message = string.Format(message, (long.MinValue/factor).ToString("C", currencyCulture.NumberFormat), (long.MaxValue/factor).ToString("C", currencyCulture.NumberFormat));
             bool parsed = decimal.TryParse((string)value, NumberStyles.Currency,
               currencyCulture.NumberFormat, out outVar);
             if (parsed)

@@ -11,7 +11,7 @@ namespace BFF.WPFStuff.ValidationRules
             decimal outVar;
             bool validate = decimal.TryParse((string) value, NumberStyles.Currency,
                 BffEnvironment.CultureProvider.CurrencyCulture.NumberFormat, out outVar);
-            return new ValidationResult(validate, validate ? null : "The Currency format could not be parsed!"); //todo: Localize
+            return new ValidationResult(validate, validate ? null : (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("ValidationRule_Currency", null, BffEnvironment.CultureProvider.LanguageCulture));
             // The "Invalid"-Message is only relevant if validate is false
         }
     }

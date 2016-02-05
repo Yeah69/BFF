@@ -500,5 +500,41 @@ namespace BFF.Properties {
                 return ResourceManager.GetString("OpenSaveDialog_TitleOpen", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationRule_Currency {
+            get {
+                return ResourceManager.GetString("ValidationRule_Currency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationRule_CurrencyLongRange {
+            get {
+                return ResourceManager.GetString("ValidationRule_CurrencyLongRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationRule_NoEmptyNull {
+            get {
+                return ResourceManager.GetString("ValidationRule_NoEmptyNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationRule_NoNull {
+            get {
+                return ResourceManager.GetString("ValidationRule_NoNull", resourceCulture);
+            }
+        }
     }
 }

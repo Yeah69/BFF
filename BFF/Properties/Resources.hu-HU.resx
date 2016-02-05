@@ -264,4 +264,16 @@
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Öffne einen Finanzplan</value>
   </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Dieser Text konnte nicht als Währung geparst werden!</value>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Der Wert liegt außerhalb des Gültigkeitsbereiches: [ {0} .. {1} ]!</value>
+  </data>
+  <data name="ValidationRule_NoEmptyNull" xml:space="preserve">
+    <value>Dieser Text darf nicht leer sein!</value>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Diese Property darf nicht leer sein!</value>
+  </data>
 </root>

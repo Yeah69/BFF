@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows.Controls;
+using BFF.Helper;
 
 namespace BFF.WPFStuff.ValidationRules
 {
@@ -8,7 +9,7 @@ namespace BFF.WPFStuff.ValidationRules
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             bool validate = !string.IsNullOrEmpty((string) value);
-            return new ValidationResult(validate, validate ? null : "The text may not be empty!"); //todo: Localize
+            return new ValidationResult(validate, validate ? null : (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("ValidationRule_NoEmptyNull", null, BffEnvironment.CultureProvider.LanguageCulture));
             // The "Invalid"-Message is only relevant if validate is false
         }
     }
