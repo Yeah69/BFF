@@ -98,7 +98,7 @@
                                       IsTextSearchEnabled="True"
                                       ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitsView}">
                                 <ComboBox.SelectedItem>
-                                    <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>
                                             <validationRules:NoNullRule />
                                         </Binding.ValidationRules>
@@ -151,7 +151,7 @@
                                           ItemsSource="{Binding AllPayees}"
                                           HorizontalAlignment="Stretch">
                                     <ComboBox.SelectedItem>
-                                        <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                             <Binding.ValidationRules>
                                                 <validationRules:NoNullRule />
                                             </Binding.ValidationRules>
@@ -167,7 +167,7 @@
                                                               IsTextSearchEnabled="True"
                                                               ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitsView}">
                                 <ComboBox.SelectedItem>
-                                    <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                     </Binding>
                                 </ComboBox.SelectedItem>
                             </ComboBox>
@@ -221,7 +221,7 @@
                                           IsTextSearchEnabled="True"
                                           ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSourceConverter}}">
                                     <ComboBox.SelectedItem>
-                                        <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         </Binding>
                                     </ComboBox.SelectedItem>
                                 </ComboBox>
@@ -240,7 +240,7 @@
                                                               IsTextSearchEnabled="True"
                                                               ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitsView}">
                                 <ComboBox.SelectedItem>
-                                    <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                     </Binding>
                                 </ComboBox.SelectedItem>
                             </ComboBox>
