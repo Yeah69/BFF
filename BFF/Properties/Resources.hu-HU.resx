@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Alle Konten</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Erstellen</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_Name" xml:space="preserve">
+    <value>Kontoname:</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_StartingBalance" xml:space="preserve">
+    <value>Initialler Kontostand:</value>
+  </data>
+  <data name="AccountView_Balance" xml:space="preserve">
+    <value>Kontostand:</value>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Konto</value>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Kategorie</value>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Erledigt</value>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Notiz</value>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Bezahlter</value>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Betrag</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="AccountView_StartingBalance" xml:space="preserve">
+    <value>Initialler Kontostand:</value>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>In die Tabelle aufnehmen</value>
+  </data>
+  <data name="AccountView_ToolTip_NewIncome" xml:space="preserve">
+    <value>Neuer Einkommenseintrag</value>
+  </data>
+  <data name="AccountView_ToolTip_NewParentIncome" xml:space="preserve">
+    <value>Neuer aufgeteilter Einkommenseintrag</value>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Neue aufgeteilte Transaktion</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Neue Transaktion</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Neuer Transfer</value>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>Die Datei "{0}" konnte nicht gefunden werden.</value>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Durchsuchen</value>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Importieren</value>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Importiere und speichere zu folgenden Pfad:</value>
+  </data>
+  <data name="ImportView_YNAB4" xml:space="preserve">
+    <value>Import von YNAB4 CSV-Dateien</value>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Pfad zu der YNAB-Budget-CSV:</value>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Pfad zu der YNAB-Transaktions-CSV:</value>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>Über</value>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Datei</value>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Öffnen</value>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="MainWindow_Settings_Accents" xml:space="preserve">
+    <value>Akzente:</value>
+  </data>
+  <data name="MainWindow_Settings_Currency" xml:space="preserve">
+    <value>Währungsformart:</value>
+  </data>
+  <data name="MainWindow_Settings_Currency_Negative" xml:space="preserve">
+    <value>Positiv:</value>
+  </data>
+  <data name="MainWindow_Settings_Currency_Positive" xml:space="preserve">
+    <value>Negativ:</value>
+  </data>
+  <data name="MainWindow_Settings_Date" xml:space="preserve">
+    <value>Datumsformat:</value>
+  </data>
+  <data name="MainWindow_Settings_Date_Long" xml:space="preserve">
+    <value>Lang:</value>
+  </data>
+  <data name="MainWindow_Settings_Date_Long_Inverted" xml:space="preserve">
+    <value>:Lang</value>
+  </data>
+  <data name="MainWindow_Settings_Date_Short" xml:space="preserve">
+    <value>Kurz:</value>
+  </data>
+  <data name="MainWindow_Settings_Language" xml:space="preserve">
+    <value>Sprache:</value>
+  </data>
+  <data name="MainWindow_Settings_Theme" xml:space="preserve">
+    <value>Theme:</value>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>BFF Finanzplan (*.sqlite)|*.sqlite</value>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Erstelle einen neuen Finanzplan</value>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Öffne einen Finanzplan</value>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Dieser Text konnte nicht als Währung geparst werden!</value>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Der Wert liegt außerhalb des Gültigkeitsbereiches: [ {0} .. {1} ]!</value>
+  </data>
+  <data name="ValidationRule_NoEmptyNull" xml:space="preserve">
+    <value>Dieser Text darf nicht leer sein!</value>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Diese Property darf nicht leer sein!</value>
+  </data>
+</root>

@@ -49,7 +49,7 @@ namespace BFF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("en")]
+        [global::System.Configuration.DefaultSettingValueAttribute("en-US")]
         public string Localization_Language {
             get {
                 return ((string)(this["Localization_Language"]));
@@ -61,13 +61,121 @@ namespace BFF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
         public string DBLocation {
             get {
                 return ((string)(this["DBLocation"]));
             }
             set {
                 this["DBLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string Import_YnabCsvTransaction {
+            get {
+                return ((string)(this["Import_YnabCsvTransaction"]));
+            }
+            set {
+                this["Import_YnabCsvTransaction"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string Import_YnabCsvBudget {
+            get {
+                return ((string)(this["Import_YnabCsvBudget"]));
+            }
+            set {
+                this["Import_YnabCsvBudget"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
+        public string Import_SavePath {
+            get {
+                return ((string)(this["Import_SavePath"]));
+            }
+            set {
+                this["Import_SavePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Localization_Date_Long {
+            get {
+                return ((bool)(this["Localization_Date_Long"]));
+            }
+            set {
+                this["Localization_Date_Long"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public double MainWindow_Width {
+            get {
+                return ((double)(this["MainWindow_Width"]));
+            }
+            set {
+                this["MainWindow_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public double MainWindow_Height {
+            get {
+                return ((double)(this["MainWindow_Height"]));
+            }
+            set {
+                this["MainWindow_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public double MainWindow_X {
+            get {
+                return ((double)(this["MainWindow_X"]));
+            }
+            set {
+                this["MainWindow_X"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public double MainWindow_Y {
+            get {
+                return ((double)(this["MainWindow_Y"]));
+            }
+            set {
+                this["MainWindow_Y"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Normal")]
+        public global::System.Windows.WindowState MainWindow_WindowState {
+            get {
+                return ((global::System.Windows.WindowState)(this["MainWindow_WindowState"]));
+            }
+            set {
+                this["MainWindow_WindowState"] = value;
             }
         }
     }

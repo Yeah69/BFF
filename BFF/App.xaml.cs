@@ -1,7 +1,9 @@
-﻿using System.Reflection;
-using System.Windows;
+﻿using System.Windows;
+using BFF.DB;
 using BFF.DB.SQLite;
-using BFF.ViewModel;
+using BFF.Helper;
+using BFF.Model.Native;
+using MahApps.Metro;
 
 namespace BFF
 {
@@ -12,14 +14,20 @@ namespace BFF
     {
         public App()
         {
-            string assemblyPath = Assembly.GetExecutingAssembly().Location;
-            assemblyPath = assemblyPath.Substring(0, assemblyPath.LastIndexOf('\\') + 1);
-            SqLiteHelper.OpenDatabase($"{assemblyPath}testDatabase.sqlite");
-            MainWindow mainWindow = new MainWindow();
-            MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
+            InitializeComponent();
+            new AllAccounts(); //todo: Find more elegant way
+            IBffOrm orm = new SqLiteBffOrm();
+            IBffCultureProvider cultureProvider = new BffCultureProvider(orm);
+            BffEnvironment.CultureProvider = cultureProvider;
+            MainWindow mainWindow = new MainWindow(orm);
             mainWindow.Show();
-            mainWindow.DataContext = mainWindowViewModel;
+        }
 
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            Accent initialAccent = ThemeManager.GetAccent(BFF.Properties.Settings.Default.MahApps_Accent);
+            AppTheme initialAppTheme = ThemeManager.GetAppTheme(BFF.Properties.Settings.Default.MahApps_AppTheme);
+            ThemeManager.ChangeAppStyle(Current, initialAccent, initialAppTheme);
         }
     }
 }

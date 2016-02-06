@@ -2,10 +2,11 @@
 using System.Globalization;
 using System.Windows.Media;
 using BFF.Helper;
+using BFF.Helper.Import;
 
 namespace BFF.Model.Conversion.YNAB
 {
-    class Transaction
+    public class Transaction
     {
         public string Account { get; set; }
 
@@ -25,9 +26,9 @@ namespace BFF.Model.Conversion.YNAB
 
         public string Memo { get; set; }
 
-        public double Outflow { get; set; }
+        public long Outflow { get; set; }
 
-        public double Inflow { get; set; }
+        public long Inflow { get; set; }
 
         public bool Cleared { get; set; }
 
@@ -96,10 +97,10 @@ namespace BFF.Model.Conversion.YNAB
                 MasterCategory = entries[6].Trim('"'),
                 SubCategory = entries[7].Trim('"'),
                 Memo = entries[8].Trim('"'),
-                Outflow = double.Parse(entries[9].TrimEnd('€')), //todo: Localize look into Humanizer or Regex
-                Inflow = double.Parse(entries[10].TrimEnd('€')), //todo: Localize look into Humanizer or Regex
+                Outflow = YnabCsvImport.ExtractLong(entries[9]),
+                Inflow = YnabCsvImport.ExtractLong(entries[10]),
                 Cleared = entries[11] == "C",
-                RunningBalance = double.Parse(entries[12].TrimEnd('€'))
+                RunningBalance = YnabCsvImport.ExtractLong(entries[12]),
             };
             return ret;
         }

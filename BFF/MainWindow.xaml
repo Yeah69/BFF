@@ -5,39 +5,118 @@
         xmlns:usercontrols="clr-namespace:BFF.WPFStuff.UserControls"
         xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        lex:LocalizeDictionary.DesignCulture="en"
+        xmlns:viewModel="clr-namespace:BFF.ViewModel"
+        xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
+        lex:LocalizeDictionary.DesignCulture="en-US"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
-        Title="BFF" Height="700" Width="1300" MinHeight="700" MinWidth="1300" ShowIconOnTitleBar="True" Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" RightWindowCommandsOverlayBehavior="Never" LeftWindowCommandsOverlayBehavior="Never">
+        Title="{Binding Title}" MinHeight="500" MinWidth="1000" ShowIconOnTitleBar="True" WindowState="{Binding WindowState, Mode=TwoWay}"
+        Height="{Binding Height, Mode=TwoWay}" Width="{Binding Width, Mode=TwoWay}" Left="{Binding X, Mode=TwoWay}" Top="{Binding Y, Mode=TwoWay}"
+        Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" 
+        RightWindowCommandsOverlayBehavior="Never" LeftWindowCommandsOverlayBehavior="Never" BorderThickness="2"
+        BorderBrush="{DynamicResource AccentColorBrush}">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Icons.xaml" />
-                <ResourceDictionary Source="/WPFStuff/Resources/BFF_ResourceDictionary.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <converters:NullToLexConverter x:Key="NullToLex" />
+            <converters:CurrencyComboConverter x:Key="CurrencyComboConverter"/>
+            <converters:DateComboConverter x:Key="DateComboConverter"/>
+            <converters:BooleanToNullableBooleanConverter x:Key="BooleanToNullableBooleanConverter"/>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <controls:Flyout Name="SettingsFlyout" Header="{lex:Loc Settings}" Position="Right" Width="300">
+            <controls:Flyout Name="SettingsFlyout" Header="{lex:Loc MainWindow_Settings}" Position="Right" Width="300">
                 <Grid>
                     <StackPanel Orientation="Vertical">
-                        <Label Content="{lex:Loc Theme}"/>
-                        <ComboBox Name="ThemeCombo" SelectionChanged="ThemeCombo_SelectionChanged" DisplayMemberPath="Name" />
-                        <Label Content="{lex:Loc Accents}"/>
-                        <ComboBox Name="AccentCombo" SelectionChanged="AccentCombo_SelectionChanged" DisplayMemberPath="Name" />
-                        <Label Content="{lex:Loc Language}"/>
-                        <ComboBox Name="LanguageCombo" SelectionChanged="LanguageCombo_SelectionChanged"/>
+                        <Label Content="{lex:Loc MainWindow_Settings_Theme}"/>
+                        <ComboBox Name="ThemeCombo" SelectionChanged="ThemeCombo_SelectionChanged">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Stroke="{DynamicResource BlackBrush}" StrokeThickness="1" Fill="{Binding WhiteBrush}" Width="15" Height="15" />
+                                        <Label Content="{Binding Path=Theme.Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Label Content="{lex:Loc MainWindow_Settings_Accents}"/>
+                        <ComboBox Name="AccentCombo" SelectionChanged="AccentCombo_SelectionChanged">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Stroke="{DynamicResource BlackBrush}" StrokeThickness="1" Fill="{Binding AccentColorBrush}" Width="15" Height="15" />
+                                        <Label Content="{Binding Path=Accent.Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Label Content="{lex:Loc MainWindow_Settings_Language}"/>
+                        <ComboBox Name="LanguageCombo" SelectionChanged="LanguageCombo_SelectionChanged" />
+                        <Label Content="{lex:Loc MainWindow_Settings_Currency}"/>
+                        <ComboBox Name="CurrencyCombo" SelectedItem="{Binding CurrencyCulture, Mode=OneWay}" SelectionChanged="CurrencyCombo_OnSelectionChanged" Style="{StaticResource VirtualisedMetroComboBox}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="{Binding Name}" Grid.Row="0" Grid.Column="0" />
+                                        <Label Content="{Binding DisplayName}" Grid.Row="0" Grid.Column="1" />
+                                        <Label Content="{lex:Loc MainWindow_Settings_Currency_Positive}" Grid.Row="1" Grid.Column="0" />
+                                        <Label Content="{Binding Name, Converter={StaticResource CurrencyComboConverter}, ConverterParameter=positive}" Foreground="{StaticResource IncomeBrush}" Grid.Row="1" Grid.Column="1" />
+                                        <Label Content="{lex:Loc MainWindow_Settings_Currency_Negative}" Grid.Row="2" Grid.Column="0" />
+                                        <Label Content="{Binding Name, Converter={StaticResource CurrencyComboConverter}, ConverterParameter=negative}" Foreground="{StaticResource TransactionBrush}" Grid.Row="2" Grid.Column="1" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Label Content="{lex:Loc MainWindow_Settings_Date}" />
+                        <ComboBox Name="DateCombo" SelectedItem="{Binding DateCulture, Mode=OneWay}" SelectionChanged="DateCombo_OnSelectionChanged" Style="{StaticResource VirtualisedMetroComboBox}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="{Binding Name}" Grid.Row="0" Grid.Column="0" />
+                                        <Label Content="{Binding DisplayName}" Grid.Row="0" Grid.Column="1" />
+                                        <Label Content="{lex:Loc MainWindow_Settings_Date_Short}" Grid.Row="1" Grid.Column="0" />
+                                        <Label Content="{Binding Name, Converter={StaticResource DateComboConverter}, ConverterParameter=short}"  Grid.Row="1" Grid.Column="1" />
+                                        <Label Content="{lex:Loc MainWindow_Settings_Date_Long}" Grid.Row="2" Grid.Column="0" />
+                                        <Label Content="{Binding Name, Converter={StaticResource DateComboConverter}, ConverterParameter=long}"  Grid.Row="2" Grid.Column="1" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <CheckBox Content="{lex:Loc MainWindow_Settings_Date_Long_Inverted}" Margin="5" 
+                                  FlowDirection="RightToLeft" HorizontalAlignment="Right"
+                                  IsChecked="{Binding DateLong, Mode=TwoWay, Converter={StaticResource BooleanToNullableBooleanConverter}}"
+                                  Checked="ToggleButton_OnChecked"
+                                  Unchecked="ToggleButton_OnChecked"/>
                     </StackPanel>
                 </Grid>
             </controls:Flyout>
-            <controls:Flyout Name="FileFlyout" Header="{lex:Loc File}" Position="Left">
+            <controls:Flyout Name="FileFlyout" Header="{lex:Loc MainWindow_File}" Position="Left">
                 <Grid>
                     <StackPanel Orientation="Vertical">
-                        <Button Content="{lex:Loc New}" Margin="10,5,10,5" />
-                        <Button Content="{lex:Loc Open}" Margin="10,5,10,5" />
-                        <Button Content="{lex:Loc Import}" Margin="10,5,10,5" />
+                        <Button Content="{lex:Loc MainWindow_File_New}" Margin="10,5,10,5" Command="{Binding NewBudgetPlanCommand}" Click="Close_FileFlyout" Style="{DynamicResource SquareButtonStyle}" />
+                        <Button Content="{lex:Loc MainWindow_File_Open}" Margin="10,5,10,5" Command="{Binding OpenBudgetPlanCommand}" Click="Close_FileFlyout" Style="{DynamicResource SquareButtonStyle}" />
+                        <Button Content="{lex:Loc MainWindow_File_Import}" Margin="10,5,10,5" Click="Open_ImportDialog" Style="{DynamicResource SquareButtonStyle}" />
                     </StackPanel>
                 </Grid>
             </controls:Flyout>
@@ -45,37 +124,27 @@
     </controls:MetroWindow.Flyouts>
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands>
-            <Button Name="FileButt" Content="{lex:Loc File}" Click="FileButt_Click" />
+            <Button Name="FileButt" Content="{lex:Loc MainWindow_File}" Click="FileButt_Click" />
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Name="SettingsButt" Content="{lex:Loc Settings}" Click="SettingsButt_Click"/>
-            <Button Content="{lex:Loc About}"/>
+            <Button Name="SettingsButt" Click="SettingsButt_Click">
+                <metro:PackIconMaterial Kind="{StaticResource SettingsIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" />
+            </Button>
+            <Button Name="AboutButt" Content="{lex:Loc MainWindow_About}"/>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <Grid>
-        <TabControl ItemsSource="{Binding TabItems}" Name="AccountsTabControl">
-            <TabControl.ItemTemplate>
-                <!-- this is the header template-->
-                <DataTemplate>
-                    <TextBlock >
-                        <TextBlock.Text>
-                            <MultiBinding Converter="{StaticResource NullToLex}">
-                                <Binding Path="Header" />
-                                <Binding RelativeSource="{RelativeSource Self}" />
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
+        <ContentControl Name="MainContentControl"  Content="{Binding ContentViewModel}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewModel:AccountTabsViewModel}">
+                    <usercontrols:AccountTabsView x:Name="MainContent" />
                 </DataTemplate>
-            </TabControl.ItemTemplate>
-            <TabControl.ContentTemplate>
-                <!-- this is the body of the TabItem template-->
-                <DataTemplate>
-                    <usercontrols:TransactionDataGrid DataContext="{Binding ViewModel}" />
+                <DataTemplate DataType="{x:Type viewModel:EmptyContentViewModel}">
+                    <!-- todo: Something like a StartPage here -->
                 </DataTemplate>
-            </TabControl.ContentTemplate>
-        </TabControl>
-        <!--<usercontrols:TransactionDataGrid DataContext="{Binding AllAccsViewModel}" />-->
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </controls:MetroWindow>

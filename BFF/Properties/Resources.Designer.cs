@@ -63,162 +63,477 @@ namespace BFF.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string About {
+        public static string AccountTabsView_AllAccounts {
             get {
-                return ResourceManager.GetString("About", resourceCulture);
+                return ResourceManager.GetString("AccountTabsView_AllAccounts", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Accents {
+        public static string AccountTabsView_NewAccount_Create {
             get {
-                return ResourceManager.GetString("Accents", resourceCulture);
+                return ResourceManager.GetString("AccountTabsView_NewAccount_Create", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Account {
+        public static string AccountTabsView_NewAccount_Name {
             get {
-                return ResourceManager.GetString("Account", resourceCulture);
+                return ResourceManager.GetString("AccountTabsView_NewAccount_Name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Account_Transfer {
+        public static string AccountTabsView_NewAccount_StartingBalance {
             get {
-                return ResourceManager.GetString("Account_Transfer", resourceCulture);
+                return ResourceManager.GetString("AccountTabsView_NewAccount_StartingBalance", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string All_Accounts {
+        public static string AccountView_Balance {
             get {
-                return ResourceManager.GetString("All_Accounts", resourceCulture);
+                return ResourceManager.GetString("AccountView_Balance", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Category {
+        public static string AccountView_Column_Transfer {
             get {
-                return ResourceManager.GetString("Category", resourceCulture);
+                return ResourceManager.GetString("AccountView_Column_Transfer", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Cleared {
+        public static string AccountView_ConMenu_Delete {
             get {
-                return ResourceManager.GetString("Cleared", resourceCulture);
+                return ResourceManager.GetString("AccountView_ConMenu_Delete", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Date {
+        public static string AccountView_Header_Account {
             get {
-                return ResourceManager.GetString("Date", resourceCulture);
+                return ResourceManager.GetString("AccountView_Header_Account", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string File {
+        public static string AccountView_Header_Category {
             get {
-                return ResourceManager.GetString("File", resourceCulture);
+                return ResourceManager.GetString("AccountView_Header_Category", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Import {
+        public static string AccountView_Header_Cleared {
             get {
-                return ResourceManager.GetString("Import", resourceCulture);
+                return ResourceManager.GetString("AccountView_Header_Cleared", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Language {
+        public static string AccountView_Header_Date {
             get {
-                return ResourceManager.GetString("Language", resourceCulture);
+                return ResourceManager.GetString("AccountView_Header_Date", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Memo {
+        public static string AccountView_Header_Memo {
             get {
-                return ResourceManager.GetString("Memo", resourceCulture);
+                return ResourceManager.GetString("AccountView_Header_Memo", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string New {
+        public static string AccountView_Header_Payee {
             get {
-                return ResourceManager.GetString("New", resourceCulture);
+                return ResourceManager.GetString("AccountView_Header_Payee", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Open {
+        public static string AccountView_Header_Sum {
             get {
-                return ResourceManager.GetString("Open", resourceCulture);
+                return ResourceManager.GetString("AccountView_Header_Sum", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Payee {
+        public static string AccountView_Header_SymbolAbbr {
             get {
-                return ResourceManager.GetString("Payee", resourceCulture);
+                return ResourceManager.GetString("AccountView_Header_SymbolAbbr", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Settings {
+        public static string AccountView_StartingBalance {
             get {
-                return ResourceManager.GetString("Settings", resourceCulture);
+                return ResourceManager.GetString("AccountView_StartingBalance", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Sum {
+        public static string AccountView_ToolTip_AddToTable {
             get {
-                return ResourceManager.GetString("Sum", resourceCulture);
+                return ResourceManager.GetString("AccountView_ToolTip_AddToTable", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Theme {
+        public static string AccountView_ToolTip_NewIncome {
             get {
-                return ResourceManager.GetString("Theme", resourceCulture);
+                return ResourceManager.GetString("AccountView_ToolTip_NewIncome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string AccountView_ToolTip_NewParentIncome {
+            get {
+                return ResourceManager.GetString("AccountView_ToolTip_NewParentIncome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string AccountView_ToolTip_NewParentTransaction {
+            get {
+                return ResourceManager.GetString("AccountView_ToolTip_NewParentTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string AccountView_ToolTip_NewTransaction {
+            get {
+                return ResourceManager.GetString("AccountView_ToolTip_NewTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string AccountView_ToolTip_NewTransfer {
+            get {
+                return ResourceManager.GetString("AccountView_ToolTip_NewTransfer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Exception_FileNotFound {
+            get {
+                return ResourceManager.GetString("Exception_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ImportView_Browse {
+            get {
+                return ResourceManager.GetString("ImportView_Browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ImportView_Cancel {
+            get {
+                return ResourceManager.GetString("ImportView_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ImportView_Import {
+            get {
+                return ResourceManager.GetString("ImportView_Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ImportView_SaveFile {
+            get {
+                return ResourceManager.GetString("ImportView_SaveFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ImportView_YNAB4 {
+            get {
+                return ResourceManager.GetString("ImportView_YNAB4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ImportView_YNAB4_Budget {
+            get {
+                return ResourceManager.GetString("ImportView_YNAB4_Budget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ImportView_YNAB4_Transaction {
+            get {
+                return ResourceManager.GetString("ImportView_YNAB4_Transaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_About {
+            get {
+                return ResourceManager.GetString("MainWindow_About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_File {
+            get {
+                return ResourceManager.GetString("MainWindow_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_File_Import {
+            get {
+                return ResourceManager.GetString("MainWindow_File_Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_File_New {
+            get {
+                return ResourceManager.GetString("MainWindow_File_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_File_Open {
+            get {
+                return ResourceManager.GetString("MainWindow_File_Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_Settings {
+            get {
+                return ResourceManager.GetString("MainWindow_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_Settings_Accents {
+            get {
+                return ResourceManager.GetString("MainWindow_Settings_Accents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_Settings_Currency {
+            get {
+                return ResourceManager.GetString("MainWindow_Settings_Currency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_Settings_Currency_Negative {
+            get {
+                return ResourceManager.GetString("MainWindow_Settings_Currency_Negative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_Settings_Currency_Positive {
+            get {
+                return ResourceManager.GetString("MainWindow_Settings_Currency_Positive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_Settings_Date {
+            get {
+                return ResourceManager.GetString("MainWindow_Settings_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_Settings_Date_Long {
+            get {
+                return ResourceManager.GetString("MainWindow_Settings_Date_Long", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_Settings_Date_Long_Inverted {
+            get {
+                return ResourceManager.GetString("MainWindow_Settings_Date_Long_Inverted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_Settings_Date_Short {
+            get {
+                return ResourceManager.GetString("MainWindow_Settings_Date_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_Settings_Language {
+            get {
+                return ResourceManager.GetString("MainWindow_Settings_Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MainWindow_Settings_Theme {
+            get {
+                return ResourceManager.GetString("MainWindow_Settings_Theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string OpenSaveDialog_Filter {
+            get {
+                return ResourceManager.GetString("OpenSaveDialog_Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string OpenSaveDialog_TitleNew {
+            get {
+                return ResourceManager.GetString("OpenSaveDialog_TitleNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string OpenSaveDialog_TitleOpen {
+            get {
+                return ResourceManager.GetString("OpenSaveDialog_TitleOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationRule_Currency {
+            get {
+                return ResourceManager.GetString("ValidationRule_Currency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationRule_CurrencyLongRange {
+            get {
+                return ResourceManager.GetString("ValidationRule_CurrencyLongRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationRule_NoEmptyNull {
+            get {
+                return ResourceManager.GetString("ValidationRule_NoEmptyNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationRule_NoNull {
+            get {
+                return ResourceManager.GetString("ValidationRule_NoNull", resourceCulture);
             }
         }
     }

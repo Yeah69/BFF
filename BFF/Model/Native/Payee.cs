@@ -1,22 +1,37 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BFF.Model.Native.Structure;
-using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
-    class Payee : DataModelBase
+    /// <summary>
+    /// Someone to whom was payeed or who payeed himself
+    /// </summary>
+    public class Payee : CommonProperty
     {
-        [Key]
-        public long Id { get; set; } = -1;
-
-        public string Name { get; set; }
-        
+        /// <summary>
+        /// Representing string
+        /// </summary>
+        /// <returns>Just the Name-property</returns>
         public override string ToString()
         {
             return Name;
         }
-        
+
+        /// <summary>
+        /// Initializing the object
+        /// </summary>
+        /// <param name="id">The objects Id</param>
+        /// <param name="name">Name of the Payee</param>
+        public Payee(long id = -1L, string name = null) : base(name)
+        {
+            ConstrDbLock = true;
+
+            if (id > 0L) Id = id;
+
+            ConstrDbLock = false;
+        }
+
         private static readonly Dictionary<string, Payee> Cache = new Dictionary<string, Payee>();
 
         public static Payee GetOrCreate(string name)
@@ -31,6 +46,26 @@ namespace BFF.Model.Native
         public static List<Payee> GetAllCache()
         {
             return Cache.Values.ToList();
+        }
+
+        public static void ClearCache()
+        {
+            Cache.Clear();
+        }
+
+        protected override void InsertToDb()
+        {
+            Database?.Insert(this);
+        }
+
+        protected override void UpdateToDb()
+        {
+            Database?.Update(this);
+        }
+
+        protected override void DeleteFromDb()
+        {
+            Database?.Delete(this);
         }
     }
 }

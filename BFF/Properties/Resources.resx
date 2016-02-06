@@ -117,58 +117,163 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
     <value />
   </data>
-  <data name="Accents" xml:space="preserve">
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
     <value />
   </data>
-  <data name="Account" xml:space="preserve">
+  <data name="AccountTabsView_NewAccount_Name" xml:space="preserve">
     <value />
   </data>
-  <data name="Account_Transfer" xml:space="preserve">
+  <data name="AccountTabsView_NewAccount_StartingBalance" xml:space="preserve">
     <value />
   </data>
-  <data name="All_Accounts" xml:space="preserve">
+  <data name="AccountView_Balance" xml:space="preserve">
     <value />
   </data>
-  <data name="Category" xml:space="preserve">
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
     <value />
   </data>
-  <data name="Cleared" xml:space="preserve">
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
     <value />
   </data>
-  <data name="Date" xml:space="preserve">
+  <data name="AccountView_Header_Account" xml:space="preserve">
     <value />
   </data>
-  <data name="File" xml:space="preserve">
+  <data name="AccountView_Header_Category" xml:space="preserve">
     <value />
   </data>
-  <data name="Import" xml:space="preserve">
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
     <value />
   </data>
-  <data name="Language" xml:space="preserve">
+  <data name="AccountView_Header_Date" xml:space="preserve">
     <value />
   </data>
-  <data name="Memo" xml:space="preserve">
+  <data name="AccountView_Header_Memo" xml:space="preserve">
     <value />
   </data>
-  <data name="New" xml:space="preserve">
+  <data name="AccountView_Header_Payee" xml:space="preserve">
     <value />
   </data>
-  <data name="Open" xml:space="preserve">
+  <data name="AccountView_Header_Sum" xml:space="preserve">
     <value />
   </data>
-  <data name="Payee" xml:space="preserve">
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
     <value />
   </data>
-  <data name="Settings" xml:space="preserve">
+  <data name="AccountView_StartingBalance" xml:space="preserve">
     <value />
   </data>
-  <data name="Sum" xml:space="preserve">
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
     <value />
   </data>
-  <data name="Theme" xml:space="preserve">
+  <data name="AccountView_ToolTip_NewIncome" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AccountView_ToolTip_NewParentIncome" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ImportView_YNAB4" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_Settings_Accents" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_Settings_Currency" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_Settings_Currency_Negative" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_Settings_Currency_Positive" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_Settings_Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_Settings_Date_Long" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_Settings_Date_Long_Inverted" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_Settings_Date_Short" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_Settings_Language" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainWindow_Settings_Theme" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ValidationRule_NoEmptyNull" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
     <value />
   </data>
 </root>

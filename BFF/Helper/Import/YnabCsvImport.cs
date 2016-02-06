@@ -1,30 +1,96 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
-using BFF.DB.SQLite;
-using Dapper;
-using Dapper.Contrib.Extensions;
+using BFF.DB;
+using BFF.Model.Native.Structure;
+using BFF.WPFStuff;
 using YNAB = BFF.Model.Conversion.YNAB;
 using Native = BFF.Model.Native;
-using static BFF.DB.SQLite.SqLiteHelper;
 
 namespace BFF.Helper.Import
 {
-    class YnabCsvImport
+    class YnabCsvImport : ObservableObject, IImportable
     {
+        private readonly IBffOrm _orm;
+
+        public string TransactionPath
+        {
+            get { return _transactionPath; }
+            set
+            {
+                _transactionPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string BudgetPath
+        {
+            get { return _budgetPath; }
+            set
+            {
+                _budgetPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SavePath
+        {
+            get { return _savePath; }
+            set
+            {
+                _savePath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Import()
+        {
+
+            string exceptionTemplate = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("Exception_FileNotFound", null, BffEnvironment.CultureProvider.LanguageCulture);
+            if (!File.Exists(TransactionPath))
+                throw new FileNotFoundException(string.Format(exceptionTemplate, TransactionPath));
+            if(!File.Exists(BudgetPath))
+                throw new FileNotFoundException(string.Format(exceptionTemplate, BudgetPath));
+            if (File.Exists(SavePath))
+                File.Delete(SavePath); //todo: Exception handling
+            ImportYnabTransactionsCsvtoDb(TransactionPath, BudgetPath, SavePath);
+            return SavePath;
+         }
+
         internal static readonly Regex TransferPayeeRegex = new Regex(@"Transfer : (?<accountName>.+)$", RegexOptions.RightToLeft);
         internal static readonly Regex PayeePartsRegex = new Regex(@"^(?<payeeStr>.+)?(( / )?Transfer : (?<accountName>.+))?$", RegexOptions.RightToLeft);
         internal static readonly Regex SplitMemoRegex = new Regex(@"^\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) ");
         internal static readonly Regex MemoPartsRegex = new Regex(@"^(\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) )?((?<subTransMemo>.*) / )?(?<parentTransMemo>.*)$");
+        internal static readonly Regex NumberExtractRegex = new Regex(@"\d+");
 
-
-        public static void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string dbName)
+        internal static long ExtractLong(string text)
         {
+            if (NumberExtractRegex.IsMatch(text))
+            {
+                string concatedNumber = NumberExtractRegex.Matches(text).Cast<Match>().Aggregate("", (current, match) => current + match.Value);
+                return long.Parse(concatedNumber);
+            }
+            return 0L;
+        }
+
+        public YnabCsvImport(IBffOrm orm)
+        {
+            _orm = orm;
+        }
+
+        public void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string savePath)
+        {
+            //Initialization
+            ProcessedAccountsList.Clear();
+            Native.Account.ClearCache();
+            Native.Payee.ClearCache();
+            Native.Category.ClearCache();
+
+            DataModelBase.Database = null; //switches off OR mapping
+
             //First step: Parse CSV data into conversion objects
             Queue<YNAB.Transaction> ynabTransactions = new Queue<YNAB.Transaction>(ParseTransactionCsv(filePathTransaction));
             List<YNAB.BudgetEntry> budgets = ParseBudgetCsv(filePathBudget);
@@ -38,10 +104,11 @@ namespace BFF.Helper.Import
             //Todo: List<Native.Budget> nativeBudgets = budgets.Select(budget => (Native.Budget)budget).ToList();
 
             //Third step: Create new database for imported data
-            string assemblyPath = Assembly.GetExecutingAssembly().Location;
-            assemblyPath = assemblyPath.Substring(0, assemblyPath.LastIndexOf('\\') + 1);
-            CreateNewDatabase($"{assemblyPath}testDatabase.sqlite"); //todo: refactor later (Name/Location choosable)
-            PopulateDatabase(transactions, subTransactions, transfers, incomes);
+            DataModelBase.Database = _orm; //turn on OR mapping
+            _orm.DbPath = savePath;
+            _orm.CreateNewDatabase();
+            _orm.PopulateDatabase(transactions, subTransactions, incomes, new List<Native.SubIncome>(), 
+                transfers, Native.Account.GetAllCache(), Native.Payee.GetAllCache(), Native.Category.GetAllCache());
         }
 
         private static List<YNAB.Transaction> ParseTransactionCsv(string filePath)
@@ -128,12 +195,12 @@ namespace BFF.Helper.Import
                 Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Memo);
                 if (splitMatch.Success)
                 {
-                    Native.Transaction parent = ynabTransaction;
+                    Native.ParentTransaction parent = (Native.ParentTransaction)ynabTransaction;
                     int splitCount = int.Parse(splitMatch.Groups[nameof(splitCount)].Value);
                     int count = 0;
                     for (int i = 0; i < splitCount; i++)
                     {
-                        YNAB.Transaction newYnabTransaction = (i==0) ? ynabTransaction : ynabTransactions.Dequeue();
+                        YNAB.Transaction newYnabTransaction = i==0 ? ynabTransaction : ynabTransactions.Dequeue();
                         Match transferMatch = TransferPayeeRegex.Match(newYnabTransaction.Payee);
                         if (transferMatch.Success)
                             AddTransfer(transfers, newYnabTransaction);
@@ -149,9 +216,6 @@ namespace BFF.Helper.Import
                     }
                     if (count > 0)
                     {
-                        parent.Sum = null;
-                        parent.Category = null;
-                        parent.Type = "ParentTrans";
                         transactions.Add(parent);
                     }
                 }
@@ -167,9 +231,15 @@ namespace BFF.Helper.Import
                 }
             }
         }
+        private string _transactionPath;
+        private string _budgetPath;
+        private string _savePath;
 
+        /* The smart people of YNAB thought it would be a nice idea to put each Transfer two times into the export,
+           one time for each Account. Fortunatelly, the Accounts are processed consecutively.
+           That way if one of the Accounts of the Transfer points to an already processed Account,
+           then it means that this Transfer is already created and can be skipped. */
         private static readonly List<string> ProcessedAccountsList = new List<string>();
-
         private static void AddTransfer(List<Native.Transfer> transfers, YNAB.Transaction ynabTransfer)
         {
             if (ProcessedAccountsList.Count == 0)
