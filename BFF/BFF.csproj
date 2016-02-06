@@ -176,6 +176,9 @@
     </Compile>
     <Compile Include="WPFStuff\ObservableObject.cs" />
     <Compile Include="WPFStuff\ValidationRules\CurrencyLongRangeRule.cs" />
+    <Compile Include="WPFStuff\ValidationRules\NoEmptyFileNameRule.cs" />
+    <Compile Include="WPFStuff\ValidationRules\NotExistingSavePathRule.cs" />
+    <Compile Include="WPFStuff\ValidationRules\NotExistingFilePathRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\NoNullRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\NoEmptyNullStringRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\CurrencyRule.cs" />

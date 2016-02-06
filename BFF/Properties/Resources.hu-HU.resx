@@ -276,4 +276,13 @@
   <data name="ValidationRule_NoNull" xml:space="preserve">
     <value>Diese Property darf nicht leer sein!</value>
   </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Dieser Dateipfad existiert nicht!</value>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Das Verzeichnis vom Speicherpfad existiert nicht!</value>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Der Dateiname von diesem Speicherpfad ist leer!</value>
+  </data>
 </root>

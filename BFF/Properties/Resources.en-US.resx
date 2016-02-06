@@ -276,4 +276,13 @@
   <data name="ValidationRule_NoNull" xml:space="preserve">
     <value>This property may not be empty!</value>
   </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>This file path does not exist!</value>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>The directory of the save path does not exist!</value>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>The file name of this save path is empty!</value>
+  </data>
 </root>

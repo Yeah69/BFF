@@ -536,5 +536,32 @@ namespace BFF.Properties {
                 return ResourceManager.GetString("ValidationRule_NoNull", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationRule_NotExistingFilePath {
+            get {
+                return ResourceManager.GetString("ValidationRule_NotExistingFilePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationRule_NotExistingSavePath {
+            get {
+                return ResourceManager.GetString("ValidationRule_NotExistingSavePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationRule_NotExistingSavePath_EmptyName {
+            get {
+                return ResourceManager.GetString("ValidationRule_NotExistingSavePath_EmptyName", resourceCulture);
+            }
+        }
     }
 }
