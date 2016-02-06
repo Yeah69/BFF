@@ -15,7 +15,7 @@
              xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700"
-             Name="TitsView" Loaded="AccountView_OnLoaded">
+             Name="TitsView">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -448,7 +448,7 @@
         <!--#region TitsGrid -->
         <!-- The DataGrid, which shows all saved Tits -->
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" RowStyle="{StaticResource DefaultRowStyle}" SelectionMode="Single" SelectionUnit="FullRow"
-                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
+                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected" Loaded="TitGrid_OnLoaded">
             <DataGrid.Columns>
                 <!-- Symbol -->
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_SymbolAbbr}" x:Name="SymbolColumn">
