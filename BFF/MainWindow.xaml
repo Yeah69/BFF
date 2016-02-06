@@ -10,7 +10,8 @@
         lex:LocalizeDictionary.DesignCulture="en-US"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
-        Title="{Binding Title}" Height="700" Width="1300" MinHeight="700" MinWidth="1300" ShowIconOnTitleBar="True"
+        Title="{Binding Title}" MinHeight="500" MinWidth="1000" ShowIconOnTitleBar="True" WindowState="{Binding WindowState, Mode=TwoWay}"
+        Height="{Binding Height, Mode=TwoWay}" Width="{Binding Width, Mode=TwoWay}" Left="{Binding X, Mode=TwoWay}" Top="{Binding Y, Mode=TwoWay}"
         Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" 
         RightWindowCommandsOverlayBehavior="Never" LeftWindowCommandsOverlayBehavior="Never" BorderThickness="2"
         BorderBrush="{DynamicResource AccentColorBrush}">

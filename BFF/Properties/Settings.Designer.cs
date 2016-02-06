@@ -118,5 +118,65 @@ namespace BFF.Properties {
                 this["Localization_Date_Long"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public double MainWindow_Width {
+            get {
+                return ((double)(this["MainWindow_Width"]));
+            }
+            set {
+                this["MainWindow_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public double MainWindow_Height {
+            get {
+                return ((double)(this["MainWindow_Height"]));
+            }
+            set {
+                this["MainWindow_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public double MainWindow_X {
+            get {
+                return ((double)(this["MainWindow_X"]));
+            }
+            set {
+                this["MainWindow_X"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public double MainWindow_Y {
+            get {
+                return ((double)(this["MainWindow_Y"]));
+            }
+            set {
+                this["MainWindow_Y"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Normal")]
+        public global::System.Windows.WindowState MainWindow_WindowState {
+            get {
+                return ((global::System.Windows.WindowState)(this["MainWindow_WindowState"]));
+            }
+            set {
+                this["MainWindow_WindowState"] = value;
+            }
+        }
     }
 }

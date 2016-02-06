@@ -1,12 +1,16 @@
 ﻿using System.Globalization;
 using System.IO;
+using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using BFF.DB;
 using BFF.Helper;
 using BFF.Helper.Import;
 using BFF.Model.Native;
+using BFF.Properties;
 using BFF.WPFStuff;
-using Microsoft.Win32;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace BFF.ViewModel
 {
@@ -49,10 +53,23 @@ namespace BFF.ViewModel
             set { BffEnvironment.CultureProvider.DateLong = value; }
         }
 
+        private const double BorderOffset = 50.0;
+
         public MainWindowViewModel(IBffOrm orm)
         {
             _orm = orm;
             Reset();
+
+            //If the application is not visible on screen, than reset the default position
+            //This might occure when one of multipe monitors is switched off or the screen resolution is changed while BFF is off
+            if (X - BorderOffset > SystemInformation.VirtualScreen.Right ||
+                Y - BorderOffset > SystemInformation.VirtualScreen.Bottom ||
+                X + Width - BorderOffset < SystemInformation.VirtualScreen.Left ||
+                Y + Height - BorderOffset < SystemInformation.VirtualScreen.Top)
+            {
+                X = 50.0;
+                Y = 50.0;
+            }
         }
 
         protected void NewBudgetPlan()
@@ -133,5 +150,64 @@ namespace BFF.ViewModel
             OnPropertyChanged(nameof(CurrencyCulture));
             OnPropertyChanged(nameof(DateCulture));
         }
+
+        #region SizeLocationWindowState
+
+        public double Width
+        {
+            get { return Settings.Default.MainWindow_Width; }
+            set
+            {
+                Settings.Default.MainWindow_Width = value;
+                Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public double Height
+        {
+            get { return Settings.Default.MainWindow_Height; }
+            set
+            {
+                Settings.Default.MainWindow_Height = value;
+                Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public double X
+        {
+            get { return Settings.Default.MainWindow_X; }
+            set
+            {
+                Settings.Default.MainWindow_X = value;
+                Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public double Y
+        {
+            get { return Settings.Default.MainWindow_Y; }
+            set
+            {
+                Settings.Default.MainWindow_Y = value;
+                Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public WindowState WindowState
+        {
+            get { return Settings.Default.MainWindow_WindowState; }
+            set
+            {
+                Settings.Default.MainWindow_WindowState = value;
+                Settings.Default.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
     }
 }
