@@ -33,16 +33,18 @@ namespace BFF.ViewModel
         
         public ICommand NewAccountCommand => new RelayCommand(param =>
         {
+            //Insert Account to Database
             _orm.Insert(NewAccount);
-            NewAccount = new Account { Id = -1, Name = "", StartingBalance = 0L };
-            OnPropertyChanged(nameof(NewAccount));
-            NewAccount.RefreshBalance();
+            //Refresh all relevant properties
             NewAccount.RefreshBalance();
             if (Account.allAccounts != null)
             {
                 Account.allAccounts.RefreshBalance();
                 Account.allAccounts.RefreshStartingBalance();
             }
+            //Refresh dummy-Account
+            NewAccount = new Account { Id = -1, Name = "", StartingBalance = 0L };
+            OnPropertyChanged(nameof(NewAccount));
         }
         , param => !string.IsNullOrEmpty(NewAccount.Name));
         
