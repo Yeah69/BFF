@@ -127,7 +127,7 @@
     <value>Kontoname:</value>
   </data>
   <data name="AccountTabsView_NewAccount_StartingBalance" xml:space="preserve">
-    <value>Initialler Kontostand:</value>
+    <value>Anfangskontostand:</value>
   </data>
   <data name="AccountView_Balance" xml:space="preserve">
     <value>Kontostand:</value>
@@ -163,7 +163,7 @@
     <value>S</value>
   </data>
   <data name="AccountView_StartingBalance" xml:space="preserve">
-    <value>Initialler Kontostand:</value>
+    <value>Anfangskontostand:</value>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
     <value>In die Tabelle aufnehmen</value>
@@ -196,7 +196,7 @@
     <value>Importieren</value>
   </data>
   <data name="ImportView_SaveFile" xml:space="preserve">
-    <value>Importiere und speichere zu folgenden Pfad:</value>
+    <value>Importiere und speichere unter folgendem Pfad:</value>
   </data>
   <data name="ImportView_YNAB4" xml:space="preserve">
     <value>Import von YNAB4 CSV-Dateien</value>
