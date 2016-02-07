@@ -63,9 +63,9 @@ namespace BFF.Model.Native
         #region ViewModel_Part
 
         [Write(false)]
-        public override long Balance
+        public override long? Balance
         {
-            get { return AllAccounts?.Sum(account => account.Balance) ?? 0L; }
+            get { return AllAccounts?.Sum(account => account.Balance); }
             set { OnPropertyChanged(); }
         }
 

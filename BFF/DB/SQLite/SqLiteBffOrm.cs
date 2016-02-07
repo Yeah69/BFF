@@ -128,7 +128,7 @@ namespace BFF.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public long GetAccountBalance(Account account = null)
+        public long? GetAccountBalance(Account account = null)
         {
             long ret;
 
@@ -136,9 +136,16 @@ namespace BFF.DB.SQLite
             {
                 cnn.Open();
 
-                ret = account == null 
-                    ? cnn.Query<long>(SqLiteQueries.AllAccountsBalanceStatement).First() 
-                    : cnn.Query<long>(SqLiteQueries.AccountSpecificBalanceStatement, new { accountId = account.Id }).First();
+                try
+                {
+                    ret = account == null
+                        ? cnn.Query<long>(SqLiteQueries.AllAccountsBalanceStatement).First()
+                        : cnn.Query<long>(SqLiteQueries.AccountSpecificBalanceStatement, new { accountId = account.Id }).First();
+                }
+                catch (OverflowException)
+                {
+                    return null;
+                }
 
                 cnn.Close();
             }

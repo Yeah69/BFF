@@ -731,7 +731,7 @@
                 <TextBlock Name="StartingBalanceTextBlock" Text="{Binding StartingBalance, Converter={StaticResource SumConverter}}" />
             </GroupBox>
             <GroupBox Header="{lex:Loc AccountView_Balance}" HorizontalAlignment="Left">
-                <TextBlock Name="BalanceTextBlock"  Text="{Binding Balance, Converter={StaticResource SumConverter}}" />
+                <TextBlock Name="BalanceTextBlock" Text="{Binding Balance, Converter={StaticResource SumConverter}}" />
             </GroupBox>
         </StackPanel>
     </Grid>
