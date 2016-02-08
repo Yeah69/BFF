@@ -169,10 +169,10 @@
     <value>In die Tabelle aufnehmen</value>
   </data>
   <data name="AccountView_ToolTip_NewIncome" xml:space="preserve">
-    <value>Neuer Einkommenseintrag</value>
+    <value>Neues Einkommen</value>
   </data>
   <data name="AccountView_ToolTip_NewParentIncome" xml:space="preserve">
-    <value>Neuer aufgeteilter Einkommenseintrag</value>
+    <value>Neues aufgeteiltes Einkommen</value>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
     <value>Neue aufgeteilte Transaktion</value>

@@ -169,13 +169,13 @@
     <value>Add to the table</value>
   </data>
   <data name="AccountView_ToolTip_NewIncome" xml:space="preserve">
-    <value>New Income entry</value>
+    <value>New Income</value>
   </data>
   <data name="AccountView_ToolTip_NewParentIncome" xml:space="preserve">
-    <value>New splitted Income entry</value>
+    <value>New splitted Income</value>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>New splitted Transaction entry</value>
+    <value>New splitted Transaction</value>
   </data>
   <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
     <value>New Transaction</value>
