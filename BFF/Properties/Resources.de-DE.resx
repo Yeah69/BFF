@@ -229,7 +229,7 @@
     <value>Akzente:</value>
   </data>
   <data name="MainWindow_Settings_Currency" xml:space="preserve">
-    <value>Währungsformart:</value>
+    <value>Währungsformat:</value>
   </data>
   <data name="MainWindow_Settings_Currency_Negative" xml:space="preserve">
     <value>Positiv:</value>
@@ -270,11 +270,8 @@
   <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
     <value>Der Wert liegt außerhalb des Gültigkeitsbereiches: [ {0} .. {1} ]!</value>
   </data>
-  <data name="ValidationRule_NoEmptyNull" xml:space="preserve">
-    <value>Dieser Text darf nicht leer sein!</value>
-  </data>
   <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>Diese Property darf nicht leer sein!</value>
+    <value>Dieses Eingabefeld darf nicht leer bleiben!</value>
   </data>
   <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
     <value>Dieser Dateipfad existiert nicht!</value>

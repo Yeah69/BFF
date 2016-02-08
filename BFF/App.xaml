@@ -3,6 +3,7 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              Startup="Application_Startup">
     <Application.Resources>
         <ResourceDictionary>
@@ -12,6 +13,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!--#region Global BFF Resources -->
@@ -28,6 +30,10 @@
             <system:Double x:Key="IconSize">20.0</system:Double>
             <system:Double x:Key="TabHeaderIconSize">30.0</system:Double>
             <system:Double x:Key="WindowCommandIconSize">15.0</system:Double>
+
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SquareButtonStyle}">
+                <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
+            </Style>
             <!--#endregion -->
         </ResourceDictionary>
     </Application.Resources>

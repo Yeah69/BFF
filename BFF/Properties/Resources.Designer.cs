@@ -522,15 +522,6 @@ namespace BFF.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string ValidationRule_NoEmptyNull {
-            get {
-                return ResourceManager.GetString("ValidationRule_NoEmptyNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
         public static string ValidationRule_NoNull {
             get {
                 return ResourceManager.GetString("ValidationRule_NoNull", resourceCulture);

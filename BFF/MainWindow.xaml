@@ -13,7 +13,7 @@
         Title="{Binding Title}" MinHeight="500" MinWidth="1000" ShowIconOnTitleBar="True" WindowState="{Binding WindowState, Mode=TwoWay}"
         Height="{Binding Height, Mode=TwoWay}" Width="{Binding Width, Mode=TwoWay}" Left="{Binding X, Mode=TwoWay}" Top="{Binding Y, Mode=TwoWay}"
         Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" 
-        RightWindowCommandsOverlayBehavior="Never" LeftWindowCommandsOverlayBehavior="Never" BorderThickness="2"
+        RightWindowCommandsOverlayBehavior="Never" LeftWindowCommandsOverlayBehavior="Never" BorderThickness="2" TitleCaps="False"
         BorderBrush="{DynamicResource AccentColorBrush}">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
@@ -114,9 +114,9 @@
             <controls:Flyout Name="FileFlyout" Header="{lex:Loc MainWindow_File}" Position="Left">
                 <Grid>
                     <StackPanel Orientation="Vertical">
-                        <Button Content="{lex:Loc MainWindow_File_New}" Margin="10,5,10,5" Command="{Binding NewBudgetPlanCommand}" Click="Close_FileFlyout" Style="{DynamicResource SquareButtonStyle}" />
-                        <Button Content="{lex:Loc MainWindow_File_Open}" Margin="10,5,10,5" Command="{Binding OpenBudgetPlanCommand}" Click="Close_FileFlyout" Style="{DynamicResource SquareButtonStyle}" />
-                        <Button Content="{lex:Loc MainWindow_File_Import}" Margin="10,5,10,5" Click="Open_ImportDialog" Style="{DynamicResource SquareButtonStyle}" />
+                        <Button Content="{lex:Loc MainWindow_File_New}" Margin="10,5,10,5" Command="{Binding NewBudgetPlanCommand}" Click="Close_FileFlyout" />
+                        <Button Content="{lex:Loc MainWindow_File_Open}" Margin="10,5,10,5" Command="{Binding OpenBudgetPlanCommand}" Click="Close_FileFlyout" />
+                        <Button Content="{lex:Loc MainWindow_File_Import}" Margin="10,5,10,5" Click="Open_ImportDialog" />
                     </StackPanel>
                 </Grid>
             </controls:Flyout>

@@ -139,7 +139,7 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
                             <DockPanel LastChildFill="True">
-                                <Button DockPanel.Dock="Right" Command="{Binding AddPayeeCommand}" Padding="0">
+                                <Button DockPanel.Dock="Right" Command="{Binding AddPayeeCommand}" Padding="0"  Style="{DynamicResource SquareButtonStyle}">
                                     <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                                 </Button>
                                 <ComboBox TextSearch.TextPath="Name" 
@@ -581,7 +581,7 @@
         <!-- The Editing-Form -->
         <StackPanel Grid.Row="1">
             <DataGrid Name="NewTitGrid" ItemsSource="{Binding NewTits}" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0,2,0,0" CanUserAddRows="False" CanUserSortColumns="False"
-                      Width="{Binding ActualWidth ,ElementName=TitGrid}">
+                      Width="{Binding ActualWidth ,ElementName=TitGrid}" MaxHeight="200">
                 <DataGrid.Columns>
                     <!-- Symbol -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SymbolColumn}, Mode=TwoWay}">
