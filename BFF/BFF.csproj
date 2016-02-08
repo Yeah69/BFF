@@ -153,7 +153,6 @@
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="WPFStuff\Behaviors\AdditionalTabItemsBehavior.cs" />
     <Compile Include="WPFStuff\Converters\BooleanToNullableBooleanConverter.cs" />
-    <Compile Include="WPFStuff\Converters\CategoriesToHierarchicalItemsSourceConverter.cs" />
     <Compile Include="WPFStuff\Converters\DateToStringConverter.cs" />
     <Compile Include="WPFStuff\Converters\DateComboConverter.cs" />
     <Compile Include="WPFStuff\Converters\DataGridLengthsToDoubleConverter.cs" />

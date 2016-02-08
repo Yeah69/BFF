@@ -201,7 +201,18 @@ namespace BFF.DB.SQLite
                     else if (dataModelBase is Payee)
                         AllPayees.Add(dataModelBase as Payee);
                     else if (dataModelBase is Category)
-                        AllCategories.Add(dataModelBase as Category);
+                    {
+                        Category newCategory = dataModelBase as Category;
+                        if (newCategory.Parent == null)
+                            AllCategories.Add(newCategory);
+                        else
+                        {
+                            int index = newCategory.Parent.Categories.Count - 2;
+                            index = index == -1 ? AllCategories.IndexOf(newCategory.Parent) + 1 :
+                                AllCategories.IndexOf(newCategory.Parent.Categories[index]) + 1;
+                            AllCategories.Insert(index, newCategory);
+                        }
+                    }
                 }
                 if (dataModelBase is TitNoTransfer)
                 {
@@ -416,6 +427,7 @@ namespace BFF.DB.SQLite
                             return ret;
                         }, splitOn: "*");
                     //Now after every Category is loaded the Parent-Child relations are established
+                    List<Category> parentCategories = new List<Category>();
                     foreach (Category category in categories)
                     {
                         if (category.ParentId != null)
@@ -423,15 +435,30 @@ namespace BFF.DB.SQLite
                             category.Parent = catagoryDictionary[(long)category.ParentId];
                             category.Parent.Categories.Add(category);
                         }
+                        else parentCategories.Add(category);
                     }
-                    foreach(Category category in categories)
-                        AllCategories.Add(category);
+                    foreach (Category parentCategory in parentCategories)
+                    {
+                        AllCategories.Add(parentCategory);
+                        FillCategoryWithDescandents(parentCategory, AllCategories);
+                    }
+                    //foreach (Category category in categories) //todo: remove if above code works
+                    //    AllCategories.Add(category);
 
                     cnn.Close();
                 }
                 GetAllTits(DateTime.MinValue, DateTime.MaxValue);
                 Account.allAccounts?.RefreshStartingBalance(); //todo: Rather use the DbPathChanged event in AllAccounts
                 Account.allAccounts?.RefreshBalance();
+            }
+        }
+
+        private void FillCategoryWithDescandents(Category parentCategory, IList<Category> list)
+        {
+            foreach (Category childCategory in parentCategory.Categories)
+            {
+                list.Add(childCategory);
+                FillCategoryWithDescandents(childCategory, list);
             }
         }
 
