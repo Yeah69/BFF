@@ -139,7 +139,7 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
                             <DockPanel LastChildFill="True">
-                                <Button DockPanel.Dock="Right" Command="{Binding AddPayeeCommand}" Padding="0"  Style="{DynamicResource SquareButtonStyle}">
+                                <Button DockPanel.Dock="Right" Command="{Binding AddPayeeCommand}" Padding="0">
                                     <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                                 </Button>
                                 <ComboBox TextSearch.TextPath="Name" 
