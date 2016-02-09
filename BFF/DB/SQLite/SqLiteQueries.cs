@@ -5,6 +5,10 @@ namespace BFF.DB.SQLite
 {
     static class SqLiteQueries
     {
+        internal static readonly int DatabaseSchemaVersion = 1;
+
+        internal static string SetDatabaseSchemaVersion = $@"PRAGMA user_version = {DatabaseSchemaVersion};";
+
         #region BalanceStatements
 
         internal static string AllAccountsBalanceStatement =>
