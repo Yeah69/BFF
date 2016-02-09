@@ -116,7 +116,7 @@
                 <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringConverter}}" />
             </DataTemplate>
             <DataTemplate x:Key="DateEditingColumnTemplate">
-                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}" SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitsView, Converter={StaticResource BooleanToDatePickerFormatConverter}}"/>
+                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitsView, Converter={StaticResource BooleanToDatePickerFormatConverter}}"/>
             </DataTemplate>
             <!-- Payee -->
             <DataTemplate x:Key="PayeeColumnTemplate">
