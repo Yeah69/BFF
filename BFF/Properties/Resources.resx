@@ -266,14 +266,26 @@
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
     <value />
+    <comment>Validation message saying that the text is not validly formated as currency.</comment>
   </data>
   <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
     <value />
-  </data>
-  <data name="ValidationRule_NoEmptyNull" xml:space="preserve">
-    <value />
+    <comment>Validation message, which tells the long range as currency to the user.</comment>
   </data>
   <data name="ValidationRule_NoNull" xml:space="preserve">
     <value />
+    <comment>Validation message saying that the property is not allowed to be empty.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value />
+    <comment>Validation message saying that file path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value />
+    <comment>Validation message saying that directory of the save path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value />
+    <comment>Validation message saying that the file name of the save path is empty.</comment>
   </data>
 </root>

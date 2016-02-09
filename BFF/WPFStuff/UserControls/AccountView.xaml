@@ -15,7 +15,7 @@
              xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700"
-             Name="TitsView" Loaded="AccountView_OnLoaded">
+             Name="TitsView">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -31,7 +31,6 @@
             <converters:SumToBrushConverter x:Key="SumToBrushConverter" PositiveBrush="{StaticResource IncomeBrush}" NegativeBrush="{StaticResource TransactionBrush}"/>
             <converters:SumConverter x:Key="SumConverter" />
             <converters:NegativeTransferMultiConverter x:Key="NegativeTransferMultiConverter" />
-            <converters:CategoriesToHierarchicalItemsSourceConverter x:Key="CategoriesToHierarchicalItemsSourceConverter" />
             <converters:DateToStringConverter x:Key="DateToStringConverter"/>
             <converters:DataGridWidthsToLeftMarginConverter x:Key="DataGridWidthsToLeftMarginConverter" />
             <converters:DataGridLengthsToDoubleConverter x:Key="DataGridLengthsToDoubleConverter" />
@@ -117,7 +116,7 @@
                 <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringConverter}}" />
             </DataTemplate>
             <DataTemplate x:Key="DateEditingColumnTemplate">
-                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay}" SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitsView, Converter={StaticResource BooleanToDatePickerFormatConverter}}"/>
+                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitsView, Converter={StaticResource BooleanToDatePickerFormatConverter}}"/>
             </DataTemplate>
             <!-- Payee -->
             <DataTemplate x:Key="PayeeColumnTemplate">
@@ -140,7 +139,7 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
                             <DockPanel LastChildFill="True">
-                                <Button DockPanel.Dock="Right" Command="{Binding AddPayeeCommand}">
+                                <Button DockPanel.Dock="Right" Command="{Binding AddPayeeCommand}" Padding="0">
                                     <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                                 </Button>
                                 <ComboBox TextSearch.TextPath="Name" 
@@ -206,8 +205,7 @@
                         <DataTemplate DataType="{x:Type structure:TitLike}">
                             <DockPanel LastChildFill="True">
                                 <controls:SplitButton DockPanel.Dock="Right" Orientation="Horizontal" Command="{Binding AddCategoryCommand}" SelectedItem="{Binding AddingCategoryParent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSourceConverter}}"
-                                                      Click="CategoryButton_OnClick">
+                                                      ItemsSource="{Binding AllCategories}">
                                     <controls:SplitButton.IconTemplate>
                                         <DataTemplate>
                                             <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
@@ -219,7 +217,7 @@
                                           IsEditable="True" 
                                           IsTextSearchCaseSensitive="False"
                                           IsTextSearchEnabled="True"
-                                          ItemsSource="{Binding AllCategories, Converter={StaticResource CategoriesToHierarchicalItemsSourceConverter}}">
+                                          ItemsSource="{Binding AllCategories}">
                                     <ComboBox.SelectedItem>
                                         <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         </Binding>
@@ -432,7 +430,6 @@
             </DataTemplate>
             <!--#endregion -->
 
-
             <Style BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
                 <Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush8}" />
             </Style>
@@ -448,7 +445,7 @@
         <!--#region TitsGrid -->
         <!-- The DataGrid, which shows all saved Tits -->
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" RowStyle="{StaticResource DefaultRowStyle}" SelectionMode="Single" SelectionUnit="FullRow"
-                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
+                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected" Loaded="TitGrid_OnLoaded">
             <DataGrid.Columns>
                 <!-- Symbol -->
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_SymbolAbbr}" x:Name="SymbolColumn">
@@ -584,7 +581,7 @@
         <!-- The Editing-Form -->
         <StackPanel Grid.Row="1">
             <DataGrid Name="NewTitGrid" ItemsSource="{Binding NewTits}" AutoGenerateColumns="False" HeadersVisibility="None" BorderThickness="0,2,0,0" CanUserAddRows="False" CanUserSortColumns="False"
-                      Width="{Binding ActualWidth ,ElementName=TitGrid}">
+                      Width="{Binding ActualWidth ,ElementName=TitGrid}" MaxHeight="200">
                 <DataGrid.Columns>
                     <!-- Symbol -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SymbolColumn}, Mode=TwoWay}">
@@ -731,7 +728,7 @@
                 <TextBlock Name="StartingBalanceTextBlock" Text="{Binding StartingBalance, Converter={StaticResource SumConverter}}" />
             </GroupBox>
             <GroupBox Header="{lex:Loc AccountView_Balance}" HorizontalAlignment="Left">
-                <TextBlock Name="BalanceTextBlock"  Text="{Binding Balance, Converter={StaticResource SumConverter}}" />
+                <TextBlock Name="BalanceTextBlock" Text="{Binding Balance, Converter={StaticResource SumConverter}}" />
             </GroupBox>
         </StackPanel>
     </Grid>

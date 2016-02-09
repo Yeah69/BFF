@@ -29,7 +29,7 @@ namespace BFF.Model.Native.Structure
                 _account = value;
                 Update();
                 OnPropertyChanged();
-                if (temp != null && temp != _account)
+                if (Id != -1 && temp != null && temp != _account)
                 {
                     if (temp.Tits.Contains(this)) temp.Tits.Remove(this);
                     if (!_account.Tits.Contains(this)) _account.Tits.Add(this);
@@ -211,12 +211,12 @@ namespace BFF.Model.Native.Structure
         public ICommand AddCategoryCommand => new RelayCommand(obj =>
         {
             Category newCategory = new Category {Name = CategoryText.Trim()};
-            Database?.Insert(newCategory);
             if (AddingCategoryParent != null)
             {
                 newCategory.Parent = AddingCategoryParent;
                 AddingCategoryParent.Categories.Add(newCategory);
             }
+            Database?.Insert(newCategory);
             OnPropertyChanged(nameof(AllCategories));
             Category = newCategory;
         }, obj =>

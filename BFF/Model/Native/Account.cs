@@ -98,7 +98,6 @@ namespace BFF.Model.Native
 
         public virtual void RefreshBalance()
         {
-            _balance = Database?.GetAccountBalance(this) ?? 0L;
             OnPropertyChanged(nameof(Balance));
             allAccounts?.RefreshBalance();
         }
@@ -113,12 +112,13 @@ namespace BFF.Model.Native
         [Write(false)]
         public ObservableCollection<TitBase> NewTits { get; set; } = new ObservableCollection<TitBase>();
 
-        private long? _balance;
-
         [Write(false)]
-        public virtual long Balance
+        public virtual long? Balance
         {
-            get { return _balance ?? Database?.GetAccountBalance(this) ?? 0L; }
+            get
+            {
+                return Database?.GetAccountBalance(this);
+            }
             set { OnPropertyChanged(); }
         }
 

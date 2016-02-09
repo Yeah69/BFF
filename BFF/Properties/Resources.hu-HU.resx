@@ -169,10 +169,10 @@
     <value>In die Tabelle aufnehmen</value>
   </data>
   <data name="AccountView_ToolTip_NewIncome" xml:space="preserve">
-    <value>Neuer Einkommenseintrag</value>
+    <value>Neues Einkommen</value>
   </data>
   <data name="AccountView_ToolTip_NewParentIncome" xml:space="preserve">
-    <value>Neuer aufgeteilter Einkommenseintrag</value>
+    <value>Neues aufgeteiltes Einkommen</value>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
     <value>Neue aufgeteilte Transaktion</value>
@@ -229,7 +229,7 @@
     <value>Akzente:</value>
   </data>
   <data name="MainWindow_Settings_Currency" xml:space="preserve">
-    <value>Währungsformart:</value>
+    <value>Währungsformat:</value>
   </data>
   <data name="MainWindow_Settings_Currency_Negative" xml:space="preserve">
     <value>Positiv:</value>
@@ -270,10 +270,16 @@
   <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
     <value>Der Wert liegt außerhalb des Gültigkeitsbereiches: [ {0} .. {1} ]!</value>
   </data>
-  <data name="ValidationRule_NoEmptyNull" xml:space="preserve">
-    <value>Dieser Text darf nicht leer sein!</value>
-  </data>
   <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>Diese Property darf nicht leer sein!</value>
+    <value>Dieses Eingabefeld darf nicht leer bleiben!</value>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Dieser Dateipfad existiert nicht!</value>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Das Verzeichnis vom Speicherpfad existiert nicht!</value>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Der Dateiname von diesem Speicherpfad ist leer!</value>
   </data>
 </root>

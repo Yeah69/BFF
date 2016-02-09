@@ -88,7 +88,7 @@
                     </TextBox>
                     <Button HorizontalAlignment="Right" Content="{lex:Loc AccountTabsView_NewAccount_Create}" Command="{Binding DataContext.NewAccountCommand, ElementName=AccountTabsUserControl}">
                         <Button.Style>
-                            <Style TargetType="Button" BasedOn="{StaticResource MetroButton}">
+                            <Style TargetType="Button" BasedOn="{StaticResource BffGeneralButtonStyle}">
                                 <Setter Property="IsEnabled" Value="False"/>
                                 <Style.Triggers>
                                     <MultiDataTrigger>

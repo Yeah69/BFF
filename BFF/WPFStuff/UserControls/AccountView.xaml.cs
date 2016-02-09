@@ -32,14 +32,9 @@ namespace BFF.WPFStuff.UserControls
             RefreshDataGrids();
         }
 
-        private void AccountView_OnLoaded(object sender, RoutedEventArgs e)
+        private void TitGrid_OnLoaded(object sender, RoutedEventArgs e)
         {
-            TitGrid.Items.Refresh();
-        }
-
-        private void CategoryButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            RefreshDataGrids();
+            ((DataGrid) sender).Items.Refresh();
         }
     }
 }

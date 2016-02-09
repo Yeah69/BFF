@@ -153,7 +153,6 @@
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="WPFStuff\Behaviors\AdditionalTabItemsBehavior.cs" />
     <Compile Include="WPFStuff\Converters\BooleanToNullableBooleanConverter.cs" />
-    <Compile Include="WPFStuff\Converters\CategoriesToHierarchicalItemsSourceConverter.cs" />
     <Compile Include="WPFStuff\Converters\DateToStringConverter.cs" />
     <Compile Include="WPFStuff\Converters\DateComboConverter.cs" />
     <Compile Include="WPFStuff\Converters\DataGridLengthsToDoubleConverter.cs" />
@@ -176,6 +175,9 @@
     </Compile>
     <Compile Include="WPFStuff\ObservableObject.cs" />
     <Compile Include="WPFStuff\ValidationRules\CurrencyLongRangeRule.cs" />
+    <Compile Include="WPFStuff\ValidationRules\NoEmptyFileNameRule.cs" />
+    <Compile Include="WPFStuff\ValidationRules\NotExistingSavePathRule.cs" />
+    <Compile Include="WPFStuff\ValidationRules\NotExistingFilePathRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\NoNullRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\NoEmptyNullStringRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\CurrencyRule.cs" />
