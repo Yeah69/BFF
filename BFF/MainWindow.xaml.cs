@@ -51,9 +51,8 @@ namespace BFF
         private void InitializeCultureComboBoxes()
         {
             string initialLocalization = Settings.Default.Localization_Language;
-            LanguageCombo.Items.Add("de-DE");
-            LanguageCombo.Items.Add("en-US");
-            LanguageCombo.SelectedItem = initialLocalization;
+            LanguageCombo.ItemsSource = WPFLocalizeExtension.Providers.ResxLocalizationProvider.Instance.AvailableCultures.Where(culture => !(culture == CultureInfo.InvariantCulture));
+            LanguageCombo.SelectedItem = CultureInfo.GetCultureInfo(initialLocalization);
             BffEnvironment.CultureProvider.LanguageCulture = CultureInfo.GetCultureInfo(initialLocalization);
 
             foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.Name))
@@ -114,9 +113,7 @@ namespace BFF
 
         private void LanguageCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string language = (string) LanguageCombo.SelectedItem;
-
-            BffEnvironment.CultureProvider.LanguageCulture = CultureInfo.GetCultureInfo(language);
+            BffEnvironment.CultureProvider.LanguageCulture = (CultureInfo) LanguageCombo.SelectedItem;
         }
 
         private void FileButt_Click(object sender, RoutedEventArgs e)
