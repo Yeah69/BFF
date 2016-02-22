@@ -6,7 +6,7 @@ using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using AlphaChiTech.Virtualization;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
 using BFF.Properties;
@@ -15,6 +15,45 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.DB.SQLite
 {
+    class ItemsProvider<T> : IPagedSourceProvider<T>
+    {
+        private readonly SqLiteBffOrm _orm;
+
+        public ItemsProvider(SqLiteBffOrm orm)
+        {
+            _orm = orm;
+        }
+
+        #region Implementation of IBaseSourceProvider
+
+        public void OnReset(int count)
+        {
+        }
+
+        #endregion
+
+        #region Implementation of IItemSourceProvider<T>
+
+        public int GetCount(bool asyncOK)
+        {
+            return _orm.GetCount<T>();
+        }
+
+        public PagedSourceItemsPacket<T> GetItemsAt(int pageoffset, int count, bool usePlaceholder)
+        {
+            return new PagedSourceItemsPacket<T> {Items = _orm.Get<T>(pageoffset, count), LoadedAt = DateTime.Now};
+        }
+
+        public int IndexOf(T item)
+        {
+            return -1;
+        }
+
+        public int Count => GetCount(true);
+
+        #endregion
+    }
+
     class SqLiteBffOrm : IBffOrm
     {
         public string DbPath {
@@ -341,8 +380,6 @@ namespace BFF.DB.SQLite
                             Memo = (string)objArr[5],
                             Cleared = (long)objArr[7] == 1,
                         };
-                    ((Transaction) ret).Account?.Tits.Add(ret);
-                    Account.allAccounts?.Tits.Add(ret);
                     break;
                 case TitType.Income:
                     if(categoryId != null)
@@ -366,8 +403,6 @@ namespace BFF.DB.SQLite
                             Memo = (string)objArr[5],
                             Cleared = (long)objArr[7] == 1
                         };
-                    ((Income) ret).Account.Tits?.Add(ret);
-                    Account.allAccounts?.Tits.Add(ret);
                     break;
                 case TitType.Transfer:
                     ret = new Transfer(date)
@@ -379,9 +414,6 @@ namespace BFF.DB.SQLite
                         Sum = (long)objArr[6],
                         Cleared = (long)objArr[7] == 1
                     };
-                    if(!(((Transfer)ret).FromAccount?.Tits.Contains(ret) ?? true)) ((Transfer)ret).FromAccount?.Tits.Add(ret);
-                    if (!(((Transfer)ret).ToAccount?.Tits.Contains(ret) ?? true)) ((Transfer)ret).ToAccount?.Tits.Add(ret);
-                    Account.allAccounts?.Tits.Add(ret);
                     break;
                 default:
                     ret = new Transaction (DateTime.Today) { Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR" };
@@ -466,5 +498,45 @@ namespace BFF.DB.SQLite
         public Payee GetPayee(long id) => AllPayees.FirstOrDefault(payee => payee.Id == id);
         public Category GetCategory(long id) => AllCategories.FirstOrDefault(category => category.Id == id);
 
-    }
+        public IEnumerable<T> Get<T>(long offset, long chunk) //todo: sorting options
+        {
+            _dbLockFlag = true;
+            IEnumerable<T> ret = new List<T>();
+            using (var cnn = new SQLiteConnection(ConnectionString))
+            {
+                cnn.Open();
+                if (typeof(T) != typeof(TitBase))
+                {
+                    string query = $"SELECT * FROM [{nameof(T)}s] LIMIT {offset}, {chunk};";
+                    ret = cnn.Query<T>(query);
+                }
+                else
+                {
+                    string query = $"SELECT * FROM [{TheTitName}] ORDER BY {nameof(TitBase.Date)} LIMIT {offset}, {chunk};";
+                    Type[] types =
+                    {
+                        typeof (long), typeof (long), typeof (long), typeof (long),
+                        typeof (DateTime), typeof (string), typeof (long), typeof (bool), typeof(string)
+                    };
+                    ret = cnn.Query(query, types, _theTitMap, splitOn: "*").Cast<T>();
+                }
+                cnn.Close();
+            }
+            _dbLockFlag = false;
+            return ret;
+        }
+
+        public int GetCount<T>()
+        {
+            int ret = 0;
+            using (var cnn = new SQLiteConnection(ConnectionString))
+            {
+                cnn.Open();
+                string query = typeof(T) != typeof(TitBase) ? $"SELECT COUNT(*) FROM {nameof(T)};"
+                    : $"SELECT COUNT(*) FROM [{TheTitName}];";
+                ret = cnn.Query<int>(query).First();
+                cnn.Close();
+            }
+            return ret;
+        }    }
 }

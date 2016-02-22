@@ -1,10 +1,12 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using AlphaChiTech.Virtualization;
 using BFF.DB;
 using BFF.Helper;
 using BFF.Helper.Import;
@@ -41,6 +43,25 @@ namespace BFF
         {
             _orm = orm;
             InitializeComponent();
+            //this routine only needs to run once, so first check to make sure the
+            //VirtualizationManager isn’t already initialized
+            if (!VirtualizationManager.IsInitialized)
+            {
+                //set the VirtualizationManager’s UIThreadExcecuteAction. In this case
+                //we’re using Dispatcher.Invoke to give the VirtualizationManager access
+                //to the dispatcher thread, and using a DispatcherTimer to run the background
+                //operations the VirtualizationManager needs to run to reclaim pages and manage memory.
+                VirtualizationManager.Instance.UIThreadExcecuteAction =
+                    (a) => Dispatcher.Invoke(a);
+                new DispatcherTimer(
+                    TimeSpan.FromSeconds(1),
+                    DispatcherPriority.Background,
+                    delegate (object s, EventArgs a)
+                    {
+                        VirtualizationManager.Instance.ProcessActions();
+                    },
+                    this.Dispatcher).Start();
+            }
             InitializeCultureComboBoxes();
             InitializeAppThemeAndAccentComboBoxes();
             SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));

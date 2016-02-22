@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using AlphaChiTech.Virtualization;
+using BFF.DB.SQLite;
 using BFF.Helper;
 using BFF.Model.Native.Structure;
 using BFF.WPFStuff;
@@ -104,10 +106,10 @@ namespace BFF.Model.Native
 
         #region ViewModel_Part
 
-        private ObservableCollection<TitBase> _tits; 
+        private VirtualizingObservableCollection<TitBase> _tits; 
 
         [Write(false)]
-        public ObservableCollection<TitBase> Tits => _tits ?? (_tits = new ObservableCollection<TitBase>());
+        public VirtualizingObservableCollection<TitBase> Tits => _tits ?? (_tits = new VirtualizingObservableCollection<TitBase>(new PaginationManager<TitBase>(new ItemsProvider<TitBase>((SqLiteBffOrm)Database))));
 
         [Write(false)]
         public ObservableCollection<TitBase> NewTits { get; set; } = new ObservableCollection<TitBase>();

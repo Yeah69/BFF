@@ -35,17 +35,6 @@ namespace BFF.Model.Native
                 _fromAccount = value;
                 Update();
                 OnPropertyChanged();
-                if(Id != -1)
-                {
-                    if (tempFrom != null && tempFrom != _fromAccount && tempFrom != _toAccount && tempFrom.Tits.Contains(this))
-                        tempFrom.Tits.Remove(this);
-                    if (tempTo != null && tempTo != _fromAccount && tempTo != _toAccount && tempTo.Tits.Contains(this))
-                        tempTo.Tits.Remove(this);
-                    if (_fromAccount != null && _fromAccount != tempFrom && _fromAccount != tempTo && !_fromAccount.Tits.Contains(this))
-                        _fromAccount.Tits.Add(this);
-                    if (_toAccount != null && _toAccount != tempFrom && _toAccount != tempTo && !_toAccount.Tits.Contains(this))
-                        _toAccount.Tits.Add(this);
-                }
             }
         }
 
@@ -78,20 +67,6 @@ namespace BFF.Model.Native
                 _toAccount = value;
                 Update();
                 OnPropertyChanged();
-                if (Id != -1)
-                {
-                    if (tempFrom != null && tempFrom != _fromAccount && tempFrom != _toAccount &&
-                        tempFrom.Tits.Contains(this))
-                        tempFrom.Tits.Remove(this);
-                    if (tempTo != null && tempTo != _fromAccount && tempTo != _toAccount && tempTo.Tits.Contains(this))
-                        tempTo.Tits.Remove(this);
-                    if (_fromAccount != null && _fromAccount != tempFrom && _fromAccount != tempTo &&
-                        !_fromAccount.Tits.Contains(this))
-                        _fromAccount.Tits.Add(this);
-                    if (_toAccount != null && _toAccount != tempFrom && _toAccount != tempTo &&
-                        !_toAccount.Tits.Contains(this))
-                        _toAccount.Tits.Add(this);
-                }
             }
         }
 
@@ -196,30 +171,6 @@ namespace BFF.Model.Native
             Delete();
             FromAccount.RefreshBalance();
             ToAccount.RefreshBalance();
-            for (int i = FromAccount.Tits.Count - 1; i >= 0; i--)
-            {
-                if (FromAccount.Tits[i].GetType() == GetType() && FromAccount.Tits[i].Id == Id)
-                {
-                    FromAccount.Tits.Remove(FromAccount.Tits[i]);
-                    break;
-                }
-            }
-            for (int i = ToAccount.Tits.Count - 1; i >= 0; i--)
-            {
-                if (ToAccount.Tits[i].GetType() == GetType() && ToAccount.Tits[i].Id == Id)
-                {
-                    ToAccount.Tits.Remove(ToAccount.Tits[i]);
-                    break;
-                }
-            }
-            for (int i = Account.allAccounts.Tits.Count - 1; i >= 0; i--)
-            {
-                if (Account.allAccounts.Tits[i].GetType() == GetType() && Account.allAccounts.Tits[i].Id == Id)
-                {
-                    Account.allAccounts.Tits.Remove(Account.allAccounts.Tits[i]);
-                    break;
-                }
-            }
         });
     }
 }
