@@ -118,8 +118,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DB\IBffOrm.cs" />
+    <Compile Include="DB\IPagedOrm.cs" />
     <Compile Include="DB\SQLite\SqLiteBffOrm.cs" />
     <Compile Include="DB\SQLite\SqLiteQueries.cs" />
+    <Compile Include="DB\PagedTitBaseProvider.cs" />
     <Compile Include="Helper\BffCultureProvider.cs" />
     <Compile Include="Helper\BffEnvironment.cs" />
     <Compile Include="Helper\IBffCultureProvider.cs" />

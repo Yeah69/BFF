@@ -25,8 +25,6 @@ namespace BFF.Model.Native
             get { return _fromAccount; }
             set
             {
-                Account tempFrom = _fromAccount;
-                Account tempTo = _toAccount;
                 if (_toAccount == value)
                 {
                     _toAccount = _fromAccount;
@@ -57,8 +55,6 @@ namespace BFF.Model.Native
             get { return _toAccount; }
             set
             {
-                Account tempFrom = _fromAccount;
-                Account tempTo = _toAccount;
                 if (_fromAccount == value)
                 {
                     _fromAccount = _toAccount;

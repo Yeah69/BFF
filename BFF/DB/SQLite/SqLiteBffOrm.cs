@@ -6,7 +6,6 @@ using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using AlphaChiTech.Virtualization;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
 using BFF.Properties;
@@ -15,44 +14,6 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.DB.SQLite
 {
-    class ItemsProvider<T> : IPagedSourceProvider<T>
-    {
-        private readonly SqLiteBffOrm _orm;
-
-        public ItemsProvider(SqLiteBffOrm orm)
-        {
-            _orm = orm;
-        }
-
-        #region Implementation of IBaseSourceProvider
-
-        public void OnReset(int count)
-        {
-        }
-
-        #endregion
-
-        #region Implementation of IItemSourceProvider<T>
-
-        public int GetCount(bool asyncOK)
-        {
-            return _orm.GetCount<T>();
-        }
-
-        public PagedSourceItemsPacket<T> GetItemsAt(int pageoffset, int count, bool usePlaceholder)
-        {
-            return new PagedSourceItemsPacket<T> {Items = _orm.Get<T>(pageoffset, count), LoadedAt = DateTime.Now};
-        }
-
-        public int IndexOf(T item)
-        {
-            return -1;
-        }
-
-        public int Count => GetCount(true);
-
-        #endregion
-    }
 
     class SqLiteBffOrm : IBffOrm
     {
@@ -162,11 +123,6 @@ namespace BFF.DB.SQLite
             return results;
         }
 
-        public IEnumerable<Category> GetAllCache()
-        {
-            throw new NotImplementedException();
-        }
-
         public long? GetAccountBalance(Account account = null)
         {
             long ret;
@@ -229,7 +185,7 @@ namespace BFF.DB.SQLite
             {
                 using (var cnn = new SQLiteConnection(ConnectionString))
                 {
-                    ret = cnn.OpenAndReturn().Insert<T>(dataModelBase);
+                    ret = cnn.OpenAndReturn().Insert(dataModelBase);
                     dataModelBase.Id = ret;
                     cnn.Close();
                 }
@@ -474,8 +430,6 @@ namespace BFF.DB.SQLite
                         AllCategories.Add(parentCategory);
                         FillCategoryWithDescandents(parentCategory, AllCategories);
                     }
-                    //foreach (Category category in categories) //todo: remove if above code works
-                    //    AllCategories.Add(category);
 
                     cnn.Close();
                 }
@@ -498,21 +452,25 @@ namespace BFF.DB.SQLite
         public Payee GetPayee(long id) => AllPayees.FirstOrDefault(payee => payee.Id == id);
         public Category GetCategory(long id) => AllCategories.FirstOrDefault(category => category.Id == id);
 
-        public IEnumerable<T> Get<T>(long offset, long chunk) //todo: sorting options
+        public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
         {
             _dbLockFlag = true;
-            IEnumerable<T> ret = new List<T>();
+            IEnumerable<T> ret;
             using (var cnn = new SQLiteConnection(ConnectionString))
             {
                 cnn.Open();
                 if (typeof(T) != typeof(TitBase))
                 {
-                    string query = $"SELECT * FROM [{nameof(T)}s] LIMIT {offset}, {chunk};";
+                    string query = $"SELECT * FROM [{nameof(T)}s] LIMIT {offset}, {pageSize};";
                     ret = cnn.Query<T>(query);
                 }
                 else
                 {
-                    string query = $"SELECT * FROM [{TheTitName}] ORDER BY {nameof(TitBase.Date)} LIMIT {offset}, {chunk};";
+                    string specifyingAddition = "";
+                    Account account = specifyingObject as Account;
+                    if(account != null && !(account is AllAccounts))
+                        specifyingAddition = $"WHERE {nameof(TitNoTransfer.AccountId)} = {account.Id} OR {nameof(TitNoTransfer.AccountId)} = -69 AND ({nameof(TitNoTransfer.PayeeId)} = {account.Id} OR {nameof(TitNoTransfer.CategoryId)} = {account.Id})";
+                    string query = $"SELECT * FROM [{TheTitName}] {specifyingAddition} ORDER BY {nameof(TitBase.Date)} LIMIT {offset}, {pageSize};";
                     Type[] types =
                     {
                         typeof (long), typeof (long), typeof (long), typeof (long),
@@ -526,17 +484,27 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public int GetCount<T>()
+        public int GetCount<T>(object specifyingObject = null)
         {
-            int ret = 0;
+            int ret;
             using (var cnn = new SQLiteConnection(ConnectionString))
             {
                 cnn.Open();
-                string query = typeof(T) != typeof(TitBase) ? $"SELECT COUNT(*) FROM {nameof(T)};"
-                    : $"SELECT COUNT(*) FROM [{TheTitName}];";
+                string query;
+                if(typeof(T) != typeof(TitBase))
+                    query = $"SELECT COUNT(*) FROM {nameof(T)};";
+                else
+                {
+                    string specifyingAddition = "";
+                    Account account = specifyingObject as Account;
+                    if (account != null && !(account is AllAccounts))
+                        specifyingAddition = $"WHERE {nameof(TitNoTransfer.AccountId)} = {account.Id} OR {nameof(TitNoTransfer.AccountId)} = -69 AND ({nameof(TitNoTransfer.PayeeId)} = {account.Id} OR {nameof(TitNoTransfer.CategoryId)} = {account.Id})";
+                    query = $"SELECT COUNT(*) FROM [{TheTitName}] {specifyingAddition};";
+                }
                 ret = cnn.Query<int>(query).First();
                 cnn.Close();
             }
             return ret;
-        }    }
+        }
+    }
 }
