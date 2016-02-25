@@ -41,6 +41,7 @@
             <metro:PackIconMaterialKind x:Key="TransactionIcon">Logout</metro:PackIconMaterialKind>
             <metro:PackIconMaterialKind x:Key="IncomeIcon">Login</metro:PackIconMaterialKind>
             <metro:PackIconMaterialKind x:Key="TransferIcon">ShuffleVariant</metro:PackIconMaterialKind>
+            <metro:PackIconMaterialKind x:Key="PlaceholderIcon">ClockFast</metro:PackIconMaterialKind>
             <metro:PackIconMaterialKind x:Key="ParentIcon">Sitemap</metro:PackIconMaterialKind>
             <metro:PackIconMaterialKind x:Key="AddToTableIcon">TableRowPlusAfter</metro:PackIconMaterialKind>
             <metro:PackIconMaterialKind x:Key="RemoveFromTableIcon">TableRowRemove</metro:PackIconMaterialKind>
@@ -70,6 +71,9 @@
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <metro:PackIconMaterial Kind="{StaticResource TransferIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransferBrush}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}">
+                            <metro:PackIconMaterial Kind="{StaticResource PlaceholderIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransferBrush}" />
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>

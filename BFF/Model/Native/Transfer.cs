@@ -25,7 +25,8 @@ namespace BFF.Model.Native
             get { return _fromAccount; }
             set
             {
-                if (_toAccount == value)
+                if(_fromAccount == value) return;
+                if(_toAccount == value)
                 {
                     _toAccount = _fromAccount;
                     OnPropertyChanged(nameof(ToAccount));
@@ -55,7 +56,8 @@ namespace BFF.Model.Native
             get { return _toAccount; }
             set
             {
-                if (_fromAccount == value)
+                if(_toAccount == value) return;
+                if(_fromAccount == value)
                 {
                     _fromAccount = _toAccount;
                     OnPropertyChanged(nameof(FromAccount));

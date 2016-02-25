@@ -25,15 +25,10 @@ namespace BFF.Model.Native.Structure
             get { return _account; }
             set
             {
-                Account temp = _account;
+                if(_account == value) return;
                 _account = value;
                 Update();
                 OnPropertyChanged();
-                if (Id != -1 && temp != null && temp != _account)
-                {
-                    if (temp.Tits.Contains(this)) temp.Tits.Remove(this);
-                    if (!_account.Tits.Contains(this)) _account.Tits.Add(this);
-                }
             }
         }
 
@@ -43,7 +38,7 @@ namespace BFF.Model.Native.Structure
         public long AccountId
         {
             get { return Account?.Id ?? -1; }
-            set { Account = Database?.GetAccount(value); }
+            set { _account = Database?.GetAccount(value); }
         }
 
         /// <summary>
@@ -55,6 +50,7 @@ namespace BFF.Model.Native.Structure
             get { return _payee; }
             set
             {
+                if(_payee == value) return;
                 _payee = value;
                 Update();
                 OnPropertyChanged();
@@ -79,6 +75,7 @@ namespace BFF.Model.Native.Structure
             get { return _category; }
             set
             {
+                if(_category == value) return;
                 _category = value;
                 Update();
                 OnPropertyChanged();
