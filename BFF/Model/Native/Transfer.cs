@@ -43,7 +43,7 @@ namespace BFF.Model.Native
         public long FromAccountId
         {
             get { return FromAccount?.Id ?? -1; }
-            set { FromAccount = Database?.GetAccount(value); }
+            set { _fromAccount = Database?.GetAccount(value); }
         }
 
 
@@ -74,7 +74,7 @@ namespace BFF.Model.Native
         public long ToAccountId
         {
             get { return ToAccount?.Id ?? -1; }
-            set { ToAccount = Database?.GetAccount(value); }
+            set { _toAccount = Database?.GetAccount(value); }
         }
 
         /// <summary>
