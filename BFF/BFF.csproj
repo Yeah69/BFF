@@ -119,6 +119,7 @@
     </ApplicationDefinition>
     <Compile Include="DB\IBffOrmAsync.cs" />
     <Compile Include="DB\IBffOrm.cs" />
+    <Compile Include="DB\SQLite\SqLiteBffOrmAsync.cs" />
     <Compile Include="DB\SQLite\SqLiteBffOrm.cs" />
     <Compile Include="DB\SQLite\SqLiteQueries.cs" />
     <Compile Include="DB\PagedTitBaseProvider.cs" />

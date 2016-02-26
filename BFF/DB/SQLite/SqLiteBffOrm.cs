@@ -189,26 +189,7 @@ namespace BFF.DB.SQLite
                     dataModelBase.Id = ret;
                     cnn.Close();
                 }
-                if (dataModelBase is CommonProperty)
-                {
-                    if(dataModelBase is Account)
-                        AllAccounts.Add(dataModelBase as Account);
-                    else if (dataModelBase is Payee)
-                        AllPayees.Add(dataModelBase as Payee);
-                    else if (dataModelBase is Category)
-                    {
-                        Category newCategory = dataModelBase as Category;
-                        if (newCategory.Parent == null)
-                            AllCategories.Add(newCategory);
-                        else
-                        {
-                            int index = newCategory.Parent.Categories.Count - 2;
-                            index = index == -1 ? AllCategories.IndexOf(newCategory.Parent) + 1 :
-                                AllCategories.IndexOf(newCategory.Parent.Categories[index]) + 1;
-                            AllCategories.Insert(index, newCategory);
-                        }
-                    }
-                }
+                ManageIfPeriphery(dataModelBase);
                 if (dataModelBase is TitNoTransfer)
                 {
                     TitNoTransfer titNoTransfer = dataModelBase as TitNoTransfer;
@@ -224,6 +205,30 @@ namespace BFF.DB.SQLite
                 }
             }
             return ret;
+        }
+
+        protected void ManageIfPeriphery<T>(T dataModelBase) where T : DataModelBase
+        {
+            if (dataModelBase is CommonProperty)
+            {
+                if (dataModelBase is Account)
+                    AllAccounts.Add(dataModelBase as Account);
+                else if (dataModelBase is Payee)
+                    AllPayees.Add(dataModelBase as Payee);
+                else if (dataModelBase is Category)
+                {
+                    Category newCategory = dataModelBase as Category;
+                    if (newCategory.Parent == null)
+                        AllCategories.Add(newCategory);
+                    else
+                    {
+                        int index = newCategory.Parent.Categories.Count - 2;
+                        index = index == -1 ? AllCategories.IndexOf(newCategory.Parent) + 1 :
+                            AllCategories.IndexOf(newCategory.Parent.Categories[index]) + 1;
+                        AllCategories.Insert(index, newCategory);
+                    }
+                }
+            }
         }
 
         public T Get<T>(long id) where T : DataModelBase
@@ -292,9 +297,9 @@ namespace BFF.DB.SQLite
             }
         }
 
-        private string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;";
+        protected string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;";
 
-        private bool _dbLockFlag;
+        protected bool _dbLockFlag;
 
         private const string TheTitName = "The Tit";
 
