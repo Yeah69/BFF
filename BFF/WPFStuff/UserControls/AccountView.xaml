@@ -88,6 +88,7 @@
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <TextBlock Text="{lex:Loc AccountView_Column_Transfer}" />
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -112,15 +113,30 @@
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <TextBlock Text="{lex:Loc AccountView_Column_Transfer}" />
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
             <!-- Date -->
             <DataTemplate x:Key="DateColumnTemplate">
-                <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringConverter}}" />
+                <ContentControl Content="{Binding}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type structure:TitBase}">
+                            <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringConverter}}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
+                    </ContentControl.Resources>
+                </ContentControl>
             </DataTemplate>
             <DataTemplate x:Key="DateEditingColumnTemplate">
-                <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitsView, Converter={StaticResource BooleanToDatePickerFormatConverter}}"/>
+                <ContentControl Content="{Binding}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type structure:TitBase}">
+                            <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitsView, Converter={StaticResource BooleanToDatePickerFormatConverter}}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
+                    </ContentControl.Resources>
+                </ContentControl>
             </DataTemplate>
             <!-- Payee -->
             <DataTemplate x:Key="PayeeColumnTemplate">
@@ -135,6 +151,7 @@
                                 <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
                             </StackPanel>
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -175,6 +192,7 @@
                                 </ComboBox.SelectedItem>
                             </ComboBox>
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -197,6 +215,7 @@
                                 <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
                             </StackPanel>
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -247,6 +266,7 @@
                                 </ComboBox.SelectedItem>
                             </ComboBox>
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -284,6 +304,7 @@
                                        Foreground="{Binding Sum, Converter={StaticResource SumToBrushConverter}}"
                                        Text="{Binding Sum, Converter={StaticResource SumConverter}}" />
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -322,6 +343,7 @@
                                 </TextBox.Text>
                             </TextBox>
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>

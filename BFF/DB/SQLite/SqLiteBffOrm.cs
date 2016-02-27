@@ -287,60 +287,18 @@ namespace BFF.DB.SQLite
             {
                 case TitType.Transaction:
                     if (categoryId != null)
-                        ret = new Transaction(date)
-                        {
-                            Id = (long)objArr[0],
-                            AccountId = (long)objArr[1],
-                            PayeeId = (long)objArr[2],
-                            CategoryId = categoryId,
-                            Memo = (string)objArr[5],
-                            Sum = (long)objArr[6],
-                            Cleared = (long)objArr[7] == 1,
-                        };
+                        ret = new Transaction((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (long)categoryId, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
                     else
-                        ret = new ParentTransaction(date)
-                        {
-                            Id = (long)objArr[0],
-                            AccountId = (long)objArr[1],
-                            PayeeId = (long)objArr[2],
-                            CategoryId = null,
-                            Memo = (string)objArr[5],
-                            Cleared = (long)objArr[7] == 1,
-                        };
+                        ret = new ParentTransaction((long)objArr[0], (long)objArr[1], date, (long)objArr[2], categoryId ?? -1, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
                     break;
                 case TitType.Income:
                     if(categoryId != null)
-                        ret = new Income (date)
-                        {
-                            Id = (long)objArr[0],
-                            AccountId = (long)objArr[1],
-                            PayeeId = (long)objArr[2],
-                            CategoryId = categoryId,
-                            Memo = (string)objArr[5],
-                            Sum = (long)objArr[6],
-                            Cleared = (long)objArr[7] == 1
-                        };
+                        ret = new Income((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (long)categoryId, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
                     else
-                        ret = new ParentIncome(date)
-                        {
-                            Id = (long)objArr[0],
-                            AccountId = (long)objArr[1],
-                            PayeeId = (long)objArr[2],
-                            CategoryId = categoryId,
-                            Memo = (string)objArr[5],
-                            Cleared = (long)objArr[7] == 1
-                        };
+                        ret = new ParentIncome((long)objArr[0], (long)objArr[1], date, (long)objArr[2], categoryId ?? -1, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
                     break;
                 case TitType.Transfer:
-                    ret = new Transfer(date)
-                    {
-                        Id = (long)objArr[0],
-                        FromAccountId = (long)objArr[2],
-                        ToAccountId = (long)objArr[3],
-                        Memo = (string)objArr[5],
-                        Sum = (long)objArr[6],
-                        Cleared = (long)objArr[7] == 1
-                    };
+                    ret = new Transfer((long)objArr[0], (long)objArr[2], (long)objArr[3], date, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
                     break;
                 default:
                     ret = new Transaction (DateTime.Today) { Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR" };

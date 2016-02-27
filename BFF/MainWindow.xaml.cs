@@ -52,15 +52,15 @@ namespace BFF
                 //to the dispatcher thread, and using a DispatcherTimer to run the background
                 //operations the VirtualizationManager needs to run to reclaim pages and manage memory.
                 VirtualizationManager.Instance.UIThreadExcecuteAction =
-                    (a) => Dispatcher.Invoke(a);
+                    a => Dispatcher.Invoke(a);
                 new DispatcherTimer(
                     TimeSpan.FromSeconds(1),
                     DispatcherPriority.Background,
-                    delegate (object s, EventArgs a)
+                    delegate
                     {
                         VirtualizationManager.Instance.ProcessActions();
                     },
-                    this.Dispatcher).Start();
+                    Dispatcher).Start();
             }
             InitializeCultureComboBoxes();
             InitializeAppThemeAndAccentComboBoxes();
@@ -72,7 +72,7 @@ namespace BFF
         private void InitializeCultureComboBoxes()
         {
             string initialLocalization = Settings.Default.Localization_Language;
-            LanguageCombo.ItemsSource = WPFLocalizeExtension.Providers.ResxLocalizationProvider.Instance.AvailableCultures.Where(culture => !(culture == CultureInfo.InvariantCulture));
+            LanguageCombo.ItemsSource = WPFLocalizeExtension.Providers.ResxLocalizationProvider.Instance.AvailableCultures.Where(culture => !Equals(culture, CultureInfo.InvariantCulture));
             LanguageCombo.SelectedItem = CultureInfo.GetCultureInfo(initialLocalization);
             BffEnvironment.CultureProvider.LanguageCulture = CultureInfo.GetCultureInfo(initialLocalization);
 
