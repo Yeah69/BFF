@@ -34,38 +34,44 @@ namespace BFF.DB.SQLite
 
         public event PropertyChangedEventHandler DbPathChanged;
 
-        public void CreateNewDatabase()
+        public void CreateNewDatabase(string dbPath)
         {
-            if (File.Exists(DbPath)) //todo: This will make problems
-                File.Delete(DbPath);
-            SQLiteConnection.CreateFile(DbPath);
-            using (var transactionScope = new DbTransactions.TransactionScope())
+            if (File.Exists(dbPath)) //todo: This will make problems
+                File.Delete(dbPath);
+            SQLiteConnection.CreateFile(dbPath);
+            using(var cnn = new SQLiteConnection($"Data Source={dbPath};Version=3;foreign keys=true;"))
             {
-                Cnn.Execute(SqLiteQueries.CreatePayeeTableStatement);
-                Cnn.Execute(SqLiteQueries.CreateCategoryTableStatement);
-                Cnn.Execute(SqLiteQueries.CreateAccountTableStatement);
-                Cnn.Execute(SqLiteQueries.CreateTransferTableStatement);
-                Cnn.Execute(SqLiteQueries.CreateTransactionTableStatement);
-                Cnn.Execute(SqLiteQueries.CreateSubTransactionTableStatement);
-                Cnn.Execute(SqLiteQueries.CreateIncomeTableStatement);
-                Cnn.Execute(SqLiteQueries.CreateSubIncomeTableStatement);
+                cnn.Open();
+                using(var transactionScope = new DbTransactions.TransactionScope())
+                {
+                    cnn.Execute(SqLiteQueries.CreatePayeeTableStatement);
+                    cnn.Execute(SqLiteQueries.CreateCategoryTableStatement);
+                    cnn.Execute(SqLiteQueries.CreateAccountTableStatement);
+                    cnn.Execute(SqLiteQueries.CreateTransferTableStatement);
+                    cnn.Execute(SqLiteQueries.CreateTransactionTableStatement);
+                    cnn.Execute(SqLiteQueries.CreateSubTransactionTableStatement);
+                    cnn.Execute(SqLiteQueries.CreateIncomeTableStatement);
+                    cnn.Execute(SqLiteQueries.CreateSubIncomeTableStatement);
 
-                Cnn.Execute(SqLiteQueries.CreateDbSettingTableStatement);
-                Cnn.Insert(new DbSetting { CurrencyCultrureName = "de-DE", DateCultureName = "de-DE"});
+                    cnn.Execute(SqLiteQueries.CreateDbSettingTableStatement);
+                    cnn.Insert(new DbSetting {CurrencyCultrureName = "de-DE", DateCultureName = "de-DE"});
 
-                Cnn.Execute(SqLiteQueries.SetDatabaseSchemaVersion);
+                    cnn.Execute(SqLiteQueries.SetDatabaseSchemaVersion);
 
-                Cnn.Execute(SqLiteQueries.CreateTheTitViewStatement);
+                    cnn.Execute(SqLiteQueries.CreateTheTitViewStatement);
 
-                transactionScope.Complete();
+                    transactionScope.Complete();
+                }
+                cnn.Close();
             }
+            DbPath = dbPath;
         }
 
         public void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
             IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories)
         {
             _dbLockFlag = true;
-            using (var transactionScope = new DbTransactions.TransactionScope())
+            using (var transactionScope = new DbTransactions.TransactionScope(DbTransactions.TransactionScopeOption.RequiresNew, new DbTransactions.TransactionOptions {IsolationLevel = DbTransactions.IsolationLevel.RepeatableRead}))
             {
 
                 /*  
@@ -324,51 +330,56 @@ namespace BFF.DB.SQLite
             AllAccounts.Clear();
             AllPayees.Clear();
             AllCategories.Clear();
-            Account.allAccounts?.Tits.Clear();
-            Account.allAccounts?.NewTits.Clear();
             if (File.Exists(DbPath))
             {
                 Cnn.ConnectionString = ConnectionString;
                 Cnn.Open();
-                foreach (Account account in GetAll<Account>())
-                    AllAccounts.Add(account);
-                foreach (Payee payee in GetAll<Payee>())
-                    AllPayees.Add(payee);
-                Dictionary<long, Category> catagoryDictionary = new Dictionary<long, Category>();
-                IEnumerable<Category> categories = new List<Category>();
-                using (var cnnTransaction = new DbTransactions.TransactionScope())
-                {
-                    //Catagories may reference itself, so a custom mapping is responsible for delaying referencing the Parent per dummy with the Parent-Id
-                    //This is mandatory because the Parent may not be loaded first
-                    categories = Cnn.Query($"SELECT * FROM [{nameof(Category)}s];", 
-                        new[] { typeof(long), typeof(long?), typeof(string) },
-                        objArray =>
-                        {
-                            Category ret = new Category(objArray[1] == null ? null : new Category { Id = (long)objArray[1] } /*dummy*/, (string)objArray[2]) { Id = (long)objArray[0]};
-                            catagoryDictionary.Add(ret.Id, ret);
-                            return ret;
-                        }, splitOn: "*");
-                    cnnTransaction.Complete();
-                }
-                //Now after every Category is loaded the Parent-Child relations are established
-                List<Category> parentCategories = new List<Category>();
-                foreach (Category category in categories)
-                {
-                    if (category.ParentId != null)
-                    {
-                        category.Parent = catagoryDictionary[(long)category.ParentId];
-                        category.Parent.Categories.Add(category);
-                    }
-                    else parentCategories.Add(category);
-                }
-                foreach (Category parentCategory in parentCategories)
-                {
-                    AllCategories.Add(parentCategory);
-                    FillCategoryWithDescandents(parentCategory, AllCategories);
-                }
+                InitializePeripherie();
 
                 Account.allAccounts?.RefreshStartingBalance(); //todo: Rather use the DbPathChanged event in AllAccounts
                 Account.allAccounts?.RefreshBalance();
+            }
+            Account.allAccounts?.Tits.Clear();
+            Account.allAccounts?.NewTits.Clear();
+        }
+
+        private void InitializePeripherie()
+        {
+            foreach (Account account in GetAll<Account>())
+                AllAccounts.Add(account);
+            foreach (Payee payee in GetAll<Payee>())
+                AllPayees.Add(payee);
+            Dictionary<long, Category> catagoryDictionary = new Dictionary<long, Category>();
+            IEnumerable<Category> categories = new List<Category>();
+            using (var cnnTransaction = new DbTransactions.TransactionScope())
+            {
+                //Catagories may reference itself, so a custom mapping is responsible for delaying referencing the Parent per dummy with the Parent-Id
+                //This is mandatory because the Parent may not be loaded first
+                categories = Cnn.Query($"SELECT * FROM [{nameof(Category)}s];",
+                    new[] { typeof(long), typeof(long?), typeof(string) },
+                    objArray =>
+                    {
+                        Category ret = new Category(objArray[1] == null ? null : new Category { Id = (long)objArray[1] } /*dummy*/, (string)objArray[2]) { Id = (long)objArray[0] };
+                        catagoryDictionary.Add(ret.Id, ret);
+                        return ret;
+                    }, splitOn: "*");
+                cnnTransaction.Complete();
+            }
+            //Now after every Category is loaded the Parent-Child relations are established
+            List<Category> parentCategories = new List<Category>();
+            foreach (Category category in categories)
+            {
+                if (category.ParentId != null)
+                {
+                    category.Parent = catagoryDictionary[(long)category.ParentId];
+                    category.Parent.Categories.Add(category);
+                }
+                else parentCategories.Add(category);
+            }
+            foreach (Category parentCategory in parentCategories)
+            {
+                AllCategories.Add(parentCategory);
+                FillCategoryWithDescandents(parentCategory, AllCategories);
             }
         }
 

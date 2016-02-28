@@ -16,8 +16,8 @@ namespace BFF.WPFStuff.UserControls
 
         private void RefreshDataGrids()
         {
-            TitGrid.Items.Refresh();
-            NewTitGrid.Items.Refresh();
+            //TitGrid.Items.Refresh();
+            //NewTitGrid.Items.Refresh();
         }
 
         public void RefreshCurrencyVisuals()
@@ -29,12 +29,12 @@ namespace BFF.WPFStuff.UserControls
 
         public void RefreshDateVisuals()
         {
-            RefreshDataGrids();
+            //RefreshDataGrids();
         }
 
         private void TitGrid_OnLoaded(object sender, RoutedEventArgs e)
         {
-            ((DataGrid) sender).Items.Refresh();
+            //((DataGrid) sender).Items.Refresh();
         }
     }
 }

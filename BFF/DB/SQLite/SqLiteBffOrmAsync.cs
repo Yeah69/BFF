@@ -79,7 +79,7 @@ namespace BFF.DB.SQLite
 
         #region Implementation of IBffOrmAsync
 
-        public Task CreateNewDatabaseAsync()
+        public Task CreateNewDatabaseAsync(string dbPath)
         {
             throw new NotImplementedException();
         }

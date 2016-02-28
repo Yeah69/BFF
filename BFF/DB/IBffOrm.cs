@@ -11,7 +11,7 @@ namespace BFF.DB
     {
         string DbPath { get; set; }
         event PropertyChangedEventHandler DbPathChanged;
-        void CreateNewDatabase();
+        void CreateNewDatabase(string dbPath);
         void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
             IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories);
         IEnumerable<TitBase> GetAllTits(DateTime startTime, DateTime endTime, Account account = null);
