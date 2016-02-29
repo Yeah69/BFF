@@ -30,6 +30,8 @@ namespace BFF.Model.Native.Structure
                 _account = value;
                 Update();
                 temp?.Tits.Clear();
+                _account?.RefreshBalance();
+                temp?.RefreshBalance();
                 OnPropertyChanged();
             }
         }
@@ -93,7 +95,8 @@ namespace BFF.Model.Native.Structure
             set { Category = Database?.GetCategory(value ?? -1L); }
         }
 
-        public override long Sum {
+        public override long Sum
+        {
             get { return base.Sum; }
             set
             {

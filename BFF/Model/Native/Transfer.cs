@@ -36,6 +36,11 @@ namespace BFF.Model.Native
                 _fromAccount = value;
                 Update();
                 temp?.Tits.Clear();
+                if(temp == null)
+                    _toAccount?.RefreshBalance();
+                else
+                    temp.RefreshBalance();
+                _fromAccount?.RefreshBalance();
                 OnPropertyChanged();
             }
         }
@@ -70,6 +75,11 @@ namespace BFF.Model.Native
                 _toAccount = value;
                 Update();
                 temp?.Tits.Clear();
+                if (temp == null)
+                    _fromAccount?.RefreshBalance();
+                else
+                    temp.RefreshBalance();
+                _toAccount?.RefreshBalance();
                 OnPropertyChanged();
             }
         }
@@ -81,6 +91,17 @@ namespace BFF.Model.Native
         {
             get { return ToAccount?.Id ?? -1; }
             set { _toAccount = Database?.GetAccount(value); }
+        }
+
+        public override long Sum
+        {
+            get { return base.Sum; }
+            set
+            {
+                base.Sum = value;
+                _fromAccount?.RefreshBalance();
+                _toAccount?.RefreshBalance();
+            }
         }
 
         /// <summary>
