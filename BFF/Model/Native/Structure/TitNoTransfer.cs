@@ -26,8 +26,10 @@ namespace BFF.Model.Native.Structure
             set
             {
                 if(_account == value) return;
+                Account temp = _account;
                 _account = value;
                 Update();
+                temp?.Tits.Clear();
                 OnPropertyChanged();
             }
         }
@@ -151,7 +153,9 @@ namespace BFF.Model.Native.Structure
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            Account.RefreshBalance();
+            Account.allAccounts?.Tits.Clear();
+            Account?.Tits.Clear();
+            Account?.RefreshBalance();
         });
 
         public override bool ValidToInsert()

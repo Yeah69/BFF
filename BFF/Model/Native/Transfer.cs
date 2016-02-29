@@ -26,13 +26,16 @@ namespace BFF.Model.Native
             set
             {
                 if(_fromAccount == value) return;
-                if(_toAccount == value)
+                Account temp = _fromAccount;
+                if (_toAccount == value)
                 {
                     _toAccount = _fromAccount;
                     OnPropertyChanged(nameof(ToAccount));
+                    temp = null;
                 }
                 _fromAccount = value;
                 Update();
+                temp?.Tits.Clear();
                 OnPropertyChanged();
             }
         }
@@ -57,13 +60,16 @@ namespace BFF.Model.Native
             set
             {
                 if(_toAccount == value) return;
-                if(_fromAccount == value)
+                Account temp = _toAccount;
+                if (_fromAccount == value)
                 {
                     _fromAccount = _toAccount;
                     OnPropertyChanged(nameof(FromAccount));
+                    temp = null;
                 }
                 _toAccount = value;
                 Update();
+                temp?.Tits.Clear();
                 OnPropertyChanged();
             }
         }
@@ -156,6 +162,9 @@ namespace BFF.Model.Native
         protected override void UpdateToDb()
         {
             Database?.Update(this);
+            Account.allAccounts?.Tits.Clear();
+            FromAccount?.Tits.Clear();
+            ToAccount?.Tits.Clear();
         }
 
         protected override void DeleteFromDb()
@@ -167,6 +176,9 @@ namespace BFF.Model.Native
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
+            Account.allAccounts.Tits.Clear();
+            FromAccount.Tits.Clear();
+            ToAccount.Tits.Clear();
             FromAccount.RefreshBalance();
             ToAccount.RefreshBalance();
         });

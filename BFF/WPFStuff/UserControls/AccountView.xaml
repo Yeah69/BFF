@@ -73,7 +73,7 @@
                             <metro:PackIconMaterial Kind="{StaticResource TransferIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransferBrush}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:TitBasePlaceholder}">
-                            <metro:PackIconMaterial Kind="{StaticResource PlaceholderIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransferBrush}" />
+                            <metro:PackIconMaterial Kind="{StaticResource PlaceholderIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackBrush}" />
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
@@ -471,7 +471,8 @@
         <!--#region TitsGrid -->
         <!-- The DataGrid, which shows all saved Tits -->
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" RowStyle="{StaticResource DefaultRowStyle}" SelectionMode="Single" SelectionUnit="FullRow"
-                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected" Loaded="TitGrid_OnLoaded">
+                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected" Loaded="TitGrid_OnLoaded"
+                  EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingStackPanel.IsVirtualizing="True">
             <DataGrid.Columns>
                 <!-- Symbol -->
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_SymbolAbbr}" x:Name="SymbolColumn">

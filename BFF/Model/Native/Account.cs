@@ -197,18 +197,21 @@ namespace BFF.Model.Native
                     }
                     parentIncome.NewSubElements.Clear();
                 }
-                if(tit is TitNoTransfer && !accounts.Contains((tit as TitNoTransfer).Account))
+                if(tit is TitNoTransfer)
                     accounts.Add((tit as TitNoTransfer).Account);
                 if (tit is Transfer)
                 {
                     Transfer transfer = tit as Transfer;
-                    if(!accounts.Contains(transfer.FromAccount)) accounts.Add(transfer.FromAccount);
-                    if(!accounts.Contains(transfer.ToAccount)) accounts.Add(transfer.ToAccount);
+                    accounts.Add(transfer.FromAccount);
+                    accounts.Add(transfer.ToAccount);
                 }
             }
-            OnPropertyChanged(nameof(Tits));
+            allAccounts.Tits.Clear();
             foreach(Account account in accounts)
+            {
+                account.Tits.Clear();
                 account.RefreshBalance();
+            }
         }
 
         [Write(false)]
