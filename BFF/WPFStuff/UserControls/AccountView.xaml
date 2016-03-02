@@ -58,42 +58,59 @@
                 <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
             </Style>
 
+            <Style x:Key="CellContent" TargetType="ContentControl">
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="MinHeight" Value="30" />
+            </Style>
+            
+            <Style x:Key="CellTextBlock" TargetType="TextBlock">
+                <Setter Property="Padding" Value="5,0,0,0" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+
+            <Style x:Key="CellIconMaterial" TargetType="metro:PackIconMaterial">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Height" Value="{StaticResource IconSize}" />
+                <Setter Property="Width" Value="{StaticResource IconSize}" />
+            </Style>
+
             <!--#region ColumnTemplates -->
             <!-- Symbol -->
             <DataTemplate x:Key="SymbolColumnTemplate">
-                <ContentControl Content="{Binding}">
+                <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type native:Transaction}">
-                            <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
+                            <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Foreground="{DynamicResource TransactionBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Income}">
-                            <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
+                            <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Foreground="{DynamicResource IncomeBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
-                            <metro:PackIconMaterial Kind="{StaticResource TransferIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransferBrush}" />
+                            <metro:PackIconMaterial Kind="{StaticResource TransferIcon}" Foreground="{DynamicResource TransferBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:TitBasePlaceholder}">
-                            <metro:PackIconMaterial Kind="{StaticResource PlaceholderIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackBrush}" />
+                            <metro:PackIconMaterial Kind="{StaticResource PlaceholderIcon}" Foreground="{DynamicResource BlackBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
             <!-- Account -->
             <DataTemplate x:Key="AccountColumnTemplate">
-                <ContentControl Content="{Binding}">
+                <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}">
-                            <TextBlock Text="{Binding Account}" />
+                            <TextBlock Text="{Binding Account}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
-                            <TextBlock Text="{lex:Loc AccountView_Column_Transfer}" />
+                            <TextBlock Text="{lex:Loc AccountView_Column_Transfer}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
             <DataTemplate  x:Key="AccountEditingColumnTemplate">
-                <ContentControl Content="{Binding}">
+                <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}">
                             <ComboBox TextSearch.TextPath="Name"
@@ -111,7 +128,7 @@
                             </ComboBox>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
-                            <TextBlock Text="{lex:Loc AccountView_Column_Transfer}" />
+                            <TextBlock Text="{lex:Loc AccountView_Column_Transfer}" Style="{StaticResource CellTextBlock}"/>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
                     </ContentControl.Resources>
@@ -119,20 +136,21 @@
             </DataTemplate>
             <!-- Date -->
             <DataTemplate x:Key="DateColumnTemplate">
-                <ContentControl Content="{Binding}">
+                <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitBase}">
-                            <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringConverter}}" />
+                            <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringConverter}}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
             <DataTemplate x:Key="DateEditingColumnTemplate">
-                <ContentControl Content="{Binding}">
+                <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitBase}">
-                            <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitsView, Converter={StaticResource BooleanToDatePickerFormatConverter}}" />
+                            <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"
+                                        SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitsView, Converter={StaticResource BooleanToDatePickerFormatConverter}}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
                     </ContentControl.Resources>
@@ -140,15 +158,15 @@
             </DataTemplate>
             <!-- Payee -->
             <DataTemplate x:Key="PayeeColumnTemplate">
-                <ContentControl HorizontalAlignment="Stretch"  Content="{Binding}">
+                <ContentControl HorizontalAlignment="Stretch" Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
-                            <TextBlock Text="{Binding Payee}" />
+                            <TextBlock Text="{Binding Payee}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding FromAccount}" VerticalAlignment="Center" />
-                                <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
+                                <TextBlock Text="{Binding FromAccount}" Style="{StaticResource CellTextBlock}" />
+                                <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" />
                             </StackPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
@@ -156,12 +174,12 @@
                 </ContentControl>
             </DataTemplate>
             <DataTemplate x:Key="PayeeEditingColumnTemplate">
-                <ContentControl HorizontalAlignment="Stretch" Content="{Binding}">
+                <ContentControl HorizontalAlignment="Stretch" Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
                             <DockPanel LastChildFill="True">
                                 <Button DockPanel.Dock="Right" Command="{Binding AddPayeeCommand}" Padding="0">
-                                    <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                                    <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Foreground="{DynamicResource BlackColorBrush}" Style="{StaticResource CellIconMaterial}" />
                                 </Button>
                                 <ComboBox TextSearch.TextPath="Name" 
                                           Text="{Binding PayeeText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
@@ -198,21 +216,21 @@
             </DataTemplate>
             <!-- Category -->
             <DataTemplate x:Key="CategoryColumnTemplate">
-                <ContentControl Content="{Binding}">
+                <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitLike}">
-                            <TextBlock Text="{Binding Category.Name}" ToolTip="{Binding Category.FullName}"/>
+                            <TextBlock Text="{Binding Category.Name}" ToolTip="{Binding Category.FullName}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:ParentTransaction}">
-                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
+                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:ParentIncome}">
-                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
+                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding ToAccount}" VerticalAlignment="Center" />
-                                <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
+                                <TextBlock Text="{Binding ToAccount}" Style="{StaticResource CellTextBlock}" />
+                                <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" />
                             </StackPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
@@ -220,7 +238,7 @@
                 </ContentControl>
             </DataTemplate>
             <DataTemplate x:Key="CategoryEditingColumnTemplate">
-                <ContentControl Content="{Binding}">
+                <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
                             <TextBlock Text="{Binding}" FontSize="12" />
@@ -231,7 +249,7 @@
                                                       ItemsSource="{Binding AllCategories}">
                                     <controls:SplitButton.IconTemplate>
                                         <DataTemplate>
-                                            <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                                            <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Foreground="{DynamicResource BlackColorBrush}" Style="{StaticResource CellIconMaterial}" />
                                         </DataTemplate>
                                     </controls:SplitButton.IconTemplate>
                                 </controls:SplitButton>
@@ -249,10 +267,10 @@
                             </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:ParentTransaction}">
-                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
+                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:ParentIncome}">
-                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource GrayBrush4}" />
+                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <ComboBox TextSearch.TextPath="Name"
@@ -272,17 +290,29 @@
             </DataTemplate>
             <!-- Memo -->
             <DataTemplate x:Key="MemoColumnTemplate">
-                <TextBlock Text="{Binding Memo}" ToolTip="{Binding Memo}" />
+                <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type structure:TitLike}">
+                            <TextBlock Text="{Binding Memo, Mode=OneWay}" ToolTip="{Binding Memo}" TextTrimming="CharacterEllipsis" Style="{StaticResource CellTextBlock}" />
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
             </DataTemplate>
             <DataTemplate x:Key="MemoEditingColumnTemplate">
-                <TextBox Text="{Binding Memo, UpdateSourceTrigger=LostFocus}" TextWrapping="NoWrap" />
+                <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type structure:TitLike}">
+                            <TextBox Text="{Binding Memo, UpdateSourceTrigger=LostFocus}" TextWrapping="NoWrap" VerticalAlignment="Stretch" VerticalContentAlignment="Center" />
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
             </DataTemplate>
             <!-- Sum -->
             <DataTemplate x:Key="SumColumnTemplate">
-                <ContentControl Content="{Binding}">
+                <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type native:Transfer}">
-                            <TextBlock Name="TitGrid_SumBox" TextAlignment="Right">
+                            <TextBlock Name="TitGrid_SumBox" TextAlignment="Right" Style="{StaticResource CellTextBlock}" Padding="0,0,5,0">
                                 <TextBlock.Text>
                                     <MultiBinding Converter="{StaticResource NegativeTransferMultiConverter}">
                                         <Binding Path="DataContext" ElementName="TitsView" />
@@ -300,7 +330,7 @@
                             </TextBlock>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type structure:TitLike}">
-                            <TextBlock Name="TitGrid_SumBox" TextAlignment="Right" 
+                            <TextBlock Name="TitGrid_SumBox" TextAlignment="Right"  Style="{StaticResource CellTextBlock}"  Padding="0,0,5,0"
                                        Foreground="{Binding Sum, Converter={StaticResource SumToBrushConverter}}"
                                        Text="{Binding Sum, Converter={StaticResource SumConverter}}" />
                         </DataTemplate>
@@ -309,10 +339,10 @@
                 </ContentControl>
             </DataTemplate>
             <DataTemplate  x:Key="SumEditingColumnTemplate">
-                <ContentControl Content="{Binding}">
+                <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type native:Transfer}">
-                            <TextBox Name="TitGrid_SumBox" TextAlignment="Right">
+                            <TextBox Name="TitGrid_SumBox" TextAlignment="Right" VerticalContentAlignment="Center">
                                 <TextBox.Foreground>
                                     <MultiBinding Converter="{StaticResource SumColorMultiConverter}">
                                         <Binding Path="DataContext" ElementName="TitsView" />
@@ -331,7 +361,7 @@
                             </TextBox>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type structure:TitLike}">
-                            <TextBox Name="TitGrid_SumBox" TextAlignment="Right" 
+                            <TextBox Name="TitGrid_SumBox" TextAlignment="Right" VerticalContentAlignment="Center"
                                        Foreground="{Binding Sum, Converter={StaticResource SumToBrushConverter}}">
                                 <TextBox.Text>
                                     <Binding Path="Sum" Converter="{StaticResource SumConverter}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
@@ -349,7 +379,7 @@
             </DataTemplate>
             <!-- Cleared -->
             <DataTemplate x:Key="ClearedColumnTemplate">
-                <CheckBox Style="{StaticResource BffCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
+                <CheckBox Style="{StaticResource BffCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" MinHeight="30" VerticalAlignment="Center"/>
             </DataTemplate>
             <!--#endregion -->
             <!--#region SubElementsFormTemplate -->
@@ -411,11 +441,6 @@
                                         <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoColumnTemplate}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingColumnTemplate}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
                             <!-- Sum -->
                             <DataGridTemplateColumn SortMemberPath="Sum" IsReadOnly="False" Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}">
@@ -472,7 +497,8 @@
         <!-- The DataGrid, which shows all saved Tits -->
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" RowStyle="{StaticResource DefaultRowStyle}" SelectionMode="Single" SelectionUnit="FullRow"
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected" Loaded="TitGrid_OnLoaded"
-                  EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingStackPanel.IsVirtualizing="True">
+                  EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingStackPanel.IsVirtualizing="True"
+                  ScrollViewer.CanContentScroll="True" VerticalContentAlignment="Center">
             <DataGrid.Columns>
                 <!-- Symbol -->
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_SymbolAbbr}" x:Name="SymbolColumn">
