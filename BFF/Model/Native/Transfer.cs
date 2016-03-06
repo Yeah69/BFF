@@ -34,8 +34,8 @@ namespace BFF.Model.Native
                     temp = null;
                 }
                 _fromAccount = value;
-                Update();
-                temp?.Tits.Clear();
+                if(Id != -1) Update();
+                temp?.RefreshTits();
                 if(temp == null)
                     _toAccount?.RefreshBalance();
                 else
@@ -73,8 +73,8 @@ namespace BFF.Model.Native
                     temp = null;
                 }
                 _toAccount = value;
-                Update();
-                temp?.Tits.Clear();
+                if(Id != -1) Update();
+                temp?.RefreshTits();
                 if (temp == null)
                     _fromAccount?.RefreshBalance();
                 else
@@ -183,9 +183,9 @@ namespace BFF.Model.Native
         protected override void UpdateToDb()
         {
             Database?.Update(this);
-            Account.allAccounts?.Tits.Clear();
-            FromAccount?.Tits.Clear();
-            ToAccount?.Tits.Clear();
+            Account.allAccounts?.RefreshTits();
+            FromAccount?.RefreshTits();
+            ToAccount?.RefreshTits();
         }
 
         protected override void DeleteFromDb()
@@ -197,9 +197,9 @@ namespace BFF.Model.Native
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            Account.allAccounts.Tits.Clear();
-            FromAccount.Tits.Clear();
-            ToAccount.Tits.Clear();
+            Account.allAccounts.RefreshTits();
+            FromAccount.RefreshTits();
+            ToAccount.RefreshTits();
             FromAccount.RefreshBalance();
             ToAccount.RefreshBalance();
         });

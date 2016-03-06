@@ -23,7 +23,7 @@ namespace BFF.Model.Native
                 if (value is Income)
                 {
                     _parent = value;
-                    Update();
+                    if(Id != -1) Update();
                     OnPropertyChanged();
                 }
                 else

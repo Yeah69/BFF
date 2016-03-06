@@ -57,7 +57,7 @@ namespace BFF.DB
 
         public TitBase GetPlaceHolder(int index, int page, int offset)
         {
-            return new TitBasePlaceholder(DateTime.Now); //todo: !!!
+            return new TitBasePlaceholder(DateTime.Now);
         }
 
         public Task<int> GetCountAsync()

@@ -17,6 +17,8 @@ namespace BFF.Model.Native
     /// </summary>
     public class Account : CommonProperty
     {
+        public Action RefreshDataGrid;
+
         public static AllAccounts allAccounts;
 
         private long _startingBalance;
@@ -30,7 +32,7 @@ namespace BFF.Model.Native
             set
             {
                 _startingBalance = value;
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
                 allAccounts?.RefreshStartingBalance();
             }
@@ -106,13 +108,25 @@ namespace BFF.Model.Native
 
         #region ViewModel_Part
 
-        private VirtualizingObservableCollection<TitBase> _tits; 
+        private VirtualizingObservableCollection<TitBase> _tits;
+        private PaginationManager<TitBase> paginationManager;
 
         [Write(false)]
-        public VirtualizingObservableCollection<TitBase> Tits => _tits ?? (_tits = new VirtualizingObservableCollection<TitBase>(new PaginationManager<TitBase>(new PagedTitBaseProviderAsync(Database, this))));
+        public VirtualizingObservableCollection<TitBase> Tits => _tits ?? (_tits = new VirtualizingObservableCollection<TitBase>(paginationManager = new PaginationManager<TitBase>(new PagedTitBaseProviderAsync(Database, this))));
 
         [Write(false)]
         public ObservableCollection<TitBase> NewTits { get; set; } = new ObservableCollection<TitBase>();
+        
+        public void RefreshTits()
+        {
+            paginationManager?.ResetWithoutResetEvent();
+            //Tits.OnCountTouched();
+            RefreshDataGrid?.Invoke();
+            //Setting the PageSize will let it drop all pages
+            //if (paginationManager != null)
+            //   paginationManager.PageSize = paginationManager.PageSize;
+            //OnPropertyChanged(nameof(Tits));
+        }
 
         [Write(false)]
         public virtual long? Balance
@@ -136,31 +150,31 @@ namespace BFF.Model.Native
         [Write(false)]
         public virtual ICommand NewTransactionCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Transaction(DateTime.Today) { Memo = "", Sum = 0L, Cleared = false, Account = this });
+            NewTits.Add(new Transaction(DateTime.Today, account: this, memo: "", sum: 0L, cleared: false));
         });
 
         [Write(false)]
         public virtual ICommand NewIncomeCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Income(DateTime.Today) { Memo = "", Sum = 0L, Cleared = false, Account = this });
+            NewTits.Add(new Income(DateTime.Today, account: this, memo: "", sum: 0L, cleared: false));
         });
 
         [Write(false)]
         public ICommand NewTransferCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Transfer(DateTime.Today) { Memo = "", Sum = 0L, Cleared = false });
+            NewTits.Add(new Transfer(DateTime.Today, memo: "", sum: 0L, cleared: false));
         });
 
         [Write(false)]
         public virtual ICommand NewParentTransactionCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new ParentTransaction(DateTime.Today) { Memo = "", Cleared = false, Account = this });
+            NewTits.Add(new ParentTransaction(DateTime.Today, account: this, memo: "", cleared: false));
         });
 
         [Write(false)]
         public virtual ICommand NewParentIncomeCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new ParentIncome(DateTime.Today) { Memo = "", Cleared = false, Account = this });
+            NewTits.Add(new ParentIncome(DateTime.Today, account: this, memo: "", cleared: false));
         });
 
         [Write(false)]
@@ -206,10 +220,10 @@ namespace BFF.Model.Native
                     accounts.Add(transfer.ToAccount);
                 }
             }
-            allAccounts.Tits.Clear();
+            allAccounts.RefreshTits();
             foreach(Account account in accounts)
             {
-                account.Tits.Clear();
+                account.RefreshTits();
                 account.RefreshBalance();
             }
         }

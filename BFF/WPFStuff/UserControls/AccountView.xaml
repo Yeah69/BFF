@@ -15,7 +15,7 @@
              xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700"
-             Name="TitsView">
+             Name="TitsView" DataContextChanged="AccountView_OnDataContextChanged">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -498,7 +498,7 @@
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" RowStyle="{StaticResource DefaultRowStyle}" SelectionMode="Single" SelectionUnit="FullRow"
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected" Loaded="TitGrid_OnLoaded"
                   EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingStackPanel.IsVirtualizing="True"
-                  ScrollViewer.CanContentScroll="True" VerticalContentAlignment="Center">
+                  ScrollViewer.CanContentScroll="True" VerticalContentAlignment="Center" UseLayoutRounding="True">
             <DataGrid.Columns>
                 <!-- Symbol -->
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_SymbolAbbr}" x:Name="SymbolColumn">
@@ -769,7 +769,7 @@
                         <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
                     </StackPanel>
                 </Button>
-                <Button ToolTip="{lex:Loc AccountView_ToolTip_AddToTable}" Command="{Binding ApplyCommand}" HorizontalAlignment="Right">
+                <Button ToolTip="{lex:Loc AccountView_ToolTip_AddToTable}" Command="{Binding ApplyCommand}" HorizontalAlignment="Right" Click="ApplyButton_OnClick">
                     <metro:PackIconMaterial Kind="{StaticResource AddToTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                 </Button>
             </DockPanel>

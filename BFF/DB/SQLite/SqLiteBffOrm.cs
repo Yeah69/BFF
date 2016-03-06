@@ -339,8 +339,8 @@ namespace BFF.DB.SQLite
                 Account.allAccounts?.RefreshStartingBalance(); //todo: Rather use the DbPathChanged event in AllAccounts
                 Account.allAccounts?.RefreshBalance();
             }
-            Account.allAccounts?.Tits.Clear();
-            Account.allAccounts?.NewTits.Clear();
+            Account.allAccounts?.RefreshTits();
+            Account.allAccounts?.RefreshTits();
         }
 
         private void InitializePeripherie()

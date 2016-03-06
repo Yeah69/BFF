@@ -29,7 +29,7 @@ namespace BFF.Model.Native.Structure
             set
             {
                 _date = value;
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }
@@ -43,7 +43,7 @@ namespace BFF.Model.Native.Structure
             set
             {
                 _cleared = value;
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }

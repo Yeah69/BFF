@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using BFF.Helper;
+using BFF.Model.Native;
 
 namespace BFF.WPFStuff.UserControls
 {
@@ -35,6 +36,18 @@ namespace BFF.WPFStuff.UserControls
         private void TitGrid_OnLoaded(object sender, RoutedEventArgs e)
         {
             //((DataGrid) sender).Items.Refresh();
+        }
+
+        private void ApplyButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            //TitGrid.Items.Refresh();
+        }
+
+        private void AccountView_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            Account account = DataContext as Account;
+            if(account != null)
+                account.RefreshDataGrid = () => { TitGrid.Items.Refresh(); };
         }
     }
 }

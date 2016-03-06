@@ -28,8 +28,8 @@ namespace BFF.Model.Native.Structure
                 if(_account == value) return;
                 Account temp = _account;
                 _account = value;
-                Update();
-                temp?.Tits.Clear();
+                if(Id != -1) Update();
+                temp?.RefreshTits();
                 _account?.RefreshBalance();
                 temp?.RefreshBalance();
                 OnPropertyChanged();
@@ -56,7 +56,7 @@ namespace BFF.Model.Native.Structure
             {
                 if(_payee == value) return;
                 _payee = value;
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }
@@ -81,7 +81,7 @@ namespace BFF.Model.Native.Structure
             {
                 if(_category == value) return;
                 _category = value;
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }
@@ -156,8 +156,8 @@ namespace BFF.Model.Native.Structure
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            Account.allAccounts?.Tits.Clear();
-            Account?.Tits.Clear();
+            Account.allAccounts?.RefreshTits();
+            Account?.RefreshTits();
             Account?.RefreshBalance();
         });
 
