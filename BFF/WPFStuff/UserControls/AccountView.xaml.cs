@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using BFF.DB;
 using BFF.Helper;
 using BFF.Model.Native;
 
@@ -45,14 +47,32 @@ namespace BFF.WPFStuff.UserControls
 
         private void AccountView_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Account account = DataContext as Account;
-            if(account != null)
-                account.RefreshDataGrid = () => { TitGrid.Items.Refresh(); };
+            IVirtualizedRefresh oldVirtualizedRefresh = e.OldValue as IVirtualizedRefresh;
+            if(oldVirtualizedRefresh != null)
+            {
+                oldVirtualizedRefresh.PreVirtualizedRefresh -= PreVirtualizedRefresh;
+                oldVirtualizedRefresh.PostVirtualizedRefresh -= PostVirtualizedRefresh;
+            }
+            IVirtualizedRefresh virtualizedRefresh = DataContext as IVirtualizedRefresh;
+            if(virtualizedRefresh != null)
+            {
+                virtualizedRefresh.PreVirtualizedRefresh += PreVirtualizedRefresh;
+                virtualizedRefresh.PostVirtualizedRefresh += PostVirtualizedRefresh;
+            }
         }
 
-        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        private int _previousPosition = 0;
+
+        private void PreVirtualizedRefresh(object sender, EventArgs args)
         {
+            _previousPosition = TitGrid.SelectedIndex;
             TitGrid.UnselectAllCells();
+        }
+
+        private void PostVirtualizedRefresh(object sender, EventArgs args)
+        {
+            if(TitGrid.Items.Count > _previousPosition)
+                TitGrid.SelectedIndex = _previousPosition;
         }
     }
 }

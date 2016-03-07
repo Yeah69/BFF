@@ -48,7 +48,7 @@
             <!--#endregion -->
 
             <ContextMenu x:Key="RowMenu">
-                <MenuItem Header="{lex:Loc AccountView_ConMenu_Delete}" Command="{Binding DeleteCommand}" Click="MenuItem_OnClick">
+                <MenuItem Header="{lex:Loc AccountView_ConMenu_Delete}" Command="{Binding DeleteCommand}">
                     <MenuItem.Icon>
                         <metro:PackIconMaterial Kind="{StaticResource RemoveFromTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{StaticResource BlackBrush}" />
                     </MenuItem.Icon>
@@ -498,7 +498,7 @@
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits}" AutoGenerateColumns="False" RowStyle="{StaticResource DefaultRowStyle}" SelectionMode="Single" SelectionUnit="FullRow"
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected" Loaded="TitGrid_OnLoaded"
                   EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingStackPanel.IsVirtualizing="True"
-                  ScrollViewer.CanContentScroll="True" VerticalContentAlignment="Center" UseLayoutRounding="True">
+                  ScrollViewer.CanContentScroll="True" VerticalContentAlignment="Center">
             <DataGrid.Columns>
                 <!-- Symbol -->
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_SymbolAbbr}" x:Name="SymbolColumn">

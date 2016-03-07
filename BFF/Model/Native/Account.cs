@@ -15,7 +15,7 @@ namespace BFF.Model.Native
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class Account : CommonProperty
+    public class Account : CommonProperty, IVirtualizedRefresh
     {
         public Action RefreshDataGrid;
 
@@ -119,8 +119,10 @@ namespace BFF.Model.Native
         
         public void RefreshTits()
         {
+            OnPreVirtualizedRefresh();
             _tits = new VirtualizingObservableCollection<TitBase>(paginationManager = new PaginationManager<TitBase>(new PagedTitBaseProviderAsync(Database, this)));
             OnPropertyChanged(nameof(Tits));
+            OnPostVirtualizedRefresh();
             //paginationManager?.ResetWithoutResetEvent();
             //Tits.OnCountTouched();
             //RefreshDataGrid?.Invoke();
@@ -232,6 +234,22 @@ namespace BFF.Model.Native
 
         [Write(false)]
         public bool IsDateFormatLong => BffEnvironment.CultureProvider?.DateLong ?? false;
+
+        #endregion
+
+        #region Implementation of IVirtualizedRefresh
+
+        public event EventHandler PreVirtualizedRefresh;
+        public void OnPreVirtualizedRefresh()
+        {
+            PreVirtualizedRefresh?.Invoke(this, new EventArgs());
+        }
+
+        public event EventHandler PostVirtualizedRefresh;
+        public void OnPostVirtualizedRefresh()
+        {
+            PostVirtualizedRefresh?.Invoke(this, new EventArgs());
+        }
 
         #endregion
     }
