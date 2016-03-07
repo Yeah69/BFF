@@ -49,5 +49,10 @@ namespace BFF.WPFStuff.UserControls
             if(account != null)
                 account.RefreshDataGrid = () => { TitGrid.Items.Refresh(); };
         }
+
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            TitGrid.UnselectAllCells();
+        }
     }
 }

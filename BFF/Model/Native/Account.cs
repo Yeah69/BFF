@@ -119,9 +119,11 @@ namespace BFF.Model.Native
         
         public void RefreshTits()
         {
-            paginationManager?.ResetWithoutResetEvent();
+            _tits = new VirtualizingObservableCollection<TitBase>(paginationManager = new PaginationManager<TitBase>(new PagedTitBaseProviderAsync(Database, this)));
+            OnPropertyChanged(nameof(Tits));
+            //paginationManager?.ResetWithoutResetEvent();
             //Tits.OnCountTouched();
-            RefreshDataGrid?.Invoke();
+            //RefreshDataGrid?.Invoke();
             //Setting the PageSize will let it drop all pages
             //if (paginationManager != null)
             //   paginationManager.PageSize = paginationManager.PageSize;

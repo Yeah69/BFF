@@ -48,7 +48,7 @@
             <!--#endregion -->
 
             <ContextMenu x:Key="RowMenu">
-                <MenuItem Header="{lex:Loc AccountView_ConMenu_Delete}" Command="{Binding DeleteCommand}">
+                <MenuItem Header="{lex:Loc AccountView_ConMenu_Delete}" Command="{Binding DeleteCommand}" Click="MenuItem_OnClick">
                     <MenuItem.Icon>
                         <metro:PackIconMaterial Kind="{StaticResource RemoveFromTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{StaticResource BlackBrush}" />
                     </MenuItem.Icon>
