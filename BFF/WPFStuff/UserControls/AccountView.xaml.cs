@@ -19,8 +19,8 @@ namespace BFF.WPFStuff.UserControls
 
         private void RefreshDataGrids()
         {
-            //TitGrid.Items.Refresh();
-            //NewTitGrid.Items.Refresh();
+            TitGrid.Items.Refresh();
+            NewTitGrid.Items.Refresh();
         }
 
         public void RefreshCurrencyVisuals()
@@ -32,17 +32,7 @@ namespace BFF.WPFStuff.UserControls
 
         public void RefreshDateVisuals()
         {
-            //RefreshDataGrids();
-        }
-
-        private void TitGrid_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            //((DataGrid) sender).Items.Refresh();
-        }
-
-        private void ApplyButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            //TitGrid.Items.Refresh();
+            RefreshDataGrids();
         }
 
         private void AccountView_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -72,7 +62,14 @@ namespace BFF.WPFStuff.UserControls
         private void PostVirtualizedRefresh(object sender, EventArgs args)
         {
             if(TitGrid.Items.Count > _previousPosition)
+            {
+                if(_previousPosition != -1)
+                {
+                    TitGrid.CurrentItem = TitGrid.Items[_previousPosition];
+                    TitGrid.ScrollIntoView(TitGrid.CurrentItem);
+                }
                 TitGrid.SelectedIndex = _previousPosition;
+            }
         }
     }
 }
