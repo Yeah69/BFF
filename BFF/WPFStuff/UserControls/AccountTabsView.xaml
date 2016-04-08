@@ -29,14 +29,14 @@
         <controls:MetroTabControl Name="AccountsTabControl" Margin="10">
             <i:Interaction.Behaviors>
                 <behaviors:AdditionalTabItemsBehavior ItemsSource="{Binding AllAccounts}" StartingIndex="1">
-                    <!-- todo: <behaviors:AdditionalTabItemsBehavior.HeaderTemplate>
+                    <behaviors:AdditionalTabItemsBehavior.HeaderTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <metro:PackIconMaterial Kind="CreditCard" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
-                                <TextBlock Text="{Binding Name}" />
+                                <TextBlock Text="{Binding DataContext.Name, RelativeSource={RelativeSource AncestorType=TabItem}}" />
                             </StackPanel>
                         </DataTemplate>
-                    </behaviors:AdditionalTabItemsBehavior.HeaderTemplate>-->
+                    </behaviors:AdditionalTabItemsBehavior.HeaderTemplate>
                     <behaviors:AdditionalTabItemsBehavior.ContentTemplate>
                         <DataTemplate>
                             <local:AccountView />
