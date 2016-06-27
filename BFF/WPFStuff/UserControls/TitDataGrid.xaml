@@ -1,0 +1,327 @@
+﻿<UserControl x:Class="BFF.WPFStuff.UserControls.TitDataGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:native="clr-namespace:BFF.Model.Native"
+             xmlns:structure="clr-namespace:BFF.Model.Native.Structure"
+             xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
+             xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="Root">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.datagrid.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.checkbox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+                <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMCheckBox.xaml" />
+                <ResourceDictionary Source="/WPFStuff/TitDataGridTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--#region Converters -->
+            <converters:DataGridWidthsToLeftMarginConverter x:Key="DataGridWidthsToLeftMarginConverter" />
+            <converters:DataGridLengthsToDoubleConverter x:Key="DataGridLengthsToDoubleConverter" />
+            <!--#endregion -->
+
+            <Style x:Name="Blah" BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
+                <Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush8}" />
+                <Setter Property="AutoGenerateColumns" Value="False"/>
+                <Setter Property="CanUserSortColumns" Value="False"/>
+                <Setter Property="CanUserAddRows" Value="False"/>
+                <Setter Property="CanUserDeleteRows" Value="False"/>
+                <Setter Property="EnableRowVirtualization" Value="True"/>
+                <Setter Property="EnableColumnVirtualization" Value="True"/>
+                <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
+                <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
+                <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.datagrid.xaml" />
+                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.checkbox.xaml" />
+                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
+                    <ResourceDictionary Source="/Resources/Icons.xaml" />
+                    <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMCheckBox.xaml" />
+                    <ResourceDictionary Source="/WPFStuff/TitDataGridTemplates.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+
+                <!--#region Converters -->
+                <converters:DataGridWidthsToLeftMarginConverter x:Key="DataGridWidthsToLeftMarginConverter" />
+                <converters:DataGridLengthsToDoubleConverter x:Key="DataGridLengthsToDoubleConverter" />
+                <!--#endregion -->
+
+                <Style BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
+                    <Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush8}" />
+                    <Setter Property="AutoGenerateColumns" Value="False"/>
+                    <Setter Property="CanUserSortColumns" Value="False"/>
+                    <Setter Property="CanUserAddRows" Value="False"/>
+                    <Setter Property="CanUserDeleteRows" Value="False"/>
+                    <Setter Property="EnableRowVirtualization" Value="True"/>
+                    <Setter Property="EnableColumnVirtualization" Value="True"/>
+                    <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
+                    <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+                </Style>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!--#region TitsGrid -->
+        <!-- The DataGrid, which shows all saved Tits -->
+        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding DataContext.Tits, ElementName=Root}" RowStyle="{StaticResource DefaultRowStyle}" 
+                  SelectionMode="Single" SelectionUnit="FullRow"
+                  ScrollViewer.IsDeferredScrollingEnabled="True">
+            <DataGrid.Columns>
+                <!-- Symbol -->
+                <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_SymbolAbbr}" x:Name="SymbolColumn">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SymbolColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <!-- Account -->
+                <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Account}" SortMemberPath="Account.Name" x:Name="AccountColumn">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountEditingColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <!-- Date -->
+                <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Date}" SortMemberPath="Date" x:Name="DateColumn">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateEditingColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <!-- Payee -->
+                <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Payee}" SortMemberPath="Payee.Name" x:Name="PayeeColumn">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeEditingColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <!-- Category -->
+                <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Category}" SortMemberPath="Category.Name" x:Name="CategoryColumn">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <!-- Memo -->
+                <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Memo}" SortMemberPath="Memo" Width="*" x:Name="MemoColumn">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <!-- Sum -->
+                <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Sum}" SortMemberPath="Sum" IsReadOnly="False" x:Name="SumColumn">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <!-- Cleared -->
+                <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Cleared}" SortMemberPath="Cleared" IsReadOnly="True" x:Name="ClearedColumn">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ClearedColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <!--#endregion -->
+        <!--#region EditingForm -->
+        <!-- The Editing-Form -->
+        <StackPanel Grid.Row="1">
+            <DataGrid Name="NewTitGrid" ItemsSource="{Binding NewTits}" HeadersVisibility="None" BorderThickness="0,2,0,0" MaxHeight="200"
+                      Width="{Binding ActualWidth ,ElementName=TitGrid}" RowDetailsVisibilityMode="Visible">
+                <DataGrid.Columns>
+                    <!-- Symbol -->
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SymbolColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SymbolColumnTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Account -->
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference AccountColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountEditingColumnTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Date -->
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference DateColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateEditingColumnTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Payee -->
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference PayeeColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeEditingColumnTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Category -->
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingColumnTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Memo -->
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingColumnTemplate}">
+                                </ContentControl>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Sum -->
+                    <DataGridTemplateColumn IsReadOnly="False" Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingColumnTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Cleared -->
+                    <DataGridTemplateColumn IsReadOnly="True" Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ClearedColumnTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <ContentControl Content="{Binding}" HorizontalAlignment="Left">
+                            <ContentControl.Margin>
+                                <MultiBinding Converter="{StaticResource DataGridWidthsToLeftMarginConverter}">
+                                    <Binding Path="Width" Source="{x:Reference SymbolColumn}"/>
+                                    <Binding Path="Width" Source="{x:Reference AccountColumn}"/>
+                                    <Binding Path="Width" Source="{x:Reference DateColumn}"/>
+                                    <Binding Path="Width" Source="{x:Reference PayeeColumn}"/>
+                                </MultiBinding>
+                            </ContentControl.Margin>
+                            <ContentControl.Width>
+                                <MultiBinding Converter="{StaticResource DataGridLengthsToDoubleConverter}">
+                                    <Binding Path="Width" Source="{x:Reference CategoryColumn}"/>
+                                    <Binding Path="Width" Source="{x:Reference MemoColumn}"/>
+                                    <Binding Path="Width" Source="{x:Reference SumColumn}"/>
+                                    <Binding Path="Width" Source="{x:Reference ClearedColumn}"/>
+                                </MultiBinding>
+                            </ContentControl.Width>
+                            <ContentControl.Resources>
+                                <DataTemplate DataType="{x:Type native:ParentTransaction}">
+                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingFormTemplate}"/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type native:ParentIncome}">
+                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingFormTemplate}"/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type structure:TitLike}">
+                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource EmptyDataTemplate}"/>
+                                </DataTemplate>
+                            </ContentControl.Resources>
+                        </ContentControl>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+            </DataGrid>
+            <DockPanel>
+                <Button ToolTip="{lex:Loc AccountView_ToolTip_NewTransaction}" Command="{Binding NewTransactionCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="{lex:Loc AccountView_ToolTip_NewIncome}" Command="{Binding NewIncomeCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="{lex:Loc AccountView_ToolTip_NewTransfer}" Command="{Binding NewTransferCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource TransferIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransferBrush}" />
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="{lex:Loc AccountView_ToolTip_NewParentTransaction}" Command="{Binding NewParentTransactionCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="{lex:Loc AccountView_ToolTip_NewParentIncome}" Command="{Binding NewParentIncomeCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
+                    </StackPanel>
+                </Button>
+                <Button ToolTip="{lex:Loc AccountView_ToolTip_AddToTable}" Command="{Binding ApplyCommand}" HorizontalAlignment="Right">
+                    <metro:PackIconMaterial Kind="{StaticResource AddToTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                </Button>
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

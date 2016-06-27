@@ -7,6 +7,10 @@
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:viewModel="clr-namespace:BFF.ViewModel"
         xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
+        xmlns:bff="clr-namespace:BFF"
+        xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
+        xmlns:native="clr-namespace:BFF.Model.Native"
+        xmlns:structure="clr-namespace:BFF.Model.Native.Structure"
         lex:LocalizeDictionary.DesignCulture="en-US"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
@@ -20,6 +24,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
+                <ResourceDictionary Source="/WPFStuff/TitDataGridTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converters:CurrencyComboConverter x:Key="CurrencyComboConverter"/>
             <converters:DateComboConverter x:Key="DateComboConverter"/>
@@ -34,7 +39,7 @@
                         <Label Content="{lex:Loc MainWindow_Settings_Theme}"/>
                         <ComboBox Name="ThemeCombo" SelectionChanged="ThemeCombo_SelectionChanged">
                             <ComboBox.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="bff:ThemeWrap">
                                     <StackPanel Orientation="Horizontal">
                                         <Ellipse Stroke="{DynamicResource BlackBrush}" StrokeThickness="1" Fill="{Binding WhiteBrush}" Width="15" Height="15" />
                                         <Label Content="{Binding Path=Theme.Name}" />
@@ -45,7 +50,7 @@
                         <Label Content="{lex:Loc MainWindow_Settings_Accents}"/>
                         <ComboBox Name="AccentCombo" SelectionChanged="AccentCombo_SelectionChanged">
                             <ComboBox.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="bff:AccentWrap">
                                     <StackPanel Orientation="Horizontal">
                                         <Ellipse Stroke="{DynamicResource BlackBrush}" StrokeThickness="1" Fill="{Binding AccentColorBrush}" Width="15" Height="15" />
                                         <Label Content="{Binding Path=Accent.Name}" />
@@ -56,7 +61,7 @@
                         <Label Content="{lex:Loc MainWindow_Settings_Language}"/>
                         <ComboBox Name="LanguageCombo" SelectionChanged="LanguageCombo_SelectionChanged">
                             <ComboBox.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="globalization:CultureInfo">
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="{Binding Name}"/>
                                         <Label Content="{Binding NativeName}"/>
@@ -67,7 +72,7 @@
                         <Label Content="{lex:Loc MainWindow_Settings_Currency}"/>
                         <ComboBox Name="CurrencyCombo" SelectedItem="{Binding CurrencyCulture, Mode=OneWay}" SelectionChanged="CurrencyCombo_OnSelectionChanged" Style="{StaticResource VirtualisedMetroComboBox}">
                             <ComboBox.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="globalization:CultureInfo">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition />
@@ -91,7 +96,7 @@
                         <Label Content="{lex:Loc MainWindow_Settings_Date}" />
                         <ComboBox Name="DateCombo" SelectedItem="{Binding DateCulture, Mode=OneWay}" SelectionChanged="DateCombo_OnSelectionChanged" Style="{StaticResource VirtualisedMetroComboBox}">
                             <ComboBox.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="globalization:CultureInfo">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition />
@@ -128,6 +133,121 @@
                         <Button Content="{lex:Loc MainWindow_File_Import}" Margin="10,5,10,5" Click="Open_ImportDialog" />
                     </StackPanel>
                 </Grid>
+            </controls:Flyout>
+            <controls:Flyout Name="ParentTitFlyout" Position="Top" IsModal="True" IsOpen="{Binding ParentTitFlyoutOpen}"> <!-- todo lex -->
+                <ContentControl Content="{Binding ParentTitViewModel}">
+                    <ContentControl.ContentTemplate>
+                        <DataTemplate DataType="viewModel:ParentTitViewModel">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Title}" />
+                                <DataGrid Name="ParentTitGrid" ItemsSource="{Binding ParentTitSource}" RowDetailsVisibilityMode="Visible">
+                                    <DataGrid.Columns>
+                                        <!-- Symbol -->
+                                        <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_SymbolAbbr}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SymbolColumnTemplate}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <!-- Account -->
+                                        <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Account}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource AccountEditingColumnTemplate}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <!-- Date -->
+                                        <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Date}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DateEditingColumnTemplate}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <!-- Payee -->
+                                        <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Payee}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource PayeeEditingColumnTemplate}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <!-- Category -->
+                                        <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Category}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingColumnTemplate}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <!-- Memo -->
+                                        <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Memo}" Width="*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingColumnTemplate}">
+                                                    </ContentControl>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <!-- Sum -->
+                                        <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Sum}" IsReadOnly="False">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingColumnTemplate}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <!-- Cleared -->
+                                        <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Cleared}" IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ClearedColumnTemplate}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                    <DataGrid.RowDetailsTemplate>
+                                        <DataTemplate>
+                                            
+                                            <ContentControl Content="{Binding}" HorizontalAlignment="Left">
+                                                <!--
+                                                <ContentControl.Margin>
+                                                    <MultiBinding Converter="{StaticResource DataGridWidthsToLeftMarginConverter}">
+                                                        <Binding Path="Width" Source="{x:Reference SymbolColumn}"/>
+                                                        <Binding Path="Width" Source="{x:Reference AccountColumn}"/>
+                                                        <Binding Path="Width" Source="{x:Reference DateColumn}"/>
+                                                        <Binding Path="Width" Source="{x:Reference PayeeColumn}"/>
+                                                    </MultiBinding>
+                                                </ContentControl.Margin>
+                                                <ContentControl.Width>
+                                                    <MultiBinding Converter="{StaticResource DataGridLengthsToDoubleConverter}">
+                                                        <Binding Path="Width" Source="{x:Reference CategoryColumn}"/>
+                                                        <Binding Path="Width" Source="{x:Reference MemoColumn}"/>
+                                                        <Binding Path="Width" Source="{x:Reference SumColumn}"/>
+                                                        <Binding Path="Width" Source="{x:Reference ClearedColumn}"/>
+                                                    </MultiBinding>
+                                                </ContentControl.Width> 
+                                                <ContentControl.Resources>
+                                                    <DataTemplate DataType="{x:Type native:ParentTransaction}">
+                                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingFormTemplate}"/>
+                                                    </DataTemplate>
+                                                    <DataTemplate DataType="{x:Type native:ParentIncome}">
+                                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingFormTemplate}"/>
+                                                    </DataTemplate>
+                                                    <DataTemplate DataType="{x:Type structure:TitLike}">
+                                                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource EmptyDataTemplate}"/>
+                                                    </DataTemplate>
+                                                </ContentControl.Resources>-->
+                                            </ContentControl>
+                                        </DataTemplate>
+                                    </DataGrid.RowDetailsTemplate>
+                                </DataGrid>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ContentControl.ContentTemplate>
+                </ContentControl>
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
