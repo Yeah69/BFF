@@ -107,7 +107,7 @@
                                       IsEditable="True"
                                       IsTextSearchCaseSensitive="False"
                                       IsTextSearchEnabled="True"
-                                      ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitsView}">
+                                      ItemsSource="{Binding DataContext.Account.AllAccounts, ElementName=LayoutRoot}">
                         <ComboBox.SelectedItem>
                             <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                 <Binding.ValidationRules>
@@ -193,7 +193,7 @@
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
                                                               IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitsView}">
+                                                              ItemsSource="{Binding DataContext.Account.AllAccounts, ElementName=LayoutRoot}">
                         <ComboBox.SelectedItem>
                             <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                             </Binding>
@@ -271,7 +271,7 @@
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
                                                               IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.AllAccounts, ElementName=TitsView}">
+                                                              ItemsSource="{Binding DataContext.Account.AllAccounts, ElementName=LayoutRoot}">
                         <ComboBox.SelectedItem>
                             <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                             </Binding>
@@ -309,14 +309,14 @@
                     <TextBlock Name="TitGrid_SumBox" TextAlignment="Right" Style="{StaticResource CellTextBlock}" Padding="0,0,5,0">
                         <TextBlock.Text>
                             <MultiBinding Converter="{StaticResource NegativeTransferMultiConverter}">
-                                <Binding Path="DataContext" ElementName="TitsView" />
+                                <Binding Path="DataContext.Account" ElementName="LayoutRoot" />
                                 <Binding Path="FromAccount" />
                                 <Binding Path="Sum" />
                             </MultiBinding>
                         </TextBlock.Text>
                         <TextBlock.Foreground>
                             <MultiBinding Converter="{StaticResource SumColorMultiConverter}">
-                                <Binding Path="DataContext" ElementName="TitsView" />
+                                <Binding Path="DataContext.Account" ElementName="LayoutRoot" />
                                 <Binding Path="FromAccount" />
                                 <Binding Path="ToAccount" />
                             </MultiBinding>
@@ -339,7 +339,7 @@
                     <TextBox Name="TitGrid_SumBox" TextAlignment="Right" VerticalContentAlignment="Center">
                         <TextBox.Foreground>
                             <MultiBinding Converter="{StaticResource SumColorMultiConverter}">
-                                <Binding Path="DataContext" ElementName="TitsView" />
+                                <Binding Path="DataContext.Account" ElementName="LayoutRoot" />
                                 <Binding Path="FromAccount" />
                                 <Binding Path="ToAccount" />
                             </MultiBinding>

@@ -19,8 +19,8 @@ namespace BFF.WPFStuff.UserControls
 
         private void RefreshDataGrids()
         {
-            TitGrid.Items.Refresh();
-            NewTitGrid.Items.Refresh();
+            //TitGrid.Items.Refresh(); //todo !!!
+            //NewTitGrid.Items.Refresh();
         }
 
         public void RefreshCurrencyVisuals()
@@ -55,21 +55,21 @@ namespace BFF.WPFStuff.UserControls
 
         private void PreVirtualizedRefresh(object sender, EventArgs args)
         {
-            _previousPosition = TitGrid.SelectedIndex;
-            TitGrid.UnselectAllCells();
+            //_previousPosition = TitGrid.SelectedIndex;
+            //TitGrid.UnselectAllCells();
         }
 
         private void PostVirtualizedRefresh(object sender, EventArgs args)
         {
-            if(TitGrid.Items.Count > _previousPosition)
-            {
-                if(_previousPosition != -1)
-                {
-                    TitGrid.CurrentItem = TitGrid.Items[_previousPosition];
-                    TitGrid.ScrollIntoView(TitGrid.CurrentItem);
-                }
-                TitGrid.SelectedIndex = _previousPosition;
-            }
+            //if(TitGrid.Items.Count > _previousPosition)
+            //{
+            //    if(_previousPosition != -1)
+            //    {
+            //        TitGrid.CurrentItem = TitGrid.Items[_previousPosition];
+            //        TitGrid.ScrollIntoView(TitGrid.CurrentItem);
+            //    }
+            //    TitGrid.SelectedIndex = _previousPosition;
+            //}
         }
     }
 }

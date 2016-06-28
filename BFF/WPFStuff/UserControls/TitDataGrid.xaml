@@ -27,7 +27,7 @@
             <converters:DataGridLengthsToDoubleConverter x:Key="DataGridLengthsToDoubleConverter" />
             <!--#endregion -->
 
-            <Style x:Name="Blah" BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
+            <Style BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
                 <Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush8}" />
                 <Setter Property="AutoGenerateColumns" Value="False"/>
                 <Setter Property="CanUserSortColumns" Value="False"/>
@@ -42,43 +42,13 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
-        <Grid.Resources>
-            <ResourceDictionary>
-                <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.datagrid.xaml" />
-                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.checkbox.xaml" />
-                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
-                    <ResourceDictionary Source="/Resources/Icons.xaml" />
-                    <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMCheckBox.xaml" />
-                    <ResourceDictionary Source="/WPFStuff/TitDataGridTemplates.xaml" />
-                </ResourceDictionary.MergedDictionaries>
-
-                <!--#region Converters -->
-                <converters:DataGridWidthsToLeftMarginConverter x:Key="DataGridWidthsToLeftMarginConverter" />
-                <converters:DataGridLengthsToDoubleConverter x:Key="DataGridLengthsToDoubleConverter" />
-                <!--#endregion -->
-
-                <Style BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
-                    <Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush8}" />
-                    <Setter Property="AutoGenerateColumns" Value="False"/>
-                    <Setter Property="CanUserSortColumns" Value="False"/>
-                    <Setter Property="CanUserAddRows" Value="False"/>
-                    <Setter Property="CanUserDeleteRows" Value="False"/>
-                    <Setter Property="EnableRowVirtualization" Value="True"/>
-                    <Setter Property="EnableColumnVirtualization" Value="True"/>
-                    <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
-                    <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
-                    <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
-                </Style>
-            </ResourceDictionary>
-        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!--#region TitsGrid -->
         <!-- The DataGrid, which shows all saved Tits -->
-        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding DataContext.Tits, ElementName=Root}" RowStyle="{StaticResource DefaultRowStyle}" 
+        <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits, ElementName=Root}" RowStyle="{StaticResource DefaultRowStyle}" 
                   SelectionMode="Single" SelectionUnit="FullRow"
                   ScrollViewer.IsDeferredScrollingEnabled="True">
             <DataGrid.Columns>

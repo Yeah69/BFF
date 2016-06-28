@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using AlphaChiTech.Virtualization;
+using BFF.Model.Native;
 using BFF.Model.Native.Structure;
 
 namespace BFF.WPFStuff.UserControls
@@ -11,12 +12,21 @@ namespace BFF.WPFStuff.UserControls
     /// </summary>
     public partial class TitDataGrid
     {
-        public static readonly DependencyProperty TitsProperty = DependencyProperty.Register(
-            nameof(Tits), typeof(IEnumerable), typeof(TitDataGrid), new PropertyMetadata(default(IEnumerable)));
+        public static readonly DependencyProperty AccountProperty = DependencyProperty.Register(
+            nameof(Account), typeof(Account), typeof(TitDataGrid), new PropertyMetadata(default(Account)));
 
-        public IEnumerable Tits
+        public Account Account
         {
-            get { return (IEnumerable) GetValue(TitsProperty); }
+            get { return (Account) GetValue(AccountProperty); }
+            set { SetValue(AccountProperty, value); }
+        }
+
+        public static readonly DependencyProperty TitsProperty = DependencyProperty.Register(
+            nameof(Tits), typeof(VirtualizingObservableCollection<TitBase>), typeof(TitDataGrid), new PropertyMetadata(default(VirtualizingObservableCollection<TitBase>)));
+
+        public VirtualizingObservableCollection<TitBase> Tits
+        {
+            get { return (VirtualizingObservableCollection<TitBase>) GetValue(TitsProperty); }
             set { SetValue(TitsProperty, value); }
         }
 
