@@ -11,7 +11,7 @@
              xmlns:userControls="clr-namespace:BFF.WPFStuff.UserControls"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700"
-             Name="TitsView" DataContextChanged="AccountView_OnDataContextChanged">
+             Name="TitsView">
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:SumConverter x:Key="SumConverter" />
@@ -25,7 +25,12 @@
         <userControls:TitDataGrid Grid.Row="0" 
                                   Account="{Binding}" 
                                   Tits="{Binding Tits}" 
-                                  NewTits="{Binding NewTits}" />
+                                  NewTits="{Binding NewTits}"
+                                  NewTransactionCommand="{Binding NewTransactionCommand}"
+                                  NewIncomeCommand="{Binding NewIncomeCommand}"
+                                  NewTransferCommand="{Binding NewTransferCommand}"
+                                  NewParentTransactionCommand="{Binding NewParentTransactionCommand}"
+                                  NewParentIncomeCommand="{Binding NewParentIncomeCommand}"/>
         <!-- "Status bar" -->
         <StackPanel Grid.Row="1" 
                     Orientation="Horizontal">

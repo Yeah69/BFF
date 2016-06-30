@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Windows;
 using System.Windows.Input;
-using AlphaChiTech.Virtualization;
 using BFF.Model.Native;
-using BFF.Model.Native.Structure;
 
 namespace BFF.WPFStuff.UserControls
 {
@@ -26,12 +24,12 @@ namespace BFF.WPFStuff.UserControls
         }
 
         public static readonly DependencyProperty TitsProperty = DependencyProperty.Register(
-            nameof(Tits), typeof(VirtualizingObservableCollection<TitBase>), typeof(TitDataGrid),
-            new PropertyMetadata(default(VirtualizingObservableCollection<TitBase>)));
+            nameof(Tits), typeof(IEnumerable), typeof(TitDataGrid),
+            new PropertyMetadata(default(IEnumerable)));
 
-        public VirtualizingObservableCollection<TitBase> Tits
+        public IEnumerable Tits
         {
-            get { return (VirtualizingObservableCollection<TitBase>) GetValue(TitsProperty); }
+            get { return (IEnumerable) GetValue(TitsProperty); }
             set { SetValue(TitsProperty, value); }
         }
 
@@ -52,6 +50,51 @@ namespace BFF.WPFStuff.UserControls
         {
             get { return (ICommand) GetValue(NewTransactionCommandProperty); }
             set { SetValue(NewTransactionCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty NewIncomeCommandProperty = DependencyProperty.Register(
+            nameof(NewIncomeCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand)));
+
+        public ICommand NewIncomeCommand
+        {
+            get { return (ICommand) GetValue(NewIncomeCommandProperty); }
+            set { SetValue(NewIncomeCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty NewTransferCommandProperty = DependencyProperty.Register(
+            nameof(NewTransferCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand)));
+
+        public ICommand NewTransferCommand
+        {
+            get { return (ICommand) GetValue(NewTransferCommandProperty); }
+            set { SetValue(NewTransferCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty NewParentTransactionCommandProperty = DependencyProperty.Register(
+            nameof(NewParentTransactionCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand)));
+
+        public ICommand NewParentTransactionCommand
+        {
+            get { return (ICommand) GetValue(NewParentTransactionCommandProperty); }
+            set { SetValue(NewParentTransactionCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty NewParentIncomeCommandProperty = DependencyProperty.Register(
+            nameof(NewParentIncomeCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand)));
+
+        public ICommand NewParentIncomeCommand
+        {
+            get { return (ICommand) GetValue(NewParentIncomeCommandProperty); }
+            set { SetValue(NewParentIncomeCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty ApplyCommandProperty = DependencyProperty.Register(
+            nameof(ApplyCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand)));
+
+        public ICommand ApplyCommand
+        {
+            get { return (ICommand) GetValue(ApplyCommandProperty); }
+            set { SetValue(ApplyCommandProperty, value); }
         }
 
         #endregion
