@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using BFF.Model.Native;
 
@@ -43,8 +44,10 @@ namespace BFF.WPFStuff.UserControls
         }
 
         public static readonly DependencyProperty NewTransactionCommandProperty = DependencyProperty.Register(
-            nameof(NewTransactionCommand), typeof(ICommand), typeof(TitDataGrid),
-            new PropertyMetadata(default(ICommand)));
+            nameof(NewTransactionCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
+            {
+                ((TitDataGrid)o).NewTransactionVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+            }));
 
         public ICommand NewTransactionCommand
         {
@@ -53,7 +56,10 @@ namespace BFF.WPFStuff.UserControls
         }
 
         public static readonly DependencyProperty NewIncomeCommandProperty = DependencyProperty.Register(
-            nameof(NewIncomeCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand)));
+            nameof(NewIncomeCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand),(o, args) =>
+            {
+                ((TitDataGrid)o).NewIncomeVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+            }));
 
         public ICommand NewIncomeCommand
         {
@@ -62,7 +68,10 @@ namespace BFF.WPFStuff.UserControls
         }
 
         public static readonly DependencyProperty NewTransferCommandProperty = DependencyProperty.Register(
-            nameof(NewTransferCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand)));
+            nameof(NewTransferCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
+            {
+                ((TitDataGrid)o).NewTransferVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+            }));
 
         public ICommand NewTransferCommand
         {
@@ -71,7 +80,10 @@ namespace BFF.WPFStuff.UserControls
         }
 
         public static readonly DependencyProperty NewParentTransactionCommandProperty = DependencyProperty.Register(
-            nameof(NewParentTransactionCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand)));
+            nameof(NewParentTransactionCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
+            {
+                ((TitDataGrid)o).NewParentTransactionVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+            }));
 
         public ICommand NewParentTransactionCommand
         {
@@ -80,7 +92,10 @@ namespace BFF.WPFStuff.UserControls
         }
 
         public static readonly DependencyProperty NewParentIncomeCommandProperty = DependencyProperty.Register(
-            nameof(NewParentIncomeCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand)));
+            nameof(NewParentIncomeCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
+            {
+                ((TitDataGrid)o).NewParentIncomeVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+            }));
 
         public ICommand NewParentIncomeCommand
         {
@@ -89,12 +104,78 @@ namespace BFF.WPFStuff.UserControls
         }
 
         public static readonly DependencyProperty ApplyCommandProperty = DependencyProperty.Register(
-            nameof(ApplyCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand)));
+            nameof(ApplyCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
+            {
+                ((TitDataGrid)o).ApplyVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+            }));
 
         public ICommand ApplyCommand
         {
             get { return (ICommand) GetValue(ApplyCommandProperty); }
             set { SetValue(ApplyCommandProperty, value); }
+        }
+
+        private static readonly DependencyProperty NewTransactionVisibilityProperty = DependencyProperty.Register(
+            nameof(NewTransactionVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
+
+        private Visibility NewTransactionVisibility
+        {
+            get { return (Visibility) GetValue(NewTransactionVisibilityProperty); }
+            set { SetValue(NewTransactionVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty NewIncomeVisibilityProperty = DependencyProperty.Register(
+            nameof(NewIncomeVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
+
+        public Visibility NewIncomeVisibility
+        {
+            get { return (Visibility) GetValue(NewIncomeVisibilityProperty); }
+            set { SetValue(NewIncomeVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty NewTransferVisibilityProperty = DependencyProperty.Register(
+            nameof(NewTransferVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
+
+        public Visibility NewTransferVisibility
+        {
+            get { return (Visibility) GetValue(NewTransferVisibilityProperty); }
+            set { SetValue(NewTransferVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty NewParentTransactionVisibilityProperty = DependencyProperty.Register(
+            nameof(NewParentTransactionVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
+
+        public Visibility NewParentTransactionVisibility
+        {
+            get { return (Visibility) GetValue(NewParentTransactionVisibilityProperty); }
+            set { SetValue(NewParentTransactionVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty NewParentIncomeVisibilityProperty = DependencyProperty.Register(
+            nameof(NewParentIncomeVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
+
+        public Visibility NewParentIncomeVisibility
+        {
+            get { return (Visibility) GetValue(NewParentIncomeVisibilityProperty); }
+            set { SetValue(NewParentIncomeVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty ApplyVisibilityProperty = DependencyProperty.Register(
+            nameof(ApplyVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
+
+        public Visibility ApplyVisibility
+        {
+            get { return (Visibility) GetValue(ApplyVisibilityProperty); }
+            set { SetValue(ApplyVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowRowDetailsModeProperty = DependencyProperty.Register(
+            nameof(ShowRowDetailsMode), typeof(DataGridRowDetailsVisibilityMode), typeof(TitDataGrid), new PropertyMetadata(DataGridRowDetailsVisibilityMode.Collapsed));
+
+        public DataGridRowDetailsVisibilityMode ShowRowDetailsMode
+        {
+            get { return (DataGridRowDetailsVisibilityMode) GetValue(ShowRowDetailsModeProperty); }
+            set { SetValue(ShowRowDetailsModeProperty, value); }
         }
 
         #endregion
