@@ -55,6 +55,30 @@ namespace BFF.ViewModel
 
         private const double BorderOffset = 50.0;
 
+        private ParentTitViewModel _parentTitViewModel;
+
+        public ParentTitViewModel ParentTitViewModel
+        {
+            get { return _parentTitViewModel; }
+            set
+            {
+                _parentTitViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _parentTitFlyoutOpen;
+
+        public bool ParentTitFlyoutOpen
+        {
+            get { return _parentTitFlyoutOpen; }
+            set
+            {
+                _parentTitFlyoutOpen = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MainWindowViewModel(IBffOrm orm)
         {
             _orm = orm;
@@ -70,6 +94,12 @@ namespace BFF.ViewModel
                 X = 50.0;
                 Y = 50.0;
             }
+
+            Messenger.Default.Register<ParentTitViewModel>(this, parentTitViewModel =>
+            {
+                ParentTitViewModel = parentTitViewModel;
+                ParentTitFlyoutOpen = true;
+            });
         }
 
         protected void NewBudgetPlan()

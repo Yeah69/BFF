@@ -159,6 +159,7 @@
     <Compile Include="ViewModel\EmptyContentViewModel.cs" />
     <Compile Include="ViewModel\AccountTabsViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\ParentTitViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="WPFStuff\Behaviors\AdditionalTabItemsBehavior.cs" />
     <Compile Include="WPFStuff\Converters\BooleanToNullableBooleanConverter.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="WPFStuff\Converters\SumConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumColorMultiConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
+    <Compile Include="WPFStuff\Messenger.cs" />
     <Compile Include="WPFStuff\RelayCommand.cs" />
     <Compile Include="WPFStuff\UserControls\AccountTabsView.xaml.cs">
       <DependentUpon>AccountTabsView.xaml</DependentUpon>
@@ -183,6 +185,9 @@
       <DependentUpon>AccountView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WPFStuff\ObservableObject.cs" />
+    <Compile Include="WPFStuff\UserControls\TitDataGrid.xaml.cs">
+      <DependentUpon>TitDataGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPFStuff\ValidationRules\CurrencyLongRangeRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\NoEmptyFileNameRule.cs" />
     <Compile Include="WPFStuff\ValidationRules\NotExistingSavePathRule.cs" />
@@ -219,6 +224,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WPFStuff\UserControls\AccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFStuff\UserControls\TitDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
