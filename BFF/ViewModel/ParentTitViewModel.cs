@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BFF.Model.Native;
 using BFF.Model.Native.Structure;
 using BFF.WPFStuff;
 
@@ -31,11 +32,24 @@ namespace BFF.ViewModel
             }
         }
 
+        private Account _account;
+
+        public Account Account
+        {
+            get { return _account; }
+            set
+            {
+                _account = value;
+                OnPropertyChanged();
+            }
+        }
+
         public IList<TitNoTransfer> ParentTitSource => new List<TitNoTransfer> {ParentTit};
 
-        public ParentTitViewModel(TitNoTransfer parent, string title)
+        public ParentTitViewModel(TitNoTransfer parent, string title, Account account)
         {
             _title = title;
+            _account = account;
             _parentTit = parent;
         }
     }

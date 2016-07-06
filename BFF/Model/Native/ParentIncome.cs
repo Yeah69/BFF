@@ -119,7 +119,7 @@ namespace BFF.Model.Native
 
         public ICommand OpenParentTitView
         {
-            get { return new RelayCommand(param => Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69"))); }
+            get { return new RelayCommand(param => Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", param as Account))); }
         }
 
         [Write(false)]
