@@ -9,6 +9,7 @@ using BFF.Helper.Import;
 using BFF.Model.Native;
 using BFF.Properties;
 using BFF.WPFStuff;
+using NLog;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
@@ -16,6 +17,8 @@ namespace BFF.ViewModel
 {
     public class MainWindowViewModel : ObservableObject
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private readonly IBffOrm _orm;
         protected bool FileFlyoutIsOpen;
         protected string _title;
@@ -57,6 +60,7 @@ namespace BFF.ViewModel
 
         public MainWindowViewModel(IBffOrm orm)
         {
+            logger.Debug("Initializing …");
             _orm = orm;
             Reset();
 
@@ -70,6 +74,7 @@ namespace BFF.ViewModel
                 X = 50.0;
                 Y = 50.0;
             }
+            logger.Trace("Initializing done.");
         }
 
         protected void NewBudgetPlan()
