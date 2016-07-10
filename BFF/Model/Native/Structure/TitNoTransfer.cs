@@ -25,15 +25,14 @@ namespace BFF.Model.Native.Structure
             get { return _account; }
             set
             {
+                if(_account == value) return;
                 Account temp = _account;
                 _account = value;
-                Update();
+                if(Id != -1) Update();
+                temp?.RefreshTits();
+                _account?.RefreshBalance();
+                temp?.RefreshBalance();
                 OnPropertyChanged();
-                if (Id != -1 && temp != null && temp != _account)
-                {
-                    if (temp.Tits.Contains(this)) temp.Tits.Remove(this);
-                    if (!_account.Tits.Contains(this)) _account.Tits.Add(this);
-                }
             }
         }
 
@@ -43,7 +42,7 @@ namespace BFF.Model.Native.Structure
         public long AccountId
         {
             get { return Account?.Id ?? -1; }
-            set { Account = Database?.GetAccount(value); }
+            set { _account = Database?.GetAccount(value); }
         }
 
         /// <summary>
@@ -55,8 +54,9 @@ namespace BFF.Model.Native.Structure
             get { return _payee; }
             set
             {
+                if(_payee == value) return;
                 _payee = value;
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }
@@ -79,8 +79,9 @@ namespace BFF.Model.Native.Structure
             get { return _category; }
             set
             {
+                if(_category == value) return;
                 _category = value;
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }
@@ -94,7 +95,8 @@ namespace BFF.Model.Native.Structure
             set { Category = Database?.GetCategory(value ?? -1L); }
         }
 
-        public override long Sum {
+        public override long Sum
+        {
             get { return base.Sum; }
             set
             {
@@ -154,23 +156,9 @@ namespace BFF.Model.Native.Structure
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            Account.RefreshBalance();
-            for (int i = Account.Tits.Count - 1; i >= 0; i--)
-            {
-                if (Account.Tits[i].GetType() == GetType() && Account.Tits[i].Id == Id)
-                {
-                    Account.Tits.Remove(Account.Tits[i]);
-                    break;
-                }
-            }
-            for (int i = Account.allAccounts.Tits.Count - 1; i >= 0; i--)
-            {
-                if (Account.allAccounts.Tits[i].GetType() == GetType() && Account.allAccounts.Tits[i].Id == Id)
-                {
-                    Account.allAccounts.Tits.Remove(Account.allAccounts.Tits[i]);
-                    break;
-                }
-            }
+            Account.allAccounts?.RefreshTits();
+            Account?.RefreshTits();
+            Account?.RefreshBalance();
         });
 
         public override bool ValidToInsert()

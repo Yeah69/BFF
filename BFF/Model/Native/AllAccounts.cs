@@ -72,25 +72,25 @@ namespace BFF.Model.Native
         [Write(false)]
         public override ICommand NewTransactionCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Transaction(DateTime.Today) { Memo = "", Sum = 0L, Cleared = false, Account = null });
+            NewTits.Add(new Transaction(DateTime.Today, account: null, memo: "", sum: 0L, cleared: false));
         });
 
         [Write(false)]
         public override ICommand NewIncomeCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Income(DateTime.Today) { Memo = "", Sum = 0L, Cleared = false, Account = null });
+            NewTits.Add(new Income(DateTime.Today, account: null, memo: "", sum: 0L, cleared: false));
         });
 
         [Write(false)]
         public override ICommand NewParentTransactionCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new ParentTransaction(DateTime.Today) { Memo = "", Cleared = false, Account = null });
+            NewTits.Add(new ParentTransaction(DateTime.Today, account: null, memo: "", cleared: false));
         });
 
         [Write(false)]
         public override ICommand NewParentIncomeCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new ParentIncome(DateTime.Today) { Memo = "", Cleared = false, Account = null });
+            NewTits.Add(new ParentIncome(DateTime.Today, account: null, memo: "", cleared: false));
         });
 
         [Write(false)]

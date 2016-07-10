@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
+using BFF.ViewModel;
 using BFF.WPFStuff;
 using Dapper.Contrib.Extensions;
 using YNAB = BFF.Model.Conversion.YNAB;
@@ -121,6 +122,7 @@ namespace BFF.Model.Native
         }
 
         private readonly ObservableCollection<SubTransaction> _newSubElements = new ObservableCollection<SubTransaction>();
+        private ICommand _openParentTitView;
 
         /// <summary>
         /// New SubElements, which have to be edited before addition 
@@ -133,6 +135,12 @@ namespace BFF.Model.Native
                 return _newSubElements;
             }
             set { }
+        }
+
+        public ICommand OpenParentTitView
+        {
+            get { return new RelayCommand(param => 
+            Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", param as Account))); }
         }
 
         [Write(false)]

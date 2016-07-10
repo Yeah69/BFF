@@ -21,7 +21,7 @@ namespace BFF.Model.Native.Structure
             set
             {
                 _memo = value;
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }
@@ -35,7 +35,7 @@ namespace BFF.Model.Native.Structure
             set
             {
                 _sum = value; 
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }

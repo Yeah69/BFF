@@ -39,7 +39,7 @@ namespace BFF.Model.Native.Structure
             set
             {
                 _category = value;
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }
@@ -63,7 +63,7 @@ namespace BFF.Model.Native.Structure
             {
                 if(Parent != null) Parent.Sum -= _sum;
                 _sum = value;
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
                 if(Parent != null) Parent.Sum += _sum;
             }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using AlphaChiTech.Virtualization;
+using BFF.DB;
 using BFF.Helper;
 using BFF.Model.Native.Structure;
 using BFF.WPFStuff;
@@ -13,8 +15,10 @@ namespace BFF.Model.Native
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class Account : CommonProperty
+    public class Account : CommonProperty, IVirtualizedRefresh
     {
+        public Action RefreshDataGrid;
+
         public static AllAccounts allAccounts;
 
         private long _startingBalance;
@@ -28,7 +32,7 @@ namespace BFF.Model.Native
             set
             {
                 _startingBalance = value;
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
                 allAccounts?.RefreshStartingBalance();
             }
@@ -104,13 +108,29 @@ namespace BFF.Model.Native
 
         #region ViewModel_Part
 
-        private ObservableCollection<TitBase> _tits; 
+        private VirtualizingObservableCollection<TitBase> _tits;
+        private PaginationManager<TitBase> paginationManager;
 
         [Write(false)]
-        public ObservableCollection<TitBase> Tits => _tits ?? (_tits = new ObservableCollection<TitBase>());
+        public VirtualizingObservableCollection<TitBase> Tits => _tits ?? (_tits = new VirtualizingObservableCollection<TitBase>(paginationManager = new PaginationManager<TitBase>(new PagedTitBaseProviderAsync(Database, this))));
 
         [Write(false)]
         public ObservableCollection<TitBase> NewTits { get; set; } = new ObservableCollection<TitBase>();
+        
+        public void RefreshTits()
+        {
+            OnPreVirtualizedRefresh();
+            _tits = new VirtualizingObservableCollection<TitBase>(paginationManager = new PaginationManager<TitBase>(new PagedTitBaseProviderAsync(Database, this)));
+            OnPropertyChanged(nameof(Tits));
+            OnPostVirtualizedRefresh();
+            //paginationManager?.ResetWithoutResetEvent();
+            //Tits.OnCountTouched();
+            //RefreshDataGrid?.Invoke();
+            //Setting the PageSize will let it drop all pages
+            //if (paginationManager != null)
+            //   paginationManager.PageSize = paginationManager.PageSize;
+            //OnPropertyChanged(nameof(Tits));
+        }
 
         [Write(false)]
         public virtual long? Balance
@@ -134,31 +154,31 @@ namespace BFF.Model.Native
         [Write(false)]
         public virtual ICommand NewTransactionCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Transaction(DateTime.Today) { Memo = "", Sum = 0L, Cleared = false, Account = this });
+            NewTits.Add(new Transaction(DateTime.Today, account: this, memo: "", sum: 0L, cleared: false));
         });
 
         [Write(false)]
         public virtual ICommand NewIncomeCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Income(DateTime.Today) { Memo = "", Sum = 0L, Cleared = false, Account = this });
+            NewTits.Add(new Income(DateTime.Today, account: this, memo: "", sum: 0L, cleared: false));
         });
 
         [Write(false)]
         public ICommand NewTransferCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Transfer(DateTime.Today) { Memo = "", Sum = 0L, Cleared = false });
+            NewTits.Add(new Transfer(DateTime.Today, memo: "", sum: 0L, cleared: false));
         });
 
         [Write(false)]
         public virtual ICommand NewParentTransactionCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new ParentTransaction(DateTime.Today) { Memo = "", Cleared = false, Account = this });
+            NewTits.Add(new ParentTransaction(DateTime.Today, account: this, memo: "", cleared: false));
         });
 
         [Write(false)]
         public virtual ICommand NewParentIncomeCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new ParentIncome(DateTime.Today) { Memo = "", Cleared = false, Account = this });
+            NewTits.Add(new ParentIncome(DateTime.Today, account: this, memo: "", cleared: false));
         });
 
         [Write(false)]
@@ -195,22 +215,41 @@ namespace BFF.Model.Native
                     }
                     parentIncome.NewSubElements.Clear();
                 }
-                if(tit is TitNoTransfer && !accounts.Contains((tit as TitNoTransfer).Account))
+                if(tit is TitNoTransfer)
                     accounts.Add((tit as TitNoTransfer).Account);
                 if (tit is Transfer)
                 {
                     Transfer transfer = tit as Transfer;
-                    if(!accounts.Contains(transfer.FromAccount)) accounts.Add(transfer.FromAccount);
-                    if(!accounts.Contains(transfer.ToAccount)) accounts.Add(transfer.ToAccount);
+                    accounts.Add(transfer.FromAccount);
+                    accounts.Add(transfer.ToAccount);
                 }
             }
-            OnPropertyChanged(nameof(Tits));
+            allAccounts.RefreshTits();
             foreach(Account account in accounts)
+            {
+                account.RefreshTits();
                 account.RefreshBalance();
+            }
         }
 
         [Write(false)]
         public bool IsDateFormatLong => BffEnvironment.CultureProvider?.DateLong ?? false;
+
+        #endregion
+
+        #region Implementation of IVirtualizedRefresh
+
+        public event EventHandler PreVirtualizedRefresh;
+        public void OnPreVirtualizedRefresh()
+        {
+            PreVirtualizedRefresh?.Invoke(this, new EventArgs());
+        }
+
+        public event EventHandler PostVirtualizedRefresh;
+        public void OnPostVirtualizedRefresh()
+        {
+            PostVirtualizedRefresh?.Invoke(this, new EventArgs());
+        }
 
         #endregion
     }

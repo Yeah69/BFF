@@ -105,8 +105,7 @@ namespace BFF.Helper.Import
 
             //Third step: Create new database for imported data
             DataModelBase.Database = _orm; //turn on OR mapping
-            _orm.DbPath = savePath;
-            _orm.CreateNewDatabase();
+            _orm.CreateNewDatabase(savePath);
             _orm.PopulateDatabase(transactions, subTransactions, incomes, new List<Native.SubIncome>(), 
                 transfers, Native.Account.GetAllCache(), Native.Payee.GetAllCache(), Native.Category.GetAllCache());
         }

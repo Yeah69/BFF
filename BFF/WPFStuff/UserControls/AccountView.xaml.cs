@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using BFF.DB;
 using BFF.Helper;
+using BFF.Model.Native;
 
 namespace BFF.WPFStuff.UserControls
 {
@@ -16,8 +19,8 @@ namespace BFF.WPFStuff.UserControls
 
         private void RefreshDataGrids()
         {
-            TitGrid.Items.Refresh();
-            NewTitGrid.Items.Refresh();
+            //TitGrid.Items.Refresh(); //todo !!!
+            //NewTitGrid.Items.Refresh();
         }
 
         public void RefreshCurrencyVisuals()
@@ -30,11 +33,6 @@ namespace BFF.WPFStuff.UserControls
         public void RefreshDateVisuals()
         {
             RefreshDataGrids();
-        }
-
-        private void TitGrid_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            ((DataGrid) sender).Items.Refresh();
         }
     }
 }

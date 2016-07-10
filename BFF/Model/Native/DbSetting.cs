@@ -18,7 +18,7 @@ namespace BFF.Model.Native
             set
             {
                 CurrencyCultrureName = value.Name;
-                Update();
+                if(Id != -1) Update();
             }
         }
 
@@ -34,7 +34,7 @@ namespace BFF.Model.Native
             set
             {
                 DateCultureName = value.Name;
-                Update();
+                if(Id != -1) Update();
             }
         }
         

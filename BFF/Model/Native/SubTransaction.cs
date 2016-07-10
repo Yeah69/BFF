@@ -37,7 +37,7 @@ namespace BFF.Model.Native
                 if (value is Transaction)
                 {
                     _parent = value;
-                    Update();
+                    if(Id != -1) Update();
                     OnPropertyChanged();
                 }
                 else

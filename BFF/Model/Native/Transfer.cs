@@ -25,27 +25,23 @@ namespace BFF.Model.Native
             get { return _fromAccount; }
             set
             {
-                Account tempFrom = _fromAccount;
-                Account tempTo = _toAccount;
+                if(_fromAccount == value) return;
+                Account temp = _fromAccount;
                 if (_toAccount == value)
                 {
                     _toAccount = _fromAccount;
                     OnPropertyChanged(nameof(ToAccount));
+                    temp = null;
                 }
                 _fromAccount = value;
-                Update();
+                if(Id != -1) Update();
+                temp?.RefreshTits();
+                if(temp == null)
+                    _toAccount?.RefreshBalance();
+                else
+                    temp.RefreshBalance();
+                _fromAccount?.RefreshBalance();
                 OnPropertyChanged();
-                if(Id != -1)
-                {
-                    if (tempFrom != null && tempFrom != _fromAccount && tempFrom != _toAccount && tempFrom.Tits.Contains(this))
-                        tempFrom.Tits.Remove(this);
-                    if (tempTo != null && tempTo != _fromAccount && tempTo != _toAccount && tempTo.Tits.Contains(this))
-                        tempTo.Tits.Remove(this);
-                    if (_fromAccount != null && _fromAccount != tempFrom && _fromAccount != tempTo && !_fromAccount.Tits.Contains(this))
-                        _fromAccount.Tits.Add(this);
-                    if (_toAccount != null && _toAccount != tempFrom && _toAccount != tempTo && !_toAccount.Tits.Contains(this))
-                        _toAccount.Tits.Add(this);
-                }
             }
         }
 
@@ -55,7 +51,7 @@ namespace BFF.Model.Native
         public long FromAccountId
         {
             get { return FromAccount?.Id ?? -1; }
-            set { FromAccount = Database?.GetAccount(value); }
+            set { _fromAccount = Database?.GetAccount(value); }
         }
 
 
@@ -68,30 +64,23 @@ namespace BFF.Model.Native
             get { return _toAccount; }
             set
             {
-                Account tempFrom = _fromAccount;
-                Account tempTo = _toAccount;
+                if(_toAccount == value) return;
+                Account temp = _toAccount;
                 if (_fromAccount == value)
                 {
                     _fromAccount = _toAccount;
                     OnPropertyChanged(nameof(FromAccount));
+                    temp = null;
                 }
                 _toAccount = value;
-                Update();
+                if(Id != -1) Update();
+                temp?.RefreshTits();
+                if (temp == null)
+                    _fromAccount?.RefreshBalance();
+                else
+                    temp.RefreshBalance();
+                _toAccount?.RefreshBalance();
                 OnPropertyChanged();
-                if (Id != -1)
-                {
-                    if (tempFrom != null && tempFrom != _fromAccount && tempFrom != _toAccount &&
-                        tempFrom.Tits.Contains(this))
-                        tempFrom.Tits.Remove(this);
-                    if (tempTo != null && tempTo != _fromAccount && tempTo != _toAccount && tempTo.Tits.Contains(this))
-                        tempTo.Tits.Remove(this);
-                    if (_fromAccount != null && _fromAccount != tempFrom && _fromAccount != tempTo &&
-                        !_fromAccount.Tits.Contains(this))
-                        _fromAccount.Tits.Add(this);
-                    if (_toAccount != null && _toAccount != tempFrom && _toAccount != tempTo &&
-                        !_toAccount.Tits.Contains(this))
-                        _toAccount.Tits.Add(this);
-                }
             }
         }
 
@@ -101,7 +90,18 @@ namespace BFF.Model.Native
         public long ToAccountId
         {
             get { return ToAccount?.Id ?? -1; }
-            set { ToAccount = Database?.GetAccount(value); }
+            set { _toAccount = Database?.GetAccount(value); }
+        }
+
+        public override long Sum
+        {
+            get { return base.Sum; }
+            set
+            {
+                base.Sum = value;
+                _fromAccount?.RefreshBalance();
+                _toAccount?.RefreshBalance();
+            }
         }
 
         /// <summary>
@@ -183,6 +183,9 @@ namespace BFF.Model.Native
         protected override void UpdateToDb()
         {
             Database?.Update(this);
+            Account.allAccounts?.RefreshTits();
+            FromAccount?.RefreshTits();
+            ToAccount?.RefreshTits();
         }
 
         protected override void DeleteFromDb()
@@ -194,32 +197,11 @@ namespace BFF.Model.Native
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
+            Account.allAccounts.RefreshTits();
+            FromAccount.RefreshTits();
+            ToAccount.RefreshTits();
             FromAccount.RefreshBalance();
             ToAccount.RefreshBalance();
-            for (int i = FromAccount.Tits.Count - 1; i >= 0; i--)
-            {
-                if (FromAccount.Tits[i].GetType() == GetType() && FromAccount.Tits[i].Id == Id)
-                {
-                    FromAccount.Tits.Remove(FromAccount.Tits[i]);
-                    break;
-                }
-            }
-            for (int i = ToAccount.Tits.Count - 1; i >= 0; i--)
-            {
-                if (ToAccount.Tits[i].GetType() == GetType() && ToAccount.Tits[i].Id == Id)
-                {
-                    ToAccount.Tits.Remove(ToAccount.Tits[i]);
-                    break;
-                }
-            }
-            for (int i = Account.allAccounts.Tits.Count - 1; i >= 0; i--)
-            {
-                if (Account.allAccounts.Tits[i].GetType() == GetType() && Account.allAccounts.Tits[i].Id == Id)
-                {
-                    Account.allAccounts.Tits.Remove(Account.allAccounts.Tits[i]);
-                    break;
-                }
-            }
         });
     }
 }

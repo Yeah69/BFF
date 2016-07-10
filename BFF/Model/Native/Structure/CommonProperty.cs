@@ -16,7 +16,7 @@
             set
             {
                 _name = value; 
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }

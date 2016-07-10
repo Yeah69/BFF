@@ -58,6 +58,30 @@ namespace BFF.ViewModel
 
         private const double BorderOffset = 50.0;
 
+        private ParentTitViewModel _parentTitViewModel;
+
+        public ParentTitViewModel ParentTitViewModel
+        {
+            get { return _parentTitViewModel; }
+            set
+            {
+                _parentTitViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _parentTitFlyoutOpen;
+
+        public bool ParentTitFlyoutOpen
+        {
+            get { return _parentTitFlyoutOpen; }
+            set
+            {
+                _parentTitFlyoutOpen = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MainWindowViewModel(IBffOrm orm)
         {
             logger.Debug("Initializing …");
@@ -74,6 +98,12 @@ namespace BFF.ViewModel
                 X = 50.0;
                 Y = 50.0;
             }
+
+            Messenger.Default.Register<ParentTitViewModel>(this, parentTitViewModel =>
+            {
+                ParentTitViewModel = parentTitViewModel;
+                ParentTitFlyoutOpen = true;
+            });
             logger.Trace("Initializing done.");
         }
 
@@ -87,8 +117,7 @@ namespace BFF.ViewModel
             };
             if (saveFileDialog.ShowDialog() == true)
             {
-                _orm.DbPath = saveFileDialog.FileName;
-                _orm.CreateNewDatabase();
+                _orm.CreateNewDatabase(saveFileDialog.FileName);
                 Reset();
             }
         }
@@ -121,14 +150,12 @@ namespace BFF.ViewModel
             {
                 ResetCultures();
                 ContentViewModel.Refresh();
-                _orm.Reset();
                 Title = $"{new FileInfo(_orm.DbPath).Name} - BFF";
             }
             else if (File.Exists(_orm.DbPath) && !(ContentViewModel is AccountTabsViewModel))
             {
                 ResetCultures();
                 ContentViewModel = new AccountTabsViewModel(_orm);
-                _orm.Reset();
                 Title = $"{new FileInfo(_orm.DbPath).Name} - BFF";
             }
             else

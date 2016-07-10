@@ -27,7 +27,7 @@ namespace BFF.Model.Native
             set
             {
                 _parent = value;
-                Update();
+                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }
