@@ -13,12 +13,15 @@ using BFF.Model.Native.Structure;
 using BFF.Properties;
 using Dapper;
 using Dapper.Contrib.Extensions;
+using NLog;
 
 namespace BFF.DB.SQLite
 {
 
     class SqLiteBffOrm : IBffOrm
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         protected SQLiteConnection Cnn = new SQLiteConnection();
 
         public string DbPath {
@@ -29,6 +32,7 @@ namespace BFF.DB.SQLite
                 Settings.Default.Save();
                 Reset();
                 DbPathChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DbPath)));
+                Logger.Trace("Database path changed to: {0}.", value);
             }
         }
 
@@ -36,6 +40,7 @@ namespace BFF.DB.SQLite
 
         public void CreateNewDatabase(string dbPath)
         {
+            Logger.Info("Creating a new Database with the path: {0}.", dbPath);
             if (File.Exists(dbPath)) //todo: This will make problems
                 File.Delete(dbPath);
             SQLiteConnection.CreateFile(dbPath);
@@ -70,6 +75,7 @@ namespace BFF.DB.SQLite
         public void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
             IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories)
         {
+            Logger.Info("Populating the current database.");
             _dbLockFlag = true;
             using (var transactionScope = new DbTransactions.TransactionScope(DbTransactions.TransactionScopeOption.RequiresNew, new DbTransactions.TransactionOptions {IsolationLevel = DbTransactions.IsolationLevel.RepeatableRead}))
             {
@@ -103,6 +109,7 @@ namespace BFF.DB.SQLite
 
         public IEnumerable<TitBase> GetAllTits(DateTime startDate, DateTime endDate, Account account = null)
         {
+            Logger.Debug("Getting all TITs from {0} between {1} and {2}.", account?.Name ?? "AllAccounts", startDate, endDate);
             _dbLockFlag = true;
             IEnumerable<TitBase> results;
 
@@ -131,6 +138,7 @@ namespace BFF.DB.SQLite
 
         public long? GetAccountBalance(Account account = null)
         {
+            Logger.Debug("Getting account balance from {0}.", account?.Name ?? "AllAccounts");
             long ret;
 
             using (var transactionScope = new DbTransactions.TransactionScope())
@@ -155,6 +163,7 @@ namespace BFF.DB.SQLite
 
         public IEnumerable<T> GetSubTransInc<T>(long parentId) where T : SubTitBase
         {
+            Logger.Debug("Getting SubTransactions/SubIncomes from table {0} with the ParentId {1}.", typeof(T).Name, parentId);
             IEnumerable<T> ret;
             using (var transactionScope = new DbTransactions.TransactionScope())
             {
@@ -168,6 +177,7 @@ namespace BFF.DB.SQLite
 
         public IEnumerable<T> GetAll<T>() where T : DataModelBase
         {
+            Logger.Debug("Getting all entries from table {0}.", typeof(T).Name);
             if (!_dbLockFlag)
             {
                 IEnumerable<T> ret;
@@ -183,6 +193,7 @@ namespace BFF.DB.SQLite
 
         public long Insert<T>(T dataModelBase) where T : DataModelBase
         {
+            Logger.Debug("Insert an entry into table {0}.", typeof(T).Name);
             long ret = -1L;
             if (!_dbLockFlag)
             {
@@ -250,6 +261,7 @@ namespace BFF.DB.SQLite
 
         public void Delete<T>(T dataModelBase) where T : DataModelBase
         {
+            Logger.Debug("Delete an entry from table {0}.", typeof(T).Name);
             if (!_dbLockFlag)
             {
                 using (var transactionScope = new DbTransactions.TransactionScope())
@@ -292,10 +304,7 @@ namespace BFF.DB.SQLite
             switch (type)
             {
                 case TitType.Transaction:
-                    if (categoryId != null)
-                        ret = new Transaction((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (long)categoryId, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
-                    else
-                        ret = new ParentTransaction((long)objArr[0], (long)objArr[1], date, (long)objArr[2], categoryId ?? -1, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
+                    ret = categoryId != null ? new Transaction((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (long)categoryId, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1) : new ParentTransaction((long)objArr[0], (long)objArr[1], date, (long)objArr[2], categoryId ?? -1, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
                     break;
                 case TitType.Income:
                     if(categoryId != null)
@@ -325,7 +334,8 @@ namespace BFF.DB.SQLite
 
         public void Reset()
         {
-            if(Cnn.State != ConnectionState.Closed)
+            Logger.Debug("Reset the database.");
+            if (Cnn.State != ConnectionState.Closed)
                 Cnn.Close();
             AllAccounts.Clear();
             AllPayees.Clear();
@@ -398,6 +408,7 @@ namespace BFF.DB.SQLite
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
         {
+            Logger.Debug("Getting a page of entries from table {0} of page size {1} by offsett {2}.", typeof(T).Name, pageSize, offset);
             _dbLockFlag = true;
             IEnumerable<T> ret;
             using (var cnnTransaction = new DbTransactions.TransactionScope())
@@ -429,6 +440,7 @@ namespace BFF.DB.SQLite
 
         public int GetCount<T>(object specifyingObject = null)
         {
+            Logger.Debug("Getting the count of table {0}.", typeof(T).Name);
             int ret;
             string query;
             if(typeof(T) != typeof(TitBase))

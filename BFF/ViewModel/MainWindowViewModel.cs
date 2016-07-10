@@ -17,7 +17,7 @@ namespace BFF.ViewModel
 {
     public class MainWindowViewModel : ObservableObject
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IBffOrm _orm;
         protected bool FileFlyoutIsOpen;
@@ -84,7 +84,7 @@ namespace BFF.ViewModel
 
         public MainWindowViewModel(IBffOrm orm)
         {
-            logger.Debug("Initializing …");
+            Logger.Debug("Initializing …");
             _orm = orm;
             Reset();
 
@@ -104,7 +104,7 @@ namespace BFF.ViewModel
                 ParentTitViewModel = parentTitViewModel;
                 ParentTitFlyoutOpen = true;
             });
-            logger.Trace("Initializing done.");
+            Logger.Trace("Initializing done.");
         }
 
         protected void NewBudgetPlan()

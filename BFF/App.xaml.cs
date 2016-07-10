@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Threading;
 using BFF.DB;
 using BFF.DB.SQLite;
@@ -7,6 +8,7 @@ using BFF.Model.Native;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using NLog;
 
 namespace BFF
 {
@@ -15,8 +17,11 @@ namespace BFF
     /// </summary>
     public partial class App
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public App()
         {
+            Logger.Trace("Initializing App");
             InitializeComponent();
             new AllAccounts(); //todo: Find more elegant way
             IBffOrm orm = new SqLiteBffOrm();
@@ -31,6 +36,7 @@ namespace BFF
             Accent initialAccent = ThemeManager.GetAccent(BFF.Properties.Settings.Default.MahApps_Accent);
             AppTheme initialAppTheme = ThemeManager.GetAppTheme(BFF.Properties.Settings.Default.MahApps_AppTheme);
             ThemeManager.ChangeAppStyle(Current, initialAccent, initialAppTheme);
+            Logger.Info("BFF started. (Version: {0})", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
         }
 
         /// <summary>
@@ -40,6 +46,8 @@ namespace BFF
         /// <param name="e"></param>
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
+
+            Logger.Fatal(e.Exception, "An unhandled error occured!");
             var mySettings = new MetroDialogSettings { AffirmativeButtonText = "Okay" };
             //(MainWindow as MetroWindow).ShowMessageAsync("An unhandled error occured!", $"Error message:\r\n{e.Exception.Message}\r\nStackTrace:\r\n{e.Exception.StackTrace}", MessageDialogStyle.Affirmative, mySettings);
             (MainWindow as MetroWindow).ShowMessageAsync("An unhandled error occured!", $"Error message:\r\n{e.Exception.Message}", MessageDialogStyle.Affirmative, mySettings);
