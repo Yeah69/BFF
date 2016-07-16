@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows.Controls;
-using BFF.Helper;
+using BFF.Properties;
 
 namespace BFF.WPFStuff.ValidationRules
 {
@@ -9,7 +9,7 @@ namespace BFF.WPFStuff.ValidationRules
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             bool validate = value != null;
-            return new ValidationResult(validate, validate ? null : (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("ValidationRule_NoNull", null, BffEnvironment.CultureProvider.LanguageCulture));
+            return new ValidationResult(validate, validate ? null : (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("ValidationRule_NoNull", null, Settings.Default.Culture_DefaultLanguage));
             // The "Invalid"-Message is only relevant if validate is false
         }
     }

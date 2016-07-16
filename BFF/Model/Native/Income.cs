@@ -8,7 +8,7 @@ namespace BFF.Model.Native
     /// <summary>
     /// The Income documents earned money
     /// </summary>
-    public class Income : TitNoTransfer
+    public class Income : TitNoTransfer, ITransInc
     {
         /// <summary>
         /// Initializes the object

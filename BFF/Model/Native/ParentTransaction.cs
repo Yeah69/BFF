@@ -15,7 +15,7 @@ namespace BFF.Model.Native
     /// <summary>
     /// A Transaction, which is split into several SubTransactions
     /// </summary>
-    public class ParentTransaction : Transaction, IParentTitNoTransfer<SubTransaction>
+    public class ParentTransaction : Transaction, IParentTransInc<SubTransaction>
     {
         private ObservableCollection<SubTransaction> _subElements;
 

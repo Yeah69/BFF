@@ -9,7 +9,7 @@ namespace BFF.Model.Native
     /// <summary>
     /// A SubElement of a Transaction
     /// </summary>
-    public class SubTransaction : SubTitBase
+    public class SubTransaction : SubTitBase, ISubTransInc
     {
         private TitNoTransfer _parent;
 

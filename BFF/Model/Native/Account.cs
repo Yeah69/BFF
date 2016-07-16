@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using AlphaChiTech.Virtualization;
 using BFF.DB;
-using BFF.Helper;
 using BFF.Model.Native.Structure;
+using BFF.Properties;
 using BFF.WPFStuff;
 using Dapper.Contrib.Extensions;
 
@@ -59,6 +60,29 @@ namespace BFF.Model.Native
 
             if (id > 0L) Id = id;
             if (_startingBalance == 0L) _startingBalance = startingBalance;
+
+            Messenger.Default.Register<CutlureMessage>(this, message =>
+            {
+                switch(message)
+                {
+                    case CutlureMessage.Refresh:
+                        OnPropertyChanged(nameof(StartingBalance));
+                        OnPropertyChanged(nameof(Balance));
+                        RefreshTits();
+                        break;
+                    case CutlureMessage.RefreshCurrency:
+                        OnPropertyChanged(nameof(StartingBalance));
+                        OnPropertyChanged(nameof(Balance));
+                        RefreshTits();
+                        break;
+                    case CutlureMessage.RefreshDate:
+                        RefreshTits();
+                        break;
+                    default:
+                        throw new InvalidEnumArgumentException();
+
+                }
+            });
 
             ConstrDbLock = false;
         }
@@ -195,9 +219,9 @@ namespace BFF.Model.Native
             {
                 tit.Insert();
                 NewTits.Remove(tit);
-                if (tit is IParentTitNoTransfer<SubTransaction>)
+                if (tit is IParentTransInc<SubTransaction>)
                 {
-                    IParentTitNoTransfer<SubTransaction> parentTransaction = tit as IParentTitNoTransfer<SubTransaction>;
+                    IParentTransInc<SubTransaction> parentTransaction = tit as IParentTransInc<SubTransaction>;
                     foreach (SubTransaction subTransaction in parentTransaction.NewSubElements)
                     {
                         subTransaction.Insert();
@@ -205,9 +229,9 @@ namespace BFF.Model.Native
                     }
                     parentTransaction.NewSubElements.Clear();
                 }
-                if (tit is IParentTitNoTransfer<SubIncome>)
+                if (tit is IParentTransInc<SubIncome>)
                 {
-                    IParentTitNoTransfer<SubIncome> parentIncome = tit as IParentTitNoTransfer<SubIncome>;
+                    IParentTransInc<SubIncome> parentIncome = tit as IParentTransInc<SubIncome>;
                     foreach (SubIncome subIncome in parentIncome.NewSubElements)
                     {
                         subIncome.Insert();
@@ -233,7 +257,7 @@ namespace BFF.Model.Native
         }
 
         [Write(false)]
-        public bool IsDateFormatLong => BffEnvironment.CultureProvider?.DateLong ?? false;
+        public bool IsDateFormatLong => Settings.Default.Culture_DefaultDateLong;
 
         #endregion
 

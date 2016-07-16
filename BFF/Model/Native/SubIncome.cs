@@ -7,7 +7,7 @@ namespace BFF.Model.Native
     /// <summary>
     /// A SubElement of an Income
     /// </summary>
-    public class SubIncome : SubTitBase
+    public class SubIncome : SubTitBase, ISubTransInc
     {
         private TitNoTransfer _parent;
 

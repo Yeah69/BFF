@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
 using System.Globalization;
@@ -10,7 +9,6 @@ using System.Linq;
 using DbTransactions = System.Transactions;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
-using BFF.Properties;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using NLog;
@@ -24,21 +22,11 @@ namespace BFF.DB.SQLite
 
         protected SQLiteConnection Cnn = new SQLiteConnection();
 
-        public string DbPath {
-            get { return Settings.Default.DBLocation; }
-            set
-            {
-                Settings.Default.DBLocation = value;
-                Settings.Default.Save();
-                Reset();
-                DbPathChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DbPath)));
-                Logger.Trace("Database path changed to: {0}.", value);
-            }
-        }
+        private readonly string _dbPath;
 
-        public event PropertyChangedEventHandler DbPathChanged;
+        public string DbPath => _dbPath;
 
-        public void CreateNewDatabase(string dbPath)
+        public static void CreateNewDatabase(string dbPath)
         {
             Logger.Info("Creating a new Database with the path: {0}.", dbPath);
             if (File.Exists(dbPath)) //todo: This will make problems
@@ -69,7 +57,6 @@ namespace BFF.DB.SQLite
                 }
                 cnn.Close();
             }
-            DbPath = dbPath;
         }
 
         public void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
@@ -298,7 +285,7 @@ namespace BFF.DB.SQLite
                 !DateTime.TryParseExact((string)objArr[4], "yyyy-MM-dd HH:mm:ss", null, DateTimeStyles.None,
                     out date))
                 throw new InvalidCastException();
-            // todo: Maybe find out why in some cases the date is pre-casted to DateTime and in others it is still a string
+            // todo: Maybe find out why in some cases the date is pre-casted to Date and in others it is still a string
             long? categoryId = (long?) objArr[3];
             TitBase ret;
             switch (type)
@@ -322,19 +309,9 @@ namespace BFF.DB.SQLite
             return ret;
         };
 
-        public SqLiteBffOrm()
+        public SqLiteBffOrm(string dbPath)
         {
-            DataModelBase.Database = this;
-            if(File.Exists(DbPath)) Reset();
-        }
-
-        public ObservableCollection<Account> AllAccounts { get; } = new ObservableCollection<Account>();
-        public ObservableCollection<Payee> AllPayees { get; } = new ObservableCollection<Payee>();
-        public ObservableCollection<Category> AllCategories { get; } = new ObservableCollection<Category>(); 
-
-        public void Reset()
-        {
-            Logger.Debug("Reset the database.");
+            _dbPath = dbPath;
             if (Cnn.State != ConnectionState.Closed)
                 Cnn.Close();
             AllAccounts.Clear();
@@ -346,11 +323,24 @@ namespace BFF.DB.SQLite
                 Cnn.Open();
                 InitializePeripherie();
 
-                Account.allAccounts?.RefreshStartingBalance(); //todo: Rather use the DbPathChanged event in AllAccounts
+                Account.allAccounts?.RefreshStartingBalance();
                 Account.allAccounts?.RefreshBalance();
             }
             Account.allAccounts?.RefreshTits();
             Account.allAccounts?.RefreshTits();
+
+            //Old
+            DataModelBase.Database = this;
+            if(File.Exists(DbPath)) Reset();
+        }
+
+        public ObservableCollection<Account> AllAccounts { get; } = new ObservableCollection<Account>();
+        public ObservableCollection<Payee> AllPayees { get; } = new ObservableCollection<Payee>();
+        public ObservableCollection<Category> AllCategories { get; } = new ObservableCollection<Category>(); 
+
+        public void Reset()
+        {
+            
         }
 
         private void InitializePeripherie()

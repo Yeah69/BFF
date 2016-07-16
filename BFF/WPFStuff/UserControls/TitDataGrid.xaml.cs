@@ -204,7 +204,7 @@ namespace BFF.WPFStuff.UserControls
             }
         }
 
-        private int _previousPosition = 0;
+        private int _previousPosition;
 
         private void PreVirtualizedRefresh(object sender, EventArgs args)
         {

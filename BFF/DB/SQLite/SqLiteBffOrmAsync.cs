@@ -112,5 +112,7 @@ namespace BFF.DB.SQLite
         }
 
         #endregion
+
+        public SqLiteBffOrmAsync(string dbPath) : base(dbPath) {}
     }
 }

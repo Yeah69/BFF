@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace BFF.Model.Native.Structure
 {
-    interface IParentTitNoTransfer<T> where T : SubTitBase
+    interface IParentTransInc<T> : ITransInc where T : ISubTransInc 
     {
         ObservableCollection<T> SubElements { get; }
         ObservableCollection<T> NewSubElements { get; }

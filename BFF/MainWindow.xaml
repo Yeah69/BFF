@@ -55,7 +55,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <Label Content="{lex:Loc MainWindow_Settings_Language}"/>
-                    <ComboBox Name="LanguageCombo" SelectionChanged="LanguageCombo_SelectionChanged">
+                    <ComboBox Name="LanguageCombo" SelectedItem="{Binding LanguageCulture, Mode=TwoWay}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="globalization:CultureInfo">
                                 <StackPanel Orientation="Horizontal">
@@ -66,7 +66,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <Label Content="{lex:Loc MainWindow_Settings_Currency}"/>
-                    <ComboBox Name="CurrencyCombo" SelectedItem="{Binding CurrencyCulture, Mode=OneWay}" SelectionChanged="CurrencyCombo_OnSelectionChanged" Style="{StaticResource VirtualisedMetroComboBox}">
+                    <ComboBox Name="CurrencyCombo" SelectedItem="{Binding CurrencyCulture, Mode=TwoWay}" Style="{StaticResource VirtualisedMetroComboBox}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="globalization:CultureInfo">
                                 <Grid>
@@ -90,7 +90,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <Label Content="{lex:Loc MainWindow_Settings_Date}" />
-                    <ComboBox Name="DateCombo" SelectedItem="{Binding DateCulture, Mode=OneWay}" SelectionChanged="DateCombo_OnSelectionChanged" Style="{StaticResource VirtualisedMetroComboBox}">
+                    <ComboBox Name="DateCombo" SelectedItem="{Binding DateCulture, Mode=TwoWay}" Style="{StaticResource VirtualisedMetroComboBox}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="globalization:CultureInfo">
                                 <Grid>
@@ -115,9 +115,7 @@
                     </ComboBox>
                     <CheckBox Content="{lex:Loc MainWindow_Settings_Date_Long_Inverted}" Margin="5" 
                                 FlowDirection="RightToLeft" HorizontalAlignment="Right"
-                                IsChecked="{Binding DateLong, Mode=TwoWay, Converter={StaticResource BooleanToNullableBooleanConverter}}"
-                                Checked="ToggleButton_OnChecked"
-                                Unchecked="ToggleButton_OnChecked"/>
+                                IsChecked="{Binding DateLong, Mode=TwoWay, Converter={StaticResource BooleanToNullableBooleanConverter}}"/>
                 </StackPanel>
             </controls:Flyout>
             <controls:Flyout Name="FileFlyout" Header="{lex:Loc MainWindow_File}" Position="Left">

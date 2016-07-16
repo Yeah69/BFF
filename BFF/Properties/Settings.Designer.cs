@@ -49,18 +49,6 @@ namespace BFF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("en-US")]
-        public string Localization_Language {
-            get {
-                return ((string)(this["Localization_Language"]));
-            }
-            set {
-                this["Localization_Language"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("C:\\")]
         public string DBLocation {
             get {
@@ -104,18 +92,6 @@ namespace BFF.Properties {
             }
             set {
                 this["Import_SavePath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Localization_Date_Long {
-            get {
-                return ((bool)(this["Localization_Date_Long"]));
-            }
-            set {
-                this["Localization_Date_Long"] = value;
             }
         }
         
@@ -176,6 +152,78 @@ namespace BFF.Properties {
             }
             set {
                 this["MainWindow_WindowState"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("en-US")]
+        public global::System.Globalization.CultureInfo Culture_DefaultLanguage {
+            get {
+                return ((global::System.Globalization.CultureInfo)(this["Culture_DefaultLanguage"]));
+            }
+            set {
+                this["Culture_DefaultLanguage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("de-DE")]
+        public global::System.Globalization.CultureInfo Culture_DefaultCurrency {
+            get {
+                return ((global::System.Globalization.CultureInfo)(this["Culture_DefaultCurrency"]));
+            }
+            set {
+                this["Culture_DefaultCurrency"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("de-DE")]
+        public global::System.Globalization.CultureInfo Culture_DefaultDate {
+            get {
+                return ((global::System.Globalization.CultureInfo)(this["Culture_DefaultDate"]));
+            }
+            set {
+                this["Culture_DefaultDate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("de-DE")]
+        public global::System.Globalization.CultureInfo Culture_SessionCurrency {
+            get {
+                return ((global::System.Globalization.CultureInfo)(this["Culture_SessionCurrency"]));
+            }
+            set {
+                this["Culture_SessionCurrency"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("de-DE")]
+        public global::System.Globalization.CultureInfo Culture_SessionDate {
+            get {
+                return ((global::System.Globalization.CultureInfo)(this["Culture_SessionDate"]));
+            }
+            set {
+                this["Culture_SessionDate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Culture_DefaultDateLong {
+            get {
+                return ((bool)(this["Culture_DefaultDateLong"]));
+            }
+            set {
+                this["Culture_DefaultDateLong"] = value;
             }
         }
     }

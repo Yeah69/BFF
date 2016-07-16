@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 using BFF.Helper;
+using BFF.Properties;
 
 namespace BFF.WPFStuff.Converters
 {
@@ -11,8 +12,8 @@ namespace BFF.WPFStuff.Converters
         {
             //Transfer is in FromAccount
             if (values[0] == values[1])
-                return (-1 * (long) values[2]).AsCurrency(BffEnvironment.CultureProvider.CurrencyCulture);
-            return  ((long)values[2]).AsCurrency(BffEnvironment.CultureProvider.CurrencyCulture);
+                return (-1 * (long) values[2]).AsCurrency(Settings.Default.Culture_SessionCurrency);
+            return  ((long)values[2]).AsCurrency(Settings.Default.Culture_SessionCurrency);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)

@@ -138,18 +138,14 @@
     </ApplicationDefinition>
     <Compile Include="DB\IBffOrmAsync.cs" />
     <Compile Include="DB\IBffOrm.cs" />
+    <Compile Include="DB\ITitViewModelOrm.cs" />
     <Compile Include="DB\IVirtualizedRefresh.cs" />
     <Compile Include="DB\SQLite\SqLiteBffOrmAsync.cs" />
     <Compile Include="DB\SQLite\SqLiteBffOrm.cs" />
     <Compile Include="DB\SQLite\SqLiteQueries.cs" />
     <Compile Include="DB\PagedTitBaseProvider.cs" />
-    <Compile Include="Helper\BffCultureProvider.cs" />
-    <Compile Include="Helper\BffEnvironment.cs" />
-    <Compile Include="Helper\IBffCultureProvider.cs" />
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />
-    <Compile Include="Helper\IRefreshDateVisuals.cs" />
-    <Compile Include="Helper\IRefreshCurrencyVisuals.cs" />
     <Compile Include="Helper\Output.cs" />
     <Compile Include="Model\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="Model\Conversion\YNAB\Transaction.cs" />
@@ -158,6 +154,8 @@
     <Compile Include="Model\Native\Category.cs" />
     <Compile Include="Model\Native\Budget.cs" />
     <Compile Include="Model\Native\DbSetting.cs" />
+    <Compile Include="Model\Native\ISubTransInc.cs" />
+    <Compile Include="Model\Native\ITransInc.cs" />
     <Compile Include="Model\Native\ParentIncome.cs" />
     <Compile Include="Model\Native\Payee.cs" />
     <Compile Include="Model\Native\Structure\CommonProperty.cs" />
@@ -174,12 +172,17 @@
     <Compile Include="Model\Native\TitBasePlaceholder.cs" />
     <Compile Include="Model\Native\Transfer.cs" />
     <Compile Include="Model\Native\Transaction.cs" />
+    <Compile Include="ViewModel\ForModels\ParentTransIncViewModel.cs" />
+    <Compile Include="ViewModel\ForModels\TitViewModelBase.cs" />
+    <Compile Include="ViewModel\ForModels\SubTransIncViewModel.cs" />
+    <Compile Include="ViewModel\ForModels\TransferViewModel.cs" />
+    <Compile Include="ViewModel\ForModels\TransIncViewModel.cs" />
     <Compile Include="ViewModel\ImportDialogViewModel.cs" />
     <Compile Include="ViewModel\EmptyContentViewModel.cs" />
     <Compile Include="ViewModel\AccountTabsViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ParentTitViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="ViewModel\SessionViewModelBase.cs" />
     <Compile Include="WPFStuff\Behaviors\AdditionalTabItemsBehavior.cs" />
     <Compile Include="WPFStuff\Converters\BooleanToNullableBooleanConverter.cs" />
     <Compile Include="WPFStuff\Converters\DateToStringConverter.cs" />
@@ -192,6 +195,7 @@
     <Compile Include="WPFStuff\Converters\SumConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumColorMultiConverter.cs" />
     <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
+    <Compile Include="WPFStuff\Messages.cs" />
     <Compile Include="WPFStuff\Messenger.cs" />
     <Compile Include="WPFStuff\RelayCommand.cs" />
     <Compile Include="WPFStuff\UserControls\AccountTabsView.xaml.cs">
@@ -265,15 +269,21 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.hu-HU.resx" />
-    <EmbeddedResource Include="Properties\Resources.de-DE.resx" />
+    <EmbeddedResource Include="Properties\Resources.hu-HU.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.de-DE.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.en-US.resx">
       <LastGenOutput>Res.us.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>

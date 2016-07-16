@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 using BFF.Helper;
+using BFF.Properties;
 
 namespace BFF.WPFStuff.Converters
 {
@@ -11,12 +12,12 @@ namespace BFF.WPFStuff.Converters
         {
             if (value == null) return "";
             long sum = (long)value;
-            return sum.AsCurrency(BffEnvironment.CultureProvider.CurrencyCulture);
+            return sum.AsCurrency(Settings.Default.Culture_SessionCurrency);
         }
 
         public object ConvertBack(object value, Type targetTypes, object parameter, CultureInfo culture)
         {
-            return ((string) value).CurrencyAsLong(BffEnvironment.CultureProvider.CurrencyCulture);
+            return ((string) value).CurrencyAsLong(Settings.Default.Culture_SessionCurrency);
         }
     }
 }

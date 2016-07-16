@@ -8,7 +8,7 @@ namespace BFF.Model.Native
     /// <summary>
     /// The Transaction documents payment to or from externals
     /// </summary>
-    public class Transaction : TitNoTransfer
+    public class Transaction : TitNoTransfer, ITransInc
     {
         /// <summary>
         /// Initializes the object

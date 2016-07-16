@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
@@ -9,8 +8,7 @@ namespace BFF.DB
 {
     public interface IBffOrmAsync : ICrudOrmAsync, IPeripheryProvider, IPagedOrmAsync
     {
-        string DbPath { get; set; }
-        event PropertyChangedEventHandler DbPathChanged;
+        string DbPath { get; }
         Task CreateNewDatabaseAsync(string dbPath);
         Task PopulateDatabaseAsync(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
             IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories);

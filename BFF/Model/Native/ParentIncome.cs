@@ -13,7 +13,7 @@ namespace BFF.Model.Native
     /// <summary>
     /// An Income, which is split into several SubIncomes
     /// </summary>
-    public class ParentIncome : Income, IParentTitNoTransfer<SubIncome>
+    public class ParentIncome : Income, IParentTransInc<SubIncome>
     {
         private ObservableCollection<SubIncome> _subElements;
 

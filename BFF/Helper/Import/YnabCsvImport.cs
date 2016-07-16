@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BFF.DB;
+using BFF.DB.SQLite;
 using BFF.Model.Native.Structure;
+using BFF.Properties;
 using BFF.WPFStuff;
 using YNAB = BFF.Model.Conversion.YNAB;
 using Native = BFF.Model.Native;
@@ -49,7 +51,7 @@ namespace BFF.Helper.Import
         public string Import()
         {
 
-            string exceptionTemplate = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("Exception_FileNotFound", null, BffEnvironment.CultureProvider.LanguageCulture);
+            string exceptionTemplate = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("Exception_FileNotFound", null, Settings.Default.Culture_DefaultLanguage);
             if (!File.Exists(TransactionPath))
                 throw new FileNotFoundException(string.Format(exceptionTemplate, TransactionPath));
             if(!File.Exists(BudgetPath))
@@ -105,7 +107,7 @@ namespace BFF.Helper.Import
 
             //Third step: Create new database for imported data
             DataModelBase.Database = _orm; //turn on OR mapping
-            _orm.CreateNewDatabase(savePath);
+            SqLiteBffOrm.CreateNewDatabase(savePath);
             _orm.PopulateDatabase(transactions, subTransactions, incomes, new List<Native.SubIncome>(), 
                 transfers, Native.Account.GetAllCache(), Native.Payee.GetAllCache(), Native.Category.GetAllCache());
         }

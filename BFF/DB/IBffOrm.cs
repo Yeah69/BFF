@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
 
@@ -9,9 +8,7 @@ namespace BFF.DB
 {
     public interface IBffOrm : ICrudOrm, IPeripheryProvider, IPagedOrm
     {
-        string DbPath { get; set; }
-        event PropertyChangedEventHandler DbPathChanged;
-        void CreateNewDatabase(string dbPath);
+        string DbPath { get; }
         void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
             IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories);
         IEnumerable<TitBase> GetAllTits(DateTime startTime, DateTime endTime, Account account = null);

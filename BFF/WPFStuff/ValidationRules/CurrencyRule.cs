@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows.Controls;
-using BFF.Helper;
+using BFF.Properties;
 
 namespace BFF.WPFStuff.ValidationRules
 {
@@ -10,8 +10,8 @@ namespace BFF.WPFStuff.ValidationRules
         {
             decimal outVar;
             bool validate = decimal.TryParse((string) value, NumberStyles.Currency,
-                BffEnvironment.CultureProvider.CurrencyCulture.NumberFormat, out outVar);
-            return new ValidationResult(validate, validate ? null : (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("ValidationRule_Currency", null, BffEnvironment.CultureProvider.LanguageCulture));
+                Settings.Default.Culture_SessionCurrency.NumberFormat, out outVar);
+            return new ValidationResult(validate, validate ? null : (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("ValidationRule_Currency", null, Settings.Default.Culture_DefaultLanguage));
             // The "Invalid"-Message is only relevant if validate is false
         }
     }

@@ -74,11 +74,12 @@ namespace BFF.WPFStuff.Behaviors
                                 {
                                     ICollection collection = o as ICollection;
                                     j = 0;
-                                    foreach (object obj in collection)
-                                    {
-                                        AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + j, objectToTabItem);
-                                        j++;
-                                    }
+                                    if(collection != null)
+                                        foreach (object obj in collection)
+                                        {
+                                            AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + j, objectToTabItem);
+                                            j++;
+                                        }
                                 }
                                 break;
                             case NotifyCollectionChangedAction.Move:

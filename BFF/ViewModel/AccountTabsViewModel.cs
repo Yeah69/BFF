@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Input;
 using BFF.DB;
 using BFF.Model.Native;
+using BFF.Properties;
 using BFF.WPFStuff;
 
 namespace BFF.ViewModel
 {
-    public class AccountTabsViewModel : EmptyContentViewModel
+    public class AccountTabsViewModel : SessionViewModelBase
     {
         protected AllAccounts _allAccountsViewModel;
 
@@ -58,7 +61,48 @@ namespace BFF.ViewModel
         public AccountTabsViewModel(IBffOrm orm)
         {
             _orm = orm;
-            AllAccountsViewModel = Account.allAccounts;
+            AllAccountsViewModel = new AllAccounts();
+
+            DbSetting dbSetting = orm.Get<DbSetting>(1);
+            Settings.Default.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultrureName);
+            Settings.Default.Culture_SessionDate = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
+            ManageCultures();
+
+            Messenger.Default.Register<CutlureMessage>(this, message =>
+            {
+                switch(message)
+                {
+                    case CutlureMessage.Refresh:
+                    case CutlureMessage.RefreshCurrency:
+                        OnPropertyChanged(nameof(NewAccount));
+                        break;
+                    case CutlureMessage.RefreshDate:
+                        break;
+                    default:
+                        throw new InvalidEnumArgumentException();
+                }
+            });
         }
+
+        #region Overrides of SessionViewModelBase
+
+        protected override CultureInfo CreateCustomCulture()
+        {
+            CultureInfo customCulture = CultureInfo.CreateSpecificCulture(Settings.Default.Culture_DefaultLanguage.Name);
+            customCulture.NumberFormat = Settings.Default.Culture_SessionCurrency.NumberFormat;
+            customCulture.DateTimeFormat = Settings.Default.Culture_SessionDate.DateTimeFormat;
+            return customCulture;
+        }
+
+        protected override void SaveCultures()
+        {
+            Settings.Default.Save();
+            DbSetting dbSetting = _orm.Get<DbSetting>(1);
+            dbSetting.CurrencyCulture = Settings.Default.Culture_SessionCurrency;
+            dbSetting.DateCulture = Settings.Default.Culture_SessionDate;
+            _orm.Update(dbSetting);
+        }
+
+        #endregion
     }
 }

@@ -7,8 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using AlphaChiTech.Virtualization;
-using BFF.DB;
-using BFF.Helper;
+using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.Properties;
 using BFF.ViewModel;
@@ -21,7 +20,7 @@ namespace BFF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : IRefreshCurrencyVisuals, IRefreshDateVisuals
+    public partial class MainWindow
     {
         public static readonly DependencyProperty ImportCommandProperty =
             DependencyProperty.Register(nameof(ImportCommand), typeof(ICommand), typeof(MainWindow),
@@ -37,11 +36,8 @@ namespace BFF
             set { SetValue(ImportCommandProperty, value); }
         }
 
-        private readonly IBffOrm _orm;
-
-        public MainWindow(IBffOrm orm)
+        public MainWindow()
         {
-            _orm = orm;
             InitializeComponent();
             //this routine only needs to run once, so first check to make sure the
             //VirtualizationManager isn’t already initialized
@@ -66,15 +62,13 @@ namespace BFF
             InitializeAppThemeAndAccentComboBoxes();
             SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
 
-            DataContext = new MainWindowViewModel(_orm);
+            DataContext = new MainWindowViewModel();
         }
 
         private void InitializeCultureComboBoxes()
         {
-            string initialLocalization = Settings.Default.Localization_Language;
             LanguageCombo.ItemsSource = WPFLocalizeExtension.Providers.ResxLocalizationProvider.Instance.AvailableCultures.Where(culture => !Equals(culture, CultureInfo.InvariantCulture));
-            LanguageCombo.SelectedItem = CultureInfo.GetCultureInfo(initialLocalization);
-            BffEnvironment.CultureProvider.LanguageCulture = CultureInfo.GetCultureInfo(initialLocalization);
+            LanguageCombo.SelectedItem = Settings.Default.Culture_DefaultLanguage;
 
             foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.Name))
             {
@@ -132,11 +126,6 @@ namespace BFF
             Settings.Default.Save();
         }
 
-        private void LanguageCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            BffEnvironment.CultureProvider.LanguageCulture = (CultureInfo) LanguageCombo.SelectedItem;
-        }
-
         private void FileButt_Click(object sender, RoutedEventArgs e)
         {
             FileFlyout.IsOpen = true;
@@ -154,7 +143,7 @@ namespace BFF
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
             ImportDialogViewModel importDialogVm = new ImportDialogViewModel
             {
-                Importable = new YnabCsvImport(_orm)
+                Importable = new YnabCsvImport(new SqLiteBffOrm(Settings.Default.Import_SavePath))
                 {
                     TransactionPath = Settings.Default.Import_YnabCsvTransaction,
                     BudgetPath = Settings.Default.Import_YnabCsvBudget,
@@ -174,61 +163,6 @@ namespace BFF
                     Dispatcher.Invoke(() => ImportCommand.Execute(importDialogVm.Importable), DispatcherPriority.Background);
             };
             this.ShowMetroDialogAsync(importDialog);
-        }
-
-        private void CurrencyCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            BffEnvironment.CultureProvider.CurrencyCulture = (CultureInfo) ((ComboBox) sender).SelectedItem;
-            RefreshCurrencyVisuals();
-        }
-
-        public void RefreshCurrencyVisuals()
-        {
-            if(MainContentControl.Content != null)
-            {
-                //When the MainContentControl has Content, then the first child is the ContentPresenter 
-                //and its first child is the root of the DataTemplates generated content
-                DependencyObject depObj = VisualTreeHelper.GetChild(MainContentControl, 0);
-                if (VisualTreeHelper.GetChildrenCount(depObj) > 0)
-                {
-                    depObj = VisualTreeHelper.GetChild(depObj, 0);
-                    if (depObj is IRefreshCurrencyVisuals)
-                    {
-                        IRefreshCurrencyVisuals rcv = depObj as IRefreshCurrencyVisuals;
-                        rcv.RefreshCurrencyVisuals();
-                    }
-                }
-            }
-        }
-
-        private void DateCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            BffEnvironment.CultureProvider.DateCulture = (CultureInfo)((ComboBox)sender).SelectedItem;
-            RefreshDateVisuals();
-        }
-
-        public void RefreshDateVisuals()
-        {
-            if(MainContentControl.Content != null)
-            {
-                //When the MainContentControl has Content, then the first child is the ContentPresenter 
-                //and its first child is the root of the DataTemplates generated content
-                DependencyObject depObj = VisualTreeHelper.GetChild(MainContentControl, 0);
-                if (VisualTreeHelper.GetChildrenCount(depObj) > 0)
-                {
-                    depObj = VisualTreeHelper.GetChild(depObj, 0);
-                    if (depObj is IRefreshDateVisuals)
-                    {
-                        IRefreshDateVisuals rcv = depObj as IRefreshDateVisuals;
-                        rcv.RefreshDateVisuals();
-                    }
-                }
-            }
-        }
-
-        private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
-        {
-            RefreshDateVisuals();
         }
     }
 
