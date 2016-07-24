@@ -18,6 +18,8 @@ namespace BFF.DB.SQLite
 
     class SqLiteBffOrm : IBffOrm
     {
+        public CommonPropertyProvider CommonPropertyProvider { get; }
+
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected SQLiteConnection Cnn = new SQLiteConnection();
@@ -200,7 +202,7 @@ namespace BFF.DB.SQLite
             if (dataModelBase is CommonProperty)
             {
                 if (dataModelBase is Account)
-                    AllAccounts.Add(dataModelBase as Account);
+                    CommonPropertyProvider.Add(dataModelBase as Account);
                 else if (dataModelBase is Payee)
                     AllPayees.Add(dataModelBase as Payee);
                 else if (dataModelBase is Category)
@@ -258,8 +260,8 @@ namespace BFF.DB.SQLite
                 }
                 if (dataModelBase is CommonProperty)
                 {
-                    if (dataModelBase is Account && AllAccounts.Contains(dataModelBase as Account))
-                        AllAccounts.Remove(dataModelBase as Account);
+                    if (dataModelBase is Account && CommonPropertyProvider.Accounts.Contains(dataModelBase as Account))
+                        CommonPropertyProvider.Remove(dataModelBase as Account);
                     else if (dataModelBase is Payee && AllPayees.Contains(dataModelBase as Payee))
                         AllPayees.Remove(dataModelBase as Payee);
                     else if (dataModelBase is Category && AllCategories.Contains(dataModelBase as Category))
@@ -314,7 +316,6 @@ namespace BFF.DB.SQLite
             _dbPath = dbPath;
             if (Cnn.State != ConnectionState.Closed)
                 Cnn.Close();
-            AllAccounts.Clear();
             AllPayees.Clear();
             AllCategories.Clear();
             if (File.Exists(DbPath))
@@ -323,18 +324,19 @@ namespace BFF.DB.SQLite
                 Cnn.Open();
                 InitializePeripherie();
 
-                Account.allAccounts?.RefreshStartingBalance();
-                Account.allAccounts?.RefreshBalance();
+                //Account.allAccounts?.RefreshStartingBalance(); todo
+                //Account.allAccounts?.RefreshBalance(); todo
             }
-            Account.allAccounts?.RefreshTits();
-            Account.allAccounts?.RefreshTits();
+            //Account.allAccounts?.RefreshTits(); todo
+            //Account.allAccounts?.RefreshTits(); todo
+
+            CommonPropertyProvider = new CommonPropertyProvider(this);
 
             //Old
             DataModelBase.Database = this;
             if(File.Exists(DbPath)) Reset();
         }
 
-        public ObservableCollection<Account> AllAccounts { get; } = new ObservableCollection<Account>();
         public ObservableCollection<Payee> AllPayees { get; } = new ObservableCollection<Payee>();
         public ObservableCollection<Category> AllCategories { get; } = new ObservableCollection<Category>(); 
 
@@ -345,8 +347,6 @@ namespace BFF.DB.SQLite
 
         private void InitializePeripherie()
         {
-            foreach (Account account in GetAll<Account>())
-                AllAccounts.Add(account);
             foreach (Payee payee in GetAll<Payee>())
                 AllPayees.Add(payee);
             Dictionary<long, Category> catagoryDictionary = new Dictionary<long, Category>();
@@ -392,7 +392,6 @@ namespace BFF.DB.SQLite
             }
         }
 
-        public Account GetAccount(long id) => AllAccounts.FirstOrDefault(account => account.Id == id);
         public Payee GetPayee(long id) => AllPayees.FirstOrDefault(payee => payee.Id == id);
         public Category GetCategory(long id) => AllCategories.FirstOrDefault(category => category.Id == id);
 

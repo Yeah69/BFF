@@ -76,8 +76,8 @@ namespace BFF.Model.Native
         protected override void UpdateToDb()
         {
             Database?.Update(this);
-            Account.allAccounts?.RefreshTits();
-            Account?.RefreshTits();
+            //Account.allAccounts?.RefreshTits(); todo
+            //Account?.RefreshTits(); todo
         }
 
         protected override void DeleteFromDb()

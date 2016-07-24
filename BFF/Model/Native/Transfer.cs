@@ -35,12 +35,12 @@ namespace BFF.Model.Native
                 }
                 _fromAccount = value;
                 if(Id != -1) Update();
-                temp?.RefreshTits();
-                if(temp == null)
-                    _toAccount?.RefreshBalance();
-                else
-                    temp.RefreshBalance();
-                _fromAccount?.RefreshBalance();
+                //temp?.RefreshTits();  todo
+                //if (temp == null)
+                    //_toAccount?.RefreshBalance();  todo
+                //else
+                    //temp.RefreshBalance();  todo
+                //_fromAccount?.RefreshBalance();  todo
                 OnPropertyChanged();
             }
         }
@@ -51,7 +51,7 @@ namespace BFF.Model.Native
         public long FromAccountId
         {
             get { return FromAccount?.Id ?? -1; }
-            set { _fromAccount = Database?.GetAccount(value); }
+            set { _fromAccount = Database?.CommonPropertyProvider.GetAccount(value); }
         }
 
 
@@ -74,12 +74,12 @@ namespace BFF.Model.Native
                 }
                 _toAccount = value;
                 if(Id != -1) Update();
-                temp?.RefreshTits();
-                if (temp == null)
-                    _fromAccount?.RefreshBalance();
-                else
-                    temp.RefreshBalance();
-                _toAccount?.RefreshBalance();
+                //temp?.RefreshTits(); todo
+                //if (temp == null)
+                //_fromAccount?.RefreshBalance(); todo
+                //else
+                //temp.RefreshBalance(); todo
+                //_toAccount?.RefreshBalance(); todo
                 OnPropertyChanged();
             }
         }
@@ -90,7 +90,7 @@ namespace BFF.Model.Native
         public long ToAccountId
         {
             get { return ToAccount?.Id ?? -1; }
-            set { _toAccount = Database?.GetAccount(value); }
+            set { _toAccount = Database?.CommonPropertyProvider.GetAccount(value); }
         }
 
         public override long Sum
@@ -99,8 +99,8 @@ namespace BFF.Model.Native
             set
             {
                 base.Sum = value;
-                _fromAccount?.RefreshBalance();
-                _toAccount?.RefreshBalance();
+                //_fromAccount?.RefreshBalance(); todo
+                //_toAccount?.RefreshBalance(); todo
             }
         }
 
@@ -171,8 +171,8 @@ namespace BFF.Model.Native
 
         public override bool ValidToInsert()
         {
-            return FromAccount != null && (Database?.AllAccounts.Contains(FromAccount) ?? false) &&
-                ToAccount != null && (Database?.AllAccounts.Contains(ToAccount) ?? false);
+            return FromAccount != null && (Database?.CommonPropertyProvider.Accounts.Contains(FromAccount) ?? false) &&
+                ToAccount != null && (Database?.CommonPropertyProvider.Accounts.Contains(ToAccount) ?? false);
         }
 
         protected override void InsertToDb()
@@ -183,9 +183,9 @@ namespace BFF.Model.Native
         protected override void UpdateToDb()
         {
             Database?.Update(this);
-            Account.allAccounts?.RefreshTits();
-            FromAccount?.RefreshTits();
-            ToAccount?.RefreshTits();
+            //Account.allAccounts?.RefreshTits();  todo
+            //FromAccount?.RefreshTits();  todo
+            //ToAccount?.RefreshTits(); todo
         }
 
         protected override void DeleteFromDb()
@@ -197,11 +197,11 @@ namespace BFF.Model.Native
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            Account.allAccounts.RefreshTits();
-            FromAccount.RefreshTits();
-            ToAccount.RefreshTits();
-            FromAccount.RefreshBalance();
-            ToAccount.RefreshBalance();
+            //Account.allAccounts.RefreshTits(); todo
+            //FromAccount.RefreshTits();  todo
+            //ToAccount.RefreshTits(); todo
+            //FromAccount.RefreshBalance(); todo
+            //.RefreshBalance(); todo
         });
     }
 }

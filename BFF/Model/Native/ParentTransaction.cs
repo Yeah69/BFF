@@ -44,7 +44,7 @@ namespace BFF.Model.Native
             set
             {
                 OnPropertyChanged();
-                Account?.RefreshBalance();
+                //Account?.RefreshBalance(); todo
             }
         }
 
@@ -117,7 +117,7 @@ namespace BFF.Model.Native
 
         public override bool ValidToInsert()
         {
-            return Account != null && (Database?.AllAccounts.Contains(Account) ?? false) &&
+            return Account != null && (Database?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) &&
                 Payee != null && (Database?.AllPayees.Contains(Payee) ?? false) && NewSubElements.All(subElement => subElement.ValidToInsert());
         }
 
@@ -157,7 +157,7 @@ namespace BFF.Model.Native
             }
             _newSubElements.Clear();
             OnPropertyChanged(nameof(Sum));
-            Account?.RefreshBalance();
+            //Account?.RefreshBalance(); todo
         });
 
         public void RemoveSubElement(SubTitBase toRemove)

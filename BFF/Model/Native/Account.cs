@@ -1,27 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Windows.Input;
-using AlphaChiTech.Virtualization;
-using BFF.DB;
 using BFF.Model.Native.Structure;
-using BFF.Properties;
-using BFF.WPFStuff;
-using Dapper.Contrib.Extensions;
 
 namespace BFF.Model.Native
 {
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class Account : CommonProperty, IVirtualizedRefresh
+    public class Account : CommonProperty
     {
-        public Action RefreshDataGrid;
-
-        public static AllAccounts allAccounts;
-
         private long _startingBalance;
 
         /// <summary>
@@ -33,9 +21,7 @@ namespace BFF.Model.Native
             set
             {
                 _startingBalance = value;
-                if(Id != -1) Update();
                 OnPropertyChanged();
-                allAccounts?.RefreshStartingBalance();
             }
         }
 
@@ -56,35 +42,8 @@ namespace BFF.Model.Native
         /// <param name="startingBalance">Starting balance of the Account</param>
         public Account(long id = -1L, string name = null, long startingBalance = 0L) : base(name)
         {
-            ConstrDbLock = true;
-
-            if (id > 0L) Id = id;
-            if (_startingBalance == 0L) _startingBalance = startingBalance;
-
-            Messenger.Default.Register<CutlureMessage>(this, message =>
-            {
-                switch(message)
-                {
-                    case CutlureMessage.Refresh:
-                        OnPropertyChanged(nameof(StartingBalance));
-                        OnPropertyChanged(nameof(Balance));
-                        RefreshTits();
-                        break;
-                    case CutlureMessage.RefreshCurrency:
-                        OnPropertyChanged(nameof(StartingBalance));
-                        OnPropertyChanged(nameof(Balance));
-                        RefreshTits();
-                        break;
-                    case CutlureMessage.RefreshDate:
-                        RefreshTits();
-                        break;
-                    default:
-                        throw new InvalidEnumArgumentException();
-
-                }
-            });
-
-            ConstrDbLock = false;
+            Id = id;
+            _startingBalance = startingBalance;
         }
 
         private static readonly Dictionary<string, Account> Cache = new Dictionary<string, Account>();
@@ -109,170 +68,21 @@ namespace BFF.Model.Native
             Cache.Clear();
         }
 
+        #region Overrides of DataModelBase
+
         protected override void InsertToDb()
         {
-            Database?.Insert(this);
+            throw new NotImplementedException();
         }
 
         protected override void UpdateToDb()
         {
-            Database?.Update(this);
+            throw new NotImplementedException();
         }
 
         protected override void DeleteFromDb()
         {
-            Database?.Delete(this);
-        }
-
-        public virtual void RefreshBalance()
-        {
-            OnPropertyChanged(nameof(Balance));
-            allAccounts?.RefreshBalance();
-        }
-
-        #region ViewModel_Part
-
-        private VirtualizingObservableCollection<TitBase> _tits;
-        private PaginationManager<TitBase> paginationManager;
-
-        [Write(false)]
-        public VirtualizingObservableCollection<TitBase> Tits => _tits ?? (_tits = new VirtualizingObservableCollection<TitBase>(paginationManager = new PaginationManager<TitBase>(new PagedTitBaseProviderAsync(Database, this))));
-
-        [Write(false)]
-        public ObservableCollection<TitBase> NewTits { get; set; } = new ObservableCollection<TitBase>();
-        
-        public void RefreshTits()
-        {
-            OnPreVirtualizedRefresh();
-            _tits = new VirtualizingObservableCollection<TitBase>(paginationManager = new PaginationManager<TitBase>(new PagedTitBaseProviderAsync(Database, this)));
-            OnPropertyChanged(nameof(Tits));
-            OnPostVirtualizedRefresh();
-            //paginationManager?.ResetWithoutResetEvent();
-            //Tits.OnCountTouched();
-            //RefreshDataGrid?.Invoke();
-            //Setting the PageSize will let it drop all pages
-            //if (paginationManager != null)
-            //   paginationManager.PageSize = paginationManager.PageSize;
-            //OnPropertyChanged(nameof(Tits));
-        }
-
-        [Write(false)]
-        public virtual long? Balance
-        {
-            get
-            {
-                return Database?.GetAccountBalance(this);
-            }
-            set { OnPropertyChanged(); }
-        }
-
-        [Write(false)]
-        public ObservableCollection<Account> AllAccounts => Database?.AllAccounts;
-
-        [Write(false)]
-        public ObservableCollection<Payee> AllPayees => Database?.AllPayees;
-
-        [Write(false)]
-        public ObservableCollection<Category> AllCategories => Database?.AllCategories;
-
-        [Write(false)]
-        public virtual ICommand NewTransactionCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new Transaction(DateTime.Today, account: this, memo: "", sum: 0L, cleared: false));
-        });
-
-        [Write(false)]
-        public virtual ICommand NewIncomeCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new Income(DateTime.Today, account: this, memo: "", sum: 0L, cleared: false));
-        });
-
-        [Write(false)]
-        public ICommand NewTransferCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new Transfer(DateTime.Today, memo: "", sum: 0L, cleared: false));
-        });
-
-        [Write(false)]
-        public virtual ICommand NewParentTransactionCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new ParentTransaction(DateTime.Today, account: this, memo: "", cleared: false));
-        });
-
-        [Write(false)]
-        public virtual ICommand NewParentIncomeCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new ParentIncome(DateTime.Today, account: this, memo: "", cleared: false));
-        });
-
-        [Write(false)]
-        public virtual ICommand ApplyCommand => new RelayCommand(obj =>
-        {
-            ApplyTits();
-        }, obj => NewTits.Count > 0);
-
-        protected void ApplyTits()
-        {
-            List<Account> accounts = new List<Account>();
-            List<TitBase> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
-            foreach (TitBase tit in insertTits)
-            {
-                tit.Insert();
-                NewTits.Remove(tit);
-                if (tit is IParentTransInc<SubTransaction>)
-                {
-                    IParentTransInc<SubTransaction> parentTransaction = tit as IParentTransInc<SubTransaction>;
-                    foreach (SubTransaction subTransaction in parentTransaction.NewSubElements)
-                    {
-                        subTransaction.Insert();
-                        parentTransaction.SubElements.Add(subTransaction);
-                    }
-                    parentTransaction.NewSubElements.Clear();
-                }
-                if (tit is IParentTransInc<SubIncome>)
-                {
-                    IParentTransInc<SubIncome> parentIncome = tit as IParentTransInc<SubIncome>;
-                    foreach (SubIncome subIncome in parentIncome.NewSubElements)
-                    {
-                        subIncome.Insert();
-                        parentIncome.SubElements.Add(subIncome);
-                    }
-                    parentIncome.NewSubElements.Clear();
-                }
-                if(tit is TitNoTransfer)
-                    accounts.Add((tit as TitNoTransfer).Account);
-                if (tit is Transfer)
-                {
-                    Transfer transfer = tit as Transfer;
-                    accounts.Add(transfer.FromAccount);
-                    accounts.Add(transfer.ToAccount);
-                }
-            }
-            allAccounts.RefreshTits();
-            foreach(Account account in accounts)
-            {
-                account.RefreshTits();
-                account.RefreshBalance();
-            }
-        }
-
-        [Write(false)]
-        public bool IsDateFormatLong => Settings.Default.Culture_DefaultDateLong;
-
-        #endregion
-
-        #region Implementation of IVirtualizedRefresh
-
-        public event EventHandler PreVirtualizedRefresh;
-        public void OnPreVirtualizedRefresh()
-        {
-            PreVirtualizedRefresh?.Invoke(this, new EventArgs());
-        }
-
-        public event EventHandler PostVirtualizedRefresh;
-        public void OnPostVirtualizedRefresh()
-        {
-            PostVirtualizedRefresh?.Invoke(this, new EventArgs());
+            throw new NotImplementedException();
         }
 
         #endregion

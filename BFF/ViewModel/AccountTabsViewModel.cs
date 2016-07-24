@@ -6,28 +6,26 @@ using System.Windows.Input;
 using BFF.DB;
 using BFF.Model.Native;
 using BFF.Properties;
+using BFF.ViewModel.ForModels;
 using BFF.WPFStuff;
 
 namespace BFF.ViewModel
 {
     public class AccountTabsViewModel : SessionViewModelBase
     {
-        protected AllAccounts _allAccountsViewModel;
-
         protected readonly IBffOrm _orm;
 
         public IBffOrm Orm => _orm;
 
-        public ObservableCollection<Account> AllAccounts => _orm.AllAccounts;
+        public ObservableCollection<AccountViewModel> AllAccounts => _orm.CommonPropertyProvider.AccountViewModels;
 
         public ObservableCollection<Category> AllCategories => _orm.AllCategories; 
 
-        public AllAccounts AllAccountsViewModel
+        public AllAccountsViewModel AllAccountsViewModel
         {
-            get { return _allAccountsViewModel; }
+            get { return _orm.CommonPropertyProvider.AllAccountsViewModel; }
             set
             {
-                _allAccountsViewModel = value;
                 OnPropertyChanged();
             }
         }
@@ -39,12 +37,12 @@ namespace BFF.ViewModel
             //Insert Account to Database
             _orm.Insert(NewAccount);
             //Refresh all relevant properties
-            NewAccount.RefreshBalance();
-            if (Account.allAccounts != null)
-            {
-                Account.allAccounts.RefreshBalance();
-                Account.allAccounts.RefreshStartingBalance();
-            }
+            //NewAccount.RefreshBalance(); todo
+            //if (Account.allAccounts != null) todo
+            //{
+            //    Account.allAccounts.RefreshBalance(); todo
+            //    Account.allAccounts.RefreshStartingBalance(); todo
+            //}
             //Refresh dummy-Account
             NewAccount = new Account { Id = -1, Name = "", StartingBalance = 0L };
             OnPropertyChanged(nameof(NewAccount));
@@ -61,7 +59,6 @@ namespace BFF.ViewModel
         public AccountTabsViewModel(IBffOrm orm)
         {
             _orm = orm;
-            AllAccountsViewModel = new AllAccounts();
 
             DbSetting dbSetting = orm.Get<DbSetting>(1);
             Settings.Default.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultrureName);

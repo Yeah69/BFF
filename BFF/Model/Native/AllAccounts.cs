@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Windows.Input;
-using BFF.WPFStuff;
-using Dapper.Contrib.Extensions;
+﻿using System.Linq;
 
 namespace BFF.Model.Native
 {
@@ -11,14 +7,6 @@ namespace BFF.Model.Native
     /// </summary>
     public class AllAccounts : Account
     {
-        /// <summary>
-        /// Starting balance of the Account
-        /// </summary>
-        public override long StartingBalance
-        {
-            get { return Database?.AllAccounts.Sum(account => account.StartingBalance) ?? 0L; }
-            set { OnPropertyChanged(); }
-        }
         
         /// <summary>
         /// Initializes the object
@@ -28,7 +16,6 @@ namespace BFF.Model.Native
             ConstrDbLock = true;
 
             Name = "All Accounts";
-            allAccounts = this;
 
             ConstrDbLock = false;
         }
@@ -45,60 +32,12 @@ namespace BFF.Model.Native
         {
         }
 
-        public override void RefreshBalance()
-        {
-            OnPropertyChanged(nameof(Balance));
-        }
-
-        public void RefreshStartingBalance()
-        {
-            OnPropertyChanged(nameof(StartingBalance));
-        }
-
         public override bool ValidToInsert()
         {
             return false;
         }
 
         #region ViewModel_Part
-
-        [Write(false)]
-        public override long? Balance
-        {
-            get { return AllAccounts?.Sum(account => account.Balance); }
-            set { OnPropertyChanged(); }
-        }
-
-        [Write(false)]
-        public override ICommand NewTransactionCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new Transaction(DateTime.Today, account: null, memo: "", sum: 0L, cleared: false));
-        });
-
-        [Write(false)]
-        public override ICommand NewIncomeCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new Income(DateTime.Today, account: null, memo: "", sum: 0L, cleared: false));
-        });
-
-        [Write(false)]
-        public override ICommand NewParentTransactionCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new ParentTransaction(DateTime.Today, account: null, memo: "", cleared: false));
-        });
-
-        [Write(false)]
-        public override ICommand NewParentIncomeCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new ParentIncome(DateTime.Today, account: null, memo: "", cleared: false));
-        });
-
-        [Write(false)]
-        public override ICommand ApplyCommand => new RelayCommand(obj =>
-        {
-            ApplyTits();
-            OnPropertyChanged(nameof(Balance));
-        }, obj => NewTits.Count > 0);
 
         #endregion
     }

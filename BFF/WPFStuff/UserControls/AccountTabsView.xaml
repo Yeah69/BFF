@@ -42,7 +42,7 @@
                     </behaviors:AdditionalTabItemsBehavior.HeaderTemplate>
                     <behaviors:AdditionalTabItemsBehavior.ContentTemplate>
                         <DataTemplate>
-                            <local:AccountView />
+                            <local:AccountView DataContext="{Binding}" />
                         </DataTemplate>
                     </behaviors:AdditionalTabItemsBehavior.ContentTemplate>
                 </behaviors:AdditionalTabItemsBehavior>

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using BFF.Model.Native;
+using BFF.ViewModel.ForModels;
 
 namespace BFF.WPFStuff.UserControls
 {
@@ -15,13 +16,22 @@ namespace BFF.WPFStuff.UserControls
         #region Depencency Properties
 
         public static readonly DependencyProperty AccountProperty = DependencyProperty.Register(
-            nameof(Account), typeof(Account), typeof(TitDataGrid),
-            new PropertyMetadata(default(Account), OnAccountChanged));
+            nameof(Account), typeof(Account), typeof(TitDataGrid), new PropertyMetadata(default(Account)));
 
         public Account Account
         {
             get { return (Account) GetValue(AccountProperty); }
             set { SetValue(AccountProperty, value); }
+        }
+
+        public static readonly DependencyProperty AccountViewModelProperty = DependencyProperty.Register(
+            nameof(AccountViewModel), typeof(AccountViewModel), typeof(TitDataGrid), 
+            new PropertyMetadata(default(AccountViewModel), OnAccountViewModelChanged));
+
+        public AccountViewModel AccountViewModel
+        {
+            get { return (AccountViewModel) GetValue(AccountViewModelProperty); }
+            set { SetValue(AccountViewModelProperty, value); }
         }
 
         public static readonly DependencyProperty TitsProperty = DependencyProperty.Register(
@@ -188,15 +198,15 @@ namespace BFF.WPFStuff.UserControls
             LayoutRoot.DataContext = this;
         }
 
-        private static void OnAccountChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        private static void OnAccountViewModelChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            Account oldAccount = (Account) args.OldValue;
+            AccountViewModel oldAccount = (AccountViewModel) args.OldValue;
             if (oldAccount != null)
             {
                 oldAccount.PreVirtualizedRefresh -= ((TitDataGrid)sender).PreVirtualizedRefresh;
                 oldAccount.PostVirtualizedRefresh -= ((TitDataGrid)sender).PostVirtualizedRefresh;
             }
-            Account newAccount = (Account) args.NewValue;
+            AccountViewModel newAccount = (AccountViewModel) args.NewValue;
             if (newAccount != null)
             {
                 newAccount.PreVirtualizedRefresh += ((TitDataGrid)sender).PreVirtualizedRefresh;

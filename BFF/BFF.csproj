@@ -136,6 +136,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DB\CommonPropertyProvider.cs" />
     <Compile Include="DB\IBffOrmAsync.cs" />
     <Compile Include="DB\IBffOrm.cs" />
     <Compile Include="DB\ITitViewModelOrm.cs" />
@@ -172,6 +173,9 @@
     <Compile Include="Model\Native\TitBasePlaceholder.cs" />
     <Compile Include="Model\Native\Transfer.cs" />
     <Compile Include="Model\Native\Transaction.cs" />
+    <Compile Include="ViewModel\ForModels\AccountViewModelBase.cs" />
+    <Compile Include="ViewModel\ForModels\AllAccountsViewModel.cs" />
+    <Compile Include="ViewModel\ForModels\AccountViewModel.cs" />
     <Compile Include="ViewModel\ForModels\ParentTransIncViewModel.cs" />
     <Compile Include="ViewModel\ForModels\TitViewModelBase.cs" />
     <Compile Include="ViewModel\ForModels\SubTransIncViewModel.cs" />

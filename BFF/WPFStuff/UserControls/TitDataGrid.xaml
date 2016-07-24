@@ -26,9 +26,6 @@
             <!--#region Converters -->
             <converters:DataGridWidthsToLeftMarginConverter x:Key="DataGridWidthsToLeftMarginConverter" />
             <converters:DataGridLengthsToDoubleConverter x:Key="DataGridLengthsToDoubleConverter" />
-            <!--#endregion -->
-
-            <!--#region Converters -->
             <converters:SumColorMultiConverter x:Key="SumColorMultiConverter" PositiveBrush="{StaticResource IncomeBrush}" NegativeBrush="{StaticResource TransactionBrush}" TransferBrush="{StaticResource TransferBrush}"/>
             <converters:SumToBrushConverter x:Key="SumToBrushConverter" PositiveBrush="{StaticResource IncomeBrush}" NegativeBrush="{StaticResource TransactionBrush}"/>
             <converters:SumConverter x:Key="SumConverter" />
@@ -340,7 +337,7 @@
                                 </TextBlock.Text>
                                 <TextBlock.Foreground>
                                     <MultiBinding Converter="{StaticResource SumColorMultiConverter}">
-                                        <Binding Path="DataContext.Account" ElementName="LayoutRoot" />
+                                        <Binding Path="DataContext.Account" ElementName="LayoutRoot" /> <!-- todo: Make TransferViewModel aware of in which AccountViewModel it is inside -->
                                         <Binding Path="FromAccount" />
                                         <Binding Path="ToAccount" />
                                     </MultiBinding>

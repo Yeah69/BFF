@@ -23,7 +23,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <userControls:TitDataGrid Grid.Row="0" 
-                                  Account="{Binding}" 
+                                  Account="{Binding Account}" 
+                                  AccountViewModel="{Binding}"
                                   Tits="{Binding Tits}" 
                                   NewTits="{Binding NewTits}"
                                   NewTransactionCommand="{Binding NewTransactionCommand}"

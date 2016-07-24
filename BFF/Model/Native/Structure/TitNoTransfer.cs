@@ -29,9 +29,9 @@ namespace BFF.Model.Native.Structure
                 Account temp = _account;
                 _account = value;
                 if(Id != -1) Update();
-                temp?.RefreshTits();
-                _account?.RefreshBalance();
-                temp?.RefreshBalance();
+                //temp?.RefreshTits(); todo
+                //_account?.RefreshBalance(); todo
+                //temp?.RefreshBalance(); todo
                 OnPropertyChanged();
             }
         }
@@ -42,7 +42,7 @@ namespace BFF.Model.Native.Structure
         public long AccountId
         {
             get { return Account?.Id ?? -1; }
-            set { _account = Database?.GetAccount(value); }
+            set { _account = Database?.CommonPropertyProvider.GetAccount(value); }
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace BFF.Model.Native.Structure
             set
             {
                 base.Sum = value;
-                _account?.RefreshBalance();
+                //_account?.RefreshBalance();  todo
             }
         }
 
@@ -156,14 +156,14 @@ namespace BFF.Model.Native.Structure
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            Account.allAccounts?.RefreshTits();
-            Account?.RefreshTits();
-            Account?.RefreshBalance();
+            //Account.allAccounts?.RefreshTits();  todo
+            //Account?.RefreshTits();  todo
+            //Account?.RefreshBalance();  todo
         });
 
         public override bool ValidToInsert()
         {
-            return Account != null && (Database?.AllAccounts.Contains(Account) ?? false) && 
+            return Account != null && (Database?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) && 
                 Payee != null && (Database?.AllPayees.Contains(Payee) ?? false) && 
                 Category != null && (Database?.AllCategories.Contains(Category) ?? false);
         }

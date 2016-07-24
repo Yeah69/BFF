@@ -8,6 +8,8 @@ namespace BFF.DB
 {
     public interface IBffOrm : ICrudOrm, IPeripheryProvider, IPagedOrm
     {
+        CommonPropertyProvider CommonPropertyProvider { get; }
+
         string DbPath { get; }
         void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
             IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories);
@@ -28,10 +30,8 @@ namespace BFF.DB
 
     public interface IPeripheryProvider
     {
-        ObservableCollection<Account> AllAccounts { get; }
         ObservableCollection<Payee> AllPayees { get; }
         ObservableCollection<Category> AllCategories { get; }
-        Account GetAccount(long id);
         Payee GetPayee(long id);
         Category GetCategory(long id);
     }
