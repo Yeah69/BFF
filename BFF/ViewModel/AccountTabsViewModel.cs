@@ -37,12 +37,9 @@ namespace BFF.ViewModel
             //Insert Account to Database
             _orm.Insert(NewAccount);
             //Refresh all relevant properties
-            //NewAccount.RefreshBalance(); todo
-            //if (Account.allAccounts != null) todo
-            //{
-            //    Account.allAccounts.RefreshBalance(); todo
-            //    Account.allAccounts.RefreshStartingBalance(); todo
-            //}
+            Messenger.Default.Send(AccountMessage.RefreshBalance, NewAccount);
+            Messenger.Default.Send(AllAccountMessage.RefreshBalance);
+            Messenger.Default.Send(AllAccountMessage.RefreshStartingBalance);
             //Refresh dummy-Account
             NewAccount = new Account { Id = -1, Name = "", StartingBalance = 0L };
             OnPropertyChanged(nameof(NewAccount));

@@ -42,7 +42,8 @@ namespace BFF.Model.Native
             set
             {
                 OnPropertyChanged();
-                //Account?.RefreshBalance(); todo
+                Messenger.Default.Send(AllAccountMessage.Refresh);
+                Messenger.Default.Send(AccountMessage.Refresh, Account);
             }
         }
 
@@ -136,7 +137,8 @@ namespace BFF.Model.Native
             }
             _newSubElements.Clear();
             OnPropertyChanged(nameof(Sum));
-            //Account?.RefreshBalance(); todo
+            Messenger.Default.Send(AllAccountMessage.Refresh);
+            Messenger.Default.Send(AccountMessage.Refresh, Account);
         });
 
         public void RemoveSubElement(SubTitBase toRemove)

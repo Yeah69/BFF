@@ -35,12 +35,12 @@ namespace BFF.Model.Native
                 }
                 _fromAccount = value;
                 if(Id != -1) Update();
-                //temp?.RefreshTits();  todo
-                //if (temp == null)
-                    //_toAccount?.RefreshBalance();  todo
-                //else
-                    //temp.RefreshBalance();  todo
-                //_fromAccount?.RefreshBalance();  todo
+                Messenger.Default.Send(AccountMessage.RefreshTits, temp);
+                if (temp == null)
+                    Messenger.Default.Send(AccountMessage.RefreshBalance, _toAccount);
+                else
+                    Messenger.Default.Send(AccountMessage.RefreshBalance, temp);
+                Messenger.Default.Send(AccountMessage.RefreshBalance, _fromAccount);
                 OnPropertyChanged();
             }
         }
@@ -74,12 +74,12 @@ namespace BFF.Model.Native
                 }
                 _toAccount = value;
                 if(Id != -1) Update();
-                //temp?.RefreshTits(); todo
-                //if (temp == null)
-                //_fromAccount?.RefreshBalance(); todo
-                //else
-                //temp.RefreshBalance(); todo
-                //_toAccount?.RefreshBalance(); todo
+                Messenger.Default.Send(AccountMessage.RefreshTits, temp);
+                if (temp == null)
+                    Messenger.Default.Send(AccountMessage.RefreshBalance, _fromAccount);
+                else
+                    Messenger.Default.Send(AccountMessage.RefreshBalance, temp);
+                Messenger.Default.Send(AccountMessage.RefreshBalance, _toAccount);
                 OnPropertyChanged();
             }
         }
@@ -99,8 +99,8 @@ namespace BFF.Model.Native
             set
             {
                 base.Sum = value;
-                //_fromAccount?.RefreshBalance(); todo
-                //_toAccount?.RefreshBalance(); todo
+                Messenger.Default.Send(AccountMessage.RefreshBalance, _fromAccount);
+                Messenger.Default.Send(AccountMessage.RefreshBalance, _toAccount);
             }
         }
 
@@ -183,9 +183,9 @@ namespace BFF.Model.Native
         protected override void UpdateToDb()
         {
             Database?.Update(this);
-            //Account.allAccounts?.RefreshTits();  todo
-            //FromAccount?.RefreshTits();  todo
-            //ToAccount?.RefreshTits(); todo
+            Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
+            Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
+            Messenger.Default.Send(AllAccountMessage.RefreshTits);
         }
 
         protected override void DeleteFromDb()
@@ -197,11 +197,9 @@ namespace BFF.Model.Native
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            //Account.allAccounts.RefreshTits(); todo
-            //FromAccount.RefreshTits();  todo
-            //ToAccount.RefreshTits(); todo
-            //FromAccount.RefreshBalance(); todo
-            //.RefreshBalance(); todo
+            Messenger.Default.Send(AccountMessage.Refresh, FromAccount);
+            Messenger.Default.Send(AccountMessage.Refresh, ToAccount);
+            Messenger.Default.Send(AllAccountMessage.RefreshTits);
         });
     }
 }

@@ -40,26 +40,26 @@ namespace BFF.ViewModel.ForModels
         public AllAccountsViewModel(IBffOrm orm) : base(orm)
         {
             Account = new AllAccounts();
-            Messenger.Default.Register<CutlureMessage>(this, message =>
+            Messenger.Default.Register<AllAccountMessage>(this, message =>
             {
-                switch(message)
+                switch (message)
                 {
-                    case CutlureMessage.Refresh:
-                        OnPropertyChanged(nameof(StartingBalance));
-                        OnPropertyChanged(nameof(Balance));
+                    case AllAccountMessage.Refresh:
                         RefreshTits();
+                        RefreshBalance();
+                        RefreshStartingBalance();
                         break;
-                    case CutlureMessage.RefreshCurrency:
-                        OnPropertyChanged(nameof(StartingBalance));
-                        OnPropertyChanged(nameof(Balance));
-                        RefreshTits();
+                    case AllAccountMessage.RefreshBalance:
+                        RefreshBalance();
                         break;
-                    case CutlureMessage.RefreshDate:
+                    case AllAccountMessage.RefreshStartingBalance:
+                        RefreshStartingBalance();
+                        break;
+                    case AllAccountMessage.RefreshTits:
                         RefreshTits();
                         break;
                     default:
-                        throw new InvalidEnumArgumentException();
-
+                        throw new NotImplementedException();
                 }
             });
         }

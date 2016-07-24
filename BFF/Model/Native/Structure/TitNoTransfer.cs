@@ -29,9 +29,8 @@ namespace BFF.Model.Native.Structure
                 Account temp = _account;
                 _account = value;
                 if(Id != -1) Update();
-                //temp?.RefreshTits(); todo
-                //_account?.RefreshBalance(); todo
-                //temp?.RefreshBalance(); todo
+                Messenger.Default.Send(AccountMessage.Refresh, temp);
+                Messenger.Default.Send(AccountMessage.Refresh, _account);
                 OnPropertyChanged();
             }
         }
@@ -101,7 +100,7 @@ namespace BFF.Model.Native.Structure
             set
             {
                 base.Sum = value;
-                //_account?.RefreshBalance();  todo
+                Messenger.Default.Send(AccountMessage.RefreshBalance, _account);
             }
         }
 
@@ -156,9 +155,8 @@ namespace BFF.Model.Native.Structure
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            //Account.allAccounts?.RefreshTits();  todo
-            //Account?.RefreshTits();  todo
-            //Account?.RefreshBalance();  todo
+            Messenger.Default.Send(AllAccountMessage.Refresh);
+            Messenger.Default.Send(AccountMessage.Refresh, Account);
         });
 
         public override bool ValidToInsert()

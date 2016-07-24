@@ -1,6 +1,7 @@
 ﻿using System;
 using BFF.Helper.Import;
 using BFF.Model.Native.Structure;
+using BFF.WPFStuff;
 using YNAB = BFF.Model.Conversion.YNAB;
 
 namespace BFF.Model.Native
@@ -76,8 +77,8 @@ namespace BFF.Model.Native
         protected override void UpdateToDb()
         {
             Database?.Update(this);
-            //Account.allAccounts?.RefreshTits(); todo
-            //Account?.RefreshTits(); todo
+            Messenger.Default.Send(AllAccountMessage.Refresh);
+            Messenger.Default.Send(AccountMessage.Refresh, Account);
         }
 
         protected override void DeleteFromDb()

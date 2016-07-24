@@ -9,6 +9,7 @@ using System.Linq;
 using DbTransactions = System.Transactions;
 using BFF.Model.Native;
 using BFF.Model.Native.Structure;
+using BFF.WPFStuff;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using NLog;
@@ -323,12 +324,7 @@ namespace BFF.DB.SQLite
                 Cnn.ConnectionString = ConnectionString;
                 Cnn.Open();
                 InitializePeripherie();
-
-                //Account.allAccounts?.RefreshStartingBalance(); todo
-                //Account.allAccounts?.RefreshBalance(); todo
             }
-            //Account.allAccounts?.RefreshTits(); todo
-            //Account.allAccounts?.RefreshTits(); todo
 
             CommonPropertyProvider = new CommonPropertyProvider(this);
 

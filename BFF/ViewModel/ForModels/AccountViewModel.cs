@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
 using System.Windows.Input;
 using AlphaChiTech.Virtualization;
 using BFF.DB;
@@ -51,6 +48,24 @@ namespace BFF.ViewModel.ForModels
         public AccountViewModel(Account account, IBffOrm orm) : base(orm)
         {
             Account = account;
+            Messenger.Default.Register<AccountMessage>(this, message =>
+            {
+                switch(message)
+                {
+                    case AccountMessage.Refresh:
+                        RefreshTits();
+                        RefreshBalance();
+                        break;
+                    case AccountMessage.RefreshBalance:
+                        RefreshBalance();
+                        break;
+                    case AccountMessage.RefreshTits:
+                        RefreshTits();
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+            }, Account);
         }
 
         #region ViewModel_Part
@@ -71,14 +86,14 @@ namespace BFF.ViewModel.ForModels
         public override void RefreshBalance()
         {
             OnPropertyChanged(nameof(Balance));
-            //_allAccounts?.RefreshBalance(); todo
+            Messenger.Default.Send(AllAccountMessage.RefreshBalance);
         }
 
         public override void RefreshTits()
         {
             OnPreVirtualizedRefresh();
             _tits = new VirtualizingObservableCollection<TitBase>(new PaginationManager<TitBase>(new PagedTitBaseProviderAsync(Orm, Account)));
-            OnPropertyChanged(nameof(AccountViewModel.Tits));
+            OnPropertyChanged(nameof(Tits));
             OnPostVirtualizedRefresh();
         }
 
