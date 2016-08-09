@@ -9,9 +9,9 @@ using System.Windows.Threading;
 using AlphaChiTech.Virtualization;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
+using BFF.MVVM.ViewModels;
+using BFF.MVVM.Views;
 using BFF.Properties;
-using BFF.ViewModel;
-using BFF.WPFStuff.UserControls;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 

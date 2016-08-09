@@ -2,13 +2,13 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:usercontrols="clr-namespace:BFF.WPFStuff.UserControls"
-        xmlns:converters="clr-namespace:BFF.WPFStuff.Converters"
-        xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        xmlns:viewModel="clr-namespace:BFF.ViewModel"
-        xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
+                      xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                      xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
         xmlns:bff="clr-namespace:BFF"
         xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
+        xmlns:converters="clr-namespace:BFF.MVVM.Converters"
+        xmlns:views="clr-namespace:BFF.MVVM.Views"
+        xmlns:viewModel="clr-namespace:BFF.MVVM.ViewModels"
         lex:LocalizeDictionary.DesignCulture="en-US"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
@@ -126,7 +126,7 @@
                 </StackPanel>
             </controls:Flyout>
             <controls:Flyout Name="ParentTitFlyout" Position="Top" IsModal="True" IsOpen="{Binding ParentTitFlyoutOpen}"> <!-- todo lex -->
-                <usercontrols:TitDataGrid Tits="{Binding ParentTitViewModel.ParentTitSource}" 
+                <views:TitDataGrid Tits="{Binding ParentTitViewModel.ParentTitSource}" 
                                           ShowRowDetailsMode="Visible"
                                           Account="{Binding ParentTitViewModel.Account}"/>
             </controls:Flyout>
@@ -149,7 +149,7 @@
         <ContentControl Name="MainContentControl"  Content="{Binding ContentViewModel}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type viewModel:AccountTabsViewModel}">
-                    <usercontrols:AccountTabsView x:Name="MainContent" />
+                    <views:AccountTabsView x:Name="MainContent" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewModel:EmptyContentViewModel}">
                     <!-- todo: Something like a StartPage here -->

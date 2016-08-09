@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using BFF.Model.Native;
-using BFF.Model.Native.Structure;
+using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB
 {

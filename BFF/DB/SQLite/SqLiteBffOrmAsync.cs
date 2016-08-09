@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Threading.Tasks;
-using BFF.Model.Native;
-using BFF.Model.Native.Structure;
+using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using Dapper.Contrib.Extensions;
 
 namespace BFF.DB.SQLite

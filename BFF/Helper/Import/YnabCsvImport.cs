@@ -6,11 +6,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using BFF.DB;
 using BFF.DB.SQLite;
-using BFF.Model.Native.Structure;
+using BFF.MVVM;
+using BFF.MVVM.Models.Conversion.YNAB;
+using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using BFF.Properties;
-using BFF.WPFStuff;
-using YNAB = BFF.Model.Conversion.YNAB;
-using Native = BFF.Model.Native;
+using Transaction = BFF.MVVM.Models.Conversion.YNAB.Transaction;
 
 namespace BFF.Helper.Import
 {
@@ -87,40 +88,40 @@ namespace BFF.Helper.Import
         {
             //Initialization
             ProcessedAccountsList.Clear();
-            Native.Account.ClearCache();
-            Native.Payee.ClearCache();
-            Native.Category.ClearCache();
+            Account.ClearCache();
+            Payee.ClearCache();
+            Category.ClearCache();
 
             DataModelBase.Database = null; //switches off OR mapping
 
             //First step: Parse CSV data into conversion objects
-            Queue<YNAB.Transaction> ynabTransactions = new Queue<YNAB.Transaction>(ParseTransactionCsv(filePathTransaction));
-            List<YNAB.BudgetEntry> budgets = ParseBudgetCsv(filePathBudget);
+            Queue<Transaction> ynabTransactions = new Queue<Transaction>(ParseTransactionCsv(filePathTransaction));
+            List<BudgetEntry> budgets = ParseBudgetCsv(filePathBudget);
 
             //Second step: Convert conversion objects into native models
-            List<Native.Transaction> transactions = new List<Native.Transaction>();
-            List<Native.SubTransaction> subTransactions = new List<Native.SubTransaction>();
-            List<Native.Transfer> transfers = new List<Native.Transfer>();
-            List<Native.Income> incomes = new List<Native.Income>();
+            List<MVVM.Models.Native.Transaction> transactions = new List<MVVM.Models.Native.Transaction>();
+            List<SubTransaction> subTransactions = new List<SubTransaction>();
+            List<Transfer> transfers = new List<Transfer>();
+            List<Income> incomes = new List<Income>();
             ConvertTransactionsToNative(ynabTransactions, transactions, transfers, subTransactions, incomes);
             //Todo: List<Native.Budget> nativeBudgets = budgets.Select(budget => (Native.Budget)budget).ToList();
 
             //Third step: Create new database for imported data
             DataModelBase.Database = _orm; //turn on OR mapping
             SqLiteBffOrm.CreateNewDatabase(savePath);
-            _orm.PopulateDatabase(transactions, subTransactions, incomes, new List<Native.SubIncome>(), 
-                transfers, Native.Account.GetAllCache(), Native.Payee.GetAllCache(), Native.Category.GetAllCache());
+            _orm.PopulateDatabase(transactions, subTransactions, incomes, new List<SubIncome>(), 
+                transfers, Account.GetAllCache(), Payee.GetAllCache(), Category.GetAllCache());
         }
 
-        private static List<YNAB.Transaction> ParseTransactionCsv(string filePath)
+        private static List<Transaction> ParseTransactionCsv(string filePath)
         {
-            var ret = new List<YNAB.Transaction>();
+            var ret = new List<Transaction>();
             if (File.Exists(filePath))
             {
                 using (StreamReader streamReader = new StreamReader(new FileStream(filePath, FileMode.Open)))
                 {
                     string header = streamReader.ReadLine();
-                    if (header != YNAB.Transaction.CsvHeader)
+                    if (header != Transaction.CsvHeader)
                     {
                         Output.WriteLine($"The file of path '{filePath}' is not a valid YNAB transactions CSV.");
                         return null;
@@ -132,7 +133,7 @@ namespace BFF.Helper.Import
                     {
                         ret.Add(streamReader.ReadLine());
                     }
-                    YNAB.Transaction.ToOutput(ret.Last());
+                    Transaction.ToOutput(ret.Last());
                     stopwatch.Stop();
                     TimeSpan ts = stopwatch.Elapsed;
                     string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds/10:00}";
@@ -147,15 +148,15 @@ namespace BFF.Helper.Import
             return ret;
         }
 
-        private static List<YNAB.BudgetEntry> ParseBudgetCsv(string filePath)
+        private static List<BudgetEntry> ParseBudgetCsv(string filePath)
         {
-            var ret = new List<YNAB.BudgetEntry>();
+            var ret = new List<BudgetEntry>();
             if (File.Exists(filePath))
             {
                 using (StreamReader streamReader = new StreamReader(new FileStream(filePath, FileMode.Open)))
                 {
                     string header = streamReader.ReadLine();
-                    if (header != YNAB.Transaction.CsvHeader)
+                    if (header != Transaction.CsvHeader)
                     {
                         Output.WriteLine($"The file of path '{filePath}' is not a valid YNAB transactions CSV.");
                         return null;
@@ -167,7 +168,7 @@ namespace BFF.Helper.Import
                     {
                         ret.Add(streamReader.ReadLine());
                     }
-                    YNAB.BudgetEntry.ToOutput(ret.Last());
+                    BudgetEntry.ToOutput(ret.Last());
                     stopwatch.Stop();
                     TimeSpan ts = stopwatch.Elapsed;
                     string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds/10:00}";
@@ -182,26 +183,26 @@ namespace BFF.Helper.Import
             return ret;
         }
 
-        private static void ConvertTransactionsToNative(Queue<YNAB.Transaction> ynabTransactions, List<Native.Transaction> transactions, List<Native.Transfer> transfers, List<Native.SubTransaction> subTransactions, List<Native.Income> incomes )
+        private static void ConvertTransactionsToNative(Queue<Transaction> ynabTransactions, List<MVVM.Models.Native.Transaction> transactions, List<Transfer> transfers, List<SubTransaction> subTransactions, List<Income> incomes )
         {
             while (ynabTransactions.Count > 0)
             {
-                YNAB.Transaction ynabTransaction = ynabTransactions.Dequeue();
+                Transaction ynabTransaction = ynabTransactions.Dequeue();
                 if (ynabTransaction.Payee == "Starting Balance")
                 {
-                    Native.Account.GetOrCreate(ynabTransaction.Account).StartingBalance = ynabTransaction.Inflow - ynabTransaction.Outflow;
+                    Account.GetOrCreate(ynabTransaction.Account).StartingBalance = ynabTransaction.Inflow - ynabTransaction.Outflow;
                     continue;
                 }
                 
                 Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Memo);
                 if (splitMatch.Success)
                 {
-                    Native.ParentTransaction parent = (Native.ParentTransaction)ynabTransaction;
+                    ParentTransaction parent = (ParentTransaction)ynabTransaction;
                     int splitCount = int.Parse(splitMatch.Groups[nameof(splitCount)].Value);
                     int count = 0;
                     for (int i = 0; i < splitCount; i++)
                     {
-                        YNAB.Transaction newYnabTransaction = i==0 ? ynabTransaction : ynabTransactions.Dequeue();
+                        Transaction newYnabTransaction = i==0 ? ynabTransaction : ynabTransactions.Dequeue();
                         Match transferMatch = TransferPayeeRegex.Match(newYnabTransaction.Payee);
                         if (transferMatch.Success)
                             AddTransfer(transfers, newYnabTransaction);
@@ -209,7 +210,7 @@ namespace BFF.Helper.Import
                             incomes.Add(newYnabTransaction);
                         else
                         {
-                            Native.SubTransaction subTransaction = newYnabTransaction;
+                            SubTransaction subTransaction = newYnabTransaction;
                             subTransaction.Parent = parent;
                             subTransactions.Add(subTransaction);
                             count++;
@@ -241,7 +242,7 @@ namespace BFF.Helper.Import
            That way if one of the Accounts of the Transfer points to an already processed Account,
            then it means that this Transfer is already created and can be skipped. */
         private static readonly List<string> ProcessedAccountsList = new List<string>();
-        private static void AddTransfer(List<Native.Transfer> transfers, YNAB.Transaction ynabTransfer)
+        private static void AddTransfer(List<Transfer> transfers, Transaction ynabTransfer)
         {
             if (ProcessedAccountsList.Count == 0)
             {

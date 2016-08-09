@@ -2,8 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using BFF.Model.Native;
-using BFF.ViewModel.ForModels;
+using BFF.MVVM.Models.Native;
+using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.DB
 {

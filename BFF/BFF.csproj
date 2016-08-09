@@ -148,80 +148,80 @@
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />
     <Compile Include="Helper\Output.cs" />
-    <Compile Include="Model\Conversion\YNAB\BudgetEntry.cs" />
-    <Compile Include="Model\Conversion\YNAB\Transaction.cs" />
-    <Compile Include="Model\Native\AllAccounts.cs" />
-    <Compile Include="Model\Native\Account.cs" />
-    <Compile Include="Model\Native\Category.cs" />
-    <Compile Include="Model\Native\Budget.cs" />
-    <Compile Include="Model\Native\DbSetting.cs" />
-    <Compile Include="Model\Native\ISubTransInc.cs" />
-    <Compile Include="Model\Native\ITransInc.cs" />
-    <Compile Include="Model\Native\ParentIncome.cs" />
-    <Compile Include="Model\Native\Payee.cs" />
-    <Compile Include="Model\Native\Structure\CommonProperty.cs" />
-    <Compile Include="Model\Native\Structure\DataModelBase.cs" />
-    <Compile Include="Model\Native\Structure\IParentTitNoTransfer.cs" />
-    <Compile Include="Model\Native\Structure\TitLike.cs" />
-    <Compile Include="Model\Native\Structure\SubTitBase.cs" />
-    <Compile Include="Model\Native\Structure\TitBase.cs" />
-    <Compile Include="Model\Native\Structure\TitNoTransfer.cs" />
-    <Compile Include="Model\Native\SubIncome.cs" />
-    <Compile Include="Model\Native\SubTransaction.cs" />
-    <Compile Include="Model\Native\Income.cs" />
-    <Compile Include="Model\Native\ParentTransaction.cs" />
-    <Compile Include="Model\Native\TitBasePlaceholder.cs" />
-    <Compile Include="Model\Native\Transfer.cs" />
-    <Compile Include="Model\Native\Transaction.cs" />
-    <Compile Include="ViewModel\ForModels\AccountViewModelBase.cs" />
-    <Compile Include="ViewModel\ForModels\AllAccountsViewModel.cs" />
-    <Compile Include="ViewModel\ForModels\AccountViewModel.cs" />
-    <Compile Include="ViewModel\ForModels\ParentTransIncViewModel.cs" />
-    <Compile Include="ViewModel\ForModels\TitViewModelBase.cs" />
-    <Compile Include="ViewModel\ForModels\SubTransIncViewModel.cs" />
-    <Compile Include="ViewModel\ForModels\TransferViewModel.cs" />
-    <Compile Include="ViewModel\ForModels\TransIncViewModel.cs" />
-    <Compile Include="ViewModel\ImportDialogViewModel.cs" />
-    <Compile Include="ViewModel\EmptyContentViewModel.cs" />
-    <Compile Include="ViewModel\AccountTabsViewModel.cs" />
-    <Compile Include="ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="ViewModel\ParentTitViewModel.cs" />
-    <Compile Include="ViewModel\SessionViewModelBase.cs" />
-    <Compile Include="WPFStuff\Behaviors\AdditionalTabItemsBehavior.cs" />
-    <Compile Include="WPFStuff\Converters\BooleanToNullableBooleanConverter.cs" />
-    <Compile Include="WPFStuff\Converters\DateToStringConverter.cs" />
-    <Compile Include="WPFStuff\Converters\DateComboConverter.cs" />
-    <Compile Include="WPFStuff\Converters\DataGridLengthsToDoubleConverter.cs" />
-    <Compile Include="WPFStuff\Converters\CurrencyComboConverter.cs" />
-    <Compile Include="WPFStuff\Converters\DataGridWidthsToLeftMarginConverter.cs" />
-    <Compile Include="WPFStuff\Converters\NegativeTransferMultiConverter.cs" />
-    <Compile Include="WPFStuff\Converters\BooleanToDatePickerFormatConverter.cs" />
-    <Compile Include="WPFStuff\Converters\SumConverter.cs" />
-    <Compile Include="WPFStuff\Converters\SumColorMultiConverter.cs" />
-    <Compile Include="WPFStuff\Converters\SumToBrushConverter.cs" />
-    <Compile Include="WPFStuff\Messages.cs" />
-    <Compile Include="WPFStuff\Messenger.cs" />
-    <Compile Include="WPFStuff\RelayCommand.cs" />
-    <Compile Include="WPFStuff\UserControls\AccountTabsView.xaml.cs">
+    <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />
+    <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
+    <Compile Include="MVVM\Models\Native\AllAccounts.cs" />
+    <Compile Include="MVVM\Models\Native\Account.cs" />
+    <Compile Include="MVVM\Models\Native\Category.cs" />
+    <Compile Include="MVVM\Models\Native\Budget.cs" />
+    <Compile Include="MVVM\Models\Native\DbSetting.cs" />
+    <Compile Include="MVVM\Models\Native\ISubTransInc.cs" />
+    <Compile Include="MVVM\Models\Native\ITransInc.cs" />
+    <Compile Include="MVVM\Models\Native\ParentIncome.cs" />
+    <Compile Include="MVVM\Models\Native\Payee.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\CommonProperty.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\DataModelBase.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\IParentTitNoTransfer.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\TitLike.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\SubTitBase.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\TitBase.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\TitNoTransfer.cs" />
+    <Compile Include="MVVM\Models\Native\SubIncome.cs" />
+    <Compile Include="MVVM\Models\Native\SubTransaction.cs" />
+    <Compile Include="MVVM\Models\Native\Income.cs" />
+    <Compile Include="MVVM\Models\Native\ParentTransaction.cs" />
+    <Compile Include="MVVM\Models\Native\TitBasePlaceholder.cs" />
+    <Compile Include="MVVM\Models\Native\Transfer.cs" />
+    <Compile Include="MVVM\Models\Native\Transaction.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\AccountViewModelBase.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\AllAccountsViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\AccountViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\ParentTransIncViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\TitViewModelBase.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\SubTransIncViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\TransferViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\TransIncViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ImportDialogViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\EmptyContentViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\AccountTabsViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ParentTitViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\SessionViewModelBase.cs" />
+    <Compile Include="MVVM\AttachedBehaviors\AdditionalTabItemsBehavior.cs" />
+    <Compile Include="MVVM\Converters\BooleanToNullableBooleanConverter.cs" />
+    <Compile Include="MVVM\Converters\DateToStringConverter.cs" />
+    <Compile Include="MVVM\Converters\DateComboConverter.cs" />
+    <Compile Include="MVVM\Converters\DataGridLengthsToDoubleConverter.cs" />
+    <Compile Include="MVVM\Converters\CurrencyComboConverter.cs" />
+    <Compile Include="MVVM\Converters\DataGridWidthsToLeftMarginConverter.cs" />
+    <Compile Include="MVVM\Converters\NegativeTransferMultiConverter.cs" />
+    <Compile Include="MVVM\Converters\BooleanToDatePickerFormatConverter.cs" />
+    <Compile Include="MVVM\Converters\SumConverter.cs" />
+    <Compile Include="MVVM\Converters\SumColorMultiConverter.cs" />
+    <Compile Include="MVVM\Converters\SumToBrushConverter.cs" />
+    <Compile Include="MVVM\Messages.cs" />
+    <Compile Include="MVVM\Messenger.cs" />
+    <Compile Include="MVVM\RelayCommand.cs" />
+    <Compile Include="MVVM\Views\AccountTabsView.xaml.cs">
       <DependentUpon>AccountTabsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPFStuff\UserControls\ImportDialog.xaml.cs">
+    <Compile Include="MVVM\Views\ImportDialog.xaml.cs">
       <DependentUpon>ImportDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPFStuff\UserControls\AccountView.xaml.cs">
+    <Compile Include="MVVM\Views\AccountView.xaml.cs">
       <DependentUpon>AccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPFStuff\ObservableObject.cs" />
-    <Compile Include="WPFStuff\UserControls\TitDataGrid.xaml.cs">
+    <Compile Include="MVVM\ObservableObject.cs" />
+    <Compile Include="MVVM\Views\TitDataGrid.xaml.cs">
       <DependentUpon>TitDataGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPFStuff\ValidationRules\CurrencyLongRangeRule.cs" />
-    <Compile Include="WPFStuff\ValidationRules\NoEmptyFileNameRule.cs" />
-    <Compile Include="WPFStuff\ValidationRules\NotExistingSavePathRule.cs" />
-    <Compile Include="WPFStuff\ValidationRules\NotExistingFilePathRule.cs" />
-    <Compile Include="WPFStuff\ValidationRules\NoNullRule.cs" />
-    <Compile Include="WPFStuff\ValidationRules\NoEmptyNullStringRule.cs" />
-    <Compile Include="WPFStuff\ValidationRules\CurrencyRule.cs" />
+    <Compile Include="MVVM\ValidationRules\CurrencyLongRangeRule.cs" />
+    <Compile Include="MVVM\ValidationRules\NoEmptyFileNameRule.cs" />
+    <Compile Include="MVVM\ValidationRules\NotExistingSavePathRule.cs" />
+    <Compile Include="MVVM\ValidationRules\NotExistingFilePathRule.cs" />
+    <Compile Include="MVVM\ValidationRules\NoNullRule.cs" />
+    <Compile Include="MVVM\ValidationRules\NoEmptyNullStringRule.cs" />
+    <Compile Include="MVVM\ValidationRules\CurrencyRule.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -238,23 +238,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WPFStuff\Resources\BFF_ModifiedMAMCheckBox.xaml">
+    <Page Include="MVVM\Resources\BFF_ModifiedMAMCheckBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WPFStuff\UserControls\AccountTabsView.xaml">
+    <Page Include="MVVM\Views\AccountTabsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPFStuff\UserControls\ImportDialog.xaml">
+    <Page Include="MVVM\Views\ImportDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPFStuff\UserControls\AccountView.xaml">
+    <Page Include="MVVM\Views\AccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WPFStuff\UserControls\TitDataGrid.xaml">
+    <Page Include="MVVM\Views\TitDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -318,7 +318,7 @@
     <Resource Include="Icons\logo_quadratic.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="WPFStuff\AttachedProperties\" />
+    <Folder Include="MVVM\AttachedProperties\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
