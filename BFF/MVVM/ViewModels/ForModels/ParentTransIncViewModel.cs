@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,7 +8,7 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    class ParentTransIncViewModel<T> : TransIncViewModel where T : ISubTransInc
+    abstract class ParentTransIncViewModel<T> : TransIncViewModel where T : ISubTransInc
     {
         private ObservableCollection<SubTransIncViewModel> _subElements; 
 
@@ -45,23 +44,12 @@ namespace BFF.MVVM.ViewModels.ForModels
             }
         }
 
-        public ParentTransIncViewModel(IParentTransInc<T> transInc, IBffOrm orm) : base(transInc, orm) { }
+        protected ParentTransIncViewModel(IParentTransInc<T> transInc, IBffOrm orm) : base(transInc, orm) { }
 
         public override bool ValidToInsert()
         {
             return Account != null && (Orm?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) &&
                    Payee   != null &&  Orm .AllPayees.Contains(Payee) && NewSubElements.All(subElement => subElement.ValidToInsert());
-        }
-
-        public override void Insert()
-        {
-            if (TransInc is ParentTransaction)
-                Orm?.Insert(TransInc as ParentTransaction);
-            else if (TransInc is ParentIncome)
-                Orm?.Insert(TransInc as ParentIncome);
-            else
-                throw new NotImplementedException($"{TransInc.GetType().FullName} is not supported as {nameof(ParentTransaction)} or {nameof(ParentIncome)}."); //todo Localization
-
         }
     }
 }

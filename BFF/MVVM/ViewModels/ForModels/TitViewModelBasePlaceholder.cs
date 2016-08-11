@@ -1,7 +1,6 @@
 ﻿using BFF.DB;
-using BFF.MVVM.ViewModels.ForModels;
 
-namespace BFF.MVVM.Models.Native
+namespace BFF.MVVM.ViewModels.ForModels
 {
     sealed class TitViewModelBasePlaceholder : TitViewModelBase
     {

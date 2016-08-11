@@ -25,12 +25,12 @@ namespace BFF.MVVM.Views
         }
 
         public static readonly DependencyProperty AccountViewModelProperty = DependencyProperty.Register(
-            nameof(AccountViewModel), typeof(AccountViewModel), typeof(TitDataGrid), 
-            new PropertyMetadata(default(AccountViewModel), OnAccountViewModelChanged));
+            nameof(AccountViewModel), typeof(AccountViewModelBase), typeof(TitDataGrid), 
+            new PropertyMetadata(default(AccountViewModelBase), OnAccountViewModelChanged));
 
-        public AccountViewModel AccountViewModel
+        public AccountViewModelBase AccountViewModel
         {
-            get { return (AccountViewModel) GetValue(AccountViewModelProperty); }
+            get { return (AccountViewModelBase) GetValue(AccountViewModelProperty); }
             set { SetValue(AccountViewModelProperty, value); }
         }
 
@@ -200,13 +200,13 @@ namespace BFF.MVVM.Views
 
         private static void OnAccountViewModelChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            AccountViewModel oldAccount = (AccountViewModel) args.OldValue;
+            AccountViewModelBase oldAccount = (AccountViewModelBase) args.OldValue;
             if (oldAccount != null)
             {
                 oldAccount.PreVirtualizedRefresh -= ((TitDataGrid)sender).PreVirtualizedRefresh;
                 oldAccount.PostVirtualizedRefresh -= ((TitDataGrid)sender).PostVirtualizedRefresh;
             }
-            AccountViewModel newAccount = (AccountViewModel) args.NewValue;
+            AccountViewModelBase newAccount = (AccountViewModelBase) args.NewValue;
             if (newAccount != null)
             {
                 newAccount.PreVirtualizedRefresh += ((TitDataGrid)sender).PreVirtualizedRefresh;

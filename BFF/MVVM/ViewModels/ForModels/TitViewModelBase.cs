@@ -1,5 +1,6 @@
 ﻿using System;
 using BFF.DB;
+using BFF.MVVM.Models.Native;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {

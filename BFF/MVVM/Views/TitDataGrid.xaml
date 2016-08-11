@@ -10,6 +10,7 @@
              xmlns:converters="clr-namespace:BFF.MVVM.Converters"
              xmlns:native="clr-namespace:BFF.MVVM.Models.Native"
              xmlns:structure="clr-namespace:BFF.MVVM.Models.Native.Structure"
+             xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              x:Name="Root">
@@ -91,16 +92,22 @@
             <DataTemplate x:Key="SymbolColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type native:Transaction}">
+                        <DataTemplate DataType="{x:Type forModels:TransactionViewModel}">
                             <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Foreground="{DynamicResource TransactionBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:Income}">
+                        <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
+                            <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Foreground="{DynamicResource TransactionBrush}" Style="{StaticResource CellIconMaterial}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type forModels:IncomeViewModel}">
                             <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Foreground="{DynamicResource IncomeBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:Transfer}">
+                        <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
+                            <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Foreground="{DynamicResource IncomeBrush}" Style="{StaticResource CellIconMaterial}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <metro:PackIconMaterial Kind="{StaticResource TransferIcon}" Foreground="{DynamicResource TransferBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}">
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBasePlaceholder}">
                             <metro:PackIconMaterial Kind="{StaticResource PlaceholderIcon}" Foreground="{DynamicResource BlackBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
                     </ContentControl.Resources>
@@ -110,20 +117,20 @@
             <DataTemplate x:Key="AccountColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitNoTransfer}">
+                        <DataTemplate DataType="{x:Type forModels:TransIncViewModel}">
                             <TextBlock Text="{Binding Account}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:Transfer}">
+                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <TextBlock Text="{lex:Loc AccountView_Column_Transfer}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
             <DataTemplate  x:Key="AccountEditingColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitNoTransfer}">
+                        <DataTemplate DataType="{x:Type forModels:TransIncViewModel}">
                             <ComboBox TextSearch.TextPath="Name"
                                       IsEditable="True"
                                       IsTextSearchCaseSensitive="False"
@@ -138,10 +145,10 @@
                                 </ComboBox.SelectedItem>
                             </ComboBox>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:Transfer}">
+                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <TextBlock Text="{lex:Loc AccountView_Column_Transfer}" Style="{StaticResource CellTextBlock}"/>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -149,21 +156,21 @@
             <DataTemplate x:Key="DateColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitBase}">
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBase}">
                             <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringConverter}}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
             <DataTemplate x:Key="DateEditingColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitBase}">
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBase}">
                             <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"
                                         SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitsView, Converter={StaticResource BooleanToDatePickerFormatConverter}}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -171,23 +178,23 @@
             <DataTemplate x:Key="PayeeColumnTemplate">
                 <ContentControl HorizontalAlignment="Stretch" Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
+                        <DataTemplate DataType="{x:Type forModels:TransIncViewModel}" >
                             <TextBlock Text="{Binding Payee}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:Transfer}">
+                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding FromAccount}" Style="{StaticResource CellTextBlock}" />
                                 <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" />
                             </StackPanel>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
             <DataTemplate x:Key="PayeeEditingColumnTemplate">
                 <ContentControl HorizontalAlignment="Stretch" Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitNoTransfer}" >
+                        <DataTemplate DataType="{x:Type forModels:TransIncViewModel}" >
                             <DockPanel LastChildFill="True">
                                 <Button DockPanel.Dock="Right" Command="{Binding AddPayeeCommand}" Padding="0">
                                     <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Foreground="{DynamicResource BlackColorBrush}" Style="{StaticResource CellIconMaterial}" />
@@ -209,7 +216,7 @@
                                 </ComboBox>
                             </DockPanel>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:Transfer}">
+                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <ComboBox TextSearch.TextPath="Name"
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
@@ -221,7 +228,7 @@
                                 </ComboBox.SelectedItem>
                             </ComboBox>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -229,26 +236,26 @@
             <DataTemplate x:Key="CategoryColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitLike}">
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBase}">
                             <TextBlock Text="{Binding Category.Name}" ToolTip="{Binding Category.FullName}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:ParentTransaction}">
+                        <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
                             <Button Command="{Binding OpenParentTitView}" CommandParameter="{Binding Account}" BorderThickness="0" HorizontalContentAlignment="Left" Margin="0" Padding="0" Background="Transparent">
                                 <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                             </Button>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:ParentIncome}">
+                        <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
                             <Button Command="{Binding OpenParentTitView}" CommandParameter="{Binding Account}" BorderThickness="0" HorizontalContentAlignment="Left" Margin="0" Padding="0" Background="Transparent">
                                 <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                             </Button>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:Transfer}">
+                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding ToAccount}" Style="{StaticResource CellTextBlock}" />
                                 <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" />
                             </StackPanel>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -258,7 +265,7 @@
                         <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
                             <TextBlock Text="{Binding}" FontSize="12" />
                         </HierarchicalDataTemplate>
-                        <DataTemplate DataType="{x:Type structure:TitLike}">
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBase}">
                             <DockPanel LastChildFill="True">
                                 <controls:SplitButton DockPanel.Dock="Right" Orientation="Horizontal" Command="{Binding AddCategoryCommand}" SelectedItem="{Binding AddingCategoryParent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       ItemsSource="{Binding AllCategories}">
@@ -281,13 +288,15 @@
                                 </ComboBox>
                             </DockPanel>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:ParentTransaction}">
+                        <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
+                            <!-- todo -->
                             <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:ParentIncome}">
+                        <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
+                            <!-- todo -->
                             <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:Transfer}">
+                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <ComboBox TextSearch.TextPath="Name"
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
@@ -299,7 +308,7 @@
                                 </ComboBox.SelectedItem>
                             </ComboBox>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -307,7 +316,7 @@
             <DataTemplate x:Key="MemoColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitLike}">
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBase}">
                             <TextBlock Text="{Binding Memo, Mode=OneWay}" ToolTip="{Binding Memo}" TextTrimming="CharacterEllipsis" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                     </ContentControl.Resources>
@@ -316,7 +325,7 @@
             <DataTemplate x:Key="MemoEditingColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitLike}">
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBase}">
                             <TextBox Text="{Binding Memo, UpdateSourceTrigger=LostFocus}" TextWrapping="NoWrap" VerticalAlignment="Stretch" VerticalContentAlignment="Center" />
                         </DataTemplate>
                     </ContentControl.Resources>
@@ -326,7 +335,7 @@
             <DataTemplate x:Key="SumColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type native:Transfer}">
+                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <TextBlock Name="TitGrid_SumBox" TextAlignment="Right" Style="{StaticResource CellTextBlock}" Padding="0,0,5,0">
                                 <TextBlock.Text>
                                     <MultiBinding Converter="{StaticResource NegativeTransferMultiConverter}">
@@ -344,19 +353,19 @@
                                 </TextBlock.Foreground>
                             </TextBlock>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type structure:TitLike}">
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBase}">
                             <TextBlock Name="TitGrid_SumBox" TextAlignment="Right"  Style="{StaticResource CellTextBlock}"  Padding="0,0,5,0"
                                        Foreground="{Binding Sum, Converter={StaticResource SumToBrushConverter}}"
                                        Text="{Binding Sum, Converter={StaticResource SumConverter}}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
             <DataTemplate  x:Key="SumEditingColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type native:Transfer}">
+                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <TextBox Name="TitGrid_SumBox" TextAlignment="Right" VerticalContentAlignment="Center">
                                 <TextBox.Foreground>
                                     <MultiBinding Converter="{StaticResource SumColorMultiConverter}">
@@ -375,7 +384,7 @@
                                 </TextBox.Text>
                             </TextBox>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type structure:TitLike}">
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBase}">
                             <TextBox Name="TitGrid_SumBox" TextAlignment="Right" VerticalContentAlignment="Center"
                                        Foreground="{Binding Sum, Converter={StaticResource SumToBrushConverter}}">
                                 <TextBox.Text>
@@ -388,7 +397,7 @@
                                 </TextBox.Text>
                             </TextBox>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -628,13 +637,13 @@
                             </MultiBinding>
                         </ContentControl.Width>
                         <ContentControl.Resources>
-                            <DataTemplate DataType="{x:Type native:ParentTransaction}">
+                            <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
                                 <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsShowFormTemplate}"/>
                             </DataTemplate>
-                            <DataTemplate DataType="{x:Type native:ParentIncome}">
+                            <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
                                 <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsShowFormTemplate}"/>
                             </DataTemplate>
-                            <DataTemplate DataType="{x:Type structure:TitLike}">
+                            <DataTemplate DataType="{x:Type forModels:TitViewModelBase}">
                                 <ContentControl Content="{Binding}" ContentTemplate="{StaticResource EmptyDataTemplate}"/>
                             </DataTemplate>
                         </ContentControl.Resources>
@@ -735,13 +744,13 @@
                                 </MultiBinding>
                             </ContentControl.Width>
                             <ContentControl.Resources>
-                                <DataTemplate DataType="{x:Type native:ParentTransaction}">
+                                <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
                                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingFormTemplate}"/>
                                 </DataTemplate>
-                                <DataTemplate DataType="{x:Type native:ParentIncome}">
+                                <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
                                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingFormTemplate}"/>
                                 </DataTemplate>
-                                <DataTemplate DataType="{x:Type structure:TitLike}">
+                                <DataTemplate DataType="{x:Type forModels:TitViewModelBase}">
                                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource EmptyDataTemplate}"/>
                                 </DataTemplate>
                             </ContentControl.Resources>

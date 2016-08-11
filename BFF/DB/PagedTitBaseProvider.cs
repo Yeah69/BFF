@@ -40,11 +40,13 @@ namespace BFF.DB
                 if(item is Transfer)
                     vmItems.Add(new TransferViewModel(item as Transfer, Orm));
                 else if (item is ParentTransaction)
-                    vmItems.Add(new ParentTransIncViewModel<SubTransaction>(item as IParentTransInc<SubTransaction>, Orm));
+                    vmItems.Add(new ParentTransactionViewModel(item as ParentTransaction, Orm));
                 else if (item is ParentIncome)
-                    vmItems.Add(new ParentTransIncViewModel<SubIncome>(item as IParentTransInc<SubIncome>, Orm));
-                else if(item is Transaction || item is Income)
-                    vmItems.Add(new TransIncViewModel(item as ITransInc, Orm));
+                    vmItems.Add(new ParentIncomeViewModel(item as ParentIncome, Orm));
+                else if (item is Transaction)
+                    vmItems.Add(new TransactionViewModel(item as Transaction, Orm));
+                else if (item is Income)
+                    vmItems.Add(new IncomeViewModel(item as Income, Orm));
             }
             return new PagedSourceItemsPacket<TitViewModelBase> { Items = vmItems , LoadedAt = DateTime.Now };
         }
