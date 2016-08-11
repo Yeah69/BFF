@@ -64,6 +64,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 OnPropertyChanged();
             }
         }
+
         public bool Cleared
         {
             get { return TransInc.Cleared; }
@@ -79,6 +80,24 @@ namespace BFF.MVVM.ViewModels.ForModels
         public TransIncViewModel(ITransInc transInc, IBffOrm orm) : base(orm)
         {
             TransInc = transInc;
+        }
+
+        public override bool ValidToInsert()
+        {
+            return Account != null  && (Orm?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) &&
+                   Payee != null    &&  Orm .AllPayees.Contains(Payee) &&
+                   Category != null &&  Orm .AllCategories.Contains(Category);
+        }
+
+        public override void Insert()
+        {
+            if(TransInc is Transaction)
+                Orm?.Insert(TransInc as Transaction);
+            else if(TransInc is Income)
+                Orm?.Insert(TransInc as Income);
+            else
+                throw new NotImplementedException($"{TransInc.GetType().FullName} is not supported as {nameof(Transaction)} or {nameof(Income)}."); //todo Localization
+
         }
     }
 }

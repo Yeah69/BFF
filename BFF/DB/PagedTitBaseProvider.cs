@@ -1,20 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AlphaChiTech.Virtualization;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.DB
 {
-    class PagedTitBaseProvider : IPagedSourceProvider<TitBase>
+    class PagedTitBaseProvider : IPagedSourceProvider<TitViewModelBase>
     {
-        protected readonly IPagedOrm Orm;
+        protected readonly IPagedOrm PagedOrm;
+        protected readonly IBffOrm Orm;
         protected readonly Account Account;
 
-        public PagedTitBaseProvider(IPagedOrm orm, Account account)
+        public PagedTitBaseProvider(IPagedOrm pagedOrm, Account account, IBffOrm orm)
         {
-            Orm = orm;
+            PagedOrm = pagedOrm;
             Account = account;
+            Orm = orm;
         }
 
         #region Implementation of IBaseSourceProvider
@@ -27,37 +31,50 @@ namespace BFF.DB
 
         #region Implementation of IItemSourceProvider<T>
 
-        public PagedSourceItemsPacket<TitBase> GetItemsAt(int pageoffset, int count, bool usePlaceholder)
+        public PagedSourceItemsPacket<TitViewModelBase> GetItemsAt(int pageoffset, int count, bool usePlaceholder)
         {
-            return new PagedSourceItemsPacket<TitBase> { Items = Orm.GetPage<TitBase>(pageoffset, count, Account), LoadedAt = DateTime.Now };
+            IEnumerable<TitBase> items = PagedOrm.GetPage<TitBase>(pageoffset, count, Account);
+            IList<TitViewModelBase> vmItems = new List<TitViewModelBase>();
+            foreach(TitBase item in items)
+            {
+                if(item is Transfer)
+                    vmItems.Add(new TransferViewModel(item as Transfer, Orm));
+                else if (item is ParentTransaction)
+                    vmItems.Add(new ParentTransIncViewModel<SubTransaction>(item as IParentTransInc<SubTransaction>, Orm));
+                else if (item is ParentIncome)
+                    vmItems.Add(new ParentTransIncViewModel<SubIncome>(item as IParentTransInc<SubIncome>, Orm));
+                else if(item is Transaction || item is Income)
+                    vmItems.Add(new TransIncViewModel(item as ITransInc, Orm));
+            }
+            return new PagedSourceItemsPacket<TitViewModelBase> { Items = vmItems , LoadedAt = DateTime.Now };
         }
 
-        public int IndexOf(TitBase item)
+        public int IndexOf(TitViewModelBase item)
         {
             return -1; //todo: Find a way
         }
 
-        public int Count => Orm.GetCount<TitBase>(Account);
+        public int Count => PagedOrm.GetCount<TitBase>(Account);
 
         #endregion
     }
-    class PagedTitBaseProviderAsync : PagedTitBaseProvider, IPagedSourceProviderAsync<TitBase>
+    class PagedTitBaseProviderAsync : PagedTitBaseProvider, IPagedSourceProviderAsync<TitViewModelBase>
     {
 
-        public PagedTitBaseProviderAsync(IPagedOrm orm, Account account) : base(orm, account)
+        public PagedTitBaseProviderAsync(IPagedOrm pagedOrm, Account account, IBffOrm orm) : base(pagedOrm, account, orm)
         {
         }
 
         #region Implementation of IPagedSourceProviderAsync<TitBase>
 
-        public Task<PagedSourceItemsPacket<TitBase>>  GetItemsAtAsync(int pageoffset, int count, bool usePlaceholder)
+        public Task<PagedSourceItemsPacket<TitViewModelBase>>  GetItemsAtAsync(int pageoffset, int count, bool usePlaceholder)
         {
             return Task.Run(() => GetItemsAt(pageoffset, count, usePlaceholder));
         }
 
-        public TitBase GetPlaceHolder(int index, int page, int offset)
+        public TitViewModelBase GetPlaceHolder(int index, int page, int offset)
         {
-            return new TitBasePlaceholder(DateTime.Now);
+            return new TitViewModelBasePlaceholder(Orm);
         }
 
         public Task<int> GetCountAsync()
@@ -65,7 +82,7 @@ namespace BFF.DB
             return Task.Run(() => Count);
         }
 
-        public Task<int> IndexOfAsync(TitBase item)
+        public Task<int> IndexOfAsync(TitViewModelBase item)
         {
             return Task.Run(() => IndexOf(item));
         }

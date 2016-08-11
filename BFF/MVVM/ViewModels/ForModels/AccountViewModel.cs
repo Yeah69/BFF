@@ -69,10 +69,10 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region ViewModel_Part
 
-        public override VirtualizingObservableCollection<TitBase> Tits => _tits ?? 
-            (_tits = new VirtualizingObservableCollection<TitBase>(new PaginationManager<TitBase>(new PagedTitBaseProviderAsync(Orm, Account))));
+        public override VirtualizingObservableCollection<TitViewModelBase> Tits => _tits ?? 
+            (_tits = new VirtualizingObservableCollection<TitViewModelBase>(new PaginationManager<TitViewModelBase>(new PagedTitBaseProviderAsync(Orm, Account, Orm))));
         
-        public override ObservableCollection<TitBase> NewTits { get; set; } = new ObservableCollection<TitBase>();
+        public override ObservableCollection<TitViewModelBase> NewTits { get; set; } = new ObservableCollection<TitViewModelBase>();
 
         public override long? Balance
         {
@@ -91,34 +91,34 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override void RefreshTits()
         {
             OnPreVirtualizedRefresh();
-            _tits = new VirtualizingObservableCollection<TitBase>(new PaginationManager<TitBase>(new PagedTitBaseProviderAsync(Orm, Account)));
+            _tits = new VirtualizingObservableCollection<TitViewModelBase>(new PaginationManager<TitViewModelBase>(new PagedTitBaseProviderAsync(Orm, Account, Orm)));
             OnPropertyChanged(nameof(Tits));
             OnPostVirtualizedRefresh();
         }
 
         public override ICommand NewTransactionCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Transaction(DateTime.Today, Account, memo: "", sum: 0L, cleared: false));
+            NewTits.Add(new TransIncViewModel(new Transaction(DateTime.Today, Account, memo: "", sum: 0L, cleared: false), Orm));
         });
         
         public override ICommand NewIncomeCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Income(DateTime.Today, Account, memo: "", sum: 0L, cleared: false));
+            NewTits.Add(new TransIncViewModel(new Income(DateTime.Today, Account, memo: "", sum: 0L, cleared: false), Orm));
         });
         
         public override ICommand NewTransferCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new Transfer(DateTime.Today, memo: "", sum: 0L, cleared: false));
+            NewTits.Add(new TransferViewModel(new Transfer(DateTime.Today, memo: "", sum: 0L, cleared: false), Orm));
         });
         
         public override ICommand NewParentTransactionCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new ParentTransaction(DateTime.Today, Account, memo: "", cleared: false));
+            NewTits.Add(new ParentTransIncViewModel<SubTransaction>(new ParentTransaction(DateTime.Today, Account, memo: "", cleared: false), Orm));
         });
         
         public override ICommand NewParentIncomeCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new ParentIncome(DateTime.Today, Account, memo: "", cleared: false));
+            NewTits.Add(new ParentTransIncViewModel<SubIncome>(new ParentIncome(DateTime.Today, Account, memo: "", cleared: false), Orm));
         });
         
         public override ICommand ApplyCommand => new RelayCommand(obj =>

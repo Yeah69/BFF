@@ -9,6 +9,8 @@ namespace BFF.MVVM.Models.Native
     /// </summary>
     public class Income : TitNoTransfer, ITransInc
     {
+        private TitNoTransfer _parent;
+
         /// <summary>
         /// Initializes the object
         /// </summary>

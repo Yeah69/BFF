@@ -15,7 +15,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     public abstract class AccountViewModelBase : ObservableObject, IVirtualizedRefresh
     {
         protected IBffOrm Orm;
-        protected VirtualizingObservableCollection<TitBase> _tits;
+        protected VirtualizingObservableCollection<TitViewModelBase> _tits;
 
         /// <summary>
         /// Starting balance of the Account
@@ -23,8 +23,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         public abstract long StartingBalance { get; set; }
 
         public abstract string Name { get; set; }
-        public abstract VirtualizingObservableCollection<TitBase> Tits { get; }
-        public abstract ObservableCollection<TitBase> NewTits { get; set; }
+        public abstract VirtualizingObservableCollection<TitViewModelBase> Tits { get; }
+        public abstract ObservableCollection<TitViewModelBase> NewTits { get; set; }
         public abstract long? Balance { get; set; }
         public ObservableCollection<Account> AllAccounts => Orm?.CommonPropertyProvider.Accounts;
         public ObservableCollection<Payee> AllPayees => Orm?.AllPayees;
@@ -81,8 +81,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         protected void ApplyTits()
         {
             List<AccountViewModel> accountViewModels = new List<AccountViewModel>();
-            List<TitBase> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
-            foreach (TitBase tit in insertTits)
+            List<TitViewModelBase> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
+            foreach (TitViewModelBase tit in insertTits)
             {
                 tit.Insert();
                 NewTits.Remove(tit);
@@ -106,11 +106,11 @@ namespace BFF.MVVM.ViewModels.ForModels
                     }
                     parentIncome.NewSubElements.Clear();
                 }
-                if (tit is TitNoTransfer)
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel((tit as TitNoTransfer).Account.Id));
-                if (tit is Transfer)
+                if (tit is TransIncViewModel)
+                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel((tit as TransIncViewModel).Account.Id));
+                if (tit is TransferViewModel)
                 {
-                    Transfer transfer = tit as Transfer;
+                    TransferViewModel transfer = tit as TransferViewModel;
                     accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transfer.FromAccount.Id));
                     accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transfer.ToAccount.Id));
                 }

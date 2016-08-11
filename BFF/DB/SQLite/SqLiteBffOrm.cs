@@ -65,7 +65,7 @@ namespace BFF.DB.SQLite
             IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories)
         {
             Logger.Info("Populating the current database.");
-            _dbLockFlag = true;
+            DbLockFlag = true;
             using (var transactionScope = new DbTransactions.TransactionScope(DbTransactions.TransactionScopeOption.RequiresNew, new DbTransactions.TransactionOptions {IsolationLevel = DbTransactions.IsolationLevel.RepeatableRead}))
             {
 
@@ -93,13 +93,13 @@ namespace BFF.DB.SQLite
 
                 transactionScope.Complete();
             }
-            _dbLockFlag = false;
+            DbLockFlag = false;
         }
 
         public IEnumerable<TitBase> GetAllTits(DateTime startDate, DateTime endDate, Account account = null)
         {
             Logger.Debug("Getting all TITs from {0} between {1} and {2}.", account?.Name ?? "AllAccounts", startDate, endDate);
-            _dbLockFlag = true;
+            DbLockFlag = true;
             IEnumerable<TitBase> results;
 
             string accountAddition = $"WHERE date({nameof(TitBase.Date)}) BETWEEN date('{startDate.ToString("yyyy-MM-dd")}') AND date('{endDate.ToString("yyyy-MM-dd")}') ";
@@ -121,7 +121,7 @@ namespace BFF.DB.SQLite
                 transactionScope.Complete();
             }
 
-            _dbLockFlag = false;
+            DbLockFlag = false;
             return results;
         }
 
@@ -150,7 +150,7 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public IEnumerable<T> GetSubTransInc<T>(long parentId) where T : SubTitBase
+        public IEnumerable<T> GetSubTransInc<T>(long parentId) where T : ISubTransInc
         {
             Logger.Debug("Getting SubTransactions/SubIncomes from table {0} with the ParentId {1}.", typeof(T).Name, parentId);
             IEnumerable<T> ret;
@@ -167,7 +167,7 @@ namespace BFF.DB.SQLite
         public IEnumerable<T> GetAll<T>() where T : DataModelBase
         {
             Logger.Debug("Getting all entries from table {0}.", typeof(T).Name);
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 IEnumerable<T> ret;
                 using (var transactionScope = new DbTransactions.TransactionScope())
@@ -184,7 +184,7 @@ namespace BFF.DB.SQLite
         {
             Logger.Debug("Insert an entry into table {0}.", typeof(T).Name);
             long ret = -1L;
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 using (var transactionScope = new DbTransactions.TransactionScope())
                 {
@@ -223,7 +223,7 @@ namespace BFF.DB.SQLite
 
         public T Get<T>(long id) where T : DataModelBase
         {
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 T ret;
                 using (var transactionScope = new DbTransactions.TransactionScope())
@@ -238,7 +238,7 @@ namespace BFF.DB.SQLite
         
         public void Update<T>(T dataModelBase) where T : DataModelBase
         {
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 using (var transactionScope = new DbTransactions.TransactionScope())
                 {
@@ -251,7 +251,7 @@ namespace BFF.DB.SQLite
         public void Delete<T>(T dataModelBase) where T : DataModelBase
         {
             Logger.Debug("Delete an entry from table {0}.", typeof(T).Name);
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 using (var transactionScope = new DbTransactions.TransactionScope())
                 {
@@ -272,7 +272,7 @@ namespace BFF.DB.SQLite
 
         protected string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;";
 
-        protected bool _dbLockFlag;
+        protected bool DbLockFlag;
 
         private const string TheTitName = "The Tit";
 
@@ -345,7 +345,7 @@ namespace BFF.DB.SQLite
             foreach (Payee payee in GetAll<Payee>())
                 AllPayees.Add(payee);
             Dictionary<long, Category> catagoryDictionary = new Dictionary<long, Category>();
-            IEnumerable<Category> categories = new List<Category>();
+            IEnumerable<Category> categories;
             using (var cnnTransaction = new DbTransactions.TransactionScope())
             {
                 //Catagories may reference itself, so a custom mapping is responsible for delaying referencing the Parent per dummy with the Parent-Id
@@ -393,13 +393,13 @@ namespace BFF.DB.SQLite
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
         {
             Logger.Debug("Getting a page of entries from table {0} of page size {1} by offsett {2}.", typeof(T).Name, pageSize, offset);
-            _dbLockFlag = true;
+            DbLockFlag = true;
             IEnumerable<T> ret;
             using (var cnnTransaction = new DbTransactions.TransactionScope())
             {
                 if (typeof(T) != typeof(TitBase))
                 {
-                    string query = $"SELECT * FROM [{nameof(T)}s] LIMIT {offset}, {pageSize};";
+                    string query = $"SELECT * FROM [{typeof(T).Name}s] LIMIT {offset}, {pageSize};";
                     ret = Cnn.Query<T>(query);
                 }
                 else
@@ -418,7 +418,7 @@ namespace BFF.DB.SQLite
                 }
                 cnnTransaction.Complete();
             }
-            _dbLockFlag = false;
+            DbLockFlag = false;
             return ret;
         }
 
@@ -428,7 +428,7 @@ namespace BFF.DB.SQLite
             int ret;
             string query;
             if(typeof(T) != typeof(TitBase))
-                query = $"SELECT COUNT(*) FROM {nameof(T)};";
+                query = $"SELECT COUNT(*) FROM {typeof(T).Name};";
             else
             {
                 string specifyingAddition = "";

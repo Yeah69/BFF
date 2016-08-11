@@ -1,9 +1,9 @@
-﻿namespace BFF.MVVM.Models.Native
+﻿using BFF.MVVM.Models.Native.Structure;
+
+namespace BFF.MVVM.Models.Native
 {
-    interface ISubTransInc
+    public interface ISubTransInc : IBasicTit
     {
-        Category Category { get; set; }
-        string Memo { get; set; }
-        long Sum { get; set; }
+        TitNoTransfer Parent { get; set; }
     }
 }

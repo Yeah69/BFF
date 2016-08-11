@@ -15,7 +15,7 @@ namespace BFF.DB
             IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories);
         IEnumerable<TitBase> GetAllTits(DateTime startTime, DateTime endTime, Account account = null);
         long? GetAccountBalance(Account account = null);
-        IEnumerable<T> GetSubTransInc<T>(long parentId) where T : SubTitBase;
+        IEnumerable<T> GetSubTransInc<T>(long parentId) where T : ISubTransInc;
         void Reset();
     }
 

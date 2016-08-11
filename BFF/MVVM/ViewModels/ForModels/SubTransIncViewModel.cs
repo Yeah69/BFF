@@ -1,4 +1,5 @@
-﻿using BFF.DB;
+﻿using System;
+using BFF.DB;
 using BFF.MVVM.Models.Native;
 
 namespace BFF.MVVM.ViewModels.ForModels
@@ -35,6 +36,21 @@ namespace BFF.MVVM.ViewModels.ForModels
                 SubTransInc.Sum = value;
                 OnPropertyChanged();
             }
+        }
+
+        public override bool ValidToInsert()
+        {
+            return Category != null && (Orm?.AllCategories.Contains(Category) ?? false) && SubTransInc.Parent != null;
+        }
+
+        public override void Insert()
+        {
+            if(SubTransInc is SubTransaction)
+                Orm?.Insert(SubTransInc as SubTransaction);
+            else if(SubTransInc is SubIncome)
+                Orm?.Insert(SubTransInc as SubIncome);
+            else
+                throw new NotImplementedException($"{SubTransInc.GetType().FullName} is not supported as Subelement."); //todo Localization
         }
 
         #endregion

@@ -15,7 +15,7 @@ namespace BFF.DB.SQLite
 
         public Task<IEnumerable<T>> GetAllAsync<T>() where T : DataModelBase
         {
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 Task<IEnumerable<T>> ret;
                 using (var cnn = new SQLiteConnection(ConnectionString))
@@ -33,7 +33,7 @@ namespace BFF.DB.SQLite
         public Task<int> InsertAsync<T>(T dataModelBase) where T : DataModelBase
         {
             Task<int> ret = null;
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 using (var cnn = new SQLiteConnection(ConnectionString))
                 {

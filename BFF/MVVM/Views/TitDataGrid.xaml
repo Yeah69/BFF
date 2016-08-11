@@ -20,7 +20,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.checkbox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
-                <ResourceDictionary Source="/WPFStuff/Resources/BFF_ModifiedMAMCheckBox.xaml" />
+                <ResourceDictionary Source="/MVVM/Resources/BFF_ModifiedMAMCheckBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!--#region Converters -->
@@ -100,7 +100,7 @@
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <metro:PackIconMaterial Kind="{StaticResource TransferIcon}" Foreground="{DynamicResource TransferBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}">
+                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}">
                             <metro:PackIconMaterial Kind="{StaticResource PlaceholderIcon}" Foreground="{DynamicResource BlackBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
                     </ContentControl.Resources>
@@ -116,7 +116,7 @@
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <TextBlock Text="{lex:Loc AccountView_Column_Transfer}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -141,7 +141,7 @@
                         <DataTemplate DataType="{x:Type native:Transfer}">
                             <TextBlock Text="{lex:Loc AccountView_Column_Transfer}" Style="{StaticResource CellTextBlock}"/>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -152,7 +152,7 @@
                         <DataTemplate DataType="{x:Type structure:TitBase}">
                             <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringConverter}}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -163,7 +163,7 @@
                             <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"
                                         SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitsView, Converter={StaticResource BooleanToDatePickerFormatConverter}}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -180,7 +180,7 @@
                                 <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" />
                             </StackPanel>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -221,7 +221,7 @@
                                 </ComboBox.SelectedItem>
                             </ComboBox>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -248,7 +248,7 @@
                                 <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" />
                             </StackPanel>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -299,7 +299,7 @@
                                 </ComboBox.SelectedItem>
                             </ComboBox>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -349,7 +349,7 @@
                                        Foreground="{Binding Sum, Converter={StaticResource SumToBrushConverter}}"
                                        Text="{Binding Sum, Converter={StaticResource SumConverter}}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -388,7 +388,7 @@
                                 </TextBox.Text>
                             </TextBox>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type native:TitBasePlaceholder}" />
+                        <DataTemplate DataType="{x:Type native:TitViewModelBasePlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>

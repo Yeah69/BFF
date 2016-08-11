@@ -6,70 +6,82 @@ namespace BFF.MVVM.ViewModels.ForModels
 {
     class TransferViewModel : TitViewModelBase
     {
-        protected readonly Transfer _transferModel;
+        protected readonly Transfer Transfer;
 
         #region Transfer Properties
 
         public DateTime Date
         {
-            get { return _transferModel.Date; }
+            get { return Transfer.Date; }
             set
             {
-                _transferModel.Date = value;
+                Transfer.Date = value;
                 OnPropertyChanged();
             }
         }
         public Account FromAccount
         {
-            get { return _transferModel.FromAccount; }
+            get { return Transfer.FromAccount; }
             set
             {
-                _transferModel.FromAccount = value;
+                Transfer.FromAccount = value;
                 OnPropertyChanged();
             }
         }
         public Account ToAccount
         {
-            get { return _transferModel.ToAccount; }
+            get { return Transfer.ToAccount; }
             set
             {
-                _transferModel.ToAccount = value;
+                Transfer.ToAccount = value;
                 OnPropertyChanged();
             }
         }
         public override string Memo
         {
-            get { return _transferModel.Memo; }
+            get { return Transfer.Memo; }
             set
             {
-                _transferModel.Memo = value;
+                Transfer.Memo = value;
                 OnPropertyChanged();
             }
         }
         public override long Sum
         {
-            get { return _transferModel.Sum; }
+            get { return Transfer.Sum; }
             set
             {
-                _transferModel.Sum = value;
+                Transfer.Sum = value;
                 OnPropertyChanged();
             }
         }
+
         public bool Cleared
         {
-            get { return _transferModel.Cleared; }
+            get { return Transfer.Cleared; }
             set
             {
-                _transferModel.Cleared = value;
+                Transfer.Cleared = value;
                 OnPropertyChanged();
             }
         }
 
         #endregion
 
-        public TransferViewModel(Transfer transferModel, IBffOrm orm) : base(orm)
+        public TransferViewModel(Transfer transfer, IBffOrm orm) : base(orm)
         {
-            _transferModel = transferModel;
+            Transfer = transfer;
+        }
+
+        public override bool ValidToInsert()
+        {
+            return FromAccount != null && (Orm?.CommonPropertyProvider.Accounts.Contains(FromAccount) ?? false) &&
+                   ToAccount != null   &&  Orm .CommonPropertyProvider.Accounts.Contains(ToAccount);
+        }
+
+        public override void Insert()
+        {
+            Orm?.Insert(Transfer);
         }
     }
 }

@@ -1,37 +1,42 @@
-﻿using System;
-using BFF.MVVM.Models.Native.Structure;
+﻿using BFF.DB;
+using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.MVVM.Models.Native
 {
-    sealed class TitBasePlaceholder : TitBase
+    sealed class TitViewModelBasePlaceholder : TitViewModelBase
     {
+        private string _memo;
+        private long _sum;
+
         /// <summary>
         /// Initializes the TitBase-parts of the object
         /// </summary>
-        /// <param name="id">Identification number for the database</param>
-        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        /// <param name="sum">The amount of money, which was payeed or recieved</param>
-        /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        /// <param name="date">Marks when the Tit happened</param>
-        public TitBasePlaceholder(DateTime date, long id = -1, string memo = null, long sum = 0, bool? cleared = null)
-            : base(date, id, memo, sum, cleared)
+        public TitViewModelBasePlaceholder(IBffOrm orm)
+            : base(orm)
         {
             Memo = "Content is loading…";
-            Cleared = false;
         }
 
-        #region Overrides of DataModelBase
+        #region Overrides of TitViewModelBase
 
-        protected override void InsertToDb() {}
+        public override string Memo
+        {
+            get { return _memo; }
+            set { _memo = value; }
+        }
+
+        public override long Sum
+        {
+            get { return _sum; }
+            set { _sum = value; }
+        }
 
         public override bool ValidToInsert()
         {
             return false;
         }
 
-        protected override void UpdateToDb() {}
-
-        protected override void DeleteFromDb() {}
+        public override void Insert() {}
 
         #endregion
     }
