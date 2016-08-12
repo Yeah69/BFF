@@ -3,23 +3,23 @@ using BFF.MVVM.Models.Native;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    class TransactionViewModel : TransIncViewModel
+    class SubIncomeViewModel : SubTransIncViewModel
     {
-        public TransactionViewModel(Transaction transInc, IBffOrm orm) : base(transInc, orm) { }
+        public SubIncomeViewModel(SubIncome subTransInc, IBffOrm orm) : base(subTransInc, orm) { }
 
         protected override void InsertToDb()
         {
-            Orm?.Insert(TransInc as Transaction);
+            Orm?.Insert(SubTransInc as SubIncome);
         }
 
         protected override void UpdateToDb()
         {
-            Orm?.Update(TransInc as Transaction);
+            Orm?.Update(SubTransInc as SubIncome);
         }
 
         protected override void DeleteFromDb()
         {
-            Orm?.Delete(TransInc as Transaction);
+            Orm?.Delete(SubTransInc as SubIncome);
         }
     }
 }

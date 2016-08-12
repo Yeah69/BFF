@@ -7,12 +7,11 @@ using System.Windows.Input;
 using AlphaChiTech.Virtualization;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
 using BFF.Properties;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public abstract class AccountViewModelBase : ObservableObject, IVirtualizedRefresh
+    public abstract class AccountViewModelBase : DbViewModelBase, IVirtualizedRefresh
     {
         protected IBffOrm Orm;
         protected VirtualizingObservableCollection<TitViewModelBase> _tits;
@@ -86,29 +85,29 @@ namespace BFF.MVVM.ViewModels.ForModels
             {
                 tit.Insert();
                 NewTits.Remove(tit);
-                if (tit is IParentTransInc<SubTransaction>)
+                if (tit is ParentTransactionViewModel)
                 {
-                    IParentTransInc<SubTransaction> parentTransaction = tit as IParentTransInc<SubTransaction>;
-                    foreach (SubTransaction subTransaction in parentTransaction.NewSubElements)
+                    ParentTransactionViewModel parentTransaction = tit as ParentTransactionViewModel;
+                    foreach (SubTransIncViewModel subTransaction in parentTransaction.NewSubElements)
                     {
                         subTransaction.Insert();
                         parentTransaction.SubElements.Add(subTransaction);
                     }
                     parentTransaction.NewSubElements.Clear();
                 }
-                if (tit is IParentTransInc<SubIncome>)
+                else if (tit is ParentIncomeViewModel) // todo unify this and the above if-clause?
                 {
-                    IParentTransInc<SubIncome> parentIncome = tit as IParentTransInc<SubIncome>;
-                    foreach (SubIncome subIncome in parentIncome.NewSubElements)
+                    ParentIncomeViewModel parentIncome = tit as ParentIncomeViewModel;
+                    foreach (SubTransIncViewModel subIncome in parentIncome.NewSubElements)
                     {
                         subIncome.Insert();
                         parentIncome.SubElements.Add(subIncome);
                     }
                     parentIncome.NewSubElements.Clear();
                 }
-                if (tit is TransIncViewModel)
+                else if (tit is TransIncViewModel)
                     accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel((tit as TransIncViewModel).Account.Id));
-                if (tit is TransferViewModel)
+                else if (tit is TransferViewModel)
                 {
                     TransferViewModel transfer = tit as TransferViewModel;
                     accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transfer.FromAccount.Id));

@@ -39,7 +39,26 @@ namespace BFF.MVVM.ViewModels.ForModels
             }
         }
 
-        public long Id => Account.Id;
+        public override long Id => Account.Id;
+        internal override bool ValidToInsert()
+        {
+            return !string.IsNullOrWhiteSpace(Name);
+        }
+
+        protected override void InsertToDb()
+        {
+            Orm?.Insert(Account);
+        }
+
+        protected override void UpdateToDb()
+        {
+            Orm?.Update(Account);
+        }
+
+        protected override void DeleteFromDb()
+        {
+            Orm?.Delete(Account);
+        }
 
         /// <summary>
         /// Initializes the object

@@ -22,7 +22,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                     _subElements = new ObservableCollection<SubTransIncViewModel>();
                     foreach(T sub in subs)
                     {
-                        _subElements.Add(new SubTransIncViewModel(sub, Orm));
+                        _subElements.Add(CreateNewSubViewModel(sub)); //new SubTransIncViewModel(sub, Orm));
                     }
                 }
                 return _subElements;
@@ -32,6 +32,8 @@ namespace BFF.MVVM.ViewModels.ForModels
                 OnPropertyChanged();
             }
         }
+
+        protected abstract SubTransIncViewModel CreateNewSubViewModel(T subElement);
 
         private ObservableCollection<SubTransIncViewModel> _newSubElements = new ObservableCollection<SubTransIncViewModel>(); 
 
@@ -46,7 +48,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         protected ParentTransIncViewModel(IParentTransInc<T> transInc, IBffOrm orm) : base(transInc, orm) { }
 
-        public override bool ValidToInsert()
+        internal override bool ValidToInsert()
         {
             return Account != null && (Orm?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) &&
                    Payee   != null &&  Orm .AllPayees.Contains(Payee) && NewSubElements.All(subElement => subElement.ValidToInsert());

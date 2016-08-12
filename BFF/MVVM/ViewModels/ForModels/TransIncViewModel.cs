@@ -9,7 +9,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         protected readonly ITransInc TransInc;
 
         #region Transaction/Income Properties
-        
+
+        public override long Id => TransInc.Id;
+
         public Account Account
         {
             get { return TransInc.Account; }
@@ -82,7 +84,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             TransInc = transInc;
         }
 
-        public override bool ValidToInsert()
+        internal override bool ValidToInsert()
         {
             return Account != null  && (Orm?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) &&
                    Payee != null    &&  Orm .AllPayees.Contains(Payee) &&

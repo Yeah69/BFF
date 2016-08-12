@@ -4,12 +4,18 @@ using BFF.MVVM.Models.Native;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    class SubTransIncViewModel : TitViewModelBase
+    abstract class SubTransIncViewModel : TitViewModelBase
     {
         protected readonly ISubTransInc SubTransInc;
 
         #region SubTransaction/SubIncome Properties
-        
+
+        #region Overrides of DbViewModelBase
+
+        public override long Id => SubTransInc.Id;
+
+        #endregion
+
         public Category Category
         {
             get { return SubTransInc.Category; }
@@ -38,23 +44,13 @@ namespace BFF.MVVM.ViewModels.ForModels
             }
         }
 
-        public override bool ValidToInsert()
+        internal override bool ValidToInsert()
         {
             return Category != null && (Orm?.AllCategories.Contains(Category) ?? false) && SubTransInc.Parent != null;
         }
 
-        public override void Insert()
-        {
-            if(SubTransInc is SubTransaction)
-                Orm?.Insert(SubTransInc as SubTransaction);
-            else if(SubTransInc is SubIncome)
-                Orm?.Insert(SubTransInc as SubIncome);
-            else
-                throw new NotImplementedException($"{SubTransInc.GetType().FullName} is not supported as Subelement."); //todo Localization
-        }
-
         #endregion
-        public SubTransIncViewModel(ISubTransInc subTransInc, IBffOrm orm) : base(orm)
+        protected SubTransIncViewModel(ISubTransInc subTransInc, IBffOrm orm) : base(orm)
         {
             SubTransInc = subTransInc;
         }

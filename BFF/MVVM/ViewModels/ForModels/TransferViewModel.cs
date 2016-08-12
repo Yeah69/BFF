@@ -10,6 +10,8 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region Transfer Properties
 
+        public override long Id => Transfer.Id;
+
         public DateTime Date
         {
             get { return Transfer.Date; }
@@ -73,15 +75,25 @@ namespace BFF.MVVM.ViewModels.ForModels
             Transfer = transfer;
         }
 
-        public override bool ValidToInsert()
+        internal override bool ValidToInsert()
         {
             return FromAccount != null && (Orm?.CommonPropertyProvider.Accounts.Contains(FromAccount) ?? false) &&
                    ToAccount != null   &&  Orm .CommonPropertyProvider.Accounts.Contains(ToAccount);
         }
 
-        public override void Insert()
+        protected override void InsertToDb()
         {
             Orm?.Insert(Transfer);
+        }
+
+        protected override void UpdateToDb()
+        {
+            Orm?.Update(Transfer);
+        }
+
+        protected override void DeleteFromDb()
+        {
+            Orm?.Delete(Transfer);
         }
     }
 }

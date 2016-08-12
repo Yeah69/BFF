@@ -7,6 +7,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         private string _memo;
         private long _sum;
 
+        public override long Id => -2L;
+
         /// <summary>
         /// Initializes the TitBase-parts of the object
         /// </summary>
@@ -30,12 +32,13 @@ namespace BFF.MVVM.ViewModels.ForModels
             set { _sum = value; }
         }
 
-        public override bool ValidToInsert()
-        {
-            return false;
-        }
+        internal override bool ValidToInsert() => false;
 
-        public override void Insert() {}
+        protected override void InsertToDb() { }
+
+        protected override void UpdateToDb() { }
+
+        protected override void DeleteFromDb() { }
 
         #endregion
     }

@@ -13,6 +13,8 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class AllAccountsViewModel : AccountViewModelBase
     {
+        private long _id;
+
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
@@ -124,5 +126,19 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             OnPropertyChanged(nameof(StartingBalance));
         }
+
+        #region Overrides of DbViewModelBase
+
+        public override long Id => -3;
+
+        internal override bool ValidToInsert() => false;
+
+        protected override void InsertToDb() { }
+
+        protected override void UpdateToDb() { }
+
+        protected override void DeleteFromDb() { }
+
+        #endregion
     }
 }

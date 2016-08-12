@@ -8,9 +8,19 @@ namespace BFF.MVVM.ViewModels.ForModels
     {
         public IncomeViewModel(Income transInc, IBffOrm orm) : base(transInc, orm) { }
 
-        public override void Insert()
+        protected override void InsertToDb()
         {
             Orm?.Insert(TransInc as Income);
+        }
+
+        protected override void UpdateToDb()
+        {
+            Orm?.Update(TransInc as Income);
+        }
+
+        protected override void DeleteFromDb()
+        {
+            Orm?.Delete(TransInc as Income);
         }
     }
 }
