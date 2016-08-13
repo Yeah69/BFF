@@ -5,13 +5,14 @@ using AlphaChiTech.Virtualization;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class AccountViewModel : AccountViewModelBase
+    public class AccountViewModel : AccountBaseViewModel
     {
         public Action RefreshDataGrid;
 
@@ -88,10 +89,10 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region ViewModel_Part
 
-        public override VirtualizingObservableCollection<TitViewModelBase> Tits => _tits ?? 
-            (_tits = new VirtualizingObservableCollection<TitViewModelBase>(new PaginationManager<TitViewModelBase>(new PagedTitBaseProviderAsync(Orm, Account, Orm))));
+        public override VirtualizingObservableCollection<TitLikeViewModel> Tits => _tits ?? 
+            (_tits = new VirtualizingObservableCollection<TitLikeViewModel>(new PaginationManager<TitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, Account, Orm))));
         
-        public override ObservableCollection<TitViewModelBase> NewTits { get; set; } = new ObservableCollection<TitViewModelBase>();
+        public override ObservableCollection<TitLikeViewModel> NewTits { get; set; } = new ObservableCollection<TitLikeViewModel>();
 
         public override long? Balance
         {
@@ -110,7 +111,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override void RefreshTits()
         {
             OnPreVirtualizedRefresh();
-            _tits = new VirtualizingObservableCollection<TitViewModelBase>(new PaginationManager<TitViewModelBase>(new PagedTitBaseProviderAsync(Orm, Account, Orm)));
+            _tits = new VirtualizingObservableCollection<TitLikeViewModel>(new PaginationManager<TitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, Account, Orm)));
             OnPropertyChanged(nameof(Tits));
             OnPostVirtualizedRefresh();
         }

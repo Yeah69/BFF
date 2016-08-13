@@ -1,6 +1,6 @@
-﻿using System;
-using BFF.DB;
+﻿using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
@@ -16,6 +16,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         protected override void UpdateToDb()
         {
             Orm?.Update(TransInc as Income);
+            Messenger.Default.Send(AllAccountMessage.Refresh);
+            Messenger.Default.Send(AccountMessage.Refresh, Account);
         }
 
         protected override void DeleteFromDb()

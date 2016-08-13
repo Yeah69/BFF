@@ -1,8 +1,16 @@
-﻿namespace BFF.MVVM.ViewModels.ForModels
+﻿using BFF.DB;
+
+namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    public abstract class DbViewModelBase : ObservableObject
+    public abstract class DataModelViewModel : ObservableObject
     {
+        protected IBffOrm Orm;
         public abstract long Id { get; }
+
+        protected DataModelViewModel(IBffOrm orm)
+        {
+            Orm = orm;
+        }
 
         internal abstract bool ValidToInsert();
         protected abstract void InsertToDb();

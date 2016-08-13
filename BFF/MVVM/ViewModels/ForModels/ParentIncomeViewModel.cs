@@ -1,5 +1,6 @@
 ﻿using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
@@ -7,21 +8,21 @@ namespace BFF.MVVM.ViewModels.ForModels
     {
         public ParentIncomeViewModel(ParentIncome transInc, IBffOrm orm) : base(transInc, orm) { }
 
-        #region Overrides of DbViewModelBase
+        #region Overrides of DataModelViewModel
 
         protected override void InsertToDb()
         {
-            Orm?.Insert(TransInc as ParentIncome);
+            Orm?.Insert(ParentTransInc as ParentIncome);
         }
 
         protected override void UpdateToDb()
         {
-            Orm?.Update(TransInc as ParentIncome);
+            Orm?.Update(ParentTransInc as ParentIncome);
         }
 
         protected override void DeleteFromDb()
         {
-            Orm?.Delete(TransInc as ParentIncome);
+            Orm?.Delete(ParentTransInc as ParentIncome);
         }
 
         #endregion

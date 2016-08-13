@@ -1,5 +1,6 @@
 ﻿using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
@@ -9,17 +10,17 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         protected override void InsertToDb()
         {
-            Orm?.Insert(TransInc as ParentTransaction);
+            Orm?.Insert(ParentTransInc as ParentTransaction);
         }
 
         protected override void UpdateToDb()
         {
-            Orm?.Update(TransInc as ParentTransaction);
+            Orm?.Update(ParentTransInc as ParentTransaction);
         }
 
         protected override void DeleteFromDb()
         {
-            Orm?.Delete(TransInc as ParentTransaction);
+            Orm?.Delete(ParentTransInc as ParentTransaction);
         }
 
         #region Overrides of ParentTransIncViewModel<SubTransaction>

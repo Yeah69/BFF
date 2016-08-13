@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    class TransferViewModel : TitViewModelBase
+    class TransferViewModel : TitBaseViewModel
     {
         protected readonly Transfer Transfer;
 
@@ -12,12 +14,13 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override long Id => Transfer.Id;
 
-        public DateTime Date
+        public override DateTime Date
         {
             get { return Transfer.Date; }
             set
             {
                 Transfer.Date = value;
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -27,6 +30,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             set
             {
                 Transfer.FromAccount = value;
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -36,6 +40,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             set
             {
                 Transfer.ToAccount = value;
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -45,6 +50,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             set
             {
                 Transfer.Memo = value;
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -54,16 +60,18 @@ namespace BFF.MVVM.ViewModels.ForModels
             set
             {
                 Transfer.Sum = value;
+                Update();
                 OnPropertyChanged();
             }
         }
 
-        public bool Cleared
+        public override bool Cleared
         {
             get { return Transfer.Cleared; }
             set
             {
                 Transfer.Cleared = value;
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -89,11 +97,22 @@ namespace BFF.MVVM.ViewModels.ForModels
         protected override void UpdateToDb()
         {
             Orm?.Update(Transfer);
+            Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
+            Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
+            Messenger.Default.Send(AllAccountMessage.RefreshTits);
         }
 
         protected override void DeleteFromDb()
         {
             Orm?.Delete(Transfer);
         }
+        
+        public override ICommand DeleteCommand => new RelayCommand(obj =>
+        {
+            Delete();
+            Messenger.Default.Send(AccountMessage.Refresh, FromAccount);
+            Messenger.Default.Send(AccountMessage.Refresh, ToAccount);
+            Messenger.Default.Send(AllAccountMessage.RefreshTits);
+        });
     }
 }

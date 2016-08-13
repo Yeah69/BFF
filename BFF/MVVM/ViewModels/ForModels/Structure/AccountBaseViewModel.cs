@@ -9,12 +9,11 @@ using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.Properties;
 
-namespace BFF.MVVM.ViewModels.ForModels
+namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    public abstract class AccountViewModelBase : DbViewModelBase, IVirtualizedRefresh
+    public abstract class AccountBaseViewModel : DataModelViewModel, IVirtualizedRefresh
     {
-        protected IBffOrm Orm;
-        protected VirtualizingObservableCollection<TitViewModelBase> _tits;
+        protected VirtualizingObservableCollection<TitLikeViewModel> _tits;
 
         /// <summary>
         /// Starting balance of the Account
@@ -22,8 +21,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         public abstract long StartingBalance { get; set; }
 
         public abstract string Name { get; set; }
-        public abstract VirtualizingObservableCollection<TitViewModelBase> Tits { get; }
-        public abstract ObservableCollection<TitViewModelBase> NewTits { get; set; }
+        public abstract VirtualizingObservableCollection<TitLikeViewModel> Tits { get; }
+        public abstract ObservableCollection<TitLikeViewModel> NewTits { get; set; }
         public abstract long? Balance { get; set; }
         public ObservableCollection<Account> AllAccounts => Orm?.CommonPropertyProvider.Accounts;
         public ObservableCollection<Payee> AllPayees => Orm?.AllPayees;
@@ -37,7 +36,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public bool IsDateFormatLong => Settings.Default.Culture_DefaultDateLong;
         public Account Account { get; protected set; }
 
-        protected AccountViewModelBase(IBffOrm orm)
+        protected AccountBaseViewModel(IBffOrm orm) : base(orm)
         {
             Orm = orm;
             Messenger.Default.Register<CutlureMessage>(this, message =>
@@ -80,8 +79,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         protected void ApplyTits()
         {
             List<AccountViewModel> accountViewModels = new List<AccountViewModel>();
-            List<TitViewModelBase> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
-            foreach (TitViewModelBase tit in insertTits)
+            List<TitLikeViewModel> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
+            foreach (TitLikeViewModel tit in insertTits)
             {
                 tit.Insert();
                 NewTits.Remove(tit);

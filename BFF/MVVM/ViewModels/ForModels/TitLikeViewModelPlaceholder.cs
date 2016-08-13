@@ -1,8 +1,9 @@
 ﻿using BFF.DB;
+using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    sealed class TitViewModelBasePlaceholder : TitViewModelBase
+    sealed class TitLikeViewModelPlaceholder : TitLikeViewModel
     {
         private string _memo;
         private long _sum;
@@ -12,13 +13,13 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Initializes the TitBase-parts of the object
         /// </summary>
-        public TitViewModelBasePlaceholder(IBffOrm orm)
+        public TitLikeViewModelPlaceholder(IBffOrm orm)
             : base(orm)
         {
             Memo = "Content is loading…";
         }
 
-        #region Overrides of TitViewModelBase
+        #region Overrides of TitLikeViewModel
 
         public override string Memo
         {

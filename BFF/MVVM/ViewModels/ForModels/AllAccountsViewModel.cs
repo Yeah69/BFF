@@ -5,13 +5,14 @@ using System.Windows.Input;
 using AlphaChiTech.Virtualization;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class AllAccountsViewModel : AccountViewModelBase
+    public class AllAccountsViewModel : AccountBaseViewModel
     {
         private long _id;
 
@@ -70,15 +71,15 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region ViewModel_Part
 
-        public override VirtualizingObservableCollection<TitViewModelBase> Tits => _tits ?? 
-            (_tits = new VirtualizingObservableCollection<TitViewModelBase>(new PaginationManager<TitViewModelBase>(new PagedTitBaseProviderAsync(Orm, null, Orm))));
+        public override VirtualizingObservableCollection<TitLikeViewModel> Tits => _tits ?? 
+            (_tits = new VirtualizingObservableCollection<TitLikeViewModel>(new PaginationManager<TitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, null, Orm))));
         
-        public override ObservableCollection<TitViewModelBase> NewTits { get; set; } = new ObservableCollection<TitViewModelBase>();
+        public override ObservableCollection<TitLikeViewModel> NewTits { get; set; } = new ObservableCollection<TitLikeViewModel>();
         
         public override void RefreshTits()
         {
             OnPreVirtualizedRefresh();
-            _tits = new VirtualizingObservableCollection<TitViewModelBase>(new PaginationManager<TitViewModelBase>(new PagedTitBaseProviderAsync(Orm, null, Orm)));
+            _tits = new VirtualizingObservableCollection<TitLikeViewModel>(new PaginationManager<TitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, null, Orm)));
             OnPropertyChanged(nameof(Tits));
             OnPostVirtualizedRefresh();
         }
@@ -127,7 +128,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             OnPropertyChanged(nameof(StartingBalance));
         }
 
-        #region Overrides of DbViewModelBase
+        #region Overrides of DataModelViewModel
 
         public override long Id => -3;
 

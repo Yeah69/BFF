@@ -2,7 +2,7 @@
 
 namespace BFF.MVVM.Models.Native
 {
-    interface ITransInc : IBasicTit
+    public interface ITransInc : IBasicTit
     {
         Account Account { get; set; }
         DateTime Date { get; set; }
