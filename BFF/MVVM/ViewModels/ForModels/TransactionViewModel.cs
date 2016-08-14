@@ -7,7 +7,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model Transaction.
     /// </summary>
-    class TransactionViewModel : TransIncViewModel
+    public class TransactionViewModel : TransIncViewModel
     {
         /// <summary>
         /// Initializes a TransactionViewModel.

@@ -18,7 +18,7 @@ namespace BFF.DB.SQLite
 
     class SqLiteBffOrm : IBffOrm
     {
-        public CommonPropertyProvider CommonPropertyProvider { get; }
+        public ICommonPropertyProvider CommonPropertyProvider { get; }
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

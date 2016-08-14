@@ -7,7 +7,21 @@ using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.DB
 {
-    public class CommonPropertyProvider
+    public interface ICommonPropertyProvider {
+        ObservableCollection<Account> Accounts { get; }
+        ObservableCollection<AccountViewModel> AccountViewModels { get; }
+        AllAccountsViewModel AllAccountsViewModel { get; }
+        ObservableCollection<Payee> Payees { get; }
+        void Add(Account account);
+        void Add(Payee payee);
+        void Remove(Account account);
+        void Remove(Payee payee);
+        Account GetAccount(long id);
+        Payee GetPayee(long id);
+        AccountViewModel GetAccountViewModel(long id);
+    }
+
+    public class CommonPropertyProvider : ICommonPropertyProvider
     {
         private IBffOrm _orm;
 

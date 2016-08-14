@@ -8,7 +8,7 @@ namespace BFF.DB
 {
     public interface IBffOrm : ICrudOrm, IPeripheryProvider, IPagedOrm
     {
-        CommonPropertyProvider CommonPropertyProvider { get; }
+        ICommonPropertyProvider CommonPropertyProvider { get; }
 
         string DbPath { get; }
         void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
