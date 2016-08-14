@@ -117,7 +117,7 @@
             <DataTemplate x:Key="AccountColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransIncViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}">
                             <TextBlock Text="{Binding Account}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
@@ -130,7 +130,7 @@
             <DataTemplate  x:Key="AccountEditingColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransIncViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}">
                             <ComboBox TextSearch.TextPath="Name"
                                       IsEditable="True"
                                       IsTextSearchCaseSensitive="False"
@@ -178,7 +178,7 @@
             <DataTemplate x:Key="PayeeColumnTemplate">
                 <ContentControl HorizontalAlignment="Stretch" Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransIncViewModel}" >
+                        <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}" >
                             <TextBlock Text="{Binding Payee}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
@@ -194,7 +194,7 @@
             <DataTemplate x:Key="PayeeEditingColumnTemplate">
                 <ContentControl HorizontalAlignment="Stretch" Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransIncViewModel}" >
+                        <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}" >
                             <DockPanel LastChildFill="True">
                                 <Button DockPanel.Dock="Right" Command="{Binding AddPayeeCommand}" Padding="0">
                                     <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Foreground="{DynamicResource BlackColorBrush}" Style="{StaticResource CellIconMaterial}" />

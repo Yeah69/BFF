@@ -6,9 +6,10 @@ using BFF.MVVM.Models.Native;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    abstract class SubTransIncViewModel : TitLikeViewModel
+    abstract class SubTransIncViewModel<T> : TitLikeViewModel where T : ISubTransInc
     {
         protected readonly ISubTransInc SubTransInc;
+        protected ParentTransIncViewModel<T> Parent; 
 
         #region SubTransaction/SubIncome Properties
 
@@ -16,10 +17,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         public Category Category
         {
-            get { return SubTransInc.Category; }
+            get
+            {
+                return SubTransInc.CategoryId == -1 ? null : 
+                    Orm?.GetCategory(SubTransInc.CategoryId);
+            }
             set
             {
-                SubTransInc.Category = value;
+                SubTransInc.CategoryId = value?.Id ?? -1;
                 Update();
                 OnPropertyChanged();
             }
@@ -41,19 +46,21 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 SubTransInc.Sum = value;
                 Update();
+                Parent.RefreshSum();
                 OnPropertyChanged();
             }
         }
 
         internal override bool ValidToInsert()
         {
-            return Category != null && (Orm?.AllCategories.Contains(Category) ?? false) && SubTransInc.Parent != null;
+            return Category != null && (Orm?.AllCategories.Contains(Category) ?? false) && SubTransInc.ParentId != -1;
         }
 
         #endregion
-        protected SubTransIncViewModel(ISubTransInc subTransInc, IBffOrm orm) : base(orm)
+        protected SubTransIncViewModel(ISubTransInc subTransInc, ParentTransIncViewModel<T> parent, IBffOrm orm) : base(orm)
         {
             SubTransInc = subTransInc;
+            Parent = parent;
         }
 
         public string CategoryText { get; set; }
@@ -81,5 +88,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         public ObservableCollection<Category> AllCategories => Orm?.AllCategories;
 
+        public override ICommand DeleteCommand => new RelayCommand(obj =>
+        {
+            Delete();
+            Parent?.RemoveSubElement(this);
+        });
     }
 }

@@ -87,7 +87,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 if (tit is ParentTransactionViewModel)
                 {
                     ParentTransactionViewModel parentTransaction = tit as ParentTransactionViewModel;
-                    foreach (SubTransIncViewModel subTransaction in parentTransaction.NewSubElements)
+                    foreach (SubTransIncViewModel<SubTransaction> subTransaction in parentTransaction.NewSubElements)
                     {
                         subTransaction.Insert();
                         parentTransaction.SubElements.Add(subTransaction);
@@ -97,7 +97,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 else if (tit is ParentIncomeViewModel) // todo unify this and the above if-clause?
                 {
                     ParentIncomeViewModel parentIncome = tit as ParentIncomeViewModel;
-                    foreach (SubTransIncViewModel subIncome in parentIncome.NewSubElements)
+                    foreach (SubTransIncViewModel<SubIncome> subIncome in parentIncome.NewSubElements)
                     {
                         subIncome.Insert();
                         parentIncome.SubElements.Add(subIncome);

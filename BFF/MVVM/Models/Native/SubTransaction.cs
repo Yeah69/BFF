@@ -10,38 +10,17 @@ namespace BFF.MVVM.Models.Native
     /// </summary>
     public class SubTransaction : SubTitBase, ISubTransInc
     {
-        private TitNoTransfer _parent;
 
         public static implicit operator SubTransaction(Conversion.YNAB.Transaction ynabTransaction)
         {
             Category tempCategory = Category.GetOrCreate(ynabTransaction.Category);
             SubTransaction ret = new SubTransaction
             {
-                Category = tempCategory,
+                CategoryId = tempCategory?.Id ?? -1,
                 Memo = YnabCsvImport.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["subTransMemo"].Value,
                 Sum = ynabTransaction.Inflow - ynabTransaction.Outflow
             };
             return ret;
-        }
-
-        /// <summary>
-        /// This instance is a SubElement of the Parent (has to be a Transaction)
-        /// </summary>
-        [Write(false)]
-        public override TitNoTransfer Parent
-        {
-            get { return _parent; }
-            set
-            {
-                if (value is Transaction)
-                {
-                    _parent = value;
-                    if(Id != -1) Update();
-                    OnPropertyChanged();
-                }
-                else
-                    throw new ArgumentException($"{nameof(Parent)} of a {nameof(SubTransaction)} has to be of Type {nameof(Transaction)}!");
-            }
         }
 
         /// <summary>
@@ -55,8 +34,6 @@ namespace BFF.MVVM.Models.Native
             : base(category, memo, sum)
         {
             ConstrDbLock = true;
-
-            _parent = parent ?? _parent;
 
             ConstrDbLock = false;
         }
@@ -74,21 +51,6 @@ namespace BFF.MVVM.Models.Native
             ConstrDbLock = true;
 
             ConstrDbLock = false;
-        }
-
-        protected override void InsertToDb()
-        {
-            Database?.Insert(this);
-        }
-
-        protected override void UpdateToDb()
-        {
-            Database?.Update(this);
-        }
-
-        protected override void DeleteFromDb()
-        {
-            Database?.Delete(this);
         }
     }
 }

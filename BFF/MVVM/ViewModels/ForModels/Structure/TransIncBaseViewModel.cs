@@ -28,5 +28,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         });
 
         public ObservableCollection<Payee> AllPayees => Orm?.CommonPropertyProvider.Payees;
+
+        public override ICommand DeleteCommand => new RelayCommand(obj =>
+        {
+            Delete();
+            Messenger.Default.Send(AllAccountMessage.Refresh);
+            Messenger.Default.Send(AccountMessage.Refresh, Account);
+        });
     }
 }

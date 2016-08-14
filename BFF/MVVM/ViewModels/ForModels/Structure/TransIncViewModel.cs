@@ -17,11 +17,18 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         public override Account Account
         {
-            get { return TransInc.Account; }
+            get
+            {
+                return TransInc.AccountId == -1 ? null :
+                  Orm?.CommonPropertyProvider?.GetAccount(TransInc.AccountId);
+            }
             set
             {
-                TransInc.Account = value;
+                Account temp = Account;
+                TransInc.AccountId = value?.Id ?? -1;
                 Update();
+                if (temp != null) Messenger.Default.Send(AccountMessage.Refresh, temp);
+                if (value != null) Messenger.Default.Send(AccountMessage.Refresh, value);
                 OnPropertyChanged();
             }
         }
@@ -37,20 +44,22 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         }
         public override Payee Payee
         {
-            get { return TransInc.Payee; }
+            get { return TransInc.PayeeId == -1 ? null : 
+                    Orm?.CommonPropertyProvider?.GetPayee(TransInc.PayeeId); }
             set
             {
-                TransInc.Payee = value;
+                TransInc.PayeeId = value?.Id ?? -1;
                 Update();
                 OnPropertyChanged();
             }
         }
         public Category Category
         {
-            get { return TransInc.Category; }
+            get { return TransInc.CategoryId == -1 ? null :
+                    Orm?.GetCategory(TransInc.CategoryId); }
             set
             {
-                TransInc.Category = value;
+                TransInc.CategoryId = value?.Id ?? -1;
                 Update();
                 OnPropertyChanged();
             }
@@ -72,6 +81,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 TransInc.Sum = value;
                 Update();
+                Messenger.Default.Send(AccountMessage.RefreshBalance, Account);
                 OnPropertyChanged();
             }
         }

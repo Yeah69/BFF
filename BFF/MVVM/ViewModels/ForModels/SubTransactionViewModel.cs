@@ -1,12 +1,14 @@
-﻿using BFF.DB;
+﻿using System.Windows.Input;
+using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    class SubTransactionViewModel : SubTransIncViewModel
+    class SubTransactionViewModel : SubTransIncViewModel<SubTransaction>
     {
-        public SubTransactionViewModel(SubTransaction subTransInc, IBffOrm orm) : base(subTransInc, orm) { }
+        public SubTransactionViewModel(SubTransaction subTransInc, ParentTransIncViewModel<SubTransaction> parent, IBffOrm orm) :
+                                           base(subTransInc, parent, orm) { }
 
         protected override void InsertToDb()
         {

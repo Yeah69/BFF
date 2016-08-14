@@ -3,7 +3,7 @@
     /// <summary>
     /// CommonProperties are classes, whose instances are shared among other model classes
     /// </summary>
-    public abstract class CommonProperty : DataModelBase
+    public abstract class CommonProperty : CrudBase
     {
         private string _name;
 

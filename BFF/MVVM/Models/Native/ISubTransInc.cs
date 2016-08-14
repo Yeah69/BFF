@@ -4,6 +4,6 @@ namespace BFF.MVVM.Models.Native
 {
     public interface ISubTransInc : IBasicTit
     {
-        TitNoTransfer Parent { get; set; }
+        long ParentId { get; set; }
     }
 }

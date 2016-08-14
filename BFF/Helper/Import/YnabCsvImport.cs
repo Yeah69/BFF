@@ -211,7 +211,7 @@ namespace BFF.Helper.Import
                         else
                         {
                             SubTransaction subTransaction = newYnabTransaction;
-                            subTransaction.Parent = parent;
+                            subTransaction.ParentId = parent.Id;
                             subTransactions.Add(subTransaction);
                             count++;
                         }

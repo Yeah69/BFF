@@ -26,21 +26,76 @@ namespace BFF.MVVM.ViewModels.ForModels
         }
         public Account FromAccount
         {
-            get { return Transfer.FromAccount; }
+            get {
+                return Transfer.FromAccountId == -1 ? null : 
+                    Orm?.CommonPropertyProvider.GetAccount(Transfer.FromAccountId);
+            }
             set
             {
-                Transfer.FromAccount = value;
+                if(value?.Id == Transfer.FromAccountId) return;
+                Account temp = FromAccount;
+                bool accountSwitch = false;
+                if (ToAccount == value) // If value equals ToAccount, then the FromAccount and ToAccount switch values
+                {
+                    Transfer.ToAccountId = Transfer.FromAccountId;
+                    OnPropertyChanged(nameof(ToAccount));
+                    accountSwitch = true;
+                }
+                Transfer.FromAccountId = value?.Id ?? -1;
                 Update();
+                if(accountSwitch && ToAccount != null) //Refresh ToAccount if switch occured
+                {
+                    Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
+                    Messenger.Default.Send(AccountMessage.RefreshBalance, ToAccount);
+                }
+                if(FromAccount != null) //Refresh FromAccount if it exists
+                {
+                    Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
+                    Messenger.Default.Send(AccountMessage.RefreshBalance, FromAccount);
+                }
+                if(!accountSwitch && temp != null && temp != FromAccount) //if switch happened then with temp is now ToAccount and was refreshed already, if not then refresh if it exists and is not FromAccount
+                { 
+                    Messenger.Default.Send(AccountMessage.RefreshTits, temp);
+                    Messenger.Default.Send(AccountMessage.RefreshBalance, temp);
+                }
                 OnPropertyChanged();
             }
         }
         public Account ToAccount
         {
-            get { return Transfer.ToAccount; }
+            get
+            {
+                return Transfer.ToAccountId == -1 ? null :
+                    Orm?.CommonPropertyProvider.GetAccount(Transfer.ToAccountId);
+            }
             set
             {
-                Transfer.ToAccount = value;
+                if (value?.Id == Transfer.ToAccountId) return;
+                Account temp = ToAccount;
+                bool accountSwitch = false;
+                if (FromAccount == value) // If value equals FromAccount, then the ToAccount and FromAccount switch values
+                {
+                    Transfer.FromAccountId = Transfer.ToAccountId;
+                    OnPropertyChanged(nameof(FromAccount));
+                    accountSwitch = true;
+                }
+                Transfer.ToAccountId = value?.Id ?? -1;
                 Update();
+                if (accountSwitch && FromAccount != null) //Refresh ToAccount if switch occured
+                {
+                    Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
+                    Messenger.Default.Send(AccountMessage.RefreshBalance, FromAccount);
+                }
+                if (ToAccount != null) //Refresh FromAccount if it exists
+                {
+                    Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
+                    Messenger.Default.Send(AccountMessage.RefreshBalance, ToAccount);
+                }
+                if (!accountSwitch && temp != null && temp != ToAccount) //if switch happened then with temp is now FromAccount and was refreshed already, if not then refresh if it exists and is not ToAccount
+                {
+                    Messenger.Default.Send(AccountMessage.RefreshTits, temp);
+                    Messenger.Default.Send(AccountMessage.RefreshBalance, temp);
+                }
                 OnPropertyChanged();
             }
         }
@@ -61,6 +116,8 @@ namespace BFF.MVVM.ViewModels.ForModels
             {
                 Transfer.Sum = value;
                 Update();
+                Messenger.Default.Send(AccountMessage.RefreshBalance, FromAccount);
+                Messenger.Default.Send(AccountMessage.RefreshBalance, ToAccount);
                 OnPropertyChanged();
             }
         }

@@ -20,7 +20,6 @@ namespace BFF.MVVM.Models.Native.Structure
             set
             {
                 _memo = value;
-                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }
@@ -34,7 +33,6 @@ namespace BFF.MVVM.Models.Native.Structure
             set
             {
                 _sum = value; 
-                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }
@@ -47,19 +45,9 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         protected TitLike(long id = -1L, string memo = null, long sum = 0L) : base(id)
         {
-            ConstrDbLock = true;
-
             _memo = memo ?? _memo;
             if (_sum == 0L || sum != 0L) _sum = sum;
-
-            ConstrDbLock = false;
         }
-
-        [Write(false)]
-        public virtual ICommand DeleteCommand => new RelayCommand(obj =>
-        {
-            Delete();
-        });
 
     }
 }

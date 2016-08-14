@@ -15,47 +15,6 @@ namespace BFF.MVVM.Models.Native
     /// </summary>
     public class ParentTransaction : Transaction, IParentTransInc<SubTransaction>
     {
-        private ObservableCollection<SubTransaction> _subElements;
-
-        /// <summary>
-        /// SubElements if this is a Parent
-        /// </summary>
-        [Write(false)]
-        public ObservableCollection<SubTransaction> SubElements
-        {
-            get
-            {
-                if (_subElements == null)
-                {
-                    _subElements = new ObservableCollection<SubTransaction>(Database?.GetSubTransInc<SubTransaction>(Id) ?? new List<SubTransaction>());
-                    foreach (SubTransaction subTransaction in _subElements)
-                        subTransaction.Parent = this;
-                }
-                return _subElements;
-            }
-            set { }
-        }
-
-        public override long Sum
-        {
-            get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
-            set
-            {
-                OnPropertyChanged();
-                Messenger.Default.Send(AllAccountMessage.Refresh);
-                Messenger.Default.Send(AccountMessage.Refresh, Account);
-            }
-        }
-
-        [Write(false)]
-        public override ICommand DeleteCommand => new RelayCommand(obj =>
-        {
-            foreach(SubTransaction subTransaction in SubElements)
-                subTransaction.Delete();
-            SubElements.Clear();
-            Delete();
-        });
-
         /// <summary>
         /// Initializes the object
         /// </summary>
@@ -69,9 +28,6 @@ namespace BFF.MVVM.Models.Native
             Category category = null, string memo = null, bool? cleared = null)
             : base(date, account, payee, category, memo, 0L, cleared)
         {
-            ConstrDbLock = true;
-
-            ConstrDbLock = false;
         }
 
         /// <summary>
@@ -89,9 +45,6 @@ namespace BFF.MVVM.Models.Native
             long sum, bool cleared)
             : base(id, accountId, date, payeeId, categoryId, memo, sum, cleared)
         {
-            ConstrDbLock = true;
-
-            ConstrDbLock = false;
         }
 
         /// <summary>
@@ -102,70 +55,14 @@ namespace BFF.MVVM.Models.Native
         {
             ParentTransaction ret = new ParentTransaction(ynabTransaction.Date)
             {
-                Account = Account.GetOrCreate(ynabTransaction.Account),
-                Payee = Payee.GetOrCreate(YnabCsvImport.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value),
-                Category = null,
+                AccountId = Account.GetOrCreate(ynabTransaction.Account)?.Id ?? -1,
+                PayeeId = Payee.GetOrCreate(YnabCsvImport.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value)?.Id ?? -1,
+                CategoryId = -1,
                 Memo = YnabCsvImport.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
                 Sum = 0L,
                 Cleared = ynabTransaction.Cleared
             };
             return ret;
         }
-
-        #region SubElementStuff
-
-        public override bool ValidToInsert()
-        {
-            return Account != null && (Database?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) &&
-                Payee != null && (Database?.AllPayees.Contains(Payee) ?? false) && NewSubElements.All(subElement => subElement.ValidToInsert());
-        }
-
-        private readonly ObservableCollection<SubTransaction> _newSubElements = new ObservableCollection<SubTransaction>();
-        private ICommand _openParentTitView;
-
-        /// <summary>
-        /// New SubElements, which have to be edited before addition 
-        /// </summary>
-        [Write(false)]
-        public ObservableCollection<SubTransaction> NewSubElements
-        {
-            get
-            {
-                return _newSubElements;
-            }
-            set { }
-        }
-
-        public ICommand OpenParentTitView
-        {
-            get { return new RelayCommand(param => 
-            Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", param as Account))); }
-        }
-
-        [Write(false)]
-        public ICommand NewSubElementCommand => new RelayCommand(obj => _newSubElements.Add(new SubTransaction(this)));
-
-        [Write(false)]
-        public ICommand ApplyCommand => new RelayCommand(obj =>
-        {
-            foreach (SubTransaction subTransaction in _newSubElements)
-            {
-                if(Id > 0L)
-                    subTransaction.Insert();
-                _subElements.Add(subTransaction);
-            }
-            _newSubElements.Clear();
-            OnPropertyChanged(nameof(Sum));
-            Messenger.Default.Send(AllAccountMessage.Refresh);
-            Messenger.Default.Send(AccountMessage.Refresh, Account);
-        });
-
-        public void RemoveSubElement(SubTitBase toRemove)
-        {
-            if (SubElements.Contains(toRemove))
-                SubElements.Remove(toRemove as SubTransaction);
-        }
-
-        #endregion
     }
 }

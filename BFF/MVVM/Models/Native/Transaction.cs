@@ -57,31 +57,14 @@ namespace BFF.MVVM.Models.Native
             Category tempCategory = Category.GetOrCreate(ynabTransaction.Category);
             Transaction ret = new Transaction(ynabTransaction.Date)
             {
-                Account = Account.GetOrCreate(ynabTransaction.Account),
-                Payee = Payee.GetOrCreate(YnabCsvImport.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value),
-                Category = tempCategory,
+                AccountId = Account.GetOrCreate(ynabTransaction.Account)?.Id ?? -1,
+                PayeeId = Payee.GetOrCreate(YnabCsvImport.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value)?.Id ?? -1,
+                CategoryId = tempCategory?.Id ?? -1,
                 Memo = YnabCsvImport.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
                 Sum = ynabTransaction.Inflow - ynabTransaction.Outflow,
                 Cleared = ynabTransaction.Cleared
             };
             return ret;
-        }
-
-        protected override void InsertToDb()
-        {
-            Database?.Insert(this);
-        }
-
-        protected override void UpdateToDb()
-        {
-            Database?.Update(this);
-            Messenger.Default.Send(AllAccountMessage.Refresh);
-            Messenger.Default.Send(AccountMessage.Refresh, Account);
-        }
-
-        protected override void DeleteFromDb()
-        {
-            Database?.Delete(this);
         }
     }
 }

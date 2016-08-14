@@ -14,47 +14,6 @@ namespace BFF.MVVM.Models.Native
     /// </summary>
     public class ParentIncome : Income, IParentTransInc<SubIncome>
     {
-        private ObservableCollection<SubIncome> _subElements;
-
-        /// <summary>
-        /// SubElements if this is a Parent
-        /// </summary>
-        [Write(false)]
-        public ObservableCollection<SubIncome> SubElements
-        {
-            get
-            {
-                if (_subElements == null)
-                {
-                    _subElements = new ObservableCollection<SubIncome>(Database?.GetSubTransInc<SubIncome>(Id) ?? new List<SubIncome>());
-                    foreach (SubIncome subIncome in _subElements)
-                        subIncome.Parent = this;
-                }
-                return _subElements;
-            }
-            set { }
-        }
-
-        public override long Sum
-        {
-            get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
-            set
-            {
-                OnPropertyChanged();
-                Messenger.Default.Send(AllAccountMessage.Refresh);
-                Messenger.Default.Send(AccountMessage.Refresh, Account);
-            }
-        }
-
-        [Write(false)]
-        public override ICommand DeleteCommand => new RelayCommand(obj =>
-        {
-            foreach (SubIncome subIncome in SubElements)
-                subIncome.Delete();
-            SubElements.Clear();
-            Delete();
-        });
-
         /// <summary>
         /// Initializes the object
         /// </summary>
@@ -68,9 +27,6 @@ namespace BFF.MVVM.Models.Native
             Category category = null, string memo = null, bool? cleared = null)
             : base(date, account, payee, category, memo, 0L, cleared)
         {
-            ConstrDbLock = true;
-
-            ConstrDbLock = false;
         }
 
         /// <summary>
@@ -88,64 +44,6 @@ namespace BFF.MVVM.Models.Native
             long sum, bool cleared)
             : base(id, accountId, date, payeeId, categoryId, memo, sum, cleared)
         {
-            ConstrDbLock = true;
-
-            ConstrDbLock = false;
         }
-
-        #region SubElementStuff
-
-        public override bool ValidToInsert()
-        {
-            return Account != null && (Database?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) &&
-                Payee != null && (Database?.AllPayees.Contains(Payee) ?? false) && NewSubElements.All(subElement => subElement.ValidToInsert());
-        }
-
-        private readonly ObservableCollection<SubIncome> _newSubElements = new ObservableCollection<SubIncome>();
-        private ICommand _openParentTitView;
-
-        /// <summary>
-        /// New SubElements, which have to be edited before addition 
-        /// </summary>
-        [Write(false)]
-        public ObservableCollection<SubIncome> NewSubElements
-        {
-            get
-            {
-                return _newSubElements;
-            }
-            set { }
-        }
-
-        public ICommand OpenParentTitView
-        {
-            get { return new RelayCommand(param => Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", param as Account))); }
-        }
-
-        [Write(false)]
-        public ICommand NewSubElementCommand => new RelayCommand(obj => _newSubElements.Add(new SubIncome(this)));
-
-        [Write(false)]
-        public ICommand ApplyCommand => new RelayCommand(obj =>
-        {
-            foreach (SubIncome subIncome in _newSubElements)
-            {
-                if (Id > 0L)
-                    subIncome.Insert();
-                _subElements.Add(subIncome);
-            }
-            _newSubElements.Clear();
-            OnPropertyChanged(nameof(Sum));
-            Messenger.Default.Send(AllAccountMessage.Refresh);
-            Messenger.Default.Send(AccountMessage.Refresh, Account);
-        });
-
-        public void RemoveSubElement(SubTitBase toRemove)
-        {
-            if (SubElements.Contains(toRemove))
-                SubElements.Remove(toRemove as SubIncome);
-        }
-
-        #endregion
     }
 }

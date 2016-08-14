@@ -1,12 +1,13 @@
 ﻿using System;
+using BFF.DB;
 
 namespace BFF.MVVM.Models.Native
 {
     public interface ITransInc : IBasicTit
     {
-        Account Account { get; set; }
+        long AccountId { get; set; }
         DateTime Date { get; set; }
-        Payee Payee { get; set; }
+        long PayeeId { get; set; }
         bool Cleared { get; set; }
     }
 }

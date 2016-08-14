@@ -4,7 +4,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.MVVM.Models.Native
 {
-    public class DbSetting : DataModelBase
+    public class DbSetting : CrudBase
     {
         public string CurrencyCultrureName { get; set; }
 

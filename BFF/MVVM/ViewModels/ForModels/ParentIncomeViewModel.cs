@@ -29,9 +29,14 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region Overrides of ParentTransIncViewModel<SubIncome>
 
-        protected override SubTransIncViewModel CreateNewSubViewModel(SubIncome subElement)
+        protected override SubTransIncViewModel<SubIncome> CreateNewSubViewModel(SubIncome subElement)
         {
-            return new SubIncomeViewModel(subElement, Orm);
+            return new SubIncomeViewModel(subElement, this, Orm);
+        }
+
+        public override SubIncome CreateNewSubElement()
+        {
+            return new SubIncome();
         }
 
         #endregion

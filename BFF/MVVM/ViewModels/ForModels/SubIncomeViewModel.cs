@@ -4,9 +4,10 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    class SubIncomeViewModel : SubTransIncViewModel
+    class SubIncomeViewModel : SubTransIncViewModel<SubIncome>
     {
-        public SubIncomeViewModel(SubIncome subTransInc, IBffOrm orm) : base(subTransInc, orm) { }
+        public SubIncomeViewModel(SubIncome subTransInc, ParentTransIncViewModel<SubIncome> parent, IBffOrm orm) : 
+            base(subTransInc, parent, orm) { }
 
         protected override void InsertToDb()
         {

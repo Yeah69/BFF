@@ -25,9 +25,14 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region Overrides of ParentTransIncViewModel<SubTransaction>
 
-        protected override SubTransIncViewModel CreateNewSubViewModel(SubTransaction subElement)
+        protected override SubTransIncViewModel<SubTransaction> CreateNewSubViewModel(SubTransaction subElement)
         {
-            return new SubTransactionViewModel(subElement, Orm);
+            return new SubTransactionViewModel(subElement, this, Orm);
+        }
+
+        public override SubTransaction CreateNewSubElement()
+        {
+            return new SubTransaction();
         }
 
         #endregion

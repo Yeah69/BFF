@@ -29,7 +29,6 @@ namespace BFF.MVVM.Models.Native.Structure
             set
             {
                 _date = value;
-                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }
@@ -43,7 +42,6 @@ namespace BFF.MVVM.Models.Native.Structure
             set
             {
                 _cleared = value;
-                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }

@@ -3,7 +3,7 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    class Budget : DataModelBase
+    class Budget : CrudBase
     {
         public DateTime MonthYear { get; set; }
 

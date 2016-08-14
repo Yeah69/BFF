@@ -10,35 +10,19 @@ namespace BFF.MVVM.Models.Native.Structure
     /// </summary>
     public abstract class SubTitBase : TitLike
     {
-        private Category _category;
+        private long _parentId;
+        private long _categoryId;
         private long _sum;
-
-        /// <summary>
-        /// This instance is a SubElement of the Parent
-        /// </summary>
-        [Write(false)]
-        public abstract TitNoTransfer Parent{ get; set; }
 
         /// <summary>
         /// Id of the Parent
         /// </summary>
         public long ParentId
         {
-            get { return Parent?.Id ?? -1L; }
-            set { }
-        }
-
-        /// <summary>
-        /// Category of the SubElement
-        /// </summary>
-        [Write(false)]
-        public virtual Category Category
-        {
-            get { return _category; }
+            get { return _parentId; }
             set
             {
-                _category = value;
-                if(Id != -1) Update();
+                _parentId = value;
                 OnPropertyChanged();
             }
         }
@@ -48,8 +32,12 @@ namespace BFF.MVVM.Models.Native.Structure
         /// </summary>
         public long CategoryId
         {
-            get { return Category?.Id ?? -1; }
-            set { Category = Database?.GetCategory(value); }
+            get { return _categoryId; }
+            set
+            {
+                _categoryId = value;
+                OnPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -60,11 +48,8 @@ namespace BFF.MVVM.Models.Native.Structure
             get { return _sum; }
             set
             {
-                if(Parent != null) Parent.Sum -= _sum;
                 _sum = value;
-                if(Id != -1) Update();
                 OnPropertyChanged();
-                if(Parent != null) Parent.Sum += _sum;
             }
         }
 
@@ -78,7 +63,7 @@ namespace BFF.MVVM.Models.Native.Structure
         {
             ConstrDbLock = true;
 
-            _category = category ?? _category;
+            _categoryId = category?.Id ?? -1;
             _sum = sum;
 
             ConstrDbLock = false;
@@ -96,54 +81,11 @@ namespace BFF.MVVM.Models.Native.Structure
         {
             ConstrDbLock = true;
 
-            ParentId = parentId;
-            CategoryId = categoryId;
+            _parentId = parentId;
+            _categoryId = categoryId;
             _sum = sum;
 
             ConstrDbLock = false;
         }
-
-        public override bool ValidToInsert()
-        {
-            return Category != null && (Database?.AllCategories.Contains(Category) ?? false) && Parent != null;
-        }
-
-        [Write(false)]
-        public override ICommand DeleteCommand => new RelayCommand(obj =>
-        {
-            Delete();
-            (Parent as ParentTransaction)?.RemoveSubElement(this);
-            (Parent as ParentIncome)?.RemoveSubElement(this);
-            Parent.Sum -= _sum;
-        });
-
-        [Write(false)]
-        public string CategoryText { get; set; }
-
-        [Write(false)]
-        public Category AddingCategoryParent { get; set; }
-
-        [Write(false)]
-        public ICommand AddCategoryCommand => new RelayCommand(obj =>
-        {
-            Category newCategory = new Category { Name = CategoryText.Trim() };
-            Database?.Insert(newCategory);
-            if (AddingCategoryParent != null)
-            {
-                newCategory.Parent = AddingCategoryParent;
-                AddingCategoryParent.Categories.Add(newCategory);
-            }
-            OnPropertyChanged(nameof(AllCategories));
-            Category = newCategory;
-        }, obj =>
-        {
-            string trimmedCategoryText = CategoryText.Trim();
-            return trimmedCategoryText != "" &&
-                (AddingCategoryParent == null && Database?.AllCategories?.Count(category => category.Parent == null && category.Name == trimmedCategoryText) == 0 ||
-                AddingCategoryParent != null && AddingCategoryParent.Categories.Count(category => category.Name == trimmedCategoryText) == 0);
-        });
-
-        [Write(false)]
-        public ObservableCollection<Category> AllCategories => Database?.AllCategories;
     }
 }

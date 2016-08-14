@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Windows.Input;
 using BFF.Helper.Import;
 using BFF.MVVM.Models.Native.Structure;
-using Dapper.Contrib.Extensions;
 
 namespace BFF.MVVM.Models.Native
 {
@@ -11,73 +9,18 @@ namespace BFF.MVVM.Models.Native
     /// </summary>
     public class Transfer : TitBase
     {
-        private Account _fromAccount;
-        private Account _toAccount;
-
-        /// <summary>
-        /// The Sum is transfered from this Account
-        /// </summary>
-        [Write(false)]
-        public Account FromAccount
-        {
-            get { return _fromAccount; }
-            set
-            {
-                if(_fromAccount == value) return;
-                Account temp = _fromAccount;
-                if (_toAccount == value)
-                {
-                    _toAccount = _fromAccount;
-                    OnPropertyChanged(nameof(ToAccount));
-                    temp = null;
-                }
-                _fromAccount = value;
-                if(Id != -1) Update();
-                Messenger.Default.Send(AccountMessage.RefreshTits, temp);
-                if (temp == null)
-                    Messenger.Default.Send(AccountMessage.RefreshBalance, _toAccount);
-                else
-                    Messenger.Default.Send(AccountMessage.RefreshBalance, temp);
-                Messenger.Default.Send(AccountMessage.RefreshBalance, _fromAccount);
-                OnPropertyChanged();
-            }
-        }
+        private long _fromAccountId;
+        private long _toAccountId;
 
         /// <summary>
         /// Id of FromAccount
         /// </summary>
         public long FromAccountId
         {
-            get { return FromAccount?.Id ?? -1; }
-            set { _fromAccount = Database?.CommonPropertyProvider.GetAccount(value); }
-        }
-
-
-        /// <summary>
-        /// The Sum is transfered to this Account
-        /// </summary>
-        [Write(false)]
-        public Account ToAccount
-        {
-            get { return _toAccount; }
+            get { return _fromAccountId; }
             set
             {
-                if(_toAccount == value) return;
-                Account temp = _toAccount;
-                if (_fromAccount == value)
-                {
-                    _fromAccount = _toAccount;
-                    OnPropertyChanged(nameof(FromAccount));
-                    temp = null;
-                }
-                _toAccount = value;
-                if(Id != -1) Update();
-                Messenger.Default.Send(AccountMessage.RefreshTits, temp);
-                if (temp == null)
-                    Messenger.Default.Send(AccountMessage.RefreshBalance, _fromAccount);
-                else
-                    Messenger.Default.Send(AccountMessage.RefreshBalance, temp);
-                Messenger.Default.Send(AccountMessage.RefreshBalance, _toAccount);
+                _fromAccountId = value; 
                 OnPropertyChanged();
             }
         }
@@ -87,18 +30,11 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         public long ToAccountId
         {
-            get { return ToAccount?.Id ?? -1; }
-            set { _toAccount = Database?.CommonPropertyProvider.GetAccount(value); }
-        }
-
-        public override long Sum
-        {
-            get { return base.Sum; }
+            get { return _toAccountId; }
             set
             {
-                base.Sum = value;
-                Messenger.Default.Send(AccountMessage.RefreshBalance, _fromAccount);
-                Messenger.Default.Send(AccountMessage.RefreshBalance, _toAccount);
+                _toAccountId = value;
+                OnPropertyChanged();
             }
         }
 
@@ -115,12 +51,8 @@ namespace BFF.MVVM.Models.Native
             long sum = 0L, bool? cleared = null)
             : base(date, memo: memo, sum: sum, cleared: cleared)
         {
-            ConstrDbLock = true;
-
-            _fromAccount = fromAccount ?? _fromAccount;
-            _toAccount = toAccount ?? _toAccount;
-
-            ConstrDbLock = false;
+            _fromAccountId = fromAccount?.Id ?? -1;
+            _toAccountId = toAccount?.Id ?? -1;
         }
 
         /// <summary>
@@ -137,12 +69,8 @@ namespace BFF.MVVM.Models.Native
             long sum, bool cleared)
             : base(date, id, memo, sum, cleared)
         {
-            ConstrDbLock = true;
-
             FromAccountId = fromAccountId;
             ToAccountId = toAccountId;
-
-            ConstrDbLock = false;
         }
 
         /// <summary>
@@ -158,46 +86,13 @@ namespace BFF.MVVM.Models.Native
                 : Account.GetOrCreate(YnabCsvImport.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value);
             Transfer ret = new Transfer(ynabTransaction.Date)
             {
-                FromAccount = tempFromAccount,
-                ToAccount = tempToAccount,
+                FromAccountId = tempFromAccount?.Id ?? -1,
+                ToAccountId = tempToAccount?.Id ?? -1,
                 Memo = YnabCsvImport.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
                 Sum = Math.Abs(tempSum),
                 Cleared = ynabTransaction.Cleared
             };
             return ret;
         }
-
-        public override bool ValidToInsert()
-        {
-            return FromAccount != null && (Database?.CommonPropertyProvider.Accounts.Contains(FromAccount) ?? false) &&
-                ToAccount != null && (Database?.CommonPropertyProvider.Accounts.Contains(ToAccount) ?? false);
-        }
-
-        protected override void InsertToDb()
-        {
-            Database?.Insert(this);
-        }
-
-        protected override void UpdateToDb()
-        {
-            Database?.Update(this);
-            Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
-            Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
-            Messenger.Default.Send(AllAccountMessage.RefreshTits);
-        }
-
-        protected override void DeleteFromDb()
-        {
-            Database?.Delete(this);
-        }
-
-        [Write(false)]
-        public override ICommand DeleteCommand => new RelayCommand(obj =>
-        {
-            Delete();
-            Messenger.Default.Send(AccountMessage.Refresh, FromAccount);
-            Messenger.Default.Send(AccountMessage.Refresh, ToAccount);
-            Messenger.Default.Send(AllAccountMessage.RefreshTits);
-        });
     }
 }
