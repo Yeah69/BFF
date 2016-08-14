@@ -4,7 +4,6 @@ using System.Windows.Input;
 using AlphaChiTech.Virtualization;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
@@ -14,8 +13,6 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class AccountViewModel : AccountBaseViewModel
     {
-        public Action RefreshDataGrid;
-
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
@@ -30,6 +27,9 @@ namespace BFF.MVVM.ViewModels.ForModels
             }
         }
 
+        /// <summary>
+        /// Name of the Account Model
+        /// </summary>
         public override string Name
         {
             get { return Account.Name; }
@@ -40,30 +40,56 @@ namespace BFF.MVVM.ViewModels.ForModels
             }
         }
 
+        /// <summary>
+        /// The object's Id in the table of the database.
+        /// </summary>
         public override long Id => Account.Id;
+
+        /// <summary>
+        /// Before a model object is inserted into the database, it has to be valid.
+        /// This function should guarantee that the object is valid to be inserted.
+        /// </summary>
+        /// <returns>True if valid, else false</returns>
         internal override bool ValidToInsert()
         {
             return !string.IsNullOrWhiteSpace(Name);
         }
 
+        /// <summary>
+        /// Uses the OR mapper to insert the model into the database. Inner function for the Insert method.
+        /// The Orm works in a generic way and determines the right table by the given type.
+        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
+        /// </summary>
         protected override void InsertToDb()
         {
             Orm?.Insert(Account);
         }
 
+        /// <summary>
+        /// Uses the OR mapper to update the model in the database. Inner function for the Update method.
+        /// The Orm works in a generic way and determines the right table by the given type.
+        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
+        /// </summary>
         protected override void UpdateToDb()
         {
             Orm?.Update(Account);
         }
 
+        /// <summary>
+        /// Uses the OR mapper to delete the model from the database. Inner function for the Delete method.
+        /// The Orm works in a generic way and determines the right table by the given type.
+        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
+        /// </summary>
         protected override void DeleteFromDb()
         {
             Orm?.Delete(Account);
         }
 
         /// <summary>
-        /// Initializes the object
+        /// Initializes an AccountViewModel.
         /// </summary>
+        /// <param name="account">An Account Model.</param>
+        /// <param name="orm">Used for the database accesses.</param>
         public AccountViewModel(Account account, IBffOrm orm) : base(orm)
         {
             Account = account;
@@ -89,11 +115,20 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region ViewModel_Part
 
+        /// <summary>
+        /// Lazy loaded collection of TITs belonging to this Account.
+        /// </summary>
         public override VirtualizingObservableCollection<TitLikeViewModel> Tits => _tits ?? 
             (_tits = new VirtualizingObservableCollection<TitLikeViewModel>(new PaginationManager<TitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, Account, Orm))));
-        
+
+        /// <summary>
+        /// Collection of TITs, which are about to be inserted to this Account.
+        /// </summary>
         public override ObservableCollection<TitLikeViewModel> NewTits { get; set; } = new ObservableCollection<TitLikeViewModel>();
 
+        /// <summary>
+        /// The current Balance of this Account.
+        /// </summary>
         public override long? Balance
         {
             get
@@ -102,12 +137,19 @@ namespace BFF.MVVM.ViewModels.ForModels
             }
             set { OnPropertyChanged(); }
         }
+
+        /// <summary>
+        /// Refreshes the Balance.
+        /// </summary>
         public override void RefreshBalance()
         {
             OnPropertyChanged(nameof(Balance));
             Messenger.Default.Send(AllAccountMessage.RefreshBalance);
         }
 
+        /// <summary>
+        /// Refreshes the TITs of this Account.
+        /// </summary>
         public override void RefreshTits()
         {
             OnPreVirtualizedRefresh();
@@ -116,31 +158,49 @@ namespace BFF.MVVM.ViewModels.ForModels
             OnPostVirtualizedRefresh();
         }
 
+        /// <summary>
+        /// Creates a new Transaction.
+        /// </summary>
         public override ICommand NewTransactionCommand => new RelayCommand(obj =>
         {
             NewTits.Add(new TransactionViewModel(new Transaction(DateTime.Today, Account, memo: "", sum: 0L, cleared: false), Orm));
         });
-        
+
+        /// <summary>
+        /// Creates a new Income.
+        /// </summary>
         public override ICommand NewIncomeCommand => new RelayCommand(obj =>
         {
             NewTits.Add(new IncomeViewModel(new Income(DateTime.Today, Account, memo: "", sum: 0L, cleared: false), Orm));
         });
-        
+
+        /// <summary>
+        /// Creates a new Transfer.
+        /// </summary>
         public override ICommand NewTransferCommand => new RelayCommand(obj =>
         {
             NewTits.Add(new TransferViewModel(new Transfer(DateTime.Today, memo: "", sum: 0L, cleared: false), Orm));
         });
-        
+
+        /// <summary>
+        /// Creates a new ParentTransaction.
+        /// </summary>
         public override ICommand NewParentTransactionCommand => new RelayCommand(obj =>
         {
             NewTits.Add(new ParentTransactionViewModel(new ParentTransaction(DateTime.Today, Account, memo: "", cleared: false), Orm));
         });
-        
+
+        /// <summary>
+        /// Creates a new ParentIncome.
+        /// </summary>
         public override ICommand NewParentIncomeCommand => new RelayCommand(obj =>
         {
             NewTits.Add(new ParentIncomeViewModel(new ParentIncome(DateTime.Today, Account, memo: "", cleared: false), Orm));
         });
-        
+
+        /// <summary>
+        /// Flushes all valid and not yet inserted TITs to the database.
+        /// </summary>
         public override ICommand ApplyCommand => new RelayCommand(obj =>
         {
             ApplyTits();
