@@ -10,7 +10,7 @@ using BFF.Properties;
 
 namespace BFF.MVVM.ViewModels
 {
-    public class AccountTabsViewModel : SessionViewModelBase
+    public class AccountTabsViewModel : SessionViewModelBase, IDisposable
     {
         protected readonly IBffOrm _orm;
 
@@ -94,6 +94,22 @@ namespace BFF.MVVM.ViewModels
             dbSetting.CurrencyCulture = Settings.Default.Culture_SessionCurrency;
             dbSetting.DateCulture = Settings.Default.Culture_SessionDate;
             _orm.Update(dbSetting);
+        }
+
+        #endregion
+
+        #region Implementation of IDisposable
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+        {
+            foreach(AccountViewModel accountViewModel in AllAccounts)
+            {
+                (accountViewModel as IDisposable)?.Dispose();
+            }
+            AllAccounts.Clear();
+            (AllAccountsViewModel as IDisposable)?.Dispose();
+            Messenger.Default.Unregister(this);
         }
 
         #endregion

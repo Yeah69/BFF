@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
@@ -171,6 +172,7 @@ namespace BFF.MVVM.ViewModels
 
         protected void Reset(string dbPath)
         {
+            (ContentViewModel as IDisposable)?.Dispose();
             if (File.Exists(dbPath))
             {
                 IBffOrm orm = new SqLiteBffOrm(dbPath);

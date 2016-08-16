@@ -17,7 +17,7 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
             [Theory, MemberData(nameof(TransactionData))]
             public void PropertyTheory(long accountId, DateTime dateTime, long payeeId, long categoryId, string memo, long sum, bool cleared)
             {
-                //Assemble
+                //Arrange
                 Mock<IBffOrm> ormMock = MockTheOrm();
                 Transaction transaction = new Transaction(-1, accountId, dateTime, payeeId, categoryId, memo, sum, cleared);
                 TransactionViewModel transactionViewModel = new TransactionViewModel(transaction, ormMock.Object);
