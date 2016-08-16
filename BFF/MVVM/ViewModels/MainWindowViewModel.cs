@@ -29,9 +29,40 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public ICommand NewBudgetPlanCommand => new RelayCommand(param => NewBudgetPlan(), param => true);
-        public ICommand OpenBudgetPlanCommand => new RelayCommand(param => OpenBudgetPlan(), param => true);
-        public ICommand ImportBudgetPlanCommand => new RelayCommand(ImportBudgetPlan, param => true);
+        public ICommand NewBudgetPlanCommand => new RelayCommand(param => 
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Title = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_TitleNew", null, Settings.Default.Culture_DefaultLanguage),
+                Filter = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_Filter", null, Settings.Default.Culture_DefaultLanguage),
+                DefaultExt = "*.sqlite"
+            };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                SqLiteBffOrm.CreateNewDatabase(saveFileDialog.FileName);
+                Reset(saveFileDialog.FileName);
+            }
+        });
+
+        public ICommand OpenBudgetPlanCommand => new RelayCommand(param => 
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Title = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_TitleOpen", null, Settings.Default.Culture_DefaultLanguage),
+                Filter = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_Filter", null, Settings.Default.Culture_DefaultLanguage),
+                DefaultExt = "*.sqlite"
+            };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Reset(openFileDialog.FileName);
+            }
+        });
+
+        public ICommand ImportBudgetPlanCommand => new RelayCommand(importableObject =>
+        {
+            string savePath = ((IImportable)importableObject).Import();
+            Reset(savePath);
+        });
 
         private SessionViewModelBase _contentViewModel;
         public SessionViewModelBase ContentViewModel
@@ -138,41 +169,6 @@ namespace BFF.MVVM.ViewModels
             Logger.Trace("Initializing done.");
         }
 
-        protected void NewBudgetPlan()
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog
-            {
-                Title = (string) WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_TitleNew", null, Settings.Default.Culture_DefaultLanguage), 
-                Filter = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_Filter", null, Settings.Default.Culture_DefaultLanguage), 
-                DefaultExt = "*.sqlite"
-            };
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                SqLiteBffOrm.CreateNewDatabase(saveFileDialog.FileName);
-                Reset(saveFileDialog.FileName);
-            }
-        }
-
-        protected void OpenBudgetPlan()
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                Title = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_TitleOpen", null, Settings.Default.Culture_DefaultLanguage),
-                Filter = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_Filter", null, Settings.Default.Culture_DefaultLanguage),
-                DefaultExt = "*.sqlite"
-            };
-            if (openFileDialog.ShowDialog() == true)
-            {
-                Reset(openFileDialog.FileName);
-            }
-        }
-
-        protected void ImportBudgetPlan(object importableObject)
-        {
-            string savePath = ((IImportable)importableObject).Import();
-            Reset(savePath);
-        }
-
         protected void Reset(string dbPath)
         {
             if (File.Exists(dbPath))
@@ -180,11 +176,15 @@ namespace BFF.MVVM.ViewModels
                 IBffOrm orm = new SqLiteBffOrm(dbPath);
                 ContentViewModel = new AccountTabsViewModel(orm);
                 Title = $"{new FileInfo(dbPath).Name} - BFF";
+                Settings.Default.DBLocation = dbPath;
+                Settings.Default.Save();
             }
             else
             {
                 ContentViewModel = new EmptyContentViewModel();
                 Title = "BFF";
+                Settings.Default.DBLocation = "";
+                Settings.Default.Save();
             }
             OnPropertyChanged(nameof(CurrencyCulture));
             OnPropertyChanged(nameof(DateCulture));
