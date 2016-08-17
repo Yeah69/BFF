@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using BFF.DB;
+using BFF.MVVM.Models.Native;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -26,5 +28,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
         protected TitBaseViewModel(IBffOrm orm) : base(orm) { }
+
+        #region Account Editing
+
+        /// <summary>
+        /// All currently available Accounts.
+        /// </summary>
+        public ObservableCollection<Account> AllAccounts => Orm?.CommonPropertyProvider.Accounts;
+
+        #endregion
     }
 }

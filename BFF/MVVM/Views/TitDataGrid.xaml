@@ -11,7 +11,6 @@
              xmlns:native="clr-namespace:BFF.MVVM.Models.Native"
              xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              xmlns:structure="clr-namespace:BFF.MVVM.ViewModels.ForModels.Structure"
-             xmlns:views="clr-namespace:BFF.MVVM.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              x:Name="Root">
@@ -136,7 +135,7 @@
                                       IsEditable="True"
                                       IsTextSearchCaseSensitive="False"
                                       IsTextSearchEnabled="True"
-                                      ItemsSource="{Binding DataContext.(views:TitDataGrid.AccountViewModel).AllAccounts, ElementName=LayoutRoot}">
+                                      ItemsSource="{Binding AllAccounts}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>
@@ -222,7 +221,7 @@
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
                                                               IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.(views:TitDataGrid.AccountViewModel).AllAccounts, ElementName=LayoutRoot}">
+                                                              ItemsSource="{Binding AllAccounts}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                     </Binding>
@@ -302,7 +301,7 @@
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
                                                               IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.(views:TitDataGrid.AccountViewModel).AllAccounts, ElementName=LayoutRoot}">
+                                                              ItemsSource="{Binding AllAccounts}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                     </Binding>
@@ -404,7 +403,7 @@
             </DataTemplate>
             <!-- Cleared -->
             <DataTemplate x:Key="ClearedColumnTemplate">
-                <CheckBox Style="{StaticResource BffCheckBox}" IsChecked="{Binding (structure:TitBaseViewModel.Cleared), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" MinHeight="30" VerticalAlignment="Center"/>
+                <CheckBox Style="{StaticResource BffCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" MinHeight="30" VerticalAlignment="Center"/>
             </DataTemplate>
             <!--#endregion -->
             <!--#region SubElementsFormTemplate -->
