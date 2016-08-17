@@ -11,7 +11,7 @@ namespace BFF.DB
     public interface ICommonPropertyProvider {
         ObservableCollection<Account> Accounts { get; }
         ObservableCollection<AccountViewModel> AccountViewModels { get; }
-        AllAccountsViewModel AllAccountsViewModel { get; }
+        SummaryAccountViewModel SummaryAccountViewModel { get; }
         ObservableCollection<Payee> Payees { get; }
         ObservableCollection<Category> Categories { get; }
         void Add(Account account);
@@ -34,7 +34,7 @@ namespace BFF.DB
 
         public ObservableCollection<AccountViewModel> AccountViewModels { get; private set; }
 
-        public AllAccountsViewModel AllAccountsViewModel { get; private set; }
+        public SummaryAccountViewModel SummaryAccountViewModel { get; private set; }
 
         public ObservableCollection<Payee> Payees { get; private set; }
 
@@ -107,7 +107,7 @@ namespace BFF.DB
 
         private void InitializeAccounts()
         {
-            AllAccountsViewModel = new AllAccountsViewModel(_orm);
+            SummaryAccountViewModel = new SummaryAccountViewModel(_orm);
             Accounts = new ObservableCollection<Account>(_orm.GetAll<Account>().OrderBy(account => account.Name));
             AccountViewModels = new ObservableCollection<AccountViewModel>(
                 Accounts.Select(account => new AccountViewModel(account, _orm)));

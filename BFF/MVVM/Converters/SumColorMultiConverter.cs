@@ -16,7 +16,7 @@ namespace BFF.MVVM.Converters
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             //Transfer in "All Accounts"-Tab
-            if (values[0] is AllAccounts)
+            if (values[0] is SummaryAccount)
                 return TransferBrush;
             Account account = (Account)values[0];
             //Transfer in FromAccount-Tab

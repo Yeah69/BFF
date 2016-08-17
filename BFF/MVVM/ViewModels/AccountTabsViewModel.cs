@@ -20,9 +20,9 @@ namespace BFF.MVVM.ViewModels
 
         public ObservableCollection<Category> AllCategories => _orm.CommonPropertyProvider.Categories; 
 
-        public AllAccountsViewModel AllAccountsViewModel
+        public SummaryAccountViewModel SummaryAccountViewModel
         {
-            get { return _orm.CommonPropertyProvider.AllAccountsViewModel; }
+            get { return _orm.CommonPropertyProvider.SummaryAccountViewModel; }
             set
             {
                 OnPropertyChanged();
@@ -108,7 +108,7 @@ namespace BFF.MVVM.ViewModels
                 (accountViewModel as IDisposable)?.Dispose();
             }
             AllAccounts.Clear();
-            (AllAccountsViewModel as IDisposable)?.Dispose();
+            (SummaryAccountViewModel as IDisposable)?.Dispose();
             Messenger.Default.Unregister(this);
         }
 

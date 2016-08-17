@@ -98,7 +98,7 @@ namespace BFF.DB.SQLite
 
         public IEnumerable<TitBase> GetAllTits(DateTime startDate, DateTime endDate, Account account = null)
         {
-            Logger.Debug("Getting all TITs from {0} between {1} and {2}.", account?.Name ?? "AllAccounts", startDate, endDate);
+            Logger.Debug("Getting all TITs from {0} between {1} and {2}.", account?.Name ?? "SummaryAccount", startDate, endDate);
             DbLockFlag = true;
             IEnumerable<TitBase> results;
 
@@ -127,7 +127,7 @@ namespace BFF.DB.SQLite
 
         public long? GetAccountBalance(Account account = null)
         {
-            Logger.Debug("Getting account balance from {0}.", account?.Name ?? "AllAccounts");
+            Logger.Debug("Getting account balance from {0}.", account?.Name ?? "SummaryAccount");
             long ret;
 
             using (var transactionScope = new DbTransactions.TransactionScope())
@@ -310,7 +310,7 @@ namespace BFF.DB.SQLite
                 {
                     string specifyingAddition = "";
                     Account account = specifyingObject as Account;
-                    if(account != null && !(account is AllAccounts))
+                    if(account != null && !(account is SummaryAccount))
                         specifyingAddition = $"WHERE {nameof(TitNoTransfer.AccountId)} = {account.Id} OR {nameof(TitNoTransfer.AccountId)} = -69 AND ({nameof(TitNoTransfer.PayeeId)} = {account.Id} OR {nameof(TitNoTransfer.CategoryId)} = {account.Id})";
                     string query = $"SELECT * FROM [{TheTitName}] {specifyingAddition} ORDER BY {nameof(TitBase.Date)} LIMIT {offset}, {pageSize};";
                     Type[] types =
@@ -337,7 +337,7 @@ namespace BFF.DB.SQLite
             {
                 string specifyingAddition = "";
                 Account account = specifyingObject as Account;
-                if (account != null && !(account is AllAccounts))
+                if (account != null && !(account is SummaryAccount))
                     specifyingAddition = $"WHERE {nameof(TitNoTransfer.AccountId)} = {account.Id} OR {nameof(TitNoTransfer.AccountId)} = -69 AND ({nameof(TitNoTransfer.PayeeId)} = {account.Id} OR {nameof(TitNoTransfer.CategoryId)} = {account.Id})";
                 query = $"SELECT COUNT(*) FROM [{TheTitName}] {specifyingAddition};";
             }

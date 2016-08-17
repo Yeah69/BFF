@@ -23,7 +23,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             {
                 Account.StartingBalance = value;
                 OnPropertyChanged();
-                Orm.CommonPropertyProvider.AllAccountsViewModel.RefreshStartingBalance();
+                Orm.CommonPropertyProvider.SummaryAccountViewModel.RefreshStartingBalance();
             }
         }
 

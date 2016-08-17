@@ -150,7 +150,7 @@
     <Compile Include="Helper\Output.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
-    <Compile Include="MVVM\Models\Native\AllAccounts.cs" />
+    <Compile Include="MVVM\Models\Native\SummaryAccount.cs" />
     <Compile Include="MVVM\Models\Native\Account.cs" />
     <Compile Include="MVVM\Models\Native\Category.cs" />
     <Compile Include="MVVM\Models\Native\Budget.cs" />
@@ -182,7 +182,7 @@
     <Compile Include="MVVM\Models\Native\Transfer.cs" />
     <Compile Include="MVVM\Models\Native\Transaction.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\AccountBaseViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\AllAccountsViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\SummaryAccountViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\AccountViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\ParentIncomeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\ParentTransactionViewModel.cs" />

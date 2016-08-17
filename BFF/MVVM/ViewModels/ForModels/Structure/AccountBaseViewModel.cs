@@ -185,7 +185,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transfer.ToAccount.Id));
                 }
             }
-            Orm.CommonPropertyProvider.AllAccountsViewModel.RefreshTits();
+            Orm.CommonPropertyProvider.SummaryAccountViewModel.RefreshTits();
             foreach (AccountViewModel accountViewModel in accountViewModels)
             {
                 accountViewModel.RefreshTits();
