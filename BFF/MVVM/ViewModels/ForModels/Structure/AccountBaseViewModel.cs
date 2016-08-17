@@ -48,12 +48,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All available Payees.
         /// </summary>
-        public ObservableCollection<Payee> AllPayees => Orm?.AllPayees;
+        public ObservableCollection<Payee> AllPayees => Orm?.CommonPropertyProvider.Payees;
 
         /// <summary>
         /// All available Categories.
         /// </summary>
-        public ObservableCollection<Category> AllCategories => Orm?.AllCategories;
+        public ObservableCollection<Category> AllCategories => Orm?.CommonPropertyProvider.Categories;
 
         /// <summary>
         /// Creates a new Transaction.

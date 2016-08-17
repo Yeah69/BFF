@@ -62,7 +62,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void InsertToDb()
         {
-            Orm?.Insert(Account);
+            Orm?.CommonPropertyProvider.Add(Account);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void DeleteFromDb()
         {
-            Orm?.Delete(Account);
+            Orm?.CommonPropertyProvider.Remove(Account);
         }
 
         /// <summary>

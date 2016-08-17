@@ -27,18 +27,22 @@ namespace BFF.MVVM.Models.Native
             set
             {
                 _parent = value;
-                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }
+
+        private long? _parentId;
 
         /// <summary>
         /// Id of Parent
         /// </summary>
         public long? ParentId
         {
-            get { return Parent?.Id; }
-            set { _parent = Database?.GetCategory(value ?? -1L); 
+            get { return _parentId; }
+            set
+            {
+                _parentId = value;
+                OnPropertyChanged(); 
             }
         }
 
@@ -136,7 +140,7 @@ namespace BFF.MVVM.Models.Native
 
         protected override void InsertToDb()
         {
-            Database?.Insert(this);
+            Database?.CommonPropertyProvider.Add(this);
         }
 
         protected override void UpdateToDb()
@@ -146,7 +150,7 @@ namespace BFF.MVVM.Models.Native
 
         protected override void DeleteFromDb()
         {
-            Database?.Delete(this);
+            Database?.CommonPropertyProvider.Remove(this);
         }
     }
 }

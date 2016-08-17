@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -12,12 +13,16 @@ namespace BFF.DB
         ObservableCollection<AccountViewModel> AccountViewModels { get; }
         AllAccountsViewModel AllAccountsViewModel { get; }
         ObservableCollection<Payee> Payees { get; }
+        ObservableCollection<Category> Categories { get; }
         void Add(Account account);
         void Add(Payee payee);
+        void Add(Category category);
         void Remove(Account account);
         void Remove(Payee payee);
+        void Remove(Category category);
         Account GetAccount(long id);
         Payee GetPayee(long id);
+        Category GetCategory(long id);
         AccountViewModel GetAccountViewModel(long id);
     }
 
@@ -33,9 +38,9 @@ namespace BFF.DB
 
         public ObservableCollection<Payee> Payees { get; private set; }
 
-        //todo PayeeViewModels!?
+        public ObservableCollection<Category> Categories { get; private set; }
 
-        //todo Categories
+        //todo PayeeViewModels!?
 
         //todo CategoryViewModels!?
 
@@ -45,8 +50,8 @@ namespace BFF.DB
             _orm = orm;
 
             InitializeAccounts();
-
-            Payees = new ObservableCollection<Payee>(_orm.GetAll<Payee>());
+            InitializePayees();
+            InitializeCategories();
         }
 
         public void Add(Account account)
@@ -61,6 +66,20 @@ namespace BFF.DB
             Payees.Add(payee);
         }
 
+        public void Add(Category category)
+        {
+            _orm.Insert(category);
+            if (category.Parent == null) //if new category has no parents then append at the end of the list
+                Categories.Add(category);
+            else //if new category has parent then append as its last child
+            {
+                int index = category.Parent.Categories.Count - 2;
+                index = index == -1 ? Categories.IndexOf(category.Parent) + 1 :
+                    Categories.IndexOf(category.Parent.Categories[index]) + 1;
+                Categories.Insert(index, category);
+            }
+        }
+
         public void Remove(Account account)
         {
             _orm.Delete(account);
@@ -73,8 +92,15 @@ namespace BFF.DB
             Payees.Remove(payee);
         }
 
+        public void Remove(Category category)
+        {
+            _orm.Delete(category);
+            Categories.Remove(category);
+        }
+
         public Account GetAccount(long id) => Accounts.FirstOrDefault(account => account.Id == id);
         public Payee GetPayee(long id) => Payees.FirstOrDefault(payee => payee.Id == id);
+        public Category GetCategory(long id) => Categories.FirstOrDefault(category => category.Id == id);
 
         public AccountViewModel GetAccountViewModel(long id)
             => AccountViewModels.FirstOrDefault(accountVm => accountVm.Id == id);
@@ -82,7 +108,7 @@ namespace BFF.DB
         private void InitializeAccounts()
         {
             AllAccountsViewModel = new AllAccountsViewModel(_orm);
-            Accounts = new ObservableCollection<Account>(_orm.GetAll<Account>());
+            Accounts = new ObservableCollection<Account>(_orm.GetAll<Account>().OrderBy(account => account.Name));
             AccountViewModels = new ObservableCollection<AccountViewModel>(
                 Accounts.Select(account => new AccountViewModel(account, _orm)));
             Accounts.CollectionChanged += (sender, args) =>
@@ -112,6 +138,44 @@ namespace BFF.DB
                         break;
                 }
             };
+        }
+
+        private void InitializePayees()
+        {
+            Payees = new ObservableCollection<Payee>(_orm.GetAll<Payee>().OrderBy(payee => payee.Name));
+        }
+
+        private void InitializeCategories()
+        {
+            Categories = new ObservableCollection<Category>();
+            Dictionary<long, Category> catagoryDictionary = _orm.GetAll<Category>().ToDictionary(category => category.Id);
+            //Now after every Category is loaded the Parent-Child relations are established
+            List<Category> parentCategories = new List<Category>();
+            foreach (Category category in catagoryDictionary.Values)
+            {
+                if (category.ParentId != null && category.ParentId > 0)
+                {
+                    category.Parent = catagoryDictionary[(long)category.ParentId];
+                    category.Parent.Categories.Add(category);
+                }
+                else parentCategories.Add(category);
+            }
+            foreach (Category parentCategory in parentCategories.OrderBy(category => category.Name))
+            {
+                Categories.Add(parentCategory);
+                FillCategoryWithDescandents(parentCategory,  Categories);
+            }
+        }
+
+
+
+        private void FillCategoryWithDescandents(Category parentCategory, IList<Category> list)
+        {
+            foreach (Category childCategory in parentCategory.Categories.OrderBy(category => category.Name))
+            {
+                list.Add(childCategory);
+                FillCategoryWithDescandents(childCategory, list);
+            }
         }
     }
 }

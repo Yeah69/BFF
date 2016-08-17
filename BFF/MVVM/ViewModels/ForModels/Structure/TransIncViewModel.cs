@@ -80,7 +80,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public Category Category
         {
             get { return TransInc.CategoryId == -1 ? null :
-                    Orm?.GetCategory(TransInc.CategoryId); }
+                    Orm?.CommonPropertyProvider.GetCategory(TransInc.CategoryId); }
             set
             {
                 TransInc.CategoryId = value?.Id ?? -1;
@@ -155,7 +155,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         {
             return Account != null  && (Orm?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) &&
                    Payee != null    &&  Orm .CommonPropertyProvider.Payees.Contains(Payee) &&
-                   Category != null &&  Orm .AllCategories.Contains(Category);
+                   Category != null &&  Orm .CommonPropertyProvider.Categories.Contains(Category);
         }
 
         #region Category Editing
@@ -198,7 +198,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All currently available Categories.
         /// </summary>
-        public ObservableCollection<Category> AllCategories => Orm?.AllCategories;
+        public ObservableCollection<Category> AllCategories => Orm?.CommonPropertyProvider.Categories;
 
         #endregion
 

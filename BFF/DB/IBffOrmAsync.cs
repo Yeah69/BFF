@@ -6,7 +6,7 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB
 {
-    public interface IBffOrmAsync : ICrudOrmAsync, IPeripheryProvider, IPagedOrmAsync
+    public interface IBffOrmAsync : ICrudOrmAsync, IPagedOrmAsync
     {
         string DbPath { get; }
         Task CreateNewDatabaseAsync(string dbPath);

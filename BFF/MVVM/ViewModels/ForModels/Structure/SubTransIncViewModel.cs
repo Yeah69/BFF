@@ -36,7 +36,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             get
             {
                 return SubTransInc.CategoryId == -1 ? null : 
-                    Orm?.GetCategory(SubTransInc.CategoryId);
+                    Orm?.CommonPropertyProvider.GetCategory(SubTransInc.CategoryId);
             }
             set
             {
@@ -96,7 +96,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <returns>True if valid, else false</returns>
         internal override bool ValidToInsert()
         {
-            return Category != null && (Orm?.AllCategories.Contains(Category) ?? false) && SubTransInc.ParentId != -1;
+            return Category != null && (Orm?.CommonPropertyProvider.Categories.Contains(Category) ?? false) && SubTransInc.ParentId != -1;
         }
 
         #region Category Editing
@@ -122,7 +122,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 newCategory.Parent = AddingCategoryParent;
                 AddingCategoryParent.Categories.Add(newCategory);
             }
-            Orm?.Insert(newCategory);
+            Orm?.CommonPropertyProvider.Add(newCategory);
             OnPropertyChanged(nameof(AllCategories));
             Category = newCategory;
         }, obj =>
@@ -139,7 +139,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All currently available Categories.
         /// </summary>
-        public ObservableCollection<Category> AllCategories => Orm?.AllCategories;
+        public ObservableCollection<Category> AllCategories => Orm?.CommonPropertyProvider.Categories;
 
         #endregion
 

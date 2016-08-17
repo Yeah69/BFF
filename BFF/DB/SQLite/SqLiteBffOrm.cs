@@ -192,33 +192,8 @@ namespace BFF.DB.SQLite
                     dataModelBase.Id = ret;
                     transactionScope.Complete();
                 }
-                ManageIfPeriphery(dataModelBase);
             }
             return ret;
-        }
-
-        protected void ManageIfPeriphery<T>(T dataModelBase) where T : DataModelBase
-        {
-            if (dataModelBase is CommonProperty)
-            {
-                if (dataModelBase is Account)
-                    CommonPropertyProvider.Add(dataModelBase as Account);
-                else if (dataModelBase is Payee)
-                    AllPayees.Add(dataModelBase as Payee);
-                else if (dataModelBase is Category)
-                {
-                    Category newCategory = dataModelBase as Category;
-                    if (newCategory.Parent == null)
-                        AllCategories.Add(newCategory);
-                    else
-                    {
-                        int index = newCategory.Parent.Categories.Count - 2;
-                        index = index == -1 ? AllCategories.IndexOf(newCategory.Parent) + 1 :
-                            AllCategories.IndexOf(newCategory.Parent.Categories[index]) + 1;
-                        AllCategories.Insert(index, newCategory);
-                    }
-                }
-            }
         }
 
         public T Get<T>(long id) where T : DataModelBase
@@ -257,15 +232,6 @@ namespace BFF.DB.SQLite
                 {
                     Cnn.Delete(dataModelBase);
                     transactionScope.Complete();
-                }
-                if (dataModelBase is CommonProperty)
-                {
-                    if (dataModelBase is Account && CommonPropertyProvider.Accounts.Contains(dataModelBase as Account))
-                        CommonPropertyProvider.Remove(dataModelBase as Account);
-                    else if (dataModelBase is Payee && AllPayees.Contains(dataModelBase as Payee))
-                        AllPayees.Remove(dataModelBase as Payee);
-                    else if (dataModelBase is Category && AllCategories.Contains(dataModelBase as Category))
-                        AllCategories.Remove(dataModelBase as Category);
                 }
             }
         }
@@ -316,79 +282,17 @@ namespace BFF.DB.SQLite
             _dbPath = dbPath;
             if (Cnn.State != ConnectionState.Closed)
                 Cnn.Close();
-            AllPayees.Clear();
-            AllCategories.Clear();
             if (File.Exists(DbPath))
             {
                 Cnn.ConnectionString = ConnectionString;
                 Cnn.Open();
-                InitializePeripherie();
             }
 
             CommonPropertyProvider = new CommonPropertyProvider(this);
 
             //Old
             DataModelBase.Database = this;
-            if(File.Exists(DbPath)) Reset();
         }
-
-        public ObservableCollection<Payee> AllPayees { get; } = new ObservableCollection<Payee>();
-        public ObservableCollection<Category> AllCategories { get; } = new ObservableCollection<Category>(); 
-
-        public void Reset()
-        {
-            
-        }
-
-        private void InitializePeripherie()
-        {
-            foreach (Payee payee in GetAll<Payee>())
-                AllPayees.Add(payee);
-            Dictionary<long, Category> catagoryDictionary = new Dictionary<long, Category>();
-            IEnumerable<Category> categories;
-            using (var cnnTransaction = new DbTransactions.TransactionScope())
-            {
-                //Catagories may reference itself, so a custom mapping is responsible for delaying referencing the Parent per dummy with the Parent-Id
-                //This is mandatory because the Parent may not be loaded first
-                categories = Cnn.Query($"SELECT * FROM [{nameof(Category)}s];",
-                    new[] { typeof(long), typeof(long?), typeof(string) },
-                    objArray =>
-                    {
-                        Category ret = new Category(objArray[1] == null ? null : new Category { Id = (long)objArray[1] } /*dummy*/, (string)objArray[2]) { Id = (long)objArray[0] };
-                        catagoryDictionary.Add(ret.Id, ret);
-                        return ret;
-                    }, splitOn: "*");
-                cnnTransaction.Complete();
-            }
-            //Now after every Category is loaded the Parent-Child relations are established
-            List<Category> parentCategories = new List<Category>();
-            foreach (Category category in categories)
-            {
-                if (category.ParentId != null)
-                {
-                    category.Parent = catagoryDictionary[(long)category.ParentId];
-                    category.Parent.Categories.Add(category);
-                }
-                else parentCategories.Add(category);
-            }
-            foreach (Category parentCategory in parentCategories)
-            {
-                AllCategories.Add(parentCategory);
-                FillCategoryWithDescandents(parentCategory, AllCategories);
-            }
-        }
-
-        private void FillCategoryWithDescandents(Category parentCategory, IList<Category> list)
-        {
-            foreach (Category childCategory in parentCategory.Categories)
-            {
-                list.Add(childCategory);
-                FillCategoryWithDescandents(childCategory, list);
-            }
-        }
-
-        public Payee GetPayee(long id) => AllPayees.FirstOrDefault(payee => payee.Id == id);
-        public Category GetCategory(long id) => AllCategories.FirstOrDefault(category => category.Id == id);
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
         {

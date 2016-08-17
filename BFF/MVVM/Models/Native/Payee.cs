@@ -55,7 +55,7 @@ namespace BFF.MVVM.Models.Native
 
         protected override void InsertToDb()
         {
-            Database?.Insert(this);
+            Database?.CommonPropertyProvider.Add(this);
         }
 
         protected override void UpdateToDb()
@@ -65,7 +65,7 @@ namespace BFF.MVVM.Models.Native
 
         protected override void DeleteFromDb()
         {
-            Database?.Delete(this);
+            Database?.CommonPropertyProvider.Remove(this);
         }
     }
 }

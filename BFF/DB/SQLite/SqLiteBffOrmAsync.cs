@@ -41,7 +41,6 @@ namespace BFF.DB.SQLite
                     ret.GetAwaiter().OnCompleted(() => dataModelBase.Id = ret.Result);
                     cnn.Close();
                 }
-                ManageIfPeriphery(dataModelBase);
             }
             return ret;
         }

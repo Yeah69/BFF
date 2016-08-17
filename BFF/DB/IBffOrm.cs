@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB
 {
-    public interface IBffOrm : ICrudOrm, IPeripheryProvider, IPagedOrm
+    public interface IBffOrm : ICrudOrm, IPagedOrm
     {
         ICommonPropertyProvider CommonPropertyProvider { get; }
 
@@ -16,7 +15,6 @@ namespace BFF.DB
         IEnumerable<TitBase> GetAllTits(DateTime startTime, DateTime endTime, Account account = null);
         long? GetAccountBalance(Account account = null);
         IEnumerable<T> GetSubTransInc<T>(long parentId) where T : ISubTransInc;
-        void Reset();
     }
 
     public interface ICrudOrm
@@ -26,14 +24,6 @@ namespace BFF.DB
         T Get<T>(long id) where T : DataModelBase;
         void Update<T>(T dataModelBase) where T : DataModelBase;
         void Delete<T>(T dataModelBase) where T : DataModelBase;
-    }
-
-    public interface IPeripheryProvider
-    {
-        ObservableCollection<Payee> AllPayees { get; }
-        ObservableCollection<Category> AllCategories { get; }
-        Payee GetPayee(long id);
-        Category GetCategory(long id);
     }
     
     public interface IPagedOrm

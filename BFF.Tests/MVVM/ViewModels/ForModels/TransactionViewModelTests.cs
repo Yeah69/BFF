@@ -65,9 +65,9 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
             ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayee(2)).Returns(payee2);
             ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayee(3)).Returns(payee3);
 
-            ormMock.Setup(orm => orm.GetCategory(1)).Returns(category1);
-            ormMock.Setup(orm => orm.GetCategory(2)).Returns(category2);
-            ormMock.Setup(orm => orm.GetCategory(3)).Returns(category3);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategory(1)).Returns(category1);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategory(2)).Returns(category2);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategory(3)).Returns(category3);
 
             return ormMock;
         }

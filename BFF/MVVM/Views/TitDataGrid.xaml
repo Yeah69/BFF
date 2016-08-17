@@ -11,6 +11,7 @@
              xmlns:native="clr-namespace:BFF.MVVM.Models.Native"
              xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              xmlns:structure="clr-namespace:BFF.MVVM.ViewModels.ForModels.Structure"
+             xmlns:views="clr-namespace:BFF.MVVM.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              x:Name="Root">
@@ -135,7 +136,7 @@
                                       IsEditable="True"
                                       IsTextSearchCaseSensitive="False"
                                       IsTextSearchEnabled="True"
-                                      ItemsSource="{Binding DataContext.Account.AllAccounts, ElementName=LayoutRoot}">
+                                      ItemsSource="{Binding DataContext.(views:TitDataGrid.AccountViewModel).AllAccounts, ElementName=LayoutRoot}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>
@@ -156,7 +157,7 @@
             <DataTemplate x:Key="DateColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TitBaseViewModel}">
                             <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringConverter}}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
@@ -166,7 +167,7 @@
             <DataTemplate x:Key="DateEditingColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TitBaseViewModel}">
                             <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"
                                         SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitsView, Converter={StaticResource BooleanToDatePickerFormatConverter}}" />
                         </DataTemplate>
@@ -221,7 +222,7 @@
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
                                                               IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.Account.AllAccounts, ElementName=LayoutRoot}">
+                                                              ItemsSource="{Binding DataContext.(views:TitDataGrid.AccountViewModel).AllAccounts, ElementName=LayoutRoot}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                     </Binding>
@@ -301,7 +302,7 @@
                                                               IsEditable="True"
                                                               IsTextSearchCaseSensitive="False"
                                                               IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding DataContext.Account.AllAccounts, ElementName=LayoutRoot}">
+                                                              ItemsSource="{Binding DataContext.(views:TitDataGrid.AccountViewModel).AllAccounts, ElementName=LayoutRoot}">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                     </Binding>
@@ -403,7 +404,7 @@
             </DataTemplate>
             <!-- Cleared -->
             <DataTemplate x:Key="ClearedColumnTemplate">
-                <CheckBox Style="{StaticResource BffCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" MinHeight="30" VerticalAlignment="Center"/>
+                <CheckBox Style="{StaticResource BffCheckBox}" IsChecked="{Binding (structure:TitBaseViewModel.Cleared), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" MinHeight="30" VerticalAlignment="Center"/>
             </DataTemplate>
             <!--#endregion -->
             <!--#region SubElementsFormTemplate -->
