@@ -31,7 +31,8 @@
                                   NewIncomeCommand="{Binding NewIncomeCommand}"
                                   NewTransferCommand="{Binding NewTransferCommand}"
                                   NewParentTransactionCommand="{Binding NewParentTransactionCommand}"
-                                  NewParentIncomeCommand="{Binding NewParentIncomeCommand}"/>
+                                  NewParentIncomeCommand="{Binding NewParentIncomeCommand}"
+                                  ApplyCommand="{Binding ApplyCommand}"/>
         <!-- "Status bar" -->
         <StackPanel Grid.Row="1" 
                     Orientation="Horizontal">

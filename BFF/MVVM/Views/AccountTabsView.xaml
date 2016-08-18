@@ -56,7 +56,7 @@
                         </StackPanel>
                     </DataTemplate>
                 </TabItem.HeaderTemplate>
-                <views:AccountView DataContext="{Binding AllAccountsViewModel}" />
+                <views:AccountView DataContext="{Binding SummaryAccountViewModel}" />
             </TabItem>
             <TabItem Name="NewAccountTab">
                 <TabItem.HeaderTemplate>
