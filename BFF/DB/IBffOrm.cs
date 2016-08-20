@@ -13,7 +13,8 @@ namespace BFF.DB
         string DbPath { get; }
         void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments);
         IEnumerable<TitBase> GetAllTits(DateTime startTime, DateTime endTime, Account account = null);
-        long? GetAccountBalance(Account account = null);
+        long? GetAccountBalance(Account account);
+        long? GetSummaryAccountBalance();
         IEnumerable<T> GetSubTransInc<T>(long parentId) where T : ISubTransInc;
     }
 

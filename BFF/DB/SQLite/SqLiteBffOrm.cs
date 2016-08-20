@@ -180,18 +180,39 @@ namespace BFF.DB.SQLite
             return results;
         }
 
-        public long? GetAccountBalance(Account account = null)
+        public long? GetAccountBalance(Account account)
         {
-            Logger.Debug("Getting account balance from {0}.", account?.Name ?? "SummaryAccount");
+            Logger.Debug("Getting account balance from {0}.", account?.Name ?? "NULL");
             long ret;
 
             using (var transactionScope = new DbTransactions.TransactionScope())
             {
                 try
                 {
-                    ret = account == null
-                        ? Cnn.Query<long>(SqLiteQueries.AllAccountsBalanceStatement).First()
-                        : Cnn.Query<long>(SqLiteQueries.AccountSpecificBalanceStatement, new { accountId = account.Id }).First();
+                    ret = Cnn.Query<long>(SqLiteQueries.AccountSpecificBalanceStatement, new { accountId = account?.Id ?? -1 }).First();
+                }
+                catch (OverflowException)
+                {
+                    transactionScope.Complete();
+                    return null;
+                }
+
+                transactionScope.Complete();
+            }
+
+            return ret;
+        }
+
+        public long? GetSummaryAccountBalance()
+        {
+            Logger.Debug("Getting account balance from SummaryAccount.");
+            long ret;
+
+            using (var transactionScope = new DbTransactions.TransactionScope())
+            {
+                try
+                {
+                    ret = Cnn.Query<long>(SqLiteQueries.AllAccountsBalanceStatement).First();
                 }
                 catch (OverflowException)
                 {

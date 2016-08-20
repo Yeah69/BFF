@@ -103,7 +103,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override long? Balance
         {
-            get { return Orm?.CommonPropertyProvider?.AccountViewModels?.Sum(account => account.Balance); }
+            get { return Orm?.GetSummaryAccountBalance(); }
             set { OnPropertyChanged(); }
         }
 
