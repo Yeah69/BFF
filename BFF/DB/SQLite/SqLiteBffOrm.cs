@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using BFF.Helper.Import;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using DbTransactions = System.Transactions;
@@ -42,11 +42,16 @@ namespace BFF.DB.SQLite
                     cnn.Execute(SqLiteQueries.CreatePayeeTableStatement);
                     cnn.Execute(SqLiteQueries.CreateCategoryTableStatement);
                     cnn.Execute(SqLiteQueries.CreateAccountTableStatement);
-                    cnn.Execute(SqLiteQueries.CreateTransferTableStatement);
+
                     cnn.Execute(SqLiteQueries.CreateTransactionTableStatement);
+                    cnn.Execute(SqLiteQueries.CreateParentTransactionTableStatement);
                     cnn.Execute(SqLiteQueries.CreateSubTransactionTableStatement);
+
                     cnn.Execute(SqLiteQueries.CreateIncomeTableStatement);
+                    cnn.Execute(SqLiteQueries.CreateParentIncomeTableStatement);
                     cnn.Execute(SqLiteQueries.CreateSubIncomeTableStatement);
+
+                    cnn.Execute(SqLiteQueries.CreateTransferTableStatement);
 
                     cnn.Execute(SqLiteQueries.CreateDbSettingTableStatement);
                     cnn.Insert(new DbSetting {CurrencyCultrureName = "de-DE", DateCultureName = "de-DE"});
@@ -61,34 +66,84 @@ namespace BFF.DB.SQLite
             }
         }
 
-        public void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
-            IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories)
+        public void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments)
         {
             Logger.Info("Populating the current database.");
             DbLockFlag = true;
             using (var transactionScope = new DbTransactions.TransactionScope(DbTransactions.TransactionScopeOption.RequiresNew, new DbTransactions.TransactionOptions {IsolationLevel = DbTransactions.IsolationLevel.RepeatableRead}))
             {
-
                 /*  
                 Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
                 because the structure of the imported csv-Entry of Categories allowes to get the master category first and
                 then the sub category. Thus, the parents id is known beforehand.
                 */
-                foreach (Category category in categories)
+                foreach (Category category in importLists.Categories)
+                {
                     category.Id = Cnn.Insert(category);
-                foreach (Payee payee in payees)
+                    if (importAssignments.CategoryToCategory.ContainsKey(category))
+                    {
+                        foreach (Category subCategory in importAssignments.CategoryToCategory[category])
+                        {
+                            subCategory.ParentId = category.Id;
+                        }
+                    }
+                    if (importAssignments.CategoryToIHaveCategory.ContainsKey(category))
+                    {
+                        foreach (IHaveCategory hasCategory in importAssignments.CategoryToIHaveCategory[category])
+                        {
+                            hasCategory.CategoryId = category.Id;
+                        }
+                    }
+                }
+                foreach (Payee payee in importLists.Payees)
+                {
                     payee.Id = Cnn.Insert(payee);
-                foreach (Account account in accounts)
+                    foreach(TransIncBase transIncBase in importAssignments.PayeeToTransIncBase[payee])
+                    {
+                        transIncBase.PayeeId = payee.Id;
+                    }
+                }
+                foreach (Account account in importLists.Accounts)
+                {
                     account.Id = Cnn.Insert(account);
-                foreach (Transaction transaction in transactions)
+                    foreach(TransIncBase transIncBase in importAssignments.AccountToTransIncBase[account])
+                    {
+                        transIncBase.AccountId = account.Id;
+                    }
+                    foreach(Transfer transfer in importAssignments.FromAccountToTransfer[account])
+                    {
+                        transfer.FromAccountId = account.Id;
+                    }
+                    foreach(Transfer transfer in importAssignments.ToAccountToTransfer[account])
+                    {
+                        transfer.ToAccountId = account.Id;
+                    }
+                }
+                foreach (Transaction transaction in importLists.Transactions)
                     transaction.Id = Cnn.Insert(transaction);
-                foreach (SubTransaction subTransaction in subTransactions)
+                foreach (ParentTransaction parentTransaction in importLists.ParentTransactions)
+                {
+                    parentTransaction.Id = Cnn.Insert(parentTransaction);
+                    foreach(SubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
+                    {
+                        subTransaction.ParentId = parentTransaction.Id;
+                    }
+                }
+                foreach (SubTransaction subTransaction in importLists.SubTransactions)
                     subTransaction.Id = Cnn.Insert(subTransaction);
-                foreach (Income income in incomes)
+                foreach (Income income in importLists.Incomes)
                     income.Id = Cnn.Insert(income);
-                foreach (SubIncome subIncome in subIncomes)
+                foreach (ParentIncome parentIncome in importLists.ParentIncomes)
+                {
+                    parentIncome.Id = Cnn.Insert(parentIncome);
+                    foreach (SubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
+                    {
+                        subIncome.ParentId = parentIncome.Id;
+                    }
+                }
+                foreach (SubIncome subIncome in importLists.SubIncomes)
                     subIncome.Id = Cnn.Insert(subIncome);
-                foreach (Transfer transfer in transfers)
+                foreach (Transfer transfer in importLists.Transfers)
                     transfer.Id = Cnn.Insert(transfer);
 
                 transactionScope.Complete();
@@ -105,7 +160,7 @@ namespace BFF.DB.SQLite
             string accountAddition = $"WHERE date({nameof(TitBase.Date)}) BETWEEN date('{startDate.ToString("yyyy-MM-dd")}') AND date('{endDate.ToString("yyyy-MM-dd")}') ";
             accountAddition += account == null
                 ? ""
-                : $"AND ({nameof(TitNoTransfer.AccountId)} = @accountId OR {nameof(TitNoTransfer.AccountId)} = -69 AND ({nameof(TitNoTransfer.PayeeId)} = @accountId OR {nameof(TitNoTransfer.CategoryId)} = @accountId))";
+                : $"AND ({nameof(TransIncBase.AccountId)} = @accountId OR {nameof(TransIncBase.AccountId)} = -69 AND ({nameof(TransIncBase.PayeeId)} = @accountId OR {nameof(TransInc.CategoryId)} = @accountId))";
             string sql = $"SELECT * FROM [{TheTitName}] {accountAddition} ORDER BY {nameof(TitBase.Date)};";
 
             Type[] types =
@@ -156,7 +211,7 @@ namespace BFF.DB.SQLite
             IEnumerable<T> ret;
             using (var transactionScope = new DbTransactions.TransactionScope())
             {
-                string query = $"SELECT * FROM [{typeof(T).Name}s] WHERE {nameof(SubTitBase.ParentId)} = @id;";
+                string query = $"SELECT * FROM [{typeof(T).Name}s] WHERE {nameof(SubTransInc.ParentId)} = @id;";
                 ret = Cnn.Query<T>(query, new { id = parentId });
 
                 transactionScope.Complete();
@@ -259,16 +314,21 @@ namespace BFF.DB.SQLite
             switch (type)
             {
                 case TitType.Transaction:
-                    ret = categoryId != null ? new Transaction((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (long)categoryId, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1) : new ParentTransaction((long)objArr[0], (long)objArr[1], date, (long)objArr[2], categoryId ?? -1, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
+                    ret = new Transaction((long) objArr[0], (long) objArr[1], date, (long) objArr[2], (long) categoryId,
+                                          (string) objArr[5], (long) objArr[6], (long) objArr[7] == 1);
                     break;
                 case TitType.Income:
-                    if(categoryId != null)
-                        ret = new Income((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (long)categoryId, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
-                    else
-                        ret = new ParentIncome((long)objArr[0], (long)objArr[1], date, (long)objArr[2], categoryId ?? -1, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
+                    ret = new Income((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (long)categoryId, 
+                        (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
                     break;
                 case TitType.Transfer:
                     ret = new Transfer((long)objArr[0], (long)objArr[2], (long)objArr[3], date, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
+                    break;
+                case TitType.ParentTransaction:
+                    ret = new ParentTransaction((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (string)objArr[5], (long)objArr[7] == 1);
+                    break;
+                case TitType.ParentIncome:
+                    ret = new ParentIncome((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (string)objArr[5], (long)objArr[7] == 1);
                     break;
                 default:
                     ret = new Transaction (DateTime.Today) { Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR" };
@@ -311,7 +371,7 @@ namespace BFF.DB.SQLite
                     string specifyingAddition = "";
                     Account account = specifyingObject as Account;
                     if(account != null && !(account is SummaryAccount))
-                        specifyingAddition = $"WHERE {nameof(TitNoTransfer.AccountId)} = {account.Id} OR {nameof(TitNoTransfer.AccountId)} = -69 AND ({nameof(TitNoTransfer.PayeeId)} = {account.Id} OR {nameof(TitNoTransfer.CategoryId)} = {account.Id})";
+                        specifyingAddition = $"WHERE {nameof(TransIncBase.AccountId)} = {account.Id} OR {nameof(TransIncBase.AccountId)} = -69 AND ({nameof(TransIncBase.PayeeId)} = {account.Id} OR {nameof(TransInc.CategoryId)} = {account.Id})";
                     string query = $"SELECT * FROM [{TheTitName}] {specifyingAddition} ORDER BY {nameof(TitBase.Date)} LIMIT {offset}, {pageSize};";
                     Type[] types =
                     {
@@ -338,7 +398,7 @@ namespace BFF.DB.SQLite
                 string specifyingAddition = "";
                 Account account = specifyingObject as Account;
                 if (account != null && !(account is SummaryAccount))
-                    specifyingAddition = $"WHERE {nameof(TitNoTransfer.AccountId)} = {account.Id} OR {nameof(TitNoTransfer.AccountId)} = -69 AND ({nameof(TitNoTransfer.PayeeId)} = {account.Id} OR {nameof(TitNoTransfer.CategoryId)} = {account.Id})";
+                    specifyingAddition = $"WHERE {nameof(TransIncBase.AccountId)} = {account.Id} OR {nameof(TransIncBase.AccountId)} = -69 AND ({nameof(TransIncBase.PayeeId)} = {account.Id} OR {nameof(TransInc.CategoryId)} = {account.Id})";
                 query = $"SELECT COUNT(*) FROM [{TheTitName}] {specifyingAddition};";
             }
 

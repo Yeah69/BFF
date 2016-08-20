@@ -150,6 +150,9 @@
     <Compile Include="Helper\Output.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\IHaveCategory.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\ParentTransInc.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\TransInc.cs" />
     <Compile Include="MVVM\Models\Native\SummaryAccount.cs" />
     <Compile Include="MVVM\Models\Native\Account.cs" />
     <Compile Include="MVVM\Models\Native\Category.cs" />
@@ -163,11 +166,10 @@
     <Compile Include="MVVM\Models\Native\Structure\CommonProperty.cs" />
     <Compile Include="MVVM\Models\Native\Structure\CrudBase.cs" />
     <Compile Include="MVVM\Models\Native\Structure\DataModelBase.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\IParentTitNoTransfer.cs" />
     <Compile Include="MVVM\Models\Native\Structure\TitLike.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\SubTitBase.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\SubTransInc.cs" />
     <Compile Include="MVVM\Models\Native\Structure\TitBase.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\TitNoTransfer.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\TransIncBase.cs" />
     <Compile Include="MVVM\Models\Native\SubIncome.cs" />
     <Compile Include="MVVM\Models\Native\SubTransaction.cs" />
     <Compile Include="MVVM\Models\Native\Income.cs" />

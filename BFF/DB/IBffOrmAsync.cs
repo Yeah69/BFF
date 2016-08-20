@@ -14,7 +14,7 @@ namespace BFF.DB
             IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories);
         IEnumerable<TitBase> GetAllTitsAsync(DateTime startTime, DateTime endTime, Account account = null);
         Task<long?> GetAccountBalanceAsync(Account account = null);
-        IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : SubTitBase;
+        IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : SubTransInc;
         Task ResetAsync();
     }
 

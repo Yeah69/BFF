@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BFF.Helper.Import;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 
@@ -10,8 +11,7 @@ namespace BFF.DB
         ICommonPropertyProvider CommonPropertyProvider { get; }
 
         string DbPath { get; }
-        void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
-            IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories);
+        void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments);
         IEnumerable<TitBase> GetAllTits(DateTime startTime, DateTime endTime, Account account = null);
         long? GetAccountBalance(Account account = null);
         IEnumerable<T> GetSubTransInc<T>(long parentId) where T : ISubTransInc;

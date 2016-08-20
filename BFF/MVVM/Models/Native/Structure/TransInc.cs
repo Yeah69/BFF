@@ -2,40 +2,10 @@
 
 namespace BFF.MVVM.Models.Native.Structure
 {
-    /// <summary>
-    /// Base of all Tit-classes except Transfer (TIT := Transaction Income Transfer)
-    /// </summary>
-    public abstract class TitNoTransfer : TitBase
+    public abstract class TransInc : TransIncBase, IHaveCategory
     {
-        private long _accountId;
-        private long _payeeId;
         private long _categoryId;
-
-        /// <summary>
-        /// Id of Account
-        /// </summary>
-        public long AccountId
-        {
-            get { return _accountId; }
-            set
-            {
-                _accountId = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Id of Payee
-        /// </summary>
-        public long PayeeId
-        {
-            get { return _payeeId; }
-            set
-            {
-                _payeeId = value;
-                OnPropertyChanged();
-            }
-        }
+        private long _sum;
 
         /// <summary>
         /// Id of Category
@@ -51,6 +21,19 @@ namespace BFF.MVVM.Models.Native.Structure
         }
 
         /// <summary>
+        /// The amount of money, which was payeed or recieved
+        /// </summary>
+        public long Sum
+        {
+            get { return _sum; }
+            set
+            {
+                _sum = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Initializes the object
         /// </summary>
         /// <param name="date">Marks when the Tit happened</param>
@@ -60,13 +43,12 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TitNoTransfer(DateTime date, Account account = null, Payee payee = null,
-            Category category = null, string memo = null, long sum = 0L, bool? cleared = null)
-            : base(date, memo: memo, sum: sum, cleared: cleared)
+        protected TransInc(DateTime date, Account account = null, Payee payee = null, Category category = null, string memo = null, 
+            long sum = 0, bool? cleared = null) 
+            : base(date, account, payee, memo, cleared)
         {
-            _accountId = account?.Id ?? -1;
-            _payeeId = payee?.Id ?? -1;
             _categoryId = category?.Id ?? -1;
+            _sum = sum;
         }
 
         /// <summary>
@@ -80,13 +62,11 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TitNoTransfer(long id, long accountId, DateTime date, long payeeId, long categoryId, string memo,
-            long sum, bool cleared)
-            : base(date, id, memo, sum, cleared)
+        protected TransInc(long id, long accountId, DateTime date, long payeeId, long categoryId, string memo, long sum, bool cleared) 
+            : base(id, accountId, date, payeeId, memo, cleared)
         {
-            AccountId = accountId;
-            PayeeId = payeeId;
-            CategoryId = categoryId;
+            _categoryId = categoryId;
+            _sum = sum;
         }
     }
 }

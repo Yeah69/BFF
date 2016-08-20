@@ -1,102 +1,123 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="BFF.MVVM.ViewModels.ForModels.AccountViewModel" Collapsed="true">
-    <Position X="12.75" Y="3.5" Width="1.5" />
+    <Position X="6.75" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIACAAAAABIAAAAAAAgCAAQAAAEAAAAAiABAQUAAAAA=</HashCode>
+      <HashCode>AMACAAAgABIAAAgAgAgCAAQAAAEAAAAAiABAQEAAAAA=</HashCode>
       <FileName>MVVM\ViewModels\ForModels\AccountViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BFF.MVVM.ViewModels.ForModels.AccountViewModelBase" Collapsed="true">
-    <Position X="13.5" Y="2" Width="1.5" />
+  <Class Name="BFF.MVVM.ViewModels.ForModels.SummaryAccountViewModel" Collapsed="true">
+    <Position X="9" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAACIAABJAAAQEUAgCAAwAAAEAAAAgiABAQMAAAEA=</HashCode>
-      <FileName>MVVM\ViewModels\ForModels\AccountViewModelBase.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="BFF.MVVM.ViewModels.ForModels.AllAccountsViewModel" Collapsed="true">
-    <Position X="14.5" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AIAAAAAAABIAAAAQAAgCAAQAAAEAAAAAiABAQEAAAAA=</HashCode>
-      <FileName>MVVM\ViewModels\ForModels\AllAccountsViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BFF.MVVM.ViewModels.ForModels.DbViewModelBase" Collapsed="true">
-    <Position X="10.75" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>MVVM\ViewModels\ForModels\DbViewModelBase.cs</FileName>
+      <HashCode>AMACAAAgABIAAAgQgAgCAAQAAAEAAAAAiABAQEAAAAA=</HashCode>
+      <FileName>MVVM\ViewModels\ForModels\SummaryAccountViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BFF.MVVM.ViewModels.ForModels.IncomeViewModel" Collapsed="true">
-    <Position X="6.75" Y="5" Width="1.5" />
+    <Position X="18" Y="8.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAgAAAAAAgAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MVVM\ViewModels\ForModels\IncomeViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BFF.MVVM.ViewModels.ForModels.ParentIncomeViewModel" Collapsed="true">
-    <Position X="7.25" Y="6.25" Width="1.5" />
+    <Position X="22.5" Y="8.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEAAAAgAAAAAAgAgAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MVVM\ViewModels\ForModels\ParentIncomeViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BFF.MVVM.ViewModels.ForModels.ParentTransactionViewModel" Collapsed="true">
-    <Position X="9.5" Y="6.25" Width="1.5" />
+    <Position X="24.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEAAAAgAAAAAAgAgAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MVVM\ViewModels\ForModels\ParentTransactionViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BFF.MVVM.ViewModels.ForModels.ParentTransIncViewModel&lt;T&gt;" Collapsed="true">
-    <Position X="8.5" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AEAAAAAAAAAAAAAAAAACCRAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>MVVM\ViewModels\ForModels\ParentTransIncViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BFF.MVVM.ViewModels.ForModels.SubTransIncViewModel" Collapsed="true">
-    <Position X="5" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AEAAAEAAAAAAAAAAAAAAEAAAAAAAAAACAAAAAAAACAQ=</HashCode>
-      <FileName>MVVM\ViewModels\ForModels\SubTransIncViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BFF.MVVM.ViewModels.ForModels.TitViewModelBase" Collapsed="true">
-    <Position X="7.75" Y="2" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AEAAAEAAAAAAAAAAAAAAAAAAAAAAAAAiAAAAAAAAAAQ=</HashCode>
-      <FileName>MVVM\ViewModels\ForModels\TitViewModelBase.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BFF.MVVM.ViewModels.ForModels.TitViewModelBasePlaceholder" Collapsed="true">
-    <Position X="10.25" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AEAAAEAAAAwAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAQ=</HashCode>
-      <FileName>MVVM\ViewModels\ForModels\TitViewModelBasePlaceholder.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="BFF.MVVM.ViewModels.ForModels.TransactionViewModel" Collapsed="true">
-    <Position X="10.25" Y="5" Width="1.5" />
+    <Position X="20.25" Y="8.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAgAAAAAAgAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MVVM\ViewModels\ForModels\TransactionViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BFF.MVVM.ViewModels.ForModels.TransferViewModel" Collapsed="true">
-    <Position X="6.75" Y="3.5" Width="1.5" />
+    <Position X="15.75" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEBAAEAAAAAAAAAAAAAAAQAAAAAAAAADAAAAABAEAAQ=</HashCode>
+      <HashCode>AEBCAAAgAAAAAAkAgAAAAQAAAAAAAAADAAAAABAEAAQ=</HashCode>
       <FileName>MVVM\ViewModels\ForModels\TransferViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BFF.MVVM.ViewModels.ForModels.TransIncViewModel" Collapsed="true">
-    <Position X="8.5" Y="3.5" Width="1.5" />
+  <Class Name="BFF.MVVM.ViewModels.ForModels.Structure.AccountBaseViewModel" Collapsed="true">
+    <Position X="8" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEgAAAAAAAAAAAAAAAAAAAAAEAAAAAADAAAAAAAECEQ=</HashCode>
-      <FileName>MVVM\ViewModels\ForModels\TransIncViewModel.cs</FileName>
+      <HashCode>AIAAACIAABJAAAQEUAgCAAwAAAEAAAAAiABAQMAAAEA=</HashCode>
+      <FileName>MVVM\ViewModels\ForModels\Structure\AccountBaseViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BFF.MVVM.ViewModels.ForModels.Structure.DataModelViewModel" Collapsed="true">
+    <Position X="15.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQCAEAgAAAAAAgAgAAAAAAAAAEAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>MVVM\ViewModels\ForModels\Structure\DataModelViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BFF.MVVM.ViewModels.ForModels.Structure.ParentTransIncViewModel&lt;T&gt;" Collapsed="true">
+    <Position X="23.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMkCAAAAAAAAQAEAAAAiCZAAAAAAAAADAAAQEAAGAEQ=</HashCode>
+      <FileName>MVVM\ViewModels\ForModels\Structure\ParentTransIncViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BFF.MVVM.ViewModels.ForModels.Structure.SubTransIncViewModel&lt;T&gt;" Collapsed="true">
+    <Position X="12.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACQAIAAAAAAAEAAAAAUAAAAgAAAAACAAAAAAAACBQ=</HashCode>
+      <FileName>MVVM\ViewModels\ForModels\Structure\SubTransIncViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BFF.MVVM.ViewModels.ForModels.Structure.TitBaseViewModel" Collapsed="true">
+    <Position X="20.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAABAAAAAAAEAAA=</HashCode>
+      <FileName>MVVM\ViewModels\ForModels\Structure\TitBaseViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BFF.MVVM.ViewModels.ForModels.Structure.TitLikeViewModel" Collapsed="true">
+    <Position X="18" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAAAAACAAAAAAAAAAQ=</HashCode>
+      <FileName>MVVM\ViewModels\ForModels\Structure\TitLikeViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BFF.MVVM.ViewModels.ForModels.Structure.TransIncBaseViewModel" Collapsed="true">
+    <Position X="21.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAIAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAABAAEA=</HashCode>
+      <FileName>MVVM\ViewModels\ForModels\Structure\TransIncBaseViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BFF.MVVM.ViewModels.ForModels.Structure.TransIncViewModel" Collapsed="true">
+    <Position X="19.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEgCQAIAAAAAAAAAAAAAAAAAEgAAAAADAAAAAAAECFQ=</HashCode>
+      <FileName>MVVM\ViewModels\ForModels\Structure\TransIncViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BFF.MVVM.ViewModels.ForModels.SubTransactionViewModel" Collapsed="true">
+    <Position X="11.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAgAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MVVM\ViewModels\ForModels\SubTransactionViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BFF.MVVM.ViewModels.ForModels.SubIncomeViewModel" Collapsed="true">
+    <Position X="13.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAgAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MVVM\ViewModels\ForModels\SubIncomeViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

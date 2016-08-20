@@ -4,10 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using BFF.DB;
 using BFF.DB.SQLite;
 using BFF.MVVM;
-using BFF.MVVM.Models.Conversion.YNAB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.Properties;
@@ -17,8 +15,6 @@ namespace BFF.Helper.Import
 {
     class YnabCsvImport : ObservableObject, IImportable
     {
-        private readonly IBffOrm _orm;
-
         public string TransactionPath
         {
             get { return _transactionPath; }
@@ -47,6 +43,13 @@ namespace BFF.Helper.Import
                 _savePath = value;
                 OnPropertyChanged();
             }
+        }
+
+        public YnabCsvImport(string transactionPath, string budgetPath, string savePath)
+        {
+            _transactionPath = transactionPath;
+            _budgetPath = budgetPath;
+            _savePath = savePath;
         }
 
         public string Import()
@@ -79,38 +82,60 @@ namespace BFF.Helper.Import
             return 0L;
         }
 
-        public YnabCsvImport(IBffOrm orm)
-        {
-            _orm = orm;
-        }
+        public YnabCsvImport(){ }
 
         public void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string savePath)
         {
             //Initialization
-            ProcessedAccountsList.Clear();
-            Account.ClearCache();
-            Payee.ClearCache();
-            Category.ClearCache();
+            _processedAccountsList.Clear();
+            ClearAccountCache(); 
+            ClearPayeeCache();
+            ClearCategoryCache();
 
             DataModelBase.Database = null; //switches off OR mapping
 
             //First step: Parse CSV data into conversion objects
             Queue<Transaction> ynabTransactions = new Queue<Transaction>(ParseTransactionCsv(filePathTransaction));
-            List<BudgetEntry> budgets = ParseBudgetCsv(filePathBudget);
+            //List<BudgetEntry> budgets = ParseBudgetCsv(filePathBudget);
+
+            ImportLists lists = new ImportLists
+            {
+                Accounts = new List<Account>(),
+                Categories = new List<Category>(),
+                Payees = new List<Payee>(),
+                Incomes = new List<Income>(),
+                ParentIncomes = new List<ParentIncome>(),
+                ParentTransactions = new List<ParentTransaction>(),
+                SubIncomes = new List<SubIncome>(),
+                SubTransactions = new List<SubTransaction>(),
+                Transactions = new List<MVVM.Models.Native.Transaction>(),
+                Transfers = new List<Transfer>()
+            };
 
             //Second step: Convert conversion objects into native models
-            List<MVVM.Models.Native.Transaction> transactions = new List<MVVM.Models.Native.Transaction>();
-            List<SubTransaction> subTransactions = new List<SubTransaction>();
-            List<Transfer> transfers = new List<Transfer>();
-            List<Income> incomes = new List<Income>();
-            ConvertTransactionsToNative(ynabTransactions, transactions, transfers, subTransactions, incomes);
+            ConvertTransactionsToNative(ynabTransactions, lists);
             //Todo: List<Native.Budget> nativeBudgets = budgets.Select(budget => (Native.Budget)budget).ToList();
+            lists.Accounts = GetAllAccountCache();
+            lists.Payees = GetAllPayeeCache();
+            lists.Categories = GetAllCategoryCache();
+
+            ImportAssignments assignments = new ImportAssignments
+            {
+                AccountToTransIncBase = _accountAssignment,
+                FromAccountToTransfer = _fromAccountAssignment,
+                ToAccountToTransfer = _toAccountAssignment,
+                PayeeToTransIncBase = _payeeAssingment,
+                CategoryToCategory = _categoryCategoryAssignment,
+                CategoryToIHaveCategory = _categoryTitAssignment,
+                ParentTransactionToSubTransaction = _parentTransactionAssignment,
+                ParentIncomeToSubIncome = new Dictionary<ParentIncome, IList<SubIncome>>() //In YNAB4 are no ParentIncomes
+            };
 
             //Third step: Create new database for imported data
-            DataModelBase.Database = _orm; //turn on OR mapping
             SqLiteBffOrm.CreateNewDatabase(savePath);
-            _orm.PopulateDatabase(transactions, subTransactions, incomes, new List<SubIncome>(), 
-                transfers, Account.GetAllCache(), Payee.GetAllCache(), Category.GetAllCache());
+            SqLiteBffOrm orm = new SqLiteBffOrm(savePath);
+            DataModelBase.Database = orm; //turn on OR mapping
+            orm.PopulateDatabase(lists, assignments);
         }
 
         private static List<Transaction> ParseTransactionCsv(string filePath)
@@ -148,6 +173,7 @@ namespace BFF.Helper.Import
             return ret;
         }
 
+        /*
         private static List<BudgetEntry> ParseBudgetCsv(string filePath)
         {
             var ret = new List<BudgetEntry>();
@@ -182,22 +208,30 @@ namespace BFF.Helper.Import
             }
             return ret;
         }
+        */
 
-        private static void ConvertTransactionsToNative(Queue<Transaction> ynabTransactions, List<MVVM.Models.Native.Transaction> transactions, List<Transfer> transfers, List<SubTransaction> subTransactions, List<Income> incomes )
+        private void ConvertTransactionsToNative(Queue<Transaction> ynabTransactions, ImportLists lists )
         {
+            //Account preprocessing
+            //First create all available Accounts. The reason for this is to make the Account all assignable from the beginning
+            foreach(Transaction ynabTransaction in ynabTransactions.Where(ynabTransaction => ynabTransaction.Payee == "Starting Balance"))
+            {
+                CreateAccount(ynabTransaction.Account, ynabTransaction.Inflow - ynabTransaction.Outflow);
+            }
+            //Now process the queue
             while (ynabTransactions.Count > 0)
             {
                 Transaction ynabTransaction = ynabTransactions.Dequeue();
                 if (ynabTransaction.Payee == "Starting Balance")
                 {
-                    Account.GetOrCreate(ynabTransaction.Account).StartingBalance = ynabTransaction.Inflow - ynabTransaction.Outflow;
+                    //These are Transactions in YNAB but not for BFF. They are only used to create Accounts as only there is the Starting Balance
                     continue;
                 }
                 
                 Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Memo);
                 if (splitMatch.Success)
                 {
-                    ParentTransaction parent = (ParentTransaction)ynabTransaction;
+                    ParentTransaction parent = TransformToParentTransaction(ynabTransaction);
                     int splitCount = int.Parse(splitMatch.Groups[nameof(splitCount)].Value);
                     int count = 0;
                     for (int i = 0; i < splitCount; i++)
@@ -205,34 +239,34 @@ namespace BFF.Helper.Import
                         Transaction newYnabTransaction = i==0 ? ynabTransaction : ynabTransactions.Dequeue();
                         Match transferMatch = TransferPayeeRegex.Match(newYnabTransaction.Payee);
                         if (transferMatch.Success)
-                            AddTransfer(transfers, newYnabTransaction);
+                            AddTransfer(lists.Transfers, newYnabTransaction);
                         else if (newYnabTransaction.MasterCategory == "Income")
-                            incomes.Add(newYnabTransaction);
+                            lists.Incomes.Add(TransformToIncome(newYnabTransaction));
                         else
                         {
-                            SubTransaction subTransaction = newYnabTransaction;
-                            subTransaction.ParentId = parent.Id;
-                            subTransactions.Add(subTransaction);
+                            SubTransaction subTransaction = TransformToSubTransaction(newYnabTransaction, parent);
+                            lists.SubTransactions.Add(subTransaction);
                             count++;
                         }
                     }
                     if (count > 0)
                     {
-                        transactions.Add(parent);
+                        lists.ParentTransactions.Add(parent);
                     }
                 }
                 else
                 {
                     Match transferMatch = TransferPayeeRegex.Match(ynabTransaction.Payee);
                     if (transferMatch.Success)
-                        AddTransfer(transfers, ynabTransaction);
+                        AddTransfer(lists.Transfers, ynabTransaction);
                     else if (ynabTransaction.MasterCategory == "Income")
-                        incomes.Add(ynabTransaction);
+                        lists.Incomes.Add(TransformToIncome(ynabTransaction));
                     else
-                        transactions.Add(ynabTransaction);
+                        lists.Transactions.Add(TransformToTransaction(ynabTransaction));
                 }
             }
         }
+
         private string _transactionPath;
         private string _budgetPath;
         private string _savePath;
@@ -241,23 +275,276 @@ namespace BFF.Helper.Import
            one time for each Account. Fortunatelly, the Accounts are processed consecutively.
            That way if one of the Accounts of the Transfer points to an already processed Account,
            then it means that this Transfer is already created and can be skipped. */
-        private static readonly List<string> ProcessedAccountsList = new List<string>();
-        private static void AddTransfer(List<Transfer> transfers, Transaction ynabTransfer)
+        private readonly List<string> _processedAccountsList = new List<string>();
+        private void AddTransfer(IList<Transfer> transfers, Transaction ynabTransfer)
         {
-            if (ProcessedAccountsList.Count == 0)
+            if (_processedAccountsList.Count == 0)
             {
-                ProcessedAccountsList.Add(ynabTransfer.Account);
+                _processedAccountsList.Add(ynabTransfer.Account);
             }
-            else if (ProcessedAccountsList.Last() != ynabTransfer.Account)
+            else if (_processedAccountsList.Last() != ynabTransfer.Account)
             {
-                ProcessedAccountsList.Add(ynabTransfer.Account);
+                _processedAccountsList.Add(ynabTransfer.Account);
             }
 
             string otherAccount = PayeePartsRegex.Match(ynabTransfer.Payee).Groups["accountName"].Value;
-            if (!ProcessedAccountsList.Contains(otherAccount))
+            if (!_processedAccountsList.Contains(otherAccount))
             {
-                transfers.Add(ynabTransfer);
+                transfers.Add(TransformToTransfer(ynabTransfer));
             }
         }
+
+        #region Transformations
+
+        /// <summary>
+        /// Creates a Transaction-object depending on a YNAB-Transaction
+        /// </summary>
+        /// <param name="ynabTransaction">The YNAB-model</param>
+        private MVVM.Models.Native.Transaction TransformToTransaction(Transaction ynabTransaction)
+        {
+            MVVM.Models.Native.Transaction ret = new MVVM.Models.Native.Transaction(ynabTransaction.Date)
+            {
+                Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
+                Sum = ynabTransaction.Inflow - ynabTransaction.Outflow,
+                Cleared = ynabTransaction.Cleared
+            };
+            AssignAccount(ynabTransaction.Account, ret);
+            CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value, ret);
+            AssignCategory(ynabTransaction.Category, ret);
+            return ret;
+        }
+
+        /// <summary>
+        /// Creates a Income-object depending on a YNAB-Transaction
+        /// </summary>
+        /// <param name="ynabTransaction">The YNAB-model</param>
+        private Income TransformToIncome(Transaction ynabTransaction)
+        {
+            Income ret = new Income(ynabTransaction.Date)
+            {
+                Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
+                Sum = ynabTransaction.Inflow - ynabTransaction.Outflow,
+                Cleared = ynabTransaction.Cleared
+            };
+            AssignAccount(ynabTransaction.Account, ret);
+            CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value, ret);
+            AssignCategory(ynabTransaction.Category, ret);
+            return ret;
+        }
+
+        /// <summary>
+        /// Creates a Transfer-object depending on a YNAB-Transaction
+        /// </summary>
+        /// <param name="ynabTransaction">The YNAB-model</param>
+        private Transfer TransformToTransfer(Transaction ynabTransaction)
+        {
+            long tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;
+            Transfer ret = new Transfer(ynabTransaction.Date)
+            {
+                Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
+                Sum = Math.Abs(tempSum),
+                Cleared = ynabTransaction.Cleared
+            };
+            if(tempSum < 0)
+            {
+                AssignFormAccount(ynabTransaction.Account, ret);
+                AssignToAccount(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value, ret);
+            }
+            else
+            {
+                AssignFormAccount(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value, ret);
+                AssignToAccount(ynabTransaction.Account, ret);
+            }
+            return ret;
+        }
+
+        private readonly IDictionary<ParentTransaction, IList<SubTransaction>> _parentTransactionAssignment =
+            new Dictionary<ParentTransaction, IList<SubTransaction>>();
+
+        /// <summary>
+        /// Creates a Transaction-object depending on a YNAB-Transaction
+        /// </summary>
+        /// <param name="ynabTransaction">The YNAB-model</param>
+        private ParentTransaction TransformToParentTransaction(Transaction ynabTransaction)
+        {
+            ParentTransaction ret = new ParentTransaction(ynabTransaction.Date)
+            {
+                Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
+                Cleared = ynabTransaction.Cleared
+            };
+            AssignAccount(ynabTransaction.Account, ret);
+            CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value, ret);
+            return ret;
+        }
+
+        private SubTransaction TransformToSubTransaction(Transaction ynabTransaction, ParentTransaction parent)
+        {
+            SubTransaction ret = new SubTransaction
+            {
+                Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["subTransMemo"].Value,
+                Sum = ynabTransaction.Inflow - ynabTransaction.Outflow
+            };
+            AssignCategory(ynabTransaction.Category, ret);
+            if(!_parentTransactionAssignment.ContainsKey(parent))
+                _parentTransactionAssignment.Add(parent, new List<SubTransaction> {ret});
+            else _parentTransactionAssignment[parent].Add(ret);
+            return ret;
+        }
+
+        #endregion
+        
+        #region Accounts
+
+        private readonly IDictionary<string, Account> _accountCache = new Dictionary<string, Account>();
+
+        private readonly IDictionary<Account, IList<TransIncBase>> _accountAssignment =
+            new Dictionary<Account, IList<TransIncBase>>();
+
+        private readonly IDictionary<Account, IList<Transfer>> _fromAccountAssignment =
+            new Dictionary<Account, IList<Transfer>>();
+
+        private readonly IDictionary<Account, IList<Transfer>> _toAccountAssignment =
+            new Dictionary<Account, IList<Transfer>>();
+
+        private void CreateAccount(string name, long startingBalance)
+        {
+            if(string.IsNullOrWhiteSpace(name)) return;
+            Account account = new Account {Name = name, StartingBalance = startingBalance};
+            _accountCache.Add(name, account);
+            _accountAssignment.Add(account, new List<TransIncBase>());
+            _fromAccountAssignment.Add(account, new List<Transfer>());
+            _toAccountAssignment.Add(account, new List<Transfer>());
+        }
+
+        private void AssignAccount(string name, TransIncBase titNoTransfer)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return;
+            _accountAssignment[_accountCache[name]].Add(titNoTransfer);
+        }
+
+        private void AssignToAccount(string name, Transfer transfer)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return;
+            _toAccountAssignment[_accountCache[name]].Add(transfer);
+        }
+
+        private void AssignFormAccount(string name, Transfer transfer)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return;
+            _fromAccountAssignment[_accountCache[name]].Add(transfer);
+        }
+
+        private List<Account> GetAllAccountCache()
+        {
+            return _accountCache.Values.ToList();
+        }
+
+        private void ClearAccountCache()
+        {
+            _accountCache.Clear();
+            _accountAssignment.Clear();
+            _fromAccountAssignment.Clear();
+            _toAccountAssignment.Clear();
+        }
+
+        #endregion
+
+        #region Payees
+
+        private readonly IDictionary<string, Payee> _payeeCache = new Dictionary<string, Payee>();
+        private readonly IDictionary<Payee, IList<TransIncBase>> _payeeAssingment = new Dictionary<Payee, IList<TransIncBase>>();
+
+        private void CreateAndOrAssignPayee(string name, TransIncBase titBase)
+        {
+            if(string.IsNullOrWhiteSpace(name))
+                return;
+            if(!_payeeCache.ContainsKey(name))
+            {
+                Payee payee = new Payee(name: name);
+                _payeeCache.Add(name, payee);
+                _payeeAssingment.Add(payee, new List<TransIncBase> {titBase});
+            }
+            else
+            {
+                _payeeAssingment[_payeeCache[name]].Add(titBase);
+            }
+        }
+
+        private List<Payee> GetAllPayeeCache()
+        {
+            return _payeeCache.Values.ToList();
+        }
+
+        private void ClearPayeeCache()
+        {
+            _payeeCache.Clear();
+            _payeeAssingment.Clear();
+        }
+
+        #endregion
+
+        #region Categories
+
+        private readonly IDictionary<string, Category> _categoriesCache = new Dictionary<string, Category>();
+
+        private readonly IDictionary<Category, IList<IHaveCategory>> _categoryTitAssignment =
+            new Dictionary<Category, IList<IHaveCategory>>();
+
+        private readonly IDictionary<Category, IList<Category>> _categoryCategoryAssignment =
+            new Dictionary<Category, IList<Category>>();
+
+        private void CreateAndOrAssignCategory(string namePath)
+        {
+            if(string.IsNullOrWhiteSpace(namePath)) return;
+            Category category;
+            if(!_categoriesCache.ContainsKey(namePath))
+            {
+                category = new Category(name: namePath.Split(':').Last());
+                _categoriesCache.Add(namePath, category);
+                _categoryTitAssignment.Add(category, new List<IHaveCategory>());
+                _categoryCategoryAssignment.Add(category, new List<Category>());
+            }
+            else
+            {
+                category = _categoriesCache[namePath];
+            }
+
+            if(namePath.Contains(':'))
+            {
+                string parentName = namePath.Split(':').First();
+                if(!_categoriesCache.ContainsKey(parentName))
+                {
+                    Category parentCategory = new Category(name: parentName);
+                    _categoriesCache.Add(parentName, parentCategory);
+                    _categoryTitAssignment.Add(parentCategory, new List<IHaveCategory>());
+                    _categoryCategoryAssignment.Add(parentCategory, new List<Category> {category});
+                }
+                else
+                    _categoryCategoryAssignment[_categoriesCache[parentName]].Add(category);
+            }
+        }
+
+        private void AssignCategory(string namePath, IHaveCategory titLike)
+        {
+            if(!_categoriesCache.ContainsKey(namePath))
+                CreateAndOrAssignCategory(namePath);
+            _categoryTitAssignment[_categoriesCache[namePath]].Add(titLike);
+        }
+
+        private List<Category> GetAllCategoryCache()
+        {
+            return _categoriesCache.Values.ToList();
+        }
+
+        private void ClearCategoryCache()
+        {
+            _categoriesCache.Clear();
+            _categoryTitAssignment.Clear();
+            _categoryCategoryAssignment.Clear();
+        }
+
+        #endregion
+
+
     }
 }

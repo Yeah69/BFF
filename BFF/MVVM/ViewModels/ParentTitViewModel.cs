@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.ViewModels
 {
@@ -17,9 +18,9 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        private ITransInc _parentTit;
+        private ParentTransInc _parentTit;
 
-        public ITransInc ParentTit
+        public ParentTransInc ParentTit
         {
             get { return _parentTit; }
             set
@@ -42,9 +43,9 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public IList<ITransInc> ParentTitSource => new List<ITransInc> {ParentTit};
+        public IList<ParentTransInc> ParentTitSource => new List<ParentTransInc> {ParentTit};
 
-        public ParentTitViewModel(ITransInc parent, string title, Account account)
+        public ParentTitViewModel(ParentTransInc parent, string title, Account account)
         {
             _title = title;
             _account = account;

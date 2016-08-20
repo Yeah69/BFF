@@ -18,7 +18,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Model of ParentTransaction or ParentIncome. Mostly they both act almost the same. Differences are handled in their concrete classes.
         /// </summary>
-        protected IParentTransInc<T> ParentTransInc;
+        protected ParentTransInc ParentTransInc;
 
         /// <summary>
         /// The object's Id in the table of the database.
@@ -181,7 +181,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="transInc">The associated Model of this ViewModel.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        protected ParentTransIncViewModel(IParentTransInc<T> transInc, IBffOrm orm) : base(orm)
+        protected ParentTransIncViewModel(ParentTransInc transInc, IBffOrm orm) : base(orm)
         {
             ParentTransInc = transInc;
         }

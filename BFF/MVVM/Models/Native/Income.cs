@@ -1,5 +1,4 @@
 ﻿using System;
-using BFF.Helper.Import;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -7,7 +6,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// The Income documents earned money
     /// </summary>
-    public class Income : TitNoTransfer, ITransInc
+    public class Income : TransInc, ITransInc
     {
         /// <summary>
         /// Initializes the object
@@ -48,25 +47,6 @@ namespace BFF.MVVM.Models.Native
             ConstrDbLock = true;
 
             ConstrDbLock = false;
-        }
-
-        /// <summary>
-        /// Creates a Income-object depending on a YNAB-Transaction
-        /// </summary>
-        /// <param name="ynabTransaction">The YNAB-model</param>
-        public static implicit operator Income(Conversion.YNAB.Transaction ynabTransaction)
-        {
-            Category tempCategory = Category.GetOrCreate(ynabTransaction.Category);
-            Income ret = new Income (ynabTransaction.Date)
-            {
-                AccountId = Account.GetOrCreate(ynabTransaction.Account)?.Id ?? -1,
-                PayeeId = Payee.GetOrCreate(YnabCsvImport.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value)?.Id ?? -1,
-                CategoryId = tempCategory?.Id ?? -1,
-                Memo = YnabCsvImport.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
-                Sum = ynabTransaction.Inflow - ynabTransaction.Outflow,
-                Cleared = ynabTransaction.Cleared
-            };
-            return ret;
         }
     }
 }

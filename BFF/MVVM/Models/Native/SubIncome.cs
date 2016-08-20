@@ -5,7 +5,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// A SubElement of an Income
     /// </summary>
-    public class SubIncome : SubTitBase, ISubTransInc
+    public class SubIncome : SubTransInc, ISubTransInc
     {
 
         /// <summary>

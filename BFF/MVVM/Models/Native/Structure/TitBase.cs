@@ -9,7 +9,9 @@ namespace BFF.MVVM.Models.Native.Structure
     {
         Transaction = 1,
         Income = 2,
-        Transfer = 3
+        Transfer = 3,
+        ParentTransaction = 4,
+        ParentIncome = 5
     }
 
     /// <summary>
@@ -54,14 +56,10 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         /// <param name="date">Marks when the Tit happened</param>
-        protected TitBase(DateTime date, long id = -1L, string memo = null, long sum = 0L, bool? cleared = null) : base(id, memo, sum)
+        protected TitBase(DateTime date, long id = -1L, string memo = null, bool? cleared = null) : base(id, memo)
         {
-            ConstrDbLock = true;
-
             _date = date;
             _cleared = cleared ?? _cleared;
-            
-            ConstrDbLock = false;
         }
     }
 }

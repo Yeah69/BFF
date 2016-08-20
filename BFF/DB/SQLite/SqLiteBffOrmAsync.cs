@@ -100,7 +100,7 @@ namespace BFF.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : SubTitBase
+        public IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : SubTransInc
         {
             throw new NotImplementedException();
         }

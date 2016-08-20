@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using AlphaChiTech.Virtualization;
+using BFF.DB;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.MVVM.ViewModels;
@@ -141,9 +143,10 @@ namespace BFF
             FileFlyout.IsOpen = false;
 
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
+
             ImportDialogViewModel importDialogVm = new ImportDialogViewModel
             {
-                Importable = new YnabCsvImport(new SqLiteBffOrm(Settings.Default.Import_SavePath))
+                Importable = new YnabCsvImport()
                 {
                     TransactionPath = Settings.Default.Import_YnabCsvTransaction,
                     BudgetPath = Settings.Default.Import_YnabCsvBudget,

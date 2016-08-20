@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -44,28 +42,6 @@ namespace BFF.MVVM.Models.Native
         {
             Id = id;
             _startingBalance = startingBalance;
-        }
-
-        private static readonly Dictionary<string, Account> Cache = new Dictionary<string, Account>();
-
-        // todo: Refactor the GetOrCreate and GetAllCache into the Conversion/Import class
-        public static Account GetOrCreate(string name)
-        {
-            if (Cache.ContainsKey(name))
-                return Cache[name];
-            Account account = new Account {Name = name};
-            Cache.Add(name, account);
-            return account;
-        }
-
-        public static List<Account> GetAllCache()
-        {
-            return Cache.Values.ToList();
-        }
-
-        public static void ClearCache()
-        {
-            Cache.Clear();
         }
 
         #region Overrides of DataModelBase

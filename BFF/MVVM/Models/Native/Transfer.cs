@@ -1,5 +1,4 @@
 ﻿using System;
-using BFF.Helper.Import;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -11,6 +10,7 @@ namespace BFF.MVVM.Models.Native
     {
         private long _fromAccountId;
         private long _toAccountId;
+        private long _sum;
 
         /// <summary>
         /// Id of FromAccount
@@ -39,6 +39,19 @@ namespace BFF.MVVM.Models.Native
         }
 
         /// <summary>
+        /// The amount of money, which was payeed or recieved
+        /// </summary>
+        public long Sum
+        {
+            get { return _sum; }
+            set
+            {
+                _sum = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Initializes the object
         /// </summary>
         /// <param name="date">Marks when the Tit happened</param>
@@ -49,10 +62,11 @@ namespace BFF.MVVM.Models.Native
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public Transfer(DateTime date, Account fromAccount = null, Account toAccount = null, string memo = null,
             long sum = 0L, bool? cleared = null)
-            : base(date, memo: memo, sum: sum, cleared: cleared)
+            : base(date, memo: memo, cleared: cleared)
         {
             _fromAccountId = fromAccount?.Id ?? -1;
             _toAccountId = toAccount?.Id ?? -1;
+            _sum = sum;
         }
 
         /// <summary>
@@ -67,32 +81,11 @@ namespace BFF.MVVM.Models.Native
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public Transfer(long id, long fromAccountId, long toAccountId, DateTime date, string memo,
             long sum, bool cleared)
-            : base(date, id, memo, sum, cleared)
+            : base(date, id, memo, cleared)
         {
-            FromAccountId = fromAccountId;
-            ToAccountId = toAccountId;
-        }
-
-        /// <summary>
-        /// Creates a Transfer-object depending on a YNAB-Transaction
-        /// </summary>
-        /// <param name="ynabTransaction">The YNAB-model</param>
-        public static implicit operator Transfer(Conversion.YNAB.Transaction ynabTransaction)
-        {
-            long tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;
-            Account tempFromAccount = tempSum < 0 ? Account.GetOrCreate(ynabTransaction.Account) 
-                : Account.GetOrCreate(YnabCsvImport.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value);
-            Account tempToAccount = tempSum >= 0 ? Account.GetOrCreate(ynabTransaction.Account) 
-                : Account.GetOrCreate(YnabCsvImport.PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value);
-            Transfer ret = new Transfer(ynabTransaction.Date)
-            {
-                FromAccountId = tempFromAccount?.Id ?? -1,
-                ToAccountId = tempToAccount?.Id ?? -1,
-                Memo = YnabCsvImport.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
-                Sum = Math.Abs(tempSum),
-                Cleared = ynabTransaction.Cleared
-            };
-            return ret;
+            _fromAccountId = fromAccountId;
+            _toAccountId = toAccountId;
+            _sum = sum;
         }
     }
 }

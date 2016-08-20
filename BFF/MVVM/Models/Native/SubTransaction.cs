@@ -1,36 +1,19 @@
-﻿using System;
-using BFF.Helper.Import;
-using BFF.MVVM.Models.Native.Structure;
-using Dapper.Contrib.Extensions;
+﻿using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
     /// <summary>
     /// A SubElement of a Transaction
     /// </summary>
-    public class SubTransaction : SubTitBase, ISubTransInc
+    public class SubTransaction : SubTransInc, ISubTransInc
     {
-
-        public static implicit operator SubTransaction(Conversion.YNAB.Transaction ynabTransaction)
-        {
-            Category tempCategory = Category.GetOrCreate(ynabTransaction.Category);
-            SubTransaction ret = new SubTransaction
-            {
-                CategoryId = tempCategory?.Id ?? -1,
-                Memo = YnabCsvImport.MemoPartsRegex.Match(ynabTransaction.Memo).Groups["subTransMemo"].Value,
-                Sum = ynabTransaction.Inflow - ynabTransaction.Outflow
-            };
-            return ret;
-        }
-
         /// <summary>
         /// Initializes the object
         /// </summary>
-        /// <param name="parent">This instance is a SubElement of the parent</param>
         /// <param name="category">Category of the SubElement</param>
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        public SubTransaction(Transaction parent = null, Category category = null, long sum = 0L, string memo = null) 
+        public SubTransaction(Category category = null, long sum = 0L, string memo = null) 
             : base(category, memo, sum)
         {
             ConstrDbLock = true;
