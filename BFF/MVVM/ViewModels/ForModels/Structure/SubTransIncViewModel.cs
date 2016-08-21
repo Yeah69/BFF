@@ -10,7 +10,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// Base class for ViewModels of the Models SubTransaction and SubIncome
     /// </summary>
     /// <typeparam name="T">Type of the SubElement. Can be a SubTransaction or a SubIncome.</typeparam>
-    abstract class SubTransIncViewModel<T> : TitLikeViewModel where T : ISubTransInc
+    public abstract class SubTransIncViewModel<T> : TitLikeViewModel where T : ISubTransInc
     {
         /// <summary>
         /// Model of SubTransaction or SubIncome. Mostly they both act almost the same. Differences are handled in their concrete classes.

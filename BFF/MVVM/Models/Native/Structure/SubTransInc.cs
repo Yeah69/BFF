@@ -3,7 +3,7 @@
     /// <summary>
     /// Base class for all SubElement classes, which are used by TitNoTransfer classes
     /// </summary>
-    public abstract class SubTransInc : TitLike, IHaveCategory
+    public abstract class SubTransInc : TitLike, IHaveCategory, ISubTransInc
     {
         private long _parentId;
         private long _categoryId;

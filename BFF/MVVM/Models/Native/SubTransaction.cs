@@ -5,7 +5,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// A SubElement of a Transaction
     /// </summary>
-    public class SubTransaction : SubTransInc, ISubTransInc
+    public class SubTransaction : SubTransInc
     {
         /// <summary>
         /// Initializes the object
@@ -14,12 +14,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         public SubTransaction(Category category = null, long sum = 0L, string memo = null) 
-            : base(category, memo, sum)
-        {
-            ConstrDbLock = true;
-
-            ConstrDbLock = false;
-        }
+            : base(category, memo, sum) {}
 
         /// <summary>
         /// Safe ORM-constructor
@@ -29,11 +24,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="categoryId">Id of the Category</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The Sum of the SubElement</param>
-        public SubTransaction(long id, long parentId, long categoryId, string memo, long sum) : base(id, parentId, categoryId, sum, memo)
-        {
-            ConstrDbLock = true;
-
-            ConstrDbLock = false;
-        }
+        public SubTransaction(long id, long parentId, long categoryId, string memo, long sum)
+            : base(id, parentId, categoryId, sum, memo) {}
     }
 }

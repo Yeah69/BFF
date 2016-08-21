@@ -13,7 +13,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// Base class for ViewModels of the Models ParentTransaction and ParentIncome
     /// </summary>
     /// <typeparam name="T">Type of the SubElement. Can be a SubTransaction or a SubIncome.</typeparam>
-    abstract class ParentTransIncViewModel<T> : TransIncBaseViewModel where T : ISubTransInc
+    public abstract class ParentTransIncViewModel<T> : TransIncBaseViewModel where T : ISubTransInc
     {
         /// <summary>
         /// Model of ParentTransaction or ParentIncome. Mostly they both act almost the same. Differences are handled in their concrete classes.
@@ -253,6 +253,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
         public ICommand OpenParentTitView => new RelayCommand(param =>
-                    Messenger.Default.Send(new ParentTitViewModel(ParentTransInc, "Yeah69", param as Account)));
+                    Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", param as Account)));
     }
 }
