@@ -131,10 +131,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override long? Balance
         {
-            get
-            {
-                return Orm?.GetAccountBalance(Account);
-            }
+            get{ return Orm?.GetAccountBalance(Account); }
             set { OnPropertyChanged(); }
         }
 

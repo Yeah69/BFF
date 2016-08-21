@@ -23,8 +23,8 @@ SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s);";
 $@"SELECT (SELECT Total({nameof(Transaction.Sum)}) FROM (
 SELECT {nameof(TransInc.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL 
 SELECT {nameof(TransInc.Sum)} FROM {nameof(Income)}s WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
-SELECT {nameof(SubTransInc.Sum)} FROM (SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)}, {nameof(ParentTransaction)}s.{nameof(Transaction.AccountId)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(ParentTransaction)}s ON {nameof(SubIncome)}s.{nameof(SubIncome.ParentId)} = {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Id)}) WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL
-SELECT {nameof(SubTransInc.Sum)} FROM (SELECT {nameof(SubIncome)}s.{nameof(SubIncome.Sum)}, {nameof(ParentIncome)}s.{nameof(ParentIncome.AccountId)} FROM {nameof(SubIncome)}s INNER JOIN {nameof(ParentIncome)}s ON {nameof(SubIncome)}s.{nameof(SubIncome.ParentId)} = {nameof(ParentIncome)}s.{nameof(ParentIncome.Id)}) WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
+SELECT {nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(ParentTransaction)}s ON {nameof(SubTransaction.ParentId)} = {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Id)} AND {nameof(ParentTransaction.AccountId)} = @accountId UNION ALL
+SELECT {nameof(SubIncome.Sum)} FROM {nameof(SubIncome)}s INNER JOIN {nameof(ParentIncome)}s ON {nameof(SubIncome.ParentId)} = {nameof(ParentIncome)}s.{nameof(ParentIncome.Id)} AND {nameof(ParentIncome.AccountId)} = @accountId UNION ALL
 SELECT {nameof(TransInc.Sum)} FROM {nameof(Transfer)}s WHERE {nameof(Transfer.ToAccountId)} = @accountId UNION ALL
 SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.Id)} = @accountId)) 
 - (SELECT Total({nameof(TransInc.Sum)}) FROM {nameof(Transfer)}s WHERE {nameof(Transfer.FromAccountId)} = @accountId);";
