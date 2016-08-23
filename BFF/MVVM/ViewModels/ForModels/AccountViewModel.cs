@@ -63,6 +63,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         protected override void InsertToDb()
         {
             Orm?.CommonPropertyProvider.Add(Account);
+            Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
+            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
         }
 
         /// <summary>
@@ -141,7 +143,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override void RefreshBalance()
         {
             OnPropertyChanged(nameof(Balance));
-            Messenger.Default.Send(AllAccountMessage.RefreshBalance);
+            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
         }
 
         /// <summary>

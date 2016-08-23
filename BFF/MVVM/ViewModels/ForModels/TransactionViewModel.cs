@@ -34,7 +34,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         protected override void UpdateToDb()
         {
             Orm?.Update(TransInc as Transaction);
-            Messenger.Default.Send(AllAccountMessage.Refresh);
+            Messenger.Default.Send(SummaryAccountMessage.Refresh);
             Messenger.Default.Send(AccountMessage.Refresh, Account);
         }
 

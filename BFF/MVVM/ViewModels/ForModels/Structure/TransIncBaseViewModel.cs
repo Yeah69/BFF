@@ -63,7 +63,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            Messenger.Default.Send(AllAccountMessage.Refresh);
+            Messenger.Default.Send(SummaryAccountMessage.Refresh);
             Messenger.Default.Send(AccountMessage.Refresh, Account);
         });
     }

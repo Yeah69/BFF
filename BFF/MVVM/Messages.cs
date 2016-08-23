@@ -14,7 +14,7 @@
         RefreshBalance
     }
 
-    public enum AllAccountMessage
+    public enum SummaryAccountMessage
     {
         Refresh,
         RefreshTits,

@@ -107,7 +107,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         internal void RefreshSum()
         {
-            Messenger.Default.Send(AllAccountMessage.RefreshBalance);
+            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
             Messenger.Default.Send(AccountMessage.RefreshBalance, Account);
             OnPropertyChanged(nameof(Sum));
         }
@@ -245,7 +245,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             }
             _newSubElements.Clear();
             OnPropertyChanged(nameof(Sum));
-            Messenger.Default.Send(AllAccountMessage.Refresh);
+            Messenger.Default.Send(SummaryAccountMessage.Refresh);
             Messenger.Default.Send(AccountMessage.Refresh, Account);
         });
 

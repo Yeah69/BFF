@@ -42,22 +42,22 @@ namespace BFF.MVVM.ViewModels.ForModels
         public SummaryAccountViewModel(IBffOrm orm) : base(orm)
         {
             Account = new SummaryAccount();
-            Messenger.Default.Register<AllAccountMessage>(this, message =>
+            Messenger.Default.Register<SummaryAccountMessage>(this, message =>
             {
                 switch (message)
                 {
-                    case AllAccountMessage.Refresh:
+                    case SummaryAccountMessage.Refresh:
                         RefreshTits();
                         RefreshBalance();
                         RefreshStartingBalance();
                         break;
-                    case AllAccountMessage.RefreshBalance:
+                    case SummaryAccountMessage.RefreshBalance:
                         RefreshBalance();
                         break;
-                    case AllAccountMessage.RefreshStartingBalance:
+                    case SummaryAccountMessage.RefreshStartingBalance:
                         RefreshStartingBalance();
                         break;
-                    case AllAccountMessage.RefreshTits:
+                    case SummaryAccountMessage.RefreshTits:
                         RefreshTits();
                         break;
                     default:

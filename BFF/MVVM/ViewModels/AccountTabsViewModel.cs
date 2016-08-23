@@ -37,8 +37,8 @@ namespace BFF.MVVM.ViewModels
             _orm.CommonPropertyProvider.Add(NewAccount);
             //Refresh all relevant properties
             Messenger.Default.Send(AccountMessage.RefreshBalance, NewAccount);
-            Messenger.Default.Send(AllAccountMessage.RefreshBalance);
-            Messenger.Default.Send(AllAccountMessage.RefreshStartingBalance);
+            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+            Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
             //Refresh dummy-Account
             NewAccount = new Account { Id = -1, Name = "", StartingBalance = 0L };
             OnPropertyChanged(nameof(NewAccount));
@@ -109,7 +109,7 @@ namespace BFF.MVVM.ViewModels
             }
             AllAccounts.Clear();
             (SummaryAccountViewModel as IDisposable)?.Dispose();
-            Messenger.Default.Unregister(this);
+            Messenger.Default.Unregister<CutlureMessage>(this);
         }
 
         #endregion

@@ -209,7 +209,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Orm?.Update(Transfer);
             Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
             Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
-            Messenger.Default.Send(AllAccountMessage.RefreshTits);
+            Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Delete();
             Messenger.Default.Send(AccountMessage.Refresh, FromAccount);
             Messenger.Default.Send(AccountMessage.Refresh, ToAccount);
-            Messenger.Default.Send(AllAccountMessage.RefreshTits);
+            Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
         });
     }
 }
