@@ -186,6 +186,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 }
             }
             Orm.CommonPropertyProvider.SummaryAccountViewModel.RefreshTits();
+            Orm.CommonPropertyProvider.SummaryAccountViewModel.RefreshBalance();
             foreach (AccountViewModel accountViewModel in accountViewModels)
             {
                 accountViewModel.RefreshTits();

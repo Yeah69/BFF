@@ -69,7 +69,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected void Update()
         {
-            UpdateToDb();
+            if (Id > 0L) UpdateToDb();
         }
 
 
