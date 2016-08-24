@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using BFF.Properties;
 
 namespace BFF.Helper
 {
@@ -9,7 +10,7 @@ namespace BFF.Helper
     {
         public static CultureInfo CurrencyCulture = null;
 
-        public static void WriteLine(string text, [CallerMemberName] string callerName = null)
+        public static void WriteLine(string text, [CallerMemberName] string callerName = null) //todo: Replace with NLog
         {
             Console.BackgroundColor = ConsoleColor.DarkMagenta;
             Console.Write(@"{0}:", callerName);
@@ -19,7 +20,7 @@ namespace BFF.Helper
 
         public static string AsCurrency(this long value)
         {
-            return value.AsCurrency(BffEnvironment.CultureProvider.CurrencyCulture ?? CultureInfo.CurrentCulture);
+            return value.AsCurrency(Settings.Default.Culture_SessionCurrency ?? CultureInfo.CurrentCulture);
         }
 
         public static string AsCurrency(this long value, CultureInfo culture)
@@ -30,7 +31,7 @@ namespace BFF.Helper
 
         public static long CurrencyAsLong(this string value)
         {
-            return value.CurrencyAsLong(BffEnvironment.CultureProvider.CurrencyCulture ?? CultureInfo.CurrentCulture);
+            return value.CurrencyAsLong(Settings.Default.Culture_SessionCurrency ?? CultureInfo.CurrentCulture);
         }
 
         public static long CurrencyAsLong(this string value, CultureInfo culture)

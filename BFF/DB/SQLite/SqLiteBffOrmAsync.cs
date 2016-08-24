@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Threading.Tasks;
-using BFF.Model.Native;
-using BFF.Model.Native.Structure;
+using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using Dapper.Contrib.Extensions;
 
 namespace BFF.DB.SQLite
@@ -15,7 +15,7 @@ namespace BFF.DB.SQLite
 
         public Task<IEnumerable<T>> GetAllAsync<T>() where T : DataModelBase
         {
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 Task<IEnumerable<T>> ret;
                 using (var cnn = new SQLiteConnection(ConnectionString))
@@ -33,7 +33,7 @@ namespace BFF.DB.SQLite
         public Task<int> InsertAsync<T>(T dataModelBase) where T : DataModelBase
         {
             Task<int> ret = null;
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 using (var cnn = new SQLiteConnection(ConnectionString))
                 {
@@ -41,7 +41,6 @@ namespace BFF.DB.SQLite
                     ret.GetAwaiter().OnCompleted(() => dataModelBase.Id = ret.Result);
                     cnn.Close();
                 }
-                ManageIfPeriphery(dataModelBase);
             }
             return ret;
         }
@@ -101,7 +100,7 @@ namespace BFF.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : SubTitBase
+        public IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : SubTransInc
         {
             throw new NotImplementedException();
         }
@@ -112,5 +111,7 @@ namespace BFF.DB.SQLite
         }
 
         #endregion
+
+        public SqLiteBffOrmAsync(string dbPath) : base(dbPath) {}
     }
 }

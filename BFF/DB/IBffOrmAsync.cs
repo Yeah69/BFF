@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
-using BFF.Model.Native;
-using BFF.Model.Native.Structure;
+using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB
 {
-    public interface IBffOrmAsync : ICrudOrmAsync, IPeripheryProvider, IPagedOrmAsync
+    public interface IBffOrmAsync : ICrudOrmAsync, IPagedOrmAsync
     {
-        string DbPath { get; set; }
-        event PropertyChangedEventHandler DbPathChanged;
+        string DbPath { get; }
         Task CreateNewDatabaseAsync(string dbPath);
         Task PopulateDatabaseAsync(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
             IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories);
         IEnumerable<TitBase> GetAllTitsAsync(DateTime startTime, DateTime endTime, Account account = null);
         Task<long?> GetAccountBalanceAsync(Account account = null);
-        IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : SubTitBase;
+        IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : SubTransInc;
         Task ResetAsync();
     }
 

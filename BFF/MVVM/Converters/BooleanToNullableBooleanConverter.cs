@@ -1,0 +1,21 @@
+﻿using System;
+using System.Globalization;
+using System.Windows.Data;
+
+namespace BFF.MVVM.Converters
+{
+    public class BooleanToNullableBooleanConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetTypes, object parameter, CultureInfo culture)
+        {
+            if (value == null)
+                return false;
+            return (bool) value;
+        }
+    }
+}

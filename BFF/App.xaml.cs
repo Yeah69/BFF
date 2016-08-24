@@ -1,10 +1,5 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Threading;
-using BFF.DB;
-using BFF.DB.SQLite;
-using BFF.Helper;
-using BFF.Model.Native;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -23,11 +18,7 @@ namespace BFF
         {
             Logger.Trace("Initializing App");
             InitializeComponent();
-            new AllAccounts(); //todo: Find more elegant way
-            IBffOrm orm = new SqLiteBffOrm();
-            IBffCultureProvider cultureProvider = new BffCultureProvider(orm);
-            BffEnvironment.CultureProvider = cultureProvider;
-            MainWindow mainWindow = new MainWindow(orm);
+            MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }
 
