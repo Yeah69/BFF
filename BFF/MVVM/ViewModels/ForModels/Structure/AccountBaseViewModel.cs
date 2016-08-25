@@ -117,7 +117,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                         RefreshTits();
                         break;
                     case CutlureMessage.RefreshDate:
-                        RefreshTits();
+                        OnPropertyChanged(nameof(IsDateFormatLong));
                         break;
                     default:
                         throw new InvalidEnumArgumentException();
@@ -159,7 +159,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 if (tit is ParentTransactionViewModel)
                 {
                     ParentTransactionViewModel parentTransaction = tit as ParentTransactionViewModel;
-                    foreach (SubTransIncViewModel<SubTransaction> subTransaction in parentTransaction.NewSubElements)
+                    foreach(SubTransIncViewModel<SubTransaction> subTransaction in parentTransaction.NewSubElements)
                     {
                         subTransaction.Insert();
                         parentTransaction.SubElements.Add(subTransaction);
