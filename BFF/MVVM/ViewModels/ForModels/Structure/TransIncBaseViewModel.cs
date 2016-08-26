@@ -40,8 +40,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public ICommand AddPayeeCommand => new RelayCommand(obj =>
         {
             Payee newPayee = new Payee {Name = PayeeText.Trim()};
-            Orm?.Insert(newPayee);
-            OnPropertyChanged();
+            Orm?.CommonPropertyProvider?.Add(newPayee);
+            OnPropertyChanged(nameof(AllPayees));
             Payee = newPayee;
         }, obj =>
         {

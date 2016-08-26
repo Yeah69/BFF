@@ -181,7 +181,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 newCategory.Parent = AddingCategoryParent;
                 AddingCategoryParent.Categories.Add(newCategory);
             }
-            Orm?.Insert(newCategory);
+            Orm?.CommonPropertyProvider?.Add(newCategory);
             OnPropertyChanged(nameof(AllCategories));
             Category = newCategory;
         }, obj =>
@@ -198,7 +198,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All currently available Categories.
         /// </summary>
-        public ObservableCollection<Category> AllCategories => Orm?.CommonPropertyProvider.Categories;
+        public ObservableCollection<Category> AllCategories => Orm?.CommonPropertyProvider?.Categories;
 
         #endregion
 
