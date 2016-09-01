@@ -160,7 +160,7 @@ SELECT {nameof(DataModelBase.Id)}, -69 AS AccountFiller, {nameof(Transfer.FromAc
                         {
                     nameof(SubTransaction.Sum)} INTEGER,
                         FOREIGN KEY({
-                    nameof(SubTransaction.ParentId)}) REFERENCES {nameof(Transaction)}s({nameof(Transaction.Id)
+                    nameof(SubTransaction.ParentId)}) REFERENCES {nameof(ParentTransaction)}s({nameof(ParentTransaction.Id)
                     }) ON DELETE CASCADE);";
 
         internal static string CreateSubIncomeTableStatement
@@ -176,7 +176,7 @@ SELECT {nameof(DataModelBase.Id)}, -69 AS AccountFiller, {nameof(Transfer.FromAc
                         {
                     nameof(SubIncome.Sum)} INTEGER,
                         FOREIGN KEY({nameof(SubIncome.ParentId)
-                    }) REFERENCES {nameof(Income)}s({nameof(Income.Id)}) ON DELETE CASCADE);";
+                    }) REFERENCES {nameof(ParentIncome)}s({nameof(ParentIncome.Id)}) ON DELETE CASCADE);";
 
         internal static string CreateTransactionTableStatement
             =>

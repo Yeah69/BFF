@@ -107,8 +107,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         internal void RefreshSum()
         {
-            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
-            Messenger.Default.Send(AccountMessage.RefreshBalance, Account);
+            if(Id > 0)
+            {
+                Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+                Messenger.Default.Send(AccountMessage.RefreshBalance, Account);
+            }
             OnPropertyChanged(nameof(Sum));
         }
 
@@ -184,6 +187,22 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected ParentTransIncViewModel(ParentTransInc transInc, IBffOrm orm) : base(orm)
         {
             ParentTransInc = transInc;
+            ParentTransInc.PropertyChanged += (sender, args) =>
+            {
+                switch(args.PropertyName)
+                {
+                    case nameof(ParentTransInc.Id):
+                        foreach(SubTransIncViewModel<T> subTransIncViewModel in SubElements)
+                        {
+                            subTransIncViewModel.ParentId = ParentTransInc.Id;
+                        }
+                        foreach(SubTransIncViewModel<T> subTransIncViewModel in NewSubElements)
+                        {
+                            subTransIncViewModel.ParentId = ParentTransInc.Id;
+                        }
+                        break;
+                }
+            };
         }
 
         /// <summary>

@@ -10,11 +10,21 @@ namespace BFF.MVVM.Models.Native.Structure
     {
         protected bool ConstrDbLock;
 
+        private long _id = -1L;
+
         /// <summary>
         /// Identification number for the database
         /// </summary>
         [Key]
-        public long Id { get; set; } = -1L;
+        public long Id
+        {
+            get { return _id; }
+            set
+            {
+                _id = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Reference to current ORM class
