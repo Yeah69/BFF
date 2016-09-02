@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using BFF.Model.Native;
-using BFF.Model.Native.Structure;
+using BFF.Helper.Import;
+using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB
 {
-    public interface IBffOrm : ICrudOrm, IPeripheryProvider, IPagedOrm
+    public interface IBffOrm : ICrudOrm, IPagedOrm
     {
-        string DbPath { get; set; }
-        event PropertyChangedEventHandler DbPathChanged;
-        void CreateNewDatabase(string dbPath);
-        void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
-            IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories);
+        ICommonPropertyProvider CommonPropertyProvider { get; }
+
+        string DbPath { get; }
+        void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments);
         IEnumerable<TitBase> GetAllTits(DateTime startTime, DateTime endTime, Account account = null);
-        long? GetAccountBalance(Account account = null);
-        IEnumerable<T> GetSubTransInc<T>(long parentId) where T : SubTitBase;
-        void Reset();
+        long? GetAccountBalance(Account account);
+        long? GetSummaryAccountBalance();
+        IEnumerable<T> GetSubTransInc<T>(long parentId) where T : ISubTransInc;
     }
 
     public interface ICrudOrm
@@ -27,16 +25,6 @@ namespace BFF.DB
         T Get<T>(long id) where T : DataModelBase;
         void Update<T>(T dataModelBase) where T : DataModelBase;
         void Delete<T>(T dataModelBase) where T : DataModelBase;
-    }
-
-    public interface IPeripheryProvider
-    {
-        ObservableCollection<Account> AllAccounts { get; }
-        ObservableCollection<Payee> AllPayees { get; }
-        ObservableCollection<Category> AllCategories { get; }
-        Account GetAccount(long id);
-        Payee GetPayee(long id);
-        Category GetCategory(long id);
     }
     
     public interface IPagedOrm

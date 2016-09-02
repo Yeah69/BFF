@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using BFF.Helper.Import;
+using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using DbTransactions = System.Transactions;
-using BFF.Model.Native;
-using BFF.Model.Native.Structure;
-using BFF.Properties;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using NLog;
@@ -20,25 +18,17 @@ namespace BFF.DB.SQLite
 
     class SqLiteBffOrm : IBffOrm
     {
+        public ICommonPropertyProvider CommonPropertyProvider { get; }
+
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected SQLiteConnection Cnn = new SQLiteConnection();
 
-        public string DbPath {
-            get { return Settings.Default.DBLocation; }
-            set
-            {
-                Settings.Default.DBLocation = value;
-                Settings.Default.Save();
-                Reset();
-                DbPathChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DbPath)));
-                Logger.Trace("Database path changed to: {0}.", value);
-            }
-        }
+        private readonly string _dbPath;
 
-        public event PropertyChangedEventHandler DbPathChanged;
+        public string DbPath => _dbPath;
 
-        public void CreateNewDatabase(string dbPath)
+        public static void CreateNewDatabase(string dbPath)
         {
             Logger.Info("Creating a new Database with the path: {0}.", dbPath);
             if (File.Exists(dbPath)) //todo: This will make problems
@@ -52,11 +42,16 @@ namespace BFF.DB.SQLite
                     cnn.Execute(SqLiteQueries.CreatePayeeTableStatement);
                     cnn.Execute(SqLiteQueries.CreateCategoryTableStatement);
                     cnn.Execute(SqLiteQueries.CreateAccountTableStatement);
-                    cnn.Execute(SqLiteQueries.CreateTransferTableStatement);
+
                     cnn.Execute(SqLiteQueries.CreateTransactionTableStatement);
+                    cnn.Execute(SqLiteQueries.CreateParentTransactionTableStatement);
                     cnn.Execute(SqLiteQueries.CreateSubTransactionTableStatement);
+
                     cnn.Execute(SqLiteQueries.CreateIncomeTableStatement);
+                    cnn.Execute(SqLiteQueries.CreateParentIncomeTableStatement);
                     cnn.Execute(SqLiteQueries.CreateSubIncomeTableStatement);
+
+                    cnn.Execute(SqLiteQueries.CreateTransferTableStatement);
 
                     cnn.Execute(SqLiteQueries.CreateDbSettingTableStatement);
                     cnn.Insert(new DbSetting {CurrencyCultrureName = "de-DE", DateCultureName = "de-DE"});
@@ -69,54 +64,103 @@ namespace BFF.DB.SQLite
                 }
                 cnn.Close();
             }
-            DbPath = dbPath;
         }
 
-        public void PopulateDatabase(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes, IEnumerable<SubIncome> subIncomes,
-            IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees, IEnumerable<Category> categories)
+        public void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments)
         {
             Logger.Info("Populating the current database.");
-            _dbLockFlag = true;
+            DbLockFlag = true;
             using (var transactionScope = new DbTransactions.TransactionScope(DbTransactions.TransactionScopeOption.RequiresNew, new DbTransactions.TransactionOptions {IsolationLevel = DbTransactions.IsolationLevel.RepeatableRead}))
             {
-
                 /*  
                 Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
                 because the structure of the imported csv-Entry of Categories allowes to get the master category first and
                 then the sub category. Thus, the parents id is known beforehand.
                 */
-                foreach (Category category in categories)
+                foreach (Category category in importLists.Categories)
+                {
                     category.Id = Cnn.Insert(category);
-                foreach (Payee payee in payees)
+                    if (importAssignments.CategoryToCategory.ContainsKey(category))
+                    {
+                        foreach (Category subCategory in importAssignments.CategoryToCategory[category])
+                        {
+                            subCategory.ParentId = category.Id;
+                        }
+                    }
+                    if (importAssignments.CategoryToIHaveCategory.ContainsKey(category))
+                    {
+                        foreach (IHaveCategory hasCategory in importAssignments.CategoryToIHaveCategory[category])
+                        {
+                            hasCategory.CategoryId = category.Id;
+                        }
+                    }
+                }
+                foreach (Payee payee in importLists.Payees)
+                {
                     payee.Id = Cnn.Insert(payee);
-                foreach (Account account in accounts)
+                    foreach(TransIncBase transIncBase in importAssignments.PayeeToTransIncBase[payee])
+                    {
+                        transIncBase.PayeeId = payee.Id;
+                    }
+                }
+                foreach (Account account in importLists.Accounts)
+                {
                     account.Id = Cnn.Insert(account);
-                foreach (Transaction transaction in transactions)
+                    foreach(TransIncBase transIncBase in importAssignments.AccountToTransIncBase[account])
+                    {
+                        transIncBase.AccountId = account.Id;
+                    }
+                    foreach(Transfer transfer in importAssignments.FromAccountToTransfer[account])
+                    {
+                        transfer.FromAccountId = account.Id;
+                    }
+                    foreach(Transfer transfer in importAssignments.ToAccountToTransfer[account])
+                    {
+                        transfer.ToAccountId = account.Id;
+                    }
+                }
+                foreach (Transaction transaction in importLists.Transactions)
                     transaction.Id = Cnn.Insert(transaction);
-                foreach (SubTransaction subTransaction in subTransactions)
+                foreach (ParentTransaction parentTransaction in importLists.ParentTransactions)
+                {
+                    parentTransaction.Id = Cnn.Insert(parentTransaction);
+                    foreach(SubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
+                    {
+                        subTransaction.ParentId = parentTransaction.Id;
+                    }
+                }
+                foreach (SubTransaction subTransaction in importLists.SubTransactions)
                     subTransaction.Id = Cnn.Insert(subTransaction);
-                foreach (Income income in incomes)
+                foreach (Income income in importLists.Incomes)
                     income.Id = Cnn.Insert(income);
-                foreach (SubIncome subIncome in subIncomes)
+                foreach (ParentIncome parentIncome in importLists.ParentIncomes)
+                {
+                    parentIncome.Id = Cnn.Insert(parentIncome);
+                    foreach (SubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
+                    {
+                        subIncome.ParentId = parentIncome.Id;
+                    }
+                }
+                foreach (SubIncome subIncome in importLists.SubIncomes)
                     subIncome.Id = Cnn.Insert(subIncome);
-                foreach (Transfer transfer in transfers)
+                foreach (Transfer transfer in importLists.Transfers)
                     transfer.Id = Cnn.Insert(transfer);
 
                 transactionScope.Complete();
             }
-            _dbLockFlag = false;
+            DbLockFlag = false;
         }
 
         public IEnumerable<TitBase> GetAllTits(DateTime startDate, DateTime endDate, Account account = null)
         {
-            Logger.Debug("Getting all TITs from {0} between {1} and {2}.", account?.Name ?? "AllAccounts", startDate, endDate);
-            _dbLockFlag = true;
+            Logger.Debug("Getting all TITs from {0} between {1} and {2}.", account?.Name ?? "SummaryAccount", startDate, endDate);
+            DbLockFlag = true;
             IEnumerable<TitBase> results;
 
             string accountAddition = $"WHERE date({nameof(TitBase.Date)}) BETWEEN date('{startDate.ToString("yyyy-MM-dd")}') AND date('{endDate.ToString("yyyy-MM-dd")}') ";
             accountAddition += account == null
                 ? ""
-                : $"AND ({nameof(TitNoTransfer.AccountId)} = @accountId OR {nameof(TitNoTransfer.AccountId)} = -69 AND ({nameof(TitNoTransfer.PayeeId)} = @accountId OR {nameof(TitNoTransfer.CategoryId)} = @accountId))";
+                : $"AND ({nameof(TransIncBase.AccountId)} = @accountId OR {nameof(TransIncBase.AccountId)} = -69 AND ({nameof(TransIncBase.PayeeId)} = @accountId OR {nameof(TransInc.CategoryId)} = @accountId))";
             string sql = $"SELECT * FROM [{TheTitName}] {accountAddition} ORDER BY {nameof(TitBase.Date)};";
 
             Type[] types =
@@ -132,22 +176,20 @@ namespace BFF.DB.SQLite
                 transactionScope.Complete();
             }
 
-            _dbLockFlag = false;
+            DbLockFlag = false;
             return results;
         }
 
-        public long? GetAccountBalance(Account account = null)
+        public long? GetAccountBalance(Account account)
         {
-            Logger.Debug("Getting account balance from {0}.", account?.Name ?? "AllAccounts");
+            Logger.Debug("Getting account balance from {0}.", account?.Name ?? "NULL");
             long ret;
 
             using (var transactionScope = new DbTransactions.TransactionScope())
             {
                 try
                 {
-                    ret = account == null
-                        ? Cnn.Query<long>(SqLiteQueries.AllAccountsBalanceStatement).First()
-                        : Cnn.Query<long>(SqLiteQueries.AccountSpecificBalanceStatement, new { accountId = account.Id }).First();
+                    ret = Cnn.Query<long>(SqLiteQueries.AccountSpecificBalanceStatement, new { accountId = account?.Id ?? -1 }).First();
                 }
                 catch (OverflowException)
                 {
@@ -161,13 +203,36 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public IEnumerable<T> GetSubTransInc<T>(long parentId) where T : SubTitBase
+        public long? GetSummaryAccountBalance()
+        {
+            Logger.Debug("Getting account balance from SummaryAccount.");
+            long ret;
+
+            using (var transactionScope = new DbTransactions.TransactionScope())
+            {
+                try
+                {
+                    ret = Cnn.Query<long>(SqLiteQueries.AllAccountsBalanceStatement).First();
+                }
+                catch (OverflowException)
+                {
+                    transactionScope.Complete();
+                    return null;
+                }
+
+                transactionScope.Complete();
+            }
+
+            return ret;
+        }
+
+        public IEnumerable<T> GetSubTransInc<T>(long parentId) where T : ISubTransInc
         {
             Logger.Debug("Getting SubTransactions/SubIncomes from table {0} with the ParentId {1}.", typeof(T).Name, parentId);
             IEnumerable<T> ret;
             using (var transactionScope = new DbTransactions.TransactionScope())
             {
-                string query = $"SELECT * FROM [{typeof(T).Name}s] WHERE {nameof(SubTitBase.ParentId)} = @id;";
+                string query = $"SELECT * FROM [{typeof(T).Name}s] WHERE {nameof(SubTransInc.ParentId)} = @id;";
                 ret = Cnn.Query<T>(query, new { id = parentId });
 
                 transactionScope.Complete();
@@ -178,7 +243,7 @@ namespace BFF.DB.SQLite
         public IEnumerable<T> GetAll<T>() where T : DataModelBase
         {
             Logger.Debug("Getting all entries from table {0}.", typeof(T).Name);
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 IEnumerable<T> ret;
                 using (var transactionScope = new DbTransactions.TransactionScope())
@@ -195,7 +260,7 @@ namespace BFF.DB.SQLite
         {
             Logger.Debug("Insert an entry into table {0}.", typeof(T).Name);
             long ret = -1L;
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 using (var transactionScope = new DbTransactions.TransactionScope())
                 {
@@ -203,38 +268,13 @@ namespace BFF.DB.SQLite
                     dataModelBase.Id = ret;
                     transactionScope.Complete();
                 }
-                ManageIfPeriphery(dataModelBase);
             }
             return ret;
         }
 
-        protected void ManageIfPeriphery<T>(T dataModelBase) where T : DataModelBase
-        {
-            if (dataModelBase is CommonProperty)
-            {
-                if (dataModelBase is Account)
-                    AllAccounts.Add(dataModelBase as Account);
-                else if (dataModelBase is Payee)
-                    AllPayees.Add(dataModelBase as Payee);
-                else if (dataModelBase is Category)
-                {
-                    Category newCategory = dataModelBase as Category;
-                    if (newCategory.Parent == null)
-                        AllCategories.Add(newCategory);
-                    else
-                    {
-                        int index = newCategory.Parent.Categories.Count - 2;
-                        index = index == -1 ? AllCategories.IndexOf(newCategory.Parent) + 1 :
-                            AllCategories.IndexOf(newCategory.Parent.Categories[index]) + 1;
-                        AllCategories.Insert(index, newCategory);
-                    }
-                }
-            }
-        }
-
         public T Get<T>(long id) where T : DataModelBase
         {
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 T ret;
                 using (var transactionScope = new DbTransactions.TransactionScope())
@@ -249,7 +289,7 @@ namespace BFF.DB.SQLite
         
         public void Update<T>(T dataModelBase) where T : DataModelBase
         {
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 using (var transactionScope = new DbTransactions.TransactionScope())
                 {
@@ -262,28 +302,19 @@ namespace BFF.DB.SQLite
         public void Delete<T>(T dataModelBase) where T : DataModelBase
         {
             Logger.Debug("Delete an entry from table {0}.", typeof(T).Name);
-            if (!_dbLockFlag)
+            if (!DbLockFlag)
             {
                 using (var transactionScope = new DbTransactions.TransactionScope())
                 {
                     Cnn.Delete(dataModelBase);
                     transactionScope.Complete();
                 }
-                if (dataModelBase is CommonProperty)
-                {
-                    if (dataModelBase is Account && AllAccounts.Contains(dataModelBase as Account))
-                        AllAccounts.Remove(dataModelBase as Account);
-                    else if (dataModelBase is Payee && AllPayees.Contains(dataModelBase as Payee))
-                        AllPayees.Remove(dataModelBase as Payee);
-                    else if (dataModelBase is Category && AllCategories.Contains(dataModelBase as Category))
-                        AllCategories.Remove(dataModelBase as Category);
-                }
             }
         }
 
         protected string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;";
 
-        protected bool _dbLockFlag;
+        protected bool DbLockFlag;
 
         private const string TheTitName = "The Tit";
 
@@ -298,22 +329,27 @@ namespace BFF.DB.SQLite
                 !DateTime.TryParseExact((string)objArr[4], "yyyy-MM-dd HH:mm:ss", null, DateTimeStyles.None,
                     out date))
                 throw new InvalidCastException();
-            // todo: Maybe find out why in some cases the date is pre-casted to DateTime and in others it is still a string
+            // todo: Maybe find out why in some cases the date is pre-casted to Date and in others it is still a string
             long? categoryId = (long?) objArr[3];
             TitBase ret;
             switch (type)
             {
                 case TitType.Transaction:
-                    ret = categoryId != null ? new Transaction((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (long)categoryId, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1) : new ParentTransaction((long)objArr[0], (long)objArr[1], date, (long)objArr[2], categoryId ?? -1, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
+                    ret = new Transaction((long) objArr[0], (long) objArr[1], date, (long) objArr[2], (long) categoryId,
+                                          (string) objArr[5], (long) objArr[6], (long) objArr[7] == 1);
                     break;
                 case TitType.Income:
-                    if(categoryId != null)
-                        ret = new Income((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (long)categoryId, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
-                    else
-                        ret = new ParentIncome((long)objArr[0], (long)objArr[1], date, (long)objArr[2], categoryId ?? -1, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
+                    ret = new Income((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (long)categoryId, 
+                        (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
                     break;
                 case TitType.Transfer:
                     ret = new Transfer((long)objArr[0], (long)objArr[2], (long)objArr[3], date, (string)objArr[5], (long)objArr[6], (long)objArr[7] == 1);
+                    break;
+                case TitType.ParentTransaction:
+                    ret = new ParentTransaction((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (string)objArr[5], (long)objArr[7] == 1);
+                    break;
+                case TitType.ParentIncome:
+                    ret = new ParentIncome((long)objArr[0], (long)objArr[1], date, (long)objArr[2], (string)objArr[5], (long)objArr[7] == 1);
                     break;
                 default:
                     ret = new Transaction (DateTime.Today) { Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR" };
@@ -322,108 +358,41 @@ namespace BFF.DB.SQLite
             return ret;
         };
 
-        public SqLiteBffOrm()
+        public SqLiteBffOrm(string dbPath)
         {
-            DataModelBase.Database = this;
-            if(File.Exists(DbPath)) Reset();
-        }
-
-        public ObservableCollection<Account> AllAccounts { get; } = new ObservableCollection<Account>();
-        public ObservableCollection<Payee> AllPayees { get; } = new ObservableCollection<Payee>();
-        public ObservableCollection<Category> AllCategories { get; } = new ObservableCollection<Category>(); 
-
-        public void Reset()
-        {
-            Logger.Debug("Reset the database.");
+            _dbPath = dbPath;
             if (Cnn.State != ConnectionState.Closed)
                 Cnn.Close();
-            AllAccounts.Clear();
-            AllPayees.Clear();
-            AllCategories.Clear();
             if (File.Exists(DbPath))
             {
                 Cnn.ConnectionString = ConnectionString;
                 Cnn.Open();
-                InitializePeripherie();
-
-                Account.allAccounts?.RefreshStartingBalance(); //todo: Rather use the DbPathChanged event in AllAccounts
-                Account.allAccounts?.RefreshBalance();
             }
-            Account.allAccounts?.RefreshTits();
-            Account.allAccounts?.RefreshTits();
+
+            CommonPropertyProvider = new CommonPropertyProvider(this);
+
+            //Old
+            DataModelBase.Database = this;
         }
-
-        private void InitializePeripherie()
-        {
-            foreach (Account account in GetAll<Account>())
-                AllAccounts.Add(account);
-            foreach (Payee payee in GetAll<Payee>())
-                AllPayees.Add(payee);
-            Dictionary<long, Category> catagoryDictionary = new Dictionary<long, Category>();
-            IEnumerable<Category> categories = new List<Category>();
-            using (var cnnTransaction = new DbTransactions.TransactionScope())
-            {
-                //Catagories may reference itself, so a custom mapping is responsible for delaying referencing the Parent per dummy with the Parent-Id
-                //This is mandatory because the Parent may not be loaded first
-                categories = Cnn.Query($"SELECT * FROM [{nameof(Category)}s];",
-                    new[] { typeof(long), typeof(long?), typeof(string) },
-                    objArray =>
-                    {
-                        Category ret = new Category(objArray[1] == null ? null : new Category { Id = (long)objArray[1] } /*dummy*/, (string)objArray[2]) { Id = (long)objArray[0] };
-                        catagoryDictionary.Add(ret.Id, ret);
-                        return ret;
-                    }, splitOn: "*");
-                cnnTransaction.Complete();
-            }
-            //Now after every Category is loaded the Parent-Child relations are established
-            List<Category> parentCategories = new List<Category>();
-            foreach (Category category in categories)
-            {
-                if (category.ParentId != null)
-                {
-                    category.Parent = catagoryDictionary[(long)category.ParentId];
-                    category.Parent.Categories.Add(category);
-                }
-                else parentCategories.Add(category);
-            }
-            foreach (Category parentCategory in parentCategories)
-            {
-                AllCategories.Add(parentCategory);
-                FillCategoryWithDescandents(parentCategory, AllCategories);
-            }
-        }
-
-        private void FillCategoryWithDescandents(Category parentCategory, IList<Category> list)
-        {
-            foreach (Category childCategory in parentCategory.Categories)
-            {
-                list.Add(childCategory);
-                FillCategoryWithDescandents(childCategory, list);
-            }
-        }
-
-        public Account GetAccount(long id) => AllAccounts.FirstOrDefault(account => account.Id == id);
-        public Payee GetPayee(long id) => AllPayees.FirstOrDefault(payee => payee.Id == id);
-        public Category GetCategory(long id) => AllCategories.FirstOrDefault(category => category.Id == id);
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
         {
             Logger.Debug("Getting a page of entries from table {0} of page size {1} by offsett {2}.", typeof(T).Name, pageSize, offset);
-            _dbLockFlag = true;
+            DbLockFlag = true;
             IEnumerable<T> ret;
             using (var cnnTransaction = new DbTransactions.TransactionScope())
             {
                 if (typeof(T) != typeof(TitBase))
                 {
-                    string query = $"SELECT * FROM [{nameof(T)}s] LIMIT {offset}, {pageSize};";
+                    string query = $"SELECT * FROM [{typeof(T).Name}s] LIMIT {offset}, {pageSize};";
                     ret = Cnn.Query<T>(query);
                 }
                 else
                 {
                     string specifyingAddition = "";
                     Account account = specifyingObject as Account;
-                    if(account != null && !(account is AllAccounts))
-                        specifyingAddition = $"WHERE {nameof(TitNoTransfer.AccountId)} = {account.Id} OR {nameof(TitNoTransfer.AccountId)} = -69 AND ({nameof(TitNoTransfer.PayeeId)} = {account.Id} OR {nameof(TitNoTransfer.CategoryId)} = {account.Id})";
+                    if(account != null && !(account is SummaryAccount))
+                        specifyingAddition = $"WHERE {nameof(TransIncBase.AccountId)} = {account.Id} OR {nameof(TransIncBase.AccountId)} = -69 AND ({nameof(TransIncBase.PayeeId)} = {account.Id} OR {nameof(TransInc.CategoryId)} = {account.Id})";
                     string query = $"SELECT * FROM [{TheTitName}] {specifyingAddition} ORDER BY {nameof(TitBase.Date)} LIMIT {offset}, {pageSize};";
                     Type[] types =
                     {
@@ -434,7 +403,7 @@ namespace BFF.DB.SQLite
                 }
                 cnnTransaction.Complete();
             }
-            _dbLockFlag = false;
+            DbLockFlag = false;
             return ret;
         }
 
@@ -444,13 +413,13 @@ namespace BFF.DB.SQLite
             int ret;
             string query;
             if(typeof(T) != typeof(TitBase))
-                query = $"SELECT COUNT(*) FROM {nameof(T)};";
+                query = $"SELECT COUNT(*) FROM {typeof(T).Name};";
             else
             {
                 string specifyingAddition = "";
                 Account account = specifyingObject as Account;
-                if (account != null && !(account is AllAccounts))
-                    specifyingAddition = $"WHERE {nameof(TitNoTransfer.AccountId)} = {account.Id} OR {nameof(TitNoTransfer.AccountId)} = -69 AND ({nameof(TitNoTransfer.PayeeId)} = {account.Id} OR {nameof(TitNoTransfer.CategoryId)} = {account.Id})";
+                if (account != null && !(account is SummaryAccount))
+                    specifyingAddition = $"WHERE {nameof(TransIncBase.AccountId)} = {account.Id} OR {nameof(TransIncBase.AccountId)} = -69 AND ({nameof(TransIncBase.PayeeId)} = {account.Id} OR {nameof(TransInc.CategoryId)} = {account.Id})";
                 query = $"SELECT COUNT(*) FROM [{TheTitName}] {specifyingAddition};";
             }
 
