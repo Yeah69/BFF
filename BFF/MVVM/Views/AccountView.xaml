@@ -32,7 +32,8 @@
                                   NewTransferCommand="{Binding NewTransferCommand}"
                                   NewParentTransactionCommand="{Binding NewParentTransactionCommand}"
                                   NewParentIncomeCommand="{Binding NewParentIncomeCommand}"
-                                  ApplyCommand="{Binding ApplyCommand}"/>
+                                  ApplyCommand="{Binding ApplyCommand}"
+                           IsDateLong="{Binding IsDateFormatLong}"/>
         <!-- "Status bar" -->
         <StackPanel Grid.Row="1" 
                     Orientation="Horizontal">

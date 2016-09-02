@@ -188,6 +188,15 @@ namespace BFF.MVVM.Views
             set { SetValue(ShowRowDetailsModeProperty, value); }
         }
 
+        public static readonly DependencyProperty IsDateLongProperty = DependencyProperty.Register(
+            nameof(IsDateLong), typeof(bool), typeof(TitDataGrid), new PropertyMetadata(default(bool)));
+
+        public bool IsDateLong
+        {
+            get { return (bool) GetValue(IsDateLongProperty); }
+            set { SetValue(IsDateLongProperty, value); }
+        }
+
         #endregion
 
 

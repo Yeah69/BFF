@@ -28,6 +28,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public override long Id => SubTransInc.Id;
 
+        public long ParentId
+        {
+            get { return SubTransInc.ParentId; }
+            set { SubTransInc.ParentId = value; }
+        }
+
         /// <summary>
         /// Each SubTransaction or SubIncome can be budgeted to a category.
         /// </summary>
@@ -87,6 +93,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         {
             SubTransInc = subTransInc;
             Parent = parent;
+            SubTransInc.ParentId = Parent.Id;
         }
 
         /// <summary>
@@ -96,7 +103,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <returns>True if valid, else false</returns>
         internal override bool ValidToInsert()
         {
-            return Category != null && (Orm?.CommonPropertyProvider.Categories.Contains(Category) ?? false) && SubTransInc.ParentId != -1;
+            return Category != null && (Orm?.CommonPropertyProvider.Categories.Contains(Category) ?? false);
         }
 
         #region Category Editing
@@ -122,7 +129,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 newCategory.Parent = AddingCategoryParent;
                 AddingCategoryParent.Categories.Add(newCategory);
             }
-            Orm?.CommonPropertyProvider.Add(newCategory);
+            Orm?.CommonPropertyProvider?.Add(newCategory);
             OnPropertyChanged(nameof(AllCategories));
             Category = newCategory;
         }, obj =>
@@ -139,7 +146,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All currently available Categories.
         /// </summary>
-        public ObservableCollection<Category> AllCategories => Orm?.CommonPropertyProvider.Categories;
+        public ObservableCollection<Category> AllCategories => Orm?.CommonPropertyProvider?.Categories;
 
         #endregion
 

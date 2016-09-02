@@ -168,7 +168,7 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitBaseViewModel}">
                             <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"
-                                        SelectedDateFormat="{Binding DataContext.IsDateFormatLong, ElementName=TitsView, Converter={StaticResource BooleanToDatePickerFormatConverter}}" />
+                                        SelectedDateFormat="{Binding DataContext.IsDateLong, ElementName=LayoutRoot, Converter={StaticResource BooleanToDatePickerFormatConverter}}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
