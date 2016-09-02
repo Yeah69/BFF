@@ -2,10 +2,12 @@
 
 namespace BFF.MVVM.Models.Native
 {
+    public interface IPayee : ICommonProperty {}
+
     /// <summary>
     /// Someone to whom was payeed or who payeed himself
     /// </summary>
-    public class Payee : CommonProperty
+    public class Payee : CommonProperty, IPayee
     {
         /// <summary>
         /// Representing string

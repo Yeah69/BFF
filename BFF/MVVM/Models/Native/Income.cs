@@ -3,10 +3,12 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
+    public interface IIncome : ITransInc {}
+
     /// <summary>
     /// The Income documents earned money
     /// </summary>
-    public class Income : TransInc, ITransInc
+    public class Income : TransInc, IIncome
     {
         /// <summary>
         /// Initializes the object

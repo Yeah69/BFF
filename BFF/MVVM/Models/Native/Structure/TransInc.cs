@@ -2,7 +2,15 @@
 
 namespace BFF.MVVM.Models.Native.Structure
 {
-    public abstract class TransInc : TransIncBase, IHaveCategory
+    public interface ITransInc : ITransIncBase, IHaveCategory
+    {
+        /// <summary>
+        /// The amount of money, which was payeed or recieved
+        /// </summary>
+        long Sum { get; set; }
+    }
+
+    public abstract class TransInc : TransIncBase, ITransInc
     {
         private long _categoryId;
         private long _sum;

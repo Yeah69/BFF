@@ -3,10 +3,18 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
+    public interface IAccount : ICommonProperty
+    {
+        /// <summary>
+        /// Starting balance of the Account
+        /// </summary>
+        long StartingBalance { get; set; }
+    }
+
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class Account : CommonProperty
+    public class Account : CommonProperty, IAccount
     {
         private long _startingBalance;
 

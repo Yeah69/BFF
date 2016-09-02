@@ -4,10 +4,30 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.MVVM.Models.Native
 {
+    public interface ICategory : ICommonProperty
+    {
+        /// <summary>
+        /// The Child-Categories
+        /// </summary>
+        ObservableCollection<Category> Categories { get; set; }
+
+        /// <summary>
+        /// The Parent
+        /// </summary>
+        Category Parent { get; set; }
+
+        /// <summary>
+        /// Id of Parent
+        /// </summary>
+        long? ParentId { get; set; }
+
+        string FullName { get; }
+    }
+
     /// <summary>
     /// This CommonProperty is used to categorize Tits
     /// </summary>
-    public class Category : CommonProperty
+    public class Category : CommonProperty, ICategory
     {
         /// <summary>
         /// The Child-Categories

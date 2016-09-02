@@ -1,9 +1,22 @@
 ﻿namespace BFF.MVVM.Models.Native.Structure
 {
+    public interface ISubTransInc : ITitLike, IHaveCategory
+    {
+        /// <summary>
+        /// Id of the Parent
+        /// </summary>
+        long ParentId { get; set; }
+
+        /// <summary>
+        /// The amount of money, which was payeed or recieved
+        /// </summary>
+        long Sum { get; set; }
+    }
+
     /// <summary>
     /// Base class for all SubElement classes, which are used by TitNoTransfer classes
     /// </summary>
-    public abstract class SubTransInc : TitLike, IHaveCategory, ISubTransInc
+    public abstract class SubTransInc : TitLike, ISubTransInc
     {
         private long _parentId;
         private long _categoryId;

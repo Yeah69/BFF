@@ -2,10 +2,23 @@
 
 namespace BFF.MVVM.Models.Native.Structure
 {
+    public interface ITransIncBase : ITitBase
+    {
+        /// <summary>
+        /// Id of Account
+        /// </summary>
+        long AccountId { get; set; }
+
+        /// <summary>
+        /// Id of Payee
+        /// </summary>
+        long PayeeId { get; set; }
+    }
+
     /// <summary>
     /// Base of all Tit-classes except Transfer (TIT := Transaction Income Transfer)
     /// </summary>
-    public abstract class TransIncBase : TitBase
+    public abstract class TransIncBase : TitBase, ITransIncBase
     {
         private long _accountId;
         private long _payeeId;

@@ -3,10 +3,12 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
+    public interface IParentTransaction : IParentTransInc {}
+
     /// <summary>
     /// A Transaction, which is split into several SubTransactions
     /// </summary>
-    public class ParentTransaction : ParentTransInc
+    public class ParentTransaction : ParentTransInc, IParentTransaction
     {
         /// <summary>
         /// Initializes the object

@@ -3,7 +3,11 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    class Budget : CrudBase
+    internal interface IBudget : ICrudBase {
+        DateTime MonthYear { get; set; }
+    }
+
+    class Budget : CrudBase, IBudget
     {
         public DateTime MonthYear { get; set; }
 

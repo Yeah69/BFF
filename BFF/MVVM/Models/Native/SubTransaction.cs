@@ -2,10 +2,12 @@
 
 namespace BFF.MVVM.Models.Native
 {
+    public interface ISubTransaction : ISubTransInc {}
+
     /// <summary>
     /// A SubElement of a Transaction
     /// </summary>
-    public class SubTransaction : SubTransInc
+    public class SubTransaction : SubTransInc, ISubTransaction
     {
         /// <summary>
         /// Initializes the object

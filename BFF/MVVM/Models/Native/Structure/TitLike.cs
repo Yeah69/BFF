@@ -1,9 +1,17 @@
 ﻿namespace BFF.MVVM.Models.Native.Structure
 {
+    public interface ITitLike : IDataModelBase
+    {
+        /// <summary>
+        /// A note to hint on the reasons of creating this Tit
+        /// </summary>
+        string Memo { get; set; }
+    }
+
     /// <summary>
     /// Base class for all classes which can be shown in the TitDataGrid (TIT := Transaction Income Transfer)
     /// </summary>
-    public abstract class TitLike : DataModelBase
+    public abstract class TitLike : DataModelBase, ITitLike
     {
         private string _memo;
 

@@ -2,7 +2,10 @@
 
 namespace BFF.MVVM.Models.Native.Structure
 {
-    public abstract class ParentTransInc : TransIncBase
+    public interface IParentTransInc : ITransIncBase
+    { }
+
+    public abstract class ParentTransInc : TransIncBase, IParentTransInc
     {
         /// <summary>
         /// Initializes the object

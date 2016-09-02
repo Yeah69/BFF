@@ -3,10 +3,18 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
+    public interface IDataModelBase
+    {
+        /// <summary>
+        /// Identification number for the database
+        /// </summary>
+        long Id { get; set; }
+    }
+
     /// <summary>
     /// Base class for all model classes, which get OR-mapped
     /// </summary>
-    public abstract class DataModelBase : ObservableObject
+    public abstract class DataModelBase : ObservableObject, IDataModelBase
     {
         protected bool ConstrDbLock;
 

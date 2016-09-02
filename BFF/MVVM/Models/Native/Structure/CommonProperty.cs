@@ -1,9 +1,16 @@
 ﻿namespace BFF.MVVM.Models.Native.Structure
 {
+    public interface ICommonProperty : ICrudBase {
+        /// <summary>
+        /// Name of the CommonProperty
+        /// </summary>
+        string Name { get; set; }
+    }
+
     /// <summary>
     /// CommonProperties are classes, whose instances are shared among other model classes
     /// </summary>
-    public abstract class CommonProperty : CrudBase
+    public abstract class CommonProperty : CrudBase, ICommonProperty
     {
         private string _name;
 

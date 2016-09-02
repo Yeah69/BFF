@@ -3,10 +3,27 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
+    public interface ITransfer : ITitBase {
+        /// <summary>
+        /// Id of FromAccount
+        /// </summary>
+        long FromAccountId { get; set; }
+
+        /// <summary>
+        /// Id of ToAccount
+        /// </summary>
+        long ToAccountId { get; set; }
+
+        /// <summary>
+        /// The amount of money, which was payeed or recieved
+        /// </summary>
+        long Sum { get; set; }
+    }
+
     /// <summary>
     /// A Transfer is basically a Transaction from one owned Account to another owned Account
     /// </summary>
-    public class Transfer : TitBase
+    public class Transfer : TitBase, ITransfer
     {
         private long _fromAccountId;
         private long _toAccountId;

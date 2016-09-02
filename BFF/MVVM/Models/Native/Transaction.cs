@@ -3,10 +3,12 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
+    public interface ITransaction : ITransInc {}
+
     /// <summary>
     /// The Transaction documents payment to or from externals
     /// </summary>
-    public class Transaction : TransInc, ITransInc
+    public class Transaction : TransInc, ITransaction
     {
         /// <summary>
         /// Initializes the object

@@ -2,10 +2,12 @@
 
 namespace BFF.MVVM.Models.Native
 {
+    public interface ISubIncome : ISubTransInc {}
+
     /// <summary>
     /// A SubElement of an Income
     /// </summary>
-    public class SubIncome : SubTransInc
+    public class SubIncome : SubTransInc, ISubIncome
     {
         /// <summary>
         /// Initializes the object

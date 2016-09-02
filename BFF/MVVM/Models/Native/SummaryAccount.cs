@@ -1,9 +1,11 @@
 ﻿namespace BFF.MVVM.Models.Native
 {
+    public interface ISummaryAccount : IAccount {}
+
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class SummaryAccount : Account
+    public class SummaryAccount : Account, ISummaryAccount
     {
         
         /// <summary>
@@ -13,7 +15,7 @@
         {
             ConstrDbLock = true;
 
-            Name = "All Accounts";
+            Name = "All Accounts"; //todo Localize! Maybe then override the Name property
 
             ConstrDbLock = false;
         }

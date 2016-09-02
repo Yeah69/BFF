@@ -158,9 +158,6 @@
     <Compile Include="MVVM\Models\Native\Category.cs" />
     <Compile Include="MVVM\Models\Native\Budget.cs" />
     <Compile Include="MVVM\Models\Native\DbSetting.cs" />
-    <Compile Include="MVVM\Models\Native\IBasicTit.cs" />
-    <Compile Include="MVVM\Models\Native\ISubTransInc.cs" />
-    <Compile Include="MVVM\Models\Native\ITransInc.cs" />
     <Compile Include="MVVM\Models\Native\ParentIncome.cs" />
     <Compile Include="MVVM\Models\Native\Payee.cs" />
     <Compile Include="MVVM\Models\Native\Structure\CommonProperty.cs" />

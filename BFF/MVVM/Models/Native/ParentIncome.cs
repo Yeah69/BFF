@@ -3,10 +3,12 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
+    public interface IParentIncome : IParentTransInc {}
+
     /// <summary>
     /// An Income, which is split into several SubIncomes
     /// </summary>
-    public class ParentIncome : ParentTransInc
+    public class ParentIncome : ParentTransInc, IParentIncome
     {
         /// <summary>
         /// Initializes the object

@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BFF.MVVM.Models.Native.Structure
+﻿namespace BFF.MVVM.Models.Native.Structure
 {
-    public abstract class CrudBase : DataModelBase
+    public interface ICrudBase : IDataModelBase {
+        bool ValidToInsert();
+
+        /// <summary>
+        /// Inserts this object to the database
+        /// </summary>
+        void Insert();
+
+        /// <summary>
+        /// Deletes this object from the database
+        /// </summary>
+        void Delete();
+    }
+
+    public abstract class CrudBase : DataModelBase, ICrudBase
     {
 
         protected abstract void InsertToDb();
