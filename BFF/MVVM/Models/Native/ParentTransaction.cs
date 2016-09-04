@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
@@ -49,6 +50,11 @@ namespace BFF.MVVM.Models.Native
         public override void Delete(IBffOrm orm)
         {
             orm?.Delete(this);
+        }
+
+        public override IEnumerable<ISubTransInc> GetSubTransInc(IBffOrm orm)
+        {
+            return orm?.GetSubTransInc<SubTransaction>(Id);
         }
 
         #endregion

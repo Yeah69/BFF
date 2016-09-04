@@ -1,5 +1,6 @@
 ﻿using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
@@ -7,7 +8,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model ParentTransaction.
     /// </summary>
-    class ParentTransactionViewModel : ParentTransIncViewModel<SubTransaction>
+    class ParentTransactionViewModel : ParentTransIncViewModel
     {
         /// <summary>
         /// Initializes a ParentTransactionViewModel.
@@ -23,16 +24,16 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="subElement">The SubElement, which gets a ViewModel.</param>
         /// <returns>A new ViewModel for a SubElement.</returns>
-        protected override SubTransIncViewModel<SubTransaction> CreateNewSubViewModel(SubTransaction subElement)
+        protected override SubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement)
         {
-            return new SubTransactionViewModel(subElement, this, Orm);
+            return new SubTransactionViewModel(subElement as ISubTransaction, this, Orm);
         }
 
         /// <summary>
         /// Provides a new SubElement.
         /// </summary>
         /// <returns>A new SubElement.</returns>
-        public override SubTransaction CreateNewSubElement()
+        public override ISubTransInc CreateNewSubElement()
         {
             return new SubTransaction();
         }

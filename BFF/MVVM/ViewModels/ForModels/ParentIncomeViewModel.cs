@@ -1,5 +1,6 @@
 ﻿using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
@@ -7,7 +8,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model ParentIncome.
     /// </summary>
-    class ParentIncomeViewModel : ParentTransIncViewModel<SubIncome>
+    class ParentIncomeViewModel : ParentTransIncViewModel
     {
         /// <summary>
         /// Initializes a ParentIncomeViewModel.
@@ -23,16 +24,16 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="subElement">The SubElement, which gets a ViewModel.</param>
         /// <returns>A new ViewModel for a SubElement.</returns>
-        protected override SubTransIncViewModel<SubIncome> CreateNewSubViewModel(SubIncome subElement)
+        protected override SubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement)
         {
-            return new SubIncomeViewModel(subElement, this, Orm);
+            return new SubIncomeViewModel(subElement as ISubIncome, this, Orm);
         }
 
         /// <summary>
         /// Provides a new SubElement.
         /// </summary>
         /// <returns>A new SubElement.</returns>
-        public override SubIncome CreateNewSubElement()
+        public override ISubTransInc CreateNewSubElement()
         {
             return new SubIncome();
         }

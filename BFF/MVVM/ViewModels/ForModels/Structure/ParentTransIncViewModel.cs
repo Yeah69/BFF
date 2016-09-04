@@ -13,7 +13,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// Base class for ViewModels of the Models ParentTransaction and ParentIncome
     /// </summary>
     /// <typeparam name="T">Type of the SubElement. Can be a SubTransaction or a SubIncome.</typeparam>
-    public abstract class ParentTransIncViewModel<T> : TransIncBaseViewModel where T : ISubTransInc
+    public abstract class ParentTransIncViewModel : TransIncBaseViewModel
     {
         /// <summary>
         /// Model of ParentTransaction or ParentIncome. Mostly they both act almost the same. Differences are handled in their concrete classes.
@@ -131,20 +131,20 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             }
         }
 
-        private ObservableCollection<SubTransIncViewModel<T>> _subElements; 
+        private ObservableCollection<SubTransIncViewModel> _subElements; 
 
         /// <summary>
         /// The SubElements of this ParentElement, which are inserted into the database already.
         /// </summary>
-        public ObservableCollection<SubTransIncViewModel<T>> SubElements
+        public ObservableCollection<SubTransIncViewModel> SubElements
         {
             get
             {
                 if (_subElements == null)
                 {
-                    IEnumerable<T> subs = Orm?.GetSubTransInc<T>(ParentTransInc.Id) ?? new List<T>();
-                    _subElements = new ObservableCollection<SubTransIncViewModel<T>>();
-                    foreach(T sub in subs)
+                    IEnumerable<ISubTransInc> subs = ParentTransInc.GetSubTransInc(Orm) ?? new List<ISubTransInc>();
+                    _subElements = new ObservableCollection<SubTransIncViewModel>();
+                    foreach(ISubTransInc sub in subs)
                     {
                         _subElements.Add(CreateNewSubViewModel(sub));
                     }
@@ -162,15 +162,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="subElement">The SubElement, which gets a ViewModel.</param>
         /// <returns>A new ViewModel for a SubElement.</returns>
-        protected abstract SubTransIncViewModel<T> CreateNewSubViewModel(T subElement);
+        protected abstract SubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement);
 
-        private readonly ObservableCollection<SubTransIncViewModel<T>> _newSubElements = new ObservableCollection<SubTransIncViewModel<T>>();
+        private readonly ObservableCollection<SubTransIncViewModel> _newSubElements = new ObservableCollection<SubTransIncViewModel>();
 
         /// <summary>
         /// The SubElements of this ParentElement, which are not inserted into the database yet.
         /// These SubElements are in the process of being created and inserted to the database.
         /// </summary>
-        public ObservableCollection<SubTransIncViewModel<T>> NewSubElements
+        public ObservableCollection<SubTransIncViewModel> NewSubElements
         {
             get { return _newSubElements; }
             set
@@ -192,11 +192,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 switch(args.PropertyName)
                 {
                     case nameof(ParentTransInc.Id):
-                        foreach(SubTransIncViewModel<T> subTransIncViewModel in SubElements)
+                        foreach(SubTransIncViewModel subTransIncViewModel in SubElements)
                         {
                             subTransIncViewModel.ParentId = ParentTransInc.Id;
                         }
-                        foreach(SubTransIncViewModel<T> subTransIncViewModel in NewSubElements)
+                        foreach(SubTransIncViewModel subTransIncViewModel in NewSubElements)
                         {
                             subTransIncViewModel.ParentId = ParentTransInc.Id;
                         }
@@ -221,7 +221,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Removes the given SubElement and refreshes the sum.
         /// </summary>
         /// <param name="toRemove"></param>
-        public void RemoveSubElement(SubTransIncViewModel<T> toRemove)
+        public void RemoveSubElement(SubTransIncViewModel toRemove)
         {
             if (SubElements.Contains(toRemove))
                 SubElements.Remove(toRemove);
@@ -233,7 +233,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
-            foreach (SubTransIncViewModel<T> subTransaction in SubElements)
+            foreach (SubTransIncViewModel subTransaction in SubElements)
                 subTransaction.Delete();
             SubElements.Clear();
             NewSubElements.Clear();
@@ -249,14 +249,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// The concrete Parent class should provide a new SubElement.
         /// </summary>
         /// <returns>A new SubElement.</returns>
-        public abstract T CreateNewSubElement();
+        public abstract ISubTransInc CreateNewSubElement();
         
         /// <summary>
         /// All new SubElement, which are not inserted into the database yet, will be flushed to the database with this command.
         /// </summary>
         public ICommand ApplyCommand => new RelayCommand(obj =>
         {
-            foreach (SubTransIncViewModel<T> subTransaction in _newSubElements)
+            foreach (SubTransIncViewModel subTransaction in _newSubElements)
             {
                 if (Id > 0L)
                     subTransaction.Insert();

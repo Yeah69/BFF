@@ -7,7 +7,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model SubTransaction.
     /// </summary>
-    class SubTransactionViewModel : SubTransIncViewModel<SubTransaction>
+    class SubTransactionViewModel : SubTransIncViewModel
     {
         /// <summary>
         /// Initializes a SubTransactionViewModel.
@@ -15,7 +15,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <param name="subTransInc">A SubTransaction Model.</param>
         /// <param name="parent">The ViewModel of the Model's ParentTransaction.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public SubTransactionViewModel(SubTransaction subTransInc, ParentTransIncViewModel<SubTransaction> parent, IBffOrm orm) :
+        public SubTransactionViewModel(ISubTransaction subTransInc, ParentTransIncViewModel parent, IBffOrm orm) :
                                            base(subTransInc, parent, orm) { }
     }
 }
