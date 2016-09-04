@@ -1,5 +1,4 @@
-﻿using System;
-using BFF.DB;
+﻿using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -27,6 +26,7 @@ namespace BFF.MVVM.Models.Native
             get { return _startingBalance; }
             set
             {
+                if(_startingBalance == value) return;
                 _startingBalance = value;
                 OnPropertyChanged();
             }

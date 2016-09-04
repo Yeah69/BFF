@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
 using Moq;
-using NLog;
 using Xunit;
 
 namespace BFF.Tests.MVVM.ViewModels.ForModels

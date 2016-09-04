@@ -74,6 +74,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="MVVM\Models\Native\AccountTests.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TransactionViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -86,6 +87,7 @@
       <Name>BFF</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

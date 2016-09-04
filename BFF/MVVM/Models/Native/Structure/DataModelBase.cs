@@ -45,6 +45,7 @@ namespace BFF.MVVM.Models.Native.Structure
             get { return _id; }
             set
             {
+                if (_id == value) return;
                 _id = value;
                 OnPropertyChanged();
             }
