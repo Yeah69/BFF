@@ -1,4 +1,6 @@
-﻿namespace BFF.MVVM.Models.Native
+﻿using BFF.DB;
+
+namespace BFF.MVVM.Models.Native
 {
     public interface ISummaryAccount : IAccount {}
 
@@ -13,28 +15,17 @@
         /// </summary>
         public SummaryAccount()
         {
-            ConstrDbLock = true;
-
             Name = "All Accounts"; //todo Localize! Maybe then override the Name property
-
-            ConstrDbLock = false;
         }
 
-        protected override void InsertToDb()
-        {
-        }
+        #region Overrides of ExteriorCrudBase
 
-        protected override void UpdateToDb()
-        {
-        }
+        public override void Insert(IBffOrm orm) {}
 
-        protected override void DeleteFromDb()
-        {
-        }
+        public override void Update(IBffOrm orm) {}
 
-        public override bool ValidToInsert()
-        {
-            return false;
-        }
+        public override void Delete(IBffOrm orm){}
+
+        #endregion
     }
 }

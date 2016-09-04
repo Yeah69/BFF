@@ -1,6 +1,7 @@
 ﻿namespace BFF.MVVM.Models.Native.Structure
 {
-    public interface ICommonProperty : ICrudBase {
+    public interface ICommonProperty : IDataModelBase
+    {
         /// <summary>
         /// Name of the CommonProperty
         /// </summary>
@@ -10,7 +11,7 @@
     /// <summary>
     /// CommonProperties are classes, whose instances are shared among other model classes
     /// </summary>
-    public abstract class CommonProperty : CrudBase, ICommonProperty
+    public abstract class CommonProperty : DataModelBase, ICommonProperty
     {
         private string _name;
 
@@ -23,23 +24,13 @@
             set
             {
                 _name = value; 
-                if(Id != -1) Update();
                 OnPropertyChanged();
             }
         }
 
         protected CommonProperty(string name = null)
         {
-            ConstrDbLock = true;
-
             _name = name;
-
-            ConstrDbLock = false;
-        }
-
-        public override bool ValidToInsert()
-        {
-            return !string.IsNullOrEmpty(Name);
         }
     }
 }

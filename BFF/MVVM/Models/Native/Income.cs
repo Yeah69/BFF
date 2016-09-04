@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -24,11 +25,7 @@ namespace BFF.MVVM.Models.Native
             ICategory category = null, string memo = null, long sum = 0L, bool? cleared = null)
             : base(date, account, payee, category, memo, sum, cleared)
         {
-            ConstrDbLock = true;
-
             Date = date;
-
-            ConstrDbLock = false;
         }
 
         /// <summary>
@@ -44,11 +41,25 @@ namespace BFF.MVVM.Models.Native
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public Income(long id, long accountId, DateTime date, long payeeId, long categoryId, string memo,
             long sum, bool cleared)
-            : base(id, accountId, date, payeeId, categoryId, memo, sum, cleared)
-        {
-            ConstrDbLock = true;
+            : base(id, accountId, date, payeeId, categoryId, memo, sum, cleared) {}
 
-            ConstrDbLock = false;
+        #region Overrides of ExteriorCrudBase
+
+        public override void Insert(IBffOrm orm)
+        {
+            orm?.Insert(this);
         }
+
+        public override void Update(IBffOrm orm)
+        {
+            orm?.Update(this);
+        }
+
+        public override void Delete(IBffOrm orm)
+        {
+            orm?.Delete(this);
+        }
+
+        #endregion
     }
 }

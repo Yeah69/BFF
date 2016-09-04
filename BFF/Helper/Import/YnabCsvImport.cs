@@ -91,9 +91,7 @@ namespace BFF.Helper.Import
             ClearAccountCache(); 
             ClearPayeeCache();
             ClearCategoryCache();
-
-            DataModelBase.Database = null; //switches off OR mapping //todo: Check if still needed. If not remove else refactor so it is not needed anymore and remove
-
+            
             //First step: Parse CSV data into conversion objects
             Queue<Transaction> ynabTransactions = new Queue<Transaction>(ParseTransactionCsv(filePathTransaction));
             //List<BudgetEntry> budgets = ParseBudgetCsv(filePathBudget);
@@ -134,7 +132,6 @@ namespace BFF.Helper.Import
             //Third step: Create new database for imported data
             SqLiteBffOrm.CreateNewDatabase(savePath);
             SqLiteBffOrm orm = new SqLiteBffOrm(savePath);
-            DataModelBase.Database = orm; //turn on OR mapping //todo: Check if still needed. If not remove else refactor so it is not needed anymore and remove
             orm.PopulateDatabase(lists, assignments);
         }
 

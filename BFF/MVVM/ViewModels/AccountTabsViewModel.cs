@@ -90,10 +90,10 @@ namespace BFF.MVVM.ViewModels
         protected override void SaveCultures()
         {
             Settings.Default.Save();
-            DbSetting dbSetting = _orm.Get<DbSetting>(1);
+            IDbSetting dbSetting = _orm.Get<DbSetting>(1);
             dbSetting.CurrencyCulture = Settings.Default.Culture_SessionCurrency;
             dbSetting.DateCulture = Settings.Default.Culture_SessionDate;
-            _orm.Update(dbSetting);
+            dbSetting.Update(_orm);
         }
 
         #endregion

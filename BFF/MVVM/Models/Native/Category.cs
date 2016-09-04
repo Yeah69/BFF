@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper.Contrib.Extensions;
 
@@ -75,11 +76,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="name">Name of the Category</param>
         public Category(ICategory parent = null, string name = null) : base(name)
         {
-            ConstrDbLock = true;
-
             _parent = parent ?? _parent;
-
-            ConstrDbLock = false;
         }
 
         /// <summary>
@@ -90,12 +87,8 @@ namespace BFF.MVVM.Models.Native
         /// <param name="name">Name of the Category</param>
         public Category(long id, long parentId, string name) : base(name)
         {
-            ConstrDbLock = true;
-
             Id = id;
             ParentId = parentId;
-
-            ConstrDbLock = false;
         }
 
         /// <summary>
@@ -112,19 +105,23 @@ namespace BFF.MVVM.Models.Native
             return $"{((Category)Parent)?.GetIndent()}. "; //todo: When there is a CategoryVM transfer this there
         }
 
-        protected override void InsertToDb()
+        #region Overrides of ExteriorCrudBase
+
+        public override void Insert(IBffOrm orm)
         {
-            Database?.CommonPropertyProvider.Add(this);
+            orm?.Insert(this);
         }
 
-        protected override void UpdateToDb()
+        public override void Update(IBffOrm orm)
         {
-            Database?.Update(this);
+            orm?.Update(this);
         }
 
-        protected override void DeleteFromDb()
+        public override void Delete(IBffOrm orm)
         {
-            Database?.CommonPropertyProvider.Remove(this);
+            orm?.Delete(this);
         }
+
+        #endregion
     }
 }

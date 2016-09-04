@@ -1,10 +1,11 @@
 ﻿using System.Globalization;
+using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper.Contrib.Extensions;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface IDbSetting : ICrudBase
+    public interface IDbSetting : IDataModelBase
     {
         string CurrencyCultrureName { get; set; }
         CultureInfo CurrencyCulture { get; set; }
@@ -12,7 +13,7 @@ namespace BFF.MVVM.Models.Native
         CultureInfo DateCulture { get; set; }
     }
 
-    public class DbSetting : CrudBase, IDbSetting
+    public class DbSetting : DataModelBase, IDbSetting
     {
         public string CurrencyCultrureName { get; set; }
 
@@ -26,7 +27,6 @@ namespace BFF.MVVM.Models.Native
             set
             {
                 CurrencyCultrureName = value.Name;
-                if(Id != -1) Update();
             }
         }
 
@@ -42,28 +42,26 @@ namespace BFF.MVVM.Models.Native
             set
             {
                 DateCultureName = value.Name;
-                if(Id != -1) Update();
             }
         }
-        
-        protected override void InsertToDb()
+
+        #region Overrides of ExteriorCrudBase
+
+        public override void Insert(IBffOrm orm)
         {
-            Database?.Insert(this);
+            orm?.Insert(this);
         }
 
-        public override bool ValidToInsert()
+        public override void Update(IBffOrm orm)
         {
-            return true;
+            orm?.Update(this);
         }
 
-        protected override void UpdateToDb()
+        public override void Delete(IBffOrm orm)
         {
-            Database?.Update(this);
+            orm?.Delete(this);
         }
 
-        protected override void DeleteFromDb()
-        {
-            Database?.Delete(this);
-        }
+        #endregion
     }
 }

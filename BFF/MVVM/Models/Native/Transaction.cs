@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -41,5 +42,24 @@ namespace BFF.MVVM.Models.Native
             : base(id, accountId, date, payeeId, categoryId, memo, sum, cleared)
         {
         }
+
+        #region Overrides of ExteriorCrudBase
+
+        public override void Insert(IBffOrm orm)
+        {
+            orm?.Insert(this);
+        }
+
+        public override void Update(IBffOrm orm)
+        {
+            orm?.Update(this);
+        }
+
+        public override void Delete(IBffOrm orm)
+        {
+            orm?.Delete(this);
+        }
+
+        #endregion
     }
 }

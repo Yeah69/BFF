@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -52,21 +53,21 @@ namespace BFF.MVVM.Models.Native
             _startingBalance = startingBalance;
         }
 
-        #region Overrides of DataModelBase
+        #region Overrides of ExteriorCrudBase
 
-        protected override void InsertToDb()
+        public override void Insert(IBffOrm orm)
         {
-            throw new NotImplementedException();
+            orm?.Insert(this);
         }
 
-        protected override void UpdateToDb()
+        public override void Update(IBffOrm orm)
         {
-            throw new NotImplementedException();
+            orm?.Update(this);
         }
 
-        protected override void DeleteFromDb()
+        public override void Delete(IBffOrm orm)
         {
-            throw new NotImplementedException();
+            orm?.Delete(this);
         }
 
         #endregion

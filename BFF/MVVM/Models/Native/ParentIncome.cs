@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -31,6 +32,25 @@ namespace BFF.MVVM.Models.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public ParentIncome(long id, long accountId, DateTime date, long payeeId, string memo, bool cleared)
-            : base(id, accountId, date, payeeId, memo, cleared) {}
+            : base(id, accountId, date, payeeId, memo, cleared) { }
+
+        #region Overrides of ExteriorCrudBase
+
+        public override void Insert(IBffOrm orm)
+        {
+            orm?.Insert(this);
+        }
+
+        public override void Update(IBffOrm orm)
+        {
+            orm?.Update(this);
+        }
+
+        public override void Delete(IBffOrm orm)
+        {
+            orm?.Delete(this);
+        }
+
+        #endregion
     }
 }

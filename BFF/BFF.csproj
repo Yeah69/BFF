@@ -161,7 +161,6 @@
     <Compile Include="MVVM\Models\Native\ParentIncome.cs" />
     <Compile Include="MVVM\Models\Native\Payee.cs" />
     <Compile Include="MVVM\Models\Native\Structure\CommonProperty.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\CrudBase.cs" />
     <Compile Include="MVVM\Models\Native\Structure\DataModelBase.cs" />
     <Compile Include="MVVM\Models\Native\Structure\TitLike.cs" />
     <Compile Include="MVVM\Models\Native\Structure\SubTransInc.cs" />

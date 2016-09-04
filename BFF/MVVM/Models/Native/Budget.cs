@@ -1,35 +1,37 @@
 ﻿using System;
+using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    internal interface IBudget : ICrudBase {
+    internal interface IBudget : IDataModelBase
+    {
         DateTime MonthYear { get; set; }
     }
 
-    class Budget : CrudBase, IBudget
+    class Budget : DataModelBase, IBudget
     {
         public DateTime MonthYear { get; set; }
 
         //Todo: budget relevant properties
-        protected override void InsertToDb()
+
+        #region Overrides of ExteriorCrudBase
+
+        public override void Insert(IBffOrm orm)
         {
-            Database?.Insert(this);
+            orm?.Insert(this);
         }
 
-        protected override void UpdateToDb()
+        public override void Update(IBffOrm orm)
         {
-            Database?.Update(this);
+            orm?.Update(this);
         }
 
-        protected override void DeleteFromDb()
+        public override void Delete(IBffOrm orm)
         {
-            Database?.Delete(this);
+            orm?.Delete(this);
         }
 
-        public override bool ValidToInsert()
-        {
-            return false; //... , because Budgets are not a feature, yet. todo: Update this when the time comes
-        }
+        #endregion
     }
 }

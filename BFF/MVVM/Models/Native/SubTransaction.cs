@@ -1,4 +1,5 @@
-﻿using BFF.MVVM.Models.Native.Structure;
+﻿using BFF.DB;
+using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
@@ -27,6 +28,25 @@ namespace BFF.MVVM.Models.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The Sum of the SubElement</param>
         public SubTransaction(long id, long parentId, long categoryId, string memo, long sum)
-            : base(id, parentId, categoryId, sum, memo) {}
+            : base(id, parentId, categoryId, sum, memo) { }
+
+        #region Overrides of ExteriorCrudBase
+
+        public override void Insert(IBffOrm orm)
+        {
+            orm?.Insert(this);
+        }
+
+        public override void Update(IBffOrm orm)
+        {
+            orm?.Update(this);
+        }
+
+        public override void Delete(IBffOrm orm)
+        {
+            orm?.Delete(this);
+        }
+
+        #endregion
     }
 }

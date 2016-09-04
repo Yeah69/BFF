@@ -370,9 +370,6 @@ namespace BFF.DB.SQLite
             }
 
             CommonPropertyProvider = new CommonPropertyProvider(this);
-
-            //Old
-            DataModelBase.Database = this; //todo: Check if still needed. If not remove else refactor so it is not needed anymore and remove
         }
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options

@@ -1,4 +1,5 @@
-﻿using BFF.MVVM.Models.Native.Structure;
+﻿using BFF.DB;
+using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
@@ -25,26 +26,26 @@ namespace BFF.MVVM.Models.Native
         /// <param name="name">Name of the Payee</param>
         public Payee(long id = -1L, string name = null) : base(name)
         {
-            ConstrDbLock = true;
-
             if (id > 0L) Id = id;
-
-            ConstrDbLock = false;
         }
 
-        protected override void InsertToDb()
+        #region Overrides of ExteriorCrudBase
+
+        public override void Insert(IBffOrm orm)
         {
-            Database?.CommonPropertyProvider.Add(this);
+            orm?.Insert(this);
         }
 
-        protected override void UpdateToDb()
+        public override void Update(IBffOrm orm)
         {
-            Database?.Update(this);
+            orm?.Update(this);
         }
 
-        protected override void DeleteFromDb()
+        public override void Delete(IBffOrm orm)
         {
-            Database?.CommonPropertyProvider.Remove(this);
+            orm?.Delete(this);
         }
+
+        #endregion
     }
 }

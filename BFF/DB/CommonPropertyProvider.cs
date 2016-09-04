@@ -56,19 +56,19 @@ namespace BFF.DB
 
         public void Add(IAccount account)
         {
-            _orm.Insert(account);
+            account.Insert(_orm);
             Accounts.Add(account);
         }
 
         public void Add(IPayee payee)
         {
-            _orm.Insert(payee);
+            payee.Insert(_orm);
             Payees.Add(payee);
         }
 
         public void Add(ICategory category)
         {
-            _orm.Insert(category);
+            category.Insert(_orm);
             if (category.Parent == null) //if new category has no parents then append at the end of the list
                 Categories.Add(category);
             else //if new category has parent then append as its last child
@@ -82,19 +82,19 @@ namespace BFF.DB
 
         public void Remove(IAccount account)
         {
-            _orm.Delete(account);
+            account.Delete(_orm);
             Accounts.Remove(account);
         }
 
         public void Remove(IPayee payee)
         {
-            _orm.Delete(payee);
+            payee.Delete(_orm);
             Payees.Remove(payee);
         }
 
         public void Remove(ICategory category)
         {
-            _orm.Delete(category);
+            category.Delete(_orm);
             Categories.Remove(category);
         }
 

@@ -196,7 +196,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void InsertToDb()
         {
-            Orm?.Insert(Transfer);
+            Transfer.Insert(Orm);
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void UpdateToDb()
         {
-            Orm?.Update(Transfer);
+            Transfer.Update(Orm);
             Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
             Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
             Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
@@ -219,7 +219,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void DeleteFromDb()
         {
-            Orm?.Delete(Transfer);
+            Transfer.Delete(Orm);
         }
 
         /// <summary>

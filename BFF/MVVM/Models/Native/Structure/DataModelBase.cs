@@ -9,6 +9,24 @@ namespace BFF.MVVM.Models.Native.Structure
         /// Identification number for the database
         /// </summary>
         long Id { get; set; }
+
+        /// <summary>
+        /// The model inserts itself to a database provided by given ORM.
+        /// </summary>
+        /// <param name="orm">Given ORM.</param>
+        void Insert(IBffOrm orm);
+
+        /// <summary>
+        /// The model updates itself in a database provided by given ORM.
+        /// </summary>
+        /// <param name="orm">Given ORM.</param>
+        void Update(IBffOrm orm);
+
+        /// <summary>
+        /// The model removes itself from a database provided by given ORM.
+        /// </summary>
+        /// <param name="orm">Given ORM.</param>
+        void Delete(IBffOrm orm);
     }
 
     /// <summary>
@@ -16,8 +34,6 @@ namespace BFF.MVVM.Models.Native.Structure
     /// </summary>
     public abstract class DataModelBase : ObservableObject, IDataModelBase
     {
-        protected bool ConstrDbLock;
-
         private long _id = -1L;
 
         /// <summary>
@@ -35,22 +51,30 @@ namespace BFF.MVVM.Models.Native.Structure
         }
 
         /// <summary>
-        /// Reference to current ORM class
-        /// </summary>
-        [Write(false)]
-        public static IBffOrm Database { get; set; }
-
-        /// <summary>
         /// Initializes the object
         /// </summary>
         /// <param name="id">Identification number for the database</param>
         protected DataModelBase(long id = -1L)
         {
-            ConstrDbLock = true;
-
             if (Id == -1L || id > 0L) Id = id;
-
-            ConstrDbLock = false;
         }
+
+        /// <summary>
+        /// The model inserts itself to a database provided by given ORM.
+        /// </summary>
+        /// <param name="orm">Given ORM.</param>
+        public abstract void Insert(IBffOrm orm);
+
+        /// <summary>
+        /// The model updates itself in a database provided by given ORM.
+        /// </summary>
+        /// <param name="orm">Given ORM.</param>
+        public abstract void Update(IBffOrm orm);
+
+        /// <summary>
+        /// The model removes itself from a database provided by given ORM.
+        /// </summary>
+        /// <param name="orm">Given ORM.</param>
+        public abstract void Delete(IBffOrm orm);
     }
 }

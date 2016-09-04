@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -104,5 +105,24 @@ namespace BFF.MVVM.Models.Native
             _toAccountId = toAccountId;
             _sum = sum;
         }
+
+        #region Overrides of ExteriorCrudBase
+
+        public override void Insert(IBffOrm orm)
+        {
+            orm?.Insert(this);
+        }
+
+        public override void Update(IBffOrm orm)
+        {
+            orm?.Update(this);
+        }
+
+        public override void Delete(IBffOrm orm)
+        {
+            orm?.Delete(this);
+        }
+
+        #endregion
     }
 }
