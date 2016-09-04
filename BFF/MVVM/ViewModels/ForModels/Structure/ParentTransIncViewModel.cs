@@ -9,11 +9,49 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
+    public interface IParentTransIncViewModel : ITransIncBaseViewModel {
+        /// <summary>
+        /// Removes the given SubElement and refreshes the sum.
+        /// </summary>
+        /// <param name="toRemove"></param>
+        void RemoveSubElement(ISubTransIncViewModel toRemove);
+
+        /// <summary>
+        /// Creates a new SubElement for this ParentElement.
+        /// </summary>
+        ICommand NewSubElementCommand { get; }
+
+        /// <summary>
+        /// All new SubElement, which are not inserted into the database yet, will be flushed to the database with this command.
+        /// </summary>
+        ICommand ApplyCommand { get; }
+
+        /// <summary>
+        /// Opens the Parent master page for this ParentElement.
+        /// </summary>
+        ICommand OpenParentTitView { get; }
+
+        /// <summary>
+        /// The SubElements of this ParentElement, which are inserted into the database already.
+        /// </summary>
+        ObservableCollection<ISubTransIncViewModel> SubElements { get; set; }
+
+        /// <summary>
+        /// The SubElements of this ParentElement, which are not inserted into the database yet.
+        /// These SubElements are in the process of being created and inserted to the database.
+        /// </summary>
+        ObservableCollection<ISubTransIncViewModel> NewSubElements { get; set; }
+
+        /// <summary>
+        /// Refreshes the Balance of the associated account and the summary account and tells the GUI to refresh the sum of this ViewModel.
+        /// </summary>
+        void RefreshSum();
+    }
+
     /// <summary>
     /// Base class for ViewModels of the Models ParentTransaction and ParentIncome
     /// </summary>
-    /// <typeparam name="T">Type of the SubElement. Can be a SubTransaction or a SubIncome.</typeparam>
-    public abstract class ParentTransIncViewModel : TransIncBaseViewModel
+    public abstract class ParentTransIncViewModel : TransIncBaseViewModel, IParentTransIncViewModel
     {
         /// <summary>
         /// Model of ParentTransaction or ParentIncome. Mostly they both act almost the same. Differences are handled in their concrete classes.
@@ -105,7 +143,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Refreshes the Balance of the associated account and the summary account and tells the GUI to refresh the sum of this ViewModel.
         /// </summary>
-        internal void RefreshSum()
+        public void RefreshSum()
         {
             if(Id > 0)
             {
@@ -131,19 +169,19 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             }
         }
 
-        private ObservableCollection<SubTransIncViewModel> _subElements; 
+        private ObservableCollection<ISubTransIncViewModel> _subElements; 
 
         /// <summary>
         /// The SubElements of this ParentElement, which are inserted into the database already.
         /// </summary>
-        public ObservableCollection<SubTransIncViewModel> SubElements
+        public ObservableCollection<ISubTransIncViewModel> SubElements
         {
             get
             {
                 if (_subElements == null)
                 {
                     IEnumerable<ISubTransInc> subs = ParentTransInc.GetSubTransInc(Orm) ?? new List<ISubTransInc>();
-                    _subElements = new ObservableCollection<SubTransIncViewModel>();
+                    _subElements = new ObservableCollection<ISubTransIncViewModel>();
                     foreach(ISubTransInc sub in subs)
                     {
                         _subElements.Add(CreateNewSubViewModel(sub));
@@ -162,15 +200,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="subElement">The SubElement, which gets a ViewModel.</param>
         /// <returns>A new ViewModel for a SubElement.</returns>
-        protected abstract SubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement);
+        protected abstract ISubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement);
 
-        private readonly ObservableCollection<SubTransIncViewModel> _newSubElements = new ObservableCollection<SubTransIncViewModel>();
+        private readonly ObservableCollection<ISubTransIncViewModel> _newSubElements = new ObservableCollection<ISubTransIncViewModel>();
 
         /// <summary>
         /// The SubElements of this ParentElement, which are not inserted into the database yet.
         /// These SubElements are in the process of being created and inserted to the database.
         /// </summary>
-        public ObservableCollection<SubTransIncViewModel> NewSubElements
+        public ObservableCollection<ISubTransIncViewModel> NewSubElements
         {
             get { return _newSubElements; }
             set
@@ -192,11 +230,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 switch(args.PropertyName)
                 {
                     case nameof(ParentTransInc.Id):
-                        foreach(SubTransIncViewModel subTransIncViewModel in SubElements)
+                        foreach(ISubTransIncViewModel subTransIncViewModel in SubElements)
                         {
                             subTransIncViewModel.ParentId = ParentTransInc.Id;
                         }
-                        foreach(SubTransIncViewModel subTransIncViewModel in NewSubElements)
+                        foreach(ISubTransIncViewModel subTransIncViewModel in NewSubElements)
                         {
                             subTransIncViewModel.ParentId = ParentTransInc.Id;
                         }
@@ -210,7 +248,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// This function should guarantee that the object is valid to be inserted.
         /// </summary>
         /// <returns>True if valid, else false</returns>
-        internal override bool ValidToInsert()
+        public override bool ValidToInsert()
         {
             return Account != null && (Orm?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) &&
                    Payee   != null &&  Orm .CommonPropertyProvider.Payees.Contains(Payee) && 
@@ -221,7 +259,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Removes the given SubElement and refreshes the sum.
         /// </summary>
         /// <param name="toRemove"></param>
-        public void RemoveSubElement(SubTransIncViewModel toRemove)
+        public void RemoveSubElement(ISubTransIncViewModel toRemove)
         {
             if (SubElements.Contains(toRemove))
                 SubElements.Remove(toRemove);
@@ -233,7 +271,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
-            foreach (SubTransIncViewModel subTransaction in SubElements)
+            foreach (ISubTransIncViewModel subTransaction in SubElements)
                 subTransaction.Delete();
             SubElements.Clear();
             NewSubElements.Clear();
@@ -256,7 +294,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public ICommand ApplyCommand => new RelayCommand(obj =>
         {
-            foreach (SubTransIncViewModel subTransaction in _newSubElements)
+            foreach (ISubTransIncViewModel subTransaction in _newSubElements)
             {
                 if (Id > 0L)
                     subTransaction.Insert();

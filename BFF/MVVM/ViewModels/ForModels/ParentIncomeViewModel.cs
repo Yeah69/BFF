@@ -5,10 +5,12 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
+    internal interface IParentIncomeViewModel : IParentTransIncViewModel {}
+
     /// <summary>
     /// The ViewModel of the Model ParentIncome.
     /// </summary>
-    class ParentIncomeViewModel : ParentTransIncViewModel
+    class ParentIncomeViewModel : ParentTransIncViewModel, IParentIncomeViewModel
     {
         /// <summary>
         /// Initializes a ParentIncomeViewModel.
@@ -24,7 +26,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="subElement">The SubElement, which gets a ViewModel.</param>
         /// <returns>A new ViewModel for a SubElement.</returns>
-        protected override SubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement)
+        protected override ISubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement)
         {
             return new SubIncomeViewModel(subElement as ISubIncome, this, Orm);
         }

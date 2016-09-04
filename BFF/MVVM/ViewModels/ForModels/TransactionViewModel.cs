@@ -4,10 +4,12 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
+    public interface ITransactionViewModel : ITransIncViewModel {}
+
     /// <summary>
     /// The ViewModel of the Model Transaction.
     /// </summary>
-    public class TransactionViewModel : TransIncViewModel
+    public class TransactionViewModel : TransIncViewModel, ITransactionViewModel
     {
         /// <summary>
         /// Initializes a TransactionViewModel.

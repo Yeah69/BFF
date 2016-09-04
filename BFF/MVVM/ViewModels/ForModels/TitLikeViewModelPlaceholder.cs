@@ -44,7 +44,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Does only return False, because a Placeholder may not be inserted to the database. Needed to mimic a TIT.
         /// </summary>
         /// <returns>Only False.</returns>
-        internal override bool ValidToInsert() => false;
+        public override bool ValidToInsert() => false;
 
         /// <summary>
         /// Does nothing, because this is a Placeholder. Needed to mimic a TIT.

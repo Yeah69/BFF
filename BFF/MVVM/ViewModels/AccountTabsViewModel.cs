@@ -16,11 +16,11 @@ namespace BFF.MVVM.ViewModels
 
         public IBffOrm Orm => _orm;
 
-        public ObservableCollection<AccountViewModel> AllAccounts => _orm.CommonPropertyProvider.AccountViewModels;
+        public ObservableCollection<IAccountViewModel> AllAccounts => _orm.CommonPropertyProvider.AccountViewModels;
 
         public ObservableCollection<ICategory> AllCategories => _orm.CommonPropertyProvider.Categories; 
 
-        public SummaryAccountViewModel SummaryAccountViewModel
+        public ISummaryAccountViewModel SummaryAccountViewModel
         {
             get { return _orm.CommonPropertyProvider.SummaryAccountViewModel; }
             set
@@ -103,7 +103,7 @@ namespace BFF.MVVM.ViewModels
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-            foreach(AccountViewModel accountViewModel in AllAccounts)
+            foreach(IAccountViewModel accountViewModel in AllAccounts)
             {
                 (accountViewModel as IDisposable)?.Dispose();
             }

@@ -4,10 +4,12 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
+    internal interface ISubIncomeViewModel : ISubTransIncViewModel {}
+
     /// <summary>
     /// The ViewModel of the Model SubIncome.
     /// </summary>
-    class SubIncomeViewModel : SubTransIncViewModel
+    class SubIncomeViewModel : SubTransIncViewModel, ISubIncomeViewModel
     {
         /// <summary>
         /// Initializes a SubIncomeViewModel.
@@ -15,7 +17,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <param name="subTransInc">A SubIncome Model.</param>
         /// <param name="parent">The ViewModel of the Model's ParentTransaction.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public SubIncomeViewModel(ISubIncome subTransInc, ParentTransIncViewModel parent, IBffOrm orm) : 
+        public SubIncomeViewModel(ISubIncome subTransInc, IParentTransIncViewModel parent, IBffOrm orm) : 
             base(subTransInc, parent, orm) { }
     }
 }

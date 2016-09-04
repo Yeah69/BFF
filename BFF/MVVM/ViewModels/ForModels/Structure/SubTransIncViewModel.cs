@@ -7,11 +7,20 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
+    public interface ISubTransIncViewModel : ITitLikeViewModel
+    {
+        /// <summary>
+        /// Each SubTransaction or SubIncome can be budgeted to a category.
+        /// </summary>
+        ICategory Category { get; set; }
+
+        long ParentId { get; set; }
+    }
+
     /// <summary>
     /// Base class for ViewModels of the Models SubTransaction and SubIncome
     /// </summary>
-    /// <typeparam name="T">Type of the SubElement. Can be a SubTransaction or a SubIncome.</typeparam>
-    public abstract class SubTransIncViewModel : TitLikeViewModel 
+    public abstract class SubTransIncViewModel : TitLikeViewModel, ISubTransIncViewModel
     {
         /// <summary>
         /// Model of SubTransaction or SubIncome. Mostly they both act almost the same. Differences are handled in their concrete classes.
@@ -20,7 +29,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The ViewModel of the Parent Model of the SubTransInc.
         /// </summary>
-        protected ParentTransIncViewModel Parent;
+        protected IParentTransIncViewModel Parent;
 
         #region SubTransaction/SubIncome Properties
 
@@ -90,7 +99,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="subTransInc">The associated Model of this ViewModel.</param>
         /// <param name="parent">The ViewModel of the Parent Model of the SubTransInc.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        protected SubTransIncViewModel(ISubTransInc subTransInc, ParentTransIncViewModel parent, IBffOrm orm) : base(orm)
+        protected SubTransIncViewModel(ISubTransInc subTransInc, IParentTransIncViewModel parent, IBffOrm orm) : base(orm)
         {
             SubTransInc = subTransInc;
             Parent = parent;
@@ -102,7 +111,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// This function should guarantee that the object is valid to be inserted.
         /// </summary>
         /// <returns>True if valid, else false</returns>
-        internal override bool ValidToInsert()
+        public override bool ValidToInsert()
         {
             return Category != null && (Orm?.CommonPropertyProvider.Categories.Contains(Category) ?? false);
         }

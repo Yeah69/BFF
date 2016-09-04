@@ -9,7 +9,7 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.DB
 {
-    class PagedTitBaseProvider : IPagedSourceProvider<TitLikeViewModel>
+    class PagedTitBaseProvider : IPagedSourceProvider<ITitLikeViewModel>
     {
         protected readonly IPagedOrm PagedOrm;
         protected readonly IBffOrm Orm;
@@ -32,10 +32,10 @@ namespace BFF.DB
 
         #region Implementation of IItemSourceProvider<T>
 
-        public PagedSourceItemsPacket<TitLikeViewModel> GetItemsAt(int pageoffset, int count, bool usePlaceholder)
+        public PagedSourceItemsPacket<ITitLikeViewModel> GetItemsAt(int pageoffset, int count, bool usePlaceholder)
         {
             IEnumerable<ITitBase> items = PagedOrm.GetPage<ITitBase>(pageoffset, count, Account);
-            IList<TitLikeViewModel> vmItems = new List<TitLikeViewModel>();
+            IList<ITitLikeViewModel> vmItems = new List<ITitLikeViewModel>();
             foreach(ITitBase item in items)
             {
                 if(item is ITransfer)
@@ -49,10 +49,10 @@ namespace BFF.DB
                 else if (item is IIncome)
                     vmItems.Add(new IncomeViewModel(item as IIncome, Orm));
             }
-            return new PagedSourceItemsPacket<TitLikeViewModel> { Items = vmItems , LoadedAt = DateTime.Now };
+            return new PagedSourceItemsPacket<ITitLikeViewModel> { Items = vmItems , LoadedAt = DateTime.Now };
         }
 
-        public int IndexOf(TitLikeViewModel item)
+        public int IndexOf(ITitLikeViewModel item)
         {
             return -1; //todo: Find a way
         }
@@ -61,7 +61,7 @@ namespace BFF.DB
 
         #endregion
     }
-    class PagedTitBaseProviderAsync : PagedTitBaseProvider, IPagedSourceProviderAsync<TitLikeViewModel>
+    class PagedTitBaseProviderAsync : PagedTitBaseProvider, IPagedSourceProviderAsync<ITitLikeViewModel>
     {
 
         public PagedTitBaseProviderAsync(IPagedOrm pagedOrm, IAccount account, IBffOrm orm) : base(pagedOrm, account, orm)
@@ -70,12 +70,12 @@ namespace BFF.DB
 
         #region Implementation of IPagedSourceProviderAsync<TitBase>
 
-        public Task<PagedSourceItemsPacket<TitLikeViewModel>>  GetItemsAtAsync(int pageoffset, int count, bool usePlaceholder)
+        public Task<PagedSourceItemsPacket<ITitLikeViewModel>>  GetItemsAtAsync(int pageoffset, int count, bool usePlaceholder)
         {
             return Task.Run(() => GetItemsAt(pageoffset, count, usePlaceholder));
         }
 
-        public TitLikeViewModel GetPlaceHolder(int index, int page, int offset)
+        public ITitLikeViewModel GetPlaceHolder(int index, int page, int offset)
         {
             return new TitLikeViewModelPlaceholder(Orm);
         }
@@ -85,7 +85,7 @@ namespace BFF.DB
             return Task.Run(() => Count);
         }
 
-        public Task<int> IndexOfAsync(TitLikeViewModel item)
+        public Task<int> IndexOfAsync(ITitLikeViewModel item)
         {
             return Task.Run(() => IndexOf(item));
         }

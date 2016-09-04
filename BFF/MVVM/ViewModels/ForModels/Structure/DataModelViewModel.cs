@@ -2,12 +2,35 @@
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
+    public interface IDataModelViewModel {
+        /// <summary>
+        /// The object's Id in the table of the database.
+        /// </summary>
+        long Id { get; }
+
+        /// <summary>
+        /// Before a model object is inserted into the database, it has to be valid.
+        /// This function should guarantee that the object is valid to be inserted.
+        /// </summary>
+        /// <returns>True if valid, else false</returns>
+        bool ValidToInsert();
+
+        /// <summary>
+        /// Inserts the model object to the database.
+        /// </summary>
+        void Insert();
+
+        /// <summary>
+        /// Deletes the model object from the database.
+        /// </summary>
+        void Delete();
+    }
 
     /// <summary>
     /// Base class to all ViewModels for Models, which are read from the database.
     /// Offers CRUD functionality (except for Read, because the Models are not read from within itself).
     /// </summary>
-    public abstract class DataModelViewModel : ObservableObject
+    public abstract class DataModelViewModel : ObservableObject, IDataModelViewModel
     {
         /// <summary>
         /// The Orm object, which handles all database accesses.
@@ -33,7 +56,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// This function should guarantee that the object is valid to be inserted.
         /// </summary>
         /// <returns>True if valid, else false</returns>
-        internal abstract bool ValidToInsert();
+        public abstract bool ValidToInsert();
 
         /// <summary>
         /// Uses the OR mapper to insert the object into the database. Inner function for the Insert method.

@@ -5,10 +5,12 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
+    internal interface IParentTransactionViewModel : IParentTransIncViewModel {}
+
     /// <summary>
     /// The ViewModel of the Model ParentTransaction.
     /// </summary>
-    class ParentTransactionViewModel : ParentTransIncViewModel
+    class ParentTransactionViewModel : ParentTransIncViewModel, IParentTransactionViewModel
     {
         /// <summary>
         /// Initializes a ParentTransactionViewModel.
@@ -24,7 +26,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="subElement">The SubElement, which gets a ViewModel.</param>
         /// <returns>A new ViewModel for a SubElement.</returns>
-        protected override SubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement)
+        protected override ISubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement)
         {
             return new SubTransactionViewModel(subElement as ISubTransaction, this, Orm);
         }

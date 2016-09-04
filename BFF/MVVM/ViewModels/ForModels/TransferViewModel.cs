@@ -6,10 +6,23 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
+    internal interface ITransferViewModel : ITitBaseViewModel
+    {
+        /// <summary>
+        /// The account from where the money is transfered.
+        /// </summary>
+        IAccount FromAccount { get; set; }
+
+        /// <summary>
+        /// The account to where the money is transfered.
+        /// </summary>
+        IAccount ToAccount { get; set; }
+    }
+
     /// <summary>
     /// The ViewModel of the Model Transfer.
     /// </summary>
-    class TransferViewModel : TitBaseViewModel
+    class TransferViewModel : TitBaseViewModel, ITransferViewModel
     {
         /// <summary>
         /// The Transfer Model.
@@ -183,7 +196,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// This function should guarantee that the object is valid to be inserted.
         /// </summary>
         /// <returns>True if valid, else false</returns>
-        internal override bool ValidToInsert()
+        public override bool ValidToInsert()
         {
             return FromAccount != null && (Orm?.CommonPropertyProvider.Accounts.Contains(FromAccount) ?? false) &&
                    ToAccount != null   &&  Orm .CommonPropertyProvider.Accounts.Contains(ToAccount);

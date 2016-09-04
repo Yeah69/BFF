@@ -6,10 +6,23 @@ using BFF.MVVM.Models.Native;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
+    public interface ITransIncBaseViewModel : ITitBaseViewModel
+    {
+        /// <summary>
+        /// The assigned Account, where this Transaction/Income is registered.
+        /// </summary>
+        IAccount Account { get; set; }
+
+        /// <summary>
+        /// Someone or something, who got paid or paid the user by the Transaction/Income.
+        /// </summary>
+        IPayee Payee { get; set; }
+    }
+
     /// <summary>
     /// Base class for ViewModels of the models Transaction, Income, ParentTransaction and ParentIncome.
     /// </summary>
-    public abstract class TransIncBaseViewModel : TitBaseViewModel
+    public abstract class TransIncBaseViewModel : TitBaseViewModel, ITransIncBaseViewModel
     {
         /// <summary>
         /// The assigned Account, where this Transaction/Income is registered.

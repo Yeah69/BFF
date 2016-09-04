@@ -3,6 +3,7 @@ using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
@@ -25,12 +26,12 @@ namespace BFF.MVVM.Views
         }
 
         public static readonly DependencyProperty AccountViewModelProperty = DependencyProperty.Register(
-            nameof(AccountViewModel), typeof(AccountBaseViewModel), typeof(TitDataGrid), 
-            new PropertyMetadata(default(AccountBaseViewModel), OnAccountViewModelChanged));
+            nameof(AccountViewModel), typeof(IAccountBaseViewModel), typeof(TitDataGrid), 
+            new PropertyMetadata(default(IAccountBaseViewModel), OnAccountViewModelChanged));
 
-        public AccountBaseViewModel AccountViewModel
+        public IAccountBaseViewModel AccountViewModel
         {
-            get { return (AccountBaseViewModel) GetValue(AccountViewModelProperty); }
+            get { return (IAccountBaseViewModel) GetValue(AccountViewModelProperty); }
             set { SetValue(AccountViewModelProperty, value); }
         }
 
@@ -209,13 +210,13 @@ namespace BFF.MVVM.Views
 
         private static void OnAccountViewModelChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            AccountBaseViewModel oldAccount = (AccountBaseViewModel) args.OldValue;
+            IVirtualizedRefresh oldAccount = (IVirtualizedRefresh) args.OldValue;
             if (oldAccount != null)
             {
                 oldAccount.PreVirtualizedRefresh -= ((TitDataGrid)sender).PreVirtualizedRefresh;
                 oldAccount.PostVirtualizedRefresh -= ((TitDataGrid)sender).PostVirtualizedRefresh;
             }
-            AccountBaseViewModel newAccount = (AccountBaseViewModel) args.NewValue;
+            IVirtualizedRefresh newAccount = (IVirtualizedRefresh) args.NewValue;
             if (newAccount != null)
             {
                 newAccount.PreVirtualizedRefresh += ((TitDataGrid)sender).PreVirtualizedRefresh;

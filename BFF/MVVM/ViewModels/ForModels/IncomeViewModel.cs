@@ -4,10 +4,12 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
+    internal interface IIncomeViewModel : ITransIncViewModel {}
+
     /// <summary>
     /// The ViewModel of the Model Income.
     /// </summary>
-    class IncomeViewModel : TransIncViewModel
+    class IncomeViewModel : TransIncViewModel, IIncomeViewModel
     {
         /// <summary>
         /// Initializes an IncomeViewModel.

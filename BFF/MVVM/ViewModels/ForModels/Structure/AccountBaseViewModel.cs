@@ -11,9 +11,77 @@ using BFF.Properties;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    public abstract class AccountBaseViewModel : DataModelViewModel, IVirtualizedRefresh
+    public interface IAccountBaseViewModel : IDataModelViewModel
     {
-        protected VirtualizingObservableCollection<TitLikeViewModel> _tits;
+        /// <summary>
+        /// Starting balance of the Account
+        /// </summary>
+        long StartingBalance { get; set; }
+
+        /// <summary>
+        /// Name of the Account Model
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
+        /// Lazy loaded collection of TITs belonging to this Account.
+        /// </summary>
+        VirtualizingObservableCollection<ITitLikeViewModel> Tits { get; }
+
+        /// <summary>
+        /// Collection of TITs, which are about to be inserted to this Account.
+        /// </summary>
+        ObservableCollection<ITitLikeViewModel> NewTits { get; set; }
+
+        /// <summary>
+        /// The current Balance of this Account.
+        /// </summary>
+        long? Balance { get; set; }
+
+        /// <summary>
+        /// Creates a new Transaction.
+        /// </summary>
+        ICommand NewTransactionCommand { get; }
+
+        /// <summary>
+        /// Creates a new Income.
+        /// </summary>
+        ICommand NewIncomeCommand { get; }
+
+        /// <summary>
+        /// Creates a new Transfer.
+        /// </summary>
+        ICommand NewTransferCommand { get; }
+
+        /// <summary>
+        /// Creates a new ParentTransaction.
+        /// </summary>
+        ICommand NewParentTransactionCommand { get; }
+
+        /// <summary>
+        /// Creates a new ParentIncome.
+        /// </summary>
+        ICommand NewParentIncomeCommand { get; }
+
+        /// <summary>
+        /// Flushes all valid and not yet inserted TITs to the database.
+        /// </summary>
+        ICommand ApplyCommand { get; }
+
+        /// <summary>
+        /// Refreshes the Balance.
+        /// </summary>
+        void RefreshBalance();
+
+        /// <summary>
+        /// Refreshes the TITs of this Account.
+        /// </summary>
+        void RefreshTits();
+    }
+
+    public abstract class AccountBaseViewModel : DataModelViewModel, IVirtualizedRefresh, IAccountBaseViewModel
+    {
+        protected VirtualizingObservableCollection<ITitLikeViewModel> _tits;
 
         /// <summary>
         /// Starting balance of the Account
@@ -28,12 +96,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        public abstract VirtualizingObservableCollection<TitLikeViewModel> Tits { get; }
+        public abstract VirtualizingObservableCollection<ITitLikeViewModel> Tits { get; }
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public abstract ObservableCollection<TitLikeViewModel> NewTits { get; set; }
+        public abstract ObservableCollection<ITitLikeViewModel> NewTits { get; set; }
 
         /// <summary>
         /// The current Balance of this Account.
@@ -150,44 +218,44 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected void ApplyTits()
         {
-            List<AccountViewModel> accountViewModels = new List<AccountViewModel>();
-            List<TitLikeViewModel> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
-            foreach (TitLikeViewModel tit in insertTits)
+            List<IAccountViewModel> accountViewModels = new List<IAccountViewModel>();
+            List<ITitLikeViewModel> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
+            foreach (ITitLikeViewModel tit in insertTits)
             {
                 tit.Insert();
                 NewTits.Remove(tit);
-                if (tit is ParentTransactionViewModel)
+                if (tit is IParentTransactionViewModel)
                 {
-                    ParentTransactionViewModel parentTransaction = tit as ParentTransactionViewModel;
-                    foreach(SubTransIncViewModel subTransaction in parentTransaction.NewSubElements)
+                    IParentTransactionViewModel parentTransaction = tit as IParentTransactionViewModel;
+                    foreach(ISubTransIncViewModel subTransaction in parentTransaction.NewSubElements)
                     {
                         subTransaction.Insert();
                         parentTransaction.SubElements.Add(subTransaction);
                     }
                     parentTransaction.NewSubElements.Clear();
                 }
-                else if (tit is ParentIncomeViewModel) // todo unify this and the above if-clause?
+                else if (tit is IParentIncomeViewModel) // todo unify this and the above if-clause?
                 {
-                    ParentIncomeViewModel parentIncome = tit as ParentIncomeViewModel;
-                    foreach (SubTransIncViewModel subIncome in parentIncome.NewSubElements)
+                    IParentIncomeViewModel parentIncome = tit as IParentIncomeViewModel;
+                    foreach (ISubTransIncViewModel subIncome in parentIncome.NewSubElements)
                     {
                         subIncome.Insert();
                         parentIncome.SubElements.Add(subIncome);
                     }
                     parentIncome.NewSubElements.Clear();
                 }
-                else if (tit is TransIncViewModel)
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel((tit as TransIncViewModel).Account.Id));
-                else if (tit is TransferViewModel)
+                else if (tit is ITransIncViewModel)
+                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel((tit as ITransIncViewModel).Account.Id));
+                else if (tit is ITransferViewModel)
                 {
-                    TransferViewModel transfer = tit as TransferViewModel;
+                    ITransferViewModel transfer = tit as ITransferViewModel;
                     accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transfer.FromAccount.Id));
                     accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transfer.ToAccount.Id));
                 }
             }
             Orm.CommonPropertyProvider.SummaryAccountViewModel.RefreshTits();
             Orm.CommonPropertyProvider.SummaryAccountViewModel.RefreshBalance();
-            foreach (AccountViewModel accountViewModel in accountViewModels)
+            foreach (IAccountViewModel accountViewModel in accountViewModels)
             {
                 accountViewModel.RefreshTits();
                 accountViewModel.RefreshBalance();

@@ -8,10 +8,18 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
+    public interface ITransIncViewModel : ITransIncBaseViewModel
+    {
+        /// <summary>
+        /// Each Transaction or Income can be budgeted to a category.
+        /// </summary>
+        ICategory Category { get; set; }
+    }
+
     /// <summary>
     /// Base class for ViewModels of Transaction and Income
     /// </summary>
-    public abstract class TransIncViewModel : TransIncBaseViewModel
+    public abstract class TransIncViewModel : TransIncBaseViewModel, ITransIncViewModel
     {
         /// <summary>
         /// Model of Transaction or Income. Mostly they both act almost the same. Differences are handled in their concrete classes.
@@ -152,7 +160,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// This function should guarantee that the object is valid to be inserted.
         /// </summary>
         /// <returns>True if valid, else false</returns>
-        internal override bool ValidToInsert()
+        public override bool ValidToInsert()
         {
             return Account != null  && (Orm?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) &&
                    Payee != null    &&  Orm .CommonPropertyProvider.Payees.Contains(Payee) &&

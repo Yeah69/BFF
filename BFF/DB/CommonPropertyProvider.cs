@@ -10,8 +10,8 @@ namespace BFF.DB
 {
     public interface ICommonPropertyProvider {
         ObservableCollection<IAccount> Accounts { get; }
-        ObservableCollection<AccountViewModel> AccountViewModels { get; }
-        SummaryAccountViewModel SummaryAccountViewModel { get; }
+        ObservableCollection<IAccountViewModel> AccountViewModels { get; }
+        ISummaryAccountViewModel SummaryAccountViewModel { get; }
         ObservableCollection<IPayee> Payees { get; }
         ObservableCollection<ICategory> Categories { get; }
         void Add(IAccount account);
@@ -23,7 +23,7 @@ namespace BFF.DB
         IAccount GetAccount(long id);
         IPayee GetPayee(long id);
         ICategory GetCategory(long id);
-        AccountViewModel GetAccountViewModel(long id);
+        IAccountViewModel GetAccountViewModel(long id);
     }
 
     public class CommonPropertyProvider : ICommonPropertyProvider
@@ -32,9 +32,9 @@ namespace BFF.DB
 
         public ObservableCollection<IAccount> Accounts { get; private set; }
 
-        public ObservableCollection<AccountViewModel> AccountViewModels { get; private set; }
+        public ObservableCollection<IAccountViewModel> AccountViewModels { get; private set; }
 
-        public SummaryAccountViewModel SummaryAccountViewModel { get; private set; }
+        public ISummaryAccountViewModel SummaryAccountViewModel { get; private set; }
 
         public ObservableCollection<IPayee> Payees { get; private set; }
 
@@ -102,14 +102,14 @@ namespace BFF.DB
         public IPayee GetPayee(long id) => Payees.FirstOrDefault(payee => payee.Id == id);
         public ICategory GetCategory(long id) => Categories.FirstOrDefault(category => category.Id == id);
 
-        public AccountViewModel GetAccountViewModel(long id)
+        public IAccountViewModel GetAccountViewModel(long id)
             => AccountViewModels.FirstOrDefault(accountVm => accountVm.Id == id);
 
         private void InitializeAccounts()
         {
             SummaryAccountViewModel = new SummaryAccountViewModel(_orm);
             Accounts = new ObservableCollection<IAccount>(_orm.GetAll<Account>().OrderBy(account => account.Name));
-            AccountViewModels = new ObservableCollection<AccountViewModel>(
+            AccountViewModels = new ObservableCollection<IAccountViewModel>(
                 Accounts.Select(account => new AccountViewModel(account, _orm)));
             Accounts.CollectionChanged += (sender, args) =>
             {

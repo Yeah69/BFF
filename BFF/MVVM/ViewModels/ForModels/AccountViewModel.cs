@@ -8,10 +8,12 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
+    public interface IAccountViewModel : IAccountBaseViewModel {}
+
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class AccountViewModel : AccountBaseViewModel
+    public class AccountViewModel : AccountBaseViewModel, IAccountViewModel
     {
         /// <summary>
         /// Starting balance of the Account
@@ -50,7 +52,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// This function should guarantee that the object is valid to be inserted.
         /// </summary>
         /// <returns>True if valid, else false</returns>
-        internal override bool ValidToInsert()
+        public override bool ValidToInsert()
         {
             return !string.IsNullOrWhiteSpace(Name);
         }
@@ -120,13 +122,13 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        public override VirtualizingObservableCollection<TitLikeViewModel> Tits => _tits ?? 
-            (_tits = new VirtualizingObservableCollection<TitLikeViewModel>(new PaginationManager<TitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, Account, Orm))));
+        public override VirtualizingObservableCollection<ITitLikeViewModel> Tits => _tits ?? 
+            (_tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, Account, Orm))));
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public override ObservableCollection<TitLikeViewModel> NewTits { get; set; } = new ObservableCollection<TitLikeViewModel>();
+        public override ObservableCollection<ITitLikeViewModel> NewTits { get; set; } = new ObservableCollection<ITitLikeViewModel>();
 
         /// <summary>
         /// The current Balance of this Account.
@@ -152,7 +154,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override void RefreshTits()
         {
             OnPreVirtualizedRefresh();
-            _tits = new VirtualizingObservableCollection<TitLikeViewModel>(new PaginationManager<TitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, Account, Orm)));
+            _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, Account, Orm)));
             OnPropertyChanged(nameof(Tits));
             OnPostVirtualizedRefresh();
         }

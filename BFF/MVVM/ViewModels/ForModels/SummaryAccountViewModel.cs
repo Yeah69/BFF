@@ -9,10 +9,18 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
+    public interface ISummaryAccountViewModel : IAccountBaseViewModel {
+        /// <summary>
+        /// Refreshes the starting balance.
+        /// This is needed for the summary account, because on run-time the user may add a new account.
+        /// </summary>
+        void RefreshStartingBalance();
+    }
+
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class SummaryAccountViewModel : AccountBaseViewModel
+    public class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel
     {
         /// <summary>
         /// Starting balance of the Account
@@ -79,13 +87,13 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        public override VirtualizingObservableCollection<TitLikeViewModel> Tits => _tits ?? 
-            (_tits = new VirtualizingObservableCollection<TitLikeViewModel>(new PaginationManager<TitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, null, Orm))));
+        public override VirtualizingObservableCollection<ITitLikeViewModel> Tits => _tits ?? 
+            (_tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, null, Orm))));
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public override ObservableCollection<TitLikeViewModel> NewTits { get; set; } = new ObservableCollection<TitLikeViewModel>();
+        public override ObservableCollection<ITitLikeViewModel> NewTits { get; set; } = new ObservableCollection<ITitLikeViewModel>();
         
         /// <summary>
         /// Refreshes the TITs of this Account.
@@ -93,7 +101,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override void RefreshTits()
         {
             OnPreVirtualizedRefresh();
-            _tits = new VirtualizingObservableCollection<TitLikeViewModel>(new PaginationManager<TitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, null, Orm)));
+            _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, null, Orm)));
             OnPropertyChanged(nameof(Tits));
             OnPostVirtualizedRefresh();
         }
@@ -178,7 +186,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Does only return False, because the summary account may not be inserted to the database. Needed to mimic an Account.
         /// </summary>
         /// <returns>Only False.</returns>
-        internal override bool ValidToInsert() => false;
+        public override bool ValidToInsert() => false;
 
         /// <summary>
         /// Does nothing, because this is the summary account. Needed to mimic an Account.
