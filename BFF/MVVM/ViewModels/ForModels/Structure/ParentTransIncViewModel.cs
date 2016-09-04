@@ -18,7 +18,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Model of ParentTransaction or ParentIncome. Mostly they both act almost the same. Differences are handled in their concrete classes.
         /// </summary>
-        protected ParentTransInc ParentTransInc;
+        protected IParentTransInc ParentTransInc;
 
         /// <summary>
         /// The object's Id in the table of the database.
@@ -28,7 +28,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The assigned Account, where this ParentTransaction/ParentIncome is registered.
         /// </summary>
-        public override Account Account
+        public override IAccount Account
         {
             get
             {
@@ -37,7 +37,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             }
             set
             {
-                Account temp = Account;
+                IAccount temp = Account;
                 ParentTransInc.AccountId = value?.Id ?? -1;
                 Update();
                 if (temp != null) Messenger.Default.Send(AccountMessage.Refresh, temp);
@@ -63,7 +63,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction/Income.
         /// </summary>
-        public override Payee Payee
+        public override IPayee Payee
         {
             get
             {
@@ -184,7 +184,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="transInc">The associated Model of this ViewModel.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        protected ParentTransIncViewModel(ParentTransInc transInc, IBffOrm orm) : base(orm)
+        protected ParentTransIncViewModel(IParentTransInc transInc, IBffOrm orm) : base(orm)
         {
             ParentTransInc = transInc;
             ParentTransInc.PropertyChanged += (sender, args) =>
@@ -272,6 +272,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
         public ICommand OpenParentTitView => new RelayCommand(param =>
-                    Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", param as Account)));
+                    Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", param as IAccount)));
     }
 }

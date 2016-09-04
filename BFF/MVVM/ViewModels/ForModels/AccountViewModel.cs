@@ -92,7 +92,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="account">An Account Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public AccountViewModel(Account account, IBffOrm orm) : base(orm)
+        public AccountViewModel(IAccount account, IBffOrm orm) : base(orm)
         {
             Account = account;
             Messenger.Default.Register<AccountMessage>(this, message =>

@@ -2,8 +2,7 @@
 
 namespace BFF.MVVM.Models.Native.Structure
 {
-    public interface IParentTransInc : ITransIncBase
-    { }
+    public interface IParentTransInc : ITransIncBase {}
 
     public abstract class ParentTransInc : TransIncBase, IParentTransInc
     {
@@ -15,7 +14,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="payee">To whom was payeed or who payeed</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected ParentTransInc(DateTime date, Account account = null, Payee payee = null, string memo = null, bool? cleared = null) 
+        protected ParentTransInc(DateTime date, IAccount account = null, IPayee payee = null, string memo = null, bool? cleared = null) 
             : base(date, account, payee, memo, cleared) {}
 
         /// <summary>

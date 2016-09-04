@@ -9,12 +9,12 @@ namespace BFF.MVVM.Models.Native
         /// <summary>
         /// The Child-Categories
         /// </summary>
-        ObservableCollection<Category> Categories { get; set; }
+        ObservableCollection<ICategory> Categories { get; set; }
 
         /// <summary>
         /// The Parent
         /// </summary>
-        Category Parent { get; set; }
+        ICategory Parent { get; set; }
 
         /// <summary>
         /// Id of Parent
@@ -33,14 +33,14 @@ namespace BFF.MVVM.Models.Native
         /// The Child-Categories
         /// </summary>
         [Write(false)]
-        public ObservableCollection<Category> Categories { get; set; } = new ObservableCollection<Category>();
+        public ObservableCollection<ICategory> Categories { get; set; } = new ObservableCollection<ICategory>();
 
-        private Category _parent;
+        private ICategory _parent;
         /// <summary>
         /// The Parent
         /// </summary>
         [Write(false)]
-        public Category Parent
+        public ICategory Parent
         {
             get { return _parent; }
             set
@@ -73,7 +73,7 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         /// <param name="parent">The Parent</param>
         /// <param name="name">Name of the Category</param>
-        public Category(Category parent = null, string name = null) : base(name)
+        public Category(ICategory parent = null, string name = null) : base(name)
         {
             ConstrDbLock = true;
 
@@ -104,12 +104,12 @@ namespace BFF.MVVM.Models.Native
         /// <returns>Name with preceding dots (foreach Ancestor one)</returns>
         public override string ToString()
         {
-            return $"{Parent?.GetIndent()}{Name}";
+            return $"{((Category)Parent)?.GetIndent()}{Name}"; //todo: When there is a CategoryVM transfer this there
         }
 
         private string GetIndent()
         {
-            return $"{Parent?.GetIndent()}. ";
+            return $"{((Category)Parent)?.GetIndent()}. "; //todo: When there is a CategoryVM transfer this there
         }
 
         protected override void InsertToDb()

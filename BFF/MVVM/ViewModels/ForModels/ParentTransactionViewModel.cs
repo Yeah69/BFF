@@ -14,7 +14,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="transInc">A ParentTransaction Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public ParentTransactionViewModel(ParentTransaction transInc, IBffOrm orm) : base(transInc, orm) {}
+        public ParentTransactionViewModel(IParentTransaction transInc, IBffOrm orm) : base(transInc, orm) {}
 
         /// <summary>
         /// Uses the OR mapper to insert the model into the database. Inner function for the Insert method.

@@ -68,7 +68,7 @@
         /// <param name="category">Category of the SubElement</param>
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        protected SubTransInc(Category category = null, string memo = null, long sum = 0L) : base(memo: memo)
+        protected SubTransInc(ICategory category = null, string memo = null, long sum = 0L) : base(memo: memo)
         {
             _categoryId = category?.Id ?? -1;
             _sum = sum;

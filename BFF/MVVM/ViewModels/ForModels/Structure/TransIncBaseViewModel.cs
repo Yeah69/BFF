@@ -14,12 +14,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The assigned Account, where this Transaction/Income is registered.
         /// </summary>
-        public abstract Account Account { get; set; }
+        public abstract IAccount Account { get; set; }
 
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction/Income.
         /// </summary>
-        public abstract Payee Payee { get; set; }
+        public abstract IPayee Payee { get; set; }
 
         /// <summary>
         /// Initializes a TransIncBaseViewModel.
@@ -39,7 +39,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public ICommand AddPayeeCommand => new RelayCommand(obj =>
         {
-            Payee newPayee = new Payee {Name = PayeeText.Trim()};
+            IPayee newPayee = new Payee {Name = PayeeText.Trim()};
             Orm?.CommonPropertyProvider?.Add(newPayee);
             OnPropertyChanged(nameof(AllPayees));
             Payee = newPayee;
@@ -53,7 +53,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All currently available Payees.
         /// </summary>
-        public ObservableCollection<Payee> AllPayees => Orm?.CommonPropertyProvider.Payees;
+        public ObservableCollection<IPayee> AllPayees => Orm?.CommonPropertyProvider.Payees;
 
         #endregion
 

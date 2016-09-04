@@ -16,11 +16,11 @@ namespace BFF.MVVM.Views
         #region Depencency Properties
 
         public static readonly DependencyProperty AccountProperty = DependencyProperty.Register(
-            nameof(Account), typeof(Account), typeof(TitDataGrid), new PropertyMetadata(default(Account)));
+            nameof(Account), typeof(IAccount), typeof(TitDataGrid), new PropertyMetadata(default(IAccount)));
 
-        public Account Account
+        public IAccount Account
         {
-            get { return (Account) GetValue(AccountProperty); }
+            get { return (IAccount) GetValue(AccountProperty); }
             set { SetValue(AccountProperty, value); }
         }
 

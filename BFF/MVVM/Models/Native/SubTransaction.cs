@@ -15,7 +15,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="category">Category of the SubElement</param>
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        public SubTransaction(Category category = null, long sum = 0L, string memo = null) 
+        public SubTransaction(ICategory category = null, long sum = 0L, string memo = null) 
             : base(category, memo, sum) {}
 
         /// <summary>

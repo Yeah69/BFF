@@ -12,19 +12,19 @@ namespace BFF.DB
 
         string DbPath { get; }
         void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments);
-        IEnumerable<TitBase> GetAllTits(DateTime startTime, DateTime endTime, Account account = null);
-        long? GetAccountBalance(Account account);
+        IEnumerable<ITitBase> GetAllTits(DateTime startTime, DateTime endTime, IAccount account = null);
+        long? GetAccountBalance(IAccount account);
         long? GetSummaryAccountBalance();
         IEnumerable<T> GetSubTransInc<T>(long parentId) where T : ISubTransInc;
     }
 
     public interface ICrudOrm
     {
-        IEnumerable<T> GetAll<T>() where T : DataModelBase;
-        long Insert<T>(T dataModelBase) where T : DataModelBase;
-        T Get<T>(long id) where T : DataModelBase;
-        void Update<T>(T dataModelBase) where T : DataModelBase;
-        void Delete<T>(T dataModelBase) where T : DataModelBase;
+        IEnumerable<T> GetAll<T>() where T : class, IDataModelBase;
+        long Insert<T>(T dataModelBase) where T : class, IDataModelBase;
+        T Get<T>(long id) where T : class, IDataModelBase;
+        void Update<T>(T dataModelBase) where T : class, IDataModelBase;
+        void Delete<T>(T dataModelBase) where T : class, IDataModelBase;
     }
     
     public interface IPagedOrm

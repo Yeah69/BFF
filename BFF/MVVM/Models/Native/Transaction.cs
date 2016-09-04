@@ -20,7 +20,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public Transaction(DateTime date, Account account = null, Payee payee = null, Category category = null, string memo = null, 
+        public Transaction(DateTime date, IAccount account = null, IPayee payee = null, ICategory category = null, string memo = null, 
             long sum = 0L, bool? cleared = null)
             : base(date, account, payee, category, memo, sum, cleared)
         {

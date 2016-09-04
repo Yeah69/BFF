@@ -14,7 +14,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The Transfer Model.
         /// </summary>
-        protected readonly Transfer Transfer;
+        protected readonly ITransfer Transfer;
 
         #region Transfer Properties
 
@@ -40,7 +40,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The account from where the money is transfered.
         /// </summary>
-        public Account FromAccount
+        public IAccount FromAccount
         {
             get {
                 return Transfer.FromAccountId == -1 ? null : 
@@ -49,7 +49,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             set
             {
                 if(value?.Id == Transfer.FromAccountId) return;
-                Account temp = FromAccount;
+                IAccount temp = FromAccount;
                 bool accountSwitch = false;
                 if (ToAccount == value) // If value equals ToAccount, then the FromAccount and ToAccount switch values
                 {
@@ -81,7 +81,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The account to where the money is transfered.
         /// </summary>
-        public Account ToAccount
+        public IAccount ToAccount
         {
             get
             {
@@ -91,7 +91,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             set
             {
                 if (value?.Id == Transfer.ToAccountId) return;
-                Account temp = ToAccount;
+                IAccount temp = ToAccount;
                 bool accountSwitch = false;
                 if (FromAccount == value) // If value equals FromAccount, then the ToAccount and FromAccount switch values
                 {
@@ -173,7 +173,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="transfer">A Transfer Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public TransferViewModel(Transfer transfer, IBffOrm orm) : base(orm)
+        public TransferViewModel(ITransfer transfer, IBffOrm orm) : base(orm)
         {
             Transfer = transfer;
         }

@@ -3,7 +3,9 @@ using System.Runtime.CompilerServices;
 
 namespace BFF.MVVM
 {
-    public abstract class ObservableObject : INotifyPropertyChanged
+    public interface IObservableObject : INotifyPropertyChanged {}
+
+    public abstract class ObservableObject : IObservableObject
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

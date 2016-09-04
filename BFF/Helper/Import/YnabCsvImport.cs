@@ -92,7 +92,7 @@ namespace BFF.Helper.Import
             ClearPayeeCache();
             ClearCategoryCache();
 
-            DataModelBase.Database = null; //switches off OR mapping
+            DataModelBase.Database = null; //switches off OR mapping //todo: Check if still needed. If not remove else refactor so it is not needed anymore and remove
 
             //First step: Parse CSV data into conversion objects
             Queue<Transaction> ynabTransactions = new Queue<Transaction>(ParseTransactionCsv(filePathTransaction));
@@ -100,16 +100,16 @@ namespace BFF.Helper.Import
 
             ImportLists lists = new ImportLists
             {
-                Accounts = new List<Account>(),
-                Categories = new List<Category>(),
-                Payees = new List<Payee>(),
-                Incomes = new List<Income>(),
-                ParentIncomes = new List<ParentIncome>(),
-                ParentTransactions = new List<ParentTransaction>(),
-                SubIncomes = new List<SubIncome>(),
-                SubTransactions = new List<SubTransaction>(),
-                Transactions = new List<MVVM.Models.Native.Transaction>(),
-                Transfers = new List<Transfer>()
+                Accounts = new List<IAccount>(),
+                Categories = new List<ICategory>(),
+                Payees = new List<IPayee>(),
+                Incomes = new List<IIncome>(),
+                ParentIncomes = new List<IParentIncome>(),
+                ParentTransactions = new List<IParentTransaction>(),
+                SubIncomes = new List<ISubIncome>(),
+                SubTransactions = new List<ISubTransaction>(),
+                Transactions = new List<MVVM.Models.Native.ITransaction>(),
+                Transfers = new List<ITransfer>()
             };
 
             //Second step: Convert conversion objects into native models
@@ -128,13 +128,13 @@ namespace BFF.Helper.Import
                 CategoryToCategory = _categoryCategoryAssignment,
                 CategoryToIHaveCategory = _categoryTitAssignment,
                 ParentTransactionToSubTransaction = _parentTransactionAssignment,
-                ParentIncomeToSubIncome = new Dictionary<ParentIncome, IList<SubIncome>>() //In YNAB4 are no ParentIncomes
+                ParentIncomeToSubIncome = new Dictionary<IParentIncome, IList<ISubIncome>>() //In YNAB4 are no ParentIncomes
             };
 
             //Third step: Create new database for imported data
             SqLiteBffOrm.CreateNewDatabase(savePath);
             SqLiteBffOrm orm = new SqLiteBffOrm(savePath);
-            DataModelBase.Database = orm; //turn on OR mapping
+            DataModelBase.Database = orm; //turn on OR mapping //todo: Check if still needed. If not remove else refactor so it is not needed anymore and remove
             orm.PopulateDatabase(lists, assignments);
         }
 
@@ -231,7 +231,7 @@ namespace BFF.Helper.Import
                 Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Memo);
                 if (splitMatch.Success)
                 {
-                    ParentTransaction parent = TransformToParentTransaction(ynabTransaction);
+                    IParentTransaction parent = TransformToParentTransaction(ynabTransaction);
                     int splitCount = int.Parse(splitMatch.Groups[nameof(splitCount)].Value);
                     int count = 0;
                     for (int i = 0; i < splitCount; i++)
@@ -244,7 +244,7 @@ namespace BFF.Helper.Import
                             lists.Incomes.Add(TransformToIncome(newYnabTransaction));
                         else
                         {
-                            SubTransaction subTransaction = TransformToSubTransaction(newYnabTransaction, parent);
+                            ISubTransaction subTransaction = TransformToSubTransaction(newYnabTransaction, parent);
                             lists.SubTransactions.Add(subTransaction);
                             count++;
                         }
@@ -276,7 +276,7 @@ namespace BFF.Helper.Import
            That way if one of the Accounts of the Transfer points to an already processed Account,
            then it means that this Transfer is already created and can be skipped. */
         private readonly List<string> _processedAccountsList = new List<string>();
-        private void AddTransfer(IList<Transfer> transfers, Transaction ynabTransfer)
+        private void AddTransfer(IList<ITransfer> transfers, Transaction ynabTransfer)
         {
             if (_processedAccountsList.Count == 0)
             {
@@ -300,9 +300,9 @@ namespace BFF.Helper.Import
         /// Creates a Transaction-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private MVVM.Models.Native.Transaction TransformToTransaction(Transaction ynabTransaction)
+        private MVVM.Models.Native.ITransaction TransformToTransaction(Transaction ynabTransaction)
         {
-            MVVM.Models.Native.Transaction ret = new MVVM.Models.Native.Transaction(ynabTransaction.Date)
+            MVVM.Models.Native.ITransaction ret = new MVVM.Models.Native.Transaction(ynabTransaction.Date)
             {
                 Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
                 Sum = ynabTransaction.Inflow - ynabTransaction.Outflow,
@@ -318,9 +318,9 @@ namespace BFF.Helper.Import
         /// Creates a Income-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private Income TransformToIncome(Transaction ynabTransaction)
+        private IIncome TransformToIncome(Transaction ynabTransaction)
         {
-            Income ret = new Income(ynabTransaction.Date)
+            IIncome ret = new Income(ynabTransaction.Date)
             {
                 Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
                 Sum = ynabTransaction.Inflow - ynabTransaction.Outflow,
@@ -336,10 +336,10 @@ namespace BFF.Helper.Import
         /// Creates a Transfer-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private Transfer TransformToTransfer(Transaction ynabTransaction)
+        private ITransfer TransformToTransfer(Transaction ynabTransaction)
         {
             long tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;
-            Transfer ret = new Transfer(ynabTransaction.Date)
+            ITransfer ret = new Transfer(ynabTransaction.Date)
             {
                 Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
                 Sum = Math.Abs(tempSum),
@@ -358,16 +358,16 @@ namespace BFF.Helper.Import
             return ret;
         }
 
-        private readonly IDictionary<ParentTransaction, IList<SubTransaction>> _parentTransactionAssignment =
-            new Dictionary<ParentTransaction, IList<SubTransaction>>();
+        private readonly IDictionary<IParentTransaction, IList<ISubTransaction>> _parentTransactionAssignment =
+            new Dictionary<IParentTransaction, IList<ISubTransaction>>();
 
         /// <summary>
         /// Creates a Transaction-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private ParentTransaction TransformToParentTransaction(Transaction ynabTransaction)
+        private IParentTransaction TransformToParentTransaction(Transaction ynabTransaction)
         {
-            ParentTransaction ret = new ParentTransaction(ynabTransaction.Date)
+            IParentTransaction ret = new ParentTransaction(ynabTransaction.Date)
             {
                 Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
                 Cleared = ynabTransaction.Cleared
@@ -377,16 +377,16 @@ namespace BFF.Helper.Import
             return ret;
         }
 
-        private SubTransaction TransformToSubTransaction(Transaction ynabTransaction, ParentTransaction parent)
+        private ISubTransaction TransformToSubTransaction(Transaction ynabTransaction, IParentTransaction parent)
         {
-            SubTransaction ret = new SubTransaction
+            ISubTransaction ret = new SubTransaction
             {
                 Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["subTransMemo"].Value,
                 Sum = ynabTransaction.Inflow - ynabTransaction.Outflow
             };
             AssignCategory(ynabTransaction.Category, ret);
             if(!_parentTransactionAssignment.ContainsKey(parent))
-                _parentTransactionAssignment.Add(parent, new List<SubTransaction> {ret});
+                _parentTransactionAssignment.Add(parent, new List<ISubTransaction> {ret});
             else _parentTransactionAssignment[parent].Add(ret);
             return ret;
         }
@@ -395,46 +395,46 @@ namespace BFF.Helper.Import
         
         #region Accounts
 
-        private readonly IDictionary<string, Account> _accountCache = new Dictionary<string, Account>();
+        private readonly IDictionary<string, IAccount> _accountCache = new Dictionary<string, IAccount>();
 
-        private readonly IDictionary<Account, IList<TransIncBase>> _accountAssignment =
-            new Dictionary<Account, IList<TransIncBase>>();
+        private readonly IDictionary<IAccount, IList<ITransIncBase>> _accountAssignment =
+            new Dictionary<IAccount, IList<ITransIncBase>>();
 
-        private readonly IDictionary<Account, IList<Transfer>> _fromAccountAssignment =
-            new Dictionary<Account, IList<Transfer>>();
+        private readonly IDictionary<IAccount, IList<ITransfer>> _fromAccountAssignment =
+            new Dictionary<IAccount, IList<ITransfer>>();
 
-        private readonly IDictionary<Account, IList<Transfer>> _toAccountAssignment =
-            new Dictionary<Account, IList<Transfer>>();
+        private readonly IDictionary<IAccount, IList<ITransfer>> _toAccountAssignment =
+            new Dictionary<IAccount, IList<ITransfer>>();
 
         private void CreateAccount(string name, long startingBalance)
         {
             if(string.IsNullOrWhiteSpace(name)) return;
-            Account account = new Account {Name = name, StartingBalance = startingBalance};
+            IAccount account = new Account {Name = name, StartingBalance = startingBalance};
             _accountCache.Add(name, account);
-            _accountAssignment.Add(account, new List<TransIncBase>());
-            _fromAccountAssignment.Add(account, new List<Transfer>());
-            _toAccountAssignment.Add(account, new List<Transfer>());
+            _accountAssignment.Add(account, new List<ITransIncBase>());
+            _fromAccountAssignment.Add(account, new List<ITransfer>());
+            _toAccountAssignment.Add(account, new List<ITransfer>());
         }
 
-        private void AssignAccount(string name, TransIncBase titNoTransfer)
+        private void AssignAccount(string name, ITransIncBase titNoTransfer)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
             _accountAssignment[_accountCache[name]].Add(titNoTransfer);
         }
 
-        private void AssignToAccount(string name, Transfer transfer)
+        private void AssignToAccount(string name, ITransfer transfer)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
             _toAccountAssignment[_accountCache[name]].Add(transfer);
         }
 
-        private void AssignFormAccount(string name, Transfer transfer)
+        private void AssignFormAccount(string name, ITransfer transfer)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
             _fromAccountAssignment[_accountCache[name]].Add(transfer);
         }
 
-        private List<Account> GetAllAccountCache()
+        private List<IAccount> GetAllAccountCache()
         {
             return _accountCache.Values.ToList();
         }
@@ -451,18 +451,18 @@ namespace BFF.Helper.Import
 
         #region Payees
 
-        private readonly IDictionary<string, Payee> _payeeCache = new Dictionary<string, Payee>();
-        private readonly IDictionary<Payee, IList<TransIncBase>> _payeeAssingment = new Dictionary<Payee, IList<TransIncBase>>();
+        private readonly IDictionary<string, IPayee> _payeeCache = new Dictionary<string, IPayee>();
+        private readonly IDictionary<IPayee, IList<ITransIncBase>> _payeeAssingment = new Dictionary<IPayee, IList<ITransIncBase>>();
 
-        private void CreateAndOrAssignPayee(string name, TransIncBase titBase)
+        private void CreateAndOrAssignPayee(string name, ITransIncBase titBase)
         {
             if(string.IsNullOrWhiteSpace(name))
                 return;
             if(!_payeeCache.ContainsKey(name))
             {
-                Payee payee = new Payee(name: name);
+                IPayee payee = new Payee(name: name);
                 _payeeCache.Add(name, payee);
-                _payeeAssingment.Add(payee, new List<TransIncBase> {titBase});
+                _payeeAssingment.Add(payee, new List<ITransIncBase> {titBase});
             }
             else
             {
@@ -470,7 +470,7 @@ namespace BFF.Helper.Import
             }
         }
 
-        private List<Payee> GetAllPayeeCache()
+        private List<IPayee> GetAllPayeeCache()
         {
             return _payeeCache.Values.ToList();
         }
@@ -485,24 +485,24 @@ namespace BFF.Helper.Import
 
         #region Categories
 
-        private readonly IDictionary<string, Category> _categoriesCache = new Dictionary<string, Category>();
+        private readonly IDictionary<string, ICategory> _categoriesCache = new Dictionary<string, ICategory>();
 
-        private readonly IDictionary<Category, IList<IHaveCategory>> _categoryTitAssignment =
-            new Dictionary<Category, IList<IHaveCategory>>();
+        private readonly IDictionary<ICategory, IList<IHaveCategory>> _categoryTitAssignment =
+            new Dictionary<ICategory, IList<IHaveCategory>>();
 
-        private readonly IDictionary<Category, IList<Category>> _categoryCategoryAssignment =
-            new Dictionary<Category, IList<Category>>();
+        private readonly IDictionary<ICategory, IList<ICategory>> _categoryCategoryAssignment =
+            new Dictionary<ICategory, IList<ICategory>>();
 
         private void CreateAndOrAssignCategory(string namePath)
         {
             if(string.IsNullOrWhiteSpace(namePath)) return;
-            Category category;
+            ICategory category;
             if(!_categoriesCache.ContainsKey(namePath))
             {
                 category = new Category(name: namePath.Split(':').Last());
                 _categoriesCache.Add(namePath, category);
                 _categoryTitAssignment.Add(category, new List<IHaveCategory>());
-                _categoryCategoryAssignment.Add(category, new List<Category>());
+                _categoryCategoryAssignment.Add(category, new List<ICategory>());
             }
             else
             {
@@ -514,10 +514,10 @@ namespace BFF.Helper.Import
                 string parentName = namePath.Split(':').First();
                 if(!_categoriesCache.ContainsKey(parentName))
                 {
-                    Category parentCategory = new Category(name: parentName);
+                    ICategory parentCategory = new Category(name: parentName);
                     _categoriesCache.Add(parentName, parentCategory);
                     _categoryTitAssignment.Add(parentCategory, new List<IHaveCategory>());
-                    _categoryCategoryAssignment.Add(parentCategory, new List<Category> {category});
+                    _categoryCategoryAssignment.Add(parentCategory, new List<ICategory> {category});
                 }
                 else
                     _categoryCategoryAssignment[_categoriesCache[parentName]].Add(category);
@@ -531,7 +531,7 @@ namespace BFF.Helper.Import
             _categoryTitAssignment[_categoriesCache[namePath]].Add(titLike);
         }
 
-        private List<Category> GetAllCategoryCache()
+        private List<ICategory> GetAllCategoryCache()
         {
             return _categoriesCache.Values.ToList();
         }

@@ -31,9 +31,9 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        private Account _account;
+        private IAccount _account;
 
-        public Account Account
+        public IAccount Account
         {
             get { return _account; }
             set
@@ -45,7 +45,7 @@ namespace BFF.MVVM.ViewModels
 
         public IList<TitLikeViewModel> ParentTitSource => new List<TitLikeViewModel> {ParentTit};
 
-        public ParentTitViewModel(TitLikeViewModel parent, string title, Account account)
+        public ParentTitViewModel(TitLikeViewModel parent, string title, IAccount account)
         {
              _title = title;
             _account = account;

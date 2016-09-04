@@ -19,7 +19,7 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
             {
                 //Arrange
                 Mock<IBffOrm> ormMock = MockTheOrm();
-                Transaction transaction = new Transaction(-1, accountId, dateTime, payeeId, categoryId, memo, sum, cleared);
+                ITransaction transaction = new Transaction(-1, accountId, dateTime, payeeId, categoryId, memo, sum, cleared);
                 TransactionViewModel transactionViewModel = new TransactionViewModel(transaction, ormMock.Object);
 
                 //Act
@@ -45,13 +45,13 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
 
         private static Mock<IBffOrm> MockTheOrm()
         {
-            Account account1 = new Account(1, "One", 1), 
+            IAccount account1 = new Account(1, "One", 1), 
                     account2 = new Account(2, "Two", 10),
                     account3 = new Account(3, "Three", 11);
-            Payee payee1 = new Payee(1, "One"), 
+            IPayee payee1 = new Payee(1, "One"), 
                   payee2 = new Payee(2, "Two"),
                   payee3 = new Payee(3, "Three");
-            Category category1 = new Category(1, -1, "One"), 
+            ICategory category1 = new Category(1, -1, "One"), 
                      category2 = new Category(2, -1, "Two"),
                      category3 = new Category(3, 1, "Three");
 

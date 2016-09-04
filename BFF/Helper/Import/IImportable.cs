@@ -13,33 +13,33 @@ namespace BFF.Helper.Import
 
     public struct ImportLists
     {
-        public IList<Account> Accounts;
-        public IList<Payee> Payees;
-        public IList<Category> Categories;
+        public IList<IAccount> Accounts;
+        public IList<IPayee> Payees;
+        public IList<ICategory> Categories;
 
-        public IList<Transaction> Transactions;
-        public IList<Income> Incomes;
-        public IList<Transfer> Transfers;
+        public IList<ITransaction> Transactions;
+        public IList<IIncome> Incomes;
+        public IList<ITransfer> Transfers;
 
-        public IList<ParentTransaction> ParentTransactions;
-        public IList<ParentIncome> ParentIncomes;
+        public IList<IParentTransaction> ParentTransactions;
+        public IList<IParentIncome> ParentIncomes;
 
-        public IList<SubTransaction> SubTransactions;
-        public IList<SubIncome> SubIncomes;
+        public IList<ISubTransaction> SubTransactions;
+        public IList<ISubIncome> SubIncomes;
     }
 
     public struct ImportAssignments
     {
-        public IDictionary<Account, IList<TransIncBase>> AccountToTransIncBase;
-        public IDictionary<Account, IList<Transfer>> FromAccountToTransfer;
-        public IDictionary<Account, IList<Transfer>> ToAccountToTransfer;
+        public IDictionary<IAccount, IList<ITransIncBase>> AccountToTransIncBase;
+        public IDictionary<IAccount, IList<ITransfer>> FromAccountToTransfer;
+        public IDictionary<IAccount, IList<ITransfer>> ToAccountToTransfer;
 
-        public IDictionary<Payee, IList<TransIncBase>> PayeeToTransIncBase;
+        public IDictionary<IPayee, IList<ITransIncBase>> PayeeToTransIncBase;
 
-        public IDictionary<Category, IList<IHaveCategory>> CategoryToIHaveCategory;
-        public IDictionary<Category, IList<Category>> CategoryToCategory;
+        public IDictionary<ICategory, IList<IHaveCategory>> CategoryToIHaveCategory;
+        public IDictionary<ICategory, IList<ICategory>> CategoryToCategory;
 
-        public IDictionary<ParentTransaction, IList<SubTransaction>> ParentTransactionToSubTransaction;
-        public IDictionary<ParentIncome, IList<SubIncome>> ParentIncomeToSubIncome;
+        public IDictionary<IParentTransaction, IList<ISubTransaction>> ParentTransactionToSubTransaction;
+        public IDictionary<IParentIncome, IList<ISubIncome>> ParentIncomeToSubIncome;
     }
 }

@@ -13,9 +13,9 @@ namespace BFF.DB
     {
         protected readonly IPagedOrm PagedOrm;
         protected readonly IBffOrm Orm;
-        protected readonly Account Account;
+        protected readonly IAccount Account;
 
-        public PagedTitBaseProvider(IPagedOrm pagedOrm, Account account, IBffOrm orm)
+        public PagedTitBaseProvider(IPagedOrm pagedOrm, IAccount account, IBffOrm orm)
         {
             PagedOrm = pagedOrm;
             Account = account;
@@ -34,20 +34,20 @@ namespace BFF.DB
 
         public PagedSourceItemsPacket<TitLikeViewModel> GetItemsAt(int pageoffset, int count, bool usePlaceholder)
         {
-            IEnumerable<TitBase> items = PagedOrm.GetPage<TitBase>(pageoffset, count, Account);
+            IEnumerable<ITitBase> items = PagedOrm.GetPage<ITitBase>(pageoffset, count, Account);
             IList<TitLikeViewModel> vmItems = new List<TitLikeViewModel>();
-            foreach(TitBase item in items)
+            foreach(ITitBase item in items)
             {
-                if(item is Transfer)
-                    vmItems.Add(new TransferViewModel(item as Transfer, Orm));
-                else if (item is ParentTransaction)
-                    vmItems.Add(new ParentTransactionViewModel(item as ParentTransaction, Orm));
-                else if (item is ParentIncome)
-                    vmItems.Add(new ParentIncomeViewModel(item as ParentIncome, Orm));
-                else if (item is Transaction)
-                    vmItems.Add(new TransactionViewModel(item as Transaction, Orm));
-                else if (item is Income)
-                    vmItems.Add(new IncomeViewModel(item as Income, Orm));
+                if(item is ITransfer)
+                    vmItems.Add(new TransferViewModel(item as ITransfer, Orm));
+                else if (item is IParentTransaction)
+                    vmItems.Add(new ParentTransactionViewModel(item as IParentTransaction, Orm));
+                else if (item is IParentIncome)
+                    vmItems.Add(new ParentIncomeViewModel(item as IParentIncome, Orm));
+                else if (item is ITransaction)
+                    vmItems.Add(new TransactionViewModel(item as ITransaction, Orm));
+                else if (item is IIncome)
+                    vmItems.Add(new IncomeViewModel(item as IIncome, Orm));
             }
             return new PagedSourceItemsPacket<TitLikeViewModel> { Items = vmItems , LoadedAt = DateTime.Now };
         }
@@ -57,14 +57,14 @@ namespace BFF.DB
             return -1; //todo: Find a way
         }
 
-        public int Count => PagedOrm.GetCount<TitBase>(Account);
+        public int Count => PagedOrm.GetCount<ITitBase>(Account);
 
         #endregion
     }
     class PagedTitBaseProviderAsync : PagedTitBaseProvider, IPagedSourceProviderAsync<TitLikeViewModel>
     {
 
-        public PagedTitBaseProviderAsync(IPagedOrm pagedOrm, Account account, IBffOrm orm) : base(pagedOrm, account, orm)
+        public PagedTitBaseProviderAsync(IPagedOrm pagedOrm, IAccount account, IBffOrm orm) : base(pagedOrm, account, orm)
         {
         }
 

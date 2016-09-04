@@ -34,7 +34,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All currently available Accounts.
         /// </summary>
-        public ObservableCollection<Account> AllAccounts => Orm?.CommonPropertyProvider.Accounts;
+        public ObservableCollection<IAccount> AllAccounts => Orm?.CommonPropertyProvider.Accounts;
 
         #endregion
     }

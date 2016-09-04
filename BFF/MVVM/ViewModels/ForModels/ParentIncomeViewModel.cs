@@ -14,7 +14,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="transInc">A ParentIncome Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public ParentIncomeViewModel(ParentIncome transInc, IBffOrm orm) : base(transInc, orm) { }
+        public ParentIncomeViewModel(IParentIncome transInc, IBffOrm orm) : base(transInc, orm) { }
 
         #region Overrides of DataModelViewModel
 

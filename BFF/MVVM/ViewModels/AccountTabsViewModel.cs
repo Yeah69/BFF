@@ -18,7 +18,7 @@ namespace BFF.MVVM.ViewModels
 
         public ObservableCollection<AccountViewModel> AllAccounts => _orm.CommonPropertyProvider.AccountViewModels;
 
-        public ObservableCollection<Category> AllCategories => _orm.CommonPropertyProvider.Categories; 
+        public ObservableCollection<ICategory> AllCategories => _orm.CommonPropertyProvider.Categories; 
 
         public SummaryAccountViewModel SummaryAccountViewModel
         {
@@ -29,7 +29,7 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public Account NewAccount { get; set; } = new Account {Id = -1, Name = "", StartingBalance = 0L};
+        public IAccount NewAccount { get; set; } = new Account {Id = -1, Name = "", StartingBalance = 0L};
         
         public ICommand NewAccountCommand => new RelayCommand(param =>
         {
@@ -45,9 +45,9 @@ namespace BFF.MVVM.ViewModels
         }
         , param => !string.IsNullOrEmpty(NewAccount.Name));
         
-        public Func<string, Payee> CreatePayeeFunc => name => 
+        public Func<string, IPayee> CreatePayeeFunc => name => 
         {
-            Payee ret = new Payee {Name = name};
+            IPayee ret = new Payee {Name = name};
             _orm.Insert(ret);
             return ret;
         }; 
@@ -56,7 +56,7 @@ namespace BFF.MVVM.ViewModels
         {
             _orm = orm;
 
-            DbSetting dbSetting = orm.Get<DbSetting>(1);
+            IDbSetting dbSetting = orm.Get<DbSetting>(1);
             Settings.Default.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultrureName);
             Settings.Default.Culture_SessionDate = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
             ManageCultures();

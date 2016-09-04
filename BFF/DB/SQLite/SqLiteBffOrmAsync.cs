@@ -13,7 +13,7 @@ namespace BFF.DB.SQLite
     {
         #region Implementation of ICrudOrmAsync
 
-        public Task<IEnumerable<T>> GetAllAsync<T>() where T : DataModelBase
+        public Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IDataModelBase
         {
             if (!DbLockFlag)
             {
@@ -30,7 +30,7 @@ namespace BFF.DB.SQLite
             return newTask;
         }
 
-        public Task<int> InsertAsync<T>(T dataModelBase) where T : DataModelBase
+        public Task<int> InsertAsync<T>(T dataModelBase) where T : class, IDataModelBase
         {
             Task<int> ret = null;
             if (!DbLockFlag)
@@ -45,17 +45,17 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public Task<T> GetAsync<T>(long id) where T : DataModelBase
+        public Task<T> GetAsync<T>(long id) where T : class, IDataModelBase
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync<T>(T dataModelBase) where T : DataModelBase
+        public Task UpdateAsync<T>(T dataModelBase) where T : class, IDataModelBase
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync<T>(T dataModelBase) where T : DataModelBase
+        public Task DeleteAsync<T>(T dataModelBase) where T : class, IDataModelBase
         {
             throw new NotImplementedException();
         }
@@ -83,24 +83,24 @@ namespace BFF.DB.SQLite
             throw new NotImplementedException();
         }
 
-        public Task PopulateDatabaseAsync(IEnumerable<Transaction> transactions, IEnumerable<SubTransaction> subTransactions, IEnumerable<Income> incomes,
-                                          IEnumerable<SubIncome> subIncomes, IEnumerable<Transfer> transfers, IEnumerable<Account> accounts, IEnumerable<Payee> payees,
-                                          IEnumerable<Category> categories)
+        public Task PopulateDatabaseAsync(IEnumerable<ITransaction> transactions, IEnumerable<ISubTransaction> subTransactions, IEnumerable<IIncome> incomes,
+                                          IEnumerable<ISubIncome> subIncomes, IEnumerable<ITransfer> transfers, IEnumerable<IAccount> accounts, IEnumerable<IPayee> payees,
+                                          IEnumerable<ICategory> categories)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<TitBase> GetAllTitsAsync(DateTime startTime, DateTime endTime, Account account = null)
+        public IEnumerable<ITitBase> GetAllTitsAsync(DateTime startTime, DateTime endTime, IAccount account = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<long?> GetAccountBalanceAsync(Account account = null)
+        public Task<long?> GetAccountBalanceAsync(IAccount account = null)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : SubTransInc
+        public IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : class, ISubTransInc
         {
             throw new NotImplementedException();
         }

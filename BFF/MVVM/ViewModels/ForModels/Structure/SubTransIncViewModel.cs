@@ -38,7 +38,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Each SubTransaction or SubIncome can be budgeted to a category.
         /// </summary>
-        public Category Category
+        public ICategory Category
         {
             get
             {
@@ -117,14 +117,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The ParentCategory to which the new Category should be added.
         /// </summary>
-        public Category AddingCategoryParent { get; set; }
+        public ICategory AddingCategoryParent { get; set; }
 
         /// <summary>
         /// Creates a new Category.
         /// </summary>
         public ICommand AddCategoryCommand => new RelayCommand(obj =>
         {
-            Category newCategory = new Category {Name = CategoryText.Trim()};
+            ICategory newCategory = new Category {Name = CategoryText.Trim()};
             if(AddingCategoryParent != null)
             {
                 newCategory.Parent = AddingCategoryParent;
@@ -147,7 +147,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All currently available Categories.
         /// </summary>
-        public ObservableCollection<Category> AllCategories => Orm?.CommonPropertyProvider?.Categories;
+        public ObservableCollection<ICategory> AllCategories => Orm?.CommonPropertyProvider?.Categories;
 
         #endregion
 

@@ -43,17 +43,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All available Accounts.
         /// </summary>
-        public ObservableCollection<Account> AllAccounts => Orm?.CommonPropertyProvider.Accounts;
+        public ObservableCollection<IAccount> AllAccounts => Orm?.CommonPropertyProvider.Accounts;
 
         /// <summary>
         /// All available Payees.
         /// </summary>
-        public ObservableCollection<Payee> AllPayees => Orm?.CommonPropertyProvider.Payees;
+        public ObservableCollection<IPayee> AllPayees => Orm?.CommonPropertyProvider.Payees;
 
         /// <summary>
         /// All available Categories.
         /// </summary>
-        public ObservableCollection<Category> AllCategories => Orm?.CommonPropertyProvider.Categories;
+        public ObservableCollection<ICategory> AllCategories => Orm?.CommonPropertyProvider.Categories;
 
         /// <summary>
         /// Creates a new Transaction.
@@ -93,7 +93,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The Account Model.
         /// </summary>
-        public Account Account { get; protected set; }
+        public IAccount Account { get; protected set; }
 
         /// <summary>
         /// Initializes a AccountBaseViewModel.

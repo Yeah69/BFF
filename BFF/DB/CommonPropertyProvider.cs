@@ -9,20 +9,20 @@ using BFF.MVVM.ViewModels.ForModels;
 namespace BFF.DB
 {
     public interface ICommonPropertyProvider {
-        ObservableCollection<Account> Accounts { get; }
+        ObservableCollection<IAccount> Accounts { get; }
         ObservableCollection<AccountViewModel> AccountViewModels { get; }
         SummaryAccountViewModel SummaryAccountViewModel { get; }
-        ObservableCollection<Payee> Payees { get; }
-        ObservableCollection<Category> Categories { get; }
-        void Add(Account account);
-        void Add(Payee payee);
-        void Add(Category category);
-        void Remove(Account account);
-        void Remove(Payee payee);
-        void Remove(Category category);
-        Account GetAccount(long id);
-        Payee GetPayee(long id);
-        Category GetCategory(long id);
+        ObservableCollection<IPayee> Payees { get; }
+        ObservableCollection<ICategory> Categories { get; }
+        void Add(IAccount account);
+        void Add(IPayee payee);
+        void Add(ICategory category);
+        void Remove(IAccount account);
+        void Remove(IPayee payee);
+        void Remove(ICategory category);
+        IAccount GetAccount(long id);
+        IPayee GetPayee(long id);
+        ICategory GetCategory(long id);
         AccountViewModel GetAccountViewModel(long id);
     }
 
@@ -30,15 +30,15 @@ namespace BFF.DB
     {
         private IBffOrm _orm;
 
-        public ObservableCollection<Account> Accounts { get; private set; }
+        public ObservableCollection<IAccount> Accounts { get; private set; }
 
         public ObservableCollection<AccountViewModel> AccountViewModels { get; private set; }
 
         public SummaryAccountViewModel SummaryAccountViewModel { get; private set; }
 
-        public ObservableCollection<Payee> Payees { get; private set; }
+        public ObservableCollection<IPayee> Payees { get; private set; }
 
-        public ObservableCollection<Category> Categories { get; private set; }
+        public ObservableCollection<ICategory> Categories { get; private set; }
 
         //todo PayeeViewModels!?
 
@@ -54,19 +54,19 @@ namespace BFF.DB
             InitializeCategories();
         }
 
-        public void Add(Account account)
+        public void Add(IAccount account)
         {
             _orm.Insert(account);
             Accounts.Add(account);
         }
 
-        public void Add(Payee payee)
+        public void Add(IPayee payee)
         {
             _orm.Insert(payee);
             Payees.Add(payee);
         }
 
-        public void Add(Category category)
+        public void Add(ICategory category)
         {
             _orm.Insert(category);
             if (category.Parent == null) //if new category has no parents then append at the end of the list
@@ -80,27 +80,27 @@ namespace BFF.DB
             }
         }
 
-        public void Remove(Account account)
+        public void Remove(IAccount account)
         {
             _orm.Delete(account);
             Accounts.Remove(account);
         }
 
-        public void Remove(Payee payee)
+        public void Remove(IPayee payee)
         {
             _orm.Delete(payee);
             Payees.Remove(payee);
         }
 
-        public void Remove(Category category)
+        public void Remove(ICategory category)
         {
             _orm.Delete(category);
             Categories.Remove(category);
         }
 
-        public Account GetAccount(long id) => Accounts.FirstOrDefault(account => account.Id == id);
-        public Payee GetPayee(long id) => Payees.FirstOrDefault(payee => payee.Id == id);
-        public Category GetCategory(long id) => Categories.FirstOrDefault(category => category.Id == id);
+        public IAccount GetAccount(long id) => Accounts.FirstOrDefault(account => account.Id == id);
+        public IPayee GetPayee(long id) => Payees.FirstOrDefault(payee => payee.Id == id);
+        public ICategory GetCategory(long id) => Categories.FirstOrDefault(category => category.Id == id);
 
         public AccountViewModel GetAccountViewModel(long id)
             => AccountViewModels.FirstOrDefault(accountVm => accountVm.Id == id);
@@ -108,7 +108,7 @@ namespace BFF.DB
         private void InitializeAccounts()
         {
             SummaryAccountViewModel = new SummaryAccountViewModel(_orm);
-            Accounts = new ObservableCollection<Account>(_orm.GetAll<Account>().OrderBy(account => account.Name));
+            Accounts = new ObservableCollection<IAccount>(_orm.GetAll<Account>().OrderBy(account => account.Name));
             AccountViewModels = new ObservableCollection<AccountViewModel>(
                 Accounts.Select(account => new AccountViewModel(account, _orm)));
             Accounts.CollectionChanged += (sender, args) =>
@@ -119,7 +119,7 @@ namespace BFF.DB
                         int i = args.NewStartingIndex;
                         foreach(var newItem in args.NewItems)
                         {
-                            AccountViewModels.Insert(i, new AccountViewModel(newItem as Account, _orm));
+                            AccountViewModels.Insert(i, new AccountViewModel(newItem as IAccount, _orm));
                             i++;
                         }
                         break;
@@ -142,16 +142,16 @@ namespace BFF.DB
 
         private void InitializePayees()
         {
-            Payees = new ObservableCollection<Payee>(_orm.GetAll<Payee>().OrderBy(payee => payee.Name));
+            Payees = new ObservableCollection<IPayee>(_orm.GetAll<Payee>().OrderBy(payee => payee.Name));
         }
 
         private void InitializeCategories()
         {
-            Categories = new ObservableCollection<Category>();
-            Dictionary<long, Category> catagoryDictionary = _orm.GetAll<Category>().ToDictionary(category => category.Id);
+            Categories = new ObservableCollection<ICategory>();
+            Dictionary<long, ICategory> catagoryDictionary = _orm.GetAll<Category>().Cast<ICategory>().ToDictionary(category => category.Id);
             //Now after every Category is loaded the Parent-Child relations are established
-            List<Category> parentCategories = new List<Category>();
-            foreach (Category category in catagoryDictionary.Values)
+            List<ICategory> parentCategories = new List<ICategory>();
+            foreach (ICategory category in catagoryDictionary.Values)
             {
                 if (category.ParentId != null && category.ParentId > 0)
                 {
@@ -160,7 +160,7 @@ namespace BFF.DB
                 }
                 else parentCategories.Add(category);
             }
-            foreach (Category parentCategory in parentCategories.OrderBy(category => category.Name))
+            foreach (ICategory parentCategory in parentCategories.OrderBy(category => category.Name))
             {
                 Categories.Add(parentCategory);
                 FillCategoryWithDescandents(parentCategory,  Categories);
@@ -169,9 +169,9 @@ namespace BFF.DB
 
 
 
-        private void FillCategoryWithDescandents(Category parentCategory, IList<Category> list)
+        private void FillCategoryWithDescandents(ICategory parentCategory, IList<ICategory> list)
         {
-            foreach (Category childCategory in parentCategory.Categories.OrderBy(category => category.Name))
+            foreach (ICategory childCategory in parentCategory.Categories.OrderBy(category => category.Name))
             {
                 list.Add(childCategory);
                 FillCategoryWithDescandents(childCategory, list);

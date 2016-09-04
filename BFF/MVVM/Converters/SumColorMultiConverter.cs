@@ -16,14 +16,14 @@ namespace BFF.MVVM.Converters
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             //Transfer in "All Accounts"-Tab
-            if (values[0] is SummaryAccount)
+            if (values[0] is ISummaryAccount)
                 return TransferBrush;
-            Account account = (Account)values[0];
+            IAccount account = (IAccount)values[0];
             //Transfer in FromAccount-Tab
-            if(account == (Account)values[1])
+            if(account == (IAccount)values[1])
                 return NegativeBrush;
             //Transfer in ToAccount-Tab
-            if (account == (Account)values[2])
+            if (account == (IAccount)values[2])
                 return PositiveBrush;
             return Brushes.Transparent;
         }

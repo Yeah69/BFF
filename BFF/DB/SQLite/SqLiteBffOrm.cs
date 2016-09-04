@@ -77,12 +77,12 @@ namespace BFF.DB.SQLite
                 because the structure of the imported csv-Entry of Categories allowes to get the master category first and
                 then the sub category. Thus, the parents id is known beforehand.
                 */
-                foreach (Category category in importLists.Categories)
+                foreach (ICategory category in importLists.Categories)
                 {
                     category.Id = Cnn.Insert(category);
                     if (importAssignments.CategoryToCategory.ContainsKey(category))
                     {
-                        foreach (Category subCategory in importAssignments.CategoryToCategory[category])
+                        foreach (ICategory subCategory in importAssignments.CategoryToCategory[category])
                         {
                             subCategory.ParentId = category.Id;
                         }
@@ -95,55 +95,55 @@ namespace BFF.DB.SQLite
                         }
                     }
                 }
-                foreach (Payee payee in importLists.Payees)
+                foreach (IPayee payee in importLists.Payees)
                 {
                     payee.Id = Cnn.Insert(payee);
-                    foreach(TransIncBase transIncBase in importAssignments.PayeeToTransIncBase[payee])
+                    foreach(ITransIncBase transIncBase in importAssignments.PayeeToTransIncBase[payee])
                     {
                         transIncBase.PayeeId = payee.Id;
                     }
                 }
-                foreach (Account account in importLists.Accounts)
+                foreach (IAccount account in importLists.Accounts)
                 {
                     account.Id = Cnn.Insert(account);
-                    foreach(TransIncBase transIncBase in importAssignments.AccountToTransIncBase[account])
+                    foreach(ITransIncBase transIncBase in importAssignments.AccountToTransIncBase[account])
                     {
                         transIncBase.AccountId = account.Id;
                     }
-                    foreach(Transfer transfer in importAssignments.FromAccountToTransfer[account])
+                    foreach(ITransfer transfer in importAssignments.FromAccountToTransfer[account])
                     {
                         transfer.FromAccountId = account.Id;
                     }
-                    foreach(Transfer transfer in importAssignments.ToAccountToTransfer[account])
+                    foreach(ITransfer transfer in importAssignments.ToAccountToTransfer[account])
                     {
                         transfer.ToAccountId = account.Id;
                     }
                 }
-                foreach (Transaction transaction in importLists.Transactions)
+                foreach (ITransaction transaction in importLists.Transactions)
                     transaction.Id = Cnn.Insert(transaction);
-                foreach (ParentTransaction parentTransaction in importLists.ParentTransactions)
+                foreach (IParentTransaction parentTransaction in importLists.ParentTransactions)
                 {
                     parentTransaction.Id = Cnn.Insert(parentTransaction);
-                    foreach(SubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
+                    foreach(ISubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
                     {
                         subTransaction.ParentId = parentTransaction.Id;
                     }
                 }
-                foreach (SubTransaction subTransaction in importLists.SubTransactions)
+                foreach (ISubTransaction subTransaction in importLists.SubTransactions)
                     subTransaction.Id = Cnn.Insert(subTransaction);
-                foreach (Income income in importLists.Incomes)
+                foreach (IIncome income in importLists.Incomes)
                     income.Id = Cnn.Insert(income);
-                foreach (ParentIncome parentIncome in importLists.ParentIncomes)
+                foreach (IParentIncome parentIncome in importLists.ParentIncomes)
                 {
                     parentIncome.Id = Cnn.Insert(parentIncome);
-                    foreach (SubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
+                    foreach (ISubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
                     {
                         subIncome.ParentId = parentIncome.Id;
                     }
                 }
-                foreach (SubIncome subIncome in importLists.SubIncomes)
+                foreach (ISubIncome subIncome in importLists.SubIncomes)
                     subIncome.Id = Cnn.Insert(subIncome);
-                foreach (Transfer transfer in importLists.Transfers)
+                foreach (ITransfer transfer in importLists.Transfers)
                     transfer.Id = Cnn.Insert(transfer);
 
                 transactionScope.Complete();
@@ -151,17 +151,17 @@ namespace BFF.DB.SQLite
             DbLockFlag = false;
         }
 
-        public IEnumerable<TitBase> GetAllTits(DateTime startDate, DateTime endDate, Account account = null)
+        public IEnumerable<ITitBase> GetAllTits(DateTime startDate, DateTime endDate, IAccount account = null)
         {
             Logger.Debug("Getting all TITs from {0} between {1} and {2}.", account?.Name ?? "SummaryAccount", startDate, endDate);
             DbLockFlag = true;
-            IEnumerable<TitBase> results;
+            IEnumerable<ITitBase> results;
 
-            string accountAddition = $"WHERE date({nameof(TitBase.Date)}) BETWEEN date('{startDate.ToString("yyyy-MM-dd")}') AND date('{endDate.ToString("yyyy-MM-dd")}') ";
+            string accountAddition = $"WHERE date({nameof(ITitBase.Date)}) BETWEEN date('{startDate:yyyy-MM-dd}') AND date('{endDate:yyyy-MM-dd}') ";
             accountAddition += account == null
                 ? ""
-                : $"AND ({nameof(TransIncBase.AccountId)} = @accountId OR {nameof(TransIncBase.AccountId)} = -69 AND ({nameof(TransIncBase.PayeeId)} = @accountId OR {nameof(TransInc.CategoryId)} = @accountId))";
-            string sql = $"SELECT * FROM [{TheTitName}] {accountAddition} ORDER BY {nameof(TitBase.Date)};";
+                : $"AND ({nameof(ITransIncBase.AccountId)} = @accountId OR {nameof(ITransIncBase.AccountId)} = -69 AND ({nameof(ITransIncBase.PayeeId)} = @accountId OR {nameof(ITransInc.CategoryId)} = @accountId))";
+            string sql = $"SELECT * FROM [{TheTitName}] {accountAddition} ORDER BY {nameof(ITitBase.Date)};";
 
             Type[] types =
             {
@@ -180,7 +180,7 @@ namespace BFF.DB.SQLite
             return results;
         }
 
-        public long? GetAccountBalance(Account account)
+        public long? GetAccountBalance(IAccount account)
         {
             Logger.Debug("Getting account balance from {0}.", account?.Name ?? "NULL");
             long ret;
@@ -232,7 +232,7 @@ namespace BFF.DB.SQLite
             IEnumerable<T> ret;
             using (var transactionScope = new DbTransactions.TransactionScope())
             {
-                string query = $"SELECT * FROM [{typeof(T).Name}s] WHERE {nameof(SubTransInc.ParentId)} = @id;";
+                string query = $"SELECT * FROM [{typeof(T).Name}s] WHERE {nameof(ISubTransInc.ParentId)} = @id;";
                 ret = Cnn.Query<T>(query, new { id = parentId });
 
                 transactionScope.Complete();
@@ -240,7 +240,7 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public IEnumerable<T> GetAll<T>() where T : DataModelBase
+        public IEnumerable<T> GetAll<T>() where T : class, IDataModelBase
         {
             Logger.Debug("Getting all entries from table {0}.", typeof(T).Name);
             if (!DbLockFlag)
@@ -256,7 +256,7 @@ namespace BFF.DB.SQLite
             return null;
         }
 
-        public long Insert<T>(T dataModelBase) where T : DataModelBase
+        public long Insert<T>(T dataModelBase) where T : class, IDataModelBase
         {
             Logger.Debug("Insert an entry into table {0}.", typeof(T).Name);
             long ret = -1L;
@@ -272,7 +272,7 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public T Get<T>(long id) where T : DataModelBase
+        public T Get<T>(long id) where T : class, IDataModelBase
         {
             if (!DbLockFlag)
             {
@@ -287,7 +287,7 @@ namespace BFF.DB.SQLite
             return null;
         }
         
-        public void Update<T>(T dataModelBase) where T : DataModelBase
+        public void Update<T>(T dataModelBase) where T : class, IDataModelBase
         {
             if (!DbLockFlag)
             {
@@ -299,7 +299,7 @@ namespace BFF.DB.SQLite
             }
         }
 
-        public void Delete<T>(T dataModelBase) where T : DataModelBase
+        public void Delete<T>(T dataModelBase) where T : class, IDataModelBase
         {
             Logger.Debug("Delete an entry from table {0}.", typeof(T).Name);
             if (!DbLockFlag)
@@ -318,7 +318,7 @@ namespace BFF.DB.SQLite
 
         private const string TheTitName = "The Tit";
 
-        private readonly Func<object[], TitBase> _theTitMap = objArr =>
+        private readonly Func<object[], ITitBase> _theTitMap = objArr =>
         {
             TitType type;
             Enum.TryParse((string)objArr[8], true, out type);
@@ -331,7 +331,7 @@ namespace BFF.DB.SQLite
                 throw new InvalidCastException();
             // todo: Maybe find out why in some cases the date is pre-casted to Date and in others it is still a string
             long? categoryId = (long?) objArr[3];
-            TitBase ret;
+            ITitBase ret;
             switch (type)
             {
                 case TitType.Transaction:
@@ -372,7 +372,7 @@ namespace BFF.DB.SQLite
             CommonPropertyProvider = new CommonPropertyProvider(this);
 
             //Old
-            DataModelBase.Database = this;
+            DataModelBase.Database = this; //todo: Check if still needed. If not remove else refactor so it is not needed anymore and remove
         }
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
@@ -382,7 +382,7 @@ namespace BFF.DB.SQLite
             IEnumerable<T> ret;
             using (var cnnTransaction = new DbTransactions.TransactionScope())
             {
-                if (typeof(T) != typeof(TitBase))
+                if (typeof(T) != typeof(ITitBase))
                 {
                     string query = $"SELECT * FROM [{typeof(T).Name}s] LIMIT {offset}, {pageSize};";
                     ret = Cnn.Query<T>(query);
@@ -390,10 +390,10 @@ namespace BFF.DB.SQLite
                 else
                 {
                     string specifyingAddition = "";
-                    Account account = specifyingObject as Account;
-                    if(account != null && !(account is SummaryAccount))
-                        specifyingAddition = $"WHERE {nameof(TransIncBase.AccountId)} = {account.Id} OR {nameof(TransIncBase.AccountId)} = -69 AND ({nameof(TransIncBase.PayeeId)} = {account.Id} OR {nameof(TransInc.CategoryId)} = {account.Id})";
-                    string query = $"SELECT * FROM [{TheTitName}] {specifyingAddition} ORDER BY {nameof(TitBase.Date)} LIMIT {offset}, {pageSize};";
+                    IAccount account = specifyingObject as IAccount;
+                    if(account != null && !(account is ISummaryAccount))
+                        specifyingAddition = $"WHERE {nameof(ITransIncBase.AccountId)} = {account.Id} OR {nameof(ITransIncBase.AccountId)} = -69 AND ({nameof(ITransIncBase.PayeeId)} = {account.Id} OR {nameof(ITransInc.CategoryId)} = {account.Id})";
+                    string query = $"SELECT * FROM [{TheTitName}] {specifyingAddition} ORDER BY {nameof(ITitBase.Date)} LIMIT {offset}, {pageSize};";
                     Type[] types =
                     {
                         typeof (long), typeof (long), typeof (long), typeof (long),
@@ -412,14 +412,14 @@ namespace BFF.DB.SQLite
             Logger.Debug("Getting the count of table {0}.", typeof(T).Name);
             int ret;
             string query;
-            if(typeof(T) != typeof(TitBase))
+            if(typeof(T) != typeof(ITitBase))
                 query = $"SELECT COUNT(*) FROM {typeof(T).Name};";
             else
             {
                 string specifyingAddition = "";
-                Account account = specifyingObject as Account;
-                if (account != null && !(account is SummaryAccount))
-                    specifyingAddition = $"WHERE {nameof(TransIncBase.AccountId)} = {account.Id} OR {nameof(TransIncBase.AccountId)} = -69 AND ({nameof(TransIncBase.PayeeId)} = {account.Id} OR {nameof(TransInc.CategoryId)} = {account.Id})";
+                IAccount account = specifyingObject as IAccount;
+                if (account != null && !(account is ISummaryAccount))
+                    specifyingAddition = $"WHERE {nameof(ITransIncBase.AccountId)} = {account.Id} OR {nameof(ITransIncBase.AccountId)} = -69 AND ({nameof(ITransIncBase.PayeeId)} = {account.Id} OR {nameof(ITransInc.CategoryId)} = {account.Id})";
                 query = $"SELECT COUNT(*) FROM [{TheTitName}] {specifyingAddition};";
             }
 

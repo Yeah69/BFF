@@ -3,7 +3,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
-    public interface IDataModelBase
+    public interface IDataModelBase : IObservableObject
     {
         /// <summary>
         /// Identification number for the database

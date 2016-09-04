@@ -18,7 +18,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="payee">To whom was payeed or who payeed</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public ParentTransaction(DateTime date, Account account = null, Payee payee = null, string memo = null, bool? cleared = null)
+        public ParentTransaction(DateTime date, IAccount account = null, IPayee payee = null, string memo = null, bool? cleared = null)
             : base(date, account, payee, memo, cleared) {}
 
         /// <summary>

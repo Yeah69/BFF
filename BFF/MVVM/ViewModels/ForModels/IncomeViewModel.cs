@@ -14,7 +14,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="transInc">A Transaction Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public IncomeViewModel(Income transInc, IBffOrm orm) : base(transInc, orm) { }
+        public IncomeViewModel(IIncome transInc, IBffOrm orm) : base(transInc, orm) { }
 
         /// <summary>
         /// Uses the OR mapper to insert the model into the database. Inner function for the Insert method.

@@ -77,7 +77,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The transfered Sum</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public Transfer(DateTime date, Account fromAccount = null, Account toAccount = null, string memo = null,
+        public Transfer(DateTime date, IAccount fromAccount = null, IAccount toAccount = null, string memo = null,
             long sum = 0L, bool? cleared = null)
             : base(date, memo: memo, cleared: cleared)
         {
