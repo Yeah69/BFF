@@ -29,6 +29,15 @@
             }
         }
 
+        /// <summary>
+        /// Representing String
+        /// </summary>
+        /// <returns>Just the Name-property</returns>
+        public override string ToString()
+        {
+            return Name;
+        }
+
         protected CommonProperty(string name = null)
         {
             _name = name;

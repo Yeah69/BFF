@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using Moq;
@@ -96,9 +97,9 @@ namespace BFF.Tests.MVVM.Models.Native
                 Account account = new Account(1, "AnAccount", 6969);
 
                 //Act
-                account.Insert(null);
-                account.Update(null);
-                account.Delete(null);
+                Assert.Throws<ArgumentNullException>(() => account.Insert(null));
+                Assert.Throws<ArgumentNullException>(() => account.Update(null));
+                Assert.Throws<ArgumentNullException>(() => account.Delete(null));
 
                 //Assert
                 //Should not throw exceptions in Act //todo: but maybe it should. Because it cannot be right and the user is lead to think everything is save

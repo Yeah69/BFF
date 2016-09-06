@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper.Contrib.Extensions;
@@ -49,17 +50,20 @@ namespace BFF.MVVM.Models.Native
 
         public override void Insert(IBffOrm orm)
         {
-            orm?.Insert(this);
+            if (orm == null) throw new ArgumentNullException(nameof(orm));
+            orm.Insert(this);
         }
 
         public override void Update(IBffOrm orm)
         {
-            orm?.Update(this);
+            if (orm == null) throw new ArgumentNullException(nameof(orm));
+            orm.Update(this);
         }
 
         public override void Delete(IBffOrm orm)
         {
-            orm?.Delete(this);
+            if (orm == null) throw new ArgumentNullException(nameof(orm));
+            orm.Delete(this);
         }
 
         #endregion

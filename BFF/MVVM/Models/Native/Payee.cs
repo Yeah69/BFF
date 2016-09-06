@@ -1,4 +1,5 @@
-﻿using BFF.DB;
+﻿using System;
+using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -10,15 +11,6 @@ namespace BFF.MVVM.Models.Native
     /// </summary>
     public class Payee : CommonProperty, IPayee
     {
-        /// <summary>
-        /// Representing string
-        /// </summary>
-        /// <returns>Just the Name-property</returns>
-        public override string ToString()
-        {
-            return Name;
-        }
-
         /// <summary>
         /// Initializing the object
         /// </summary>
@@ -33,17 +25,20 @@ namespace BFF.MVVM.Models.Native
 
         public override void Insert(IBffOrm orm)
         {
-            orm?.Insert(this);
+            if (orm == null) throw new ArgumentNullException(nameof(orm));
+            orm.Insert(this);
         }
 
         public override void Update(IBffOrm orm)
         {
-            orm?.Update(this);
+            if (orm == null) throw new ArgumentNullException(nameof(orm));
+            orm.Update(this);
         }
 
         public override void Delete(IBffOrm orm)
         {
-            orm?.Delete(this);
+            if (orm == null) throw new ArgumentNullException(nameof(orm));
+            orm.Delete(this);
         }
 
         #endregion
