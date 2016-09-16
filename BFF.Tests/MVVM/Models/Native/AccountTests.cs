@@ -21,17 +21,17 @@ namespace BFF.Tests.MVVM.Models.Native
 
             [Theory, MemberData(nameof(AccountData))]
             public void ConstructionTheory(long id, string name, long startingBalance)
-            {
+            {  
                 //Arrange
                 Account account = new Account(id, name, startingBalance);
-
+               
                 //Act
-
+               
                 //Assert
                 Assert.True(account.Id == id, $"{nameof(account.Id)} not set right!");
                 Assert.True(account.Name == name, $"{nameof(account.Name)} not set right!");
                 Assert.True(account.StartingBalance == startingBalance, $"{nameof(account.StartingBalance)} not set right!");
-            }
+            }  
 
             [Fact]
             public void DefaultConstructionFact()
@@ -96,13 +96,10 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Arrange
                 Account account = new Account(1, "AnAccount", 6969);
 
-                //Act
+                //Act + Assert
                 Assert.Throws<ArgumentNullException>(() => account.Insert(null));
                 Assert.Throws<ArgumentNullException>(() => account.Update(null));
                 Assert.Throws<ArgumentNullException>(() => account.Delete(null));
-
-                //Assert
-                //Should not throw exceptions in Act //todo: but maybe it should. Because it cannot be right and the user is lead to think everything is save
             }
         }
 

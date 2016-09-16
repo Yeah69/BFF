@@ -62,6 +62,7 @@ namespace BFF.MVVM.Models.Native
             get { return _parentId; }
             set
             {
+                if(_parentId == value) return;
                 _parentId = value;
                 OnPropertyChanged(); 
             }

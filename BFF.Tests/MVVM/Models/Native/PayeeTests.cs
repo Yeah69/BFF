@@ -92,13 +92,10 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Arrange
                 Payee payee = new Payee(1, "Someone");
 
-                //Act
+                //Act + Assert
                 Assert.Throws<ArgumentNullException>(() => payee.Insert(null));
                 Assert.Throws<ArgumentNullException>(() => payee.Update(null));
                 Assert.Throws<ArgumentNullException>(() => payee.Delete(null));
-
-                //Assert
-                //Should not throw exceptions in Act //todo: but maybe it should. Because it cannot be right and the user is lead to think everything is save
             }
         }
 
