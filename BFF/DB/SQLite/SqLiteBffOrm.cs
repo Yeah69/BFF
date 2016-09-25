@@ -68,8 +68,8 @@ namespace BFF.DB.SQLite
 
         public void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments)
         {
+            //todo: more performance
             Logger.Info("Populating the current database.");
-            DbLockFlag = true;
             using (var transactionScope = new DbTransactions.TransactionScope(DbTransactions.TransactionScopeOption.RequiresNew, new DbTransactions.TransactionOptions {IsolationLevel = DbTransactions.IsolationLevel.RepeatableRead}))
             {
                 /*  
@@ -77,27 +77,24 @@ namespace BFF.DB.SQLite
                 because the structure of the imported csv-Entry of Categories allowes to get the master category first and
                 then the sub category. Thus, the parents id is known beforehand.
                 */
-                foreach (ICategory category in importLists.Categories)
+                Queue<CategoryImportWrapper> categoriesOrder = new Queue<CategoryImportWrapper>(importLists.Categories);
+                while(categoriesOrder.Count > 0)
                 {
-                    category.Id = Cnn.Insert(category);
-                    if (importAssignments.CategoryToCategory.ContainsKey(category))
+                    CategoryImportWrapper current = categoriesOrder.Dequeue();
+                    current.Category.Insert(this);
+                    foreach(IHaveCategory currentTitAssignment in current.TitAssignments)
                     {
-                        foreach (ICategory subCategory in importAssignments.CategoryToCategory[category])
-                        {
-                            subCategory.ParentId = category.Id;
-                        }
+                        currentTitAssignment.CategoryId = current.Category.Id;
                     }
-                    if (importAssignments.CategoryToIHaveCategory.ContainsKey(category))
+                    foreach(CategoryImportWrapper categoryImportWrapper in current.Categories)
                     {
-                        foreach (IHaveCategory hasCategory in importAssignments.CategoryToIHaveCategory[category])
-                        {
-                            hasCategory.CategoryId = category.Id;
-                        }
+                        categoryImportWrapper.Category.ParentId = current.Category.Id;
+                        categoriesOrder.Enqueue(categoryImportWrapper);
                     }
                 }
                 foreach (IPayee payee in importLists.Payees)
                 {
-                    payee.Id = Cnn.Insert(payee);
+                    payee.Insert(this);
                     foreach(ITransIncBase transIncBase in importAssignments.PayeeToTransIncBase[payee])
                     {
                         transIncBase.PayeeId = payee.Id;
@@ -105,7 +102,7 @@ namespace BFF.DB.SQLite
                 }
                 foreach (IAccount account in importLists.Accounts)
                 {
-                    account.Id = Cnn.Insert(account);
+                    account.Insert(this);
                     foreach(ITransIncBase transIncBase in importAssignments.AccountToTransIncBase[account])
                     {
                         transIncBase.AccountId = account.Id;
@@ -120,41 +117,39 @@ namespace BFF.DB.SQLite
                     }
                 }
                 foreach (ITransaction transaction in importLists.Transactions)
-                    transaction.Id = Cnn.Insert(transaction);
+                    transaction.Insert(this);
                 foreach (IParentTransaction parentTransaction in importLists.ParentTransactions)
                 {
-                    parentTransaction.Id = Cnn.Insert(parentTransaction);
+                    parentTransaction.Insert(this);
                     foreach(ISubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
                     {
                         subTransaction.ParentId = parentTransaction.Id;
                     }
                 }
                 foreach (ISubTransaction subTransaction in importLists.SubTransactions)
-                    subTransaction.Id = Cnn.Insert(subTransaction);
+                    subTransaction.Insert(this);
                 foreach (IIncome income in importLists.Incomes)
-                    income.Id = Cnn.Insert(income);
+                    income.Insert(this);
                 foreach (IParentIncome parentIncome in importLists.ParentIncomes)
                 {
-                    parentIncome.Id = Cnn.Insert(parentIncome);
+                    parentIncome.Insert(this);
                     foreach (ISubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
                     {
                         subIncome.ParentId = parentIncome.Id;
                     }
                 }
                 foreach (ISubIncome subIncome in importLists.SubIncomes)
-                    subIncome.Id = Cnn.Insert(subIncome);
+                    subIncome.Insert(this);
                 foreach (ITransfer transfer in importLists.Transfers)
-                    transfer.Id = Cnn.Insert(transfer);
+                    transfer.Insert(this);
 
                 transactionScope.Complete();
             }
-            DbLockFlag = false;
         }
 
         public IEnumerable<ITitBase> GetAllTits(DateTime startDate, DateTime endDate, IAccount account = null)
         {
             Logger.Debug("Getting all TITs from {0} between {1} and {2}.", account?.Name ?? "SummaryAccount", startDate, endDate);
-            DbLockFlag = true;
             IEnumerable<ITitBase> results;
 
             string accountAddition = $"WHERE date({nameof(ITitBase.Date)}) BETWEEN date('{startDate:yyyy-MM-dd}') AND date('{endDate:yyyy-MM-dd}') ";
@@ -175,8 +170,6 @@ namespace BFF.DB.SQLite
 
                 transactionScope.Complete();
             }
-
-            DbLockFlag = false;
             return results;
         }
 
@@ -243,78 +236,59 @@ namespace BFF.DB.SQLite
         public IEnumerable<T> GetAll<T>() where T : class, IDataModelBase
         {
             Logger.Debug("Getting all entries from table {0}.", typeof(T).Name);
-            if (!DbLockFlag)
+            IEnumerable<T> ret;
+            using (var transactionScope = new DbTransactions.TransactionScope())
             {
-                IEnumerable<T> ret;
-                using (var transactionScope = new DbTransactions.TransactionScope())
-                {
-                    ret = Cnn.GetAll<T>();
-                    transactionScope.Complete();
-                }
-                return ret;
+                ret = Cnn.GetAll<T>();
+                transactionScope.Complete();
             }
-            return null;
+            return ret;
         }
 
         public long Insert<T>(T dataModelBase) where T : class, IDataModelBase
         {
             Logger.Debug("Insert an entry into table {0}.", typeof(T).Name);
             long ret = -1L;
-            if (!DbLockFlag)
+            using (var transactionScope = new DbTransactions.TransactionScope())
             {
-                using (var transactionScope = new DbTransactions.TransactionScope())
-                {
-                    ret = Cnn.Insert(dataModelBase);
-                    dataModelBase.Id = ret;
-                    transactionScope.Complete();
-                }
+                ret = Cnn.Insert(dataModelBase);
+                dataModelBase.Id = ret;
+                transactionScope.Complete();
             }
             return ret;
         }
 
         public T Get<T>(long id) where T : class, IDataModelBase
         {
-            if (!DbLockFlag)
+            T ret;
+            using (var transactionScope = new DbTransactions.TransactionScope())
             {
-                T ret;
-                using (var transactionScope = new DbTransactions.TransactionScope())
-                {
-                    ret = Cnn.Get<T>(id);
-                    transactionScope.Complete();
-                }
-                return ret;
+                ret = Cnn.Get<T>(id);
+                transactionScope.Complete();
             }
-            return null;
+            return ret;
         }
         
         public void Update<T>(T dataModelBase) where T : class, IDataModelBase
         {
-            if (!DbLockFlag)
+            using (var transactionScope = new DbTransactions.TransactionScope())
             {
-                using (var transactionScope = new DbTransactions.TransactionScope())
-                {
-                    Cnn.Update<T>(dataModelBase);
-                    transactionScope.Complete();
-                }
+                Cnn.Update<T>(dataModelBase);
+                transactionScope.Complete();
             }
         }
 
         public void Delete<T>(T dataModelBase) where T : class, IDataModelBase
         {
             Logger.Debug("Delete an entry from table {0}.", typeof(T).Name);
-            if (!DbLockFlag)
+            using (var transactionScope = new DbTransactions.TransactionScope())
             {
-                using (var transactionScope = new DbTransactions.TransactionScope())
-                {
-                    Cnn.Delete(dataModelBase);
-                    transactionScope.Complete();
-                }
+                Cnn.Delete(dataModelBase);
+                transactionScope.Complete();
             }
         }
 
         protected string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;";
-
-        protected bool DbLockFlag;
 
         private const string TheTitName = "The Tit";
 
@@ -375,7 +349,6 @@ namespace BFF.DB.SQLite
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
         {
             Logger.Debug("Getting a page of entries from table {0} of page size {1} by offsett {2}.", typeof(T).Name, pageSize, offset);
-            DbLockFlag = true;
             IEnumerable<T> ret;
             using (var cnnTransaction = new DbTransactions.TransactionScope())
             {
@@ -400,7 +373,6 @@ namespace BFF.DB.SQLite
                 }
                 cnnTransaction.Complete();
             }
-            DbLockFlag = false;
             return ret;
         }
 

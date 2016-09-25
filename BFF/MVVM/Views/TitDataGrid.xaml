@@ -262,12 +262,10 @@
             <DataTemplate x:Key="CategoryEditingColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <HierarchicalDataTemplate DataType="{x:Type native:Category}" ItemsSource="{Binding Categories}">
-                            <TextBlock Text="{Binding}" FontSize="12" />
-                        </HierarchicalDataTemplate>
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
                             <DockPanel LastChildFill="True">
-                                <controls:SplitButton DockPanel.Dock="Right" Orientation="Horizontal" Command="{Binding AddCategoryCommand}" SelectedItem="{Binding AddingCategoryParent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                <controls:SplitButton DockPanel.Dock="Right" x:Name="AddButton" Orientation="Horizontal"
+                                                      Command="{Binding AddCategoryCommand}" SelectedItem="{Binding AddingCategoryParent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       ItemsSource="{Binding AllCategories}">
                                     <controls:SplitButton.IconTemplate>
                                         <DataTemplate>
@@ -275,8 +273,11 @@
                                         </DataTemplate>
                                     </controls:SplitButton.IconTemplate>
                                 </controls:SplitButton>
+                                <Popup PlacementTarget="{Binding ElementName=AddButton}" Placement="Bottom" PopupAnimation="Slide"
+                                       IsOpen="{Binding ElementName=AddButton, Path=IsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBox x:Name="NewCategoryField" Focusable="True" Text="{Binding CategoryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="{Binding ElementName=AddButton, Path=ActualHeight}" MinWidth="{Binding ElementName=AddButton, Path=ActualWidth}"></TextBox>
+                                </Popup>
                                 <ComboBox TextSearch.TextPath="Name"
-                                          Text="{Binding CategoryText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
                                           IsEditable="True" 
                                           IsTextSearchCaseSensitive="False"
                                           IsTextSearchEnabled="True"

@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using BFF.DB;
@@ -12,7 +12,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Each SubTransaction or SubIncome can be budgeted to a category.
         /// </summary>
-        ICategory Category { get; set; }
+        ICategoryViewModel Category { get; set; }
 
         long ParentId { get; set; }
     }
@@ -47,16 +47,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Each SubTransaction or SubIncome can be budgeted to a category.
         /// </summary>
-        public ICategory Category
+        public ICategoryViewModel Category
         {
             get
             {
-                return SubTransInc.CategoryId == -1 ? null : 
-                    Orm?.CommonPropertyProvider.GetCategory(SubTransInc.CategoryId);
+                return SubTransInc.CategoryId == -1 ? null :
+                  Orm?.CommonPropertyProvider.GetCategoryViewModel(SubTransInc.CategoryId);
             }
             set
             {
-                SubTransInc.CategoryId = value?.Id ?? -1;
+                if (value == null || value.Id == SubTransInc.CategoryId) return; //todo: make Category nullable?
+                SubTransInc.CategoryId = value.Id;
                 Update();
                 OnPropertyChanged();
             }
@@ -113,50 +114,53 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return Category != null && (Orm?.CommonPropertyProvider.Categories.Contains(Category) ?? false);
+            return Category != null && (Orm?.CommonPropertyProvider.AllCategoryViewModels.Contains(Category) ?? false);
         }
 
         #region Category Editing
 
+        //todo: Delegate the Editing?
+
+        private string _categoryText;
+
         /// <summary>
         /// User input of the to be searched or to be created Category.
         /// </summary>
-        public string CategoryText { get; set; }
+        public string CategoryText
+        {
+            get { return _categoryText; }
+            set
+            {
+                _categoryText = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// The ParentCategory to which the new Category should be added.
         /// </summary>
-        public ICategory AddingCategoryParent { get; set; }
+        public ICategoryViewModel AddingCategoryParent { get; set; }
 
         /// <summary>
         /// Creates a new Category.
         /// </summary>
         public ICommand AddCategoryCommand => new RelayCommand(obj =>
         {
-            ICategory newCategory = new Category {Name = CategoryText.Trim()};
-            if(AddingCategoryParent != null)
-            {
-                newCategory.Parent = AddingCategoryParent;
-                AddingCategoryParent.Categories.Add(newCategory);
-            }
+            ICategory newCategory = new Category { Name = CategoryText.Trim(), ParentId = AddingCategoryParent?.Id };
             Orm?.CommonPropertyProvider?.Add(newCategory);
             OnPropertyChanged(nameof(AllCategories));
-            Category = newCategory;
+            Category = Orm?.CommonPropertyProvider?.GetCategoryViewModel(newCategory.Id);
         }, obj =>
         {
-            string trimmedCategoryText = CategoryText?.Trim();
-            return !string.IsNullOrEmpty(trimmedCategoryText) &&
-                   (AddingCategoryParent == null &&
-                    AllCategories?.Count(category => category.Parent == null && category.Name == trimmedCategoryText) ==
-                    0 ||
-                    AddingCategoryParent != null &&
-                    AddingCategoryParent.Categories.Count(category => category.Name == trimmedCategoryText) == 0);
+            return !string.IsNullOrWhiteSpace(CategoryText) &&
+            (AddingCategoryParent == null && (Orm?.CommonPropertyProvider?.ParentCategoryViewModels.All(pcvm => pcvm.Name != CategoryText) ?? false) ||
+            AddingCategoryParent != null && AddingCategoryParent.Categories.All(c => c.Name != CategoryText));
         });
 
         /// <summary>
         /// All currently available Categories.
         /// </summary>
-        public ObservableCollection<ICategory> AllCategories => Orm?.CommonPropertyProvider?.Categories;
+        public IEnumerable<ICategoryViewModel> AllCategories => Orm?.CommonPropertyProvider?.AllCategoryViewModels;
 
         #endregion
 

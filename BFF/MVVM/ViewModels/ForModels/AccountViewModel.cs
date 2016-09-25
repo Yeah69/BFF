@@ -76,7 +76,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void UpdateToDb()
         {
-            Orm?.Update(Account);
+            Account.Update(Orm);
         }
 
         /// <summary>

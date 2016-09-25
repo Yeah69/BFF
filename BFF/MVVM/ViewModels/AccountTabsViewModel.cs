@@ -45,10 +45,12 @@ namespace BFF.MVVM.ViewModels
         }
         , param => !string.IsNullOrEmpty(NewAccount.Name));
         
+
+        //todo: Delete CreatePayeFunc?
         public Func<string, IPayee> CreatePayeeFunc => name => 
         {
             IPayee ret = new Payee {Name = name};
-            _orm.Insert(ret);
+            ret.Insert(_orm);
             return ret;
         }; 
 

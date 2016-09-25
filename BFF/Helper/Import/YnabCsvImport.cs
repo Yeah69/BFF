@@ -99,14 +99,14 @@ namespace BFF.Helper.Import
             ImportLists lists = new ImportLists
             {
                 Accounts = new List<IAccount>(),
-                Categories = new List<ICategory>(),
+                Categories = new List<CategoryImportWrapper>(),
                 Payees = new List<IPayee>(),
                 Incomes = new List<IIncome>(),
                 ParentIncomes = new List<IParentIncome>(),
                 ParentTransactions = new List<IParentTransaction>(),
                 SubIncomes = new List<ISubIncome>(),
                 SubTransactions = new List<ISubTransaction>(),
-                Transactions = new List<MVVM.Models.Native.ITransaction>(),
+                Transactions = new List<ITransaction>(),
                 Transfers = new List<ITransfer>()
             };
 
@@ -115,7 +115,7 @@ namespace BFF.Helper.Import
             //Todo: List<Native.Budget> nativeBudgets = budgets.Select(budget => (Native.Budget)budget).ToList();
             lists.Accounts = GetAllAccountCache();
             lists.Payees = GetAllPayeeCache();
-            lists.Categories = GetAllCategoryCache();
+            lists.Categories = _categoryImportWrappers;
 
             ImportAssignments assignments = new ImportAssignments
             {
@@ -123,8 +123,6 @@ namespace BFF.Helper.Import
                 FromAccountToTransfer = _fromAccountAssignment,
                 ToAccountToTransfer = _toAccountAssignment,
                 PayeeToTransIncBase = _payeeAssingment,
-                CategoryToCategory = _categoryCategoryAssignment,
-                CategoryToIHaveCategory = _categoryTitAssignment,
                 ParentTransactionToSubTransaction = _parentTransactionAssignment,
                 ParentIncomeToSubIncome = new Dictionary<IParentIncome, IList<ISubIncome>>() //In YNAB4 are no ParentIncomes
             };
@@ -297,9 +295,9 @@ namespace BFF.Helper.Import
         /// Creates a Transaction-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private MVVM.Models.Native.ITransaction TransformToTransaction(Transaction ynabTransaction)
+        private ITransaction TransformToTransaction(Transaction ynabTransaction)
         {
-            MVVM.Models.Native.ITransaction ret = new MVVM.Models.Native.Transaction(ynabTransaction.Date)
+            ITransaction ret = new MVVM.Models.Native.Transaction(ynabTransaction.Date)
             {
                 Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value,
                 Sum = ynabTransaction.Inflow - ynabTransaction.Outflow,
@@ -482,62 +480,32 @@ namespace BFF.Helper.Import
 
         #region Categories
 
-        private readonly IDictionary<string, ICategory> _categoriesCache = new Dictionary<string, ICategory>();
-
-        private readonly IDictionary<ICategory, IList<IHaveCategory>> _categoryTitAssignment =
-            new Dictionary<ICategory, IList<IHaveCategory>>();
-
-        private readonly IDictionary<ICategory, IList<ICategory>> _categoryCategoryAssignment =
-            new Dictionary<ICategory, IList<ICategory>>();
-
-        private void CreateAndOrAssignCategory(string namePath)
-        {
-            if(string.IsNullOrWhiteSpace(namePath)) return;
-            ICategory category;
-            if(!_categoriesCache.ContainsKey(namePath))
-            {
-                category = new Category(name: namePath.Split(':').Last());
-                _categoriesCache.Add(namePath, category);
-                _categoryTitAssignment.Add(category, new List<IHaveCategory>());
-                _categoryCategoryAssignment.Add(category, new List<ICategory>());
-            }
-            else
-            {
-                category = _categoriesCache[namePath];
-            }
-
-            if(namePath.Contains(':'))
-            {
-                string parentName = namePath.Split(':').First();
-                if(!_categoriesCache.ContainsKey(parentName))
-                {
-                    ICategory parentCategory = new Category(name: parentName);
-                    _categoriesCache.Add(parentName, parentCategory);
-                    _categoryTitAssignment.Add(parentCategory, new List<IHaveCategory>());
-                    _categoryCategoryAssignment.Add(parentCategory, new List<ICategory> {category});
-                }
-                else
-                    _categoryCategoryAssignment[_categoriesCache[parentName]].Add(category);
-            }
-        }
+        private readonly IList<CategoryImportWrapper> _categoryImportWrappers = new List<CategoryImportWrapper>();
 
         private void AssignCategory(string namePath, IHaveCategory titLike)
         {
-            if(!_categoriesCache.ContainsKey(namePath))
-                CreateAndOrAssignCategory(namePath);
-            _categoryTitAssignment[_categoriesCache[namePath]].Add(titLike);
-        }
-
-        private List<ICategory> GetAllCategoryCache()
-        {
-            return _categoriesCache.Values.ToList();
+            string masterCategoryName = namePath.Split(':').First();
+            string subCategoryName = namePath.Split(':').Last();
+            CategoryImportWrapper masterCategoryWrapper =
+                _categoryImportWrappers.SingleOrDefault(ciw => ciw.Category.Name == masterCategoryName);
+            if(masterCategoryWrapper == null)
+            {
+                masterCategoryWrapper = new CategoryImportWrapper { Parent = null, Category = new Category(masterCategoryName) };
+                _categoryImportWrappers.Add(masterCategoryWrapper);
+            }
+            CategoryImportWrapper subCategoryWrapper =
+                masterCategoryWrapper.Categories.SingleOrDefault(c => c.Category.Name == subCategoryName);
+            if(subCategoryWrapper == null)
+            {
+                subCategoryWrapper = new CategoryImportWrapper {Parent = masterCategoryWrapper, Category = new Category(subCategoryName)};
+                masterCategoryWrapper.Categories.Add(subCategoryWrapper);
+            }
+            subCategoryWrapper.TitAssignments.Add(titLike);
         }
 
         private void ClearCategoryCache()
         {
-            _categoriesCache.Clear();
-            _categoryTitAssignment.Clear();
-            _categoryCategoryAssignment.Clear();
+            _categoryImportWrappers.Clear();
         }
 
         #endregion

@@ -15,32 +15,23 @@ namespace BFF.DB.SQLite
 
         public Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IDataModelBase
         {
-            if (!DbLockFlag)
+            Task<IEnumerable<T>> ret;
+            using (var cnn = new SQLiteConnection(ConnectionString))
             {
-                Task<IEnumerable<T>> ret;
-                using (var cnn = new SQLiteConnection(ConnectionString))
-                {
-                    ret = cnn.OpenAndReturn().GetAllAsync<T>();
-                    cnn.Close();
-                }
-                return ret;
+                ret = cnn.OpenAndReturn().GetAllAsync<T>();
+                cnn.Close();
             }
-            Task<IEnumerable<T>> newTask = new Task<IEnumerable<T>>(() => new List<T>());
-            newTask.Start();
-            return newTask;
+            return ret;
         }
 
         public Task<int> InsertAsync<T>(T dataModelBase) where T : class, IDataModelBase
         {
-            Task<int> ret = null;
-            if (!DbLockFlag)
+            Task<int> ret;
+            using (var cnn = new SQLiteConnection(ConnectionString))
             {
-                using (var cnn = new SQLiteConnection(ConnectionString))
-                {
-                    ret = cnn.OpenAndReturn().InsertAsync(dataModelBase);
-                    ret.GetAwaiter().OnCompleted(() => dataModelBase.Id = ret.Result);
-                    cnn.Close();
-                }
+                ret = cnn.OpenAndReturn().InsertAsync(dataModelBase);
+                ret.GetAwaiter().OnCompleted(() => dataModelBase.Id = ret.Result);
+                cnn.Close();
             }
             return ret;
         }

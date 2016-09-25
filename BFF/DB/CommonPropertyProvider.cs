@@ -14,6 +14,8 @@ namespace BFF.DB
         ISummaryAccountViewModel SummaryAccountViewModel { get; }
         ObservableCollection<IPayee> Payees { get; }
         ObservableCollection<ICategory> Categories { get; }
+        IEnumerable<ICategoryViewModel> AllCategoryViewModels { get; }
+        ObservableCollection<ICategoryViewModel> ParentCategoryViewModels { get;  }
         void Add(IAccount account);
         void Add(IPayee payee);
         void Add(ICategory category);
@@ -24,6 +26,8 @@ namespace BFF.DB
         IPayee GetPayee(long id);
         ICategory GetCategory(long id);
         IAccountViewModel GetAccountViewModel(long id);
+        ICategoryViewModel GetCategoryViewModel(long id);
+        IEnumerable<ICategoryViewModel> GetCategoryViewModelChildren(long parentId);
     }
 
     public class CommonPropertyProvider : ICommonPropertyProvider
@@ -39,6 +43,11 @@ namespace BFF.DB
         public ObservableCollection<IPayee> Payees { get; private set; }
 
         public ObservableCollection<ICategory> Categories { get; private set; }
+
+        public ObservableCollection<ICategoryViewModel> ParentCategoryViewModels { get; private set; }
+
+        public IEnumerable<ICategoryViewModel> AllCategoryViewModels
+            => ParentCategoryViewModels.SelectMany(pcvm => pcvm as IEnumerable<ICategoryViewModel>);
 
         //todo PayeeViewModels!?
 
@@ -69,15 +78,16 @@ namespace BFF.DB
         public void Add(ICategory category)
         {
             category.Insert(_orm);
-            if (category.Parent == null) //if new category has no parents then append at the end of the list
-                Categories.Add(category);
-            else //if new category has parent then append as its last child
+            Categories.Add(category);
+            ICategoryViewModel categoryViewModel = new CategoryViewModel(category, _orm);
+            if(category.ParentId != null)
             {
-                int index = category.Parent.Categories.Count - 2;
-                index = index == -1 ? Categories.IndexOf(category.Parent) + 1 :
-                    Categories.IndexOf(category.Parent.Categories[index]) + 1;
-                Categories.Insert(index, category);
+                ICategoryViewModel parent = AllCategoryViewModels.Single(scvm => scvm.Id == category.ParentId);
+                parent.Categories.Add(categoryViewModel);
+                categoryViewModel.Parent = parent;
             }
+            else
+                ParentCategoryViewModels.Add(categoryViewModel);
         }
 
         public void Remove(IAccount account)
@@ -95,6 +105,8 @@ namespace BFF.DB
         public void Remove(ICategory category)
         {
             category.Delete(_orm);
+            ICategoryViewModel viewModel = AllCategoryViewModels.Single(scvm => scvm.Id == category.Id);
+            viewModel.Parent?.Categories.Remove(viewModel);
             Categories.Remove(category);
         }
 
@@ -105,8 +117,15 @@ namespace BFF.DB
         public IAccountViewModel GetAccountViewModel(long id)
             => AccountViewModels.FirstOrDefault(accountVm => accountVm.Id == id);
 
+        public IEnumerable<ICategoryViewModel> GetCategoryViewModelChildren(long parentId)
+            => ParentCategoryViewModels.Where(cvm => cvm.Parent.Id == parentId);
+
+        public ICategoryViewModel GetCategoryViewModel(long id)
+            => AllCategoryViewModels.FirstOrDefault(categoryVm => categoryVm.Id == id);
+
         private void InitializeAccounts()
         {
+            //todo: when C#7.0 is released: make this a local function in Constructor
             SummaryAccountViewModel = new SummaryAccountViewModel(_orm);
             Accounts = new ObservableCollection<IAccount>(_orm.GetAll<Account>().OrderBy(account => account.Name));
             AccountViewModels = new ObservableCollection<IAccountViewModel>(
@@ -142,39 +161,29 @@ namespace BFF.DB
 
         private void InitializePayees()
         {
+            //todo: when C#7.0 is released: make this a local function in Constructor
             Payees = new ObservableCollection<IPayee>(_orm.GetAll<Payee>().OrderBy(payee => payee.Name));
         }
 
         private void InitializeCategories()
         {
-            Categories = new ObservableCollection<ICategory>();
-            Dictionary<long, ICategory> catagoryDictionary = _orm.GetAll<Category>().Cast<ICategory>().ToDictionary(category => category.Id);
-            //Now after every Category is loaded the Parent-Child relations are established
-            List<ICategory> parentCategories = new List<ICategory>();
-            foreach (ICategory category in catagoryDictionary.Values)
+            //todo: when C#7.0 is released: make this a local function in Constructor
+            Categories = new ObservableCollection<ICategory>(_orm.GetAll<Category>());
+            IEnumerable<ICategory> parentCategories = Categories.Where(c => c.ParentId == 0);
+            ParentCategoryViewModels = new ObservableCollection<ICategoryViewModel>(parentCategories.Select(pc => new CategoryViewModel(pc, _orm)));
+            foreach (ICategoryViewModel parentCategoryViewModel in ParentCategoryViewModels)
             {
-                if (category.ParentId != null && category.ParentId > 0)
-                {
-                    category.Parent = catagoryDictionary[(long)category.ParentId];
-                    category.Parent.Categories.Add(category);
-                }
-                else parentCategories.Add(category);
-            }
-            foreach (ICategory parentCategory in parentCategories.OrderBy(category => category.Name))
-            {
-                Categories.Add(parentCategory);
-                FillCategoryWithDescandents(parentCategory,  Categories);
+                CreateChildCategoryViewModels(parentCategoryViewModel);
             }
         }
 
-
-
-        private void FillCategoryWithDescandents(ICategory parentCategory, IList<ICategory> list)
+        private void CreateChildCategoryViewModels(ICategoryViewModel parentViewModel)
         {
-            foreach (ICategory childCategory in parentCategory.Categories.OrderBy(category => category.Name))
+            IEnumerable<ICategory> children = Categories.Where(c => c.ParentId == parentViewModel.Id);
+            parentViewModel.Categories = new ObservableCollection<ICategoryViewModel>(children.Select(c => new CategoryViewModel(c, _orm)));
+            foreach(ICategoryViewModel categoryViewModel in parentViewModel.Categories)
             {
-                list.Add(childCategory);
-                FillCategoryWithDescandents(childCategory, list);
+                CreateChildCategoryViewModels(categoryViewModel);
             }
         }
     }
