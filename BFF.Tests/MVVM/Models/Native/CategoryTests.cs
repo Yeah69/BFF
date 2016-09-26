@@ -9,7 +9,6 @@ namespace BFF.Tests.MVVM.Models.Native
 {
     public class CategoryTests
     {
-        //todo: Create a CategoryViewModel and transfer "Parent" (not "ParentId") there
         public class ConstructionTests
         {
             public static IEnumerable<object[]> CategoryData => new[]
@@ -43,7 +42,7 @@ namespace BFF.Tests.MVVM.Models.Native
 
                 //Assert
                 Assert.True(category.Id == -1L, $"Default {nameof(category.Id)} not set right!");
-                Assert.True(category.ParentId == 0L, $"{nameof(category.ParentId)} not set right!"); //todo: maybe set the ParentId in default to -1L
+                Assert.True(category.ParentId == null, $"{nameof(category.ParentId)} not set right!");
                 Assert.True(category.Name == null, $"Default {nameof(category.Name)} not set right!");
             }
         }

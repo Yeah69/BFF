@@ -49,23 +49,27 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
             IPayee payee1 = new Payee(1, "One"), 
                   payee2 = new Payee(2, "Two"),
                   payee3 = new Payee(3, "Three");
-            ICategory category1 = new Category(1, -1, "One"), 
+            ICategory category1 = new Category(1, -1, "One"),
                      category2 = new Category(2, -1, "Two"),
                      category3 = new Category(3, 1, "Three");
 
             Mock<IBffOrm> ormMock = new Mock<IBffOrm>();
 
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccount(1)).Returns(account1);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccount(2)).Returns(account2);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccount(3)).Returns(account3);
+            ICategoryViewModel categoryViewModel1 = new CategoryViewModel(category1, ormMock.Object),
+                     categoryViewModel2 = new CategoryViewModel(category2, ormMock.Object),
+                     categoryViewModel3 = new CategoryViewModel(category3, ormMock.Object);
 
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayee(1)).Returns(payee1);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayee(2)).Returns(payee2);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayee(3)).Returns(payee3);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccount(account1.Id)).Returns(account1);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccount(account2.Id)).Returns(account2);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccount(account3.Id)).Returns(account3);
 
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategory(1)).Returns(category1);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategory(2)).Returns(category2);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategory(3)).Returns(category3);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayee(payee1.Id)).Returns(payee1);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayee(payee2.Id)).Returns(payee2);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayee(payee3.Id)).Returns(payee3);
+
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategoryViewModel(1)).Returns(categoryViewModel1);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategoryViewModel(2)).Returns(categoryViewModel2);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategoryViewModel(3)).Returns(categoryViewModel3);
 
             return ormMock;
         }

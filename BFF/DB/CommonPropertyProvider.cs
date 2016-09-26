@@ -51,8 +51,6 @@ namespace BFF.DB
 
         //todo PayeeViewModels!?
 
-        //todo CategoryViewModels!?
-
 
         public CommonPropertyProvider(IBffOrm orm)
         {
