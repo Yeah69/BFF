@@ -16,7 +16,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction/Income.
         /// </summary>
-        IPayee Payee { get; set; }
+        IPayeeViewModel Payee { get; set; }
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction/Income.
         /// </summary>
-        public abstract IPayee Payee { get; set; }
+        public abstract IPayeeViewModel Payee { get; set; }
 
         /// <summary>
         /// Initializes a TransIncBaseViewModel.
@@ -55,7 +55,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             IPayee newPayee = new Payee {Name = PayeeText.Trim()};
             Orm?.CommonPropertyProvider?.Add(newPayee);
             OnPropertyChanged(nameof(AllPayees));
-            Payee = newPayee;
+            Payee = Orm?.CommonPropertyProvider?.GetPayeeViewModel(newPayee.Id);
         }, obj =>
         {
             string trimmedPayeeText = PayeeText?.Trim();
@@ -66,7 +66,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All currently available Payees.
         /// </summary>
-        public ObservableCollection<IPayee> AllPayees => Orm?.CommonPropertyProvider.Payees;
+        public ObservableCollection<IPayeeViewModel> AllPayees => Orm?.CommonPropertyProvider.AllPayeeViewModels;
 
         #endregion
 

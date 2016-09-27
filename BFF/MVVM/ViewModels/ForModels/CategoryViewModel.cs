@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public interface ICategoryViewModel : IDataModelViewModel, IEnumerable<ICategoryViewModel>
+    public interface ICategoryViewModel : ICommonPropertyViewModel, IEnumerable<ICategoryViewModel>
     {
         /// <summary>
         /// The Child-Categories
@@ -20,15 +21,14 @@ namespace BFF.MVVM.ViewModels.ForModels
         ICategoryViewModel Parent { get; set; }
 
         string FullName { get; }
-        string Name { get; set; }
         string GetIndent();
     }
 
-    public class CategoryViewModel : DataModelViewModel, ICategoryViewModel
+    public class CategoryViewModel : CommonPropertyViewModel, ICategoryViewModel
     {
         private readonly ICategory _category;
 
-        public string Name
+        public override string Name
         {
             get { return _category.Name; }
             set
@@ -107,7 +107,9 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override bool ValidToInsert()
         {
-            throw new System.NotImplementedException();
+            return !string.IsNullOrWhiteSpace(Name) &&
+                   (Parent == null && (Orm?.CommonPropertyProvider?.ParentCategoryViewModels.All(pcvm => pcvm.Name != Name) ?? false) ||
+                   Parent != null && Parent.Categories.All(pcvm => pcvm.Name != Name));
         }
 
         protected override void InsertToDb()

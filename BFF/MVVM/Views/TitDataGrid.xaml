@@ -196,16 +196,24 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}" >
                             <DockPanel LastChildFill="True">
-                                <Button DockPanel.Dock="Right" Command="{Binding AddPayeeCommand}" Padding="0">
+                                <Button DockPanel.Dock="Right" x:Name="AddPayeeButton" Command="{Binding AddPayeeCommand}" Padding="0">
                                     <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Foreground="{DynamicResource BlackColorBrush}" Style="{StaticResource CellIconMaterial}" />
                                 </Button>
+                                <Popup PlacementTarget="{Binding ElementName=AddPayeeButton}" Placement="Bottom" PopupAnimation="Slide"
+                                       IsOpen="{Binding ElementName=AddPayeeButton, Path=IsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBox Focusable="True" 
+                                             Text="{Binding PayeeText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             Height="{Binding ElementName=AddPayeeButton, Path=ActualHeight}"
+                                             MinWidth="{Binding ElementName=AddPayeeButton, Path=ActualWidth}" />
+                                </Popup>
                                 <ComboBox TextSearch.TextPath="Name" 
                                           Text="{Binding PayeeText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                                           IsEditable="True"
                                           IsTextSearchEnabled="True"
                                           IsTextSearchCaseSensitive="False"
                                           ItemsSource="{Binding AllPayees}"
-                                          HorizontalAlignment="Stretch">
+                                          HorizontalAlignment="Stretch"
+                                          DisplayMemberPath="Name">
                                     <ComboBox.SelectedItem>
                                         <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                             <Binding.ValidationRules>
@@ -264,7 +272,7 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
                             <DockPanel LastChildFill="True">
-                                <controls:SplitButton DockPanel.Dock="Right" x:Name="AddButton" Orientation="Horizontal"
+                                <controls:SplitButton DockPanel.Dock="Right" x:Name="AddCategoryButton" Orientation="Horizontal"
                                                       Command="{Binding AddCategoryCommand}" SelectedItem="{Binding AddingCategoryParent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                       ItemsSource="{Binding AllCategories}">
                                     <controls:SplitButton.IconTemplate>
@@ -273,9 +281,12 @@
                                         </DataTemplate>
                                     </controls:SplitButton.IconTemplate>
                                 </controls:SplitButton>
-                                <Popup PlacementTarget="{Binding ElementName=AddButton}" Placement="Bottom" PopupAnimation="Slide"
-                                       IsOpen="{Binding ElementName=AddButton, Path=IsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <TextBox x:Name="NewCategoryField" Focusable="True" Text="{Binding CategoryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="{Binding ElementName=AddButton, Path=ActualHeight}" MinWidth="{Binding ElementName=AddButton, Path=ActualWidth}"></TextBox>
+                                <Popup PlacementTarget="{Binding ElementName=AddCategoryButton}" Placement="Bottom" PopupAnimation="Slide"
+                                       IsOpen="{Binding ElementName=AddCategoryButton, Path=IsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBox Focusable="True" 
+                                             Text="{Binding CategoryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             Height="{Binding ElementName=AddCategoryButton, Path=ActualHeight}"
+                                             MinWidth="{Binding ElementName=AddCategoryButton, Path=ActualWidth}" />
                                 </Popup>
                                 <ComboBox TextSearch.TextPath="Name"
                                           IsEditable="True" 

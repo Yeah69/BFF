@@ -71,13 +71,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction/Income.
         /// </summary>
-        public override IPayee Payee
+        public override IPayeeViewModel Payee
         {
             get { return TransInc.PayeeId == -1 ? null : 
-                    Orm?.CommonPropertyProvider?.GetPayee(TransInc.PayeeId); }
+                    Orm?.CommonPropertyProvider?.GetPayeeViewModel(TransInc.PayeeId); }
             set
             {
-                TransInc.PayeeId = value?.Id ?? -1;
+                if(value == null) return;
+                TransInc.PayeeId = value.Id;
                 Update();
                 OnPropertyChanged();
             }
@@ -164,7 +165,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public override bool ValidToInsert()
         {
             return Account != null  && (Orm?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) &&
-                   Payee != null    &&  Orm .CommonPropertyProvider.Payees.Contains(Payee) &&
+                   Payee != null    &&  Orm .CommonPropertyProvider.AllPayeeViewModels.Contains(Payee) &&
                    Category != null &&  Orm .CommonPropertyProvider.AllCategoryViewModels.Contains(Category);
         }
 

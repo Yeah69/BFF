@@ -16,6 +16,7 @@ namespace BFF.DB
         ObservableCollection<ICategory> Categories { get; }
         IEnumerable<ICategoryViewModel> AllCategoryViewModels { get; }
         ObservableCollection<ICategoryViewModel> ParentCategoryViewModels { get;  }
+        ObservableCollection<IPayeeViewModel> AllPayeeViewModels { get; }
         void Add(IAccount account);
         void Add(IPayee payee);
         void Add(ICategory category);
@@ -28,6 +29,7 @@ namespace BFF.DB
         IAccountViewModel GetAccountViewModel(long id);
         ICategoryViewModel GetCategoryViewModel(long id);
         IEnumerable<ICategoryViewModel> GetCategoryViewModelChildren(long parentId);
+        IPayeeViewModel GetPayeeViewModel(long id);
     }
 
     public class CommonPropertyProvider : ICommonPropertyProvider
@@ -49,7 +51,7 @@ namespace BFF.DB
         public IEnumerable<ICategoryViewModel> AllCategoryViewModels
             => ParentCategoryViewModels.SelectMany(pcvm => pcvm as IEnumerable<ICategoryViewModel>);
 
-        //todo PayeeViewModels!?
+        public ObservableCollection<IPayeeViewModel> AllPayeeViewModels { get; private set; }
 
 
         public CommonPropertyProvider(IBffOrm orm)
@@ -71,6 +73,7 @@ namespace BFF.DB
         {
             payee.Insert(_orm);
             Payees.Add(payee);
+            AllPayeeViewModels.Add(new PayeeViewModel(payee, _orm));
         }
 
         public void Add(ICategory category)
@@ -97,6 +100,8 @@ namespace BFF.DB
         public void Remove(IPayee payee)
         {
             payee.Delete(_orm);
+            IPayeeViewModel viewModel = AllPayeeViewModels.Single(apvm => apvm.Id == payee.Id);
+            AllPayeeViewModels.Remove(viewModel);
             Payees.Remove(payee);
         }
 
@@ -105,6 +110,8 @@ namespace BFF.DB
             category.Delete(_orm);
             ICategoryViewModel viewModel = AllCategoryViewModels.Single(scvm => scvm.Id == category.Id);
             viewModel.Parent?.Categories.Remove(viewModel);
+            if(viewModel.Parent == null)
+                ParentCategoryViewModels.Remove(viewModel);
             Categories.Remove(category);
         }
 
@@ -120,6 +127,9 @@ namespace BFF.DB
 
         public ICategoryViewModel GetCategoryViewModel(long id)
             => AllCategoryViewModels.FirstOrDefault(categoryVm => categoryVm.Id == id);
+
+        public IPayeeViewModel GetPayeeViewModel(long id)
+            => AllPayeeViewModels.FirstOrDefault(apvm => apvm.Id == id);
 
         private void InitializeAccounts()
         {
@@ -161,6 +171,7 @@ namespace BFF.DB
         {
             //todo: when C#7.0 is released: make this a local function in Constructor
             Payees = new ObservableCollection<IPayee>(_orm.GetAll<Payee>().OrderBy(payee => payee.Name));
+            AllPayeeViewModels = new ObservableCollection<IPayeeViewModel>(Payees.Select(p => new PayeeViewModel(p, _orm)));
         }
 
         private void InitializeCategories()

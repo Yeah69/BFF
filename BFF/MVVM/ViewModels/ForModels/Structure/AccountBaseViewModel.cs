@@ -11,17 +11,12 @@ using BFF.Properties;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    public interface IAccountBaseViewModel : IDataModelViewModel
+    public interface IAccountBaseViewModel : ICommonPropertyViewModel
     {
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
         long StartingBalance { get; set; }
-
-        /// <summary>
-        /// Name of the Account Model
-        /// </summary>
-        string Name { get; set; }
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
@@ -79,7 +74,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         void RefreshTits();
     }
 
-    public abstract class AccountBaseViewModel : DataModelViewModel, IVirtualizedRefresh, IAccountBaseViewModel
+    public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
         protected VirtualizingObservableCollection<ITitLikeViewModel> _tits;
 
@@ -87,11 +82,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Starting balance of the Account
         /// </summary>
         public abstract long StartingBalance { get; set; }
-
-        /// <summary>
-        /// Name of the Account Model
-        /// </summary>
-        public abstract string Name { get; set; }
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
