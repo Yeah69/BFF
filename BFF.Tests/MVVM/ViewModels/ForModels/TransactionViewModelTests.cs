@@ -43,6 +43,7 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
 
         private static Mock<IBffOrm> MockTheOrm()
         {
+            //todo: Mock Account, Payee, Category, AccountViewModel, PayeeViewModel and CategoryViewModel!!!
             IAccount account1 = new Account(1, "One", 1), 
                     account2 = new Account(2, "Two", 10),
                     account3 = new Account(3, "Three", 11);
@@ -55,6 +56,10 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
 
             Mock<IBffOrm> ormMock = new Mock<IBffOrm>();
 
+            IPayeeViewModel payeeViewModel1 = new PayeeViewModel(payee1, ormMock.Object),
+                     payeeViewModel2 = new PayeeViewModel(payee2, ormMock.Object),
+                     payeeViewModel3 = new PayeeViewModel(payee3, ormMock.Object);
+
             ICategoryViewModel categoryViewModel1 = new CategoryViewModel(category1, ormMock.Object),
                      categoryViewModel2 = new CategoryViewModel(category2, ormMock.Object),
                      categoryViewModel3 = new CategoryViewModel(category3, ormMock.Object);
@@ -63,9 +68,9 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
             ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccount(account2.Id)).Returns(account2);
             ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccount(account3.Id)).Returns(account3);
 
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayee(payee1.Id)).Returns(payee1);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayee(payee2.Id)).Returns(payee2);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayee(payee3.Id)).Returns(payee3);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayeeViewModel(1)).Returns(payeeViewModel1);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayeeViewModel(2)).Returns(payeeViewModel2);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayeeViewModel(3)).Returns(payeeViewModel3);
 
             ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategoryViewModel(1)).Returns(categoryViewModel1);
             ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategoryViewModel(2)).Returns(categoryViewModel2);
