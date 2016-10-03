@@ -56,6 +56,10 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
 
             Mock<IBffOrm> ormMock = new Mock<IBffOrm>();
 
+            IAccountViewModel accountViewModel1 = new AccountViewModel(account1, ormMock.Object),
+                     accountViewModel2 = new AccountViewModel(account2, ormMock.Object),
+                     accountViewModel3 = new AccountViewModel(account3, ormMock.Object);
+
             IPayeeViewModel payeeViewModel1 = new PayeeViewModel(payee1, ormMock.Object),
                      payeeViewModel2 = new PayeeViewModel(payee2, ormMock.Object),
                      payeeViewModel3 = new PayeeViewModel(payee3, ormMock.Object);
@@ -64,9 +68,9 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
                      categoryViewModel2 = new CategoryViewModel(category2, ormMock.Object),
                      categoryViewModel3 = new CategoryViewModel(category3, ormMock.Object);
 
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccount(account1.Id)).Returns(account1);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccount(account2.Id)).Returns(account2);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccount(account3.Id)).Returns(account3);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccountViewModel(1)).Returns(accountViewModel1);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccountViewModel(2)).Returns(accountViewModel2);
+            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccountViewModel(3)).Returns(accountViewModel3);
 
             ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayeeViewModel(1)).Returns(payeeViewModel1);
             ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayeeViewModel(2)).Returns(payeeViewModel2);
