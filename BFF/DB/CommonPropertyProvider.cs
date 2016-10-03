@@ -10,7 +10,7 @@ namespace BFF.DB
 {
     public interface ICommonPropertyProvider {
         ObservableCollection<IAccount> Accounts { get; }
-        ObservableCollection<IAccountViewModel> AccountViewModels { get; }
+        ObservableCollection<IAccountViewModel> AllAccountViewModels { get; }
         ISummaryAccountViewModel SummaryAccountViewModel { get; }
         ObservableCollection<IPayee> Payees { get; }
         ObservableCollection<ICategory> Categories { get; }
@@ -38,7 +38,7 @@ namespace BFF.DB
 
         public ObservableCollection<IAccount> Accounts { get; private set; }
 
-        public ObservableCollection<IAccountViewModel> AccountViewModels { get; private set; }
+        public ObservableCollection<IAccountViewModel> AllAccountViewModels { get; private set; }
 
         public ISummaryAccountViewModel SummaryAccountViewModel { get; private set; }
 
@@ -120,7 +120,7 @@ namespace BFF.DB
         public ICategory GetCategory(long id) => Categories.FirstOrDefault(category => category.Id == id);
 
         public IAccountViewModel GetAccountViewModel(long id)
-            => AccountViewModels.FirstOrDefault(accountVm => accountVm.Id == id);
+            => AllAccountViewModels.FirstOrDefault(accountVm => accountVm.Id == id);
 
         public IEnumerable<ICategoryViewModel> GetCategoryViewModelChildren(long parentId)
             => ParentCategoryViewModels.Where(cvm => cvm.Parent.Id == parentId);
@@ -136,7 +136,7 @@ namespace BFF.DB
             //todo: when C#7.0 is released: make this a local function in Constructor
             SummaryAccountViewModel = new SummaryAccountViewModel(_orm);
             Accounts = new ObservableCollection<IAccount>(_orm.GetAll<Account>().OrderBy(account => account.Name));
-            AccountViewModels = new ObservableCollection<IAccountViewModel>(
+            AllAccountViewModels = new ObservableCollection<IAccountViewModel>(
                 Accounts.Select(account => new AccountViewModel(account, _orm)));
             Accounts.CollectionChanged += (sender, args) =>
             {
@@ -146,7 +146,7 @@ namespace BFF.DB
                         int i = args.NewStartingIndex;
                         foreach(var newItem in args.NewItems)
                         {
-                            AccountViewModels.Insert(i, new AccountViewModel(newItem as IAccount, _orm));
+                            AllAccountViewModels.Insert(i, new AccountViewModel(newItem as IAccount, _orm));
                             i++;
                         }
                         break;
@@ -155,13 +155,13 @@ namespace BFF.DB
                     case NotifyCollectionChangedAction.Remove:
                         for(int j = 0; j < args.OldItems.Count; j++)
                         {
-                            AccountViewModels.RemoveAt(args.OldStartingIndex);
+                            AllAccountViewModels.RemoveAt(args.OldStartingIndex);
                         }
                         break;
                     case NotifyCollectionChangedAction.Replace:
                         throw new NotImplementedException();
                     case NotifyCollectionChangedAction.Reset:
-                        AccountViewModels.Clear();
+                        AllAccountViewModels.Clear();
                         break;
                 }
             };

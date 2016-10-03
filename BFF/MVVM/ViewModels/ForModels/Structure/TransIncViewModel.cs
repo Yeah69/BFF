@@ -36,16 +36,16 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The assigned Account, where this Transaction/Income is registered.
         /// </summary>
-        public override IAccount Account
+        public override IAccountViewModel Account
         {
             get
             {
                 return TransInc.AccountId == -1 ? null :
-                  Orm?.CommonPropertyProvider?.GetAccount(TransInc.AccountId);
+                  Orm?.CommonPropertyProvider?.GetAccountViewModel(TransInc.AccountId);
             }
             set
             {
-                IAccount temp = Account;
+                IAccountViewModel temp = Account;
                 TransInc.AccountId = value?.Id ?? -1;
                 Update();
                 if (temp != null) Messenger.Default.Send(AccountMessage.Refresh, temp);
@@ -164,7 +164,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return Account != null  && (Orm?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) &&
+            return Account != null  && (Orm?.CommonPropertyProvider.AllAccountViewModels.Contains(Account) ?? false) &&
                    Payee != null    &&  Orm .CommonPropertyProvider.AllPayeeViewModels.Contains(Payee) &&
                    Category != null &&  Orm .CommonPropertyProvider.AllCategoryViewModels.Contains(Category);
         }

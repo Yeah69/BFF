@@ -11,7 +11,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The assigned Account, where this Transaction/Income is registered.
         /// </summary>
-        IAccount Account { get; set; }
+        IAccountViewModel Account { get; set; }
 
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction/Income.
@@ -27,7 +27,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The assigned Account, where this Transaction/Income is registered.
         /// </summary>
-        public abstract IAccount Account { get; set; } //todo: change to IAccountViewModel
+        public abstract IAccountViewModel Account { get; set; } //todo: change to IAccountViewModel
 
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction/Income.

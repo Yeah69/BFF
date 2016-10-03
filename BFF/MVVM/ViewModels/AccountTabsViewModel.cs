@@ -16,7 +16,7 @@ namespace BFF.MVVM.ViewModels
 
         public IBffOrm Orm => _orm;
 
-        public ObservableCollection<IAccountViewModel> AllAccounts => _orm.CommonPropertyProvider.AccountViewModels;
+        public ObservableCollection<IAccountViewModel> AllAccounts => _orm.CommonPropertyProvider.AllAccountViewModels;
 
         public ObservableCollection<ICategory> AllCategories => _orm.CommonPropertyProvider.Categories; 
 

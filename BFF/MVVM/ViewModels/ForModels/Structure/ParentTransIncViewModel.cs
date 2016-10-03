@@ -66,16 +66,16 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The assigned Account, where this ParentTransaction/ParentIncome is registered.
         /// </summary>
-        public override IAccount Account
+        public override IAccountViewModel Account
         {
             get
             {
                 return ParentTransInc.AccountId == -1 ? null : 
-                    Orm?.CommonPropertyProvider?.GetAccount(ParentTransInc.AccountId);
+                    Orm?.CommonPropertyProvider?.GetAccountViewModel(ParentTransInc.AccountId);
             }
             set
             {
-                IAccount temp = Account;
+                IAccountViewModel temp = Account;
                 ParentTransInc.AccountId = value?.Id ?? -1;
                 Update();
                 if (temp != null) Messenger.Default.Send(AccountMessage.Refresh, temp);
@@ -250,7 +250,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return Account != null && (Orm?.CommonPropertyProvider.Accounts.Contains(Account) ?? false) &&
+            return Account != null && (Orm?.CommonPropertyProvider.AllAccountViewModels.Contains(Account) ?? false) &&
                    Payee   != null &&  Orm .CommonPropertyProvider.AllPayeeViewModels.Contains(Payee) && 
                    NewSubElements.All(subElement => subElement.ValidToInsert());
         }
