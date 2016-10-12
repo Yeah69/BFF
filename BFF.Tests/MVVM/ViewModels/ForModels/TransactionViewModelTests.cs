@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
+using BFF.Tests.DB.Mock;
 using Moq;
 using Xunit;
 
@@ -16,7 +17,7 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
             public void PropertyTheory(long accountId, DateTime dateTime, long payeeId, long categoryId, string memo, long sum, bool cleared)
             {
                 //Arrange
-                Mock<IBffOrm> ormMock = MockTheOrm();
+                Mock<IBffOrm> ormMock = IBffOrmMock.BffOrmMock;
                 ITransaction transaction = new Transaction(-1, accountId, dateTime, payeeId, categoryId, memo, sum, cleared);
                 TransactionViewModel transactionViewModel = new TransactionViewModel(transaction, ormMock.Object);
 
@@ -39,48 +40,6 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
                 new object[] { 3, DateTime.Now, 1, 2, "Yeah", 323, true },
                 new object[] { 3, DateTime.MinValue, 2, 1, "Refactoring by Martin Fowler", 69, false }
             };
-        }
-
-        private static Mock<IBffOrm> MockTheOrm()
-        {
-            //todo: Mock Account, Payee, Category, AccountViewModel, PayeeViewModel and CategoryViewModel!!!
-            IAccount account1 = new Account(1, "One", 1), 
-                    account2 = new Account(2, "Two", 10),
-                    account3 = new Account(3, "Three", 11);
-            IPayee payee1 = new Payee(1, "One"), 
-                  payee2 = new Payee(2, "Two"),
-                  payee3 = new Payee(3, "Three");
-            ICategory category1 = new Category(1, -1, "One"),
-                     category2 = new Category(2, -1, "Two"),
-                     category3 = new Category(3, 1, "Three");
-
-            Mock<IBffOrm> ormMock = new Mock<IBffOrm>();
-
-            IAccountViewModel accountViewModel1 = new AccountViewModel(account1, ormMock.Object),
-                     accountViewModel2 = new AccountViewModel(account2, ormMock.Object),
-                     accountViewModel3 = new AccountViewModel(account3, ormMock.Object);
-
-            IPayeeViewModel payeeViewModel1 = new PayeeViewModel(payee1, ormMock.Object),
-                     payeeViewModel2 = new PayeeViewModel(payee2, ormMock.Object),
-                     payeeViewModel3 = new PayeeViewModel(payee3, ormMock.Object);
-
-            ICategoryViewModel categoryViewModel1 = new CategoryViewModel(category1, ormMock.Object),
-                     categoryViewModel2 = new CategoryViewModel(category2, ormMock.Object),
-                     categoryViewModel3 = new CategoryViewModel(category3, ormMock.Object);
-
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccountViewModel(1)).Returns(accountViewModel1);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccountViewModel(2)).Returns(accountViewModel2);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetAccountViewModel(3)).Returns(accountViewModel3);
-
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayeeViewModel(1)).Returns(payeeViewModel1);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayeeViewModel(2)).Returns(payeeViewModel2);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetPayeeViewModel(3)).Returns(payeeViewModel3);
-
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategoryViewModel(1)).Returns(categoryViewModel1);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategoryViewModel(2)).Returns(categoryViewModel2);
-            ormMock.Setup(orm => orm.CommonPropertyProvider.GetCategoryViewModel(3)).Returns(categoryViewModel3);
-
-            return ormMock;
         }
     }
 }

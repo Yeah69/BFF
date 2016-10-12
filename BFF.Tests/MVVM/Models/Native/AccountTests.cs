@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.Tests.DB.Mock;
 using Moq;
 using Xunit;
 
@@ -78,7 +79,7 @@ namespace BFF.Tests.MVVM.Models.Native
             {
                 //Arrange
                 Account account = new Account(1, "AnAccount", 6969);
-                Mock<IBffOrm> ormMock = OrmMock();
+                Mock<IBffOrm> ormMock = IBffOrmMock.BffOrmMock;
 
                 //Act
                 account.Insert(ormMock.Object);
@@ -131,16 +132,6 @@ namespace BFF.Tests.MVVM.Models.Native
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
                     () => Assert.PropertyChanged(account, nameof(account.StartingBalance), () => account.StartingBalance = 6969));
             }
-        }
-
-        public static Mock<IBffOrm> OrmMock()
-        {
-            Mock<IBffOrm> ormMock = new Mock<IBffOrm>();
-            ormMock.Setup(orm => orm.Insert(It.IsAny<Account>())).Verifiable();
-            ormMock.Setup(orm => orm.Update(It.IsAny<Account>())).Verifiable();
-            ormMock.Setup(orm => orm.Delete(It.IsAny<Account>())).Verifiable();
-            
-            return ormMock;
         }
     }
 }

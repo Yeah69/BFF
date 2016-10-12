@@ -39,6 +39,9 @@
       <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Moq, Version=4.5.21.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.5.21\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
@@ -74,9 +77,16 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="DB\Mock\IBffOrmMock.cs" />
     <Compile Include="MVVM\Models\Native\AccountTests.cs" />
     <Compile Include="MVVM\Models\Native\CategoryTests.cs" />
+    <Compile Include="MVVM\Models\Native\Mock\IAccountMock.cs" />
+    <Compile Include="MVVM\Models\Native\Mock\ICategoryMock.cs" />
+    <Compile Include="MVVM\Models\Native\Mock\IPayeeMock.cs" />
     <Compile Include="MVVM\Models\Native\PayeeTests.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Mock\IAccountViewModelMock.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Mock\ICategoryViewModelMock.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Mock\IPayeeViewModelMock.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TransactionViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

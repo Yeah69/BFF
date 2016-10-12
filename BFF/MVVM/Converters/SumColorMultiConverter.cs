@@ -2,6 +2,8 @@
 using System.Windows.Data;
 using System.Windows.Media;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.ViewModels.ForModels;
+using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.Converters
 {
@@ -16,14 +18,14 @@ namespace BFF.MVVM.Converters
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             //Transfer in "All Accounts"-Tab
-            if (values[0] is ISummaryAccount)
+            if (values[0] is ISummaryAccountViewModel)
                 return TransferBrush;
-            IAccount account = (IAccount)values[0];
+            IAccountViewModel account = (IAccountViewModel)values[0];
             //Transfer in FromAccount-Tab
-            if(account == (IAccount)values[1])
+            if(account == (IAccountViewModel)values[1])
                 return NegativeBrush;
             //Transfer in ToAccount-Tab
-            if (account == (IAccount)values[2])
+            if (account == (IAccountViewModel)values[2])
                 return PositiveBrush;
             return Brushes.Transparent;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.Tests.DB.Mock;
 using Moq;
 using Xunit;
 
@@ -76,7 +77,7 @@ namespace BFF.Tests.MVVM.Models.Native
             {
                 //Arrange
                 Category category = new Category(-1, -1, "ACategory");
-                Mock<IBffOrm> ormMock = OrmMock();
+                Mock<IBffOrm> ormMock = IBffOrmMock.BffOrmMock;
 
                 //Act
                 category.Insert(ormMock.Object);
@@ -129,16 +130,6 @@ namespace BFF.Tests.MVVM.Models.Native
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
                     () => Assert.PropertyChanged(category, nameof(category.ParentId), () => category.ParentId = 6969));
             }
-        }
-
-        public static Mock<IBffOrm> OrmMock()
-        {
-            Mock<IBffOrm> ormMock = new Mock<IBffOrm>();
-            ormMock.Setup(orm => orm.Insert(It.IsAny<Category>())).Verifiable();
-            ormMock.Setup(orm => orm.Update(It.IsAny<Category>())).Verifiable();
-            ormMock.Setup(orm => orm.Delete(It.IsAny<Category>())).Verifiable();
-
-            return ormMock;
         }
     }
 }

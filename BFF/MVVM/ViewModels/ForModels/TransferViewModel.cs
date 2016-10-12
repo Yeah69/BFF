@@ -11,12 +11,12 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The account from where the money is transfered.
         /// </summary>
-        IAccount FromAccount { get; set; }
+        IAccountViewModel FromAccount { get; set; }
 
         /// <summary>
         /// The account to where the money is transfered.
         /// </summary>
-        IAccount ToAccount { get; set; }
+        IAccountViewModel ToAccount { get; set; }
     }
 
     /// <summary>
@@ -53,16 +53,16 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The account from where the money is transfered.
         /// </summary>
-        public IAccount FromAccount
+        public IAccountViewModel FromAccount
         {
             get {
                 return Transfer.FromAccountId == -1 ? null : 
-                    Orm?.CommonPropertyProvider.GetAccount(Transfer.FromAccountId);
+                    Orm?.CommonPropertyProvider.GetAccountViewModel(Transfer.FromAccountId);
             }
             set
             {
                 if(value?.Id == Transfer.FromAccountId) return;
-                IAccount temp = FromAccount;
+                IAccountViewModel temp = FromAccount;
                 bool accountSwitch = false;
                 if (ToAccount == value) // If value equals ToAccount, then the FromAccount and ToAccount switch values
                 {
@@ -94,17 +94,17 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The account to where the money is transfered.
         /// </summary>
-        public IAccount ToAccount
+        public IAccountViewModel ToAccount
         {
             get
             {
                 return Transfer.ToAccountId == -1 ? null :
-                    Orm?.CommonPropertyProvider.GetAccount(Transfer.ToAccountId);
+                    Orm?.CommonPropertyProvider.GetAccountViewModel(Transfer.ToAccountId);
             }
             set
             {
                 if (value?.Id == Transfer.ToAccountId) return;
-                IAccount temp = ToAccount;
+                IAccountViewModel temp = ToAccount;
                 bool accountSwitch = false;
                 if (FromAccount == value) // If value equals FromAccount, then the ToAccount and FromAccount switch values
                 {
@@ -198,8 +198,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return FromAccount != null && (Orm?.CommonPropertyProvider.Accounts.Contains(FromAccount) ?? false) &&
-                   ToAccount != null   &&  Orm .CommonPropertyProvider.Accounts.Contains(ToAccount);
+            return FromAccount != null && (Orm?.CommonPropertyProvider.AllAccountViewModels.Contains(FromAccount) ?? false) &&
+                   ToAccount != null   &&  Orm .CommonPropertyProvider.AllAccountViewModels.Contains(ToAccount);
         }
 
         /// <summary>

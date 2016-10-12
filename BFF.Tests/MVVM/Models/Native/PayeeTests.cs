@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.Tests.DB.Mock;
 using Moq;
 using Xunit;
 
@@ -74,7 +75,7 @@ namespace BFF.Tests.MVVM.Models.Native
             {
                 //Arrange
                 Payee payee = new Payee(1, "Someone");
-                Mock<IBffOrm> ormMock = OrmMock();
+                Mock<IBffOrm> ormMock = IBffOrmMock.BffOrmMock;
 
                 //Act
                 payee.Insert(ormMock.Object);
@@ -124,16 +125,6 @@ namespace BFF.Tests.MVVM.Models.Native
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
                     () => Assert.PropertyChanged(payee, nameof(payee.Name), () => payee.Name = "Someone"));
             }
-        }
-
-        public static Mock<IBffOrm> OrmMock()
-        {
-            Mock<IBffOrm> ormMock = new Mock<IBffOrm>();
-            ormMock.Setup(orm => orm.Insert(It.IsAny<Payee>())).Verifiable();
-            ormMock.Setup(orm => orm.Update(It.IsAny<Payee>())).Verifiable();
-            ormMock.Setup(orm => orm.Delete(It.IsAny<Payee>())).Verifiable();
-
-            return ormMock;
         }
     }
 }

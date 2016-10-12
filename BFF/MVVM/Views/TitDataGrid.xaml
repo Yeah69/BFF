@@ -351,14 +351,14 @@
                             <TextBlock Name="TitGrid_SumBox" TextAlignment="Right" Style="{StaticResource CellTextBlock}" Padding="0,0,5,0">
                                 <TextBlock.Text>
                                     <MultiBinding Converter="{StaticResource NegativeTransferMultiConverter}">
-                                        <Binding Path="DataContext.Account" ElementName="LayoutRoot" />
+                                        <Binding Path="DataContext.AccountViewModel" ElementName="LayoutRoot" />
                                         <Binding Path="FromAccount" />
                                         <Binding Path="Sum" />
                                     </MultiBinding>
                                 </TextBlock.Text>
                                 <TextBlock.Foreground>
                                     <MultiBinding Converter="{StaticResource SumColorMultiConverter}">
-                                        <Binding Path="DataContext.Account" ElementName="LayoutRoot" /> <!-- todo: Make TransferViewModel aware of in which AccountViewModel it is inside -->
+                                        <Binding Path="DataContext.AccountViewModel" ElementName="LayoutRoot" /> <!-- todo: Make TransferViewModel aware of in which AccountViewModel it is inside -->
                                         <Binding Path="FromAccount" />
                                         <Binding Path="ToAccount" />
                                     </MultiBinding>
@@ -381,7 +381,7 @@
                             <TextBox Name="TitGrid_SumBox" TextAlignment="Right" VerticalContentAlignment="Center">
                                 <TextBox.Foreground>
                                     <MultiBinding Converter="{StaticResource SumColorMultiConverter}">
-                                        <Binding Path="DataContext.Account" ElementName="LayoutRoot" />
+                                        <Binding Path="DataContext.AccountViewModel" ElementName="LayoutRoot" />
                                         <Binding Path="FromAccount" />
                                         <Binding Path="ToAccount" />
                                     </MultiBinding>
