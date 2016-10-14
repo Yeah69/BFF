@@ -23,6 +23,7 @@
             get { return _memo; }
             set
             {
+                if(_memo == value) return;
                 _memo = value;
                 OnPropertyChanged();
             }

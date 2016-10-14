@@ -23,6 +23,7 @@ namespace BFF.MVVM.Models.Native.Structure
             get { return _categoryId; }
             set
             {
+                if(_categoryId == value) return;
                 _categoryId = value;
                 OnPropertyChanged();
             }
@@ -36,6 +37,7 @@ namespace BFF.MVVM.Models.Native.Structure
             get { return _sum; }
             set
             {
+                if(_sum == value) return;
                 _sum = value;
                 OnPropertyChanged();
             }
