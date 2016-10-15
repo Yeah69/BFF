@@ -157,7 +157,6 @@
     <Compile Include="MVVM\Models\Native\SummaryAccount.cs" />
     <Compile Include="MVVM\Models\Native\Account.cs" />
     <Compile Include="MVVM\Models\Native\Category.cs" />
-    <Compile Include="MVVM\Models\Native\Budget.cs" />
     <Compile Include="MVVM\Models\Native\DbSetting.cs" />
     <Compile Include="MVVM\Models\Native\ParentIncome.cs" />
     <Compile Include="MVVM\Models\Native\Payee.cs" />

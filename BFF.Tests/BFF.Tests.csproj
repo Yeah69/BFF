@@ -82,6 +82,7 @@
     <Compile Include="MVVM\Models\Native\ParentTransactionTests.cs" />
     <Compile Include="MVVM\Models\Native\SubIncomeTests.cs" />
     <Compile Include="MVVM\Models\Native\SubTransactionTests.cs" />
+    <Compile Include="MVVM\Models\Native\SummaryAccountTests.cs" />
     <Compile Include="MVVM\Models\Native\TransactionTests.cs" />
     <Compile Include="MVVM\Models\Native\PayeeTests.cs" />
     <Compile Include="MVVM\Models\Native\TransferTests.cs" />
