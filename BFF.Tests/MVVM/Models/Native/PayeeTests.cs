@@ -28,8 +28,8 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(payee.Id == id, $"{nameof(payee.Id)} not set right!");
-                Assert.True(payee.Name == name, $"{nameof(payee.Name)} not set right!");
+                Assert.Equal(id, payee.Id);
+                Assert.Equal(name, payee.Name);
             }
 
             [Fact]
@@ -41,8 +41,8 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(payee.Id == -1L, $"Default {nameof(payee.Id)} not set right!");
-                Assert.True(payee.Name == null, $"Default {nameof(payee.Name)} not set right!");
+                Assert.Equal(-1L, payee.Id);
+                Assert.Equal(null, payee.Name);
             }
         }
 
@@ -64,7 +64,7 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(payee.ToString() == name, $"{nameof(payee.ToString)}() does not work right!");
+                Assert.Equal(name, payee.ToString());
             }
         }
 

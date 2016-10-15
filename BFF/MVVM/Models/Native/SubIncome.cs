@@ -17,8 +17,8 @@ namespace BFF.MVVM.Models.Native
         /// <param name="category">Category of the SubElement</param>
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        public SubIncome(ICategory category = null, string memo = null, long sum = 0L) 
-            : base(category, memo, sum) {}
+        public SubIncome(IParentIncome parent = null, ICategory category = null, string memo = null, long sum = 0L) 
+            : base(parent, category, memo, sum) {}
 
         /// <summary>
         /// Safe ORM-constructor

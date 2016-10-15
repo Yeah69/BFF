@@ -28,14 +28,14 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(transaction.Id == id, $"{nameof(transaction.Id)} not set right!");
-                Assert.True(transaction.AccountId == accountId, $"{nameof(transaction.AccountId)} not set right!");
-                Assert.True(transaction.Date == date, $"{nameof(transaction.Date)} not set right!");
-                Assert.True(transaction.PayeeId == payeeId, $"{nameof(transaction.PayeeId)} not set right!");
-                Assert.True(transaction.CategoryId == categoryId, $"{nameof(transaction.CategoryId)} not set right!");
-                Assert.True(transaction.Memo == memo, $"{nameof(transaction.Memo)} not set right!");
-                Assert.True(transaction.Sum == sum, $"{nameof(transaction.Sum)} not set right!");
-                Assert.True(transaction.Cleared == cleared, $"{nameof(transaction.Cleared)} not set right!");
+                Assert.Equal(id, transaction.Id);
+                Assert.Equal(accountId, transaction.AccountId);
+                Assert.Equal(date, transaction.Date);
+                Assert.Equal(payeeId, transaction.PayeeId);
+                Assert.Equal(categoryId, transaction.CategoryId);
+                Assert.Equal(memo, transaction.Memo);
+                Assert.Equal(sum, transaction.Sum);
+                Assert.Equal(cleared, transaction.Cleared);
             }
 
             [Fact]
@@ -48,14 +48,14 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(transaction.Id == -1L, $"Default {nameof(transaction.Id)} not set right!");
-                Assert.True(transaction.AccountId == -1L, $"Default {nameof(transaction.AccountId)} not set right!");
-                Assert.True(transaction.Date == today, $"Default {nameof(transaction.Date)} not set right!");
-                Assert.True(transaction.PayeeId == -1L, $"Default {nameof(transaction.PayeeId)} not set right!");
-                Assert.True(transaction.CategoryId == -1L, $"Default {nameof(transaction.CategoryId)} not set right!");
-                Assert.True(transaction.Memo == null, $"Default {nameof(transaction.Memo)} not set right!");
-                Assert.True(transaction.Sum == 0L, $"Default {nameof(transaction.Sum)} not set right!");
-                Assert.True(transaction.Cleared == false, $"Default {nameof(transaction.Cleared)} not set right!");
+                Assert.Equal(-1L, transaction.Id);
+                Assert.Equal(-1L, transaction.AccountId);
+                Assert.Equal(today, transaction.Date);
+                Assert.Equal(-1L, transaction.PayeeId);
+                Assert.Equal(-1L, transaction.CategoryId);
+                Assert.Equal(null, transaction.Memo);
+                Assert.Equal(0L, transaction.Sum);
+                Assert.Equal(false, transaction.Cleared);
             }
         }
 

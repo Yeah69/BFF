@@ -28,12 +28,12 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(parentTransaction.Id == id, $"{nameof(parentTransaction.Id)} not set right!");
-                Assert.True(parentTransaction.AccountId == accountId, $"{nameof(parentTransaction.AccountId)} not set right!");
-                Assert.True(parentTransaction.Date == date, $"{nameof(parentTransaction.Date)} not set right!");
-                Assert.True(parentTransaction.PayeeId == payeeId, $"{nameof(parentTransaction.PayeeId)} not set right!");
-                Assert.True(parentTransaction.Memo == memo, $"{nameof(parentTransaction.Memo)} not set right!");
-                Assert.True(parentTransaction.Cleared == cleared, $"{nameof(parentTransaction.Cleared)} not set right!");
+                Assert.Equal(id, parentTransaction.Id);
+                Assert.Equal(accountId, parentTransaction.AccountId);
+                Assert.Equal(date, parentTransaction.Date);
+                Assert.Equal(payeeId, parentTransaction.PayeeId);
+                Assert.Equal(memo, parentTransaction.Memo);
+                Assert.Equal(cleared, parentTransaction.Cleared);
             }
 
             [Fact]
@@ -46,12 +46,12 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(parentTransaction.Id == -1L, $"Default {nameof(parentTransaction.Id)} not set right!");
-                Assert.True(parentTransaction.AccountId == -1L, $"Default {nameof(parentTransaction.AccountId)} not set right!");
-                Assert.True(parentTransaction.Date == today, $"Default {nameof(parentTransaction.Date)} not set right!");
-                Assert.True(parentTransaction.PayeeId == -1L, $"Default {nameof(parentTransaction.PayeeId)} not set right!");
-                Assert.True(parentTransaction.Memo == null, $"Default {nameof(parentTransaction.Memo)} not set right!");
-                Assert.True(parentTransaction.Cleared == false, $"Default {nameof(parentTransaction.Cleared)} not set right!");
+                Assert.Equal(-1L, parentTransaction.Id);
+                Assert.Equal(-1L, parentTransaction.AccountId);
+                Assert.Equal(today, parentTransaction.Date);
+                Assert.Equal(-1L, parentTransaction.PayeeId);
+                Assert.Equal(null, parentTransaction.Memo);
+                Assert.Equal(false, parentTransaction.Cleared);
             }
         }
 

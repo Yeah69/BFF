@@ -28,14 +28,14 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(income.Id == id, $"{nameof(income.Id)} not set right!");
-                Assert.True(income.AccountId == accountId, $"{nameof(income.AccountId)} not set right!");
-                Assert.True(income.Date == date, $"{nameof(income.Date)} not set right!");
-                Assert.True(income.PayeeId == payeeId, $"{nameof(income.PayeeId)} not set right!");
-                Assert.True(income.CategoryId == categoryId, $"{nameof(income.CategoryId)} not set right!");
-                Assert.True(income.Memo == memo, $"{nameof(income.Memo)} not set right!");
-                Assert.True(income.Sum == sum, $"{nameof(income.Sum)} not set right!");
-                Assert.True(income.Cleared == cleared, $"{nameof(income.Cleared)} not set right!");
+                Assert.Equal(id, income.Id);
+                Assert.Equal(accountId, income.AccountId);
+                Assert.Equal(date, income.Date);
+                Assert.Equal(payeeId, income.PayeeId);
+                Assert.Equal(categoryId, income.CategoryId);
+                Assert.Equal(memo, income.Memo);
+                Assert.Equal(sum, income.Sum);
+                Assert.Equal(cleared, income.Cleared);
             }
 
             [Fact]
@@ -48,14 +48,14 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(income.Id == -1L, $"Default {nameof(income.Id)} not set right!");
-                Assert.True(income.AccountId == -1L, $"Default {nameof(income.AccountId)} not set right!");
-                Assert.True(income.Date == today, $"Default {nameof(income.Date)} not set right!");
-                Assert.True(income.PayeeId == -1L, $"Default {nameof(income.PayeeId)} not set right!");
-                Assert.True(income.CategoryId == -1L, $"Default {nameof(income.CategoryId)} not set right!");
-                Assert.True(income.Memo == null, $"Default {nameof(income.Memo)} not set right!");
-                Assert.True(income.Sum == 0L, $"Default {nameof(income.Sum)} not set right!");
-                Assert.True(income.Cleared == false, $"Default {nameof(income.Cleared)} not set right!");
+                Assert.Equal(-1L, income.Id);
+                Assert.Equal(-1L, income.AccountId);
+                Assert.Equal(today, income.Date);
+                Assert.Equal(-1L, income.PayeeId);
+                Assert.Equal(-1L, income.CategoryId);
+                Assert.Equal(null, income.Memo);
+                Assert.Equal(0L, income.Sum);
+                Assert.Equal(false, income.Cleared);
             }
         }
 

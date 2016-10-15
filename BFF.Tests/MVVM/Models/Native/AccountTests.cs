@@ -29,9 +29,9 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
                
                 //Assert
-                Assert.True(account.Id == id, $"{nameof(account.Id)} not set right!");
-                Assert.True(account.Name == name, $"{nameof(account.Name)} not set right!");
-                Assert.True(account.StartingBalance == startingBalance, $"{nameof(account.StartingBalance)} not set right!");
+                Assert.Equal(id, account.Id);
+                Assert.Equal(name, account.Name);
+                Assert.Equal(startingBalance, account.StartingBalance);
             }  
 
             [Fact]
@@ -43,9 +43,9 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(account.Id == -1L, $"Default {nameof(account.Id)} not set right!");
-                Assert.True(account.Name == null, $"Default {nameof(account.Name)} not set right!");
-                Assert.True(account.StartingBalance == 0L, $"Default {nameof(account.StartingBalance)} not set right!");
+                Assert.Equal(-1L, account.Id);
+                Assert.Equal(null, account.Name);
+                Assert.Equal(0L, account.StartingBalance);
             }
         }
 
@@ -68,7 +68,7 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(account.ToString() == name, $"{nameof(account.ToString)}() does not work right!");
+                Assert.Equal(name, account.ToString());
             }
         }
 

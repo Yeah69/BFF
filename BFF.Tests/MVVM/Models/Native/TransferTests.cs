@@ -28,13 +28,13 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(transfer.Id == id, $"{nameof(transfer.Id)} not set right!");
-                Assert.True(transfer.FromAccountId == fromAccountId, $"{nameof(transfer.FromAccountId)} not set right!");
-                Assert.True(transfer.ToAccountId == toAccountId, $"{nameof(transfer.ToAccountId)} not set right!");
-                Assert.True(transfer.Date == date, $"{nameof(transfer.Date)} not set right!");
-                Assert.True(transfer.Memo == memo, $"{nameof(transfer.Memo)} not set right!");
-                Assert.True(transfer.Sum == sum, $"{nameof(transfer.Sum)} not set right!");
-                Assert.True(transfer.Cleared == cleared, $"{nameof(transfer.Cleared)} not set right!");
+                Assert.Equal(id, transfer.Id);
+                Assert.Equal(fromAccountId, transfer.FromAccountId);
+                Assert.Equal(toAccountId, transfer.ToAccountId);
+                Assert.Equal(date, transfer.Date);
+                Assert.Equal(memo, transfer.Memo);
+                Assert.Equal(sum, transfer.Sum);
+                Assert.Equal(cleared, transfer.Cleared);
             }
 
             [Fact]
@@ -47,13 +47,13 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(transfer.Id == -1L, $"Default {nameof(transfer.Id)} not set right!");
-                Assert.True(transfer.FromAccountId == -1L, $"Default {nameof(transfer.FromAccountId)} not set right!");
-                Assert.True(transfer.ToAccountId == -1L, $"Default {nameof(transfer.ToAccountId)} not set right!");
-                Assert.True(transfer.Date == today, $"Default {nameof(transfer.Date)} not set right!");
-                Assert.True(transfer.Memo == null, $"Default {nameof(transfer.Memo)} not set right!");
-                Assert.True(transfer.Sum == 0L, $"Default {nameof(transfer.Sum)} not set right!");
-                Assert.True(transfer.Cleared == false, $"Default {nameof(transfer.Cleared)} not set right!");
+                Assert.Equal(-1L, transfer.Id);
+                Assert.Equal(-1L, transfer.FromAccountId);
+                Assert.Equal(-1L, transfer.ToAccountId);
+                Assert.Equal(today, transfer.Date);
+                Assert.Equal(null, transfer.Memo);
+                Assert.Equal(0L, transfer.Sum);
+                Assert.Equal(false, transfer.Cleared);
             }
         }
 

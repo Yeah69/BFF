@@ -29,6 +29,7 @@
             get { return _parentId; }
             set
             {
+                if(_parentId == value) return;
                 _parentId = value;
                 OnPropertyChanged();
             }
@@ -42,6 +43,7 @@
             get { return _categoryId; }
             set
             {
+                if(_categoryId == value) return;
                 _categoryId = value;
                 OnPropertyChanged();
             }
@@ -57,6 +59,7 @@
             get { return _sum; }
             set
             {
+                if(_sum == value) return;
                 _sum = value;
                 OnPropertyChanged();
             }
@@ -68,8 +71,9 @@
         /// <param name="category">Category of the SubElement</param>
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        protected SubTransInc(ICategory category = null, string memo = null, long sum = 0L) : base(memo: memo)
+        protected SubTransInc(IParentTransInc parent = null, ICategory category = null, string memo = null, long sum = 0L) : base(memo: memo)
         {
+            _parentId = parent?.Id ?? -1;
             _categoryId = category?.Id ?? -1;
             _sum = sum;
         }

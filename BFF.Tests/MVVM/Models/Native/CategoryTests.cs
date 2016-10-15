@@ -28,9 +28,9 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(category.Id == id, $"{nameof(category.Id)} not set right!");
-                Assert.True(category.ParentId == parentId, $"{nameof(category.ParentId)} not set right!");
-                Assert.True(category.Name == name, $"{nameof(category.Name)} not set right!");
+                Assert.Equal(id, category.Id);
+                Assert.Equal(parentId, category.ParentId);
+                Assert.Equal(name, category.Name);
             }
 
             [Fact]
@@ -42,9 +42,9 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(category.Id == -1L, $"Default {nameof(category.Id)} not set right!");
-                Assert.True(category.ParentId == null, $"{nameof(category.ParentId)} not set right!");
-                Assert.True(category.Name == null, $"Default {nameof(category.Name)} not set right!");
+                Assert.Equal(-1L, category.Id);
+                Assert.Equal(null, category.ParentId);
+                Assert.Equal(null, category.Name);
             }
         }
 
@@ -66,7 +66,7 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(category.ToString() == name, $"{nameof(category.ToString)}() does not work right!");
+                Assert.Equal(name, category.ToString());
             }
         }
 

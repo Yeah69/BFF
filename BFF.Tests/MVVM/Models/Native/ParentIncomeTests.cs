@@ -28,12 +28,12 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(parentIncome.Id == id, $"{nameof(parentIncome.Id)} not set right!");
-                Assert.True(parentIncome.AccountId == accountId, $"{nameof(parentIncome.AccountId)} not set right!");
-                Assert.True(parentIncome.Date == date, $"{nameof(parentIncome.Date)} not set right!");
-                Assert.True(parentIncome.PayeeId == payeeId, $"{nameof(parentIncome.PayeeId)} not set right!");
-                Assert.True(parentIncome.Memo == memo, $"{nameof(parentIncome.Memo)} not set right!");
-                Assert.True(parentIncome.Cleared == cleared, $"{nameof(parentIncome.Cleared)} not set right!");
+                Assert.Equal(id, parentIncome.Id);
+                Assert.Equal(accountId, parentIncome.AccountId);
+                Assert.Equal(date, parentIncome.Date);
+                Assert.Equal(payeeId, parentIncome.PayeeId);
+                Assert.Equal(memo, parentIncome.Memo);
+                Assert.Equal(cleared, parentIncome.Cleared);
             }
 
             [Fact]
@@ -46,12 +46,12 @@ namespace BFF.Tests.MVVM.Models.Native
                 //Act
 
                 //Assert
-                Assert.True(parentIncome.Id == -1L, $"Default {nameof(parentIncome.Id)} not set right!");
-                Assert.True(parentIncome.AccountId == -1L, $"Default {nameof(parentIncome.AccountId)} not set right!");
-                Assert.True(parentIncome.Date == today, $"Default {nameof(parentIncome.Date)} not set right!");
-                Assert.True(parentIncome.PayeeId == -1L, $"Default {nameof(parentIncome.PayeeId)} not set right!");
-                Assert.True(parentIncome.Memo == null, $"Default {nameof(parentIncome.Memo)} not set right!");
-                Assert.True(parentIncome.Cleared == false, $"Default {nameof(parentIncome.Cleared)} not set right!");
+                Assert.Equal(-1L, parentIncome.Id);
+                Assert.Equal(-1L, parentIncome.AccountId);
+                Assert.Equal(today, parentIncome.Date);
+                Assert.Equal(-1L, parentIncome.PayeeId);
+                Assert.Equal(null, parentIncome.Memo);
+                Assert.Equal(false, parentIncome.Cleared);
             }
         }
 
