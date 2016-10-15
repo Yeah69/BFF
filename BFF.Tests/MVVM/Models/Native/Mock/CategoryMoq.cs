@@ -7,7 +7,7 @@ using Moq;
 
 namespace BFF.Tests.MVVM.Models.Native.Mock
 {
-    public static class ICategoryMock
+    public static class CategoryMoq
     {
 
         public static IList<Mock<ICategory>> CategoryMocks => LazyMock.Value;

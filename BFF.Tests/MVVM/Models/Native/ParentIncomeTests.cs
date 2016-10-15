@@ -62,7 +62,7 @@ namespace BFF.Tests.MVVM.Models.Native
             {
                 //Arrange
                 ParentIncome parentIncome = new ParentIncome(1, 1, DateTime.Today, 2, "Yeah, Party!", true);
-                Mock<IBffOrm> ormMock = IBffOrmMock.BffOrmMock;
+                Mock<IBffOrm> ormMock = BffOrmMoq.BffOrmMock;
 
                 //Act
                 parentIncome.Insert(ormMock.Object);

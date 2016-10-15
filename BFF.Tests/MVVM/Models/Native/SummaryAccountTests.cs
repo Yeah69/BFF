@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using BFF.DB;
+﻿using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.Tests.DB.Mock;
 using Moq;
@@ -33,7 +31,7 @@ namespace BFF.Tests.MVVM.Models.Native
             {
                 //Arrange
                 SummaryAccount summaryAccount = new SummaryAccount();
-                Mock<IBffOrm> ormMock = IBffOrmMock.BffOrmMock;
+                Mock<IBffOrm> ormMock = BffOrmMoq.BffOrmMock;
 
                 //Act
                 summaryAccount.Insert(ormMock.Object);

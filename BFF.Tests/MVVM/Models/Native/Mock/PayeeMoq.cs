@@ -7,7 +7,7 @@ using Moq;
 
 namespace BFF.Tests.MVVM.Models.Native.Mock
 {
-    public static class IPayeeMock
+    public static class PayeeMoq
     {
         public static IList<Mock<IPayee>> PayeeMocks => LazyMock.Value;
 

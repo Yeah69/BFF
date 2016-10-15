@@ -59,7 +59,7 @@ namespace BFF.Tests.MVVM.Models.Native
             {
                 //Arrange
                 SubIncome subIncome = new SubIncome(1, 1, 2, "Yeah, Party!", -6969L);
-                Mock<IBffOrm> ormMock = IBffOrmMock.BffOrmMock;
+                Mock<IBffOrm> ormMock = BffOrmMoq.BffOrmMock;
 
                 //Act
                 subIncome.Insert(ormMock.Object);

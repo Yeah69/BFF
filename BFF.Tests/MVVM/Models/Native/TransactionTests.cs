@@ -66,7 +66,7 @@ namespace BFF.Tests.MVVM.Models.Native
             {
                 //Arrange
                 Transaction transaction = new Transaction(1, 1, DateTime.Today, 2, 3, "Yeah, Party!", 6969L, true);
-                Mock<IBffOrm> ormMock = IBffOrmMock.BffOrmMock;
+                Mock<IBffOrm> ormMock = BffOrmMoq.BffOrmMock;
 
                 //Act
                 transaction.Insert(ormMock.Object);

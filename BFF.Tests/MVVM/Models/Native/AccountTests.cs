@@ -79,7 +79,7 @@ namespace BFF.Tests.MVVM.Models.Native
             {
                 //Arrange
                 Account account = new Account(1, "AnAccount", 6969);
-                Mock<IBffOrm> ormMock = IBffOrmMock.BffOrmMock;
+                Mock<IBffOrm> ormMock = BffOrmMoq.BffOrmMock;
 
                 //Act
                 account.Insert(ormMock.Object);

@@ -36,7 +36,7 @@ namespace BFF.Tests.MVVM.Models.Native
             {
                 //Arrange
                 DbSetting dbSetting = new DbSetting();
-                Mock<IBffOrm> ormMock = IBffOrmMock.BffOrmMock;
+                Mock<IBffOrm> ormMock = BffOrmMoq.BffOrmMock;
 
                 //Act
                 dbSetting.Insert(ormMock.Object);

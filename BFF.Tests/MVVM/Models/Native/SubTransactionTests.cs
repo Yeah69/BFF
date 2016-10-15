@@ -59,7 +59,7 @@ namespace BFF.Tests.MVVM.Models.Native
             {
                 //Arrange
                 SubTransaction subTransaction = new SubTransaction(1, 1, 2, "Yeah, Party!", -6969L);
-                Mock<IBffOrm> ormMock = IBffOrmMock.BffOrmMock;
+                Mock<IBffOrm> ormMock = BffOrmMoq.BffOrmMock;
 
                 //Act
                 subTransaction.Insert(ormMock.Object);

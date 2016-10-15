@@ -62,7 +62,7 @@ namespace BFF.Tests.MVVM.Models.Native
             {
                 //Arrange
                 ParentTransaction parentTransaction = new ParentTransaction(1, 1, DateTime.Today, 2, "Yeah, Party!", true);
-                Mock<IBffOrm> ormMock = IBffOrmMock.BffOrmMock;
+                Mock<IBffOrm> ormMock = BffOrmMoq.BffOrmMock;
 
                 //Act
                  parentTransaction.Insert(ormMock.Object);

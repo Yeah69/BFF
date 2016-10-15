@@ -77,7 +77,7 @@ namespace BFF.Tests.MVVM.Models.Native
             {
                 //Arrange
                 Category category = new Category(-1, -1, "ACategory");
-                Mock<IBffOrm> ormMock = IBffOrmMock.BffOrmMock;
+                Mock<IBffOrm> ormMock = BffOrmMoq.BffOrmMock;
 
                 //Act
                 category.Insert(ormMock.Object);

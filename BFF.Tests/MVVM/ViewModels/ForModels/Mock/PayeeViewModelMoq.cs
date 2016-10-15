@@ -7,7 +7,7 @@ using Moq;
 
 namespace BFF.Tests.MVVM.ViewModels.ForModels.Mock
 {
-    public static class IPayeeViewModelMock
+    public static class PayeeViewModelMoq
     {
         public static IList<Mock<IPayeeViewModel>> PayeeViewModelMocks => LazyMock.Value;
 

@@ -7,7 +7,7 @@ using Moq;
 
 namespace BFF.Tests.MVVM.ViewModels.ForModels.Mock
 {
-    public static class ICategoryViewModelMock
+    public static class CategoryViewModelMoq
     {
         private struct CategoryData
         {
@@ -16,7 +16,7 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels.Mock
             public long? ParentId;
         }
 
-        private static CategoryData[] categoryData =
+        private static readonly CategoryData[] CategorySet =
         {
             new CategoryData {Id = 1, Name= "Food", ParentId = null},
             new CategoryData {Id = 2, Name= "Outside", ParentId = 1},
@@ -38,18 +38,18 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels.Mock
 
         private static readonly Lazy<IList<Mock<ICategoryViewModel>>> LazyMock = new Lazy<IList<Mock<ICategoryViewModel>>>(() => new List<Mock<ICategoryViewModel>>
                                                                                               {
-                                                                                                  CreateMock(categoryData[0].Id, categoryData[0].Name,  categoryData[0].ParentId),
-                                                                                                  CreateMock(categoryData[1].Id, categoryData[1].Name,  categoryData[1].ParentId),
-                                                                                                  CreateMock(categoryData[2].Id, categoryData[2].Name,  categoryData[2].ParentId),
-                                                                                                  CreateMock(categoryData[3].Id, categoryData[3].Name,  categoryData[3].ParentId),
-                                                                                                  CreateMock(categoryData[4].Id, categoryData[4].Name,  categoryData[4].ParentId),
-                                                                                                  CreateMock(categoryData[5].Id, categoryData[5].Name,  categoryData[5].ParentId),
-                                                                                                  CreateMock(categoryData[6].Id, categoryData[6].Name,  categoryData[6].ParentId),
-                                                                                                  CreateMock(categoryData[7].Id, categoryData[7].Name,  categoryData[7].ParentId),
-                                                                                                  CreateMock(categoryData[8].Id, categoryData[8].Name,  categoryData[8].ParentId),
-                                                                                                  CreateMock(categoryData[9].Id, categoryData[9].Name,  categoryData[9].ParentId),
-                                                                                                  CreateMock(categoryData[10].Id, categoryData[10].Name,  categoryData[10].ParentId),
-                                                                                                  CreateMock(categoryData[11].Id, categoryData[11].Name,  categoryData[11].ParentId)
+                                                                                                  CreateMock(CategorySet[0].Id, CategorySet[0].Name,  CategorySet[0].ParentId),
+                                                                                                  CreateMock(CategorySet[1].Id, CategorySet[1].Name,  CategorySet[1].ParentId),
+                                                                                                  CreateMock(CategorySet[2].Id, CategorySet[2].Name,  CategorySet[2].ParentId),
+                                                                                                  CreateMock(CategorySet[3].Id, CategorySet[3].Name,  CategorySet[3].ParentId),
+                                                                                                  CreateMock(CategorySet[4].Id, CategorySet[4].Name,  CategorySet[4].ParentId),
+                                                                                                  CreateMock(CategorySet[5].Id, CategorySet[5].Name,  CategorySet[5].ParentId),
+                                                                                                  CreateMock(CategorySet[6].Id, CategorySet[6].Name,  CategorySet[6].ParentId),
+                                                                                                  CreateMock(CategorySet[7].Id, CategorySet[7].Name,  CategorySet[7].ParentId),
+                                                                                                  CreateMock(CategorySet[8].Id, CategorySet[8].Name,  CategorySet[8].ParentId),
+                                                                                                  CreateMock(CategorySet[9].Id, CategorySet[9].Name,  CategorySet[9].ParentId),
+                                                                                                  CreateMock(CategorySet[10].Id, CategorySet[10].Name,  CategorySet[10].ParentId),
+                                                                                                  CreateMock(CategorySet[11].Id, CategorySet[11].Name,  CategorySet[11].ParentId)
                                                                                               }, LazyThreadSafetyMode.ExecutionAndPublication);
 
         private static readonly Lazy<IList<ICategoryViewModel>> Lazy = new Lazy<IList<ICategoryViewModel>>(() => CategoryViewModelMocks.Select(pm => pm.Object).ToList(), LazyThreadSafetyMode.ExecutionAndPublication);
@@ -61,7 +61,7 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels.Mock
             mock.SetupGet(c => c.Id).Returns(id);
             mock.SetupGet(c => c.Name).Returns(name);
             if(parentId != null)
-                mock.SetupGet(c => c.Parent).Returns(CreateMock(categoryData[(int)parentId].Id, categoryData[(int)parentId].Name, categoryData[(int)parentId - 1].ParentId).Object);
+                mock.SetupGet(c => c.Parent).Returns(CreateMock(CategorySet[(int)parentId].Id, CategorySet[(int)parentId].Name, CategorySet[(int)parentId - 1].ParentId).Object);
             else
                 mock.SetupGet(c => c.Parent).Returns(() => null);
 

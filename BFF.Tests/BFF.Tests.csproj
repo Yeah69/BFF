@@ -70,14 +70,14 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="DB\Mock\IBffOrmMock.cs" />
+    <Compile Include="DB\Mock\BffOrmMoq.cs" />
     <Compile Include="MVVM\Models\Native\AccountTests.cs" />
     <Compile Include="MVVM\Models\Native\CategoryTests.cs" />
     <Compile Include="MVVM\Models\Native\DbSettingTests.cs" />
     <Compile Include="MVVM\Models\Native\IncomeTests.cs" />
-    <Compile Include="MVVM\Models\Native\Mock\IAccountMock.cs" />
-    <Compile Include="MVVM\Models\Native\Mock\ICategoryMock.cs" />
-    <Compile Include="MVVM\Models\Native\Mock\IPayeeMock.cs" />
+    <Compile Include="MVVM\Models\Native\Mock\AccountMoq.cs" />
+    <Compile Include="MVVM\Models\Native\Mock\CategoryMoq.cs" />
+    <Compile Include="MVVM\Models\Native\Mock\PayeeMoq.cs" />
     <Compile Include="MVVM\Models\Native\ParentIncomeTests.cs" />
     <Compile Include="MVVM\Models\Native\ParentTransactionTests.cs" />
     <Compile Include="MVVM\Models\Native\SubIncomeTests.cs" />
@@ -86,9 +86,9 @@
     <Compile Include="MVVM\Models\Native\TransactionTests.cs" />
     <Compile Include="MVVM\Models\Native\PayeeTests.cs" />
     <Compile Include="MVVM\Models\Native\TransferTests.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Mock\IAccountViewModelMock.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Mock\ICategoryViewModelMock.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Mock\IPayeeViewModelMock.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Mock\AccountViewModelMoq.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Mock\CategoryViewModelMoq.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Mock\PayeeViewModelMoq.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TransactionViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

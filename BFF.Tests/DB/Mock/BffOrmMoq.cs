@@ -8,7 +8,7 @@ using Moq;
 
 namespace BFF.Tests.DB.Mock
 {
-    public static class IBffOrmMock
+    public static class BffOrmMoq
     {
         public static Mock<IBffOrm> BffOrmMock => LazyMock.Value;
 
@@ -34,17 +34,17 @@ namespace BFF.Tests.DB.Mock
             mock.Setup(orm => orm.Update(It.IsAny<IPayee>())).Verifiable();
             mock.Setup(orm => orm.Delete(It.IsAny<IPayee>())).Verifiable();
 
-            foreach(IAccountViewModel accountViewModel in IAccountViewModelMock.AccountViewModels)
+            foreach(IAccountViewModel accountViewModel in AccountViewModelMoq.AccountViewModels)
             {
                 mock.Setup(orm => orm.CommonPropertyProvider.GetAccountViewModel(accountViewModel.Id)).Returns(accountViewModel);
             }
 
-            foreach(ICategoryViewModel categoryViewModel in ICategoryViewModelMock.CategorieViewModels)
+            foreach(ICategoryViewModel categoryViewModel in CategoryViewModelMoq.CategorieViewModels)
             {
                 mock.Setup(orm => orm.CommonPropertyProvider.GetCategoryViewModel(categoryViewModel.Id)).Returns(categoryViewModel);
             }
 
-            foreach(IPayeeViewModel payeeViewModel in IPayeeViewModelMock.PayeeViewModels)
+            foreach(IPayeeViewModel payeeViewModel in PayeeViewModelMoq.PayeeViewModels)
             {
                 mock.Setup(orm => orm.CommonPropertyProvider.GetPayeeViewModel(payeeViewModel.Id)).Returns(payeeViewModel);
             }
