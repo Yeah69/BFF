@@ -8,7 +8,7 @@ namespace BFF.MVVM.Models.Native
 {
     public interface IDbSetting : IDataModelBase
     {
-        string CurrencyCultrureName { get; set; }
+        string CurrencyCultureName { get; set; }
         CultureInfo CurrencyCulture { get; set; }
         string DateCultureName { get; set; }
         CultureInfo DateCulture { get; set; }
@@ -16,34 +16,70 @@ namespace BFF.MVVM.Models.Native
 
     public class DbSetting : DataModelBase, IDbSetting
     {
-        public string CurrencyCultrureName { get; set; }
+        public string CurrencyCultureName
+        {
+            get { return CurrencyCulture.Name; }
+            set
+            {
+                if(_currencyCulture.Equals(CultureInfo.GetCultureInfo(value))) return;
+                _currencyCulture = CultureInfo.GetCultureInfo(value);
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CurrencyCulture));
+            }
+        }
+
+        private CultureInfo _currencyCulture;
 
         [Write(false)]
         public CultureInfo CurrencyCulture
         {
             get
             {
-                return CultureInfo.GetCultureInfo(CurrencyCultrureName);
+                return _currencyCulture;
             }
             set
             {
-                CurrencyCultrureName = value.Name;
+                if(_currencyCulture.Equals(value)) return;
+                _currencyCulture = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CurrencyCultureName));
             }
         }
 
-        public string DateCultureName { get; set; }
+        public string DateCultureName
+        {
+            get { return DateCulture.Name; }
+            set
+            {
+                if (_dateCulture.Equals(CultureInfo.GetCultureInfo(value))) return;
+                _dateCulture = CultureInfo.GetCultureInfo(value);
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DateCulture));
+            }
+        }
+
+        private CultureInfo _dateCulture;
 
         [Write(false)]
         public CultureInfo DateCulture
         {
             get
             {
-                return CultureInfo.GetCultureInfo(DateCultureName);
+                return _dateCulture;
             }
             set
             {
-                DateCultureName = value.Name;
+                if (_dateCulture.Equals(value)) return;
+                _dateCulture = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DateCultureName));
             }
+        }
+
+        public DbSetting()
+        {
+            _currencyCulture = CultureInfo.GetCultureInfo("de-DE");
+            _dateCulture = CultureInfo.GetCultureInfo("de-DE");
         }
 
         #region Overrides of ExteriorCrudBase

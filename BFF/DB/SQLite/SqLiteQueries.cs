@@ -227,7 +227,7 @@ SELECT {nameof(IDataModelBase.Id)}, -69 AS AccountFiller, {nameof(ITransfer.From
 
         internal static string CreateDbSettingTableStatement
             =>
-                $@"CREATE TABLE [{nameof(DbSetting)}s]({nameof(IDbSetting.Id)} INTEGER PRIMARY KEY, {nameof(IDbSetting.CurrencyCultrureName)} VARCHAR(10),
+                $@"CREATE TABLE [{nameof(DbSetting)}s]({nameof(IDbSetting.Id)} INTEGER PRIMARY KEY, {nameof(IDbSetting.CurrencyCultureName)} VARCHAR(10),
 {nameof(IDbSetting.DateCultureName)} VARCHAR(10));";
 
         #endregion

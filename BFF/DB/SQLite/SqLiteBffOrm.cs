@@ -54,7 +54,7 @@ namespace BFF.DB.SQLite
                     cnn.Execute(SqLiteQueries.CreateTransferTableStatement);
 
                     cnn.Execute(SqLiteQueries.CreateDbSettingTableStatement);
-                    cnn.Insert(new DbSetting {CurrencyCultrureName = "de-DE", DateCultureName = "de-DE"});
+                    cnn.Insert(new DbSetting());
 
                     cnn.Execute(SqLiteQueries.SetDatabaseSchemaVersion);
 

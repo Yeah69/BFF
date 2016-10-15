@@ -73,6 +73,7 @@
     <Compile Include="DB\Mock\IBffOrmMock.cs" />
     <Compile Include="MVVM\Models\Native\AccountTests.cs" />
     <Compile Include="MVVM\Models\Native\CategoryTests.cs" />
+    <Compile Include="MVVM\Models\Native\DbSettingTests.cs" />
     <Compile Include="MVVM\Models\Native\IncomeTests.cs" />
     <Compile Include="MVVM\Models\Native\Mock\IAccountMock.cs" />
     <Compile Include="MVVM\Models\Native\Mock\ICategoryMock.cs" />

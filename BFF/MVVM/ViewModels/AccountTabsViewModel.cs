@@ -59,7 +59,7 @@ namespace BFF.MVVM.ViewModels
             _orm = orm;
 
             IDbSetting dbSetting = orm.Get<DbSetting>(1);
-            Settings.Default.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultrureName);
+            Settings.Default.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultureName);
             Settings.Default.Culture_SessionDate = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
             ManageCultures();
 

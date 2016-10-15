@@ -109,6 +109,7 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
+        //todo: put DateLong into Database, too?
         public bool DateLong
         {
             get { return Settings.Default.Culture_DefaultDateLong; }
