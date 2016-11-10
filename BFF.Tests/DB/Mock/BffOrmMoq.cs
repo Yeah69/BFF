@@ -34,20 +34,7 @@ namespace BFF.Tests.DB.Mock
             mock.Setup(orm => orm.Update(It.IsAny<IPayee>())).Verifiable();
             mock.Setup(orm => orm.Delete(It.IsAny<IPayee>())).Verifiable();
 
-            foreach(IAccountViewModel accountViewModel in AccountViewModelMoq.AccountViewModels)
-            {
-                mock.Setup(orm => orm.CommonPropertyProvider.GetAccountViewModel(accountViewModel.Id)).Returns(accountViewModel);
-            }
-
-            foreach(ICategoryViewModel categoryViewModel in CategoryViewModelMoq.CategorieViewModels)
-            {
-                mock.Setup(orm => orm.CommonPropertyProvider.GetCategoryViewModel(categoryViewModel.Id)).Returns(categoryViewModel);
-            }
-
-            foreach(IPayeeViewModel payeeViewModel in PayeeViewModelMoq.PayeeViewModels)
-            {
-                mock.Setup(orm => orm.CommonPropertyProvider.GetPayeeViewModel(payeeViewModel.Id)).Returns(payeeViewModel);
-            }
+            mock.Setup(orm => orm.CommonPropertyProvider).Returns(CommonPropertyProviderMoq.CommonPropertyProvider);
 
             return mock;
         }

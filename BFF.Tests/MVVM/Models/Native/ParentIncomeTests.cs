@@ -70,9 +70,9 @@ namespace BFF.Tests.MVVM.Models.Native
                 parentIncome.Delete(ormMock.Object);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<ParentIncome>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Update(It.IsAny<ParentIncome>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Delete(It.IsAny<ParentIncome>()), Times.Exactly(1));
+                ormMock.Verify(orm => orm.Insert(It.IsAny<ParentIncome>()), Times.Once);
+                ormMock.Verify(orm => orm.Update(It.IsAny<ParentIncome>()), Times.Once);
+                ormMock.Verify(orm => orm.Delete(It.IsAny<ParentIncome>()), Times.Once);
             }
             [Fact]
             public void NullCrudFact()

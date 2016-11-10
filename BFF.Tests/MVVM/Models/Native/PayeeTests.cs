@@ -83,9 +83,9 @@ namespace BFF.Tests.MVVM.Models.Native
                 payee.Delete(ormMock.Object);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<Payee>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Update(It.IsAny<Payee>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Delete(It.IsAny<Payee>()), Times.Exactly(1));
+                ormMock.Verify(orm => orm.Insert(It.IsAny<Payee>()), Times.Once);
+                ormMock.Verify(orm => orm.Update(It.IsAny<Payee>()), Times.Once);
+                ormMock.Verify(orm => orm.Delete(It.IsAny<Payee>()), Times.Once);
             }
             [Fact]
             public void NullCrudFact()

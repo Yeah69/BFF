@@ -70,9 +70,9 @@ namespace BFF.Tests.MVVM.Models.Native
                  parentTransaction.Delete(ormMock.Object);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<ParentTransaction>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Update(It.IsAny<ParentTransaction>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Delete(It.IsAny<ParentTransaction>()), Times.Exactly(1));
+                ormMock.Verify(orm => orm.Insert(It.IsAny<ParentTransaction>()), Times.Once);
+                ormMock.Verify(orm => orm.Update(It.IsAny<ParentTransaction>()), Times.Once);
+                ormMock.Verify(orm => orm.Delete(It.IsAny<ParentTransaction>()), Times.Once);
             }
             [Fact]
             public void NullCrudFact()

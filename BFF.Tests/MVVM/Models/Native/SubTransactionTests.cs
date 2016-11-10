@@ -67,9 +67,9 @@ namespace BFF.Tests.MVVM.Models.Native
                 subTransaction.Delete(ormMock.Object);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<SubTransaction>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Update(It.IsAny<SubTransaction>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Delete(It.IsAny<SubTransaction>()), Times.Exactly(1));
+                ormMock.Verify(orm => orm.Insert(It.IsAny<SubTransaction>()), Times.Once);
+                ormMock.Verify(orm => orm.Update(It.IsAny<SubTransaction>()), Times.Once);
+                ormMock.Verify(orm => orm.Delete(It.IsAny<SubTransaction>()), Times.Once);
             }
             [Fact]
             public void NullCrudFact()

@@ -71,6 +71,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DB\Mock\BffOrmMoq.cs" />
+    <Compile Include="DB\Mock\CommonPropertyProviderMoq.cs" />
     <Compile Include="MVVM\Models\Native\AccountTests.cs" />
     <Compile Include="MVVM\Models\Native\CategoryTests.cs" />
     <Compile Include="MVVM\Models\Native\DbSettingTests.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="MVVM\Models\Native\TransactionTests.cs" />
     <Compile Include="MVVM\Models\Native\PayeeTests.cs" />
     <Compile Include="MVVM\Models\Native\TransferTests.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\AccountViewModelTests.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Mock\AccountViewModelMoq.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Mock\CategoryViewModelMoq.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Mock\PayeeViewModelMoq.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

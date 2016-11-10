@@ -44,9 +44,9 @@ namespace BFF.Tests.MVVM.Models.Native
                 dbSetting.Delete(ormMock.Object);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<DbSetting>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Update(It.IsAny<DbSetting>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Delete(It.IsAny<DbSetting>()), Times.Exactly(1));
+                ormMock.Verify(orm => orm.Insert(It.IsAny<DbSetting>()), Times.Once);
+                ormMock.Verify(orm => orm.Update(It.IsAny<DbSetting>()), Times.Once);
+                ormMock.Verify(orm => orm.Delete(It.IsAny<DbSetting>()), Times.Once);
             }
             [Fact]
             public void NullCrudFact()

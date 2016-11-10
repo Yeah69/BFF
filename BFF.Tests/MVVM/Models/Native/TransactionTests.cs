@@ -74,9 +74,9 @@ namespace BFF.Tests.MVVM.Models.Native
                 transaction.Delete(ormMock.Object);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<Transaction>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Update(It.IsAny<Transaction>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Delete(It.IsAny<Transaction>()), Times.Exactly(1));
+                ormMock.Verify(orm => orm.Insert(It.IsAny<Transaction>()), Times.Once);
+                ormMock.Verify(orm => orm.Update(It.IsAny<Transaction>()), Times.Once);
+                ormMock.Verify(orm => orm.Delete(It.IsAny<Transaction>()), Times.Once);
             }
             [Fact]
             public void NullCrudFact()

@@ -67,9 +67,9 @@ namespace BFF.Tests.MVVM.Models.Native
                 subIncome.Delete(ormMock.Object);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<SubIncome>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Update(It.IsAny<SubIncome>()), Times.Exactly(1));
-                ormMock.Verify(orm => orm.Delete(It.IsAny<SubIncome>()), Times.Exactly(1));
+                ormMock.Verify(orm => orm.Insert(It.IsAny<SubIncome>()), Times.Once);
+                ormMock.Verify(orm => orm.Update(It.IsAny<SubIncome>()), Times.Once);
+                ormMock.Verify(orm => orm.Delete(It.IsAny<SubIncome>()), Times.Once);
             }
             [Fact]
             public void NullCrudFact()

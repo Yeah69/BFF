@@ -23,7 +23,9 @@ namespace BFF.MVVM.ViewModels.ForModels
             get { return Account.StartingBalance; }
             set
             {
+                if(Account.StartingBalance == value) return;
                 Account.StartingBalance = value;
+                Account.Update(Orm);
                 OnPropertyChanged();
                 Orm.CommonPropertyProvider.SummaryAccountViewModel.RefreshStartingBalance();
             }
@@ -37,7 +39,9 @@ namespace BFF.MVVM.ViewModels.ForModels
             get { return Account.Name; }
             set
             {
+                if(Account.Name == value) return;
                 Account.Name = value;
+                Account.Update(Orm);
                 OnPropertyChanged();
             }
         }
@@ -86,7 +90,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void DeleteFromDb()
         {
-            Orm?.CommonPropertyProvider.Remove(Account);
+            Orm?.CommonPropertyProvider?.Remove(Account);
         }
 
         /// <summary>
