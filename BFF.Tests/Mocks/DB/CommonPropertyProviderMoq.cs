@@ -46,6 +46,8 @@ namespace BFF.Tests.Mocks.DB
                 mock.Setup(cpp => cpp.GetPayeeViewModel(payeeViewModel.Id)).Returns(payeeViewModel);
             }
 
+            mock.SetupGet(cpp => cpp.SummaryAccountViewModel).Returns(SummaryAccountViewModelMoq.SummaryAccountViewModel);
+
             return mock;
         }
     }

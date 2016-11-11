@@ -78,6 +78,7 @@
     <Compile Include="Mocks\MVVM\ViewModels\ForModels\AccountViewModelMoq.cs" />
     <Compile Include="Mocks\MVVM\ViewModels\ForModels\CategoryViewModelMoq.cs" />
     <Compile Include="Mocks\MVVM\ViewModels\ForModels\PayeeViewModelMoq.cs" />
+    <Compile Include="Mocks\MVVM\ViewModels\ForModels\SummaryAccountViewModelMoq.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\MVVM\Models\Native\AccountTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\CategoryTests.cs" />
@@ -103,6 +104,9 @@
       <Project>{c3840ddb-2348-4cc6-9d64-442fa4f1c329}</Project>
       <Name>BFF</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Mocks\MVVM\Models\Native" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
