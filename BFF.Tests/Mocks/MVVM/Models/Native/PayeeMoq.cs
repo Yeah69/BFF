@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Collections.Generic;
 using BFF.MVVM.Models.Native;
 using Moq;
 
@@ -9,19 +6,13 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
 {
     public static class PayeeMoq
     {
-        public static IList<Mock<IPayee>> PayeeMocks => LazyMock.Value;
-
-        public static IList<IPayee> Payees => Lazy.Value;
-
-        private static readonly Lazy<IList<Mock<IPayee>>> LazyMock = new Lazy<IList<Mock<IPayee>>>(() => new List<Mock<IPayee>>
-                                                                                              {
-                                                                                                  CreateMock(1, "Tony's Pizza"),
-                                                                                                  CreateMock(2, "Mother"),
-                                                                                                  CreateMock(3, "cineplex"),
-                                                                                                  CreateMock(4, "Work")
-                                                                                              }, LazyThreadSafetyMode.ExecutionAndPublication);
-
-        private static readonly Lazy<IList<IPayee>> Lazy = new Lazy<IList<IPayee>>(() => PayeeMocks.Select(pm => pm.Object).ToList(), LazyThreadSafetyMode.ExecutionAndPublication);
+        public static IList<Mock<IPayee>> PayeeMocks => new List<Mock<IPayee>>
+        {
+            CreateMock(1, "Tony's Pizza"),
+            CreateMock(2, "Mother"),
+            CreateMock(3, "cineplex"),
+            CreateMock(4, "Work")
+        };
 
         private static Mock<IPayee> CreateMock(long id, string name)
         {

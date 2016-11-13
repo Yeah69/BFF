@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using BFF.DB;
+﻿using BFF.DB;
 using BFF.MVVM.Models.Native;
 using Moq;
 
@@ -8,15 +6,9 @@ namespace BFF.Tests.Mocks.DB
 {
     public static class BffOrmMoq
     {
-        public static Mock<IBffOrm> BffOrmMock => LazyMock.Value;
+        public static Mock<IBffOrm> BffOrmMock => CreateMock();
 
-        public static IBffOrm BffOrm => Lazy.Value;
-
-        private static readonly Lazy<Mock<IBffOrm>> LazyMock = new Lazy<Mock<IBffOrm>>(CreateMock, LazyThreadSafetyMode.ExecutionAndPublication);
-
-        private static readonly Lazy<IBffOrm> Lazy = new Lazy<IBffOrm>(() => BffOrmMock.Object, LazyThreadSafetyMode.ExecutionAndPublication);
-
-        private static Mock<IBffOrm> CreateMock()
+        internal static Mock<IBffOrm> CreateMock(Mock<ICommonPropertyProvider> commonPropertyProviderMock = null)
         {
             Mock<IBffOrm> mock = new Mock<IBffOrm>();
 
@@ -32,7 +24,8 @@ namespace BFF.Tests.Mocks.DB
             mock.Setup(orm => orm.Update(It.IsAny<IPayee>())).Verifiable();
             mock.Setup(orm => orm.Delete(It.IsAny<IPayee>())).Verifiable();
 
-            mock.Setup(orm => orm.CommonPropertyProvider).Returns(CommonPropertyProviderMoq.CommonPropertyProvider);
+            if(commonPropertyProviderMock != null)
+                mock.Setup(orm => orm.CommonPropertyProvider).Returns(commonPropertyProviderMock.Object);
 
             return mock;
         }

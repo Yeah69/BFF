@@ -5,22 +5,24 @@ using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.Tests.Mocks.DB;
 using BFF.Tests.Mocks.MVVM.Models.Native;
+using BFF.Tests.Mocks.MVVM.ViewModels.ForModels;
 using Moq;
 using Xunit;
 
-namespace BFF.Tests.MVVM.ViewModels.ForModels
+namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 {
     public class AccountViewModelTests
     {
         public class ConstructionTests
         {
-            public static IEnumerable<object[]> AccountViewModelData => AccountMoq.Accounts.Select(a => new object[] { a });
+            public static IEnumerable<object[]> AccountViewModelData =
+                AccountMoq.AccountMocks.Select(am => new object[] {am.Object});
 
             [Theory, MemberData(nameof(AccountViewModelData))]
             public void ConstructionTheory(IAccount account)
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(account, BffOrmMoq.BffOrm);
+                AccountViewModel accountViewModel = new AccountViewModel(account, BffOrmMoq.BffOrmMock.Object);
 
                 //Act
 
@@ -33,13 +35,14 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
 
         public class ToStringTest
         {
-            public static IEnumerable<object[]> AccountViewModelData => AccountMoq.Accounts.Select(a => new object[] { a });
+            public static IEnumerable<object[]> AccountViewModelData =
+                AccountMoq.AccountMocks.Select(am => new object[] {am.Object});
 
             [Theory, MemberData(nameof(AccountViewModelData))]
             public void ToStringTheory(IAccount account)
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(account, BffOrmMoq.BffOrm);
+                AccountViewModel accountViewModel = new AccountViewModel(account, BffOrmMoq.BffOrmMock.Object);
 
                 //Act
 
@@ -54,41 +57,49 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
             public void CrudInsertFact()
             {
                 //Arrange
-                AccountViewModel insertAccount = new AccountViewModel(AccountMoq.NotInsertedAccount, BffOrmMoq.BffOrm);
-                CommonPropertyProviderMoq.CommonPropertyProviderMock.ResetCalls();
+                Mock<ICommonPropertyProvider> commonPropertyProviderMock =
+                    CommonPropertyProviderMoq.CommonPropertyProviderMock;
+                AccountViewModel insertAccount = new AccountViewModel(AccountMoq.NotInsertedAccountMock.Object,
+                                                                      BffOrmMoq.CreateMock(commonPropertyProviderMock).Object);
+                commonPropertyProviderMock.ResetCalls();
 
                 //Act
                 insertAccount.Insert();
 
                 //Assert
-                CommonPropertyProviderMoq.CommonPropertyProviderMock.Verify(cpp => cpp.Add(It.IsAny<IAccount>()), Times.Once());
+                commonPropertyProviderMock.Verify(cpp => cpp.Add(It.IsAny<IAccount>()), Times.Once());
             }
 
             [Fact]
             public void CrudUpdateFact()
             {
                 //Arrange
-                AccountViewModel updateAccount = new AccountViewModel(AccountMoq.Accounts[0], BffOrmMoq.BffOrm);
-                AccountMoq.AccountMocks[0].ResetCalls();
+                Mock<IAccount> mock = AccountMoq.AccountMocks[0];
+                AccountViewModel updateAccount = new AccountViewModel(mock.Object, BffOrmMoq.BffOrmMock.Object);
+                mock.ResetCalls();
 
                 //Act
                 updateAccount.Name = "asdf";
 
                 //Assert
-                AccountMoq.AccountMocks[0].Verify(orm => orm.Update(It.IsAny<IBffOrm>()), Times.Once);
+                mock.Verify(orm => orm.Update(It.IsAny<IBffOrm>()), Times.Once);
             }
             [Fact]
             public void CrudDeleteFact()
             {
                 //Arrange
-                AccountViewModel deleteAccount = new AccountViewModel(AccountMoq.Accounts[0], BffOrmMoq.BffOrm);
-                CommonPropertyProviderMoq.CommonPropertyProviderMock.ResetCalls();
+                Mock<IAccount> accountMock = AccountMoq.AccountMocks[0];
+                Mock<ICommonPropertyProvider> commonPropertyProviderMock =
+                    CommonPropertyProviderMoq.CommonPropertyProviderMock;
+                AccountViewModel deleteAccount = new AccountViewModel(accountMock.Object,
+                                                                      BffOrmMoq.CreateMock(commonPropertyProviderMock).Object);
+                commonPropertyProviderMock.ResetCalls();
 
                 //Act
                 deleteAccount.Delete();
 
                 //Assert
-                CommonPropertyProviderMoq.CommonPropertyProviderMock.Verify(cpp => cpp.Remove(It.IsAny<IAccount>()), Times.Once());
+                commonPropertyProviderMock.Verify(cpp => cpp.Remove(It.IsAny<IAccount>()), Times.Once());
             }
         }
 
@@ -98,7 +109,12 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
             public void PropertyChangedFact()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Accounts[0], BffOrmMoq.BffOrm);
+                Mock<IAccount> accountMock = AccountMoq.AccountMocks[0];
+                Mock<ICommonPropertyProvider> commonPropertyProviderMock =
+                    CommonPropertyProviderMoq.CreateMock(summaryAccountViewModelMock:
+                                                         SummaryAccountViewModelMoq.SummaryAccountViewModelMock);
+                AccountViewModel accountViewModel = new AccountViewModel(accountMock.Object,
+                                                                         BffOrmMoq.CreateMock(commonPropertyProviderMock).Object);
 
                 //Act + Assert
                 Assert.PropertyChanged(accountViewModel, nameof(accountViewModel.Name), () => accountViewModel.Name = "AnotherAccountViewModel");
@@ -109,7 +125,8 @@ namespace BFF.Tests.MVVM.ViewModels.ForModels
             public void PropertyNotChangedFact()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Accounts[0], BffOrmMoq.BffOrm);
+                Mock<IAccount> mock = AccountMoq.AccountMocks[0];
+                AccountViewModel accountViewModel = new AccountViewModel(mock.Object, BffOrmMoq.BffOrmMock.Object);
 
                 //Act + Assert
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),

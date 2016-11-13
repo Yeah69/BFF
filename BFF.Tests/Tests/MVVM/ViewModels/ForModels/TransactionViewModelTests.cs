@@ -4,6 +4,7 @@ using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.Tests.Mocks.DB;
+using BFF.Tests.Mocks.MVVM.ViewModels.ForModels;
 using Moq;
 using Xunit;
 
@@ -17,7 +18,10 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void PropertyTheory(long accountId, DateTime dateTime, long payeeId, long categoryId, string memo, long sum, bool cleared)
             {
                 //Arrange
-                Mock<IBffOrm> ormMock = BffOrmMoq.BffOrmMock;
+                Mock<IBffOrm> ormMock = BffOrmMoq.CreateMock(
+                    CommonPropertyProviderMoq.CreateMock(AccountViewModelMoq.AccountViewModelMocks,
+                                                         CategoryViewModelMoq.CategoryViewModelMocks,
+                                                         PayeeViewModelMoq.PayeeViewModelMocks));
                 ITransaction transaction = new Transaction(-1, accountId, dateTime, payeeId, categoryId, memo, sum, cleared);
                 TransactionViewModel transactionViewModel = new TransactionViewModel(transaction, ormMock.Object);
 

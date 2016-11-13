@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 using System.Windows.Media;
-using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
-using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.Converters
 {

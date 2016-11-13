@@ -5,9 +5,7 @@ namespace BFF.Tests.Mocks.MVVM.ViewModels.ForModels
 {
     public static class SummaryAccountViewModelMoq
     {
-        public static IMock<ISummaryAccountViewModel> SummaryAccountViewModelMock = CreateMock();
-
-        public static ISummaryAccountViewModel SummaryAccountViewModel = SummaryAccountViewModelMock.Object;
+        public static Mock<ISummaryAccountViewModel> SummaryAccountViewModelMock => CreateMock();
 
         private static Mock<ISummaryAccountViewModel> CreateMock()
         {

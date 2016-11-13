@@ -6,7 +6,7 @@ using BFF.Tests.Mocks.DB;
 using Moq;
 using Xunit;
 
-namespace BFF.Tests.MVVM.Models.Native
+namespace BFF.Tests.Tests.MVVM.Models.Native
 {
     public class DbSettingTests
     {

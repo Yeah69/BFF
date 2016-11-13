@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using BFF.DB;
-using BFF.MVVM.Models.Native;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
