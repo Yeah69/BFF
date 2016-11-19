@@ -135,7 +135,7 @@ namespace BFF.Helper.Import
 
         private static List<Transaction> ParseTransactionCsv(string filePath)
         {
-            var ret = new List<Transaction>();
+            List<Transaction> ret = new List<Transaction>();
             if (File.Exists(filePath))
             {
                 using (StreamReader streamReader = new StreamReader(new FileStream(filePath, FileMode.Open)))

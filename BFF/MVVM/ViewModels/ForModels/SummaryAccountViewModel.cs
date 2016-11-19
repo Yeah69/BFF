@@ -109,11 +109,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The sum of all accounts balances.
         /// </summary>
-        public override long? Balance
-        {
-            get { return Orm?.GetSummaryAccountBalance(); }
-            set { OnPropertyChanged(); }
-        }
+        public override long? Balance => Orm?.GetSummaryAccountBalance();
 
         /// <summary>
         /// Creates a new Transaction.

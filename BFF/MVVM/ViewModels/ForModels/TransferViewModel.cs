@@ -22,7 +22,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model Transfer.
     /// </summary>
-    class TransferViewModel : TitBaseViewModel, ITransferViewModel
+    public class TransferViewModel : TitBaseViewModel, ITransferViewModel
     {
         /// <summary>
         /// The Transfer Model.

@@ -31,7 +31,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The current Balance of this Account.
         /// </summary>
-        long? Balance { get; set; }
+        long? Balance { get; }
 
         /// <summary>
         /// Creates a new Transaction.
@@ -96,7 +96,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The current Balance of this Account.
         /// </summary>
-        public abstract long? Balance { get; set; }
+        public abstract long? Balance { get; }
 
         /// <summary>
         /// All available Accounts.
@@ -243,9 +243,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transfer.ToAccount.Id));
                 }
             }
-            Orm.CommonPropertyProvider.SummaryAccountViewModel.RefreshTits();
-            Orm.CommonPropertyProvider.SummaryAccountViewModel.RefreshBalance();
-            foreach (IAccountViewModel accountViewModel in accountViewModels)
+            
+            Refresh(Orm.CommonPropertyProvider.SummaryAccountViewModel);
+            foreach (IAccountViewModel accountViewModel in accountViewModels.Distinct())
+            {
+                Refresh(accountViewModel);
+            }
+            
+            void Refresh(IAccountBaseViewModel accountViewModel)
             {
                 accountViewModel.RefreshTits();
                 accountViewModel.RefreshBalance();

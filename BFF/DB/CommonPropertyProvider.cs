@@ -144,7 +144,7 @@ namespace BFF.DB
                 {
                     case NotifyCollectionChangedAction.Add:
                         int i = args.NewStartingIndex;
-                        foreach(var newItem in args.NewItems)
+                        foreach(object newItem in args.NewItems)
                         {
                             AllAccountViewModels.Insert(i, new AccountViewModel(newItem as IAccount, _orm));
                             i++;

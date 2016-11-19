@@ -25,7 +25,7 @@ namespace BFF
             DependencyProperty.Register(nameof(ImportCommand), typeof(ICommand), typeof(MainWindow),
                 new PropertyMetadata((depObj, args) =>
                 {
-                    var mw = (MainWindow)depObj;
+                    MainWindow mw = (MainWindow)depObj;
                     mw.ImportCommand = (ICommand)args.NewValue;
                 }));
 

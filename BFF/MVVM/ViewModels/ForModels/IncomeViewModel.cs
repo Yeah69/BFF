@@ -9,7 +9,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model Income.
     /// </summary>
-    class IncomeViewModel : TransIncViewModel, IIncomeViewModel
+    public class IncomeViewModel : TransIncViewModel, IIncomeViewModel
     {
         /// <summary>
         /// Initializes an IncomeViewModel.

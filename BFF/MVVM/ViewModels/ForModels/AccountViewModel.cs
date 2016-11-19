@@ -137,11 +137,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The current Balance of this Account.
         /// </summary>
-        public override long? Balance
-        {
-            get{ return Orm?.GetAccountBalance(Account); }
-            set { OnPropertyChanged(); }
-        }
+        public override long? Balance => Orm?.GetAccountBalance(Account);
 
         /// <summary>
         /// Refreshes the Balance.
@@ -149,7 +145,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override void RefreshBalance()
         {
             OnPropertyChanged(nameof(Balance));
-            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance); //todo: Necsessary?
         }
 
         /// <summary>

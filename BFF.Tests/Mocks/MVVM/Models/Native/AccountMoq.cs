@@ -16,6 +16,20 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
 
         public static Mock<IAccount> NotInsertedAccountMock => CreateMock(-1, "Not Inserted Account", 34564356);
 
+        public static IList<Mock<IAccount>> NotValidToInsertMocks
+        {
+            get
+            {
+                Mock<IAccount> nullName = new Mock<IAccount>();
+                nullName.SetupGet(nn => nn.Name).Returns(default(string));
+                Mock<IAccount> emptyName = new Mock<IAccount>();
+                emptyName.SetupGet(en => en.Name).Returns("");
+                Mock<IAccount> whitespaceName = new Mock<IAccount>();
+                whitespaceName.SetupGet(wn => wn.Name).Returns("    ");
+                return new List<Mock<IAccount>>{ nullName, emptyName, whitespaceName };
+            }
+        }
+
         private static Mock<IAccount> CreateMock(long id, string name, long startingBalance)
         {
             Mock<IAccount> mock = new Mock<IAccount>();

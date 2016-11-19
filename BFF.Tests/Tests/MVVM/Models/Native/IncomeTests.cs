@@ -131,7 +131,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
                     () => Assert.PropertyChanged(income, nameof(income.Memo), () => income.Memo = "Yeah, Party!"));
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(income, nameof(income.Sum), () => income.Id = 6969L));
+                    () => Assert.PropertyChanged(income, nameof(income.Sum), () => income.Sum = 6969L));
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
                     () => Assert.PropertyChanged(income, nameof(income.Cleared), () => income.Cleared = true));
             }

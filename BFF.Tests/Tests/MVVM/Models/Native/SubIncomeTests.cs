@@ -116,7 +116,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
                     () => Assert.PropertyChanged(subIncome, nameof(subIncome.Memo), () => subIncome.Memo = "Yeah, Party!"));
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(subIncome, nameof(subIncome.Sum), () => subIncome.Id = 6969L));
+                    () => Assert.PropertyChanged(subIncome, nameof(subIncome.Sum), () => subIncome.Sum = -6969L));
             }
         }
     }

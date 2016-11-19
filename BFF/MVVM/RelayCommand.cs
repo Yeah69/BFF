@@ -15,15 +15,9 @@ namespace BFF.MVVM
 
         #region Constructors
 
-        public RelayCommand(Action<object> execute) : this(execute, null)
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
         {
-        }
-
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
-        {
-            if (execute == null)
-                throw new ArgumentNullException(nameof(execute));
-            _execute = execute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
         }
 

@@ -10,7 +10,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model ParentIncome.
     /// </summary>
-    class ParentIncomeViewModel : ParentTransIncViewModel, IParentIncomeViewModel
+    public class ParentIncomeViewModel : ParentTransIncViewModel, IParentIncomeViewModel
     {
         /// <summary>
         /// Initializes a ParentIncomeViewModel.

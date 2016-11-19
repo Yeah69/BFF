@@ -126,7 +126,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
                     () => Assert.PropertyChanged(transfer, nameof(transfer.Memo), () => transfer.Memo = "Yeah, Party!"));
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transfer, nameof(transfer.Sum), () => transfer.Id = 6969L));
+                    () => Assert.PropertyChanged(transfer, nameof(transfer.Sum), () => transfer.Sum = 6969L));
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
                     () => Assert.PropertyChanged(transfer, nameof(transfer.Cleared), () => transfer.Cleared = true));
             }

@@ -34,10 +34,10 @@ namespace BFF.DB.SQLite
             if (File.Exists(dbPath)) //todo: This will make problems
                 File.Delete(dbPath);
             SQLiteConnection.CreateFile(dbPath);
-            using(var cnn = new SQLiteConnection($"Data Source={dbPath};Version=3;foreign keys=true;"))
+            using(SQLiteConnection cnn = new SQLiteConnection($"Data Source={dbPath};Version=3;foreign keys=true;"))
             {
                 cnn.Open();
-                using(var transactionScope = new DbTransactions.TransactionScope())
+                using(DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
                 {
                     cnn.Execute(SqLiteQueries.CreatePayeeTableStatement);
                     cnn.Execute(SqLiteQueries.CreateCategoryTableStatement);
@@ -70,7 +70,7 @@ namespace BFF.DB.SQLite
         {
             //todo: more performance
             Logger.Info("Populating the current database.");
-            using (var transactionScope = new DbTransactions.TransactionScope(DbTransactions.TransactionScopeOption.RequiresNew, new DbTransactions.TransactionOptions {IsolationLevel = DbTransactions.IsolationLevel.RepeatableRead}))
+            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope(DbTransactions.TransactionScopeOption.RequiresNew, new DbTransactions.TransactionOptions {IsolationLevel = DbTransactions.IsolationLevel.RepeatableRead}))
             {
                 /*  
                 Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
@@ -164,7 +164,7 @@ namespace BFF.DB.SQLite
                 typeof (DateTime), typeof (string), typeof (long), typeof (bool), typeof(string)
             };
 
-            using (var transactionScope = new DbTransactions.TransactionScope())
+            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
             {
                 results = Cnn.Query(sql, types, _theTitMap, account == null ? null : new { accountId = account.Id }, splitOn: "*");
 
@@ -178,7 +178,7 @@ namespace BFF.DB.SQLite
             Logger.Debug("Getting account balance from {0}.", account?.Name ?? "NULL");
             long ret;
 
-            using (var transactionScope = new DbTransactions.TransactionScope())
+            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
             {
                 try
                 {
@@ -201,7 +201,7 @@ namespace BFF.DB.SQLite
             Logger.Debug("Getting account balance from SummaryAccount.");
             long ret;
 
-            using (var transactionScope = new DbTransactions.TransactionScope())
+            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
             {
                 try
                 {
@@ -223,7 +223,7 @@ namespace BFF.DB.SQLite
         {
             Logger.Debug("Getting SubTransactions/SubIncomes from table {0} with the ParentId {1}.", typeof(T).Name, parentId);
             IEnumerable<T> ret;
-            using (var transactionScope = new DbTransactions.TransactionScope())
+            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
             {
                 string query = $"SELECT * FROM [{typeof(T).Name}s] WHERE {nameof(ISubTransInc.ParentId)} = @id;";
                 ret = Cnn.Query<T>(query, new { id = parentId });
@@ -237,7 +237,7 @@ namespace BFF.DB.SQLite
         {
             Logger.Debug("Getting all entries from table {0}.", typeof(T).Name);
             IEnumerable<T> ret;
-            using (var transactionScope = new DbTransactions.TransactionScope())
+            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
             {
                 ret = Cnn.GetAll<T>();
                 transactionScope.Complete();
@@ -249,7 +249,7 @@ namespace BFF.DB.SQLite
         {
             Logger.Debug("Insert an entry into table {0}.", typeof(T).Name);
             long ret = -1L;
-            using (var transactionScope = new DbTransactions.TransactionScope())
+            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
             {
                 ret = Cnn.Insert(dataModelBase);
                 dataModelBase.Id = ret;
@@ -261,7 +261,7 @@ namespace BFF.DB.SQLite
         public T Get<T>(long id) where T : class, IDataModelBase
         {
             T ret;
-            using (var transactionScope = new DbTransactions.TransactionScope())
+            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
             {
                 ret = Cnn.Get<T>(id);
                 transactionScope.Complete();
@@ -271,7 +271,7 @@ namespace BFF.DB.SQLite
         
         public void Update<T>(T dataModelBase) where T : class, IDataModelBase
         {
-            using (var transactionScope = new DbTransactions.TransactionScope())
+            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
             {
                 Cnn.Update<T>(dataModelBase);
                 transactionScope.Complete();
@@ -281,7 +281,7 @@ namespace BFF.DB.SQLite
         public void Delete<T>(T dataModelBase) where T : class, IDataModelBase
         {
             Logger.Debug("Delete an entry from table {0}.", typeof(T).Name);
-            using (var transactionScope = new DbTransactions.TransactionScope())
+            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
             {
                 Cnn.Delete(dataModelBase);
                 transactionScope.Complete();
@@ -350,7 +350,7 @@ namespace BFF.DB.SQLite
         {
             Logger.Debug("Getting a page of entries from table {0} of page size {1} by offsett {2}.", typeof(T).Name, pageSize, offset);
             IEnumerable<T> ret;
-            using (var cnnTransaction = new DbTransactions.TransactionScope())
+            using (DbTransactions.TransactionScope cnnTransaction = new DbTransactions.TransactionScope())
             {
                 if (typeof(T) != typeof(ITitBase))
                 {
@@ -392,7 +392,7 @@ namespace BFF.DB.SQLite
                 query = $"SELECT COUNT(*) FROM [{TheTitName}] {specifyingAddition};";
             }
 
-            using (var cnnTransaction = new DbTransactions.TransactionScope())
+            using (DbTransactions.TransactionScope cnnTransaction = new DbTransactions.TransactionScope())
             {
                 ret = Cnn.Query<int>(query).First();
                 cnnTransaction.Complete();

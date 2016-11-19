@@ -10,7 +10,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model ParentTransaction.
     /// </summary>
-    class ParentTransactionViewModel : ParentTransIncViewModel, IParentTransactionViewModel
+    public class ParentTransactionViewModel : ParentTransIncViewModel, IParentTransactionViewModel
     {
         /// <summary>
         /// Initializes a ParentTransactionViewModel.

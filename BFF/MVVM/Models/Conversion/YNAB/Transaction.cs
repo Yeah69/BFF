@@ -83,8 +83,8 @@ namespace BFF.MVVM.Models.Conversion.YNAB
                     tempColor = Colors.Transparent;
                     break;
             }
-            int temp;
-            if (!int.TryParse(entries[2], out temp))
+
+            if (!int.TryParse(entries[2], out int temp))
                 temp = -1;
             Transaction ret = new Transaction
             {
