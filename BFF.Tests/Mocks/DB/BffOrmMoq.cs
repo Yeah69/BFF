@@ -8,7 +8,7 @@ namespace BFF.Tests.Mocks.DB
 {
     public static class BffOrmMoq
     {
-        public static Mock<IBffOrm> BffOrmMock => CreateMock();
+        public static Mock<IBffOrm> Mock => CreateMock();
 
         internal static Mock<IBffOrm> CreateMock(Mock<ICommonPropertyProvider> commonPropertyProviderMock = null, 
             IList<Mock<ISubTransaction>> subTransationMocks = null, IList<Mock<ISubIncome>> subIncomeMocks = null)

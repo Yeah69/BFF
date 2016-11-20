@@ -6,7 +6,7 @@ namespace BFF.Tests.Mocks.MVVM.ViewModels.ForModels
 {
     public static class PayeeViewModelMoq
     {
-        public static IList<Mock<IPayeeViewModel>> PayeeViewModelMocks => new List<Mock<IPayeeViewModel>>
+        public static IList<Mock<IPayeeViewModel>> Mocks => new List<Mock<IPayeeViewModel>>
         {
             CreateMock(1, "Tony's Pizza"),
             CreateMock(2, "Mother"),

@@ -64,7 +64,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             {
                 //Arrange
                 Transfer transfer = new Transfer(1, 1, 2, DateTime.Today, "Yeah, Party!", 6969L, true);
-                Mock<IBffOrm> ormMock = BffOrmMoq.BffOrmMock;
+                Mock<IBffOrm> ormMock = BffOrmMoq.Mock;
 
                 //Act
                 transfer.Insert(ormMock.Object);

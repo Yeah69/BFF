@@ -75,7 +75,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             {
                 //Arrange
                 Payee payee = new Payee(1, "Someone");
-                Mock<IBffOrm> ormMock = BffOrmMoq.BffOrmMock;
+                Mock<IBffOrm> ormMock = BffOrmMoq.Mock;
 
                 //Act
                 payee.Insert(ormMock.Object);

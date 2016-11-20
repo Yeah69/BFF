@@ -29,7 +29,7 @@ namespace BFF.Tests.Mocks.MVVM.ViewModels.ForModels
             new CategoryData {Id = 12, Name= "Bonus", ParentId = 5}
         };
 
-        public static IList<Mock<ICategoryViewModel>> CategoryViewModelMocks => new List<Mock<ICategoryViewModel>>
+        public static IList<Mock<ICategoryViewModel>> Mocks => new List<Mock<ICategoryViewModel>>
         {
             CreateMock(CategorySet[0].Id, CategorySet[0].Name,  CategorySet[0].ParentId),
             CreateMock(CategorySet[1].Id, CategorySet[1].Name,  CategorySet[1].ParentId),

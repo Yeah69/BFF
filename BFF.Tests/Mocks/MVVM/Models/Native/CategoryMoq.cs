@@ -7,7 +7,7 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
     public static class CategoryMoq
     {
 
-        public static IList<Mock<ICategory>> CategoryMocks => new List<Mock<ICategory>>
+        public static IList<Mock<ICategory>> Mocks => new List<Mock<ICategory>>
         {
             CreateMock(1, "Food", null),
             CreateMock(2, "Outside", 1),

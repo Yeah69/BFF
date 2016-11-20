@@ -9,7 +9,7 @@ namespace BFF.Tests.Mocks.DB
 {
     public static class CommonPropertyProviderMoq
     {
-        public static Mock<ICommonPropertyProvider> CommonPropertyProviderMock => CreateMock();
+        public static Mock<ICommonPropertyProvider> Mock => CreateMock();
 
         internal static Mock<ICommonPropertyProvider> CreateMock(IList<Mock<IAccountViewModel>> accountViewModelMocks = null,
                                                                 IList<Mock<ICategoryViewModel>> categoryVieModelMocks = null,

@@ -31,7 +31,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             {
                 //Arrange
                 SummaryAccount summaryAccount = new SummaryAccount();
-                Mock<IBffOrm> ormMock = BffOrmMoq.BffOrmMock;
+                Mock<IBffOrm> ormMock = BffOrmMoq.Mock;
 
                 //Act
                 summaryAccount.Insert(ormMock.Object);

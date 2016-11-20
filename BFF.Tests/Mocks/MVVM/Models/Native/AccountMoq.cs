@@ -7,7 +7,7 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
 {
     public static class AccountMoq
     {
-        public static IList<Mock<IAccount>> AccountMocks => new List<Mock<IAccount>>
+        public static IList<Mock<IAccount>> Mocks => new List<Mock<IAccount>>
         {
             CreateMock(1, "Bank", 32369),
             CreateMock(2, "Wallet", 6969),

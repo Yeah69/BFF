@@ -17,13 +17,13 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         public class ConstructionTests
         {
             public static IEnumerable<object[]> AccountViewModelData =
-                AccountMoq.AccountMocks.Select(am => new object[] {am.Object});
+                AccountMoq.Mocks.Select(am => new object[] {am.Object});
 
             [Theory, MemberData(nameof(AccountViewModelData))]
             public void ConstructionTheory(IAccount account)
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(account, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(account, BffOrmMoq.Mock.Object);
 
                 //Act
 
@@ -37,13 +37,13 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         public class ToStringTest
         {
             public static IEnumerable<object[]> AccountViewModelData =
-                AccountMoq.AccountMocks.Select(am => new object[] {am.Object});
+                AccountMoq.Mocks.Select(am => new object[] {am.Object});
 
             [Theory, MemberData(nameof(AccountViewModelData))]
             public void ToStringTheory(IAccount account)
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(account, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(account, BffOrmMoq.Mock.Object);
 
                 //Act
 
@@ -59,7 +59,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             {
                 //Arrange
                 Mock<ICommonPropertyProvider> commonPropertyProviderMock =
-                    CommonPropertyProviderMoq.CommonPropertyProviderMock;
+                    CommonPropertyProviderMoq.Mock;
                 AccountViewModel insertAccount = new AccountViewModel(AccountMoq.NotInsertedAccountMock.Object,
                                                                       BffOrmMoq.CreateMock(commonPropertyProviderMock).Object);
                 commonPropertyProviderMock.ResetCalls();
@@ -75,8 +75,8 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void CrudUpdateFact()
             {
                 //Arrange
-                Mock<IAccount> mock = AccountMoq.AccountMocks[0];
-                AccountViewModel updateAccount = new AccountViewModel(mock.Object, BffOrmMoq.BffOrmMock.Object);
+                Mock<IAccount> mock = AccountMoq.Mocks[0];
+                AccountViewModel updateAccount = new AccountViewModel(mock.Object, BffOrmMoq.Mock.Object);
                 mock.ResetCalls();
 
                 //Act
@@ -89,9 +89,9 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void CrudDeleteFact()
             {
                 //Arrange
-                Mock<IAccount> accountMock = AccountMoq.AccountMocks[0];
+                Mock<IAccount> accountMock = AccountMoq.Mocks[0];
                 Mock<ICommonPropertyProvider> commonPropertyProviderMock =
-                    CommonPropertyProviderMoq.CommonPropertyProviderMock;
+                    CommonPropertyProviderMoq.Mock;
                 AccountViewModel deleteAccount = new AccountViewModel(accountMock.Object,
                                                                       BffOrmMoq.CreateMock(commonPropertyProviderMock).Object);
                 commonPropertyProviderMock.ResetCalls();
@@ -110,10 +110,10 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void PropertyChangedFact()
             {
                 //Arrange
-                Mock<IAccount> accountMock = AccountMoq.AccountMocks[0];
+                Mock<IAccount> accountMock = AccountMoq.Mocks[0];
                 Mock<ICommonPropertyProvider> commonPropertyProviderMock =
                     CommonPropertyProviderMoq.CreateMock(summaryAccountViewModelMock:
-                                                         SummaryAccountViewModelMoq.SummaryAccountViewModelMock);
+                                                         SummaryAccountViewModelMoq.Mock);
                 AccountViewModel accountViewModel = new AccountViewModel(accountMock.Object,
                                                                          BffOrmMoq.CreateMock(commonPropertyProviderMock).Object);
 
@@ -126,8 +126,8 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void PropertyNotChangedFact()
             {
                 //Arrange
-                Mock<IAccount> mock = AccountMoq.AccountMocks[0];
-                AccountViewModel accountViewModel = new AccountViewModel(mock.Object, BffOrmMoq.BffOrmMock.Object);
+                Mock<IAccount> mock = AccountMoq.Mocks[0];
+                AccountViewModel accountViewModel = new AccountViewModel(mock.Object, BffOrmMoq.Mock.Object);
 
                 //Act + Assert
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
@@ -140,7 +140,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         public class ValidToInsertTests
         {
             public static IEnumerable<object[]> ValidToInsert =
-                AccountMoq.AccountMocks.Select(am => new object[] { am.Object });
+                AccountMoq.Mocks.Select(am => new object[] { am.Object });
             public static IEnumerable<object[]> NotValidToInsert =
                 AccountMoq.NotValidToInsertMocks.Select(am => new object[] { am.Object });
 
@@ -148,7 +148,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void ValidToInsertTest(IAccount account)
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(account, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(account, BffOrmMoq.Mock.Object);
 
                 //Act
 
@@ -160,7 +160,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void NotValidToInsertTest(IAccount account)
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(account, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(account, BffOrmMoq.Mock.Object);
 
                 //Act
 
@@ -175,7 +175,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void RefreshBalanceTest()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.Mock.Object);
                 bool eventRaised = false;
                 accountViewModel.PropertyChanged += (sender, args) =>
                 {
@@ -193,7 +193,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void RefreshTitsTest()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.Mock.Object);
                 bool eventRaised = false;
                 accountViewModel.PropertyChanged += (sender, args) =>
                 {
@@ -211,7 +211,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void RefreshBalanceMessageTest()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.Mock.Object);
                 bool eventRaised = false;
                 accountViewModel.PropertyChanged += (sender, args) =>
                 {
@@ -229,7 +229,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void RefreshTitsMessageTest()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.Mock.Object);
                 bool eventRaised = false;
                 accountViewModel.PropertyChanged += (sender, args) =>
                 {
@@ -247,7 +247,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void RefreshMessageTest()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.Mock.Object);
                 bool titsEventRaised = false;
                 bool balanceEventRaised = false;
                 accountViewModel.PropertyChanged += (sender, args) =>
@@ -268,7 +268,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void RefreshCultureMessageTest()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.Mock.Object);
                 bool titsEventRaised = false;
                 bool balanceEventRaised = false;
                 bool startingBalanceEventRaised = false;
@@ -292,7 +292,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void RefreshCurrencyMessageTest()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.Mock.Object);
                 bool titsEventRaised = false;
                 bool balanceEventRaised = false;
                 bool startingBalanceEventRaised = false;
@@ -316,7 +316,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void RefreshDateMessageTest()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.Mock.Object);
                 bool dateEventRaised = false;
                 accountViewModel.PropertyChanged += (sender, args) =>
                 {
@@ -337,7 +337,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void NewTransactionCommandTest()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.Mock.Object);
 
                 //Act
                 accountViewModel.NewTransactionCommand.Execute(null);
@@ -350,7 +350,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void NewIncomeCommandTest()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.Mock.Object);
 
                 //Act
                 accountViewModel.NewIncomeCommand.Execute(null);
@@ -363,7 +363,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void NewTransferCommandTest()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.Mock.Object);
 
                 //Act
                 accountViewModel.NewTransferCommand.Execute(null);
@@ -376,7 +376,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void NewParentTransactionCommandTest()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.Mock.Object);
 
                 //Act
                 accountViewModel.NewParentTransactionCommand.Execute(null);
@@ -389,7 +389,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void NewParentIncomeCommandTest()
             {
                 //Arrange
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.BffOrmMock.Object);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.Mock.Object);
 
                 //Act
                 accountViewModel.NewParentIncomeCommand.Execute(null);
@@ -403,12 +403,12 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             {
                 //Arrange
                 Mock<ICommonPropertyProvider> commonPropertyProviderMock = CommonPropertyProviderMoq.CreateMock(
-                    summaryAccountViewModelMock: SummaryAccountViewModelMoq.SummaryAccountViewModelMock);
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.AccountMocks[0].Object, BffOrmMoq.CreateMock(commonPropertyProviderMock).Object);
+                    summaryAccountViewModelMock: SummaryAccountViewModelMoq.Mock);
+                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.CreateMock(commonPropertyProviderMock).Object);
                 accountViewModel.NewTransactionCommand.Execute(null);
                 ITransactionViewModel transactionViewModel = (ITransactionViewModel) accountViewModel.NewTits[0];
-                transactionViewModel.Category = CategoryViewModelMoq.CategoryViewModelMocks[0].Object;
-                transactionViewModel.Payee = PayeeViewModelMoq.PayeeViewModelMocks[0].Object;
+                transactionViewModel.Category = CategoryViewModelMoq.Mocks[0].Object;
+                transactionViewModel.Payee = PayeeViewModelMoq.Mocks[0].Object;
 
                 bool titsEventRaised = false;
                 bool balanceEventRaised = false;

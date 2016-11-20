@@ -6,7 +6,7 @@ namespace BFF.Tests.Mocks.MVVM.ViewModels.ForModels
 {
     public static class AccountViewModelMoq
     {
-        public static IList<Mock<IAccountViewModel>> AccountViewModelMocks => new List<Mock<IAccountViewModel>>
+        public static IList<Mock<IAccountViewModel>> Mocks => new List<Mock<IAccountViewModel>>
         {
             CreateMock(1, "Bank", 32369),
             CreateMock(2, "Wallet", 6969),

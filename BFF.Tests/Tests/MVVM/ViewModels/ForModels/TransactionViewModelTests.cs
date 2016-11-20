@@ -19,9 +19,9 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             {
                 //Arrange
                 Mock<IBffOrm> ormMock = BffOrmMoq.CreateMock(
-                    CommonPropertyProviderMoq.CreateMock(AccountViewModelMoq.AccountViewModelMocks,
-                                                         CategoryViewModelMoq.CategoryViewModelMocks,
-                                                         PayeeViewModelMoq.PayeeViewModelMocks));
+                    CommonPropertyProviderMoq.CreateMock(AccountViewModelMoq.Mocks,
+                                                         CategoryViewModelMoq.Mocks,
+                                                         PayeeViewModelMoq.Mocks));
                 ITransaction transaction = new Transaction(-1, accountId, dateTime, payeeId, categoryId, memo, sum, cleared);
                 TransactionViewModel transactionViewModel = new TransactionViewModel(transaction, ormMock.Object);
 
