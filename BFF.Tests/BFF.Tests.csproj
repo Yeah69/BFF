@@ -80,6 +80,8 @@
     <Compile Include="Mocks\MVVM\Models\Native\AccountMoq.cs" />
     <Compile Include="Mocks\MVVM\Models\Native\CategoryMoq.cs" />
     <Compile Include="Mocks\MVVM\Models\Native\PayeeMoq.cs" />
+    <Compile Include="Mocks\MVVM\Models\Native\SubIncomeMoq.cs" />
+    <Compile Include="Mocks\MVVM\Models\Native\SubTransactionMoq.cs" />
     <Compile Include="Mocks\MVVM\ViewModels\ForModels\AccountViewModelMoq.cs" />
     <Compile Include="Mocks\MVVM\ViewModels\ForModels\CategoryViewModelMoq.cs" />
     <Compile Include="Mocks\MVVM\ViewModels\ForModels\PayeeViewModelMoq.cs" />

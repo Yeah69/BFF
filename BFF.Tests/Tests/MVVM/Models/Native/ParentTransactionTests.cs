@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using BFF.Tests.Mocks.DB;
+using BFF.Tests.Mocks.MVVM.Models.Native;
 using Moq;
 using Xunit;
 
@@ -124,6 +127,28 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
                     () => Assert.PropertyChanged(parentTransaction, nameof(parentTransaction.Memo), () => parentTransaction.Memo = "Yeah, Party!"));
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
                     () => Assert.PropertyChanged(parentTransaction, nameof(parentTransaction.Cleared), () => parentTransaction.Cleared = true));
+            }
+        }
+
+        public class SubElementTests
+        {
+            [Fact]
+            public void SubElementFact()
+            {
+                //Arrange
+                IList<Mock<ISubTransaction>> subTransactionMocks = SubTransactionMoq.Mocks;
+                Mock<IBffOrm> ormMock = BffOrmMoq.CreateMock(subTransationMocks: subTransactionMocks);
+                DateTime today = DateTime.Today;
+                ParentTransaction parentTransaction = new ParentTransaction(1, 1, today, 2, "Yeah, Party!", true);
+                
+                //Act
+                IList<ISubTransInc> subTransactions = parentTransaction.GetSubTransInc(ormMock.Object).ToList();
+
+                //Assert
+                foreach(ISubTransaction subTransaction in subTransactionMocks.Select(stm => stm.Object).Where(st => st.ParentId == parentTransaction.Id))
+                {
+                    Assert.Contains(subTransaction, subTransactions);
+                }
             }
         }
     }

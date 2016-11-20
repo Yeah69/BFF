@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using BFF.Tests.Mocks.DB;
+using BFF.Tests.Mocks.MVVM.Models.Native;
 using Moq;
 using Xunit;
 
@@ -124,6 +127,27 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
                     () => Assert.PropertyChanged(parentIncome, nameof(parentIncome.Memo), () => parentIncome.Memo = "Yeah, Party!"));
                 Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
                     () => Assert.PropertyChanged(parentIncome, nameof(parentIncome.Cleared), () => parentIncome.Cleared = true));
+            }
+        }
+        public class SubElementTests
+        {
+            [Fact]
+            public void SubElementFact()
+            {
+                //Arrange
+                IList<Mock<ISubIncome>> subIncomeMocks = SubIncomeMoq.Mocks;
+                Mock<IBffOrm> ormMock = BffOrmMoq.CreateMock(subIncomeMocks: subIncomeMocks);
+                DateTime today = DateTime.Today;
+                ParentIncome parentIncome = new ParentIncome(1, 1, today, 2, "Yeah, Party!", true);
+
+                //Act
+                IList<ISubTransInc> subIncomes = parentIncome.GetSubTransInc(ormMock.Object).ToList();
+
+                //Assert
+                foreach (ISubIncome subIncome in subIncomeMocks.Select(stm => stm.Object).Where(st => st.ParentId == parentIncome.Id))
+                {
+                    Assert.Contains(subIncome, subIncomes);
+                }
             }
         }
     }

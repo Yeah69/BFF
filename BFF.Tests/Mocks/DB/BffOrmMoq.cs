@@ -1,4 +1,6 @@
-﻿using BFF.DB;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BFF.DB;
 using BFF.MVVM.Models.Native;
 using Moq;
 
@@ -8,7 +10,8 @@ namespace BFF.Tests.Mocks.DB
     {
         public static Mock<IBffOrm> BffOrmMock => CreateMock();
 
-        internal static Mock<IBffOrm> CreateMock(Mock<ICommonPropertyProvider> commonPropertyProviderMock = null)
+        internal static Mock<IBffOrm> CreateMock(Mock<ICommonPropertyProvider> commonPropertyProviderMock = null, 
+            IList<Mock<ISubTransaction>> subTransationMocks = null, IList<Mock<ISubIncome>> subIncomeMocks = null)
         {
             Mock<IBffOrm> mock = new Mock<IBffOrm>();
 
@@ -26,6 +29,26 @@ namespace BFF.Tests.Mocks.DB
 
             if(commonPropertyProviderMock != null)
                 mock.Setup(orm => orm.CommonPropertyProvider).Returns(commonPropertyProviderMock.Object);
+
+            if (subTransationMocks != null)
+            {
+                IEnumerable<long> parentIds = subTransationMocks.Select(stm => stm.Object.ParentId).Distinct();
+                foreach (long parentId in parentIds)
+                {
+                    mock.Setup(orm => orm.GetSubTransInc<SubTransaction>(parentId)).
+                        Returns(() => subTransationMocks.Where(stm => stm.Object.ParentId == parentId).Select(stm => stm.Object));
+                }
+            }
+
+            if (subIncomeMocks != null)
+            {
+                IEnumerable<long> parentIds = subIncomeMocks.Select(stm => stm.Object.ParentId).Distinct();
+                foreach (long parentId in parentIds)
+                {
+                    mock.Setup(orm => orm.GetSubTransInc<SubIncome>(parentId)).
+                        Returns(() => subIncomeMocks.Where(stm => stm.Object.ParentId == parentId).Select(stm => stm.Object));
+                }
+            }
 
             return mock;
         }

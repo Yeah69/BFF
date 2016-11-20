@@ -15,7 +15,7 @@ namespace BFF.DB
         IEnumerable<ITitBase> GetAllTits(DateTime startTime, DateTime endTime, IAccount account = null);
         long? GetAccountBalance(IAccount account);
         long? GetSummaryAccountBalance();
-        IEnumerable<T> GetSubTransInc<T>(long parentId) where T : ISubTransInc;
+        IEnumerable<ISubTransInc> GetSubTransInc<T>(long parentId) where T : ISubTransInc;
     }
 
     public interface ICrudOrm

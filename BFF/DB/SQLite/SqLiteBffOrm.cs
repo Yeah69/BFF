@@ -219,14 +219,14 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public IEnumerable<T> GetSubTransInc<T>(long parentId) where T : ISubTransInc
+        public IEnumerable<ISubTransInc> GetSubTransInc<T>(long parentId) where T : ISubTransInc
         {
             Logger.Debug("Getting SubTransactions/SubIncomes from table {0} with the ParentId {1}.", typeof(T).Name, parentId);
-            IEnumerable<T> ret;
+            IEnumerable<ISubTransInc> ret;
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
             {
                 string query = $"SELECT * FROM [{typeof(T).Name}s] WHERE {nameof(ISubTransInc.ParentId)} = @id;";
-                ret = Cnn.Query<T>(query, new { id = parentId });
+                ret = Cnn.Query<T>(query, new { id = parentId }).Cast<ISubTransInc>();
 
                 transactionScope.Complete();
             }
