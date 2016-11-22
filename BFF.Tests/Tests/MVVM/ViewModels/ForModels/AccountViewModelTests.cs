@@ -104,8 +104,35 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             }
         }
 
-        public class PropertyChangedTests
+        public class PropertyTests
         {
+            [Fact]
+            public void BalancePropertyFact()
+            {
+                //Arrange
+                IList<Mock<IAccount>> accountMocks = AccountMoq.Mocks;
+                IList<Mock<ITransaction>> transactionMocks = TransactionMoq.Mocks;
+                IList<Mock<IIncome>> incomeMocks = IncomeMoq.Mocks;
+                IList<Mock<ITransfer>> transferMocks = TransferMoq.Mocks;
+                IList<Mock<IParentTransaction>> parentTransactionMocks = ParentTransactionMoq.Mocks;
+                IList<Mock<IParentIncome>> parentIncomeMocks = ParentIncomeMoq.Mocks;
+                IList<Mock<ISubTransaction>> subTransactionMocks = SubTransactionMoq.Mocks;
+                IList<Mock<ISubIncome>> subIncomeMocks = SubIncomeMoq.Mocks;
+                Mock<IBffOrm> ormMock = BffOrmMoq.CreateMock(accountMocks: accountMocks, transactionMocks: transactionMocks,
+                                                 incomeMocks: incomeMocks, transferMocks: transferMocks,
+                                                 parentTransactionMocks: parentTransactionMocks,
+                                                 parentIncomeMocks: parentIncomeMocks,
+                                                 subTransactionMocks: subTransactionMocks, subIncomeMocks: subIncomeMocks);
+                AccountViewModel accountViewModel = new AccountViewModel(accountMocks[0].Object,
+                                                                         ormMock.Object);
+
+                //Act
+                long? balance = accountViewModel.Balance;
+
+                //Assert
+                Assert.Equal(ormMock.Object.GetAccountBalance(accountMocks[0].Object), balance);
+            }
+
             [Fact]
             public void PropertyChangedFact()
             {

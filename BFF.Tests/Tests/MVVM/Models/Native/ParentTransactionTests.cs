@@ -137,7 +137,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             {
                 //Arrange
                 IList<Mock<ISubTransaction>> subTransactionMocks = SubTransactionMoq.Mocks;
-                Mock<IBffOrm> ormMock = BffOrmMoq.CreateMock(subTransationMocks: subTransactionMocks);
+                Mock<IBffOrm> ormMock = BffOrmMoq.CreateMock(subTransactionMocks: subTransactionMocks);
                 DateTime today = DateTime.Today;
                 ParentTransaction parentTransaction = new ParentTransaction(1, 1, today, 2, "Yeah, Party!", true);
                 

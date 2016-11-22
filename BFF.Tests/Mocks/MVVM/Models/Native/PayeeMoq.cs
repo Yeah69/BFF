@@ -11,7 +11,11 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
             CreateMock(1, "Tony's Pizza"),
             CreateMock(2, "Mother"),
             CreateMock(3, "cineplex"),
-            CreateMock(4, "Work")
+            CreateMock(4, "Work"),
+            CreateMock(5, "amazon"),
+            CreateMock(6, "Walmart"),
+            CreateMock(7, "Mensa"),
+            CreateMock(8, "BFF")
         };
 
         private static Mock<IPayee> CreateMock(long id, string name)

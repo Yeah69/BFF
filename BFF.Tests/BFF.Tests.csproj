@@ -79,9 +79,14 @@
     <Compile Include="Mocks\DB\CommonPropertyProviderMoq.cs" />
     <Compile Include="Mocks\MVVM\Models\Native\AccountMoq.cs" />
     <Compile Include="Mocks\MVVM\Models\Native\CategoryMoq.cs" />
+    <Compile Include="Mocks\MVVM\Models\Native\IncomeMoq.cs" />
+    <Compile Include="Mocks\MVVM\Models\Native\ParentIncomeMoq.cs" />
+    <Compile Include="Mocks\MVVM\Models\Native\ParentTransactionMoq.cs" />
     <Compile Include="Mocks\MVVM\Models\Native\PayeeMoq.cs" />
     <Compile Include="Mocks\MVVM\Models\Native\SubIncomeMoq.cs" />
     <Compile Include="Mocks\MVVM\Models\Native\SubTransactionMoq.cs" />
+    <Compile Include="Mocks\MVVM\Models\Native\TransactionMoq.cs" />
+    <Compile Include="Mocks\MVVM\Models\Native\TransferMoq.cs" />
     <Compile Include="Mocks\MVVM\ViewModels\ForModels\AccountViewModelMoq.cs" />
     <Compile Include="Mocks\MVVM\ViewModels\ForModels\CategoryViewModelMoq.cs" />
     <Compile Include="Mocks\MVVM\ViewModels\ForModels\PayeeViewModelMoq.cs" />

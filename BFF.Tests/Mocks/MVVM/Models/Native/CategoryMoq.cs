@@ -21,6 +21,10 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
             CreateMock(10, "Sweets/Snacks", 9),
             CreateMock(11, "Salary", 5),
             CreateMock(12, "Bonus", 5),
+            CreateMock(13, "Education", null),
+            CreateMock(14, "Books", 13),
+            CreateMock(15, "Grocery", null),
+            CreateMock(16, "Debt", null)
         };
 
         private static Mock<ICategory> CreateMock(long id, string name, long? parentId)
