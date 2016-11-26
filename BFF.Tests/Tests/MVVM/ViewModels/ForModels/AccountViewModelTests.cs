@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BFF.DB;
 using BFF.MVVM;
@@ -423,41 +424,6 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 
                 //Assert
                 Assert.Collection(accountViewModel.NewTits, tit => Assert.IsType(typeof(ParentIncomeViewModel), tit));
-            }
-
-            [Fact(Skip= "I have to figure out how to test this yet.")]
-            public void ApplyCommandTest()
-            {
-                //Arrange
-                Mock<ICommonPropertyProvider> commonPropertyProviderMock = CommonPropertyProviderMoq.CreateMock(
-                    summaryAccountViewModelMock: SummaryAccountViewModelMoq.Mock);
-                AccountViewModel accountViewModel = new AccountViewModel(AccountMoq.Mocks[0].Object, BffOrmMoq.CreateMock(commonPropertyProviderMock).Object);
-                accountViewModel.NewTransactionCommand.Execute(null);
-                ITransactionViewModel transactionViewModel = (ITransactionViewModel) accountViewModel.NewTits[0];
-                transactionViewModel.Category = CategoryViewModelMoq.Mocks[0].Object;
-                transactionViewModel.Payee = PayeeViewModelMoq.Mocks[0].Object;
-
-                bool titsEventRaised = false;
-                bool balanceEventRaised = false;
-                accountViewModel.PropertyChanged += (sender, args) =>
-                {
-                    switch(args.PropertyName)
-                    {
-                        case nameof(AccountViewModel.Tits):
-                            titsEventRaised = true;
-                            break;
-                        case nameof(AccountViewModel.Balance):
-                            balanceEventRaised = true;
-                            break;
-                    }
-                };
-
-                //Act
-                accountViewModel.ApplyCommand.Execute(null);
-
-                //Assert
-                Assert.True(titsEventRaised);
-                Assert.True(balanceEventRaised);
             }
         }
     }

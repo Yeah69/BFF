@@ -30,6 +30,9 @@ namespace BFF.DB
         ICategoryViewModel GetCategoryViewModel(long id);
         IEnumerable<ICategoryViewModel> GetCategoryViewModelChildren(long parentId);
         IPayeeViewModel GetPayeeViewModel(long id);
+        bool Contains(IAccountViewModel accountViewModel);
+        bool Contains(IPayeeViewModel payeeViewModel);
+        bool Contains(ICategoryViewModel categoryViewModel);
     }
 
     public class CommonPropertyProvider : ICommonPropertyProvider
@@ -195,5 +198,11 @@ namespace BFF.DB
                 CreateChildCategoryViewModels(categoryViewModel);
             }
         }
+
+        public bool Contains(IAccountViewModel accountViewModel) => AllAccountViewModels.Contains(accountViewModel);
+
+        public bool Contains(IPayeeViewModel payeeViewModel) => AllPayeeViewModels.Contains(payeeViewModel);
+
+        public bool Contains(ICategoryViewModel categoryViewModel) => AllCategoryViewModels.Contains(categoryViewModel);
     }
 }

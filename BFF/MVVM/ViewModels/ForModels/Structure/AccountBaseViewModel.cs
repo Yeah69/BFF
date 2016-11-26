@@ -214,33 +214,30 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 tit.Insert();
                 NewTits.Remove(tit);
-                if (tit is IParentTransactionViewModel)
+                if (tit is IParentTransactionViewModel parentTransactionViewModel)
                 {
-                    IParentTransactionViewModel parentTransaction = tit as IParentTransactionViewModel;
-                    foreach(ISubTransIncViewModel subTransaction in parentTransaction.NewSubElements)
+                    foreach(ISubTransIncViewModel subTransaction in parentTransactionViewModel.NewSubElements)
                     {
                         subTransaction.Insert();
-                        parentTransaction.SubElements.Add(subTransaction);
+                        parentTransactionViewModel.SubElements.Add(subTransaction);
                     }
-                    parentTransaction.NewSubElements.Clear();
+                    parentTransactionViewModel.NewSubElements.Clear();
                 }
-                else if (tit is IParentIncomeViewModel) // todo unify this and the above if-clause?
+                else if (tit is IParentIncomeViewModel parentIncomeViewModel) // todo unify this and the above if-clause?
                 {
-                    IParentIncomeViewModel parentIncome = tit as IParentIncomeViewModel;
-                    foreach (ISubTransIncViewModel subIncome in parentIncome.NewSubElements)
+                    foreach (ISubTransIncViewModel subIncome in parentIncomeViewModel.NewSubElements)
                     {
                         subIncome.Insert();
-                        parentIncome.SubElements.Add(subIncome);
+                        parentIncomeViewModel.SubElements.Add(subIncome);
                     }
-                    parentIncome.NewSubElements.Clear();
+                    parentIncomeViewModel.NewSubElements.Clear();
                 }
-                else if (tit is ITransIncViewModel)
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel((tit as ITransIncViewModel).Account.Id));
-                else if (tit is ITransferViewModel)
+                else if (tit is ITransIncViewModel transIncViewModel)
+                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transIncViewModel.Account.Id));
+                else if (tit is ITransferViewModel transferViewModel)
                 {
-                    ITransferViewModel transfer = tit as ITransferViewModel;
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transfer.FromAccount.Id));
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transfer.ToAccount.Id));
+                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transferViewModel.FromAccount.Id));
+                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transferViewModel.ToAccount.Id));
                 }
             }
             

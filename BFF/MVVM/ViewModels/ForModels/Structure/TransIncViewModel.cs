@@ -164,9 +164,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return Account != null  && (Orm?.CommonPropertyProvider.AllAccountViewModels.Contains(Account) ?? false) &&
-                   Payee != null    &&  Orm .CommonPropertyProvider.AllPayeeViewModels.Contains(Payee) &&
-                   Category != null &&  Orm .CommonPropertyProvider.AllCategoryViewModels.Contains(Category);
+            return Account != null  && (Orm?.CommonPropertyProvider.Contains(Account) ?? false) &&
+                   Payee != null    &&  Orm .CommonPropertyProvider.Contains(Payee) &&
+                   Category != null &&  Orm .CommonPropertyProvider.Contains(Category);
         }
 
         #region Category Editing
