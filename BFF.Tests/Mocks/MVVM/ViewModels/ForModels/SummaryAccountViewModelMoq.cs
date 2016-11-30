@@ -1,17 +1,15 @@
 ﻿using BFF.MVVM.ViewModels.ForModels;
-using Moq;
+using NSubstitute;
 
 namespace BFF.Tests.Mocks.MVVM.ViewModels.ForModels
 {
     public static class SummaryAccountViewModelMoq
     {
-        public static Mock<ISummaryAccountViewModel> Mock => CreateMock();
+        public static ISummaryAccountViewModel Mock => CreateMock();
 
-        private static Mock<ISummaryAccountViewModel> CreateMock()
+        private static ISummaryAccountViewModel CreateMock()
         {
-            Mock<ISummaryAccountViewModel> mock = new Mock<ISummaryAccountViewModel>();
-
-            mock.Setup(savm => savm.RefreshStartingBalance()).Verifiable();
+            ISummaryAccountViewModel mock = Substitute.For<ISummaryAccountViewModel>();
 
             return mock;
         }

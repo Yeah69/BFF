@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using BFF.MVVM.Models.Native;
-using Moq;
+using NSubstitute;
 
 namespace BFF.Tests.Mocks.MVVM.Models.Native
 {
     public static class CategoryMoq
     {
 
-        public static IList<Mock<ICategory>> Mocks => new List<Mock<ICategory>>
+        public static IList<ICategory> Mocks => new List<ICategory>
         {
             CreateMock(1, "Food", null),
             CreateMock(2, "Outside", 1),
@@ -27,15 +27,13 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
             CreateMock(16, "Debt", null)
         };
 
-        private static Mock<ICategory> CreateMock(long id, string name, long? parentId)
+        private static ICategory CreateMock(long id, string name, long? parentId)
         {
-            Mock<ICategory> mock = new Mock<ICategory>();
-
-            mock.SetupGet(c => c.Id).Returns(id);
-            mock.SetupGet(c => c.Name).Returns(name);
-            mock.SetupGet(c => c.ParentId).Returns(parentId);
-
-            return mock;
+            ICategory category = Substitute.For<BFF.MVVM.Models.Native.ICategory>();
+            category.Id.Returns(id);
+            category.Name.Returns(name);
+            category.ParentId.Returns(parentId);
+            return category;
         }
     }
 }

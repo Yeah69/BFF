@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using BFF.MVVM.Models.Native;
-using Moq;
+using NSubstitute;
 
 namespace BFF.Tests.Mocks.MVVM.Models.Native
 {
     public static class PayeeMoq
     {
-        public static IList<Mock<IPayee>> Mocks => new List<Mock<IPayee>>
+        public static IList<IPayee> Mocks => new List<IPayee>
         {
             CreateMock(1, "Tony's Pizza"),
             CreateMock(2, "Mother"),
@@ -18,14 +18,12 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
             CreateMock(8, "BFF")
         };
 
-        private static Mock<IPayee> CreateMock(long id, string name)
+        private static IPayee CreateMock(long id, string name)
         {
-            Mock<IPayee> mock = new Mock<IPayee>();
-
-            mock.SetupGet(p => p.Id).Returns(id);
-            mock.SetupGet(p => p.Name).Returns(name);
-
-            return mock;
+            IPayee payee = Substitute.For<IPayee>();
+            payee.Id.Returns(id);
+            payee.Name.Returns(name);
+            return payee;
         }
     }
 }

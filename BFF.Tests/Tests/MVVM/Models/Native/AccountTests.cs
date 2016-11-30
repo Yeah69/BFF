@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.Tests.Mocks.DB;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
@@ -79,17 +79,17 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             {
                 //Arrange
                 Account account = new Account(1, "AnAccount", 6969);
-                Mock<IBffOrm> ormMock = BffOrmMoq.Mock;
+                IBffOrm ormMock = BffOrmMoq.Mock;
 
                 //Act
-                account.Insert(ormMock.Object);
-                account.Update(ormMock.Object);
-                account.Delete(ormMock.Object);
+                account.Insert(ormMock);
+                account.Update(ormMock);
+                account.Delete(ormMock);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<Account>()), Times.Once);
-                ormMock.Verify(orm => orm.Update(It.IsAny<Account>()), Times.Once);
-                ormMock.Verify(orm => orm.Delete(It.IsAny<Account>()), Times.Once);
+                ormMock.Received().Insert(Arg.Any<Account>());
+                ormMock.Received().Update(Arg.Any<Account>());
+                ormMock.Received().Delete(Arg.Any<Account>());
             }
             [Fact]
             public void NullCrudFact()

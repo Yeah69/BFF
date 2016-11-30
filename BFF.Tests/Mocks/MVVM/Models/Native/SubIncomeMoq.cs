@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BFF.MVVM.Models.Native;
-using Moq;
+using NSubstitute;
 
 namespace BFF.Tests.Mocks.MVVM.Models.Native
 {
     public static class SubIncomeMoq
     {
-        public static IList<Mock<ISubIncome>> Mocks => new List<Mock<ISubIncome>>
+        public static IList<ISubIncome> Mocks => new List<ISubIncome>
         {
             CreateMock(1, 1, 11, "Salary for July", -110000),
             CreateMock(2, 1, 12, "Bonus July", -20000),
@@ -15,15 +14,15 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
             CreateMock(4, 2, 12, "Bonus August", -13000)
         };
 
-        private static Mock<ISubIncome> CreateMock(long id, long parentId, long categoryId, string memo, long sum)
+        private static ISubIncome CreateMock(long id, long parentId, long categoryId, string memo, long sum)
         {
-            Mock<ISubIncome> mock = new Mock<ISubIncome>();
-
-            mock.SetupGet(p => p.Id).Returns(id);
-            mock.SetupGet(p => p.ParentId).Returns(parentId);
-            mock.SetupGet(p => p.CategoryId).Returns(categoryId);
-            mock.SetupGet(p => p.Memo).Returns(memo);
-            mock.SetupGet(p => p.Sum).Returns(sum);
+            ISubIncome mock = Substitute.For<ISubIncome>();
+            
+            mock.Id.Returns(id);
+            mock.ParentId.Returns(parentId);
+            mock.CategoryId.Returns(categoryId);
+            mock.Memo.Returns(memo);
+            mock.Sum.Returns(sum);
 
             return mock;
         }

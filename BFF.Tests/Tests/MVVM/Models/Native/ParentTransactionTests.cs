@@ -6,7 +6,7 @@ using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.Tests.Mocks.DB;
 using BFF.Tests.Mocks.MVVM.Models.Native;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
@@ -65,17 +65,17 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             {
                 //Arrange
                 ParentTransaction parentTransaction = new ParentTransaction(1, 1, DateTime.Today, 2, "Yeah, Party!", true);
-                Mock<IBffOrm> ormMock = BffOrmMoq.Mock;
+                IBffOrm ormMock = BffOrmMoq.Mock;
 
                 //Act
-                 parentTransaction.Insert(ormMock.Object);
-                 parentTransaction.Update(ormMock.Object);
-                 parentTransaction.Delete(ormMock.Object);
+                 parentTransaction.Insert(ormMock);
+                 parentTransaction.Update(ormMock);
+                 parentTransaction.Delete(ormMock);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<ParentTransaction>()), Times.Once);
-                ormMock.Verify(orm => orm.Update(It.IsAny<ParentTransaction>()), Times.Once);
-                ormMock.Verify(orm => orm.Delete(It.IsAny<ParentTransaction>()), Times.Once);
+                ormMock.Received().Insert(Arg.Any<ParentTransaction>());
+                ormMock.Received().Update(Arg.Any<ParentTransaction>());
+                ormMock.Received().Delete(Arg.Any<ParentTransaction>());
             }
             [Fact]
             public void NullCrudFact()
@@ -136,16 +136,16 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             public void SubElementFact()
             {
                 //Arrange
-                IList<Mock<ISubTransaction>> subTransactionMocks = SubTransactionMoq.Mocks;
-                Mock<IBffOrm> ormMock = BffOrmMoq.CreateMock(subTransactionMocks: subTransactionMocks);
+                IList<ISubTransaction> subTransactionMocks = SubTransactionMoq.Mocks;
+                IBffOrm ormMock = BffOrmMoq.CreateMock(subTransactionMocks: subTransactionMocks);
                 DateTime today = DateTime.Today;
                 ParentTransaction parentTransaction = new ParentTransaction(1, 1, today, 2, "Yeah, Party!", true);
                 
                 //Act
-                IList<ISubTransInc> subTransactions = parentTransaction.GetSubTransInc(ormMock.Object).ToList();
+                IList<ISubTransInc> subTransactions = parentTransaction.GetSubTransInc(ormMock).ToList();
 
                 //Assert
-                foreach(ISubTransaction subTransaction in subTransactionMocks.Select(stm => stm.Object).Where(st => st.ParentId == parentTransaction.Id))
+                foreach(ISubTransaction subTransaction in subTransactionMocks.Where(st => st.ParentId == parentTransaction.Id))
                 {
                     Assert.Contains(subTransaction, subTransactions);
                 }

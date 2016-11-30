@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using BFF.MVVM.Models.Native;
-using Moq;
+using NSubstitute;
 
 namespace BFF.Tests.Mocks.MVVM.Models.Native
 {
     public static class SubTransactionMoq
     {
-        public static IList<Mock<ISubTransaction>> Mocks => new List<Mock<ISubTransaction>>
+        public static IList<ISubTransaction> Mocks => new List<ISubTransaction>
         {
             CreateMock(1, 1, 3, "Tony's Pizza", -450),
             CreateMock(2, 1, 1, "Something to drink", -150),
@@ -15,15 +15,15 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
             CreateMock(5, 2, 9, "Rented a movie", -200)
         };
 
-        private static Mock<ISubTransaction> CreateMock(long id, long parentId, long categoryId, string memo, long sum)
+        private static ISubTransaction CreateMock(long id, long parentId, long categoryId, string memo, long sum)
         {
-            Mock<ISubTransaction> mock = new Mock<ISubTransaction>();
+            ISubTransaction mock = Substitute.For<ISubTransaction>();
 
-            mock.SetupGet(p => p.Id).Returns(id);
-            mock.SetupGet(p => p.ParentId).Returns(parentId);
-            mock.SetupGet(p => p.CategoryId).Returns(categoryId);
-            mock.SetupGet(p => p.Memo).Returns(memo);
-            mock.SetupGet(p => p.Sum).Returns(sum);
+            mock.Id.Returns(id);
+            mock.ParentId.Returns(parentId);
+            mock.CategoryId.Returns(categoryId);
+            mock.Memo.Returns(memo);
+            mock.Sum.Returns(sum);
 
             return mock;
         }

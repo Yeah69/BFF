@@ -6,7 +6,7 @@ using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.Tests.Mocks.DB;
 using BFF.Tests.Mocks.MVVM.Models.Native;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
@@ -65,17 +65,17 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             {
                 //Arrange
                 ParentIncome parentIncome = new ParentIncome(1, 1, DateTime.Today, 2, "Yeah, Party!", true);
-                Mock<IBffOrm> ormMock = BffOrmMoq.Mock;
+                IBffOrm ormMock = BffOrmMoq.Mock;
 
                 //Act
-                parentIncome.Insert(ormMock.Object);
-                parentIncome.Update(ormMock.Object);
-                parentIncome.Delete(ormMock.Object);
+                parentIncome.Insert(ormMock);
+                parentIncome.Update(ormMock);
+                parentIncome.Delete(ormMock);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<ParentIncome>()), Times.Once);
-                ormMock.Verify(orm => orm.Update(It.IsAny<ParentIncome>()), Times.Once);
-                ormMock.Verify(orm => orm.Delete(It.IsAny<ParentIncome>()), Times.Once);
+                ormMock.Received().Insert(Arg.Any<ParentIncome>());
+                ormMock.Received().Update(Arg.Any<ParentIncome>());
+                ormMock.Received().Delete(Arg.Any<ParentIncome>());
             }
             [Fact]
             public void NullCrudFact()
@@ -135,16 +135,16 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             public void SubElementFact()
             {
                 //Arrange
-                IList<Mock<ISubIncome>> subIncomeMocks = SubIncomeMoq.Mocks;
-                Mock<IBffOrm> ormMock = BffOrmMoq.CreateMock(subIncomeMocks: subIncomeMocks);
+                IList<ISubIncome> subIncomeMocks = SubIncomeMoq.Mocks;
+                IBffOrm ormMock = BffOrmMoq.CreateMock(subIncomeMocks: subIncomeMocks);
                 DateTime today = DateTime.Today;
                 ParentIncome parentIncome = new ParentIncome(1, 1, today, 2, "Yeah, Party!", true);
 
                 //Act
-                IList<ISubTransInc> subIncomes = parentIncome.GetSubTransInc(ormMock.Object).ToList();
+                IList<ISubTransInc> subIncomes = parentIncome.GetSubTransInc(ormMock).ToList();
 
                 //Assert
-                foreach (ISubIncome subIncome in subIncomeMocks.Select(stm => stm.Object).Where(st => st.ParentId == parentIncome.Id))
+                foreach (ISubIncome subIncome in subIncomeMocks.Where(st => st.ParentId == parentIncome.Id))
                 {
                     Assert.Contains(subIncome, subIncomes);
                 }

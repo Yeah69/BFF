@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.Tests.Mocks.DB;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
@@ -59,17 +59,17 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             {
                 //Arrange
                 SubTransaction subTransaction = new SubTransaction(1, 1, 2, "Yeah, Party!", -6969L);
-                Mock<IBffOrm> ormMock = BffOrmMoq.Mock;
+                IBffOrm ormMock = BffOrmMoq.Mock;
 
                 //Act
-                subTransaction.Insert(ormMock.Object);
-                subTransaction.Update(ormMock.Object);
-                subTransaction.Delete(ormMock.Object);
+                subTransaction.Insert(ormMock);
+                subTransaction.Update(ormMock);
+                subTransaction.Delete(ormMock);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<SubTransaction>()), Times.Once);
-                ormMock.Verify(orm => orm.Update(It.IsAny<SubTransaction>()), Times.Once);
-                ormMock.Verify(orm => orm.Delete(It.IsAny<SubTransaction>()), Times.Once);
+                ormMock.Received().Insert(Arg.Any<SubTransaction>());
+                ormMock.Received().Update(Arg.Any<SubTransaction>());
+                ormMock.Received().Delete(Arg.Any<SubTransaction>());
             }
             [Fact]
             public void NullCrudFact()

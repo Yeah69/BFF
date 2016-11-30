@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.Tests.Mocks.DB;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
@@ -64,17 +64,17 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             {
                 //Arrange
                 Transfer transfer = new Transfer(1, 1, 2, DateTime.Today, "Yeah, Party!", 6969L, true);
-                Mock<IBffOrm> ormMock = BffOrmMoq.Mock;
+                IBffOrm ormMock = BffOrmMoq.Mock;
 
                 //Act
-                transfer.Insert(ormMock.Object);
-                transfer.Update(ormMock.Object);
-                transfer.Delete(ormMock.Object);
+                transfer.Insert(ormMock);
+                transfer.Update(ormMock);
+                transfer.Delete(ormMock);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<Transfer>()), Times.Once);
-                ormMock.Verify(orm => orm.Update(It.IsAny<Transfer>()), Times.Once);
-                ormMock.Verify(orm => orm.Delete(It.IsAny<Transfer>()), Times.Once);
+                ormMock.Received().Insert(Arg.Any<Transfer>());
+                ormMock.Received().Update(Arg.Any<Transfer>());
+                ormMock.Received().Delete(Arg.Any<Transfer>());
             }
             [Fact]
             public void NullCrudFact()

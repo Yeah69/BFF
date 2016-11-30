@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.Tests.Mocks.DB;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
@@ -77,17 +77,17 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             {
                 //Arrange
                 Category category = new Category(-1, -1, "ACategory");
-                Mock<IBffOrm> ormMock = BffOrmMoq.Mock;
+                IBffOrm ormMock = BffOrmMoq.Mock;
 
                 //Act
-                category.Insert(ormMock.Object);
-                category.Update(ormMock.Object);
-                category.Delete(ormMock.Object);
+                category.Insert(ormMock);
+                category.Update(ormMock);
+                category.Delete(ormMock);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<Category>()), Times.Once);
-                ormMock.Verify(orm => orm.Update(It.IsAny<Category>()), Times.Once);
-                ormMock.Verify(orm => orm.Delete(It.IsAny<Category>()), Times.Once);
+                ormMock.Received().Insert(Arg.Any<Category>());
+                ormMock.Received().Update(Arg.Any<Category>());
+                ormMock.Received().Delete(Arg.Any<Category>());
             }
             [Fact]
             public void NullCrudFact()

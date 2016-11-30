@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.Tests.Mocks.DB;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
@@ -66,17 +66,17 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             {
                 //Arrange
                 Income income = new Income(1, 1, DateTime.Today, 2, 3, "Yeah, Party!", 6969L, true);
-                Mock<IBffOrm> ormMock = BffOrmMoq.Mock;
+                IBffOrm ormMock = BffOrmMoq.Mock;
 
                 //Act
-                income.Insert(ormMock.Object);
-                income.Update(ormMock.Object);
-                income.Delete(ormMock.Object);
+                income.Insert(ormMock);
+                income.Update(ormMock);
+                income.Delete(ormMock);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<Income>()), Times.Once);
-                ormMock.Verify(orm => orm.Update(It.IsAny<Income>()), Times.Once);
-                ormMock.Verify(orm => orm.Delete(It.IsAny<Income>()), Times.Once);
+                ormMock.Received().Insert(Arg.Any<Income>());
+                ormMock.Received().Update(Arg.Any<Income>());
+                ormMock.Received().Delete(Arg.Any<Income>());
             }
             [Fact]
             public void NullCrudFact()

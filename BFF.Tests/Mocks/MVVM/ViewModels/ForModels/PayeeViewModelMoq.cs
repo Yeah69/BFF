@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using BFF.MVVM.ViewModels.ForModels;
-using Moq;
+using NSubstitute;
 
 namespace BFF.Tests.Mocks.MVVM.ViewModels.ForModels
 {
     public static class PayeeViewModelMoq
     {
-        public static IList<Mock<IPayeeViewModel>> Mocks => new List<Mock<IPayeeViewModel>>
+        public static IList<IPayeeViewModel> Mocks => new List<IPayeeViewModel>
         {
             CreateMock(1, "Tony's Pizza"),
             CreateMock(2, "Mother"),
@@ -14,12 +14,12 @@ namespace BFF.Tests.Mocks.MVVM.ViewModels.ForModels
             CreateMock(4, "Work")
         };
 
-        private static Mock<IPayeeViewModel> CreateMock(long id, string name)
+        private static IPayeeViewModel CreateMock(long id, string name)
         {
-            Mock<IPayeeViewModel> mock = new Mock<IPayeeViewModel>();
+            IPayeeViewModel mock = Substitute.For<IPayeeViewModel>();
 
-            mock.SetupGet(p => p.Id).Returns(id);
-            mock.SetupGet(p => p.Name).Returns(name);
+            mock.Id.Returns(id);
+            mock.Name.Returns(name);
 
             return mock;
         }

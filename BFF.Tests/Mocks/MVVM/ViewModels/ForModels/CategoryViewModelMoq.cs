@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using BFF.MVVM.ViewModels.ForModels;
-using Moq;
+using NSubstitute;
 
 namespace BFF.Tests.Mocks.MVVM.ViewModels.ForModels
 {
@@ -29,7 +29,7 @@ namespace BFF.Tests.Mocks.MVVM.ViewModels.ForModels
             new CategoryData {Id = 12, Name= "Bonus", ParentId = 5}
         };
 
-        public static IList<Mock<ICategoryViewModel>> Mocks => new List<Mock<ICategoryViewModel>>
+        public static IList<ICategoryViewModel> Mocks => new List<ICategoryViewModel>
         {
             CreateMock(CategorySet[0].Id, CategorySet[0].Name,  CategorySet[0].ParentId),
             CreateMock(CategorySet[1].Id, CategorySet[1].Name,  CategorySet[1].ParentId),
@@ -45,16 +45,21 @@ namespace BFF.Tests.Mocks.MVVM.ViewModels.ForModels
             CreateMock(CategorySet[11].Id, CategorySet[11].Name,  CategorySet[11].ParentId)
         };
 
-        private static Mock<ICategoryViewModel> CreateMock(long id, string name, long? parentId)
+        private static ICategoryViewModel CreateMock(long id, string name, long? parentId)
         {
-            Mock<ICategoryViewModel> mock = new Mock<ICategoryViewModel>();
+            ICategoryViewModel mock = Substitute.For<ICategoryViewModel>();
 
-            mock.SetupGet(c => c.Id).Returns(id);
-            mock.SetupGet(c => c.Name).Returns(name);
+            mock.Id.Returns(id);
+            mock.Name.Returns(name);
             if(parentId != null)
-                mock.SetupGet(c => c.Parent).Returns(CreateMock(CategorySet[(int)parentId].Id, CategorySet[(int)parentId].Name, CategorySet[(int)parentId - 1].ParentId).Object);
+            {
+                ICategoryViewModel parent = CreateMock(CategorySet[(int) parentId].Id, CategorySet[(int) parentId].Name,
+                                                       CategorySet[(int) parentId - 1].ParentId);
+                mock.Parent.Returns(parent);
+
+            }
             else
-                mock.SetupGet(c => c.Parent).Returns(() => null);
+                mock.Parent.Returns(default(ICategoryViewModel));
 
             return mock;
         }

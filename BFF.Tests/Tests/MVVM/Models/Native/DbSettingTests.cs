@@ -3,7 +3,7 @@ using System.Globalization;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.Tests.Mocks.DB;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
@@ -36,17 +36,17 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             {
                 //Arrange
                 DbSetting dbSetting = new DbSetting();
-                Mock<IBffOrm> ormMock = BffOrmMoq.Mock;
+                IBffOrm ormMock = BffOrmMoq.Mock;
 
                 //Act
-                dbSetting.Insert(ormMock.Object);
-                dbSetting.Update(ormMock.Object);
-                dbSetting.Delete(ormMock.Object);
+                dbSetting.Insert(ormMock);
+                dbSetting.Update(ormMock);
+                dbSetting.Delete(ormMock);
 
                 //Assert
-                ormMock.Verify(orm => orm.Insert(It.IsAny<DbSetting>()), Times.Once);
-                ormMock.Verify(orm => orm.Update(It.IsAny<DbSetting>()), Times.Once);
-                ormMock.Verify(orm => orm.Delete(It.IsAny<DbSetting>()), Times.Once);
+                ormMock.Received().Insert(Arg.Any<DbSetting>());
+                ormMock.Received().Update(Arg.Any<DbSetting>());
+                ormMock.Received().Delete(Arg.Any<DbSetting>());
             }
             [Fact]
             public void NullCrudFact()

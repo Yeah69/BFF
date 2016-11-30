@@ -1,7 +1,7 @@
 ﻿using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.Tests.Mocks.DB;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
@@ -31,19 +31,20 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             {
                 //Arrange
                 SummaryAccount summaryAccount = new SummaryAccount();
-                Mock<IBffOrm> ormMock = BffOrmMoq.Mock;
+                IBffOrm ormMock = BffOrmMoq.Mock;
 
                 //Act
-                summaryAccount.Insert(ormMock.Object);
-                summaryAccount.Update(ormMock.Object);
-                summaryAccount.Delete(ormMock.Object);
+                summaryAccount.Insert(ormMock);
+                summaryAccount.Update(ormMock);
+                summaryAccount.Delete(ormMock);
 
                 //Assert
                 //SummaryAccount is a virtual Account, which summarizes all over accounts. Thus, it should not interact with the ORM.
-                ormMock.Verify(orm => orm.Insert(It.IsAny<SummaryAccount>()), Times.Never);
-                ormMock.Verify(orm => orm.Update(It.IsAny<SummaryAccount>()), Times.Never);
-                ormMock.Verify(orm => orm.Delete(It.IsAny<SummaryAccount>()), Times.Never);
+                ormMock.DidNotReceive().Insert(Arg.Any<SummaryAccount>());
+                ormMock.DidNotReceive().Update(Arg.Any<SummaryAccount>());
+                ormMock.DidNotReceive().Delete(Arg.Any<SummaryAccount>());
             }
+
             [Fact]
             public void NullCrudFact()
             {

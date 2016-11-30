@@ -1,58 +1,47 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using BFF.DB;
-using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
-using Moq;
+using NSubstitute;
 
 namespace BFF.Tests.Mocks.DB
 {
     public static class CommonPropertyProviderMoq
     {
-        public static Mock<ICommonPropertyProvider> Mock => CreateMock();
+        public static ICommonPropertyProvider Mock => CreateMock();
 
-        internal static Mock<ICommonPropertyProvider> CreateMock(IList<Mock<IAccountViewModel>> accountViewModelMocks = null,
-                                                                IList<Mock<ICategoryViewModel>> categoryVieModelMocks = null,
-                                                                IList<Mock<IPayeeViewModel>> payeeViewModelMocks = null,
-                                                                Mock<ISummaryAccountViewModel> summaryAccountViewModelMock = null)
+        internal static ICommonPropertyProvider CreateMock(IList<IAccountViewModel> accountViewModelMocks = null,
+                                                                IList<ICategoryViewModel> categoryVieModelMocks = null,
+                                                                IList<IPayeeViewModel> payeeViewModelMocks = null,
+                                                                ISummaryAccountViewModel summaryAccountViewModelMock = null)
         {
-            Mock<ICommonPropertyProvider> mock = new Mock<ICommonPropertyProvider>();
-
-            mock.Setup(cpp => cpp.Add(It.IsAny<IAccount>())).Verifiable();
-            mock.Setup(cpp => cpp.Remove(It.IsAny<IAccount>())).Verifiable();
-
-            mock.Setup(cpp => cpp.Add(It.IsAny<ICategory>())).Verifiable();
-            mock.Setup(cpp => cpp.Remove(It.IsAny<ICategory>())).Verifiable();
-
-            mock.Setup(cpp => cpp.Add(It.IsAny<IPayee>())).Verifiable();
-            mock.Setup(cpp => cpp.Remove(It.IsAny<IPayee>())).Verifiable();
+            ICommonPropertyProvider mock = Substitute.For<ICommonPropertyProvider>();
 
             if(accountViewModelMocks != null)
             {
-                foreach (IAccountViewModel accountViewModel in accountViewModelMocks.Select(avmm => avmm.Object))
+                foreach (IAccountViewModel accountViewModel in accountViewModelMocks)
                 {
-                    mock.Setup(cpp => cpp.GetAccountViewModel(accountViewModel.Id)).Returns(accountViewModel);
+                    mock.GetAccountViewModel(accountViewModel.Id).Returns(accountViewModel);
                 }
             }
 
             if(categoryVieModelMocks != null)
             {
-                foreach (ICategoryViewModel categoryViewModel in categoryVieModelMocks.Select(cvmm => cvmm.Object))
+                foreach (ICategoryViewModel categoryViewModel in categoryVieModelMocks)
                 {
-                    mock.Setup(cpp => cpp.GetCategoryViewModel(categoryViewModel.Id)).Returns(categoryViewModel);
+                    mock.GetCategoryViewModel(categoryViewModel.Id).Returns(categoryViewModel);
                 }
             }
 
             if(payeeViewModelMocks != null)
             {
-                foreach (IPayeeViewModel payeeViewModel in payeeViewModelMocks.Select(pvmm => pvmm.Object))
+                foreach (IPayeeViewModel payeeViewModel in payeeViewModelMocks)
                 {
-                    mock.Setup(cpp => cpp.GetPayeeViewModel(payeeViewModel.Id)).Returns(payeeViewModel);
+                    mock.GetPayeeViewModel(payeeViewModel.Id).Returns(payeeViewModel);
                 }
             }
 
             if(summaryAccountViewModelMock != null)
-                mock.SetupGet(cpp => cpp.SummaryAccountViewModel).Returns(summaryAccountViewModelMock.Object);
+                mock.SummaryAccountViewModel.Returns(summaryAccountViewModelMock);
 
             return mock;
         }
