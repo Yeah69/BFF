@@ -11,7 +11,7 @@ using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
 {
-    public class ParentTransactionTests
+    public static class ParentTransactionTests
     {
         public class ConstructionTests
         {

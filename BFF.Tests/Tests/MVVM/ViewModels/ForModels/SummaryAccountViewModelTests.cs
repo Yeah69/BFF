@@ -21,7 +21,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             {
                 //Arrange
                 IList<IAccount> accountMocks = AccountMoq.Mocks;
-                ICommonPropertyProvider commonPropertyProvider = CommonPropertyProviderMoq.CreateMock(accountMocks: accountMocks);
+                ICommonPropertyProvider commonPropertyProvider = CommonPropertyProviderMoq.CreateMock(accountMocks);
                 SummaryAccountViewModel summaryAccountViewModel = new SummaryAccountViewModel(BffOrmMoq.CreateMock(commonPropertyProvider));
 
                 //Act
@@ -92,19 +92,8 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void BalancePropertyFact()
             {
                 //Arrange
-                IList<IAccount> accountMocks = AccountMoq.Mocks;
-                IList<ITransaction> transactionMocks = TransactionMoq.Mocks;
-                IList<IIncome> incomeMocks = IncomeMoq.Mocks;
-                IList<ITransfer> transferMocks = TransferMoq.Mocks;
-                IList<IParentTransaction> parentTransactionMocks = ParentTransactionMoq.Mocks;
-                IList<IParentIncome> parentIncomeMocks = ParentIncomeMoq.Mocks;
-                IList<ISubTransaction> subTransactionMocks = SubTransactionMoq.Mocks;
-                IList<ISubIncome> subIncomeMocks = SubIncomeMoq.Mocks;
-                IBffOrm ormMock = BffOrmMoq.CreateMock(accountMocks: accountMocks, transactionMocks: transactionMocks,
-                                                 incomeMocks: incomeMocks, transferMocks: transferMocks,
-                                                 parentTransactionMocks: parentTransactionMocks,
-                                                 parentIncomeMocks: parentIncomeMocks,
-                                                 subTransactionMocks: subTransactionMocks, subIncomeMocks: subIncomeMocks);
+                
+                IBffOrm ormMock = BffOrmMoq.Mock;
                 SummaryAccountViewModel summaryAccountViewModel = new SummaryAccountViewModel(ormMock);
 
                 //Act

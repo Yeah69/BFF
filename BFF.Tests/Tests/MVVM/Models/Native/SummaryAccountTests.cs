@@ -6,7 +6,7 @@ using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
 {
-    public class SummaryAccountTests
+    public static class SummaryAccountTests
     {
         public class ConstructionTests
         {

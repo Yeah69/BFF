@@ -8,7 +8,7 @@ using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
 {
-    public class SubTransactionTests
+    public static class SubTransactionTests
     {
         public class ConstructionTests
         {

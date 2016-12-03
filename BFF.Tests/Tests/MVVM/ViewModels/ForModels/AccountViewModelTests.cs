@@ -12,7 +12,7 @@ using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 {
-    public class AccountViewModelTests
+    public static class AccountViewModelTests
     {
         public class ConstructionTests
         {
@@ -58,8 +58,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public void CrudInsertFact()
             {
                 //Arrange
-                ICommonPropertyProvider commonPropertyProviderMock =
-                    CommonPropertyProviderMoq.Mock;
+                ICommonPropertyProvider commonPropertyProviderMock = CommonPropertyProviderMoq.Mock;
                 AccountViewModel insertAccount = new AccountViewModel(AccountMoq.NotInsertedAccountMock,
                                                                       BffOrmMoq.CreateMock(commonPropertyProviderMock));
 
@@ -88,8 +87,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             {
                 //Arrange
                 IAccount accountMock = AccountMoq.Mocks[0];
-                ICommonPropertyProvider commonPropertyProviderMock =
-                    CommonPropertyProviderMoq.Mock;
+                ICommonPropertyProvider commonPropertyProviderMock = CommonPropertyProviderMoq.Mock;
                 AccountViewModel deleteAccount = new AccountViewModel(accountMock,
                                                                       BffOrmMoq.CreateMock(commonPropertyProviderMock));
 
@@ -108,18 +106,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             {
                 //Arrange
                 IList<IAccount> accountMocks = AccountMoq.Mocks;
-                IList<ITransaction> transactionMocks = TransactionMoq.Mocks;
-                IList<IIncome> incomeMocks = IncomeMoq.Mocks;
-                IList<ITransfer> transferMocks = TransferMoq.Mocks;
-                IList<IParentTransaction> parentTransactionMocks = ParentTransactionMoq.Mocks;
-                IList<IParentIncome> parentIncomeMocks = ParentIncomeMoq.Mocks;
-                IList<ISubTransaction> subTransactionMocks = SubTransactionMoq.Mocks;
-                IList<ISubIncome> subIncomeMocks = SubIncomeMoq.Mocks;
-                IBffOrm ormMock = BffOrmMoq.CreateMock(accountMocks: accountMocks, transactionMocks: transactionMocks,
-                                                 incomeMocks: incomeMocks, transferMocks: transferMocks,
-                                                 parentTransactionMocks: parentTransactionMocks,
-                                                 parentIncomeMocks: parentIncomeMocks,
-                                                 subTransactionMocks: subTransactionMocks, subIncomeMocks: subIncomeMocks);
+                IBffOrm ormMock = BffOrmMoq.CreateMock(accountMocks: accountMocks);
                 AccountViewModel accountViewModel = new AccountViewModel(accountMocks[0],
                                                                          ormMock);
 

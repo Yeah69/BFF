@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
+using BFF.Tests.Mocks.MVVM.Models.Native;
+using BFF.Tests.Mocks.MVVM.ViewModels.ForModels;
 using NSubstitute;
 
 namespace BFF.Tests.Mocks.DB
@@ -11,47 +13,45 @@ namespace BFF.Tests.Mocks.DB
     {
         public static ICommonPropertyProvider Mock => CreateMock();
 
-        internal static ICommonPropertyProvider CreateMock(IList<IAccountViewModel> accountViewModelMocks = null,
-                                                                IList<ICategoryViewModel> categoryVieModelMocks = null,
-                                                                IList<IPayeeViewModel> payeeViewModelMocks = null,
-                                                                ISummaryAccountViewModel summaryAccountViewModelMock = null, 
-                                                                IList<IAccount> accountMocks = null, 
-                                                                IList<IPayee> payees = null, 
-                                                                IList<ICategory> category = null)
+        internal static ICommonPropertyProvider CreateMock(IList<IAccount> accountMocks = null,
+                                                           IList<IPayee> payeeMocks = null,
+                                                           IList<ICategory> categoryMocks = null,
+                                                           IList<IAccountViewModel> accountViewModelMocks = null,
+                                                           IList<ICategoryViewModel> categoryVieModelMocks = null,
+                                                           IList<IPayeeViewModel> payeeViewModelMocks = null,
+                                                           ISummaryAccountViewModel summaryAccountViewModelMock = null)
         {
             ICommonPropertyProvider mock = Substitute.For<ICommonPropertyProvider>();
 
-            if(accountMocks != null)
-            {
-                mock.Accounts.Returns(new ObservableCollection<IAccount>(accountMocks));
-            }
+            if(accountMocks == null) accountMocks = AccountMoq.Mocks;
+            if(payeeMocks == null) payeeMocks = PayeeMoq.Mocks;
+            if(categoryMocks == null) categoryMocks = CategoryMoq.Mocks;
+            if(accountViewModelMocks == null) accountViewModelMocks = AccountViewModelMoq.Mocks;
+            if(payeeViewModelMocks == null) payeeViewModelMocks = PayeeViewModelMoq.Mocks;
+            if(categoryVieModelMocks == null) categoryVieModelMocks = CategoryViewModelMoq.Mocks;
+            if(summaryAccountViewModelMock == null) summaryAccountViewModelMock = SummaryAccountViewModelMoq.Mock;
 
-            if(accountViewModelMocks != null)
-            {
-                foreach (IAccountViewModel accountViewModel in accountViewModelMocks)
-                {
-                    mock.GetAccountViewModel(accountViewModel.Id).Returns(accountViewModel);
-                }
-            }
+            
+            mock.Accounts.Returns(new ObservableCollection<IAccount>(accountMocks));
+            mock.Payees.Returns(new ObservableCollection<IPayee>(payeeMocks));
+            mock.Categories.Returns(new ObservableCollection<ICategory>(categoryMocks));
 
-            if(categoryVieModelMocks != null)
+            foreach (IAccountViewModel accountViewModel in accountViewModelMocks)
             {
-                foreach (ICategoryViewModel categoryViewModel in categoryVieModelMocks)
-                {
-                    mock.GetCategoryViewModel(categoryViewModel.Id).Returns(categoryViewModel);
-                }
+                mock.GetAccountViewModel(accountViewModel.Id).Returns(accountViewModel);
             }
-
-            if(payeeViewModelMocks != null)
+            
+            foreach (ICategoryViewModel categoryViewModel in categoryVieModelMocks)
             {
-                foreach (IPayeeViewModel payeeViewModel in payeeViewModelMocks)
-                {
-                    mock.GetPayeeViewModel(payeeViewModel.Id).Returns(payeeViewModel);
-                }
+                mock.GetCategoryViewModel(categoryViewModel.Id).Returns(categoryViewModel);
             }
-
-            if(summaryAccountViewModelMock != null)
-                mock.SummaryAccountViewModel.Returns(summaryAccountViewModelMock);
+            
+            foreach (IPayeeViewModel payeeViewModel in payeeViewModelMocks)
+            {
+                mock.GetPayeeViewModel(payeeViewModel.Id).Returns(payeeViewModel);
+            }
+            
+            mock.SummaryAccountViewModel.Returns(summaryAccountViewModelMock);
 
             return mock;
         }

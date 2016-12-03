@@ -5,7 +5,7 @@ using NSubstitute;
 
 namespace BFF.Tests.Mocks.MVVM.Models.Native
 {
-    public class ParentTransactionMoq
+    public static class ParentTransactionMoq
     {
         public static IList<IParentTransaction> Mocks => new List<IParentTransaction>
         {

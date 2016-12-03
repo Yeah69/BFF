@@ -5,7 +5,7 @@ using NSubstitute;
 
 namespace BFF.Tests.Mocks.MVVM.Models.Native
 {
-    public class ParentIncomeMoq
+    public static class ParentIncomeMoq
     {
         public static IList<IParentIncome> Mocks => new List<IParentIncome>
         {
