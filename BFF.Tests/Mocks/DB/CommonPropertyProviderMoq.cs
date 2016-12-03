@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using BFF.DB;
+using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
 using NSubstitute;
 
@@ -12,9 +14,17 @@ namespace BFF.Tests.Mocks.DB
         internal static ICommonPropertyProvider CreateMock(IList<IAccountViewModel> accountViewModelMocks = null,
                                                                 IList<ICategoryViewModel> categoryVieModelMocks = null,
                                                                 IList<IPayeeViewModel> payeeViewModelMocks = null,
-                                                                ISummaryAccountViewModel summaryAccountViewModelMock = null)
+                                                                ISummaryAccountViewModel summaryAccountViewModelMock = null, 
+                                                                IList<IAccount> accountMocks = null, 
+                                                                IList<IPayee> payees = null, 
+                                                                IList<ICategory> category = null)
         {
             ICommonPropertyProvider mock = Substitute.For<ICommonPropertyProvider>();
+
+            if(accountMocks != null)
+            {
+                mock.Accounts.Returns(new ObservableCollection<IAccount>(accountMocks));
+            }
 
             if(accountViewModelMocks != null)
             {

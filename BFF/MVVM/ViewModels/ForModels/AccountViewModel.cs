@@ -8,7 +8,13 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public interface IAccountViewModel : IAccountBaseViewModel {}
+    public interface IAccountViewModel : IAccountBaseViewModel
+    {
+        /// <summary>
+        /// Starting balance of the Account
+        /// </summary>
+        new long StartingBalance { get; set; }
+    }
 
     /// <summary>
     /// Tits can be added to an Account

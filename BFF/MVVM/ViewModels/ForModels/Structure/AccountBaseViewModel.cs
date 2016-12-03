@@ -16,7 +16,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        long StartingBalance { get; set; }
+        long StartingBalance { get; }
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
@@ -26,7 +26,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        ObservableCollection<ITitLikeViewModel> NewTits { get; set; }
+        ObservableCollection<ITitLikeViewModel> NewTits { get; }
 
         /// <summary>
         /// The current Balance of this Account.
