@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BFF.DB;
-using BFF.MVVM;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.Tests.Mocks.DB;

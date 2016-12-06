@@ -9,8 +9,8 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
     {
         public static IList<IParentIncome> Mocks => new List<IParentIncome>
         {
-            CreateMock(1, 2, DateTime.Today - TimeSpan.FromDays(69), 1, "Diner", true),
-            CreateMock(2, 2, DateTime.Today - TimeSpan.FromDays(69), 8, "Movie Night", true)
+            CreateMock(1, 2, new DateTime(1969, 6, 9), 1, "Diner", true),
+            CreateMock(2, 2, new DateTime(1969, 6, 11), 8, "Movie Night", true)
         };
 
         private static IParentIncome CreateMock(long id, long accountId, DateTime date, long payeeId, string memo, bool cleared)
