@@ -18,6 +18,25 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
             CreateMock(8, "BFF")
         };
 
+        public static IPayee NotInsertedAccountMock => CreateMock(-1, "Not Inserted Account");
+
+        public static IList<IPayee> NotValidToInsertMocks
+        {
+            get
+            {
+                IPayee nullName = Substitute.For<IPayee>();
+                nullName.Id.Returns(-1);
+                nullName.Name.Returns(default(string));
+                IPayee emptyName = Substitute.For<IPayee>();
+                emptyName.Id.Returns(-1);
+                emptyName.Name.Returns("");
+                IPayee whitespaceName = Substitute.For<IPayee>();
+                whitespaceName.Id.Returns(-1);
+                whitespaceName.Name.Returns("    ");
+                return new List<IPayee> { nullName, emptyName, whitespaceName };
+            }
+        }
+
         private static IPayee CreateMock(long id, string name)
         {
             IPayee payee = Substitute.For<IPayee>();

@@ -50,6 +50,8 @@ namespace BFF.Tests.Mocks.DB
             {
                 mock.GetPayeeViewModel(payeeViewModel.Id).Returns(payeeViewModel);
             }
+
+            mock.AllPayeeViewModels.Returns(new ObservableCollection<IPayeeViewModel>(payeeViewModelMocks));
             
             mock.SummaryAccountViewModel.Returns(summaryAccountViewModelMock);
 

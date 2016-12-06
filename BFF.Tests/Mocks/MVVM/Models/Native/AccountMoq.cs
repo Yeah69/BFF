@@ -20,10 +20,13 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
             get
             {
                 IAccount nullName = Substitute.For<IAccount>();
+                nullName.Id.Returns(-1);
                 nullName.Name.Returns(default(string));
                 IAccount emptyName = Substitute.For<IAccount>();
+                emptyName.Id.Returns(-1);
                 emptyName.Name.Returns("");
                 IAccount whitespaceName = Substitute.For<IAccount>();
+                whitespaceName.Id.Returns(-1);
                 whitespaceName.Name.Returns("    ");
                 return new List<IAccount>{ nullName, emptyName, whitespaceName };
             }
