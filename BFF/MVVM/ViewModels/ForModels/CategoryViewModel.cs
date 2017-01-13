@@ -50,10 +50,10 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public ICategoryViewModel Parent
         {
-            get { return Orm.CommonPropertyProvider.GetCategoryViewModel(_category.ParentId ?? 0); }
+            get { return _category.ParentId == null ? null : Orm.CommonPropertyProvider.GetCategoryViewModel(_category.ParentId ?? 0); }
             set
             {
-                if(Orm.CommonPropertyProvider.GetCategoryViewModel(_category.ParentId ?? 0) == value) return;
+                if(_category.ParentId == null && value == null || Orm.CommonPropertyProvider.GetCategoryViewModel(_category.ParentId ?? 0) == value) return;
                 _category.ParentId = value.Id;
                 Update();
                 OnPropertyChanged();
@@ -107,9 +107,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override bool ValidToInsert()
         {
-            return !string.IsNullOrWhiteSpace(Name) &&
-                   (Parent == null && (Orm?.CommonPropertyProvider?.ParentCategoryViewModels.All(pcvm => pcvm.Name != Name) ?? false) ||
-                   Parent != null && Parent.Categories.All(pcvm => pcvm.Name != Name));
+            return !string.IsNullOrWhiteSpace(Name) && Orm.CommonPropertyProvider.IsValidToInsert(this);
         }
 
         protected override void InsertToDb()

@@ -13,9 +13,9 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
             CreateMock(3, "CreditCard", -2369)
         };
 
-        public static IAccount NotInsertedAccountMock => CreateMock(-1, "Not Inserted Account", 34564356);
+        public static IAccount NotInserted => CreateMock(-1, "Not Inserted Account", 34564356);
 
-        public static IList<IAccount> NotValidToInsertMocks
+        public static IList<IAccount> NotValidToInsert
         {
             get
             {

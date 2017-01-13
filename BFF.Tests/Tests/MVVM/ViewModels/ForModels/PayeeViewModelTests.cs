@@ -39,7 +39,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             {
                 //Arrange
                 ICommonPropertyProvider commonPropertyProviderMock = CommonPropertyProviderMoq.Mock;
-                PayeeViewModel insertPayee = new PayeeViewModel(PayeeMoq.NotInsertedAccountMock,
+                PayeeViewModel insertPayee = new PayeeViewModel(PayeeMoq.NotInserted,
                                                                   BffOrmMoq.CreateMock(commonPropertyProviderMock));
 
                 //Act
@@ -114,7 +114,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
             public static IEnumerable<object[]> ValidToInsert =
                 PayeeMoq.Mocks.Select(am => new object[] { am });
             public static IEnumerable<object[]> NotValidToInsert =
-                PayeeMoq.NotValidToInsertMocks.Select(am => new object[] { am });
+                PayeeMoq.NotValidToInsert.Select(am => new object[] { am });
 
             [Theory, MemberData(nameof(ValidToInsert))]
             public void ValidToInsertTest(IPayee payee)

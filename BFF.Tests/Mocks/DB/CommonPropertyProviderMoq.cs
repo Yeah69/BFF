@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
@@ -17,7 +18,7 @@ namespace BFF.Tests.Mocks.DB
                                                            IList<IPayee> payeeMocks = null,
                                                            IList<ICategory> categoryMocks = null,
                                                            IList<IAccountViewModel> accountViewModelMocks = null,
-                                                           IList<ICategoryViewModel> categoryVieModelMocks = null,
+                                                           IList<ICategoryViewModel> categoryViewModelMocks = null,
                                                            IList<IPayeeViewModel> payeeViewModelMocks = null,
                                                            ISummaryAccountViewModel summaryAccountViewModelMock = null)
         {
@@ -28,7 +29,7 @@ namespace BFF.Tests.Mocks.DB
             if(categoryMocks == null) categoryMocks = CategoryMoq.Mocks;
             if(accountViewModelMocks == null) accountViewModelMocks = AccountViewModelMoq.Mocks;
             if(payeeViewModelMocks == null) payeeViewModelMocks = PayeeViewModelMoq.Mocks;
-            if(categoryVieModelMocks == null) categoryVieModelMocks = CategoryViewModelMoq.Mocks;
+            if(categoryViewModelMocks == null) categoryViewModelMocks = CategoryViewModelMoq.Mocks;
             if(summaryAccountViewModelMock == null) summaryAccountViewModelMock = SummaryAccountViewModelMoq.Mock;
 
             
@@ -41,7 +42,7 @@ namespace BFF.Tests.Mocks.DB
                 mock.GetAccountViewModel(accountViewModel.Id).Returns(accountViewModel);
             }
             
-            foreach (ICategoryViewModel categoryViewModel in categoryVieModelMocks)
+            foreach (ICategoryViewModel categoryViewModel in categoryViewModelMocks)
             {
                 mock.GetCategoryViewModel(categoryViewModel.Id).Returns(categoryViewModel);
             }
@@ -51,8 +52,13 @@ namespace BFF.Tests.Mocks.DB
                 mock.GetPayeeViewModel(payeeViewModel.Id).Returns(payeeViewModel);
             }
 
+            mock.AllAccountViewModels.Returns(new ObservableCollection<IAccountViewModel>(accountViewModelMocks));
             mock.AllPayeeViewModels.Returns(new ObservableCollection<IPayeeViewModel>(payeeViewModelMocks));
-            
+            mock.AllCategoryViewModels.Returns(new ObservableCollection<ICategoryViewModel>(categoryViewModelMocks));
+            ObservableCollection<ICategoryViewModel> parentCategories = new ObservableCollection<ICategoryViewModel>(
+                categoryViewModelMocks.Where(cvmm => cvmm.Parent == null));
+            mock.ParentCategoryViewModels.Returns(parentCategories);
+
             mock.SummaryAccountViewModel.Returns(summaryAccountViewModelMock);
 
             return mock;

@@ -33,6 +33,7 @@ namespace BFF.DB
         bool Contains(IAccountViewModel accountViewModel);
         bool Contains(IPayeeViewModel payeeViewModel);
         bool Contains(ICategoryViewModel categoryViewModel);
+        bool IsValidToInsert(ICategoryViewModel categoryViewModel);
     }
 
     public class CommonPropertyProvider : ICommonPropertyProvider
@@ -204,5 +205,9 @@ namespace BFF.DB
         public bool Contains(IPayeeViewModel payeeViewModel) => AllPayeeViewModels.Contains(payeeViewModel);
 
         public bool Contains(ICategoryViewModel categoryViewModel) => AllCategoryViewModels.Contains(categoryViewModel);
+
+        public bool IsValidToInsert(ICategoryViewModel categoryViewModel) =>
+            categoryViewModel.Parent == null && ParentCategoryViewModels.All(pcvm => pcvm.Name != categoryViewModel.Name) ||
+             categoryViewModel.Parent != null && categoryViewModel.Parent.Categories.All(pcvm => pcvm.Name != categoryViewModel.Name);
     }
 }

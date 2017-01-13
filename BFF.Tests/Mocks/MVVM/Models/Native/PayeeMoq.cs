@@ -18,9 +18,9 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
             CreateMock(8, "BFF")
         };
 
-        public static IPayee NotInsertedAccountMock => CreateMock(-1, "Not Inserted Account");
+        public static IPayee NotInserted => CreateMock(-1, "Not Inserted Payee");
 
-        public static IList<IPayee> NotValidToInsertMocks
+        public static IList<IPayee> NotValidToInsert
         {
             get
             {
