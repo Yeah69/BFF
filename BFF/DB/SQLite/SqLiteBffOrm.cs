@@ -348,7 +348,7 @@ namespace BFF.DB.SQLite
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
         {
-            Logger.Fatal("Getting a page of entries from table {0} of page size {1} by offset {2}.", typeof(T).Name, pageSize, offset);
+            Logger.Debug("Getting a page of entries from table {0} of page size {1} by offset {2}.", typeof(T).Name, pageSize, offset);
             IEnumerable<T> ret;
             using (DbTransactions.TransactionScope cnnTransaction = new DbTransactions.TransactionScope())
             {

@@ -62,45 +62,45 @@ namespace BFF
             SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
 
             DataContext = new MainWindowViewModel();
-        }
 
-        private void InitializeCultureComboBoxes()
-        {
-            LanguageCombo.ItemsSource = WPFLocalizeExtension.Providers.ResxLocalizationProvider.Instance.AvailableCultures.Where(culture => !Equals(culture, CultureInfo.InvariantCulture));
-            LanguageCombo.SelectedItem = Settings.Default.Culture_DefaultLanguage;
-
-            foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.Name))
+            void InitializeCultureComboBoxes()
             {
-                CurrencyCombo.Items.Add(culture);
-                DateCombo.Items.Add(culture);
-            }
-        }
+                LanguageCombo.ItemsSource = WPFLocalizeExtension.Providers.ResxLocalizationProvider.Instance.AvailableCultures.Where(culture => !Equals(culture, CultureInfo.InvariantCulture));
+                LanguageCombo.SelectedItem = Settings.Default.Culture_DefaultLanguage;
 
-        private void InitializeAppThemeAndAccentComboBoxes()
-        {
-            AppTheme initialAppTheme = ThemeManager.GetAppTheme(Settings.Default.MahApps_AppTheme);
-            Accent initialAccent = ThemeManager.GetAccent(Settings.Default.MahApps_Accent);
-            foreach (AppTheme theme in ThemeManager.AppThemes.OrderBy(x => x.Name))
-            {
-                ThemeWrap current = new ThemeWrap
+                foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.Name))
                 {
-                    Theme = theme,
-                    WhiteBrush = (SolidColorBrush)theme.Resources["WhiteBrush"]
-                };
-                ThemeCombo.Items.Add(current);
-                if (theme == initialAppTheme)
-                    ThemeCombo.SelectedItem = current;
+                    CurrencyCombo.Items.Add(culture);
+                    DateCombo.Items.Add(culture);
+                }
             }
-            foreach (Accent accent in ThemeManager.Accents.OrderBy(x => x.Name))
+
+            void InitializeAppThemeAndAccentComboBoxes()
             {
-                AccentWrap current = new AccentWrap
+                AppTheme initialAppTheme = ThemeManager.GetAppTheme(Settings.Default.MahApps_AppTheme);
+                Accent initialAccent = ThemeManager.GetAccent(Settings.Default.MahApps_Accent);
+                foreach (AppTheme theme in ThemeManager.AppThemes.OrderBy(x => x.Name))
                 {
-                    Accent = accent,
-                    AccentColorBrush = (SolidColorBrush)accent.Resources["AccentColorBrush"]
-                };
-                AccentCombo.Items.Add(current);
-                if (accent == initialAccent)
-                    AccentCombo.SelectedItem = current;
+                    ThemeWrap current = new ThemeWrap
+                    {
+                        Theme = theme,
+                        WhiteBrush = (SolidColorBrush)theme.Resources["WhiteBrush"]
+                    };
+                    ThemeCombo.Items.Add(current);
+                    if (theme == initialAppTheme)
+                        ThemeCombo.SelectedItem = current;
+                }
+                foreach (Accent accent in ThemeManager.Accents.OrderBy(x => x.Name))
+                {
+                    AccentWrap current = new AccentWrap
+                    {
+                        Accent = accent,
+                        AccentColorBrush = (SolidColorBrush)accent.Resources["AccentColorBrush"]
+                    };
+                    AccentCombo.Items.Add(current);
+                    if (accent == initialAccent)
+                        AccentCombo.SelectedItem = current;
+                }
             }
         }
 
