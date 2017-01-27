@@ -1,135 +1,158 @@
 ﻿using System;
-using System.Collections.Generic;
-using BFF.DB;
 using BFF.MVVM.Models.Native;
-using BFF.Tests.Mocks.DB;
-using NSubstitute;
+using BFF.Tests.Tests.MVVM.Models.Native.Structure;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
 {
-    public static class TransferTests
+    public class TransferTests : TitBaseTests<Transfer>
     {
-        public class ConstructionTests
+        protected override Transfer DataModelBaseFactory => new Transfer(IdInitialValue, 69, 23, new DateTime(1996, 6, 9), "Yeah, Party!", 69, true);
+
+        protected override long IdInitialValue => 69;
+
+        protected override long IdDifferentValue => 23;
+
+        protected override Transfer TitLikeFactory => new Transfer(1, 69, 23, new DateTime(1996, 6, 9), MemoInitialValue, 69, true);
+
+        protected override string MemoInitialValue => "Yeah, Party!";
+
+        protected override string MemoDifferentValue => "Party, Yeah!";
+
+        protected override Transfer TitBaseFactory => new Transfer(1, 69, 23, DateInitialValue, "Yeah, Party!", 69, ClearedInitialValue);
+
+        protected override DateTime DateInitialValue => new DateTime(1996, 6, 9);
+
+        protected override DateTime DateDifferentValue => new DateTime(1996, 9, 6);
+
+        protected override bool ClearedInitialValue => false;
+
+        protected override bool ClearedDifferentValue => true;
+
+
+        Transfer TransferFactory => new Transfer(1, FromAccountIdInitialValue, ToAccountIdInitialValue, new DateTime(1996, 6, 9), "Yeah, Party!", SumInitialValue, true);
+
+        long FromAccountIdInitialValue => 69;
+        long FromAccountIdDifferentValue => 23;
+
+        long ToAccountIdInitialValue => 3;
+        long ToAccountIdDifferentValue => 6;
+
+        long SumInitialValue => 9;
+        long SumDifferentValue => 18;
+
+        [Fact]
+        public void FromAccountId_ChangeValue_TriggersNotification()
         {
-            public static IEnumerable<object[]> TransferData => new[]
+            //Arrange
+            Transfer transfer = TransferFactory;
+            bool notified = false;
+            transfer.FromAccountId = FromAccountIdInitialValue;
+            transfer.PropertyChanged += (sender, args) =>
             {
-                new object[] { 1, 1, 2, DateTime.Today, "Yeah, Party!", 6969L, true },
-                new object[] { -1, -1, 23, DateTime.Today - TimeSpan.FromDays(69), "Long ago", 323L, false },
-                new object[] { 11, 455, -1, DateTime.Today + TimeSpan.FromDays(69), "Great Transfer", 87978L, true }
+                if (args.PropertyName == nameof(ITransfer.FromAccountId)) notified = true;
             };
 
-            [Theory, MemberData(nameof(TransferData))]
-            public void ConstructionTheory(long id, long fromAccountId, long toAccountId, DateTime date, string memo, long sum, bool cleared)
-            {
-                //Arrange
-                Transfer transfer = new Transfer(id, fromAccountId, toAccountId, date, memo, sum, cleared);
+            //Act
+            transfer.FromAccountId = FromAccountIdDifferentValue;
 
-                //Act
-
-                //Assert
-                Assert.Equal(id, transfer.Id);
-                Assert.Equal(fromAccountId, transfer.FromAccountId);
-                Assert.Equal(toAccountId, transfer.ToAccountId);
-                Assert.Equal(date, transfer.Date);
-                Assert.Equal(memo, transfer.Memo);
-                Assert.Equal(sum, transfer.Sum);
-                Assert.Equal(cleared, transfer.Cleared);
-            }
-
-            [Fact]
-            public void DefaultConstructionFact()
-            {
-                //Arrange
-                DateTime today = DateTime.Today;
-                Transfer transfer = new Transfer(today);
-
-                //Act
-
-                //Assert
-                Assert.Equal(-1L, transfer.Id);
-                Assert.Equal(-1L, transfer.FromAccountId);
-                Assert.Equal(-1L, transfer.ToAccountId);
-                Assert.Equal(today, transfer.Date);
-                Assert.Equal(null, transfer.Memo);
-                Assert.Equal(0L, transfer.Sum);
-                Assert.Equal(false, transfer.Cleared);
-            }
+            //Assert
+            Assert.True(notified);
         }
 
-        public class CrudTests
+        [Fact]
+        public void FromAccountId_SameValue_DoesntTriggersNotification()
         {
-            [Fact]
-            public void CrudFact()
+            //Arrange
+            Transfer transfer = TransferFactory;
+            bool notified = false;
+            transfer.FromAccountId = FromAccountIdInitialValue;
+            transfer.PropertyChanged += (sender, args) =>
             {
-                //Arrange
-                Transfer transfer = new Transfer(1, 1, 2, DateTime.Today, "Yeah, Party!", 6969L, true);
-                IBffOrm ormMock = BffOrmMoq.Mock;
+                if (args.PropertyName == nameof(ITransfer.FromAccountId)) notified = true;
+            };
 
-                //Act
-                transfer.Insert(ormMock);
-                transfer.Update(ormMock);
-                transfer.Delete(ormMock);
+            //Act
+            transfer.FromAccountId = FromAccountIdInitialValue;
 
-                //Assert
-                ormMock.Received().Insert(Arg.Any<Transfer>());
-                ormMock.Received().Update(Arg.Any<Transfer>());
-                ormMock.Received().Delete(Arg.Any<Transfer>());
-            }
-            [Fact]
-            public void NullCrudFact()
-            {
-                //Arrange
-                Transfer transfer = new Transfer(1, 1, 2, DateTime.Today, "Yeah, Party!", 6969L, true);
-
-                //Act + Assert
-                Assert.Throws<ArgumentNullException>(() => transfer.Insert(null));
-                Assert.Throws<ArgumentNullException>(() => transfer.Update(null));
-                Assert.Throws<ArgumentNullException>(() => transfer.Delete(null));
-            }
+            //Assert
+            Assert.False(notified);
         }
 
-        public class PropertyChangedTests
+        [Fact]
+        public void ToAccountId_ChangeValue_TriggersNotification()
         {
-            [Fact]
-            public void PropertyChangedFact()
+            //Arrange
+            Transfer transfer = TransferFactory;
+            bool notified = false;
+            transfer.ToAccountId = ToAccountIdInitialValue;
+            transfer.PropertyChanged += (sender, args) =>
             {
-                //Arrange
-                Transfer transfer = new Transfer(1, 1, 2, DateTime.Today, "Yeah, Party!", 6969L, true);
+                if (args.PropertyName == nameof(ITransfer.ToAccountId)) notified = true;
+            };
 
-                //Act + Assert
-                Assert.PropertyChanged(transfer, nameof(transfer.Id), () => transfer.Id = 69);
-                Assert.PropertyChanged(transfer, nameof(transfer.FromAccountId), () => transfer.FromAccountId = 69);
-                Assert.PropertyChanged(transfer, nameof(transfer.ToAccountId), () => transfer.ToAccountId = 23);
-                Assert.PropertyChanged(transfer, nameof(transfer.Date), () => transfer.Date = DateTime.Today - TimeSpan.FromDays(3));
-                Assert.PropertyChanged(transfer, nameof(transfer.Memo), () => transfer.Memo = "Hangover?");
-                Assert.PropertyChanged(transfer, nameof(transfer.Sum), () => transfer.Sum = 69L);
-                Assert.PropertyChanged(transfer, nameof(transfer.Cleared), () => transfer.Cleared = false);
-            }
+            //Act
+            transfer.ToAccountId = ToAccountIdDifferentValue;
 
-            [Fact]
-            public void PropertyNotChangedFact()
+            //Assert
+            Assert.True(notified);
+        }
+
+        [Fact]
+        public void ToAccountId_SameValue_DoesntTriggersNotification()
+        {
+            //Arrange
+            Transfer transfer = TransferFactory;
+            bool notified = false;
+            transfer.ToAccountId = ToAccountIdInitialValue;
+            transfer.PropertyChanged += (sender, args) =>
             {
-                //Arrange
-                DateTime today = DateTime.Today;
-                Transfer transfer = new Transfer(1, 1, 2, DateTime.Today, "Yeah, Party!", 6969L, true);
+                if (args.PropertyName == nameof(ITransfer.ToAccountId)) notified = true;
+            };
 
-                //Act + Assert
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transfer, nameof(transfer.Id), () => transfer.Id = 1));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transfer, nameof(transfer.FromAccountId), () => transfer.FromAccountId = 1));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transfer, nameof(transfer.ToAccountId), () => transfer.ToAccountId = 2));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transfer, nameof(transfer.Date), () => transfer.Date = today));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transfer, nameof(transfer.Memo), () => transfer.Memo = "Yeah, Party!"));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transfer, nameof(transfer.Sum), () => transfer.Sum = 6969L));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transfer, nameof(transfer.Cleared), () => transfer.Cleared = true));
-            }
+            //Act
+            transfer.ToAccountId = ToAccountIdInitialValue;
+
+            //Assert
+            Assert.False(notified);
+        }
+
+        [Fact]
+        public void Sum_ChangeValue_TriggersNotification()
+        {
+            //Arrange
+            Transfer transfer = TransferFactory;
+            bool notified = false;
+            transfer.Sum = SumInitialValue;
+            transfer.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(ITransfer.Sum)) notified = true;
+            };
+
+            //Act
+            transfer.Sum = SumDifferentValue;
+
+            //Assert
+            Assert.True(notified);
+        }
+
+        [Fact]
+        public void Sum_SameValue_DoesntTriggersNotification()
+        {
+            //Arrange
+            Transfer transfer = TransferFactory;
+            bool notified = false;
+            transfer.Sum = SumInitialValue;
+            transfer.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(ITransfer.Sum)) notified = true;
+            };
+
+            //Act
+            transfer.Sum = SumInitialValue;
+
+            //Assert
+            Assert.False(notified);
         }
     }
 }

@@ -103,6 +103,7 @@
     <Compile Include="Tests\MVVM\Models\Native\ParentTransactionTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\PayeeTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\Structure\DataModelBaseTests.cs" />
+    <Compile Include="Tests\MVVM\Models\Native\Structure\SubTransIncTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\Structure\TitBaseTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\Structure\TitLikeTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\Structure\TransIncTests.cs" />

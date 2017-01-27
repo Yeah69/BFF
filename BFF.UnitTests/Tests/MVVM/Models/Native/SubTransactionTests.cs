@@ -1,123 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using BFF.DB;
-using BFF.MVVM.Models.Native;
-using BFF.Tests.Mocks.DB;
-using NSubstitute;
-using Xunit;
+﻿using BFF.MVVM.Models.Native;
+using BFF.Tests.Tests.MVVM.Models.Native.Structure;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
 {
-    public static class SubTransactionTests
+    public class SubTransactionTests : SubTransIncTests<SubTransaction>
     {
-        public class ConstructionTests
-        {
-            public static IEnumerable<object[]> SubTransactionData => new[]
-            {
-                new object[] { 1, 1, 2, "Yeah, Party!", -6969L },
-                new object[] { -1, -1, 23, "Long ago", -323L },
-                new object[] { 11, 455, -1, "Positive SubTransaction", 87978L }
-            };
+        protected override SubTransaction DataModelBaseFactory => new SubTransaction(IdInitialValue, 1, 1, "Yeah, Party!", 69);
 
-            [Theory, MemberData(nameof(SubTransactionData))]
-            public void ConstructionTheory(long id, long parentId, long categoryId, string memo, long sum)
-            {
-                //Arrange
-                SubTransaction subTransaction = new SubTransaction(id, parentId, categoryId, memo, sum);
+        protected override long IdInitialValue => 69;
 
-                //Act
+        protected override long IdDifferentValue => 23;
 
-                //Assert
-                Assert.Equal(id, subTransaction.Id);
-                Assert.Equal(parentId, subTransaction.ParentId);
-                Assert.Equal(categoryId, subTransaction.CategoryId);
-                Assert.Equal(memo, subTransaction.Memo);
-                Assert.Equal(sum, subTransaction.Sum);
-            }
+        protected override SubTransaction TitLikeFactory => new SubTransaction(1, 1, 1, MemoInitialValue, 69);
 
-            [Fact]
-            public void DefaultConstructionFact()
-            {
-                //Arrange
-                SubTransaction subTransaction = new SubTransaction();
+        protected override string MemoInitialValue => "Yeah, Party!";
 
-                //Act
+        protected override string MemoDifferentValue => "Party, Yeah!";
 
-                //Assert
-                Assert.Equal(-1L, subTransaction.Id);
-                Assert.Equal(-1L, subTransaction.ParentId);
-                Assert.Equal(-1L, subTransaction.CategoryId);
-                Assert.Equal(null, subTransaction.Memo);
-                Assert.Equal(0L, subTransaction.Sum);
-            }
-        }
+        protected override SubTransaction SubTransIncFactory => new SubTransaction(1, ParentIdInitialValue, CategoryIdInitialValue, "Yeah, Party!", SumInitialValue);
 
-        public class CrudTests
-        {
-            [Fact]
-            public void CrudFact()
-            {
-                //Arrange
-                SubTransaction subTransaction = new SubTransaction(1, 1, 2, "Yeah, Party!", -6969L);
-                IBffOrm ormMock = BffOrmMoq.Mock;
+        protected override long ParentIdInitialValue => 1;
 
-                //Act
-                subTransaction.Insert(ormMock);
-                subTransaction.Update(ormMock);
-                subTransaction.Delete(ormMock);
+        protected override long ParentIdDifferentValue => 2;
 
-                //Assert
-                ormMock.Received().Insert(Arg.Any<SubTransaction>());
-                ormMock.Received().Update(Arg.Any<SubTransaction>());
-                ormMock.Received().Delete(Arg.Any<SubTransaction>());
-            }
-            [Fact]
-            public void NullCrudFact()
-            {
-                //Arrange
-                SubTransaction subTransaction = new SubTransaction(1, 1, 2, "Yeah, Party!", -6969L);
+        protected override long CategoryIdInitialValue => 3;
 
-                //Act + Assert
-                Assert.Throws<ArgumentNullException>(() => subTransaction.Insert(null));
-                Assert.Throws<ArgumentNullException>(() => subTransaction.Update(null));
-                Assert.Throws<ArgumentNullException>(() => subTransaction.Delete(null));
-            }
-        }
+        protected override long CategoryIdDifferentValue => 4;
 
-        public class PropertyChangedTests
-        {
-            [Fact]
-            public void PropertyChangedFact()
-            {
-                //Arrange
-                SubTransaction subTransaction = new SubTransaction(1, 1, 2, "Yeah, Party!", -6969L);
+        protected override long SumInitialValue => 5;
 
-                //Act + Assert
-                Assert.PropertyChanged(subTransaction, nameof(subTransaction.Id), () => subTransaction.Id = 69);
-                Assert.PropertyChanged(subTransaction, nameof(subTransaction.ParentId), () => subTransaction.ParentId = 69);
-                Assert.PropertyChanged(subTransaction, nameof(subTransaction.CategoryId), () => subTransaction.CategoryId = 23);
-                Assert.PropertyChanged(subTransaction, nameof(subTransaction.Memo), () => subTransaction.Memo = "Hangover?");
-                Assert.PropertyChanged(subTransaction, nameof(subTransaction.Sum), () => subTransaction.Sum = 69L);
-            }
-
-            [Fact]
-            public void PropertyNotChangedFact()
-            {
-                //Arrange
-                SubTransaction subTransaction = new SubTransaction(1, 1, 2, "Yeah, Party!", -6969L);
-
-                //Act + Assert
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(subTransaction, nameof(subTransaction.Id), () => subTransaction.Id = 1));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(subTransaction, nameof(subTransaction.ParentId), () => subTransaction.ParentId = 1));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(subTransaction, nameof(subTransaction.CategoryId), () => subTransaction.CategoryId = 2));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(subTransaction, nameof(subTransaction.Memo), () => subTransaction.Memo = "Yeah, Party!"));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(subTransaction, nameof(subTransaction.Sum), () => subTransaction.Sum = -6969L));
-            }
-        }
+        protected override long SumDifferentValue => 6;
     }
 }
