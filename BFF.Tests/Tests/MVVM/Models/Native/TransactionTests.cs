@@ -1,140 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
-using BFF.DB;
 using BFF.MVVM.Models.Native;
-using BFF.Tests.Mocks.DB;
-using NSubstitute;
-using Xunit;
+using BFF.Tests.Tests.MVVM.Models.Native.Structure;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
 {
-    public static class TransactionTests
+    public class TransactionTests : TransIncTests<Transaction>
     {
-        public class ConstructionTests
-        {
-            public static IEnumerable<object[]> TransactionData => new[]
-            {
-                new object[] { 1, 1, DateTime.Today, 2, 3, "Yeah, Party!", -6969L, true },
-                new object[] { -1, -1, DateTime.Today - TimeSpan.FromDays(69), 23, -1, "Long ago", -323L, false },
-                new object[] { 11, 455, DateTime.Today + TimeSpan.FromDays(69), -1, 3, "Positive Transaction", 87978L, true }
-            };
+        //todo: Should the constructor (also default values) be tested?
+        protected override Transaction DataModelBaseFactory => new Transaction(IdInitialValue, 1, new DateTime(1969, 6, 9), 1, 1, "Yeah, Party", 69, false);
 
-            [Theory, MemberData(nameof(TransactionData))]
-            public void ConstructionTheory(long id, long accountId, DateTime date, long payeeId, long categoryId, string memo, long sum, bool cleared)
-            {
-                //Arrange
-                Transaction transaction = new Transaction(id, accountId, date, payeeId, categoryId, memo, sum, cleared);
+        protected override long IdInitialValue => 69;
 
-                //Act
+        protected override long IdDifferentValue => 23;
 
-                //Assert
-                Assert.Equal(id, transaction.Id);
-                Assert.Equal(accountId, transaction.AccountId);
-                Assert.Equal(date, transaction.Date);
-                Assert.Equal(payeeId, transaction.PayeeId);
-                Assert.Equal(categoryId, transaction.CategoryId);
-                Assert.Equal(memo, transaction.Memo);
-                Assert.Equal(sum, transaction.Sum);
-                Assert.Equal(cleared, transaction.Cleared);
-            }
+        protected override Transaction TitLikeFactory => new Transaction(new DateTime(1969, 6, 9), memo: MemoInitialValue);
 
-            [Fact]
-            public void DefaultConstructionFact()
-            {
-                //Arrange
-                DateTime today = DateTime.Today;
-                Transaction transaction = new Transaction(today);
+        protected override string MemoInitialValue => "Yeah, Party";
 
-                //Act
+        protected override string MemoDifferentValue => "Party, Yeah";
 
-                //Assert
-                Assert.Equal(-1L, transaction.Id);
-                Assert.Equal(-1L, transaction.AccountId);
-                Assert.Equal(today, transaction.Date);
-                Assert.Equal(-1L, transaction.PayeeId);
-                Assert.Equal(-1L, transaction.CategoryId);
-                Assert.Equal(null, transaction.Memo);
-                Assert.Equal(0L, transaction.Sum);
-                Assert.Equal(false, transaction.Cleared);
-            }
-        }
+        protected override Transaction TitBaseFactory => new Transaction(DateInitialValue, cleared: ClearedInitialValue);
 
-        public class CrudTests
-        {
-            [Fact]
-            public void CrudFact()
-            {
-                //Arrange
-                Transaction transaction = new Transaction(1, 1, DateTime.Today, 2, 3, "Yeah, Party!", 6969L, true);
-                IBffOrm ormMock = BffOrmMoq.Mock;
+        protected override DateTime DateInitialValue => new DateTime(1969, 6, 9);
 
-                //Act
-                transaction.Insert(ormMock);
-                transaction.Update(ormMock);
-                transaction.Delete(ormMock);
+        protected override DateTime DateDifferentValue => new DateTime(1969, 9, 6);
 
-                //Assert
-                ormMock.Received().Insert(Arg.Any<Transaction>());
-                ormMock.Received().Update(Arg.Any<Transaction>());
-                ormMock.Received().Delete(Arg.Any<Transaction>());
-            }
-            [Fact]
-            public void NullCrudFact()
-            {
-                //Arrange
-                Transaction transaction = new Transaction(1, 1, DateTime.Today, 2, 3, "Yeah, Party!", 6969L, true);
+        protected override bool ClearedInitialValue => false;
 
-                //Act + Assert
-                Assert.Throws<ArgumentNullException>(() => transaction.Insert(null));
-                Assert.Throws<ArgumentNullException>(() => transaction.Update(null));
-                Assert.Throws<ArgumentNullException>(() => transaction.Delete(null));
-            }
-        }
+        protected override bool ClearedDifferentValue => true;
 
-        public class PropertyChangedTests
-        {
-            [Fact]
-            public void PropertyChangedFact()
-            {
-                //Arrange
-                Transaction transaction = new Transaction(1, 1, DateTime.Today, 2, 3, "Yeah, Party!", 6969L, true);
+        protected override Transaction TransIncBaseFactory => new Transaction(1, AccountIdInitialValue, new DateTime(1969, 6, 9), PayeeIdInitialValue, 1, "Yeah, Party!", 69, true);
 
-                //Act + Assert
-                Assert.PropertyChanged(transaction, nameof(transaction.Id), () => transaction.Id = 69);
-                Assert.PropertyChanged(transaction, nameof(transaction.AccountId), () => transaction.AccountId = 69);
-                Assert.PropertyChanged(transaction, nameof(transaction.Date), () => transaction.Date = DateTime.Today - TimeSpan.FromDays(3));
-                Assert.PropertyChanged(transaction, nameof(transaction.PayeeId), () => transaction.PayeeId = 69);
-                Assert.PropertyChanged(transaction, nameof(transaction.CategoryId), () => transaction.CategoryId = 69);
-                Assert.PropertyChanged(transaction, nameof(transaction.Memo), () => transaction.Memo = "Hangover?");
-                Assert.PropertyChanged(transaction, nameof(transaction.Sum), () => transaction.Sum = 69L);
-                Assert.PropertyChanged(transaction, nameof(transaction.Cleared), () => transaction.Cleared = false);
-            }
+        protected override long AccountIdInitialValue => 69;
 
-            [Fact]
-            public void PropertyNotChangedFact()
-            {
-                //Arrange
-                DateTime today = DateTime.Today;
-                Transaction transaction = new Transaction(1, 1, today, 2, 3, "Yeah, Party!", 6969L, true);
+        protected override long AccountIdDifferentValue => 23;
 
-                //Act + Assert
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transaction, nameof(transaction.Id), () => transaction.Id = 1));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transaction, nameof(transaction.AccountId), () => transaction.AccountId = 1));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transaction, nameof(transaction.Date), () => transaction.Date = today));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transaction, nameof(transaction.PayeeId), () => transaction.PayeeId = 2));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transaction, nameof(transaction.CategoryId), () => transaction.CategoryId = 3));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transaction, nameof(transaction.Memo), () => transaction.Memo = "Yeah, Party!"));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transaction, nameof(transaction.Sum), () => transaction.Sum = 6969L));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(transaction, nameof(transaction.Cleared), () => transaction.Cleared = true));
-            }
-        }
+        protected override long PayeeIdInitialValue => 69;
+
+        protected override long PayeeIdDifferentValue => 23;
+
+        protected override Transaction TransIncFactory => new Transaction(1, 1, new DateTime(1969, 6, 9), 1, CategoryIdDifferentValue, "Yeah, Party!", SumInitialValue, true);
+
+        protected override long CategoryIdInitialValue => 69;
+
+        protected override long CategoryIdDifferentValue => 23;
+
+        protected override long SumInitialValue => 69;
+
+        protected override long SumDifferentValue => 23;
     }
 }
