@@ -23,7 +23,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
         long StartingBalanceDifferentValue => 230;
 
         [Fact]
-        public void FromAccountId_ChangeValue_TriggersNotification()
+        public void StartingBalance_ChangeValue_TriggersNotification()
         {
             //Arrange
             Account account = AccountFactory;
@@ -37,7 +37,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
         }
 
         [Fact]
-        public void FromAccountId_SameValue_DoesntTriggersNotification()
+        public void StartingBalance_SameValue_DoesntTriggersNotification()
         {
             //Arrange
             Account account = AccountFactory;
