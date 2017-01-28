@@ -37,10 +37,10 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             dataModelBase.Id = IdInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => dataModelBase.Id = IdInitialValue;
+            Action shouldNotTriggerNotification = () => dataModelBase.Id = IdInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(dataModelBase, nameof(dataModelBase.Id), shouldTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(dataModelBase, nameof(dataModelBase.Id), shouldNotTriggerNotification);
         }
 
         [Fact]

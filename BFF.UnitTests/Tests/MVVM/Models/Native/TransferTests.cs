@@ -64,10 +64,10 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             transfer.FromAccountId = FromAccountIdInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => transfer.FromAccountId = FromAccountIdInitialValue;
+            Action shouldNotTriggerNotification = () => transfer.FromAccountId = FromAccountIdInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(transfer, nameof(transfer.FromAccountId), shouldTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(transfer, nameof(transfer.FromAccountId), shouldNotTriggerNotification);
         }
 
         [Fact]
@@ -92,10 +92,10 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             transfer.ToAccountId = ToAccountIdInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => transfer.ToAccountId = ToAccountIdInitialValue;
+            Action shouldNotTriggerNotification = () => transfer.ToAccountId = ToAccountIdInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(transfer, nameof(transfer.ToAccountId), shouldTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(transfer, nameof(transfer.ToAccountId), shouldNotTriggerNotification);
         }
 
         [Fact]
@@ -120,10 +120,10 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             transfer.Sum = SumInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => transfer.Sum = SumInitialValue;
+            Action shouldNotTriggerNotification = () => transfer.Sum = SumInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(transfer, nameof(transfer.Sum), shouldTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(transfer, nameof(transfer.Sum), shouldNotTriggerNotification);
         }
     }
 }

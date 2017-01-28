@@ -35,10 +35,10 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             titBase.Date = DateInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => titBase.Date = DateInitialValue;
+            Action shouldNotTriggerNotification = () => titBase.Date = DateInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(titBase, nameof(titBase.Date), shouldTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(titBase, nameof(titBase.Date), shouldNotTriggerNotification);
         }
 
         protected abstract bool ClearedInitialValue { get; }
@@ -66,10 +66,10 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             titBase.Cleared = ClearedInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => titBase.Cleared = ClearedInitialValue;
+            Action shouldNotTriggerNotification = () => titBase.Cleared = ClearedInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(titBase, nameof(titBase.Cleared), shouldTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(titBase, nameof(titBase.Cleared), shouldNotTriggerNotification);
         }
     }
 }

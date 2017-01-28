@@ -34,10 +34,10 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             transIncBase.AccountId = AccountIdInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => transIncBase.AccountId = AccountIdInitialValue;
+            Action shouldNotTriggerNotification = () => transIncBase.AccountId = AccountIdInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(transIncBase, nameof(transIncBase.AccountId), shouldTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(transIncBase, nameof(transIncBase.AccountId), shouldNotTriggerNotification);
         }
 
         protected abstract long PayeeIdInitialValue { get; }
@@ -65,10 +65,10 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             transIncBase.PayeeId = PayeeIdInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => transIncBase.PayeeId = PayeeIdInitialValue;
+            Action shouldNotTriggerNotification = () => transIncBase.PayeeId = PayeeIdInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(transIncBase, nameof(transIncBase.PayeeId), shouldTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(transIncBase, nameof(transIncBase.PayeeId), shouldNotTriggerNotification);
         }
     }
 }

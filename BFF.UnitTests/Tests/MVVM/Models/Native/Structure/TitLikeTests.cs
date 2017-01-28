@@ -34,10 +34,10 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             titLike.Memo = MemoInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => titLike.Memo = MemoInitialValue;
+            Action shouldNotTriggerNotification = () => titLike.Memo = MemoInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(titLike, nameof(titLike.Memo), shouldTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(titLike, nameof(titLike.Memo), shouldNotTriggerNotification);
         }
     }
 }

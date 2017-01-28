@@ -35,10 +35,10 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             commonProperty.Name = NameInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => commonProperty.Name = NameInitialValue;
+            Action shouldNotTriggerNotification = () => commonProperty.Name = NameInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(commonProperty, nameof(commonProperty.Name), shouldTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(commonProperty, nameof(commonProperty.Name), shouldNotTriggerNotification);
         }
 
         [Fact]

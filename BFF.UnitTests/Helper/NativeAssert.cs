@@ -1,24 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-using Xunit.Sdk;
 
 namespace BFF.Tests.Helper
 {
     class NativeAssert
     {
         /// <summary>
-        /// Verifies that the provided object raised <see cref="INotifyPropertyChanged.PropertyChanged"/>
+        /// Verifies that the provided object has not raised <see cref="INotifyPropertyChanged.PropertyChanged"/>
         /// as a result of executing the given test code.
         /// </summary>
-        /// <param name="object">The object which should raise the notification</param>
-        /// <param name="propertyName">The property name for which the notification should be raised</param>
-        /// <param name="testCode">The test code which should cause the notification to be raised</param>
-        /// <exception cref="PropertyChangedException">Thrown when the notification is not raised</exception>
+        /// <param name="object">The object which should not raise the notification</param>
+        /// <param name="propertyName">The property name for which the notification should not be raised</param>
+        /// <param name="testCode">The test code which should not cause the notification to be raised</param>
+        /// <exception cref="DoesNotRaisePropertyChangedException">Thrown when the notification is raised</exception>
         public static void DoesNotRaisePropertyChanged(INotifyPropertyChanged @object, string propertyName, Action testCode)
         {
             if (@object == null)
@@ -36,7 +30,7 @@ namespace BFF.Tests.Helper
             {
                 testCode();
                 if (propertyChangeHappened)
-                    throw new PropertyChangedException(propertyName);
+                    throw new DoesNotRaisePropertyChangedException(propertyName);
             }
             finally
             {

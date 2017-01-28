@@ -34,10 +34,10 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             subTransInc.ParentId = ParentIdInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => subTransInc.ParentId = ParentIdInitialValue;
+            Action shouldNotTriggerNotification = () => subTransInc.ParentId = ParentIdInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(subTransInc, nameof(subTransInc.ParentId), shouldTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(subTransInc, nameof(subTransInc.ParentId), shouldNotTriggerNotification);
         }
 
         protected abstract long CategoryIdInitialValue { get; }
@@ -65,10 +65,10 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             subTransInc.CategoryId = CategoryIdInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => subTransInc.CategoryId = CategoryIdInitialValue;
+            Action shouldNotTriggerNotification = () => subTransInc.CategoryId = CategoryIdInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(subTransInc, nameof(subTransInc.CategoryId), shouldTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(subTransInc, nameof(subTransInc.CategoryId), shouldNotTriggerNotification);
         }
 
         protected abstract long SumInitialValue { get; }
@@ -96,10 +96,10 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             subTransInc.Sum = SumInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => subTransInc.Sum = SumInitialValue;
+            Action shouldNotTriggerNotification = () => subTransInc.Sum = SumInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(subTransInc, nameof(subTransInc.Sum), shouldTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(subTransInc, nameof(subTransInc.Sum), shouldNotTriggerNotification);
         }
     }
 }
