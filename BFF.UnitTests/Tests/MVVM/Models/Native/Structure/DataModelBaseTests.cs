@@ -57,7 +57,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T dataModelBase = DataModelBaseFactory;
-            IBffOrm ormMock = BffOrmMoq.Mock;
+            IBffOrm ormMock = BffOrmMoq.NakedFake;
 
             //Act
             dataModelBase.Insert(ormMock);
@@ -81,7 +81,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T dataModelBase = DataModelBaseFactory;
-            IBffOrm ormMock = BffOrmMoq.Mock;
+            IBffOrm ormMock = BffOrmMoq.NakedFake;
 
             //Act
             dataModelBase.Update(ormMock);
@@ -105,7 +105,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T dataModelBase = DataModelBaseFactory;
-            IBffOrm ormMock = BffOrmMoq.Mock;
+            IBffOrm ormMock = BffOrmMoq.NakedFake;
 
             //Act
             dataModelBase.Delete(ormMock);

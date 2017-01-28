@@ -55,11 +55,6 @@ namespace BFF.MVVM.Models.Native
             orm.Delete(this);
         }
 
-        public override IEnumerable<ISubTransInc> GetSubTransInc(IBffOrm orm)
-        {
-            return orm?.GetSubTransInc<SubIncome>(Id);
-        }
-
         #endregion
     }
 }

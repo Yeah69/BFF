@@ -11,6 +11,8 @@ namespace BFF.Tests.Mocks.DB
     {
         public static IBffOrm Mock => CreateMock();
 
+        public static IBffOrm NakedFake => Substitute.For<IBffOrm>();
+
         internal static IBffOrm CreateMock(ICommonPropertyProvider commonPropertyProviderMock = null, IList<IAccount> accountMocks = null,
             IList<ITransaction> transactionMocks = null, IList<IIncome> incomeMocks = null, IList<ITransfer> transferMocks = null,
             IList<IParentTransaction> parentTransactionMocks = null, IList<IParentIncome> parentIncomeMocks = null,

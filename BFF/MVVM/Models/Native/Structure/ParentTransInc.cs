@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using BFF.DB;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
-    public interface IParentTransInc : ITransIncBase {
-        IEnumerable<ISubTransInc> GetSubTransInc(IBffOrm orm);
-    }
+    public interface IParentTransInc : ITransIncBase {}
 
     public abstract class ParentTransInc : TransIncBase, IParentTransInc
     {
@@ -32,7 +28,5 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         protected ParentTransInc(long id, long accountId, DateTime date, long payeeId, string memo, bool cleared) 
             : base(id, accountId, date, payeeId, memo, cleared) {}
-
-        public abstract IEnumerable<ISubTransInc> GetSubTransInc(IBffOrm orm);
     }
 }

@@ -1,4 +1,5 @@
-﻿using BFF.DB;
+﻿using System.Collections.Generic;
+using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -12,12 +13,17 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class ParentIncomeViewModel : ParentTransIncViewModel, IParentIncomeViewModel
     {
+        private readonly IParentIncome parentIncome;
+
         /// <summary>
         /// Initializes a ParentIncomeViewModel.
         /// </summary>
         /// <param name="transInc">A ParentIncome Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public ParentIncomeViewModel(IParentIncome transInc, IBffOrm orm) : base(transInc, orm) { }
+        public ParentIncomeViewModel(IParentIncome transInc, IBffOrm orm) : base(transInc, orm)
+        {
+            parentIncome = transInc;
+        }
 
         #region Overrides of ParentTransIncViewModel<SubIncome>
 
@@ -38,6 +44,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override ISubTransInc CreateNewSubElement()
         {
             return new SubIncome();
+        }
+
+        protected override IEnumerable<ISubTransInc> GetSubTransInc()
+        {
+            return Orm?.GetSubTransInc<SubIncome>(parentIncome.Id);
         }
 
         #endregion

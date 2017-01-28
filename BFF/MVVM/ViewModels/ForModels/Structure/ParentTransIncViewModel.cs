@@ -180,7 +180,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 if (_subElements == null)
                 {
-                    IEnumerable<ISubTransInc> subs = ParentTransInc.GetSubTransInc(Orm) ?? new List<ISubTransInc>();
+                    IEnumerable<ISubTransInc> subs = GetSubTransInc() ?? new List<ISubTransInc>();
                     _subElements = new ObservableCollection<ISubTransIncViewModel>();
                     foreach(ISubTransInc sub in subs)
                     {
@@ -201,6 +201,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="subElement">The SubElement, which gets a ViewModel.</param>
         /// <returns>A new ViewModel for a SubElement.</returns>
         protected abstract ISubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement);
+        protected abstract IEnumerable<ISubTransInc> GetSubTransInc();
 
         private readonly ObservableCollection<ISubTransIncViewModel> _newSubElements = new ObservableCollection<ISubTransIncViewModel>();
 
