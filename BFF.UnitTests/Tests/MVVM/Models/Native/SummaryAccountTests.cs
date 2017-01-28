@@ -6,57 +6,120 @@ using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
 {
-    public static class SummaryAccountTests
+    public class SummaryAccountTests
     {
-        public class ConstructionTests
+        SummaryAccount SummaryAccountFactory => new SummaryAccount();
+
+        private long IdDefaultVaule => -1L;
+
+        private long StartingBalanceDefaultValue => 0L;
+
+        [Fact]
+        public void Ctor_Nothing_HasDefaultId()
         {
-            [Fact]
-            public void DefaultConstructionFact()
-            {
-                //Arrange
-                SummaryAccount summaryAccount = new SummaryAccount();
+            //Arrange
+            SummaryAccount summaryAccount = new SummaryAccount();
 
-                //Act
+            //Act
 
-                //Assert
-                Assert.Equal(-1L, summaryAccount.Id);
-                Assert.Equal(0L, summaryAccount.StartingBalance);
-            }
+            //Assert
+            Assert.Equal(IdDefaultVaule, summaryAccount.Id);
         }
 
-        public class CrudTests
+        [Fact]
+        public void Ctor_Nothing_HasDefaultStartingBalance()
         {
-            [Fact]
-            public void CrudFact()
-            {
-                //Arrange
-                SummaryAccount summaryAccount = new SummaryAccount();
-                IBffOrm ormMock = BffOrmMoq.Mock;
+            //Arrange
+            SummaryAccount summaryAccount = new SummaryAccount();
 
-                //Act
-                summaryAccount.Insert(ormMock);
-                summaryAccount.Update(ormMock);
-                summaryAccount.Delete(ormMock);
+            //Act
 
-                //Assert
-                //SummaryAccount is a virtual Account, which summarizes all over accounts. Thus, it should not interact with the ORM.
-                ormMock.DidNotReceive().Insert(Arg.Any<SummaryAccount>());
-                ormMock.DidNotReceive().Update(Arg.Any<SummaryAccount>());
-                ormMock.DidNotReceive().Delete(Arg.Any<SummaryAccount>());
-            }
+            //Assert
+            Assert.Equal(StartingBalanceDefaultValue, summaryAccount.StartingBalance);
+        }
 
-            [Fact]
-            public void NullCrudFact()
-            {
-                //Arrange
-                SummaryAccount summaryAccount = new SummaryAccount();
+        [Fact]
+        public void Insert_Orm_DoesNotCallInsertOnOrm()
+        {
+            //Arrange
+            SummaryAccount summaryAccount = SummaryAccountFactory;
+            IBffOrm ormMock = BffOrmMoq.NakedFake;
 
-                //Act + Assert
-                //SummaryAccount is a virtual Account, which summarizes all over accounts. Thus, it should not throw an exception if the given ORM is not valid.
-                summaryAccount.Insert(null);
-                summaryAccount.Update(null);
-                summaryAccount.Delete(null);
-            }
+            //Act
+            summaryAccount.Insert(ormMock);
+
+            //Assert
+            //SummaryAccount is a virtual Account, which summarizes all over accounts. Thus, it should not interact with the ORM.
+            ormMock.DidNotReceive().Insert(Arg.Any<SummaryAccount>());
+        }
+
+        [Fact]
+        public void Insert_Null_DoesNothing()
+        {
+            //Arrange
+            SummaryAccount summaryAccount = SummaryAccountFactory;
+
+            //Act 
+
+            //Assert
+            //SummaryAccount is a virtual Account, which summarizes all over accounts. Thus, it should not throw an exception if the given ORM is not valid.
+            summaryAccount.Insert(null);
+        }
+
+        [Fact]
+        public void Update_Orm_DoesNotCallUpdateOnOrm()
+        {
+            //Arrange
+            SummaryAccount summaryAccount = SummaryAccountFactory;
+            IBffOrm ormMock = BffOrmMoq.NakedFake;
+
+            //Act
+            summaryAccount.Update(ormMock);
+
+            //Assert
+            //SummaryAccount is a virtual Account, which summarizes all over accounts. Thus, it should not interact with the ORM.
+            ormMock.DidNotReceive().Update(Arg.Any<SummaryAccount>());
+        }
+
+        [Fact]
+        public void Update_Null_DoesNothing()
+        {
+            //Arrange
+            SummaryAccount summaryAccount = SummaryAccountFactory;
+
+            //Act
+
+            //Assert
+            //SummaryAccount is a virtual Account, which summarizes all over accounts. Thus, it should not throw an exception if the given ORM is not valid.
+            summaryAccount.Update(null);
+        }
+
+        [Fact]
+        public void Delete_Orm_DoesNotCallDeleteOnOrm()
+        {
+            //Arrange
+            SummaryAccount summaryAccount = SummaryAccountFactory;
+            IBffOrm ormMock = BffOrmMoq.NakedFake;
+
+            //Act
+            summaryAccount.Delete(ormMock);
+
+            //Assert
+            //SummaryAccount is a virtual Account, which summarizes all over accounts. Thus, it should not interact with the ORM.
+            ormMock.DidNotReceive().Delete(Arg.Any<SummaryAccount>());
+        }
+
+        [Fact]
+        public void Delete_Null_DoesNothing()
+        {
+            //Arrange
+            SummaryAccount summaryAccount = SummaryAccountFactory;
+
+            //Act
+
+            //Assert
+            //SummaryAccount is a virtual Account, which summarizes all over accounts. Thus, it should not throw an exception if the given ORM is not valid.
+            summaryAccount.Delete(null);
         }
     }
 }
