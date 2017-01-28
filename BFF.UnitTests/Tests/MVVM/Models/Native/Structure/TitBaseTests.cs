@@ -17,18 +17,13 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T titBase = TitBaseFactory;
-            bool notified = false;
             titBase.Date = DateInitialValue;
-            titBase.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ITitBase.Date)) notified = true;
-            };
 
             //Act
-            titBase.Date = DateDifferentValue;
+            Action shouldTriggerNotification = () => titBase.Date = DateDifferentValue;
 
             //Assert
-            Assert.True(notified);
+            Assert.PropertyChanged(titBase, nameof(ITitBase.Date), shouldTriggerNotification);
         }
 
         [Fact]
@@ -36,18 +31,15 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T titBase = TitBaseFactory;
-            bool notified = false;
             titBase.Date = DateInitialValue;
-            titBase.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ITitBase.Date)) notified = true;
-            };
 
             //Act
-            titBase.Date = DateInitialValue;
+            Action shouldTriggerNotification = () => titBase.Date = DateInitialValue;
 
             //Assert
-            Assert.False(notified);
+            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
+                () => Assert.PropertyChanged(titBase, nameof(ITitBase.Date), shouldTriggerNotification)
+            );
         }
 
         protected abstract bool ClearedInitialValue { get; }
@@ -58,18 +50,13 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T titBase = TitBaseFactory;
-            bool notified = false;
             titBase.Cleared = ClearedInitialValue;
-            titBase.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ITitBase.Cleared)) notified = true;
-            };
 
             //Act
-            titBase.Cleared = ClearedDifferentValue;
+            Action shouldTriggerNotification = () => titBase.Cleared = ClearedDifferentValue;
 
             //Assert
-            Assert.True(notified);
+            Assert.PropertyChanged(titBase, nameof(ITitBase.Cleared), shouldTriggerNotification);
         }
 
         [Fact]
@@ -77,18 +64,15 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T titBase = TitBaseFactory;
-            bool notified = false;
             titBase.Cleared = ClearedInitialValue;
-            titBase.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ITitBase.Cleared)) notified = true;
-            };
 
             //Act
-            titBase.Cleared = ClearedInitialValue;
+            Action shouldTriggerNotification = () => titBase.Cleared = ClearedInitialValue;
 
             //Assert
-            Assert.False(notified);
+            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
+                () => Assert.PropertyChanged(titBase, nameof(ITitBase.Cleared), shouldTriggerNotification)
+            );
         }
     }
 }

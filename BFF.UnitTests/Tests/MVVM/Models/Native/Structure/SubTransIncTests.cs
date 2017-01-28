@@ -1,4 +1,5 @@
-﻿using BFF.MVVM.Models.Native.Structure;
+﻿using System;
+using BFF.MVVM.Models.Native.Structure;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
@@ -15,18 +16,13 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T subTransInc = SubTransIncFactory;
-            bool notified = false;
             subTransInc.ParentId = ParentIdInitialValue;
-            subTransInc.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ISubTransInc.ParentId)) notified = true;
-            };
 
             //Act
-            subTransInc.ParentId = ParentIdDifferentValue;
+            Action shouldTriggerNotification = () => subTransInc.ParentId = ParentIdDifferentValue;
 
             //Assert
-            Assert.True(notified);
+            Assert.PropertyChanged(subTransInc, nameof(ISubTransInc.ParentId), shouldTriggerNotification);
         }
 
         [Fact]
@@ -34,18 +30,15 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T subTransInc = SubTransIncFactory;
-            bool notified = false;
             subTransInc.ParentId = ParentIdInitialValue;
-            subTransInc.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ISubTransInc.ParentId)) notified = true;
-            };
 
             //Act
-            subTransInc.ParentId = ParentIdInitialValue;
+            Action shouldTriggerNotification = () => subTransInc.ParentId = ParentIdInitialValue;
 
             //Assert
-            Assert.False(notified);
+            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
+                () => Assert.PropertyChanged(subTransInc, nameof(ISubTransInc.ParentId), shouldTriggerNotification)
+            );
         }
 
         protected abstract long CategoryIdInitialValue { get; }
@@ -56,18 +49,13 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T subTransInc = SubTransIncFactory;
-            bool notified = false;
             subTransInc.CategoryId = CategoryIdInitialValue;
-            subTransInc.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ISubTransInc.CategoryId)) notified = true;
-            };
 
             //Act
-            subTransInc.CategoryId = CategoryIdDifferentValue;
+            Action shouldTriggerNotification = () => subTransInc.CategoryId = CategoryIdDifferentValue;
 
             //Assert
-            Assert.True(notified);
+            Assert.PropertyChanged(subTransInc, nameof(ISubTransInc.CategoryId), shouldTriggerNotification);
         }
 
         [Fact]
@@ -75,18 +63,15 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T subTransInc = SubTransIncFactory;
-            bool notified = false;
             subTransInc.CategoryId = CategoryIdInitialValue;
-            subTransInc.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ISubTransInc.CategoryId)) notified = true;
-            };
 
             //Act
-            subTransInc.CategoryId = CategoryIdInitialValue;
+            Action shouldTriggerNotification = () => subTransInc.CategoryId = CategoryIdInitialValue;
 
             //Assert
-            Assert.False(notified);
+            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
+                () => Assert.PropertyChanged(subTransInc, nameof(ISubTransInc.CategoryId), shouldTriggerNotification)
+            );
         }
 
         protected abstract long SumInitialValue { get; }
@@ -97,18 +82,13 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T subTransInc = SubTransIncFactory;
-            bool notified = false;
             subTransInc.Sum = SumInitialValue;
-            subTransInc.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ISubTransInc.Sum)) notified = true;
-            };
 
             //Act
-            subTransInc.Sum = SumDifferentValue;
+            Action shouldTriggerNotification = () => subTransInc.Sum = SumDifferentValue;
 
             //Assert
-            Assert.True(notified);
+            Assert.PropertyChanged(subTransInc, nameof(ISubTransInc.Sum), shouldTriggerNotification);
         }
 
         [Fact]
@@ -116,18 +96,15 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T subTransInc = SubTransIncFactory;
-            bool notified = false;
             subTransInc.Sum = SumInitialValue;
-            subTransInc.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ISubTransInc.Sum)) notified = true;
-            };
 
             //Act
-            subTransInc.Sum = SumInitialValue;
+            Action shouldTriggerNotification = () => subTransInc.Sum = SumInitialValue;
 
             //Assert
-            Assert.False(notified);
+            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
+                () => Assert.PropertyChanged(subTransInc, nameof(ISubTransInc.Sum), shouldTriggerNotification)
+            );
         }
     }
 }

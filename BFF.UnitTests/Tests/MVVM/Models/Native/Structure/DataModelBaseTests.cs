@@ -19,18 +19,13 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T dataModelBase = DataModelBaseFactory;
-            bool notified = false;
             dataModelBase.Id = IdInitialValue;
-            dataModelBase.PropertyChanged += (sender, args) =>
-            {
-                if(args.PropertyName == nameof(IDataModelBase.Id)) notified = true;
-            };
 
             //Act
-            dataModelBase.Id = IdDifferentValue;
+            Action shouldTriggerNotification = () => dataModelBase.Id = IdDifferentValue;
 
             //Assert
-            Assert.True(notified);
+            Assert.PropertyChanged(dataModelBase, nameof(IDataModelBase.Id), shouldTriggerNotification);
         }
 
         [Fact]
@@ -38,18 +33,15 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T dataModelBase = DataModelBaseFactory;
-            bool notified = false;
             dataModelBase.Id = IdInitialValue;
-            dataModelBase.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(IDataModelBase.Id)) notified = true;
-            };
 
             //Act
-            dataModelBase.Id = IdInitialValue;
+            Action shouldTriggerNotification = () => dataModelBase.Id = IdInitialValue;
 
             //Assert
-            Assert.False(notified);
+            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
+                () => Assert.PropertyChanged(dataModelBase, nameof(IDataModelBase.Id), shouldTriggerNotification)
+            );
         }
 
         [Fact]

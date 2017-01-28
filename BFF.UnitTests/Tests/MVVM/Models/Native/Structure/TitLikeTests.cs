@@ -1,4 +1,5 @@
-﻿using BFF.MVVM.Models.Native.Structure;
+﻿using System;
+using BFF.MVVM.Models.Native.Structure;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
@@ -15,18 +16,13 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T titLike = TitLikeFactory;
-            bool notified = false;
             titLike.Memo = MemoInitialValue;
-            titLike.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ITitLike.Memo)) notified = true;
-            };
 
             //Act
-            titLike.Memo = MemoDifferentValue;
+            Action shouldTriggerNotification = () => titLike.Memo = MemoDifferentValue;
 
             //Assert
-            Assert.True(notified);
+            Assert.PropertyChanged(titLike, nameof(ITitLike.Memo), shouldTriggerNotification);
         }
 
         [Fact]
@@ -34,18 +30,15 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T titLike = TitLikeFactory;
-            bool notified = false;
             titLike.Memo = MemoInitialValue;
-            titLike.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ITitLike.Memo)) notified = true;
-            };
 
             //Act
-            titLike.Memo = MemoInitialValue;
+            Action shouldTriggerNotification = () => titLike.Memo = MemoInitialValue;
 
             //Assert
-            Assert.False(notified);
+            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
+                () => Assert.PropertyChanged(titLike, nameof(ITitLike.Memo), shouldTriggerNotification)
+            );
         }
     }
 }

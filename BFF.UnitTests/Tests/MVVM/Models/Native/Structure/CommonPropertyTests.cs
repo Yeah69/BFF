@@ -1,4 +1,5 @@
-﻿using BFF.MVVM.Models.Native.Structure;
+﻿using System;
+using BFF.MVVM.Models.Native.Structure;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
@@ -16,18 +17,13 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T commonProperty = CommonPropertyFactory;
-            bool notified = false;
             commonProperty.Name = NameInitialValue;
-            commonProperty.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ICommonProperty.Name)) notified = true;
-            };
 
             //Act
-            commonProperty.Name = NameDifferentValue;
+            Action shouldTriggerNotification = () => commonProperty.Name = NameDifferentValue;
 
             //Assert
-            Assert.True(notified);
+            Assert.PropertyChanged(commonProperty, nameof(ICommonProperty.Name), shouldTriggerNotification);
         }
 
         [Fact]
@@ -35,18 +31,15 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T commonProperty = CommonPropertyFactory;
-            bool notified = false;
             commonProperty.Name = NameInitialValue;
-            commonProperty.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ICommonProperty.Name)) notified = true;
-            };
 
             //Act
-            commonProperty.Name = NameInitialValue;
+            Action shouldTriggerNotification = () => commonProperty.Name = NameInitialValue;
 
             //Assert
-            Assert.False(notified);
+            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
+                () => Assert.PropertyChanged(commonProperty, nameof(ICommonProperty.Name), shouldTriggerNotification)
+            );
         }
 
         [Fact]

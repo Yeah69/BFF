@@ -1,4 +1,5 @@
-﻿using BFF.MVVM.Models.Native.Structure;
+﻿using System;
+using BFF.MVVM.Models.Native.Structure;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
@@ -15,18 +16,13 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T transIncBase = TransIncBaseFactory;
-            bool notified = false;
             transIncBase.AccountId = AccountIdInitialValue;
-            transIncBase.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ITransIncBase.AccountId)) notified = true;
-            };
 
             //Act
-            transIncBase.AccountId = AccountIdDifferentValue;
+            Action shouldTriggerNotification = () => transIncBase.AccountId = AccountIdDifferentValue;
 
             //Assert
-            Assert.True(notified);
+            Assert.PropertyChanged(transIncBase, nameof(ITransIncBase.AccountId), shouldTriggerNotification);
         }
 
         [Fact]
@@ -34,18 +30,15 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T transIncBase = TransIncBaseFactory;
-            bool notified = false;
             transIncBase.AccountId = AccountIdInitialValue;
-            transIncBase.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ITransIncBase.AccountId)) notified = true;
-            };
 
             //Act
-            transIncBase.AccountId = AccountIdInitialValue;
+            Action shouldTriggerNotification = () => transIncBase.AccountId = AccountIdInitialValue;
 
             //Assert
-            Assert.False(notified);
+            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
+                () => Assert.PropertyChanged(transIncBase, nameof(ITransIncBase.AccountId), shouldTriggerNotification)
+            );
         }
 
         protected abstract long PayeeIdInitialValue { get; }
@@ -56,18 +49,13 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T transIncBase = TransIncBaseFactory;
-            bool notified = false;
             transIncBase.PayeeId = PayeeIdInitialValue;
-            transIncBase.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ITransIncBase.PayeeId)) notified = true;
-            };
 
             //Act
-            transIncBase.PayeeId = PayeeIdDifferentValue;
+            Action shouldTriggerNotification = () => transIncBase.PayeeId = PayeeIdDifferentValue;
 
             //Assert
-            Assert.True(notified);
+            Assert.PropertyChanged(transIncBase, nameof(ITransIncBase.PayeeId), shouldTriggerNotification);
         }
 
         [Fact]
@@ -75,18 +63,15 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
         {
             //Arrange
             T transIncBase = TransIncBaseFactory;
-            bool notified = false;
             transIncBase.PayeeId = PayeeIdInitialValue;
-            transIncBase.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ITransIncBase.PayeeId)) notified = true;
-            };
 
             //Act
-            transIncBase.PayeeId = PayeeIdInitialValue;
+            Action shouldTriggerNotification = () => transIncBase.PayeeId = PayeeIdInitialValue;
 
             //Assert
-            Assert.False(notified);
+            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
+                () => Assert.PropertyChanged(transIncBase, nameof(ITransIncBase.PayeeId), shouldTriggerNotification)
+            );
         }
     }
 }
