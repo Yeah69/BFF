@@ -1,5 +1,6 @@
 ﻿using System;
 using BFF.MVVM.Models.Native;
+using BFF.Tests.Helper;
 using BFF.Tests.Tests.MVVM.Models.Native.Structure;
 using Xunit;
 
@@ -52,7 +53,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             Action shouldTriggerNotification = () => transfer.FromAccountId = FromAccountIdDifferentValue;
 
             //Assert
-            Assert.PropertyChanged(transfer, nameof(ITransfer.FromAccountId), shouldTriggerNotification);
+            Assert.PropertyChanged(transfer, nameof(transfer.FromAccountId), shouldTriggerNotification);
         }
 
         [Fact]
@@ -66,9 +67,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             Action shouldTriggerNotification = () => transfer.FromAccountId = FromAccountIdInitialValue;
 
             //Assert
-            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
-                () => Assert.PropertyChanged(transfer, nameof(ITransfer.FromAccountId), shouldTriggerNotification)
-            );
+            NativeAssert.DoesNotRaisePropertyChanged(transfer, nameof(transfer.FromAccountId), shouldTriggerNotification);
         }
 
         [Fact]
@@ -82,7 +81,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             Action shouldTriggerNotification = () => transfer.ToAccountId = ToAccountIdDifferentValue;
 
             //Assert
-            Assert.PropertyChanged(transfer, nameof(ITransfer.ToAccountId), shouldTriggerNotification);
+            Assert.PropertyChanged(transfer, nameof(transfer.ToAccountId), shouldTriggerNotification);
         }
 
         [Fact]
@@ -96,9 +95,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             Action shouldTriggerNotification = () => transfer.ToAccountId = ToAccountIdInitialValue;
 
             //Assert
-            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
-                () => Assert.PropertyChanged(transfer, nameof(ITransfer.ToAccountId), shouldTriggerNotification)
-            );
+            NativeAssert.DoesNotRaisePropertyChanged(transfer, nameof(transfer.ToAccountId), shouldTriggerNotification);
         }
 
         [Fact]
@@ -112,7 +109,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             Action shouldTriggerNotification = () => transfer.Sum = SumDifferentValue;
 
             //Assert
-            Assert.PropertyChanged(transfer, nameof(ITransfer.Sum), shouldTriggerNotification);
+            Assert.PropertyChanged(transfer, nameof(transfer.Sum), shouldTriggerNotification);
         }
 
         [Fact]
@@ -126,9 +123,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
             Action shouldTriggerNotification = () => transfer.Sum = SumInitialValue;
 
             //Assert
-            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
-                () => Assert.PropertyChanged(transfer, nameof(ITransfer.Sum), shouldTriggerNotification)
-            );
+            NativeAssert.DoesNotRaisePropertyChanged(transfer, nameof(transfer.Sum), shouldTriggerNotification);
         }
     }
 }

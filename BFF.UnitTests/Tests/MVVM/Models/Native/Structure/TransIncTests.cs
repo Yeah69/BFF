@@ -1,5 +1,6 @@
 ﻿using System;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.Tests.Helper;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
@@ -22,7 +23,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => transInc.CategoryId = CategoryIdDifferentValue;
 
             //Assert
-            Assert.PropertyChanged(transInc, nameof(ITransInc.CategoryId), shouldTriggerNotification);
+            Assert.PropertyChanged(transInc, nameof(transInc.CategoryId), shouldTriggerNotification);
         }
 
         [Fact]
@@ -36,9 +37,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => transInc.CategoryId = CategoryIdInitialValue;
 
             //Assert
-            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
-                () => Assert.PropertyChanged(transInc, nameof(ITransInc.CategoryId), shouldTriggerNotification)
-            );
+            NativeAssert.DoesNotRaisePropertyChanged(transInc, nameof(transInc.CategoryId), shouldTriggerNotification);
         }
 
         protected abstract long SumInitialValue { get; }
@@ -55,7 +54,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => transInc.Sum = SumDifferentValue;
 
             //Assert
-            Assert.PropertyChanged(transInc, nameof(ITransInc.Sum), shouldTriggerNotification);
+            Assert.PropertyChanged(transInc, nameof(transInc.Sum), shouldTriggerNotification);
         }
 
         [Fact]
@@ -69,9 +68,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => transInc.Sum = SumInitialValue;
 
             //Assert
-            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
-                () => Assert.PropertyChanged(transInc, nameof(ITransInc.Sum), shouldTriggerNotification)
-            );
+            NativeAssert.DoesNotRaisePropertyChanged(transInc, nameof(transInc.Sum), shouldTriggerNotification);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.Tests.Helper;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
@@ -22,7 +23,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => titLike.Memo = MemoDifferentValue;
 
             //Assert
-            Assert.PropertyChanged(titLike, nameof(ITitLike.Memo), shouldTriggerNotification);
+            Assert.PropertyChanged(titLike, nameof(titLike.Memo), shouldTriggerNotification);
         }
 
         [Fact]
@@ -36,9 +37,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => titLike.Memo = MemoInitialValue;
 
             //Assert
-            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
-                () => Assert.PropertyChanged(titLike, nameof(ITitLike.Memo), shouldTriggerNotification)
-            );
+            NativeAssert.DoesNotRaisePropertyChanged(titLike, nameof(titLike.Memo), shouldTriggerNotification);
         }
     }
 }

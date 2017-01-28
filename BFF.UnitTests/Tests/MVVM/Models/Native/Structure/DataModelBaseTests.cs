@@ -1,6 +1,7 @@
 ﻿using System;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.Tests.Helper;
 using BFF.Tests.Mocks.DB;
 using NSubstitute;
 using Xunit;
@@ -25,7 +26,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => dataModelBase.Id = IdDifferentValue;
 
             //Assert
-            Assert.PropertyChanged(dataModelBase, nameof(IDataModelBase.Id), shouldTriggerNotification);
+            Assert.PropertyChanged(dataModelBase, nameof(dataModelBase.Id), shouldTriggerNotification);
         }
 
         [Fact]
@@ -39,9 +40,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => dataModelBase.Id = IdInitialValue;
 
             //Assert
-            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
-                () => Assert.PropertyChanged(dataModelBase, nameof(IDataModelBase.Id), shouldTriggerNotification)
-            );
+            NativeAssert.DoesNotRaisePropertyChanged(dataModelBase, nameof(dataModelBase.Id), shouldTriggerNotification);
         }
 
         [Fact]

@@ -1,5 +1,6 @@
 ﻿using System;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.Tests.Helper;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
@@ -23,7 +24,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => titBase.Date = DateDifferentValue;
 
             //Assert
-            Assert.PropertyChanged(titBase, nameof(ITitBase.Date), shouldTriggerNotification);
+            Assert.PropertyChanged(titBase, nameof(titBase.Date), shouldTriggerNotification);
         }
 
         [Fact]
@@ -37,9 +38,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => titBase.Date = DateInitialValue;
 
             //Assert
-            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
-                () => Assert.PropertyChanged(titBase, nameof(ITitBase.Date), shouldTriggerNotification)
-            );
+            NativeAssert.DoesNotRaisePropertyChanged(titBase, nameof(titBase.Date), shouldTriggerNotification);
         }
 
         protected abstract bool ClearedInitialValue { get; }
@@ -56,7 +55,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => titBase.Cleared = ClearedDifferentValue;
 
             //Assert
-            Assert.PropertyChanged(titBase, nameof(ITitBase.Cleared), shouldTriggerNotification);
+            Assert.PropertyChanged(titBase, nameof(titBase.Cleared), shouldTriggerNotification);
         }
 
         [Fact]
@@ -70,9 +69,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => titBase.Cleared = ClearedInitialValue;
 
             //Assert
-            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
-                () => Assert.PropertyChanged(titBase, nameof(ITitBase.Cleared), shouldTriggerNotification)
-            );
+            NativeAssert.DoesNotRaisePropertyChanged(titBase, nameof(titBase.Cleared), shouldTriggerNotification);
         }
     }
 }

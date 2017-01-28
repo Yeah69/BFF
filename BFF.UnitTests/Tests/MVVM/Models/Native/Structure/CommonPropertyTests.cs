@@ -1,5 +1,6 @@
 ﻿using System;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.Tests.Helper;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
@@ -23,7 +24,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => commonProperty.Name = NameDifferentValue;
 
             //Assert
-            Assert.PropertyChanged(commonProperty, nameof(ICommonProperty.Name), shouldTriggerNotification);
+            Assert.PropertyChanged(commonProperty, nameof(commonProperty.Name), shouldTriggerNotification);
         }
 
         [Fact]
@@ -37,9 +38,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => commonProperty.Name = NameInitialValue;
 
             //Assert
-            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
-                () => Assert.PropertyChanged(commonProperty, nameof(ICommonProperty.Name), shouldTriggerNotification)
-            );
+            NativeAssert.DoesNotRaisePropertyChanged(commonProperty, nameof(commonProperty.Name), shouldTriggerNotification);
         }
 
         [Fact]

@@ -1,5 +1,6 @@
 ﻿using System;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.Tests.Helper;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
@@ -22,7 +23,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => transIncBase.AccountId = AccountIdDifferentValue;
 
             //Assert
-            Assert.PropertyChanged(transIncBase, nameof(ITransIncBase.AccountId), shouldTriggerNotification);
+            Assert.PropertyChanged(transIncBase, nameof(transIncBase.AccountId), shouldTriggerNotification);
         }
 
         [Fact]
@@ -36,9 +37,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => transIncBase.AccountId = AccountIdInitialValue;
 
             //Assert
-            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
-                () => Assert.PropertyChanged(transIncBase, nameof(ITransIncBase.AccountId), shouldTriggerNotification)
-            );
+            NativeAssert.DoesNotRaisePropertyChanged(transIncBase, nameof(transIncBase.AccountId), shouldTriggerNotification);
         }
 
         protected abstract long PayeeIdInitialValue { get; }
@@ -55,7 +54,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => transIncBase.PayeeId = PayeeIdDifferentValue;
 
             //Assert
-            Assert.PropertyChanged(transIncBase, nameof(ITransIncBase.PayeeId), shouldTriggerNotification);
+            Assert.PropertyChanged(transIncBase, nameof(transIncBase.PayeeId), shouldTriggerNotification);
         }
 
         [Fact]
@@ -69,9 +68,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
             Action shouldTriggerNotification = () => transIncBase.PayeeId = PayeeIdInitialValue;
 
             //Assert
-            Assert.Throws<Xunit.Sdk.PropertyChangedException>(
-                () => Assert.PropertyChanged(transIncBase, nameof(ITransIncBase.PayeeId), shouldTriggerNotification)
-            );
+            NativeAssert.DoesNotRaisePropertyChanged(transIncBase, nameof(transIncBase.PayeeId), shouldTriggerNotification);
         }
     }
 }
