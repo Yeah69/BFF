@@ -1,112 +1,325 @@
 ﻿using System;
 using System.Globalization;
-using BFF.DB;
 using BFF.MVVM.Models.Native;
-using BFF.Tests.Mocks.DB;
-using NSubstitute;
+using BFF.Tests.Helper;
+using BFF.Tests.Tests.MVVM.Models.Native.Structure;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
 {
-    public static class DbSettingTests
+    public class DbSettingTests : DataModelBaseTests<DbSetting>
     {
-        public class ConstructionTests
+        protected override DbSetting DataModelBaseFactory => new DbSetting();
+        protected override long IdInitialValue => -1L;
+        protected override long IdDifferentValue => 69;
+
+        DbSetting DbSettingFactory => new DbSetting();
+
+        private long IdDefaultValue => -1;
+        private CultureInfo CurrencyCultureDefaultValue => CultureInfo.GetCultureInfo("de-DE");
+        private CultureInfo DateCultureDefaultValue => CultureInfo.GetCultureInfo("de-DE");
+        private string CurrencyCultureNameDefaultValue => CultureInfo.GetCultureInfo("de-DE").Name;
+        private string DateCultureNameDefaultValue => CultureInfo.GetCultureInfo("de-DE").Name;
+
+        [Fact]
+        public void Ctor_Nothing_HasDefaultId()
         {
-            [Fact]
-            public void DefaultConstructionFact()
-            {
-                //Arrange
-                DbSetting dbSetting = new DbSetting();
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
 
-                //Act
+            //Act
 
-                //Assert
-                Assert.Equal(-1L, dbSetting.Id);
-                Assert.Equal(CultureInfo.GetCultureInfo("de-DE"), dbSetting.CurrencyCulture);
-                Assert.Equal(CultureInfo.GetCultureInfo("de-DE"), dbSetting.DateCulture);
-                Assert.Equal(CultureInfo.GetCultureInfo("de-DE").Name, dbSetting.CurrencyCultureName);
-                Assert.Equal(CultureInfo.GetCultureInfo("de-DE").Name, dbSetting.DateCultureName);
-            }
+
+            //Assert
+            Assert.Equal(IdDefaultValue, dbSetting.Id);
         }
 
-        public class CrudTests
+        [Fact]
+        public void Ctor_Nothing_HasDefaultCurrencyCulture()
         {
-            [Fact]
-            public void CrudFact()
-            {
-                //Arrange
-                DbSetting dbSetting = new DbSetting();
-                IBffOrm ormMock = BffOrmMoq.Mock;
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
 
-                //Act
-                dbSetting.Insert(ormMock);
-                dbSetting.Update(ormMock);
-                dbSetting.Delete(ormMock);
+            //Act
 
-                //Assert
-                ormMock.Received().Insert(Arg.Any<DbSetting>());
-                ormMock.Received().Update(Arg.Any<DbSetting>());
-                ormMock.Received().Delete(Arg.Any<DbSetting>());
-            }
-            [Fact]
-            public void NullCrudFact()
-            {
-                //Arrange
-                DbSetting dbSetting = new DbSetting();
 
-                //Act + Assert
-                Assert.Throws<ArgumentNullException>(() => dbSetting.Insert(null));
-                Assert.Throws<ArgumentNullException>(() => dbSetting.Update(null));
-                Assert.Throws<ArgumentNullException>(() => dbSetting.Delete(null));
-            }
+            //Assert
+            Assert.Equal(CurrencyCultureDefaultValue, dbSetting.CurrencyCulture);
         }
 
-        public class PropertyChangedTests
+        [Fact]
+        public void Ctor_Nothing_HasDefaultCurrencyCultureName()
         {
-            [Fact]
-            public void PropertyChangedFact()
-            {
-                //Arrange
-                DbSetting dbSetting = new DbSetting();
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
 
-                //Act + Assert
-                Assert.PropertyChanged(dbSetting, nameof(dbSetting.Id), () => dbSetting.Id = 69);
-                Assert.PropertyChanged(dbSetting, nameof(dbSetting.CurrencyCulture), () => dbSetting.CurrencyCulture = CultureInfo.GetCultureInfo(69));
-                Assert.PropertyChanged(dbSetting, nameof(dbSetting.DateCulture), () => dbSetting.DateCulture = CultureInfo.GetCultureInfo(69));
-                Assert.PropertyChanged(dbSetting, nameof(dbSetting.CurrencyCultureName), () => dbSetting.CurrencyCulture = CultureInfo.GetCultureInfo(23));
-                Assert.PropertyChanged(dbSetting, nameof(dbSetting.DateCultureName), () => dbSetting.DateCulture = CultureInfo.GetCultureInfo(23));
-                Assert.PropertyChanged(dbSetting, nameof(dbSetting.CurrencyCulture), () => dbSetting.CurrencyCultureName = CultureInfo.GetCultureInfo(69).Name);
-                Assert.PropertyChanged(dbSetting, nameof(dbSetting.DateCulture), () => dbSetting.DateCultureName = CultureInfo.GetCultureInfo(69).Name);
-                Assert.PropertyChanged(dbSetting, nameof(dbSetting.CurrencyCultureName), () => dbSetting.CurrencyCultureName = CultureInfo.GetCultureInfo(23).Name);
-                Assert.PropertyChanged(dbSetting, nameof(dbSetting.DateCultureName), () => dbSetting.DateCultureName = CultureInfo.GetCultureInfo(23).Name);
-            }
+            //Act
 
-            [Fact]
-            public void PropertyNotChangedFact()
-            {
-                //Arrange
-                DbSetting dbSetting = new DbSetting();
 
-                //Act + Assert
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(dbSetting, nameof(dbSetting.Id), () => dbSetting.Id = -1));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(dbSetting, nameof(dbSetting.CurrencyCulture), () => dbSetting.CurrencyCulture = CultureInfo.GetCultureInfo("de-DE")));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(dbSetting, nameof(dbSetting.DateCulture), () => dbSetting.DateCulture = CultureInfo.GetCultureInfo("de-DE")));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(dbSetting, nameof(dbSetting.CurrencyCultureName), () => dbSetting.CurrencyCulture = CultureInfo.GetCultureInfo("de-DE")));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(dbSetting, nameof(dbSetting.DateCultureName), () => dbSetting.DateCulture = CultureInfo.GetCultureInfo("de-DE")));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(dbSetting, nameof(dbSetting.CurrencyCulture), () => dbSetting.CurrencyCultureName = "de-DE"));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(dbSetting, nameof(dbSetting.DateCulture), () => dbSetting.DateCultureName = "de-DE"));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(dbSetting, nameof(dbSetting.CurrencyCultureName), () => dbSetting.CurrencyCultureName = "de-DE"));
-                Assert.Throws(typeof(Xunit.Sdk.PropertyChangedException),
-                    () => Assert.PropertyChanged(dbSetting, nameof(dbSetting.DateCultureName), () => dbSetting.DateCultureName = "de-DE"));
-            }
+            //Assert
+            Assert.Equal(CurrencyCultureNameDefaultValue, dbSetting.CurrencyCultureName);
+        }
+
+        [Fact]
+        public void Ctor_Nothing_HasDefaultDateCulture()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+
+            //Act
+
+
+            //Assert
+            Assert.Equal(DateCultureDefaultValue, dbSetting.DateCulture);
+        }
+
+        [Fact]
+        public void Ctor_Nothing_HasDefaultDateCultureName()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+
+            //Act
+
+
+            //Assert
+            Assert.Equal(DateCultureNameDefaultValue, dbSetting.DateCultureName);
+        }
+
+        private CultureInfo CurrencyCultureInitialValue => CultureInfo.GetCultureInfo("hu-HU");
+        private CultureInfo CurrencyCultureDifferentValue => CultureInfo.GetCultureInfo("en-US");
+
+        private string CurrencyCultureNameInitialValue => "hu-HU";
+        private string CurrencyCultureNameDifferentValue => "en-US";
+
+        [Fact]
+        public void CurrencyCulture_ChangeValue_TriggersNotification()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.CurrencyCulture = CurrencyCultureInitialValue;
+
+            //Act
+            Action shouldTriggerNotification = () => dbSetting.CurrencyCulture = CurrencyCultureDifferentValue;
+
+            //Assert
+            Assert.PropertyChanged(dbSetting, nameof(dbSetting.CurrencyCulture), shouldTriggerNotification);
+        }
+
+        [Fact]
+        public void CurrencyCulture_SameValue_DoesntTriggersNotification()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.CurrencyCulture = CurrencyCultureInitialValue;
+
+            //Act
+            Action shouldNotTriggerNotification = () => dbSetting.CurrencyCulture = CurrencyCultureInitialValue;
+
+            //Assert
+            NativeAssert.DoesNotRaisePropertyChanged(dbSetting, nameof(dbSetting.CurrencyCulture), shouldNotTriggerNotification);
+        }
+
+        [Fact]
+        public void CurrencyCulture_ChangeValue_TriggersNotificationOfCurrencyCultureName()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.CurrencyCulture = CurrencyCultureInitialValue;
+
+            //Act
+            Action shouldTriggerNotification = () => dbSetting.CurrencyCulture = CurrencyCultureDifferentValue;
+
+            //Assert
+            Assert.PropertyChanged(dbSetting, nameof(dbSetting.CurrencyCultureName), shouldTriggerNotification);
+        }
+
+        [Fact]
+        public void CurrencyCulture_SameValue_DoesntTriggersNotificationOfCurrencyCultureName()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.CurrencyCulture = CurrencyCultureInitialValue;
+
+            //Act
+            Action shouldNotTriggerNotification = () => dbSetting.CurrencyCulture = CurrencyCultureInitialValue;
+
+            //Assert
+            NativeAssert.DoesNotRaisePropertyChanged(dbSetting, nameof(dbSetting.CurrencyCultureName), shouldNotTriggerNotification);
+        }
+
+        [Fact]
+        public void CurrencyCultureName_ChangeValue_TriggersNotification()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.CurrencyCultureName = CurrencyCultureNameInitialValue;
+
+            //Act
+            Action shouldTriggerNotification = () => dbSetting.CurrencyCultureName = CurrencyCultureNameDifferentValue;
+
+            //Assert
+            Assert.PropertyChanged(dbSetting, nameof(dbSetting.CurrencyCultureName), shouldTriggerNotification);
+        }
+
+        [Fact]
+        public void CurrencyCultureName_SameValue_DoesntTriggersNotification()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.CurrencyCultureName = CurrencyCultureNameInitialValue;
+
+            //Act
+            Action shouldNotTriggerNotification = () => dbSetting.CurrencyCultureName = CurrencyCultureNameInitialValue;
+
+            //Assert
+            NativeAssert.DoesNotRaisePropertyChanged(dbSetting, nameof(dbSetting.CurrencyCultureName), shouldNotTriggerNotification);
+        }
+
+        [Fact]
+        public void CurrencyCultureName_ChangeValue_TriggersNotificationOfCurrencyCulture()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.CurrencyCultureName = CurrencyCultureNameInitialValue;
+
+            //Act
+            Action shouldTriggerNotification = () => dbSetting.CurrencyCultureName = CurrencyCultureNameDifferentValue;
+
+            //Assert
+            Assert.PropertyChanged(dbSetting, nameof(dbSetting.CurrencyCulture), shouldTriggerNotification);
+        }
+
+        [Fact]
+        public void CurrencyCultureName_SameValue_DoesntTriggersNotificationOfCurrencyCulture()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.CurrencyCultureName = CurrencyCultureNameInitialValue;
+
+            //Act
+            Action shouldNotTriggerNotification = () => dbSetting.CurrencyCultureName = CurrencyCultureNameInitialValue;
+
+            //Assert
+            NativeAssert.DoesNotRaisePropertyChanged(dbSetting, nameof(dbSetting.CurrencyCulture), shouldNotTriggerNotification);
+        }
+
+        private CultureInfo DateCultureInitialValue => CultureInfo.GetCultureInfo("hu-HU");
+        private CultureInfo DateCultureDifferentValue => CultureInfo.GetCultureInfo("en-US");
+
+        private string DateCultureNameInitialValue => "hu-HU";
+        private string DateCultureNameDifferentValue => "en-US";
+
+        [Fact]
+        public void DateCulture_ChangeValue_TriggersNotification()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.DateCulture = DateCultureInitialValue;
+
+            //Act
+            Action shouldTriggerNotification = () => dbSetting.DateCulture = DateCultureDifferentValue;
+
+            //Assert
+            Assert.PropertyChanged(dbSetting, nameof(dbSetting.DateCulture), shouldTriggerNotification);
+        }
+
+        [Fact]
+        public void DateCulture_SameValue_DoesntTriggersNotification()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.DateCulture = DateCultureInitialValue;
+
+            //Act
+            Action shouldNotTriggerNotification = () => dbSetting.DateCulture = DateCultureInitialValue;
+
+            //Assert
+            NativeAssert.DoesNotRaisePropertyChanged(dbSetting, nameof(dbSetting.DateCulture), shouldNotTriggerNotification);
+        }
+
+        [Fact]
+        public void DateCulture_ChangeValue_TriggersNotificationOfDateCultureName()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.DateCulture = DateCultureInitialValue;
+
+            //Act
+            Action shouldTriggerNotification = () => dbSetting.DateCulture = DateCultureDifferentValue;
+
+            //Assert
+            Assert.PropertyChanged(dbSetting, nameof(dbSetting.DateCultureName), shouldTriggerNotification);
+        }
+
+        [Fact]
+        public void DateCulture_SameValue_DoesntTriggersNotificationOfDateCultureName()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.DateCulture = DateCultureInitialValue;
+
+            //Act
+            Action shouldNotTriggerNotification = () => dbSetting.DateCulture = DateCultureInitialValue;
+
+            //Assert
+            NativeAssert.DoesNotRaisePropertyChanged(dbSetting, nameof(dbSetting.DateCultureName), shouldNotTriggerNotification);
+        }
+
+        [Fact]
+        public void DateCultureName_ChangeValue_TriggersNotification()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.DateCultureName = DateCultureNameInitialValue;
+
+            //Act
+            Action shouldTriggerNotification = () => dbSetting.DateCultureName = DateCultureNameDifferentValue;
+
+            //Assert
+            Assert.PropertyChanged(dbSetting, nameof(dbSetting.DateCultureName), shouldTriggerNotification);
+        }
+
+        [Fact]
+        public void DateCultureName_SameValue_DoesntTriggersNotification()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.DateCultureName = DateCultureNameInitialValue;
+
+            //Act
+            Action shouldNotTriggerNotification = () => dbSetting.DateCultureName = DateCultureNameInitialValue;
+
+            //Assert
+            NativeAssert.DoesNotRaisePropertyChanged(dbSetting, nameof(dbSetting.DateCultureName), shouldNotTriggerNotification);
+        }
+
+        [Fact]
+        public void DateCultureName_ChangeValue_TriggersNotificationOfDateCulture()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.DateCultureName = DateCultureNameInitialValue;
+
+            //Act
+            Action shouldTriggerNotification = () => dbSetting.DateCultureName = DateCultureNameDifferentValue;
+
+            //Assert
+            Assert.PropertyChanged(dbSetting, nameof(dbSetting.DateCulture), shouldTriggerNotification);
+        }
+
+        [Fact]
+        public void DateCultureName_SameValue_DoesntTriggersNotificationOfDateCulture()
+        {
+            //Arrange
+            DbSetting dbSetting = DbSettingFactory;
+            dbSetting.DateCultureName = DateCultureNameInitialValue;
+
+            //Act
+            Action shouldNotTriggerNotification = () => dbSetting.DateCultureName = DateCultureNameInitialValue;
+
+            //Assert
+            NativeAssert.DoesNotRaisePropertyChanged(dbSetting, nameof(dbSetting.DateCulture), shouldNotTriggerNotification);
         }
     }
 }
