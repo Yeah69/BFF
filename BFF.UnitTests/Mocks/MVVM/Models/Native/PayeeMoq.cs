@@ -6,6 +6,8 @@ namespace BFF.Tests.Mocks.MVVM.Models.Native
 {
     public static class PayeeMoq
     {
+        public static IPayee NakedFake => Substitute.For<IPayee>();
+
         public static IList<IPayee> Mocks => new List<IPayee>
         {
             CreateMock(1, "Tony's Pizza"),

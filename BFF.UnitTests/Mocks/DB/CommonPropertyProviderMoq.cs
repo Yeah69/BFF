@@ -1,67 +1,46 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using BFF.DB;
-using BFF.MVVM.Models.Native;
-using BFF.MVVM.ViewModels.ForModels;
-using BFF.Tests.Mocks.MVVM.Models.Native;
-using BFF.Tests.Mocks.MVVM.ViewModels.ForModels;
+﻿using BFF.DB;
 using NSubstitute;
 
 namespace BFF.Tests.Mocks.DB
 {
     public static class CommonPropertyProviderMoq
     {
-        public static ICommonPropertyProvider Mock => CreateMock();
+        public static ICommonPropertyProvider Naked => Substitute.For<ICommonPropertyProvider>();
 
-        internal static ICommonPropertyProvider CreateMock(IList<IAccount> accountMocks = null,
-                                                           IList<IPayee> payeeMocks = null,
-                                                           IList<ICategory> categoryMocks = null,
-                                                           IList<IAccountViewModel> accountViewModelMocks = null,
-                                                           IList<ICategoryViewModel> categoryViewModelMocks = null,
-                                                           IList<IPayeeViewModel> payeeViewModelMocks = null,
-                                                           ISummaryAccountViewModel summaryAccountViewModelMock = null)
+        public static ICommonPropertyProvider NullAccountViewModel
         {
-            ICommonPropertyProvider mock = Substitute.For<ICommonPropertyProvider>();
-
-            if(accountMocks == null) accountMocks = AccountMoq.Mocks;
-            if(payeeMocks == null) payeeMocks = PayeeMoq.Mocks;
-            if(categoryMocks == null) categoryMocks = CategoryMoq.Mocks;
-            if(accountViewModelMocks == null) accountViewModelMocks = AccountViewModelMoq.Mocks;
-            if(payeeViewModelMocks == null) payeeViewModelMocks = PayeeViewModelMoq.Mocks;
-            if(categoryViewModelMocks == null) categoryViewModelMocks = CategoryViewModelMoq.Mocks;
-            if(summaryAccountViewModelMock == null) summaryAccountViewModelMock = SummaryAccountViewModelMoq.Mock;
-
-            
-            mock.Accounts.Returns(new ObservableCollection<IAccount>(accountMocks));
-            mock.Payees.Returns(new ObservableCollection<IPayee>(payeeMocks));
-            mock.Categories.Returns(new ObservableCollection<ICategory>(categoryMocks));
-
-            foreach (IAccountViewModel accountViewModel in accountViewModelMocks)
+            get
             {
-                mock.GetAccountViewModel(accountViewModel.Id).Returns(accountViewModel);
+                ICommonPropertyProvider fake = Substitute.For<ICommonPropertyProvider>();
+
+                fake.GetAccountViewModel(Arg.Any<long>()).Returns(ci => null);
+
+                return fake;
             }
-            
-            foreach (ICategoryViewModel categoryViewModel in categoryViewModelMocks)
+        }
+
+        public static ICommonPropertyProvider NullCategoryViewModel
+        {
+            get
             {
-                mock.GetCategoryViewModel(categoryViewModel.Id).Returns(categoryViewModel);
+                ICommonPropertyProvider fake = Substitute.For<ICommonPropertyProvider>();
+
+                fake.GetCategoryViewModel(Arg.Any<long>()).Returns(ci => null);
+
+                return fake;
             }
-            
-            foreach (IPayeeViewModel payeeViewModel in payeeViewModelMocks)
+        }
+
+        public static ICommonPropertyProvider NullPayeeViewModel
+        {
+            get
             {
-                mock.GetPayeeViewModel(payeeViewModel.Id).Returns(payeeViewModel);
+                ICommonPropertyProvider fake = Substitute.For<ICommonPropertyProvider>();
+
+                fake.GetPayeeViewModel(Arg.Any<long>()).Returns(ci => null);
+
+                return fake;
             }
-
-            mock.AllAccountViewModels.Returns(new ObservableCollection<IAccountViewModel>(accountViewModelMocks));
-            mock.AllPayeeViewModels.Returns(new ObservableCollection<IPayeeViewModel>(payeeViewModelMocks));
-            mock.AllCategoryViewModels.Returns(new ObservableCollection<ICategoryViewModel>(categoryViewModelMocks));
-            ObservableCollection<ICategoryViewModel> parentCategories = new ObservableCollection<ICategoryViewModel>(
-                categoryViewModelMocks.Where(cvmm => cvmm.Parent == null));
-            mock.ParentCategoryViewModels.Returns(parentCategories);
-
-            mock.SummaryAccountViewModel.Returns(summaryAccountViewModelMock);
-
-            return mock;
         }
     }
 }

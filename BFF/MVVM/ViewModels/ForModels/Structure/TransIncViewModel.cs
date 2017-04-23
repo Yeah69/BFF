@@ -26,8 +26,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected readonly ITransInc TransInc;
 
+        protected readonly ICommonPropertyProvider CommonPropertyProvider;
+
         #region Transaction/Income Properties
-        
+
         /// <summary>
         /// The object's Id in the table of the database.
         /// </summary>
@@ -38,11 +40,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public override IAccountViewModel Account
         {
-            get
-            {
-                return TransInc.AccountId == -1 ? null :
-                  Orm?.CommonPropertyProvider?.GetAccountViewModel(TransInc.AccountId);
-            }
+            get => TransInc.AccountId == -1 
+                ? null 
+                : CommonPropertyProvider?.GetAccountViewModel(TransInc.AccountId);
             set
             {
                 IAccountViewModel temp = Account;
@@ -59,7 +59,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public override DateTime Date
         {
-            get { return TransInc.Date; }
+            get => TransInc.Date;
             set
             {
                 TransInc.Date = value;
@@ -73,8 +73,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public override IPayeeViewModel Payee
         {
-            get { return TransInc.PayeeId == -1 ? null : 
-                    Orm?.CommonPropertyProvider?.GetPayeeViewModel(TransInc.PayeeId); }
+            get => TransInc.PayeeId == -1 
+                ? null 
+                : CommonPropertyProvider?.GetPayeeViewModel(TransInc.PayeeId);
             set
             {
                 if(value == null) return;
@@ -89,8 +90,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public ICategoryViewModel Category
         {
-            get { return TransInc.CategoryId == -1 ? null :
-                    Orm?.CommonPropertyProvider.GetCategoryViewModel(TransInc.CategoryId); }
+            get => TransInc.CategoryId == -1 
+                ? null 
+                : CommonPropertyProvider.GetCategoryViewModel(TransInc.CategoryId);
             set
             {
                 if(value == null || value.Id == TransInc.CategoryId) return; //todo: make Category nullable?
@@ -105,7 +107,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public override string Memo
         {
-            get { return TransInc.Memo; }
+            get => TransInc.Memo;
             set
             {
                 TransInc.Memo = value;
@@ -119,7 +121,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public override long Sum
         {
-            get { return TransInc.Sum; }
+            get => TransInc.Sum;
             set
             {
                 TransInc.Sum = value;
@@ -136,7 +138,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public override bool Cleared
         {
-            get { return TransInc.Cleared; }
+            get => TransInc.Cleared;
             set
             {
                 TransInc.Cleared = value;
@@ -155,6 +157,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected TransIncViewModel(ITransInc transInc, IBffOrm orm) : base(orm)
         {
             TransInc = transInc;
+            CommonPropertyProvider = orm.CommonPropertyProvider;
         }
 
         /// <summary>
@@ -164,9 +167,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return Account != null  && (Orm?.CommonPropertyProvider.Contains(Account) ?? false) &&
-                   Payee != null    &&  Orm .CommonPropertyProvider.Contains(Payee) &&
-                   Category != null &&  Orm .CommonPropertyProvider.Contains(Category);
+            return Account != null && Payee != null && Category != null;
         }
 
         #region Category Editing
@@ -180,7 +181,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public string CategoryText
         {
-            get { return _categoryText; }
+            get => _categoryText;
             set
             {
                 _categoryText = value;
