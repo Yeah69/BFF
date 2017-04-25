@@ -8,7 +8,7 @@ using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
 {
-    public abstract class DataModelBaseTests<T> where T : DataModelBase
+    public abstract class DataModelTests<T> where T : DataModel
     {
         protected abstract T DataModelBaseFactory { get; }
 

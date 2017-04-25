@@ -5,7 +5,7 @@ using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
 {
-    public abstract class CommonPropertyTests<T> : DataModelBaseTests<T> where T : CommonProperty
+    public abstract class CommonPropertyTests<T> : DataModelTests<T> where T : CommonProperty
     {
         protected abstract T CommonPropertyFactory { get; }
 

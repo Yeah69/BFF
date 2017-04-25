@@ -14,7 +14,7 @@ namespace BFF.MVVM.Models.Native
         CultureInfo DateCulture { get; set; }
     }
 
-    public class DbSetting : DataModelBase, IDbSetting
+    public class DbSetting : DataModel, IDbSetting
     {
         public string CurrencyCultureName
         {

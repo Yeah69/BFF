@@ -105,7 +105,7 @@
     <Compile Include="Tests\MVVM\Models\Native\ParentTransactionTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\PayeeTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\Structure\CommonPropertyTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\Structure\DataModelBaseTests.cs" />
+    <Compile Include="Tests\MVVM\Models\Native\Structure\DataModelTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\Structure\ParentTransIncTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\Structure\SubTransIncTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\Structure\TitBaseTests.cs" />

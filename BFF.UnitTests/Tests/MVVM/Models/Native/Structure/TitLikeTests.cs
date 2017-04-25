@@ -5,7 +5,7 @@ using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native.Structure
 {
-    public abstract class TitLikeTests<T> : DataModelBaseTests<T> where T : TitLike
+    public abstract class TitLikeTests<T> : DataModelTests<T> where T : TitLike
     {
         protected abstract T TitLikeFactory { get; }
 

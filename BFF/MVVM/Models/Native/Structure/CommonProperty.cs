@@ -11,7 +11,7 @@
     /// <summary>
     /// CommonProperties are classes, whose instances are shared among other model classes
     /// </summary>
-    public abstract class CommonProperty : DataModelBase, ICommonProperty
+    public abstract class CommonProperty : DataModel, ICommonProperty
     {
         private string _name;
 

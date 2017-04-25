@@ -7,7 +7,7 @@ using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.Models.Native
 {
-    public class DbSettingTests : DataModelBaseTests<DbSetting>
+    public class DbSettingTests : DataModelTests<DbSetting>
     {
         protected override DbSetting DataModelBaseFactory => new DbSetting();
         protected override long IdInitialValue => -1L;

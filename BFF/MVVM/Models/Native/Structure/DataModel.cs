@@ -32,7 +32,7 @@ namespace BFF.MVVM.Models.Native.Structure
     /// <summary>
     /// Base class for all model classes, which get OR-mapped
     /// </summary>
-    public abstract class DataModelBase : ObservableObject, IDataModelBase
+    public abstract class DataModel : ObservableObject, IDataModelBase
     {
         private long _id = -1L;
 
@@ -55,7 +55,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// Initializes the object
         /// </summary>
         /// <param name="id">Identification number for the database</param>
-        protected DataModelBase(long id = -1L)
+        protected DataModel(long id = -1L)
         {
             if (Id == -1L || id > 0L) Id = id;
         }
