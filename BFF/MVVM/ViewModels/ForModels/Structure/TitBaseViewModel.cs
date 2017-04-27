@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using BFF.DB;
+using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -25,30 +26,56 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class TitBaseViewModel : TitLikeViewModel, ITitBaseViewModel
     {
+        private readonly ITitBase _titBase;
+
         /// <summary>
         /// This timestamp marks the time point, when the TIT happened.
         /// </summary>
-        public abstract DateTime Date { get; set; }
+        public virtual DateTime Date
+        {
+            get => _titBase.Date;
+            set
+            {
+                if(_titBase.Date == value) return;
+                _titBase.Date = value;
+                Update();
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Like the Memo the Cleared flag is an aid for the user.
         /// It can be used to mark TITs, which the user thinks is processed enough (True) or needs to be changed later (False).
         /// This maybe needed, if the user does not remember everything clearly and wants to finish the Tit later.
         /// </summary>
-        public abstract bool Cleared { get; set; }
+        public virtual bool Cleared
+        {
+            get => _titBase.Cleared;
+            set
+            {
+                if(_titBase.Cleared == value) return;
+                _titBase.Cleared = value;
+                Update();
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Initializes a TitBaseViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
-        protected TitBaseViewModel(IBffOrm orm) : base(orm) { }
+        /// <param name="titBase">The model.</param>
+        protected TitBaseViewModel(IBffOrm orm, ITitBase titBase) : base(orm, titBase)
+        {
+            _titBase = titBase;
+        }
 
         #region Account Editing
 
         /// <summary>
         /// All currently available Accounts.
         /// </summary>
-        public ObservableCollection<IAccountViewModel> AllAccounts => Orm?.CommonPropertyProvider.AllAccountViewModels;
+        public ObservableCollection<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
 
         #endregion
     }

@@ -25,23 +25,18 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Model of SubTransaction or SubIncome. Mostly they both act almost the same. Differences are handled in their concrete classes.
         /// </summary>
-        protected readonly ISubTransInc SubTransInc;
+        private readonly ISubTransInc _subTransInc;
         /// <summary>
         /// The ViewModel of the Parent Model of the SubTransInc.
         /// </summary>
-        protected IParentTransIncViewModel Parent;
+        private readonly IParentTransIncViewModel _parent;
 
         #region SubTransaction/SubIncome Properties
 
-        /// <summary>
-        /// The object's Id in the table of the database.
-        /// </summary>
-        public override long Id => SubTransInc.Id;
-
         public long ParentId
         {
-            get { return SubTransInc.ParentId; }
-            set { SubTransInc.ParentId = value; }
+            get => _subTransInc.ParentId;
+            set => _subTransInc.ParentId = value;
         }
 
         /// <summary>
@@ -49,29 +44,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public ICategoryViewModel Category
         {
-            get
-            {
-                return SubTransInc.CategoryId == -1 ? null :
-                  Orm?.CommonPropertyProvider.GetCategoryViewModel(SubTransInc.CategoryId);
-            }
+            get => _subTransInc.CategoryId == -1 ? null :
+                       CommonPropertyProvider.GetCategoryViewModel(_subTransInc.CategoryId);
             set
             {
-                if (value == null || value.Id == SubTransInc.CategoryId) return; //todo: make Category nullable?
-                SubTransInc.CategoryId = value.Id;
-                Update();
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// A note, which a user can attach to each TIT as a reminder for himself.
-        /// </summary>
-        public override string Memo
-        {
-            get { return SubTransInc.Memo; }
-            set
-            {
-                SubTransInc.Memo = value;
+                if (value == null || value.Id == _subTransInc.CategoryId) return; //todo: make Category nullable?
+                _subTransInc.CategoryId = value.Id;
                 Update();
                 OnPropertyChanged();
             }
@@ -82,12 +60,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public override long Sum
         {
-            get { return SubTransInc.Sum; }
+            get => _subTransInc.Sum;
             set
             {
-                SubTransInc.Sum = value;
+                if(_subTransInc.Sum == value) return;
+                _subTransInc.Sum = value;
                 Update();
-                Parent.RefreshSum();
+                _parent.RefreshSum();
                 OnPropertyChanged();
             }
         }
@@ -100,11 +79,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="subTransInc">The associated Model of this ViewModel.</param>
         /// <param name="parent">The ViewModel of the Parent Model of the SubTransInc.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        protected SubTransIncViewModel(ISubTransInc subTransInc, IParentTransIncViewModel parent, IBffOrm orm) : base(orm)
+        protected SubTransIncViewModel(ISubTransInc subTransInc, IParentTransIncViewModel parent, IBffOrm orm) : base(orm, subTransInc)
         {
-            SubTransInc = subTransInc;
-            Parent = parent;
-            SubTransInc.ParentId = Parent.Id;
+            _subTransInc = subTransInc;
+            _parent = parent;
+            _subTransInc.ParentId = _parent.Id;
         }
 
         /// <summary>
@@ -114,7 +93,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return Category != null && (Orm?.CommonPropertyProvider.AllCategoryViewModels.Contains(Category) ?? false);
+            return Category != null && (CommonPropertyProvider?.AllCategoryViewModels.Contains(Category) ?? false);
         }
 
         #region Category Editing
@@ -147,20 +126,20 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public ICommand AddCategoryCommand => new RelayCommand(obj =>
         {
             ICategory newCategory = new Category { Name = CategoryText.Trim(), ParentId = AddingCategoryParent?.Id };
-            Orm?.CommonPropertyProvider?.Add(newCategory);
+            CommonPropertyProvider?.Add(newCategory);
             OnPropertyChanged(nameof(AllCategories));
-            Category = Orm?.CommonPropertyProvider?.GetCategoryViewModel(newCategory.Id);
+            Category = CommonPropertyProvider?.GetCategoryViewModel(newCategory.Id);
         }, obj =>
         {
             return !string.IsNullOrWhiteSpace(CategoryText) &&
-            (AddingCategoryParent == null && (Orm?.CommonPropertyProvider?.ParentCategoryViewModels.All(pcvm => pcvm.Name != CategoryText) ?? false) ||
+            (AddingCategoryParent == null && (CommonPropertyProvider?.ParentCategoryViewModels.All(pcvm => pcvm.Name != CategoryText) ?? false) ||
             AddingCategoryParent != null && AddingCategoryParent.Categories.All(c => c.Name != CategoryText));
         });
 
         /// <summary>
         /// All currently available Categories.
         /// </summary>
-        public IEnumerable<ICategoryViewModel> AllCategories => Orm?.CommonPropertyProvider?.AllCategoryViewModels;
+        public IEnumerable<ICategoryViewModel> AllCategories => CommonPropertyProvider?.AllCategoryViewModels;
 
         #endregion
 
@@ -170,7 +149,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            Parent?.RemoveSubElement(this);
+            _parent?.RemoveSubElement(this);
         });
 
         /// <summary>
@@ -180,7 +159,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected override void InsertToDb()
         {
-            SubTransInc.Insert(Orm);
+            _subTransInc.Insert(Orm);
         }
 
         /// <summary>
@@ -190,7 +169,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected override void UpdateToDb()
         {
-            SubTransInc.Update(Orm);
+            _subTransInc.Update(Orm);
         }
 
         /// <summary>
@@ -200,7 +179,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected override void DeleteFromDb()
         {
-            SubTransInc.Delete(Orm);
+            _subTransInc.Delete(Orm);
         }
     }
 }

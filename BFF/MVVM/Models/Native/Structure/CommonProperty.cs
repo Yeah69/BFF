@@ -1,6 +1,6 @@
 ﻿namespace BFF.MVVM.Models.Native.Structure
 {
-    public interface ICommonProperty : IDataModelBase
+    public interface ICommonProperty : IDataModel
     {
         /// <summary>
         /// Name of the CommonProperty

@@ -10,14 +10,14 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
 {
     public abstract class DataModelViewModelTests<T> where T : DataModelViewModel
     {
-        protected abstract (T, IDataModelBase) CreateDataModelViewModel(IBffOrm orm, long modelId);
+        protected abstract (T, IDataModel) CreateDataModelViewModel(IBffOrm orm, long modelId);
 
         [Fact]
         public void Insert_AllNonNullCommonPropertyProvider_NotInsertedModel_CallsInsertOnOrm()
         {
             //Arrange
             IBffOrm ormFake = BffOrmMoq.Naked;
-            (T viewModel, IDataModelBase modelMock) = CreateDataModelViewModel(ormFake, -1);
+            (T viewModel, IDataModel modelMock) = CreateDataModelViewModel(ormFake, -1);
             
             //Act
             viewModel.Insert();
@@ -31,7 +31,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
         {
             //Arrange
             IBffOrm ormFake = BffOrmMoq.Naked;
-            (T viewModel, IDataModelBase modelMock) = CreateDataModelViewModel(ormFake, 1);
+            (T viewModel, IDataModel modelMock) = CreateDataModelViewModel(ormFake, 1);
 
             //Act
             viewModel.Insert();
@@ -55,7 +55,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
             //Arrange
             IBffOrm ormFake = BffOrmMoq.Naked;
             ormFake.CommonPropertyProvider.Returns(info => commonPropertyProvider);
-            (T viewModel, IDataModelBase modelMock) = CreateDataModelViewModel(ormFake, -1);
+            (T viewModel, IDataModel modelMock) = CreateDataModelViewModel(ormFake, -1);
 
             //Act
             viewModel.Insert();
@@ -69,7 +69,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
         {
             //Arrange
             IBffOrm ormFake = BffOrmMoq.Naked;
-            (T viewModel, IDataModelBase modelMock) = CreateDataModelViewModel(ormFake, 1);
+            (T viewModel, IDataModel modelMock) = CreateDataModelViewModel(ormFake, 1);
 
             //Act
             viewModel.Delete();
@@ -83,7 +83,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
         {
             //Arrange
             IBffOrm ormFake = BffOrmMoq.Naked;
-            (T viewModel, IDataModelBase modelMock) = CreateDataModelViewModel(BffOrmMoq.Naked, -1);
+            (T viewModel, IDataModel modelMock) = CreateDataModelViewModel(BffOrmMoq.Naked, -1);
 
             //Act
             viewModel.Delete();
@@ -113,7 +113,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
             //Arrange
             IBffOrm ormFake = BffOrmMoq.Naked;
             ormFake.CommonPropertyProvider.Returns(info => commonPropertyProvider);
-            (T viewModel, IDataModelBase modelMock) = CreateDataModelViewModel(ormFake, -1);
+            (T viewModel, IDataModel modelMock) = CreateDataModelViewModel(ormFake, -1);
 
             //Act
             bool result = viewModel.ValidToInsert();

@@ -12,9 +12,7 @@ namespace BFF.MVVM.ViewModels
 {
     public class AccountTabsViewModel : SessionViewModelBase, IDisposable
     {
-        protected readonly IBffOrm _orm;
-
-        public IBffOrm Orm => _orm;
+        private readonly IBffOrm _orm;
 
         public ObservableCollection<IAccountViewModel> AllAccounts => _orm.CommonPropertyProvider.AllAccountViewModels;
 

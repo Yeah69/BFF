@@ -20,11 +20,11 @@ namespace BFF.DB
 
     public interface ICrudOrm
     {
-        IEnumerable<T> GetAll<T>() where T : class, IDataModelBase;
-        long Insert<T>(T dataModelBase) where T : class, IDataModelBase;
-        T Get<T>(long id) where T : class, IDataModelBase;
-        void Update<T>(T dataModelBase) where T : class, IDataModelBase;
-        void Delete<T>(T dataModelBase) where T : class, IDataModelBase;
+        IEnumerable<T> GetAll<T>() where T : class, IDataModel;
+        long Insert<T>(T dataModelBase) where T : class, IDataModel;
+        T Get<T>(long id) where T : class, IDataModel;
+        void Update<T>(T dataModelBase) where T : class, IDataModel;
+        void Delete<T>(T dataModelBase) where T : class, IDataModel;
     }
     
     public interface IPagedOrm

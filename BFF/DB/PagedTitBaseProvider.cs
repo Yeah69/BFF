@@ -87,7 +87,7 @@ namespace BFF.DB
 
         public ITitLikeViewModel GetPlaceHolder(int index, int page, int offset)
         {
-            return new TitLikeViewModelPlaceholder(Orm);
+            return new TitLikeViewModelPlaceholder();
         }
 
         public async Task<int> GetCountAsync()

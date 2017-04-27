@@ -6,7 +6,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface IDbSetting : IDataModelBase
+    public interface IDbSetting : IDataModel
     {
         string CurrencyCultureName { get; set; }
         CultureInfo CurrencyCulture { get; set; }

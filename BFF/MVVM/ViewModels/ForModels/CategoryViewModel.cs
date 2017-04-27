@@ -26,18 +26,6 @@ namespace BFF.MVVM.ViewModels.ForModels
     public class CategoryViewModel : CommonPropertyViewModel, ICategoryViewModel
     {
         private readonly ICategory _category;
-
-        public override string Name
-        {
-            get { return _category.Name; }
-            set
-            {
-                if(_category.Name == value) return;
-                Update();
-                _category.Name = value;
-                OnPropertyChanged();
-            }
-        }
         
         /// <summary>
         /// The Child-Categories
@@ -95,23 +83,21 @@ namespace BFF.MVVM.ViewModels.ForModels
             return $"{Parent?.GetIndent()}. ";
         }
 
-        public CategoryViewModel(ICategory category, IBffOrm orm) : base(orm)
+        public CategoryViewModel(ICategory category, IBffOrm orm) : base(orm, category)
         {
             _category = category;
         }
 
         #region Overrides of DataModelViewModel
 
-        public override long Id => _category.Id;
-
         public override bool ValidToInsert()
         {
-            return !string.IsNullOrWhiteSpace(Name) && Orm.CommonPropertyProvider.IsValidToInsert(this);
+            return !string.IsNullOrWhiteSpace(Name) && CommonPropertyProvider.IsValidToInsert(this);
         }
 
         protected override void InsertToDb()
         {
-            Orm?.CommonPropertyProvider.Add(_category);
+            CommonPropertyProvider.Add(_category);
         }
 
         protected override void UpdateToDb()
@@ -121,7 +107,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         protected override void DeleteFromDb()
         {
-            Orm?.CommonPropertyProvider.Remove(_category);
+            CommonPropertyProvider.Remove(_category);
         }
 
         #endregion

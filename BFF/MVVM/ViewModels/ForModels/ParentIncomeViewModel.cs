@@ -13,7 +13,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class ParentIncomeViewModel : ParentTransIncViewModel, IParentIncomeViewModel
     {
-        private readonly IParentIncome parentIncome;
+        private readonly IParentIncome _parentIncome;
 
         /// <summary>
         /// Initializes a ParentIncomeViewModel.
@@ -22,7 +22,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <param name="orm">Used for the database accesses.</param>
         public ParentIncomeViewModel(IParentIncome transInc, IBffOrm orm) : base(transInc, orm)
         {
-            parentIncome = transInc;
+            _parentIncome = transInc;
         }
 
         #region Overrides of ParentTransIncViewModel<SubIncome>
@@ -48,7 +48,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         protected override IEnumerable<ISubTransInc> GetSubTransInc()
         {
-            return Orm?.GetSubTransInc<SubIncome>(parentIncome.Id);
+            return Orm?.GetSubTransInc<SubIncome>(_parentIncome.Id);
         }
 
         #endregion

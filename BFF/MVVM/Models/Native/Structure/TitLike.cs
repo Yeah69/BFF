@@ -1,6 +1,6 @@
 ﻿namespace BFF.MVVM.Models.Native.Structure
 {
-    public interface ITitLike : IDataModelBase
+    public interface ITitLike : IDataModel
     {
         /// <summary>
         /// A note to hint on the reasons of creating this Tit

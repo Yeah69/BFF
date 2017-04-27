@@ -27,11 +27,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override long StartingBalance
         {
-            get { return Orm?.CommonPropertyProvider?.Accounts.Sum(account => account.StartingBalance) ?? 0L; }
-            set
-            {
-                OnPropertyChanged();
-            }
+            get { return CommonPropertyProvider?.Accounts.Sum(account => account.StartingBalance) ?? 0L; }
+            set => OnPropertyChanged();
         }
 
         /// <summary>
@@ -39,17 +36,18 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override string Name //todo Localization
         {
-            get { return "All Accounts"; }
-            set { OnPropertyChanged(); }
+            get => "All Accounts";
+            set => OnPropertyChanged();
         }
 
         /// <summary>
         /// Initializes an SummaryAccountViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
-        public SummaryAccountViewModel(IBffOrm orm) : base(orm)
+        /// <param name="summaryAccount">The model.</param>
+        public SummaryAccountViewModel(IBffOrm orm, ISummaryAccount summaryAccount) : base(orm, summaryAccount)
         {
-            Account = new SummaryAccount();
+            Account = summaryAccount;
             Messenger.Default.Register<SummaryAccountMessage>(this, message =>
             {
                 switch (message)

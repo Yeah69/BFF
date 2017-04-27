@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using BFF.MVVM.ViewModels.ForModels;
+﻿using BFF.MVVM.ViewModels.ForModels;
 using NSubstitute;
 
 namespace BFF.Tests.Mocks.MVVM.ViewModels.ForModels

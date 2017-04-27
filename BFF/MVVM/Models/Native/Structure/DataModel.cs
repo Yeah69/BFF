@@ -3,7 +3,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
-    public interface IDataModelBase : IObservableObject
+    public interface IDataModel : IObservableObject
     {
         /// <summary>
         /// Identification number for the database
@@ -32,7 +32,7 @@ namespace BFF.MVVM.Models.Native.Structure
     /// <summary>
     /// Base class for all model classes, which get OR-mapped
     /// </summary>
-    public abstract class DataModel : ObservableObject, IDataModelBase
+    public abstract class DataModel : ObservableObject, IDataModel
     {
         private long _id = -1L;
 

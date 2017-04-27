@@ -138,7 +138,7 @@ namespace BFF.DB
         private void InitializeAccounts()
         {
             //todo: when C#7.0 is released: make this a local function in Constructor
-            SummaryAccountViewModel = new SummaryAccountViewModel(_orm);
+            SummaryAccountViewModel = new SummaryAccountViewModel(_orm, new SummaryAccount());
             Accounts = new ObservableCollection<IAccount>(_orm.GetAll<Account>().OrderBy(account => account.Name));
             AllAccountViewModels = new ObservableCollection<IAccountViewModel>(
                 Accounts.Select(account => new AccountViewModel(account, _orm)));

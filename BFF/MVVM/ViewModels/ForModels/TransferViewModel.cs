@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -27,28 +26,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The Transfer Model.
         /// </summary>
-        protected readonly ITransfer Transfer;
+        private readonly ITransfer _transfer;
 
         #region Transfer Properties
-
-        /// <summary>
-        /// The object's Id in the table of the database.
-        /// </summary>
-        public override long Id => Transfer.Id;
-
-        /// <summary>
-        /// This timestamp marks the time point, when the Transfer happened.
-        /// </summary>
-        public override DateTime Date
-        {
-            get { return Transfer.Date; }
-            set
-            {
-                Transfer.Date = value;
-                Update();
-                OnPropertyChanged();
-            }
-        }
 
         /// <summary>
         /// The account from where the money is transfered.
@@ -56,21 +36,21 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IAccountViewModel FromAccount
         {
             get {
-                return Transfer.FromAccountId == -1 ? null : 
-                    Orm?.CommonPropertyProvider.GetAccountViewModel(Transfer.FromAccountId);
+                return _transfer.FromAccountId == -1 ? null : 
+                    CommonPropertyProvider.GetAccountViewModel(_transfer.FromAccountId);
             }
             set
             {
-                if(value?.Id == Transfer.FromAccountId) return;
+                if(value?.Id == _transfer.FromAccountId) return;
                 IAccountViewModel temp = FromAccount;
                 bool accountSwitch = false;
                 if (ToAccount == value) // If value equals ToAccount, then the FromAccount and ToAccount switch values
                 {
-                    Transfer.ToAccountId = Transfer.FromAccountId;
+                    _transfer.ToAccountId = _transfer.FromAccountId;
                     OnPropertyChanged(nameof(ToAccount));
                     accountSwitch = true;
                 }
-                Transfer.FromAccountId = value?.Id ?? -1;
+                _transfer.FromAccountId = value?.Id ?? -1;
                 Update();
                 if(accountSwitch && ToAccount != null) //Refresh ToAccount if switch occured
                 {
@@ -98,21 +78,21 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             get
             {
-                return Transfer.ToAccountId == -1 ? null :
-                    Orm?.CommonPropertyProvider.GetAccountViewModel(Transfer.ToAccountId);
+                return _transfer.ToAccountId == -1 ? null :
+                    CommonPropertyProvider.GetAccountViewModel(_transfer.ToAccountId);
             }
             set
             {
-                if (value?.Id == Transfer.ToAccountId) return;
+                if (value?.Id == _transfer.ToAccountId) return;
                 IAccountViewModel temp = ToAccount;
                 bool accountSwitch = false;
                 if (FromAccount == value) // If value equals FromAccount, then the ToAccount and FromAccount switch values
                 {
-                    Transfer.FromAccountId = Transfer.ToAccountId;
+                    _transfer.FromAccountId = _transfer.ToAccountId;
                     OnPropertyChanged(nameof(FromAccount));
                     accountSwitch = true;
                 }
-                Transfer.ToAccountId = value?.Id ?? -1;
+                _transfer.ToAccountId = value?.Id ?? -1;
                 Update();
                 if (accountSwitch && FromAccount != null) //Refresh ToAccount if switch occured
                 {
@@ -134,47 +114,17 @@ namespace BFF.MVVM.ViewModels.ForModels
         }
 
         /// <summary>
-        /// A note, which a user can attach to each TIT as a reminder for himself.
-        /// </summary>
-        public override string Memo
-        {
-            get { return Transfer.Memo; }
-            set
-            {
-                Transfer.Memo = value;
-                Update();
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
         /// The amount of money, which is transfered.
         /// </summary>
         public override long Sum
         {
-            get { return Transfer.Sum; }
+            get { return _transfer.Sum; }
             set
             {
-                Transfer.Sum = value;
+                _transfer.Sum = value;
                 Update();
                 Messenger.Default.Send(AccountMessage.RefreshBalance, FromAccount);
                 Messenger.Default.Send(AccountMessage.RefreshBalance, ToAccount);
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Like the Memo the Cleared flag is an aid for the user.
-        /// It can be used to mark TITs, which the user thinks is processed enough (True) or needs to be changed later (False).
-        /// This maybe needed, if the user does not remember everything clearly and wants to finish the Tit later.
-        /// </summary>
-        public override bool Cleared
-        {
-            get { return Transfer.Cleared; }
-            set
-            {
-                Transfer.Cleared = value;
-                Update();
                 OnPropertyChanged();
             }
         }
@@ -186,9 +136,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="transfer">A Transfer Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public TransferViewModel(ITransfer transfer, IBffOrm orm) : base(orm)
+        public TransferViewModel(ITransfer transfer, IBffOrm orm) : base(orm, transfer)
         {
-            Transfer = transfer;
+            _transfer = transfer;
         }
 
         /// <summary>
@@ -198,8 +148,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return FromAccount != null && (Orm?.CommonPropertyProvider.AllAccountViewModels.Contains(FromAccount) ?? false) &&
-                   ToAccount != null   &&  Orm .CommonPropertyProvider.AllAccountViewModels.Contains(ToAccount);
+            return FromAccount != null && (CommonPropertyProvider?.AllAccountViewModels.Contains(FromAccount) ?? false) &&
+                   ToAccount != null   &&  CommonPropertyProvider.AllAccountViewModels.Contains(ToAccount);
         }
 
         /// <summary>
@@ -209,7 +159,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void InsertToDb()
         {
-            Transfer.Insert(Orm);
+            _transfer.Insert(Orm);
         }
 
         /// <summary>
@@ -219,7 +169,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void UpdateToDb()
         {
-            Transfer.Update(Orm);
+            _transfer.Update(Orm);
             Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
             Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
             Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
@@ -232,7 +182,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void DeleteFromDb()
         {
-            Transfer.Delete(Orm);
+            _transfer.Delete(Orm);
         }
 
         /// <summary>

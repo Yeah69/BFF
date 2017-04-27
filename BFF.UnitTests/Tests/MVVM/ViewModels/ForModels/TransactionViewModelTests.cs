@@ -10,7 +10,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 {
     public class TransactionViewModelTests : DataModelViewModelTests<TransactionViewModel>
     {
-        protected override (TransactionViewModel, IDataModelBase) CreateDataModelViewModel(IBffOrm orm, long modelId)
+        protected override (TransactionViewModel, IDataModel) CreateDataModelViewModel(IBffOrm orm, long modelId)
         {
             ITransaction transactionMock = TransactionMoq.Naked;
             transactionMock.Id.Returns(modelId);

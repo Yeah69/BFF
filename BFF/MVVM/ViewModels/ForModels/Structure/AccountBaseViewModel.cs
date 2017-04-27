@@ -76,6 +76,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
+        private readonly IAccount _account;
+
         protected VirtualizingObservableCollection<ITitLikeViewModel> _tits;
 
         /// <summary>
@@ -101,17 +103,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All available Accounts.
         /// </summary>
-        public ObservableCollection<IAccount> AllAccounts => Orm?.CommonPropertyProvider.Accounts;
+        public ObservableCollection<IAccount> AllAccounts => CommonPropertyProvider.Accounts;
 
         /// <summary>
         /// All available Payees.
         /// </summary>
-        public ObservableCollection<IPayee> AllPayees => Orm?.CommonPropertyProvider.Payees;
+        public ObservableCollection<IPayee> AllPayees => CommonPropertyProvider.Payees;
 
         /// <summary>
         /// All available Categories.
         /// </summary>
-        public ObservableCollection<ICategory> AllCategories => Orm?.CommonPropertyProvider.Categories;
+        public ObservableCollection<ICategory> AllCategories => CommonPropertyProvider.Categories;
 
         /// <summary>
         /// Creates a new Transaction.
@@ -157,8 +159,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Initializes a AccountBaseViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
-        protected AccountBaseViewModel(IBffOrm orm) : base(orm)
+        /// <param name="account">The model.</param>
+        protected AccountBaseViewModel(IBffOrm orm, IAccount account) : base(orm, account)
         {
+            _account = account;
             Orm = orm;
             Messenger.Default.Register<CutlureMessage>(this, message =>
             {

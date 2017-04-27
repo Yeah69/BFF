@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -56,79 +55,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Model of ParentTransaction or ParentIncome. Mostly they both act almost the same. Differences are handled in their concrete classes.
         /// </summary>
-        protected IParentTransInc ParentTransInc;
-
-        /// <summary>
-        /// The object's Id in the table of the database.
-        /// </summary>
-        public override long Id => ParentTransInc.Id;
-
-        /// <summary>
-        /// The assigned Account, where this ParentTransaction/ParentIncome is registered.
-        /// </summary>
-        public override IAccountViewModel Account
-        {
-            get
-            {
-                return ParentTransInc.AccountId == -1 ? null : 
-                    Orm?.CommonPropertyProvider?.GetAccountViewModel(ParentTransInc.AccountId);
-            }
-            set
-            {
-                IAccountViewModel temp = Account;
-                ParentTransInc.AccountId = value?.Id ?? -1;
-                Update();
-                if (temp != null) Messenger.Default.Send(AccountMessage.Refresh, temp);
-                if (value != null) Messenger.Default.Send(AccountMessage.Refresh, value);
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// This timestamp marks the time point, when the TIT happened.
-        /// </summary>
-        public override DateTime Date
-        {
-            get { return ParentTransInc.Date; }
-            set
-            {
-                ParentTransInc.Date = value;
-                Update();
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Someone or something, who got paid or paid the user by the Transaction/Income.
-        /// </summary>
-        public override IPayeeViewModel Payee
-        {
-            get
-            {
-                return ParentTransInc.PayeeId == -1 ? null :
-                  Orm?.CommonPropertyProvider?.GetPayeeViewModel(ParentTransInc.PayeeId);
-            }
-            set
-            {
-                ParentTransInc.PayeeId = value?.Id ?? -1;
-                Update();
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// A note, which a user can attach to each TIT as a reminder for himself.
-        /// </summary>
-        public override string Memo
-        {
-            get { return ParentTransInc.Memo; }
-            set
-            {
-                ParentTransInc.Memo = value;
-                Update();
-                OnPropertyChanged();
-            }
-        }
+        private readonly IParentTransInc _parentTransInc;
 
         /// <summary>
         /// The amount of money of the exchangement of the ParentTransaction or ParentIncome.
@@ -151,22 +78,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 Messenger.Default.Send(AccountMessage.RefreshBalance, Account);
             }
             OnPropertyChanged(nameof(Sum));
-        }
-
-        /// <summary>
-        /// Like the Memo the Cleared flag is an aid for the user.
-        /// It can be used to mark TITs, which the user thinks is processed enough (True) or needs to be changed later (False).
-        /// This maybe needed, if the user does not remember everything clearly and wants to finish the Tit later.
-        /// </summary>
-        public override bool Cleared
-        {
-            get { return ParentTransInc.Cleared; }
-            set
-            {
-                ParentTransInc.Cleared = value;
-                Update();
-                OnPropertyChanged();
-            }
         }
 
         private ObservableCollection<ISubTransIncViewModel> _subElements; 
@@ -223,21 +134,21 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="transInc">The associated Model of this ViewModel.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        protected ParentTransIncViewModel(IParentTransInc transInc, IBffOrm orm) : base(orm)
+        protected ParentTransIncViewModel(IParentTransInc transInc, IBffOrm orm) : base(orm, transInc)
         {
-            ParentTransInc = transInc;
-            ParentTransInc.PropertyChanged += (sender, args) =>
+            _parentTransInc = transInc;
+            _parentTransInc.PropertyChanged += (sender, args) =>
             {
                 switch(args.PropertyName)
                 {
-                    case nameof(ParentTransInc.Id):
+                    case nameof(_parentTransInc.Id):
                         foreach(ISubTransIncViewModel subTransIncViewModel in SubElements)
                         {
-                            subTransIncViewModel.ParentId = ParentTransInc.Id;
+                            subTransIncViewModel.ParentId = _parentTransInc.Id;
                         }
                         foreach(ISubTransIncViewModel subTransIncViewModel in NewSubElements)
                         {
-                            subTransIncViewModel.ParentId = ParentTransInc.Id;
+                            subTransIncViewModel.ParentId = _parentTransInc.Id;
                         }
                         break;
                 }
@@ -251,8 +162,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return Account != null && (Orm?.CommonPropertyProvider.AllAccountViewModels.Contains(Account) ?? false) &&
-                   Payee   != null &&  Orm .CommonPropertyProvider.AllPayeeViewModels.Contains(Payee) && 
+            return Account != null && (CommonPropertyProvider?.AllAccountViewModels.Contains(Account) ?? false) &&
+                   Payee   != null &&  CommonPropertyProvider.AllPayeeViewModels.Contains(Payee) && 
                    NewSubElements.All(subElement => subElement.ValidToInsert());
         }
 
@@ -320,7 +231,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected override void InsertToDb()
         {
-            ParentTransInc.Insert(Orm);
+            _parentTransInc.Insert(Orm);
         }
 
         /// <summary>
@@ -330,7 +241,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected override void UpdateToDb()
         {
-            ParentTransInc.Update(Orm);
+            _parentTransInc.Update(Orm);
         }
 
         /// <summary>
@@ -340,7 +251,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected override void DeleteFromDb()
         {
-            ParentTransInc.Delete(Orm);
+            _parentTransInc.Delete(Orm);
         }
     }
 }
