@@ -8,9 +8,9 @@
              xmlns:validationRules="clr-namespace:BFF.MVVM.ValidationRules"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
-             xmlns:converters="clr-namespace:BFF.MVVM.Converters"
              xmlns:attachedBehaviors="clr-namespace:BFF.MVVM.AttachedBehaviors"
              xmlns:views="clr-namespace:BFF.MVVM.Views"
+             xmlns:mvvm="clr-namespace:BFF.MVVM"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" x:Name="AccountTabsUserControl">
     <UserControl.Resources>
@@ -19,7 +19,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <converters:SumConverter x:Key="SumConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -82,7 +81,7 @@
                     <Label Content="{lex:Loc AccountTabsView_NewAccount_StartingBalance}"/>
                     <TextBox MaxLength="30" Name="NewAccountStartingBalance">
                         <TextBox.Text>
-                            <Binding Path="StartingBalance" Mode="TwoWay" Converter="{StaticResource SumConverter}" UpdateSourceTrigger="LostFocus" >
+                            <Binding Path="StartingBalance" Mode="TwoWay" Converter="{x:Static mvvm:Converter.Sum}" UpdateSourceTrigger="LostFocus" >
                                 <Binding.ValidationRules>
                                     <validationRules:CurrencyRule />
                                     <validationRules:CurrencyLongRangeRule />

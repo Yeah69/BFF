@@ -72,6 +72,9 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="LambdaConverters.Wpf, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6258cb5075259882, processorArchitecture=MSIL">
+      <HintPath>..\packages\LambdaConverters.2.0.0\lib\net46\LambdaConverters.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.3.0.28, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.3.0-ALPHA028\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
@@ -243,6 +246,7 @@
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />
     <Compile Include="Helper\Output.cs" />
+    <Compile Include="MVVM\Converters.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
     <Compile Include="MVVM\Models\Native\Structure\IHaveCategory.cs" />
@@ -294,15 +298,6 @@
     <Compile Include="MVVM\ViewModels\ParentTitViewModel.cs" />
     <Compile Include="MVVM\ViewModels\SessionViewModelBase.cs" />
     <Compile Include="MVVM\AttachedBehaviors\AdditionalTabItemsBehavior.cs" />
-    <Compile Include="MVVM\Converters\BooleanToNullableBooleanConverter.cs" />
-    <Compile Include="MVVM\Converters\DateToStringConverter.cs" />
-    <Compile Include="MVVM\Converters\DateComboConverter.cs" />
-    <Compile Include="MVVM\Converters\DataGridLengthsToDoubleConverter.cs" />
-    <Compile Include="MVVM\Converters\CurrencyComboConverter.cs" />
-    <Compile Include="MVVM\Converters\DataGridWidthsToLeftMarginConverter.cs" />
-    <Compile Include="MVVM\Converters\NegativeTransferMultiConverter.cs" />
-    <Compile Include="MVVM\Converters\BooleanToDatePickerFormatConverter.cs" />
-    <Compile Include="MVVM\Converters\SumConverter.cs" />
     <Compile Include="MVVM\Converters\SumColorMultiConverter.cs" />
     <Compile Include="MVVM\Converters\SumToBrushConverter.cs" />
     <Compile Include="MVVM\Messages.cs" />
@@ -398,7 +393,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

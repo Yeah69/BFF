@@ -4,19 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
-             xmlns:converters="clr-namespace:BFF.MVVM.Converters"
              xmlns:views="clr-namespace:BFF.MVVM.Views"
+             xmlns:mvvm="clr-namespace:BFF.MVVM"
              lex:LocalizeDictionary.DesignCulture="en-US"
              lex:ResxLocalizationProvider.DefaultAssembly="BFF"
              lex:ResxLocalizationProvider.DefaultDictionary="Resources"
              mc:Ignorable="d" 
              d:DesignWidth="1300" d:DesignHeight="700"
              Name="TitsView">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <converters:SumConverter x:Key="SumConverter" />
-        </ResourceDictionary>
-    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -40,12 +35,12 @@
             <GroupBox Header="{lex:Loc AccountView_StartingBalance}" 
                       HorizontalAlignment="Left">
                 <TextBlock Name="StartingBalanceTextBlock" 
-                           Text="{Binding StartingBalance, Converter={StaticResource SumConverter}}" />
+                           Text="{Binding StartingBalance, Converter={x:Static mvvm:Converter.Sum}}" />
             </GroupBox>
             <GroupBox Header="{lex:Loc AccountView_Balance}" 
                       HorizontalAlignment="Left">
                 <TextBlock Name="BalanceTextBlock" 
-                           Text="{Binding Balance, Converter={StaticResource SumConverter}}" />
+                           Text="{Binding Balance, Converter={x:Static mvvm:Converter.Sum}}" />
             </GroupBox>
         </StackPanel>
     </Grid>
