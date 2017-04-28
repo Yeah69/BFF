@@ -81,7 +81,7 @@
                     <Label Content="{lex:Loc AccountTabsView_NewAccount_StartingBalance}"/>
                     <TextBox MaxLength="30" Name="NewAccountStartingBalance">
                         <TextBox.Text>
-                            <Binding Path="StartingBalance" Mode="TwoWay" Converter="{x:Static mvvm:Converter.Sum}" UpdateSourceTrigger="LostFocus" >
+                            <Binding Path="StartingBalance" Mode="TwoWay" Converter="{x:Static mvvm:Converters.NullableSumToString}" UpdateSourceTrigger="LostFocus" >
                                 <Binding.ValidationRules>
                                     <validationRules:CurrencyRule />
                                     <validationRules:CurrencyLongRangeRule />

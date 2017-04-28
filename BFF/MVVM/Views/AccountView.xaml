@@ -35,12 +35,12 @@
             <GroupBox Header="{lex:Loc AccountView_StartingBalance}" 
                       HorizontalAlignment="Left">
                 <TextBlock Name="StartingBalanceTextBlock" 
-                           Text="{Binding StartingBalance, Converter={x:Static mvvm:Converter.Sum}}" />
+                           Text="{Binding StartingBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
             </GroupBox>
             <GroupBox Header="{lex:Loc AccountView_Balance}" 
                       HorizontalAlignment="Left">
                 <TextBlock Name="BalanceTextBlock" 
-                           Text="{Binding Balance, Converter={x:Static mvvm:Converter.Sum}}" />
+                           Text="{Binding Balance, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
             </GroupBox>
         </StackPanel>
     </Grid>

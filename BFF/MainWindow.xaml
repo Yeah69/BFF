@@ -79,9 +79,9 @@
                                     <Label Content="{Binding Name}" Grid.Row="0" Grid.Column="0" />
                                     <Label Content="{Binding NativeName}" Grid.Row="0" Grid.Column="1" />
                                     <Label Content="{lex:Loc MainWindow_Settings_Currency_Positive}" Grid.Row="1" Grid.Column="0" />
-                                    <Label Content="{Binding Name, Converter={x:Static mvvm:Converter.CurrencyCombo}, ConverterParameter=positive}" Foreground="{StaticResource IncomeBrush}" Grid.Row="1" Grid.Column="1" />
+                                    <Label Content="{Binding Name, Converter={x:Static mvvm:Converters.CurrencyChoiceBoxExampleConversion}, ConverterParameter=positive}" Foreground="{StaticResource IncomeBrush}" Grid.Row="1" Grid.Column="1" />
                                     <Label Content="{lex:Loc MainWindow_Settings_Currency_Negative}" Grid.Row="2" Grid.Column="0" />
-                                    <Label Content="{Binding Name, Converter={x:Static mvvm:Converter.CurrencyCombo}, ConverterParameter=negative}" Foreground="{StaticResource TransactionBrush}" Grid.Row="2" Grid.Column="1" />
+                                    <Label Content="{Binding Name, Converter={x:Static mvvm:Converters.CurrencyChoiceBoxExampleConversion}, ConverterParameter=negative}" Foreground="{StaticResource TransactionBrush}" Grid.Row="2" Grid.Column="1" />
                                 </Grid>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
@@ -103,16 +103,16 @@
                                     <Label Content="{Binding Name}" Grid.Row="0" Grid.Column="0" />
                                     <Label Content="{Binding NativeName}" Grid.Row="0" Grid.Column="1" />
                                     <Label Content="{lex:Loc MainWindow_Settings_Date_Short}" Grid.Row="1" Grid.Column="0" />
-                                    <Label Content="{Binding Name, Converter={x:Static mvvm:Converter.DateCombo}, ConverterParameter=short}"  Grid.Row="1" Grid.Column="1" />
+                                    <Label Content="{Binding Name, Converter={x:Static mvvm:Converters.DateChoiceBoxExampleConversion}, ConverterParameter=short}"  Grid.Row="1" Grid.Column="1" />
                                     <Label Content="{lex:Loc MainWindow_Settings_Date_Long}" Grid.Row="2" Grid.Column="0" />
-                                    <Label Content="{Binding Name, Converter={x:Static mvvm:Converter.DateCombo}, ConverterParameter=long}"  Grid.Row="2" Grid.Column="1" />
+                                    <Label Content="{Binding Name, Converter={x:Static mvvm:Converters.DateChoiceBoxExampleConversion}, ConverterParameter=long}"  Grid.Row="2" Grid.Column="1" />
                                 </Grid>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <CheckBox Content="{lex:Loc MainWindow_Settings_Date_Long_Inverted}" Margin="5" 
                                 FlowDirection="RightToLeft" HorizontalAlignment="Right"
-                                IsChecked="{Binding DateLong, Mode=TwoWay, Converter={x:Static mvvm:Converter.BooleanToNullableBoolean}}"/>
+                                IsChecked="{Binding DateLong, Mode=TwoWay, Converter={x:Static mvvm:Converters.BooleanToNullableBoolean}}"/>
                 </StackPanel>
             </controls:Flyout>
             <controls:Flyout Name="FileFlyout" Header="{lex:Loc MainWindow_File}" Position="Left">

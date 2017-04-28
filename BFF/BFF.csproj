@@ -298,8 +298,6 @@
     <Compile Include="MVVM\ViewModels\ParentTitViewModel.cs" />
     <Compile Include="MVVM\ViewModels\SessionViewModelBase.cs" />
     <Compile Include="MVVM\AttachedBehaviors\AdditionalTabItemsBehavior.cs" />
-    <Compile Include="MVVM\Converters\SumColorMultiConverter.cs" />
-    <Compile Include="MVVM\Converters\SumToBrushConverter.cs" />
     <Compile Include="MVVM\Messages.cs" />
     <Compile Include="MVVM\Messenger.cs" />
     <Compile Include="MVVM\RelayCommand.cs" />
@@ -420,9 +418,7 @@
   <ItemGroup>
     <Resource Include="Icons\logo_quadratic.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MVVM\AttachedProperties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>

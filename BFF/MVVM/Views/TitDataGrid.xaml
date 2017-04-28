@@ -7,7 +7,6 @@
              xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
              xmlns:validationRules="clr-namespace:BFF.MVVM.ValidationRules"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:converters="clr-namespace:BFF.MVVM.Converters"
              xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              xmlns:structure="clr-namespace:BFF.MVVM.ViewModels.ForModels.Structure"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
@@ -23,11 +22,6 @@
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/MVVM/Resources/BFF_ModifiedMAMCheckBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <!--#region Converters -->
-            <converters:SumColorMultiConverter x:Key="SumColorMultiConverter" PositiveBrush="{StaticResource IncomeBrush}" NegativeBrush="{StaticResource TransactionBrush}" TransferBrush="{StaticResource TransferBrush}"/>
-            <converters:SumToBrushConverter x:Key="SumToBrushConverter" PositiveBrush="{StaticResource IncomeBrush}" NegativeBrush="{StaticResource TransactionBrush}"/>
-            <!--#endregion -->
 
             <!--#region Icons -->
             <metro:PackIconMaterialKind x:Key="TransactionIcon">Logout</metro:PackIconMaterialKind>
@@ -151,7 +145,7 @@
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitBaseViewModel}">
-                            <TextBlock Text="{Binding Date, Converter={x:Static mvvm:Converter.DateToString}}" Style="{StaticResource CellTextBlock}" />
+                            <TextBlock Text="{Binding Date, Converter={x:Static mvvm:Converters.DateTimeToString}}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
@@ -162,7 +156,7 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitBaseViewModel}">
                             <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"
-                                        SelectedDateFormat="{Binding DataContext.IsDateLong, ElementName=LayoutRoot, Converter={x:Static mvvm:Converter.BooleanToDatePickerFormat}}" />
+                                        SelectedDateFormat="{Binding DataContext.IsDateLong, ElementName=LayoutRoot, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
@@ -344,14 +338,14 @@
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <TextBlock Name="TitGrid_SumBox" TextAlignment="Right" Style="{StaticResource CellTextBlock}" Padding="0,0,5,0">
                                 <TextBlock.Text>
-                                    <MultiBinding Converter="{x:Static mvvm:Converter.NegativeTransfer}">
+                                    <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumAsCorrectlySignedString}">
                                         <Binding Path="DataContext.AccountViewModel" ElementName="LayoutRoot" />
                                         <Binding Path="FromAccount" />
                                         <Binding Path="Sum" />
                                     </MultiBinding>
                                 </TextBlock.Text>
                                 <TextBlock.Foreground>
-                                    <MultiBinding Converter="{StaticResource SumColorMultiConverter}">
+                                    <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumToSolidColorBrush}">
                                         <Binding Path="DataContext.AccountViewModel" ElementName="LayoutRoot" /> <!-- todo: Make TransferViewModel aware of in which AccountViewModel it is inside -->
                                         <Binding Path="FromAccount" />
                                         <Binding Path="ToAccount" />
@@ -361,8 +355,8 @@
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
                             <TextBlock Name="TitGrid_SumBox" TextAlignment="Right"  Style="{StaticResource CellTextBlock}"  Padding="0,0,5,0"
-                                       Foreground="{Binding Sum, Converter={StaticResource SumToBrushConverter}}"
-                                       Text="{Binding Sum, Converter={x:Static mvvm:Converter.Sum}}" />
+                                       Foreground="{Binding Sum, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                       Text="{Binding Sum, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
@@ -374,14 +368,14 @@
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <TextBox Name="TitGrid_SumBox" TextAlignment="Right" VerticalContentAlignment="Center">
                                 <TextBox.Foreground>
-                                    <MultiBinding Converter="{StaticResource SumColorMultiConverter}">
+                                    <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumToSolidColorBrush}">
                                         <Binding Path="DataContext.AccountViewModel" ElementName="LayoutRoot" />
                                         <Binding Path="FromAccount" />
                                         <Binding Path="ToAccount" />
                                     </MultiBinding>
                                 </TextBox.Foreground>
                                 <TextBox.Text>
-                                    <Binding Path="Sum" Converter="{x:Static mvvm:Converter.Sum}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                    <Binding Path="Sum" Converter="{x:Static mvvm:Converters.NullableSumToString}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>
                                             <validationRules:CurrencyRule />
                                             <validationRules:CurrencyLongRangeRule />
@@ -392,9 +386,9 @@
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
                             <TextBox Name="TitGrid_SumBox" TextAlignment="Right" VerticalContentAlignment="Center"
-                                       Foreground="{Binding Sum, Converter={StaticResource SumToBrushConverter}}">
+                                       Foreground="{Binding Sum, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}">
                                 <TextBox.Text>
-                                    <Binding Path="Sum" Converter="{x:Static mvvm:Converter.Sum}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                    <Binding Path="Sum" Converter="{x:Static mvvm:Converters.NullableSumToString}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>
                                             <validationRules:CurrencyRule />
                                             <validationRules:CurrencyLongRangeRule />
@@ -627,7 +621,7 @@
                 <DataTemplate>
                     <ContentControl Content="{Binding}" HorizontalAlignment="Left">
                         <ContentControl.Margin>
-                            <MultiBinding Converter="{x:Static mvvm:Converter.DataGridWidthsToLeftMargin}">
+                            <MultiBinding Converter="{x:Static mvvm:Converters.WidthsToLeftMargin}">
                                 <Binding Path="Width" Source="{x:Reference SymbolColumn}"/>
                                 <Binding Path="Width" Source="{x:Reference AccountColumn}"/>
                                 <Binding Path="Width" Source="{x:Reference DateColumn}"/>
@@ -635,7 +629,7 @@
                             </MultiBinding>
                         </ContentControl.Margin>
                         <ContentControl.Width>
-                            <MultiBinding Converter="{x:Static mvvm:Converter.DataGridLengthsToDouble}">
+                            <MultiBinding Converter="{x:Static mvvm:Converters.WidthsToDouble}">
                                 <Binding Path="Width" Source="{x:Reference CategoryColumn}"/>
                                 <Binding Path="Width" Source="{x:Reference MemoColumn}"/>
                                 <Binding Path="Width" Source="{x:Reference SumColumn}"/>
@@ -734,7 +728,7 @@
                     <DataTemplate>
                         <ContentControl Content="{Binding}" HorizontalAlignment="Left">
                             <ContentControl.Margin>
-                                <MultiBinding Converter="{x:Static mvvm:Converter.DataGridWidthsToLeftMargin}">
+                                <MultiBinding Converter="{x:Static mvvm:Converters.WidthsToLeftMargin}">
                                     <Binding Path="Width" Source="{x:Reference SymbolColumn}"/>
                                     <Binding Path="Width" Source="{x:Reference AccountColumn}"/>
                                     <Binding Path="Width" Source="{x:Reference DateColumn}"/>
@@ -742,7 +736,7 @@
                                 </MultiBinding>
                             </ContentControl.Margin>
                             <ContentControl.Width>
-                                <MultiBinding Converter="{x:Static mvvm:Converter.DataGridLengthsToDouble}">
+                                <MultiBinding Converter="{x:Static mvvm:Converters.WidthsToDouble}">
                                     <Binding Path="Width" ElementName="CategoryColumn"/>
                                     <Binding Path="Width" Source="{x:Reference MemoColumn}"/>
                                     <Binding Path="Width" Source="{x:Reference SumColumn}"/>
