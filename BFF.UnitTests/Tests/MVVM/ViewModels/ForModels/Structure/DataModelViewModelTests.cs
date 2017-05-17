@@ -113,7 +113,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
             //Arrange
             IBffOrm ormFake = BffOrmMoq.Naked;
             ormFake.CommonPropertyProvider.Returns(info => commonPropertyProvider);
-            (T viewModel, IDataModel modelMock) = CreateDataModelViewModel(ormFake, -1);
+            (T viewModel, _) = CreateDataModelViewModel(ormFake, -1);
 
             //Act
             bool result = viewModel.ValidToInsert();
@@ -122,27 +122,18 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
             Assert.False(result);
         }
 
-        public static IEnumerable<object[]> DataModelIds
-            => new[]
-            {
-                new object [] {-1},
-                new object [] {0},
-                new object [] {1},
-                new object [] {3},
-                new object [] {23},
-                new object [] {69}
-            };
-
-        [Theory]
-        [MemberData(nameof(DataModelIds))]
-        public void IdGet_ModelWithSpecificId_SpecificId(long id)
+        [Fact]
+        public void IdGet_CallsModelIdGet()
         {
             //Arrange
             IBffOrm ormFake = BffOrmMoq.Naked;
-            (T viewModel, _) = CreateDataModelViewModel(ormFake, id);
+            (T viewModel, IDataModel mock) = CreateDataModelViewModel(ormFake, 69);
 
-            //Act + Assert
-            Assert.Equal(id, viewModel.Id);
+            //Act
+            _ = viewModel.Id;
+
+            //Assert
+            _ = mock.Received().Id;
         }
     }
 }
