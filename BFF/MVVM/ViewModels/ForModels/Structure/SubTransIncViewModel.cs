@@ -107,7 +107,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public string CategoryText
         {
-            get { return _categoryText; }
+            get => _categoryText;
             set
             {
                 _categoryText = value;

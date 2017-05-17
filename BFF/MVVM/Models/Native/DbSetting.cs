@@ -18,7 +18,7 @@ namespace BFF.MVVM.Models.Native
     {
         public string CurrencyCultureName
         {
-            get { return CurrencyCulture.Name; }
+            get => CurrencyCulture.Name;
             set
             {
                 if(_currencyCulture.Equals(CultureInfo.GetCultureInfo(value))) return;
@@ -33,10 +33,7 @@ namespace BFF.MVVM.Models.Native
         [Write(false)]
         public CultureInfo CurrencyCulture
         {
-            get
-            {
-                return _currencyCulture;
-            }
+            get => _currencyCulture;
             set
             {
                 if(_currencyCulture.Equals(value)) return;
@@ -48,7 +45,7 @@ namespace BFF.MVVM.Models.Native
 
         public string DateCultureName
         {
-            get { return DateCulture.Name; }
+            get => DateCulture.Name;
             set
             {
                 if (_dateCulture.Equals(CultureInfo.GetCultureInfo(value))) return;
@@ -63,10 +60,7 @@ namespace BFF.MVVM.Models.Native
         [Write(false)]
         public CultureInfo DateCulture
         {
-            get
-            {
-                return _dateCulture;
-            }
+            get => _dateCulture;
             set
             {
                 if (_dateCulture.Equals(value)) return;

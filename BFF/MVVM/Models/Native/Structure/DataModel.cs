@@ -42,7 +42,7 @@ namespace BFF.MVVM.Models.Native.Structure
         [Key]
         public long Id
         {
-            get { return _id; }
+            get => _id;
             set
             {
                 if (_id == value) return;

@@ -37,7 +37,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public ICategoryViewModel Parent
         {
-            get { return _category.ParentId == null ? null : Orm.CommonPropertyProvider.GetCategoryViewModel(_category.ParentId ?? 0); }
+            get => _category.ParentId == null ? null : Orm.CommonPropertyProvider.GetCategoryViewModel(_category.ParentId ?? 0);
             set
             {
                 if(_category.ParentId == null && value == null || Orm.CommonPropertyProvider.GetCategoryViewModel(_category.ParentId ?? 0) == value) return;

@@ -16,8 +16,8 @@ namespace BFF.MVVM.AttachedBehaviors
 
         public IEnumerable<object> ItemsSource
         {
-            get { return (IEnumerable<object>)GetValue(ItemsSourceProperty); }
-            set { SetValue(ItemsSourceProperty, value); }
+            get => (IEnumerable<object>)GetValue(ItemsSourceProperty);
+            set => SetValue(ItemsSourceProperty, value);
         }
 
         public static readonly DependencyProperty ItemsSourceProperty =
@@ -115,8 +115,8 @@ namespace BFF.MVVM.AttachedBehaviors
 
         public DataTemplate ContentTemplate
         {
-            get { return (DataTemplate)GetValue(ContentTemplateProperty); }
-            set { SetValue(ContentTemplateProperty, value); }
+            get => (DataTemplate)GetValue(ContentTemplateProperty);
+            set => SetValue(ContentTemplateProperty, value);
         }
 
         public static readonly DependencyProperty ContentTemplateProperty =
@@ -132,8 +132,8 @@ namespace BFF.MVVM.AttachedBehaviors
 
         public DataTemplate HeaderTemplate
         {
-            get { return (DataTemplate)GetValue(HeaderTemplateProperty); }
-            set { SetValue(HeaderTemplateProperty, value); }
+            get => (DataTemplate)GetValue(HeaderTemplateProperty);
+            set => SetValue(HeaderTemplateProperty, value);
         }
 
         public static readonly DependencyProperty HeaderTemplateProperty =
@@ -149,8 +149,8 @@ namespace BFF.MVVM.AttachedBehaviors
 
         public int StartingIndex
         {
-            get { return (int)GetValue(StartingIndexProperty); }
-            set { SetValue(StartingIndexProperty, value); }
+            get => (int)GetValue(StartingIndexProperty);
+            set => SetValue(StartingIndexProperty, value);
         }
 
         public static readonly DependencyProperty StartingIndexProperty =

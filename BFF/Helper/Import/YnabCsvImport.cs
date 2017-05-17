@@ -17,7 +17,7 @@ namespace BFF.Helper.Import
     {
         public string TransactionPath
         {
-            get { return _transactionPath; }
+            get => _transactionPath;
             set
             {
                 _transactionPath = value;
@@ -27,7 +27,7 @@ namespace BFF.Helper.Import
 
         public string BudgetPath
         {
-            get { return _budgetPath; }
+            get => _budgetPath;
             set
             {
                 _budgetPath = value;
@@ -37,7 +37,7 @@ namespace BFF.Helper.Import
 
         public string SavePath
         {
-            get { return _savePath; }
+            get => _savePath;
             set
             {
                 _savePath = value;

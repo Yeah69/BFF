@@ -22,7 +22,7 @@ namespace BFF.MVVM.ViewModels
         private string _title;
         public string Title
         {
-            get { return _title; }
+            get => _title;
             set
             {
                 _title = value;
@@ -68,7 +68,7 @@ namespace BFF.MVVM.ViewModels
         private SessionViewModelBase _contentViewModel;
         public SessionViewModelBase ContentViewModel
         {
-            get { return _contentViewModel; }
+            get => _contentViewModel;
             set
             {
                 _contentViewModel = value;
@@ -78,7 +78,7 @@ namespace BFF.MVVM.ViewModels
 
         public CultureInfo LanguageCulture
         {
-            get { return Settings.Default.Culture_DefaultLanguage; }
+            get => Settings.Default.Culture_DefaultLanguage;
             set
             {
                 Settings.Default.Culture_DefaultLanguage = value;
@@ -89,7 +89,7 @@ namespace BFF.MVVM.ViewModels
 
         public CultureInfo CurrencyCulture
         {
-            get { return Settings.Default.Culture_SessionCurrency; }
+            get => Settings.Default.Culture_SessionCurrency;
             set
             {
                 Settings.Default.Culture_SessionCurrency = value;
@@ -100,7 +100,7 @@ namespace BFF.MVVM.ViewModels
 
         public CultureInfo DateCulture
         {
-            get { return Settings.Default.Culture_SessionDate; }
+            get => Settings.Default.Culture_SessionDate;
             set
             {
                 Settings.Default.Culture_SessionDate = value;
@@ -112,7 +112,7 @@ namespace BFF.MVVM.ViewModels
         //todo: put DateLong into Database, too?
         public bool DateLong
         {
-            get { return Settings.Default.Culture_DefaultDateLong; }
+            get => Settings.Default.Culture_DefaultDateLong;
             set
             {
                 Settings.Default.Culture_DefaultDateLong = value;
@@ -128,7 +128,7 @@ namespace BFF.MVVM.ViewModels
 
         public ParentTitViewModel ParentTitViewModel
         {
-            get { return _parentTitViewModel; }
+            get => _parentTitViewModel;
             set
             {
                 _parentTitViewModel = value;
@@ -140,7 +140,7 @@ namespace BFF.MVVM.ViewModels
 
         public bool ParentTitFlyoutOpen
         {
-            get { return _parentTitFlyoutOpen; }
+            get => _parentTitFlyoutOpen;
             set
             {
                 _parentTitFlyoutOpen = value;
@@ -198,7 +198,7 @@ namespace BFF.MVVM.ViewModels
 
         public double Width
         {
-            get { return Settings.Default.MainWindow_Width; }
+            get => Settings.Default.MainWindow_Width;
             set
             {
                 Settings.Default.MainWindow_Width = value;
@@ -209,7 +209,7 @@ namespace BFF.MVVM.ViewModels
 
         public double Height
         {
-            get { return Settings.Default.MainWindow_Height; }
+            get => Settings.Default.MainWindow_Height;
             set
             {
                 Settings.Default.MainWindow_Height = value;
@@ -220,7 +220,7 @@ namespace BFF.MVVM.ViewModels
 
         public double X
         {
-            get { return Settings.Default.MainWindow_X; }
+            get => Settings.Default.MainWindow_X;
             set
             {
                 Settings.Default.MainWindow_X = value;
@@ -231,7 +231,7 @@ namespace BFF.MVVM.ViewModels
 
         public double Y
         {
-            get { return Settings.Default.MainWindow_Y; }
+            get => Settings.Default.MainWindow_Y;
             set
             {
                 Settings.Default.MainWindow_Y = value;
@@ -242,7 +242,7 @@ namespace BFF.MVVM.ViewModels
 
         public WindowState WindowState
         {
-            get { return Settings.Default.MainWindow_WindowState; }
+            get => Settings.Default.MainWindow_WindowState;
             set
             {
                 Settings.Default.MainWindow_WindowState = value;

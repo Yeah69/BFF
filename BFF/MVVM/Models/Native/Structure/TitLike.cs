@@ -20,7 +20,7 @@
         /// </summary>
         public string Memo
         {
-            get { return _memo; }
+            get => _memo;
             set
             {
                 if(_memo == value) return;

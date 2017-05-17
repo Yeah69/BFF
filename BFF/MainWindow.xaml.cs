@@ -31,8 +31,8 @@ namespace BFF
 
         public ICommand ImportCommand
         {
-            get { return (ICommand)GetValue(ImportCommandProperty); }
-            set { SetValue(ImportCommandProperty, value); }
+            get => (ICommand)GetValue(ImportCommandProperty);
+            set => SetValue(ImportCommandProperty, value);
         }
 
         public MainWindow()

@@ -35,7 +35,7 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         public long FromAccountId
         {
-            get { return _fromAccountId; }
+            get => _fromAccountId;
             set
             {
                 if(_fromAccountId == value) return;
@@ -49,7 +49,7 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         public long ToAccountId
         {
-            get { return _toAccountId; }
+            get => _toAccountId;
             set
             {
                 if(_toAccountId == value) return;
@@ -63,7 +63,7 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         public long Sum
         {
-            get { return _sum; }
+            get => _sum;
             set
             {
                 if(_sum == value) return;

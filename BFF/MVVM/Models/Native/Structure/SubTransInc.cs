@@ -26,7 +26,7 @@
         /// </summary>
         public long ParentId
         {
-            get { return _parentId; }
+            get => _parentId;
             set
             {
                 if(_parentId == value) return;
@@ -40,7 +40,7 @@
         /// </summary>
         public long CategoryId
         {
-            get { return _categoryId; }
+            get => _categoryId;
             set
             {
                 if(_categoryId == value) return;
@@ -56,7 +56,7 @@
         /// </summary>
         public long Sum
         {
-            get { return _sum; }
+            get => _sum;
             set
             {
                 if(_sum == value) return;

@@ -24,7 +24,7 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         public long? ParentId
         {
-            get { return _parentId; }
+            get => _parentId;
             set
             {
                 if(_parentId == value) return;

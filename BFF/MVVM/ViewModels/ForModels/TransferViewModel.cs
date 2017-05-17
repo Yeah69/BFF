@@ -35,10 +35,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public IAccountViewModel FromAccount
         {
-            get {
-                return _transfer.FromAccountId == -1 ? null : 
-                    CommonPropertyProvider.GetAccountViewModel(_transfer.FromAccountId);
-            }
+            get => _transfer.FromAccountId == -1 ? null : 
+                       CommonPropertyProvider.GetAccountViewModel(_transfer.FromAccountId);
             set
             {
                 if(value?.Id == _transfer.FromAccountId) return;
@@ -76,11 +74,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public IAccountViewModel ToAccount
         {
-            get
-            {
-                return _transfer.ToAccountId == -1 ? null :
-                    CommonPropertyProvider.GetAccountViewModel(_transfer.ToAccountId);
-            }
+            get => _transfer.ToAccountId == -1 ? null :
+                       CommonPropertyProvider.GetAccountViewModel(_transfer.ToAccountId);
             set
             {
                 if (value?.Id == _transfer.ToAccountId) return;
@@ -118,7 +113,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override long Sum
         {
-            get { return _transfer.Sum; }
+            get => _transfer.Sum;
             set
             {
                 _transfer.Sum = value;

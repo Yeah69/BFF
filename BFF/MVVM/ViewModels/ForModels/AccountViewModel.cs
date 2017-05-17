@@ -26,7 +26,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override long StartingBalance
         {
-            get { return Account.StartingBalance; }
+            get => Account.StartingBalance;
             set
             {
                 if(Account.StartingBalance == value) return;

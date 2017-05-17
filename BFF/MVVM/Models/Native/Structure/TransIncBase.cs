@@ -28,7 +28,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// </summary>
         public long AccountId
         {
-            get { return _accountId; }
+            get => _accountId;
             set
             {
                 if(_accountId == value) return;
@@ -42,7 +42,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// </summary>
         public long PayeeId
         {
-            get { return _payeeId; }
+            get => _payeeId;
             set
             {
                 if(_payeeId == value) return;

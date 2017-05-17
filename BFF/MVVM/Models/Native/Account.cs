@@ -24,7 +24,7 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         public virtual long StartingBalance
         {
-            get { return _startingBalance; }
+            get => _startingBalance;
             set
             {
                 if(_startingBalance == value) return;

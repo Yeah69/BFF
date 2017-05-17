@@ -64,7 +64,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public override long Sum
         {
             get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
-            set { RefreshSum(); }
+            set => RefreshSum();
         }
 
         /// <summary>
@@ -100,10 +100,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 }
                 return _subElements;
             }
-            set
-            {
-                OnPropertyChanged();
-            }
+            set => OnPropertyChanged();
         }
 
         /// <summary>
@@ -122,11 +119,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public ObservableCollection<ISubTransIncViewModel> NewSubElements
         {
-            get { return _newSubElements; }
-            set
-            {
-                OnPropertyChanged();
-            }
+            get => _newSubElements;
+            set => OnPropertyChanged();
         }
 
         /// <summary>

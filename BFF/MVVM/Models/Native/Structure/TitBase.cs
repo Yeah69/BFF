@@ -40,7 +40,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// </summary>
         public DateTime Date
         {
-            get { return _date; }
+            get => _date;
             set
             {
                 if(_date == value) return;
@@ -54,7 +54,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// </summary>
         public bool Cleared
         {
-            get { return _cleared; }
+            get => _cleared;
             set
             {
                 if(_cleared == value) return;

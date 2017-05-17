@@ -20,11 +20,8 @@ namespace BFF.MVVM.ViewModels
 
         public ISummaryAccountViewModel SummaryAccountViewModel
         {
-            get { return _orm.CommonPropertyProvider.SummaryAccountViewModel; }
-            set
-            {
-                OnPropertyChanged();
-            }
+            get => _orm.CommonPropertyProvider.SummaryAccountViewModel;
+            set => OnPropertyChanged();
         }
 
         public IAccount NewAccount { get; set; } = new Account {Id = -1, Name = "", StartingBalance = 0L};
