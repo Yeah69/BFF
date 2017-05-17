@@ -1,4 +1,5 @@
-﻿using BFF.DB;
+﻿using System;
+using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels;
@@ -9,7 +10,7 @@ using NSubstitute;
 
 namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 {
-    public class TransactionViewModelTests : TitLikeViewModelTests<TransactionViewModel>
+    public class TransactionViewModelTests : TitBaseViewModelTests<TransactionViewModel>
     {
         protected override (TransactionViewModel, IDataModel) CreateDataModelViewModel(IBffOrm orm, long modelId)
         {
@@ -28,5 +29,19 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         }
         protected override string MemoInitialValue => "Hello";
         protected override string MemoDifferentValue => "World";
+        protected override (TransactionViewModel, ITitBase) TitBaseViewModelFactory
+        {
+            get
+            {
+                ITransaction transactionMock = TransactionMoq.Naked;
+                transactionMock.Cleared.Returns(ClearedInitialValue);
+                transactionMock.Date.Returns(DateInitialValue);
+                return (new TransactionViewModel(transactionMock, BffOrmMoq.Naked), transactionMock);
+            }
+        }
+        protected override bool ClearedInitialValue => true;
+        protected override bool ClearedDifferentValue => false;
+        protected override DateTime DateInitialValue => new DateTime(1969, 6, 9);
+        protected override DateTime DateDifferentValue => new DateTime(1969, 9, 6);
     }
 }
