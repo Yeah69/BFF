@@ -10,7 +10,7 @@ using NSubstitute;
 
 namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 {
-    public class TransactionViewModelTests : TransIncBaseViewModelTests<TransactionViewModel>
+    public class TransactionViewModelTests : TransIncViewModelTests<TransactionViewModel>
     {
         protected override (TransactionViewModel, IDataModel) CreateDataModelViewModel(IBffOrm orm, long modelId)
         {
@@ -84,5 +84,36 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
                 return payeeViewModel;
             }
         }
+
+        protected override (TransactionViewModel, ITransInc) TransIncViewModelFactory
+        {
+            get
+            {
+                ITransaction transactionMock = TransactionMoq.Naked;
+                transactionMock.CategoryId.Returns(c => CategoryInitialValue.Id);
+                transactionMock.Sum.Returns(c => SumInitialValue);
+                return (new TransactionViewModel(transactionMock, BffOrmMoq.Naked), transactionMock);
+            }
+        }
+        protected override ICategoryViewModel CategoryInitialValue
+        {
+            get
+            {
+                var categoryViewModel = Substitute.For<ICategoryViewModel>();
+                categoryViewModel.Id.Returns(23);
+                return categoryViewModel;
+            }
+        }
+        protected override ICategoryViewModel CategoryDifferentValue
+        {
+            get
+            {
+                var categoryViewModel = Substitute.For<ICategoryViewModel>();
+                categoryViewModel.Id.Returns(69);
+                return categoryViewModel;
+            }
+        }
+        protected override long SumInitialValue => 23;
+        protected override long SumDifferentValue => 69;
     }
 }

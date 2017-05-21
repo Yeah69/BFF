@@ -118,6 +118,7 @@
     <Compile Include="Tests\MVVM\Models\Native\TransactionTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\TransferTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\DataModelViewModelTests.cs" />
+    <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TransIncViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TransIncBaseViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TitBaseViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TitLikeViewModelTests.cs" />

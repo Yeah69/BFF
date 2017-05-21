@@ -52,6 +52,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             get => _transInc.Sum;
             set
             {
+                if(value == _transInc.Sum) return;
                 _transInc.Sum = value;
                 Update();
                 Messenger.Default.Send(AccountMessage.RefreshBalance, Account);
