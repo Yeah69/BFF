@@ -58,7 +58,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         private readonly IParentTransInc _parentTransInc;
 
         /// <summary>
-        /// The amount of money of the exchangement of the ParentTransaction or ParentIncome.
+        /// The amount of money of the exchange of the ParentTransaction or ParentIncome.
         /// A ParentElement's Sum is defined by the Sum of all Sum's of its SubElements.
         /// </summary>
         public override long Sum
@@ -156,9 +156,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return Account != null && (CommonPropertyProvider?.AllAccountViewModels.Contains(Account) ?? false) &&
-                   Payee   != null &&  CommonPropertyProvider.AllPayeeViewModels.Contains(Payee) && 
-                   NewSubElements.All(subElement => subElement.ValidToInsert());
+            return Account != null  && Payee != null && NewSubElements.All(subElement => subElement.ValidToInsert());
         }
 
         /// <summary>

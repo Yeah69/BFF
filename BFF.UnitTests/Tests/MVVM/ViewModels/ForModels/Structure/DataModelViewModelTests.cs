@@ -50,7 +50,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
 
         [Theory]
         [MemberData(nameof(AtLeastOneNullCommonPropertyProvider))]
-        public void Insert_AtLeastOneNullCommonPropertyProvider_NotInserted_DoesntCallInsertOnOrm(ICommonPropertyProvider commonPropertyProvider)
+        public virtual void Insert_AtLeastOneNullCommonPropertyProvider_NotInserted_DoesntCallInsertOnOrm(ICommonPropertyProvider commonPropertyProvider)
         {
             //Arrange
             IBffOrm ormFake = BffOrmMoq.Naked;
@@ -108,7 +108,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
 
         [Theory]
         [MemberData(nameof(AtLeastOneNullCommonPropertyProvider))]
-        public void ValidToInsert_AtLeastOneNullCommonPropertyProvider_NotInserted_False(ICommonPropertyProvider commonPropertyProvider)
+        public virtual void ValidToInsert_AtLeastOneNullCommonPropertyProvider_NotInserted_False(ICommonPropertyProvider commonPropertyProvider)
         {
             //Arrange
             IBffOrm ormFake = BffOrmMoq.Naked;
