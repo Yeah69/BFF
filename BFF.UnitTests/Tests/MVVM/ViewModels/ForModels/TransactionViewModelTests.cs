@@ -10,7 +10,7 @@ using NSubstitute;
 
 namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 {
-    public class TransactionViewModelTests : TitBaseViewModelTests<TransactionViewModel>
+    public class TransactionViewModelTests : TransIncBaseViewModelTests<TransactionViewModel>
     {
         protected override (TransactionViewModel, IDataModel) CreateDataModelViewModel(IBffOrm orm, long modelId)
         {
@@ -43,5 +43,46 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         protected override bool ClearedDifferentValue => false;
         protected override DateTime DateInitialValue => new DateTime(1969, 6, 9);
         protected override DateTime DateDifferentValue => new DateTime(1969, 9, 6);
+        protected override (TransactionViewModel, ITransIncBase) TransIncBaseViewModelFactory {
+            get
+            {
+                ITransaction transactionMock = TransactionMoq.Naked;
+                transactionMock.AccountId.Returns(c => AccountInitialValue.Id);
+                transactionMock.PayeeId.Returns(c => PayeeInitialValue.Id);
+                return (new TransactionViewModel(transactionMock, BffOrmMoq.Naked), transactionMock);
+            }
+        }
+        protected override IAccountViewModel AccountInitialValue {
+            get
+            {
+                var accountViewModel = Substitute.For<IAccountViewModel>();
+                accountViewModel.Id.Returns(23);
+                return accountViewModel;
+            }
+        }
+        protected override IAccountViewModel AccountDifferentValue {
+            get
+            {
+                var accountViewModel = Substitute.For<IAccountViewModel>();
+                accountViewModel.Id.Returns(69);
+                return accountViewModel;
+            }
+        }
+        protected override IPayeeViewModel PayeeInitialValue {
+            get
+            {
+                var payeeViewModel = Substitute.For<IPayeeViewModel>();
+                payeeViewModel.Id.Returns(23);
+                return payeeViewModel;
+            }
+        }
+        protected override IPayeeViewModel PayeeDifferentValue {
+            get
+            {
+                var payeeViewModel = Substitute.For<IPayeeViewModel>();
+                payeeViewModel.Id.Returns(69);
+                return payeeViewModel;
+            }
+        }
     }
 }
