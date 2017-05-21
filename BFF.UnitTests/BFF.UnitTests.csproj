@@ -122,6 +122,7 @@
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TransIncBaseViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TitBaseViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TitLikeViewModelTests.cs" />
+    <Compile Include="Tests\MVVM\ViewModels\ForModels\IncomeViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\TransactionViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
