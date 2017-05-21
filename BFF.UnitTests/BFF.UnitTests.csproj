@@ -117,7 +117,7 @@
     <Compile Include="Tests\MVVM\Models\Native\SummaryAccountTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\TransactionTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\TransferTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\ParentTransactionViewModelTests - Copy.cs" />
+    <Compile Include="Tests\MVVM\ViewModels\ForModels\ParentIncomeViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\DataModelViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\ParentTransIncViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TransIncViewModelTests.cs" />
