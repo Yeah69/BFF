@@ -39,7 +39,7 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
             mock.Received().GetSubTransInc<TSub>(Arg.Any<long>());
         }
 
-        public static IEnumerable<object[]> AtLeastOneNullCommonPropertyProvider
+        public new static IEnumerable<object[]> AtLeastOneNullCommonPropertyProvider
             => new[]
             {
                 new object [] {CommonPropertyProviderMoq.NullAccountViewModel},

@@ -42,7 +42,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 if(value?.Id == _transfer.FromAccountId) return;
                 IAccountViewModel temp = FromAccount;
                 bool accountSwitch = false;
-                if (ToAccount == value) // If value equals ToAccount, then the FromAccount and ToAccount switch values
+                if (value != null && _transfer.ToAccountId == value.Id) // If value equals ToAccount, then the FromAccount and ToAccount switch values
                 {
                     _transfer.ToAccountId = _transfer.FromAccountId;
                     OnPropertyChanged(nameof(ToAccount));
@@ -50,7 +50,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 }
                 _transfer.FromAccountId = value?.Id ?? -1;
                 Update();
-                if(accountSwitch && ToAccount != null) //Refresh ToAccount if switch occured
+                if(accountSwitch && ToAccount != null) //Refresh ToAccount if switch occurred
                 {
                     Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
                     Messenger.Default.Send(AccountMessage.RefreshBalance, ToAccount);
@@ -70,7 +70,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         }
 
         /// <summary>
-        /// The account to where the money is transfered.
+        /// The account to where the money is transferred.
         /// </summary>
         public IAccountViewModel ToAccount
         {
@@ -81,7 +81,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 if (value?.Id == _transfer.ToAccountId) return;
                 IAccountViewModel temp = ToAccount;
                 bool accountSwitch = false;
-                if (FromAccount == value) // If value equals FromAccount, then the ToAccount and FromAccount switch values
+                if (value != null && _transfer.FromAccountId == value.Id) // If value equals FromAccount, then the ToAccount and FromAccount switch values
                 {
                     _transfer.FromAccountId = _transfer.ToAccountId;
                     OnPropertyChanged(nameof(FromAccount));
@@ -89,7 +89,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 }
                 _transfer.ToAccountId = value?.Id ?? -1;
                 Update();
-                if (accountSwitch && FromAccount != null) //Refresh ToAccount if switch occured
+                if (accountSwitch && FromAccount != null) //Refresh ToAccount if switch occurred
                 {
                     Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
                     Messenger.Default.Send(AccountMessage.RefreshBalance, FromAccount);
@@ -116,6 +116,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             get => _transfer.Sum;
             set
             {
+                if(value == _transfer.Sum) return;
                 _transfer.Sum = value;
                 Update();
                 Messenger.Default.Send(AccountMessage.RefreshBalance, FromAccount);
@@ -143,8 +144,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return FromAccount != null && (CommonPropertyProvider?.AllAccountViewModels.Contains(FromAccount) ?? false) &&
-                   ToAccount != null   &&  CommonPropertyProvider.AllAccountViewModels.Contains(ToAccount);
+            return FromAccount != null && ToAccount != null;
         }
 
         /// <summary>

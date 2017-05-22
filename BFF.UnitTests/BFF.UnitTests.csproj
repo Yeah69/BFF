@@ -126,6 +126,7 @@
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TitLikeViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\IncomeViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\ParentTransactionViewModelTests.cs" />
+    <Compile Include="Tests\MVVM\ViewModels\ForModels\TransferViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\TransactionViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
