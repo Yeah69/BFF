@@ -120,12 +120,15 @@
     <Compile Include="Tests\MVVM\ViewModels\ForModels\ParentIncomeViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\DataModelViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\ParentTransIncViewModelTests.cs" />
+    <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\SubTransIncViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TransIncViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TransIncBaseViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TitBaseViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TitLikeViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\IncomeViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\ParentTransactionViewModelTests.cs" />
+    <Compile Include="Tests\MVVM\ViewModels\ForModels\SubIncomeViewModelTests.cs" />
+    <Compile Include="Tests\MVVM\ViewModels\ForModels\SubTransactionViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\TransferViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\TransactionViewModelTests.cs" />
   </ItemGroup>
