@@ -5,8 +5,6 @@ namespace BFF.Tests.Mocks.DB
 {
     public static class CommonPropertyProviderMoq
     {
-        public static ICommonPropertyProvider Naked => Substitute.For<ICommonPropertyProvider>();
-
         public static ICommonPropertyProvider NullAccountViewModel
         {
             get

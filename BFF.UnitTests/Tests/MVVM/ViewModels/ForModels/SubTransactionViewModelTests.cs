@@ -6,7 +6,6 @@ using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using BFF.Tests.Mocks.DB;
-using BFF.Tests.Mocks.MVVM.Models.Native;
 using BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure;
 using NSubstitute;
 using Xunit;
@@ -15,19 +14,22 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 {
     public class SubTransactionViewModelTests : SubTransIncViewModelTests<SubTransactionViewModel>
     {
-        protected override (SubTransactionViewModel, IDataModel) CreateDataModelViewModel(IBffOrm orm, long modelId)
+        protected override (SubTransactionViewModel, IDataModel, IBffOrm) CreateDataModelViewModel(long modelId, ICommonPropertyProvider commonPropertyProvider = null)
         {
-            ISubTransaction subTransactionMock = SubTransactionMoq.Naked;
+            ISubTransaction subTransactionMock = Substitute.For<ISubTransaction>();
             subTransactionMock.Id.Returns(modelId);
-            return (new SubTransactionViewModel(subTransactionMock, Substitute.For<IParentTransIncViewModel>(), orm), subTransactionMock);
+            var bffOrm = Substitute.For<IBffOrm>();
+            bffOrm.CommonPropertyProvider
+                  .Returns(ci => commonPropertyProvider ?? Substitute.For<ICommonPropertyProvider>());
+            return (new SubTransactionViewModel(subTransactionMock, Substitute.For<IParentTransIncViewModel>(), bffOrm), subTransactionMock, bffOrm);
         }
 
         protected override (SubTransactionViewModel, ITitLike) TitLikeViewModelFactory {
             get
             {
-                ISubTransaction subTransactionMock = SubTransactionMoq.Naked;
+                ISubTransaction subTransactionMock = Substitute.For<ISubTransaction>();
                 subTransactionMock.Memo.Returns(MemoInitialValue);
-                return (new SubTransactionViewModel(subTransactionMock, Substitute.For<IParentTransIncViewModel>(), BffOrmMoq.Naked), subTransactionMock);
+                return (new SubTransactionViewModel(subTransactionMock, Substitute.For<IParentTransIncViewModel>(), Substitute.For<IBffOrm>()), subTransactionMock);
             }
         }
         protected override string MemoInitialValue => "Hello";
@@ -37,10 +39,10 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         {
             get
             {
-                ISubTransaction subTransactionMock = SubTransactionMoq.Naked;
+                ISubTransaction subTransactionMock = Substitute.For<ISubTransaction>();
                 subTransactionMock.Sum.Returns(SumInitialValue);
                 subTransactionMock.CategoryId.Returns(c => CategoryInitialValue.Id);
-                return (new SubTransactionViewModel(subTransactionMock, Substitute.For<IParentTransIncViewModel>(), BffOrmMoq.Naked), subTransactionMock);
+                return (new SubTransactionViewModel(subTransactionMock, Substitute.For<IParentTransIncViewModel>(), Substitute.For<IBffOrm>()), subTransactionMock);
             }
         }
         protected override long SumInitialValue => 23;

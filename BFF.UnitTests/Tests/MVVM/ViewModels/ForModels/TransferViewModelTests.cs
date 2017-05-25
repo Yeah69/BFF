@@ -6,7 +6,6 @@ using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.Tests.Helper;
 using BFF.Tests.Mocks.DB;
-using BFF.Tests.Mocks.MVVM.Models.Native;
 using BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure;
 using NSubstitute;
 using Xunit;
@@ -15,19 +14,22 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 {
     public class TransferViewModelTests : TitBaseViewModelTests<TransferViewModel>
     {
-        protected override (TransferViewModel, IDataModel) CreateDataModelViewModel(IBffOrm orm, long modelId)
+        protected override (TransferViewModel, IDataModel, IBffOrm) CreateDataModelViewModel(long modelId, ICommonPropertyProvider commonPropertyProvider = null)
         {
-            ITransfer transferMock = TransferMoq.Naked;
+            ITransfer transferMock = Substitute.For<ITransfer>();
             transferMock.Id.Returns(modelId);
-            return (new TransferViewModel(transferMock, orm), transferMock);
+            var bffOrm = Substitute.For<IBffOrm>();
+            bffOrm.CommonPropertyProvider
+                  .Returns(ci => commonPropertyProvider ?? Substitute.For<ICommonPropertyProvider>());
+            return (new TransferViewModel(transferMock, bffOrm), transferMock, bffOrm);
         }
 
         protected override (TransferViewModel, ITitLike) TitLikeViewModelFactory {
             get
             {
-                ITransfer transferMock = TransferMoq.Naked;
+                ITransfer transferMock = Substitute.For<ITransfer>();
                 transferMock.Memo.Returns(MemoInitialValue);
-                return (new TransferViewModel(transferMock, BffOrmMoq.Naked), transferMock);
+                return (new TransferViewModel(transferMock, Substitute.For<IBffOrm>()), transferMock);
             }
         }
         protected override string MemoInitialValue => "Hello";
@@ -36,10 +38,10 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         {
             get
             {
-                ITransfer transferMock = TransferMoq.Naked;
+                ITransfer transferMock = Substitute.For<ITransfer>();
                 transferMock.Cleared.Returns(ClearedInitialValue);
                 transferMock.Date.Returns(DateInitialValue);
-                return (new TransferViewModel(transferMock, BffOrmMoq.Naked), transferMock);
+                return (new TransferViewModel(transferMock, Substitute.For<IBffOrm>()), transferMock);
             }
         }
         protected override bool ClearedInitialValue => true;
@@ -51,11 +53,11 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         {
             get
             {
-                ITransfer transferMock = TransferMoq.Naked;
+                ITransfer transferMock = Substitute.For<ITransfer>();
                 transferMock.ToAccountId.Returns(c => ToAccountInitialValue.Id);
                 transferMock.FromAccountId.Returns(c => FromAccountInitialValue.Id);
                 transferMock.Sum.Returns(c => SumInitialValue);
-                return (new TransferViewModel(transferMock, BffOrmMoq.Naked), transferMock);
+                return (new TransferViewModel(transferMock, Substitute.For<IBffOrm>()), transferMock);
             }
         }
 

@@ -6,7 +6,6 @@ using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using BFF.Tests.Mocks.DB;
-using BFF.Tests.Mocks.MVVM.Models.Native;
 using BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure;
 using NSubstitute;
 using Xunit;
@@ -15,19 +14,22 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 {
     public class SubIncomeViewModelTests : SubTransIncViewModelTests<SubIncomeViewModel>
     {
-        protected override (SubIncomeViewModel, IDataModel) CreateDataModelViewModel(IBffOrm orm, long modelId)
+        protected override (SubIncomeViewModel, IDataModel, IBffOrm) CreateDataModelViewModel(long modelId, ICommonPropertyProvider commonPropertyProvider = null)
         {
-            ISubIncome subIncomeMock = SubIncomeMoq.Naked;
+            ISubIncome subIncomeMock = Substitute.For<ISubIncome>();
             subIncomeMock.Id.Returns(modelId);
-            return (new SubIncomeViewModel(subIncomeMock, Substitute.For<IParentTransIncViewModel>(), orm), subIncomeMock);
+            var bffOrm = Substitute.For<IBffOrm>();
+            bffOrm.CommonPropertyProvider
+                  .Returns(ci => commonPropertyProvider ?? Substitute.For<ICommonPropertyProvider>());
+            return (new SubIncomeViewModel(subIncomeMock, Substitute.For<IParentTransIncViewModel>(), bffOrm), subIncomeMock, bffOrm);
         }
 
         protected override (SubIncomeViewModel, ITitLike) TitLikeViewModelFactory {
             get
             {
-                ISubIncome subIncomeMock = SubIncomeMoq.Naked;
+                ISubIncome subIncomeMock = Substitute.For<ISubIncome>();
                 subIncomeMock.Memo.Returns(MemoInitialValue);
-                return (new SubIncomeViewModel(subIncomeMock, Substitute.For<IParentTransIncViewModel>(), BffOrmMoq.Naked), subIncomeMock);
+                return (new SubIncomeViewModel(subIncomeMock, Substitute.For<IParentTransIncViewModel>(), Substitute.For<IBffOrm>()), subIncomeMock);
             }
         }
         protected override string MemoInitialValue => "Hello";
@@ -37,10 +39,10 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         {
             get
             {
-                ISubIncome subIncomeMock = SubIncomeMoq.Naked;
+                ISubIncome subIncomeMock = Substitute.For<ISubIncome>();
                 subIncomeMock.Sum.Returns(SumInitialValue);
                 subIncomeMock.CategoryId.Returns(c => CategoryInitialValue.Id);
-                return (new SubIncomeViewModel(subIncomeMock, Substitute.For<IParentTransIncViewModel>(), BffOrmMoq.Naked), subIncomeMock);
+                return (new SubIncomeViewModel(subIncomeMock, Substitute.For<IParentTransIncViewModel>(), Substitute.For<IBffOrm>()), subIncomeMock);
             }
         }
         protected override long SumInitialValue => 23;

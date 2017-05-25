@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using BFF.Tests.Helper;
+using BFF.Tests.Mocks.DB;
 using NSubstitute;
 using Xunit;
 
@@ -21,10 +24,10 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
             (T viewModel, ITitLike mock) = TitLikeViewModelFactory;
 
             //Act
-            _ = viewModel.Id;
+            _ = viewModel.Memo;
 
             //Assert
-            _ = mock.Received().Id;
+            _ = mock.Received().Memo;
         }
 
         [Fact]
@@ -81,6 +84,107 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
 
             //Assert
             mock.DidNotReceive().Memo = MemoInitialValue;
+        }
+
+        [Fact]
+        public void Insert_AllNonNullCommonPropertyProvider_NotInsertedModel_CallsInsertOnOrm()
+        {
+            //Arrange
+            var (viewModel, modelMock, ormFake) = CreateDataModelViewModel(-1);
+
+            //Act
+            viewModel.Insert();
+
+            //Assert
+            modelMock.Received().Insert(ormFake);
+        }
+
+        [Fact]
+        public void Insert_AllNonNullCommonPropertyProvider_InsertedModel_DoesNtCallInsertOnOrm()
+        {
+            //Arrange
+            var (viewModel, modelMock, ormFake) = CreateDataModelViewModel(1);
+
+            //Act
+            viewModel.Insert();
+
+            //Assert
+            modelMock.DidNotReceive().Insert(ormFake);
+        }
+
+        public static IEnumerable<object[]> AtLeastOneNullCommonPropertyProvider
+            => new[]
+            {
+                new object [] {CommonPropertyProviderMoq.NullAccountViewModel},
+                new object [] {CommonPropertyProviderMoq.NullCategoryViewModel},
+                new object [] {CommonPropertyProviderMoq.NullPayeeViewModel}
+            };
+
+        [Theory]
+        [MemberData(nameof(AtLeastOneNullCommonPropertyProvider))]
+        public virtual void Insert_AtLeastOneNullCommonPropertyProvider_NotInserted_DoesntCallInsertOnOrm(ICommonPropertyProvider commonPropertyProvider)
+        {
+            //Arrange
+            var (viewModel, modelMock, ormFake) = CreateDataModelViewModel(-1, commonPropertyProvider);
+
+            //Act
+            viewModel.Insert();
+
+            //Assert
+            modelMock.DidNotReceive().Insert(ormFake);
+        }
+
+        [Fact]
+        public void Delete_InsertedModel_CallsDeleteOnOrm()
+        {
+            //Arrange
+            var (viewModel, modelMock, ormFake) = CreateDataModelViewModel(1);
+
+            //Act
+            viewModel.Delete();
+
+            //Assert
+            modelMock.Received().Delete(ormFake);
+        }
+
+        [Fact]
+        public void Delete_NotInsertedModel_DoesntCallDeleteOnOrm()
+        {
+            //Arrange
+            var (viewModel, modelMock, ormFake) = CreateDataModelViewModel(-1);
+
+            //Act
+            viewModel.Delete();
+
+            //Assert
+            modelMock.DidNotReceive().Delete(ormFake);
+        }
+
+        [Fact]
+        public void ValidToInsert_AllNonNullCommonPropertyProvider_NotInsertedModel_True()
+        {
+            //Arrange
+            var (viewModel, _, _) = CreateDataModelViewModel(-1);
+
+            //Act
+            bool result = viewModel.ValidToInsert();
+
+            //Assert
+            Assert.True(result);
+        }
+
+        [Theory]
+        [MemberData(nameof(AtLeastOneNullCommonPropertyProvider))]
+        public virtual void ValidToInsert_AtLeastOneNullCommonPropertyProvider_NotInserted_False(ICommonPropertyProvider commonPropertyProvider)
+        {
+            //Arrange
+            var (viewModel, _, _) = CreateDataModelViewModel(-1, commonPropertyProvider);
+
+            //Act
+            bool result = viewModel.ValidToInsert();
+
+            //Assert
+            Assert.False(result);
         }
     }
 }

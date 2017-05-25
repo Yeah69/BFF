@@ -3,8 +3,6 @@ using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels;
-using BFF.Tests.Mocks.DB;
-using BFF.Tests.Mocks.MVVM.Models.Native;
 using BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure;
 using NSubstitute;
 
@@ -12,19 +10,22 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 {
     public class TransactionViewModelTests : TransIncViewModelTests<TransactionViewModel>
     {
-        protected override (TransactionViewModel, IDataModel) CreateDataModelViewModel(IBffOrm orm, long modelId)
+        protected override (TransactionViewModel, IDataModel, IBffOrm) CreateDataModelViewModel(long modelId, ICommonPropertyProvider commonPropertyProvider = null)
         {
-            ITransaction transactionMock = TransactionMoq.Naked;
+            ITransaction transactionMock = Substitute.For<ITransaction>();
             transactionMock.Id.Returns(modelId);
-            return (new TransactionViewModel(transactionMock, orm), transactionMock);
+            var bffOrm = Substitute.For<IBffOrm>();
+            bffOrm.CommonPropertyProvider
+                  .Returns(ci => commonPropertyProvider ?? Substitute.For<ICommonPropertyProvider>());
+            return (new TransactionViewModel(transactionMock, bffOrm), transactionMock, bffOrm);
         }
 
         protected override (TransactionViewModel, ITitLike) TitLikeViewModelFactory {
             get
             {
-                ITransaction transactionMock = TransactionMoq.Naked;
+                ITransaction transactionMock = Substitute.For<ITransaction>();
                 transactionMock.Memo.Returns(MemoInitialValue);
-                return (new TransactionViewModel(transactionMock, BffOrmMoq.Naked), transactionMock);
+                return (new TransactionViewModel(transactionMock, Substitute.For<IBffOrm>()), transactionMock);
             }
         }
         protected override string MemoInitialValue => "Hello";
@@ -33,10 +34,10 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         {
             get
             {
-                ITransaction transactionMock = TransactionMoq.Naked;
+                ITransaction transactionMock = Substitute.For<ITransaction>();
                 transactionMock.Cleared.Returns(ClearedInitialValue);
                 transactionMock.Date.Returns(DateInitialValue);
-                return (new TransactionViewModel(transactionMock, BffOrmMoq.Naked), transactionMock);
+                return (new TransactionViewModel(transactionMock, Substitute.For<IBffOrm>()), transactionMock);
             }
         }
         protected override bool ClearedInitialValue => true;
@@ -46,10 +47,10 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         protected override (TransactionViewModel, ITransIncBase) TransIncBaseViewModelFactory {
             get
             {
-                ITransaction transactionMock = TransactionMoq.Naked;
+                ITransaction transactionMock = Substitute.For<ITransaction>();
                 transactionMock.AccountId.Returns(c => AccountInitialValue.Id);
                 transactionMock.PayeeId.Returns(c => PayeeInitialValue.Id);
-                return (new TransactionViewModel(transactionMock, BffOrmMoq.Naked), transactionMock);
+                return (new TransactionViewModel(transactionMock, Substitute.For<IBffOrm>()), transactionMock);
             }
         }
         protected override IAccountViewModel AccountInitialValue {
@@ -89,10 +90,10 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         {
             get
             {
-                ITransaction transactionMock = TransactionMoq.Naked;
+                ITransaction transactionMock = Substitute.For<ITransaction>();
                 transactionMock.CategoryId.Returns(c => CategoryInitialValue.Id);
                 transactionMock.Sum.Returns(c => SumInitialValue);
-                return (new TransactionViewModel(transactionMock, BffOrmMoq.Naked), transactionMock);
+                return (new TransactionViewModel(transactionMock, Substitute.For<IBffOrm>()), transactionMock);
             }
         }
         protected override ICategoryViewModel CategoryInitialValue

@@ -4,8 +4,6 @@ using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels;
-using BFF.Tests.Mocks.DB;
-using BFF.Tests.Mocks.MVVM.Models.Native;
 using BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure;
 using NSubstitute;
 
@@ -13,19 +11,22 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 {
     public class ParentIncomeViewModelTests : ParentTransIncViewModelTests<ParentIncomeViewModel, SubIncome>
     {
-        protected override (ParentIncomeViewModel, IDataModel) CreateDataModelViewModel(IBffOrm orm, long modelId)
+        protected override (ParentIncomeViewModel, IDataModel, IBffOrm) CreateDataModelViewModel(long modelId, ICommonPropertyProvider commonPropertyProvider = null)
         {
-            IParentIncome parentIncomeMock = ParentIncomeMoq.Naked;
+            IParentIncome parentIncomeMock = Substitute.For<IParentIncome>();
             parentIncomeMock.Id.Returns(modelId);
-            return (new ParentIncomeViewModel(parentIncomeMock, orm), parentIncomeMock);
+            var bffOrm = Substitute.For<IBffOrm>();
+            bffOrm.CommonPropertyProvider
+                  .Returns(ci => commonPropertyProvider ?? Substitute.For<ICommonPropertyProvider>());
+            return (new ParentIncomeViewModel(parentIncomeMock, bffOrm), parentIncomeMock, bffOrm);
         }
 
         protected override (ParentIncomeViewModel, ITitLike) TitLikeViewModelFactory {
             get
             {
-                IParentIncome parentIncomeMock = ParentIncomeMoq.Naked;
+                IParentIncome parentIncomeMock = Substitute.For<IParentIncome>();
                 parentIncomeMock.Memo.Returns(MemoInitialValue);
-                return (new ParentIncomeViewModel(parentIncomeMock, BffOrmMoq.Naked), parentIncomeMock);
+                return (new ParentIncomeViewModel(parentIncomeMock, Substitute.For<IBffOrm>()), parentIncomeMock);
             }
         }
         protected override string MemoInitialValue => "Hello";
@@ -34,10 +35,10 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         {
             get
             {
-                IParentIncome parentIncomeMock = ParentIncomeMoq.Naked;
+                IParentIncome parentIncomeMock = Substitute.For<IParentIncome>();
                 parentIncomeMock.Cleared.Returns(ClearedInitialValue);
                 parentIncomeMock.Date.Returns(DateInitialValue);
-                return (new ParentIncomeViewModel(parentIncomeMock, BffOrmMoq.Naked), parentIncomeMock);
+                return (new ParentIncomeViewModel(parentIncomeMock, Substitute.For<IBffOrm>()), parentIncomeMock);
             }
         }
         protected override bool ClearedInitialValue => true;
@@ -47,10 +48,10 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         protected override (ParentIncomeViewModel, ITransIncBase) TransIncBaseViewModelFactory {
             get
             {
-                IParentIncome parentIncomeMock = ParentIncomeMoq.Naked;
+                IParentIncome parentIncomeMock = Substitute.For<IParentIncome>();
                 parentIncomeMock.AccountId.Returns(c => AccountInitialValue.Id);
                 parentIncomeMock.PayeeId.Returns(c => PayeeInitialValue.Id);
-                return (new ParentIncomeViewModel(parentIncomeMock, BffOrmMoq.Naked), parentIncomeMock);
+                return (new ParentIncomeViewModel(parentIncomeMock, Substitute.For<IBffOrm>()), parentIncomeMock);
             }
         }
         protected override IAccountViewModel AccountInitialValue {

@@ -4,8 +4,6 @@ using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels;
-using BFF.Tests.Mocks.DB;
-using BFF.Tests.Mocks.MVVM.Models.Native;
 using BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure;
 using NSubstitute;
 
@@ -13,19 +11,22 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 {
     public class ParentTransactionViewModelTests : ParentTransIncViewModelTests<ParentTransactionViewModel, SubTransaction>
     {
-        protected override (ParentTransactionViewModel, IDataModel) CreateDataModelViewModel(IBffOrm orm, long modelId)
+        protected override (ParentTransactionViewModel, IDataModel, IBffOrm) CreateDataModelViewModel(long modelId, ICommonPropertyProvider commonPropertyProvider = null)
         {
-            IParentTransaction parentTransactionMock = ParentTransactionMoq.Naked;
+            IParentTransaction parentTransactionMock = Substitute.For<IParentTransaction>();
             parentTransactionMock.Id.Returns(modelId);
-            return (new ParentTransactionViewModel(parentTransactionMock, orm), parentTransactionMock);
+            var bffOrm = Substitute.For<IBffOrm>();
+            bffOrm.CommonPropertyProvider
+                  .Returns(ci => commonPropertyProvider ?? Substitute.For<ICommonPropertyProvider>());
+            return (new ParentTransactionViewModel(parentTransactionMock, bffOrm), parentTransactionMock, bffOrm);
         }
 
         protected override (ParentTransactionViewModel, ITitLike) TitLikeViewModelFactory {
             get
             {
-                IParentTransaction parentTransactionMock = ParentTransactionMoq.Naked;
+                IParentTransaction parentTransactionMock = Substitute.For<IParentTransaction>();
                 parentTransactionMock.Memo.Returns(MemoInitialValue);
-                return (new ParentTransactionViewModel(parentTransactionMock, BffOrmMoq.Naked), parentTransactionMock);
+                return (new ParentTransactionViewModel(parentTransactionMock, Substitute.For<IBffOrm>()), parentTransactionMock);
             }
         }
         protected override string MemoInitialValue => "Hello";
@@ -34,10 +35,10 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         {
             get
             {
-                IParentTransaction parentTransactionMock = ParentTransactionMoq.Naked;
+                IParentTransaction parentTransactionMock = Substitute.For<IParentTransaction>();
                 parentTransactionMock.Cleared.Returns(ClearedInitialValue);
                 parentTransactionMock.Date.Returns(DateInitialValue);
-                return (new ParentTransactionViewModel(parentTransactionMock, BffOrmMoq.Naked), parentTransactionMock);
+                return (new ParentTransactionViewModel(parentTransactionMock, Substitute.For<IBffOrm>()), parentTransactionMock);
             }
         }
         protected override bool ClearedInitialValue => true;
@@ -47,10 +48,10 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
         protected override (ParentTransactionViewModel, ITransIncBase) TransIncBaseViewModelFactory {
             get
             {
-                IParentTransaction parentTransactionMock = ParentTransactionMoq.Naked;
+                IParentTransaction parentTransactionMock = Substitute.For<IParentTransaction>();
                 parentTransactionMock.AccountId.Returns(c => AccountInitialValue.Id);
                 parentTransactionMock.PayeeId.Returns(c => PayeeInitialValue.Id);
-                return (new ParentTransactionViewModel(parentTransactionMock, BffOrmMoq.Naked), parentTransactionMock);
+                return (new ParentTransactionViewModel(parentTransactionMock, Substitute.For<IBffOrm>()), parentTransactionMock);
             }
         }
         protected override IAccountViewModel AccountInitialValue {

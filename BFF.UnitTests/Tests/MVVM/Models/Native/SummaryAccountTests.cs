@@ -43,7 +43,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
         {
             //Arrange
             SummaryAccount summaryAccount = SummaryAccountFactory;
-            IBffOrm ormMock = BffOrmMoq.Naked;
+            IBffOrm ormMock = Substitute.For<IBffOrm>();
 
             //Act
             summaryAccount.Insert(ormMock);
@@ -71,7 +71,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
         {
             //Arrange
             SummaryAccount summaryAccount = SummaryAccountFactory;
-            IBffOrm ormMock = BffOrmMoq.Naked;
+            IBffOrm ormMock = Substitute.For<IBffOrm>();
 
             //Act
             summaryAccount.Update(ormMock);
@@ -99,7 +99,7 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
         {
             //Arrange
             SummaryAccount summaryAccount = SummaryAccountFactory;
-            IBffOrm ormMock = BffOrmMoq.Naked;
+            IBffOrm ormMock = Substitute.For<IBffOrm>();
 
             //Act
             summaryAccount.Delete(ormMock);

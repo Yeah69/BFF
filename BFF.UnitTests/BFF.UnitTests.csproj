@@ -80,22 +80,7 @@
   <ItemGroup>
     <Compile Include="Helper\DoesNotRaisePropertyChangedException.cs" />
     <Compile Include="Helper\NativeAssert.cs" />
-    <Compile Include="Mocks\DB\BffOrmMoq.cs" />
     <Compile Include="Mocks\DB\CommonPropertyProviderMoq.cs" />
-    <Compile Include="Mocks\MVVM\Models\Native\AccountMoq.cs" />
-    <Compile Include="Mocks\MVVM\Models\Native\CategoryMoq.cs" />
-    <Compile Include="Mocks\MVVM\Models\Native\IncomeMoq.cs" />
-    <Compile Include="Mocks\MVVM\Models\Native\ParentIncomeMoq.cs" />
-    <Compile Include="Mocks\MVVM\Models\Native\ParentTransactionMoq.cs" />
-    <Compile Include="Mocks\MVVM\Models\Native\PayeeMoq.cs" />
-    <Compile Include="Mocks\MVVM\Models\Native\SubIncomeMoq.cs" />
-    <Compile Include="Mocks\MVVM\Models\Native\SubTransactionMoq.cs" />
-    <Compile Include="Mocks\MVVM\Models\Native\TransactionMoq.cs" />
-    <Compile Include="Mocks\MVVM\Models\Native\TransferMoq.cs" />
-    <Compile Include="Mocks\MVVM\ViewModels\ForModels\AccountViewModelMoq.cs" />
-    <Compile Include="Mocks\MVVM\ViewModels\ForModels\CategoryViewModelMoq.cs" />
-    <Compile Include="Mocks\MVVM\ViewModels\ForModels\PayeeViewModelMoq.cs" />
-    <Compile Include="Mocks\MVVM\ViewModels\ForModels\SummaryAccountViewModelMoq.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\MVVM\Models\Native\AccountTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\CategoryTests.cs" />
@@ -118,6 +103,7 @@
     <Compile Include="Tests\MVVM\Models\Native\TransactionTests.cs" />
     <Compile Include="Tests\MVVM\Models\Native\TransferTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\ParentIncomeViewModelTests.cs" />
+    <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\CommonPropertyViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\DataModelViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\ParentTransIncViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\SubTransIncViewModelTests.cs" />
@@ -129,6 +115,7 @@
     <Compile Include="Tests\MVVM\ViewModels\ForModels\ParentTransactionViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\SubIncomeViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\SubTransactionViewModelTests.cs" />
+    <Compile Include="Tests\MVVM\ViewModels\ForModels\PayeeViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\TransferViewModelTests.cs" />
     <Compile Include="Tests\MVVM\ViewModels\ForModels\TransactionViewModelTests.cs" />
   </ItemGroup>
