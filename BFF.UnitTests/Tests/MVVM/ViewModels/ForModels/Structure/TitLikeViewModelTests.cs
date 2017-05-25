@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -10,6 +11,7 @@ using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
 {
+    [SuppressMessage("ReSharper", "AssignmentIsFullyDiscarded")]
     public abstract class TitLikeViewModelTests<T> : DataModelViewModelTests<T> where T : TitLikeViewModel
     {
         protected abstract (T, ITitLike) TitLikeViewModelFactory { get; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
@@ -12,6 +13,7 @@ using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels
 {
+    [SuppressMessage("ReSharper", "AssignmentIsFullyDiscarded")]
     public class TransferViewModelTests : TitBaseViewModelTests<TransferViewModel>
     {
         protected override (TransferViewModel, IDataModel, IBffOrm) CreateDataModelViewModel(long modelId, ICommonPropertyProvider commonPropertyProvider = null)

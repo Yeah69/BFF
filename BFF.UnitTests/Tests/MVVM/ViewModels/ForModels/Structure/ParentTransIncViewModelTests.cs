@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -8,6 +9,7 @@ using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
 {
+    [SuppressMessage("ReSharper", "AssignmentIsFullyDiscarded")]
     public abstract class ParentTransIncViewModelTests<T, TSub> : TransIncBaseViewModelTests<T> 
         where T : ParentTransIncViewModel where TSub : ISubTransInc
     {
