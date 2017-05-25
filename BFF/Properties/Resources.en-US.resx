@@ -232,10 +232,10 @@
     <value>Currency format:</value>
   </data>
   <data name="MainWindow_Settings_Currency_Negative" xml:space="preserve">
-    <value>Positive:</value>
+    <value>Negative:</value>
   </data>
   <data name="MainWindow_Settings_Currency_Positive" xml:space="preserve">
-    <value>Negative:</value>
+    <value>Positive:</value>
   </data>
   <data name="MainWindow_Settings_Date" xml:space="preserve">
     <value>Date format:</value>

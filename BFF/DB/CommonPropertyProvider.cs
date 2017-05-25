@@ -30,6 +30,10 @@ namespace BFF.DB
         ICategoryViewModel GetCategoryViewModel(long id);
         IEnumerable<ICategoryViewModel> GetCategoryViewModelChildren(long parentId);
         IPayeeViewModel GetPayeeViewModel(long id);
+        bool Contains(IAccountViewModel accountViewModel);
+        bool Contains(IPayeeViewModel payeeViewModel);
+        bool Contains(ICategoryViewModel categoryViewModel);
+        bool IsValidToInsert(ICategoryViewModel categoryViewModel);
     }
 
     public class CommonPropertyProvider : ICommonPropertyProvider
@@ -134,7 +138,7 @@ namespace BFF.DB
         private void InitializeAccounts()
         {
             //todo: when C#7.0 is released: make this a local function in Constructor
-            SummaryAccountViewModel = new SummaryAccountViewModel(_orm);
+            SummaryAccountViewModel = new SummaryAccountViewModel(_orm, new SummaryAccount());
             Accounts = new ObservableCollection<IAccount>(_orm.GetAll<Account>().OrderBy(account => account.Name));
             AllAccountViewModels = new ObservableCollection<IAccountViewModel>(
                 Accounts.Select(account => new AccountViewModel(account, _orm)));
@@ -195,5 +199,15 @@ namespace BFF.DB
                 CreateChildCategoryViewModels(categoryViewModel);
             }
         }
+
+        public bool Contains(IAccountViewModel accountViewModel) => AllAccountViewModels.Contains(accountViewModel);
+
+        public bool Contains(IPayeeViewModel payeeViewModel) => AllPayeeViewModels.Contains(payeeViewModel);
+
+        public bool Contains(ICategoryViewModel categoryViewModel) => AllCategoryViewModels.Contains(categoryViewModel);
+
+        public bool IsValidToInsert(ICategoryViewModel categoryViewModel) =>
+            categoryViewModel.Parent == null && ParentCategoryViewModels.All(pcvm => pcvm.Name != categoryViewModel.Name) ||
+             categoryViewModel.Parent != null && categoryViewModel.Parent.Categories.All(pcvm => pcvm.Name != categoryViewModel.Name);
     }
 }

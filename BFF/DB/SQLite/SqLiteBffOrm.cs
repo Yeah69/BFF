@@ -233,7 +233,7 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public IEnumerable<T> GetAll<T>() where T : class, IDataModelBase
+        public IEnumerable<T> GetAll<T>() where T : class, IDataModel
         {
             Logger.Debug("Getting all entries from table {0}.", typeof(T).Name);
             IEnumerable<T> ret;
@@ -245,7 +245,7 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public long Insert<T>(T dataModelBase) where T : class, IDataModelBase
+        public long Insert<T>(T dataModelBase) where T : class, IDataModel
         {
             Logger.Debug("Insert an entry into table {0}.", typeof(T).Name);
             long ret = -1L;
@@ -258,7 +258,7 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public T Get<T>(long id) where T : class, IDataModelBase
+        public T Get<T>(long id) where T : class, IDataModel
         {
             T ret;
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
@@ -269,7 +269,7 @@ namespace BFF.DB.SQLite
             return ret;
         }
         
-        public void Update<T>(T dataModelBase) where T : class, IDataModelBase
+        public void Update<T>(T dataModelBase) where T : class, IDataModel
         {
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
             {
@@ -278,7 +278,7 @@ namespace BFF.DB.SQLite
             }
         }
 
-        public void Delete<T>(T dataModelBase) where T : class, IDataModelBase
+        public void Delete<T>(T dataModelBase) where T : class, IDataModel
         {
             Logger.Debug("Delete an entry from table {0}.", typeof(T).Name);
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
@@ -348,7 +348,7 @@ namespace BFF.DB.SQLite
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
         {
-            Logger.Debug("Getting a page of entries from table {0} of page size {1} by offsett {2}.", typeof(T).Name, pageSize, offset);
+            Logger.Debug("Getting a page of entries from table {0} of page size {1} by offset {2}.", typeof(T).Name, pageSize, offset);
             IEnumerable<T> ret;
             using (DbTransactions.TransactionScope cnnTransaction = new DbTransactions.TransactionScope())
             {

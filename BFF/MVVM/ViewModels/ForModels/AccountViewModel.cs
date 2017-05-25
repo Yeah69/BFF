@@ -8,7 +8,13 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public interface IAccountViewModel : IAccountBaseViewModel {}
+    public interface IAccountViewModel : IAccountBaseViewModel
+    {
+        /// <summary>
+        /// Starting balance of the Account
+        /// </summary>
+        new long StartingBalance { get; set; }
+    }
 
     /// <summary>
     /// Tits can be added to an Account
@@ -20,7 +26,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override long StartingBalance
         {
-            get { return Account.StartingBalance; }
+            get => Account.StartingBalance;
             set
             {
                 if(Account.StartingBalance == value) return;
@@ -30,26 +36,6 @@ namespace BFF.MVVM.ViewModels.ForModels
                 Orm.CommonPropertyProvider.SummaryAccountViewModel.RefreshStartingBalance();
             }
         }
-
-        /// <summary>
-        /// Name of the Account Model
-        /// </summary>
-        public override string Name
-        {
-            get { return Account.Name; }
-            set
-            {
-                if(Account.Name == value) return;
-                Account.Name = value;
-                Account.Update(Orm);
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// The object's Id in the table of the database.
-        /// </summary>
-        public override long Id => Account.Id;
 
         /// <summary>
         /// Before a model object is inserted into the database, it has to be valid.
@@ -68,7 +54,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void InsertToDb()
         {
-            Orm?.CommonPropertyProvider.Add(Account);
+            CommonPropertyProvider.Add(Account);
             Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
             Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
         }
@@ -90,7 +76,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void DeleteFromDb()
         {
-            Orm?.CommonPropertyProvider?.Remove(Account);
+            CommonPropertyProvider?.Remove(Account);
         }
 
         /// <summary>
@@ -98,7 +84,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="account">An Account Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public AccountViewModel(IAccount account, IBffOrm orm) : base(orm)
+        public AccountViewModel(IAccount account, IBffOrm orm) : base(orm, account)
         {
             Account = account;
             Messenger.Default.Register<AccountMessage>(this, message =>

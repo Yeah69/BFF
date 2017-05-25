@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
@@ -53,11 +52,6 @@ namespace BFF.MVVM.Models.Native
         {
             if (orm == null) throw new ArgumentNullException(nameof(orm));
             orm.Delete(this);
-        }
-
-        public override IEnumerable<ISubTransInc> GetSubTransInc(IBffOrm orm)
-        {
-            return orm?.GetSubTransInc<SubIncome>(Id);
         }
 
         #endregion

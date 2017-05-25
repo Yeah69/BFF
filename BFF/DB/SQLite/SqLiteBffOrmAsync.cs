@@ -13,7 +13,7 @@ namespace BFF.DB.SQLite
     {
         #region Implementation of ICrudOrmAsync
 
-        public Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IDataModelBase
+        public Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IDataModel
         {
             Task<IEnumerable<T>> ret;
             using (var cnn = new SQLiteConnection(ConnectionString))
@@ -24,7 +24,7 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public Task<int> InsertAsync<T>(T dataModelBase) where T : class, IDataModelBase
+        public Task<int> InsertAsync<T>(T dataModelBase) where T : class, IDataModel
         {
             Task<int> ret;
             using (var cnn = new SQLiteConnection(ConnectionString))
@@ -36,17 +36,17 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
-        public Task<T> GetAsync<T>(long id) where T : class, IDataModelBase
+        public Task<T> GetAsync<T>(long id) where T : class, IDataModel
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync<T>(T dataModelBase) where T : class, IDataModelBase
+        public Task UpdateAsync<T>(T dataModelBase) where T : class, IDataModel
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync<T>(T dataModelBase) where T : class, IDataModelBase
+        public Task DeleteAsync<T>(T dataModelBase) where T : class, IDataModel
         {
             throw new NotImplementedException();
         }

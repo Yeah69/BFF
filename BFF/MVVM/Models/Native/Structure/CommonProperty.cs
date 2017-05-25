@@ -1,6 +1,6 @@
 ﻿namespace BFF.MVVM.Models.Native.Structure
 {
-    public interface ICommonProperty : IDataModelBase
+    public interface ICommonProperty : IDataModel
     {
         /// <summary>
         /// Name of the CommonProperty
@@ -11,7 +11,7 @@
     /// <summary>
     /// CommonProperties are classes, whose instances are shared among other model classes
     /// </summary>
-    public abstract class CommonProperty : DataModelBase, ICommonProperty
+    public abstract class CommonProperty : DataModel, ICommonProperty
     {
         private string _name;
 
@@ -20,7 +20,7 @@
         /// </summary>
         public string Name
         {
-            get { return _name; }
+            get => _name;
             set
             {
                 if (_name == value) return;

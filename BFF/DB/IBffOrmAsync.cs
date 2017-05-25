@@ -20,11 +20,11 @@ namespace BFF.DB
 
     public interface ICrudOrmAsync
     {
-        Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IDataModelBase;
-        Task<int> InsertAsync<T>(T dataModelBase) where T : class, IDataModelBase;
-        Task<T> GetAsync<T>(long id) where T : class, IDataModelBase;
-        Task UpdateAsync<T>(T dataModelBase) where T : class, IDataModelBase;
-        Task DeleteAsync<T>(T dataModelBase) where T : class, IDataModelBase;
+        Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IDataModel;
+        Task<int> InsertAsync<T>(T dataModelBase) where T : class, IDataModel;
+        Task<T> GetAsync<T>(long id) where T : class, IDataModel;
+        Task UpdateAsync<T>(T dataModelBase) where T : class, IDataModel;
+        Task DeleteAsync<T>(T dataModelBase) where T : class, IDataModel;
     }
     
     public interface IPagedOrmAsync

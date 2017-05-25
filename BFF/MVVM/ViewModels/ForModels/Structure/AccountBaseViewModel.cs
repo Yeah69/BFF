@@ -16,7 +16,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        long StartingBalance { get; set; }
+        long StartingBalance { get; }
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
@@ -26,7 +26,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        ObservableCollection<ITitLikeViewModel> NewTits { get; set; }
+        ObservableCollection<ITitLikeViewModel> NewTits { get; }
 
         /// <summary>
         /// The current Balance of this Account.
@@ -76,6 +76,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
+        private readonly IAccount _account;
+
         protected VirtualizingObservableCollection<ITitLikeViewModel> _tits;
 
         /// <summary>
@@ -101,17 +103,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All available Accounts.
         /// </summary>
-        public ObservableCollection<IAccount> AllAccounts => Orm?.CommonPropertyProvider.Accounts;
+        public ObservableCollection<IAccount> AllAccounts => CommonPropertyProvider.Accounts;
 
         /// <summary>
         /// All available Payees.
         /// </summary>
-        public ObservableCollection<IPayee> AllPayees => Orm?.CommonPropertyProvider.Payees;
+        public ObservableCollection<IPayee> AllPayees => CommonPropertyProvider.Payees;
 
         /// <summary>
         /// All available Categories.
         /// </summary>
-        public ObservableCollection<ICategory> AllCategories => Orm?.CommonPropertyProvider.Categories;
+        public ObservableCollection<ICategory> AllCategories => CommonPropertyProvider.Categories;
 
         /// <summary>
         /// Creates a new Transaction.
@@ -157,8 +159,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Initializes a AccountBaseViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
-        protected AccountBaseViewModel(IBffOrm orm) : base(orm)
+        /// <param name="account">The model.</param>
+        protected AccountBaseViewModel(IBffOrm orm, IAccount account) : base(orm, account)
         {
+            _account = account;
             Orm = orm;
             Messenger.Default.Register<CutlureMessage>(this, message =>
             {
@@ -214,33 +218,30 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 tit.Insert();
                 NewTits.Remove(tit);
-                if (tit is IParentTransactionViewModel)
+                if (tit is IParentTransactionViewModel parentTransactionViewModel)
                 {
-                    IParentTransactionViewModel parentTransaction = tit as IParentTransactionViewModel;
-                    foreach(ISubTransIncViewModel subTransaction in parentTransaction.NewSubElements)
+                    foreach(ISubTransIncViewModel subTransaction in parentTransactionViewModel.NewSubElements)
                     {
                         subTransaction.Insert();
-                        parentTransaction.SubElements.Add(subTransaction);
+                        parentTransactionViewModel.SubElements.Add(subTransaction);
                     }
-                    parentTransaction.NewSubElements.Clear();
+                    parentTransactionViewModel.NewSubElements.Clear();
                 }
-                else if (tit is IParentIncomeViewModel) // todo unify this and the above if-clause?
+                else if (tit is IParentIncomeViewModel parentIncomeViewModel) // todo unify this and the above if-clause?
                 {
-                    IParentIncomeViewModel parentIncome = tit as IParentIncomeViewModel;
-                    foreach (ISubTransIncViewModel subIncome in parentIncome.NewSubElements)
+                    foreach (ISubTransIncViewModel subIncome in parentIncomeViewModel.NewSubElements)
                     {
                         subIncome.Insert();
-                        parentIncome.SubElements.Add(subIncome);
+                        parentIncomeViewModel.SubElements.Add(subIncome);
                     }
-                    parentIncome.NewSubElements.Clear();
+                    parentIncomeViewModel.NewSubElements.Clear();
                 }
-                else if (tit is ITransIncViewModel)
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel((tit as ITransIncViewModel).Account.Id));
-                else if (tit is ITransferViewModel)
+                else if (tit is ITransIncViewModel transIncViewModel)
+                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transIncViewModel.Account.Id));
+                else if (tit is ITransferViewModel transferViewModel)
                 {
-                    ITransferViewModel transfer = tit as ITransferViewModel;
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transfer.FromAccount.Id));
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transfer.ToAccount.Id));
+                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transferViewModel.FromAccount.Id));
+                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transferViewModel.ToAccount.Id));
                 }
             }
             

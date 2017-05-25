@@ -1,4 +1,5 @@
 ﻿using BFF.DB;
+using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -32,23 +33,32 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class DataModelViewModel : ObservableObject, IDataModelViewModel
     {
+        private readonly IDataModel _dataModel;
+
         /// <summary>
         /// The Orm object, which handles all database accesses.
         /// </summary>
         protected IBffOrm Orm;
 
         /// <summary>
+        /// Provides common properties, such as Accounts, Categories and Payees.
+        /// </summary>
+        protected ICommonPropertyProvider CommonPropertyProvider => Orm?.CommonPropertyProvider;
+
+        /// <summary>
         /// The object's Id in the table of the database.
         /// </summary>
-        public abstract long Id { get; }
+        public virtual long Id => _dataModel.Id;
 
         /// <summary>
         /// Initializes a DataModelViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
-        protected DataModelViewModel(IBffOrm orm)
+        /// <param name="dataModel">The model.</param>
+        protected DataModelViewModel(IBffOrm orm, IDataModel dataModel)
         {
             Orm = orm;
+            _dataModel = dataModel;
         }
 
         /// <summary>

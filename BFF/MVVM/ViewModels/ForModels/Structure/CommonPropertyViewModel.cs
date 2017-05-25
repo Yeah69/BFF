@@ -1,4 +1,5 @@
 ﻿using BFF.DB;
+using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -9,7 +10,22 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
     public abstract class CommonPropertyViewModel : DataModelViewModel, ICommonPropertyViewModel
     {
-        protected CommonPropertyViewModel(IBffOrm orm) : base(orm) {}
-        public abstract string Name { get; set; }
+        private readonly ICommonProperty _commonProperty;
+
+        protected CommonPropertyViewModel(IBffOrm orm, ICommonProperty commonProperty) : base(orm, commonProperty)
+        {
+            _commonProperty = commonProperty;
+        }
+        public virtual string Name
+        {
+            get => _commonProperty.Name;
+            set
+            {
+                if (_commonProperty.Name == value) return;
+                Update();
+                _commonProperty.Name = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

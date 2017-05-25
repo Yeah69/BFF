@@ -12,9 +12,7 @@ namespace BFF.MVVM.ViewModels
 {
     public class AccountTabsViewModel : SessionViewModelBase, IDisposable
     {
-        protected readonly IBffOrm _orm;
-
-        public IBffOrm Orm => _orm;
+        private readonly IBffOrm _orm;
 
         public ObservableCollection<IAccountViewModel> AllAccounts => _orm.CommonPropertyProvider.AllAccountViewModels;
 
@@ -22,11 +20,8 @@ namespace BFF.MVVM.ViewModels
 
         public ISummaryAccountViewModel SummaryAccountViewModel
         {
-            get { return _orm.CommonPropertyProvider.SummaryAccountViewModel; }
-            set
-            {
-                OnPropertyChanged();
-            }
+            get => _orm.CommonPropertyProvider.SummaryAccountViewModel;
+            set => OnPropertyChanged();
         }
 
         public IAccount NewAccount { get; set; } = new Account {Id = -1, Name = "", StartingBalance = 0L};

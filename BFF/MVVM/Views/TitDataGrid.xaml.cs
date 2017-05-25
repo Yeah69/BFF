@@ -21,8 +21,8 @@ namespace BFF.MVVM.Views
 
         public IAccount Account
         {
-            get { return (IAccount) GetValue(AccountProperty); }
-            set { SetValue(AccountProperty, value); }
+            get => (IAccount) GetValue(AccountProperty);
+            set => SetValue(AccountProperty, value);
         }
 
         public static readonly DependencyProperty AccountViewModelProperty = DependencyProperty.Register(
@@ -31,8 +31,8 @@ namespace BFF.MVVM.Views
 
         public IAccountBaseViewModel AccountViewModel
         {
-            get { return (IAccountBaseViewModel) GetValue(AccountViewModelProperty); }
-            set { SetValue(AccountViewModelProperty, value); }
+            get => (IAccountBaseViewModel) GetValue(AccountViewModelProperty);
+            set => SetValue(AccountViewModelProperty, value);
         }
 
         public static readonly DependencyProperty TitsProperty = DependencyProperty.Register(
@@ -41,8 +41,8 @@ namespace BFF.MVVM.Views
 
         public IEnumerable Tits
         {
-            get { return (IEnumerable) GetValue(TitsProperty); }
-            set { SetValue(TitsProperty, value); }
+            get => (IEnumerable) GetValue(TitsProperty);
+            set => SetValue(TitsProperty, value);
         }
 
         public static readonly DependencyProperty NewTitsProperty = DependencyProperty.Register(
@@ -50,8 +50,8 @@ namespace BFF.MVVM.Views
 
         public IEnumerable NewTits
         {
-            get { return (IEnumerable) GetValue(NewTitsProperty); }
-            set { SetValue(NewTitsProperty, value); }
+            get => (IEnumerable) GetValue(NewTitsProperty);
+            set => SetValue(NewTitsProperty, value);
         }
 
         public static readonly DependencyProperty NewTransactionCommandProperty = DependencyProperty.Register(
@@ -62,8 +62,8 @@ namespace BFF.MVVM.Views
 
         public ICommand NewTransactionCommand
         {
-            get { return (ICommand) GetValue(NewTransactionCommandProperty); }
-            set { SetValue(NewTransactionCommandProperty, value); }
+            get => (ICommand) GetValue(NewTransactionCommandProperty);
+            set => SetValue(NewTransactionCommandProperty, value);
         }
 
         public static readonly DependencyProperty NewIncomeCommandProperty = DependencyProperty.Register(
@@ -74,8 +74,8 @@ namespace BFF.MVVM.Views
 
         public ICommand NewIncomeCommand
         {
-            get { return (ICommand) GetValue(NewIncomeCommandProperty); }
-            set { SetValue(NewIncomeCommandProperty, value); }
+            get => (ICommand) GetValue(NewIncomeCommandProperty);
+            set => SetValue(NewIncomeCommandProperty, value);
         }
 
         public static readonly DependencyProperty NewTransferCommandProperty = DependencyProperty.Register(
@@ -86,8 +86,8 @@ namespace BFF.MVVM.Views
 
         public ICommand NewTransferCommand
         {
-            get { return (ICommand) GetValue(NewTransferCommandProperty); }
-            set { SetValue(NewTransferCommandProperty, value); }
+            get => (ICommand) GetValue(NewTransferCommandProperty);
+            set => SetValue(NewTransferCommandProperty, value);
         }
 
         public static readonly DependencyProperty NewParentTransactionCommandProperty = DependencyProperty.Register(
@@ -98,8 +98,8 @@ namespace BFF.MVVM.Views
 
         public ICommand NewParentTransactionCommand
         {
-            get { return (ICommand) GetValue(NewParentTransactionCommandProperty); }
-            set { SetValue(NewParentTransactionCommandProperty, value); }
+            get => (ICommand) GetValue(NewParentTransactionCommandProperty);
+            set => SetValue(NewParentTransactionCommandProperty, value);
         }
 
         public static readonly DependencyProperty NewParentIncomeCommandProperty = DependencyProperty.Register(
@@ -110,8 +110,8 @@ namespace BFF.MVVM.Views
 
         public ICommand NewParentIncomeCommand
         {
-            get { return (ICommand) GetValue(NewParentIncomeCommandProperty); }
-            set { SetValue(NewParentIncomeCommandProperty, value); }
+            get => (ICommand) GetValue(NewParentIncomeCommandProperty);
+            set => SetValue(NewParentIncomeCommandProperty, value);
         }
 
         public static readonly DependencyProperty ApplyCommandProperty = DependencyProperty.Register(
@@ -122,8 +122,8 @@ namespace BFF.MVVM.Views
 
         public ICommand ApplyCommand
         {
-            get { return (ICommand) GetValue(ApplyCommandProperty); }
-            set { SetValue(ApplyCommandProperty, value); }
+            get => (ICommand) GetValue(ApplyCommandProperty);
+            set => SetValue(ApplyCommandProperty, value);
         }
 
         private static readonly DependencyProperty NewTransactionVisibilityProperty = DependencyProperty.Register(
@@ -131,8 +131,8 @@ namespace BFF.MVVM.Views
 
         private Visibility NewTransactionVisibility
         {
-            get { return (Visibility) GetValue(NewTransactionVisibilityProperty); }
-            set { SetValue(NewTransactionVisibilityProperty, value); }
+            get => (Visibility) GetValue(NewTransactionVisibilityProperty);
+            set => SetValue(NewTransactionVisibilityProperty, value);
         }
 
         public static readonly DependencyProperty NewIncomeVisibilityProperty = DependencyProperty.Register(
@@ -140,8 +140,8 @@ namespace BFF.MVVM.Views
 
         public Visibility NewIncomeVisibility
         {
-            get { return (Visibility) GetValue(NewIncomeVisibilityProperty); }
-            set { SetValue(NewIncomeVisibilityProperty, value); }
+            get => (Visibility) GetValue(NewIncomeVisibilityProperty);
+            set => SetValue(NewIncomeVisibilityProperty, value);
         }
 
         public static readonly DependencyProperty NewTransferVisibilityProperty = DependencyProperty.Register(
@@ -149,8 +149,8 @@ namespace BFF.MVVM.Views
 
         public Visibility NewTransferVisibility
         {
-            get { return (Visibility) GetValue(NewTransferVisibilityProperty); }
-            set { SetValue(NewTransferVisibilityProperty, value); }
+            get => (Visibility) GetValue(NewTransferVisibilityProperty);
+            set => SetValue(NewTransferVisibilityProperty, value);
         }
 
         public static readonly DependencyProperty NewParentTransactionVisibilityProperty = DependencyProperty.Register(
@@ -158,8 +158,8 @@ namespace BFF.MVVM.Views
 
         public Visibility NewParentTransactionVisibility
         {
-            get { return (Visibility) GetValue(NewParentTransactionVisibilityProperty); }
-            set { SetValue(NewParentTransactionVisibilityProperty, value); }
+            get => (Visibility) GetValue(NewParentTransactionVisibilityProperty);
+            set => SetValue(NewParentTransactionVisibilityProperty, value);
         }
 
         public static readonly DependencyProperty NewParentIncomeVisibilityProperty = DependencyProperty.Register(
@@ -167,8 +167,8 @@ namespace BFF.MVVM.Views
 
         public Visibility NewParentIncomeVisibility
         {
-            get { return (Visibility) GetValue(NewParentIncomeVisibilityProperty); }
-            set { SetValue(NewParentIncomeVisibilityProperty, value); }
+            get => (Visibility) GetValue(NewParentIncomeVisibilityProperty);
+            set => SetValue(NewParentIncomeVisibilityProperty, value);
         }
 
         public static readonly DependencyProperty ApplyVisibilityProperty = DependencyProperty.Register(
@@ -176,8 +176,8 @@ namespace BFF.MVVM.Views
 
         public Visibility ApplyVisibility
         {
-            get { return (Visibility) GetValue(ApplyVisibilityProperty); }
-            set { SetValue(ApplyVisibilityProperty, value); }
+            get => (Visibility) GetValue(ApplyVisibilityProperty);
+            set => SetValue(ApplyVisibilityProperty, value);
         }
 
         public static readonly DependencyProperty ShowRowDetailsModeProperty = DependencyProperty.Register(
@@ -185,8 +185,8 @@ namespace BFF.MVVM.Views
 
         public DataGridRowDetailsVisibilityMode ShowRowDetailsMode
         {
-            get { return (DataGridRowDetailsVisibilityMode) GetValue(ShowRowDetailsModeProperty); }
-            set { SetValue(ShowRowDetailsModeProperty, value); }
+            get => (DataGridRowDetailsVisibilityMode) GetValue(ShowRowDetailsModeProperty);
+            set => SetValue(ShowRowDetailsModeProperty, value);
         }
 
         public static readonly DependencyProperty IsDateLongProperty = DependencyProperty.Register(
@@ -194,8 +194,8 @@ namespace BFF.MVVM.Views
 
         public bool IsDateLong
         {
-            get { return (bool) GetValue(IsDateLongProperty); }
-            set { SetValue(IsDateLongProperty, value); }
+            get => (bool) GetValue(IsDateLongProperty);
+            set => SetValue(IsDateLongProperty, value);
         }
 
         #endregion

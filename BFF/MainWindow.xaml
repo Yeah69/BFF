@@ -6,9 +6,9 @@
                       xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
         xmlns:bff="clr-namespace:BFF"
         xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
-        xmlns:converters="clr-namespace:BFF.MVVM.Converters"
         xmlns:views="clr-namespace:BFF.MVVM.Views"
         xmlns:viewModel="clr-namespace:BFF.MVVM.ViewModels"
+        xmlns:mvvm="clr-namespace:BFF.MVVM"
         lex:LocalizeDictionary.DesignCulture="en-US"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
@@ -23,9 +23,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <converters:CurrencyComboConverter x:Key="CurrencyComboConverter"/>
-            <converters:DateComboConverter x:Key="DateComboConverter"/>
-            <converters:BooleanToNullableBooleanConverter x:Key="BooleanToNullableBooleanConverter"/>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.Flyouts>
@@ -82,9 +79,9 @@
                                     <Label Content="{Binding Name}" Grid.Row="0" Grid.Column="0" />
                                     <Label Content="{Binding NativeName}" Grid.Row="0" Grid.Column="1" />
                                     <Label Content="{lex:Loc MainWindow_Settings_Currency_Positive}" Grid.Row="1" Grid.Column="0" />
-                                    <Label Content="{Binding Name, Converter={StaticResource CurrencyComboConverter}, ConverterParameter=positive}" Foreground="{StaticResource IncomeBrush}" Grid.Row="1" Grid.Column="1" />
+                                    <Label Content="{Binding Name, Converter={x:Static mvvm:Converters.CurrencyChoiceBoxExampleConversion}, ConverterParameter=positive}" Foreground="{StaticResource IncomeBrush}" Grid.Row="1" Grid.Column="1" />
                                     <Label Content="{lex:Loc MainWindow_Settings_Currency_Negative}" Grid.Row="2" Grid.Column="0" />
-                                    <Label Content="{Binding Name, Converter={StaticResource CurrencyComboConverter}, ConverterParameter=negative}" Foreground="{StaticResource TransactionBrush}" Grid.Row="2" Grid.Column="1" />
+                                    <Label Content="{Binding Name, Converter={x:Static mvvm:Converters.CurrencyChoiceBoxExampleConversion}, ConverterParameter=negative}" Foreground="{StaticResource TransactionBrush}" Grid.Row="2" Grid.Column="1" />
                                 </Grid>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
@@ -106,16 +103,16 @@
                                     <Label Content="{Binding Name}" Grid.Row="0" Grid.Column="0" />
                                     <Label Content="{Binding NativeName}" Grid.Row="0" Grid.Column="1" />
                                     <Label Content="{lex:Loc MainWindow_Settings_Date_Short}" Grid.Row="1" Grid.Column="0" />
-                                    <Label Content="{Binding Name, Converter={StaticResource DateComboConverter}, ConverterParameter=short}"  Grid.Row="1" Grid.Column="1" />
+                                    <Label Content="{Binding Name, Converter={x:Static mvvm:Converters.DateChoiceBoxExampleConversion}, ConverterParameter=short}"  Grid.Row="1" Grid.Column="1" />
                                     <Label Content="{lex:Loc MainWindow_Settings_Date_Long}" Grid.Row="2" Grid.Column="0" />
-                                    <Label Content="{Binding Name, Converter={StaticResource DateComboConverter}, ConverterParameter=long}"  Grid.Row="2" Grid.Column="1" />
+                                    <Label Content="{Binding Name, Converter={x:Static mvvm:Converters.DateChoiceBoxExampleConversion}, ConverterParameter=long}"  Grid.Row="2" Grid.Column="1" />
                                 </Grid>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <CheckBox Content="{lex:Loc MainWindow_Settings_Date_Long_Inverted}" Margin="5" 
                                 FlowDirection="RightToLeft" HorizontalAlignment="Right"
-                                IsChecked="{Binding DateLong, Mode=TwoWay, Converter={StaticResource BooleanToNullableBooleanConverter}}"/>
+                                IsChecked="{Binding DateLong, Mode=TwoWay, Converter={x:Static mvvm:Converters.BooleanToNullableBoolean}}"/>
                 </StackPanel>
             </controls:Flyout>
             <controls:Flyout Name="FileFlyout" Header="{lex:Loc MainWindow_File}" Position="Left">

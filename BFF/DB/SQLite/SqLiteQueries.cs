@@ -35,15 +35,15 @@ SELECT {nameof(IAccount.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(
 
         internal static string CreateTheTitViewStatement =>
                     $@"CREATE VIEW IF NOT EXISTS [The Tit] AS
-SELECT {nameof(IDataModelBase.Id)}, {nameof(ITransIncBase.AccountId)}, {nameof(ITransIncBase.PayeeId)}, {nameof(ITransInc.CategoryId)}, {nameof(ITitBase.Date)}, {nameof(ITitLike.Memo)}, {nameof(ITransInc.Sum)}, {nameof(ITitBase.Cleared)}, '{TitType.Transaction}' AS Type FROM [{nameof(Transaction)}s]
+SELECT {nameof(IDataModel.Id)}, {nameof(ITransIncBase.AccountId)}, {nameof(ITransIncBase.PayeeId)}, {nameof(ITransInc.CategoryId)}, {nameof(ITitBase.Date)}, {nameof(ITitLike.Memo)}, {nameof(ITransInc.Sum)}, {nameof(ITitBase.Cleared)}, '{TitType.Transaction}' AS Type FROM [{nameof(Transaction)}s]
 UNION ALL
-SELECT {nameof(IDataModelBase.Id)}, {nameof(ITransIncBase.AccountId)}, {nameof(ITransIncBase.PayeeId)}, -69 AS CategoryFiller, {nameof(ITitBase.Date)}, {nameof(ITitLike.Memo)}, -69 AS SumFiller, {nameof(ITitBase.Cleared)}, '{TitType.ParentTransaction}' AS Type FROM [{nameof(ParentTransaction)}s]
+SELECT {nameof(IDataModel.Id)}, {nameof(ITransIncBase.AccountId)}, {nameof(ITransIncBase.PayeeId)}, -69 AS CategoryFiller, {nameof(ITitBase.Date)}, {nameof(ITitLike.Memo)}, -69 AS SumFiller, {nameof(ITitBase.Cleared)}, '{TitType.ParentTransaction}' AS Type FROM [{nameof(ParentTransaction)}s]
 UNION ALL
-SELECT {nameof(IDataModelBase.Id)}, {nameof(ITransIncBase.AccountId)}, {nameof(ITransIncBase.PayeeId)}, {nameof(ITransInc.CategoryId)}, {nameof(ITitBase.Date)}, {nameof(ITitLike.Memo)}, {nameof(ITransInc.Sum)}, {nameof(ITitBase.Cleared)}, '{TitType.Income}' AS Type FROM [{nameof(Income)}s]
+SELECT {nameof(IDataModel.Id)}, {nameof(ITransIncBase.AccountId)}, {nameof(ITransIncBase.PayeeId)}, {nameof(ITransInc.CategoryId)}, {nameof(ITitBase.Date)}, {nameof(ITitLike.Memo)}, {nameof(ITransInc.Sum)}, {nameof(ITitBase.Cleared)}, '{TitType.Income}' AS Type FROM [{nameof(Income)}s]
 UNION ALL
-SELECT {nameof(IDataModelBase.Id)}, {nameof(ITransIncBase.AccountId)}, {nameof(ITransIncBase.PayeeId)}, -69 AS CategoryFiller, {nameof(ITitBase.Date)}, {nameof(ITitLike.Memo)}, -69 AS SumFiller, {nameof(ITitBase.Cleared)}, '{TitType.ParentIncome}' AS Type FROM [{nameof(ParentIncome)}s]
+SELECT {nameof(IDataModel.Id)}, {nameof(ITransIncBase.AccountId)}, {nameof(ITransIncBase.PayeeId)}, -69 AS CategoryFiller, {nameof(ITitBase.Date)}, {nameof(ITitLike.Memo)}, -69 AS SumFiller, {nameof(ITitBase.Cleared)}, '{TitType.ParentIncome}' AS Type FROM [{nameof(ParentIncome)}s]
 UNION ALL
-SELECT {nameof(IDataModelBase.Id)}, -69 AS AccountFiller, {nameof(ITransfer.FromAccountId)}, {nameof(ITransfer.ToAccountId)}, {nameof(ITitBase.Date)}, {nameof(ITitLike.Memo)}, {nameof(ITransInc.Sum)}, {nameof(ITitBase.Cleared)}, '{TitType.Transfer}' AS Type FROM [{nameof(Transfer)}s];";
+SELECT {nameof(IDataModel.Id)}, -69 AS AccountFiller, {nameof(ITransfer.FromAccountId)}, {nameof(ITransfer.ToAccountId)}, {nameof(ITitBase.Date)}, {nameof(ITitLike.Memo)}, {nameof(ITransInc.Sum)}, {nameof(ITitBase.Cleared)}, '{TitType.Transfer}' AS Type FROM [{nameof(Transfer)}s];";
 
         internal static string CreateAccountTableStatement
             =>

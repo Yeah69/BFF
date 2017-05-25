@@ -13,35 +13,21 @@ namespace BFF.MVVM.ViewModels.ForModels
     {
         private readonly IPayee _payee;
 
-        public override string Name
-        {
-            get { return _payee.Name; }
-            set
-            {
-                if (_payee.Name == value) return;
-                Update();
-                _payee.Name = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public PayeeViewModel(IPayee payee, IBffOrm orm) : base(orm)
+        public PayeeViewModel(IPayee payee, IBffOrm orm) : base(orm, payee)
         {
             _payee = payee;
         }
 
         #region Overrides of DataModelViewModel
 
-        public override long Id => _payee.Id;
-
         public override bool ValidToInsert()
         {
-            return !string.IsNullOrWhiteSpace(Name) && (Orm?.CommonPropertyProvider?.AllPayeeViewModels.All(apvm => apvm.Name != Name) ?? false);
+            return !string.IsNullOrWhiteSpace(Name) && (CommonPropertyProvider?.AllPayeeViewModels.All(apvm => apvm.Name != Name) ?? false);
         }
 
         protected override void InsertToDb()
         {
-            Orm?.CommonPropertyProvider?.Add(_payee);
+            CommonPropertyProvider?.Add(_payee);
         }
 
         protected override void UpdateToDb()
@@ -51,7 +37,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         protected override void DeleteFromDb()
         {
-            Orm?.CommonPropertyProvider?.Remove(_payee);
+            CommonPropertyProvider?.Remove(_payee);
         }
 
         #endregion

@@ -20,7 +20,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// </summary>
         public long CategoryId
         {
-            get { return _categoryId; }
+            get => _categoryId;
             set
             {
                 if(_categoryId == value) return;
@@ -34,7 +34,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// </summary>
         public long Sum
         {
-            get { return _sum; }
+            get => _sum;
             set
             {
                 if(_sum == value) return;

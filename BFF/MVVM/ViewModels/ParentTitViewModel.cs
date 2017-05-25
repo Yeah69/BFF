@@ -10,7 +10,7 @@ namespace BFF.MVVM.ViewModels
 
         public string Title
         {
-            get { return _title; }
+            get => _title;
             set
             {
                 _title = value;
@@ -22,7 +22,7 @@ namespace BFF.MVVM.ViewModels
 
         public ITitLikeViewModel ParentTit
         {
-            get { return _parentTit; }
+            get => _parentTit;
             set
             {
                 _parentTit = value;
@@ -35,7 +35,7 @@ namespace BFF.MVVM.ViewModels
 
         public IAccount Account
         {
-            get { return _account; }
+            get => _account;
             set
             {
                 _account = value;

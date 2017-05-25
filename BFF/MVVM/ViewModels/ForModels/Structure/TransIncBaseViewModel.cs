@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -24,21 +25,54 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class TransIncBaseViewModel : TitBaseViewModel, ITransIncBaseViewModel
     {
+        private readonly ITransIncBase _transIncBase;
+
         /// <summary>
         /// The assigned Account, where this Transaction/Income is registered.
         /// </summary>
-        public abstract IAccountViewModel Account { get; set; } //todo: change to IAccountViewModel
+        public virtual IAccountViewModel Account
+        {
+            get => _transIncBase.AccountId == -1
+                ? null
+                : CommonPropertyProvider?.GetAccountViewModel(_transIncBase.AccountId);
+            set
+            {
+                if (value == null || value.Id == _transIncBase.AccountId) return;
+                IAccountViewModel temp = Account;
+                _transIncBase.AccountId = value.Id;
+                Update();
+                if (temp != null) Messenger.Default.Send(AccountMessage.Refresh, temp);
+                Messenger.Default.Send(AccountMessage.Refresh, value);
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction/Income.
         /// </summary>
-        public abstract IPayeeViewModel Payee { get; set; }
+        public virtual IPayeeViewModel Payee
+        {
+            get => _transIncBase.PayeeId == -1
+                ? null
+                : CommonPropertyProvider?.GetPayeeViewModel(_transIncBase.PayeeId);
+            set
+            {
+                if (value == null || value.Id == _transIncBase.PayeeId) return;
+                _transIncBase.PayeeId = value.Id;
+                Update();
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Initializes a TransIncBaseViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
-        protected TransIncBaseViewModel(IBffOrm orm) : base(orm) { }
+        /// <param name="transIncBase">The model.</param>
+        protected TransIncBaseViewModel(IBffOrm orm, ITransIncBase transIncBase) : base(orm, transIncBase)
+        {
+            _transIncBase = transIncBase;
+        }
 
         #region Payee Editing
 
@@ -53,9 +87,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public ICommand AddPayeeCommand => new RelayCommand(obj =>
         {
             IPayee newPayee = new Payee {Name = PayeeText.Trim()};
-            Orm?.CommonPropertyProvider?.Add(newPayee);
+            CommonPropertyProvider?.Add(newPayee);
             OnPropertyChanged(nameof(AllPayees));
-            Payee = Orm?.CommonPropertyProvider?.GetPayeeViewModel(newPayee.Id);
+            Payee = CommonPropertyProvider?.GetPayeeViewModel(newPayee.Id);
         }, obj =>
         {
             string trimmedPayeeText = PayeeText?.Trim();
@@ -66,7 +100,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All currently available Payees.
         /// </summary>
-        public ObservableCollection<IPayeeViewModel> AllPayees => Orm?.CommonPropertyProvider.AllPayeeViewModels;
+        public ObservableCollection<IPayeeViewModel> AllPayees => CommonPropertyProvider?.AllPayeeViewModels;
 
         #endregion
 

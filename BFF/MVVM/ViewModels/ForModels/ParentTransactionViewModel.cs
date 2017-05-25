@@ -1,4 +1,5 @@
-﻿using BFF.DB;
+﻿using System.Collections.Generic;
+using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -12,12 +13,17 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class ParentTransactionViewModel : ParentTransIncViewModel, IParentTransactionViewModel
     {
+        private readonly IParentTransaction _parentTransaction;
+
         /// <summary>
         /// Initializes a ParentTransactionViewModel.
         /// </summary>
         /// <param name="transInc">A ParentTransaction Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public ParentTransactionViewModel(IParentTransaction transInc, IBffOrm orm) : base(transInc, orm) {}
+        public ParentTransactionViewModel(IParentTransaction transInc, IBffOrm orm) : base(transInc, orm)
+        {
+            _parentTransaction = transInc;
+        }
 
         #region Overrides of ParentTransIncViewModel<SubTransaction>
 
@@ -38,6 +44,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override ISubTransInc CreateNewSubElement()
         {
             return new SubTransaction();
+        }
+
+        protected override IEnumerable<ISubTransInc> GetSubTransInc()
+        {
+            return Orm?.GetSubTransInc<SubTransaction>(_parentTransaction.Id);
         }
 
         #endregion

@@ -9,7 +9,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model SubTransaction.
     /// </summary>
-    class SubTransactionViewModel : SubTransIncViewModel, ISubTransactionViewModel
+    public class SubTransactionViewModel : SubTransIncViewModel, ISubTransactionViewModel
     {
         /// <summary>
         /// Initializes a SubTransactionViewModel.
