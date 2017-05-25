@@ -1,4 +1,5 @@
 ﻿using BFF.Helper;
+using BFF.Helper.Import;
 
 namespace BFF.MVVM.Models.Conversion.YNAB
 {
@@ -12,11 +13,11 @@ namespace BFF.MVVM.Models.Conversion.YNAB
 
         public string SubCategory { get; set; }
 
-        public double Budgeted { get; set; }
+        public long Budgeted { get; set; }
 
-        public double Outflow { get; set; }
+        public long Outflow { get; set; }
 
-        public double CategoryBalance { get; set; }
+        public long CategoryBalance { get; set; }
 
         public static readonly string CsvHeader = "\"Month\"	\"Category\"	\"Master Category\"	\"Sub Category\"	\"Budgeted\"	\"Outflows\"	\"Category Balance\"";
 
@@ -42,9 +43,9 @@ namespace BFF.MVVM.Models.Conversion.YNAB
                 Category = entries[1].Trim('"'),
                 MasterCategory = entries[2].Trim('"'),
                 SubCategory = entries[3].Trim('"'),
-                Budgeted = double.Parse(entries[4].TrimEnd('€')),
-                Outflow = double.Parse(entries[5].TrimEnd('€')),
-                CategoryBalance = double.Parse(entries[6].TrimEnd('€'))
+                Budgeted = YnabCsvImport.ExtractLong(entries[4]),
+                Outflow = YnabCsvImport.ExtractLong(entries[5]),
+                CategoryBalance = YnabCsvImport.ExtractLong(entries[6])
             };
             return ret;
         }

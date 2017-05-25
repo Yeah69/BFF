@@ -6,15 +6,19 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using BFF.DB.SQLite;
 using BFF.MVVM;
+using BFF.MVVM.Models.Conversion.YNAB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.Properties;
+using NLog;
 using Transaction = BFF.MVVM.Models.Conversion.YNAB.Transaction;
 
 namespace BFF.Helper.Import
 {
     class YnabCsvImport : ObservableObject, IImportable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public string TransactionPath
         {
             get => _transactionPath;
@@ -62,7 +66,7 @@ namespace BFF.Helper.Import
                 throw new FileNotFoundException(string.Format(exceptionTemplate, BudgetPath));
             if (File.Exists(SavePath))
                 File.Delete(SavePath); //todo: Exception handling
-            ImportYnabTransactionsCsvtoDb(TransactionPath, BudgetPath, SavePath);
+            ImportYnabTransactionsCsvToDb(TransactionPath, BudgetPath, SavePath);
             return SavePath;
          }
 
@@ -70,21 +74,16 @@ namespace BFF.Helper.Import
         internal static readonly Regex PayeePartsRegex = new Regex(@"^(?<payeeStr>.+)?(( / )?Transfer : (?<accountName>.+))?$", RegexOptions.RightToLeft);
         internal static readonly Regex SplitMemoRegex = new Regex(@"^\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) ");
         internal static readonly Regex MemoPartsRegex = new Regex(@"^(\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) )?((?<subTransMemo>.*) / )?(?<parentTransMemo>.*)$");
-        internal static readonly Regex NumberExtractRegex = new Regex(@"\d+");
 
         internal static long ExtractLong(string text)
         {
-            if (NumberExtractRegex.IsMatch(text))
-            {
-                string concatedNumber = NumberExtractRegex.Matches(text).Cast<Match>().Aggregate("", (current, match) => current + match.Value);
-                return long.Parse(concatedNumber);
-            }
-            return 0L;
+            string number = text.ToCharArray().Where(char.IsDigit).Aggregate("", (current, character) => $"{current}{character}");
+            return number == "" ? 0L : long.Parse(number);
         }
 
         public YnabCsvImport(){ }
 
-        public void ImportYnabTransactionsCsvtoDb(string filePathTransaction, string filePathBudget, string savePath)
+        public void ImportYnabTransactionsCsvToDb(string filePathTransaction, string filePathBudget, string savePath)
         {
             //Initialization
             _processedAccountsList.Clear();
@@ -94,7 +93,7 @@ namespace BFF.Helper.Import
             
             //First step: Parse CSV data into conversion objects
             Queue<Transaction> ynabTransactions = new Queue<Transaction>(ParseTransactionCsv(filePathTransaction));
-            //List<BudgetEntry> budgets = ParseBudgetCsv(filePathBudget);
+            IEnumerable<BudgetEntry> budgets = ParseBudgetCsv(filePathBudget);
 
             ImportLists lists = new ImportLists
             {
@@ -167,47 +166,42 @@ namespace BFF.Helper.Import
             }
             return ret;
         }
-
-        /*
-        private static List<BudgetEntry> ParseBudgetCsv(string filePath)
+        
+        private static IEnumerable<BudgetEntry> ParseBudgetCsv(string filePath)
         {
-            var ret = new List<BudgetEntry>();
-            if (File.Exists(filePath))
+            if(!File.Exists(filePath))
             {
-                using (StreamReader streamReader = new StreamReader(new FileStream(filePath, FileMode.Open)))
+                var fileNotFoundException = new FileNotFoundException($"YNAB budget export file '{filePath}' was not found", filePath);
+                Logger.Error(fileNotFoundException, "The file of path {0} does not exist!", filePath);
+                throw fileNotFoundException;
+            }
+
+            return ParseBudgetCsvInner(filePath);
+        }
+
+        private static IEnumerable<BudgetEntry> ParseBudgetCsvInner(string filePath)
+        {
+            using (StreamReader streamReader = new StreamReader(new FileStream(filePath, FileMode.Open)))
+            {
+                string header = streamReader.ReadLine();
+                if (header != BudgetEntry.CsvHeader)
                 {
-                    string header = streamReader.ReadLine();
-                    if (header != Transaction.CsvHeader)
-                    {
-                        Output.WriteLine($"The file of path '{filePath}' is not a valid YNAB transactions CSV.");
-                        return null;
-                    }
-                    Output.WriteLine("Starting to import YNAB transactions from the CSV file.");
-                    Stopwatch stopwatch = new Stopwatch();
-                    stopwatch.Start();
-                    while (!streamReader.EndOfStream)
-                    {
-                        ret.Add(streamReader.ReadLine());
-                    }
-                    BudgetEntry.ToOutput(ret.Last());
-                    stopwatch.Stop();
-                    TimeSpan ts = stopwatch.Elapsed;
-                    string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds/10:00}";
-                    Output.WriteLine($"End of transaction import. Elapsed time was: {elapsedTime}");
+                    var fileFormatException = new FileFormatException(new Uri(filePath), $"The budget file does not start with the YNAB budget header line: '{BudgetEntry.CsvHeader}'");
+                    Logger.Error(fileFormatException, "The budget file does not start with the YNAB budget header line: '{0}'", BudgetEntry.CsvHeader);
+                    throw fileFormatException;
+                }
+                while (!streamReader.EndOfStream)
+                {
+                    string line = streamReader.ReadLine();
+                    if(!string.IsNullOrWhiteSpace(line))
+                        yield return line;
                 }
             }
-            else
-            {
-                Output.WriteLine($"The file of path '{filePath}' does not exist!");
-                return null;
-            }
-            return ret;
         }
-        */
 
         private void ConvertTransactionsToNative(Queue<Transaction> ynabTransactions, ImportLists lists )
         {
-            //Account preprocessing
+            //Account pre-processing
             //First create all available Accounts. The reason for this is to make the Account all assignable from the beginning
             foreach(Transaction ynabTransaction in ynabTransactions.Where(ynabTransaction => ynabTransaction.Payee == "Starting Balance"))
             {
