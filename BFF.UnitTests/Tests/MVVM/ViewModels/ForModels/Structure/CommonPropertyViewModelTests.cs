@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using BFF.DB;
+using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using BFF.Tests.Helper;
+using BFF.Tests.Mocks.DB;
 using NSubstitute;
 using Xunit;
 
 namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
 {
-    public abstract class CommonPropertyViewModelTests<T> : DataModelViewModelTests<T> where T : CommonPropertyViewModel
+    public abstract class CommonPropertyViewModelTests<T> : DataModelViewModelTests<T>  where T : CommonPropertyViewModel
     {
         protected abstract (T, ICommonProperty) CommonPropertyViewModelFactory { get; }
 
@@ -81,6 +85,36 @@ namespace BFF.Tests.Tests.MVVM.ViewModels.ForModels.Structure
 
             //Assert
             mock.DidNotReceive().Name = NameInitialValue;
+        }
+
+        [Fact]
+        public void Insert_AllNonNullCommonPropertyProvider_NotInsertedModel_CallsInsertOnOrm()
+        {
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void Insert_AllNonNullCommonPropertyProvider_InsertedModel_DoesNtCallInsertOnOrm()
+        {
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void Delete_InsertedModel_CallsDeleteOnOrm()
+        {
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void Delete_NotInsertedModel_DoesntCallDeleteOnOrm()
+        {
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void ValidToInsert_AllNonNullCommonPropertyProvider_NotInsertedModel_True()
+        {
+            Assert.True(false);
         }
     }
 }
