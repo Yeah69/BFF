@@ -4,7 +4,7 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface IBudgetEntry
+    public interface IBudgetEntry : IDataModel
     {
         DateTime Month { get; }
         long CategoryId { get; }

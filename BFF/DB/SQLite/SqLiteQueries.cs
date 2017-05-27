@@ -225,6 +225,17 @@ SELECT {nameof(IDataModel.Id)}, -69 AS AccountFiller, {nameof(ITransfer.FromAcco
                         FOREIGN KEY({nameof(ITransfer.ToAccountId)
                     }) REFERENCES {nameof(Account)}s({nameof(IAccount.Id)}) ON DELETE RESTRICT);";
 
+        internal static string CreateBudgetEntryTableStatement
+            =>
+                $@"CREATE TABLE [{nameof(BudgetEntry)}s](
+                        {nameof(IBudgetEntry.Id)} INTEGER PRIMARY KEY,
+                        {nameof(IBudgetEntry.CategoryId)} INTEGER,
+                        {nameof(IBudgetEntry.Month)} DATE,
+                        {nameof(IBudgetEntry.Budget)
+                    } INTEGER,
+                        FOREIGN KEY({nameof(IBudgetEntry.CategoryId)
+                    }) REFERENCES {nameof(Category)}s({nameof(ICategory.Id)}) ON DELETE SET NULL);";
+
         internal static string CreateDbSettingTableStatement
             =>
                 $@"CREATE TABLE [{nameof(DbSetting)}s]({nameof(IDbSetting.Id)} INTEGER PRIMARY KEY, {nameof(IDbSetting.CurrencyCultureName)} VARCHAR(10),

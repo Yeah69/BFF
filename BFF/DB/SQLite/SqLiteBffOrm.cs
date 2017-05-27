@@ -56,6 +56,8 @@ namespace BFF.DB.SQLite
                     cnn.Execute(SqLiteQueries.CreateDbSettingTableStatement);
                     cnn.Insert(new DbSetting());
 
+                    cnn.Execute(SqLiteQueries.CreateBudgetEntryTableStatement);
+
                     cnn.Execute(SqLiteQueries.SetDatabaseSchemaVersion);
 
                     cnn.Execute(SqLiteQueries.CreateTheTitViewStatement);
@@ -70,18 +72,18 @@ namespace BFF.DB.SQLite
         {
             //todo: more performance
             Logger.Info("Populating the current database.");
-            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope(DbTransactions.TransactionScopeOption.RequiresNew, new DbTransactions.TransactionOptions {IsolationLevel = DbTransactions.IsolationLevel.RepeatableRead}))
+            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope(DbTransactions.TransactionScopeOption.Suppress, new DbTransactions.TransactionOptions {IsolationLevel = DbTransactions.IsolationLevel.Chaos, Timeout = TimeSpan.MaxValue}))
             {
                 /*  
                 Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
-                because the structure of the imported csv-Entry of Categories allowes to get the master category first and
+                because the structure of the imported csv-Entry of Categories allows to get the master category first and
                 then the sub category. Thus, the parents id is known beforehand.
                 */
                 Queue<CategoryImportWrapper> categoriesOrder = new Queue<CategoryImportWrapper>(importLists.Categories);
                 while(categoriesOrder.Count > 0)
                 {
                     CategoryImportWrapper current = categoriesOrder.Dequeue();
-                    current.Category.Insert(this);
+                    InsertWithoutTransactionScope(current.Category as Category);
                     foreach(IHaveCategory currentTitAssignment in current.TitAssignments)
                     {
                         currentTitAssignment.CategoryId = current.Category.Id;
@@ -94,15 +96,15 @@ namespace BFF.DB.SQLite
                 }
                 foreach (IPayee payee in importLists.Payees)
                 {
-                    payee.Insert(this);
-                    foreach(ITransIncBase transIncBase in importAssignments.PayeeToTransIncBase[payee])
+                    InsertWithoutTransactionScope(payee as Payee);
+                    foreach (ITransIncBase transIncBase in importAssignments.PayeeToTransIncBase[payee])
                     {
                         transIncBase.PayeeId = payee.Id;
                     }
                 }
                 foreach (IAccount account in importLists.Accounts)
                 {
-                    account.Insert(this);
+                    InsertWithoutTransactionScope(account as Account);
                     foreach(ITransIncBase transIncBase in importAssignments.AccountToTransIncBase[account])
                     {
                         transIncBase.AccountId = account.Id;
@@ -117,34 +119,37 @@ namespace BFF.DB.SQLite
                     }
                 }
                 foreach (ITransaction transaction in importLists.Transactions)
-                    transaction.Insert(this);
+                    InsertWithoutTransactionScope(transaction as Transaction);
                 foreach (IParentTransaction parentTransaction in importLists.ParentTransactions)
                 {
-                    parentTransaction.Insert(this);
+                    InsertWithoutTransactionScope(parentTransaction as ParentTransaction);
                     foreach(ISubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
                     {
                         subTransaction.ParentId = parentTransaction.Id;
                     }
                 }
                 foreach (ISubTransaction subTransaction in importLists.SubTransactions)
-                    subTransaction.Insert(this);
+                    InsertWithoutTransactionScope(subTransaction as SubTransaction);
                 foreach (IIncome income in importLists.Incomes)
-                    income.Insert(this);
+                    InsertWithoutTransactionScope(income as Income);
                 foreach (IParentIncome parentIncome in importLists.ParentIncomes)
                 {
-                    parentIncome.Insert(this);
+                    InsertWithoutTransactionScope(parentIncome as ParentIncome);
                     foreach (ISubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
                     {
                         subIncome.ParentId = parentIncome.Id;
                     }
                 }
                 foreach (ISubIncome subIncome in importLists.SubIncomes)
-                    subIncome.Insert(this);
+                    InsertWithoutTransactionScope(subIncome as SubIncome);
                 foreach (ITransfer transfer in importLists.Transfers)
-                    transfer.Insert(this);
+                    InsertWithoutTransactionScope(transfer as Transfer);
+                foreach(IBudgetEntry budgetEntry in importLists.BudgetEntries)
+                    InsertWithoutTransactionScope(budgetEntry as BudgetEntry);
 
                 transactionScope.Complete();
             }
+            Logger.Info("Finished populating the current database.");
         }
 
         public IEnumerable<ITitBase> GetAllTits(DateTime startDate, DateTime endDate, IAccount account = null)
@@ -255,6 +260,14 @@ namespace BFF.DB.SQLite
                 dataModelBase.Id = ret;
                 transactionScope.Complete();
             }
+            return ret;
+        }
+
+        private long InsertWithoutTransactionScope<T>(T dataModelBase) where T : class, IDataModel
+        {
+            long ret = -1L;
+            ret = Cnn.Insert(dataModelBase);
+            dataModelBase.Id = ret;
             return ret;
         }
 

@@ -171,34 +171,34 @@ namespace BFF.Helper.Import
         
         private static IEnumerable<BudgetEntry> ParseBudgetCsv(string filePath)
         {
-            if(!File.Exists(filePath))
+            IEnumerable<BudgetEntry> ParseBudgetCsvInner()
+            {
+                using (StreamReader streamReader = new StreamReader(new FileStream(filePath, FileMode.Open)))
+                {
+                    string header = streamReader.ReadLine();
+                    if (header != BudgetEntry.CsvHeader)
+                    {
+                        var fileFormatException = new FileFormatException(new Uri(filePath), $"The budget file does not start with the YNAB budget header line: '{BudgetEntry.CsvHeader}'");
+                        Logger.Error(fileFormatException, "The budget file does not start with the YNAB budget header line: '{0}'", BudgetEntry.CsvHeader);
+                        throw fileFormatException;
+                    }
+                    while (!streamReader.EndOfStream)
+                    {
+                        string line = streamReader.ReadLine();
+                        if (!string.IsNullOrWhiteSpace(line))
+                            yield return line;
+                    }
+                }
+            }
+
+            if (!File.Exists(filePath))
             {
                 var fileNotFoundException = new FileNotFoundException($"YNAB budget export file '{filePath}' was not found", filePath);
                 Logger.Error(fileNotFoundException, "The file of path {0} does not exist!", filePath);
                 throw fileNotFoundException;
             }
 
-            return ParseBudgetCsvInner(filePath);
-        }
-
-        private static IEnumerable<BudgetEntry> ParseBudgetCsvInner(string filePath)
-        {
-            using (StreamReader streamReader = new StreamReader(new FileStream(filePath, FileMode.Open)))
-            {
-                string header = streamReader.ReadLine();
-                if (header != BudgetEntry.CsvHeader)
-                {
-                    var fileFormatException = new FileFormatException(new Uri(filePath), $"The budget file does not start with the YNAB budget header line: '{BudgetEntry.CsvHeader}'");
-                    Logger.Error(fileFormatException, "The budget file does not start with the YNAB budget header line: '{0}'", BudgetEntry.CsvHeader);
-                    throw fileFormatException;
-                }
-                while (!streamReader.EndOfStream)
-                {
-                    string line = streamReader.ReadLine();
-                    if(!string.IsNullOrWhiteSpace(line))
-                        yield return line;
-                }
-            }
+            return ParseBudgetCsvInner();
         }
 
         private void ConvertTransactionsToNative(Queue<Transaction> ynabTransactions, ImportLists lists)
@@ -264,14 +264,17 @@ namespace BFF.Helper.Import
             {
                 foreach(var ynabBudgetEntry in ynabBudgetEntries)
                 {
-                    var month = DateTime.ParseExact(ynabBudgetEntry.Month, "MMMM yyyy", null);
-                    var budgetEntry = new MVVM.Models.Native.BudgetEntry(month)
+                    if(ynabBudgetEntry.Budgeted != 0L)
                     {
-                        Budget = ynabBudgetEntry.Budgeted
-                    };
+                        var month = DateTime.ParseExact(ynabBudgetEntry.Month, "MMMM yyyy", null);
+                        var budgetEntry = new MVVM.Models.Native.BudgetEntry(month)
+                        {
+                            Budget = ynabBudgetEntry.Budgeted
+                        };
 
-                    AssignCategory(ynabBudgetEntry.Category, budgetEntry);
-                    yield return budgetEntry;
+                        AssignCategory(ynabBudgetEntry.Category, budgetEntry);
+                        yield return budgetEntry;
+                    }
                 }
             }
             
