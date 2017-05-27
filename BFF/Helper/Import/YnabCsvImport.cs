@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using BFF.DB.SQLite;
 using BFF.MVVM;
@@ -11,6 +12,7 @@ using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.Properties;
 using NLog;
+using BudgetEntry = BFF.MVVM.Models.Conversion.YNAB.BudgetEntry;
 using Transaction = BFF.MVVM.Models.Conversion.YNAB.Transaction;
 
 namespace BFF.Helper.Import
@@ -111,7 +113,7 @@ namespace BFF.Helper.Import
 
             //Second step: Convert conversion objects into native models
             ConvertTransactionsToNative(ynabTransactions, lists);
-            //Todo: List<Native.Budget> nativeBudgets = budgets.Select(budget => (Native.Budget)budget).ToList();
+            lists.BudgetEntries = ConvertBudgetEntryToNative(budgets).ToList();
             lists.Accounts = GetAllAccountCache();
             lists.Payees = GetAllPayeeCache();
             lists.Categories = _categoryImportWrappers;
@@ -199,7 +201,7 @@ namespace BFF.Helper.Import
             }
         }
 
-        private void ConvertTransactionsToNative(Queue<Transaction> ynabTransactions, ImportLists lists )
+        private void ConvertTransactionsToNative(Queue<Transaction> ynabTransactions, ImportLists lists)
         {
             //Account pre-processing
             //First create all available Accounts. The reason for this is to make the Account all assignable from the beginning
@@ -254,6 +256,28 @@ namespace BFF.Helper.Import
                         lists.Transactions.Add(TransformToTransaction(ynabTransaction));
                 }
             }
+        }
+
+        private IEnumerable<IBudgetEntry> ConvertBudgetEntryToNative(IEnumerable<BudgetEntry> ynabBudgetEntries)
+        {
+            IEnumerable<MVVM.Models.Native.BudgetEntry> ConvertBudgetEntryToNativeInner()
+            {
+                foreach(var ynabBudgetEntry in ynabBudgetEntries)
+                {
+                    var month = DateTime.ParseExact(ynabBudgetEntry.Month, "MMMM yyyy", null);
+                    var budgetEntry = new MVVM.Models.Native.BudgetEntry(month)
+                    {
+                        Budget = ynabBudgetEntry.Budgeted
+                    };
+
+                    AssignCategory(ynabBudgetEntry.Category, budgetEntry);
+                    yield return budgetEntry;
+                }
+            }
+            
+            if(ynabBudgetEntries == null) throw new ArgumentNullException(nameof(ynabBudgetEntries));
+
+            return ConvertBudgetEntryToNativeInner();
         }
 
         private string _transactionPath;

@@ -26,6 +26,8 @@ namespace BFF.Helper.Import
 
         public IList<ISubTransaction> SubTransactions;
         public IList<ISubIncome> SubIncomes;
+
+        public IList<IBudgetEntry> BudgetEntries;
     }
 
     public struct ImportAssignments

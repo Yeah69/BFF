@@ -249,6 +249,7 @@
     <Compile Include="MVVM\Converters.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
+    <Compile Include="MVVM\Models\Native\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Native\Structure\IHaveCategory.cs" />
     <Compile Include="MVVM\Models\Native\Structure\ParentTransInc.cs" />
     <Compile Include="MVVM\Models\Native\Structure\TransInc.cs" />
