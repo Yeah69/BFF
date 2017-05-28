@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
@@ -22,11 +21,13 @@ namespace BFF.DB.SQLite
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        protected SQLiteConnection Cnn = new SQLiteConnection();
-
         private readonly string _dbPath;
 
         public string DbPath => _dbPath;
+
+        protected string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;";
+
+        private const string TheTitName = "The Tit";
 
         public static void CreateNewDatabase(string dbPath)
         {
@@ -34,61 +35,61 @@ namespace BFF.DB.SQLite
             if (File.Exists(dbPath)) //todo: This will make problems
                 File.Delete(dbPath);
             SQLiteConnection.CreateFile(dbPath);
-            using(SQLiteConnection cnn = new SQLiteConnection($"Data Source={dbPath};Version=3;foreign keys=true;"))
+
+            using(DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
+            using (SQLiteConnection cnn = new SQLiteConnection($"Data Source={dbPath};Version=3;foreign keys=true;"))
             {
                 cnn.Open();
-                using(DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
-                {
-                    cnn.Execute(SqLiteQueries.CreatePayeeTableStatement);
-                    cnn.Execute(SqLiteQueries.CreateCategoryTableStatement);
-                    cnn.Execute(SqLiteQueries.CreateAccountTableStatement);
+                cnn.Execute(SqLiteQueries.CreatePayeeTableStatement);
+                cnn.Execute(SqLiteQueries.CreateCategoryTableStatement);
+                cnn.Execute(SqLiteQueries.CreateAccountTableStatement);
 
-                    cnn.Execute(SqLiteQueries.CreateTransactionTableStatement);
-                    cnn.Execute(SqLiteQueries.CreateParentTransactionTableStatement);
-                    cnn.Execute(SqLiteQueries.CreateSubTransactionTableStatement);
+                cnn.Execute(SqLiteQueries.CreateTransactionTableStatement);
+                cnn.Execute(SqLiteQueries.CreateParentTransactionTableStatement);
+                cnn.Execute(SqLiteQueries.CreateSubTransactionTableStatement);
 
-                    cnn.Execute(SqLiteQueries.CreateIncomeTableStatement);
-                    cnn.Execute(SqLiteQueries.CreateParentIncomeTableStatement);
-                    cnn.Execute(SqLiteQueries.CreateSubIncomeTableStatement);
+                cnn.Execute(SqLiteQueries.CreateIncomeTableStatement);
+                cnn.Execute(SqLiteQueries.CreateParentIncomeTableStatement);
+                cnn.Execute(SqLiteQueries.CreateSubIncomeTableStatement);
 
-                    cnn.Execute(SqLiteQueries.CreateTransferTableStatement);
+                cnn.Execute(SqLiteQueries.CreateTransferTableStatement);
 
-                    cnn.Execute(SqLiteQueries.CreateDbSettingTableStatement);
-                    cnn.Insert(new DbSetting());
+                cnn.Execute(SqLiteQueries.CreateDbSettingTableStatement);
+                cnn.Insert(new DbSetting());
 
-                    cnn.Execute(SqLiteQueries.CreateBudgetEntryTableStatement);
+                cnn.Execute(SqLiteQueries.CreateBudgetEntryTableStatement);
 
-                    cnn.Execute(SqLiteQueries.SetDatabaseSchemaVersion);
+                cnn.Execute(SqLiteQueries.SetDatabaseSchemaVersion);
 
-                    cnn.Execute(SqLiteQueries.CreateTheTitViewStatement);
+                cnn.Execute(SqLiteQueries.CreateTheTitViewStatement);
 
-                    transactionScope.Complete();
-                }
+                transactionScope.Complete();
                 cnn.Close();
             }
         }
 
         public void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments)
         {
-            //todo: more performance
             Logger.Info("Populating the current database.");
-            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope(DbTransactions.TransactionScopeOption.Required, new DbTransactions.TransactionOptions {IsolationLevel = DbTransactions.IsolationLevel.RepeatableRead, Timeout = TimeSpan.FromHours(1)}))
+            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
+            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
             {
+                cnn.Open();
                 /*  
                 Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
                 because the structure of the imported csv-Entry of Categories allows to get the master category first and
                 then the sub category. Thus, the parents id is known beforehand.
                 */
                 Queue<CategoryImportWrapper> categoriesOrder = new Queue<CategoryImportWrapper>(importLists.Categories);
-                while(categoriesOrder.Count > 0)
+                while (categoriesOrder.Count > 0)
                 {
                     CategoryImportWrapper current = categoriesOrder.Dequeue();
-                    InsertWithoutTransactionScope(current.Category as Category);
-                    foreach(IHaveCategory currentTitAssignment in current.TitAssignments)
+                    current.Category.Id = cnn.Insert(current.Category as Category);
+                    foreach (IHaveCategory currentTitAssignment in current.TitAssignments)
                     {
                         currentTitAssignment.CategoryId = current.Category.Id;
                     }
-                    foreach(CategoryImportWrapper categoryImportWrapper in current.Categories)
+                    foreach (CategoryImportWrapper categoryImportWrapper in current.Categories)
                     {
                         categoryImportWrapper.Category.ParentId = current.Category.Id;
                         categoriesOrder.Enqueue(categoryImportWrapper);
@@ -96,7 +97,7 @@ namespace BFF.DB.SQLite
                 }
                 foreach (IPayee payee in importLists.Payees)
                 {
-                    InsertWithoutTransactionScope(payee as Payee);
+                    payee.Id = cnn.Insert(payee as Payee);
                     foreach (ITransIncBase transIncBase in importAssignments.PayeeToTransIncBase[payee])
                     {
                         transIncBase.PayeeId = payee.Id;
@@ -104,50 +105,51 @@ namespace BFF.DB.SQLite
                 }
                 foreach (IAccount account in importLists.Accounts)
                 {
-                    InsertWithoutTransactionScope(account as Account);
-                    foreach(ITransIncBase transIncBase in importAssignments.AccountToTransIncBase[account])
+                    account.Id = cnn.Insert(account as Account);
+                    foreach (ITransIncBase transIncBase in importAssignments.AccountToTransIncBase[account])
                     {
                         transIncBase.AccountId = account.Id;
                     }
-                    foreach(ITransfer transfer in importAssignments.FromAccountToTransfer[account])
+                    foreach (ITransfer transfer in importAssignments.FromAccountToTransfer[account])
                     {
                         transfer.FromAccountId = account.Id;
                     }
-                    foreach(ITransfer transfer in importAssignments.ToAccountToTransfer[account])
+                    foreach (ITransfer transfer in importAssignments.ToAccountToTransfer[account])
                     {
                         transfer.ToAccountId = account.Id;
                     }
                 }
                 foreach (ITransaction transaction in importLists.Transactions)
-                    InsertWithoutTransactionScope(transaction as Transaction);
+                    cnn.Insert(transaction as Transaction);
                 foreach (IParentTransaction parentTransaction in importLists.ParentTransactions)
                 {
-                    InsertWithoutTransactionScope(parentTransaction as ParentTransaction);
-                    foreach(ISubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
+                    parentTransaction.Id = cnn.Insert(parentTransaction as ParentTransaction);
+                    foreach (ISubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
                     {
                         subTransaction.ParentId = parentTransaction.Id;
                     }
                 }
                 foreach (ISubTransaction subTransaction in importLists.SubTransactions)
-                    InsertWithoutTransactionScope(subTransaction as SubTransaction);
+                    cnn.Insert(subTransaction as SubTransaction);
                 foreach (IIncome income in importLists.Incomes)
-                    InsertWithoutTransactionScope(income as Income);
+                    cnn.Insert(income as Income);
                 foreach (IParentIncome parentIncome in importLists.ParentIncomes)
                 {
-                    InsertWithoutTransactionScope(parentIncome as ParentIncome);
+                    parentIncome.Id = cnn.Insert(parentIncome as ParentIncome);
                     foreach (ISubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
                     {
                         subIncome.ParentId = parentIncome.Id;
                     }
                 }
                 foreach (ISubIncome subIncome in importLists.SubIncomes)
-                    InsertWithoutTransactionScope(subIncome as SubIncome);
+                    cnn.Insert(subIncome as SubIncome);
                 foreach (ITransfer transfer in importLists.Transfers)
-                    InsertWithoutTransactionScope(transfer as Transfer);
-                foreach(IBudgetEntry budgetEntry in importLists.BudgetEntries)
-                    InsertWithoutTransactionScope(budgetEntry as BudgetEntry);
+                    cnn.Insert(transfer as Transfer);
+                foreach (IBudgetEntry budgetEntry in importLists.BudgetEntries)
+                    cnn.Insert(budgetEntry as BudgetEntry);
 
                 transactionScope.Complete();
+                cnn.Close();
             }
             Logger.Info("Finished populating the current database.");
         }
@@ -170,10 +172,13 @@ namespace BFF.DB.SQLite
             };
 
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
+            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
             {
-                results = Cnn.Query(sql, types, _theTitMap, account == null ? null : new { accountId = account.Id }, splitOn: "*");
+                cnn.Open();
+                results = cnn.Query(sql, types, _theTitMap, account == null ? null : new { accountId = account.Id }, splitOn: "*");
 
                 transactionScope.Complete();
+                cnn.Close();
             }
             return results;
         }
@@ -184,18 +189,22 @@ namespace BFF.DB.SQLite
             long ret;
 
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
+            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
             {
+                cnn.Open();
                 try
                 {
-                    ret = Cnn.Query<long>(SqLiteQueries.AccountSpecificBalanceStatement, new { accountId = account?.Id ?? -1 }).First();
+                    ret = cnn.Query<long>(SqLiteQueries.AccountSpecificBalanceStatement, new { accountId = account?.Id ?? -1 }).First();
                 }
                 catch (OverflowException)
                 {
                     transactionScope.Complete();
+                    cnn.Close();
                     return null;
                 }
 
                 transactionScope.Complete();
+                cnn.Close();
             }
 
             return ret;
@@ -207,18 +216,22 @@ namespace BFF.DB.SQLite
             long ret;
 
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
+            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
             {
+                cnn.Open();
                 try
                 {
-                    ret = Cnn.Query<long>(SqLiteQueries.AllAccountsBalanceStatement).First();
+                    ret = cnn.Query<long>(SqLiteQueries.AllAccountsBalanceStatement).First();
                 }
                 catch (OverflowException)
                 {
                     transactionScope.Complete();
+                    cnn.Close();
                     return null;
                 }
 
                 transactionScope.Complete();
+                cnn.Close();
             }
 
             return ret;
@@ -229,11 +242,14 @@ namespace BFF.DB.SQLite
             Logger.Debug("Getting SubTransactions/SubIncomes from table {0} with the ParentId {1}.", typeof(T).Name, parentId);
             IEnumerable<ISubTransInc> ret;
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
+            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
             {
+                cnn.Open();
                 string query = $"SELECT * FROM [{typeof(T).Name}s] WHERE {nameof(ISubTransInc.ParentId)} = @id;";
-                ret = Cnn.Query<T>(query, new { id = parentId }).Cast<ISubTransInc>();
+                ret = cnn.Query<T>(query, new { id = parentId }).Cast<ISubTransInc>();
 
                 transactionScope.Complete();
+                cnn.Close();
             }
             return ret;
         }
@@ -243,9 +259,12 @@ namespace BFF.DB.SQLite
             Logger.Debug("Getting all entries from table {0}.", typeof(T).Name);
             IEnumerable<T> ret;
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
+            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
             {
-                ret = Cnn.GetAll<T>();
+                cnn.Open();
+                ret = cnn.GetAll<T>();
                 transactionScope.Complete();
+                cnn.Close();
             }
             return ret;
         }
@@ -255,19 +274,14 @@ namespace BFF.DB.SQLite
             Logger.Debug("Insert an entry into table {0}.", typeof(T).Name);
             long ret = -1L;
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
+            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
             {
-                ret = Cnn.Insert(dataModelBase);
+                cnn.Open();
+                ret = cnn.Insert(dataModelBase);
                 dataModelBase.Id = ret;
                 transactionScope.Complete();
+                cnn.Close();
             }
-            return ret;
-        }
-
-        private long InsertWithoutTransactionScope<T>(T dataModelBase) where T : class, IDataModel
-        {
-            long ret = -1L;
-            ret = Cnn.Insert(dataModelBase);
-            dataModelBase.Id = ret;
             return ret;
         }
 
@@ -275,9 +289,12 @@ namespace BFF.DB.SQLite
         {
             T ret;
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
+            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
             {
-                ret = Cnn.Get<T>(id);
+                cnn.Open();
+                ret = cnn.Get<T>(id);
                 transactionScope.Complete();
+                cnn.Close();
             }
             return ret;
         }
@@ -285,9 +302,12 @@ namespace BFF.DB.SQLite
         public void Update<T>(T dataModelBase) where T : class, IDataModel
         {
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
+            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
             {
-                Cnn.Update<T>(dataModelBase);
+                cnn.Open();
+                cnn.Update<T>(dataModelBase);
                 transactionScope.Complete();
+                cnn.Close();
             }
         }
 
@@ -295,15 +315,14 @@ namespace BFF.DB.SQLite
         {
             Logger.Debug("Delete an entry from table {0}.", typeof(T).Name);
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
+            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
             {
-                Cnn.Delete(dataModelBase);
+                cnn.Open();
+                cnn.Delete(dataModelBase);
                 transactionScope.Complete();
+                cnn.Close();
             }
         }
-
-        protected string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;";
-
-        private const string TheTitName = "The Tit";
 
         private readonly Func<object[], ITitBase> _theTitMap = objArr =>
         {
@@ -348,13 +367,6 @@ namespace BFF.DB.SQLite
         public SqLiteBffOrm(string dbPath)
         {
             _dbPath = dbPath;
-            if (Cnn.State != ConnectionState.Closed)
-                Cnn.Close();
-            if (File.Exists(DbPath))
-            {
-                Cnn.ConnectionString = ConnectionString;
-                Cnn.Open();
-            }
 
             CommonPropertyProvider = new CommonPropertyProvider(this);
         }
@@ -364,11 +376,13 @@ namespace BFF.DB.SQLite
             Logger.Debug("Getting a page of entries from table {0} of page size {1} by offset {2}.", typeof(T).Name, pageSize, offset);
             IEnumerable<T> ret;
             using (DbTransactions.TransactionScope cnnTransaction = new DbTransactions.TransactionScope())
+            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
             {
+                cnn.Open();
                 if (typeof(T) != typeof(ITitBase))
                 {
                     string query = $"SELECT * FROM [{typeof(T).Name}s] LIMIT {offset}, {pageSize};";
-                    ret = Cnn.Query<T>(query);
+                    ret = cnn.Query<T>(query);
                 }
                 else
                 {
@@ -382,9 +396,10 @@ namespace BFF.DB.SQLite
                         typeof (long), typeof (long), typeof (long), typeof (long),
                         typeof (DateTime), typeof (string), typeof (long), typeof (bool), typeof(string)
                     };
-                    ret = Cnn.Query(query, types, _theTitMap, splitOn: "*").Cast<T>();
+                    ret = cnn.Query(query, types, _theTitMap, splitOn: "*").Cast<T>();
                 }
                 cnnTransaction.Complete();
+                cnn.Close();
             }
             return ret;
         }
@@ -406,9 +421,12 @@ namespace BFF.DB.SQLite
             }
 
             using (DbTransactions.TransactionScope cnnTransaction = new DbTransactions.TransactionScope())
+            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
             {
-                ret = Cnn.Query<int>(query).First();
+                cnn.Open();
+                ret = cnn.Query<int>(query).First();
                 cnnTransaction.Complete();
+                cnn.Close();
             }
             return ret;
         }
