@@ -21,9 +21,7 @@ namespace BFF.DB.SQLite
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly string _dbPath;
-
-        public string DbPath => _dbPath;
+        public string DbPath { get; }
 
         protected string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;";
 
@@ -64,7 +62,6 @@ namespace BFF.DB.SQLite
                 cnn.Execute(SqLiteQueries.CreateTheTitViewStatement);
 
                 transactionScope.Complete();
-                cnn.Close();
             }
         }
 
@@ -149,7 +146,6 @@ namespace BFF.DB.SQLite
                     cnn.Insert(budgetEntry as BudgetEntry);
 
                 transactionScope.Complete();
-                cnn.Close();
             }
             Logger.Info("Finished populating the current database.");
         }
@@ -178,7 +174,6 @@ namespace BFF.DB.SQLite
                 results = cnn.Query(sql, types, _theTitMap, account == null ? null : new { accountId = account.Id }, splitOn: "*");
 
                 transactionScope.Complete();
-                cnn.Close();
             }
             return results;
         }
@@ -198,13 +193,10 @@ namespace BFF.DB.SQLite
                 }
                 catch (OverflowException)
                 {
-                    transactionScope.Complete();
-                    cnn.Close();
                     return null;
                 }
 
                 transactionScope.Complete();
-                cnn.Close();
             }
 
             return ret;
@@ -225,13 +217,10 @@ namespace BFF.DB.SQLite
                 }
                 catch (OverflowException)
                 {
-                    transactionScope.Complete();
-                    cnn.Close();
                     return null;
                 }
 
                 transactionScope.Complete();
-                cnn.Close();
             }
 
             return ret;
@@ -249,7 +238,6 @@ namespace BFF.DB.SQLite
                 ret = cnn.Query<T>(query, new { id = parentId }).Cast<ISubTransInc>();
 
                 transactionScope.Complete();
-                cnn.Close();
             }
             return ret;
         }
@@ -264,7 +252,6 @@ namespace BFF.DB.SQLite
                 cnn.Open();
                 ret = cnn.GetAll<T>();
                 transactionScope.Complete();
-                cnn.Close();
             }
             return ret;
         }
@@ -272,7 +259,7 @@ namespace BFF.DB.SQLite
         public long Insert<T>(T dataModelBase) where T : class, IDataModel
         {
             Logger.Debug("Insert an entry into table {0}.", typeof(T).Name);
-            long ret = -1L;
+            long ret;
             using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
             using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
             {
@@ -280,7 +267,6 @@ namespace BFF.DB.SQLite
                 ret = cnn.Insert(dataModelBase);
                 dataModelBase.Id = ret;
                 transactionScope.Complete();
-                cnn.Close();
             }
             return ret;
         }
@@ -294,7 +280,6 @@ namespace BFF.DB.SQLite
                 cnn.Open();
                 ret = cnn.Get<T>(id);
                 transactionScope.Complete();
-                cnn.Close();
             }
             return ret;
         }
@@ -307,7 +292,6 @@ namespace BFF.DB.SQLite
                 cnn.Open();
                 cnn.Update<T>(dataModelBase);
                 transactionScope.Complete();
-                cnn.Close();
             }
         }
 
@@ -320,7 +304,6 @@ namespace BFF.DB.SQLite
                 cnn.Open();
                 cnn.Delete(dataModelBase);
                 transactionScope.Complete();
-                cnn.Close();
             }
         }
 
@@ -366,7 +349,7 @@ namespace BFF.DB.SQLite
 
         public SqLiteBffOrm(string dbPath)
         {
-            _dbPath = dbPath;
+            DbPath = dbPath;
 
             CommonPropertyProvider = new CommonPropertyProvider(this);
         }
@@ -399,7 +382,6 @@ namespace BFF.DB.SQLite
                     ret = cnn.Query(query, types, _theTitMap, splitOn: "*").Cast<T>();
                 }
                 cnnTransaction.Complete();
-                cnn.Close();
             }
             return ret;
         }
@@ -426,7 +408,6 @@ namespace BFF.DB.SQLite
                 cnn.Open();
                 ret = cnn.Query<int>(query).First();
                 cnnTransaction.Complete();
-                cnn.Close();
             }
             return ret;
         }
