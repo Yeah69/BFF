@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              Startup="Application_Startup">
     <!--DispatcherUnhandledException="Application_DispatcherUnhandledException">-->
     <Application.Resources>
@@ -23,10 +24,10 @@
             <SolidColorBrush x:Key="TransferBrush" Color="RoyalBlue" />
             <SolidColorBrush x:Key="NeutralBrush" Color="DimGray" />
             <SolidColorBrush x:Key="DataGridSecondRowBrush" Color="#CF363636" />
-            <metro:PackIconMaterialKind x:Key="AddIcon">PlusOne</metro:PackIconMaterialKind>
-            <metro:PackIconMaterialKind x:Key="AccountIcon">CreditCard</metro:PackIconMaterialKind>
-            <metro:PackIconMaterialKind x:Key="AllAccountsIcon">CreditCardMultiple</metro:PackIconMaterialKind>
-            <metro:PackIconMaterialKind x:Key="SettingsIcon">Settings</metro:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="AddIcon">PlusOne</iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="AccountIcon">CreditCard</iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="AllAccountsIcon">CreditCardMultiple</iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="SettingsIcon">Settings</iconPacks:PackIconMaterialKind>
 
             <system:Double x:Key="IconSize">20.0</system:Double>
             <system:Double x:Key="TabHeaderIconSize">30.0</system:Double>
@@ -40,3 +41,18 @@
         </ResourceDictionary>
     </Application.Resources>
 </Application>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

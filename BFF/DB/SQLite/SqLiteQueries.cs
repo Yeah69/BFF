@@ -55,14 +55,6 @@ SELECT {nameof(IDataModel.Id)}, -69 AS AccountFiller, {nameof(ITransfer.FromAcco
                         {nameof(IAccount.StartingBalance)
                     } INTEGER NOT NULL DEFAULT 0);";
 
-        // todo: Seems not legit the Budget Table Statement
-        //                private static string CreateBudgetTableStatement
-        //                    =>
-        //                        $@"CREATE TABLE [{nameof(Budget)}s](
-        //                                {nameof(Budget.Id)
-        //                            } INTEGER PRIMARY KEY,
-        //                                {nameof(Budget.MonthYear)} DATE);";
-
         internal static string CreateCategoryTableStatement
             =>
                 $@"CREATE TABLE [{nameof(Category)}s](

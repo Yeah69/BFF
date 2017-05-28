@@ -72,7 +72,7 @@ namespace BFF.DB.SQLite
         {
             //todo: more performance
             Logger.Info("Populating the current database.");
-            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope(DbTransactions.TransactionScopeOption.Suppress, new DbTransactions.TransactionOptions {IsolationLevel = DbTransactions.IsolationLevel.Chaos, Timeout = TimeSpan.MaxValue}))
+            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope(DbTransactions.TransactionScopeOption.Required, new DbTransactions.TransactionOptions {IsolationLevel = DbTransactions.IsolationLevel.RepeatableRead, Timeout = TimeSpan.FromHours(1)}))
             {
                 /*  
                 Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,

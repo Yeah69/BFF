@@ -9,6 +9,7 @@
         xmlns:views="clr-namespace:BFF.MVVM.Views"
         xmlns:viewModel="clr-namespace:BFF.MVVM.ViewModels"
         xmlns:mvvm="clr-namespace:BFF.MVVM"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         lex:LocalizeDictionary.DesignCulture="en-US"
         lex:ResxLocalizationProvider.DefaultAssembly="BFF"
         lex:ResxLocalizationProvider.DefaultDictionary="Resources"
@@ -137,7 +138,7 @@
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button Name="SettingsButt" Click="SettingsButt_Click">
-                <metro:PackIconMaterial Kind="{StaticResource SettingsIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" />
+                <iconPacks:PackIconMaterial Kind="{StaticResource SettingsIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" />
             </Button>
             <Button Name="AboutButt" Content="{lex:Loc MainWindow_About}"/>
         </controls:WindowCommands>

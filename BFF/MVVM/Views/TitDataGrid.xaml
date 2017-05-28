@@ -10,6 +10,7 @@
              xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              xmlns:structure="clr-namespace:BFF.MVVM.ViewModels.ForModels.Structure"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              x:Name="Root">
@@ -24,13 +25,13 @@
             </ResourceDictionary.MergedDictionaries>
 
             <!--#region Icons -->
-            <metro:PackIconMaterialKind x:Key="TransactionIcon">Logout</metro:PackIconMaterialKind>
-            <metro:PackIconMaterialKind x:Key="IncomeIcon">Login</metro:PackIconMaterialKind>
-            <metro:PackIconMaterialKind x:Key="TransferIcon">ShuffleVariant</metro:PackIconMaterialKind>
-            <metro:PackIconMaterialKind x:Key="PlaceholderIcon">ClockFast</metro:PackIconMaterialKind>
-            <metro:PackIconMaterialKind x:Key="ParentIcon">Sitemap</metro:PackIconMaterialKind>
-            <metro:PackIconMaterialKind x:Key="AddToTableIcon">TableRowPlusAfter</metro:PackIconMaterialKind>
-            <metro:PackIconMaterialKind x:Key="RemoveFromTableIcon">TableRowRemove</metro:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="TransactionIcon">Logout</iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="IncomeIcon">Login</iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="TransferIcon">ShuffleVariant</iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="PlaceholderIcon">ClockFast</iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="ParentIcon">Sitemap</iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="AddToTableIcon">TableRowPlusAfter</iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="RemoveFromTableIcon">TableRowRemove</iconPacks:PackIconMaterialKind>
             <!--#endregion -->
 
             <Style x:Key="CellContent" TargetType="ContentControl">
@@ -44,7 +45,7 @@
                 <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
 
-            <Style x:Key="CellIconMaterial" TargetType="metro:PackIconMaterial">
+            <Style x:Key="CellIconMaterial" TargetType="iconPacks:PackIconMaterial">
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Height" Value="{StaticResource IconSize}" />
                 <Setter Property="Width" Value="{StaticResource IconSize}" />
@@ -53,7 +54,7 @@
             <ContextMenu x:Key="RowMenu">
                 <MenuItem Header="{lex:Loc AccountView_ConMenu_Delete}" Command="{Binding DeleteCommand}">
                     <MenuItem.Icon>
-                        <metro:PackIconMaterial Kind="{StaticResource RemoveFromTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{StaticResource BlackBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource RemoveFromTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{StaticResource BlackBrush}" />
                     </MenuItem.Icon>
                 </MenuItem>
             </ContextMenu>
@@ -81,22 +82,22 @@
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type forModels:TransactionViewModel}">
-                            <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Foreground="{DynamicResource TransactionBrush}" Style="{StaticResource CellIconMaterial}" />
+                            <iconPacks:PackIconMaterial Kind="{StaticResource TransactionIcon}" Foreground="{DynamicResource TransactionBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
-                            <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Foreground="{DynamicResource TransactionBrush}" Style="{StaticResource CellIconMaterial}" />
+                            <iconPacks:PackIconMaterial Kind="{StaticResource TransactionIcon}" Foreground="{DynamicResource TransactionBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:IncomeViewModel}">
-                            <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Foreground="{DynamicResource IncomeBrush}" Style="{StaticResource CellIconMaterial}" />
+                            <iconPacks:PackIconMaterial Kind="{StaticResource IncomeIcon}" Foreground="{DynamicResource IncomeBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
-                            <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Foreground="{DynamicResource IncomeBrush}" Style="{StaticResource CellIconMaterial}" />
+                            <iconPacks:PackIconMaterial Kind="{StaticResource IncomeIcon}" Foreground="{DynamicResource IncomeBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <metro:PackIconMaterial Kind="{StaticResource TransferIcon}" Foreground="{DynamicResource TransferBrush}" Style="{StaticResource CellIconMaterial}" />
+                            <iconPacks:PackIconMaterial Kind="{StaticResource TransferIcon}" Foreground="{DynamicResource TransferBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}">
-                            <metro:PackIconMaterial Kind="{StaticResource PlaceholderIcon}" Foreground="{DynamicResource BlackBrush}" Style="{StaticResource CellIconMaterial}" />
+                            <iconPacks:PackIconMaterial Kind="{StaticResource PlaceholderIcon}" Foreground="{DynamicResource BlackBrush}" Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
@@ -172,7 +173,7 @@
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding FromAccount.Name}" Style="{StaticResource CellTextBlock}" />
-                                <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" />
+                                <iconPacks:PackIconMaterial Kind="{StaticResource TransactionIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" />
                             </StackPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
@@ -185,7 +186,7 @@
                         <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}" >
                             <DockPanel LastChildFill="True">
                                 <Button DockPanel.Dock="Right" x:Name="AddPayeeButton" Command="{Binding AddPayeeCommand}" Padding="0">
-                                    <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Foreground="{DynamicResource BlackColorBrush}" Style="{StaticResource CellIconMaterial}" />
+                                    <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Foreground="{DynamicResource BlackColorBrush}" Style="{StaticResource CellIconMaterial}" />
                                 </Button>
                                 <Popup PlacementTarget="{Binding ElementName=AddPayeeButton}" Placement="Bottom" PopupAnimation="Slide"
                                        IsOpen="{Binding ElementName=AddPayeeButton, Path=IsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
@@ -237,18 +238,18 @@
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
                             <Button Command="{Binding OpenParentTitView}" CommandParameter="{Binding Account}" BorderThickness="0" HorizontalContentAlignment="Left" Margin="0" Padding="0" Background="Transparent">
-                                <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
+                                <iconPacks:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                             </Button>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
                             <Button Command="{Binding OpenParentTitView}" CommandParameter="{Binding Account}" BorderThickness="0" HorizontalContentAlignment="Left" Margin="0" Padding="0" Background="Transparent">
-                                <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
+                                <iconPacks:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                             </Button>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding ToAccount.Name}" Style="{StaticResource CellTextBlock}" />
-                                <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" />
+                                <iconPacks:PackIconMaterial Kind="{StaticResource IncomeIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" />
                             </StackPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
@@ -265,7 +266,7 @@
                                                       ItemsSource="{Binding AllCategories}">
                                     <controls:SplitButton.IconTemplate>
                                         <DataTemplate>
-                                            <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Foreground="{DynamicResource BlackColorBrush}" Style="{StaticResource CellIconMaterial}" />
+                                            <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Foreground="{DynamicResource BlackColorBrush}" Style="{StaticResource CellIconMaterial}" />
                                         </DataTemplate>
                                     </controls:SplitButton.IconTemplate>
                                 </controls:SplitButton>
@@ -290,11 +291,11 @@
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
                             <!-- todo -->
-                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
+                            <iconPacks:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
                             <!-- todo -->
-                            <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
+                            <iconPacks:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <ComboBox TextSearch.TextPath="Name"
@@ -492,10 +493,10 @@
                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingTemplatePart}" />
                     <DockPanel Background="{DynamicResource WhiteBrush}">
                         <Button ToolTip="New Subelement" Command="{Binding NewSubElementCommand}">
-                            <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                            <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                         </Button>
                         <Button ToolTip="Add to the table" Command="{Binding ApplyCommand}" HorizontalAlignment="Right">
-                            <metro:PackIconMaterial Kind="{StaticResource AddToTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                            <iconPacks:PackIconMaterial Kind="{StaticResource AddToTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                         </Button>
                     </DockPanel>
                 </StackPanel>
@@ -504,7 +505,7 @@
                 <StackPanel>
                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SubElementsEditingTemplatePart}" />
                     <Button ToolTip="New Subelement" Command="{Binding NewSubElementCommand}" HorizontalAlignment="Left">
-                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                     </Button>
                 </StackPanel>
             </DataTemplate>
@@ -761,41 +762,168 @@
             <DockPanel>
                 <Button ToolTip="{lex:Loc AccountView_ToolTip_NewTransaction}" Command="{Binding NewTransactionCommand}" Visibility="{Binding NewTransactionVisibility}">
                     <StackPanel Orientation="Horizontal">
-                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
                     </StackPanel>
                 </Button>
                 <Button ToolTip="{lex:Loc AccountView_ToolTip_NewIncome}" Command="{Binding NewIncomeCommand}" Visibility="{Binding NewIncomeVisibility}">
                     <StackPanel Orientation="Horizontal">
-                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
                     </StackPanel>
                 </Button>
                 <Button ToolTip="{lex:Loc AccountView_ToolTip_NewTransfer}" Command="{Binding NewTransferCommand}" Visibility="{Binding NewTransferVisibility}">
                     <StackPanel Orientation="Horizontal">
-                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <metro:PackIconMaterial Kind="{StaticResource TransferIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransferBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource TransferIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransferBrush}" />
                     </StackPanel>
                 </Button>
                 <Button ToolTip="{lex:Loc AccountView_ToolTip_NewParentTransaction}" Command="{Binding NewParentTransactionCommand}" Visibility="{Binding NewParentTransactionVisibility}">
                     <StackPanel Orientation="Horizontal">
-                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <metro:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
                     </StackPanel>
                 </Button>
                 <Button ToolTip="{lex:Loc AccountView_ToolTip_NewParentIncome}" Command="{Binding NewParentIncomeCommand}" Visibility="{Binding NewParentIncomeVisibility}">
                     <StackPanel Orientation="Horizontal">
-                        <metro:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <metro:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <metro:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <iconPacks:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
                     </StackPanel>
                 </Button>
                 <Button ToolTip="{lex:Loc AccountView_ToolTip_AddToTable}" Command="{Binding ApplyCommand}" HorizontalAlignment="Right" Visibility="{Binding ApplyVisibility}">
-                    <metro:PackIconMaterial Kind="{StaticResource AddToTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                    <iconPacks:PackIconMaterial Kind="{StaticResource AddToTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                 </Button>
             </DockPanel>
         </StackPanel>
         <!--#endregion -->
     </Grid>
 </UserControl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
