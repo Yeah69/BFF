@@ -12,7 +12,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         string Memo { get; set; }
 
         /// <summary>
-        /// The amount of money of the exchangement of the TIT.
+        /// The amount of money of the exchange of the TIT.
         /// </summary>
         long Sum { get; set; }
 
@@ -39,14 +39,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             set
             {
                 if(_titLike.Memo == value) return;
-                Update();
                 _titLike.Memo = value;
+                Update();
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// The amount of money of the exchangement of the TIT.
+        /// The amount of money of the exchange of the TIT.
         /// </summary>
         public abstract long Sum { get; set; } //todo see Memo
 
