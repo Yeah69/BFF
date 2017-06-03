@@ -357,7 +357,7 @@
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
                             <TextBlock Name="TitGrid_SumBox" TextAlignment="Right"  Style="{StaticResource CellTextBlock}"  Padding="0,0,5,0"
                                        Foreground="{Binding Sum, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                       Text="{Binding Sum, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
+                                       Text="{Binding Sum, Converter={x:Static mvvm:Converters.SumToString}}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
@@ -376,7 +376,7 @@
                                     </MultiBinding>
                                 </TextBox.Foreground>
                                 <TextBox.Text>
-                                    <Binding Path="Sum" Converter="{x:Static mvvm:Converters.NullableSumToString}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                    <Binding Path="Sum" Converter="{x:Static mvvm:Converters.SumToString}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>
                                             <validationRules:CurrencyRule />
                                             <validationRules:CurrencyLongRangeRule />
@@ -389,7 +389,7 @@
                             <TextBox Name="TitGrid_SumBox" TextAlignment="Right" VerticalContentAlignment="Center"
                                        Foreground="{Binding Sum, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}">
                                 <TextBox.Text>
-                                    <Binding Path="Sum" Converter="{x:Static mvvm:Converters.NullableSumToString}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                    <Binding Path="Sum" Converter="{x:Static mvvm:Converters.SumToString}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>
                                             <validationRules:CurrencyRule />
                                             <validationRules:CurrencyLongRangeRule />

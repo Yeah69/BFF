@@ -35,7 +35,7 @@
             <GroupBox Header="{lex:Loc AccountView_StartingBalance}" 
                       HorizontalAlignment="Left">
                 <TextBlock Name="StartingBalanceTextBlock" 
-                           Text="{Binding StartingBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
+                           Text="{Binding StartingBalance, Converter={x:Static mvvm:Converters.SumToString}}" />
             </GroupBox>
             <GroupBox Header="{lex:Loc AccountView_Balance}" 
                       HorizontalAlignment="Left">

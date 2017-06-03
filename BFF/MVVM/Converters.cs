@@ -97,6 +97,16 @@ namespace BFF.MVVM
                 e => e.Value.CurrencyAsLong(Settings.Default.Culture_SessionCurrency));
 
         /// <summary>
+        /// Converts a sum (which can also be null) to a string. The sum is a nullable long. Hence it is not decimal. 
+        /// Only the string represents the sum as decimal depending on the currently set CultureInfo for currencies.
+        /// Has convert back function.
+        /// </summary>
+        public static readonly IValueConverter SumToString =
+            ValueConverter.Create<long, string>(
+                e => e.Value.AsCurrency(Settings.Default.Culture_SessionCurrency),
+                e => e.Value.CurrencyAsLong(Settings.Default.Culture_SessionCurrency));
+
+        /// <summary>
         /// Negative sums get the same color as the transactions and positive sums (and zero) get the same color as incomes.
         /// Because it is expected that most of the transactions get negative sums and most of the incomes get positive sums.
         /// No convert back function.
