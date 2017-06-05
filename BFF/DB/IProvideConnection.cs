@@ -1,6 +1,6 @@
 using System.Data.Common;
 
-namespace BFF.DB.Dapper.ModelRepositories
+namespace BFF.DB
 {
     public interface IProvideConnection
     {
