@@ -4,6 +4,7 @@ using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using BFF.DB.Dapper;
 using BFF.Helper.Import;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
@@ -17,6 +18,8 @@ namespace BFF.DB.SQLite
 
     class SqLiteBffOrm : IBffOrm
     {
+        private BffRepository _bffRepository;
+        
         public ICommonPropertyProvider CommonPropertyProvider { get; }
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -27,42 +30,14 @@ namespace BFF.DB.SQLite
 
         private const string TheTitName = "The Tit";
 
-        public static void CreateNewDatabase(string dbPath)
+        public void CreateNewDatabase()
         {
-            Logger.Info("Creating a new Database with the path: {0}.", dbPath);
-            if (File.Exists(dbPath)) //todo: This will make problems
-                File.Delete(dbPath);
-            SQLiteConnection.CreateFile(dbPath);
+            Logger.Info("Creating a new Database with the path: {0}.", DbPath);
+            if (File.Exists(DbPath)) //todo: This will make problems
+                File.Delete(DbPath);
+            SQLiteConnection.CreateFile(DbPath);
 
-            using(DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
-            using (SQLiteConnection cnn = new SQLiteConnection($"Data Source={dbPath};Version=3;foreign keys=true;"))
-            {
-                cnn.Open();
-                cnn.Execute(SqLiteQueries.CreatePayeeTableStatement);
-                cnn.Execute(SqLiteQueries.CreateCategoryTableStatement);
-                cnn.Execute(SqLiteQueries.CreateAccountTableStatement);
-
-                cnn.Execute(SqLiteQueries.CreateTransactionTableStatement);
-                cnn.Execute(SqLiteQueries.CreateParentTransactionTableStatement);
-                cnn.Execute(SqLiteQueries.CreateSubTransactionTableStatement);
-
-                cnn.Execute(SqLiteQueries.CreateIncomeTableStatement);
-                cnn.Execute(SqLiteQueries.CreateParentIncomeTableStatement);
-                cnn.Execute(SqLiteQueries.CreateSubIncomeTableStatement);
-
-                cnn.Execute(SqLiteQueries.CreateTransferTableStatement);
-
-                cnn.Execute(SqLiteQueries.CreateDbSettingTableStatement);
-                cnn.Insert(new DbSetting());
-
-                cnn.Execute(SqLiteQueries.CreateBudgetEntryTableStatement);
-
-                cnn.Execute(SqLiteQueries.SetDatabaseSchemaVersion);
-
-                cnn.Execute(SqLiteQueries.CreateTheTitViewStatement);
-
-                transactionScope.Complete();
-            }
+            _bffRepository.CreateTables();
         }
 
         public void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments)
@@ -81,7 +56,7 @@ namespace BFF.DB.SQLite
                 while (categoriesOrder.Count > 0)
                 {
                     CategoryImportWrapper current = categoriesOrder.Dequeue();
-                    current.Category.Id = cnn.Insert(current.Category as Category);
+                    _bffRepository.CategoryRepository.Add(current.Category as Category, cnn);
                     foreach (IHaveCategory currentTitAssignment in current.TitAssignments)
                     {
                         currentTitAssignment.CategoryId = current.Category.Id;
@@ -94,7 +69,7 @@ namespace BFF.DB.SQLite
                 }
                 foreach (IPayee payee in importLists.Payees)
                 {
-                    payee.Id = cnn.Insert(payee as Payee);
+                    _bffRepository.PayeeRepository.Add(payee as Payee, cnn);
                     foreach (ITransIncBase transIncBase in importAssignments.PayeeToTransIncBase[payee])
                     {
                         transIncBase.PayeeId = payee.Id;
@@ -102,7 +77,7 @@ namespace BFF.DB.SQLite
                 }
                 foreach (IAccount account in importLists.Accounts)
                 {
-                    account.Id = cnn.Insert(account as Account);
+                    _bffRepository.AccountRepository.Add(account as Account, cnn);
                     foreach (ITransIncBase transIncBase in importAssignments.AccountToTransIncBase[account])
                     {
                         transIncBase.AccountId = account.Id;
@@ -117,33 +92,33 @@ namespace BFF.DB.SQLite
                     }
                 }
                 foreach (ITransaction transaction in importLists.Transactions)
-                    cnn.Insert(transaction as Transaction);
+                    _bffRepository.TransactionRepository.Add(transaction as Transaction, cnn);
                 foreach (IParentTransaction parentTransaction in importLists.ParentTransactions)
                 {
-                    parentTransaction.Id = cnn.Insert(parentTransaction as ParentTransaction);
+                    _bffRepository.ParentTransactionRepository.Add(parentTransaction as ParentTransaction, cnn);
                     foreach (ISubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
                     {
                         subTransaction.ParentId = parentTransaction.Id;
                     }
                 }
-                foreach (ISubTransaction subTransaction in importLists.SubTransactions)
-                    cnn.Insert(subTransaction as SubTransaction);
-                foreach (IIncome income in importLists.Incomes)
-                    cnn.Insert(income as Income);
+                foreach (ISubTransaction subTransaction in importLists.SubTransactions) 
+                    _bffRepository.SubTransactionRepository.Add(subTransaction as SubTransaction, cnn);
+                foreach (IIncome income in importLists.Incomes) 
+                    _bffRepository.IncomeRepository.Add(income as Income, cnn);
                 foreach (IParentIncome parentIncome in importLists.ParentIncomes)
                 {
-                    parentIncome.Id = cnn.Insert(parentIncome as ParentIncome);
+                    _bffRepository.ParentIncomeRepository.Add(parentIncome as ParentIncome, cnn);
                     foreach (ISubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
                     {
                         subIncome.ParentId = parentIncome.Id;
                     }
                 }
-                foreach (ISubIncome subIncome in importLists.SubIncomes)
-                    cnn.Insert(subIncome as SubIncome);
-                foreach (ITransfer transfer in importLists.Transfers)
-                    cnn.Insert(transfer as Transfer);
-                foreach (IBudgetEntry budgetEntry in importLists.BudgetEntries)
-                    cnn.Insert(budgetEntry as BudgetEntry);
+                foreach (ISubIncome subIncome in importLists.SubIncomes) 
+                    _bffRepository.SubIncomeRepository.Add(subIncome as SubIncome, cnn);
+                foreach (ITransfer transfer in importLists.Transfers) 
+                    _bffRepository.TransferRepository.Add(transfer as Transfer, cnn);
+                foreach (IBudgetEntry budgetEntry in importLists.BudgetEntries) 
+                    _bffRepository.BudgetEntryRepository.Add(budgetEntry as BudgetEntry, cnn);
 
                 transactionScope.Complete();
             }
@@ -350,8 +325,9 @@ namespace BFF.DB.SQLite
         public SqLiteBffOrm(string dbPath)
         {
             DbPath = dbPath;
+            _bffRepository = new DapperBffRepository(new ProvideSqLiteConnection(ConnectionString));
 
-            CommonPropertyProvider = new CommonPropertyProvider(this);
+            //CommonPropertyProvider = new CommonPropertyProvider(this);
         }
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options

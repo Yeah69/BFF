@@ -63,9 +63,6 @@
     <Reference Include="Dapper.Contrib, Version=1.50.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Dapper.Contrib.1.50.0\lib\net45\Dapper.Contrib.dll</HintPath>
     </Reference>
-    <Reference Include="Dapper.FastCrud, Version=2.4.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Dapper.FastCrud.2.4.1\lib\net46\Dapper.FastCrud.dll</HintPath>
-    </Reference>
     <Reference Include="dotMemory.Unit, Version=103.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.dotMemoryUnit.2.3.20160517.113140\Lib\dotMemory.Unit.dll</HintPath>
     </Reference>

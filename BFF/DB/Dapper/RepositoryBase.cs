@@ -1,16 +1,14 @@
 using System;
 using System.Data.Common;
-using System.Linq;
 using System.Transactions;
-using BFF.DB.Dapper.ModelRepositories;
 using BFF.DB.PersistanceModels;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper;
-using Dapper.FastCrud;
+using Dapper.Contrib.Extensions;
 
 namespace BFF.DB.Dapper
 {
-    public abstract class RepositoryBase<TDomain, TPersistance> : IRepository<TDomain>
+    public abstract class RepositoryBase<TDomain, TPersistance> : IDbTableRepository<TDomain>
         where TDomain : class, IDataModel
         where TPersistance : class, IPersistanceModel
     {
@@ -27,9 +25,10 @@ namespace BFF.DB.Dapper
             else
             {
                 using(TransactionScope transactionScope = new TransactionScope())
-                using(connection = _provideConnection.Connection)
+                using(DbConnection newConnection = _provideConnection.Connection)
                 {
-                    action(connection);
+                    newConnection.Open();
+                    action(newConnection);
                     transactionScope.Complete();
                 }
             }
@@ -45,7 +44,12 @@ namespace BFF.DB.Dapper
         public virtual void Add(TDomain dataModel, DbConnection connection = null)
         {
             executeOnExistingOrNewConnection(
-                c => c.Insert(ConvertToPersistance(dataModel)), 
+                c =>
+                {
+                    TPersistance persistanceModel = ConvertToPersistance(dataModel);
+                    c.Insert(persistanceModel);
+                    dataModel.Id = persistanceModel.Id;
+                }, 
                 connection);
         }
 
@@ -66,18 +70,14 @@ namespace BFF.DB.Dapper
         public virtual TDomain Find(long id, DbConnection connection = null)
         {
             TDomain ret;
-            if(connection != null) ret = ConvertToDomain(
-                connection.Find<TPersistance>(
-                    statement => statement.Where($"{nameof(IPersistanceModel.Id)}=@IdParam")
-                                          .WithParameters(new {IdParam = id})).First());
+            if(connection != null) ret = ConvertToDomain(connection.Get<TPersistance>(id));
             else
             {
                 using(TransactionScope transactionScope = new TransactionScope())
-                using(connection = _provideConnection.Connection)
+                using(DbConnection newConnection = _provideConnection.Connection)
                 {
-                    var result = connection.Find<TPersistance>(
-                        statement => statement.Where($"{nameof(IPersistanceModel.Id)}=@IdParam")
-                                              .WithParameters(new {IdParam = id})).First();
+                    newConnection.Open();
+                    var result = newConnection.Get<TPersistance>(id);
                     ret = ConvertToDomain(result);
                     transactionScope.Complete();
                 }

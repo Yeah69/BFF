@@ -129,8 +129,8 @@ namespace BFF.Helper.Import
             };
 
             //Third step: Create new database for imported data
-            SqLiteBffOrm.CreateNewDatabase(savePath);
             SqLiteBffOrm orm = new SqLiteBffOrm(savePath);
+            orm.CreateNewDatabase();
             orm.PopulateDatabase(lists, assignments);
         }
 

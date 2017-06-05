@@ -10,4 +10,11 @@ namespace BFF.DB
         void Delete(T dataModel, DbConnection connection = null);
         T Find(long id, DbConnection connection = null);
     }
+
+    public interface ICreateTable
+    {
+        void CreateTable(DbConnection connection = null);
+    }
+
+    public interface IDbTableRepository<T> : IRepository<T>, ICreateTable where T : class, IDataModel { }
 }

@@ -40,7 +40,8 @@ namespace BFF.MVVM.ViewModels
             };
             if (saveFileDialog.ShowDialog() == true)
             {
-                SqLiteBffOrm.CreateNewDatabase(saveFileDialog.FileName);
+                SqLiteBffOrm orm = new SqLiteBffOrm(saveFileDialog.FileName);
+                orm.CreateNewDatabase();
                 Reset(saveFileDialog.FileName);
             }
         });
