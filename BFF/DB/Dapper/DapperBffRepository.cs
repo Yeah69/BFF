@@ -17,6 +17,7 @@ namespace BFF.DB.Dapper
                    new SubTransactionRepository(provideConnection),
                    new TransactionRepository(provideConnection),
                    new TransferRepository(provideConnection),
+                   new TitRepository(provideConnection), 
                    provideConnection)
         {
         }

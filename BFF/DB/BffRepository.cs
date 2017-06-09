@@ -2,6 +2,7 @@ using System.Data.Common;
 using System.Transactions;
 using BFF.DB.SQLite;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 using Transaction = BFF.MVVM.Models.Native.Transaction;
 
@@ -21,6 +22,7 @@ namespace BFF.DB
         private IDbTableRepository<SubTransaction> _subTransactionRepository;
         private IDbTableRepository<Transaction> _transactionRepository;
         private IDbTableRepository<Transfer> _transferRepository;
+        private IViewRepository<ITitBase, Account> _titRepository;
 
         private IProvideConnection _provideConnection;
         
@@ -37,6 +39,7 @@ namespace BFF.DB
             IDbTableRepository<SubTransaction> subTransactionRepository, 
             IDbTableRepository<Transaction> transactionRepository, 
             IDbTableRepository<Transfer> transferRepository, 
+            IViewRepository<ITitBase, Account> titRepository, 
             IProvideConnection provideConnection)
         {
             _accountRepository = accountRepository;
@@ -51,21 +54,23 @@ namespace BFF.DB
             _subTransactionRepository = subTransactionRepository;
             _transactionRepository = transactionRepository;
             _transferRepository = transferRepository;
+            _titRepository = titRepository;
             _provideConnection = provideConnection;
         }
 
-        public IRepository<Account> AccountRepository => _accountRepository;
-        public IRepository<BudgetEntry> BudgetEntryRepository => _budgetEntryRepository;
-        public IRepository<Category> CategoryRepository => _categoryRepository;
-        public IRepository<DbSetting> DbSettingRepository => _dbSettingRepository;
-        public IRepository<Income> IncomeRepository => _incomeRepository;
-        public IRepository<ParentIncome> ParentIncomeRepository => _parentIncomeRepository;
-        public IRepository<ParentTransaction> ParentTransactionRepository => _parentTransactionRepository;
-        public IRepository<Payee> PayeeRepository => _payeeRepository;
-        public IRepository<SubIncome> SubIncomeRepository => _subIncomeRepository;
-        public IRepository<SubTransaction> SubTransactionRepository => _subTransactionRepository;
-        public IRepository<Transaction> TransactionRepository => _transactionRepository;
-        public IRepository<Transfer> TransferRepository => _transferRepository;
+        public IDbTableRepository<Account> AccountRepository => _accountRepository;
+        public IDbTableRepository<BudgetEntry> BudgetEntryRepository => _budgetEntryRepository;
+        public IDbTableRepository<Category> CategoryRepository => _categoryRepository;
+        public IDbTableRepository<DbSetting> DbSettingRepository => _dbSettingRepository;
+        public IDbTableRepository<Income> IncomeRepository => _incomeRepository;
+        public IDbTableRepository<ParentIncome> ParentIncomeRepository => _parentIncomeRepository;
+        public IDbTableRepository<ParentTransaction> ParentTransactionRepository => _parentTransactionRepository;
+        public IDbTableRepository<Payee> PayeeRepository => _payeeRepository;
+        public IDbTableRepository<SubIncome> SubIncomeRepository => _subIncomeRepository;
+        public IDbTableRepository<SubTransaction> SubTransactionRepository => _subTransactionRepository;
+        public IDbTableRepository<Transaction> TransactionRepository => _transactionRepository;
+        public IDbTableRepository<Transfer> TransferRepository => _transferRepository;
+        public IViewRepository<ITitBase, Account> TitRepository => _titRepository;
 
         private void CreateTablesInner(DbConnection connection)
         {
@@ -92,9 +97,9 @@ namespace BFF.DB
 
             connection.Execute(SqLiteQueries.CreateTheTitViewStatement);
         }
+        
         public void CreateTables(DbConnection connection = null)
         {
-
             if(connection != null) CreateTablesInner(connection);
             else
             {

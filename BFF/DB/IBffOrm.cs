@@ -12,7 +12,6 @@ namespace BFF.DB
 
         string DbPath { get; }
         void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments);
-        IEnumerable<ITitBase> GetAllTits(DateTime startTime, DateTime endTime, IAccount account = null);
         long? GetAccountBalance(IAccount account);
         long? GetSummaryAccountBalance();
         IEnumerable<ISubTransInc> GetSubTransInc<T>(long parentId) where T : ISubTransInc;
@@ -21,7 +20,7 @@ namespace BFF.DB
     public interface ICrudOrm
     {
         IEnumerable<T> GetAll<T>() where T : class, IDataModel;
-        long Insert<T>(T dataModelBase) where T : class, IDataModel;
+        void Insert<T>(T dataModelBase) where T : class, IDataModel;
         T Get<T>(long id) where T : class, IDataModel;
         void Update<T>(T dataModelBase) where T : class, IDataModel;
         void Delete<T>(T dataModelBase) where T : class, IDataModel;

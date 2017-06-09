@@ -245,9 +245,11 @@
     <Compile Include="DB\Dapper\ModelRepositories\SubTransactionRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\DbSettingRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\PayeeRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\TitRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\TransactionRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\TransferRepository.cs" />
     <Compile Include="DB\Dapper\RepositoryBase.cs" />
+    <Compile Include="DB\Dapper\ViewRepositoryBase.cs" />
     <Compile Include="DB\IBffOrmAsync.cs" />
     <Compile Include="DB\IBffOrm.cs" />
     <Compile Include="DB\IProvideConnection.cs" />
@@ -265,6 +267,7 @@
     <Compile Include="DB\PersistanceModels\Payee.cs" />
     <Compile Include="DB\PersistanceModels\SubIncome.cs" />
     <Compile Include="DB\PersistanceModels\SubTransaction.cs" />
+    <Compile Include="DB\PersistanceModels\TheTit.cs" />
     <Compile Include="DB\PersistanceModels\Transaction.cs" />
     <Compile Include="DB\PersistanceModels\Transfer.cs" />
     <Compile Include="DB\SQLite\SqLiteBffOrmAsync.cs" />
