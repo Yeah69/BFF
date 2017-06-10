@@ -42,7 +42,7 @@ namespace BFF.MVVM.ViewModels
             if (saveFileDialog.ShowDialog() == true)
             {
                 IProvideConnection provideConnection = new CreateSqLiteDatebase(saveFileDialog.FileName).Create();
-                SqLiteBffOrm orm = new SqLiteBffOrm(saveFileDialog.FileName, provideConnection);
+                SqLiteBffOrm orm = new SqLiteBffOrm(provideConnection);
                 Reset(saveFileDialog.FileName);
             }
         });
@@ -179,7 +179,7 @@ namespace BFF.MVVM.ViewModels
             (ContentViewModel as IDisposable)?.Dispose();
             if (File.Exists(dbPath))
             {
-                IBffOrm orm = new SqLiteBffOrm(dbPath, new ProvideSqLiteConnection(dbPath));
+                IBffOrm orm = new SqLiteBffOrm(new ProvideSqLiteConnection(dbPath));
                 ContentViewModel = new AccountTabsViewModel(orm);
                 Title = $"{new FileInfo(dbPath).Name} - BFF";
                 Settings.Default.DBLocation = dbPath;

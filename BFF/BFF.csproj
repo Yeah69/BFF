@@ -273,7 +273,6 @@
     <Compile Include="DB\PersistanceModels\TheTit.cs" />
     <Compile Include="DB\PersistanceModels\Transaction.cs" />
     <Compile Include="DB\PersistanceModels\Transfer.cs" />
-    <Compile Include="DB\SQLite\SqLiteBffOrmAsync.cs" />
     <Compile Include="DB\SQLite\SqLiteBffOrm.cs" />
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
     <Compile Include="DB\SQLite\SqLiteQueries.cs" />

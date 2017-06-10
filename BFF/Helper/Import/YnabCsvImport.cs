@@ -132,7 +132,7 @@ namespace BFF.Helper.Import
 
             //Third step: Create new database for imported data
             IProvideConnection provideConnection = new CreateSqLiteDatebase(savePath).Create();
-            SqLiteBffOrm orm = new SqLiteBffOrm(savePath, provideConnection);
+            SqLiteBffOrm orm = new SqLiteBffOrm(provideConnection);
             orm.PopulateDatabase(lists, assignments);
         }
 

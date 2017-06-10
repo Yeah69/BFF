@@ -1,29 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Linq;
 using BFF.DB.Dapper;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper.Import;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
-using DbTransactions = System.Transactions;
-using Dapper.Contrib.Extensions;
-using NLog;
 
 namespace BFF.DB.SQLite
 {
 
     class SqLiteBffOrm : IBffOrm
     {
-        private BffRepository _bffRepository;
+        private readonly BffRepository _bffRepository;
         
         public ICommonPropertyProvider CommonPropertyProvider { get; }
-
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        public string DbPath { get; }
-
-        protected string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;";
 
         public void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments) =>
             _bffRepository.PopulateDatabase(importLists, importAssignments);
@@ -45,77 +35,51 @@ namespace BFF.DB.SQLite
             return Enumerable.Empty<ISubTransInc>();
         }
 
-        public IEnumerable<T> GetAll<T>() where T : class, IDataModel
+        private IRepository<T> GetRepository<T>() where T : class, IDataModel
         {
-            Logger.Debug("Getting all entries from table {0}.", typeof(T).Name);
-            IEnumerable<T> ret;
-            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
-            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
-            {
-                cnn.Open();
-                ret = cnn.GetAll<T>();
-                transactionScope.Complete();
-            }
-            return ret;
+            if(typeof(T) == typeof(Account))
+                return _bffRepository.AccountRepository as IRepository<T>;
+            if(typeof(T) == typeof(BudgetEntry))
+                return _bffRepository.BudgetEntryRepository as IRepository<T>;
+            if(typeof(T) == typeof(Category))
+                return _bffRepository.CategoryRepository as IRepository<T>;
+            if(typeof(T) == typeof(DbSetting))
+                return _bffRepository.DbSettingRepository as IRepository<T>;
+            if(typeof(T) == typeof(Income))
+                return _bffRepository.IncomeRepository as IRepository<T>;
+            if(typeof(T) == typeof(ParentIncome))
+                return _bffRepository.ParentIncomeRepository as IRepository<T>;
+            if(typeof(T) == typeof(ParentTransaction))
+                return _bffRepository.ParentTransactionRepository as IRepository<T>;
+            if(typeof(T) == typeof(Payee))
+                return _bffRepository.PayeeRepository as IRepository<T>;
+            if(typeof(T) == typeof(SubIncome))
+                return _bffRepository.SubIncomeRepository as IRepository<T>;
+            if(typeof(T) == typeof(SubTransaction))
+                return _bffRepository.SubTransactionRepository as IRepository<T>;
+            if(typeof(T) == typeof(Transaction))
+                return _bffRepository.TransactionRepository as IRepository<T>;
+            if(typeof(T) == typeof(Transfer))
+                return _bffRepository.TransferRepository as IRepository<T>;
+
+            return null;
         }
 
-        public void Insert<T>(T dataModelBase) where T : class, IDataModel
-        {
-            Logger.Debug("Insert an entry into table {0}.", typeof(T).Name);
-            long ret;
-            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
-            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
-            {
-                cnn.Open();
-                ret = cnn.Insert(dataModelBase);
-                dataModelBase.Id = ret;
-                transactionScope.Complete();
-            }
-        }
 
-        public T Get<T>(long id) where T : class, IDataModel
-        {
-            T ret;
-            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
-            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
-            {
-                cnn.Open();
-                ret = cnn.Get<T>(id);
-                transactionScope.Complete();
-            }
-            return ret;
-        }
-        
-        public void Update<T>(T dataModelBase) where T : class, IDataModel
-        {
-            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
-            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
-            {
-                cnn.Open();
-                cnn.Update<T>(dataModelBase);
-                transactionScope.Complete();
-            }
-        }
+        public void Insert<T>(T dataModelBase) where T : class, IDataModel => GetRepository<T>().Add(dataModelBase);
 
-        public void Delete<T>(T dataModelBase) where T : class, IDataModel
-        {
-            Logger.Debug("Delete an entry from table {0}.", typeof(T).Name);
-            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
-            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
-            {
-                cnn.Open();
-                cnn.Delete(dataModelBase);
-                transactionScope.Complete();
-            }
-        }
+        public T Get<T>(long id) where T : class, IDataModel => GetRepository<T>().Find(id);
 
-        public SqLiteBffOrm(string dbPath, IProvideConnection provideConnection)
+        public void Update<T>(T dataModelBase) where T : class, IDataModel => GetRepository<T>().Update(dataModelBase);
+
+        public void Delete<T>(T dataModelBase) where T : class, IDataModel => GetRepository<T>().Delete(dataModelBase);
+
+        public SqLiteBffOrm(IProvideConnection provideConnection)
         {
-            DbPath = dbPath;
             _bffRepository = new DapperBffRepository(provideConnection);
             
             CommonPropertyProvider = new CommonPropertyProvider(this, _bffRepository);
-            (CommonPropertyProvider as CommonPropertyProvider).InitializeCategoryViewModels();
+            ((CommonPropertyProvider) CommonPropertyProvider).InitializeCategoryViewModels();
         }
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options

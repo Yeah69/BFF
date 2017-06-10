@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BFF.Helper.Import;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
@@ -10,7 +9,6 @@ namespace BFF.DB
     {
         ICommonPropertyProvider CommonPropertyProvider { get; }
 
-        string DbPath { get; }
         void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments);
         long? GetAccountBalance(IAccount account);
         long? GetSummaryAccountBalance();
@@ -19,7 +17,6 @@ namespace BFF.DB
 
     public interface ICrudOrm
     {
-        IEnumerable<T> GetAll<T>() where T : class, IDataModel;
         void Insert<T>(T dataModelBase) where T : class, IDataModel;
         T Get<T>(long id) where T : class, IDataModel;
         void Update<T>(T dataModelBase) where T : class, IDataModel;
