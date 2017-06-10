@@ -236,6 +236,7 @@
     <Compile Include="DB\CommonPropertyProvider.cs" />
     <Compile Include="DB\Dapper\CreateSqLiteDatebase.cs" />
     <Compile Include="DB\Dapper\DapperBffRepository.cs" />
+    <Compile Include="DB\Dapper\ConnectionHelper.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\AccountRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\BudgetEntryRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\CategoryRepository.cs" />

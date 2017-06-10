@@ -21,24 +21,10 @@ namespace BFF.DB.Dapper
 
         public virtual void CreateTable(DbConnection connection = null)
         {
-            executeOnExistingOrNewConnection(
+            ConnectionHelper.ExecuteOnExistingOrNewConnection(
                 c => c.Execute(CreateTableStatement), 
+                _provideConnection,
                 connection);
-        }
-
-        private void executeOnExistingOrNewConnection(Action<DbConnection> action, DbConnection connection = null)
-        {
-            if(connection != null) action(connection);
-            else
-            {
-                using(TransactionScope transactionScope = new TransactionScope())
-                using(DbConnection newConnection = _provideConnection.Connection)
-                {
-                    newConnection.Open();
-                    action(newConnection);
-                    transactionScope.Complete();
-                }
-            }
         }
         
         protected abstract string CreateTableStatement { get; }
@@ -48,51 +34,39 @@ namespace BFF.DB.Dapper
         where TDomain : class, IDataModel
         where TPersistance : class, IPersistanceModel
     {
-        private readonly IProvideConnection _provideConnection;
+        protected IProvideConnection ProvideConnection { get; }
 
         public RepositoryBase(IProvideConnection provideConnection)
         {
-            _provideConnection = provideConnection;
-        }
-
-        private void executeOnExistingOrNewConnection(Action<DbConnection> action, DbConnection connection = null)
-        {
-            if(connection != null) action(connection);
-            else
-            {
-                using(TransactionScope transactionScope = new TransactionScope())
-                using(DbConnection newConnection = _provideConnection.Connection)
-                {
-                    newConnection.Open();
-                    action(newConnection);
-                    transactionScope.Complete();
-                }
-            }
+            ProvideConnection = provideConnection;
         }
 
         public virtual void Add(TDomain dataModel, DbConnection connection = null)
         {
-            executeOnExistingOrNewConnection(
+            ConnectionHelper.ExecuteOnExistingOrNewConnection(
                 c =>
                 {
                     TPersistance persistanceModel = ConvertToPersistance(dataModel);
                     c.Insert(persistanceModel);
                     dataModel.Id = persistanceModel.Id;
                 }, 
+                ProvideConnection,
                 connection);
         }
 
         public virtual void Update(TDomain dataModel, DbConnection connection = null)
         {
-            executeOnExistingOrNewConnection(
+            ConnectionHelper.ExecuteOnExistingOrNewConnection(
                 c => c.Update(ConvertToPersistance(dataModel)), 
+                ProvideConnection,
                 connection);
         }
 
         public virtual void Delete(TDomain dataModel, DbConnection connection = null)
         {
-            executeOnExistingOrNewConnection(
+            ConnectionHelper.ExecuteOnExistingOrNewConnection(
                 c => c.Delete(ConvertToPersistance(dataModel)), 
+                ProvideConnection,
                 connection);
         }
 
@@ -102,7 +76,7 @@ namespace BFF.DB.Dapper
             
             TDomain ret;
             using(TransactionScope transactionScope = new TransactionScope())
-            using(DbConnection newConnection = _provideConnection.Connection)
+            using(DbConnection newConnection = ProvideConnection.Connection)
             {
                 newConnection.Open();
                 var result = newConnection.Get<TPersistance>(id);
@@ -125,7 +99,7 @@ namespace BFF.DB.Dapper
             
             IEnumerable<TDomain> ret;
             using(TransactionScope transactionScope = new TransactionScope())
-            using(DbConnection newConnection = _provideConnection.Connection)
+            using(DbConnection newConnection = ProvideConnection.Connection)
             {
                 newConnection.Open();
                 ret = inner(newConnection);

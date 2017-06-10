@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Transactions;
+using BFF.DB.Dapper;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.MVVM.Models.Native;
@@ -132,21 +133,6 @@ namespace BFF.DB
         public IDbTableRepository<Transfer> TransferRepository => _transferRepository;
         public IViewRepository<ITitBase, Account> TitRepository => _titRepository;
 
-        private void executeOnExistingOrNewConnection(Action<DbConnection> action, DbConnection connection = null)
-        {
-            if(connection != null) action(connection);
-            else
-            {
-                using(TransactionScope transactionScope = new TransactionScope())
-                using(DbConnection newConnection = _provideConnection.Connection)
-                {
-                    newConnection.Open();
-                    action(newConnection);
-                    transactionScope.Complete();
-                }
-            }
-        }
-
         private void PopulateDatabaseInner(ImportLists importLists, ImportAssignments importAssignments, DbConnection connection = null)
         {
             /*  
@@ -225,8 +211,9 @@ namespace BFF.DB
 
         public void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments, DbConnection connection = null)
         {
-            executeOnExistingOrNewConnection(
-                conn => PopulateDatabaseInner(importLists, importAssignments, conn), 
+            ConnectionHelper.ExecuteOnExistingOrNewConnection(
+                conn => PopulateDatabaseInner(importLists, importAssignments, conn),
+                _provideConnection, 
                 connection);
         }
     }

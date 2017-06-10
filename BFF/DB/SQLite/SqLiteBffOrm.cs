@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SQLite;
-using System.IO;
 using System.Linq;
 using BFF.DB.Dapper;
+using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper.Import;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
@@ -32,53 +31,11 @@ namespace BFF.DB.SQLite
             _bffRepository.PopulateDatabase(importLists, importAssignments);
         }
 
-        public long? GetAccountBalance(IAccount account)
-        {
-            Logger.Debug("Getting account balance from {0}.", account?.Name ?? "NULL");
-            long ret;
+        public long? GetAccountBalance(IAccount account) => 
+            (_bffRepository.AccountRepository as AccountRepository)?.GetBalance(account);
 
-            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
-            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
-            {
-                cnn.Open();
-                try
-                {
-                    ret = cnn.Query<long>(SqLiteQueries.AccountSpecificBalanceStatement, new { accountId = account?.Id ?? -1 }).First();
-                }
-                catch (OverflowException)
-                {
-                    return null;
-                }
-
-                transactionScope.Complete();
-            }
-
-            return ret;
-        }
-
-        public long? GetSummaryAccountBalance()
-        {
-            Logger.Debug("Getting account balance from SummaryAccount.");
-            long ret;
-
-            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
-            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
-            {
-                cnn.Open();
-                try
-                {
-                    ret = cnn.Query<long>(SqLiteQueries.AllAccountsBalanceStatement).First();
-                }
-                catch (OverflowException)
-                {
-                    return null;
-                }
-
-                transactionScope.Complete();
-            }
-
-            return ret;
-        }
+        public long? GetSummaryAccountBalance() =>
+            (_bffRepository.AccountRepository as AccountRepository)?.GetBalance(new SummaryAccount());
 
         public IEnumerable<ISubTransInc> GetSubTransInc<T>(long parentId) where T : ISubTransInc
         {
