@@ -19,7 +19,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class SubIncomeRepository : RepositoryBase<Domain.SubIncome, Persistance.SubIncome>
+    public class SubIncomeRepository : SubTransIncRepository<Domain.SubIncome, Persistance.SubIncome>
     {
         public SubIncomeRepository(IProvideConnection provideConnection) : base(provideConnection) { }
         

@@ -28,7 +28,7 @@ namespace BFF.DB.Dapper
         {
             string query = $"SELECT * FROM [{ViewName}] {GetSpecifyingPageSuffix(specifyingObject)} {GetOrderingPageSuffix(specifyingObject)} LIMIT {offset}, {pageSize};";
             
-            return ConnectionHelper.QueryOnExistingOrNewConnectionAndReturn(
+            return ConnectionHelper.QueryOnExistingOrNewConnection(
                 c => c.Query<TPersistance>(query).Select(tt => ConvertToDomain(tt)), 
                 _provideConnection, 
                 connection);
@@ -38,7 +38,7 @@ namespace BFF.DB.Dapper
         {
             string query = $"SELECT COUNT(*) FROM [{ViewName}] {GetSpecifyingCountSuffix(specifyingObject)};";
             
-            return ConnectionHelper.QueryOnExistingOrNewConnectionAndReturn(
+            return ConnectionHelper.QueryOnExistingOrNewConnection(
                 c => c.Query<int>(query), 
                 _provideConnection,
                 connection).First();

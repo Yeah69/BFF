@@ -251,6 +251,7 @@
     <Compile Include="DB\Dapper\ModelRepositories\TransactionRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\TransferRepository.cs" />
     <Compile Include="DB\Dapper\RepositoryBase.cs" />
+    <Compile Include="DB\Dapper\SubTransIncRepository.cs" />
     <Compile Include="DB\Dapper\ViewRepositoryBase.cs" />
     <Compile Include="DB\IBffOrmAsync.cs" />
     <Compile Include="DB\IBffOrm.cs" />

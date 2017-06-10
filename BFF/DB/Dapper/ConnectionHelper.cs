@@ -22,7 +22,7 @@ namespace BFF.DB.Dapper
             }
         }
         
-        public static IEnumerable<T> QueryOnExistingOrNewConnectionAndReturn<T>(
+        public static IEnumerable<T> QueryOnExistingOrNewConnection<T>(
             Func<DbConnection, IEnumerable<T>> action, 
             IProvideConnection provideConnection,
             DbConnection connection = null)

@@ -57,13 +57,13 @@ namespace BFF.DB.Dapper.ModelRepositories
             - (SELECT Total({nameof(Persistance.Transfer.Sum)}) FROM {nameof(Persistance.Transfer)}s WHERE {nameof(Persistance.Transfer.FromAccountId)} = @accountId);";
 
         private long? GetAccountBalance(Domain.Account account, DbConnection connection = null) => 
-            ConnectionHelper.QueryOnExistingOrNewConnectionAndReturn(
+            ConnectionHelper.QueryOnExistingOrNewConnection(
                 c => c.Query<long>(AccountSpecificBalanceStatement, new { accountId = account?.Id ?? -1 }), 
                 ProvideConnection, 
                 connection).First();
 
         private long? GetSummaryAccountBalance(DbConnection connection = null) => 
-            ConnectionHelper.QueryOnExistingOrNewConnectionAndReturn(
+            ConnectionHelper.QueryOnExistingOrNewConnection(
                 c => c.Query<long>(AllAccountsBalanceStatement), 
                 ProvideConnection, 
                 connection).First();

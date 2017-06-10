@@ -19,7 +19,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class SubTransactionRepository : RepositoryBase<Domain.SubTransaction, Persistance.SubTransaction>
+    public class SubTransactionRepository : SubTransIncRepository<Domain.SubTransaction, Persistance.SubTransaction>
     {
         public SubTransactionRepository(IProvideConnection provideConnection) : base(provideConnection) { }
         
