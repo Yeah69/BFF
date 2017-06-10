@@ -4,6 +4,26 @@ using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
+    public class CreateTitTable : CreateTableBase
+    {
+        public CreateTitTable(IProvideConnection provideConnection) : base(provideConnection) { }
+        
+        protected string ViewName => "The Tit";
+        
+        protected override string CreateTableStatement =>
+            $@"CREATE VIEW IF NOT EXISTS [{ViewName}] AS
+            SELECT {nameof(Persistance.Transaction.Id)}, {nameof(Persistance.Transaction.AccountId)}, {nameof(Persistance.Transaction.PayeeId)}, {nameof(Persistance.Transaction.CategoryId)}, {nameof(Persistance.Transaction.Date)}, {nameof(Persistance.Transaction.Memo)}, {nameof(Persistance.Transaction.Sum)}, {nameof(Persistance.Transaction.Cleared)}, '{Domain.Structure.TitType.Transaction}' AS Type FROM [{nameof(Persistance.Transaction)}s]
+            UNION ALL
+            SELECT {nameof(Persistance.ParentTransaction.Id)}, {nameof(Persistance.ParentTransaction.AccountId)}, {nameof(Persistance.ParentTransaction.PayeeId)}, -69 AS CategoryFiller, {nameof(Persistance.ParentTransaction.Date)}, {nameof(Persistance.ParentTransaction.Memo)}, -69 AS SumFiller, {nameof(Persistance.ParentTransaction.Cleared)}, '{Domain.Structure.TitType.ParentTransaction}' AS Type FROM [{nameof(Persistance.ParentTransaction)}s]
+            UNION ALL
+            SELECT {nameof(Persistance.Income.Id)}, {nameof(Persistance.Income.AccountId)}, {nameof(Persistance.Income.PayeeId)}, {nameof(Persistance.Income.CategoryId)}, {nameof(Persistance.Income.Date)}, {nameof(Persistance.Income.Memo)}, {nameof(Persistance.Income.Sum)}, {nameof(Persistance.Income.Cleared)}, '{Domain.Structure.TitType.Income}' AS Type FROM [{nameof(Persistance.Income)}s]
+            UNION ALL
+            SELECT {nameof(Persistance.ParentIncome.Id)}, {nameof(Persistance.ParentIncome.AccountId)}, {nameof(Persistance.ParentIncome.PayeeId)}, -69 AS CategoryFiller, {nameof(Persistance.ParentIncome.Date)}, {nameof(Persistance.ParentIncome.Memo)}, -69 AS SumFiller, {nameof(Persistance.ParentIncome.Cleared)}, '{Domain.Structure.TitType.ParentIncome}' AS Type FROM [{nameof(Persistance.ParentIncome)}s]
+            UNION ALL
+            SELECT {nameof(Persistance.Transfer.Id)}, -69 AS AccountFiller, {nameof(Persistance.Transfer.FromAccountId)}, {nameof(Persistance.Transfer.ToAccountId)}, {nameof(Persistance.Transfer.Date)}, {nameof(Persistance.Transfer.Memo)}, {nameof(Persistance.Transfer.Sum)}, {nameof(Persistance.Transfer.Cleared)}, '{Domain.Structure.TitType.Transfer}' AS Type FROM [{nameof(Persistance.Transfer)}s];";
+        
+    }
+    
     public class TitRepository : ViewRepositoryBase<Domain.Structure.ITitBase, Persistance.TheTit, MVVM.Models.Native.Account>
     {
         public TitRepository(IProvideConnection provideConnection) : base(provideConnection) { }
@@ -42,22 +62,10 @@ namespace BFF.DB.Dapper.ModelRepositories
 
             return ret;
         };
-        
-        protected override string CreateViewStatement => 
-            $@"CREATE VIEW IF NOT EXISTS [{ViewName}] AS
-            SELECT {nameof(Persistance.Transaction.Id)}, {nameof(Persistance.Transaction.AccountId)}, {nameof(Persistance.Transaction.PayeeId)}, {nameof(Persistance.Transaction.CategoryId)}, {nameof(Persistance.Transaction.Date)}, {nameof(Persistance.Transaction.Memo)}, {nameof(Persistance.Transaction.Sum)}, {nameof(Persistance.Transaction.Cleared)}, '{Domain.Structure.TitType.Transaction}' AS Type FROM [{nameof(Persistance.Transaction)}s]
-            UNION ALL
-            SELECT {nameof(Persistance.ParentTransaction.Id)}, {nameof(Persistance.ParentTransaction.AccountId)}, {nameof(Persistance.ParentTransaction.PayeeId)}, -69 AS CategoryFiller, {nameof(Persistance.ParentTransaction.Date)}, {nameof(Persistance.ParentTransaction.Memo)}, -69 AS SumFiller, {nameof(Persistance.ParentTransaction.Cleared)}, '{Domain.Structure.TitType.ParentTransaction}' AS Type FROM [{nameof(Persistance.ParentTransaction)}s]
-            UNION ALL
-            SELECT {nameof(Persistance.Income.Id)}, {nameof(Persistance.Income.AccountId)}, {nameof(Persistance.Income.PayeeId)}, {nameof(Persistance.Income.CategoryId)}, {nameof(Persistance.Income.Date)}, {nameof(Persistance.Income.Memo)}, {nameof(Persistance.Income.Sum)}, {nameof(Persistance.Income.Cleared)}, '{Domain.Structure.TitType.Income}' AS Type FROM [{nameof(Persistance.Income)}s]
-            UNION ALL
-            SELECT {nameof(Persistance.ParentIncome.Id)}, {nameof(Persistance.ParentIncome.AccountId)}, {nameof(Persistance.ParentIncome.PayeeId)}, -69 AS CategoryFiller, {nameof(Persistance.ParentIncome.Date)}, {nameof(Persistance.ParentIncome.Memo)}, -69 AS SumFiller, {nameof(Persistance.ParentIncome.Cleared)}, '{Domain.Structure.TitType.ParentIncome}' AS Type FROM [{nameof(Persistance.ParentIncome)}s]
-            UNION ALL
-            SELECT {nameof(Persistance.Transfer.Id)}, -69 AS AccountFiller, {nameof(Persistance.Transfer.FromAccountId)}, {nameof(Persistance.Transfer.ToAccountId)}, {nameof(Persistance.Transfer.Date)}, {nameof(Persistance.Transfer.Memo)}, {nameof(Persistance.Transfer.Sum)}, {nameof(Persistance.Transfer.Cleared)}, '{Domain.Structure.TitType.Transfer}' AS Type FROM [{nameof(Persistance.Transfer)}s];";
-
-        protected override string ViewName => "The Tit";
 
         protected override string GetOrderingPageSuffix(Domain.Account specifyingObject) => $"ORDER BY {nameof(Persistance.TheTit.Date)}";
+        
+        protected override string ViewName => "The Tit";
         
         private string commonSuffix(Domain.Account specifyingObject)
         {

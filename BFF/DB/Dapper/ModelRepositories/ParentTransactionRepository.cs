@@ -4,9 +4,9 @@ using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class ParentTransactionRepository : RepositoryBase<Domain.ParentTransaction, Persistance.ParentTransaction>
+    public class CreateParentTransactionTable : CreateTableBase
     {
-        public ParentTransactionRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        public CreateParentTransactionTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
             $@"CREATE TABLE [{nameof(Persistance.ParentTransaction)}s](
@@ -18,6 +18,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             {nameof(Persistance.ParentTransaction.Cleared)} INTEGER,
             FOREIGN KEY({nameof(Persistance.ParentTransaction.AccountId)}) REFERENCES {nameof(Persistance.Account)}s({nameof(Persistance.Account.Id)}) ON DELETE CASCADE,
             FOREIGN KEY({nameof(Persistance.ParentTransaction.PayeeId)}) REFERENCES {nameof(Persistance.Payee)}s({nameof(Persistance.Payee.Id)}) ON DELETE SET NULL);";
+        
+    }
+    
+    public class ParentTransactionRepository : RepositoryBase<Domain.ParentTransaction, Persistance.ParentTransaction>
+    {
+        public ParentTransactionRepository(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override Converter<Domain.ParentTransaction, Persistance.ParentTransaction> ConvertToPersistance => domainParentTransaction => 
             new Persistance.ParentTransaction

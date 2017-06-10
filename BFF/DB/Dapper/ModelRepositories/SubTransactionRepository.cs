@@ -4,9 +4,9 @@ using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class SubTransactionRepository : RepositoryBase<Domain.SubTransaction, Persistance.SubTransaction>
+    public class CreateSubTransactionTable : CreateTableBase
     {
-        public SubTransactionRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        public CreateSubTransactionTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
             $@"CREATE TABLE [{nameof(Persistance.SubTransaction)}s](
@@ -16,6 +16,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             {nameof(Persistance.SubTransaction.Memo)} TEXT,
             {nameof(Persistance.SubTransaction.Sum)} INTEGER,
             FOREIGN KEY({nameof(Persistance.SubTransaction.ParentId)}) REFERENCES {nameof(Persistance.ParentTransaction)}s({nameof(Persistance.ParentTransaction.Id)}) ON DELETE CASCADE);";
+        
+    }
+    
+    public class SubTransactionRepository : RepositoryBase<Domain.SubTransaction, Persistance.SubTransaction>
+    {
+        public SubTransactionRepository(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override Converter<Domain.SubTransaction, Persistance.SubTransaction> ConvertToPersistance => domainSubTransaction => 
             new Persistance.SubTransaction

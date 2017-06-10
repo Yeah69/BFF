@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using BFF.DB.PersistanceModels;
 using BFF.MVVM.Models.Native.Structure;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 namespace BFF.DB
 {
@@ -30,9 +32,15 @@ namespace BFF.DB
         void CreateTable(DbConnection connection = null);
     }
 
+    public interface ICreateDatabase
+    {
+        IProvideConnection Create();
+    }
+
     public interface IViewRepository<out TDomainBase, in TSpecifying>
-        : ISpecifiedPagedAccess<TDomainBase, TSpecifying>, ICreateTable
+        : ISpecifiedPagedAccess<TDomainBase, TSpecifying>
         where TDomainBase : class, IDataModel { }
 
-    public interface IDbTableRepository<T> : IRepository<T>, ICollectiveRepository<T>, ICreateTable where T : class, IDataModel { }
+    public interface IDbTableRepository<T> : IRepository<T>, ICollectiveRepository<T>
+        where T : class, IDataModel { }
 }

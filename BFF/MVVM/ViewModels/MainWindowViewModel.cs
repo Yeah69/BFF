@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using BFF.DB;
+using BFF.DB.Dapper;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.Properties;
@@ -40,8 +41,8 @@ namespace BFF.MVVM.ViewModels
             };
             if (saveFileDialog.ShowDialog() == true)
             {
-                SqLiteBffOrm orm = new SqLiteBffOrm(saveFileDialog.FileName);
-                orm.CreateNewDatabase();
+                IProvideConnection provideConnection = new CreateSqLiteDatebase(saveFileDialog.FileName).Create();
+                SqLiteBffOrm orm = new SqLiteBffOrm(saveFileDialog.FileName, provideConnection);
                 Reset(saveFileDialog.FileName);
             }
         });
@@ -178,7 +179,7 @@ namespace BFF.MVVM.ViewModels
             (ContentViewModel as IDisposable)?.Dispose();
             if (File.Exists(dbPath))
             {
-                IBffOrm orm = new SqLiteBffOrm(dbPath);
+                IBffOrm orm = new SqLiteBffOrm(dbPath, new ProvideSqLiteConnection(dbPath));
                 ContentViewModel = new AccountTabsViewModel(orm);
                 Title = $"{new FileInfo(dbPath).Name} - BFF";
                 Settings.Default.DBLocation = dbPath;

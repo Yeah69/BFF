@@ -5,13 +5,15 @@ namespace BFF.DB.SQLite
 {
     public class ProvideSqLiteConnection : IProvideConnection
     {
-        private readonly string _connectionString;
+        public DbConnection Connection  => new SQLiteConnection(ConnectionString) ;
         
-        public DbConnection Connection  => new SQLiteConnection(_connectionString) ;
+        private string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;";
 
-        public ProvideSqLiteConnection(string connectionString)
+        private string DbPath { get; }
+
+        public ProvideSqLiteConnection(string dbPath)
         {
-            _connectionString = connectionString;
+            DbPath = dbPath;
         }
     }
 }

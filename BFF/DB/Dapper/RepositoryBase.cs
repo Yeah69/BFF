@@ -10,6 +10,40 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.DB.Dapper
 {
+    public abstract class CreateTableBase : ICreateTable
+    {
+        private readonly IProvideConnection _provideConnection;
+        
+        protected CreateTableBase(IProvideConnection provideConnection)
+        {
+            _provideConnection = provideConnection;
+        }
+
+        public virtual void CreateTable(DbConnection connection = null)
+        {
+            executeOnExistingOrNewConnection(
+                c => c.Execute(CreateTableStatement), 
+                connection);
+        }
+
+        private void executeOnExistingOrNewConnection(Action<DbConnection> action, DbConnection connection = null)
+        {
+            if(connection != null) action(connection);
+            else
+            {
+                using(TransactionScope transactionScope = new TransactionScope())
+                using(DbConnection newConnection = _provideConnection.Connection)
+                {
+                    newConnection.Open();
+                    action(newConnection);
+                    transactionScope.Complete();
+                }
+            }
+        }
+        
+        protected abstract string CreateTableStatement { get; }
+    }
+
     public abstract class RepositoryBase<TDomain, TPersistance> : IDbTableRepository<TDomain>
         where TDomain : class, IDataModel
         where TPersistance : class, IPersistanceModel
@@ -34,13 +68,6 @@ namespace BFF.DB.Dapper
                     transactionScope.Complete();
                 }
             }
-        }
-
-        public virtual void CreateTable(DbConnection connection = null)
-        {
-            executeOnExistingOrNewConnection(
-                c => c.Execute(CreateTableStatement), 
-                connection);
         }
 
         public virtual void Add(TDomain dataModel, DbConnection connection = null)
@@ -87,7 +114,6 @@ namespace BFF.DB.Dapper
 
         protected abstract Converter<TDomain, TPersistance> ConvertToPersistance { get; }
         protected abstract Converter<TPersistance, TDomain> ConvertToDomain { get; }
-        protected abstract string CreateTableStatement { get; }
         public IEnumerable<TDomain> FindAll(DbConnection connection = null)
         {
             IEnumerable<TDomain> inner(DbConnection conn)

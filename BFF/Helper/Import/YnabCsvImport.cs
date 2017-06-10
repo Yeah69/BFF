@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using BFF.DB;
+using BFF.DB.Dapper;
 using BFF.DB.SQLite;
 using BFF.MVVM;
 using BFF.MVVM.Models.Conversion.YNAB;
@@ -129,8 +131,8 @@ namespace BFF.Helper.Import
             };
 
             //Third step: Create new database for imported data
-            SqLiteBffOrm orm = new SqLiteBffOrm(savePath);
-            orm.CreateNewDatabase();
+            IProvideConnection provideConnection = new CreateSqLiteDatebase(savePath).Create();
+            SqLiteBffOrm orm = new SqLiteBffOrm(savePath, provideConnection);
             orm.PopulateDatabase(lists, assignments);
         }
 

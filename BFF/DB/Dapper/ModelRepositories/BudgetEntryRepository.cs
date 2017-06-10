@@ -4,8 +4,10 @@ using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class BudgetEntryRepository : RepositoryBase<Domain.BudgetEntry, Persistance.BudgetEntry>
+    public class CreateBudgetEntryTable : CreateTableBase
     {
+        public CreateBudgetEntryTable(IProvideConnection provideConnection) : base(provideConnection) { }
+        
         protected override string CreateTableStatement =>
             $@"CREATE TABLE [{nameof(Persistance.BudgetEntry)}s](
             {nameof(Persistance.BudgetEntry.Id)} INTEGER PRIMARY KEY,
@@ -13,7 +15,10 @@ namespace BFF.DB.Dapper.ModelRepositories
             {nameof(Persistance.BudgetEntry.Month)} DATE,
             {nameof(Persistance.BudgetEntry.Budget)} INTEGER,
             FOREIGN KEY({nameof(Persistance.BudgetEntry.CategoryId)}) REFERENCES {nameof(Persistance.Category)}s({nameof(Persistance.Category.Id)}) ON DELETE SET NULL);";
-        
+    }
+    
+    public class BudgetEntryRepository : RepositoryBase<Domain.BudgetEntry, Persistance.BudgetEntry>
+    {
         public BudgetEntryRepository(IProvideConnection provideConnection) : base(provideConnection) { }
         protected override Converter<Domain.BudgetEntry, Persistance.BudgetEntry> ConvertToPersistance => domainBudgetEntry => 
             new Persistance.BudgetEntry

@@ -4,9 +4,9 @@ using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class TransferRepository : RepositoryBase<Domain.Transfer, Persistance.Transfer>
+    public class CreateTransferTable : CreateTableBase
     {
-        public TransferRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        public CreateTransferTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
             $@"CREATE TABLE [{nameof(Persistance.Transfer)}s](
@@ -19,6 +19,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             {nameof(Persistance.Transfer.Cleared)} INTEGER,
             FOREIGN KEY({nameof(Persistance.Transfer.FromAccountId)}) REFERENCES {nameof(Persistance.Account)}s({nameof(Persistance.Account.Id)}) ON DELETE RESTRICT,
             FOREIGN KEY({nameof(Persistance.Transfer.ToAccountId)}) REFERENCES {nameof(Persistance.Account)}s({nameof(Persistance.Account.Id)}) ON DELETE RESTRICT);";
+        
+    }
+    
+    public class TransferRepository : RepositoryBase<Domain.Transfer, Persistance.Transfer>
+    {
+        public TransferRepository(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override Converter<Domain.Transfer, Persistance.Transfer> ConvertToPersistance => domainTransfer => 
             new Persistance.Transfer

@@ -72,16 +72,8 @@ namespace BFF.DB.Dapper
                 c => c.Query<int>(query).First()
                 , connection);
         }
-
-        public virtual void CreateTable(DbConnection connection = null)
-        {
-            executeOnExistingOrNewConnection(
-                c => c.Execute(CreateViewStatement), 
-                connection);
-        }
         
         protected abstract Converter<TPersistance, TDomainBase> ConvertToDomain { get; }
-        protected abstract string CreateViewStatement { get; }
         protected abstract string ViewName { get; }
         protected abstract string GetOrderingPageSuffix(TSpecifying specifyingObject);
         protected abstract string GetSpecifyingPageSuffix(TSpecifying specifyingObject);

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using BFF.DB.Dapper;
@@ -28,106 +27,9 @@ namespace BFF.DB.SQLite
 
         protected string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;";
 
-        private const string TheTitName = "The Tit";
-
-        public void CreateNewDatabase()
-        {
-            Logger.Info("Creating a new Database with the path: {0}.", DbPath);
-            if (File.Exists(DbPath)) //todo: This will make problems
-                File.Delete(DbPath);
-            SQLiteConnection.CreateFile(DbPath);
-
-            _bffRepository.CreateTables();
-        }
-
         public void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments)
         {
-            Logger.Info("Populating the current database.");
-            using (DbTransactions.TransactionScope transactionScope = new DbTransactions.TransactionScope())
-            using (SQLiteConnection cnn = new SQLiteConnection(ConnectionString))
-            {
-                cnn.Open();
-                /*  
-                Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
-                because the structure of the imported csv-Entry of Categories allows to get the master category first and
-                then the sub category. Thus, the parents id is known beforehand.
-                */
-                Queue<CategoryImportWrapper> categoriesOrder = new Queue<CategoryImportWrapper>(importLists.Categories);
-                while (categoriesOrder.Count > 0)
-                {
-                    CategoryImportWrapper current = categoriesOrder.Dequeue();
-                    _bffRepository.CategoryRepository.Add(current.Category as Category, cnn);
-                    foreach (IHaveCategory currentTitAssignment in current.TitAssignments)
-                    {
-                        currentTitAssignment.CategoryId = current.Category.Id;
-                    }
-                    foreach (CategoryImportWrapper categoryImportWrapper in current.Categories)
-                    {
-                        categoryImportWrapper.Category.ParentId = current.Category.Id;
-                        categoriesOrder.Enqueue(categoryImportWrapper);
-                    }
-                }
-                foreach (IPayee payee in importLists.Payees)
-                {
-                    _bffRepository.PayeeRepository.Add(payee as Payee, cnn);
-                    foreach (ITransIncBase transIncBase in importAssignments.PayeeToTransIncBase[payee])
-                    {
-                        transIncBase.PayeeId = payee.Id;
-                    }
-                }
-                foreach (IAccount account in importLists.Accounts)
-                {
-                    _bffRepository.AccountRepository.Add(account as Account, cnn);
-                    foreach (ITransIncBase transIncBase in importAssignments.AccountToTransIncBase[account])
-                    {
-                        transIncBase.AccountId = account.Id;
-                    }
-                    foreach (ITransfer transfer in importAssignments.FromAccountToTransfer[account])
-                    {
-                        transfer.FromAccountId = account.Id;
-                    }
-                    foreach (ITransfer transfer in importAssignments.ToAccountToTransfer[account])
-                    {
-                        transfer.ToAccountId = account.Id;
-                    }
-                }
-                foreach (ITransaction transaction in importLists.Transactions)
-                    _bffRepository.TransactionRepository.Add(transaction as Transaction, cnn);
-                foreach (IParentTransaction parentTransaction in importLists.ParentTransactions)
-                {
-                    _bffRepository.ParentTransactionRepository.Add(parentTransaction as ParentTransaction, cnn);
-                    foreach (ISubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
-                    {
-                        subTransaction.ParentId = parentTransaction.Id;
-                    }
-                }
-                foreach (ISubTransaction subTransaction in importLists.SubTransactions) 
-                    _bffRepository.SubTransactionRepository.Add(subTransaction as SubTransaction, cnn);
-                foreach (IIncome income in importLists.Incomes) 
-                    _bffRepository.IncomeRepository.Add(income as Income, cnn);
-                foreach (IParentIncome parentIncome in importLists.ParentIncomes)
-                {
-                    _bffRepository.ParentIncomeRepository.Add(parentIncome as ParentIncome, cnn);
-                    foreach (ISubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
-                    {
-                        subIncome.ParentId = parentIncome.Id;
-                    }
-                }
-                foreach (ISubIncome subIncome in importLists.SubIncomes) 
-                    _bffRepository.SubIncomeRepository.Add(subIncome as SubIncome, cnn);
-                foreach (ITransfer transfer in importLists.Transfers) 
-                    _bffRepository.TransferRepository.Add(transfer as Transfer, cnn);
-                foreach (IBudgetEntry budgetEntry in importLists.BudgetEntries) 
-                    _bffRepository.BudgetEntryRepository.Add(budgetEntry as BudgetEntry, cnn);
-
-                transactionScope.Complete();
-            }
-            Logger.Info("Finished populating the current database.");
-        }
-
-        public IEnumerable<ITitBase> GetAllTits(DateTime startTime, DateTime endTime, IAccount account = null)
-        {
-            throw new NotImplementedException();
+            _bffRepository.PopulateDatabase(importLists, importAssignments);
         }
 
         public long? GetAccountBalance(IAccount account)
@@ -258,10 +160,10 @@ namespace BFF.DB.SQLite
             }
         }
 
-        public SqLiteBffOrm(string dbPath)
+        public SqLiteBffOrm(string dbPath, IProvideConnection provideConnection)
         {
             DbPath = dbPath;
-            _bffRepository = new DapperBffRepository(new ProvideSqLiteConnection(ConnectionString));
+            _bffRepository = new DapperBffRepository(provideConnection);
             
             CommonPropertyProvider = new CommonPropertyProvider(this, _bffRepository);
             (CommonPropertyProvider as CommonPropertyProvider).InitializeCategoryViewModels();

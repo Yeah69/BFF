@@ -1,17 +1,23 @@
 using System;
+using System.Data.Common;
 using Domain = BFF.MVVM.Models.Native;
 using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class AccountRepository : RepositoryBase<Domain.Account, Persistance.Account>
+    public class CreateAccountTable : CreateTableBase
     {
+        public CreateAccountTable(IProvideConnection provideConnection) : base(provideConnection) { }
+        
         protected override string CreateTableStatement =>
             $@"CREATE TABLE [{nameof(Persistance.Account)}s](
             {nameof(Persistance.Account.Id)} INTEGER PRIMARY KEY,
             {nameof(Persistance.Account.Name)} VARCHAR(100),
             {nameof(Persistance.Account.StartingBalance)} INTEGER NOT NULL DEFAULT 0);";
-        
+    }
+
+    public class AccountRepository : RepositoryBase<Domain.Account, Persistance.Account>
+    {
         public AccountRepository(IProvideConnection provideConnection) : base(provideConnection) { }
         protected override Converter<Domain.Account, Persistance.Account> ConvertToPersistance => domainAccount => 
             new Persistance.Account

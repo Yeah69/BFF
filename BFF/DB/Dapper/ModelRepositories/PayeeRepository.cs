@@ -4,14 +4,20 @@ using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class PayeeRepository : RepositoryBase<Domain.Payee, Persistance.Payee>
+    public class CreatePayeeTable : CreateTableBase
     {
-        public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        public CreatePayeeTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
             $@"CREATE TABLE [{nameof(Persistance.Payee)}s](
             {nameof(Persistance.Payee.Id)} INTEGER PRIMARY KEY,
             {nameof(Persistance.Payee.Name)} VARCHAR(100));";
+        
+    }
+    
+    public class PayeeRepository : RepositoryBase<Domain.Payee, Persistance.Payee>
+    {
+        public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override Converter<Domain.Payee, Persistance.Payee> ConvertToPersistance => domainPayee => 
             new Persistance.Payee

@@ -4,9 +4,9 @@ using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class IncomeRepository : RepositoryBase<Domain.Income, Persistance.Income>
+    public class CreateIncomeTable : CreateTableBase
     {
-        public IncomeRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        public CreateIncomeTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
             $@"CREATE TABLE [{nameof(Persistance.Income)}s](
@@ -21,6 +21,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             FOREIGN KEY({nameof(Persistance.Income.AccountId)}) REFERENCES {nameof(Persistance.Account)}s({nameof(Persistance.Account.Id)}) ON DELETE CASCADE,
             FOREIGN KEY({nameof(Persistance.Income.PayeeId)}) REFERENCES {nameof(Persistance.Payee)}s({nameof(Persistance.Payee.Id)}) ON DELETE SET NULL,
             FOREIGN KEY({nameof(Persistance.Income.CategoryId)}) REFERENCES {nameof(Persistance.Category)}s({nameof(Persistance.Category.Id)}) ON DELETE SET NULL);";
+        
+    }
+    
+    public class IncomeRepository : RepositoryBase<Domain.Income, Persistance.Income>
+    {
+        public IncomeRepository(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override Converter<Domain.Income, Persistance.Income> ConvertToPersistance => domainIncome => 
             new Persistance.Income
