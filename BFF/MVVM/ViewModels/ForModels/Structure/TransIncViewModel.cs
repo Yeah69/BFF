@@ -151,15 +151,5 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             Messenger.Default.Send(SummaryAccountMessage.Refresh);
             Messenger.Default.Send(AccountMessage.Refresh, Account);
         }
-
-        /// <summary>
-        /// Uses the OR mapper to delete the model from the database. Inner function for the Delete method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected override void DeleteFromDb()
-        {
-            _transInc.Delete();
-        }
     }
 }

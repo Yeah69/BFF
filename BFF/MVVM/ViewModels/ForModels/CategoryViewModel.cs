@@ -100,11 +100,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             CommonPropertyProvider.Add(_category);
         }
 
-        protected override void DeleteFromDb()
-        {
-            CommonPropertyProvider.Remove(_category);
-        }
-
         #endregion
     }
 }

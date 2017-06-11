@@ -76,13 +76,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected abstract void InsertToDb();
 
         /// <summary>
-        /// Uses the OR mapper to delete the object from the database. Inner function for the Delete method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected abstract void DeleteFromDb();
-
-        /// <summary>
         /// Inserts the model object to the database.
         /// </summary>
         public void Insert()
@@ -99,9 +92,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Deletes the model object from the database.
         /// </summary>
-        public void Delete()
-        {
-            if (Id > 0L) DeleteFromDb();
-        }
+        public void Delete() => _dataModel.Delete();
     }
 }

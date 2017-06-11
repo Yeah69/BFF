@@ -170,16 +170,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         }
 
         /// <summary>
-        /// Uses the OR mapper to delete the model from the database. Inner function for the Delete method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected override void DeleteFromDb()
-        {
-            _transfer.Delete();
-        }
-
-        /// <summary>
         /// Deletes the model from the database and refreshes the accounts, which it belonged to, and the summary account.
         /// </summary>
         public override ICommand DeleteCommand => new RelayCommand(obj =>

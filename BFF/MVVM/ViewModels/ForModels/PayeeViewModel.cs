@@ -30,11 +30,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             CommonPropertyProvider?.Add(_payee);
         }
 
-        protected override void DeleteFromDb()
-        {
-            CommonPropertyProvider?.Remove(_payee);
-        }
-
         #endregion
     }
 }
