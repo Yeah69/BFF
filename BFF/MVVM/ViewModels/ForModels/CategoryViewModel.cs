@@ -42,7 +42,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             {
                 if(_category.ParentId == null && value == null || Orm.CommonPropertyProvider.GetCategoryViewModel(_category.ParentId ?? 0) == value) return;
                 _category.ParentId = value.Id;
-                Update();
+                OnUpdate();
                 OnPropertyChanged();
             }
         }
@@ -98,11 +98,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         protected override void InsertToDb()
         {
             CommonPropertyProvider.Add(_category);
-        }
-
-        protected override void UpdateToDb()
-        {
-            _category.Update(Orm);
         }
 
         protected override void DeleteFromDb()

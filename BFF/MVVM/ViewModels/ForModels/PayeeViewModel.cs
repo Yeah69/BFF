@@ -30,11 +30,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             CommonPropertyProvider?.Add(_payee);
         }
 
-        protected override void UpdateToDb()
-        {
-            _payee.Update(Orm);
-        }
-
         protected override void DeleteFromDb()
         {
             CommonPropertyProvider?.Remove(_payee);

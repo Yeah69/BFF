@@ -40,7 +40,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 if (value == null || value.Id == _transIncBase.AccountId) return;
                 IAccountViewModel temp = Account;
                 _transIncBase.AccountId = value.Id;
-                Update();
+                OnUpdate();
                 if (temp != null) Messenger.Default.Send(AccountMessage.Refresh, temp);
                 Messenger.Default.Send(AccountMessage.Refresh, value);
                 OnPropertyChanged();
@@ -59,7 +59,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 if (value == null || value.Id == _transIncBase.PayeeId) return;
                 _transIncBase.PayeeId = value.Id;
-                Update();
+                OnUpdate();
                 OnPropertyChanged();
             }
         }

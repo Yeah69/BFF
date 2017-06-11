@@ -29,6 +29,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_startingBalance == value) return;
                 _startingBalance = value;
+                Update();
                 OnPropertyChanged();
             }
         }

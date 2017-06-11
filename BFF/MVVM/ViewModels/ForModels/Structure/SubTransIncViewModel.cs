@@ -50,7 +50,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 if (value == null || value.Id == _subTransInc.CategoryId) return; //todo: make Category nullable?
                 _subTransInc.CategoryId = value.Id;
-                Update();
+                OnUpdate();
                 OnPropertyChanged();
             }
         }
@@ -65,7 +65,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 if(_subTransInc.Sum == value) return;
                 _subTransInc.Sum = value;
-                Update();
+                OnUpdate();
                 _parent.RefreshSum();
                 OnPropertyChanged();
             }
@@ -161,17 +161,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected override void InsertToDb()
         {
-            _subTransInc.Insert(Orm);
-        }
-
-        /// <summary>
-        /// Uses the OR mapper to update the model in the database. Inner function for the Update method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected override void UpdateToDb()
-        {
-            _subTransInc.Update(Orm);
+            _subTransInc.Insert();
         }
 
         /// <summary>
@@ -181,7 +171,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected override void DeleteFromDb()
         {
-            _subTransInc.Delete(Orm);
+            _subTransInc.Delete();
         }
     }
 }

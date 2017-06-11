@@ -31,7 +31,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             {
                 if(Account.StartingBalance == value) return;
                 Account.StartingBalance = value;
-                Account.Update(Orm);
                 OnPropertyChanged();
                 Orm.CommonPropertyProvider.SummaryAccountViewModel.RefreshStartingBalance();
             }
@@ -57,16 +56,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             CommonPropertyProvider.Add(Account);
             Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
             Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
-        }
-
-        /// <summary>
-        /// Uses the OR mapper to update the model in the database. Inner function for the Update method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected override void UpdateToDb()
-        {
-            Account.Update(Orm);
         }
 
         /// <summary>

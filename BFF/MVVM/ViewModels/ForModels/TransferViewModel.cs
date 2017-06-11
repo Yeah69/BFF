@@ -49,7 +49,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                     accountSwitch = true;
                 }
                 _transfer.FromAccountId = value?.Id ?? -1;
-                Update();
+                OnUpdate();
                 if(accountSwitch && ToAccount != null) //Refresh ToAccount if switch occurred
                 {
                     Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
@@ -88,7 +88,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                     accountSwitch = true;
                 }
                 _transfer.ToAccountId = value?.Id ?? -1;
-                Update();
+                OnUpdate();
                 if (accountSwitch && FromAccount != null) //Refresh ToAccount if switch occurred
                 {
                     Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
@@ -118,7 +118,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             {
                 if(value == _transfer.Sum) return;
                 _transfer.Sum = value;
-                Update();
+                OnUpdate();
                 Messenger.Default.Send(AccountMessage.RefreshBalance, FromAccount);
                 Messenger.Default.Send(AccountMessage.RefreshBalance, ToAccount);
                 OnPropertyChanged();
@@ -154,7 +154,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void InsertToDb()
         {
-            _transfer.Insert(Orm);
+            _transfer.Insert();
         }
 
         /// <summary>
@@ -162,9 +162,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The Orm works in a generic way and determines the right table by the given type.
         /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
         /// </summary>
-        protected override void UpdateToDb()
+        protected override void OnUpdate()
         {
-            _transfer.Update(Orm);
             Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
             Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
             Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
@@ -177,7 +176,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void DeleteFromDb()
         {
-            _transfer.Delete(Orm);
+            _transfer.Delete();
         }
 
         /// <summary>

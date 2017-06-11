@@ -46,6 +46,7 @@ namespace BFF.MVVM.Models.Native.Structure
             {
                 if(_date == value) return;
                 _date = value;
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -60,6 +61,7 @@ namespace BFF.MVVM.Models.Native.Structure
             {
                 if(_cleared == value) return;
                 _cleared = value;
+                Update();
                 OnPropertyChanged();
             }
         }

@@ -23,21 +23,5 @@ namespace BFF.MVVM.Models.Native
                          string memo = null, 
                          long sum = 0L) 
             : base(repository, parent, category, memo, sum) {}
-
-        /// <summary>
-        /// Safe ORM-constructor
-        /// </summary>
-        /// <param name="id">This objects Id</param>
-        /// <param name="parentId">Id of the Parent</param>
-        /// <param name="categoryId">Id of the Category</param>
-        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        /// <param name="sum">The Sum of the SubElement</param>
-        public SubIncome(IRepository<SubIncome> repository, 
-                         long id,
-                         long parentId, 
-                         long categoryId, 
-                         string memo, 
-                         long sum) 
-            : base(repository, id, parentId, categoryId, sum, memo) { }
     }
 }

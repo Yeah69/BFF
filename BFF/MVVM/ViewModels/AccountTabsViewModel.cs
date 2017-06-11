@@ -45,7 +45,7 @@ namespace BFF.MVVM.ViewModels
             _orm = orm;
             NewAccount = _orm.BffRepository.AccountRepository.Create();
 
-            IDbSetting dbSetting = orm.Get<DbSetting>(1);
+            IDbSetting dbSetting = _orm.BffRepository.DbSettingRepository.Find(1);
             Settings.Default.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultureName);
             Settings.Default.Culture_SessionDate = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
             ManageCultures();
@@ -79,10 +79,9 @@ namespace BFF.MVVM.ViewModels
         protected override void SaveCultures()
         {
             Settings.Default.Save();
-            IDbSetting dbSetting = _orm.Get<DbSetting>(1);
+            IDbSetting dbSetting = _orm.BffRepository.DbSettingRepository.Find(1);
             dbSetting.CurrencyCulture = Settings.Default.Culture_SessionCurrency;
             dbSetting.DateCulture = Settings.Default.Culture_SessionDate;
-            dbSetting.Update(_orm);
         }
 
         #endregion

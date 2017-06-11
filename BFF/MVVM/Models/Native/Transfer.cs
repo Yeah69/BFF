@@ -40,6 +40,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_fromAccountId == value) return;
                 _fromAccountId = value; 
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -54,6 +55,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_toAccountId == value) return;
                 _toAccountId = value;
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -68,6 +70,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_sum == value) return;
                 _sum = value;
+                Update();
                 OnPropertyChanged();
             }
         }

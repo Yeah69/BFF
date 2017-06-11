@@ -40,7 +40,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 if(_titLike.Memo == value) return;
                 _titLike.Memo = value;
-                Update();
+                OnUpdate();
                 OnPropertyChanged();
             }
         }

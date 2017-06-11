@@ -27,21 +27,6 @@ namespace BFF.MVVM.Models.Native
             _budget = budget;
         }
 
-        /// <summary>
-        /// Safe ORM-constructor
-        /// </summary>
-        /// <param name="id">This objects Id</param>
-        /// <param name="categoryId">Id of Category</param>
-        /// <param name="month">The month of the budget entry</param>
-        /// <param name="budget">The amount of money, which was budgeted in the set month</param>
-        public BudgetEntry(IRepository<BudgetEntry> repository, long id, DateTime month, long categoryId, long budget)
-            : base(repository, id)
-        {
-            _month = month;
-            _categoryId = categoryId;
-            _budget = budget;
-        }
-
         private DateTime _month;
 
         public DateTime Month
@@ -52,6 +37,7 @@ namespace BFF.MVVM.Models.Native
                 if(_month == value) return;
 
                 _month = value;
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -66,6 +52,7 @@ namespace BFF.MVVM.Models.Native
                 if(_categoryId == value) return;
 
                 _categoryId = value;
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -80,6 +67,7 @@ namespace BFF.MVVM.Models.Native
                 if(_budget == value) return;
 
                 _budget = value;
+                Update();
                 OnPropertyChanged();
             }
         }

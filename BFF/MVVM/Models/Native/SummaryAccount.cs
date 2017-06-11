@@ -21,11 +21,11 @@ namespace BFF.MVVM.Models.Native
 
         #region Overrides of ExteriorCrudBase
 
-        public override void Insert(IBffOrm orm) {}
+        public override void Insert() {}
 
-        public override void Update(IBffOrm orm) {}
+        public override void Update() {}
 
-        public override void Delete(IBffOrm orm){}
+        public override void Delete(){}
 
         #endregion
     }

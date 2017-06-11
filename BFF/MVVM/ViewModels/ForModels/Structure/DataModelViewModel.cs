@@ -76,13 +76,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected abstract void InsertToDb();
 
         /// <summary>
-        /// Uses the OR mapper to update the object in the database. Inner function for the Update method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected abstract void UpdateToDb();
-
-        /// <summary>
         /// Uses the OR mapper to delete the object from the database. Inner function for the Delete method.
         /// The Orm works in a generic way and determines the right table by the given type.
         /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
@@ -100,10 +93,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Updates the model object in the database.
         /// </summary>
-        protected void Update()
-        {
-            if (Id > 0L) UpdateToDb();
-        }
+        protected virtual void OnUpdate() {}
 
 
         /// <summary>

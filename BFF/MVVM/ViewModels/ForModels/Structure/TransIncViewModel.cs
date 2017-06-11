@@ -39,7 +39,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 if(value == null || value.Id == _transInc.CategoryId) return; //todo: make Category nullable?
                 _transInc.CategoryId = value.Id;
-                Update();
+                OnUpdate();
                 OnPropertyChanged();
             }
         }
@@ -54,7 +54,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 if(value == _transInc.Sum) return;
                 _transInc.Sum = value;
-                Update();
+                OnUpdate();
                 Messenger.Default.Send(AccountMessage.RefreshBalance, Account);
                 OnPropertyChanged();
             }
@@ -138,7 +138,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected override void InsertToDb()
         {
-            _transInc.Insert(Orm);
+            _transInc.Insert();
         }
 
         /// <summary>
@@ -146,9 +146,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// The Orm works in a generic way and determines the right table by the given type.
         /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
         /// </summary>
-        protected override void UpdateToDb()
+        protected override void OnUpdate()
         {
-            _transInc.Update(Orm);
             Messenger.Default.Send(SummaryAccountMessage.Refresh);
             Messenger.Default.Send(AccountMessage.Refresh, Account);
         }
@@ -160,7 +159,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected override void DeleteFromDb()
         {
-            _transInc.Delete(Orm);
+            _transInc.Delete();
         }
     }
 }

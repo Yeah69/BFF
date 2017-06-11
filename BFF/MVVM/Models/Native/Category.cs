@@ -29,6 +29,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_parentId == value) return;
                 _parentId = value;
+                Update();
                 OnPropertyChanged(); 
             }
         }
@@ -41,18 +42,6 @@ namespace BFF.MVVM.Models.Native
         public Category(IRepository<Category> repository, string name = null, long? parentId = null) : base(repository)
         {
             _parentId = parentId;
-        }
-
-        /// <summary>
-        /// Safe ORM-constructor
-        /// </summary>
-        /// <param name="id">The objects Id</param>
-        /// <param name="parentId">Id of Parent</param>
-        /// <param name="name">Name of the Category</param>
-        public Category(IRepository<Category> repository, long id, long parentId, string name) : base(repository)
-        {
-            Id = id;
-            ParentId = parentId;
         }
     }
 }

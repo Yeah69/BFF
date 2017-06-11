@@ -34,6 +34,7 @@ namespace BFF.MVVM.Models.Native.Structure
             {
                 if(_accountId == value) return;
                 _accountId = value;
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -48,6 +49,7 @@ namespace BFF.MVVM.Models.Native.Structure
             {
                 if(_payeeId == value) return;
                 _payeeId = value;
+                Update();
                 OnPropertyChanged();
             }
         }

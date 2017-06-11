@@ -223,17 +223,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected override void InsertToDb()
         {
-            _parentTransInc.Insert(Orm);
-        }
-
-        /// <summary>
-        /// Uses the OR mapper to update the model in the database. Inner function for the Update method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected override void UpdateToDb()
-        {
-            _parentTransInc.Update(Orm);
+            _parentTransInc.Insert();
         }
 
         /// <summary>
@@ -243,7 +233,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected override void DeleteFromDb()
         {
-            _parentTransInc.Delete(Orm);
+            _parentTransInc.Delete();
         }
     }
 }

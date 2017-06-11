@@ -214,11 +214,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Does nothing, because this is the summary account. Needed to mimic an Account.
         /// </summary>
-        protected override void UpdateToDb() { }
-
-        /// <summary>
-        /// Does nothing, because this is the summary account. Needed to mimic an Account.
-        /// </summary>
         protected override void DeleteFromDb() { }
 
         #endregion

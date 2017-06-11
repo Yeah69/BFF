@@ -22,7 +22,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             set
             {
                 if (_commonProperty.Name == value) return;
-                Update();
+                OnUpdate();
                 _commonProperty.Name = value;
                 OnPropertyChanged();
             }

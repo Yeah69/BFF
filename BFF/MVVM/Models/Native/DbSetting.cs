@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper.Contrib.Extensions;
@@ -23,6 +22,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_currencyCulture.Equals(CultureInfo.GetCultureInfo(value))) return;
                 _currencyCulture = CultureInfo.GetCultureInfo(value);
+                Update();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CurrencyCulture));
             }
@@ -38,6 +38,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_currencyCulture.Equals(value)) return;
                 _currencyCulture = value;
+                Update();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CurrencyCultureName));
             }
@@ -50,6 +51,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if (_dateCulture.Equals(CultureInfo.GetCultureInfo(value))) return;
                 _dateCulture = CultureInfo.GetCultureInfo(value);
+                Update();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(DateCulture));
             }
@@ -65,6 +67,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if (_dateCulture.Equals(value)) return;
                 _dateCulture = value;
+                Update();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(DateCultureName));
             }

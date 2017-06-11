@@ -38,7 +38,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 if(_titBase.Date == value) return;
                 _titBase.Date = value;
-                Update();
+                OnUpdate();
                 OnPropertyChanged();
             }
         }
@@ -55,7 +55,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 if(_titBase.Cleared == value) return;
                 _titBase.Cleared = value;
-                Update();
+                OnUpdate();
                 OnPropertyChanged();
             }
         }
