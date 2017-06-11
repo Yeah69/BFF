@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
 
@@ -19,9 +18,6 @@ namespace BFF.DB
         void Add(IAccount account);
         void Add(IPayee payee);
         void Add(ICategory category);
-        void Remove(IAccount account);
-        void Remove(IPayee payee);
-        void Remove(ICategory category);
         IAccountViewModel GetAccountViewModel(long id);
         ICategoryViewModel GetCategoryViewModel(long id);
         IPayeeViewModel GetPayeeViewModel(long id);
@@ -30,7 +26,7 @@ namespace BFF.DB
 
     public class CommonPropertyProvider : ICommonPropertyProvider
     {
-        private IBffOrm _orm;
+        private readonly IBffOrm _orm;
         private readonly BffRepository _bffRepository;
 
         public ObservableCollection<IAccount> Accounts { get;  }
@@ -56,7 +52,7 @@ namespace BFF.DB
             _bffRepository = bffRepository;
             
             SummaryAccountViewModel = new SummaryAccountViewModel(
-                orm, new SummaryAccount(_bffRepository.AccountRepository as AccountRepository));
+                orm, new SummaryAccount(_bffRepository.AccountRepository));
             
             Accounts = new ObservableCollection<IAccount>(_bffRepository.AccountRepository.FindAll());
             Categories = new ObservableCollection<ICategory>(_bffRepository.CategoryRepository.FindAll());
@@ -107,25 +103,6 @@ namespace BFF.DB
         public void Add(ICategory category)
         {
             _bffRepository.CategoryRepository.Add(category as Category);
-        }
-
-        public void Remove(IAccount account)
-        {
-            _bffRepository.AccountRepository.Delete(account as Account);
-            Accounts.Remove(account);
-            AllAccountViewModels.Remove(GetAccountViewModel(account.Id));
-        }
-
-        public void Remove(IPayee payee)
-        {
-            _bffRepository.PayeeRepository.Delete(payee as Payee);
-            Payees.Remove(payee);
-            AllPayeeViewModels.Remove(GetPayeeViewModel(payee.Id));
-        }
-
-        public void Remove(ICategory category)
-        {
-            _bffRepository.CategoryRepository.Delete(category as Category);
         }
 
         public IAccountViewModel GetAccountViewModel(long id)

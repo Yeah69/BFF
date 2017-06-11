@@ -15,7 +15,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class PayeeRepository : RepositoryBase<Domain.Payee, Persistance.Payee>
+    public class PayeeRepository : CachingRepositoryBase<Domain.Payee, Persistance.Payee>
     {
         public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection) { }
 

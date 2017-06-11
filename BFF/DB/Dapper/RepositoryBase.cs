@@ -36,7 +36,7 @@ namespace BFF.DB.Dapper
     {
         protected IProvideConnection ProvideConnection { get; }
 
-        public RepositoryBase(IProvideConnection provideConnection)
+        protected RepositoryBase(IProvideConnection provideConnection)
         {
             ProvideConnection = provideConnection;
         }
@@ -93,7 +93,7 @@ namespace BFF.DB.Dapper
 
         protected abstract Converter<TDomain, TPersistance> ConvertToPersistance { get; }
         protected abstract Converter<TPersistance, TDomain> ConvertToDomain { get; }
-        public IEnumerable<TDomain> FindAll(DbConnection connection = null)
+        public virtual IEnumerable<TDomain> FindAll(DbConnection connection = null)
         {
             IEnumerable<TDomain> inner(DbConnection conn)
             {

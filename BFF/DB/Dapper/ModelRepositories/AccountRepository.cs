@@ -18,7 +18,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             {nameof(Persistance.Account.StartingBalance)} INTEGER NOT NULL DEFAULT 0);";
     }
 
-    public class AccountRepository : RepositoryBase<Domain.Account, Persistance.Account>
+    public class AccountRepository : CachingRepositoryBase<Domain.Account, Persistance.Account>
     {
         public AccountRepository(IProvideConnection provideConnection) : base(provideConnection) { }
 

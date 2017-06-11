@@ -16,7 +16,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             FOREIGN KEY({nameof(Persistance.Category.ParentId)}) REFERENCES {nameof(Persistance.Category)}s({nameof(Persistance.Category.Id)}) ON DELETE SET NULL);";
     }
     
-    public class CategoryRepository : RepositoryBase<Domain.Category, Persistance.Category>
+    public class CategoryRepository : CachingRepositoryBase<Domain.Category, Persistance.Category>
     {
         public CategoryRepository(IProvideConnection provideConnection) : base(provideConnection) { }
 
