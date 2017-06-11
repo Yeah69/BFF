@@ -18,6 +18,9 @@ namespace BFF.DB.Dapper.ModelRepositories
     public class PayeeRepository : RepositoryBase<Domain.Payee, Persistance.Payee>
     {
         public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+
+        public override Domain.Payee Create() =>
+            new Domain.Payee(this);
         
         protected override Converter<Domain.Payee, Persistance.Payee> ConvertToPersistance => domainPayee => 
             new Persistance.Payee
@@ -27,7 +30,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
 
         protected override Converter<Persistance.Payee, Domain.Payee> ConvertToDomain => persistancePayee =>
-            new Domain.Payee
+            new Domain.Payee(this)
             {
                 Id = persistancePayee.Id,
                 Name = persistancePayee.Name

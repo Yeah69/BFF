@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.DB;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
@@ -10,7 +11,7 @@ namespace BFF.MVVM.Models.Native.Structure
         long Sum { get; set; }
     }
 
-    public abstract class TransInc : TransIncBase, ITransInc
+    public abstract class TransInc<T> : TransIncBase<T>, ITransInc where T : class, ITransInc
     {
         private long _categoryId;
         private long _sum;
@@ -53,9 +54,15 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TransInc(DateTime date, IAccount account = null, IPayee payee = null, ICategory category = null, string memo = null, 
-            long sum = 0, bool? cleared = null) 
-            : base(date, account, payee, memo, cleared)
+        protected TransInc(IRepository<T> repository, 
+                           DateTime date, 
+                           IAccount account = null,
+                           IPayee payee = null, 
+                           ICategory category = null,
+                           string memo = null, 
+                           long sum = 0, 
+                           bool? cleared = null) 
+            : base(repository, date, account, payee, memo, cleared)
         {
             _categoryId = category?.Id ?? -1;
             _sum = sum;
@@ -72,8 +79,16 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TransInc(long id, long accountId, DateTime date, long payeeId, long categoryId, string memo, long sum, bool cleared) 
-            : base(id, accountId, date, payeeId, memo, cleared)
+        protected TransInc(IRepository<T> repository, 
+                           long id, 
+                           long accountId, 
+                           DateTime date, 
+                           long payeeId, 
+                           long categoryId, 
+                           string memo,
+                           long sum, 
+                           bool cleared) 
+            : base(repository, id, accountId, date, payeeId, memo, cleared)
         {
             _categoryId = categoryId;
             _sum = sum;

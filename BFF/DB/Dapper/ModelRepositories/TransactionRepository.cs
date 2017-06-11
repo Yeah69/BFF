@@ -27,6 +27,9 @@ namespace BFF.DB.Dapper.ModelRepositories
     public class TransactionRepository : RepositoryBase<Domain.Transaction, Persistance.Transaction>
     {
         public TransactionRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+
+        public override Domain.Transaction Create() =>
+            new Domain.Transaction(this, DateTime.MinValue);
         
         protected override Converter<Domain.Transaction, Persistance.Transaction> ConvertToPersistance => domainTransaction => 
             new Persistance.Transaction
@@ -42,7 +45,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         
         protected override Converter<Persistance.Transaction, Domain.Transaction> ConvertToDomain => persistanceTransaction =>
-            new Domain.Transaction(persistanceTransaction.Date)
+            new Domain.Transaction(this, persistanceTransaction.Date)
             {
                 Id = persistanceTransaction.Id,
                 AccountId = persistanceTransaction.AccountId,

@@ -9,7 +9,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// A Transaction, which is split into several SubTransactions
     /// </summary>
-    public class ParentTransaction : ParentTransInc, IParentTransaction
+    public class ParentTransaction : ParentTransInc<ParentTransaction>, IParentTransaction
     {
         /// <summary>
         /// Initializes the object
@@ -19,8 +19,13 @@ namespace BFF.MVVM.Models.Native
         /// <param name="payee">To whom was payeed or who payeed</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public ParentTransaction(DateTime date, IAccount account = null, IPayee payee = null, string memo = null, bool? cleared = null)
-            : base(date, account, payee, memo, cleared) {}
+        public ParentTransaction(IRepository<ParentTransaction> repository, 
+                                 DateTime date, 
+                                 IAccount account = null, 
+                                 IPayee payee = null, 
+                                 string memo = null, 
+                                 bool? cleared = null)
+            : base(repository, date, account, payee, memo, cleared) {}
 
         /// <summary>
         /// Safe ORM-constructor
@@ -31,29 +36,13 @@ namespace BFF.MVVM.Models.Native
         /// <param name="payeeId">Id of Payee</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public ParentTransaction(long id, long accountId, DateTime date, long payeeId, string memo, bool cleared)
-            : base(id, accountId, date, payeeId, memo, cleared) { }
-
-        #region Overrides of ExteriorCrudBase
-
-        public override void Insert(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Insert(this);
-        }
-
-        public override void Update(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Update(this);
-        }
-
-        public override void Delete(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Delete(this);
-        }
-
-        #endregion
+        public ParentTransaction(IRepository<ParentTransaction> repository, 
+                                 long id,
+                                 long accountId, 
+                                 DateTime date, 
+                                 long payeeId, 
+                                 string memo,
+                                 bool cleared)
+            : base(repository, id, accountId, date, payeeId, memo, cleared) { }
     }
 }

@@ -43,7 +43,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>A new SubElement.</returns>
         public override ISubTransInc CreateNewSubElement()
         {
-            return new SubTransaction();
+            return Orm.BffRepository.SubIncomeRepository.Create();
         }
 
         protected override IEnumerable<ISubTransInc> GetSubTransInc()

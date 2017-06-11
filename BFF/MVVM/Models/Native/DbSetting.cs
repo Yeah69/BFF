@@ -14,7 +14,7 @@ namespace BFF.MVVM.Models.Native
         CultureInfo DateCulture { get; set; }
     }
 
-    public class DbSetting : DataModel, IDbSetting
+    public class DbSetting : DataModel<DbSetting>, IDbSetting
     {
         public string CurrencyCultureName
         {
@@ -70,32 +70,10 @@ namespace BFF.MVVM.Models.Native
             }
         }
 
-        public DbSetting()
+        public DbSetting(IRepository<DbSetting> repository) : base(repository)
         {
             _currencyCulture = CultureInfo.GetCultureInfo("de-DE");
             _dateCulture = CultureInfo.GetCultureInfo("de-DE");
         }
-
-        #region Overrides of ExteriorCrudBase
-
-        public override void Insert(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Insert(this);
-        }
-
-        public override void Update(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Update(this);
-        }
-
-        public override void Delete(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Delete(this);
-        }
-
-        #endregion
     }
 }

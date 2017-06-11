@@ -24,6 +24,9 @@ namespace BFF.DB.Dapper.ModelRepositories
     public class ParentTransactionRepository : RepositoryBase<Domain.ParentTransaction, Persistance.ParentTransaction>
     {
         public ParentTransactionRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+
+        public override Domain.ParentTransaction Create() =>
+            new Domain.ParentTransaction(this, DateTime.MinValue);
         
         protected override Converter<Domain.ParentTransaction, Persistance.ParentTransaction> ConvertToPersistance => domainParentTransaction => 
             new Persistance.ParentTransaction
@@ -37,7 +40,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         
         protected override Converter<Persistance.ParentTransaction, Domain.ParentTransaction> ConvertToDomain => persistanceParentTransaction =>
-            new Domain.ParentTransaction(persistanceParentTransaction.Date)
+            new Domain.ParentTransaction(this, persistanceParentTransaction.Date)
             {
                 Id = persistanceParentTransaction.Id,
                 AccountId = persistanceParentTransaction.AccountId,

@@ -1,10 +1,11 @@
 ﻿using System;
+using BFF.DB;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
     public interface IParentTransInc : ITransIncBase {}
 
-    public abstract class ParentTransInc : TransIncBase, IParentTransInc
+    public abstract class ParentTransInc<T> : TransIncBase<T>, IParentTransInc where T : class, IParentTransInc
     {
         /// <summary>
         /// Initializes the object
@@ -14,8 +15,13 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="payee">To whom was payeed or who payeed</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected ParentTransInc(DateTime date, IAccount account = null, IPayee payee = null, string memo = null, bool? cleared = null) 
-            : base(date, account, payee, memo, cleared) {}
+        protected ParentTransInc(IRepository<T> repository, 
+                                 DateTime date, 
+                                 IAccount account = null, 
+                                 IPayee payee = null, 
+                                 string memo = null, 
+                                 bool? cleared = null) 
+            : base(repository, date, account, payee, memo, cleared) {}
 
         /// <summary>
         /// Safe ORM-constructor
@@ -26,7 +32,13 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="payeeId">Id of Payee</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected ParentTransInc(long id, long accountId, DateTime date, long payeeId, string memo, bool cleared) 
-            : base(id, accountId, date, payeeId, memo, cleared) {}
+        protected ParentTransInc(IRepository<T> repository, 
+                                 long id, 
+                                 long accountId, 
+                                 DateTime date, 
+                                 long payeeId, 
+                                 string memo, 
+                                 bool cleared) 
+            : base(repository, id, accountId, date, payeeId, memo, cleared) {}
     }
 }

@@ -15,7 +15,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// This CommonProperty is used to categorize Tits
     /// </summary>
-    public class Category : CommonProperty, ICategory
+    public class Category : CommonProperty<Category>, ICategory
     {
         private long? _parentId;
 
@@ -38,7 +38,7 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         /// <param name="name">Name of the Category</param>
         /// <param name="parentId"></param>
-        public Category( string name = null, long? parentId = null) : base(name)
+        public Category(IRepository<Category> repository, string name = null, long? parentId = null) : base(repository)
         {
             _parentId = parentId;
         }
@@ -49,32 +49,10 @@ namespace BFF.MVVM.Models.Native
         /// <param name="id">The objects Id</param>
         /// <param name="parentId">Id of Parent</param>
         /// <param name="name">Name of the Category</param>
-        public Category(long id, long parentId, string name) : base(name)
+        public Category(IRepository<Category> repository, long id, long parentId, string name) : base(repository)
         {
             Id = id;
             ParentId = parentId;
         }
-
-        #region Overrides of ExteriorCrudBase
-
-        public override void Insert(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Insert(this);
-        }
-
-        public override void Update(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Update(this);
-        }
-
-        public override void Delete(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Delete(this);
-        }
-
-        #endregion
     }
 }

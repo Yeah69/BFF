@@ -1,4 +1,5 @@
 ﻿using BFF.DB;
+using BFF.DB.Dapper.ModelRepositories;
 
 namespace BFF.MVVM.Models.Native
 {
@@ -13,7 +14,7 @@ namespace BFF.MVVM.Models.Native
         /// <summary>
         /// Initializes the object
         /// </summary>
-        public SummaryAccount()
+        public SummaryAccount(AccountRepository repository) : base(repository)
         {
             Name = "All Accounts"; //todo Localize! Maybe then override the Name property
         }

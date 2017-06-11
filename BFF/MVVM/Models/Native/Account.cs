@@ -15,7 +15,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class Account : CommonProperty, IAccount
+    public class Account : CommonProperty<Account>, IAccount
     {
         private long _startingBalance;
 
@@ -39,32 +39,14 @@ namespace BFF.MVVM.Models.Native
         /// <param name="id">This objects Id</param>
         /// <param name="name">Name of the Account</param>
         /// <param name="startingBalance">Starting balance of the Account</param>
-        public Account(long id = -1L, string name = null, long startingBalance = 0L) : base(name)
+        public Account(IRepository<Account> repository, 
+                       long id = -1L, 
+                       string name = null, 
+                       long startingBalance = 0L) 
+            : base(repository, name)
         {
             Id = id;
             _startingBalance = startingBalance;
         }
-
-        #region Overrides of ExteriorCrudBase
-
-        public override void Insert(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Insert(this);
-        }
-
-        public override void Update(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Update(this);
-        }
-
-        public override void Delete(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Delete(this);
-        }
-
-        #endregion
     }
 }

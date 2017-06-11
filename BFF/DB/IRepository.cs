@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
-using BFF.DB.PersistanceModels;
 using BFF.MVVM.Models.Native.Structure;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 namespace BFF.DB
 {
     public interface IRepository<T> where T : class, IDataModel
     {
+        T Create();
         void Add(T dataModel, DbConnection connection = null);
         void Update(T dataModel, DbConnection connection = null);
         void Delete(T dataModel, DbConnection connection = null);

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BFF.DB.Dapper;
-using BFF.DB.Dapper.ModelRepositories;
-using BFF.Helper.Import;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 
@@ -15,22 +13,22 @@ namespace BFF.DB.SQLite
         
         public ICommonPropertyProvider CommonPropertyProvider { get; }
 
-        public void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments) =>
-            _bffRepository.PopulateDatabase(importLists, importAssignments);
+        public BffRepository BffRepository => _bffRepository;
 
         public long? GetAccountBalance(IAccount account) => 
-            (_bffRepository.AccountRepository as AccountRepository)?.GetBalance(account);
+            _bffRepository.AccountRepository?.GetBalance(account);
 
         public long? GetSummaryAccountBalance() =>
-            (_bffRepository.AccountRepository as AccountRepository)?.GetBalance(new SummaryAccount());
+            _bffRepository.AccountRepository?.GetBalance(
+                new SummaryAccount(_bffRepository.AccountRepository));
 
         public IEnumerable<ISubTransInc> GetSubTransInc<T>(long parentId) where T : ISubTransInc
         {
             if(typeof(T) == typeof(SubIncome))
-                return (_bffRepository.SubIncomeRepository as SubIncomeRepository)?.GetChildrenOf(parentId) 
+                return _bffRepository.SubIncomeRepository?.GetChildrenOf(parentId) 
                        ?? Enumerable.Empty<ISubIncome>();
             if(typeof(T) == typeof(SubTransaction))
-                return (_bffRepository.SubTransactionRepository as SubTransactionRepository)?.GetChildrenOf(parentId) 
+                return _bffRepository.SubTransactionRepository?.GetChildrenOf(parentId) 
                        ?? Enumerable.Empty<ISubTransaction>();
             return Enumerable.Empty<ISubTransInc>();
         }

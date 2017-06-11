@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using BFF.Helper.Import;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 
@@ -8,8 +7,8 @@ namespace BFF.DB
     public interface IBffOrm : ICrudOrm, IPagedOrm
     {
         ICommonPropertyProvider CommonPropertyProvider { get; }
+        BffRepository BffRepository { get; }
 
-        void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments);
         long? GetAccountBalance(IAccount account);
         long? GetSummaryAccountBalance();
         IEnumerable<ISubTransInc> GetSubTransInc<T>(long parentId) where T : ISubTransInc;

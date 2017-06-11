@@ -9,7 +9,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// The Income documents earned money
     /// </summary>
-    public class Income : TransInc, IIncome
+    public class Income : TransInc<Income>, IIncome
     {
         /// <summary>
         /// Initializes the object
@@ -21,9 +21,15 @@ namespace BFF.MVVM.Models.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public Income(DateTime date, IAccount account = null, IPayee payee = null,
-            ICategory category = null, string memo = null, long sum = 0L, bool? cleared = null)
-            : base(date, account, payee, category, memo, sum, cleared)
+        public Income(IRepository<Income> repository, 
+                      DateTime date, 
+                      IAccount account = null, 
+                      IPayee payee = null,
+                      ICategory category = null, 
+                      string memo = null, 
+                      long sum = 0L, 
+                      bool? cleared = null)
+            : base(repository, date, account, payee, category, memo, sum, cleared)
         {
             Date = date;
         }
@@ -39,30 +45,15 @@ namespace BFF.MVVM.Models.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public Income(long id, long accountId, DateTime date, long payeeId, long categoryId, string memo,
-            long sum, bool cleared)
-            : base(id, accountId, date, payeeId, categoryId, memo, sum, cleared) {}
-
-        #region Overrides of ExteriorCrudBase
-
-        public override void Insert(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Insert(this);
-        }
-
-        public override void Update(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Update(this);
-        }
-
-        public override void Delete(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Delete(this);
-        }
-
-        #endregion
+        public Income(IRepository<Income> repository, 
+                      long id, 
+                      long accountId, 
+                      DateTime date, 
+                      long payeeId, 
+                      long categoryId, 
+                      string memo,
+                      long sum, 
+                      bool cleared)
+            : base(repository, id, accountId, date, payeeId, categoryId, memo, sum, cleared) {}
     }
 }

@@ -32,9 +32,11 @@ namespace BFF.MVVM.Models.Native.Structure
     /// <summary>
     /// Base class for all model classes, which get OR-mapped
     /// </summary>
-    public abstract class DataModel : ObservableObject, IDataModel
+    public abstract class DataModel<T> : ObservableObject, IDataModel where T : class, IDataModel
     {
         private long _id = -1L;
+
+        private readonly IRepository<T> _repository;
 
         /// <summary>
         /// Identification number for the database
@@ -55,8 +57,9 @@ namespace BFF.MVVM.Models.Native.Structure
         /// Initializes the object
         /// </summary>
         /// <param name="id">Identification number for the database</param>
-        protected DataModel(long id = -1L)
+        protected DataModel(IRepository<T> repository, long id = -1L)
         {
+            _repository = repository;
             if (Id == -1L || id > 0L) Id = id;
         }
 
@@ -64,18 +67,27 @@ namespace BFF.MVVM.Models.Native.Structure
         /// The model inserts itself to a database provided by given ORM.
         /// </summary>
         /// <param name="orm">Given ORM.</param>
-        public abstract void Insert(IBffOrm orm);
+        public virtual void Insert(IBffOrm orm)
+        {
+            _repository.Add(this as T);
+        }
 
         /// <summary>
         /// The model updates itself in a database provided by given ORM.
         /// </summary>
         /// <param name="orm">Given ORM.</param>
-        public abstract void Update(IBffOrm orm);
+        public virtual void Update(IBffOrm orm)
+        {
+            _repository.Update(this as T);
+        }
 
         /// <summary>
         /// The model removes itself from a database provided by given ORM.
         /// </summary>
         /// <param name="orm">Given ORM.</param>
-        public abstract void Delete(IBffOrm orm);
+        public virtual void Delete(IBffOrm orm)
+        {
+            _repository.Delete(this as T);
+        }
     }
 }

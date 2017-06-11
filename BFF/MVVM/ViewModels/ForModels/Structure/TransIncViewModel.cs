@@ -111,7 +111,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public ICommand AddCategoryCommand => new RelayCommand(obj =>
         {
-            ICategory newCategory = new Category {Name = CategoryText.Trim(), ParentId = AddingCategoryParent?.Id };
+            ICategory newCategory = Orm.BffRepository.CategoryRepository.Create();
+            newCategory.Name = CategoryText.Trim();
+            newCategory.ParentId = AddingCategoryParent?.Id;
             CommonPropertyProvider?.Add(newCategory);
             OnPropertyChanged(nameof(AllCategories));
             Category = CommonPropertyProvider?.GetCategoryViewModel(newCategory.Id);

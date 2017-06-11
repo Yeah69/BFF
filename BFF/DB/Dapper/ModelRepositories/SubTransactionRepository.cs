@@ -22,6 +22,9 @@ namespace BFF.DB.Dapper.ModelRepositories
     public class SubTransactionRepository : SubTransIncRepository<Domain.SubTransaction, Persistance.SubTransaction>
     {
         public SubTransactionRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+
+        public override Domain.SubTransaction Create() =>
+            new Domain.SubTransaction(this);
         
         protected override Converter<Domain.SubTransaction, Persistance.SubTransaction> ConvertToPersistance => domainSubTransaction => 
             new Persistance.SubTransaction
@@ -34,7 +37,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         
         protected override Converter<Persistance.SubTransaction, Domain.SubTransaction> ConvertToDomain => persistanceSubTransaction =>
-            new Domain.SubTransaction
+            new Domain.SubTransaction(this)
             {
                 Id = persistanceSubTransaction.Id,
                 ParentId = persistanceSubTransaction.ParentId,

@@ -11,7 +11,7 @@ namespace BFF.MVVM.Models.Native
         long Budget { get; set; }
     }
 
-    public class BudgetEntry : DataModel, IBudgetEntry, IHaveCategory
+    public class BudgetEntry : DataModel<BudgetEntry>, IBudgetEntry, IHaveCategory
     {
         /// <summary>
         /// Initializes the object
@@ -19,8 +19,8 @@ namespace BFF.MVVM.Models.Native
         /// <param name="month">The month of the budget entry</param>
         /// <param name="category">Categorizes this</param>
         /// <param name="budget">The amount of money, which was budgeted in the set month</param>
-        public BudgetEntry(DateTime month, ICategory category = null, long budget = 0L)
-            : base()
+        public BudgetEntry(IRepository<BudgetEntry> repository, DateTime month, ICategory category = null, long budget = 0L)
+            : base(repository)
         {
             _month = month;
             _categoryId = category?.Id ?? -1;
@@ -34,8 +34,8 @@ namespace BFF.MVVM.Models.Native
         /// <param name="categoryId">Id of Category</param>
         /// <param name="month">The month of the budget entry</param>
         /// <param name="budget">The amount of money, which was budgeted in the set month</param>
-        public BudgetEntry(long id, DateTime month, long categoryId, long budget)
-            : base(id)
+        public BudgetEntry(IRepository<BudgetEntry> repository, long id, DateTime month, long categoryId, long budget)
+            : base(repository, id)
         {
             _month = month;
             _categoryId = categoryId;
@@ -82,21 +82,6 @@ namespace BFF.MVVM.Models.Native
                 _budget = value;
                 OnPropertyChanged();
             }
-        }
-
-        public override void Insert(IBffOrm orm)
-        {
-            orm.Insert(this);
-        }
-
-        public override void Update(IBffOrm orm)
-        {
-            orm.Update(this);
-        }
-
-        public override void Delete(IBffOrm orm)
-        {
-            orm.Delete(this);
         }
     }
 }

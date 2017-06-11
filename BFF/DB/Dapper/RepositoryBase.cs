@@ -41,8 +41,11 @@ namespace BFF.DB.Dapper
             ProvideConnection = provideConnection;
         }
 
+        public abstract TDomain Create();
+
         public virtual void Add(TDomain dataModel, DbConnection connection = null)
         {
+            if(dataModel.Id > 0) return;
             ConnectionHelper.ExecuteOnExistingOrNewConnection(
                 c =>
                 {
@@ -56,6 +59,7 @@ namespace BFF.DB.Dapper
 
         public virtual void Update(TDomain dataModel, DbConnection connection = null)
         {
+            if(dataModel.Id < 0) return;
             ConnectionHelper.ExecuteOnExistingOrNewConnection(
                 c => c.Update(ConvertToPersistance(dataModel)), 
                 ProvideConnection,
@@ -64,6 +68,7 @@ namespace BFF.DB.Dapper
 
         public virtual void Delete(TDomain dataModel, DbConnection connection = null)
         {
+            if(dataModel.Id < 0) return;
             ConnectionHelper.ExecuteOnExistingOrNewConnection(
                 c => c.Delete(ConvertToPersistance(dataModel)), 
                 ProvideConnection,

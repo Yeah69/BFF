@@ -19,6 +19,9 @@ namespace BFF.DB.Dapper.ModelRepositories
     public class CategoryRepository : RepositoryBase<Domain.Category, Persistance.Category>
     {
         public CategoryRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+
+        public override Domain.Category Create() =>
+            new Domain.Category(this);
         
         protected override Converter<Domain.Category, Persistance.Category> ConvertToPersistance => domainCategory => 
             new Persistance.Category
@@ -29,7 +32,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         
         protected override Converter<Persistance.Category, Domain.Category> ConvertToDomain => persistanceCategory =>
-            new Domain.Category
+            new Domain.Category(this)
             {
                 Id = persistanceCategory.Id,
                 ParentId = persistanceCategory.ParentId,

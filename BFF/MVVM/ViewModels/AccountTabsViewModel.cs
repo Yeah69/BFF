@@ -24,7 +24,7 @@ namespace BFF.MVVM.ViewModels
             set => OnPropertyChanged();
         }
 
-        public IAccount NewAccount { get; set; } = new Account {Id = -1, Name = "", StartingBalance = 0L};
+        public IAccount NewAccount { get; set; }
         
         public ICommand NewAccountCommand => new RelayCommand(param =>
         {
@@ -35,23 +35,15 @@ namespace BFF.MVVM.ViewModels
             Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
             Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
             //Refresh dummy-Account
-            NewAccount = new Account { Id = -1, Name = "", StartingBalance = 0L };
+            NewAccount = _orm.BffRepository.AccountRepository.Create();
             OnPropertyChanged(nameof(NewAccount));
         }
         , param => !string.IsNullOrEmpty(NewAccount.Name));
-        
-
-        //todo: Delete CreatePayeFunc?
-        public Func<string, IPayee> CreatePayeeFunc => name => 
-        {
-            IPayee ret = new Payee {Name = name};
-            ret.Insert(_orm);
-            return ret;
-        }; 
 
         public AccountTabsViewModel(IBffOrm orm)
         {
             _orm = orm;
+            NewAccount = _orm.BffRepository.AccountRepository.Create();
 
             IDbSetting dbSetting = orm.Get<DbSetting>(1);
             Settings.Default.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultureName);

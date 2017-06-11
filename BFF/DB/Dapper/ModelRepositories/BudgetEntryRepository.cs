@@ -20,6 +20,10 @@ namespace BFF.DB.Dapper.ModelRepositories
     public class BudgetEntryRepository : RepositoryBase<Domain.BudgetEntry, Persistance.BudgetEntry>
     {
         public BudgetEntryRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+
+        public override Domain.BudgetEntry Create() =>
+            new Domain.BudgetEntry(this, DateTime.MinValue);
+        
         protected override Converter<Domain.BudgetEntry, Persistance.BudgetEntry> ConvertToPersistance => domainBudgetEntry => 
             new Persistance.BudgetEntry
             {
@@ -30,7 +34,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         
         protected override Converter<Persistance.BudgetEntry, Domain.BudgetEntry> ConvertToDomain => persistanceBudgetEntry =>
-            new Domain.BudgetEntry(persistanceBudgetEntry.Month)
+            new Domain.BudgetEntry(this, persistanceBudgetEntry.Month)
             {
                 Id = persistanceBudgetEntry.Id,
                 CategoryId = persistanceBudgetEntry.CategoryId,

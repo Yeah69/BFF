@@ -24,6 +24,9 @@ namespace BFF.DB.Dapper.ModelRepositories
     public class ParentIncomeRepository : RepositoryBase<Domain.ParentIncome, Persistance.ParentIncome>
     {
         public ParentIncomeRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+
+        public override Domain.ParentIncome Create() =>
+            new Domain.ParentIncome(this, DateTime.MinValue);
         
         protected override Converter<Domain.ParentIncome, Persistance.ParentIncome> ConvertToPersistance => domainParentIncome => 
             new Persistance.ParentIncome
@@ -37,7 +40,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         
         protected override Converter<Persistance.ParentIncome, Domain.ParentIncome> ConvertToDomain => persistanceParentIncome =>
-            new Domain.ParentIncome(persistanceParentIncome.Date)
+            new Domain.ParentIncome(this, persistanceParentIncome.Date)
             {
                 Id = persistanceParentIncome.Id,
                 AccountId = persistanceParentIncome.AccountId,

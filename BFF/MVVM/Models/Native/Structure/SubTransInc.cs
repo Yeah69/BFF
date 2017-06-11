@@ -1,4 +1,6 @@
-﻿namespace BFF.MVVM.Models.Native.Structure
+﻿using BFF.DB;
+
+namespace BFF.MVVM.Models.Native.Structure
 {
     public interface ISubTransInc : ITitLike, IHaveCategory
     {
@@ -16,7 +18,7 @@
     /// <summary>
     /// Base class for all SubElement classes, which are used by TitNoTransfer classes
     /// </summary>
-    public abstract class SubTransInc : TitLike, ISubTransInc
+    public abstract class SubTransInc<T> : TitLike<T>, ISubTransInc where T : class, ISubTransInc
     {
         private long _parentId;
         private long _categoryId;
@@ -71,7 +73,11 @@
         /// <param name="category">Category of the SubElement</param>
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        protected SubTransInc(IParentTransInc parent = null, ICategory category = null, string memo = null, long sum = 0L) : base(memo: memo)
+        protected SubTransInc(IRepository<T> repository, 
+                              IParentTransInc parent = null,
+                              ICategory category = null,
+                              string memo = null,
+                              long sum = 0L) : base(repository, memo: memo)
         {
             _parentId = parent?.Id ?? -1;
             _categoryId = category?.Id ?? -1;
@@ -86,7 +92,8 @@
         /// <param name="categoryId">Id of the Category</param>
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        protected SubTransInc(long id, long parentId, long categoryId, long sum, string memo) : base(id, memo)
+        protected SubTransInc(IRepository<T> repository, long id, long parentId, long categoryId, long sum, string memo) 
+            : base(repository, id, memo)
         {
             _parentId = parentId;
             _categoryId = categoryId;

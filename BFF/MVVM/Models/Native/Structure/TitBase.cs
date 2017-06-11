@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.DB;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
@@ -30,7 +31,7 @@ namespace BFF.MVVM.Models.Native.Structure
     /// <summary>
     /// Base class for all Tit classes, which are not SubElements (TIT := Transaction Income Transfer)
     /// </summary>
-    public abstract class TitBase : TitLike, ITitBase
+    public abstract class TitBase<T> : TitLike<T>, ITitBase where T : class, ITitBase
     {
         private DateTime _date;
         private bool _cleared;
@@ -70,7 +71,11 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="id">Identification number for the database</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TitBase(DateTime date, long id = -1L, string memo = null, bool? cleared = null) : base(id, memo)
+        protected TitBase(IRepository<T> repository, 
+                          DateTime date, 
+                          long id = -1L, 
+                          string memo = null, 
+                          bool? cleared = null) : base(repository, id, memo)
         {
             _date = date;
             _cleared = cleared ?? _cleared;

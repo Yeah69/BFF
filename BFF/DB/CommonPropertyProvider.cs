@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
 
@@ -54,7 +55,8 @@ namespace BFF.DB
             _orm = orm;
             _bffRepository = bffRepository;
             
-            SummaryAccountViewModel = new SummaryAccountViewModel(orm, new SummaryAccount());
+            SummaryAccountViewModel = new SummaryAccountViewModel(
+                orm, new SummaryAccount(_bffRepository.AccountRepository as AccountRepository));
             
             Accounts = new ObservableCollection<IAccount>(_bffRepository.AccountRepository.FindAll());
             Categories = new ObservableCollection<ICategory>(_bffRepository.CategoryRepository.FindAll());

@@ -24,7 +24,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// A Transfer is basically a Transaction from one owned Account to another owned Account
     /// </summary>
-    public class Transfer : TitBase, ITransfer
+    public class Transfer : TitBase<Transfer>, ITransfer
     {
         private long _fromAccountId;
         private long _toAccountId;
@@ -81,9 +81,14 @@ namespace BFF.MVVM.Models.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The transfered Sum</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public Transfer(DateTime date, IAccount fromAccount = null, IAccount toAccount = null, string memo = null,
-            long sum = 0L, bool? cleared = null)
-            : base(date, memo: memo, cleared: cleared)
+        public Transfer(IRepository<Transfer> repository, 
+                        DateTime date, 
+                        IAccount fromAccount = null, 
+                        IAccount toAccount = null, 
+                        string memo = null,
+                        long sum = 0L,
+                        bool? cleared = null)
+            : base(repository, date, memo: memo, cleared: cleared)
         {
             _fromAccountId = fromAccount?.Id ?? -1;
             _toAccountId = toAccount?.Id ?? -1;
@@ -100,35 +105,19 @@ namespace BFF.MVVM.Models.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The transfered Sum</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public Transfer(long id, long fromAccountId, long toAccountId, DateTime date, string memo,
-            long sum, bool cleared)
-            : base(date, id, memo, cleared)
+        public Transfer(IRepository<Transfer> repository,
+                        long id,
+                        long fromAccountId, 
+                        long toAccountId, 
+                        DateTime date, 
+                        string memo,
+                        long sum,
+                        bool cleared)
+            : base(repository, date, id, memo, cleared)
         {
             _fromAccountId = fromAccountId;
             _toAccountId = toAccountId;
             _sum = sum;
         }
-
-        #region Overrides of ExteriorCrudBase
-
-        public override void Insert(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Insert(this);
-        }
-
-        public override void Update(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Update(this);
-        }
-
-        public override void Delete(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Delete(this);
-        }
-
-        #endregion
     }
 }

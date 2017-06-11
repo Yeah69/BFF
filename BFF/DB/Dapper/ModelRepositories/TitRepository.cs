@@ -26,7 +26,26 @@ namespace BFF.DB.Dapper.ModelRepositories
     
     public class TitRepository : ViewRepositoryBase<Domain.Structure.ITitBase, Persistance.TheTit, MVVM.Models.Native.Account>
     {
-        public TitRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        private readonly IRepository<Domain.Transaction> _transactionRepository;
+        private readonly IRepository<Domain.Income> _incomeRepository;
+        private readonly IRepository<Domain.Transfer> _transferRepository;
+        private readonly IRepository<Domain.ParentTransaction> _parentTransactionRepository;
+        private readonly IRepository<Domain.ParentIncome> _parentIncomeRepository;
+
+        public TitRepository(IProvideConnection provideConnection, 
+                             IRepository<Domain.Transaction> transactionRepository, 
+                             IRepository<Domain.Income> incomeRepository, 
+                             IRepository<Domain.Transfer> transferRepository, 
+                             IRepository<Domain.ParentTransaction> parentTransactionRepository,
+                             IRepository<Domain.ParentIncome> parentIncomeRepository) 
+            : base(provideConnection)
+        {
+            _transactionRepository = transactionRepository;
+            _incomeRepository = incomeRepository;
+            _transferRepository = transferRepository;
+            _parentTransactionRepository = parentTransactionRepository;
+            _parentIncomeRepository = parentIncomeRepository;
+        }
 
         protected override Converter<Persistance.TheTit, Domain.Structure.ITitBase> ConvertToDomain => theTit =>
         {
@@ -35,27 +54,28 @@ namespace BFF.DB.Dapper.ModelRepositories
             switch(type)
             {
                 case Domain.Structure.TitType.Transaction:
-                    ret = new Domain.Transaction(theTit.Id, theTit.AccountId, theTit.Date, theTit.PayeeId,
-                                                 theTit.CategoryId, theTit.Memo, theTit.Sum, theTit.Cleared == 1L);
+                    ret = new Domain.Transaction(_transactionRepository, theTit.Id, theTit.AccountId, theTit.Date, 
+                                                 theTit.PayeeId, theTit.CategoryId, theTit.Memo, theTit.Sum, 
+                                                 theTit.Cleared == 1L);
                     break;
                 case Domain.Structure.TitType.Income:
-                    ret = new Domain.Income(theTit.Id, theTit.AccountId, theTit.Date, theTit.PayeeId,
+                    ret = new Domain.Income(_incomeRepository, theTit.Id, theTit.AccountId, theTit.Date, theTit.PayeeId,
                                             theTit.CategoryId, theTit.Memo, theTit.Sum, theTit.Cleared == 1L);
                     break;
                 case Domain.Structure.TitType.Transfer:
-                    ret = new Domain.Transfer(theTit.Id, theTit.PayeeId, theTit.CategoryId, theTit.Date, theTit.Memo,
-                                              theTit.Sum, theTit.Cleared == 1L);
+                    ret = new Domain.Transfer(_transferRepository, theTit.Id, theTit.PayeeId, theTit.CategoryId, 
+                                              theTit.Date, theTit.Memo, theTit.Sum, theTit.Cleared == 1L);
                     break;
                 case Domain.Structure.TitType.ParentTransaction:
-                    ret = new Domain.ParentTransaction(theTit.Id, theTit.AccountId, theTit.Date, theTit.PayeeId,
-                                                       theTit.Memo, theTit.Cleared == 1L);
+                    ret = new Domain.ParentTransaction(_parentTransactionRepository, theTit.Id, theTit.AccountId,
+                                                       theTit.Date, theTit.PayeeId, theTit.Memo, theTit.Cleared == 1L);
                     break;
                 case Domain.Structure.TitType.ParentIncome:
-                    ret = new Domain.ParentIncome(theTit.Id, theTit.AccountId, theTit.Date, theTit.PayeeId, theTit.Memo,
-                                                  theTit.Cleared == 1L);
+                    ret = new Domain.ParentIncome(_parentIncomeRepository, theTit.Id, theTit.AccountId, theTit.Date, 
+                                                  theTit.PayeeId, theTit.Memo, theTit.Cleared == 1L);
                     break;
                 default:
-                    ret = new Domain.Transaction(DateTime.Today)
+                    ret = new Domain.Transaction(_transactionRepository, DateTime.Today)
                         {Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR"};
                     break;
             }
@@ -67,7 +87,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         
         protected override string ViewName => "The Tit";
         
-        private string commonSuffix(Domain.Account specifyingObject)
+        private string CommonSuffix(Domain.Account specifyingObject)
         {
             if(specifyingObject != null && !(specifyingObject is Domain.ISummaryAccount))
                 return $"WHERE {nameof(Persistance.TheTit.AccountId)} = {specifyingObject.Id} OR {nameof(Persistance.TheTit.AccountId)} = -69 AND ({nameof(Persistance.TheTit.PayeeId)} = {specifyingObject.Id} OR {nameof(Persistance.TheTit.CategoryId)} = {specifyingObject.Id})";
@@ -77,12 +97,12 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         protected override string GetSpecifyingPageSuffix(Domain.Account specifyingObject)
         {
-            return commonSuffix(specifyingObject);
+            return CommonSuffix(specifyingObject);
         }
 
         protected override string GetSpecifyingCountSuffix(Domain.Account specifyingObject)
         {
-            return commonSuffix(specifyingObject);
+            return CommonSuffix(specifyingObject);
         }
     }
 }

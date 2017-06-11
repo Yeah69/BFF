@@ -22,6 +22,9 @@ namespace BFF.DB.Dapper.ModelRepositories
     public class SubIncomeRepository : SubTransIncRepository<Domain.SubIncome, Persistance.SubIncome>
     {
         public SubIncomeRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+
+        public override Domain.SubIncome Create() =>
+            new Domain.SubIncome(this);
         
         protected override Converter<Domain.SubIncome, Persistance.SubIncome> ConvertToPersistance => domainSubIncome => 
             new Persistance.SubIncome
@@ -34,7 +37,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         
         protected override Converter<Persistance.SubIncome, Domain.SubIncome> ConvertToDomain => persistanceSubIncome =>
-            new Domain.SubIncome
+            new Domain.SubIncome(this)
             {
                 Id = persistanceSubIncome.Id,
                 ParentId = persistanceSubIncome.ParentId,

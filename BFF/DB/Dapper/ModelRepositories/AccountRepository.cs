@@ -21,7 +21,10 @@ namespace BFF.DB.Dapper.ModelRepositories
     public class AccountRepository : RepositoryBase<Domain.Account, Persistance.Account>
     {
         public AccountRepository(IProvideConnection provideConnection) : base(provideConnection) { }
-        
+
+        public override Domain.Account Create() =>
+            new Domain.Account(this);
+
         protected override Converter<Domain.Account, Persistance.Account> ConvertToPersistance => domainAccount => 
             new Persistance.Account
             {
@@ -31,7 +34,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         
         protected override Converter<Persistance.Account, Domain.Account> ConvertToDomain => persistanceAccount =>
-            new Domain.Account
+            new Domain.Account(this)
             {
                 Id = persistanceAccount.Id,
                 Name = persistanceAccount.Name,

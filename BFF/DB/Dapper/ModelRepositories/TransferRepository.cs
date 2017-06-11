@@ -25,6 +25,9 @@ namespace BFF.DB.Dapper.ModelRepositories
     public class TransferRepository : RepositoryBase<Domain.Transfer, Persistance.Transfer>
     {
         public TransferRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+
+        public override Domain.Transfer Create() =>
+            new Domain.Transfer(this, DateTime.MinValue);
         
         protected override Converter<Domain.Transfer, Persistance.Transfer> ConvertToPersistance => domainTransfer => 
             new Persistance.Transfer
@@ -39,7 +42,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         
         protected override Converter<Persistance.Transfer, Domain.Transfer> ConvertToDomain => persistanceTransfer =>
-            new Domain.Transfer(persistanceTransfer.Date)
+            new Domain.Transfer(this, persistanceTransfer.Date)
             {
                 Id = persistanceTransfer.Id,
                 FromAccountId = persistanceTransfer.FromAccountId,

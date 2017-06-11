@@ -1,7 +1,4 @@
-﻿using BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
-
-namespace BFF.DB.SQLite
+﻿namespace BFF.DB.SQLite
 {
     static class SqLiteQueries
     {

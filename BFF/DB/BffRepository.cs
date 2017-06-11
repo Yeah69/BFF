@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Transactions;
 using BFF.DB.Dapper;
+using BFF.DB.Dapper.ModelRepositories;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.MVVM.Models.Native;
@@ -71,67 +71,26 @@ namespace BFF.DB
 
     public abstract class BffRepository
     {
-        private IDbTableRepository<Account> _accountRepository;
-        private IDbTableRepository<BudgetEntry> _budgetEntryRepository;
-        private IDbTableRepository<Category> _categoryRepository;
-        private IDbTableRepository<DbSetting> _dbSettingRepository;
-        private IDbTableRepository<Income> _incomeRepository;
-        private IDbTableRepository<ParentIncome> _parentIncomeRepository;
-        private IDbTableRepository<ParentTransaction> _parentTransactionRepository;
-        private IDbTableRepository<Payee> _payeeRepository;
-        private IDbTableRepository<SubIncome> _subIncomeRepository;
-        private IDbTableRepository<SubTransaction> _subTransactionRepository;
-        private IDbTableRepository<Transaction> _transactionRepository;
-        private IDbTableRepository<Transfer> _transferRepository;
-        private IViewRepository<ITitBase, Account> _titRepository;
-
-        private IProvideConnection _provideConnection;
+        private readonly IProvideConnection _provideConnection;
         
-        protected BffRepository(
-            IDbTableRepository<Account> accountRepository, 
-            IDbTableRepository<BudgetEntry> budgetEntryRepository, 
-            IDbTableRepository<Category> categoryRepository, 
-            IDbTableRepository<DbSetting> dbSettingRepository, 
-            IDbTableRepository<Income> incomeRepository, 
-            IDbTableRepository<ParentIncome> parentIncomeRepository, 
-            IDbTableRepository<ParentTransaction> parentTransactionRepository, 
-            IDbTableRepository<Payee> payeeRepository, 
-            IDbTableRepository<SubIncome> subIncomeRepository, 
-            IDbTableRepository<SubTransaction> subTransactionRepository, 
-            IDbTableRepository<Transaction> transactionRepository, 
-            IDbTableRepository<Transfer> transferRepository, 
-            IViewRepository<ITitBase, Account> titRepository, 
-            IProvideConnection provideConnection)
+        protected BffRepository(IProvideConnection provideConnection)
         {
-            _accountRepository = accountRepository;
-            _budgetEntryRepository = budgetEntryRepository;
-            _categoryRepository = categoryRepository;
-            _dbSettingRepository = dbSettingRepository;
-            _incomeRepository = incomeRepository;
-            _parentIncomeRepository = parentIncomeRepository;
-            _parentTransactionRepository = parentTransactionRepository;
-            _payeeRepository = payeeRepository;
-            _subIncomeRepository = subIncomeRepository;
-            _subTransactionRepository = subTransactionRepository;
-            _transactionRepository = transactionRepository;
-            _transferRepository = transferRepository;
-            _titRepository = titRepository;
             _provideConnection = provideConnection;
         }
 
-        public IDbTableRepository<Account> AccountRepository => _accountRepository;
-        public IDbTableRepository<BudgetEntry> BudgetEntryRepository => _budgetEntryRepository;
-        public IDbTableRepository<Category> CategoryRepository => _categoryRepository;
-        public IDbTableRepository<DbSetting> DbSettingRepository => _dbSettingRepository;
-        public IDbTableRepository<Income> IncomeRepository => _incomeRepository;
-        public IDbTableRepository<ParentIncome> ParentIncomeRepository => _parentIncomeRepository;
-        public IDbTableRepository<ParentTransaction> ParentTransactionRepository => _parentTransactionRepository;
-        public IDbTableRepository<Payee> PayeeRepository => _payeeRepository;
-        public IDbTableRepository<SubIncome> SubIncomeRepository => _subIncomeRepository;
-        public IDbTableRepository<SubTransaction> SubTransactionRepository => _subTransactionRepository;
-        public IDbTableRepository<Transaction> TransactionRepository => _transactionRepository;
-        public IDbTableRepository<Transfer> TransferRepository => _transferRepository;
-        public IViewRepository<ITitBase, Account> TitRepository => _titRepository;
+        public abstract AccountRepository AccountRepository { get; }
+        public abstract BudgetEntryRepository BudgetEntryRepository { get; }
+        public abstract CategoryRepository CategoryRepository { get; }
+        public abstract DbSettingRepository DbSettingRepository { get; }
+        public abstract IncomeRepository IncomeRepository { get; }
+        public abstract ParentIncomeRepository ParentIncomeRepository { get; }
+        public abstract ParentTransactionRepository ParentTransactionRepository { get; }
+        public abstract PayeeRepository PayeeRepository { get; }
+        public abstract SubIncomeRepository SubIncomeRepository { get; }
+        public abstract SubTransactionRepository SubTransactionRepository { get; }
+        public abstract TransactionRepository TransactionRepository { get; }
+        public abstract TransferRepository TransferRepository { get; }
+        public abstract TitRepository TitRepository { get; }
 
         private void PopulateDatabaseInner(ImportLists importLists, ImportAssignments importAssignments, DbConnection connection = null)
         {

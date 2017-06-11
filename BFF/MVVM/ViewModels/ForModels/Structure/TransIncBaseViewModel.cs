@@ -86,7 +86,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public ICommand AddPayeeCommand => new RelayCommand(obj =>
         {
-            IPayee newPayee = new Payee {Name = PayeeText.Trim()};
+            Payee newPayee = Orm.BffRepository.PayeeRepository.Create();
+            newPayee.Name = PayeeText.Trim();
             CommonPropertyProvider?.Add(newPayee);
             OnPropertyChanged(nameof(AllPayees));
             Payee = CommonPropertyProvider?.GetPayeeViewModel(newPayee.Id);

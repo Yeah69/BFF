@@ -114,7 +114,12 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override ICommand NewTransactionCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new TransactionViewModel(new Transaction(DateTime.Today, null, memo: "", sum: 0L, cleared: false), Orm));
+            Transaction transaction = Orm.BffRepository.TransactionRepository.Create();
+            transaction.Date = DateTime.Today;
+            transaction.Memo = "";
+            transaction.Sum = 0L;
+            transaction.Cleared = false;
+            NewTits.Add(new TransactionViewModel(transaction, Orm));
         });
 
         /// <summary>
@@ -122,7 +127,12 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override ICommand NewIncomeCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new IncomeViewModel(new Income(DateTime.Today, null, memo: "", sum: 0L, cleared: false), Orm));
+            Income income = Orm.BffRepository.IncomeRepository.Create();
+            income.Date = DateTime.Today;
+            income.Memo = "";
+            income.Sum = 0L;
+            income.Cleared = false;
+            NewTits.Add(new IncomeViewModel(income, Orm));
         });
 
         /// <summary>
@@ -130,7 +140,12 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override ICommand NewTransferCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new TransferViewModel(new Transfer(DateTime.Today, null, null, "", 0L, false), Orm));
+            Transfer transfer = Orm.BffRepository.TransferRepository.Create();
+            transfer.Date = DateTime.Today;
+            transfer.Memo = "";
+            transfer.Sum = 0L;
+            transfer.Cleared = false;
+            NewTits.Add(new TransferViewModel(transfer, Orm));
         });
 
         /// <summary>
@@ -138,7 +153,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override ICommand NewParentTransactionCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new ParentTransactionViewModel(new ParentTransaction(DateTime.Today, null, memo: "", cleared: false), Orm));
+            ParentTransaction parentTransaction = Orm.BffRepository.ParentTransactionRepository.Create();
+            parentTransaction.Date = DateTime.Today;
+            parentTransaction.Memo = "";
+            parentTransaction.Cleared = false;
+            NewTits.Add(new ParentTransactionViewModel(parentTransaction, Orm));
         });
 
         /// <summary>
@@ -146,7 +165,12 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override ICommand NewParentIncomeCommand => new RelayCommand(obj =>
         {
-            NewTits.Add(new ParentIncomeViewModel(new ParentIncome(DateTime.Today, null, memo: "", cleared: false), Orm));
+            ParentIncome parentIncome = Orm.BffRepository.ParentIncomeRepository.Create();
+            parentIncome.Date = DateTime.Today;
+            parentIncome.AccountId = Account.Id;
+            parentIncome.Memo = "";
+            parentIncome.Cleared = false;
+            NewTits.Add(new ParentIncomeViewModel(parentIncome, Orm));
         });
 
         /// <summary>

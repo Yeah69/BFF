@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.DB;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
@@ -18,7 +19,7 @@ namespace BFF.MVVM.Models.Native.Structure
     /// <summary>
     /// Base of all Tit-classes except Transfer (TIT := Transaction Income Transfer)
     /// </summary>
-    public abstract class TransIncBase : TitBase, ITransIncBase
+    public abstract class TransIncBase<T> : TitBase<T>, ITransIncBase where T : class, ITransIncBase
     {
         private long _accountId;
         private long _payeeId;
@@ -59,8 +60,13 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="payee">To whom was payeed or who payeed</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TransIncBase(DateTime date, IAccount account = null, IPayee payee = null, string memo = null, bool? cleared = null)
-            : base(date, memo: memo, cleared: cleared)
+        protected TransIncBase(IRepository<T> repository, 
+                               DateTime date,
+                               IAccount account = null, 
+                               IPayee payee = null, 
+                               string memo = null, 
+                               bool? cleared = null)
+            : base(repository, date, memo: memo, cleared: cleared)
         {
             _accountId = account?.Id ?? -1;
             _payeeId = payee?.Id ?? -1;
@@ -75,8 +81,14 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="payeeId">Id of Payee</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TransIncBase(long id, long accountId, DateTime date, long payeeId, string memo, bool cleared)
-            : base(date, id, memo, cleared)
+        protected TransIncBase(IRepository<T> repository, 
+                               long id, 
+                               long accountId, 
+                               DateTime date, 
+                               long payeeId, 
+                               string memo, 
+                               bool cleared)
+            : base(repository, date, id, memo, cleared)
         {
             _accountId = accountId;
             _payeeId = payeeId;
