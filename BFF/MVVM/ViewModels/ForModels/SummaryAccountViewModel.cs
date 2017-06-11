@@ -206,11 +206,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>Only False.</returns>
         public override bool ValidToInsert() => false;
 
-        /// <summary>
-        /// Does nothing, because this is the summary account. Needed to mimic an Account.
-        /// </summary>
-        protected override void InsertToDb() { }
-
         #endregion
     }
 }

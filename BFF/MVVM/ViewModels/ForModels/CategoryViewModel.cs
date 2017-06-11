@@ -95,11 +95,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             return !string.IsNullOrWhiteSpace(Name) && CommonPropertyProvider.IsValidToInsert(this);
         }
 
-        protected override void InsertToDb()
-        {
-            CommonPropertyProvider.Add(_category);
-        }
-
         #endregion
     }
 }

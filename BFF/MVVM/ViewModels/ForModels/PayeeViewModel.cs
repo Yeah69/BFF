@@ -25,11 +25,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             return !string.IsNullOrWhiteSpace(Name) && (CommonPropertyProvider?.AllPayeeViewModels.All(apvm => apvm.Name != Name) ?? false);
         }
 
-        protected override void InsertToDb()
-        {
-            CommonPropertyProvider?.Add(_payee);
-        }
-
         #endregion
     }
 }

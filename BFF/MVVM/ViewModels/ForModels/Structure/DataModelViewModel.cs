@@ -73,14 +73,19 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// The Orm works in a generic way and determines the right table by the given type.
         /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
         /// </summary>
-        protected abstract void InsertToDb();
+        protected virtual void OnInsert() { }
+
 
         /// <summary>
         /// Inserts the model object to the database.
         /// </summary>
         public void Insert()
         {
-            if (Id == -1L && ValidToInsert()) InsertToDb();
+            if (ValidToInsert())
+            {
+                _dataModel.Insert();
+                OnInsert();
+            }
         }
 
         /// <summary>

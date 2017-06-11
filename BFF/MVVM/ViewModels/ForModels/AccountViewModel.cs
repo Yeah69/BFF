@@ -51,9 +51,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The Orm works in a generic way and determines the right table by the given type.
         /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
         /// </summary>
-        protected override void InsertToDb()
+        protected override void OnInsert()
         {
-            CommonPropertyProvider.Add(Account);
             Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
             Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
         }
