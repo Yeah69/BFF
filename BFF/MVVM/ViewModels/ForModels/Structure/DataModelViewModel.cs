@@ -1,4 +1,6 @@
-﻿using BFF.DB;
+﻿using System;
+using System.Reactive.Disposables;
+using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
@@ -31,7 +33,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// Base class to all ViewModels for Models, which are read from the database.
     /// Offers CRUD functionality (except for Read, because the Models are not read from within itself).
     /// </summary>
-    public abstract class DataModelViewModel : ObservableObject, IDataModelViewModel
+    public abstract class DataModelViewModel : ObservableObject, IDataModelViewModel, IDisposable
     {
         private readonly IDataModel _dataModel;
 
@@ -44,6 +46,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Provides common properties, such as Accounts, Categories and Payees.
         /// </summary>
         protected ICommonPropertyProvider CommonPropertyProvider => Orm?.CommonPropertyProvider;
+
+        protected CompositeDisposable CompositeDisposable { get; } = new CompositeDisposable();
 
         /// <summary>
         /// The object's Id in the table of the database.
@@ -98,5 +102,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Deletes the model object from the database.
         /// </summary>
         public void Delete() => _dataModel.Delete();
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(disposing) { }
+            CompositeDisposable.Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

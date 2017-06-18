@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using BFF.DB;
@@ -22,7 +23,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         //ICategoryViewModel Parent { get; set; }
 
-        ReactiveProperty<ICategoryViewModel> ReactiveParent { get; }
+        ReactiveProperty<ICategoryViewModel> Parent { get; }
 
         string FullName { get; }
         string GetIndent();
@@ -30,31 +31,19 @@ namespace BFF.MVVM.ViewModels.ForModels
 
     public class CategoryViewModel : CommonPropertyViewModel, ICategoryViewModel
     {
-        private readonly ICategory _category;
-        
         /// <summary>
         /// The Child-Categories
         /// </summary>
-        public ObservableCollection<ICategoryViewModel> Categories { get; set; } = new ObservableCollection<ICategoryViewModel>();
+        public ObservableCollection<ICategoryViewModel> Categories { get; } = new ObservableCollection<ICategoryViewModel>();
         
-        /*/// <summary>
+        /// <summary>
         /// The Parent
         /// </summary>
-        public ICategoryViewModel Parent
-        {
-            get => _category.Parent == null ? null : Orm.CommonPropertyProvider.GetCategoryViewModel(_category.Parent);
-            set
-            {
-                if(_category.Parent == null && value == null || Orm.CommonPropertyProvider.GetCategoryViewModel(_category.Parent) == value) return;
-                _category.Parent = value._category;
-                OnUpdate();
-                OnPropertyChanged();
-            }
-        }*/
+        public ReactiveProperty<ICategoryViewModel> Parent { get; }
 
-        public ReactiveProperty<ICategoryViewModel> ReactiveParent { get; }
+        private ICategoryViewModel _previousParent = null;
 
-        public string FullName => $"{(ReactiveParent.Value != null ? $"{ReactiveParent.Value.FullName}." : "")}{Name}";
+        public string FullName => $"{(Parent.Value != null ? $"{Parent.Value.FullName}." : "")}{Name}";
 
         public IEnumerator<ICategoryViewModel> GetEnumerator()
         {
@@ -77,7 +66,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>Name with preceding dots (foreach Ancestor one)</returns>
         public override string ToString()
         {
-            return $"{ReactiveParent.Value?.GetIndent()}{Name.Value}";
+            return $"{Parent.Value?.GetIndent()}{Name.Value}";
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -87,15 +76,22 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public string GetIndent()
         {
-            return $"{ReactiveParent.Value?.GetIndent()}. ";
+            return $"{Parent.Value?.GetIndent()}. ";
         }
 
         public CategoryViewModel(ICategory category, IBffOrm orm, CategoryViewModelService service) : base(orm, category)
         {
-            _category = category;
-
-            ReactiveParent =
-                _category.ToReactivePropertyAsSynchronized(c => c.Parent, service.GetViewModel, service.GetModel);
+            Parent = category.ToReactivePropertyAsSynchronized(c => c.Parent, service.GetViewModel, service.GetModel)
+                              .AddTo(CompositeDisposable);
+            
+            Parent.Subscribe(cvm =>
+            {
+                if(_previousParent?.Categories.Contains(this) ?? false)
+                    _previousParent.Categories.Remove(this);
+                if(cvm != null && !cvm.Categories.Contains(this))
+                    cvm.Categories.Add(this);
+                _previousParent = cvm;
+            }).AddTo(CompositeDisposable);
         }
 
         #region Overrides of DataModelViewModel

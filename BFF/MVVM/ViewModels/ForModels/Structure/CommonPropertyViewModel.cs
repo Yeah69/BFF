@@ -12,13 +12,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
     public abstract class CommonPropertyViewModel : DataModelViewModel, ICommonPropertyViewModel
     {
-        private readonly ICommonProperty _commonProperty;
-
         protected CommonPropertyViewModel(IBffOrm orm, ICommonProperty commonProperty) : base(orm, commonProperty)
         {
-            _commonProperty = commonProperty;
-
-            Name = commonProperty.ToReactivePropertyAsSynchronized(cp => cp.Name);
+            Name = commonProperty.ToReactivePropertyAsSynchronized(cp => cp.Name).AddTo(CompositeDisposable);
         }
         public virtual ReactiveProperty<string> Name { get; set; }
     }

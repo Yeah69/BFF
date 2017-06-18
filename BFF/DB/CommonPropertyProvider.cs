@@ -73,7 +73,7 @@ namespace BFF.DB
             => AllPayeeViewModels.Single(pvm => pvm.Id  == id);
 
         public bool IsValidToInsert(ICategoryViewModel categoryViewModel) => 
-            categoryViewModel.ReactiveParent.Value == null && ParentCategoryViewModels.All(cvm => cvm.Name != categoryViewModel.Name) ||
-            categoryViewModel.ReactiveParent.Value.Categories.All(cvm => cvm.Name != categoryViewModel.Name);
+            categoryViewModel.Parent.Value == null && ParentCategoryViewModels.All(cvm => cvm.Name != categoryViewModel.Name) ||
+            categoryViewModel.Parent.Value.Categories.All(cvm => cvm.Name != categoryViewModel.Name);
     }
 }
