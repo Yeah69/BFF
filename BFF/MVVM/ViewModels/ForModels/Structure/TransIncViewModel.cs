@@ -120,8 +120,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         }, obj =>
         {
             return !string.IsNullOrWhiteSpace(CategoryText) && 
-            (AddingCategoryParent == null && (CommonPropertyProvider?.ParentCategoryViewModels.All(pcvm => pcvm.Name != CategoryText) ?? false) ||
-            AddingCategoryParent != null && AddingCategoryParent.Categories.All(c => c.Name != CategoryText));
+            (AddingCategoryParent == null && (CommonPropertyProvider?.ParentCategoryViewModels.All(pcvm => pcvm.Name.Value != CategoryText) ?? false) ||
+            AddingCategoryParent != null && AddingCategoryParent.Categories.All(c => c.Name.Value != CategoryText));
         });
 
         /// <summary>

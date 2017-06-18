@@ -36,7 +36,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconMaterial Kind="CreditCard" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
-                                <TextBlock Text="{Binding DataContext.Name, RelativeSource={RelativeSource AncestorType=TabItem}}" />
+                                <TextBlock Text="{Binding DataContext.Name.Value, RelativeSource={RelativeSource AncestorType=TabItem}}" />
                             </StackPanel>
                         </DataTemplate>
                     </attachedBehaviors:AdditionalTabItemsBehavior.HeaderTemplate>

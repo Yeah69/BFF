@@ -15,7 +15,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The Child-Categories
         /// </summary>
-        ObservableCollection<ICategoryViewModel> Categories { get; set; }
+        ObservableCollection<ICategoryViewModel> Categories { get; }
 
         /// <summary>
         /// The Parent
@@ -77,7 +77,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>Name with preceding dots (foreach Ancestor one)</returns>
         public override string ToString()
         {
-            return $"{ReactiveParent.Value?.GetIndent()}{Name}";
+            return $"{ReactiveParent.Value?.GetIndent()}{Name.Value}";
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -102,7 +102,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override bool ValidToInsert()
         {
-            return !string.IsNullOrWhiteSpace(Name) && CommonPropertyProvider.IsValidToInsert(this);
+            return !string.IsNullOrWhiteSpace(Name.Value) && CommonPropertyProvider.IsValidToInsert(this);
         }
 
         #endregion

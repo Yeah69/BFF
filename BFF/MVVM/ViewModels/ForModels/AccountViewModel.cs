@@ -43,7 +43,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return !string.IsNullOrWhiteSpace(Name);
+            return !string.IsNullOrWhiteSpace(Name.Value);
         }
 
         /// <summary>

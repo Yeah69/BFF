@@ -22,7 +22,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override bool ValidToInsert()
         {
-            return !string.IsNullOrWhiteSpace(Name) && (CommonPropertyProvider?.AllPayeeViewModels.All(apvm => apvm.Name != Name) ?? false);
+            return !string.IsNullOrWhiteSpace(Name.Value) && (CommonPropertyProvider?.AllPayeeViewModels.All(apvm => apvm.Name != Name) ?? false);
         }
 
         #endregion

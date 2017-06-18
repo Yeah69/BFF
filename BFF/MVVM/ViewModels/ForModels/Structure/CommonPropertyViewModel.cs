@@ -1,11 +1,13 @@
 ﻿using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
     public interface ICommonPropertyViewModel : IDataModelViewModel
     {
-        string Name { get; set; }
+        ReactiveProperty<string> Name { get; set; }
     }
 
     public abstract class CommonPropertyViewModel : DataModelViewModel, ICommonPropertyViewModel
@@ -15,17 +17,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected CommonPropertyViewModel(IBffOrm orm, ICommonProperty commonProperty) : base(orm, commonProperty)
         {
             _commonProperty = commonProperty;
+
+            Name = commonProperty.ToReactivePropertyAsSynchronized(cp => cp.Name);
         }
-        public virtual string Name
-        {
-            get => _commonProperty.Name;
-            set
-            {
-                if (_commonProperty.Name == value) return;
-                OnUpdate();
-                _commonProperty.Name = value;
-                OnPropertyChanged();
-            }
-        }
+        public virtual ReactiveProperty<string> Name { get; set; }
     }
 }

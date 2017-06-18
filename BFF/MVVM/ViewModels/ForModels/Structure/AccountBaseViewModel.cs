@@ -184,7 +184,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <returns>Just the Name-property.</returns>
         public override string ToString()
         {
-            return Name;
+            return Name.Value;
         }
 
         /// <summary>

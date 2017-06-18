@@ -6,6 +6,7 @@ using AlphaChiTech.Virtualization;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
@@ -34,9 +35,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Name of the Account Model
         /// </summary>
-        public override string Name //todo Localization
+        public override ReactiveProperty<string> Name //todo Localization
         {
-            get => "All Accounts";
+            get => new ReactiveProperty<string>((IObservable<string>)null, "All Accounts");
             set => OnPropertyChanged();
         }
 

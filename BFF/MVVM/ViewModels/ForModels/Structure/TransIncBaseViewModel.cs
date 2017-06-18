@@ -97,7 +97,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         {
             string trimmedPayeeText = PayeeText?.Trim();
             return !string.IsNullOrEmpty(trimmedPayeeText) &&
-                   AllPayees.Count(payee => payee.Name == trimmedPayeeText) == 0;
+                   AllPayees.Count(payee => payee.Name.Value == trimmedPayeeText) == 0;
         });
 
         /// <summary>
