@@ -58,7 +58,7 @@ namespace BFF.DB
             
             AllAccountViewModels = new ObservableCollection<IAccountViewModel>(Accounts.Select(a => new AccountViewModel(a, orm)));
             AllPayeeViewModels = new TransformingObservableReadOnlyList<IPayee, IPayeeViewModel>
-                (new WrappingObservableReadOnlyList<IPayee>(_bffRepository.PayeeRepository.All), 
+                (new WrappingObservableReadOnlyList<Payee>(_bffRepository.PayeeRepository.All), 
                  p => new PayeeViewModel(p, _orm));
             AllCategoryViewModels = CategoryViewModelService.All;
         }

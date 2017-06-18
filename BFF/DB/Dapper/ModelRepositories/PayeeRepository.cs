@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.SqlClient;
 using System.Linq;
 using Domain = BFF.MVVM.Models.Native;
 using Persistance = BFF.DB.PersistanceModels;
@@ -18,15 +19,17 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class PayeeRepository : CachingRepositoryBase<Domain.Payee, Persistance.Payee>
+    public class PayeeComparer : Comparer<Domain.Payee>
     {
-        public ObservableCollection<Domain.IPayee> All { get; }
-
-        public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection)
+        public override int Compare(Domain.Payee x, Domain.Payee y)
         {
-            List<Domain.Payee> payees = FindAll().ToList();
-            All = new ObservableCollection<Domain.IPayee>(payees);
+            return Comparer<string>.Default.Compare(x.Name, y.Name);
         }
+    }
+    
+    public class PayeeRepository : ObservableRepositoryBase<Domain.Payee, Persistance.Payee>
+    {
+        public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection, new PayeeComparer()) {}
 
         public override Domain.Payee Create() =>
             new Domain.Payee(this);

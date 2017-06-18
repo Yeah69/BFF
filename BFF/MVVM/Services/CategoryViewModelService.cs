@@ -25,7 +25,7 @@ namespace BFF.MVVM.ViewModelRepositories
             _orm = orm;
             
             All = new TransformingObservableReadOnlyList<ICategory ,ICategoryViewModel>(
-                new WrappingObservableReadOnlyList<ICategory>(_repository.All),
+                new WrappingObservableReadOnlyList<Category>(_repository.All),
                 AddToDictionaries);
             
         }

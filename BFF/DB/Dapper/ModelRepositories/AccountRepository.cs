@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using Dapper;
@@ -17,10 +18,19 @@ namespace BFF.DB.Dapper.ModelRepositories
             {nameof(Persistance.Account.Name)} VARCHAR(100),
             {nameof(Persistance.Account.StartingBalance)} INTEGER NOT NULL DEFAULT 0);";
     }
-
-    public class AccountRepository : CachingRepositoryBase<Domain.Account, Persistance.Account>
+    
+    public class AccountComparer : Comparer<Domain.Account>
     {
-        public AccountRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        public override int Compare(Domain.Account x, Domain.Account y)
+        {
+            return Comparer<string>.Default.Compare(x.Name, y.Name);
+        }
+    }
+
+    public class AccountRepository : ObservableRepositoryBase<Domain.Account, Persistance.Account>
+    {
+        public AccountRepository(IProvideConnection provideConnection) : base(provideConnection, new AccountComparer())
+        { }
 
         public override Domain.Account Create() =>
             new Domain.Account(this);

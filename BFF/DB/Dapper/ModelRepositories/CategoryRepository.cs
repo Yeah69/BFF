@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Domain = BFF.MVVM.Models.Native;
 using Persistance = BFF.DB.PersistanceModels;
@@ -19,27 +18,47 @@ namespace BFF.DB.Dapper.ModelRepositories
             FOREIGN KEY({nameof(Persistance.Category.ParentId)}) REFERENCES {nameof(Persistance.Category)}s({nameof(Persistance.Category.Id)}) ON DELETE SET NULL);";
     }
     
-    public sealed class CategoryRepository : CachingRepositoryBase<Domain.Category, Persistance.Category>
+    public class CategoryComparer : Comparer<Domain.Category>
     {
-        public ObservableCollection<Domain.ICategory> All { get; }
-
-        public CategoryRepository(IProvideConnection provideConnection) : base(provideConnection)
+        public override int Compare(Domain.Category x, Domain.Category y)
         {
-            All = new ObservableCollection<Domain.ICategory>();
-            
-            IList<Domain.Category> allCategories = FindAll().ToList();
-            var rootCategories = allCategories.Where(c => c.Parent == null).OrderBy(c => c.Name);
-            var stack = new Stack<Domain.ICategory>(rootCategories.Reverse());
-            while(stack.Count > 0)
+            IList<Domain.ICategory> getParentalPathList(Domain.Category category)
             {
-                Domain.ICategory current = stack.Pop();
-                All.Add(current);
-                var children = allCategories.Where(c => c.Parent == current);
-                foreach(var child in children.Reverse())
+                IList<Domain.ICategory> list = new List<Domain.ICategory>{category};
+                Domain.ICategory current = category;
+                while(current.Parent != null)
                 {
-                    stack.Push(child);
+                    current = current.Parent;
+                    list.Add(current);
                 }
+
+                return list.Reverse().ToList();
             }
+            
+            IList<Domain.ICategory> xList = getParentalPathList(x);
+            IList<Domain.ICategory> yList = getParentalPathList(y);
+
+            int i = 0;
+            int value = 0;
+            while(value == 0)
+            {
+                if(i >= xList.Count && i >= yList.Count) return 0;
+                if(i >= xList.Count) return -1;
+                if(i >= yList.Count) return 1;
+
+                value = Comparer<string>.Default.Compare(xList[i].Name, yList[i].Name);
+                i++;
+            } 
+
+            return value;
+        }
+    }
+    
+    public sealed class CategoryRepository : ObservableRepositoryBase<Domain.Category, Persistance.Category>
+    {
+        public CategoryRepository(IProvideConnection provideConnection) 
+            : base(provideConnection, new CategoryComparer())
+        {
         }
 
         public override Domain.Category Create() =>
