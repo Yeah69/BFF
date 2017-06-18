@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Domain = BFF.MVVM.Models.Native;
 using Persistance = BFF.DB.PersistanceModels;
 
@@ -17,7 +20,13 @@ namespace BFF.DB.Dapper.ModelRepositories
     
     public class PayeeRepository : CachingRepositoryBase<Domain.Payee, Persistance.Payee>
     {
-        public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        public ObservableCollection<Domain.IPayee> All { get; }
+
+        public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection)
+        {
+            List<Domain.Payee> payees = FindAll().ToList();
+            All = new ObservableCollection<Domain.IPayee>(payees);
+        }
 
         public override Domain.Payee Create() =>
             new Domain.Payee(this);
@@ -30,10 +39,6 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
 
         protected override Converter<Persistance.Payee, Domain.Payee> ConvertToDomain => persistancePayee =>
-            new Domain.Payee(this)
-            {
-                Id = persistancePayee.Id,
-                Name = persistancePayee.Name
-            };
+            new Domain.Payee(this, persistancePayee.Id, persistancePayee.Name);
     }
 }

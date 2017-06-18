@@ -106,16 +106,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public ObservableCollection<IAccount> AllAccounts => CommonPropertyProvider.Accounts;
 
         /// <summary>
-        /// All available Payees.
-        /// </summary>
-        public ObservableCollection<IPayee> AllPayees => CommonPropertyProvider.Payees;
-
-        /// <summary>
-        /// All available Categories.
-        /// </summary>
-        public ObservableCollection<ICategory> AllCategories => CommonPropertyProvider.Categories;
-
-        /// <summary>
         /// Creates a new Transaction.
         /// </summary>
         public abstract ICommand NewTransactionCommand { get; }

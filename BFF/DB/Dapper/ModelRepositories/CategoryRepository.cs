@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Domain = BFF.MVVM.Models.Native;
 using Persistance = BFF.DB.PersistanceModels;
 
@@ -16,27 +19,44 @@ namespace BFF.DB.Dapper.ModelRepositories
             FOREIGN KEY({nameof(Persistance.Category.ParentId)}) REFERENCES {nameof(Persistance.Category)}s({nameof(Persistance.Category.Id)}) ON DELETE SET NULL);";
     }
     
-    public class CategoryRepository : CachingRepositoryBase<Domain.Category, Persistance.Category>
+    public sealed class CategoryRepository : CachingRepositoryBase<Domain.Category, Persistance.Category>
     {
-        public CategoryRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        public ObservableCollection<Domain.ICategory> All { get; }
+
+        public CategoryRepository(IProvideConnection provideConnection) : base(provideConnection)
+        {
+            All = new ObservableCollection<Domain.ICategory>();
+            
+            IList<Domain.Category> allCategories = FindAll().ToList();
+            var rootCategories = allCategories.Where(c => c.Parent == null).OrderBy(c => c.Name);
+            var stack = new Stack<Domain.ICategory>(rootCategories.Reverse());
+            while(stack.Count > 0)
+            {
+                Domain.ICategory current = stack.Pop();
+                All.Add(current);
+                var children = allCategories.Where(c => c.Parent == current);
+                foreach(var child in children.Reverse())
+                {
+                    stack.Push(child);
+                }
+            }
+        }
 
         public override Domain.Category Create() =>
-            new Domain.Category(this);
+            new Domain.Category(this, -1, "", null);
         
         protected override Converter<Domain.Category, Persistance.Category> ConvertToPersistance => domainCategory => 
             new Persistance.Category
             {
                 Id = domainCategory.Id,
-                ParentId = domainCategory.ParentId,
+                ParentId = domainCategory.Parent.Id,
                 Name = domainCategory.Name
             };
         
         protected override Converter<Persistance.Category, Domain.Category> ConvertToDomain => persistanceCategory =>
-            new Domain.Category(this)
-            {
-                Id = persistanceCategory.Id,
-                ParentId = persistanceCategory.ParentId,
-                Name = persistanceCategory.Name
-            };
+            new Domain.Category(this,
+                                persistanceCategory.Id,
+                                persistanceCategory.Name,
+                                persistanceCategory.ParentId != null ? Find((long)persistanceCategory.ParentId) : null);
     }
 }

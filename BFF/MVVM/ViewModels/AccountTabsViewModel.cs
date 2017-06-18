@@ -16,8 +16,6 @@ namespace BFF.MVVM.ViewModels
 
         public ObservableCollection<IAccountViewModel> AllAccounts => _orm.CommonPropertyProvider.AllAccountViewModels;
 
-        public ObservableCollection<ICategory> AllCategories => _orm.CommonPropertyProvider.Categories; 
-
         public ISummaryAccountViewModel SummaryAccountViewModel
         {
             get => _orm.CommonPropertyProvider.SummaryAccountViewModel;
@@ -29,7 +27,7 @@ namespace BFF.MVVM.ViewModels
         public ICommand NewAccountCommand => new RelayCommand(param =>
         {
             //Insert Account to Database
-            _orm.CommonPropertyProvider.Add(NewAccount);
+            NewAccount.Insert();
             //Refresh all relevant properties
             Messenger.Default.Send(AccountMessage.RefreshBalance, NewAccount);
             Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);

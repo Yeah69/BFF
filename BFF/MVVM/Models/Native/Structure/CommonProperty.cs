@@ -41,7 +41,7 @@ namespace BFF.MVVM.Models.Native.Structure
             return Name;
         }
 
-        protected CommonProperty(IRepository<T> repository, string name = null) : base(repository)
+        protected CommonProperty(IRepository<T> repository, long id = -1L, string name = null) : base(repository, id)
         {
             _name = name;
         }

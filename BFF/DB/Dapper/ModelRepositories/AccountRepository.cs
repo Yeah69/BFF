@@ -34,12 +34,10 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         
         protected override Converter<Persistance.Account, Domain.Account> ConvertToDomain => persistanceAccount =>
-            new Domain.Account(this)
-            {
-                Id = persistanceAccount.Id,
-                Name = persistanceAccount.Name,
-                StartingBalance = persistanceAccount.StartingBalance
-            };
+            new Domain.Account(this,
+                               persistanceAccount.Id,
+                               persistanceAccount.Name,
+                               persistanceAccount.StartingBalance);
         
         private string AllAccountsBalanceStatement =>
             $@"SELECT Total({nameof(Persistance.Transaction.Sum)}) FROM (

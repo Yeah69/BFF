@@ -38,7 +38,6 @@ namespace BFF.DB.SQLite
             _bffRepository = new DapperBffRepository(provideConnection);
             
             CommonPropertyProvider = new CommonPropertyProvider(this, _bffRepository);
-            ((CommonPropertyProvider) CommonPropertyProvider).InitializeCategoryViewModels();
         }
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options

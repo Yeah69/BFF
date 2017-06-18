@@ -27,13 +27,13 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
         {
             //Arrange
             Category category = CategoryFactory;
-            category.ParentId = ParentIdInitialValue;
+            category.Parent = ParentIdInitialValue;
 
             //Act
-            Action shouldTriggerNotification = () => category.ParentId = ParentIdDifferentValue;
+            Action shouldTriggerNotification = () => category.Parent = ParentIdDifferentValue;
 
             //Assert
-            Assert.PropertyChanged(category, nameof(category.ParentId), shouldTriggerNotification);
+            Assert.PropertyChanged(category, nameof(category.Parent), shouldTriggerNotification);
         }
 
         [Fact]
@@ -41,13 +41,13 @@ namespace BFF.Tests.Tests.MVVM.Models.Native
         {
             //Arrange
             Category category = CategoryFactory;
-            category.ParentId = ParentIdInitialValue;
+            category.Parent = ParentIdInitialValue;
 
             //Act
-            Action shouldNotTriggerNotification = () => category.ParentId = ParentIdInitialValue;
+            Action shouldNotTriggerNotification = () => category.Parent = ParentIdInitialValue;
 
             //Assert
-            NativeAssert.DoesNotRaisePropertyChanged(category, nameof(category.ParentId), shouldNotTriggerNotification);
+            NativeAssert.DoesNotRaisePropertyChanged(category, nameof(category.Parent), shouldNotTriggerNotification);
         }
     }
 }

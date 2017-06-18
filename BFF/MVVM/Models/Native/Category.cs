@@ -9,7 +9,7 @@ namespace BFF.MVVM.Models.Native
         /// <summary>
         /// Id of Parent
         /// </summary>
-        long? ParentId { get; set; }
+        ICategory Parent { get; set; }
     }
 
     /// <summary>
@@ -17,18 +17,18 @@ namespace BFF.MVVM.Models.Native
     /// </summary>
     public class Category : CommonProperty<Category>, ICategory
     {
-        private long? _parentId;
+        private ICategory _parent;
 
         /// <summary>
         /// Id of Parent
         /// </summary>
-        public long? ParentId
+        public ICategory Parent
         {
-            get => _parentId;
+            get => _parent;
             set
             {
-                if(_parentId == value) return;
-                _parentId = value;
+                if(_parent == value) return;
+                _parent = value;
                 Update();
                 OnPropertyChanged(); 
             }
@@ -39,9 +39,9 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         /// <param name="name">Name of the Category</param>
         /// <param name="parentId"></param>
-        public Category(IRepository<Category> repository, string name = null, long? parentId = null) : base(repository)
+        public Category(IRepository<Category> repository, long id, string name, ICategory parent) : base(repository, id, name)
         {
-            _parentId = parentId;
+            _parent = parent;
         }
     }
 }

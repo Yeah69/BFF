@@ -110,7 +110,7 @@ namespace BFF.DB
                 }
                 foreach (CategoryImportWrapper categoryImportWrapper in current.Categories)
                 {
-                    categoryImportWrapper.Category.ParentId = current.Category.Id;
+                    categoryImportWrapper.Category.Parent = current.Category;
                     categoriesOrder.Enqueue(categoryImportWrapper);
                 }
             }

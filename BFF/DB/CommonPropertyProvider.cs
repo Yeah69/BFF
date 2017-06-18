@@ -2,24 +2,25 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.ViewModelRepositories;
 using BFF.MVVM.ViewModels.ForModels;
+using MuVaViMo;
+using Reactive.Bindings;
+using Reactive.Bindings.Helpers;
 
 namespace BFF.DB
 {
-    public interface ICommonPropertyProvider {
+    public interface ICommonPropertyProvider 
+    {
+        CategoryViewModelService CategoryViewModelService { get; }
         ObservableCollection<IAccount> Accounts { get; }
         ObservableCollection<IAccountViewModel> AllAccountViewModels { get; }
         ISummaryAccountViewModel SummaryAccountViewModel { get; }
-        ObservableCollection<IPayee> Payees { get; }
-        ObservableCollection<ICategory> Categories { get; }
-        ObservableCollection<ICategoryViewModel> AllCategoryViewModels { get; }
+        IObservableReadOnlyList<ICategoryViewModel> AllCategoryViewModels { get; }
         ObservableCollection<ICategoryViewModel> ParentCategoryViewModels { get;  }
-        ObservableCollection<IPayeeViewModel> AllPayeeViewModels { get; }
-        void Add(IAccount account);
-        void Add(IPayee payee);
-        void Add(ICategory category);
+        IObservableReadOnlyList<IPayeeViewModel> AllPayeeViewModels { get; }
         IAccountViewModel GetAccountViewModel(long id);
-        ICategoryViewModel GetCategoryViewModel(long id);
+        ICategoryViewModel GetCategoryViewModel(ICategory category);
         IPayeeViewModel GetPayeeViewModel(long id);
         bool IsValidToInsert(ICategoryViewModel categoryViewModel);
     }
@@ -29,93 +30,50 @@ namespace BFF.DB
         private readonly IBffOrm _orm;
         private readonly BffRepository _bffRepository;
 
+        public CategoryViewModelService CategoryViewModelService { get; }
+
         public ObservableCollection<IAccount> Accounts { get;  }
 
         public ObservableCollection<IAccountViewModel> AllAccountViewModels { get; }
 
         public ISummaryAccountViewModel SummaryAccountViewModel { get; }
 
-        public ObservableCollection<IPayee> Payees { get; }
-
-        public ObservableCollection<ICategory> Categories { get; }
-
         public ObservableCollection<ICategoryViewModel> ParentCategoryViewModels { get; private set; }
 
-        public ObservableCollection<ICategoryViewModel> AllCategoryViewModels { get; }
+        public IObservableReadOnlyList<ICategoryViewModel> AllCategoryViewModels { get; }
 
-        public ObservableCollection<IPayeeViewModel> AllPayeeViewModels { get; }
+        public IObservableReadOnlyList<IPayeeViewModel> AllPayeeViewModels { get; }
 
 
         public CommonPropertyProvider(IBffOrm orm, BffRepository bffRepository)
         {
             _orm = orm;
             _bffRepository = bffRepository;
+            CategoryViewModelService = new CategoryViewModelService(_bffRepository.CategoryRepository, _orm);
             
             SummaryAccountViewModel = new SummaryAccountViewModel(
                 orm, new SummaryAccount(_bffRepository.AccountRepository));
             
             Accounts = new ObservableCollection<IAccount>(_bffRepository.AccountRepository.FindAll());
-            Categories = new ObservableCollection<ICategory>(_bffRepository.CategoryRepository.FindAll());
-            Payees = new ObservableCollection<IPayee>(_bffRepository.PayeeRepository.FindAll());
             
             AllAccountViewModels = new ObservableCollection<IAccountViewModel>(Accounts.Select(a => new AccountViewModel(a, orm)));
-            AllPayeeViewModels = new ObservableCollection<IPayeeViewModel>(Payees.Select(p => new PayeeViewModel(p, orm)));
-            AllCategoryViewModels = new ObservableCollection<ICategoryViewModel>();
-        }
-
-        public void InitializeCategoryViewModels()
-        {
-            ParentCategoryViewModels = new ObservableCollection<ICategoryViewModel>(
-                Categories.Where(c => c.ParentId == null)
-                          .OrderBy(c => c.Name)
-                          .Select(c => new CategoryViewModel(c, _orm)));
-            Stack<ICategoryViewModel> stack = new Stack<ICategoryViewModel>(ParentCategoryViewModels.Reverse());
-            while(stack.Count > 0)
-            {
-                ICategoryViewModel categoryViewModel = stack.Pop();
-                AllCategoryViewModels.Add(categoryViewModel);
-                categoryViewModel.Categories = new ObservableCollection<ICategoryViewModel>(
-                    Categories.Where(c => c.ParentId == categoryViewModel.Id)
-                              .OrderBy(c => c.Name)
-                              .Select(c => new CategoryViewModel(c, _orm)));
-                foreach(ICategoryViewModel child in categoryViewModel.Categories.Reverse())
-                {
-                    child.Parent = categoryViewModel;
-                    stack.Push(child);
-                }
-            }
-        }
-
-        public void Add(IAccount account)
-        {
-            _bffRepository.AccountRepository.Add(account as Account);
-            Accounts.Add(account);
-            AllAccountViewModels.Add(new AccountViewModel(account, _orm));
-        }
-
-        public void Add(IPayee payee)
-        {
-            _bffRepository.PayeeRepository.Add(payee as Payee);
-            Payees.Add(payee);
-            AllPayeeViewModels.Add(new PayeeViewModel(payee, _orm));
-        }
-
-        public void Add(ICategory category)
-        {
-            _bffRepository.CategoryRepository.Add(category as Category);
+            AllPayeeViewModels = new TransformingObservableReadOnlyList<IPayee, IPayeeViewModel>
+                (new WrappingObservableReadOnlyList<IPayee>(_bffRepository.PayeeRepository.All), 
+                 p => new PayeeViewModel(p, _orm));
+            AllCategoryViewModels = CategoryViewModelService.All;
         }
 
         public IAccountViewModel GetAccountViewModel(long id)
             => AllAccountViewModels.Single(avm => avm.Id  == id);
 
-        public ICategoryViewModel GetCategoryViewModel(long id)
-            => AllCategoryViewModels.Single(cvm => cvm.Id  == id);
+        public ICategoryViewModel GetCategoryViewModel(ICategory category)
+            => CategoryViewModelService.GetViewModel(category);
 
         public IPayeeViewModel GetPayeeViewModel(long id)
             => AllPayeeViewModels.Single(pvm => pvm.Id  == id);
 
         public bool IsValidToInsert(ICategoryViewModel categoryViewModel) => 
-            categoryViewModel.Parent == null && ParentCategoryViewModels.All(cvm => cvm.Name != categoryViewModel.Name) ||
-            categoryViewModel.Parent.Categories.All(cvm => cvm.Name != categoryViewModel.Name);
+            categoryViewModel.ReactiveParent.Value == null && ParentCategoryViewModels.All(cvm => cvm.Name != categoryViewModel.Name) ||
+            categoryViewModel.ReactiveParent.Value.Categories.All(cvm => cvm.Name != categoryViewModel.Name);
     }
 }

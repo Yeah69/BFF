@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using Dapper.Contrib.Extensions;
+using NLog;
 using Persistence = BFF.DB.PersistanceModels;
 using Domain = BFF.MVVM.Models.Native.Structure;
 
@@ -11,6 +13,8 @@ namespace BFF.DB.Dapper
         where TDomain : class, Domain.IDataModel 
         where TPersistence : class, Persistence.IPersistanceModel
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        
         private readonly Dictionary<long, TDomain> _cache = new Dictionary<long, TDomain>();
 
         protected CachingRepositoryBase(IProvideConnection provideConnection) : base(provideConnection) { }
@@ -44,12 +48,14 @@ namespace BFF.DB.Dapper
                 c => c.GetAll<TPersistence>(), 
                 ProvideConnection, 
                 connection);
+            Logger.Debug("Starting to convert all POCOs of type {0}", typeof(TPersistence).Name);
             foreach(TPersistence poco in pocos)
             {
                 if(!_cache.ContainsKey(poco.Id))
                     _cache.Add(poco.Id, ConvertToDomain(poco));
                 yield return _cache[poco.Id];
             }
+            Logger.Debug("Finished converting all POCOs of type {0}", typeof(TPersistence).Name);
         }
     }
 }

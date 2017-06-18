@@ -44,7 +44,7 @@ namespace BFF.MVVM.Models.Native
                        long id = -1L, 
                        string name = null, 
                        long startingBalance = 0L) 
-            : base(repository, name)
+            : base(repository, name: name)
         {
             Id = id;
             _startingBalance = startingBalance;

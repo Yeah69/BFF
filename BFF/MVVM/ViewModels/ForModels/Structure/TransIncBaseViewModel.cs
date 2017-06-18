@@ -4,6 +4,8 @@ using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
+using MuVaViMo;
+using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -88,7 +90,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         {
             Payee newPayee = Orm.BffRepository.PayeeRepository.Create();
             newPayee.Name = PayeeText.Trim();
-            CommonPropertyProvider?.Add(newPayee);
+            newPayee.Insert();
             OnPropertyChanged(nameof(AllPayees));
             Payee = CommonPropertyProvider?.GetPayeeViewModel(newPayee.Id);
         }, obj =>
@@ -101,7 +103,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All currently available Payees.
         /// </summary>
-        public ObservableCollection<IPayeeViewModel> AllPayees => CommonPropertyProvider?.AllPayeeViewModels;
+        public IObservableReadOnlyList<IPayeeViewModel> AllPayees => CommonPropertyProvider?.AllPayeeViewModels;
 
         #endregion
 

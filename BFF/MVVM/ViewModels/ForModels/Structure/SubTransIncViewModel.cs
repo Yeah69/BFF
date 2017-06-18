@@ -45,7 +45,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public ICategoryViewModel Category
         {
             get => _subTransInc.CategoryId == -1 ? null :
-                       CommonPropertyProvider.GetCategoryViewModel(_subTransInc.CategoryId);
+                       CommonPropertyProvider.CategoryViewModelService.GetViewModel(_subTransInc.CategoryId);
             set
             {
                 if (value == null || value.Id == _subTransInc.CategoryId) return; //todo: make Category nullable?
@@ -127,10 +127,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         {
             ICategory newCategory = Orm.BffRepository.CategoryRepository.Create();
             newCategory.Name = CategoryText.Trim();
-            newCategory.ParentId = AddingCategoryParent?.Id;
-            CommonPropertyProvider?.Add(newCategory);
+            newCategory.Parent = CommonPropertyProvider.CategoryViewModelService.GetModel(AddingCategoryParent);
+            newCategory.Insert();
             OnPropertyChanged(nameof(AllCategories));
-            Category = CommonPropertyProvider?.GetCategoryViewModel(newCategory.Id);
+            Category = CommonPropertyProvider?.CategoryViewModelService.GetViewModel(newCategory);
         }, obj =>
         {
             return !string.IsNullOrWhiteSpace(CategoryText) &&
