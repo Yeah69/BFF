@@ -8,6 +8,8 @@ using AlphaChiTech.Virtualization;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.Properties;
+using MuVaViMo;
+using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -16,7 +18,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        long StartingBalance { get; }
+        ReactiveProperty<long> StartingBalance { get; }
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
@@ -83,7 +85,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        public abstract long StartingBalance { get; set; }
+        public abstract ReactiveProperty<long> StartingBalance { get; set; }
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
@@ -103,7 +105,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All available Accounts.
         /// </summary>
-        public ObservableCollection<IAccount> AllAccounts => CommonPropertyProvider.Accounts;
+        public ObservableCollection<Account> AllAccounts => CommonPropertyProvider.Accounts;
 
         /// <summary>
         /// Creates a new Transaction.
@@ -235,7 +237,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 }
             }
             
-            Refresh(Orm.CommonPropertyProvider.SummaryAccountViewModel);
+            Refresh(Orm.CommonPropertyProvider.AccountViewModelService.SummaryAccountViewModel);
             foreach (IAccountViewModel accountViewModel in accountViewModels.Distinct())
             {
                 Refresh(accountViewModel);

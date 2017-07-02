@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Windows.Input;
 using AlphaChiTech.Virtualization;
 using BFF.DB;
+using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.ViewModelRepositories;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
@@ -23,30 +28,26 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel
     {
+        private readonly Subject<long> _startingBalanceSubject = new Subject<long>();
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        public override long StartingBalance
-        {
-            get { return CommonPropertyProvider?.Accounts.Sum(account => account.StartingBalance) ?? 0L; }
-            set => OnPropertyChanged();
-        }
+        public sealed override ReactiveProperty<long> StartingBalance { get; set; }
 
         /// <summary>
         /// Name of the Account Model
         /// </summary>
         public override ReactiveProperty<string> Name //todo Localization
-        {
-            get => new ReactiveProperty<string>((IObservable<string>)null, "All Accounts");
-            set => OnPropertyChanged();
-        }
+            => new ReactiveProperty<string>("All Accounts");
 
         /// <summary>
         /// Initializes an SummaryAccountViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
         /// <param name="summaryAccount">The model.</param>
-        public SummaryAccountViewModel(IBffOrm orm, ISummaryAccount summaryAccount) : base(orm, summaryAccount)
+        public SummaryAccountViewModel(IBffOrm orm,
+                                       ISummaryAccount summaryAccount,
+                                       AccountRepository repository) : base(orm, summaryAccount)
         {
             Account = summaryAccount;
             Messenger.Default.Register<SummaryAccountMessage>(this, message =>
@@ -71,6 +72,11 @@ namespace BFF.MVVM.ViewModels.ForModels
                         throw new NotImplementedException();
                 }
             });
+            //StartingBalance = new ReactiveProperty<long>(_startingBalanceSubject).AddTo(CompositeDisposable);
+            StartingBalance = new ReactiveProperty<long>(
+                repository.All.ToObservable().Select(
+                    a => repository.All.Sum(acc => acc.StartingBalance)))
+                .AddTo(CompositeDisposable);
         }
 
         /// <summary>
@@ -191,7 +197,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public void RefreshStartingBalance()
         {
-            OnPropertyChanged(nameof(StartingBalance));
+            _startingBalanceSubject.OnNext(CommonPropertyProvider?.Accounts.Sum(account => account.StartingBalance) 
+                                           ?? 0L);
         }
 
         #region Overrides of DataModelViewModel

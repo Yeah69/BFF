@@ -127,10 +127,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         {
             ICategory newCategory = Orm.BffRepository.CategoryRepository.Create();
             newCategory.Name = CategoryText.Trim();
-            newCategory.Parent = CommonPropertyProvider.CategoryViewModelService.GetModel(AddingCategoryParent);
+            newCategory.Parent = CommonPropertyProvider.CategoryViewModelService.GetModel(AddingCategoryParent as CategoryViewModel);
             newCategory.Insert();
             OnPropertyChanged(nameof(AllCategories));
-            Category = CommonPropertyProvider?.CategoryViewModelService.GetViewModel(newCategory);
+            Category = CommonPropertyProvider?.CategoryViewModelService.GetViewModel((Category) newCategory);
         }, obj =>
         {
             return !string.IsNullOrWhiteSpace(CategoryText) &&

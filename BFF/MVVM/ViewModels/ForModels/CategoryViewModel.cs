@@ -81,8 +81,11 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public CategoryViewModel(ICategory category, IBffOrm orm, CategoryViewModelService service) : base(orm, category)
         {
-            Parent = category.ToReactivePropertyAsSynchronized(c => c.Parent, service.GetViewModel, service.GetModel)
-                              .AddTo(CompositeDisposable);
+            Parent = category.ToReactivePropertyAsSynchronized(
+                                 c => c.Parent, 
+                                 c => service.GetViewModel(c as Category) as ICategoryViewModel, 
+                                 cvm => service.GetModel(cvm as CategoryViewModel))
+                             .AddTo(CompositeDisposable);
             
             Parent.Subscribe(cvm =>
             {

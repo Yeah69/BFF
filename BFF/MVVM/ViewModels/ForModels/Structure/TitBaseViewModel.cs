@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
+using MuVaViMo;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -75,7 +76,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All currently available Accounts.
         /// </summary>
-        public ObservableCollection<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
+        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
 
         #endregion
     }

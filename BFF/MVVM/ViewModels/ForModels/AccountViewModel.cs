@@ -5,15 +5,13 @@ using AlphaChiTech.Virtualization;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
     public interface IAccountViewModel : IAccountBaseViewModel
     {
-        /// <summary>
-        /// Starting balance of the Account
-        /// </summary>
-        new long StartingBalance { get; set; }
     }
 
     /// <summary>
@@ -24,17 +22,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        public override long StartingBalance
-        {
-            get => Account.StartingBalance;
-            set
-            {
-                if(Account.StartingBalance == value) return;
-                Account.StartingBalance = value;
-                OnPropertyChanged();
-                Orm.CommonPropertyProvider.SummaryAccountViewModel.RefreshStartingBalance();
-            }
-        }
+        public sealed override ReactiveProperty<long> StartingBalance { get; set; }
 
         /// <summary>
         /// Before a model object is inserted into the database, it has to be valid.
@@ -62,7 +50,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="account">An Account Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public AccountViewModel(IAccount account, IBffOrm orm) : base(orm, account)
+        public AccountViewModel(IAccount account, IBffOrm orm, ISummaryAccountViewModel summaryAccountViewModel) 
+            : base(orm, account)
         {
             Account = account;
             Messenger.Default.Register<AccountMessage>(this, message =>
@@ -83,6 +72,12 @@ namespace BFF.MVVM.ViewModels.ForModels
                         throw new NotImplementedException();
                 }
             }, Account);
+
+            StartingBalance = account.ToReactivePropertyAsSynchronized(a => a.StartingBalance)
+                                     .AddTo(CompositeDisposable);
+            StartingBalance.Subscribe(_ => summaryAccountViewModel.RefreshStartingBalance())
+                           .AddTo(CompositeDisposable);
+            summaryAccountViewModel.RefreshStartingBalance();
         }
 
         #region ViewModel_Part

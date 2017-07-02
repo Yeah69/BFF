@@ -7,6 +7,7 @@ using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.Properties;
+using MuVaViMo;
 
 namespace BFF.MVVM.ViewModels
 {
@@ -14,11 +15,12 @@ namespace BFF.MVVM.ViewModels
     {
         private readonly IBffOrm _orm;
 
-        public ObservableCollection<IAccountViewModel> AllAccounts => _orm.CommonPropertyProvider.AllAccountViewModels;
+        public IObservableReadOnlyList<IAccountViewModel> AllAccounts =>
+            _orm.CommonPropertyProvider.AllAccountViewModels;
 
         public ISummaryAccountViewModel SummaryAccountViewModel
         {
-            get => _orm.CommonPropertyProvider.SummaryAccountViewModel;
+            get => _orm.CommonPropertyProvider.AccountViewModelService.SummaryAccountViewModel;
             set => OnPropertyChanged();
         }
 
@@ -93,7 +95,6 @@ namespace BFF.MVVM.ViewModels
             {
                 (accountViewModel as IDisposable)?.Dispose();
             }
-            AllAccounts.Clear();
             (SummaryAccountViewModel as IDisposable)?.Dispose();
             Messenger.Default.Unregister<CutlureMessage>(this);
         }

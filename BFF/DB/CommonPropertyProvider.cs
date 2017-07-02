@@ -1,21 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModelRepositories;
 using BFF.MVVM.ViewModels.ForModels;
 using MuVaViMo;
-using Reactive.Bindings;
-using Reactive.Bindings.Helpers;
 
 namespace BFF.DB
 {
     public interface ICommonPropertyProvider 
     {
+        AccountViewModelService AccountViewModelService { get; }
         CategoryViewModelService CategoryViewModelService { get; }
-        ObservableCollection<IAccount> Accounts { get; }
-        ObservableCollection<IAccountViewModel> AllAccountViewModels { get; }
-        ISummaryAccountViewModel SummaryAccountViewModel { get; }
+        ObservableCollection<Account> Accounts { get; }
+        IObservableReadOnlyList<IAccountViewModel> AllAccountViewModels { get; }
         IObservableReadOnlyList<ICategoryViewModel> AllCategoryViewModels { get; }
         ObservableCollection<ICategoryViewModel> ParentCategoryViewModels { get;  }
         IObservableReadOnlyList<IPayeeViewModel> AllPayeeViewModels { get; }
@@ -30,15 +27,15 @@ namespace BFF.DB
         private readonly IBffOrm _orm;
         private readonly BffRepository _bffRepository;
 
+        public AccountViewModelService AccountViewModelService { get; }
+        
         public CategoryViewModelService CategoryViewModelService { get; }
 
-        public ObservableCollection<IAccount> Accounts { get;  }
+        public ObservableCollection<Account> Accounts { get;  }
 
-        public ObservableCollection<IAccountViewModel> AllAccountViewModels { get; }
+        public IObservableReadOnlyList<IAccountViewModel> AllAccountViewModels { get; }
 
-        public ISummaryAccountViewModel SummaryAccountViewModel { get; }
-
-        public ObservableCollection<ICategoryViewModel> ParentCategoryViewModels { get; private set; }
+        public ObservableCollection<ICategoryViewModel> ParentCategoryViewModels { get; }
 
         public IObservableReadOnlyList<ICategoryViewModel> AllCategoryViewModels { get; }
 
@@ -49,17 +46,17 @@ namespace BFF.DB
         {
             _orm = orm;
             _bffRepository = bffRepository;
-            CategoryViewModelService = new CategoryViewModelService(_bffRepository.CategoryRepository, _orm);
             
-            SummaryAccountViewModel = new SummaryAccountViewModel(
-                orm, new SummaryAccount(_bffRepository.AccountRepository));
+            Accounts = _bffRepository.AccountRepository.All;
+            AccountViewModelService = new AccountViewModelService(_bffRepository.AccountRepository, _orm);
+            AllAccountViewModels = AccountViewModelService.All;
+            AccountViewModelService.SummaryAccountViewModel.RefreshStartingBalance();
             
-            Accounts = new ObservableCollection<IAccount>(_bffRepository.AccountRepository.FindAll());
-            
-            AllAccountViewModels = new ObservableCollection<IAccountViewModel>(Accounts.Select(a => new AccountViewModel(a, orm)));
             AllPayeeViewModels = new TransformingObservableReadOnlyList<IPayee, IPayeeViewModel>
                 (new WrappingObservableReadOnlyList<Payee>(_bffRepository.PayeeRepository.All), 
                  p => new PayeeViewModel(p, _orm));
+            
+            CategoryViewModelService = new CategoryViewModelService(_bffRepository.CategoryRepository, _orm);
             AllCategoryViewModels = CategoryViewModelService.All;
         }
 
@@ -67,7 +64,7 @@ namespace BFF.DB
             => AllAccountViewModels.Single(avm => avm.Id  == id);
 
         public ICategoryViewModel GetCategoryViewModel(ICategory category)
-            => CategoryViewModelService.GetViewModel(category);
+            => CategoryViewModelService.GetViewModel(category as Category);
 
         public IPayeeViewModel GetPayeeViewModel(long id)
             => AllPayeeViewModels.Single(pvm => pvm.Id  == id);

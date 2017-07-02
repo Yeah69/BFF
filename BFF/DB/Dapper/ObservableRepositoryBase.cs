@@ -8,14 +8,19 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB.Dapper
 {
+    public interface IObservableRepositoryBase<TDomain> where TDomain : class, IDataModel
+    {
+        ObservableCollection<TDomain> All { get; }
+    }
+
     public abstract class ObservableRepositoryBase<TDomain, TPersistence> 
-        : CachingRepositoryBase<TDomain, TPersistence>
+        : CachingRepositoryBase<TDomain, TPersistence>, IObservableRepositoryBase<TDomain>
         where TDomain : class, IDataModel
         where TPersistence : class, IPersistanceModel
     {
         private readonly Comparer<TDomain> _comparer;
-        public readonly ObservableCollection<TDomain> All;
-        
+        public ObservableCollection<TDomain> All { get; }
+
         protected ObservableRepositoryBase(IProvideConnection provideConnection, Comparer<TDomain> comparer) : base(provideConnection)
         {
             _comparer = comparer;
