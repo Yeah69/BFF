@@ -33,7 +33,7 @@ namespace BFF.DB.Dapper
             if(!All.Contains(dataModel))
             {
                 int i = 0;
-                while(_comparer.Compare(dataModel, All[i]) > 0)
+                while(i < All.Count && _comparer.Compare(dataModel, All[i]) > 0)
                     i++;
                 All.Insert(i, dataModel);
             }

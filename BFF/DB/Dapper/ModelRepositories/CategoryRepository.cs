@@ -68,7 +68,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             new Persistance.Category
             {
                 Id = domainCategory.Id,
-                ParentId = domainCategory.Parent.Id,
+                ParentId = domainCategory.Parent?.Id,
                 Name = domainCategory.Name
             };
         
