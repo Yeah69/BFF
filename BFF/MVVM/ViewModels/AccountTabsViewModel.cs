@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.Properties;
 using MuVaViMo;
@@ -14,6 +15,7 @@ namespace BFF.MVVM.ViewModels
     public class AccountTabsViewModel : SessionViewModelBase, IDisposable
     {
         private readonly IBffOrm _orm;
+        private readonly AccountViewModelService _accountViewModelService;
 
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts =>
             _orm.CommonPropertyProvider.AllAccountViewModels;
@@ -24,7 +26,7 @@ namespace BFF.MVVM.ViewModels
             set => OnPropertyChanged();
         }
 
-        public IAccount NewAccount { get; set; }
+        public IAccountViewModel NewAccount { get; set; }
         
         public ICommand NewAccountCommand => new RelayCommand(param =>
         {
@@ -35,15 +37,16 @@ namespace BFF.MVVM.ViewModels
             Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
             Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
             //Refresh dummy-Account
-            NewAccount = _orm.BffRepository.AccountRepository.Create();
+            NewAccount = _accountViewModelService.GetNewNonInsertedViewModel();
             OnPropertyChanged(nameof(NewAccount));
         }
-        , param => !string.IsNullOrEmpty(NewAccount.Name));
+        , param => !string.IsNullOrEmpty(NewAccount.Name.Value));
 
-        public AccountTabsViewModel(IBffOrm orm)
+        public AccountTabsViewModel(IBffOrm orm, AccountViewModelService accountViewModelService)
         {
             _orm = orm;
-            NewAccount = _orm.BffRepository.AccountRepository.Create();
+            _accountViewModelService = accountViewModelService;
+            NewAccount = _accountViewModelService.GetNewNonInsertedViewModel();
 
             IDbSetting dbSetting = _orm.BffRepository.DbSettingRepository.Find(1);
             Settings.Default.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultureName);

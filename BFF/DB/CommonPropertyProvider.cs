@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using BFF.MVVM.Models.Native;
-using BFF.MVVM.ViewModelRepositories;
+using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using MuVaViMo;
 

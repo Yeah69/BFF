@@ -180,7 +180,7 @@ namespace BFF.MVVM.ViewModels
             if (File.Exists(dbPath))
             {
                 IBffOrm orm = new SqLiteBffOrm(new ProvideSqLiteConnection(dbPath));
-                ContentViewModel = new AccountTabsViewModel(orm);
+                ContentViewModel = new AccountTabsViewModel(orm, orm.CommonPropertyProvider.AccountViewModelService);
                 Title = $"{new FileInfo(dbPath).Name} - BFF";
                 Settings.Default.DBLocation = dbPath;
                 Settings.Default.Save();

@@ -5,7 +5,7 @@ using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using MuVaViMo;
 
-namespace BFF.MVVM.ViewModelRepositories
+namespace BFF.MVVM.Services
 {
     public abstract class ViewModelServiceBase<TDomain, TViewModel> 
         where TDomain : class, IDataModel 
@@ -69,5 +69,7 @@ namespace BFF.MVVM.ViewModelRepositories
 
             return null;
         }
+
+        public abstract TViewModel GetNewNonInsertedViewModel();
     }
 }

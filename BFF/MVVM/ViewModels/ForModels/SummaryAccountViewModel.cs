@@ -8,7 +8,6 @@ using AlphaChiTech.Virtualization;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
-using BFF.MVVM.ViewModelRepositories;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
