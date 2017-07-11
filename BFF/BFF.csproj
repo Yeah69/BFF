@@ -374,6 +374,7 @@
     <Compile Include="MVVM\Models\Native\ParentTransaction.cs" />
     <Compile Include="MVVM\Services\AccountViewModelService.cs" />
     <Compile Include="MVVM\Services\CategoryViewModelService.cs" />
+    <Compile Include="MVVM\Services\PayeeViewModelService.cs" />
     <Compile Include="MVVM\Services\ViewModelServiceBase.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\CategoryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\CommonPropertyViewModel.cs" />
