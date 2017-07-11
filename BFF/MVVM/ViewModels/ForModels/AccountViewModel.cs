@@ -22,7 +22,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        public sealed override ReactiveProperty<long> StartingBalance { get; set; }
+        public sealed override ReactiveProperty<long> StartingBalance { get; }
 
         /// <summary>
         /// Before a model object is inserted into the database, it has to be valid.
@@ -50,6 +50,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="account">An Account Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
+        /// <param name="summaryAccountViewModel">This account summarizes all accounts.</param>
         public AccountViewModel(IAccount account, IBffOrm orm, ISummaryAccountViewModel summaryAccountViewModel) 
             : base(orm, account)
         {
@@ -91,7 +92,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public override ObservableCollection<ITitLikeViewModel> NewTits { get; set; } = new ObservableCollection<ITitLikeViewModel>();
+        public override ObservableCollection<ITitLikeViewModel> NewTits { get; } = new ObservableCollection<ITitLikeViewModel>();
 
         /// <summary>
         /// The current Balance of this Account.

@@ -26,7 +26,8 @@ namespace BFF.MVVM.Services
                 AddToDictionaries);
         }
 
-        protected override IAccountViewModel Create(Account model) => new AccountViewModel(model, _orm, SummaryAccountViewModel);
+        protected override IAccountViewModel Create(Account model) 
+            => new AccountViewModel(model, _orm, SummaryAccountViewModel);
         public override IAccountViewModel GetNewNonInsertedViewModel() 
             => new AccountViewModel(_repository.Create(), _orm, SummaryAccountViewModel);
     }

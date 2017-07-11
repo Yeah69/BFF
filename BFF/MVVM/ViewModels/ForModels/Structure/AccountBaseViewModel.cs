@@ -8,7 +8,6 @@ using AlphaChiTech.Virtualization;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.Properties;
-using MuVaViMo;
 using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
@@ -78,14 +77,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
-        private readonly IAccount _account;
-
         protected VirtualizingObservableCollection<ITitLikeViewModel> _tits;
 
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        public abstract ReactiveProperty<long> StartingBalance { get; set; }
+        public abstract ReactiveProperty<long> StartingBalance { get; }
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
@@ -95,7 +92,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public abstract ObservableCollection<ITitLikeViewModel> NewTits { get; set; }
+        public abstract ObservableCollection<ITitLikeViewModel> NewTits { get; }
 
         /// <summary>
         /// The current Balance of this Account.
@@ -154,7 +151,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="account">The model.</param>
         protected AccountBaseViewModel(IBffOrm orm, IAccount account) : base(orm, account)
         {
-            _account = account;
             Orm = orm;
             Messenger.Default.Register<CutlureMessage>(this, message =>
             {

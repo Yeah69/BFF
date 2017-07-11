@@ -16,10 +16,9 @@ namespace BFF.MVVM.Services
             _orm = orm;
         }
 
-        protected override CategoryViewModel Create(Category model) => new CategoryViewModel(model, _orm, this);
-        public override CategoryViewModel GetNewNonInsertedViewModel()
-        {
-            return new CategoryViewModel(_repository.Create(), _orm, this);
-        }
+        protected override CategoryViewModel Create(Category model) 
+            => new CategoryViewModel(model, _orm, this);
+        public override CategoryViewModel GetNewNonInsertedViewModel() 
+            => new CategoryViewModel(_repository.Create(), _orm, this);
     }
 }

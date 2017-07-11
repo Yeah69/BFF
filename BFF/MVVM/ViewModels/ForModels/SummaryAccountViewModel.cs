@@ -31,7 +31,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        public sealed override ReactiveProperty<long> StartingBalance { get; set; }
+        public sealed override ReactiveProperty<long> StartingBalance { get; }
 
         /// <summary>
         /// Name of the Account Model
@@ -97,7 +97,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public override ObservableCollection<ITitLikeViewModel> NewTits { get; set; } = new ObservableCollection<ITitLikeViewModel>();
+        public override ObservableCollection<ITitLikeViewModel> NewTits { get; } = new ObservableCollection<ITitLikeViewModel>();
         
         /// <summary>
         /// Refreshes the TITs of this Account.

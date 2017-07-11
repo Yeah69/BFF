@@ -21,8 +21,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The Parent
         /// </summary>
-        //ICategoryViewModel Parent { get; set; }
-
         ReactiveProperty<ICategoryViewModel> Parent { get; }
 
         string FullName { get; }
@@ -41,7 +39,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public ReactiveProperty<ICategoryViewModel> Parent { get; }
 
-        private ICategoryViewModel _previousParent = null;
+        private ICategoryViewModel _previousParent;
 
         public string FullName => $"{(Parent.Value != null ? $"{Parent.Value.FullName}." : "")}{Name}";
 

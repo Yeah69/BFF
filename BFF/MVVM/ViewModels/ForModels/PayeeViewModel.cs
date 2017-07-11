@@ -11,11 +11,8 @@ namespace BFF.MVVM.ViewModels.ForModels
 
     public class PayeeViewModel : CommonPropertyViewModel, IPayeeViewModel
     {
-        private readonly IPayee _payee;
-
         public PayeeViewModel(IPayee payee, IBffOrm orm) : base(orm, payee)
         {
-            _payee = payee;
         }
 
         #region Overrides of DataModelViewModel
