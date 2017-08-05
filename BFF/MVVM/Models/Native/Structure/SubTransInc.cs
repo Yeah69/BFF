@@ -7,7 +7,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <summary>
         /// Id of the Parent
         /// </summary>
-        long ParentId { get; set; }
+        IParentTransInc Parent { get; set; }
 
         /// <summary>
         /// The amount of money, which was payeed or recieved
@@ -20,19 +20,19 @@ namespace BFF.MVVM.Models.Native.Structure
     /// </summary>
     public abstract class SubTransInc<T> : TitLike<T>, ISubTransInc where T : class, ISubTransInc
     {
-        private long _parentId;
-        private long _categoryId;
+        private IParentTransInc _parent;
+        private ICategory _category;
 
         /// <summary>
         /// Id of the Parent
         /// </summary>
-        public long ParentId
+        public IParentTransInc Parent
         {
-            get => _parentId;
+            get => _parent;
             set
             {
-                if(_parentId == value) return;
-                _parentId = value;
+                if(_parent == value) return;
+                _parent = value;
                 Update();
                 OnPropertyChanged();
             }
@@ -41,13 +41,13 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <summary>
         /// Id of the Category
         /// </summary>
-        public long CategoryId
+        public ICategory Category
         {
-            get => _categoryId;
+            get => _category;
             set
             {
-                if(_categoryId == value) return;
-                _categoryId = value;
+                if(_category == value) return;
+                _category = value;
                 Update();
                 OnPropertyChanged();
             }
@@ -76,30 +76,16 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="category">Category of the SubElement</param>
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        protected SubTransInc(IRepository<T> repository, 
-                              IParentTransInc parent = null,
-                              ICategory category = null,
-                              string memo = null,
-                              long sum = 0L) : base(repository, memo: memo)
+        protected SubTransInc(
+            IRepository<T> repository, 
+            long id,
+            IParentTransInc parent = null,
+            ICategory category = null,
+            string memo = null,
+            long sum = 0L) : base(repository, id, memo)
         {
-            _parentId = parent?.Id ?? -1;
-            _categoryId = category?.Id ?? -1;
-            _sum = sum;
-        }
-
-        /// <summary>
-        /// Safe ORM-constructor
-        /// </summary>
-        /// <param name="id">Identification number for the database</param>
-        /// <param name="parentId">Id of the Parent</param>
-        /// <param name="categoryId">Id of the Category</param>
-        /// <param name="sum">The Sum of the SubElement</param>
-        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        protected SubTransInc(IRepository<T> repository, long id, long parentId, long categoryId, long sum, string memo) 
-            : base(repository, id, memo)
-        {
-            _parentId = parentId;
-            _categoryId = categoryId;
+            _parent = parent;
+            _category = category;
             _sum = sum;
         }
     }

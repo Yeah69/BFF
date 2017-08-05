@@ -1,5 +1,6 @@
 ﻿using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
@@ -16,6 +17,17 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="transInc">A Transaction Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public TransactionViewModel(ITransaction transInc, IBffOrm orm) : base(transInc, orm) { }
+        public TransactionViewModel(
+            ITransaction transInc, 
+            IBffOrm orm,
+            AccountViewModelService accountViewModelService, 
+            PayeeViewModelService payeeViewModelService, 
+            CategoryViewModelService categoryViewModelService) 
+            : base(
+                  transInc, 
+                  orm, 
+                  accountViewModelService,
+                  payeeViewModelService,
+                  categoryViewModelService) { }
     }
 }

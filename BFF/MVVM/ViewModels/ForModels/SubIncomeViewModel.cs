@@ -1,10 +1,13 @@
 ﻿using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    internal interface ISubIncomeViewModel : ISubTransIncViewModel {}
+    public interface ISubIncomeViewModel : ISubTransIncViewModel {}
 
     /// <summary>
     /// The ViewModel of the Model SubIncome.
@@ -14,10 +17,22 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Initializes a SubIncomeViewModel.
         /// </summary>
-        /// <param name="subTransInc">A SubIncome Model.</param>
+        /// <param name="subIncome">A SubIncome Model.</param>
         /// <param name="parent">The ViewModel of the Model's ParentTransaction.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public SubIncomeViewModel(ISubIncome subTransInc, IParentTransIncViewModel parent, IBffOrm orm) : 
-            base(subTransInc, parent, orm) { }
+        public SubIncomeViewModel(
+            ISubIncome subIncome,
+            IBffOrm orm,
+            CategoryViewModelService categoryViewModelService,
+            ParentIncomeViewModelService parentIncomeViewModelService) :
+        base(subIncome, orm, categoryViewModelService)
+        {
+            Parent =
+                subIncome.ToReadOnlyReactivePropertyAsSynchronized(
+                    st => st.Parent,
+                    pt => parentIncomeViewModelService.GetViewModel(pt as IParentIncome));
+        }
+
+        public override IReadOnlyReactiveProperty<IParentTransIncViewModel> Parent { get; }
     }
 }

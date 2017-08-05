@@ -77,37 +77,37 @@ namespace BFF.DB.Dapper
 
         public virtual TDomain Find(long id, DbConnection connection = null)
         {
-            if(connection != null) return ConvertToDomain(connection.Get<TPersistance>(id));
+            if(connection != null) return ConvertToDomain((connection.Get<TPersistance>(id), connection));
             
             TDomain ret;
-            using(TransactionScope transactionScope = new TransactionScope())
+            using(TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
             using(DbConnection newConnection = ProvideConnection.Connection)
             {
                 newConnection.Open();
                 var result = newConnection.Get<TPersistance>(id);
-                ret = ConvertToDomain(result);
+                ret = ConvertToDomain((result, newConnection));
                 transactionScope.Complete();
             }
             return ret;
         }
 
         protected abstract Converter<TDomain, TPersistance> ConvertToPersistance { get; }
-        protected abstract Converter<TPersistance, TDomain> ConvertToDomain { get; }
+        protected abstract Converter<(TPersistance, DbConnection), TDomain> ConvertToDomain { get; }
         public virtual IEnumerable<TDomain> FindAll(DbConnection connection = null)
         {
             IEnumerable<TDomain> inner(DbConnection conn)
             {
-                return conn.GetAll<TPersistance>().Select(p => ConvertToDomain(p));
+                return conn.GetAll<TPersistance>().Select(p => ConvertToDomain((p, conn)));
             }
 
             if(connection != null) return inner(connection);
             
             IEnumerable<TDomain> ret;
-            using(TransactionScope transactionScope = new TransactionScope())
+            using(TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
             using(DbConnection newConnection = ProvideConnection.Connection)
             {
                 newConnection.Open();
-                ret = inner(newConnection);
+                ret = inner(newConnection).ToList();
                 transactionScope.Complete();
             }
             return ret;

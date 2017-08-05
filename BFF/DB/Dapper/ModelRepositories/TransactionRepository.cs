@@ -1,4 +1,5 @@
 using System;
+using System.Data.Common;
 using Domain = BFF.MVVM.Models.Native;
 using Persistance = BFF.DB.PersistanceModels;
 
@@ -26,35 +27,50 @@ namespace BFF.DB.Dapper.ModelRepositories
     
     public class TransactionRepository : RepositoryBase<Domain.Transaction, Persistance.Transaction>
     {
-        public TransactionRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
+        private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
+        private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
+
+        public TransactionRepository(
+            IProvideConnection provideConnection,
+            Func<long, DbConnection, Domain.IAccount> accountFetcher,
+            Func<long, DbConnection, Domain.ICategory> categoryFetcher,
+            Func<long, DbConnection, Domain.IPayee> payeeFetcher) : base(provideConnection)
+        {
+            _accountFetcher = accountFetcher;
+            _categoryFetcher = categoryFetcher;
+            _payeeFetcher = payeeFetcher;
+        }
 
         public override Domain.Transaction Create() =>
-            new Domain.Transaction(this, DateTime.MinValue);
+            new Domain.Transaction(this, -1L, DateTime.Now, null, null, null, "", 0L, false);
         
         protected override Converter<Domain.Transaction, Persistance.Transaction> ConvertToPersistance => domainTransaction => 
             new Persistance.Transaction
             {
                 Id = domainTransaction.Id,
-                AccountId = domainTransaction.AccountId,
-                CategoryId = domainTransaction.CategoryId,
-                PayeeId = domainTransaction.PayeeId,
+                AccountId = domainTransaction.Account.Id,
+                CategoryId = domainTransaction.Category.Id,
+                PayeeId = domainTransaction.Payee.Id,
                 Date = domainTransaction.Date,
                 Memo = domainTransaction.Memo,
                 Sum = domainTransaction.Sum,
                 Cleared = domainTransaction.Cleared ? 1L : 0L
             };
-        
-        protected override Converter<Persistance.Transaction, Domain.Transaction> ConvertToDomain => persistanceTransaction =>
-            new Domain.Transaction(this, persistanceTransaction.Date)
-            {
-                Id = persistanceTransaction.Id,
-                AccountId = persistanceTransaction.AccountId,
-                CategoryId = persistanceTransaction.CategoryId,
-                PayeeId = persistanceTransaction.PayeeId,
-                Date = persistanceTransaction.Date,
-                Memo = persistanceTransaction.Memo,
-                Sum = persistanceTransaction.Sum,
-                Cleared = persistanceTransaction.Cleared == 1L
-            };
+
+        protected override Converter<(Persistance.Transaction, DbConnection), Domain.Transaction> ConvertToDomain => tuple =>
+        {
+            (Persistance.Transaction persistenceTransaction, DbConnection connection) = tuple;
+            return new Domain.Transaction(
+                this,
+                persistenceTransaction.Id,
+                persistenceTransaction.Date,
+                _accountFetcher(persistenceTransaction.AccountId, connection),
+                _payeeFetcher(persistenceTransaction.PayeeId, connection),
+                _categoryFetcher(persistenceTransaction.CategoryId, connection),
+                persistenceTransaction.Memo,
+                persistenceTransaction.Sum,
+                persistenceTransaction.Cleared == 1L);
+        };
     }
 }

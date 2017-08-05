@@ -2,11 +2,16 @@
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    internal interface IParentTransactionViewModel : IParentTransIncViewModel {}
+    public interface IParentTransactionViewModel : IParentTransIncViewModel
+    {
+        ReadOnlyReactiveCollection<ISubTransactionViewModel> SubTransactions { get; }
+    }
 
     /// <summary>
     /// The ViewModel of the Model ParentTransaction.
@@ -18,11 +23,18 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Initializes a ParentTransactionViewModel.
         /// </summary>
-        /// <param name="transInc">A ParentTransaction Model.</param>
+        /// <param name="parentTransaction">A ParentTransaction Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public ParentTransactionViewModel(IParentTransaction transInc, IBffOrm orm) : base(transInc, orm)
+        public ParentTransactionViewModel(
+            IParentTransaction parentTransaction,
+            IBffOrm orm,
+            SubTransactionViewModelService subTransactionViewModelService) : base(parentTransaction, orm)
         {
-            _parentTransaction = transInc;
+            _parentTransaction = parentTransaction;
+
+            SubTransactions =
+                _parentTransaction.SubTransactions.ToReadOnlyReactiveCollection(subTransactionViewModelService
+                    .GetViewModel);
         }
 
         #region Overrides of ParentTransIncViewModel<SubTransaction>
@@ -34,7 +46,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>A new ViewModel for a SubElement.</returns>
         protected override ISubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement)
         {
-            return new SubTransactionViewModel(subElement as ISubTransaction, this, Orm);
+            return new SubTransactionViewModel(
+                subElement as ISubTransaction,
+                Orm, 
+                Orm.CommonPropertyProvider.CategoryViewModelService, 
+                Orm.ParentTransactionViewModelService);
         }
 
         /// <summary>
@@ -52,5 +68,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         }
 
         #endregion
+
+        public ReadOnlyReactiveCollection<ISubTransactionViewModel> SubTransactions { get; }
     }
 }

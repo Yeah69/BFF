@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Transactions;
@@ -58,7 +59,7 @@ namespace BFF.DB
         
         public IProvideConnection Create()
         {
-            using(TransactionScope transactionScope = new TransactionScope())
+            using(TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
             using(DbConnection newConnection = ProvideConnection.Connection)
             {
                 newConnection.Open();
@@ -106,7 +107,7 @@ namespace BFF.DB
                 CategoryRepository.Add(current.Category as Category, connection);
                 foreach (IHaveCategory currentTitAssignment in current.TitAssignments)
                 {
-                    currentTitAssignment.CategoryId = current.Category.Id;
+                    currentTitAssignment.Category = current.Category;
                 }
                 foreach (CategoryImportWrapper categoryImportWrapper in current.Categories)
                 {
@@ -119,7 +120,7 @@ namespace BFF.DB
                 PayeeRepository.Add(payee as Payee, connection);
                 foreach (ITransIncBase transIncBase in importAssignments.PayeeToTransIncBase[payee])
                 {
-                    transIncBase.PayeeId = payee.Id;
+                    transIncBase.Payee = payee;
                 }
             }
             foreach (IAccount account in importLists.Accounts)
@@ -127,15 +128,15 @@ namespace BFF.DB
                 AccountRepository.Add(account as Account, connection);
                 foreach (ITransIncBase transIncBase in importAssignments.AccountToTransIncBase[account])
                 {
-                    transIncBase.AccountId = account.Id;
+                    transIncBase.Account = account;
                 }
                 foreach (ITransfer transfer in importAssignments.FromAccountToTransfer[account])
                 {
-                    transfer.FromAccountId = account.Id;
+                    transfer.FromAccount = account;
                 }
                 foreach (ITransfer transfer in importAssignments.ToAccountToTransfer[account])
                 {
-                    transfer.ToAccountId = account.Id;
+                    transfer.ToAccount = account;
                 }
             }
             foreach (ITransaction transaction in importLists.Transactions)
@@ -145,7 +146,7 @@ namespace BFF.DB
                 ParentTransactionRepository.Add(parentTransaction as ParentTransaction, connection);
                 foreach (ISubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
                 {
-                    subTransaction.ParentId = parentTransaction.Id;
+                    subTransaction.Parent = parentTransaction;
                 }
             }
             foreach (ISubTransaction subTransaction in importLists.SubTransactions) 
@@ -157,7 +158,7 @@ namespace BFF.DB
                 ParentIncomeRepository.Add(parentIncome as ParentIncome, connection);
                 foreach (ISubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
                 {
-                    subIncome.ParentId = parentIncome.Id;
+                    subIncome.Parent = parentIncome;
                 }
             }
             foreach (ISubIncome subIncome in importLists.SubIncomes) 

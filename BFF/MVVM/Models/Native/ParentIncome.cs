@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface IParentIncome : IParentTransInc {}
+    public interface IParentIncome : IParentTransInc
+    {
+        ObservableCollection<ISubIncome> SubIncomes { get; }
+    }
 
     /// <summary>
     /// An Income, which is split into several SubIncomes
@@ -19,30 +25,25 @@ namespace BFF.MVVM.Models.Native
         /// <param name="payee">To whom was payeed or who payeed</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public ParentIncome(IRepository<ParentIncome> repository,
-                            DateTime date, 
-                            IAccount account = null, 
-                            IPayee payee = null, 
-                            string memo = null, 
-                            bool? cleared = null)
-            : base(repository, date, account, payee, memo, cleared) {}
+        public ParentIncome(
+            IRepository<ParentIncome> repository,
+            IEnumerable<ISubIncome> subIncomes,
+            long id,
+            DateTime date,
+            IAccount account = null,
+            IPayee payee = null,
+            string memo = null,
+            bool? cleared = null)
+            : base(repository, id, date, account, payee, memo, cleared)
+        {
+            SubIncomes = new ObservableCollection<ISubIncome>(subIncomes);
+            foreach (var subTransaction in SubIncomes)
+            {
+                subTransaction.Parent = this;
+            }
+            SubIncomes.ObserveAddChanged().Subscribe(st => st.Parent = this);
+        }
 
-        /// <summary>
-        /// Safe ORM-constructor
-        /// </summary>
-        /// <param name="id">This objects Id</param>
-        /// <param name="accountId">Id of Account</param>
-        /// <param name="payeeId">Id of Payee</param>
-        /// <param name="date">Marks when the Tit happened</param>
-        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public ParentIncome(IRepository<ParentIncome> repository, 
-                            long id, 
-                            long accountId, 
-                            DateTime date, 
-                            long payeeId, 
-                            string memo, 
-                            bool cleared)
-            : base(repository, id, accountId, date, payeeId, memo, cleared) { }
+        public ObservableCollection<ISubIncome> SubIncomes { get; }
     }
 }

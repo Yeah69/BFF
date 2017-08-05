@@ -21,7 +21,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The Parent
         /// </summary>
-        ReactiveProperty<ICategoryViewModel> Parent { get; }
+        IReactiveProperty<ICategoryViewModel> Parent { get; }
 
         string FullName { get; }
         string GetIndent();
@@ -37,7 +37,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The Parent
         /// </summary>
-        public ReactiveProperty<ICategoryViewModel> Parent { get; }
+        public IReactiveProperty<ICategoryViewModel> Parent { get; }
 
         private ICategoryViewModel _previousParent;
 
@@ -81,8 +81,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             Parent = category.ToReactivePropertyAsSynchronized(
                                  c => c.Parent, 
-                                 c => service.GetViewModel(c as Category) as ICategoryViewModel, 
-                                 cvm => service.GetModel(cvm as CategoryViewModel))
+                                 service.GetViewModel, 
+                                 service.GetModel)
                              .AddTo(CompositeDisposable);
             
             Parent.Subscribe(cvm =>

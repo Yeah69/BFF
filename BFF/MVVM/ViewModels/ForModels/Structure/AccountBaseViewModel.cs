@@ -8,6 +8,7 @@ using AlphaChiTech.Virtualization;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.Properties;
+using MuVaViMo;
 using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
@@ -17,7 +18,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        ReactiveProperty<long> StartingBalance { get; }
+        IReactiveProperty<long> StartingBalance { get; }
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
@@ -82,7 +83,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        public abstract ReactiveProperty<long> StartingBalance { get; }
+        public abstract IReactiveProperty<long> StartingBalance { get; }
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
@@ -102,7 +103,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All available Accounts.
         /// </summary>
-        public ObservableCollection<Account> AllAccounts => CommonPropertyProvider.Accounts;
+        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
 
         /// <summary>
         /// Creates a new Transaction.
@@ -225,11 +226,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     parentIncomeViewModel.NewSubElements.Clear();
                 }
                 else if (tit is ITransIncViewModel transIncViewModel)
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transIncViewModel.Account.Id));
+                    accountViewModels.Add(transIncViewModel.Account.Value);
                 else if (tit is ITransferViewModel transferViewModel)
                 {
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transferViewModel.FromAccount.Id));
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transferViewModel.ToAccount.Id));
+                    accountViewModels.Add(transferViewModel.FromAccount.Value);
+                    accountViewModels.Add(transferViewModel.ToAccount.Value);
                 }
             }
             

@@ -21,39 +21,19 @@ namespace BFF.MVVM.Models.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public Income(IRepository<Income> repository, 
-                      DateTime date, 
-                      IAccount account = null, 
-                      IPayee payee = null,
-                      ICategory category = null, 
-                      string memo = null, 
-                      long sum = 0L, 
-                      bool? cleared = null)
-            : base(repository, date, account, payee, category, memo, sum, cleared)
+        public Income(
+            IRepository<Income> repository, 
+            long id,
+            DateTime date, 
+            IAccount account = null, 
+            IPayee payee = null,
+            ICategory category = null, 
+            string memo = null, 
+            long sum = 0L, 
+            bool? cleared = null)
+            : base(repository, id, date, account, payee, category, memo, sum, cleared)
         {
             Date = date;
         }
-
-        /// <summary>
-        /// Safe ORM-constructor
-        /// </summary>
-        /// <param name="id">This objects Id</param>
-        /// <param name="accountId">Id of Account</param>
-        /// <param name="date">Marks when the Tit happened</param>
-        /// <param name="payeeId">Id of Payee</param>
-        /// <param name="categoryId">Id of Category</param>
-        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        /// <param name="sum">The amount of money, which was payeed or recieved</param>
-        /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public Income(IRepository<Income> repository, 
-                      long id, 
-                      long accountId, 
-                      DateTime date, 
-                      long payeeId, 
-                      long categoryId, 
-                      string memo,
-                      long sum, 
-                      bool cleared)
-            : base(repository, id, accountId, date, payeeId, categoryId, memo, sum, cleared) {}
     }
 }

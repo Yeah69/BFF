@@ -1,6 +1,8 @@
 ﻿using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -9,12 +11,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// A note, which a user can attach to each TIT as a reminder for himself.
         /// </summary>
-        string Memo { get; set; }
+        IReactiveProperty<string> Memo { get; }
 
         /// <summary>
         /// The amount of money of the exchange of the TIT.
         /// </summary>
-        long Sum { get; set; }
+        IReactiveProperty<long> Sum { get; }
 
         /// <summary>
         /// Each TIT can be deleted from the GUI.
@@ -28,27 +30,16 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class TitLikeViewModel : DataModelViewModel, ITitLikeViewModel
     {
-        private readonly ITitLike _titLike;
 
         /// <summary>
         /// A note, which a user can attach to each TIT as a reminder for himself.
         /// </summary>
-        public virtual string Memo
-        {
-            get => _titLike.Memo;
-            set
-            {
-                if(_titLike.Memo == value) return;
-                _titLike.Memo = value;
-                OnUpdate();
-                OnPropertyChanged();
-            }
-        }
+        public virtual IReactiveProperty<string> Memo { get; }
 
         /// <summary>
         /// The amount of money of the exchange of the TIT.
         /// </summary>
-        public abstract long Sum { get; set; } //todo see Memo
+        public abstract IReactiveProperty<long> Sum { get; } //todo see Memo
 
         /// <summary>
         /// Initializes a TitLikeViewModel.
@@ -57,7 +48,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="titLike">The model.</param>
         protected TitLikeViewModel(IBffOrm orm, ITitLike titLike) : base(orm, titLike)
         {
-            _titLike = titLike;
+            Memo = titLike.ToReactivePropertyAsSynchronized(tl => tl.Memo);
         }
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// This CommonProperty is used to categorize Tits
     /// </summary>
-    public class Category : CommonProperty<Category>, ICategory
+    public class Category : CommonProperty<ICategory>, ICategory
     {
         private ICategory _parent;
 
@@ -39,7 +39,7 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         /// <param name="name">Name of the Category</param>
         /// <param name="parentId"></param>
-        public Category(IRepository<Category> repository, long id, string name, ICategory parent) : base(repository, id, name)
+        public Category(IRepository<ICategory> repository, long id, string name, ICategory parent) : base(repository, id, name)
         {
             _parent = parent;
         }

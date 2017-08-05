@@ -3,6 +3,8 @@ using System.Linq;
 using BFF.DB.Dapper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.MVVM.Services;
+using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.DB.SQLite
 {
@@ -12,6 +14,14 @@ namespace BFF.DB.SQLite
         private readonly BffRepository _bffRepository;
         
         public ICommonPropertyProvider CommonPropertyProvider { get; }
+
+        public ParentTransactionViewModelService ParentTransactionViewModelService { get; }
+
+        public ParentIncomeViewModelService ParentIncomeViewModelService { get; }
+
+        public SubTransactionViewModelService SubTransactionViewModelService { get; }
+
+        public SubIncomeViewModelService SubIncomeViewModelService { get; }
 
         public BffRepository BffRepository => _bffRepository;
 
@@ -38,6 +48,17 @@ namespace BFF.DB.SQLite
             _bffRepository = new DapperBffRepository(provideConnection);
             
             CommonPropertyProvider = new CommonPropertyProvider(this, _bffRepository);
+
+            SubTransactionViewModelService = new SubTransactionViewModelService(
+                st => new SubTransactionViewModel(st, this, CommonPropertyProvider.CategoryViewModelService, ParentTransactionViewModelService));
+
+            SubIncomeViewModelService = new SubIncomeViewModelService(
+                si => new SubIncomeViewModel(si, this, CommonPropertyProvider.CategoryViewModelService, ParentIncomeViewModelService));
+
+            ParentTransactionViewModelService = new ParentTransactionViewModelService(
+                pt => new ParentTransactionViewModel(pt, this, SubTransactionViewModelService));
+            ParentIncomeViewModelService = new ParentIncomeViewModelService(
+                pi => new ParentIncomeViewModel(pi, this, SubIncomeViewModelService));
         }
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options

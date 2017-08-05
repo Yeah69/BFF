@@ -19,35 +19,38 @@ namespace BFF.DB.Dapper.ModelRepositories
             {nameof(Persistance.Account.StartingBalance)} INTEGER NOT NULL DEFAULT 0);";
     }
     
-    public class AccountComparer : Comparer<Domain.Account>
+    public class AccountComparer : Comparer<Domain.IAccount>
     {
-        public override int Compare(Domain.Account x, Domain.Account y)
+        public override int Compare(Domain.IAccount x, Domain.IAccount y)
         {
             return Comparer<string>.Default.Compare(x.Name, y.Name);
         }
     }
 
-    public class AccountRepository : ObservableRepositoryBase<Domain.Account, Persistance.Account>
+    public class AccountRepository : ObservableRepositoryBase<Domain.IAccount, Persistance.Account>
     {
         public AccountRepository(IProvideConnection provideConnection) : base(provideConnection, new AccountComparer())
         { }
 
-        public override Domain.Account Create() =>
+        public override Domain.IAccount Create() =>
             new Domain.Account(this);
 
-        protected override Converter<Domain.Account, Persistance.Account> ConvertToPersistance => domainAccount => 
+        protected override Converter<Domain.IAccount, Persistance.Account> ConvertToPersistance => domainAccount => 
             new Persistance.Account
             {
                 Id = domainAccount.Id,
                 Name = domainAccount.Name,
                 StartingBalance = domainAccount.StartingBalance
             };
-        
-        protected override Converter<Persistance.Account, Domain.Account> ConvertToDomain => persistanceAccount =>
-            new Domain.Account(this,
-                               persistanceAccount.Id,
-                               persistanceAccount.Name,
-                               persistanceAccount.StartingBalance);
+
+        protected override Converter<(Persistance.Account, DbConnection), Domain.IAccount> ConvertToDomain => tuple =>
+        {
+            (Persistance.Account persistenceAccount, _) = tuple;
+            return new Domain.Account(this,
+                persistenceAccount.Id,
+                persistenceAccount.Name,
+                persistenceAccount.StartingBalance);
+        };
         
         private string AllAccountsBalanceStatement =>
             $@"SELECT Total({nameof(Persistance.Transaction.Sum)}) FROM (

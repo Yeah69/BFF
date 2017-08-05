@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.MVVM.Services;
 
 namespace BFF.DB
 {
@@ -8,6 +9,10 @@ namespace BFF.DB
     {
         ICommonPropertyProvider CommonPropertyProvider { get; }
         BffRepository BffRepository { get; }
+        ParentTransactionViewModelService ParentTransactionViewModelService { get; }
+        ParentIncomeViewModelService ParentIncomeViewModelService { get; }
+        SubTransactionViewModelService SubTransactionViewModelService { get; }
+        SubIncomeViewModelService SubIncomeViewModelService { get; }
 
         long? GetAccountBalance(IAccount account);
         long? GetSummaryAccountBalance();

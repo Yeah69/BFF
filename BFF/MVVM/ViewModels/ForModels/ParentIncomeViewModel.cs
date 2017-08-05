@@ -2,11 +2,16 @@
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    internal interface IParentIncomeViewModel : IParentTransIncViewModel {}
+    public interface IParentIncomeViewModel : IParentTransIncViewModel
+    {
+        ReadOnlyReactiveCollection<ISubIncomeViewModel> SubIncomes { get; }
+    }
 
     /// <summary>
     /// The ViewModel of the Model ParentIncome.
@@ -20,9 +25,16 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="transInc">A ParentIncome Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public ParentIncomeViewModel(IParentIncome transInc, IBffOrm orm) : base(transInc, orm)
+        public ParentIncomeViewModel(
+            IParentIncome transInc,
+            IBffOrm orm,
+            SubIncomeViewModelService subIncomeViewModelService) : base(transInc, orm)
         {
             _parentIncome = transInc;
+
+            SubIncomes =
+                _parentIncome.SubIncomes.ToReadOnlyReactiveCollection(subIncomeViewModelService
+                    .GetViewModel);
         }
 
         #region Overrides of ParentTransIncViewModel<SubIncome>
@@ -34,7 +46,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>A new ViewModel for a SubElement.</returns>
         protected override ISubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement)
         {
-            return new SubIncomeViewModel(subElement as ISubIncome, this, Orm);
+            return new SubIncomeViewModel(
+                subElement as ISubIncome,
+                Orm,
+                Orm.CommonPropertyProvider.CategoryViewModelService,
+                Orm.ParentIncomeViewModelService);
         }
 
         /// <summary>
@@ -52,5 +68,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         }
 
         #endregion
+
+        public ReadOnlyReactiveCollection<ISubIncomeViewModel> SubIncomes { get; }
     }
 }

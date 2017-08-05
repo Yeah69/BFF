@@ -1,4 +1,5 @@
 using System;
+using System.Data.Common;
 using Domain = BFF.MVVM.Models.Native;
 using Persistance = BFF.DB.PersistanceModels;
 
@@ -21,29 +22,41 @@ namespace BFF.DB.Dapper.ModelRepositories
     
     public class SubTransactionRepository : SubTransIncRepository<Domain.SubTransaction, Persistance.SubTransaction>
     {
-        public SubTransactionRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        private readonly Func<long, DbConnection, Domain.IParentTransaction> _parentTransactionFetcher;
+        private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
+
+        public SubTransactionRepository(
+            IProvideConnection provideConnection,
+            Func<long, DbConnection, Domain.IParentTransaction> parentTransactionFetcher,
+            Func<long, DbConnection, Domain.ICategory> categoryFetcher) : base(provideConnection)
+        {
+            _parentTransactionFetcher = parentTransactionFetcher;
+            _categoryFetcher = categoryFetcher;
+        }
 
         public override Domain.SubTransaction Create() =>
-            new Domain.SubTransaction(this);
+            new Domain.SubTransaction(this, -1L, null, null, "", 0L);
         
         protected override Converter<Domain.SubTransaction, Persistance.SubTransaction> ConvertToPersistance => domainSubTransaction => 
             new Persistance.SubTransaction
             {
                 Id = domainSubTransaction.Id,
-                ParentId = domainSubTransaction.ParentId,
-                CategoryId = domainSubTransaction.CategoryId,
+                ParentId = domainSubTransaction.Parent.Id,
+                CategoryId = domainSubTransaction.Category.Id,
                 Memo = domainSubTransaction.Memo,
                 Sum = domainSubTransaction.Sum
             };
-        
-        protected override Converter<Persistance.SubTransaction, Domain.SubTransaction> ConvertToDomain => persistanceSubTransaction =>
-            new Domain.SubTransaction(this)
-            {
-                Id = persistanceSubTransaction.Id,
-                ParentId = persistanceSubTransaction.ParentId,
-                CategoryId = persistanceSubTransaction.CategoryId,
-                Memo = persistanceSubTransaction.Memo,
-                Sum = persistanceSubTransaction.Sum
-            };
+
+        protected override Converter<(Persistance.SubTransaction, DbConnection), Domain.SubTransaction> ConvertToDomain => tuple =>
+        {
+            (Persistance.SubTransaction persistenceSubTransaction, DbConnection connection) = tuple;
+            return new Domain.SubTransaction(
+                this,
+                persistenceSubTransaction.Id,
+                _parentTransactionFetcher(persistenceSubTransaction.ParentId, connection),
+                _categoryFetcher(persistenceSubTransaction.CategoryId, connection),
+                persistenceSubTransaction.Memo,
+                persistenceSubTransaction.Sum);
+        };
     }
 }

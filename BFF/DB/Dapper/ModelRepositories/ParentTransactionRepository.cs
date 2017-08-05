@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
 using Domain = BFF.MVVM.Models.Native;
 using Persistance = BFF.DB.PersistanceModels;
 
@@ -21,33 +24,49 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class ParentTransactionRepository : RepositoryBase<Domain.ParentTransaction, Persistance.ParentTransaction>
+    public class ParentTransactionRepository : CachingRepositoryBase<Domain.ParentTransaction, Persistance.ParentTransaction>
     {
-        public ParentTransactionRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
+        private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
+        private readonly Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> _subTransactionsFetcher;
+
+        public ParentTransactionRepository(
+            IProvideConnection provideConnection,
+            Func<long, DbConnection, Domain.IAccount> accountFetcher,
+            Func<long, DbConnection, Domain.IPayee> payeeFetcher,
+            Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> subTransactionsFetcher) : base(provideConnection)
+        {
+            _accountFetcher = accountFetcher;
+            _payeeFetcher = payeeFetcher;
+            _subTransactionsFetcher = subTransactionsFetcher;
+        }
 
         public override Domain.ParentTransaction Create() =>
-            new Domain.ParentTransaction(this, DateTime.MinValue);
+            new Domain.ParentTransaction(this, Enumerable.Empty<Domain.SubTransaction>(), -1L, DateTime.MinValue, null, null, "", false);
         
         protected override Converter<Domain.ParentTransaction, Persistance.ParentTransaction> ConvertToPersistance => domainParentTransaction => 
             new Persistance.ParentTransaction
             {
                 Id = domainParentTransaction.Id,
-                AccountId = domainParentTransaction.AccountId,
-                PayeeId = domainParentTransaction.PayeeId,
+                AccountId = domainParentTransaction.Account.Id,
+                PayeeId = domainParentTransaction.Payee.Id,
                 Date = domainParentTransaction.Date,
                 Memo = domainParentTransaction.Memo,
                 Cleared = domainParentTransaction.Cleared ? 1L : 0L
             };
-        
-        protected override Converter<Persistance.ParentTransaction, Domain.ParentTransaction> ConvertToDomain => persistanceParentTransaction =>
-            new Domain.ParentTransaction(this, persistanceParentTransaction.Date)
-            {
-                Id = persistanceParentTransaction.Id,
-                AccountId = persistanceParentTransaction.AccountId,
-                PayeeId = persistanceParentTransaction.PayeeId,
-                Date = persistanceParentTransaction.Date,
-                Memo = persistanceParentTransaction.Memo,
-                Cleared = persistanceParentTransaction.Cleared == 1L
-            };
+
+        protected override Converter<(Persistance.ParentTransaction, DbConnection), Domain.ParentTransaction> ConvertToDomain => tuple =>
+        {
+            (Persistance.ParentTransaction persistenceParentTransaction, DbConnection connection) = tuple;
+            return new Domain.ParentTransaction(
+                this,
+                _subTransactionsFetcher(persistenceParentTransaction.Id, connection),
+                persistenceParentTransaction.Id,
+                persistenceParentTransaction.Date,
+                _accountFetcher(persistenceParentTransaction.AccountId, connection),
+                _payeeFetcher(persistenceParentTransaction.PayeeId, connection),
+                persistenceParentTransaction.Memo,
+                persistenceParentTransaction.Cleared == 1L);
+        };
     }
 }

@@ -11,7 +11,8 @@ namespace BFF.DB
     {
         AccountViewModelService AccountViewModelService { get; }
         CategoryViewModelService CategoryViewModelService { get; }
-        ObservableCollection<Account> Accounts { get; }
+        PayeeViewModelService PayeeViewModelService { get; }
+        ObservableCollection<IAccount> Accounts { get; }
         IObservableReadOnlyList<IAccountViewModel> AllAccountViewModels { get; }
         IObservableReadOnlyList<ICategoryViewModel> AllCategoryViewModels { get; }
         ObservableCollection<ICategoryViewModel> ParentCategoryViewModels { get;  }
@@ -30,8 +31,9 @@ namespace BFF.DB
         public AccountViewModelService AccountViewModelService { get; }
         
         public CategoryViewModelService CategoryViewModelService { get; }
+        public PayeeViewModelService PayeeViewModelService { get; }
 
-        public ObservableCollection<Account> Accounts { get;  }
+        public ObservableCollection<IAccount> Accounts { get;  }
 
         public IObservableReadOnlyList<IAccountViewModel> AllAccountViewModels { get; }
 
@@ -52,12 +54,11 @@ namespace BFF.DB
             AllAccountViewModels = AccountViewModelService.All;
             AccountViewModelService.SummaryAccountViewModel.RefreshStartingBalance();
             
-            AllPayeeViewModels = new TransformingObservableReadOnlyList<IPayee, IPayeeViewModel>
-                (new WrappingObservableReadOnlyList<Payee>(_bffRepository.PayeeRepository.All), 
-                 p => new PayeeViewModel(p, _orm));
-            
             CategoryViewModelService = new CategoryViewModelService(_bffRepository.CategoryRepository, _orm);
             AllCategoryViewModels = CategoryViewModelService.All;
+
+            PayeeViewModelService = new PayeeViewModelService(_bffRepository.PayeeRepository, _orm);
+            AllPayeeViewModels = PayeeViewModelService.All;
         }
 
         public IAccountViewModel GetAccountViewModel(long id)

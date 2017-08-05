@@ -37,7 +37,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// </summary>
         /// <param name="id">Identification number for the database</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        protected TitLike(IRepository<T> repository, long id = -1L, string memo = null) : base(repository, id)
+        protected TitLike(IRepository<T> repository, long id, string memo) : base(repository, id)
         {
             _memo = memo ?? _memo;
         }

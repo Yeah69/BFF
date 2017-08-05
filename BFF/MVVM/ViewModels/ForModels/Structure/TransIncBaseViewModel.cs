@@ -1,11 +1,12 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.MVVM.Services;
 using MuVaViMo;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -14,12 +15,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The assigned Account, where this Transaction/Income is registered.
         /// </summary>
-        IAccountViewModel Account { get; set; }
+        IReactiveProperty<IAccountViewModel> Account { get; }
 
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction/Income.
         /// </summary>
-        IPayeeViewModel Payee { get; set; }
+        IReactiveProperty<IPayeeViewModel> Payee { get; }
     }
 
     /// <summary>
@@ -27,53 +28,42 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class TransIncBaseViewModel : TitBaseViewModel, ITransIncBaseViewModel
     {
-        private readonly ITransIncBase _transIncBase;
+        private readonly PayeeViewModelService _payeeViewModelService;
+
+        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
 
         /// <summary>
         /// The assigned Account, where this Transaction/Income is registered.
         /// </summary>
-        public virtual IAccountViewModel Account
-        {
-            get => _transIncBase.AccountId == -1
-                ? null
-                : CommonPropertyProvider?.GetAccountViewModel(_transIncBase.AccountId);
-            set
-            {
-                if (value == null || value.Id == _transIncBase.AccountId) return;
-                IAccountViewModel temp = Account;
-                _transIncBase.AccountId = value.Id;
-                OnUpdate();
-                if (temp != null) Messenger.Default.Send(AccountMessage.Refresh, temp);
-                Messenger.Default.Send(AccountMessage.Refresh, value);
-                OnPropertyChanged();
-            }
-        }
+        public virtual IReactiveProperty<IAccountViewModel> Account { get; }
 
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction/Income.
         /// </summary>
-        public virtual IPayeeViewModel Payee
-        {
-            get => _transIncBase.PayeeId == -1
-                ? null
-                : CommonPropertyProvider?.GetPayeeViewModel(_transIncBase.PayeeId);
-            set
-            {
-                if (value == null || value.Id == _transIncBase.PayeeId) return;
-                _transIncBase.PayeeId = value.Id;
-                OnUpdate();
-                OnPropertyChanged();
-            }
-        }
+        public virtual IReactiveProperty<IPayeeViewModel> Payee { get; }
 
         /// <summary>
         /// Initializes a TransIncBaseViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
         /// <param name="transIncBase">The model.</param>
-        protected TransIncBaseViewModel(IBffOrm orm, ITransIncBase transIncBase) : base(orm, transIncBase)
+        protected TransIncBaseViewModel(
+            IBffOrm orm, 
+            ITransIncBase transIncBase, 
+            AccountViewModelService accountViewModelService,
+            PayeeViewModelService payeeViewModelService) : base(orm, transIncBase)
         {
-            _transIncBase = transIncBase;
+            _payeeViewModelService = payeeViewModelService;
+
+            Account = transIncBase.ToReactivePropertyAsSynchronized(
+                tib => tib.Account,
+                accountViewModelService.GetViewModel, 
+                accountViewModelService.GetModel);
+
+            Payee = transIncBase.ToReactivePropertyAsSynchronized(
+                tib => tib.Payee,
+                payeeViewModelService.GetViewModel,
+                payeeViewModelService.GetModel);
         }
 
         #region Payee Editing
@@ -88,11 +78,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public ICommand AddPayeeCommand => new RelayCommand(obj =>
         {
-            Payee newPayee = Orm.BffRepository.PayeeRepository.Create();
+            IPayee newPayee = Orm.BffRepository.PayeeRepository.Create();
             newPayee.Name = PayeeText.Trim();
             newPayee.Insert();
             OnPropertyChanged(nameof(AllPayees));
-            Payee = CommonPropertyProvider?.GetPayeeViewModel(newPayee.Id);
+            Payee.Value = _payeeViewModelService.GetViewModel(newPayee);
         }, obj =>
         {
             string trimmedPayeeText = PayeeText?.Trim();

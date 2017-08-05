@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Data.Common;
 using Persistance = BFF.DB.PersistanceModels;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -31,13 +33,24 @@ namespace BFF.DB.Dapper.ModelRepositories
         private readonly IRepository<Domain.Transfer> _transferRepository;
         private readonly IRepository<Domain.ParentTransaction> _parentTransactionRepository;
         private readonly IRepository<Domain.ParentIncome> _parentIncomeRepository;
+        private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
+        private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
+        private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
+        private readonly Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> _subTransactionsFetcher;
+        private readonly Func<long, DbConnection, IEnumerable<Domain.ISubIncome>> _subIncomesFetcher;
 
-        public TitRepository(IProvideConnection provideConnection, 
-                             IRepository<Domain.Transaction> transactionRepository, 
-                             IRepository<Domain.Income> incomeRepository, 
-                             IRepository<Domain.Transfer> transferRepository, 
-                             IRepository<Domain.ParentTransaction> parentTransactionRepository,
-                             IRepository<Domain.ParentIncome> parentIncomeRepository) 
+        public TitRepository(
+            IProvideConnection provideConnection, 
+            IRepository<Domain.Transaction> transactionRepository, 
+            IRepository<Domain.Income> incomeRepository, 
+            IRepository<Domain.Transfer> transferRepository, 
+            IRepository<Domain.ParentTransaction> parentTransactionRepository,
+            IRepository<Domain.ParentIncome> parentIncomeRepository,
+            Func<long, DbConnection, Domain.IAccount> accountFetcher,
+            Func<long, DbConnection, Domain.ICategory> categoryFetcher,
+            Func<long, DbConnection, Domain.IPayee> payeeFetcher,
+            Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> subTransactionsFetcher,
+            Func<long, DbConnection, IEnumerable<Domain.ISubIncome>> subIncomesFetcher)
             : base(provideConnection)
         {
             _transactionRepository = transactionRepository;
@@ -45,37 +58,79 @@ namespace BFF.DB.Dapper.ModelRepositories
             _transferRepository = transferRepository;
             _parentTransactionRepository = parentTransactionRepository;
             _parentIncomeRepository = parentIncomeRepository;
+            _accountFetcher = accountFetcher;
+            _categoryFetcher = categoryFetcher;
+            _payeeFetcher = payeeFetcher;
+            _subIncomesFetcher = subIncomesFetcher;
+            _subTransactionsFetcher = subTransactionsFetcher;
         }
 
-        protected override Converter<Persistance.TheTit, Domain.Structure.ITitBase> ConvertToDomain => theTit =>
+        protected override Converter<(Persistance.TheTit, DbConnection), Domain.Structure.ITitBase> ConvertToDomain => tuple =>
         {
+            (Persistance.TheTit theTit, DbConnection connection) = tuple;
             Enum.TryParse(theTit.Type, true, out Domain.Structure.TitType type);
             Domain.Structure.ITitBase ret;
             switch(type)
             {
                 case Domain.Structure.TitType.Transaction:
-                    ret = new Domain.Transaction(_transactionRepository, theTit.Id, theTit.AccountId, theTit.Date, 
-                                                 theTit.PayeeId, theTit.CategoryId, theTit.Memo, theTit.Sum, 
-                                                 theTit.Cleared == 1L);
+                    ret = new Domain.Transaction(
+                        _transactionRepository, 
+                        theTit.Id,
+                        theTit.Date,
+                        _accountFetcher(theTit.AccountId, connection),
+                        _payeeFetcher(theTit.PayeeId, connection),
+                        _categoryFetcher(theTit.CategoryId, connection), 
+                        theTit.Memo, 
+                        theTit.Sum,
+                        theTit.Cleared == 1L);
                     break;
                 case Domain.Structure.TitType.Income:
-                    ret = new Domain.Income(_incomeRepository, theTit.Id, theTit.AccountId, theTit.Date, theTit.PayeeId,
-                                            theTit.CategoryId, theTit.Memo, theTit.Sum, theTit.Cleared == 1L);
+                    ret = new Domain.Income(
+                        _incomeRepository, 
+                        theTit.Id, 
+                        theTit.Date,
+                        _accountFetcher(theTit.AccountId, connection),
+                        _payeeFetcher(theTit.PayeeId, connection),
+                        _categoryFetcher(theTit.CategoryId, connection),
+                        theTit.Memo,
+                        theTit.Sum, 
+                        theTit.Cleared == 1L);
                     break;
                 case Domain.Structure.TitType.Transfer:
-                    ret = new Domain.Transfer(_transferRepository, theTit.Id, theTit.PayeeId, theTit.CategoryId, 
-                                              theTit.Date, theTit.Memo, theTit.Sum, theTit.Cleared == 1L);
+                    ret = new Domain.Transfer(
+                        _transferRepository,
+                        theTit.Id,
+                        theTit.Date,
+                        _accountFetcher(theTit.PayeeId, connection),
+                        _accountFetcher(theTit.CategoryId, connection), 
+                        theTit.Memo,
+                        theTit.Sum, 
+                        theTit.Cleared == 1L);
                     break;
                 case Domain.Structure.TitType.ParentTransaction:
-                    ret = new Domain.ParentTransaction(_parentTransactionRepository, theTit.Id, theTit.AccountId,
-                                                       theTit.Date, theTit.PayeeId, theTit.Memo, theTit.Cleared == 1L);
+                    ret = new Domain.ParentTransaction(
+                        _parentTransactionRepository,
+                        _subTransactionsFetcher(theTit.Id, connection), 
+                        theTit.Id,
+                        theTit.Date,
+                        _accountFetcher(theTit.AccountId, connection),
+                        _payeeFetcher(theTit.PayeeId, connection),
+                        theTit.Memo, 
+                        theTit.Cleared == 1L);
                     break;
                 case Domain.Structure.TitType.ParentIncome:
-                    ret = new Domain.ParentIncome(_parentIncomeRepository, theTit.Id, theTit.AccountId, theTit.Date, 
-                                                  theTit.PayeeId, theTit.Memo, theTit.Cleared == 1L);
+                    ret = new Domain.ParentIncome(
+                        _parentIncomeRepository,
+                        _subIncomesFetcher(theTit.Id, connection),
+                        theTit.Id,
+                        theTit.Date,
+                        _accountFetcher(theTit.AccountId, connection),
+                        _payeeFetcher(theTit.PayeeId, connection),
+                        theTit.Memo,
+                        theTit.Cleared == 1L);
                     break;
                 default:
-                    ret = new Domain.Transaction(_transactionRepository, DateTime.Today)
+                    ret = new Domain.Transaction(_transactionRepository, -1L, DateTime.Today)
                         {Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR"};
                     break;
             }

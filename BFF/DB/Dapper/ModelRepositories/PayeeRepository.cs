@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.SqlClient;
-using System.Linq;
+using System.Data.Common;
 using Domain = BFF.MVVM.Models.Native;
 using Persistance = BFF.DB.PersistanceModels;
 
@@ -19,29 +17,32 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class PayeeComparer : Comparer<Domain.Payee>
+    public class PayeeComparer : Comparer<Domain.IPayee>
     {
-        public override int Compare(Domain.Payee x, Domain.Payee y)
+        public override int Compare(Domain.IPayee x, Domain.IPayee y)
         {
             return Comparer<string>.Default.Compare(x.Name, y.Name);
         }
     }
     
-    public class PayeeRepository : ObservableRepositoryBase<Domain.Payee, Persistance.Payee>
+    public class PayeeRepository : ObservableRepositoryBase<Domain.IPayee, Persistance.Payee>
     {
         public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection, new PayeeComparer()) {}
 
-        public override Domain.Payee Create() =>
+        public override Domain.IPayee Create() =>
             new Domain.Payee(this);
         
-        protected override Converter<Domain.Payee, Persistance.Payee> ConvertToPersistance => domainPayee => 
+        protected override Converter<Domain.IPayee, Persistance.Payee> ConvertToPersistance => domainPayee => 
             new Persistance.Payee
             {
                 Id = domainPayee.Id,
                 Name = domainPayee.Name
             };
 
-        protected override Converter<Persistance.Payee, Domain.Payee> ConvertToDomain => persistancePayee =>
-            new Domain.Payee(this, persistancePayee.Id, persistancePayee.Name);
+        protected override Converter<(Persistance.Payee, DbConnection), Domain.IPayee> ConvertToDomain => tuple =>
+        {
+            (Persistance.Payee persistencePayee, _) = tuple;
+            return new Domain.Payee(this, persistencePayee.Id, persistencePayee.Name);
+        };
     }
 }

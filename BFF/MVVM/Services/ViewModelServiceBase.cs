@@ -27,26 +27,26 @@ namespace BFF.MVVM.Services
 
         protected abstract TViewModel Create(TDomain model);
 
-        protected TViewModel AddToDictionaries(TDomain category)
+        protected TViewModel AddToDictionaries(TDomain model)
         {
             TViewModel categoryViewModel;
-            if(!_modelToViewModel.ContainsKey(category))
+            if(!_modelToViewModel.ContainsKey(model))
             {
-                categoryViewModel = Create(category);
-                _modelToViewModel.Add(category, categoryViewModel);
+                categoryViewModel = Create(model);
+                _modelToViewModel.Add(model, categoryViewModel);
             }
             else
-                categoryViewModel = _modelToViewModel[category];
+                categoryViewModel = _modelToViewModel[model];
             if(!_viewModelToModel.ContainsKey(categoryViewModel))
-                _viewModelToModel.Add(categoryViewModel, category);
+                _viewModelToModel.Add(categoryViewModel, model);
             return categoryViewModel;
         }
 
-        public TViewModel GetViewModel(TDomain category)
+        public TViewModel GetViewModel(TDomain model)
         {
-            if(category == null) return null;
-            if(_modelToViewModel.ContainsKey(category))
-                return _modelToViewModel[category];
+            if(model == null) return null;
+            if(_modelToViewModel.ContainsKey(model))
+                return _modelToViewModel[model];
 
             return null;
         }
@@ -54,18 +54,18 @@ namespace BFF.MVVM.Services
         public TViewModel GetViewModel(long id)
         {
             if(id < 1) return null;
-            TDomain category = _viewModelToModel.Values.SingleOrDefault(c => c.Id == id);
-            if(category != null && _modelToViewModel.ContainsKey(category))
-                return _modelToViewModel[category];
+            TDomain model = _viewModelToModel.Values.SingleOrDefault(c => c.Id == id);
+            if(model != null && _modelToViewModel.ContainsKey(model))
+                return _modelToViewModel[model];
 
             return null;
         }
 
-        public TDomain GetModel(TViewModel categoryViewModel)
+        public TDomain GetModel(TViewModel viewModel)
         {
-            if(categoryViewModel == null) return null;
-            if(_viewModelToModel.ContainsKey(categoryViewModel))
-                return _viewModelToModel[categoryViewModel];
+            if(viewModel == null) return null;
+            if(_viewModelToModel.ContainsKey(viewModel))
+                return _viewModelToModel[viewModel];
 
             return null;
         }

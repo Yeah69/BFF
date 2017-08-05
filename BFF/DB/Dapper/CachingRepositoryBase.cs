@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using Dapper.Contrib.Extensions;
 using NLog;
 using Persistence = BFF.DB.PersistanceModels;
@@ -52,7 +51,7 @@ namespace BFF.DB.Dapper
             foreach(TPersistence poco in pocos)
             {
                 if(!_cache.ContainsKey(poco.Id))
-                    _cache.Add(poco.Id, ConvertToDomain(poco));
+                    _cache.Add(poco.Id, ConvertToDomain( (poco, connection) ));
                 yield return _cache[poco.Id];
             }
             Logger.Debug("Finished converting all POCOs of type {0}", typeof(TPersistence).Name);

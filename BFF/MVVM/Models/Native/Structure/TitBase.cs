@@ -75,9 +75,9 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         protected TitBase(IRepository<T> repository, 
                           DateTime date, 
-                          long id = -1L, 
-                          string memo = null, 
-                          bool? cleared = null) : base(repository, id, memo)
+                          long id, 
+                          string memo, 
+                          bool? cleared) : base(repository, id, memo)
         {
             _date = date;
             _cleared = cleared ?? _cleared;

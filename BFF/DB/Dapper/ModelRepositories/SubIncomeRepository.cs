@@ -1,4 +1,5 @@
 using System;
+using System.Data.Common;
 using Domain = BFF.MVVM.Models.Native;
 using Persistance = BFF.DB.PersistanceModels;
 
@@ -21,29 +22,41 @@ namespace BFF.DB.Dapper.ModelRepositories
     
     public class SubIncomeRepository : SubTransIncRepository<Domain.SubIncome, Persistance.SubIncome>
     {
-        public SubIncomeRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        private readonly Func<long, DbConnection, Domain.IParentIncome> _parentIncomeFetcher;
+        private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
+
+        public SubIncomeRepository(
+            IProvideConnection provideConnection,
+            Func<long, DbConnection, Domain.IParentIncome> parentIncomeFetcher,
+            Func<long, DbConnection, Domain.ICategory> categoryFetcher) : base(provideConnection)
+        {
+            _parentIncomeFetcher = parentIncomeFetcher;
+            _categoryFetcher = categoryFetcher;
+        }
 
         public override Domain.SubIncome Create() =>
-            new Domain.SubIncome(this);
+            new Domain.SubIncome(this, -1L, null, null, "", 0L);
         
         protected override Converter<Domain.SubIncome, Persistance.SubIncome> ConvertToPersistance => domainSubIncome => 
             new Persistance.SubIncome
             {
                 Id = domainSubIncome.Id,
-                ParentId = domainSubIncome.ParentId,
-                CategoryId = domainSubIncome.CategoryId,
+                ParentId = domainSubIncome.Parent.Id,
+                CategoryId = domainSubIncome.Category.Id,
                 Memo = domainSubIncome.Memo,
                 Sum = domainSubIncome.Sum
             };
-        
-        protected override Converter<Persistance.SubIncome, Domain.SubIncome> ConvertToDomain => persistanceSubIncome =>
-            new Domain.SubIncome(this)
-            {
-                Id = persistanceSubIncome.Id,
-                ParentId = persistanceSubIncome.ParentId,
-                CategoryId = persistanceSubIncome.CategoryId,
-                Memo = persistanceSubIncome.Memo,
-                Sum = persistanceSubIncome.Sum
-            };
+
+        protected override Converter<(Persistance.SubIncome, DbConnection), Domain.SubIncome> ConvertToDomain => tuple =>
+        {
+            (Persistance.SubIncome persistenceSubIncome, DbConnection connection) = tuple;
+            return new Domain.SubIncome(
+                this,
+                persistenceSubIncome.Id,
+                _parentIncomeFetcher(persistenceSubIncome.ParentId, connection),
+                _categoryFetcher(persistenceSubIncome.CategoryId, connection),
+                persistenceSubIncome.Memo,
+                persistenceSubIncome.Sum);
+        };
     }
 }

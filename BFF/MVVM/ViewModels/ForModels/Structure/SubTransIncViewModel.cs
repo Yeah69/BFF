@@ -4,6 +4,10 @@ using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.MVVM.Services;
+using MuVaViMo;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -12,9 +16,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Each SubTransaction or SubIncome can be budgeted to a category.
         /// </summary>
-        ICategoryViewModel Category { get; set; }
+        IReactiveProperty<ICategoryViewModel> Category { get; }
 
-        long ParentId { get; set; }
+        IReadOnlyReactiveProperty<IParentTransIncViewModel> Parent { get; }
     }
 
     /// <summary>
@@ -22,68 +26,38 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class SubTransIncViewModel : TitLikeViewModel, ISubTransIncViewModel
     {
-        /// <summary>
-        /// Model of SubTransaction or SubIncome. Mostly they both act almost the same. Differences are handled in their concrete classes.
-        /// </summary>
-        private readonly ISubTransInc _subTransInc;
-        /// <summary>
-        /// The ViewModel of the Parent Model of the SubTransInc.
-        /// </summary>
-        private readonly IParentTransIncViewModel _parent;
+        private readonly CategoryViewModelService _categoryViewModelService;
 
         #region SubTransaction/SubIncome Properties
 
-        public long ParentId
-        {
-            get => _subTransInc.ParentId;
-            set => _subTransInc.ParentId = value;
-        }
+        public abstract IReadOnlyReactiveProperty<IParentTransIncViewModel> Parent { get; }
 
         /// <summary>
         /// Each SubTransaction or SubIncome can be budgeted to a category.
         /// </summary>
-        public ICategoryViewModel Category
-        {
-            get => _subTransInc.CategoryId == -1 ? null :
-                       CommonPropertyProvider.CategoryViewModelService.GetViewModel(_subTransInc.CategoryId);
-            set
-            {
-                if (value == null || value.Id == _subTransInc.CategoryId) return; //todo: make Category nullable?
-                _subTransInc.CategoryId = value.Id;
-                OnUpdate();
-                OnPropertyChanged();
-            }
-        }
+        public IReactiveProperty<ICategoryViewModel> Category { get; }
 
         /// <summary>
         /// The amount of money of the exchangement of the SubTransaction or SubIncome.
         /// </summary>
-        public override long Sum
-        {
-            get => _subTransInc.Sum;
-            set
-            {
-                if(_subTransInc.Sum == value) return;
-                _subTransInc.Sum = value;
-                OnUpdate();
-                _parent.RefreshSum();
-                OnPropertyChanged();
-            }
-        }
+        public override IReactiveProperty<long> Sum { get;  }
 
         #endregion
 
         /// <summary>
         /// Initializes a SubTransIncViewModel.
         /// </summary>
-        /// <param name="subTransInc">The associated Model of this ViewModel.</param>
-        /// <param name="parent">The ViewModel of the Parent Model of the SubTransInc.</param>
+        /// <param name="subIncome">The associated Model of this ViewModel.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        protected SubTransIncViewModel(ISubTransInc subTransInc, IParentTransIncViewModel parent, IBffOrm orm) : base(orm, subTransInc)
+        protected SubTransIncViewModel(ISubTransInc subIncome, IBffOrm orm, CategoryViewModelService categoryViewModelService) : base(orm, subIncome)
         {
-            _subTransInc = subTransInc;
-            _parent = parent;
-            _subTransInc.ParentId = _parent.Id;
+            _categoryViewModelService = categoryViewModelService;
+
+            Category = subIncome.ToReactivePropertyAsSynchronized(
+                sti => sti.Category,
+                categoryViewModelService.GetViewModel, 
+                categoryViewModelService.GetModel);
+            Sum = subIncome.ToReactivePropertyAsSynchronized(sti => sti.Sum);
         }
 
         /// <summary>
@@ -130,7 +104,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             newCategory.Parent = CommonPropertyProvider.CategoryViewModelService.GetModel(AddingCategoryParent as CategoryViewModel);
             newCategory.Insert();
             OnPropertyChanged(nameof(AllCategories));
-            Category = CommonPropertyProvider?.CategoryViewModelService.GetViewModel((Category) newCategory);
+            Category.Value = _categoryViewModelService.GetViewModel(newCategory);
         }, obj =>
         {
             return !string.IsNullOrWhiteSpace(CategoryText) &&
@@ -141,7 +115,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All currently available Categories.
         /// </summary>
-        public IEnumerable<ICategoryViewModel> AllCategories => CommonPropertyProvider?.AllCategoryViewModels;
+        public IObservableReadOnlyList<ICategoryViewModel> AllCategories => CommonPropertyProvider?.AllCategoryViewModels;
 
         #endregion
 
@@ -151,7 +125,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            _parent?.RemoveSubElement(this);
+            Parent.Value?.RemoveSubElement(this);
         });
     }
 }

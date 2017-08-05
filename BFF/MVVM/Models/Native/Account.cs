@@ -15,7 +15,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class Account : CommonProperty<Account>, IAccount
+    public class Account : CommonProperty<IAccount>, IAccount
     {
         private long _startingBalance;
 
@@ -40,7 +40,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="id">This objects Id</param>
         /// <param name="name">Name of the Account</param>
         /// <param name="startingBalance">Starting balance of the Account</param>
-        public Account(IRepository<Account> repository, 
+        public Account(IRepository<IAccount> repository, 
                        long id = -1L, 
                        string name = null, 
                        long startingBalance = 0L) 

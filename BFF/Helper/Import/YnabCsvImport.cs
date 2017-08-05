@@ -432,7 +432,7 @@ namespace BFF.Helper.Import
         private readonly IDictionary<Domain.IAccount, IList<Domain.ITransfer>> _toAccountAssignment =
             new Dictionary<Domain.IAccount, IList<Domain.ITransfer>>();
 
-        private void CreateAccount(string name, long startingBalance, IRepository<Domain.Account> accountRepository)
+        private void CreateAccount(string name, long startingBalance, IRepository<Domain.IAccount> accountRepository)
         {
             if(string.IsNullOrWhiteSpace(name)) return;
 
@@ -485,7 +485,7 @@ namespace BFF.Helper.Import
             new Dictionary<Domain.IPayee, IList<ITransIncBase>>();
 
         private void CreateAndOrAssignPayee(
-            string name, ITransIncBase titBase, IRepository<Domain.Payee> payeeRepository)
+            string name, ITransIncBase titBase, IRepository<Domain.IPayee> payeeRepository)
         {
             if(string.IsNullOrWhiteSpace(name))
                 return;
@@ -520,7 +520,7 @@ namespace BFF.Helper.Import
         private readonly IList<CategoryImportWrapper> _categoryImportWrappers = new List<CategoryImportWrapper>();
 
         private void AssignCategory(
-            string namePath, IHaveCategory titLike, IRepository<Domain.Category> categoryRepository)
+            string namePath, IHaveCategory titLike, IRepository<Domain.ICategory> categoryRepository)
         {
             string masterCategoryName = namePath.Split(':').First();
             string subCategoryName = namePath.Split(':').Last();
@@ -538,7 +538,7 @@ namespace BFF.Helper.Import
             if(subCategoryWrapper == null)
             {
                 Domain.ICategory category = categoryRepository.Create();
-                category.Name = masterCategoryName;
+                category.Name = subCategoryName;
                 subCategoryWrapper = new CategoryImportWrapper {Parent = masterCategoryWrapper, Category = category};
                 masterCategoryWrapper.Categories.Add(subCategoryWrapper);
             }

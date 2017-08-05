@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
@@ -16,12 +17,12 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Needed to mimic a TIT.
         /// </summary>
-        public string Memo { get; set; }
+        public IReactiveProperty<string> Memo { get;}
 
         /// <summary>
         /// Needed to mimic a TIT.
         /// </summary>
-        public long Sum { get; set; }
+        public IReactiveProperty<long> Sum { get; }
 
         public ICommand DeleteCommand { get; }
 
@@ -35,7 +36,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public TitLikeViewModelPlaceholder()
         {
-            Memo = "Content is loading…";
+            Memo = new ReactiveProperty<string>("Content is loading…");
+            Sum = new ReactiveProperty<long>(0L);
         }
 
         #region Overrides of TitLikeViewModel

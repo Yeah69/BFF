@@ -8,12 +8,12 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <summary>
         /// Id of Account
         /// </summary>
-        long AccountId { get; set; }
+        IAccount Account { get; set; }
 
         /// <summary>
         /// Id of Payee
         /// </summary>
-        long PayeeId { get; set; }
+        IPayee Payee { get; set; }
     }
 
     /// <summary>
@@ -21,19 +21,19 @@ namespace BFF.MVVM.Models.Native.Structure
     /// </summary>
     public abstract class TransIncBase<T> : TitBase<T>, ITransIncBase where T : class, ITransIncBase
     {
-        private long _accountId;
-        private long _payeeId;
+        private IAccount _account;
+        private IPayee _payee;
 
         /// <summary>
         /// Id of Account
         /// </summary>
-        public long AccountId
+        public IAccount Account
         {
-            get => _accountId;
+            get => _account;
             set
             {
-                if(_accountId == value) return;
-                _accountId = value;
+                if(_account == value) return;
+                _account = value;
                 Update();
                 OnPropertyChanged();
             }
@@ -42,13 +42,13 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <summary>
         /// Id of Payee
         /// </summary>
-        public long PayeeId
+        public IPayee Payee
         {
-            get => _payeeId;
+            get => _payee;
             set
             {
-                if(_payeeId == value) return;
-                _payeeId = value;
+                if(_payee == value) return;
+                _payee = value;
                 Update();
                 OnPropertyChanged();
             }
@@ -62,38 +62,17 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="payee">To whom was payeed or who payeed</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TransIncBase(IRepository<T> repository, 
+        protected TransIncBase(IRepository<T> repository,
+                               long id,
                                DateTime date,
                                IAccount account = null, 
                                IPayee payee = null, 
                                string memo = null, 
                                bool? cleared = null)
-            : base(repository, date, memo: memo, cleared: cleared)
-        {
-            _accountId = account?.Id ?? -1;
-            _payeeId = payee?.Id ?? -1;
-        }
-
-        /// <summary>
-        /// Safe ORM-constructor
-        /// </summary>
-        /// <param name="id">This objects Id</param>
-        /// <param name="accountId">Id of Account</param>
-        /// <param name="date">Marks when the Tit happened</param>
-        /// <param name="payeeId">Id of Payee</param>
-        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TransIncBase(IRepository<T> repository, 
-                               long id, 
-                               long accountId, 
-                               DateTime date, 
-                               long payeeId, 
-                               string memo, 
-                               bool cleared)
             : base(repository, date, id, memo, cleared)
         {
-            _accountId = accountId;
-            _payeeId = payeeId;
+            _account = account;
+            _payee = payee;
         }
     }
 }

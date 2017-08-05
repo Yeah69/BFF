@@ -4,14 +4,13 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface IBudgetEntry : IDataModel
+    public interface IBudgetEntry : IDataModel, IHaveCategory
     {
         DateTime Month { get; }
-        long CategoryId { get; }
         long Budget { get; set; }
     }
 
-    public class BudgetEntry : DataModel<BudgetEntry>, IBudgetEntry, IHaveCategory
+    public class BudgetEntry : DataModel<BudgetEntry>, IBudgetEntry
     {
         /// <summary>
         /// Initializes the object
@@ -19,11 +18,11 @@ namespace BFF.MVVM.Models.Native
         /// <param name="month">The month of the budget entry</param>
         /// <param name="category">Categorizes this</param>
         /// <param name="budget">The amount of money, which was budgeted in the set month</param>
-        public BudgetEntry(IRepository<BudgetEntry> repository, DateTime month, ICategory category = null, long budget = 0L)
-            : base(repository)
+        public BudgetEntry(IRepository<BudgetEntry> repository, long id, DateTime month, ICategory category = null, long budget = 0L)
+            : base(repository, id)
         {
             _month = month;
-            _categoryId = category?.Id ?? -1;
+            _category = category;
             _budget = budget;
         }
 
@@ -42,16 +41,16 @@ namespace BFF.MVVM.Models.Native
             }
         }
 
-        private long _categoryId;
+        private ICategory _category;
 
-        public long CategoryId
+        public ICategory Category
         {
-            get => _categoryId;
+            get => _category;
             set
             {
-                if(_categoryId == value) return;
+                if(_category == value) return;
 
-                _categoryId = value;
+                _category = value;
                 Update();
                 OnPropertyChanged();
             }

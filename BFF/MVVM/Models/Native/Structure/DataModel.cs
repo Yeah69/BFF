@@ -43,7 +43,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// Initializes the object
         /// </summary>
         /// <param name="id">Identification number for the database</param>
-        protected DataModel(IRepository<T> repository, long id = -1L)
+        protected DataModel(IRepository<T> repository, long id)
         {
             _repository = repository;
             if (Id == -1L || id > 0L) Id = id;

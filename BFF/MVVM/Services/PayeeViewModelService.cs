@@ -5,7 +5,7 @@ using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.MVVM.Services
 {
-    class PayeeViewModelService : ViewModelServiceBase<Payee, PayeeViewModel>
+    public class PayeeViewModelService : ViewModelServiceBase<IPayee, IPayeeViewModel>
     {
         private readonly PayeeRepository _repository;
         private readonly IBffOrm _orm;
@@ -16,9 +16,9 @@ namespace BFF.MVVM.Services
             _orm = orm;
         }
 
-        protected override PayeeViewModel Create(Payee model)
+        protected override IPayeeViewModel Create(IPayee model)
             => new PayeeViewModel(model, _orm);
-        public override PayeeViewModel GetNewNonInsertedViewModel()
+        public override IPayeeViewModel GetNewNonInsertedViewModel()
             => new PayeeViewModel(_repository.Create(), _orm);
     }
 }

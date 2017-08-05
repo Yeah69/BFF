@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AlphaChiTech.Virtualization;
 using BFF.MVVM.Models.Native;
@@ -41,19 +42,32 @@ namespace BFF.DB
                 switch (item)
                 {
                     case ITransfer transfer:
-                        vmItems.Add(new TransferViewModel(transfer, Orm));
+                        vmItems.Add(new TransferViewModel(transfer, Orm, Orm.CommonPropertyProvider.AccountViewModelService));
                         break;
                     case IParentTransaction parentTransaction:
-                        vmItems.Add(new ParentTransactionViewModel(parentTransaction, Orm));
+                        vmItems.Add(new ParentTransactionViewModel(parentTransaction, Orm, Orm.SubTransactionViewModelService));
                         break;
                     case IParentIncome parentIncome:
-                        vmItems.Add(new ParentIncomeViewModel(parentIncome, Orm));
+                        vmItems.Add(new ParentIncomeViewModel(
+                            parentIncome, 
+                            Orm,
+                            Orm.SubIncomeViewModelService));
                         break;
                     case ITransaction transaction:
-                        vmItems.Add(new TransactionViewModel(transaction, Orm));
+                        vmItems.Add(new TransactionViewModel(
+                            transaction,
+                            Orm, 
+                            Orm.CommonPropertyProvider.AccountViewModelService,
+                            Orm.CommonPropertyProvider.PayeeViewModelService,
+                            Orm.CommonPropertyProvider.CategoryViewModelService));
                         break;
                     case IIncome income:
-                        vmItems.Add(new IncomeViewModel(income, Orm));
+                        vmItems.Add(new IncomeViewModel(
+                            income,
+                            Orm,
+                            Orm.CommonPropertyProvider.AccountViewModelService,
+                            Orm.CommonPropertyProvider.PayeeViewModelService,
+                            Orm.CommonPropertyProvider.CategoryViewModelService));
                         break;
                     default:
                         throw new NotImplementedException();

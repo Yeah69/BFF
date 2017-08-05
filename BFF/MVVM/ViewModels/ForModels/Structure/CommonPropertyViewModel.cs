@@ -7,7 +7,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
     public interface ICommonPropertyViewModel : IDataModelViewModel
     {
-        ReactiveProperty<string> Name { get; }
+        IReactiveProperty<string> Name { get; }
     }
 
     public abstract class CommonPropertyViewModel : DataModelViewModel, ICommonPropertyViewModel
@@ -16,6 +16,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         {
             Name = commonProperty.ToReactivePropertyAsSynchronized(cp => cp.Name).AddTo(CompositeDisposable);
         }
-        public virtual ReactiveProperty<string> Name { get; }
+        public virtual IReactiveProperty<string> Name { get; }
     }
 }

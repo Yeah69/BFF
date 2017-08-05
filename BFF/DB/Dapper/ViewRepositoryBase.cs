@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Transactions;
 using BFF.DB.PersistanceModels;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper;
@@ -14,7 +13,7 @@ namespace BFF.DB.Dapper
         where TDomainBase : class, IDataModel
         where TPersistance : class, IPersistanceModel
     {
-        private IProvideConnection _provideConnection;
+        private readonly IProvideConnection _provideConnection;
         
         
         
@@ -27,10 +26,10 @@ namespace BFF.DB.Dapper
                                                         DbConnection connection = null)
         {
             string query = $"SELECT * FROM [{ViewName}] {GetSpecifyingPageSuffix(specifyingObject)} {GetOrderingPageSuffix(specifyingObject)} LIMIT {offset}, {pageSize};";
-            
+
             return ConnectionHelper.QueryOnExistingOrNewConnection(
-                c => c.Query<TPersistance>(query).Select(tt => ConvertToDomain(tt)), 
-                _provideConnection, 
+                c => c.Query<TPersistance>(query).Select(tt => ConvertToDomain((tt, c))),
+                _provideConnection,
                 connection);
         }
 
@@ -44,7 +43,7 @@ namespace BFF.DB.Dapper
                 connection).First();
         }
         
-        protected abstract Converter<TPersistance, TDomainBase> ConvertToDomain { get; }
+        protected abstract Converter<(TPersistance, DbConnection), TDomainBase> ConvertToDomain { get; }
         protected abstract string ViewName { get; }
         protected abstract string GetOrderingPageSuffix(TSpecifying specifyingObject);
         protected abstract string GetSpecifyingPageSuffix(TSpecifying specifyingObject);

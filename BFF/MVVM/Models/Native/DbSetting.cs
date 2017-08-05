@@ -73,7 +73,7 @@ namespace BFF.MVVM.Models.Native
             }
         }
 
-        public DbSetting(IRepository<DbSetting> repository) : base(repository)
+        public DbSetting(IRepository<DbSetting> repository, long id) : base(repository, id)
         {
             _currencyCulture = CultureInfo.GetCultureInfo("de-DE");
             _dateCulture = CultureInfo.GetCultureInfo("de-DE");

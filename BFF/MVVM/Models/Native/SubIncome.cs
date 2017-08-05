@@ -1,5 +1,4 @@
-﻿using System;
-using BFF.DB;
+﻿using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -17,11 +16,13 @@ namespace BFF.MVVM.Models.Native
         /// <param name="category">Category of the SubElement</param>
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        public SubIncome(IRepository<SubIncome> repository, 
-                         IParentIncome parent = null, 
-                         ICategory category = null, 
-                         string memo = null, 
-                         long sum = 0L) 
-            : base(repository, parent, category, memo, sum) {}
+        public SubIncome(
+            IRepository<SubIncome> repository,
+            long id,
+            IParentIncome parent = null, 
+            ICategory category = null, 
+            string memo = null, 
+            long sum = 0L) 
+            : base(repository, id, parent, category, memo, sum) {}
     }
 }

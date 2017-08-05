@@ -31,12 +31,12 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        public sealed override ReactiveProperty<long> StartingBalance { get; }
+        public sealed override IReactiveProperty<long> StartingBalance { get; }
 
         /// <summary>
         /// Name of the Account Model
         /// </summary>
-        public override ReactiveProperty<string> Name //todo Localization
+        public override IReactiveProperty<string> Name //todo Localization
             => new ReactiveProperty<string>("All Accounts");
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                         throw new NotImplementedException();
                 }
             });
-            //StartingBalance = new ReactiveProperty<long>(_startingBalanceSubject).AddTo(CompositeDisposable);
+
             StartingBalance = new ReactiveProperty<long>(
                 repository.All.ToObservable().Select(
                     a => repository.All.Sum(acc => acc.StartingBalance)))
@@ -125,7 +125,12 @@ namespace BFF.MVVM.ViewModels.ForModels
             transaction.Memo = "";
             transaction.Sum = 0L;
             transaction.Cleared = false;
-            NewTits.Add(new TransactionViewModel(transaction, Orm));
+            NewTits.Add(new TransactionViewModel(
+                transaction, 
+                Orm, 
+                Orm.CommonPropertyProvider.AccountViewModelService, 
+                Orm.CommonPropertyProvider.PayeeViewModelService, 
+                Orm.CommonPropertyProvider.CategoryViewModelService));
         });
 
         /// <summary>
@@ -138,7 +143,12 @@ namespace BFF.MVVM.ViewModels.ForModels
             income.Memo = "";
             income.Sum = 0L;
             income.Cleared = false;
-            NewTits.Add(new IncomeViewModel(income, Orm));
+            NewTits.Add(new IncomeViewModel(
+                income, 
+                Orm,
+                Orm.CommonPropertyProvider.AccountViewModelService,
+                Orm.CommonPropertyProvider.PayeeViewModelService,
+                Orm.CommonPropertyProvider.CategoryViewModelService));
         });
 
         /// <summary>
@@ -151,7 +161,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             transfer.Memo = "";
             transfer.Sum = 0L;
             transfer.Cleared = false;
-            NewTits.Add(new TransferViewModel(transfer, Orm));
+            NewTits.Add(new TransferViewModel(transfer, Orm, Orm.CommonPropertyProvider.AccountViewModelService));
         });
 
         /// <summary>
@@ -161,9 +171,13 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             ParentTransaction parentTransaction = Orm.BffRepository.ParentTransactionRepository.Create();
             parentTransaction.Date = DateTime.Today;
+            parentTransaction.Account = Account;
             parentTransaction.Memo = "";
             parentTransaction.Cleared = false;
-            NewTits.Add(new ParentTransactionViewModel(parentTransaction, Orm));
+            NewTits.Add(new ParentTransactionViewModel(
+                parentTransaction,
+                Orm,
+                Orm.SubTransactionViewModelService));
         });
 
         /// <summary>
@@ -173,10 +187,13 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             ParentIncome parentIncome = Orm.BffRepository.ParentIncomeRepository.Create();
             parentIncome.Date = DateTime.Today;
-            parentIncome.AccountId = Account.Id;
+            parentIncome.Account = Account;
             parentIncome.Memo = "";
             parentIncome.Cleared = false;
-            NewTits.Add(new ParentIncomeViewModel(parentIncome, Orm));
+            NewTits.Add(new ParentIncomeViewModel(
+                parentIncome, 
+                Orm, 
+                Orm.SubIncomeViewModelService));
         });
 
         /// <summary>

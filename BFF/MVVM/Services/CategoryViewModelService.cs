@@ -5,7 +5,7 @@ using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.MVVM.Services
 {
-    public class CategoryViewModelService : ViewModelServiceBase<Category, CategoryViewModel>
+    public class CategoryViewModelService : ViewModelServiceBase<ICategory, ICategoryViewModel>
     {
         private readonly CategoryRepository _repository;
         private readonly IBffOrm _orm;
@@ -16,9 +16,9 @@ namespace BFF.MVVM.Services
             _orm = orm;
         }
 
-        protected override CategoryViewModel Create(Category model) 
+        protected override ICategoryViewModel Create(ICategory model) 
             => new CategoryViewModel(model, _orm, this);
-        public override CategoryViewModel GetNewNonInsertedViewModel() 
+        public override ICategoryViewModel GetNewNonInsertedViewModel() 
             => new CategoryViewModel(_repository.Create(), _orm, this);
     }
 }

@@ -4,6 +4,10 @@ using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.MVVM.Services;
+using MuVaViMo;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -12,7 +16,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Each Transaction or Income can be budgeted to a category.
         /// </summary>
-        ICategoryViewModel Category { get; set; }
+        IReactiveProperty<ICategoryViewModel> Category { get; }
     }
 
     /// <summary>
@@ -25,40 +29,30 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         private readonly ITransInc _transInc;
 
+        private readonly CategoryViewModelService _categoryViewModelService;
+
         #region Transaction/Income Properties
 
         /// <summary>
         /// Each Transaction or Income can be budgeted to a category.
         /// </summary>
-        public ICategoryViewModel Category
-        {
-            get => _transInc.CategoryId == -1 
-                ? null 
-                : CommonPropertyProvider.CategoryViewModelService.GetViewModel(_transInc.CategoryId);
-            set
-            {
-                if(value == null || value.Id == _transInc.CategoryId) return; //todo: make Category nullable?
-                _transInc.CategoryId = value.Id;
-                OnUpdate();
-                OnPropertyChanged();
-            }
-        }
+        public IReactiveProperty<ICategoryViewModel> Category { get;  }
 
         /// <summary>
         /// The amount of money of the exchangement of the Transaction or Income.
         /// </summary>
-        public override long Sum
-        {
-            get => _transInc.Sum;
-            set
-            {
-                if(value == _transInc.Sum) return;
-                _transInc.Sum = value;
-                OnUpdate();
-                Messenger.Default.Send(AccountMessage.RefreshBalance, Account);
-                OnPropertyChanged();
-            }
-        }
+        public override IReactiveProperty<long> Sum { get; }
+        //{
+        //    get => _transInc.Sum;
+        //    set
+        //    {
+        //        if(value == _transInc.Sum) return;
+        //        _transInc.Sum = value;
+        //        OnUpdate();
+        //        Messenger.Default.Send(AccountMessage.RefreshBalance, Account);
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         #endregion
 
@@ -67,9 +61,23 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="transInc">The associated Model of this ViewModel.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        protected TransIncViewModel(ITransInc transInc, IBffOrm orm) : base(orm, transInc)
+        protected TransIncViewModel(
+            ITransInc transInc, 
+            IBffOrm orm, 
+            AccountViewModelService accountViewModelService,
+            PayeeViewModelService payeeViewModelService, 
+            CategoryViewModelService categoryViewModelService)
+            : base(orm, transInc, accountViewModelService, payeeViewModelService)
         {
             _transInc = transInc;
+            _categoryViewModelService = categoryViewModelService;
+
+            Category = transInc.ToReactivePropertyAsSynchronized(
+                ti => ti.Category, 
+                categoryViewModelService.GetViewModel, 
+                categoryViewModelService.GetModel);
+
+            Sum = transInc.ToReactivePropertyAsSynchronized(ti => ti.Sum);
         }
 
         /// <summary>
@@ -116,7 +124,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             newCategory.Parent = CommonPropertyProvider.CategoryViewModelService.GetModel(AddingCategoryParent as CategoryViewModel);
             newCategory.Insert();
             OnPropertyChanged(nameof(AllCategories));
-            Category = CommonPropertyProvider?.CategoryViewModelService.GetViewModel((Category) newCategory);
+            Category.Value = _categoryViewModelService.GetViewModel(newCategory);
         }, obj =>
         {
             return !string.IsNullOrWhiteSpace(CategoryText) && 
@@ -127,7 +135,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All currently available Categories.
         /// </summary>
-        public IEnumerable<ICategoryViewModel> AllCategories => CommonPropertyProvider?.AllCategoryViewModels;
+        public IObservableReadOnlyList<ICategoryViewModel> AllCategories => CommonPropertyProvider?.AllCategoryViewModels;
 
         #endregion
 

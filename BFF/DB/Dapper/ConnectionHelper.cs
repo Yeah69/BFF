@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Transactions;
 
 namespace BFF.DB.Dapper
@@ -12,7 +13,7 @@ namespace BFF.DB.Dapper
             if(connection != null) action(connection);
             else
             {
-                using(TransactionScope transactionScope = new TransactionScope())
+                using(TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
                 using(DbConnection newConnection = provideConnection.Connection)
                 {
                     newConnection.Open();
@@ -30,11 +31,11 @@ namespace BFF.DB.Dapper
             if(connection != null) return action(connection);
 
             IEnumerable<T> ret;
-            using(TransactionScope transactionScope = new TransactionScope())
+            using(TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
             using(DbConnection newConnection = provideConnection.Connection)
             {
                 newConnection.Open();
-                ret = action(newConnection);
+                ret = action(newConnection).ToList();
                 transactionScope.Complete();
             }
             return ret;

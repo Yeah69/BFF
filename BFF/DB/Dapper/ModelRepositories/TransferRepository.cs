@@ -1,4 +1,5 @@
 using System;
+using System.Data.Common;
 using Domain = BFF.MVVM.Models.Native;
 using Persistance = BFF.DB.PersistanceModels;
 
@@ -24,33 +25,42 @@ namespace BFF.DB.Dapper.ModelRepositories
     
     public class TransferRepository : RepositoryBase<Domain.Transfer, Persistance.Transfer>
     {
-        public TransferRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
+
+        public TransferRepository(
+            IProvideConnection provideConnection,
+            Func<long, DbConnection, Domain.IAccount> accountFetcher) : base(provideConnection)
+        {
+            _accountFetcher = accountFetcher;
+        }
 
         public override Domain.Transfer Create() =>
-            new Domain.Transfer(this, DateTime.MinValue);
+            new Domain.Transfer(this, -1L, DateTime.MinValue, null, null, "", 0L);
         
         protected override Converter<Domain.Transfer, Persistance.Transfer> ConvertToPersistance => domainTransfer => 
             new Persistance.Transfer
             {
                 Id = domainTransfer.Id,
-                FromAccountId = domainTransfer.FromAccountId,
-                ToAccountId = domainTransfer.ToAccountId,
+                FromAccountId = domainTransfer.FromAccount.Id,
+                ToAccountId = domainTransfer.ToAccount.Id,
                 Date = domainTransfer.Date,
                 Memo = domainTransfer.Memo,
                 Sum = domainTransfer.Sum,
                 Cleared = domainTransfer.Cleared ? 1L : 0L
             };
-        
-        protected override Converter<Persistance.Transfer, Domain.Transfer> ConvertToDomain => persistanceTransfer =>
-            new Domain.Transfer(this, persistanceTransfer.Date)
-            {
-                Id = persistanceTransfer.Id,
-                FromAccountId = persistanceTransfer.FromAccountId,
-                ToAccountId = persistanceTransfer.ToAccountId,
-                Date = persistanceTransfer.Date,
-                Memo = persistanceTransfer.Memo,
-                Sum = persistanceTransfer.Sum,
-                Cleared = persistanceTransfer.Cleared == 1L 
-            };
+
+        protected override Converter<(Persistance.Transfer, DbConnection), Domain.Transfer> ConvertToDomain => tuple =>
+        {
+            (Persistance.Transfer persistenceTransfer, DbConnection connection) = tuple;
+            return new Domain.Transfer(
+                this,
+                persistenceTransfer.Id,
+                persistenceTransfer.Date,
+                _accountFetcher(persistenceTransfer.FromAccountId, connection),
+                _accountFetcher(persistenceTransfer.ToAccountId, connection),
+                persistenceTransfer.Memo,
+                persistenceTransfer.Sum,
+                persistenceTransfer.Cleared == 1L);
+        };
     }
 }

@@ -7,7 +7,7 @@ using Domain = BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB.Dapper
 {
-    public abstract class SubTransIncRepository <TDomain, TPersistence> : RepositoryBase<TDomain, TPersistence> 
+    public abstract class SubTransIncRepository <TDomain, TPersistence> : CachingRepositoryBase<TDomain, TPersistence> 
         where TDomain : class, Domain.ISubTransInc 
         where TPersistence : class, Persistence.IPersistanceModel
     {
@@ -19,7 +19,7 @@ namespace BFF.DB.Dapper
         public IEnumerable<TDomain> GetChildrenOf(long parentId, DbConnection connection = null) => 
             ConnectionHelper.QueryOnExistingOrNewConnection(
                 c => c.Query<TPersistence>(ParentalQuery, new {ParentId = parentId})
-                      .Select(sti => ConvertToDomain(sti)),
+                      .Select(sti => ConvertToDomain( (sti, c) )),
                 ProvideConnection,
                 connection);
     }

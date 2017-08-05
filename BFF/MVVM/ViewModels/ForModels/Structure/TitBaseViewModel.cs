@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
-using MuVaViMo;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -11,14 +11,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// This timestamp marks the time point, when the TIT happened.
         /// </summary>
-        DateTime Date { get; set; }
+        IReactiveProperty<DateTime> Date { get; }
 
         /// <summary>
         /// Like the Memo the Cleared flag is an aid for the user.
         /// It can be used to mark TITs, which the user thinks is processed enough (True) or needs to be changed later (False).
         /// This maybe needed, if the user does not remember everything clearly and wants to finish the Tit later.
         /// </summary>
-        bool Cleared { get; set; }
+        IReactiveProperty<bool> Cleared { get; }
     }
 
     /// <summary>
@@ -27,39 +27,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class TitBaseViewModel : TitLikeViewModel, ITitBaseViewModel
     {
-        private readonly ITitBase _titBase;
-
         /// <summary>
         /// This timestamp marks the time point, when the TIT happened.
         /// </summary>
-        public virtual DateTime Date
-        {
-            get => _titBase.Date;
-            set
-            {
-                if(_titBase.Date == value) return;
-                _titBase.Date = value;
-                OnUpdate();
-                OnPropertyChanged();
-            }
-        }
+        public virtual IReactiveProperty<DateTime> Date { get; }
 
         /// <summary>
         /// Like the Memo the Cleared flag is an aid for the user.
         /// It can be used to mark TITs, which the user thinks is processed enough (True) or needs to be changed later (False).
         /// This maybe needed, if the user does not remember everything clearly and wants to finish the Tit later.
         /// </summary>
-        public virtual bool Cleared
-        {
-            get => _titBase.Cleared;
-            set
-            {
-                if(_titBase.Cleared == value) return;
-                _titBase.Cleared = value;
-                OnUpdate();
-                OnPropertyChanged();
-            }
-        }
+        public virtual IReactiveProperty<bool> Cleared { get; }
 
         /// <summary>
         /// Initializes a TitBaseViewModel.
@@ -68,16 +46,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="titBase">The model.</param>
         protected TitBaseViewModel(IBffOrm orm, ITitBase titBase) : base(orm, titBase)
         {
-            _titBase = titBase;
+            Date = titBase.ToReactivePropertyAsSynchronized(tb => tb.Date);
+            Cleared = titBase.ToReactivePropertyAsSynchronized(tb => tb.Cleared);
         }
-
-        #region Account Editing
-
-        /// <summary>
-        /// All currently available Accounts.
-        /// </summary>
-        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
-
-        #endregion
     }
 }

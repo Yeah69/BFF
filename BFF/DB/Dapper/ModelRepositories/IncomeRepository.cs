@@ -1,4 +1,5 @@
 using System;
+using System.Data.Common;
 using Domain = BFF.MVVM.Models.Native;
 using Persistance = BFF.DB.PersistanceModels;
 
@@ -26,35 +27,50 @@ namespace BFF.DB.Dapper.ModelRepositories
     
     public class IncomeRepository : RepositoryBase<Domain.Income, Persistance.Income>
     {
-        public IncomeRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
+        private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
+        private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
+
+        public IncomeRepository(
+            IProvideConnection provideConnection, 
+            Func<long, DbConnection, Domain.IAccount> accountFetcher,
+            Func<long, DbConnection, Domain.ICategory> categoryFetcher,
+            Func<long, DbConnection, Domain.IPayee> payeeFetcher) : base(provideConnection)
+        {
+            _accountFetcher = accountFetcher;
+            _categoryFetcher = categoryFetcher;
+            _payeeFetcher = payeeFetcher;
+        }
 
         public override Domain.Income Create() =>
-            new Domain.Income(this, DateTime.MinValue);
+            new Domain.Income(this, -1L, DateTime.MinValue, null, null, null, "", 0L, false);
         
         protected override Converter<Domain.Income, Persistance.Income> ConvertToPersistance => domainIncome => 
             new Persistance.Income
             {
                 Id = domainIncome.Id,
-                AccountId = domainIncome.AccountId,
-                CategoryId = domainIncome.CategoryId,
-                PayeeId = domainIncome.PayeeId,
+                AccountId = domainIncome.Account.Id,
+                CategoryId = domainIncome.Category.Id,
+                PayeeId = domainIncome.Payee.Id,
                 Date = domainIncome.Date,
                 Memo = domainIncome.Memo,
                 Sum = domainIncome.Sum,
                 Cleared = domainIncome.Cleared ? 1L : 0L
             };
-        
-        protected override Converter<Persistance.Income, Domain.Income> ConvertToDomain => persistanceIncome =>
-            new Domain.Income(this, persistanceIncome.Date)
-            {
-                Id = persistanceIncome.Id,
-                AccountId = persistanceIncome.AccountId,
-                CategoryId = persistanceIncome.CategoryId,
-                PayeeId = persistanceIncome.PayeeId,
-                Date = persistanceIncome.Date,
-                Memo = persistanceIncome.Memo,
-                Sum = persistanceIncome.Sum,
-                Cleared = persistanceIncome.Cleared == 1L
-            };
+
+        protected override Converter<(Persistance.Income, DbConnection), Domain.Income> ConvertToDomain => tuple =>
+        {
+            (Persistance.Income persistenceIncome, DbConnection connection) = tuple;
+            return new Domain.Income(
+                this,
+                persistenceIncome.Id,
+                persistenceIncome.Date,
+                _accountFetcher(persistenceIncome.AccountId, connection),
+                _payeeFetcher(persistenceIncome.PayeeId, connection),
+                _categoryFetcher(persistenceIncome.CategoryId, connection),
+                persistenceIncome.Memo,
+                persistenceIncome.Sum,
+                persistenceIncome.Cleared == 1L);
+        };
     }
 }

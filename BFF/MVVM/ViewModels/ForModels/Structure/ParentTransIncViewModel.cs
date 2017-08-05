@@ -5,6 +5,7 @@ using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
+using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -61,11 +62,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// The amount of money of the exchange of the ParentTransaction or ParentIncome.
         /// A ParentElement's Sum is defined by the Sum of all Sum's of its SubElements.
         /// </summary>
-        public override long Sum
-        {
-            get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
-            set => RefreshSum();
-        }
+        public override IReactiveProperty<long> Sum { get; }
+        //{
+        //    get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
+        //    set => RefreshSum();
+        //}
 
         /// <summary>
         /// Refreshes the Balance of the associated account and the summary account and tells the GUI to refresh the sum of this ViewModel.
@@ -128,25 +129,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="transInc">The associated Model of this ViewModel.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        protected ParentTransIncViewModel(IParentTransInc transInc, IBffOrm orm) : base(orm, transInc)
+        protected ParentTransIncViewModel(IParentTransInc transInc, IBffOrm orm) 
+            : base(
+                  orm, 
+                  transInc,
+                  orm.CommonPropertyProvider.AccountViewModelService,
+                  orm.CommonPropertyProvider.PayeeViewModelService)
         {
-            _parentTransInc = transInc;
-            _parentTransInc.PropertyChanged += (sender, args) =>
-            {
-                switch(args.PropertyName)
-                {
-                    case nameof(_parentTransInc.Id):
-                        foreach(ISubTransIncViewModel subTransIncViewModel in SubElements)
-                        {
-                            subTransIncViewModel.ParentId = _parentTransInc.Id;
-                        }
-                        foreach(ISubTransIncViewModel subTransIncViewModel in NewSubElements)
-                        {
-                            subTransIncViewModel.ParentId = _parentTransInc.Id;
-                        }
-                        break;
-                }
-            };
         }
 
         /// <summary>

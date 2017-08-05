@@ -107,7 +107,7 @@
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}">
-                            <TextBlock Text="{Binding Account.Name.Value}" Style="{StaticResource CellTextBlock}" />
+                            <TextBlock Text="{Binding Account.Value.Name.Value}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <TextBlock Text="{lex:Loc AccountView_Column_Transfer}" Style="{StaticResource CellTextBlock}" Foreground="{DynamicResource GrayBrush4}"/>
@@ -126,7 +126,7 @@
                                       IsTextSearchEnabled="True"
                                       ItemsSource="{Binding AllAccounts}">
                                 <ComboBox.SelectedItem>
-                                    <Binding Path="Account" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                    <Binding Path="Account.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>
                                             <validationRules:NoNullRule />
                                         </Binding.ValidationRules>
@@ -146,7 +146,7 @@
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitBaseViewModel}">
-                            <TextBlock Text="{Binding Date, Converter={x:Static mvvm:Converters.DateTimeToString}}" Style="{StaticResource CellTextBlock}" />
+                            <TextBlock Text="{Binding Date.Value, Converter={x:Static mvvm:Converters.DateTimeToString}}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
@@ -156,7 +156,7 @@
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitBaseViewModel}">
-                            <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"
+                            <DatePicker SelectedDate="{Binding Date.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"
                                         SelectedDateFormat="{Binding DataContext.IsDateLong, ElementName=LayoutRoot, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
@@ -168,11 +168,11 @@
                 <ContentControl HorizontalAlignment="Stretch" Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}" >
-                            <TextBlock Text="{Binding Payee.Name.Value}" Style="{StaticResource CellTextBlock}" />
+                            <TextBlock Text="{Binding Payee.Value.Name.Value}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding FromAccount.Name.Value}" Style="{StaticResource CellTextBlock}" />
+                                <TextBlock Text="{Binding FromAccount.Value.Name.Value}" Style="{StaticResource CellTextBlock}" />
                                 <iconPacks:PackIconMaterial Kind="{StaticResource TransactionIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" />
                             </StackPanel>
                         </DataTemplate>
@@ -204,7 +204,7 @@
                                           HorizontalAlignment="Stretch"
                                           DisplayMemberPath="Name.Value">
                                     <ComboBox.SelectedItem>
-                                        <Binding Path="Payee" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                        <Binding Path="Payee.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                             <Binding.ValidationRules>
                                                 <validationRules:NoNullRule />
                                             </Binding.ValidationRules>
@@ -220,7 +220,7 @@
                                                               IsTextSearchEnabled="True"
                                                               ItemsSource="{Binding AllAccounts}">
                                 <ComboBox.SelectedItem>
-                                    <Binding Path="FromAccount" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                    <Binding Path="FromAccount.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                     </Binding>
                                 </ComboBox.SelectedItem>
                             </ComboBox>
@@ -234,21 +234,21 @@
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
-                            <TextBlock Text="{Binding Category.Name.Value}" ToolTip="{Binding Category.FullName}" Style="{StaticResource CellTextBlock}" />
+                            <TextBlock Text="{Binding Category.Value.Name.Value}" ToolTip="{Binding Category.Value.FullName}" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
-                            <Button Command="{Binding OpenParentTitView}" CommandParameter="{Binding Account}" BorderThickness="0" HorizontalContentAlignment="Left" Margin="0" Padding="0" Background="Transparent">
+                            <Button Command="{Binding OpenParentTitView}" CommandParameter="{Binding Account.Value}" BorderThickness="0" HorizontalContentAlignment="Left" Margin="0" Padding="0" Background="Transparent">
                                 <iconPacks:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                             </Button>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
-                            <Button Command="{Binding OpenParentTitView}" CommandParameter="{Binding Account}" BorderThickness="0" HorizontalContentAlignment="Left" Margin="0" Padding="0" Background="Transparent">
+                            <Button Command="{Binding OpenParentTitView}" CommandParameter="{Binding Account.Value}" BorderThickness="0" HorizontalContentAlignment="Left" Margin="0" Padding="0" Background="Transparent">
                                 <iconPacks:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                             </Button>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding ToAccount.Name.Value}" Style="{StaticResource CellTextBlock}" />
+                                <TextBlock Text="{Binding ToAccount.Value.Name.Value}" Style="{StaticResource CellTextBlock}" />
                                 <iconPacks:PackIconMaterial Kind="{StaticResource IncomeIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" />
                             </StackPanel>
                         </DataTemplate>
@@ -283,7 +283,7 @@
                                           IsTextSearchEnabled="True"
                                           ItemsSource="{Binding AllCategories}">
                                     <ComboBox.SelectedItem>
-                                        <Binding Path="Category" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                        <Binding Path="Category.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         </Binding>
                                     </ComboBox.SelectedItem>
                                 </ComboBox>
@@ -304,7 +304,7 @@
                                                               IsTextSearchEnabled="True"
                                                               ItemsSource="{Binding AllAccounts}">
                                 <ComboBox.SelectedItem>
-                                    <Binding Path="ToAccount" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                    <Binding Path="ToAccount.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                     </Binding>
                                 </ComboBox.SelectedItem>
                             </ComboBox>
@@ -318,7 +318,7 @@
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
-                            <TextBlock Text="{Binding Memo, Mode=OneWay}" ToolTip="{Binding Memo}" TextTrimming="CharacterEllipsis" Style="{StaticResource CellTextBlock}" />
+                            <TextBlock Text="{Binding Memo.Value, Mode=OneWay}" ToolTip="{Binding Memo.Value}" TextTrimming="CharacterEllipsis" Style="{StaticResource CellTextBlock}" />
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
@@ -327,7 +327,7 @@
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
-                            <TextBox Text="{Binding Memo, UpdateSourceTrigger=LostFocus}" TextWrapping="NoWrap" VerticalAlignment="Stretch" VerticalContentAlignment="Center" />
+                            <TextBox Text="{Binding Memo.Value, UpdateSourceTrigger=LostFocus}" TextWrapping="NoWrap" VerticalAlignment="Stretch" VerticalContentAlignment="Center" />
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
@@ -341,23 +341,23 @@
                                 <TextBlock.Text>
                                     <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumAsCorrectlySignedString}">
                                         <Binding Path="DataContext.AccountViewModel" ElementName="LayoutRoot" />
-                                        <Binding Path="FromAccount" />
-                                        <Binding Path="Sum" />
+                                        <Binding Path="FromAccount.Value" />
+                                        <Binding Path="Sum.Value" />
                                     </MultiBinding>
                                 </TextBlock.Text>
                                 <TextBlock.Foreground>
                                     <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumToSolidColorBrush}">
                                         <Binding Path="DataContext.AccountViewModel" ElementName="LayoutRoot" /> <!-- todo: Make TransferViewModel aware of in which AccountViewModel it is inside -->
-                                        <Binding Path="FromAccount" />
-                                        <Binding Path="ToAccount" />
+                                        <Binding Path="FromAccount.Value" />
+                                        <Binding Path="ToAccount.Value" />
                                     </MultiBinding>
                                 </TextBlock.Foreground>
                             </TextBlock>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
                             <TextBlock Name="TitGrid_SumBox" TextAlignment="Right"  Style="{StaticResource CellTextBlock}"  Padding="0,0,5,0"
-                                       Foreground="{Binding Sum, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                       Text="{Binding Sum, Converter={x:Static mvvm:Converters.SumToString}}" />
+                                       Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                       Text="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
@@ -371,12 +371,12 @@
                                 <TextBox.Foreground>
                                     <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumToSolidColorBrush}">
                                         <Binding Path="DataContext.AccountViewModel" ElementName="LayoutRoot" />
-                                        <Binding Path="FromAccount" />
-                                        <Binding Path="ToAccount" />
+                                        <Binding Path="FromAccount.Value" />
+                                        <Binding Path="ToAccount.Value" />
                                     </MultiBinding>
                                 </TextBox.Foreground>
                                 <TextBox.Text>
-                                    <Binding Path="Sum" Converter="{x:Static mvvm:Converters.SumToString}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                    <Binding Path="Sum.Value" Converter="{x:Static mvvm:Converters.SumToString}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>
                                             <validationRules:CurrencyRule />
                                             <validationRules:CurrencyLongRangeRule />
@@ -387,9 +387,9 @@
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
                             <TextBox Name="TitGrid_SumBox" TextAlignment="Right" VerticalContentAlignment="Center"
-                                       Foreground="{Binding Sum, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}">
+                                       Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}">
                                 <TextBox.Text>
-                                    <Binding Path="Sum" Converter="{x:Static mvvm:Converters.SumToString}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                    <Binding Path="Sum.Value" Converter="{x:Static mvvm:Converters.SumToString}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>
                                             <validationRules:CurrencyRule />
                                             <validationRules:CurrencyLongRangeRule />
@@ -404,7 +404,7 @@
             </DataTemplate>
             <!-- Cleared -->
             <DataTemplate x:Key="ClearedColumnTemplate">
-                <CheckBox Style="{StaticResource BffCheckBox}" IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" MinHeight="30" VerticalAlignment="Center"/>
+                <CheckBox Style="{StaticResource BffCheckBox}" IsChecked="{Binding Cleared.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" MinHeight="30" VerticalAlignment="Center"/>
             </DataTemplate>
             <!--#endregion -->
             <!--#region SubElementsFormTemplate -->

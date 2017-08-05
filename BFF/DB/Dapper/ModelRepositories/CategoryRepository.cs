@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using Domain = BFF.MVVM.Models.Native;
 using Persistance = BFF.DB.PersistanceModels;
@@ -18,11 +19,11 @@ namespace BFF.DB.Dapper.ModelRepositories
             FOREIGN KEY({nameof(Persistance.Category.ParentId)}) REFERENCES {nameof(Persistance.Category)}s({nameof(Persistance.Category.Id)}) ON DELETE SET NULL);";
     }
     
-    public class CategoryComparer : Comparer<Domain.Category>
+    public class CategoryComparer : Comparer<Domain.ICategory>
     {
-        public override int Compare(Domain.Category x, Domain.Category y)
+        public override int Compare(Domain.ICategory x, Domain.ICategory y)
         {
-            IList<Domain.ICategory> getParentalPathList(Domain.Category category)
+            IList<Domain.ICategory> getParentalPathList(Domain.ICategory category)
             {
                 IList<Domain.ICategory> list = new List<Domain.ICategory>{category};
                 Domain.ICategory current = category;
@@ -54,17 +55,17 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
     }
     
-    public sealed class CategoryRepository : ObservableRepositoryBase<Domain.Category, Persistance.Category>
+    public sealed class CategoryRepository : ObservableRepositoryBase<Domain.ICategory, Persistance.Category>
     {
         public CategoryRepository(IProvideConnection provideConnection) 
             : base(provideConnection, new CategoryComparer())
         {
         }
 
-        public override Domain.Category Create() =>
+        public override Domain.ICategory Create() =>
             new Domain.Category(this, -1, "", null);
         
-        protected override Converter<Domain.Category, Persistance.Category> ConvertToPersistance => domainCategory => 
+        protected override Converter<Domain.ICategory, Persistance.Category> ConvertToPersistance => domainCategory => 
             new Persistance.Category
             {
                 Id = domainCategory.Id,
@@ -72,10 +73,13 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Name = domainCategory.Name
             };
         
-        protected override Converter<Persistance.Category, Domain.Category> ConvertToDomain => persistanceCategory =>
-            new Domain.Category(this,
-                                persistanceCategory.Id,
-                                persistanceCategory.Name,
-                                persistanceCategory.ParentId != null ? Find((long)persistanceCategory.ParentId) : null);
+        protected override Converter<(Persistance.Category, DbConnection), Domain.ICategory> ConvertToDomain => tuple =>
+        {
+            (Persistance.Category persistenceCategory, DbConnection connection) = tuple;
+            return new Domain.Category(this,
+                persistenceCategory.Id,
+                persistenceCategory.Name,
+                persistenceCategory.ParentId != null ? Find((long)persistenceCategory.ParentId, connection) : null);
+        };
     }
 }
