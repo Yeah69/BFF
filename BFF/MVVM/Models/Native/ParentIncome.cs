@@ -37,11 +37,11 @@ namespace BFF.MVVM.Models.Native
             : base(repository, id, date, account, payee, memo, cleared)
         {
             SubIncomes = new ObservableCollection<ISubIncome>(subIncomes);
+            SubIncomes.ObserveAddChanged().Subscribe(st => st.Parent = this);
             foreach (var subTransaction in SubIncomes)
             {
                 subTransaction.Parent = this;
             }
-            SubIncomes.ObserveAddChanged().Subscribe(st => st.Parent = this);
         }
 
         public ObservableCollection<ISubIncome> SubIncomes { get; }

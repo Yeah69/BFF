@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Threading;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
@@ -21,6 +26,16 @@ namespace BFF.MVVM.ViewModels.ForModels
         private readonly IParentTransaction _parentTransaction;
 
         /// <summary>
+        /// The amount of money of the exchange of the ParentTransaction or ParentIncome.
+        /// A ParentElement's Sum is defined by the Sum of all Sum's of its SubElements.
+        /// </summary>
+        public override IReactiveProperty<long> Sum { get; }
+        //{
+        //    get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
+        //    set => RefreshSum();
+        //}
+
+        /// <summary>
         /// Initializes a ParentTransactionViewModel.
         /// </summary>
         /// <param name="parentTransaction">A ParentTransaction Model.</param>
@@ -35,6 +50,21 @@ namespace BFF.MVVM.ViewModels.ForModels
             SubTransactions =
                 _parentTransaction.SubTransactions.ToReadOnlyReactiveCollection(subTransactionViewModelService
                     .GetViewModel);
+            Sum = new ReactiveProperty<long>(SubTransactions.Sum(stvw => stvw.Sum.Value))
+                .AddTo(CompositeDisposable);
+
+            SubTransactions.ObserveAddChanged().Concat(SubTransactions.ObserveRemoveChanged())
+                .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))
+                .AddTo(CompositeDisposable);
+            SubTransactions.ObserveReplaceChanged()
+                .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))
+                .AddTo(CompositeDisposable);
+            SubTransactions.ObserveResetChanged()
+                .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))
+                .AddTo(CompositeDisposable);
+            SubTransactions.ObserveElementObservableProperty(stvw => stvw.Sum)
+                .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))
+                .AddTo(CompositeDisposable);
         }
 
         #region Overrides of ParentTransIncViewModel<SubTransaction>
@@ -49,8 +79,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             return new SubTransactionViewModel(
                 subElement as ISubTransaction,
                 Orm, 
-                Orm.CommonPropertyProvider.CategoryViewModelService, 
-                Orm.ParentTransactionViewModelService);
+                Orm.CommonPropertyProvider.CategoryViewModelService);
         }
 
         /// <summary>

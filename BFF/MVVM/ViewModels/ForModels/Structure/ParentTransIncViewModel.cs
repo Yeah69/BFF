@@ -59,16 +59,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         private readonly IParentTransInc _parentTransInc;
 
         /// <summary>
-        /// The amount of money of the exchange of the ParentTransaction or ParentIncome.
-        /// A ParentElement's Sum is defined by the Sum of all Sum's of its SubElements.
-        /// </summary>
-        public override IReactiveProperty<long> Sum { get; }
-        //{
-        //    get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
-        //    set => RefreshSum();
-        //}
-
-        /// <summary>
         /// Refreshes the Balance of the associated account and the summary account and tells the GUI to refresh the sum of this ViewModel.
         /// </summary>
         public void RefreshSum()

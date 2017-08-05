@@ -17,8 +17,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Each SubTransaction or SubIncome can be budgeted to a category.
         /// </summary>
         IReactiveProperty<ICategoryViewModel> Category { get; }
-
-        IReadOnlyReactiveProperty<IParentTransIncViewModel> Parent { get; }
     }
 
     /// <summary>
@@ -29,8 +27,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         private readonly CategoryViewModelService _categoryViewModelService;
 
         #region SubTransaction/SubIncome Properties
-
-        public abstract IReadOnlyReactiveProperty<IParentTransIncViewModel> Parent { get; }
 
         /// <summary>
         /// Each SubTransaction or SubIncome can be budgeted to a category.
@@ -125,7 +121,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            Parent.Value?.RemoveSubElement(this);
+            //Parent.Value?.RemoveSubElement(this); //ToDo
         });
     }
 }

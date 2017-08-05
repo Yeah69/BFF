@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Linq;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
@@ -21,6 +25,16 @@ namespace BFF.MVVM.ViewModels.ForModels
         private readonly IParentIncome _parentIncome;
 
         /// <summary>
+        /// The amount of money of the exchange of the ParentTransaction or ParentIncome.
+        /// A ParentElement's Sum is defined by the Sum of all Sum's of its SubElements.
+        /// </summary>
+        public override IReactiveProperty<long> Sum { get; }
+        //{
+        //    get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
+        //    set => RefreshSum();
+        //}
+
+        /// <summary>
         /// Initializes a ParentIncomeViewModel.
         /// </summary>
         /// <param name="transInc">A ParentIncome Model.</param>
@@ -35,6 +49,21 @@ namespace BFF.MVVM.ViewModels.ForModels
             SubIncomes =
                 _parentIncome.SubIncomes.ToReadOnlyReactiveCollection(subIncomeViewModelService
                     .GetViewModel);
+            Sum = new ReactiveProperty<long>(SubIncomes.Sum(sivw => sivw.Sum.Value))
+                .AddTo(CompositeDisposable);
+
+            SubIncomes.ObserveAddChanged().Concat(SubIncomes.ObserveRemoveChanged())
+                .Subscribe(obj => Sum.Value = SubIncomes.Sum(sivw => sivw.Sum.Value))
+                .AddTo(CompositeDisposable);
+            SubIncomes.ObserveReplaceChanged()
+                .Subscribe(obj => Sum.Value = SubIncomes.Sum(sivw => sivw.Sum.Value))
+                .AddTo(CompositeDisposable);
+            SubIncomes.ObserveResetChanged()
+                .Subscribe(obj => Sum.Value = SubIncomes.Sum(sivw => sivw.Sum.Value))
+                .AddTo(CompositeDisposable);
+            SubIncomes.ObserveElementObservableProperty(sivw => sivw.Sum)
+                .Subscribe(obj => Sum.Value = SubIncomes.Sum(sivw => sivw.Sum.Value))
+                .AddTo(CompositeDisposable);
         }
 
         #region Overrides of ParentTransIncViewModel<SubIncome>
@@ -49,8 +78,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             return new SubIncomeViewModel(
                 subElement as ISubIncome,
                 Orm,
-                Orm.CommonPropertyProvider.CategoryViewModelService,
-                Orm.ParentIncomeViewModelService);
+                Orm.CommonPropertyProvider.CategoryViewModelService);
         }
 
         /// <summary>

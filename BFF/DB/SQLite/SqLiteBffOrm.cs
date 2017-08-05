@@ -50,10 +50,10 @@ namespace BFF.DB.SQLite
             CommonPropertyProvider = new CommonPropertyProvider(this, _bffRepository);
 
             SubTransactionViewModelService = new SubTransactionViewModelService(
-                st => new SubTransactionViewModel(st, this, CommonPropertyProvider.CategoryViewModelService, ParentTransactionViewModelService));
+                st => new SubTransactionViewModel(st, this, CommonPropertyProvider.CategoryViewModelService));
 
             SubIncomeViewModelService = new SubIncomeViewModelService(
-                si => new SubIncomeViewModel(si, this, CommonPropertyProvider.CategoryViewModelService, ParentIncomeViewModelService));
+                si => new SubIncomeViewModel(si, this, CommonPropertyProvider.CategoryViewModelService));
 
             ParentTransactionViewModelService = new ParentTransactionViewModelService(
                 pt => new ParentTransactionViewModel(pt, this, SubTransactionViewModelService));

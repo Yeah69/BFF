@@ -23,16 +23,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         public SubIncomeViewModel(
             ISubIncome subIncome,
             IBffOrm orm,
-            CategoryViewModelService categoryViewModelService,
-            ParentIncomeViewModelService parentIncomeViewModelService) :
+            CategoryViewModelService categoryViewModelService) :
         base(subIncome, orm, categoryViewModelService)
         {
-            Parent =
-                subIncome.ToReadOnlyReactivePropertyAsSynchronized(
-                    st => st.Parent,
-                    pt => parentIncomeViewModelService.GetViewModel(pt as IParentIncome));
         }
-
-        public override IReadOnlyReactiveProperty<IParentTransIncViewModel> Parent { get; }
     }
 }

@@ -30,20 +30,18 @@ namespace BFF.MVVM.Services
         public TViewModel GetViewModel(TDomain model)
         {
             if (model == null) return null;
-            if (_modelToViewModel.ContainsKey(model))
-                return _modelToViewModel[model];
+            if (!_modelToViewModel.ContainsKey(model))
+                _modelToViewModel[model] = Create(model);
 
-            return null;
+            return _modelToViewModel[model];
         }
 
         public TViewModel GetViewModel(long id)
         {
             if (id < 1) return null;
             TDomain model = _modelToViewModel.Keys.SingleOrDefault(c => c.Id == id);
-            if (model != null)
-                return _modelToViewModel[model];
 
-            return null;
+            return GetViewModel(model);
         }
     }
 }

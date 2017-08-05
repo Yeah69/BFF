@@ -1,9 +1,7 @@
 ﻿using BFF.DB;
-using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
-using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
@@ -23,16 +21,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         public SubTransactionViewModel(
             ISubTransaction subIncome,
             IBffOrm orm, 
-            CategoryViewModelService categoryViewModelService,
-            ParentTransactionViewModelService parentTransactionViewModelService) :
+            CategoryViewModelService categoryViewModelService) :
             base(subIncome, orm, categoryViewModelService)
         {
-            Parent = 
-                subIncome.ToReadOnlyReactivePropertyAsSynchronized(
-                    st => st.Parent,
-                    pt => parentTransactionViewModelService.GetViewModel(pt as IParentTransaction));
         }
-
-        public override IReadOnlyReactiveProperty<IParentTransIncViewModel> Parent { get; }
     }
 }
