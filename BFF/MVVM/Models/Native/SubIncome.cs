@@ -19,10 +19,9 @@ namespace BFF.MVVM.Models.Native
         public SubIncome(
             IRepository<SubIncome> repository,
             long id,
-            IParentIncome parent = null, 
             ICategory category = null, 
             string memo = null, 
             long sum = 0L) 
-            : base(repository, id, parent, category, memo, sum) {}
+            : base(repository, id, category, memo, sum) {}
     }
 }

@@ -18,11 +18,10 @@ namespace BFF.MVVM.Models.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         public SubTransaction(
             IRepository<SubTransaction> repository,
-            long id,
-            IParentTransaction parent = null, 
+            long id, 
             ICategory category = null,
             string memo = null,
             long sum = 0L) 
-            : base(repository, id, parent, category, memo, sum) {}
+            : base(repository, id, category, memo, sum) {}
     }
 }

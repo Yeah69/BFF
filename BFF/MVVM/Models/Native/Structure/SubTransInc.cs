@@ -79,12 +79,10 @@ namespace BFF.MVVM.Models.Native.Structure
         protected SubTransInc(
             IRepository<T> repository, 
             long id,
-            IParentTransInc parent = null,
             ICategory category = null,
             string memo = null,
             long sum = 0L) : base(repository, id, memo)
         {
-            _parent = parent;
             _category = category;
             _sum = sum;
         }

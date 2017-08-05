@@ -35,7 +35,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
 
         public override Domain.SubTransaction Create() =>
-            new Domain.SubTransaction(this, -1L, null, null, "", 0L);
+            new Domain.SubTransaction(this, -1L, null, "", 0L);
         
         protected override Converter<Domain.SubTransaction, Persistance.SubTransaction> ConvertToPersistance => domainSubTransaction => 
             new Persistance.SubTransaction
@@ -53,7 +53,6 @@ namespace BFF.DB.Dapper.ModelRepositories
             return new Domain.SubTransaction(
                 this,
                 persistenceSubTransaction.Id,
-                _parentTransactionFetcher(persistenceSubTransaction.ParentId, connection),
                 _categoryFetcher(persistenceSubTransaction.CategoryId, connection),
                 persistenceSubTransaction.Memo,
                 persistenceSubTransaction.Sum);

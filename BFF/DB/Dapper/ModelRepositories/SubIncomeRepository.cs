@@ -35,7 +35,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
 
         public override Domain.SubIncome Create() =>
-            new Domain.SubIncome(this, -1L, null, null, "", 0L);
+            new Domain.SubIncome(this, -1L, null, "", 0L);
         
         protected override Converter<Domain.SubIncome, Persistance.SubIncome> ConvertToPersistance => domainSubIncome => 
             new Persistance.SubIncome
@@ -53,7 +53,6 @@ namespace BFF.DB.Dapper.ModelRepositories
             return new Domain.SubIncome(
                 this,
                 persistenceSubIncome.Id,
-                _parentIncomeFetcher(persistenceSubIncome.ParentId, connection),
                 _categoryFetcher(persistenceSubIncome.CategoryId, connection),
                 persistenceSubIncome.Memo,
                 persistenceSubIncome.Sum);
