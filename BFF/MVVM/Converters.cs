@@ -107,7 +107,7 @@ namespace BFF.MVVM
                 e => e.Value.CurrencyAsLong(Settings.Default.Culture_SessionCurrency));
 
         /// <summary>
-        /// In combination with the DataTemplat CategoryItemTemplate this converter aids to display the Category-Tree
+        /// In combination with the DataTemplate CategoryItemTemplate this converter aids to display the Category-Tree
         /// tree-like in ComboBoxes.
         /// </summary>
         public static readonly IValueConverter CategoryDepthToMargin =
