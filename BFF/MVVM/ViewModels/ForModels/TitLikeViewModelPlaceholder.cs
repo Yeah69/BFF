@@ -1,11 +1,13 @@
-﻿using System.Windows.Input;
+﻿using System.Reactive.Concurrency;
+using System.Windows;
+using System.Windows.Input;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
     /// <summary>
-    /// A TIT ViewModel Placeholder used for asyncron lazy loaded TIT's.
+    /// A TIT ViewModel Placeholder used for async lazy loaded TIT's.
     /// </summary>
     sealed class TitLikeViewModelPlaceholder : ITitLikeViewModel
     {
@@ -29,7 +31,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Needed to mimic a TIT.
         /// </summary>
-        public bool Cleared { get; set; }
+        public IReactiveProperty<bool> Cleared { get; }
 
         /// <summary>
         /// Initializes the TitBase-parts of the object
@@ -38,6 +40,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             Memo = new ReactiveProperty<string>("Content is loading…");
             Sum = new ReactiveProperty<long>(0L);
+            Cleared = new ReactiveProperty<bool>(false);
+            DeleteCommand = new ReactiveCommand(new DispatcherScheduler(Application.Current.Dispatcher));
         }
 
         #region Overrides of TitLikeViewModel

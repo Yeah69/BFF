@@ -67,7 +67,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>Name with preceding dots (foreach Ancestor one)</returns>
         public override string ToString()
         {
-            return $"{Parent.Value?.GetIndent()}{Name.Value}";
+            return Name.Value;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

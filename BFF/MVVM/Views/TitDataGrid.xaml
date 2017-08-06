@@ -300,11 +300,9 @@
                                           IsTextSearchCaseSensitive="False"
                                           IsTextSearchEnabled="True"
                                           ItemsSource="{Binding AllCategories}"
-                                          DisplayMemberPath="Name.Value"
                                           ItemTemplate="{StaticResource CategoryItemTemplate}">
                                     <ComboBox.SelectedItem>
-                                        <Binding Path="Category.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
-                                        </Binding>
+                                        <Binding Path="Category.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus" />
                                     </ComboBox.SelectedItem>
                                 </ComboBox>
                             </DockPanel>
