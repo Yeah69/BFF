@@ -261,27 +261,47 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
                             <DockPanel LastChildFill="True">
-                                <controls:SplitButton DockPanel.Dock="Right" x:Name="AddCategoryButton" Orientation="Horizontal"
-                                                      Command="{Binding AddCategoryCommand}" SelectedItem="{Binding AddingCategoryParent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      ItemsSource="{Binding AllCategories}">
+                                <DockPanel.Resources>
+                                    <DataTemplate x:Key="CategoryItemTemplate">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Rectangle Height="16"
+                                                       Width="4" 
+                                                       Fill="{DynamicResource AccentColorBrush}" 
+                                                       Margin="{Binding Depth, Converter={x:Static mvvm:Converters.CategoryDepthToMargin}}"/>
+                                            <TextBlock Text="{Binding Name.Value}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DockPanel.Resources>
+                                <controls:SplitButton DockPanel.Dock="Right" 
+                                                      x:Name="AddCategoryButton" 
+                                                      Orientation="Horizontal"
+                                                      Command="{Binding AddCategoryCommand}" 
+                                                      SelectedItem="{Binding AddingCategoryParent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      ItemsSource="{Binding AllCategories}"
+                                                      ItemTemplate="{StaticResource CategoryItemTemplate}">
                                     <controls:SplitButton.IconTemplate>
                                         <DataTemplate>
-                                            <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Foreground="{DynamicResource BlackColorBrush}" Style="{StaticResource CellIconMaterial}" />
+                                            <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}"
+                                                                        Foreground="{DynamicResource BlackColorBrush}"
+                                                                        Style="{StaticResource CellIconMaterial}" />
                                         </DataTemplate>
                                     </controls:SplitButton.IconTemplate>
                                 </controls:SplitButton>
-                                <Popup PlacementTarget="{Binding ElementName=AddCategoryButton}" Placement="Bottom" PopupAnimation="Slide"
+                                <Popup PlacementTarget="{Binding ElementName=AddCategoryButton}" 
+                                       Placement="Bottom" PopupAnimation="Slide"
                                        IsOpen="{Binding ElementName=AddCategoryButton, Path=IsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                                     <TextBox Focusable="True" 
                                              Text="{Binding CategoryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                              Height="{Binding ElementName=AddCategoryButton, Path=ActualHeight}"
                                              MinWidth="{Binding ElementName=AddCategoryButton, Path=ActualWidth}" />
                                 </Popup>
-                                <ComboBox TextSearch.TextPath="Name"
+                                <ComboBox TextSearch.TextPath="Name.Value"
                                           IsEditable="True" 
                                           IsTextSearchCaseSensitive="False"
                                           IsTextSearchEnabled="True"
-                                          ItemsSource="{Binding AllCategories}">
+                                          ItemsSource="{Binding AllCategories}"
+                                          DisplayMemberPath="Name.Value"
+                                          ItemTemplate="{StaticResource CategoryItemTemplate}">
                                     <ComboBox.SelectedItem>
                                         <Binding Path="Category.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         </Binding>

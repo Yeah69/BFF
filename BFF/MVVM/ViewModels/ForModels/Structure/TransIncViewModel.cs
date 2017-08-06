@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
@@ -75,7 +74,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             Category = transInc.ToReactivePropertyAsSynchronized(
                 ti => ti.Category, 
                 categoryViewModelService.GetViewModel, 
-                categoryViewModelService.GetModel);
+                categoryViewModelService.GetModel)
+                .AddTo(CompositeDisposable);
 
             Sum = transInc.ToReactivePropertyAsSynchronized(ti => ti.Sum);
         }

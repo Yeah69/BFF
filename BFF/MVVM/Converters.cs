@@ -107,6 +107,14 @@ namespace BFF.MVVM
                 e => e.Value.CurrencyAsLong(Settings.Default.Culture_SessionCurrency));
 
         /// <summary>
+        /// In combination with the DataTemplat CategoryItemTemplate this converter aids to display the Category-Tree
+        /// tree-like in ComboBoxes.
+        /// </summary>
+        public static readonly IValueConverter CategoryDepthToMargin =
+            ValueConverter.Create<int, Thickness>(
+                e => new Thickness(e.Value * 10.0, 0, 5, 0));
+        
+        /// <summary>
         /// Negative sums get the same color as the transactions and positive sums (and zero) get the same color as incomes.
         /// Because it is expected that most of the transactions get negative sums and most of the incomes get positive sums.
         /// No convert back function.

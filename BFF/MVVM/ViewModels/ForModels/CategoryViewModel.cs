@@ -24,6 +24,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         IReactiveProperty<ICategoryViewModel> Parent { get; }
 
         string FullName { get; }
+        int Depth { get; }
         string GetIndent();
     }
 
@@ -41,7 +42,9 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         private ICategoryViewModel _previousParent;
 
-        public string FullName => $"{(Parent.Value != null ? $"{Parent.Value.FullName}." : "")}{Name}";
+        public string FullName => $"{(Parent.Value != null ? $"{Parent.Value.FullName}." : "")}{Name.Value}";
+
+        public int Depth => Parent.Value?.Depth + 1 ?? 0;
 
         public IEnumerator<ICategoryViewModel> GetEnumerator()
         {
