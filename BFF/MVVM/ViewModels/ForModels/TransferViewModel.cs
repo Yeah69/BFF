@@ -1,4 +1,8 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Windows.Input;
+using System.Windows.Threading;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -36,79 +40,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The account from where the money is transfered.
         /// </summary>
         public IReactiveProperty<IAccountViewModel> FromAccount { get; }
-        //{
-        //    get => _transfer.FromAccountId == -1 ? null : 
-        //               CommonPropertyProvider.GetAccountViewModel(_transfer.FromAccountId);
-        //    set
-        //    {
-        //        if(value?.Id == _transfer.FromAccountId) return;
-        //        IAccountViewModel temp = FromAccount;
-        //        bool accountSwitch = false;
-        //        if (value != null && _transfer.ToAccountId == value.Id) // If value equals ToAccount, then the FromAccount and ToAccount switch values
-        //        {
-        //            _transfer.ToAccountId = _transfer.FromAccountId;
-        //            OnPropertyChanged(nameof(ToAccount));
-        //            accountSwitch = true;
-        //        }
-        //        _transfer.FromAccountId = value?.Id ?? -1;
-        //        OnUpdate();
-        //        if(accountSwitch && ToAccount != null) //Refresh ToAccount if switch occurred
-        //        {
-        //            Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
-        //            Messenger.Default.Send(AccountMessage.RefreshBalance, ToAccount);
-        //        }
-        //        if(FromAccount != null) //Refresh FromAccount if it exists
-        //        {
-        //            Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
-        //            Messenger.Default.Send(AccountMessage.RefreshBalance, FromAccount);
-        //        }
-        //        if(!accountSwitch && temp != null && temp != FromAccount) //if switch happened then with temp is now ToAccount and was refreshed already, if not then refresh if it exists and is not FromAccount
-        //        { 
-        //            Messenger.Default.Send(AccountMessage.RefreshTits, temp);
-        //            Messenger.Default.Send(AccountMessage.RefreshBalance, temp);
-        //        }
-        //        OnPropertyChanged();
-        //    }
-        //}
 
         /// <summary>
         /// The account to where the money is transferred.
         /// </summary>
         public IReactiveProperty<IAccountViewModel> ToAccount { get; }
-        //{
-        //    get => _transfer.ToAccountId == -1 ? null :
-        //               CommonPropertyProvider.GetAccountViewModel(_transfer.ToAccountId);
-        //    set
-        //    {
-        //        if (value?.Id == _transfer.ToAccountId) return;
-        //        IAccountViewModel temp = ToAccount;
-        //        bool accountSwitch = false;
-        //        if (value != null && _transfer.FromAccountId == value.Id) // If value equals FromAccount, then the ToAccount and FromAccount switch values
-        //        {
-        //            _transfer.FromAccountId = _transfer.ToAccountId;
-        //            OnPropertyChanged(nameof(FromAccount));
-        //            accountSwitch = true;
-        //        }
-        //        _transfer.ToAccountId = value?.Id ?? -1;
-        //        OnUpdate();
-        //        if (accountSwitch && FromAccount != null) //Refresh ToAccount if switch occurred
-        //        {
-        //            Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
-        //            Messenger.Default.Send(AccountMessage.RefreshBalance, FromAccount);
-        //        }
-        //        if (ToAccount != null) //Refresh FromAccount if it exists
-        //        {
-        //            Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
-        //            Messenger.Default.Send(AccountMessage.RefreshBalance, ToAccount);
-        //        }
-        //        if (!accountSwitch && temp != null && temp != ToAccount) //if switch happened then with temp is now FromAccount and was refreshed already, if not then refresh if it exists and is not ToAccount
-        //        {
-        //            Messenger.Default.Send(AccountMessage.RefreshTits, temp);
-        //            Messenger.Default.Send(AccountMessage.RefreshBalance, temp);
-        //        }
-        //        OnPropertyChanged();
-        //    }
-        //}
 
         /// <summary>
         /// The amount of money, which is transfered.
@@ -122,17 +58,53 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="transfer">A Transfer Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public TransferViewModel(ITransfer transfer, IBffOrm orm, AccountViewModelService accountAccountViewModelService) : base(orm, transfer)
+        /// <param name="accountViewModelService"></param>
+        public TransferViewModel(ITransfer transfer, IBffOrm orm, AccountViewModelService accountViewModelService) : base(orm, transfer)
         {
-            FromAccount = transfer.ToReactivePropertyAsSynchronized(t => t.FromAccount, accountAccountViewModelService.GetViewModel, accountAccountViewModelService.GetModel).AddTo(CompositeDisposable);
-            ToAccount = transfer.ToReactivePropertyAsSynchronized(t => t.ToAccount, accountAccountViewModelService.GetViewModel, accountAccountViewModelService.GetModel).AddTo(CompositeDisposable);
-            Sum = transfer.ToReactivePropertyAsSynchronized(t => t.Sum).AddTo(CompositeDisposable);
-            //Sum.Subscribe(sum =>
-            //{
-            //    OnUpdate();
-            //    Messenger.Default.Send(AccountMessage.RefreshBalance, FromAccount);
-            //    Messenger.Default.Send(AccountMessage.RefreshBalance, ToAccount);
-            //}).AddTo(CompositeDisposable);
+
+            FromAccount = transfer
+                .ToReactivePropertyAsSynchronized(t => t.FromAccount, accountViewModelService.GetViewModel, accountViewModelService.GetModel)
+                .AddTo(CompositeDisposable);
+
+            FromAccount
+                .SkipLast(1)
+                .Subscribe(RefreshAnAccountViewModel)
+                .AddTo(CompositeDisposable);
+
+            FromAccount
+                .Skip(1)
+                .Subscribe(avm =>
+                {
+                    RefreshAnAccountViewModel(avm);
+                    Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+                })
+                .AddTo(CompositeDisposable);
+
+            ToAccount = transfer
+                .ToReactivePropertyAsSynchronized(t => t.ToAccount, accountViewModelService.GetViewModel, accountViewModelService.GetModel)
+                .AddTo(CompositeDisposable);
+
+            ToAccount
+                .SkipLast(1)
+                .Subscribe(RefreshAnAccountViewModel)
+                .AddTo(CompositeDisposable);
+
+            ToAccount
+                .Skip(1)
+                .Subscribe(avm =>
+                {
+                    RefreshAnAccountViewModel(avm);
+                    Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+                })
+                .AddTo(CompositeDisposable);
+
+            Sum = transfer.ToReactivePropertyAsSynchronized(t => t.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            Sum.Subscribe(sum =>
+            {
+                RefreshAnAccountViewModel(FromAccount.Value);
+                RefreshAnAccountViewModel(ToAccount.Value);
+                Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+            }).AddTo(CompositeDisposable);
         }
 
         /// <summary>
@@ -142,7 +114,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return FromAccount != null && ToAccount != null;
+            return FromAccount.Value != null && ToAccount.Value != null;
         }
 
         /// <summary>
@@ -152,8 +124,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         protected override void OnUpdate()
         {
-            Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
-            Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
+            Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount.Value);
+            Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount.Value);
             Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
         }
 
@@ -163,9 +135,16 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            Messenger.Default.Send(AccountMessage.Refresh, FromAccount);
-            Messenger.Default.Send(AccountMessage.Refresh, ToAccount);
+            RefreshAnAccountViewModel(FromAccount.Value);
+            RefreshAnAccountViewModel(ToAccount.Value);
             Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
         });
+
+
+        private void RefreshAnAccountViewModel(IAccountBaseViewModel accountViewModel)
+        {
+            accountViewModel?.RefreshTits();
+            accountViewModel?.RefreshBalance();
+        }
     }
 }

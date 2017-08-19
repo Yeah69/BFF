@@ -34,7 +34,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public IReactiveProperty<ICategoryViewModel> Category { get; }
 
         /// <summary>
-        /// The amount of money of the exchangement of the SubTransaction or SubIncome.
+        /// The amount of money of the exchange of the SubTransaction or SubIncome.
         /// </summary>
         public override IReactiveProperty<long> Sum { get;  }
 

@@ -16,7 +16,7 @@ namespace BFF.MVVM.Models.Native
         IAccount ToAccount { get; set; }
 
         /// <summary>
-        /// The amount of money, which was payeed or recieved
+        /// The amount of money, which was payed or received
         /// </summary>
         long Sum { get; set; }
     }
@@ -39,6 +39,11 @@ namespace BFF.MVVM.Models.Native
             set
             {
                 if(_fromAccount == value) return;
+                if (value != null && _toAccount == value) // If value equals ToAccount, then the FromAccount and ToAccount switch values
+                {
+                    _toAccount = _fromAccount;
+                    OnPropertyChanged(nameof(ToAccount));
+                }
                 _fromAccount = value; 
                 Update();
                 OnPropertyChanged();
@@ -53,7 +58,12 @@ namespace BFF.MVVM.Models.Native
             get => _toAccount;
             set
             {
-                if(_toAccount == value) return;
+                if (_toAccount == value) return;
+                if (value != null && _fromAccount == value) // If value equals ToAccount, then the FromAccount and ToAccount switch values
+                {
+                    _fromAccount = _toAccount;
+                    OnPropertyChanged(nameof(FromAccount));
+                }
                 _toAccount = value;
                 Update();
                 OnPropertyChanged();
@@ -61,7 +71,7 @@ namespace BFF.MVVM.Models.Native
         }
 
         /// <summary>
-        /// The amount of money, which was payeed or recieved
+        /// The amount of money, which was payed or received
         /// </summary>
         public long Sum
         {
@@ -78,12 +88,14 @@ namespace BFF.MVVM.Models.Native
         /// <summary>
         /// Initializes the object
         /// </summary>
+        /// <param name="id">Identifier of this model object.</param>
         /// <param name="date">Marks when the Tit happened</param>
         /// <param name="fromAccount">The Sum is transfered from this Account</param>
         /// <param name="toAccount">The Sum is transfered to this Account</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The transfered Sum</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
+        /// <param name="repository">This repository manages the persistence access to elements of this type.</param>
         public Transfer(
             IRepository<Transfer> repository,
             long id,

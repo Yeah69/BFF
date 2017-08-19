@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,6 +14,7 @@ using BFF.MVVM.Views;
 using BFF.Properties;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
+using Reactive.Bindings;
 
 namespace BFF
 {
@@ -38,6 +40,7 @@ namespace BFF
         public MainWindow()
         {
             InitializeComponent();
+
             //this routine only needs to run once, so first check to make sure the
             //VirtualizationManager isn’t already initialized
             if (!VirtualizationManager.IsInitialized)

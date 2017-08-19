@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using System.Reactive.Concurrency;
+using System.Windows;
 using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using NLog;
+using Reactive.Bindings;
 
 namespace BFF
 {
@@ -18,6 +20,7 @@ namespace BFF
         {
             Logger.Trace("Initializing App");
             InitializeComponent();
+
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }

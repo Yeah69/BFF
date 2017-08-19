@@ -44,6 +44,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
         /// <param name="summaryAccount">The model.</param>
+        /// <param name="repository">Repository for accounts.</param>
         public SummaryAccountViewModel(IBffOrm orm,
                                        ISummaryAccount summaryAccount,
                                        AccountRepository repository) : base(orm, summaryAccount)

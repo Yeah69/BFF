@@ -195,7 +195,7 @@
                                              Height="{Binding ElementName=AddPayeeButton, Path=ActualHeight}"
                                              MinWidth="{Binding ElementName=AddPayeeButton, Path=ActualWidth}" />
                                 </Popup>
-                                <ComboBox TextSearch.TextPath="Name" 
+                                <ComboBox TextSearch.TextPath="Name.Value" 
                                           Text="{Binding PayeeText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                                           IsEditable="True"
                                           IsTextSearchEnabled="True"
@@ -214,11 +214,12 @@
                             </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <ComboBox TextSearch.TextPath="Name"
-                                                              IsEditable="True"
-                                                              IsTextSearchCaseSensitive="False"
-                                                              IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding AllAccounts}">
+                            <ComboBox TextSearch.TextPath="Name.Value"
+                                      IsEditable="True"
+                                      IsTextSearchCaseSensitive="False"
+                                      IsTextSearchEnabled="True"
+                                      ItemsSource="{Binding AllAccounts}"
+                                      DisplayMemberPath="Name.Value">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="FromAccount.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                     </Binding>
@@ -316,11 +317,12 @@
                             <iconPacks:PackIconMaterial Kind="{StaticResource ParentIcon}" Foreground="{DynamicResource GrayBrush4}" Style="{StaticResource CellIconMaterial}" Margin="5,0,0,0" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <ComboBox TextSearch.TextPath="Name"
-                                                              IsEditable="True"
-                                                              IsTextSearchCaseSensitive="False"
-                                                              IsTextSearchEnabled="True"
-                                                              ItemsSource="{Binding AllAccounts}">
+                            <ComboBox TextSearch.TextPath="Name.Value"
+                                      IsEditable="True"
+                                      IsTextSearchCaseSensitive="False"
+                                      IsTextSearchEnabled="True"
+                                      ItemsSource="{Binding AllAccounts}"
+                                      DisplayMemberPath="Name.Value">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="ToAccount.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                     </Binding>

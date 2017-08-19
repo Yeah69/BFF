@@ -72,7 +72,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                     default:
                         throw new NotImplementedException();
                 }
-            }, Account);
+            }, this);
 
             StartingBalance = account.ToReactivePropertyAsSynchronized(a => a.StartingBalance)
                                      .AddTo(CompositeDisposable);
