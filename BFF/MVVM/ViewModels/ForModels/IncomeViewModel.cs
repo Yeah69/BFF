@@ -17,6 +17,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="transInc">A Transaction Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
+        /// <param name="accountViewModelService">Service of accounts.</param>
+        /// <param name="payeeViewModelService">Service of payees.</param>
+        /// <param name="categoryViewModelService">Service of categories.</param>
         public IncomeViewModel(
             IIncome transInc, 
             IBffOrm orm,

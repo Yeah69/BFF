@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
@@ -45,6 +44,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="subIncome">The associated Model of this ViewModel.</param>
         /// <param name="orm">Used for the database accesses.</param>
+        /// <param name="categoryViewModelService">Service for categories.</param>
         protected SubTransIncViewModel(ISubTransInc subIncome, IBffOrm orm, CategoryViewModelService categoryViewModelService) : base(orm, subIncome)
         {
             _categoryViewModelService = categoryViewModelService;

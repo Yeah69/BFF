@@ -93,9 +93,9 @@ namespace BFF.DB
 
         #region Implementation of IPagedSourceProviderAsync<TitBase>
 
-        public async Task<PagedSourceItemsPacket<ITitLikeViewModel>>  GetItemsAtAsync(int pageoffset, int count, bool usePlaceholder)
+        public async Task<PagedSourceItemsPacket<ITitLikeViewModel>>  GetItemsAtAsync(int pageOffset, int count, bool usePlaceholder)
         {
-            return await Task.Run(() => GetItemsAt(pageoffset, count, usePlaceholder)).ConfigureAwait(false);
+            return await Task.Run(() => GetItemsAt(pageOffset, count, usePlaceholder)).ConfigureAwait(false);
         }
 
         public ITitLikeViewModel GetPlaceHolder(int index, int page, int offset)

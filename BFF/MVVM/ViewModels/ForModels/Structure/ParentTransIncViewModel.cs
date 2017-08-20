@@ -5,7 +5,6 @@ using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
-using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -53,11 +52,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class ParentTransIncViewModel : TransIncBaseViewModel, IParentTransIncViewModel
     {
-        /// <summary>
-        /// Model of ParentTransaction or ParentIncome. Mostly they both act almost the same. Differences are handled in their concrete classes.
-        /// </summary>
-        private readonly IParentTransInc _parentTransInc;
-
         /// <summary>
         /// Refreshes the Balance of the associated account and the summary account and tells the GUI to refresh the sum of this ViewModel.
         /// </summary>

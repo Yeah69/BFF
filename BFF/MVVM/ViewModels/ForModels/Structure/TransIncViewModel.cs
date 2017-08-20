@@ -23,10 +23,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class TransIncViewModel : TransIncBaseViewModel, ITransIncViewModel
     {
-        /// <summary>
-        /// Model of Transaction or Income. Mostly they both act almost the same. Differences are handled in their concrete classes.
-        /// </summary>
-        private readonly ITransInc _transInc;
 
         private readonly CategoryViewModelService _categoryViewModelService;
 
@@ -38,7 +34,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public IReactiveProperty<ICategoryViewModel> Category { get;  }
 
         /// <summary>
-        /// The amount of money of the exchangement of the Transaction or Income.
+        /// The amount of money of the exchange of the Transaction or Income.
         /// </summary>
         public override IReactiveProperty<long> Sum { get; }
         //{
@@ -60,6 +56,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="transInc">The associated Model of this ViewModel.</param>
         /// <param name="orm">Used for the database accesses.</param>
+        /// <param name="accountViewModelService">Service of accounts.</param>
+        /// <param name="payeeViewModelService">Service of payees.</param>
+        /// <param name="categoryViewModelService">Service of categories.</param>
         protected TransIncViewModel(
             ITransInc transInc, 
             IBffOrm orm, 
@@ -68,7 +67,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             CategoryViewModelService categoryViewModelService)
             : base(orm, transInc, accountViewModelService, payeeViewModelService)
         {
-            _transInc = transInc;
             _categoryViewModelService = categoryViewModelService;
 
             Category = transInc.ToReactivePropertyAsSynchronized(

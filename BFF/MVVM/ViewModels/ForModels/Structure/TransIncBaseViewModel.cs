@@ -47,6 +47,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
         /// <param name="transIncBase">The model.</param>
+        /// <param name="accountViewModelService">Service of accounts.</param>
+        /// <param name="payeeViewModelService">Service of payees.</param>
         protected TransIncBaseViewModel(
             IBffOrm orm, 
             ITransIncBase transIncBase, 

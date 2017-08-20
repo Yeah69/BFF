@@ -23,7 +23,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
     /// <summary>
     /// Base class for all ViewModels of Models of TITs excluding the SubElements.
-    /// From this point in the documentation of the ViewModel hierarchy TIT is refering to all TIT-like Elements except SubElements.
+    /// From this point in the documentation of the ViewModel hierarchy TIT is referring to all TIT-like Elements except SubElements.
     /// </summary>
     public abstract class TitBaseViewModel : TitLikeViewModel, ITitBaseViewModel
     {

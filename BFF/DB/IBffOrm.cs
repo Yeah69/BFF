@@ -18,7 +18,7 @@ namespace BFF.DB
         long? GetSummaryAccountBalance();
         IEnumerable<ISubTransInc> GetSubTransInc<T>(long parentId) where T : ISubTransInc;
     }
-    
+
     public interface IPagedOrm
     {
         int GetCount<T>(object specifyingObject = null);
