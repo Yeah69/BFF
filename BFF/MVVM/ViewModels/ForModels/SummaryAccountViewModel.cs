@@ -93,7 +93,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
         public override VirtualizingObservableCollection<ITitLikeViewModel> Tits => _tits ?? 
-            (_tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, null, Orm))));
+            (_tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, null, Orm))));
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
@@ -106,7 +106,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override void RefreshTits()
         {
             OnPreVirtualizedRefresh();
-            _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, null, Orm)));
+            _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, null, Orm)));
             OnPropertyChanged(nameof(Tits));
             OnPostVirtualizedRefresh();
         }

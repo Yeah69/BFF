@@ -26,7 +26,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class TitRepository : ViewRepositoryBase<Domain.Structure.ITitBase, Persistance.TheTit, MVVM.Models.Native.Account>
+    public class TitRepository : ViewRepositoryBase<Domain.Structure.ITitBase, Persistance.TheTit, MVVM.Models.Native.IAccount>
     {
         private readonly IRepository<Domain.Transaction> _transactionRepository;
         private readonly IRepository<Domain.Income> _incomeRepository;
@@ -138,11 +138,11 @@ namespace BFF.DB.Dapper.ModelRepositories
             return ret;
         };
 
-        protected override string GetOrderingPageSuffix(Domain.Account specifyingObject) => $"ORDER BY {nameof(Persistance.TheTit.Date)}";
+        protected override string GetOrderingPageSuffix(Domain.IAccount specifyingObject) => $"ORDER BY {nameof(Persistance.TheTit.Date)}";
         
         protected override string ViewName => "The Tit";
         
-        private string CommonSuffix(Domain.Account specifyingObject)
+        private string CommonSuffix(Domain.IAccount specifyingObject)
         {
             if(specifyingObject != null && !(specifyingObject is Domain.ISummaryAccount))
                 return $"WHERE {nameof(Persistance.TheTit.AccountId)} = {specifyingObject.Id} OR {nameof(Persistance.TheTit.AccountId)} = -69 AND ({nameof(Persistance.TheTit.PayeeId)} = {specifyingObject.Id} OR {nameof(Persistance.TheTit.CategoryId)} = {specifyingObject.Id})";
@@ -150,12 +150,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             return "";
         }
 
-        protected override string GetSpecifyingPageSuffix(Domain.Account specifyingObject)
+        protected override string GetSpecifyingPageSuffix(Domain.IAccount specifyingObject)
         {
             return CommonSuffix(specifyingObject);
         }
 
-        protected override string GetSpecifyingCountSuffix(Domain.Account specifyingObject)
+        protected override string GetSpecifyingCountSuffix(Domain.IAccount specifyingObject)
         {
             return CommonSuffix(specifyingObject);
         }

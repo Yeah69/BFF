@@ -30,13 +30,10 @@ namespace BFF.DB
 
         #endregion
 
-        #region Implementation of IItemSourceProvider<T>
-
-        public PagedSourceItemsPacket<ITitLikeViewModel> GetItemsAt(int pageoffset, int count, bool usePlaceholder)
+        protected PagedSourceItemsPacket<ITitLikeViewModel> CreatePacket(IEnumerable<ITitBase> items)
         {
-            IEnumerable<ITitBase> items = PagedOrm.GetPage<ITitBase>(pageoffset, count, Account);
             IList<ITitLikeViewModel> vmItems = new List<ITitLikeViewModel>();
-            foreach(ITitBase item in items)
+            foreach (ITitBase item in items)
             {
                 switch (item)
                 {
@@ -48,14 +45,14 @@ namespace BFF.DB
                         break;
                     case IParentIncome parentIncome:
                         vmItems.Add(new ParentIncomeViewModel(
-                            parentIncome, 
+                            parentIncome,
                             Orm,
                             Orm.SubIncomeViewModelService));
                         break;
                     case ITransaction transaction:
                         vmItems.Add(new TransactionViewModel(
                             transaction,
-                            Orm, 
+                            Orm,
                             Orm.CommonPropertyProvider.AccountViewModelService,
                             Orm.CommonPropertyProvider.PayeeViewModelService,
                             Orm.CommonPropertyProvider.CategoryViewModelService));
@@ -72,7 +69,15 @@ namespace BFF.DB
                         throw new NotImplementedException();
                 }
             }
-            return new PagedSourceItemsPacket<ITitLikeViewModel> { Items = vmItems , LoadedAt = DateTime.Now };
+            return new PagedSourceItemsPacket<ITitLikeViewModel> { Items = vmItems, LoadedAt = DateTime.Now };
+        }
+
+        #region Implementation of IItemSourceProvider<T>
+
+        public PagedSourceItemsPacket<ITitLikeViewModel> GetItemsAt(int pageoffset, int count, bool usePlaceholder)
+        {
+            IEnumerable<ITitBase> items = PagedOrm.GetPage<ITitBase>(pageoffset, count, Account);
+            return CreatePacket(items);
         }
 
         public int IndexOf(ITitLikeViewModel item)
@@ -86,16 +91,19 @@ namespace BFF.DB
     }
     class PagedTitBaseProviderAsync : PagedTitBaseProvider, IPagedSourceProviderAsync<ITitLikeViewModel>
     {
+        private readonly IViewRepositoryAsync<ITitBase, IAccount> _repository;
 
-        public PagedTitBaseProviderAsync(IPagedOrm pagedOrm, IAccount account, IBffOrm orm) : base(pagedOrm, account, orm)
+        public PagedTitBaseProviderAsync(IViewRepositoryAsync<ITitBase, IAccount> repository, IPagedOrm pagedOrm,  IAccount account, IBffOrm orm) : base(pagedOrm, account, orm)
         {
+            _repository = repository;
         }
 
         #region Implementation of IPagedSourceProviderAsync<TitBase>
 
         public async Task<PagedSourceItemsPacket<ITitLikeViewModel>>  GetItemsAtAsync(int pageOffset, int count, bool usePlaceholder)
         {
-            return await Task.Run(() => GetItemsAt(pageOffset, count, usePlaceholder)).ConfigureAwait(false);
+            IEnumerable<ITitBase> items = await _repository.GetPageAsync(pageOffset, count, Account);
+            return CreatePacket(items);
         }
 
         public ITitLikeViewModel GetPlaceHolder(int index, int page, int offset)
@@ -105,7 +113,7 @@ namespace BFF.DB
 
         public async Task<int> GetCountAsync()
         {
-            return await Task.Run(() => Count).ConfigureAwait(false);
+            return await _repository.GetCountAsync(Account);
         }
 
         public async Task<int> IndexOfAsync(ITitLikeViewModel item)

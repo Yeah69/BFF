@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BFF.DB.Dapper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
@@ -66,5 +67,11 @@ namespace BFF.DB.SQLite
 
         public int GetCount<T>(object specifyingObject = null) => 
             _bffRepository.TitRepository.GetCount(specifyingObject as Account);
+
+        public Task<IEnumerable<T>> GetPageAsync<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
+            => _bffRepository.TitRepository.GetPageAsync(offset, pageSize, specifyingObject as Account) as Task<IEnumerable<T>>;
+
+        public Task<int> GetCountAsync<T>(object specifyingObject = null) =>
+            _bffRepository.TitRepository.GetCountAsync(specifyingObject as Account);
     }
 }
