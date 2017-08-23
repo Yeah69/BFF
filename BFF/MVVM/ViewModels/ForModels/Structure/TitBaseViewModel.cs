@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 using Reactive.Bindings;
@@ -30,7 +31,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// This timestamp marks the time point, when the TIT happened.
         /// </summary>
-        public virtual IReactiveProperty<DateTime> Date { get; }
+        public IReactiveProperty<DateTime> Date { get; }
 
         /// <summary>
         /// Like the Memo the Cleared flag is an aid for the user.
@@ -39,6 +40,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public virtual IReactiveProperty<bool> Cleared { get; }
 
+        protected abstract void NotifyRelevantAccountsToRefreshTits();
+
         /// <summary>
         /// Initializes a TitBaseViewModel.
         /// </summary>
@@ -46,8 +49,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="titBase">The model.</param>
         protected TitBaseViewModel(IBffOrm orm, ITitBase titBase) : base(orm, titBase)
         {
-            Date = titBase.ToReactivePropertyAsSynchronized(tb => tb.Date);
-            Cleared = titBase.ToReactivePropertyAsSynchronized(tb => tb.Cleared);
+            Date = titBase.ToReactivePropertyAsSynchronized(tb => tb.Date).AddTo(CompositeDisposable);
+
+            Date.Skip(1).Subscribe(_ => NotifyRelevantAccountsToRefreshTits()).AddTo(CompositeDisposable);
+
+            Cleared = titBase.ToReactivePropertyAsSynchronized(tb => tb.Cleared).AddTo(CompositeDisposable);
         }
     }
 }

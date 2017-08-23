@@ -49,6 +49,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                                        ISummaryAccount summaryAccount,
                                        AccountRepository repository) : base(orm, summaryAccount)
         {
+            IsOpen.Value = true;
             Account = summaryAccount;
             Messenger.Default.Register<SummaryAccountMessage>(this, message =>
             {
@@ -84,7 +85,10 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override void RefreshBalance()
         {
-            OnPropertyChanged(nameof(Balance));
+            if (this.IsOpen.Value)
+            {
+                OnPropertyChanged(nameof(Balance));
+            }
         }
 
         #region ViewModel_Part
@@ -105,10 +109,13 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override void RefreshTits()
         {
-            OnPreVirtualizedRefresh();
-            _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, null, Orm)));
-            OnPropertyChanged(nameof(Tits));
-            OnPostVirtualizedRefresh();
+            if(this.IsOpen.Value)
+            {
+                OnPreVirtualizedRefresh();
+                _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, null, Orm)));
+                OnPropertyChanged(nameof(Tits));
+                OnPostVirtualizedRefresh();
+            }
         }
 
         /// <summary>

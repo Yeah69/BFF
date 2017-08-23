@@ -108,5 +108,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             Messenger.Default.Send(SummaryAccountMessage.Refresh);
             Messenger.Default.Send(AccountMessage.Refresh, Account);
         });
+
+        protected override void NotifyRelevantAccountsToRefreshTits()
+        {
+            Account.Value?.RefreshTits();
+            Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+        }
     }
 }

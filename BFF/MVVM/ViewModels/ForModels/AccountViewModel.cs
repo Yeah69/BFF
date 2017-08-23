@@ -104,8 +104,10 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override void RefreshBalance()
         {
-            OnPropertyChanged(nameof(Balance));
-            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance); //todo: Necsessary?
+            if (this.IsOpen.Value)
+            {
+                OnPropertyChanged(nameof(Balance));
+            }
         }
 
         /// <summary>
@@ -113,10 +115,13 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override void RefreshTits()
         {
-            OnPreVirtualizedRefresh();
-            _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, Account, Orm)));
-            OnPropertyChanged(nameof(Tits));
-            OnPostVirtualizedRefresh();
+            if(this.IsOpen.Value)
+            {
+                OnPreVirtualizedRefresh();
+                _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, Account, Orm)));
+                OnPropertyChanged(nameof(Tits));
+                OnPostVirtualizedRefresh();
+            }
         }
 
         /// <summary>

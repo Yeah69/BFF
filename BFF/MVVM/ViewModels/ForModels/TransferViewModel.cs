@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Windows.Input;
-using System.Windows.Threading;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -73,11 +71,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             FromAccount
                 .Skip(1)
-                .Subscribe(avm =>
-                {
-                    RefreshAnAccountViewModel(avm);
-                    Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
-                })
+                .Subscribe(RefreshAnAccountViewModel)
                 .AddTo(CompositeDisposable);
 
             ToAccount = transfer
@@ -91,19 +85,14 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             ToAccount
                 .Skip(1)
-                .Subscribe(avm =>
-                {
-                    RefreshAnAccountViewModel(avm);
-                    Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
-                })
+                .Subscribe(RefreshAnAccountViewModel)
                 .AddTo(CompositeDisposable);
 
             Sum = transfer.ToReactivePropertyAsSynchronized(t => t.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
             Sum.Subscribe(sum =>
             {
-                RefreshAnAccountViewModel(FromAccount.Value);
-                RefreshAnAccountViewModel(ToAccount.Value);
-                Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+                FromAccount.Value?.RefreshBalance();
+                ToAccount.Value?.RefreshBalance();
             }).AddTo(CompositeDisposable);
         }
 
@@ -118,18 +107,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         }
 
         /// <summary>
-        /// Uses the OR mapper to update the model in the database. Inner function for the Update method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected override void OnUpdate()
-        {
-            Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount.Value);
-            Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount.Value);
-            Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
-        }
-
-        /// <summary>
         /// Deletes the model from the database and refreshes the accounts, which it belonged to, and the summary account.
         /// </summary>
         public override ICommand DeleteCommand => new RelayCommand(obj =>
@@ -138,7 +115,15 @@ namespace BFF.MVVM.ViewModels.ForModels
             RefreshAnAccountViewModel(FromAccount.Value);
             RefreshAnAccountViewModel(ToAccount.Value);
             Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
         });
+
+        protected override void NotifyRelevantAccountsToRefreshTits()
+        {
+            FromAccount.Value?.RefreshTits();
+            ToAccount.Value?.RefreshTits();
+            Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+        }
 
 
         private void RefreshAnAccountViewModel(IAccountBaseViewModel accountViewModel)

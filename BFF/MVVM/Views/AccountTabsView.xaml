@@ -31,7 +31,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
             </TabControl.Resources>
             <i:Interaction.Behaviors>
-                <attachedBehaviors:AdditionalTabItemsBehavior ItemsSource="{Binding AllAccounts}" StartingIndex="1">
+                <attachedBehaviors:AdditionalTabItemsBehavior ItemsSource="{Binding AllAccounts}" 
+                                                              StartingIndex="1"
+                                                              IsSelectedMemberPath="IsOpen.Value">
                     <attachedBehaviors:AdditionalTabItemsBehavior.HeaderTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -47,7 +49,8 @@
                     </attachedBehaviors:AdditionalTabItemsBehavior.ContentTemplate>
                 </attachedBehaviors:AdditionalTabItemsBehavior>
             </i:Interaction.Behaviors>
-            <TabItem>
+            <TabItem x:Name="SummaryAccountTab"
+                     IsSelected="{Binding SummaryAccountViewModel.IsOpen.Value}">
                 <TabItem.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using AlphaChiTech.Virtualization;
 using BFF.DB;
@@ -10,6 +11,7 @@ using BFF.MVVM.Models.Native;
 using BFF.Properties;
 using MuVaViMo;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -34,6 +36,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// The current Balance of this Account.
         /// </summary>
         long? Balance { get; }
+
+        ReactiveProperty<bool> IsOpen { get; }
 
         /// <summary>
         /// Creates a new Transaction.
@@ -99,6 +103,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// The current Balance of this Account.
         /// </summary>
         public abstract long? Balance { get; }
+
+        public ReactiveProperty<bool> IsOpen { get; }
 
         /// <summary>
         /// All available Accounts.
@@ -175,6 +181,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
                 }
             });
+
+            IsOpen = new ReactiveProperty<bool>(false);
+            IsOpen.AddTo(CompositeDisposable);
+
+            IsOpen.Where(isOpen => isOpen).Subscribe(_ =>
+            {
+                RefreshTits();
+                RefreshBalance();
+            }).AddTo(CompositeDisposable);
         }
 
         /// <summary>
