@@ -63,15 +63,15 @@ namespace BFF.DB.SQLite
         }
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
-            => _bffRepository.TitRepository.GetPage(offset, pageSize, specifyingObject as Account) as IEnumerable<T>;
+            => _bffRepository.TitRepository.GetPage(offset, pageSize, specifyingObject as IAccount) as IEnumerable<T>;
 
         public int GetCount<T>(object specifyingObject = null) => 
-            _bffRepository.TitRepository.GetCount(specifyingObject as Account);
+            _bffRepository.TitRepository.GetCount(specifyingObject as IAccount);
 
         public Task<IEnumerable<T>> GetPageAsync<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
-            => _bffRepository.TitRepository.GetPageAsync(offset, pageSize, specifyingObject as Account) as Task<IEnumerable<T>>;
+            => _bffRepository.TitRepository.GetPageAsync(offset, pageSize, specifyingObject as IAccount) as Task<IEnumerable<T>>;
 
         public Task<int> GetCountAsync<T>(object specifyingObject = null) =>
-            _bffRepository.TitRepository.GetCountAsync(specifyingObject as Account);
+            _bffRepository.TitRepository.GetCountAsync(specifyingObject as IAccount);
     }
 }

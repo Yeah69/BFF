@@ -125,7 +125,7 @@ namespace BFF.DB
             }
             foreach (IAccount account in importLists.Accounts)
             {
-                AccountRepository.Add(account as Account, connection);
+                AccountRepository.Add(account, connection);
                 foreach (ITransIncBase transIncBase in importAssignments.AccountToTransIncBase[account])
                 {
                     transIncBase.Account = account;
@@ -164,7 +164,7 @@ namespace BFF.DB
             foreach (ISubIncome subIncome in importLists.SubIncomes) 
                 SubIncomeRepository.Add(subIncome as SubIncome, connection);
             foreach (ITransfer transfer in importLists.Transfers) 
-                TransferRepository.Add(transfer as Transfer, connection);
+                TransferRepository.Add(transfer, connection);
             foreach (IBudgetEntry budgetEntry in importLists.BudgetEntries) 
                 BudgetEntryRepository.Add(budgetEntry as BudgetEntry, connection);
         }
