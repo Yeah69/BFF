@@ -9,7 +9,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// The Transaction documents payment to or from externals
     /// </summary>
-    public class Transaction : TransInc<Transaction>, ITransaction
+    public class Transaction : TransInc<ITransaction>, ITransaction
     {
         /// <summary>
         /// Initializes the object
@@ -22,7 +22,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public Transaction(
-            IRepository<Transaction> repository,
+            IRepository<ITransaction> repository,
             long id,
             DateTime date, 
             IAccount account = null, 

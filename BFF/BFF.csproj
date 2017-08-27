@@ -290,7 +290,7 @@
     <Compile Include="MVVM\Services\PayeeViewModelService.cs" />
     <Compile Include="MVVM\Services\SubIncomeViewModelService.cs" />
     <Compile Include="MVVM\Services\SubTransactionViewModelService.cs" />
-    <Compile Include="MVVM\Services\ViewModelServiceBase.cs" />
+    <Compile Include="MVVM\Services\CommonPropertyViewModelServiceBase.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\CategoryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\CommonPropertyViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\PayeeViewModel.cs" />

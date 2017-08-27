@@ -15,7 +15,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// An Income, which is split into several SubIncomes
     /// </summary>
-    public class ParentIncome : ParentTransInc<ParentIncome>, IParentIncome
+    public class ParentIncome : ParentTransInc<IParentIncome>, IParentIncome
     {
         /// <summary>
         /// Initializes the object
@@ -26,7 +26,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public ParentIncome(
-            IRepository<ParentIncome> repository,
+            IRepository<IParentIncome> repository,
             IEnumerable<ISubIncome> subIncomes,
             long id,
             DateTime date,

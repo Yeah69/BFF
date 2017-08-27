@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
@@ -52,8 +54,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             Category = subIncome.ToReactivePropertyAsSynchronized(
                 sti => sti.Category,
                 categoryViewModelService.GetViewModel, 
-                categoryViewModelService.GetModel);
-            Sum = subIncome.ToReactivePropertyAsSynchronized(sti => sti.Sum);
+                categoryViewModelService.GetModel).AddTo(CompositeDisposable);
+            Sum = subIncome.ToReactivePropertyAsSynchronized(sti => sti.Sum).AddTo(CompositeDisposable);
         }
 
         /// <summary>
@@ -114,14 +116,5 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public IObservableReadOnlyList<ICategoryViewModel> AllCategories => CommonPropertyProvider?.AllCategoryViewModels;
 
         #endregion
-
-        /// <summary>
-        /// Deletes the Model from the database and removes itself from its parent.
-        /// </summary>
-        public override ICommand DeleteCommand => new RelayCommand(obj =>
-        {
-            Delete();
-            //Parent.Value?.RemoveSubElement(this); //ToDo
-        });
     }
 }

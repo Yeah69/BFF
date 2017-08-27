@@ -15,7 +15,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// A Transaction, which is split into several SubTransactions
     /// </summary>
-    public class ParentTransaction : ParentTransInc<ParentTransaction>, IParentTransaction
+    public class ParentTransaction : ParentTransInc<IParentTransaction>, IParentTransaction
     {
         /// <summary>
         /// Initializes the object
@@ -26,7 +26,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public ParentTransaction(
-            IRepository<ParentTransaction> repository,
+            IRepository<IParentTransaction> repository,
             IEnumerable<ISubTransaction> subTransactions,
             long id,
             DateTime date,

@@ -32,8 +32,6 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
 
-        #region Transfer Properties
-
         /// <summary>
         /// The account from where the money is transfered.
         /// </summary>
@@ -48,8 +46,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The amount of money, which is transfered.
         /// </summary>
         public sealed override IReactiveProperty<long> Sum { get; }
-
-        #endregion
 
         /// <summary>
         /// Initializes a TransferViewModel.
@@ -123,6 +119,13 @@ namespace BFF.MVVM.ViewModels.ForModels
             FromAccount.Value?.RefreshTits();
             ToAccount.Value?.RefreshTits();
             Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+        }
+
+        protected override void NotifyRelevantAccountsToRefreshBalance()
+        {
+            FromAccount.Value?.RefreshBalance();
+            ToAccount.Value?.RefreshBalance();
+            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
         }
 
 

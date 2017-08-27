@@ -20,7 +20,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class SubTransactionRepository : SubTransIncRepository<Domain.SubTransaction, Persistance.SubTransaction>
+    public class SubTransactionRepository : SubTransIncRepository<Domain.ISubTransaction, Persistance.SubTransaction>
     {
         private readonly Func<long, DbConnection, Domain.IParentTransaction> _parentTransactionFetcher;
         private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
@@ -34,10 +34,10 @@ namespace BFF.DB.Dapper.ModelRepositories
             _categoryFetcher = categoryFetcher;
         }
 
-        public override Domain.SubTransaction Create() =>
+        public override Domain.ISubTransaction Create() =>
             new Domain.SubTransaction(this, -1L, null, "", 0L);
         
-        protected override Converter<Domain.SubTransaction, Persistance.SubTransaction> ConvertToPersistance => domainSubTransaction => 
+        protected override Converter<Domain.ISubTransaction, Persistance.SubTransaction> ConvertToPersistance => domainSubTransaction => 
             new Persistance.SubTransaction
             {
                 Id = domainSubTransaction.Id,
@@ -47,7 +47,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Sum = domainSubTransaction.Sum
             };
 
-        protected override Converter<(Persistance.SubTransaction, DbConnection), Domain.SubTransaction> ConvertToDomain => tuple =>
+        protected override Converter<(Persistance.SubTransaction, DbConnection), Domain.ISubTransaction> ConvertToDomain => tuple =>
         {
             (Persistance.SubTransaction persistenceSubTransaction, DbConnection connection) = tuple;
             return new Domain.SubTransaction(

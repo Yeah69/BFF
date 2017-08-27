@@ -39,7 +39,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The amount of money of the exchange of the TIT.
         /// </summary>
-        public abstract IReactiveProperty<long> Sum { get; } //todo see Memo
+        public abstract IReactiveProperty<long> Sum { get; }
 
         /// <summary>
         /// Initializes a TitLikeViewModel.

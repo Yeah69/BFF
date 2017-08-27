@@ -266,14 +266,14 @@ namespace BFF.Helper.Import
         private IEnumerable<Domain.IBudgetEntry> ConvertBudgetEntryToNative(IEnumerable<BudgetEntry> ynabBudgetEntries, 
                                                                             BffRepository bffRepository)
         {
-            IEnumerable<MVVM.Models.Native.BudgetEntry> ConvertBudgetEntryToNativeInner()
+            IEnumerable<MVVM.Models.Native.IBudgetEntry> ConvertBudgetEntryToNativeInner()
             {
                 foreach(var ynabBudgetEntry in ynabBudgetEntries)
                 {
                     if(ynabBudgetEntry.Budgeted != 0L)
                     {
                         var month = DateTime.ParseExact(ynabBudgetEntry.Month, "MMMM yyyy", null);
-                        Domain.BudgetEntry budgetEntry = bffRepository.BudgetEntryRepository.Create();
+                        Domain.IBudgetEntry budgetEntry = bffRepository.BudgetEntryRepository.Create();
                         budgetEntry.Month = month;
                         budgetEntry.Budget = ynabBudgetEntry.Budgeted;
 
@@ -299,7 +299,7 @@ namespace BFF.Helper.Import
         private readonly List<string> _processedAccountsList = new List<string>();
         private void AddTransfer(IList<Domain.ITransfer> transfers, 
                                  Transaction ynabTransfer,
-                                 IRepository<Domain.Transfer> transferRepository)
+                                 IRepository<Domain.ITransfer> transferRepository)
         {
             if (_processedAccountsList.Count == 0)
             {
@@ -362,7 +362,7 @@ namespace BFF.Helper.Import
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
         private Domain.ITransfer TransformToTransfer(Transaction ynabTransaction, 
-                                                     IRepository<Domain.Transfer> transferRepository)
+                                                     IRepository<Domain.ITransfer> transferRepository)
         {
             long tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;
             Domain.ITransfer ret = transferRepository.Create();

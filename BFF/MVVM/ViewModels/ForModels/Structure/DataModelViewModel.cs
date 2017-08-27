@@ -6,10 +6,6 @@ using BFF.MVVM.Models.Native.Structure;
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
     public interface IDataModelViewModel {
-        /// <summary>
-        /// The object's Id in the table of the database.
-        /// </summary>
-        long Id { get; }
 
         /// <summary>
         /// Before a model object is inserted into the database, it has to be valid.
@@ -48,11 +44,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected ICommonPropertyProvider CommonPropertyProvider => Orm?.CommonPropertyProvider;
 
         protected CompositeDisposable CompositeDisposable { get; } = new CompositeDisposable();
-
-        /// <summary>
-        /// The object's Id in the table of the database.
-        /// </summary>
-        public virtual long Id => _dataModel.Id;
 
         /// <summary>
         /// Initializes a DataModelViewModel.

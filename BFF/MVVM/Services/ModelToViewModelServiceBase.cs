@@ -14,19 +14,6 @@ namespace BFF.MVVM.Services
 
         protected abstract TViewModel Create(TDomain model);
 
-        protected TViewModel AddToDictionaries(TDomain model)
-        {
-            TViewModel viewModel;
-            if (!_modelToViewModel.ContainsKey(model))
-            {
-                viewModel = Create(model);
-                _modelToViewModel.Add(model, viewModel);
-            }
-            else
-                viewModel = _modelToViewModel[model];
-            return viewModel;
-        }
-
         public TViewModel GetViewModel(TDomain model)
         {
             if (model == null) return null;
@@ -34,14 +21,6 @@ namespace BFF.MVVM.Services
                 _modelToViewModel[model] = Create(model);
 
             return _modelToViewModel[model];
-        }
-
-        public TViewModel GetViewModel(long id)
-        {
-            if (id < 1) return null;
-            TDomain model = _modelToViewModel.Keys.SingleOrDefault(c => c.Id == id);
-
-            return GetViewModel(model);
         }
     }
 }

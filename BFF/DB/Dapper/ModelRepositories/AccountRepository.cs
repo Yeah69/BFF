@@ -70,7 +70,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             SELECT {nameof(Persistance.Account.StartingBalance)} FROM {nameof(Persistance.Account)}s WHERE {nameof(Persistance.Account.Id)} = @accountId)) 
             - (SELECT Total({nameof(Persistance.Transfer.Sum)}) FROM {nameof(Persistance.Transfer)}s WHERE {nameof(Persistance.Transfer.FromAccountId)} = @accountId);";
 
-        private long? GetAccountBalance(Domain.Account account, DbConnection connection = null) => 
+        private long? GetAccountBalance(Domain.IAccount account, DbConnection connection = null) => 
             ConnectionHelper.QueryOnExistingOrNewConnection(
                 c => c.Query<long>(AccountSpecificBalanceStatement, new { accountId = account?.Id ?? -1 }), 
                 ProvideConnection, 
@@ -88,9 +88,9 @@ namespace BFF.DB.Dapper.ModelRepositories
             {
                 switch(account)
                 {
-                    case Domain.SummaryAccount _:
+                    case Domain.ISummaryAccount _:
                         return GetSummaryAccountBalance(connection);
-                    case Domain.Account specificAccount:
+                    case Domain.IAccount specificAccount:
                         return GetAccountBalance(specificAccount, connection);
                     default:
                         return null;

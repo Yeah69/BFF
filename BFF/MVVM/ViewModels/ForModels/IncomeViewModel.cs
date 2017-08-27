@@ -15,19 +15,19 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Initializes an IncomeViewModel.
         /// </summary>
-        /// <param name="transInc">A Transaction Model.</param>
+        /// <param name="parentTransInc">A Transaction Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
         /// <param name="accountViewModelService">Service of accounts.</param>
         /// <param name="payeeViewModelService">Service of payees.</param>
         /// <param name="categoryViewModelService">Service of categories.</param>
         public IncomeViewModel(
-            IIncome transInc, 
+            IIncome parentTransInc, 
             IBffOrm orm,
             AccountViewModelService accountViewModelService,
             PayeeViewModelService payeeViewModelService,
             CategoryViewModelService categoryViewModelService)
             : base(
-                  transInc, 
+                  parentTransInc, 
                   orm,
                   accountViewModelService,
                   payeeViewModelService,

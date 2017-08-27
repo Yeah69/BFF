@@ -5,7 +5,7 @@ using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.MVVM.Services
 {
-    public class CategoryViewModelService : ViewModelServiceBase<ICategory, ICategoryViewModel>
+    public class CategoryViewModelService : CommonPropertyViewModelServiceBase<ICategory, ICategoryViewModel>
     {
         private readonly CategoryRepository _repository;
         private readonly IBffOrm _orm;

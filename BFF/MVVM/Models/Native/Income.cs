@@ -9,7 +9,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// The Income documents earned money
     /// </summary>
-    public class Income : TransInc<Income>, IIncome
+    public class Income : TransInc<IIncome>, IIncome
     {
         /// <summary>
         /// Initializes the object
@@ -22,7 +22,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="sum">The amount of money, which was payeed or recieved</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public Income(
-            IRepository<Income> repository, 
+            IRepository<IIncome> repository, 
             long id,
             DateTime date, 
             IAccount account = null, 

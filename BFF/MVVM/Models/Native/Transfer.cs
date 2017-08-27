@@ -24,7 +24,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// A Transfer is basically a Transaction from one owned Account to another owned Account
     /// </summary>
-    public class Transfer : TitBase<Transfer>, ITransfer
+    public class Transfer : TitBase<ITransfer>, ITransfer
     {
         private IAccount _fromAccount;
         private IAccount _toAccount;
@@ -97,7 +97,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         /// <param name="repository">This repository manages the persistence access to elements of this type.</param>
         public Transfer(
-            IRepository<Transfer> repository,
+            IRepository<ITransfer> repository,
             long id,
             DateTime date,
             IAccount fromAccount = null,

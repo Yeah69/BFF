@@ -13,7 +13,7 @@ namespace BFF.MVVM.Models.Native
         CultureInfo DateCulture { get; set; }
     }
 
-    public class DbSetting : DataModel<DbSetting>, IDbSetting
+    public class DbSetting : DataModel<IDbSetting>, IDbSetting
     {
         public string CurrencyCultureName
         {
@@ -73,7 +73,7 @@ namespace BFF.MVVM.Models.Native
             }
         }
 
-        public DbSetting(IRepository<DbSetting> repository, long id) : base(repository, id)
+        public DbSetting(IRepository<IDbSetting> repository, long id) : base(repository, id)
         {
             _currencyCulture = CultureInfo.GetCultureInfo("de-DE");
             _dateCulture = CultureInfo.GetCultureInfo("de-DE");

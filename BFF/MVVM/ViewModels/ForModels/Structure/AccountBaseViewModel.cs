@@ -37,7 +37,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         long? Balance { get; }
 
-        ReactiveProperty<bool> IsOpen { get; }
+        IReactiveProperty<bool> IsOpen { get; }
 
         /// <summary>
         /// Creates a new Transaction.
@@ -104,7 +104,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public abstract long? Balance { get; }
 
-        public ReactiveProperty<bool> IsOpen { get; }
+        public IReactiveProperty<bool> IsOpen { get; }
 
         /// <summary>
         /// All available Accounts.

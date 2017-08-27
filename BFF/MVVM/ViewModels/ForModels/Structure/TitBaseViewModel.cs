@@ -42,6 +42,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         protected abstract void NotifyRelevantAccountsToRefreshTits();
 
+        protected abstract void NotifyRelevantAccountsToRefreshBalance();
+
         /// <summary>
         /// Initializes a TitBaseViewModel.
         /// </summary>

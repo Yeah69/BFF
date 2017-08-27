@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Threading;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
@@ -30,10 +29,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// A ParentElement's Sum is defined by the Sum of all Sum's of its SubElements.
         /// </summary>
         public override IReactiveProperty<long> Sum { get; }
-        //{
-        //    get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
-        //    set => RefreshSum();
-        //}
 
         /// <summary>
         /// Initializes a ParentTransactionViewModel.
@@ -54,7 +49,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .AddTo(CompositeDisposable);
 
             SubTransactions.ObserveAddChanged().Concat(SubTransactions.ObserveRemoveChanged())
-                .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))
+                .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))//todo: Write an SQL query for that
                 .AddTo(CompositeDisposable);
             SubTransactions.ObserveReplaceChanged()
                 .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))
@@ -76,10 +71,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>A new ViewModel for a SubElement.</returns>
         protected override ISubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement)
         {
-            return new SubTransactionViewModel(
-                subElement as ISubTransaction,
-                Orm, 
-                Orm.CommonPropertyProvider.CategoryViewModelService);
+            return Orm.SubTransactionViewModelService.GetViewModel(subElement as ISubTransaction);
         }
 
         /// <summary>

@@ -104,7 +104,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override void RefreshBalance()
         {
-            if (this.IsOpen.Value)
+            if (IsOpen.Value)
             {
                 OnPropertyChanged(nameof(Balance));
             }
@@ -115,7 +115,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override void RefreshTits()
         {
-            if(this.IsOpen.Value)
+            if(IsOpen.Value)
             {
                 OnPreVirtualizedRefresh();
                 _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, Account, Orm)));
@@ -129,7 +129,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override ICommand NewTransactionCommand => new RelayCommand(obj =>
         {
-            Transaction transaction = Orm.BffRepository.TransactionRepository.Create();
+            ITransaction transaction = Orm.BffRepository.TransactionRepository.Create();
             transaction.Date = DateTime.Today;
             transaction.Account = Account;
             transaction.Memo = "";
@@ -148,7 +148,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override ICommand NewIncomeCommand => new RelayCommand(obj =>
         {
-            Income income = Orm.BffRepository.IncomeRepository.Create();
+            IIncome income = Orm.BffRepository.IncomeRepository.Create();
             income.Date = DateTime.Today;
             income.Account = Account;
             income.Memo = "";
@@ -167,7 +167,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override ICommand NewTransferCommand => new RelayCommand(obj =>
         {
-            Transfer transfer = Orm.BffRepository.TransferRepository.Create();
+            ITransfer transfer = Orm.BffRepository.TransferRepository.Create();
             transfer.Date = DateTime.Today;
             transfer.Memo = "";
             transfer.Sum = 0L;
@@ -180,15 +180,12 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override ICommand NewParentTransactionCommand => new RelayCommand(obj =>
         {
-            ParentTransaction parentTransaction = Orm.BffRepository.ParentTransactionRepository.Create();
+            IParentTransaction parentTransaction = Orm.BffRepository.ParentTransactionRepository.Create();
             parentTransaction.Date = DateTime.Today;
             parentTransaction.Account = Account;
             parentTransaction.Memo = "";
             parentTransaction.Cleared = false;
-            NewTits.Add(new ParentTransactionViewModel(
-                parentTransaction,
-                Orm,
-                Orm.SubTransactionViewModelService));
+            NewTits.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
         });
 
         /// <summary>
@@ -196,15 +193,12 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override ICommand NewParentIncomeCommand => new RelayCommand(obj =>
         {
-            ParentIncome parentIncome = Orm.BffRepository.ParentIncomeRepository.Create();
+            IParentIncome parentIncome = Orm.BffRepository.ParentIncomeRepository.Create();
             parentIncome.Date = DateTime.Today;
             parentIncome.Account = Account;
             parentIncome.Memo = "";
             parentIncome.Cleared = false;
-            NewTits.Add(new ParentIncomeViewModel(
-                parentIncome, 
-                Orm, 
-                Orm.SubIncomeViewModelService));
+            NewTits.Add(Orm.ParentIncomeViewModelService.GetViewModel(parentIncome));
         });
 
         /// <summary>

@@ -16,14 +16,14 @@ namespace BFF.DB.Dapper.ModelRepositories
             {nameof(Persistance.DbSetting.DateCultureName)} VARCHAR(10));";
     }
     
-    public class DbSettingRepository : RepositoryBase<Domain.DbSetting, Persistance.DbSetting>
+    public class DbSettingRepository : RepositoryBase<Domain.IDbSetting, Persistance.DbSetting>
     {
         public DbSettingRepository(IProvideConnection provideConnection) : base(provideConnection) { }
 
-        public override Domain.DbSetting Create() =>
+        public override Domain.IDbSetting Create() =>
             new Domain.DbSetting(this, -1L);
         
-        protected override Converter<Domain.DbSetting, Persistance.DbSetting> ConvertToPersistance => domainDbSetting => 
+        protected override Converter<Domain.IDbSetting, Persistance.DbSetting> ConvertToPersistance => domainDbSetting => 
             new Persistance.DbSetting
             {
                 Id = domainDbSetting.Id,
@@ -31,7 +31,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                 DateCultureName = domainDbSetting.DateCultureName
             };
 
-        protected override Converter<(Persistance.DbSetting, DbConnection), Domain.DbSetting> ConvertToDomain => tuple =>
+        protected override Converter<(Persistance.DbSetting, DbConnection), Domain.IDbSetting> ConvertToDomain => tuple =>
         {
             (Persistance.DbSetting persistenceDbSetting, _) = tuple;
             return new Domain.DbSetting(this, persistenceDbSetting.Id)

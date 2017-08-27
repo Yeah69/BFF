@@ -15,14 +15,14 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Initializes a SubTransactionViewModel.
         /// </summary>
-        /// <param name="subIncome">A SubTransaction Model.</param>
+        /// <param name="subTransaction">A SubTransaction Model.</param>
         /// <param name="parent">The ViewModel of the Model's ParentTransaction.</param>
         /// <param name="orm">Used for the database accesses.</param>
         public SubTransactionViewModel(
-            ISubTransaction subIncome,
+            ISubTransaction subTransaction,
             IBffOrm orm, 
             CategoryViewModelService categoryViewModelService) :
-            base(subIncome, orm, categoryViewModelService)
+            base(subTransaction, orm, categoryViewModelService)
         {
         }
     }

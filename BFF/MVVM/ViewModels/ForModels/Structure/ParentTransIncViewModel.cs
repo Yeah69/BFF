@@ -52,12 +52,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class ParentTransIncViewModel : TransIncBaseViewModel, IParentTransIncViewModel
     {
+        private readonly IParentTransInc _parentTransInc;
+
         /// <summary>
         /// Refreshes the Balance of the associated account and the summary account and tells the GUI to refresh the sum of this ViewModel.
         /// </summary>
         public void RefreshSum()
         {
-            if(Id > 0)
+            if(_parentTransInc.Id > 0)
             {
                 Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
                 Messenger.Default.Send(AccountMessage.RefreshBalance, Account);
@@ -111,15 +113,16 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Initializes a ParentTransIncViewModel.
         /// </summary>
-        /// <param name="transInc">The associated Model of this ViewModel.</param>
+        /// <param name="parentTransInc">The associated Model of this ViewModel.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        protected ParentTransIncViewModel(IParentTransInc transInc, IBffOrm orm) 
+        protected ParentTransIncViewModel(IParentTransInc parentTransInc, IBffOrm orm) 
             : base(
                   orm, 
-                  transInc,
+                  parentTransInc,
                   orm.CommonPropertyProvider.AccountViewModelService,
                   orm.CommonPropertyProvider.PayeeViewModelService)
         {
+            _parentTransInc = parentTransInc;
         }
 
         /// <summary>
@@ -173,7 +176,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         {
             foreach (ISubTransIncViewModel subTransaction in _newSubElements)
             {
-                if (Id > 0L)
+                if (_parentTransInc.Id > 0L)
                     subTransaction.Insert();
                 _subElements.Add(subTransaction);
             }

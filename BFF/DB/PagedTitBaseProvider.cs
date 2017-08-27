@@ -41,13 +41,10 @@ namespace BFF.DB
                         vmItems.Add(new TransferViewModel(transfer, Orm, Orm.CommonPropertyProvider.AccountViewModelService));
                         break;
                     case IParentTransaction parentTransaction:
-                        vmItems.Add(new ParentTransactionViewModel(parentTransaction, Orm, Orm.SubTransactionViewModelService));
+                        vmItems.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
                         break;
                     case IParentIncome parentIncome:
-                        vmItems.Add(new ParentIncomeViewModel(
-                            parentIncome,
-                            Orm,
-                            Orm.SubIncomeViewModelService));
+                        vmItems.Add(Orm.ParentIncomeViewModelService.GetViewModel(parentIncome));
                         break;
                     case ITransaction transaction:
                         vmItems.Add(new TransactionViewModel(

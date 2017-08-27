@@ -5,15 +5,11 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public interface IPayeeViewModel : ICommonPropertyViewModel
-    {
-    }
+    public interface IPayeeViewModel : ICommonPropertyViewModel {}
 
     public class PayeeViewModel : CommonPropertyViewModel, IPayeeViewModel
     {
-        public PayeeViewModel(IPayee payee, IBffOrm orm) : base(orm, payee)
-        {
-        }
+        public PayeeViewModel(IPayee payee, IBffOrm orm) : base(orm, payee) {}
 
         #region Overrides of DataModelViewModel
 

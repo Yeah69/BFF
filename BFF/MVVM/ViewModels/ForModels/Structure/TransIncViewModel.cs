@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
@@ -75,7 +78,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 categoryViewModelService.GetModel)
                 .AddTo(CompositeDisposable);
 
-            Sum = transInc.ToReactivePropertyAsSynchronized(ti => ti.Sum);
+            Sum = transInc.ToReactivePropertyAsSynchronized(ti => ti.Sum).AddTo(CompositeDisposable);
+
+            Sum.Skip(1)
+                .Subscribe(sum => NotifyRelevantAccountsToRefreshBalance())
+                .AddTo(CompositeDisposable);
         }
 
         /// <summary>

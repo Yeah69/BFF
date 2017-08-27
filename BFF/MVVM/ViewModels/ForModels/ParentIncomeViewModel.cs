@@ -29,22 +29,18 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// A ParentElement's Sum is defined by the Sum of all Sum's of its SubElements.
         /// </summary>
         public override IReactiveProperty<long> Sum { get; }
-        //{
-        //    get { return SubElements.Sum(subElement => subElement.Sum); } //todo: Write an SQL query for that
-        //    set => RefreshSum();
-        //}
 
         /// <summary>
         /// Initializes a ParentIncomeViewModel.
         /// </summary>
-        /// <param name="transInc">A ParentIncome Model.</param>
+        /// <param name="parentTransInc">A ParentIncome Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
         public ParentIncomeViewModel(
-            IParentIncome transInc,
+            IParentIncome parentTransInc,
             IBffOrm orm,
-            SubIncomeViewModelService subIncomeViewModelService) : base(transInc, orm)
+            SubIncomeViewModelService subIncomeViewModelService) : base(parentTransInc, orm)
         {
-            _parentIncome = transInc;
+            _parentIncome = parentTransInc;
 
             SubIncomes =
                 _parentIncome.SubIncomes.ToReadOnlyReactiveCollection(subIncomeViewModelService
@@ -53,7 +49,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .AddTo(CompositeDisposable);
 
             SubIncomes.ObserveAddChanged().Concat(SubIncomes.ObserveRemoveChanged())
-                .Subscribe(obj => Sum.Value = SubIncomes.Sum(sivw => sivw.Sum.Value))
+                .Subscribe(obj => Sum.Value = SubIncomes.Sum(sivw => sivw.Sum.Value))//todo: Write an SQL query for that
                 .AddTo(CompositeDisposable);
             SubIncomes.ObserveReplaceChanged()
                 .Subscribe(obj => Sum.Value = SubIncomes.Sum(sivw => sivw.Sum.Value))
@@ -75,10 +71,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>A new ViewModel for a SubElement.</returns>
         protected override ISubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement)
         {
-            return new SubIncomeViewModel(
-                subElement as ISubIncome,
-                Orm,
-                Orm.CommonPropertyProvider.CategoryViewModelService);
+            return Orm.SubIncomeViewModelService.GetViewModel(subElement as ISubIncome);
         }
 
         /// <summary>

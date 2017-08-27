@@ -5,12 +5,7 @@ namespace BFF.MVVM.Models.Native.Structure
     public interface ISubTransInc : ITitLike, IHaveCategory
     {
         /// <summary>
-        /// Id of the Parent
-        /// </summary>
-        IParentTransInc Parent { get; set; }
-
-        /// <summary>
-        /// The amount of money, which was payeed or recieved
+        /// The amount of money, which was payed or received
         /// </summary>
         long Sum { get; set; }
     }
@@ -20,23 +15,7 @@ namespace BFF.MVVM.Models.Native.Structure
     /// </summary>
     public abstract class SubTransInc<T> : TitLike<T>, ISubTransInc where T : class, ISubTransInc
     {
-        private IParentTransInc _parent;
         private ICategory _category;
-
-        /// <summary>
-        /// Id of the Parent
-        /// </summary>
-        public IParentTransInc Parent
-        {
-            get => _parent;
-            set
-            {
-                if(_parent == value) return;
-                _parent = value;
-                Update();
-                OnPropertyChanged();
-            }
-        }
 
         /// <summary>
         /// Id of the Category
@@ -56,7 +35,7 @@ namespace BFF.MVVM.Models.Native.Structure
         private long _sum;
 
         /// <summary>
-        /// The amount of money, which was payeed or recieved
+        /// The amount of money, which was payed or received
         /// </summary>
         public long Sum
         {

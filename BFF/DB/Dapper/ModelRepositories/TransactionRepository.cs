@@ -25,7 +25,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class TransactionRepository : RepositoryBase<Domain.Transaction, Persistance.Transaction>
+    public class TransactionRepository : RepositoryBase<Domain.ITransaction, Persistance.Transaction>
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
         private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
@@ -42,10 +42,10 @@ namespace BFF.DB.Dapper.ModelRepositories
             _payeeFetcher = payeeFetcher;
         }
 
-        public override Domain.Transaction Create() =>
+        public override Domain.ITransaction Create() =>
             new Domain.Transaction(this, -1L, DateTime.Now, null, null, null, "", 0L, false);
         
-        protected override Converter<Domain.Transaction, Persistance.Transaction> ConvertToPersistance => domainTransaction => 
+        protected override Converter<Domain.ITransaction, Persistance.Transaction> ConvertToPersistance => domainTransaction => 
             new Persistance.Transaction
             {
                 Id = domainTransaction.Id,
@@ -58,7 +58,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Cleared = domainTransaction.Cleared ? 1L : 0L
             };
 
-        protected override Converter<(Persistance.Transaction, DbConnection), Domain.Transaction> ConvertToDomain => tuple =>
+        protected override Converter<(Persistance.Transaction, DbConnection), Domain.ITransaction> ConvertToDomain => tuple =>
         {
             (Persistance.Transaction persistenceTransaction, DbConnection connection) = tuple;
             return new Domain.Transaction(

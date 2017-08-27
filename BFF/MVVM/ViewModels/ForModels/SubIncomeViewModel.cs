@@ -1,9 +1,7 @@
 ﻿using BFF.DB;
-using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
-using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
@@ -23,9 +21,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         public SubIncomeViewModel(
             ISubIncome subIncome,
             IBffOrm orm,
-            CategoryViewModelService categoryViewModelService) :
-        base(subIncome, orm, categoryViewModelService)
-        {
-        }
+            CategoryViewModelService categoryViewModelService) : base(subIncome, orm, categoryViewModelService) {}
     }
 }

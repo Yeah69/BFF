@@ -28,11 +28,11 @@ namespace BFF.DB.Dapper.ModelRepositories
     
     public class TitRepository : ViewRepositoryBase<Domain.Structure.ITitBase, Persistance.TheTit, MVVM.Models.Native.IAccount>
     {
-        private readonly IRepository<Domain.Transaction> _transactionRepository;
-        private readonly IRepository<Domain.Income> _incomeRepository;
-        private readonly IRepository<Domain.Transfer> _transferRepository;
-        private readonly IRepository<Domain.ParentTransaction> _parentTransactionRepository;
-        private readonly IRepository<Domain.ParentIncome> _parentIncomeRepository;
+        private readonly IRepository<Domain.ITransaction> _transactionRepository;
+        private readonly IRepository<Domain.IIncome> _incomeRepository;
+        private readonly IRepository<Domain.ITransfer> _transferRepository;
+        private readonly IRepository<Domain.IParentTransaction> _parentTransactionRepository;
+        private readonly IRepository<Domain.IParentIncome> _parentIncomeRepository;
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
         private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
         private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
@@ -41,11 +41,11 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         public TitRepository(
             IProvideConnection provideConnection, 
-            IRepository<Domain.Transaction> transactionRepository, 
-            IRepository<Domain.Income> incomeRepository, 
-            IRepository<Domain.Transfer> transferRepository, 
-            IRepository<Domain.ParentTransaction> parentTransactionRepository,
-            IRepository<Domain.ParentIncome> parentIncomeRepository,
+            IRepository<Domain.ITransaction> transactionRepository, 
+            IRepository<Domain.IIncome> incomeRepository, 
+            IRepository<Domain.ITransfer> transferRepository, 
+            IRepository<Domain.IParentTransaction> parentTransactionRepository,
+            IRepository<Domain.IParentIncome> parentIncomeRepository,
             Func<long, DbConnection, Domain.IAccount> accountFetcher,
             Func<long, DbConnection, Domain.ICategory> categoryFetcher,
             Func<long, DbConnection, Domain.IPayee> payeeFetcher,

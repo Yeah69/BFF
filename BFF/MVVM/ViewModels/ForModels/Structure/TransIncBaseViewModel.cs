@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
@@ -46,23 +48,39 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Initializes a TransIncBaseViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
-        /// <param name="transIncBase">The model.</param>
+        /// <param name="parentTransIncBase">The model.</param>
         /// <param name="accountViewModelService">Service of accounts.</param>
         /// <param name="payeeViewModelService">Service of payees.</param>
         protected TransIncBaseViewModel(
             IBffOrm orm, 
-            ITransIncBase transIncBase, 
+            ITransIncBase parentTransIncBase, 
             AccountViewModelService accountViewModelService,
-            PayeeViewModelService payeeViewModelService) : base(orm, transIncBase)
+            PayeeViewModelService payeeViewModelService) : base(orm, parentTransIncBase)
         {
+            void RefreshAnAccountViewModel(IAccountViewModel account)
+            {
+                account?.RefreshTits();
+                account?.RefreshBalance();
+            }
+
             _payeeViewModelService = payeeViewModelService;
 
-            Account = transIncBase.ToReactivePropertyAsSynchronized(
+            Account = parentTransIncBase.ToReactivePropertyAsSynchronized(
                 tib => tib.Account,
                 accountViewModelService.GetViewModel, 
                 accountViewModelService.GetModel);
 
-            Payee = transIncBase.ToReactivePropertyAsSynchronized(
+            Account
+                .SkipLast(1)
+                .Subscribe(RefreshAnAccountViewModel)
+                .AddTo(CompositeDisposable);
+
+            Account
+                .Skip(1)
+                .Subscribe(RefreshAnAccountViewModel)
+                .AddTo(CompositeDisposable);
+
+            Payee = parentTransIncBase.ToReactivePropertyAsSynchronized(
                 tib => tib.Payee,
                 payeeViewModelService.GetViewModel,
                 payeeViewModelService.GetModel);
@@ -113,6 +131,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         {
             Account.Value?.RefreshTits();
             Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+        }
+
+        protected override void NotifyRelevantAccountsToRefreshBalance()
+        {
+            Account.Value?.RefreshBalance();
+            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
         }
     }
 }

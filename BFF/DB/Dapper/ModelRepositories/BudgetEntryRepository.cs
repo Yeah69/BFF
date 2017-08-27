@@ -18,7 +18,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             FOREIGN KEY({nameof(Persistance.BudgetEntry.CategoryId)}) REFERENCES {nameof(Persistance.Category)}s({nameof(Persistance.Category.Id)}) ON DELETE SET NULL);";
     }
     
-    public class BudgetEntryRepository : RepositoryBase<Domain.BudgetEntry, Persistance.BudgetEntry>
+    public class BudgetEntryRepository : RepositoryBase<Domain.IBudgetEntry, Persistance.BudgetEntry>
     {
         private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
         public BudgetEntryRepository(IProvideConnection provideConnection, Func<long, DbConnection, Domain.ICategory> categoryFetcher) : base(provideConnection)
@@ -26,10 +26,10 @@ namespace BFF.DB.Dapper.ModelRepositories
             _categoryFetcher = categoryFetcher;
         }
 
-        public override Domain.BudgetEntry Create() =>
+        public override Domain.IBudgetEntry Create() =>
             new Domain.BudgetEntry(this, -1L, DateTime.MinValue);
         
-        protected override Converter<Domain.BudgetEntry, Persistance.BudgetEntry> ConvertToPersistance => domainBudgetEntry => 
+        protected override Converter<Domain.IBudgetEntry, Persistance.BudgetEntry> ConvertToPersistance => domainBudgetEntry => 
             new Persistance.BudgetEntry
             {
                 Id = domainBudgetEntry.Id,
@@ -38,7 +38,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Budget = domainBudgetEntry.Budget
             };
 
-        protected override Converter<(Persistance.BudgetEntry, DbConnection), Domain.BudgetEntry> ConvertToDomain => tuple =>
+        protected override Converter<(Persistance.BudgetEntry, DbConnection), Domain.IBudgetEntry> ConvertToDomain => tuple =>
         {
             (Persistance.BudgetEntry persistenceBudgetEntry, DbConnection connection) = tuple;
             return new Domain.BudgetEntry(

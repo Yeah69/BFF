@@ -25,7 +25,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class IncomeRepository : RepositoryBase<Domain.Income, Persistance.Income>
+    public class IncomeRepository : RepositoryBase<Domain.IIncome, Persistance.Income>
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
         private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
@@ -42,10 +42,10 @@ namespace BFF.DB.Dapper.ModelRepositories
             _payeeFetcher = payeeFetcher;
         }
 
-        public override Domain.Income Create() =>
+        public override Domain.IIncome Create() =>
             new Domain.Income(this, -1L, DateTime.MinValue, null, null, null, "", 0L, false);
         
-        protected override Converter<Domain.Income, Persistance.Income> ConvertToPersistance => domainIncome => 
+        protected override Converter<Domain.IIncome, Persistance.Income> ConvertToPersistance => domainIncome => 
             new Persistance.Income
             {
                 Id = domainIncome.Id,
@@ -58,7 +58,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Cleared = domainIncome.Cleared ? 1L : 0L
             };
 
-        protected override Converter<(Persistance.Income, DbConnection), Domain.Income> ConvertToDomain => tuple =>
+        protected override Converter<(Persistance.Income, DbConnection), Domain.IIncome> ConvertToDomain => tuple =>
         {
             (Persistance.Income persistenceIncome, DbConnection connection) = tuple;
             return new Domain.Income(

@@ -20,7 +20,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class SubIncomeRepository : SubTransIncRepository<Domain.SubIncome, Persistance.SubIncome>
+    public class SubIncomeRepository : SubTransIncRepository<Domain.ISubIncome, Persistance.SubIncome>
     {
         private readonly Func<long, DbConnection, Domain.IParentIncome> _parentIncomeFetcher;
         private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
@@ -34,10 +34,10 @@ namespace BFF.DB.Dapper.ModelRepositories
             _categoryFetcher = categoryFetcher;
         }
 
-        public override Domain.SubIncome Create() =>
+        public override Domain.ISubIncome Create() =>
             new Domain.SubIncome(this, -1L, null, "", 0L);
         
-        protected override Converter<Domain.SubIncome, Persistance.SubIncome> ConvertToPersistance => domainSubIncome => 
+        protected override Converter<Domain.ISubIncome, Persistance.SubIncome> ConvertToPersistance => domainSubIncome => 
             new Persistance.SubIncome
             {
                 Id = domainSubIncome.Id,
@@ -47,7 +47,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Sum = domainSubIncome.Sum
             };
 
-        protected override Converter<(Persistance.SubIncome, DbConnection), Domain.SubIncome> ConvertToDomain => tuple =>
+        protected override Converter<(Persistance.SubIncome, DbConnection), Domain.ISubIncome> ConvertToDomain => tuple =>
         {
             (Persistance.SubIncome persistenceSubIncome, DbConnection connection) = tuple;
             return new Domain.SubIncome(

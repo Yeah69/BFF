@@ -5,7 +5,7 @@ using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.MVVM.Services
 {
-    public class PayeeViewModelService : ViewModelServiceBase<IPayee, IPayeeViewModel>
+    public class PayeeViewModelService : CommonPropertyViewModelServiceBase<IPayee, IPayeeViewModel>
     {
         private readonly PayeeRepository _repository;
         private readonly IBffOrm _orm;

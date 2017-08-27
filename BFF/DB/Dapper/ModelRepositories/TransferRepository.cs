@@ -23,7 +23,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class TransferRepository : RepositoryBase<Domain.Transfer, Persistance.Transfer>
+    public class TransferRepository : RepositoryBase<Domain.ITransfer, Persistance.Transfer>
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
 
@@ -34,10 +34,10 @@ namespace BFF.DB.Dapper.ModelRepositories
             _accountFetcher = accountFetcher;
         }
 
-        public override Domain.Transfer Create() =>
+        public override Domain.ITransfer Create() =>
             new Domain.Transfer(this, -1L, DateTime.MinValue, null, null, "", 0L);
         
-        protected override Converter<Domain.Transfer, Persistance.Transfer> ConvertToPersistance => domainTransfer => 
+        protected override Converter<Domain.ITransfer, Persistance.Transfer> ConvertToPersistance => domainTransfer => 
             new Persistance.Transfer
             {
                 Id = domainTransfer.Id,
@@ -49,7 +49,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Cleared = domainTransfer.Cleared ? 1L : 0L
             };
 
-        protected override Converter<(Persistance.Transfer, DbConnection), Domain.Transfer> ConvertToDomain => tuple =>
+        protected override Converter<(Persistance.Transfer, DbConnection), Domain.ITransfer> ConvertToDomain => tuple =>
         {
             (Persistance.Transfer persistenceTransfer, DbConnection connection) = tuple;
             return new Domain.Transfer(
