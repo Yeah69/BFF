@@ -15,8 +15,6 @@ namespace BFF.DB.Dapper
             IPayee PayeeFetcher(long id, DbConnection connection) => PayeeRepository.Find(id, connection);
             IEnumerable<ISubTransaction> SubTransactionsFetcher(long parentId, DbConnection connection) => SubTransactionRepository.GetChildrenOf(parentId, connection);
             IEnumerable<ISubIncome> SubIncomesFetcher(long parentId, DbConnection connection) => SubIncomeRepository.GetChildrenOf(parentId, connection);
-            IParentTransaction ParentTransactionFetcher(long id, DbConnection connection) => ParentTransactionRepository.Find(id, connection);
-            IParentIncome ParentIncomeFetcher(long id, DbConnection connection) => ParentIncomeRepository.Find(id, connection);
 
             AccountRepository = new AccountRepository(provideConnection);
             BudgetEntryRepository = new BudgetEntryRepository(provideConnection, CategoryFetcher);
@@ -26,8 +24,8 @@ namespace BFF.DB.Dapper
             ParentIncomeRepository = new ParentIncomeRepository(provideConnection, AccountFetcher, PayeeFetcher, SubIncomesFetcher);
             ParentTransactionRepository = new ParentTransactionRepository(provideConnection, AccountFetcher, PayeeFetcher, SubTransactionsFetcher);
             PayeeRepository = new PayeeRepository(provideConnection);
-            SubIncomeRepository = new SubIncomeRepository(provideConnection, ParentIncomeFetcher, CategoryFetcher);
-            SubTransactionRepository = new SubTransactionRepository(provideConnection, ParentTransactionFetcher, CategoryFetcher);
+            SubIncomeRepository = new SubIncomeRepository(provideConnection, CategoryFetcher);
+            SubTransactionRepository = new SubTransactionRepository(provideConnection, CategoryFetcher);
             TransactionRepository = new TransactionRepository(provideConnection, AccountFetcher, CategoryFetcher, PayeeFetcher);
             TransferRepository = new TransferRepository(provideConnection, AccountFetcher);
             TitRepository = new TitRepository(provideConnection,

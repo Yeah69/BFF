@@ -9,7 +9,11 @@ namespace BFF.MVVM.Models.Native
 {
     public interface IParentTransaction : IParentTransInc
     {
-        ObservableCollection<ISubTransaction> SubTransactions { get; }
+        ReadOnlyObservableCollection<ISubTransaction> SubTransactions { get; }
+
+        void AddSubElement(ISubTransaction subTransaction);
+
+        void RemoveSubElement(ISubTransaction subTransaction);
     }
 
     /// <summary>
@@ -17,12 +21,14 @@ namespace BFF.MVVM.Models.Native
     /// </summary>
     public class ParentTransaction : ParentTransInc<IParentTransaction>, IParentTransaction
     {
+        private readonly ObservableCollection<ISubTransaction> _subTransactions;
+
         /// <summary>
         /// Initializes the object
         /// </summary>
         /// <param name="date">Marks when the Tit happened</param>
         /// <param name="account">The Account to which this belongs</param>
-        /// <param name="payee">To whom was payeed or who payeed</param>
+        /// <param name="payee">To whom was payed or who payed</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public ParentTransaction(
@@ -36,14 +42,27 @@ namespace BFF.MVVM.Models.Native
             bool? cleared = null)
             : base(repository, id, date, account, payee, memo, cleared)
         {
-            SubTransactions = new ObservableCollection<ISubTransaction>(subTransactions);
+            _subTransactions = new ObservableCollection<ISubTransaction>(subTransactions);
+            SubTransactions = new ReadOnlyObservableCollection<ISubTransaction>(_subTransactions);
             SubTransactions.ObserveAddChanged().Subscribe(st => st.Parent = this);
+            
             foreach (var subTransaction in SubTransactions)
             {
                 subTransaction.Parent = this;
             }
         }
 
-        public ObservableCollection<ISubTransaction> SubTransactions { get; }
+        public ReadOnlyObservableCollection<ISubTransaction> SubTransactions { get; }
+
+        public void AddSubElement(ISubTransaction subTransaction)
+        {
+            subTransaction.Parent = this;
+            _subTransactions.Add(subTransaction);
+        }
+
+        public void RemoveSubElement(ISubTransaction subTransaction)
+        {
+            _subTransactions.Remove(subTransaction);
+        }
     }
 }

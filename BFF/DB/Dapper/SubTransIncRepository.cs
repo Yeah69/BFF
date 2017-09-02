@@ -7,7 +7,7 @@ using Domain = BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB.Dapper
 {
-    public abstract class SubTransIncRepository <TDomain, TPersistence> : CachingRepositoryBase<TDomain, TPersistence> 
+    public abstract class SubTransIncRepository <TDomain, TPersistence> : RepositoryBase<TDomain, TPersistence> 
         where TDomain : class, Domain.ISubTransInc 
         where TPersistence : class, Persistence.IPersistanceModel
     {

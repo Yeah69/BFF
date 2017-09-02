@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using BFF.DB.Dapper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
@@ -51,10 +50,12 @@ namespace BFF.DB.SQLite
             CommonPropertyProvider = new CommonPropertyProvider(this, _bffRepository);
 
             SubTransactionViewModelService = new SubTransactionViewModelService(
-                st => new SubTransactionViewModel(st, this, CommonPropertyProvider.CategoryViewModelService));
+                st => new SubTransactionViewModel(st, this, CommonPropertyProvider.CategoryViewModelService),
+                () => BffRepository.SubTransactionRepository.Create());
 
             SubIncomeViewModelService = new SubIncomeViewModelService(
-                si => new SubIncomeViewModel(si, this, CommonPropertyProvider.CategoryViewModelService));
+                si => new SubIncomeViewModel(si, this, CommonPropertyProvider.CategoryViewModelService),
+                () => BffRepository.SubIncomeRepository.Create());
 
             ParentTransactionViewModelService = new ParentTransactionViewModelService(
                 pt => new ParentTransactionViewModel(pt, this, SubTransactionViewModelService));
@@ -67,11 +68,5 @@ namespace BFF.DB.SQLite
 
         public int GetCount<T>(object specifyingObject = null) => 
             _bffRepository.TitRepository.GetCount(specifyingObject as IAccount);
-
-        public Task<IEnumerable<T>> GetPageAsync<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
-            => _bffRepository.TitRepository.GetPageAsync(offset, pageSize, specifyingObject as IAccount) as Task<IEnumerable<T>>;
-
-        public Task<int> GetCountAsync<T>(object specifyingObject = null) =>
-            _bffRepository.TitRepository.GetCountAsync(specifyingObject as IAccount);
     }
 }

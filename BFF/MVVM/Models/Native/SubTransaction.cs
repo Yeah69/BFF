@@ -44,11 +44,16 @@ namespace BFF.MVVM.Models.Native
             }
         }
 
+        public override void Insert()
+        {
+            base.Insert();
+            Parent.AddSubElement(this);
+        }
+
         public override void Delete()
         {
             base.Delete();
-            if(Parent.SubTransactions.Contains(this))
-                Parent.SubTransactions.Remove(this);
+            Parent.RemoveSubElement(this);
         }
     }
 }

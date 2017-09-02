@@ -10,7 +10,6 @@ using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 using Dapper.Contrib.Extensions;
-using Transaction = BFF.MVVM.Models.Native.Transaction;
 
 namespace BFF.DB
 {
@@ -104,7 +103,7 @@ namespace BFF.DB
             while (categoriesOrder.Count > 0)
             {
                 CategoryImportWrapper current = categoriesOrder.Dequeue();
-                CategoryRepository.Add(current.Category as Category, connection);
+                CategoryRepository.Add(current.Category, connection);
                 foreach (IHaveCategory currentTitAssignment in current.TitAssignments)
                 {
                     currentTitAssignment.Category = current.Category;
@@ -117,7 +116,7 @@ namespace BFF.DB
             }
             foreach (IPayee payee in importLists.Payees)
             {
-                PayeeRepository.Add(payee as Payee, connection);
+                PayeeRepository.Add(payee, connection);
                 foreach (ITransIncBase transIncBase in importAssignments.PayeeToTransIncBase[payee])
                 {
                     transIncBase.Payee = payee;
@@ -140,33 +139,33 @@ namespace BFF.DB
                 }
             }
             foreach (ITransaction transaction in importLists.Transactions)
-                TransactionRepository.Add(transaction as Transaction, connection);
+                TransactionRepository.Add(transaction, connection);
             foreach (IParentTransaction parentTransaction in importLists.ParentTransactions)
             {
-                ParentTransactionRepository.Add(parentTransaction as ParentTransaction, connection);
+                ParentTransactionRepository.Add(parentTransaction, connection);
                 foreach (ISubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
                 {
                     subTransaction.Parent = parentTransaction;
                 }
             }
             foreach (ISubTransaction subTransaction in importLists.SubTransactions) 
-                SubTransactionRepository.Add(subTransaction as SubTransaction, connection);
+                SubTransactionRepository.Add(subTransaction, connection);
             foreach (IIncome income in importLists.Incomes) 
-                IncomeRepository.Add(income as Income, connection);
+                IncomeRepository.Add(income, connection);
             foreach (IParentIncome parentIncome in importLists.ParentIncomes)
             {
-                ParentIncomeRepository.Add(parentIncome as ParentIncome, connection);
+                ParentIncomeRepository.Add(parentIncome, connection);
                 foreach (ISubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
                 {
                     subIncome.Parent = parentIncome;
                 }
             }
             foreach (ISubIncome subIncome in importLists.SubIncomes) 
-                SubIncomeRepository.Add(subIncome as SubIncome, connection);
+                SubIncomeRepository.Add(subIncome, connection);
             foreach (ITransfer transfer in importLists.Transfers) 
                 TransferRepository.Add(transfer, connection);
             foreach (IBudgetEntry budgetEntry in importLists.BudgetEntries) 
-                BudgetEntryRepository.Add(budgetEntry as BudgetEntry, connection);
+                BudgetEntryRepository.Add(budgetEntry, connection);
         }
 
         public void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments, DbConnection connection = null)

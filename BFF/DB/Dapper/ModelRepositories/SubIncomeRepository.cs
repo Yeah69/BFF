@@ -22,15 +22,12 @@ namespace BFF.DB.Dapper.ModelRepositories
     
     public class SubIncomeRepository : SubTransIncRepository<Domain.ISubIncome, Persistance.SubIncome>
     {
-        private readonly Func<long, DbConnection, Domain.IParentIncome> _parentIncomeFetcher;
         private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
 
         public SubIncomeRepository(
             IProvideConnection provideConnection,
-            Func<long, DbConnection, Domain.IParentIncome> parentIncomeFetcher,
             Func<long, DbConnection, Domain.ICategory> categoryFetcher) : base(provideConnection)
         {
-            _parentIncomeFetcher = parentIncomeFetcher;
             _categoryFetcher = categoryFetcher;
         }
 

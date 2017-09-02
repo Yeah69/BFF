@@ -432,7 +432,7 @@
                 <DataGrid ItemsSource="{Binding NewSubElements}" HeadersVisibility="None">
                     <DataGrid.Columns>
                         <!-- Category -->
-                        <DataGridTemplateColumn SortMemberPath="Category.Name.Value" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn SortMemberPath="Category.Value.Name.Value" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryEditingColumnTemplate}" />
@@ -440,7 +440,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <!-- Memo -->
-                        <DataGridTemplateColumn SortMemberPath="Memo" Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn SortMemberPath="Memo.Value" Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoEditingColumnTemplate}" />
@@ -448,7 +448,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <!-- Sum -->
-                        <DataGridTemplateColumn SortMemberPath="Sum" IsReadOnly="False"  Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn SortMemberPath="Sum.Value" IsReadOnly="False"  Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumEditingColumnTemplate}" />
@@ -456,7 +456,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <!-- Cleared -->
-                        <DataGridTemplateColumn SortMemberPath="Cleared" IsReadOnly="True"  Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}"
+                        <DataGridTemplateColumn SortMemberPath="Cleared.Value" IsReadOnly="True"  Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}"
                                                     CellTemplate="{StaticResource EmptyDataTemplate}" />
                     </DataGrid.Columns>
                 </DataGrid>
@@ -466,7 +466,7 @@
                     <DataGrid ItemsSource="{Binding SubElements}" RowStyle="{StaticResource DefaultRowStyle}" HeadersVisibility="None" BorderThickness="0,0,0,2">
                         <DataGrid.Columns>
                             <!-- Category -->
-                            <DataGridTemplateColumn SortMemberPath="Category.Name.Value" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
+                            <DataGridTemplateColumn SortMemberPath="Category.Value.Name.Value" Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <ContentControl Content="{Binding}" ContentTemplate="{StaticResource CategoryColumnTemplate}" />
@@ -479,7 +479,7 @@
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
                             <!-- Memo -->
-                            <DataGridTemplateColumn SortMemberPath="Memo" Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}">
+                            <DataGridTemplateColumn SortMemberPath="Memo.Value" Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <ContentControl Content="{Binding}" ContentTemplate="{StaticResource MemoColumnTemplate}" />
@@ -492,7 +492,7 @@
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
                             <!-- Sum -->
-                            <DataGridTemplateColumn SortMemberPath="Sum" IsReadOnly="False" Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}">
+                            <DataGridTemplateColumn SortMemberPath="Sum.Value" IsReadOnly="False" Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <ContentControl Content="{Binding}" ContentTemplate="{StaticResource SumColumnTemplate}" />
@@ -505,7 +505,7 @@
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
                             <!-- Cleared -->
-                            <DataGridTemplateColumn SortMemberPath="Cleared" IsReadOnly="True" Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}"
+                            <DataGridTemplateColumn SortMemberPath="Cleared.Value" IsReadOnly="True" Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}"
                                                     CellTemplate="{StaticResource EmptyDataTemplate}" />
                         </DataGrid.Columns>
                     </DataGrid>

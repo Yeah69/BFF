@@ -24,7 +24,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class ParentTransactionRepository : CachingRepositoryBase<Domain.IParentTransaction, Persistance.ParentTransaction>
+    public class ParentTransactionRepository : RepositoryBase<Domain.IParentTransaction, Persistance.ParentTransaction>
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
         private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
@@ -58,7 +58,8 @@ namespace BFF.DB.Dapper.ModelRepositories
         protected override Converter<(Persistance.ParentTransaction, DbConnection), Domain.IParentTransaction> ConvertToDomain => tuple =>
         {
             (Persistance.ParentTransaction persistenceParentTransaction, DbConnection connection) = tuple;
-            return new Domain.ParentTransaction(
+
+            var parentTransaction = new Domain.ParentTransaction(
                 this,
                 _subTransactionsFetcher(persistenceParentTransaction.Id, connection),
                 persistenceParentTransaction.Id,
@@ -67,6 +68,13 @@ namespace BFF.DB.Dapper.ModelRepositories
                 _payeeFetcher(persistenceParentTransaction.PayeeId, connection),
                 persistenceParentTransaction.Memo,
                 persistenceParentTransaction.Cleared == 1L);
+
+            foreach (var subTransaction in parentTransaction.SubTransactions)
+            {
+                subTransaction.Parent = parentTransaction;
+            }
+
+            return parentTransaction;
         };
     }
 }

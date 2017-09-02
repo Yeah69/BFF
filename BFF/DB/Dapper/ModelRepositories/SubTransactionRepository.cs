@@ -22,15 +22,12 @@ namespace BFF.DB.Dapper.ModelRepositories
     
     public class SubTransactionRepository : SubTransIncRepository<Domain.ISubTransaction, Persistance.SubTransaction>
     {
-        private readonly Func<long, DbConnection, Domain.IParentTransaction> _parentTransactionFetcher;
         private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
 
         public SubTransactionRepository(
             IProvideConnection provideConnection,
-            Func<long, DbConnection, Domain.IParentTransaction> parentTransactionFetcher,
             Func<long, DbConnection, Domain.ICategory> categoryFetcher) : base(provideConnection)
         {
-            _parentTransactionFetcher = parentTransactionFetcher;
             _categoryFetcher = categoryFetcher;
         }
 

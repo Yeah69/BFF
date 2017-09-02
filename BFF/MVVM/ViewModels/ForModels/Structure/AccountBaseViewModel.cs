@@ -222,25 +222,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             {
                 tit.Insert();
                 NewTits.Remove(tit);
-                if (tit is IParentTransactionViewModel parentTransactionViewModel)
-                {
-                    foreach(ISubTransIncViewModel subTransaction in parentTransactionViewModel.NewSubElements)
-                    {
-                        subTransaction.Insert();
-                        parentTransactionViewModel.SubElements.Add(subTransaction);
-                    }
-                    parentTransactionViewModel.NewSubElements.Clear();
-                }
-                else if (tit is IParentIncomeViewModel parentIncomeViewModel) // todo unify this and the above if-clause?
-                {
-                    foreach (ISubTransIncViewModel subIncome in parentIncomeViewModel.NewSubElements)
-                    {
-                        subIncome.Insert();
-                        parentIncomeViewModel.SubElements.Add(subIncome);
-                    }
-                    parentIncomeViewModel.NewSubElements.Clear();
-                }
-                else if (tit is ITransIncViewModel transIncViewModel)
+                if (tit is ITransIncBaseViewModel transIncViewModel)
                     accountViewModels.Add(transIncViewModel.Account.Value);
                 else if (tit is ITransferViewModel transferViewModel)
                 {

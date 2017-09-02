@@ -126,7 +126,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         {
             ICategory newCategory = Orm.BffRepository.CategoryRepository.Create();
             newCategory.Name = CategoryText.Trim();
-            newCategory.Parent = CommonPropertyProvider.CategoryViewModelService.GetModel(AddingCategoryParent as CategoryViewModel);
+            newCategory.Parent = CommonPropertyProvider.CategoryViewModelService.GetModel(AddingCategoryParent);
             newCategory.Insert();
             OnPropertyChanged(nameof(AllCategories));
             Category.Value = _categoryViewModelService.GetViewModel(newCategory);

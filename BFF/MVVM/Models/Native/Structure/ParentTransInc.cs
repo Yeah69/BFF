@@ -1,5 +1,6 @@
 ﻿using System;
 using BFF.DB;
+using Reactive.Bindings;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
@@ -9,8 +10,6 @@ namespace BFF.MVVM.Models.Native.Structure
 
     public abstract class ParentTransInc<T> : TransIncBase<T>, IParentTransInc where T : class, IParentTransInc
     {
-
-
         /// <summary>
         /// Initializes the object
         /// </summary>

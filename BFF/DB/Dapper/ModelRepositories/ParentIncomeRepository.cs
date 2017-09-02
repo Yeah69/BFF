@@ -26,7 +26,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         
     }
     
-    public class ParentIncomeRepository : CachingRepositoryBase<Domain.IParentIncome, Persistance.ParentIncome>
+    public class ParentIncomeRepository : RepositoryBase<Domain.IParentIncome, Persistance.ParentIncome>
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
         private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
