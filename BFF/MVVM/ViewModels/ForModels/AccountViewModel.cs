@@ -55,24 +55,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             : base(orm, account)
         {
             Account = account;
-            Messenger.Default.Register<AccountMessage>(this, message =>
-            {
-                switch(message)
-                {
-                    case AccountMessage.Refresh:
-                        RefreshTits();
-                        RefreshBalance();
-                        break;
-                    case AccountMessage.RefreshBalance:
-                        RefreshBalance();
-                        break;
-                    case AccountMessage.RefreshTits:
-                        RefreshTits();
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
-            }, this);
 
             StartingBalance = account.ToReactivePropertyAsSynchronized(a => a.StartingBalance)
                                      .AddTo(CompositeDisposable);

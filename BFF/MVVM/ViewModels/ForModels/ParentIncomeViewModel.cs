@@ -84,7 +84,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             Sum.DistinctUntilChanged().Subscribe(_ =>
             {
-                Account.Value.RefreshBalance();
+                Account.Value?.RefreshBalance();
                 Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
             }).AddTo(CompositeDisposable);
 

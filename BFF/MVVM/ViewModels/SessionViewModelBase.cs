@@ -16,7 +16,7 @@ namespace BFF.MVVM.ViewModels
             Thread.CurrentThread.CurrentCulture = customCulture;
             Thread.CurrentThread.CurrentUICulture = customCulture;
             SaveCultures();
-            Messenger.Default.Send(CutlureMessage.Refresh);
+            Messenger.Default.Send(CultureMessage.Refresh);
         }
     }
 }

@@ -119,11 +119,12 @@
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}">
-                            <ComboBox TextSearch.TextPath="Name"
+                            <ComboBox TextSearch.TextPath="Name.Value"
                                       IsEditable="True"
                                       IsTextSearchCaseSensitive="False"
                                       IsTextSearchEnabled="True"
-                                      ItemsSource="{Binding AllAccounts}">
+                                      ItemsSource="{Binding AllAccounts}"
+                                      DisplayMemberPath="Name.Value">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="Account.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>

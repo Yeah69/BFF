@@ -119,7 +119,7 @@ namespace BFF.MVVM.ViewModels
             {
                 Settings.Default.Culture_DefaultDateLong = value;
                 _contentViewModel?.ManageCultures();
-                Messenger.Default.Send(CutlureMessage.RefreshDate);
+                Messenger.Default.Send(CultureMessage.RefreshDate);
                 OnPropertyChanged();
             }
         }

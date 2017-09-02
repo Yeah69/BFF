@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using BFF.DB;
@@ -40,17 +39,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// The amount of money of the exchange of the Transaction or Income.
         /// </summary>
         public override IReactiveProperty<long> Sum { get; }
-        //{
-        //    get => _transInc.Sum;
-        //    set
-        //    {
-        //        if(value == _transInc.Sum) return;
-        //        _transInc.Sum = value;
-        //        OnUpdate();
-        //        Messenger.Default.Send(AccountMessage.RefreshBalance, Account);
-        //        OnPropertyChanged();
-        //    }
-        //}
 
         #endregion
 
@@ -143,16 +131,5 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public IObservableReadOnlyList<ICategoryViewModel> AllCategories => CommonPropertyProvider?.AllCategoryViewModels;
 
         #endregion
-
-        /// <summary>
-        /// Uses the OR mapper to update the model in the database. Inner function for the Update method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected override void OnUpdate()
-        {
-            Messenger.Default.Send(SummaryAccountMessage.Refresh);
-            Messenger.Default.Send(AccountMessage.Refresh, Account);
-        }
     }
 }

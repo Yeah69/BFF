@@ -33,7 +33,7 @@ namespace BFF.MVVM.ViewModels
             //Insert Account to Database
             NewAccount.Insert();
             //Refresh all relevant properties
-            Messenger.Default.Send(AccountMessage.RefreshBalance, NewAccount);
+            NewAccount.RefreshBalance();
             Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
             Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
             //Refresh dummy-Account
@@ -53,15 +53,15 @@ namespace BFF.MVVM.ViewModels
             Settings.Default.Culture_SessionDate = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
             ManageCultures();
 
-            Messenger.Default.Register<CutlureMessage>(this, message =>
+            Messenger.Default.Register<CultureMessage>(this, message =>
             {
                 switch(message)
                 {
-                    case CutlureMessage.Refresh:
-                    case CutlureMessage.RefreshCurrency:
+                    case CultureMessage.Refresh:
+                    case CultureMessage.RefreshCurrency:
                         OnPropertyChanged(nameof(NewAccount));
                         break;
-                    case CutlureMessage.RefreshDate:
+                    case CultureMessage.RefreshDate:
                         break;
                     default:
                         throw new InvalidEnumArgumentException();
@@ -99,7 +99,7 @@ namespace BFF.MVVM.ViewModels
                 (accountViewModel as IDisposable)?.Dispose();
             }
             (SummaryAccountViewModel as IDisposable)?.Dispose();
-            Messenger.Default.Unregister<CutlureMessage>(this);
+            Messenger.Default.Unregister<CultureMessage>(this);
         }
 
         #endregion

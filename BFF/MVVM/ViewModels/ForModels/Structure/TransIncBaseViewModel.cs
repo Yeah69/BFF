@@ -123,8 +123,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public override ICommand DeleteCommand => new RelayCommand(obj =>
         {
             Delete();
-            Messenger.Default.Send(SummaryAccountMessage.Refresh);
-            Messenger.Default.Send(AccountMessage.Refresh, Account);
+            NotifyRelevantAccountsToRefreshTits();
+            NotifyRelevantAccountsToRefreshBalance();
         });
 
         protected override void NotifyRelevantAccountsToRefreshTits()

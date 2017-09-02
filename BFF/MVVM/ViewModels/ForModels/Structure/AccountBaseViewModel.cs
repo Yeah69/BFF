@@ -159,21 +159,21 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected AccountBaseViewModel(IBffOrm orm, IAccount account) : base(orm, account)
         {
             Orm = orm;
-            Messenger.Default.Register<CutlureMessage>(this, message =>
+            Messenger.Default.Register<CultureMessage>(this, message =>
             {
                 switch (message)
                 {
-                    case CutlureMessage.Refresh:
+                    case CultureMessage.Refresh:
                         OnPropertyChanged(nameof(StartingBalance));
                         OnPropertyChanged(nameof(Balance));
                         RefreshTits();
                         break;
-                    case CutlureMessage.RefreshCurrency:
+                    case CultureMessage.RefreshCurrency:
                         OnPropertyChanged(nameof(StartingBalance));
                         OnPropertyChanged(nameof(Balance));
                         RefreshTits();
                         break;
-                    case CutlureMessage.RefreshDate:
+                    case CultureMessage.RefreshDate:
                         OnPropertyChanged(nameof(IsDateFormatLong));
                         break;
                     default:
@@ -230,18 +230,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     accountViewModels.Add(transferViewModel.ToAccount.Value);
                 }
             }
-            
-            Refresh(Orm.CommonPropertyProvider.AccountViewModelService.SummaryAccountViewModel);
-            foreach (IAccountViewModel accountViewModel in accountViewModels.Distinct())
-            {
-                Refresh(accountViewModel);
-            }
-            
-            void Refresh(IAccountBaseViewModel accountViewModel)
-            {
-                accountViewModel.RefreshTits();
-                accountViewModel.RefreshBalance();
-            }
+
+            RefreshBalance();
+            RefreshTits();
         }
 
         /// <summary>

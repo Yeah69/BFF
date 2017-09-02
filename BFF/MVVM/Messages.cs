@@ -1,17 +1,10 @@
 ﻿namespace BFF.MVVM
 {
-    public enum CutlureMessage
+    public enum CultureMessage
     {
         Refresh,
         RefreshCurrency,
         RefreshDate
-    }
-
-    public enum AccountMessage
-    {
-        Refresh,
-        RefreshTits,
-        RefreshBalance
     }
 
     public enum SummaryAccountMessage
