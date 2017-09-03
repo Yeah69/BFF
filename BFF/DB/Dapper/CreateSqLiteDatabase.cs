@@ -5,7 +5,7 @@ using BFF.DB.SQLite;
 
 namespace BFF.DB.Dapper
 {
-    public class CreateSqLiteDatebase : CreateDatabaseBase
+    public class CreateSqLiteDatabase : CreateDatabaseBase
     {
         protected override ICreateTable CreateAccountTable { get; }
         protected override ICreateTable CreateBudgetEntryTable { get; }
@@ -22,7 +22,7 @@ namespace BFF.DB.Dapper
         protected override ICreateTable CreateTitTable { get; }
         protected sealed override IProvideConnection ProvideConnection { get; }
 
-        public CreateSqLiteDatebase(string fileName)
+        public CreateSqLiteDatabase(string fileName)
         {
             if (File.Exists(fileName)) //todo: This will make problems
                 File.Delete(fileName);

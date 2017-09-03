@@ -41,18 +41,18 @@ namespace BFF.DB.Dapper
                                               SubIncomesFetcher);
         }
 
-        public sealed override AccountRepository AccountRepository { get; }
-        public sealed override BudgetEntryRepository BudgetEntryRepository { get; }
-        public sealed override CategoryRepository CategoryRepository { get; }
-        public sealed override DbSettingRepository DbSettingRepository { get; }
-        public sealed override IncomeRepository IncomeRepository { get; }
-        public sealed override ParentIncomeRepository ParentIncomeRepository { get; }
-        public sealed override ParentTransactionRepository ParentTransactionRepository { get; }
-        public sealed override PayeeRepository PayeeRepository { get; }
-        public sealed override SubIncomeRepository SubIncomeRepository { get; }
-        public sealed override SubTransactionRepository SubTransactionRepository { get; }
-        public sealed override TransactionRepository TransactionRepository { get; }
-        public sealed override TransferRepository TransferRepository { get; }
-        public sealed override TitRepository TitRepository { get; }
+        public sealed override IAccountRepository AccountRepository { get; }
+        public sealed override IBudgetEntryRepository BudgetEntryRepository { get; }
+        public sealed override ICategoryRepository CategoryRepository { get; }
+        public sealed override IDbSettingRepository DbSettingRepository { get; }
+        public sealed override IIncomeRepository IncomeRepository { get; }
+        public sealed override IParentIncomeRepository ParentIncomeRepository { get; }
+        public sealed override IParentTransactionRepository ParentTransactionRepository { get; }
+        public sealed override IPayeeRepository PayeeRepository { get; }
+        public sealed override ISubIncomeRepository SubIncomeRepository { get; }
+        public sealed override ISubTransactionRepository SubTransactionRepository { get; }
+        public sealed override ITransactionRepository TransactionRepository { get; }
+        public sealed override ITransferRepository TransferRepository { get; }
+        public sealed override ITitRepository TitRepository { get; }
     }
 }

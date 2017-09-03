@@ -10,6 +10,7 @@ using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 using Dapper.Contrib.Extensions;
+using DbSetting = BFF.DB.PersistenceModels.DbSetting;
 
 namespace BFF.DB
 {
@@ -47,7 +48,7 @@ namespace BFF.DB
             CreateTransferTable.CreateTable(connection);
 
             CreateDbSettingTable.CreateTable(connection);
-            connection.Insert(new PersistanceModels.DbSetting());
+            connection.Insert(new DbSetting());
 
             CreateBudgetEntryTable.CreateTable(connection);
             
@@ -78,19 +79,19 @@ namespace BFF.DB
             _provideConnection = provideConnection;
         }
 
-        public abstract AccountRepository AccountRepository { get; }
-        public abstract BudgetEntryRepository BudgetEntryRepository { get; }
-        public abstract CategoryRepository CategoryRepository { get; }
-        public abstract DbSettingRepository DbSettingRepository { get; }
-        public abstract IncomeRepository IncomeRepository { get; }
-        public abstract ParentIncomeRepository ParentIncomeRepository { get; }
-        public abstract ParentTransactionRepository ParentTransactionRepository { get; }
-        public abstract PayeeRepository PayeeRepository { get; }
-        public abstract SubIncomeRepository SubIncomeRepository { get; }
-        public abstract SubTransactionRepository SubTransactionRepository { get; }
-        public abstract TransactionRepository TransactionRepository { get; }
-        public abstract TransferRepository TransferRepository { get; }
-        public abstract TitRepository TitRepository { get; }
+        public abstract IAccountRepository AccountRepository { get; }
+        public abstract IBudgetEntryRepository BudgetEntryRepository { get; }
+        public abstract ICategoryRepository CategoryRepository { get; }
+        public abstract IDbSettingRepository DbSettingRepository { get; }
+        public abstract IIncomeRepository IncomeRepository { get; }
+        public abstract IParentIncomeRepository ParentIncomeRepository { get; }
+        public abstract IParentTransactionRepository ParentTransactionRepository { get; }
+        public abstract IPayeeRepository PayeeRepository { get; }
+        public abstract ISubIncomeRepository SubIncomeRepository { get; }
+        public abstract ISubTransactionRepository SubTransactionRepository { get; }
+        public abstract ITransactionRepository TransactionRepository { get; }
+        public abstract ITransferRepository TransferRepository { get; }
+        public abstract ITitRepository TitRepository { get; }
 
         private void PopulateDatabaseInner(ImportLists importLists, ImportAssignments importAssignments, DbConnection connection = null)
         {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using Persistance = BFF.DB.PersistanceModels;
+using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -14,19 +14,24 @@ namespace BFF.DB.Dapper.ModelRepositories
         
         protected override string CreateTableStatement =>
             $@"CREATE VIEW IF NOT EXISTS [{ViewName}] AS
-            SELECT {nameof(Persistance.Transaction.Id)}, {nameof(Persistance.Transaction.AccountId)}, {nameof(Persistance.Transaction.PayeeId)}, {nameof(Persistance.Transaction.CategoryId)}, {nameof(Persistance.Transaction.Date)}, {nameof(Persistance.Transaction.Memo)}, {nameof(Persistance.Transaction.Sum)}, {nameof(Persistance.Transaction.Cleared)}, '{Domain.Structure.TitType.Transaction}' AS Type FROM [{nameof(Persistance.Transaction)}s]
+            SELECT {nameof(Transaction.Id)}, {nameof(Transaction.AccountId)}, {nameof(Transaction.PayeeId)}, {nameof(Transaction.CategoryId)}, {nameof(Transaction.Date)}, {nameof(Transaction.Memo)}, {nameof(Transaction.Sum)}, {nameof(Transaction.Cleared)}, '{Domain.Structure.TitType.Transaction}' AS Type FROM [{nameof(Transaction)}s]
             UNION ALL
-            SELECT {nameof(Persistance.ParentTransaction.Id)}, {nameof(Persistance.ParentTransaction.AccountId)}, {nameof(Persistance.ParentTransaction.PayeeId)}, -69 AS CategoryFiller, {nameof(Persistance.ParentTransaction.Date)}, {nameof(Persistance.ParentTransaction.Memo)}, -69 AS SumFiller, {nameof(Persistance.ParentTransaction.Cleared)}, '{Domain.Structure.TitType.ParentTransaction}' AS Type FROM [{nameof(Persistance.ParentTransaction)}s]
+            SELECT {nameof(ParentTransaction.Id)}, {nameof(ParentTransaction.AccountId)}, {nameof(ParentTransaction.PayeeId)}, -69 AS CategoryFiller, {nameof(ParentTransaction.Date)}, {nameof(ParentTransaction.Memo)}, -69 AS SumFiller, {nameof(ParentTransaction.Cleared)}, '{Domain.Structure.TitType.ParentTransaction}' AS Type FROM [{nameof(ParentTransaction)}s]
             UNION ALL
-            SELECT {nameof(Persistance.Income.Id)}, {nameof(Persistance.Income.AccountId)}, {nameof(Persistance.Income.PayeeId)}, {nameof(Persistance.Income.CategoryId)}, {nameof(Persistance.Income.Date)}, {nameof(Persistance.Income.Memo)}, {nameof(Persistance.Income.Sum)}, {nameof(Persistance.Income.Cleared)}, '{Domain.Structure.TitType.Income}' AS Type FROM [{nameof(Persistance.Income)}s]
+            SELECT {nameof(Income.Id)}, {nameof(Income.AccountId)}, {nameof(Income.PayeeId)}, {nameof(Income.CategoryId)}, {nameof(Income.Date)}, {nameof(Income.Memo)}, {nameof(Income.Sum)}, {nameof(Income.Cleared)}, '{Domain.Structure.TitType.Income}' AS Type FROM [{nameof(Income)}s]
             UNION ALL
-            SELECT {nameof(Persistance.ParentIncome.Id)}, {nameof(Persistance.ParentIncome.AccountId)}, {nameof(Persistance.ParentIncome.PayeeId)}, -69 AS CategoryFiller, {nameof(Persistance.ParentIncome.Date)}, {nameof(Persistance.ParentIncome.Memo)}, -69 AS SumFiller, {nameof(Persistance.ParentIncome.Cleared)}, '{Domain.Structure.TitType.ParentIncome}' AS Type FROM [{nameof(Persistance.ParentIncome)}s]
+            SELECT {nameof(ParentIncome.Id)}, {nameof(ParentIncome.AccountId)}, {nameof(ParentIncome.PayeeId)}, -69 AS CategoryFiller, {nameof(ParentIncome.Date)}, {nameof(ParentIncome.Memo)}, -69 AS SumFiller, {nameof(ParentIncome.Cleared)}, '{Domain.Structure.TitType.ParentIncome}' AS Type FROM [{nameof(ParentIncome)}s]
             UNION ALL
-            SELECT {nameof(Persistance.Transfer.Id)}, -69 AS AccountFiller, {nameof(Persistance.Transfer.FromAccountId)}, {nameof(Persistance.Transfer.ToAccountId)}, {nameof(Persistance.Transfer.Date)}, {nameof(Persistance.Transfer.Memo)}, {nameof(Persistance.Transfer.Sum)}, {nameof(Persistance.Transfer.Cleared)}, '{Domain.Structure.TitType.Transfer}' AS Type FROM [{nameof(Persistance.Transfer)}s];";
+            SELECT {nameof(Transfer.Id)}, -69 AS AccountFiller, {nameof(Transfer.FromAccountId)}, {nameof(Transfer.ToAccountId)}, {nameof(Transfer.Date)}, {nameof(Transfer.Memo)}, {nameof(Transfer.Sum)}, {nameof(Transfer.Cleared)}, '{Domain.Structure.TitType.Transfer}' AS Type FROM [{nameof(Transfer)}s];";
         
     }
-    
-    public class TitRepository : ViewRepositoryBase<Domain.Structure.ITitBase, Persistance.TheTit, MVVM.Models.Native.IAccount>
+
+    public interface ITitRepository : IViewRepositoryBase<Domain.Structure.ITitBase, MVVM.Models.Native.IAccount>
+    {
+    }
+
+
+    public class TitRepository : ViewRepositoryBase<Domain.Structure.ITitBase, TheTit, MVVM.Models.Native.IAccount>, ITitRepository
     {
         private readonly IRepository<Domain.ITransaction> _transactionRepository;
         private readonly IRepository<Domain.IIncome> _incomeRepository;
@@ -65,9 +70,9 @@ namespace BFF.DB.Dapper.ModelRepositories
             _subTransactionsFetcher = subTransactionsFetcher;
         }
 
-        protected override Converter<(Persistance.TheTit, DbConnection), Domain.Structure.ITitBase> ConvertToDomain => tuple =>
+        protected override Converter<(TheTit, DbConnection), Domain.Structure.ITitBase> ConvertToDomain => tuple =>
         {
-            (Persistance.TheTit theTit, DbConnection connection) = tuple;
+            (TheTit theTit, DbConnection connection) = tuple;
             Enum.TryParse(theTit.Type, true, out Domain.Structure.TitType type);
             Domain.Structure.ITitBase ret;
             switch(type)
@@ -138,14 +143,14 @@ namespace BFF.DB.Dapper.ModelRepositories
             return ret;
         };
 
-        protected override string GetOrderingPageSuffix(Domain.IAccount specifyingObject) => $"ORDER BY {nameof(Persistance.TheTit.Date)}";
+        protected override string GetOrderingPageSuffix(Domain.IAccount specifyingObject) => $"ORDER BY {nameof(TheTit.Date)}";
         
         protected override string ViewName => "The Tit";
         
         private string CommonSuffix(Domain.IAccount specifyingObject)
         {
             if(specifyingObject != null && !(specifyingObject is Domain.ISummaryAccount))
-                return $"WHERE {nameof(Persistance.TheTit.AccountId)} = {specifyingObject.Id} OR {nameof(Persistance.TheTit.AccountId)} = -69 AND ({nameof(Persistance.TheTit.PayeeId)} = {specifyingObject.Id} OR {nameof(Persistance.TheTit.CategoryId)} = {specifyingObject.Id})";
+                return $"WHERE {nameof(TheTit.AccountId)} = {specifyingObject.Id} OR {nameof(TheTit.AccountId)} = -69 AND ({nameof(TheTit.PayeeId)} = {specifyingObject.Id} OR {nameof(TheTit.CategoryId)} = {specifyingObject.Id})";
 
             return "";
         }

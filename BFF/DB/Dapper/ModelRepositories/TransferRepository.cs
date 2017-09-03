@@ -1,7 +1,7 @@
 using System;
 using System.Data.Common;
+using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
-using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -10,20 +10,24 @@ namespace BFF.DB.Dapper.ModelRepositories
         public CreateTransferTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Persistance.Transfer)}s](
-            {nameof(Persistance.Transfer.Id)} INTEGER PRIMARY KEY,
-            {nameof(Persistance.Transfer.FromAccountId)} INTEGER,
-            {nameof(Persistance.Transfer.ToAccountId)} INTEGER,
-            {nameof(Persistance.Transfer.Date)} DATE,
-            {nameof(Persistance.Transfer.Memo)} TEXT,
-            {nameof(Persistance.Transfer.Sum)} INTEGER,
-            {nameof(Persistance.Transfer.Cleared)} INTEGER,
-            FOREIGN KEY({nameof(Persistance.Transfer.FromAccountId)}) REFERENCES {nameof(Persistance.Account)}s({nameof(Persistance.Account.Id)}) ON DELETE RESTRICT,
-            FOREIGN KEY({nameof(Persistance.Transfer.ToAccountId)}) REFERENCES {nameof(Persistance.Account)}s({nameof(Persistance.Account.Id)}) ON DELETE RESTRICT);";
-        
+            $@"CREATE TABLE [{nameof(Transfer)}s](
+            {nameof(Transfer.Id)} INTEGER PRIMARY KEY,
+            {nameof(Transfer.FromAccountId)} INTEGER,
+            {nameof(Transfer.ToAccountId)} INTEGER,
+            {nameof(Transfer.Date)} DATE,
+            {nameof(Transfer.Memo)} TEXT,
+            {nameof(Transfer.Sum)} INTEGER,
+            {nameof(Transfer.Cleared)} INTEGER,
+            FOREIGN KEY({nameof(Transfer.FromAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT,
+            FOREIGN KEY({nameof(Transfer.ToAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT);";
+
     }
-    
-    public class TransferRepository : RepositoryBase<Domain.ITransfer, Persistance.Transfer>
+
+    public interface ITransferRepository : IRepository<Domain.ITransfer>
+    {
+    }
+
+    public class TransferRepository : RepositoryBase<Domain.ITransfer, Transfer>, ITransferRepository
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
 
@@ -37,8 +41,8 @@ namespace BFF.DB.Dapper.ModelRepositories
         public override Domain.ITransfer Create() =>
             new Domain.Transfer(this, -1L, DateTime.MinValue, null, null, "", 0L);
         
-        protected override Converter<Domain.ITransfer, Persistance.Transfer> ConvertToPersistance => domainTransfer => 
-            new Persistance.Transfer
+        protected override Converter<Domain.ITransfer, Transfer> ConvertToPersistence => domainTransfer => 
+            new Transfer
             {
                 Id = domainTransfer.Id,
                 FromAccountId = domainTransfer.FromAccount.Id,
@@ -49,9 +53,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Cleared = domainTransfer.Cleared ? 1L : 0L
             };
 
-        protected override Converter<(Persistance.Transfer, DbConnection), Domain.ITransfer> ConvertToDomain => tuple =>
+        protected override Converter<(Transfer, DbConnection), Domain.ITransfer> ConvertToDomain => tuple =>
         {
-            (Persistance.Transfer persistenceTransfer, DbConnection connection) = tuple;
+            (Transfer persistenceTransfer, DbConnection connection) = tuple;
             return new Domain.Transfer(
                 this,
                 persistenceTransfer.Id,

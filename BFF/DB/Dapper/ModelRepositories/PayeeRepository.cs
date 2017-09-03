@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
-using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -11,9 +11,9 @@ namespace BFF.DB.Dapper.ModelRepositories
         public CreatePayeeTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Persistance.Payee)}s](
-            {nameof(Persistance.Payee.Id)} INTEGER PRIMARY KEY,
-            {nameof(Persistance.Payee.Name)} VARCHAR(100));";
+            $@"CREATE TABLE [{nameof(Payee)}s](
+            {nameof(Payee.Id)} INTEGER PRIMARY KEY,
+            {nameof(Payee.Name)} VARCHAR(100));";
         
     }
     
@@ -24,24 +24,28 @@ namespace BFF.DB.Dapper.ModelRepositories
             return Comparer<string>.Default.Compare(x.Name, y.Name);
         }
     }
-    
-    public class PayeeRepository : ObservableRepositoryBase<Domain.IPayee, Persistance.Payee>
+
+    public interface IPayeeRepository : IObservableRepositoryBase<Domain.IPayee>
+    {
+    }
+
+    public class PayeeRepository : ObservableRepositoryBase<Domain.IPayee, Payee>, IPayeeRepository
     {
         public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection, new PayeeComparer()) {}
 
         public override Domain.IPayee Create() =>
             new Domain.Payee(this);
         
-        protected override Converter<Domain.IPayee, Persistance.Payee> ConvertToPersistance => domainPayee => 
-            new Persistance.Payee
+        protected override Converter<Domain.IPayee, Payee> ConvertToPersistence => domainPayee => 
+            new Payee
             {
                 Id = domainPayee.Id,
                 Name = domainPayee.Name
             };
 
-        protected override Converter<(Persistance.Payee, DbConnection), Domain.IPayee> ConvertToDomain => tuple =>
+        protected override Converter<(Payee, DbConnection), Domain.IPayee> ConvertToDomain => tuple =>
         {
-            (Persistance.Payee persistencePayee, _) = tuple;
+            (Payee persistencePayee, _) = tuple;
             return new Domain.Payee(this, persistencePayee.Id, persistencePayee.Name);
         };
     }

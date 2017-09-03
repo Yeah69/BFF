@@ -10,11 +10,11 @@ namespace BFF.MVVM.Services
     {
         private readonly IBffOrm _orm;
 
-        private readonly AccountRepository _repository;
+        private readonly IAccountRepository _repository;
 
         public ISummaryAccountViewModel SummaryAccountViewModel { get; } 
 
-        public AccountViewModelService(AccountRepository repository, IBffOrm orm) : base(repository, true)
+        public AccountViewModelService(IAccountRepository repository, IBffOrm orm) : base(repository, true)
         {
             _orm = orm;
             _repository = repository;

@@ -41,7 +41,7 @@ namespace BFF.MVVM.ViewModels
             };
             if (saveFileDialog.ShowDialog() == true)
             {
-                IProvideConnection provideConnection = new CreateSqLiteDatebase(saveFileDialog.FileName).Create();
+                IProvideConnection provideConnection = new CreateSqLiteDatabase(saveFileDialog.FileName).Create();
                 SqLiteBffOrm orm = new SqLiteBffOrm(provideConnection);
                 Reset(saveFileDialog.FileName);
             }

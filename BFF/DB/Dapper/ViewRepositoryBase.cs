@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.DB.PersistanceModels;
+using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 
 namespace BFF.DB.Dapper
 {
-    public abstract class ViewRepositoryBase<TDomainBase, TPersistence, TSpecifying>
+    public interface IViewRepositoryBase<TDomainBase, in TSpecifying>
         : IViewRepository<TDomainBase, TSpecifying>, IViewRepositoryAsync<TDomainBase, TSpecifying>
         where TDomainBase : class, IDataModel
-        where TPersistence : class, IPersistanceModel
+    {
+    }
+
+    public abstract class ViewRepositoryBase<TDomainBase, TPersistence, TSpecifying>
+        : IViewRepositoryBase<TDomainBase, TSpecifying>
+        where TDomainBase : class, IDataModel
+        where TPersistence : class, IPersistenceModel
     {
         private readonly IProvideConnection _provideConnection;
         

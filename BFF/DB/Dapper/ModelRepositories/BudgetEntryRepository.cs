@@ -1,7 +1,7 @@
 using System;
 using System.Data.Common;
+using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
-using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -10,15 +10,20 @@ namespace BFF.DB.Dapper.ModelRepositories
         public CreateBudgetEntryTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Persistance.BudgetEntry)}s](
-            {nameof(Persistance.BudgetEntry.Id)} INTEGER PRIMARY KEY,
-            {nameof(Persistance.BudgetEntry.CategoryId)} INTEGER,
-            {nameof(Persistance.BudgetEntry.Month)} DATE,
-            {nameof(Persistance.BudgetEntry.Budget)} INTEGER,
-            FOREIGN KEY({nameof(Persistance.BudgetEntry.CategoryId)}) REFERENCES {nameof(Persistance.Category)}s({nameof(Persistance.Category.Id)}) ON DELETE SET NULL);";
+            $@"CREATE TABLE [{nameof(BudgetEntry)}s](
+            {nameof(BudgetEntry.Id)} INTEGER PRIMARY KEY,
+            {nameof(BudgetEntry.CategoryId)} INTEGER,
+            {nameof(BudgetEntry.Month)} DATE,
+            {nameof(BudgetEntry.Budget)} INTEGER,
+            FOREIGN KEY({nameof(BudgetEntry.CategoryId)}) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
     }
-    
-    public class BudgetEntryRepository : RepositoryBase<Domain.IBudgetEntry, Persistance.BudgetEntry>
+
+    public interface IBudgetEntryRepository : IRepositoryBase<Domain.IBudgetEntry>
+    {
+    }
+
+
+    public class BudgetEntryRepository : RepositoryBase<Domain.IBudgetEntry, BudgetEntry>, IBudgetEntryRepository
     {
         private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
         public BudgetEntryRepository(IProvideConnection provideConnection, Func<long, DbConnection, Domain.ICategory> categoryFetcher) : base(provideConnection)
@@ -29,8 +34,8 @@ namespace BFF.DB.Dapper.ModelRepositories
         public override Domain.IBudgetEntry Create() =>
             new Domain.BudgetEntry(this, -1L, DateTime.MinValue);
         
-        protected override Converter<Domain.IBudgetEntry, Persistance.BudgetEntry> ConvertToPersistance => domainBudgetEntry => 
-            new Persistance.BudgetEntry
+        protected override Converter<Domain.IBudgetEntry, BudgetEntry> ConvertToPersistence => domainBudgetEntry => 
+            new BudgetEntry
             {
                 Id = domainBudgetEntry.Id,
                 CategoryId = domainBudgetEntry.Category.Id,
@@ -38,9 +43,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Budget = domainBudgetEntry.Budget
             };
 
-        protected override Converter<(Persistance.BudgetEntry, DbConnection), Domain.IBudgetEntry> ConvertToDomain => tuple =>
+        protected override Converter<(BudgetEntry, DbConnection), Domain.IBudgetEntry> ConvertToDomain => tuple =>
         {
-            (Persistance.BudgetEntry persistenceBudgetEntry, DbConnection connection) = tuple;
+            (BudgetEntry persistenceBudgetEntry, DbConnection connection) = tuple;
             return new Domain.BudgetEntry(
                 this,
                 persistenceBudgetEntry.Id,

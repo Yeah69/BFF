@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
-using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -14,19 +14,23 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
         
         protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Persistance.ParentIncome)}s](
-            {nameof(Persistance.ParentIncome.Id)} INTEGER PRIMARY KEY,
-            {nameof(Persistance.ParentIncome.AccountId)} INTEGER,
-            {nameof(Persistance.ParentIncome.PayeeId)} INTEGER,
-            {nameof(Persistance.ParentIncome.Date)} DATE,
-            {nameof(Persistance.ParentIncome.Memo)} TEXT,
-            {nameof(Persistance.ParentIncome.Cleared)} INTEGER,
-            FOREIGN KEY({nameof(Persistance.ParentIncome.AccountId)}) REFERENCES {nameof(Persistance.Account)}s({nameof(Persistance.Account.Id)}) ON DELETE CASCADE,
-            FOREIGN KEY({nameof(Persistance.ParentIncome.PayeeId)}) REFERENCES {nameof(Persistance.Payee)}s({nameof(Persistance.Payee.Id)}) ON DELETE SET NULL);";
-        
+            $@"CREATE TABLE [{nameof(ParentIncome)}s](
+            {nameof(ParentIncome.Id)} INTEGER PRIMARY KEY,
+            {nameof(ParentIncome.AccountId)} INTEGER,
+            {nameof(ParentIncome.PayeeId)} INTEGER,
+            {nameof(ParentIncome.Date)} DATE,
+            {nameof(ParentIncome.Memo)} TEXT,
+            {nameof(ParentIncome.Cleared)} INTEGER,
+            FOREIGN KEY({nameof(ParentIncome.AccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE CASCADE,
+            FOREIGN KEY({nameof(ParentIncome.PayeeId)}) REFERENCES {nameof(Payee)}s({nameof(Payee.Id)}) ON DELETE SET NULL);";
+
     }
-    
-    public class ParentIncomeRepository : RepositoryBase<Domain.IParentIncome, Persistance.ParentIncome>
+
+    public interface IParentIncomeRepository : IRepositoryBase<Domain.IParentIncome>
+    {
+    }
+
+    public class ParentIncomeRepository : RepositoryBase<Domain.IParentIncome, ParentIncome>, IParentIncomeRepository
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
         private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
@@ -46,8 +50,8 @@ namespace BFF.DB.Dapper.ModelRepositories
         public override Domain.IParentIncome Create() =>
             new Domain.ParentIncome(this, Enumerable.Empty<Domain.SubIncome>(), -1L, DateTime.MinValue, null, null, "", false);
         
-        protected override Converter<Domain.IParentIncome, Persistance.ParentIncome> ConvertToPersistance => domainParentIncome => 
-            new Persistance.ParentIncome
+        protected override Converter<Domain.IParentIncome, ParentIncome> ConvertToPersistence => domainParentIncome => 
+            new ParentIncome
             {
                 Id = domainParentIncome.Id,
                 AccountId = domainParentIncome.Account.Id,
@@ -57,9 +61,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Cleared = domainParentIncome.Cleared ? 1L : 0L
             };
 
-        protected override Converter<(Persistance.ParentIncome, DbConnection), Domain.IParentIncome> ConvertToDomain => tuple =>
+        protected override Converter<(ParentIncome, DbConnection), Domain.IParentIncome> ConvertToDomain => tuple =>
         {
-            (Persistance.ParentIncome persistenceParentIncome, DbConnection connection) = tuple;
+            (ParentIncome persistenceParentIncome, DbConnection connection) = tuple;
             return new Domain.ParentIncome(
                 this,
                 _subIncomesFetcher(persistenceParentIncome.Id, connection),

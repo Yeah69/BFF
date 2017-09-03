@@ -1,6 +1,6 @@
-namespace BFF.DB.PersistanceModels
+namespace BFF.DB.PersistenceModels
 {
-    public class DbSetting : IPersistanceModel
+    public class DbSetting : IPersistenceModel
     {
         public long Id { get; set; }
         public string CurrencyCultureName { get; set; } = "de-DE";

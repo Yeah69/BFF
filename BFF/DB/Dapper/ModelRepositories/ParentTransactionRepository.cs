@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
-using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -12,19 +12,23 @@ namespace BFF.DB.Dapper.ModelRepositories
         public CreateParentTransactionTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Persistance.ParentTransaction)}s](
-            {nameof(Persistance.ParentTransaction.Id)} INTEGER PRIMARY KEY,
-            {nameof(Persistance.ParentTransaction.AccountId)} INTEGER,
-            {nameof(Persistance.ParentTransaction.PayeeId)} INTEGER,
-            {nameof(Persistance.ParentTransaction.Date)} DATE,
-            {nameof(Persistance.ParentTransaction.Memo)} TEXT,
-            {nameof(Persistance.ParentTransaction.Cleared)} INTEGER,
-            FOREIGN KEY({nameof(Persistance.ParentTransaction.AccountId)}) REFERENCES {nameof(Persistance.Account)}s({nameof(Persistance.Account.Id)}) ON DELETE CASCADE,
-            FOREIGN KEY({nameof(Persistance.ParentTransaction.PayeeId)}) REFERENCES {nameof(Persistance.Payee)}s({nameof(Persistance.Payee.Id)}) ON DELETE SET NULL);";
-        
+            $@"CREATE TABLE [{nameof(ParentTransaction)}s](
+            {nameof(ParentTransaction.Id)} INTEGER PRIMARY KEY,
+            {nameof(ParentTransaction.AccountId)} INTEGER,
+            {nameof(ParentTransaction.PayeeId)} INTEGER,
+            {nameof(ParentTransaction.Date)} DATE,
+            {nameof(ParentTransaction.Memo)} TEXT,
+            {nameof(ParentTransaction.Cleared)} INTEGER,
+            FOREIGN KEY({nameof(ParentTransaction.AccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE CASCADE,
+            FOREIGN KEY({nameof(ParentTransaction.PayeeId)}) REFERENCES {nameof(Payee)}s({nameof(Payee.Id)}) ON DELETE SET NULL);";
+
     }
-    
-    public class ParentTransactionRepository : RepositoryBase<Domain.IParentTransaction, Persistance.ParentTransaction>
+
+    public interface IParentTransactionRepository : IRepositoryBase<Domain.IParentTransaction>
+    {
+    }
+
+    public class ParentTransactionRepository : RepositoryBase<Domain.IParentTransaction, ParentTransaction>, IParentTransactionRepository
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
         private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
@@ -44,8 +48,8 @@ namespace BFF.DB.Dapper.ModelRepositories
         public override Domain.IParentTransaction Create() =>
             new Domain.ParentTransaction(this, Enumerable.Empty<Domain.SubTransaction>(), -1L, DateTime.MinValue, null, null, "", false);
         
-        protected override Converter<Domain.IParentTransaction, Persistance.ParentTransaction> ConvertToPersistance => domainParentTransaction => 
-            new Persistance.ParentTransaction
+        protected override Converter<Domain.IParentTransaction, ParentTransaction> ConvertToPersistence => domainParentTransaction => 
+            new ParentTransaction
             {
                 Id = domainParentTransaction.Id,
                 AccountId = domainParentTransaction.Account.Id,
@@ -55,9 +59,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Cleared = domainParentTransaction.Cleared ? 1L : 0L
             };
 
-        protected override Converter<(Persistance.ParentTransaction, DbConnection), Domain.IParentTransaction> ConvertToDomain => tuple =>
+        protected override Converter<(ParentTransaction, DbConnection), Domain.IParentTransaction> ConvertToDomain => tuple =>
         {
-            (Persistance.ParentTransaction persistenceParentTransaction, DbConnection connection) = tuple;
+            (ParentTransaction persistenceParentTransaction, DbConnection connection) = tuple;
 
             var parentTransaction = new Domain.ParentTransaction(
                 this,

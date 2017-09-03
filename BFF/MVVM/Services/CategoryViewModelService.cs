@@ -7,10 +7,10 @@ namespace BFF.MVVM.Services
 {
     public class CategoryViewModelService : CommonPropertyViewModelServiceBase<ICategory, ICategoryViewModel>
     {
-        private readonly CategoryRepository _repository;
+        private readonly ICategoryRepository _repository;
         private readonly IBffOrm _orm;
 
-        public CategoryViewModelService(CategoryRepository repository, IBffOrm orm) : base(repository)
+        public CategoryViewModelService(ICategoryRepository repository, IBffOrm orm) : base(repository)
         {
             _repository = repository;
             _orm = orm;

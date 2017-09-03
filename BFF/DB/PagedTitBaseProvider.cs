@@ -71,9 +71,9 @@ namespace BFF.DB
 
         #region Implementation of IItemSourceProvider<T>
 
-        public PagedSourceItemsPacket<ITitLikeViewModel> GetItemsAt(int pageoffset, int count, bool usePlaceholder)
+        public PagedSourceItemsPacket<ITitLikeViewModel> GetItemsAt(int pageOffset, int count, bool usePlaceholder)
         {
-            IEnumerable<ITitBase> items = PagedOrm.GetPage<ITitBase>(pageoffset, count, Account);
+            IEnumerable<ITitBase> items = PagedOrm.GetPage<ITitBase>(pageOffset, count, Account);
             return CreatePacket(items);
         }
 

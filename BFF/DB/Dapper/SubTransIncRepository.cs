@@ -1,20 +1,26 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using BFF.DB.PersistenceModels;
 using Dapper;
-using Persistence = BFF.DB.PersistanceModels;
 using Domain = BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB.Dapper
 {
-    public abstract class SubTransIncRepository <TDomain, TPersistence> : RepositoryBase<TDomain, TPersistence> 
-        where TDomain : class, Domain.ISubTransInc 
-        where TPersistence : class, Persistence.IPersistanceModel
+
+    public interface ISubTransIncRepository<TDomain> : IRepository<TDomain> where TDomain : class, Domain.IDataModel
     {
-        public SubTransIncRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        IEnumerable<TDomain> GetChildrenOf(long parentId, DbConnection connection = null);
+    }
+
+    public abstract class SubTransIncRepository <TDomain, TPersistence> : RepositoryBase<TDomain, TPersistence>, ISubTransIncRepository<TDomain>
+        where TDomain : class, Domain.ISubTransInc 
+        where TPersistence : class, IPersistenceModel
+    {
+        protected SubTransIncRepository(IProvideConnection provideConnection) : base(provideConnection) { }
         
         private string ParentalQuery => 
-            $"SELECT * FROM [{typeof(TPersistence).Name}s] WHERE {nameof(Persistence.SubTransaction.ParentId)} = @ParentId;";
+            $"SELECT * FROM [{typeof(TPersistence).Name}s] WHERE {nameof(SubTransaction.ParentId)} = @ParentId;";
         
         public IEnumerable<TDomain> GetChildrenOf(long parentId, DbConnection connection = null) => 
             ConnectionHelper.QueryOnExistingOrNewConnection(

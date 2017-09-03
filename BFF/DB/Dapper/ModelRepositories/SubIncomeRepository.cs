@@ -1,7 +1,7 @@
 using System;
 using System.Data.Common;
+using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
-using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -10,17 +10,21 @@ namespace BFF.DB.Dapper.ModelRepositories
         public CreateSubIncomeTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Persistance.SubIncome)}s](
-            {nameof(Persistance.SubIncome.Id)} INTEGER PRIMARY KEY,
-            {nameof(Persistance.SubIncome.ParentId)} INTEGER,
-            {nameof(Persistance.SubIncome.CategoryId)} INTEGER,
-            {nameof(Persistance.SubIncome.Memo)} TEXT,
-            {nameof(Persistance.SubIncome.Sum)} INTEGER,
-            FOREIGN KEY({nameof(Persistance.SubIncome.ParentId)}) REFERENCES {nameof(Persistance.ParentIncome)}s({nameof(Persistance.ParentIncome.Id)}) ON DELETE CASCADE);";
-        
+            $@"CREATE TABLE [{nameof(SubIncome)}s](
+            {nameof(SubIncome.Id)} INTEGER PRIMARY KEY,
+            {nameof(SubIncome.ParentId)} INTEGER,
+            {nameof(SubIncome.CategoryId)} INTEGER,
+            {nameof(SubIncome.Memo)} TEXT,
+            {nameof(SubIncome.Sum)} INTEGER,
+            FOREIGN KEY({nameof(SubIncome.ParentId)}) REFERENCES {nameof(ParentIncome)}s({nameof(ParentIncome.Id)}) ON DELETE CASCADE);";
+
     }
-    
-    public class SubIncomeRepository : SubTransIncRepository<Domain.ISubIncome, Persistance.SubIncome>
+
+    public interface ISubIncomeRepository : ISubTransIncRepository<Domain.ISubIncome>
+    {
+    }
+
+    public class SubIncomeRepository : SubTransIncRepository<Domain.ISubIncome, SubIncome>, ISubIncomeRepository
     {
         private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
 
@@ -34,8 +38,8 @@ namespace BFF.DB.Dapper.ModelRepositories
         public override Domain.ISubIncome Create() =>
             new Domain.SubIncome(this, -1L, null, "", 0L);
         
-        protected override Converter<Domain.ISubIncome, Persistance.SubIncome> ConvertToPersistance => domainSubIncome => 
-            new Persistance.SubIncome
+        protected override Converter<Domain.ISubIncome, SubIncome> ConvertToPersistence => domainSubIncome => 
+            new SubIncome
             {
                 Id = domainSubIncome.Id,
                 ParentId = domainSubIncome.Parent.Id,
@@ -44,9 +48,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Sum = domainSubIncome.Sum
             };
 
-        protected override Converter<(Persistance.SubIncome, DbConnection), Domain.ISubIncome> ConvertToDomain => tuple =>
+        protected override Converter<(SubIncome, DbConnection), Domain.ISubIncome> ConvertToDomain => tuple =>
         {
-            (Persistance.SubIncome persistenceSubIncome, DbConnection connection) = tuple;
+            (SubIncome persistenceSubIncome, DbConnection connection) = tuple;
             return new Domain.SubIncome(
                 this,
                 persistenceSubIncome.Id,

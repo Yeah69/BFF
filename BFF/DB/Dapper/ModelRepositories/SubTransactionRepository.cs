@@ -1,7 +1,7 @@
 using System;
 using System.Data.Common;
+using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
-using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -10,17 +10,21 @@ namespace BFF.DB.Dapper.ModelRepositories
         public CreateSubTransactionTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Persistance.SubTransaction)}s](
-            {nameof(Persistance.SubTransaction.Id)} INTEGER PRIMARY KEY,
-            {nameof(Persistance.SubTransaction.ParentId)} INTEGER,
-            {nameof(Persistance.SubTransaction.CategoryId)} INTEGER,
-            {nameof(Persistance.SubTransaction.Memo)} TEXT,
-            {nameof(Persistance.SubTransaction.Sum)} INTEGER,
-            FOREIGN KEY({nameof(Persistance.SubTransaction.ParentId)}) REFERENCES {nameof(Persistance.ParentTransaction)}s({nameof(Persistance.ParentTransaction.Id)}) ON DELETE CASCADE);";
-        
+            $@"CREATE TABLE [{nameof(SubTransaction)}s](
+            {nameof(SubTransaction.Id)} INTEGER PRIMARY KEY,
+            {nameof(SubTransaction.ParentId)} INTEGER,
+            {nameof(SubTransaction.CategoryId)} INTEGER,
+            {nameof(SubTransaction.Memo)} TEXT,
+            {nameof(SubTransaction.Sum)} INTEGER,
+            FOREIGN KEY({nameof(SubTransaction.ParentId)}) REFERENCES {nameof(ParentTransaction)}s({nameof(ParentTransaction.Id)}) ON DELETE CASCADE);";
+
     }
-    
-    public class SubTransactionRepository : SubTransIncRepository<Domain.ISubTransaction, Persistance.SubTransaction>
+
+    public interface ISubTransactionRepository : ISubTransIncRepository<Domain.ISubTransaction>
+    {
+    }
+
+    public class SubTransactionRepository : SubTransIncRepository<Domain.ISubTransaction, SubTransaction>, ISubTransactionRepository
     {
         private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
 
@@ -34,8 +38,8 @@ namespace BFF.DB.Dapper.ModelRepositories
         public override Domain.ISubTransaction Create() =>
             new Domain.SubTransaction(this, -1L, null, "", 0L);
         
-        protected override Converter<Domain.ISubTransaction, Persistance.SubTransaction> ConvertToPersistance => domainSubTransaction => 
-            new Persistance.SubTransaction
+        protected override Converter<Domain.ISubTransaction, SubTransaction> ConvertToPersistence => domainSubTransaction => 
+            new SubTransaction
             {
                 Id = domainSubTransaction.Id,
                 ParentId = domainSubTransaction.Parent.Id,
@@ -44,9 +48,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Sum = domainSubTransaction.Sum
             };
 
-        protected override Converter<(Persistance.SubTransaction, DbConnection), Domain.ISubTransaction> ConvertToDomain => tuple =>
+        protected override Converter<(SubTransaction, DbConnection), Domain.ISubTransaction> ConvertToDomain => tuple =>
         {
-            (Persistance.SubTransaction persistenceSubTransaction, DbConnection connection) = tuple;
+            (SubTransaction persistenceSubTransaction, DbConnection connection) = tuple;
             return new Domain.SubTransaction(
                 this,
                 persistenceSubTransaction.Id,

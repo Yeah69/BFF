@@ -7,10 +7,10 @@ namespace BFF.MVVM.Services
 {
     public class PayeeViewModelService : CommonPropertyViewModelServiceBase<IPayee, IPayeeViewModel>
     {
-        private readonly PayeeRepository _repository;
+        private readonly IPayeeRepository _repository;
         private readonly IBffOrm _orm;
 
-        public PayeeViewModelService(PayeeRepository repository, IBffOrm orm) : base(repository)
+        public PayeeViewModelService(IPayeeRepository repository, IBffOrm orm) : base(repository)
         {
             _repository = repository;
             _orm = orm;

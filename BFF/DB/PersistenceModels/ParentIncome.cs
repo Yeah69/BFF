@@ -1,8 +1,8 @@
 using System;
 
-namespace BFF.DB.PersistanceModels
+namespace BFF.DB.PersistenceModels
 {
-    public class ParentTransaction : IPersistanceModel
+    public class ParentIncome : IPersistenceModel
     {
         public long Id { get; set; }
         public long AccountId { get; set; }

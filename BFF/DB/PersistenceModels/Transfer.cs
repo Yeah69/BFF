@@ -1,13 +1,12 @@
 using System;
 
-namespace BFF.DB.PersistanceModels
+namespace BFF.DB.PersistenceModels
 {
-    public class Transaction : IPersistanceModel
+    public class Transfer : IPersistenceModel
     {
         public long Id { get; set; }
-        public long AccountId { get; set; }
-        public long PayeeId { get; set; }
-        public long CategoryId { get; set; }
+        public long FromAccountId { get; set; }
+        public long ToAccountId { get; set; }
         public DateTime Date { get; set; }
         public string Memo { get; set; }
         public long Sum { get; set; }

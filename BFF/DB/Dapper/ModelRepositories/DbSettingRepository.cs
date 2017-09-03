@@ -1,7 +1,7 @@
 using System;
 using System.Data.Common;
+using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
-using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -10,30 +10,34 @@ namespace BFF.DB.Dapper.ModelRepositories
         public CreateDbSettingTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Persistance.DbSetting)}s](
-            {nameof(Persistance.DbSetting.Id)} INTEGER PRIMARY KEY, 
-            {nameof(Persistance.DbSetting.CurrencyCultureName)} VARCHAR(10),
-            {nameof(Persistance.DbSetting.DateCultureName)} VARCHAR(10));";
+            $@"CREATE TABLE [{nameof(DbSetting)}s](
+            {nameof(DbSetting.Id)} INTEGER PRIMARY KEY, 
+            {nameof(DbSetting.CurrencyCultureName)} VARCHAR(10),
+            {nameof(DbSetting.DateCultureName)} VARCHAR(10));";
     }
-    
-    public class DbSettingRepository : RepositoryBase<Domain.IDbSetting, Persistance.DbSetting>
+
+    public interface IDbSettingRepository : IRepositoryBase<Domain.IDbSetting>
+    {
+    }
+
+    public class DbSettingRepository : RepositoryBase<Domain.IDbSetting, DbSetting>, IDbSettingRepository
     {
         public DbSettingRepository(IProvideConnection provideConnection) : base(provideConnection) { }
 
         public override Domain.IDbSetting Create() =>
             new Domain.DbSetting(this, -1L);
         
-        protected override Converter<Domain.IDbSetting, Persistance.DbSetting> ConvertToPersistance => domainDbSetting => 
-            new Persistance.DbSetting
+        protected override Converter<Domain.IDbSetting, DbSetting> ConvertToPersistence => domainDbSetting => 
+            new DbSetting
             {
                 Id = domainDbSetting.Id,
                 CurrencyCultureName = domainDbSetting.CurrencyCultureName,
                 DateCultureName = domainDbSetting.DateCultureName
             };
 
-        protected override Converter<(Persistance.DbSetting, DbConnection), Domain.IDbSetting> ConvertToDomain => tuple =>
+        protected override Converter<(DbSetting, DbConnection), Domain.IDbSetting> ConvertToDomain => tuple =>
         {
-            (Persistance.DbSetting persistenceDbSetting, _) = tuple;
+            (DbSetting persistenceDbSetting, _) = tuple;
             return new Domain.DbSetting(this, persistenceDbSetting.Id)
             {
                 CurrencyCultureName = persistenceDbSetting.CurrencyCultureName,

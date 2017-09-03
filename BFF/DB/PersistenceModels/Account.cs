@@ -1,6 +1,6 @@
-namespace BFF.DB.PersistanceModels
+namespace BFF.DB.PersistenceModels
 {
-    public class Account : IPersistanceModel
+    public class Account : IPersistenceModel
     {
         public long Id { get; set; }
         public string Name { get; set; }

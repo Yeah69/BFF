@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using BFF.DB.PersistenceModels;
 using Dapper;
 using Domain = BFF.MVVM.Models.Native;
-using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -13,10 +13,10 @@ namespace BFF.DB.Dapper.ModelRepositories
         public CreateAccountTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Persistance.Account)}s](
-            {nameof(Persistance.Account.Id)} INTEGER PRIMARY KEY,
-            {nameof(Persistance.Account.Name)} VARCHAR(100),
-            {nameof(Persistance.Account.StartingBalance)} INTEGER NOT NULL DEFAULT 0);";
+            $@"CREATE TABLE [{nameof(Account)}s](
+            {nameof(Account.Id)} INTEGER PRIMARY KEY,
+            {nameof(Account.Name)} VARCHAR(100),
+            {nameof(Account.StartingBalance)} INTEGER NOT NULL DEFAULT 0);";
     }
     
     public class AccountComparer : Comparer<Domain.IAccount>
@@ -27,7 +27,12 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
     }
 
-    public class AccountRepository : ObservableRepositoryBase<Domain.IAccount, Persistance.Account>
+    public interface IAccountRepository : IObservableRepositoryBase<Domain.IAccount>
+    {
+        long? GetBalance(Domain.IAccount account, DbConnection connection = null);
+    }
+
+    public class AccountRepository : ObservableRepositoryBase<Domain.IAccount, Account>, IAccountRepository
     {
         public AccountRepository(IProvideConnection provideConnection) : base(provideConnection, new AccountComparer())
         { }
@@ -35,17 +40,17 @@ namespace BFF.DB.Dapper.ModelRepositories
         public override Domain.IAccount Create() =>
             new Domain.Account(this);
 
-        protected override Converter<Domain.IAccount, Persistance.Account> ConvertToPersistance => domainAccount => 
-            new Persistance.Account
+        protected override Converter<Domain.IAccount, Account> ConvertToPersistence => domainAccount => 
+            new Account
             {
                 Id = domainAccount.Id,
                 Name = domainAccount.Name,
                 StartingBalance = domainAccount.StartingBalance
             };
 
-        protected override Converter<(Persistance.Account, DbConnection), Domain.IAccount> ConvertToDomain => tuple =>
+        protected override Converter<(Account, DbConnection), Domain.IAccount> ConvertToDomain => tuple =>
         {
-            (Persistance.Account persistenceAccount, _) = tuple;
+            (Account persistenceAccount, _) = tuple;
             return new Domain.Account(this,
                 persistenceAccount.Id,
                 persistenceAccount.Name,
@@ -53,22 +58,22 @@ namespace BFF.DB.Dapper.ModelRepositories
         };
         
         private string AllAccountsBalanceStatement =>
-            $@"SELECT Total({nameof(Persistance.Transaction.Sum)}) FROM (
-            SELECT {nameof(Persistance.Transaction.Sum)} FROM {nameof(Persistance.Transaction)}s UNION ALL 
-            SELECT {nameof(Persistance.Income.Sum)} FROM {nameof(Persistance.Income)}s UNION ALL 
-            SELECT {nameof(Persistance.SubTransaction.Sum)} FROM {nameof(Persistance.SubTransaction)}s UNION ALL 
-            SELECT {nameof(Persistance.SubIncome.Sum)} FROM {nameof(Persistance.SubIncome)}s UNION ALL 
-            SELECT {nameof(Persistance.Account.StartingBalance)} FROM {nameof(Persistance.Account)}s);";
+            $@"SELECT Total({nameof(Transaction.Sum)}) FROM (
+            SELECT {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s UNION ALL 
+            SELECT {nameof(Income.Sum)} FROM {nameof(Income)}s UNION ALL 
+            SELECT {nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s UNION ALL 
+            SELECT {nameof(SubIncome.Sum)} FROM {nameof(SubIncome)}s UNION ALL 
+            SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s);";
 
         private string AccountSpecificBalanceStatement =>
-            $@"SELECT (SELECT Total({nameof(Persistance.Transaction.Sum)}) FROM (
-            SELECT {nameof(Persistance.Transaction.Sum)} FROM {nameof(Persistance.Transaction)}s WHERE {nameof(Persistance.Transaction.AccountId)} = @accountId UNION ALL 
-            SELECT {nameof(Persistance.Income.Sum)} FROM {nameof(Persistance.Income)}s WHERE {nameof(Persistance.Income.AccountId)} = @accountId UNION ALL
-            SELECT {nameof(Persistance.SubTransaction.Sum)} FROM {nameof(Persistance.SubTransaction)}s INNER JOIN {nameof(Persistance.ParentTransaction)}s ON {nameof(Persistance.SubTransaction.ParentId)} = {nameof(Persistance.ParentTransaction)}s.{nameof(Persistance.ParentTransaction.Id)} AND {nameof(Persistance.ParentTransaction.AccountId)} = @accountId UNION ALL
-            SELECT {nameof(Persistance.SubIncome.Sum)} FROM {nameof(Persistance.SubIncome)}s INNER JOIN {nameof(Persistance.ParentIncome)}s ON {nameof(Persistance.SubIncome.ParentId)} = {nameof(Persistance.ParentIncome)}s.{nameof(Persistance.ParentIncome.Id)} AND {nameof(Persistance.ParentIncome.AccountId)} = @accountId UNION ALL
-            SELECT {nameof(Persistance.Transfer.Sum)} FROM {nameof(Persistance.Transfer)}s WHERE {nameof(Persistance.Transfer.ToAccountId)} = @accountId UNION ALL
-            SELECT {nameof(Persistance.Account.StartingBalance)} FROM {nameof(Persistance.Account)}s WHERE {nameof(Persistance.Account.Id)} = @accountId)) 
-            - (SELECT Total({nameof(Persistance.Transfer.Sum)}) FROM {nameof(Persistance.Transfer)}s WHERE {nameof(Persistance.Transfer.FromAccountId)} = @accountId);";
+            $@"SELECT (SELECT Total({nameof(Transaction.Sum)}) FROM (
+            SELECT {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL 
+            SELECT {nameof(Income.Sum)} FROM {nameof(Income)}s WHERE {nameof(Income.AccountId)} = @accountId UNION ALL
+            SELECT {nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(ParentTransaction)}s ON {nameof(SubTransaction.ParentId)} = {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Id)} AND {nameof(ParentTransaction.AccountId)} = @accountId UNION ALL
+            SELECT {nameof(SubIncome.Sum)} FROM {nameof(SubIncome)}s INNER JOIN {nameof(ParentIncome)}s ON {nameof(SubIncome.ParentId)} = {nameof(ParentIncome)}s.{nameof(ParentIncome.Id)} AND {nameof(ParentIncome.AccountId)} = @accountId UNION ALL
+            SELECT {nameof(Transfer.Sum)} FROM {nameof(Transfer)}s WHERE {nameof(Transfer.ToAccountId)} = @accountId UNION ALL
+            SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.Id)} = @accountId)) 
+            - (SELECT Total({nameof(Transfer.Sum)}) FROM {nameof(Transfer)}s WHERE {nameof(Transfer.FromAccountId)} = @accountId);";
 
         private long? GetAccountBalance(Domain.IAccount account, DbConnection connection = null) => 
             ConnectionHelper.QueryOnExistingOrNewConnection(

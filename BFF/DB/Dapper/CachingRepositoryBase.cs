@@ -1,16 +1,20 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using BFF.DB.PersistenceModels;
 using Dapper.Contrib.Extensions;
 using NLog;
-using Persistence = BFF.DB.PersistanceModels;
 using Domain = BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB.Dapper
 {
+    public interface ICachingRepositoryBase<TDomain> : IRepositoryBase<TDomain> where TDomain : class, Domain.IDataModel
+    {
+    }
+
     public abstract class CachingRepositoryBase<TDomain, TPersistence> 
-        : RepositoryBase<TDomain, TPersistence> 
+        : RepositoryBase<TDomain, TPersistence>, ICachingRepositoryBase<TDomain>
         where TDomain : class, Domain.IDataModel 
-        where TPersistence : class, Persistence.IPersistanceModel
+        where TPersistence : class, IPersistenceModel
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
@@ -43,16 +47,16 @@ namespace BFF.DB.Dapper
 
         public override IEnumerable<TDomain> FindAll(DbConnection connection = null)
         {
-            IEnumerable<TPersistence> pocos = ConnectionHelper.QueryOnExistingOrNewConnection(
+            IEnumerable<TPersistence> elements = ConnectionHelper.QueryOnExistingOrNewConnection(
                 c => c.GetAll<TPersistence>(), 
                 ProvideConnection, 
                 connection);
             Logger.Debug("Starting to convert all POCOs of type {0}", typeof(TPersistence).Name);
-            foreach(TPersistence poco in pocos)
+            foreach(TPersistence element in elements)
             {
-                if(!_cache.ContainsKey(poco.Id))
-                    _cache.Add(poco.Id, ConvertToDomain( (poco, connection) ));
-                yield return _cache[poco.Id];
+                if(!_cache.ContainsKey(element.Id))
+                    _cache.Add(element.Id, ConvertToDomain( (element, connection) ));
+                yield return _cache[element.Id];
             }
             Logger.Debug("Finished converting all POCOs of type {0}", typeof(TPersistence).Name);
         }

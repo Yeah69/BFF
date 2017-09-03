@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Transactions;
-using BFF.DB.PersistanceModels;
+using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 using Dapper.Contrib.Extensions;
@@ -30,9 +30,13 @@ namespace BFF.DB.Dapper
         protected abstract string CreateTableStatement { get; }
     }
 
-    public abstract class RepositoryBase<TDomain, TPersistance> : IDbTableRepository<TDomain>
+    public interface IRepositoryBase<TDomain> : IDbTableRepository<TDomain> where TDomain : class, IDataModel
+    {
+    }
+
+    public abstract class RepositoryBase<TDomain, TPersistence> : IRepositoryBase<TDomain>
         where TDomain : class, IDataModel
-        where TPersistance : class, IPersistanceModel
+        where TPersistence : class, IPersistenceModel
     {
         protected IProvideConnection ProvideConnection { get; }
 
@@ -49,9 +53,9 @@ namespace BFF.DB.Dapper
             ConnectionHelper.ExecuteOnExistingOrNewConnection(
                 c =>
                 {
-                    TPersistance persistanceModel = ConvertToPersistance(dataModel);
-                    c.Insert(persistanceModel);
-                    dataModel.Id = persistanceModel.Id;
+                    TPersistence persistenceModel = ConvertToPersistence(dataModel);
+                    c.Insert(persistenceModel);
+                    dataModel.Id = persistenceModel.Id;
                 }, 
                 ProvideConnection,
                 connection);
@@ -61,7 +65,7 @@ namespace BFF.DB.Dapper
         {
             if(dataModel.Id < 0) return;
             ConnectionHelper.ExecuteOnExistingOrNewConnection(
-                c => c.Update(ConvertToPersistance(dataModel)), 
+                c => c.Update(ConvertToPersistence(dataModel)), 
                 ProvideConnection,
                 connection);
         }
@@ -70,44 +74,44 @@ namespace BFF.DB.Dapper
         {
             if(dataModel.Id < 0) return;
             ConnectionHelper.ExecuteOnExistingOrNewConnection(
-                c => c.Delete(ConvertToPersistance(dataModel)), 
+                c => c.Delete(ConvertToPersistence(dataModel)), 
                 ProvideConnection,
                 connection);
         }
 
         public virtual TDomain Find(long id, DbConnection connection = null)
         {
-            if(connection != null) return ConvertToDomain((connection.Get<TPersistance>(id), connection));
+            if(connection != null) return ConvertToDomain((connection.Get<TPersistence>(id), connection));
             
             TDomain ret;
             using(TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
             using(DbConnection newConnection = ProvideConnection.Connection)
             {
                 newConnection.Open();
-                var result = newConnection.Get<TPersistance>(id);
+                var result = newConnection.Get<TPersistence>(id);
                 ret = ConvertToDomain((result, newConnection));
                 transactionScope.Complete();
             }
             return ret;
         }
 
-        protected abstract Converter<TDomain, TPersistance> ConvertToPersistance { get; }
-        protected abstract Converter<(TPersistance, DbConnection), TDomain> ConvertToDomain { get; }
+        protected abstract Converter<TDomain, TPersistence> ConvertToPersistence { get; }
+        protected abstract Converter<(TPersistence, DbConnection), TDomain> ConvertToDomain { get; }
         public virtual IEnumerable<TDomain> FindAll(DbConnection connection = null)
         {
-            IEnumerable<TDomain> inner(DbConnection conn)
+            IEnumerable<TDomain> Inner(DbConnection conn)
             {
-                return conn.GetAll<TPersistance>().Select(p => ConvertToDomain((p, conn)));
+                return conn.GetAll<TPersistence>().Select(p => ConvertToDomain((p, conn)));
             }
 
-            if(connection != null) return inner(connection);
+            if(connection != null) return Inner(connection);
             
             IEnumerable<TDomain> ret;
             using(TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
             using(DbConnection newConnection = ProvideConnection.Connection)
             {
                 newConnection.Open();
-                ret = inner(newConnection).ToList();
+                ret = Inner(newConnection).ToList();
                 transactionScope.Complete();
             }
             return ret;

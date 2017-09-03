@@ -14,7 +14,7 @@ namespace BFF.MVVM.Models.Native
         /// <summary>
         /// Initializes the object
         /// </summary>
-        public SummaryAccount(AccountRepository repository) : base(repository)
+        public SummaryAccount(IAccountRepository repository) : base(repository)
         {
             Name = "All Accounts"; //todo Localize! Maybe then override the Name property
         }

@@ -1,7 +1,7 @@
 using System;
 using System.Data.Common;
+using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
-using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -10,22 +10,26 @@ namespace BFF.DB.Dapper.ModelRepositories
         public CreateTransactionTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Persistance.Transaction)}s](
-            {nameof(Persistance.Transaction.Id)} INTEGER PRIMARY KEY,
-            {nameof(Persistance.Transaction.AccountId)} INTEGER,
-            {nameof(Persistance.Transaction.PayeeId)} INTEGER,
-            {nameof(Persistance.Transaction.CategoryId)} INTEGER,
-            {nameof(Persistance.Transaction.Date)} DATE,
-            {nameof(Persistance.Transaction.Memo)} TEXT,
-            {nameof(Persistance.Transaction.Sum)} INTEGER,
-            {nameof(Persistance.Transaction.Cleared)} INTEGER,
-            FOREIGN KEY({nameof(Persistance.Transaction.AccountId)}) REFERENCES {nameof(Persistance.Account)}s({nameof(Persistance.Account.Id)}) ON DELETE CASCADE,
-            FOREIGN KEY({nameof(Persistance.Transaction.PayeeId)}) REFERENCES {nameof(Persistance.Payee)}s({nameof(Persistance.Payee.Id)}) ON DELETE SET NULL,
-            FOREIGN KEY({nameof(Persistance.Transaction.CategoryId)}) REFERENCES {nameof(Persistance.Category)}s({nameof(Persistance.Category.Id)}) ON DELETE SET NULL);";
-        
+            $@"CREATE TABLE [{nameof(Transaction)}s](
+            {nameof(Transaction.Id)} INTEGER PRIMARY KEY,
+            {nameof(Transaction.AccountId)} INTEGER,
+            {nameof(Transaction.PayeeId)} INTEGER,
+            {nameof(Transaction.CategoryId)} INTEGER,
+            {nameof(Transaction.Date)} DATE,
+            {nameof(Transaction.Memo)} TEXT,
+            {nameof(Transaction.Sum)} INTEGER,
+            {nameof(Transaction.Cleared)} INTEGER,
+            FOREIGN KEY({nameof(Transaction.AccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE CASCADE,
+            FOREIGN KEY({nameof(Transaction.PayeeId)}) REFERENCES {nameof(Payee)}s({nameof(Payee.Id)}) ON DELETE SET NULL,
+            FOREIGN KEY({nameof(Transaction.CategoryId)}) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
+
     }
-    
-    public class TransactionRepository : RepositoryBase<Domain.ITransaction, Persistance.Transaction>
+
+    public interface ITransactionRepository : IRepository<Domain.ITransaction>
+    {
+    }
+
+    public class TransactionRepository : RepositoryBase<Domain.ITransaction, Transaction>, ITransactionRepository
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
         private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
@@ -45,8 +49,8 @@ namespace BFF.DB.Dapper.ModelRepositories
         public override Domain.ITransaction Create() =>
             new Domain.Transaction(this, -1L, DateTime.Now, null, null, null, "", 0L, false);
         
-        protected override Converter<Domain.ITransaction, Persistance.Transaction> ConvertToPersistance => domainTransaction => 
-            new Persistance.Transaction
+        protected override Converter<Domain.ITransaction, Transaction> ConvertToPersistence => domainTransaction => 
+            new Transaction
             {
                 Id = domainTransaction.Id,
                 AccountId = domainTransaction.Account.Id,
@@ -58,9 +62,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Cleared = domainTransaction.Cleared ? 1L : 0L
             };
 
-        protected override Converter<(Persistance.Transaction, DbConnection), Domain.ITransaction> ConvertToDomain => tuple =>
+        protected override Converter<(Transaction, DbConnection), Domain.ITransaction> ConvertToDomain => tuple =>
         {
-            (Persistance.Transaction persistenceTransaction, DbConnection connection) = tuple;
+            (Transaction persistenceTransaction, DbConnection connection) = tuple;
             return new Domain.Transaction(
                 this,
                 persistenceTransaction.Id,

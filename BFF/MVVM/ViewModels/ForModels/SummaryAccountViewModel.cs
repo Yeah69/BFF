@@ -47,7 +47,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <param name="repository">Repository for accounts.</param>
         public SummaryAccountViewModel(IBffOrm orm,
                                        ISummaryAccount summaryAccount,
-                                       AccountRepository repository) : base(orm, summaryAccount)
+                                       IAccountRepository repository) : base(orm, summaryAccount)
         {
             IsOpen.Value = true;
             Account = summaryAccount;

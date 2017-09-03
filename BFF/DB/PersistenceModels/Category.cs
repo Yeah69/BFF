@@ -1,6 +1,6 @@
-namespace BFF.DB.PersistanceModels
+namespace BFF.DB.PersistenceModels
 {
-    public class Category : IPersistanceModel
+    public class Category : IPersistenceModel
     {
         public long Id { get; set; }
         public long? ParentId { get; set; }

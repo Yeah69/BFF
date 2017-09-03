@@ -2,13 +2,12 @@
 using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.Linq;
-using BFF.DB.Dapper.ModelRepositories;
-using BFF.DB.PersistanceModels;
+using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB.Dapper
 {
-    public interface IObservableRepositoryBase<TDomain> where TDomain : class, IDataModel
+    public interface IObservableRepositoryBase<TDomain> : ICachingRepositoryBase<TDomain> where TDomain : class, IDataModel
     {
         ObservableCollection<TDomain> All { get; }
     }
@@ -16,7 +15,7 @@ namespace BFF.DB.Dapper
     public abstract class ObservableRepositoryBase<TDomain, TPersistence> 
         : CachingRepositoryBase<TDomain, TPersistence>, IObservableRepositoryBase<TDomain>
         where TDomain : class, IDataModel
-        where TPersistence : class, IPersistanceModel
+        where TPersistence : class, IPersistenceModel
     {
         private readonly Comparer<TDomain> _comparer;
         public ObservableCollection<TDomain> All { get; }
@@ -25,6 +24,11 @@ namespace BFF.DB.Dapper
         {
             _comparer = comparer;
             All = new ObservableCollection<TDomain>(FindAll().OrderBy(o => o, _comparer));
+        }
+
+        public sealed override IEnumerable<TDomain> FindAll(DbConnection connection = null)
+        {
+            return base.FindAll(connection);
         }
 
         public override void Add(TDomain dataModel, DbConnection connection = null)

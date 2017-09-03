@@ -30,7 +30,7 @@ namespace BFF.DB
         Task<int> GetCountAsync(TSpecifying specifyingObject, DbConnection connection = null);
     }
 
-    public interface ICollectiveRepository<T> where T : class, IDataModel
+    public interface ICollectiveRepository<out T> where T : class, IDataModel
     {
         IEnumerable<T> FindAll(DbConnection connection = null);
     }

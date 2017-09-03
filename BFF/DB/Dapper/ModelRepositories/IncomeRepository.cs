@@ -1,7 +1,7 @@
 using System;
 using System.Data.Common;
+using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
-using Persistance = BFF.DB.PersistanceModels;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -10,22 +10,26 @@ namespace BFF.DB.Dapper.ModelRepositories
         public CreateIncomeTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Persistance.Income)}s](
-            {nameof(Persistance.Income.Id)} INTEGER PRIMARY KEY,
-            {nameof(Persistance.Income.AccountId)} INTEGER,
-            {nameof(Persistance.Income.PayeeId)} INTEGER,
-            {nameof(Persistance.Income.CategoryId)} INTEGER,
-            {nameof(Persistance.Income.Date)} DATE,
-            {nameof(Persistance.Income.Memo)} TEXT,
-            {nameof(Persistance.Income.Sum)} INTEGER,
-            {nameof(Persistance.Income.Cleared)} INTEGER,
-            FOREIGN KEY({nameof(Persistance.Income.AccountId)}) REFERENCES {nameof(Persistance.Account)}s({nameof(Persistance.Account.Id)}) ON DELETE CASCADE,
-            FOREIGN KEY({nameof(Persistance.Income.PayeeId)}) REFERENCES {nameof(Persistance.Payee)}s({nameof(Persistance.Payee.Id)}) ON DELETE SET NULL,
-            FOREIGN KEY({nameof(Persistance.Income.CategoryId)}) REFERENCES {nameof(Persistance.Category)}s({nameof(Persistance.Category.Id)}) ON DELETE SET NULL);";
-        
+            $@"CREATE TABLE [{nameof(Income)}s](
+            {nameof(Income.Id)} INTEGER PRIMARY KEY,
+            {nameof(Income.AccountId)} INTEGER,
+            {nameof(Income.PayeeId)} INTEGER,
+            {nameof(Income.CategoryId)} INTEGER,
+            {nameof(Income.Date)} DATE,
+            {nameof(Income.Memo)} TEXT,
+            {nameof(Income.Sum)} INTEGER,
+            {nameof(Income.Cleared)} INTEGER,
+            FOREIGN KEY({nameof(Income.AccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE CASCADE,
+            FOREIGN KEY({nameof(Income.PayeeId)}) REFERENCES {nameof(Payee)}s({nameof(Payee.Id)}) ON DELETE SET NULL,
+            FOREIGN KEY({nameof(Income.CategoryId)}) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
+
     }
-    
-    public class IncomeRepository : RepositoryBase<Domain.IIncome, Persistance.Income>
+
+    public interface IIncomeRepository : IRepositoryBase<Domain.IIncome>
+    {
+    }
+
+    public class IncomeRepository : RepositoryBase<Domain.IIncome, Income>, IIncomeRepository
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
         private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
@@ -45,8 +49,8 @@ namespace BFF.DB.Dapper.ModelRepositories
         public override Domain.IIncome Create() =>
             new Domain.Income(this, -1L, DateTime.MinValue, null, null, null, "", 0L, false);
         
-        protected override Converter<Domain.IIncome, Persistance.Income> ConvertToPersistance => domainIncome => 
-            new Persistance.Income
+        protected override Converter<Domain.IIncome, Income> ConvertToPersistence => domainIncome => 
+            new Income
             {
                 Id = domainIncome.Id,
                 AccountId = domainIncome.Account.Id,
@@ -58,9 +62,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Cleared = domainIncome.Cleared ? 1L : 0L
             };
 
-        protected override Converter<(Persistance.Income, DbConnection), Domain.IIncome> ConvertToDomain => tuple =>
+        protected override Converter<(Income, DbConnection), Domain.IIncome> ConvertToDomain => tuple =>
         {
-            (Persistance.Income persistenceIncome, DbConnection connection) = tuple;
+            (Income persistenceIncome, DbConnection connection) = tuple;
             return new Domain.Income(
                 this,
                 persistenceIncome.Id,
