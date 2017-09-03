@@ -16,15 +16,6 @@ namespace BFF.MVVM.Views
     {
         #region Depencency Properties
 
-        public static readonly DependencyProperty AccountProperty = DependencyProperty.Register(
-            nameof(Account), typeof(IAccount), typeof(TitDataGrid), new PropertyMetadata(default(IAccount)));
-
-        public IAccount Account
-        {
-            get => (IAccount) GetValue(AccountProperty);
-            set => SetValue(AccountProperty, value);
-        }
-
         public static readonly DependencyProperty AccountViewModelProperty = DependencyProperty.Register(
             nameof(AccountViewModel), typeof(IAccountBaseViewModel), typeof(TitDataGrid), 
             new PropertyMetadata(default(IAccountBaseViewModel), OnAccountViewModelChanged));

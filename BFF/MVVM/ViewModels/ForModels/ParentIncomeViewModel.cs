@@ -171,7 +171,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
         public ICommand OpenParentTitView => new RelayCommand(param =>
-            Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", param as IAccount)));
+            Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", param as IAccountViewModel)));
 
         protected override void OnInsert()
         {

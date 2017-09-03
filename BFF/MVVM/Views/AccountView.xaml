@@ -18,16 +18,15 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <views:TitDataGrid Grid.Row="0" 
-                                  Account="{Binding Account}" 
-                                  AccountViewModel="{Binding}"
-                                  Tits="{Binding Tits}" 
-                                  NewTits="{Binding NewTits}"
-                                  NewTransactionCommand="{Binding NewTransactionCommand}"
-                                  NewIncomeCommand="{Binding NewIncomeCommand}"
-                                  NewTransferCommand="{Binding NewTransferCommand}"
-                                  NewParentTransactionCommand="{Binding NewParentTransactionCommand}"
-                                  NewParentIncomeCommand="{Binding NewParentIncomeCommand}"
-                                  ApplyCommand="{Binding ApplyCommand}"
+                           AccountViewModel="{Binding}"
+                           Tits="{Binding Tits}" 
+                           NewTits="{Binding NewTits}"
+                           NewTransactionCommand="{Binding NewTransactionCommand}"
+                           NewIncomeCommand="{Binding NewIncomeCommand}"
+                           NewTransferCommand="{Binding NewTransferCommand}"
+                           NewParentTransactionCommand="{Binding NewParentTransactionCommand}"
+                           NewParentIncomeCommand="{Binding NewParentIncomeCommand}"
+                           ApplyCommand="{Binding ApplyCommand}"
                            IsDateLong="{Binding IsDateFormatLong}"/>
         <!-- "Status bar" -->
         <StackPanel Grid.Row="1" 

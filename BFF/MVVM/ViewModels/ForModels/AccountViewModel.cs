@@ -19,6 +19,8 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class AccountViewModel : AccountBaseViewModel, IAccountViewModel
     {
+        private readonly IAccount _account;
+
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
@@ -54,8 +56,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public AccountViewModel(IAccount account, IBffOrm orm, ISummaryAccountViewModel summaryAccountViewModel) 
             : base(orm, account)
         {
-            Account = account;
-
+            _account = account;
             StartingBalance = account.ToReactivePropertyAsSynchronized(a => a.StartingBalance)
                                      .AddTo(CompositeDisposable);
             StartingBalance.Subscribe(_ => summaryAccountViewModel.RefreshStartingBalance())
@@ -69,7 +70,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
         public override VirtualizingObservableCollection<ITitLikeViewModel> Tits => _tits ?? 
-            (_tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, Account, Orm))));
+            (_tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, _account, Orm))));
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
@@ -79,7 +80,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The current Balance of this Account.
         /// </summary>
-        public override long? Balance => Orm?.GetAccountBalance(Account);
+        public override long? Balance => Orm?.GetAccountBalance(_account);
 
         /// <summary>
         /// Refreshes the Balance.
@@ -100,7 +101,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             if(IsOpen.Value)
             {
                 OnPreVirtualizedRefresh();
-                _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, Account, Orm)));
+                _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, _account, Orm)));
                 OnPropertyChanged(nameof(Tits));
                 OnPostVirtualizedRefresh();
             }
@@ -113,7 +114,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             ITransaction transaction = Orm.BffRepository.TransactionRepository.Create();
             transaction.Date = DateTime.Today;
-            transaction.Account = Account;
+            transaction.Account = _account;
             transaction.Memo = "";
             transaction.Sum = 0L;
             transaction.Cleared = false;
@@ -132,7 +133,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             IIncome income = Orm.BffRepository.IncomeRepository.Create();
             income.Date = DateTime.Today;
-            income.Account = Account;
+            income.Account = _account;
             income.Memo = "";
             income.Sum = 0L;
             income.Cleared = false;
@@ -164,7 +165,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             IParentTransaction parentTransaction = Orm.BffRepository.ParentTransactionRepository.Create();
             parentTransaction.Date = DateTime.Today;
-            parentTransaction.Account = Account;
+            parentTransaction.Account = _account;
             parentTransaction.Memo = "";
             parentTransaction.Cleared = false;
             NewTits.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
@@ -177,7 +178,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             IParentIncome parentIncome = Orm.BffRepository.ParentIncomeRepository.Create();
             parentIncome.Date = DateTime.Today;
-            parentIncome.Account = Account;
+            parentIncome.Account = _account;
             parentIncome.Memo = "";
             parentIncome.Cleared = false;
             NewTits.Add(Orm.ParentIncomeViewModelService.GetViewModel(parentIncome));

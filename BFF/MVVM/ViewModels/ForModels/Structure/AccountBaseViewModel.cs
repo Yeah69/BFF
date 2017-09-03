@@ -147,11 +147,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public bool IsDateFormatLong => Settings.Default.Culture_DefaultDateLong;
 
         /// <summary>
-        /// The Account Model.
-        /// </summary>
-        public IAccount Account { get; protected set; }
-
-        /// <summary>
         /// Initializes a AccountBaseViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
@@ -216,19 +211,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected void ApplyTits()
         {
-            List<IAccountViewModel> accountViewModels = new List<IAccountViewModel>();
             List<ITitLikeViewModel> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
             foreach (ITitLikeViewModel tit in insertTits)
             {
                 tit.Insert();
                 NewTits.Remove(tit);
-                if (tit is ITransIncBaseViewModel transIncViewModel)
-                    accountViewModels.Add(transIncViewModel.Account.Value);
-                else if (tit is ITransferViewModel transferViewModel)
-                {
-                    accountViewModels.Add(transferViewModel.FromAccount.Value);
-                    accountViewModels.Add(transferViewModel.ToAccount.Value);
-                }
             }
 
             RefreshBalance();

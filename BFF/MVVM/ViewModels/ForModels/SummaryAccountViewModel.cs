@@ -50,7 +50,6 @@ namespace BFF.MVVM.ViewModels.ForModels
                                        IAccountRepository repository) : base(orm, summaryAccount)
         {
             IsOpen.Value = true;
-            Account = summaryAccount;
             Messenger.Default.Register<SummaryAccountMessage>(this, message =>
             {
                 switch (message)
@@ -179,7 +178,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             IParentTransaction parentTransaction = Orm.BffRepository.ParentTransactionRepository.Create();
             parentTransaction.Date = DateTime.Today;
-            parentTransaction.Account = Account;
             parentTransaction.Memo = "";
             parentTransaction.Cleared = false;
             NewTits.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
@@ -192,7 +190,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             IParentIncome parentIncome = Orm.BffRepository.ParentIncomeRepository.Create();
             parentIncome.Date = DateTime.Today;
-            parentIncome.Account = Account;
             parentIncome.Memo = "";
             parentIncome.Cleared = false;
             NewTits.Add(Orm.ParentIncomeViewModelService.GetViewModel(parentIncome));
