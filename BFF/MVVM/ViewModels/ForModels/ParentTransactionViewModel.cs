@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
@@ -32,17 +31,17 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Creates a new SubElement for this ParentElement.
         /// </summary>
-        ICommand NewSubElementCommand { get; }
+        ReactiveCommand NewSubElementCommand { get; }
 
         /// <summary>
         /// All new SubElement, which are not inserted into the database yet, will be flushed to the database with this command.
         /// </summary>
-        ICommand ApplyCommand { get; }
+        ReactiveCommand ApplyCommand { get; }
 
         /// <summary>
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
-        ICommand OpenParentTitView { get; }
+        ReactiveCommand<IAccountViewModel> OpenParentTitView { get; }
     }
 
     /// <summary>
@@ -50,9 +49,6 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class ParentTransactionViewModel : ParentTransIncViewModel, IParentTransactionViewModel
     {
-        private readonly IParentTransaction _parentTransaction;
-        private readonly SubTransactionViewModelService _subTransactionViewModelService;
-
         private readonly ObservableCollection<ISubTransactionViewModel> _newTransactions;
 
         /// <summary>
@@ -66,18 +62,17 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="parentTransaction">A ParentTransaction Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
+        /// <param name="subTransactionViewModelService">A service for fetching sub-transactions.</param>
         public ParentTransactionViewModel(
             IParentTransaction parentTransaction,
             IBffOrm orm,
             SubTransactionViewModelService subTransactionViewModelService) : base(parentTransaction, orm)
         {
-            _parentTransaction = parentTransaction;
-            _subTransactionViewModelService = subTransactionViewModelService;
             _newTransactions = new ObservableCollection<ISubTransactionViewModel>();
             NewSubElements = new ReadOnlyObservableCollection<ISubTransactionViewModel>(_newTransactions);
 
             SubTransactions =
-                _parentTransaction.SubTransactions.ToReadOnlyReactiveCollection(subTransactionViewModelService
+                parentTransaction.SubTransactions.ToReadOnlyReactiveCollection(subTransactionViewModelService
                     .GetViewModel);
 
             Sum = new ReactiveProperty<long>(SubTransactions.Sum(stvw => stvw.Sum.Value))
@@ -104,6 +99,28 @@ namespace BFF.MVVM.ViewModels.ForModels
             SubTransactions.ObserveElementObservableProperty(stvw => stvw.Sum)
                 .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))
                 .AddTo(CompositeDisposable);
+
+            NewSubElementCommand.Subscribe(_ =>
+            {
+                var newSubTransactionViewModel = subTransactionViewModelService.Create(parentTransaction);
+                _newTransactions.Add(newSubTransactionViewModel);
+            });
+
+            ApplyCommand.Subscribe(_ =>
+            {
+                foreach (ISubTransactionViewModel subTransaction in _newTransactions)
+                {
+                    if (parentTransaction.Id > 0L)
+                        subTransaction.Insert();
+                }
+                _newTransactions.Clear();
+                OnPropertyChanged(nameof(Sum));
+                Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+                Account.Value.RefreshBalance();
+            });
+
+            OpenParentTitView.Subscribe(avm =>
+                Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", avm)));
         }
 
         /// <summary>
@@ -148,33 +165,17 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Creates a new SubElement for this ParentElement.
         /// </summary>
-        public ICommand NewSubElementCommand => new RelayCommand(obj =>
-        {
-            var newSubTransactionViewModel = _subTransactionViewModelService.Create(_parentTransaction);
-            _newTransactions.Add(newSubTransactionViewModel);
-        });
+        public ReactiveCommand NewSubElementCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// All new SubElement, which are not inserted into the database yet, will be flushed to the database with this command.
         /// </summary>
-        public ICommand ApplyCommand => new RelayCommand(obj =>
-        {
-            foreach (ISubTransactionViewModel subTransaction in _newTransactions)
-            {
-                if (_parentTransaction.Id > 0L)
-                    subTransaction.Insert();
-            }
-            _newTransactions.Clear();
-            OnPropertyChanged(nameof(Sum));
-            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
-            Account.Value.RefreshBalance();
-        });
+        public ReactiveCommand ApplyCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
-        public ICommand OpenParentTitView => new RelayCommand(param =>
-            Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", param as IAccountViewModel)));
+        public ReactiveCommand<IAccountViewModel> OpenParentTitView { get; } = new ReactiveCommand<IAccountViewModel>();
 
         protected override void OnInsert()
         {

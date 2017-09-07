@@ -144,15 +144,12 @@ namespace BFF
 
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
 
-            ImportDialogViewModel importDialogVm = new ImportDialogViewModel
-            {
-                Importable = new YnabCsvImport()
+            ImportDialogViewModel importDialogVm = new ImportDialogViewModel(new YnabCsvImport
                 {
                     TransactionPath = Settings.Default.Import_YnabCsvTransaction,
                     BudgetPath = Settings.Default.Import_YnabCsvBudget,
                     SavePath = Settings.Default.Import_SavePath
-                }
-            };
+                });
             ImportDialog importDialog = new ImportDialog{ DataContext = importDialogVm };
             importDialog.ButtCancel.Click += (o, args) => this.HideMetroDialogAsync(importDialog);
             importDialog.ButtImport.Click += (o, args) =>

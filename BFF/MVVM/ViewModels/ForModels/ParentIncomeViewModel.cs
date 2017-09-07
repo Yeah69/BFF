@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
@@ -32,17 +31,17 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Creates a new SubElement for this ParentElement.
         /// </summary>
-        ICommand NewSubElementCommand { get; }
+        ReactiveCommand NewSubElementCommand { get; }
 
         /// <summary>
         /// All new SubElement, which are not inserted into the database yet, will be flushed to the database with this command.
         /// </summary>
-        ICommand ApplyCommand { get; }
+        ReactiveCommand ApplyCommand { get; }
 
         /// <summary>
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
-        ICommand OpenParentTitView { get; }
+        ReactiveCommand<IAccountViewModel> OpenParentTitView { get; }
     }
 
     /// <summary>
@@ -50,9 +49,6 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class ParentIncomeViewModel : ParentTransIncViewModel, IParentIncomeViewModel
     {
-        private readonly IParentIncome _parentIncome;
-        private readonly SubIncomeViewModelService _subIncomeViewModelService;
-
         private readonly ObservableCollection<ISubIncomeViewModel> _newIncomes;
 
         /// <summary>
@@ -64,20 +60,19 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Initializes a ParentIncomeViewModel.
         /// </summary>
-        /// <param name="parentTransInc">A ParentIncome Model.</param>
+        /// <param name="parentIncome">A ParentIncome Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
+        /// <param name="subIncomeViewModelService">A service for fetching sub-incomes.</param>
         public ParentIncomeViewModel(
-            IParentIncome parentTransInc,
+            IParentIncome parentIncome,
             IBffOrm orm,
-            SubIncomeViewModelService subIncomeViewModelService) : base(parentTransInc, orm)
+            SubIncomeViewModelService subIncomeViewModelService) : base(parentIncome, orm)
         {
-            _parentIncome = parentTransInc;
-            _subIncomeViewModelService = subIncomeViewModelService;
             _newIncomes = new ObservableCollection<ISubIncomeViewModel>();
             NewSubElements = new ReadOnlyObservableCollection<ISubIncomeViewModel>(_newIncomes);
 
             SubIncomes =
-                _parentIncome.SubIncomes.ToReadOnlyReactiveCollection(subIncomeViewModelService
+                parentIncome.SubIncomes.ToReadOnlyReactiveCollection(subIncomeViewModelService
                     .GetViewModel);
             Sum = new ReactiveProperty<long>(SubIncomes.Sum(sivw => sivw.Sum.Value))
                 .AddTo(CompositeDisposable);
@@ -103,6 +98,27 @@ namespace BFF.MVVM.ViewModels.ForModels
             SubIncomes.ObserveElementObservableProperty(sivw => sivw.Sum)
                 .Subscribe(obj => Sum.Value = SubIncomes.Sum(sivw => sivw.Sum.Value))
                 .AddTo(CompositeDisposable);
+
+            NewSubElementCommand.Subscribe(_ =>
+            {
+                var newSubTransactionViewModel = subIncomeViewModelService.Create(parentIncome);
+                _newIncomes.Add(newSubTransactionViewModel);
+            });
+
+            ApplyCommand.Subscribe(_ =>
+            {
+                foreach (ISubIncomeViewModel subTransaction in _newIncomes)
+                {
+                    if (parentIncome.Id > 0L)
+                        subTransaction.Insert();
+                }
+                _newIncomes.Clear();
+                OnPropertyChanged(nameof(Sum));
+                NotifyRelevantAccountsToRefreshBalance();
+            });
+
+            OpenParentTitView.Subscribe(
+                avm => Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", avm)));
         }
         
         /// <summary>
@@ -146,32 +162,17 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Creates a new SubElement for this ParentElement.
         /// </summary>
-        public ICommand NewSubElementCommand => new RelayCommand(obj =>
-        {
-            var newSubTransactionViewModel = _subIncomeViewModelService.Create(_parentIncome);
-            _newIncomes.Add(newSubTransactionViewModel);
-        });
+        public ReactiveCommand NewSubElementCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// All new SubElement, which are not inserted into the database yet, will be flushed to the database with this command.
         /// </summary>
-        public ICommand ApplyCommand => new RelayCommand(obj =>
-        {
-            foreach (ISubIncomeViewModel subTransaction in _newIncomes)
-            {
-                if (_parentIncome.Id > 0L)
-                    subTransaction.Insert();
-            }
-            _newIncomes.Clear();
-            OnPropertyChanged(nameof(Sum));
-            NotifyRelevantAccountsToRefreshBalance();
-        });
+        public ReactiveCommand ApplyCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
-        public ICommand OpenParentTitView => new RelayCommand(param =>
-            Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", param as IAccountViewModel)));
+        public ReactiveCommand<IAccountViewModel> OpenParentTitView { get; } = new ReactiveCommand<IAccountViewModel>();
 
         protected override void OnInsert()
         {

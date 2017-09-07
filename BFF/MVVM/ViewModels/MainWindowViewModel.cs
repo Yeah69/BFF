@@ -3,13 +3,12 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Input;
 using BFF.DB;
-using BFF.DB.Dapper;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.Properties;
 using NLog;
+using Reactive.Bindings;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
@@ -31,41 +30,11 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public ICommand NewBudgetPlanCommand => new RelayCommand(param => 
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog
-            {
-                Title = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_TitleNew", null, Settings.Default.Culture_DefaultLanguage),
-                Filter = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_Filter", null, Settings.Default.Culture_DefaultLanguage),
-                DefaultExt = "*.sqlite"
-            };
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                IProvideConnection provideConnection = new CreateSqLiteDatabase(saveFileDialog.FileName).Create();
-                SqLiteBffOrm orm = new SqLiteBffOrm(provideConnection);
-                Reset(saveFileDialog.FileName);
-            }
-        });
+        public ReactiveCommand NewBudgetPlanCommand { get; } = new ReactiveCommand();
 
-        public ICommand OpenBudgetPlanCommand => new RelayCommand(param => 
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                Title = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_TitleOpen", null, Settings.Default.Culture_DefaultLanguage),
-                Filter = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_Filter", null, Settings.Default.Culture_DefaultLanguage),
-                DefaultExt = "*.sqlite"
-            };
-            if (openFileDialog.ShowDialog() == true)
-            {
-                Reset(openFileDialog.FileName);
-            }
-        });
+        public ReactiveCommand OpenBudgetPlanCommand { get; } = new ReactiveCommand();
 
-        public ICommand ImportBudgetPlanCommand => new RelayCommand(importableObject =>
-        {
-            string savePath = ((IImportable)importableObject).Import();
-            Reset(savePath);
-        });
+        public ReactiveCommand<IImportable> ImportBudgetPlanCommand { get; } = new ReactiveCommand<IImportable>();
 
         private SessionViewModelBase _contentViewModel;
         public SessionViewModelBase ContentViewModel
@@ -171,6 +140,45 @@ namespace BFF.MVVM.ViewModels
                 ParentTitViewModel = parentTitViewModel;
                 ParentTitFlyoutOpen = true;
             });
+
+            NewBudgetPlanCommand.Subscribe(_ =>
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Title = (string) WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject(
+                        "OpenSaveDialog_TitleNew", null, Settings.Default.Culture_DefaultLanguage),
+                    Filter = (string) WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject(
+                        "OpenSaveDialog_Filter", null, Settings.Default.Culture_DefaultLanguage),
+                    DefaultExt = "*.sqlite"
+                };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    Reset(saveFileDialog.FileName);
+                }
+            });
+
+            OpenBudgetPlanCommand.Subscribe(_ =>
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog
+                {
+                    Title = (string) WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject(
+                        "OpenSaveDialog_TitleOpen", null, Settings.Default.Culture_DefaultLanguage),
+                    Filter = (string) WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject(
+                        "OpenSaveDialog_Filter", null, Settings.Default.Culture_DefaultLanguage),
+                    DefaultExt = "*.sqlite"
+                };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    Reset(openFileDialog.FileName);
+                }
+            });
+
+            ImportBudgetPlanCommand.Subscribe(importableObject =>
+            {
+                string savePath = importableObject.Import();
+                Reset(savePath);
+            });
+
             Logger.Trace("Initializing done.");
         }
 

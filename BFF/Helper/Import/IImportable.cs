@@ -4,7 +4,7 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.Helper.Import
 {
-    interface IImportable
+    public interface IImportable
     {
         string SavePath { get; set; }
 
