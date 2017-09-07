@@ -3,10 +3,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Windows.Input;
 using AlphaChiTech.Virtualization;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
@@ -77,6 +77,70 @@ namespace BFF.MVVM.ViewModels.ForModels
                 repository.All.ToObservable().Select(
                     a => repository.All.Sum(acc => acc.StartingBalance)))
                 .AddTo(CompositeDisposable);
+
+            NewTransactionCommand.Subscribe(_ =>
+            {
+                ITransaction transaction = Orm.BffRepository.TransactionRepository.Create();
+                transaction.Date = DateTime.Today;
+                transaction.Memo = "";
+                transaction.Sum = 0L;
+                transaction.Cleared = false;
+                NewTits.Add(new TransactionViewModel(
+                    transaction,
+                    Orm,
+                    Orm.CommonPropertyProvider.AccountViewModelService,
+                    Orm.CommonPropertyProvider.PayeeViewModelService,
+                    Orm.CommonPropertyProvider.CategoryViewModelService));
+            }).AddTo(CompositeDisposable);
+
+            NewIncomeCommand.Subscribe(_ =>
+            {
+                IIncome income = Orm.BffRepository.IncomeRepository.Create();
+                income.Date = DateTime.Today;
+                income.Memo = "";
+                income.Sum = 0L;
+                income.Cleared = false;
+                NewTits.Add(new IncomeViewModel(
+                    income,
+                    Orm,
+                    Orm.CommonPropertyProvider.AccountViewModelService,
+                    Orm.CommonPropertyProvider.PayeeViewModelService,
+                    Orm.CommonPropertyProvider.CategoryViewModelService));
+            }).AddTo(CompositeDisposable);
+
+            NewTransferCommand.Subscribe(_ =>
+            {
+                ITransfer transfer = Orm.BffRepository.TransferRepository.Create();
+                transfer.Date = DateTime.Today;
+                transfer.Memo = "";
+                transfer.Sum = 0L;
+                transfer.Cleared = false;
+                NewTits.Add(new TransferViewModel(transfer, Orm, Orm.CommonPropertyProvider.AccountViewModelService));
+            }).AddTo(CompositeDisposable);
+
+            NewParentTransactionCommand.Subscribe(_ =>
+            {
+                IParentTransaction parentTransaction = Orm.BffRepository.ParentTransactionRepository.Create();
+                parentTransaction.Date = DateTime.Today;
+                parentTransaction.Memo = "";
+                parentTransaction.Cleared = false;
+                NewTits.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
+            }).AddTo(CompositeDisposable);
+
+            NewParentIncomeCommand.Subscribe(_ =>
+            {
+                IParentIncome parentIncome = Orm.BffRepository.ParentIncomeRepository.Create();
+                parentIncome.Date = DateTime.Today;
+                parentIncome.Memo = "";
+                parentIncome.Cleared = false;
+                NewTits.Add(Orm.ParentIncomeViewModelService.GetViewModel(parentIncome));
+            }).AddTo(CompositeDisposable);
+
+            ApplyCommand = NewTits.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
+                .Select(count => count > 0)
+                .ToReactiveCommand();
+
+            ApplyCommand.Subscribe(_ => ApplyTits()).AddTo(CompositeDisposable);
         }
 
         /// <summary>
@@ -101,7 +165,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public override ObservableCollection<ITitLikeViewModel> NewTits { get; } = new ObservableCollection<ITitLikeViewModel>();
+        public sealed override ObservableCollection<ITitLikeViewModel> NewTits { get; } = new ObservableCollection<ITitLikeViewModel>();
         
         /// <summary>
         /// Refreshes the TITs of this Account.
@@ -125,84 +189,32 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        public override ICommand NewTransactionCommand => new RelayCommand(obj =>
-        {
-            ITransaction transaction = Orm.BffRepository.TransactionRepository.Create();
-            transaction.Date = DateTime.Today;
-            transaction.Memo = "";
-            transaction.Sum = 0L;
-            transaction.Cleared = false;
-            NewTits.Add(new TransactionViewModel(
-                transaction, 
-                Orm, 
-                Orm.CommonPropertyProvider.AccountViewModelService, 
-                Orm.CommonPropertyProvider.PayeeViewModelService, 
-                Orm.CommonPropertyProvider.CategoryViewModelService));
-        });
+        public sealed override ReactiveCommand NewTransactionCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// Creates a new Income.
         /// </summary>
-        public override ICommand NewIncomeCommand => new RelayCommand(obj =>
-        {
-            IIncome income = Orm.BffRepository.IncomeRepository.Create();
-            income.Date = DateTime.Today;
-            income.Memo = "";
-            income.Sum = 0L;
-            income.Cleared = false;
-            NewTits.Add(new IncomeViewModel(
-                income, 
-                Orm,
-                Orm.CommonPropertyProvider.AccountViewModelService,
-                Orm.CommonPropertyProvider.PayeeViewModelService,
-                Orm.CommonPropertyProvider.CategoryViewModelService));
-        });
+        public sealed override ReactiveCommand NewIncomeCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        public override ICommand NewTransferCommand => new RelayCommand(obj =>
-        {
-            ITransfer transfer = Orm.BffRepository.TransferRepository.Create();
-            transfer.Date = DateTime.Today;
-            transfer.Memo = "";
-            transfer.Sum = 0L;
-            transfer.Cleared = false;
-            NewTits.Add(new TransferViewModel(transfer, Orm, Orm.CommonPropertyProvider.AccountViewModelService));
-        });
+        public sealed override ReactiveCommand NewTransferCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        public override ICommand NewParentTransactionCommand => new RelayCommand(obj =>
-        {
-            IParentTransaction parentTransaction = Orm.BffRepository.ParentTransactionRepository.Create();
-            parentTransaction.Date = DateTime.Today;
-            parentTransaction.Memo = "";
-            parentTransaction.Cleared = false;
-            NewTits.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
-        });
+        public sealed override ReactiveCommand NewParentTransactionCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// Creates a new ParentIncome.
         /// </summary>
-        public override ICommand NewParentIncomeCommand => new RelayCommand(obj =>
-        {
-            IParentIncome parentIncome = Orm.BffRepository.ParentIncomeRepository.Create();
-            parentIncome.Date = DateTime.Today;
-            parentIncome.Memo = "";
-            parentIncome.Cleared = false;
-            NewTits.Add(Orm.ParentIncomeViewModelService.GetViewModel(parentIncome));
-        });
+        public sealed override ReactiveCommand NewParentIncomeCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// Flushes all valid and not yet inserted TITs to the database.
         /// </summary>
-        public override ICommand ApplyCommand => new RelayCommand(obj =>
-        {
-            ApplyTits();
-            OnPropertyChanged(nameof(Balance));
-        }, obj => NewTits.Count > 0);
+        public sealed override ReactiveCommand ApplyCommand { get; }
 
         #endregion
 

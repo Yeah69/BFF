@@ -156,7 +156,7 @@ namespace BFF.MVVM.ViewModels
             Reset(Settings.Default.DBLocation);
 
             //If the application is not visible on screen, than reset the default position
-            //This might occure when one of multipe monitors is switched off or the screen resolution is changed while BFF is off
+            //This might occur when one of multiple monitors is switched off or the screen resolution is changed while BFF is off
             if (X - BorderOffset > SystemInformation.VirtualScreen.Right ||
                 Y - BorderOffset > SystemInformation.VirtualScreen.Bottom ||
                 X + Width - BorderOffset < SystemInformation.VirtualScreen.Left ||

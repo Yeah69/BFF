@@ -18,7 +18,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!--#region Global BFF Resources -->
             <SolidColorBrush x:Key="TransactionBrush" Color="DarkOrange" />
             <SolidColorBrush x:Key="IncomeBrush" Color="LimeGreen" />
             <SolidColorBrush x:Key="TransferBrush" Color="RoyalBlue" />
@@ -37,7 +36,6 @@
                 <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
             </Style>
             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BffGeneralButtonStyle}" />
-            <!--#endregion -->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

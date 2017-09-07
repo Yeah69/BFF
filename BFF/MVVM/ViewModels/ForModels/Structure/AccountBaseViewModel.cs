@@ -42,32 +42,32 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        ICommand NewTransactionCommand { get; }
+        ReactiveCommand NewTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new Income.
         /// </summary>
-        ICommand NewIncomeCommand { get; }
+        ReactiveCommand NewIncomeCommand { get; }
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        ICommand NewTransferCommand { get; }
+        ReactiveCommand NewTransferCommand { get; }
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        ICommand NewParentTransactionCommand { get; }
+        ReactiveCommand NewParentTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new ParentIncome.
         /// </summary>
-        ICommand NewParentIncomeCommand { get; }
+        ReactiveCommand NewParentIncomeCommand { get; }
 
         /// <summary>
         /// Flushes all valid and not yet inserted TITs to the database.
         /// </summary>
-        ICommand ApplyCommand { get; }
+        ReactiveCommand ApplyCommand { get; }
 
         /// <summary>
         /// Refreshes the Balance.
@@ -114,32 +114,32 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        public abstract ICommand NewTransactionCommand { get; }
+        public abstract ReactiveCommand NewTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new Income.
         /// </summary>
-        public abstract ICommand NewIncomeCommand { get; }
+        public abstract ReactiveCommand NewIncomeCommand { get; }
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        public abstract ICommand NewTransferCommand { get; }
+        public abstract ReactiveCommand NewTransferCommand { get; }
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        public abstract ICommand NewParentTransactionCommand { get; }
+        public abstract ReactiveCommand NewParentTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new ParentIncome.
         /// </summary>
-        public abstract ICommand NewParentIncomeCommand { get; }
+        public abstract ReactiveCommand NewParentIncomeCommand { get; }
 
         /// <summary>
         /// Flushes all valid and not yet inserted TITs to the database.
         /// </summary>
-        public abstract ICommand ApplyCommand { get; }
+        public abstract ReactiveCommand ApplyCommand { get; }
 
         /// <summary>
         /// Indicates if the date format should be display in short or long fashion.

@@ -16,10 +16,10 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         /// <param name="date">Marks when the Tit happened</param>
         /// <param name="account">The Account to which this belongs</param>
-        /// <param name="payee">To whom was payeed or who payeed</param>
+        /// <param name="payee">To whom was payed or who payed</param>
         /// <param name="category">Categorizes this</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        /// <param name="sum">The amount of money, which was payeed or recieved</param>
+        /// <param name="sum">The amount of money, which was payed or received</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public Transaction(
             IRepository<ITransaction> repository,

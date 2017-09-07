@@ -6,7 +6,7 @@ namespace BFF.MVVM.Models.Native
     public interface IPayee : ICommonProperty {}
 
     /// <summary>
-    /// Someone to whom was payeed or who payeed himself
+    /// Someone to whom was payed or who payed himself
     /// </summary>
     public class Payee : CommonProperty<IPayee>, IPayee
     {

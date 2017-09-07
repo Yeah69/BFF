@@ -26,7 +26,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public IReactiveProperty<long> Sum { get; }
 
-        public ICommand DeleteCommand { get; }
+        public ReactiveCommand DeleteCommand { get; }
 
         /// <summary>
         /// Needed to mimic a TIT.
@@ -41,7 +41,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Memo = new ReactiveProperty<string>("Content is loading…");
             Sum = new ReactiveProperty<long>(0L);
             Cleared = new ReactiveProperty<bool>(false);
-            DeleteCommand = new ReactiveCommand(new DispatcherScheduler(Application.Current.Dispatcher));
+            DeleteCommand = new ReactiveCommand();
         }
 
         #region Overrides of TitLikeViewModel

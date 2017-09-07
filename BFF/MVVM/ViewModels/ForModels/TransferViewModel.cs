@@ -102,17 +102,17 @@ namespace BFF.MVVM.ViewModels.ForModels
             return FromAccount.Value != null && ToAccount.Value != null;
         }
 
-        /// <summary>
-        /// Deletes the model from the database and refreshes the accounts, which it belonged to, and the summary account.
-        /// </summary>
-        public override ICommand DeleteCommand => new RelayCommand(obj =>
+        protected override void InitializeDeleteCommand()
         {
-            Delete();
-            RefreshAnAccountViewModel(FromAccount.Value);
-            RefreshAnAccountViewModel(ToAccount.Value);
-            Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
-            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
-        });
+            DeleteCommand.Subscribe(_ =>
+            {
+                Delete();
+                RefreshAnAccountViewModel(FromAccount.Value);
+                RefreshAnAccountViewModel(ToAccount.Value);
+                Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+                Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+            });
+        }
 
         protected override void NotifyRelevantAccountsToRefreshTits()
         {

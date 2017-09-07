@@ -23,7 +23,6 @@
                 <ResourceDictionary Source="/MVVM/Resources/BFF_ModifiedMAMCheckBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!--#region Icons -->
             <iconPacks:PackIconMaterialKind x:Key="TransactionIcon">Logout</iconPacks:PackIconMaterialKind>
             <iconPacks:PackIconMaterialKind x:Key="IncomeIcon">Login</iconPacks:PackIconMaterialKind>
             <iconPacks:PackIconMaterialKind x:Key="TransferIcon">ShuffleVariant</iconPacks:PackIconMaterialKind>
@@ -31,7 +30,6 @@
             <iconPacks:PackIconMaterialKind x:Key="ParentIcon">Sitemap</iconPacks:PackIconMaterialKind>
             <iconPacks:PackIconMaterialKind x:Key="AddToTableIcon">TableRowPlusAfter</iconPacks:PackIconMaterialKind>
             <iconPacks:PackIconMaterialKind x:Key="RemoveFromTableIcon">TableRowRemove</iconPacks:PackIconMaterialKind>
-            <!--#endregion -->
 
             <Style x:Key="CellContent" TargetType="ContentControl">
                 <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -75,7 +73,8 @@
                 <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
             </Style>
 
-            <!--#region ColumnTemplates -->
+            <!-- ColumnTemplates -->
+            
             <!-- Symbol -->
             <DataTemplate x:Key="SymbolColumnTemplate">
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
@@ -426,8 +425,9 @@
             <DataTemplate x:Key="ClearedColumnTemplate">
                 <CheckBox Style="{StaticResource BffCheckBox}" IsChecked="{Binding Cleared.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" MinHeight="30" VerticalAlignment="Center"/>
             </DataTemplate>
-            <!--#endregion -->
-            <!--#region SubElementsFormTemplate -->
+            
+            <!-- SubElementsFormTemplate -->
+            
             <DataTemplate x:Key="EmptyDataTemplate"/>
             <DataTemplate x:Key="SubElementsEditingTemplatePart">
                 <DataGrid ItemsSource="{Binding NewSubElements}" HeadersVisibility="None">
@@ -529,7 +529,6 @@
                     </Button>
                 </StackPanel>
             </DataTemplate>
-            <!--#endregion -->
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
@@ -537,7 +536,9 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <!--#region TitsGrid -->
+        
+        <!-- TitsGrid -->
+        
         <!-- The DataGrid, which shows all saved Tits -->
         <DataGrid Name="TitGrid" Grid.Row="0" ItemsSource="{Binding Tits, ElementName=Root}" RowStyle="{StaticResource DefaultRowStyle}" 
                   SelectionMode="Single" SelectionUnit="FullRow" RowDetailsVisibilityMode="{Binding ShowRowDetailsMode}"
@@ -672,8 +673,9 @@
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
         </DataGrid>
-        <!--#endregion -->
-        <!--#region EditingForm -->
+        
+        <!-- EditingForm -->
+        
         <!-- The Editing-Form -->
         <StackPanel Grid.Row="1">
             <DataGrid Name="NewTitGrid" ItemsSource="{Binding NewTits}" HeadersVisibility="None" BorderThickness="0,2,0,0" MaxHeight="200"
@@ -817,7 +819,6 @@
                 </Button>
             </DockPanel>
         </StackPanel>
-        <!--#endregion -->
     </Grid>
 </UserControl>
 

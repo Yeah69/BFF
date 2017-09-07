@@ -1,4 +1,4 @@
-﻿using System.Windows.Input;
+﻿using System;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 using Reactive.Bindings;
@@ -21,7 +21,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Each TIT can be deleted from the GUI.
         /// </summary>
-        ICommand DeleteCommand { get; }
+        ReactiveCommand DeleteCommand { get; }
     }
 
     /// <summary>
@@ -49,11 +49,26 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected TitLikeViewModel(IBffOrm orm, ITitLike titLike) : base(orm, titLike)
         {
             Memo = titLike.ToReactivePropertyAsSynchronized(tl => tl.Memo);
+
+            InitializeDeleteCommand();
         }
 
         /// <summary>
         /// Each TIT can be deleted from the GUI.
         /// </summary>
-        public virtual ICommand DeleteCommand => new RelayCommand(obj => Delete());
+        /// <remarks>
+        /// In order to subscribe a different callback on the DeleteCommand override <see cref="InitializeDeleteCommand" /> and do the subscription the.
+        /// However, do not call the overridden function. It will be called in the constructor of <see cref="TitLikeViewModel"/>.
+        /// </remarks>
+        public ReactiveCommand DeleteCommand { get; } = new ReactiveCommand();
+
+        /// <summary>
+        /// Override this function for internal subscription to the DeleteCommand. This will be called once in the constructor of the <see cref="TitLikeViewModel"/>.
+        /// Hence, by only subscribing in this overridden function a single subscription is guaranteed. 
+        /// </summary>
+        protected virtual void InitializeDeleteCommand()
+        {
+            DeleteCommand.Subscribe(_ => Delete());
+        }
     }
 }

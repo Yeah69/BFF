@@ -41,10 +41,9 @@ namespace BFF
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
 
-            Logger.Fatal(e.Exception, "An unhandled error occured!");
+            Logger.Fatal(e.Exception, "An unhandled error occurred!");
             var mySettings = new MetroDialogSettings { AffirmativeButtonText = "Okay" };
-            //(MainWindow as MetroWindow).ShowMessageAsync("An unhandled error occured!", $"Error message:\r\n{e.Exception.Message}\r\nStackTrace:\r\n{e.Exception.StackTrace}", MessageDialogStyle.Affirmative, mySettings);
-            (MainWindow as MetroWindow).ShowMessageAsync("An unhandled error occured!", $"Error message:\r\n{e.Exception.Message}", MessageDialogStyle.Affirmative, mySettings);
+            (MainWindow as MetroWindow).ShowMessageAsync("An unhandled error occurred!", $"Error message:\r\n{e.Exception.Message}", MessageDialogStyle.Affirmative, mySettings);
             e.Handled = true;
         }
     }

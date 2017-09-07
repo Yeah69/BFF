@@ -125,8 +125,8 @@
             </controls:Flyout>
             <controls:Flyout Name="ParentTitFlyout" Position="Top" IsModal="True" IsOpen="{Binding ParentTitFlyoutOpen}"> <!-- todo lex -->
                 <views:TitDataGrid Tits="{Binding ParentTitViewModel.ParentTitSource}" 
-                                          ShowRowDetailsMode="Visible"
-                                          Account="{Binding ParentTitViewModel.Account}"/>
+                                   ShowRowDetailsMode="Visible"
+                                   AccountViewModel="{Binding ParentTitViewModel.Account}"/>
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>

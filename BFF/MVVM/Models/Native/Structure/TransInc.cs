@@ -6,7 +6,7 @@ namespace BFF.MVVM.Models.Native.Structure
     public interface ITransInc : ITransIncBase, IHaveCategory
     {
         /// <summary>
-        /// The amount of money, which was payeed or recieved
+        /// The amount of money, which was payed or received
         /// </summary>
         long Sum { get; set; }
     }
@@ -32,7 +32,7 @@ namespace BFF.MVVM.Models.Native.Structure
         }
 
         /// <summary>
-        /// The amount of money, which was payeed or recieved
+        /// The amount of money, which was payed or received
         /// </summary>
         public long Sum
         {
@@ -51,10 +51,10 @@ namespace BFF.MVVM.Models.Native.Structure
         /// </summary>
         /// <param name="date">Marks when the Tit happened</param>
         /// <param name="account">The Account to which this belongs</param>
-        /// <param name="payee">To whom was payeed or who payeed</param>
+        /// <param name="payee">To whom was payed or who payed</param>
         /// <param name="category">Categorizes this</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        /// <param name="sum">The amount of money, which was payeed or recieved</param>
+        /// <param name="sum">The amount of money, which was payed or received</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         protected TransInc(IRepository<T> repository,
                            long id,

@@ -117,15 +117,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         #endregion
 
-        /// <summary>
-        /// Deletes the object from the database and refreshes the account, which it belonged to, and the summary account.
-        /// </summary>
-        public override ICommand DeleteCommand => new RelayCommand(obj =>
+        protected override void InitializeDeleteCommand()
         {
-            Delete();
-            NotifyRelevantAccountsToRefreshTits();
-            NotifyRelevantAccountsToRefreshBalance();
-        });
+            DeleteCommand.Subscribe(_ =>
+            {
+                Delete();
+                NotifyRelevantAccountsToRefreshTits();
+                NotifyRelevantAccountsToRefreshBalance();
+            });
+        }
 
         protected override void NotifyRelevantAccountsToRefreshTits()
         {

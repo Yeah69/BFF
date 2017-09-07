@@ -129,19 +129,19 @@ namespace BFF.MVVM.ViewModels.ForModels
             return Account != null && Payee != null && NewSubElements.All(subElement => subElement.ValidToInsert());
         }
 
-        /// <summary>
-        /// Deletes the Model from the database and all ist SubElements, which are already in the database.
-        /// </summary>
-        public override ICommand DeleteCommand => new RelayCommand(obj =>
+        protected override void InitializeDeleteCommand()
         {
-            var tempList = new List<ISubIncomeViewModel>(SubElements);
-            foreach (ISubIncomeViewModel subTransaction in tempList)
-                subTransaction.Delete();
-            _newIncomes.Clear();
-            Delete();
-            NotifyRelevantAccountsToRefreshBalance();
-            NotifyRelevantAccountsToRefreshTits();
-        });
+            DeleteCommand.Subscribe(_ =>
+            {
+                var tempList = new List<ISubIncomeViewModel>(SubElements);
+                foreach (ISubIncomeViewModel subTransaction in tempList)
+                    subTransaction.Delete();
+                _newIncomes.Clear();
+                Delete();
+                NotifyRelevantAccountsToRefreshBalance();
+                NotifyRelevantAccountsToRefreshTits();
+            });
+        }
 
         /// <summary>
         /// Creates a new SubElement for this ParentElement.

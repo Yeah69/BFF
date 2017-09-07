@@ -125,7 +125,7 @@ namespace BFF.Helper.Import
                 AccountToTransIncBase = _accountAssignment,
                 FromAccountToTransfer = _fromAccountAssignment,
                 ToAccountToTransfer = _toAccountAssignment,
-                PayeeToTransIncBase = _payeeAssingment,
+                PayeeToTransIncBase = _payeeAssignment,
                 ParentTransactionToSubTransaction = _parentTransactionAssignment,
                 ParentIncomeToSubIncome = new Dictionary<Domain.IParentIncome, IList<Domain.ISubIncome>>() //In YNAB4 are no ParentIncomes
             };
@@ -293,7 +293,7 @@ namespace BFF.Helper.Import
         private string _savePath;
 
         /* The smart people of YNAB thought it would be a nice idea to put each Transfer two times into the export,
-           one time for each Account. Fortunatelly, the Accounts are processed consecutively.
+           one time for each Account. Fortunately, the Accounts are processed consecutively.
            That way if one of the Accounts of the Transfer points to an already processed Account,
            then it means that this Transfer is already created and can be skipped. */
         private readonly List<string> _processedAccountsList = new List<string>();
@@ -481,7 +481,7 @@ namespace BFF.Helper.Import
         #region Payees
 
         private readonly IDictionary<string, Domain.IPayee> _payeeCache = new Dictionary<string, Domain.IPayee>();
-        private readonly IDictionary<Domain.IPayee, IList<ITransIncBase>> _payeeAssingment = 
+        private readonly IDictionary<Domain.IPayee, IList<ITransIncBase>> _payeeAssignment = 
             new Dictionary<Domain.IPayee, IList<ITransIncBase>>();
 
         private void CreateAndOrAssignPayee(
@@ -494,11 +494,11 @@ namespace BFF.Helper.Import
                 Domain.IPayee payee = payeeRepository.Create();
                 payee.Name = name;
                 _payeeCache.Add(name, payee);
-                _payeeAssingment.Add(payee, new List<ITransIncBase> {titBase});
+                _payeeAssignment.Add(payee, new List<ITransIncBase> {titBase});
             }
             else
             {
-                _payeeAssingment[_payeeCache[name]].Add(titBase);
+                _payeeAssignment[_payeeCache[name]].Add(titBase);
             }
         }
 
@@ -510,7 +510,7 @@ namespace BFF.Helper.Import
         private void ClearPayeeCache()
         {
             _payeeCache.Clear();
-            _payeeAssingment.Clear();
+            _payeeAssignment.Clear();
         }
 
         #endregion
