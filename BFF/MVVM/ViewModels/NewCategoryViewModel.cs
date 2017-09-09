@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Reactive.Linq;
 using BFF.DB.Dapper.ModelRepositories;
@@ -33,16 +34,20 @@ namespace BFF.MVVM.ViewModels
         {
             _categoryViewModelService = categoryViewModelService;
 
-            AddCategoryCommand = CategoryText.CombineLatest(AddingCategoryParent, (text, parent) =>
+
+            var observeCollection = Observable.FromEventPattern<NotifyCollectionChangedEventArgs>(AllCategories, "CollectionChanged");
+
+            AddCategoryCommand = CategoryText.CombineLatest(AddingCategoryParent, observeCollection, (text, parent, _) =>
                 !string.IsNullOrWhiteSpace(text) &&
                 (parent == null && AllCategories.Where(cvw => cvw.Parent.Value == null).All(cvm => cvm.Name.Value != text) ||
-                 parent != null && parent.Categories.All(cvm => cvm.Name.Value != text))).ToReactiveCommand();
+                 parent != null && parent.Categories.All(cvm => cvm != null && cvm.Name.Value != text))).ToReactiveCommand();
 
-            AddCategoryCommand.Subscribe(_ =>
+            AddCategoryCommand.Where(_ => !string.IsNullOrWhiteSpace(CategoryText.Value)).Subscribe(_ =>
             {
                 ICategory newCategory = categoryRepository.Create();
                 newCategory.Name = CategoryText.Value.Trim();
                 newCategory.Parent = _categoryViewModelService.GetModel(AddingCategoryParent.Value);
+                newCategory.Parent.AddCategory(newCategory);
                 newCategory.Insert();
                 OnPropertyChanged(nameof(AllCategories));
                 categoryOwner.Category.Value = _categoryViewModelService.GetViewModel(newCategory);

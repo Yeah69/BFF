@@ -1,4 +1,7 @@
-﻿using BFF.DB;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -26,10 +29,31 @@ namespace BFF.MVVM.ViewModels.ForModels
 
     public class CategoryViewModel : CommonPropertyViewModel, ICategoryViewModel
     {
+        private readonly ICategory _category;
+
+        public class CategoryViewModelInitializer
+        {
+            private readonly CategoryViewModelService _service;
+
+            public CategoryViewModelInitializer(CategoryViewModelService service)
+            {
+                _service = service;
+            }
+
+            public void Initialize(IEnumerable<ICategoryViewModel> categoryViewModels)
+            {
+                foreach (var categoryViewModel in categoryViewModels.OfType<CategoryViewModel>())
+                {
+                    categoryViewModel.Categories =
+                        categoryViewModel._category.Categories.ToReadOnlyReactiveCollection(_service.GetViewModel);
+                }
+            }
+        }
+
         /// <summary>
         /// The Child-Categories
         /// </summary>
-        public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
+        public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; private set; }
         
         /// <summary>
         /// The Parent
@@ -56,13 +80,11 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public CategoryViewModel(ICategory category, IBffOrm orm, CategoryViewModelService service) : base(orm, category)
         {
+            _category = category;
             Parent = category.ToReactivePropertyAsSynchronized(
-                                 c => c.Parent, 
-                                 service.GetViewModel, 
-                                 service.GetModel)
-                             .AddTo(CompositeDisposable);
-
-            Categories = category.Categories.ToReadOnlyReactiveCollection(service.GetViewModel).AddTo(CompositeDisposable);
+                c => c.Parent,
+                service.GetViewModel,
+                service.GetModel);
         }
 
         #region Overrides of DataModelViewModel

@@ -42,7 +42,7 @@ namespace BFF.MVVM.Services
             return categoryViewModel;
         }
 
-        public TViewModel GetViewModel(TDomain model)
+        public virtual TViewModel GetViewModel(TDomain model)
         {
             if(model == null) return null;
             if(_modelToViewModel.ContainsKey(model))
@@ -55,10 +55,8 @@ namespace BFF.MVVM.Services
         {
             if(id < 1) return null;
             TDomain model = _viewModelToModel.Values.SingleOrDefault(c => c.Id == id);
-            if(model != null && _modelToViewModel.ContainsKey(model))
-                return _modelToViewModel[model];
 
-            return null;
+            return GetViewModel(model);
         }
 
         public TDomain GetModel(TViewModel viewModel)
