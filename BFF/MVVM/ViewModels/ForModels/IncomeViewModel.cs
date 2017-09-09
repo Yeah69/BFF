@@ -1,4 +1,5 @@
-﻿using BFF.DB;
+﻿using System;
+using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -21,13 +22,15 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <param name="payeeViewModelService">Service of payees.</param>
         /// <param name="categoryViewModelService">Service of categories.</param>
         public IncomeViewModel(
-            IIncome parentTransInc, 
+            IIncome parentTransInc,
+            Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
             IBffOrm orm,
             AccountViewModelService accountViewModelService,
             PayeeViewModelService payeeViewModelService,
             CategoryViewModelService categoryViewModelService)
             : base(
-                  parentTransInc, 
+                  parentTransInc,
+                  newCategoryViewModelFactory,
                   orm,
                   accountViewModelService,
                   payeeViewModelService,

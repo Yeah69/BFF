@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Reactive.Linq;
-using BFF.DB;
+﻿using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -15,7 +12,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The Child-Categories
         /// </summary>
-        ObservableCollection<ICategoryViewModel> Categories { get; }
+        ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
 
         /// <summary>
         /// The Parent
@@ -32,7 +29,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The Child-Categories
         /// </summary>
-        public ObservableCollection<ICategoryViewModel> Categories { get; } = new ObservableCollection<ICategoryViewModel>();
+        public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
         
         /// <summary>
         /// The Parent
@@ -65,21 +62,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                                  service.GetModel)
                              .AddTo(CompositeDisposable);
 
-            Parent.Skip(1)
-                .Where(parent => parent != null)
-                .Subscribe(parent =>
-            {
-                if (parent != null && !parent.Categories.Contains(this))
-                    parent.Categories.Add(this);
-            }).AddTo(CompositeDisposable);
-            
-            Parent.SkipLast(1)
-                .Where(previousParent => previousParent != null)
-                .Subscribe(previousParent =>
-            {
-                if(previousParent.Categories.Contains(this))
-                    previousParent.Categories.Remove(this);
-            }).AddTo(CompositeDisposable);
+            Categories = category.Categories.ToReadOnlyReactiveCollection(service.GetViewModel).AddTo(CompositeDisposable);
         }
 
         #region Overrides of DataModelViewModel

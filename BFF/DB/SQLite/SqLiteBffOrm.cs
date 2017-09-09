@@ -4,6 +4,7 @@ using BFF.DB.Dapper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
+using BFF.MVVM.ViewModels;
 using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.DB.SQLite
@@ -50,11 +51,19 @@ namespace BFF.DB.SQLite
             CommonPropertyProvider = new CommonPropertyProvider(this, _bffRepository);
 
             SubTransactionViewModelService = new SubTransactionViewModelService(
-                st => new SubTransactionViewModel(st, this, CommonPropertyProvider.CategoryViewModelService),
+                st => new SubTransactionViewModel(
+                    st,
+                    hcvm => new NewCategoryViewModel(hcvm, _bffRepository.CategoryRepository, CommonPropertyProvider.CategoryViewModelService),
+                    this, 
+                    CommonPropertyProvider.CategoryViewModelService),
                 () => BffRepository.SubTransactionRepository.Create());
 
             SubIncomeViewModelService = new SubIncomeViewModelService(
-                si => new SubIncomeViewModel(si, this, CommonPropertyProvider.CategoryViewModelService),
+                si => new SubIncomeViewModel(
+                    si,
+                    hcvm => new NewCategoryViewModel(hcvm, _bffRepository.CategoryRepository, CommonPropertyProvider.CategoryViewModelService),
+                    this,
+                    CommonPropertyProvider.CategoryViewModelService),
                 () => BffRepository.SubIncomeRepository.Create());
 
             ParentTransactionViewModelService = new ParentTransactionViewModelService(

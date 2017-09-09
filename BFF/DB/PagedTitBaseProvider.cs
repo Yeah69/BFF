@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AlphaChiTech.Virtualization;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.MVVM.ViewModels;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
@@ -49,6 +50,7 @@ namespace BFF.DB
                     case ITransaction transaction:
                         vmItems.Add(new TransactionViewModel(
                             transaction,
+                            hcvm => new NewCategoryViewModel(hcvm, Orm.BffRepository.CategoryRepository, Orm.CommonPropertyProvider.CategoryViewModelService),
                             Orm,
                             Orm.CommonPropertyProvider.AccountViewModelService,
                             Orm.CommonPropertyProvider.PayeeViewModelService,
@@ -57,6 +59,7 @@ namespace BFF.DB
                     case IIncome income:
                         vmItems.Add(new IncomeViewModel(
                             income,
+                            hcvm => new NewCategoryViewModel(hcvm, Orm.BffRepository.CategoryRepository, Orm.CommonPropertyProvider.CategoryViewModelService),
                             Orm,
                             Orm.CommonPropertyProvider.AccountViewModelService,
                             Orm.CommonPropertyProvider.PayeeViewModelService,

@@ -24,6 +24,11 @@ namespace BFF.MVVM.Models.Native.Structure
             get => _category;
             set
             {
+                if (value == null)
+                {
+                    OnPropertyChanged();
+                    return;
+                }
                 if(_category == value) return;
                 _category = value;
                 Update();

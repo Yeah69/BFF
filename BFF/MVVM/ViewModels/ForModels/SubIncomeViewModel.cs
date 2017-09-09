@@ -1,4 +1,5 @@
-﻿using BFF.DB;
+﻿using System;
+using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -20,7 +21,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <param name="orm">Used for the database accesses.</param>
         public SubIncomeViewModel(
             ISubIncome subIncome,
+            Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
             IBffOrm orm,
-            CategoryViewModelService categoryViewModelService) : base(subIncome, orm, categoryViewModelService) {}
+            CategoryViewModelService categoryViewModelService) : base(subIncome, newCategoryViewModelFactory, orm, categoryViewModelService) {}
     }
 }

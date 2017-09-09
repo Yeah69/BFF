@@ -26,11 +26,11 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public class SubTransactionRepository : SubTransIncRepository<Domain.ISubTransaction, SubTransaction>, ISubTransactionRepository
     {
-        private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
+        private readonly Func<long?, DbConnection, Domain.ICategory> _categoryFetcher;
 
         public SubTransactionRepository(
             IProvideConnection provideConnection,
-            Func<long, DbConnection, Domain.ICategory> categoryFetcher) : base(provideConnection)
+            Func<long?, DbConnection, Domain.ICategory> categoryFetcher) : base(provideConnection)
         {
             _categoryFetcher = categoryFetcher;
         }
@@ -43,7 +43,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             {
                 Id = domainSubTransaction.Id,
                 ParentId = domainSubTransaction.Parent.Id,
-                CategoryId = domainSubTransaction.Category.Id,
+                CategoryId = domainSubTransaction.Category?.Id,
                 Memo = domainSubTransaction.Memo,
                 Sum = domainSubTransaction.Sum
             };

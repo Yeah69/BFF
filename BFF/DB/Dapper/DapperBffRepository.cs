@@ -11,7 +11,7 @@ namespace BFF.DB.Dapper
             : base(provideConnection)
         {
             IAccount AccountFetcher(long id, DbConnection connection) => AccountRepository.Find(id, connection);
-            ICategory CategoryFetcher(long id, DbConnection connection) => CategoryRepository.Find(id, connection);
+            ICategory CategoryFetcher(long? id, DbConnection connection) => id != null ? CategoryRepository.Find((long)id, connection) : null;
             IPayee PayeeFetcher(long id, DbConnection connection) => PayeeRepository.Find(id, connection);
             IEnumerable<ISubTransaction> SubTransactionsFetcher(long parentId, DbConnection connection) => SubTransactionRepository.GetChildrenOf(parentId, connection);
             IEnumerable<ISubIncome> SubIncomesFetcher(long parentId, DbConnection connection) => SubIncomeRepository.GetChildrenOf(parentId, connection);

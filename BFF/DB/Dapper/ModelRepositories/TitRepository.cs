@@ -39,7 +39,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         private readonly IRepository<Domain.IParentTransaction> _parentTransactionRepository;
         private readonly IRepository<Domain.IParentIncome> _parentIncomeRepository;
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
-        private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
+        private readonly Func<long?, DbConnection, Domain.ICategory> _categoryFetcher;
         private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
         private readonly Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> _subTransactionsFetcher;
         private readonly Func<long, DbConnection, IEnumerable<Domain.ISubIncome>> _subIncomesFetcher;
@@ -52,7 +52,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             IRepository<Domain.IParentTransaction> parentTransactionRepository,
             IRepository<Domain.IParentIncome> parentIncomeRepository,
             Func<long, DbConnection, Domain.IAccount> accountFetcher,
-            Func<long, DbConnection, Domain.ICategory> categoryFetcher,
+            Func<long?, DbConnection, Domain.ICategory> categoryFetcher,
             Func<long, DbConnection, Domain.IPayee> payeeFetcher,
             Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> subTransactionsFetcher,
             Func<long, DbConnection, IEnumerable<Domain.ISubIncome>> subIncomesFetcher)
@@ -107,7 +107,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                         theTit.Id,
                         theTit.Date,
                         _accountFetcher(theTit.PayeeId, connection),
-                        _accountFetcher(theTit.CategoryId, connection), 
+                        _accountFetcher(theTit.CategoryId ?? -1, connection), // This CategoryId should never be a null, because it comes from a transfer
                         theTit.Memo,
                         theTit.Sum, 
                         theTit.Cleared == 1L);

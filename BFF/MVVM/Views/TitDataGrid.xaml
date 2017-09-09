@@ -275,9 +275,9 @@
                                 <controls:SplitButton DockPanel.Dock="Right" 
                                                       x:Name="AddCategoryButton" 
                                                       Orientation="Horizontal"
-                                                      Command="{Binding AddCategoryCommand}" 
-                                                      SelectedItem="{Binding AddingCategoryParent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      ItemsSource="{Binding AllCategories}"
+                                                      Command="{Binding NewCategoryViewModel.AddCategoryCommand}" 
+                                                      SelectedItem="{Binding NewCategoryViewModel.AddingCategoryParent.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      ItemsSource="{Binding NewCategoryViewModel.AllCategories}"
                                                       ItemTemplate="{StaticResource CategoryItemTemplate}">
                                     <controls:SplitButton.IconTemplate>
                                         <DataTemplate>
@@ -291,18 +291,23 @@
                                        Placement="Bottom" PopupAnimation="Slide"
                                        IsOpen="{Binding ElementName=AddCategoryButton, Path=IsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                                     <TextBox Focusable="True" 
-                                             Text="{Binding CategoryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             Text="{Binding NewCategoryViewModel.CategoryText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                              Height="{Binding ElementName=AddCategoryButton, Path=ActualHeight}"
                                              MinWidth="{Binding ElementName=AddCategoryButton, Path=ActualWidth}" />
                                 </Popup>
                                 <ComboBox TextSearch.TextPath="Name.Value"
                                           IsEditable="True" 
-                                          IsTextSearchCaseSensitive="False"
+                                          IsTextSearchCaseSensitive="True"
                                           IsTextSearchEnabled="True"
-                                          ItemsSource="{Binding AllCategories}"
-                                          ItemTemplate="{StaticResource CategoryItemTemplate}">
+                                          ItemsSource="{Binding NewCategoryViewModel.AllCategories}"
+                                          ItemTemplate="{StaticResource CategoryItemTemplate}"
+                                          ShouldPreserveUserEnteredPrefix="True">
                                     <ComboBox.SelectedItem>
-                                        <Binding Path="Category.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus" />
+                                        <Binding Path="Category.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                            <!--<Binding.ValidationRules>
+                                                <validationRules:NoNullRule />
+                                            </Binding.ValidationRules>-->
+                                        </Binding>
                                     </ComboBox.SelectedItem>
                                 </ComboBox>
                             </DockPanel>

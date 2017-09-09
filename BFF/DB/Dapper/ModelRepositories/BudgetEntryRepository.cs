@@ -25,8 +25,8 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public class BudgetEntryRepository : RepositoryBase<Domain.IBudgetEntry, BudgetEntry>, IBudgetEntryRepository
     {
-        private readonly Func<long, DbConnection, Domain.ICategory> _categoryFetcher;
-        public BudgetEntryRepository(IProvideConnection provideConnection, Func<long, DbConnection, Domain.ICategory> categoryFetcher) : base(provideConnection)
+        private readonly Func<long?, DbConnection, Domain.ICategory> _categoryFetcher;
+        public BudgetEntryRepository(IProvideConnection provideConnection, Func<long?, DbConnection, Domain.ICategory> categoryFetcher) : base(provideConnection)
         {
             _categoryFetcher = categoryFetcher;
         }
@@ -38,7 +38,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             new BudgetEntry
             {
                 Id = domainBudgetEntry.Id,
-                CategoryId = domainBudgetEntry.Category.Id,
+                CategoryId = domainBudgetEntry.Category?.Id,
                 Month = domainBudgetEntry.Month,
                 Budget = domainBudgetEntry.Budget
             };

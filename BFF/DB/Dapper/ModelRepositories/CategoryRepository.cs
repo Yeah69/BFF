@@ -64,6 +64,15 @@ namespace BFF.DB.Dapper.ModelRepositories
         public CategoryRepository(IProvideConnection provideConnection) 
             : base(provideConnection, new CategoryComparer())
         {
+            var groupedByParent = All.GroupBy(c => c.Parent).Where(grouping => grouping.Key != null);
+            foreach (var parentSubCategoryGrouping in groupedByParent)
+            {
+                var parent = parentSubCategoryGrouping.Key;
+                foreach (var subCategory in parentSubCategoryGrouping)
+                {
+                    parent.AddCategory(subCategory);
+                }
+            }
         }
 
         public override Domain.ICategory Create() =>
