@@ -74,7 +74,8 @@ namespace BFF.MVVM.ViewModels.ForModels
                 transaction.Cleared = false;
                 NewTits.Add(new TransactionViewModel(
                     transaction,
-                    hcvm => new NewCategoryViewModel(hcvm, Orm.BffRepository.CategoryRepository, Orm.CommonPropertyProvider.CategoryViewModelService), 
+                    hcvm => new NewCategoryViewModel(hcvm, Orm.BffRepository.CategoryRepository, Orm.CommonPropertyProvider.CategoryViewModelService),
+                    hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
                     Orm,
                     Orm.CommonPropertyProvider.AccountViewModelService,
                     Orm.CommonPropertyProvider.PayeeViewModelService,
@@ -92,6 +93,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 NewTits.Add(new IncomeViewModel(
                     income,
                     hcvm => new NewCategoryViewModel(hcvm, Orm.BffRepository.CategoryRepository, Orm.CommonPropertyProvider.CategoryViewModelService),
+                    hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
                     Orm,
                     Orm.CommonPropertyProvider.AccountViewModelService,
                     Orm.CommonPropertyProvider.PayeeViewModelService,

@@ -67,9 +67,17 @@ namespace BFF.DB.SQLite
                 () => BffRepository.SubIncomeRepository.Create());
 
             ParentTransactionViewModelService = new ParentTransactionViewModelService(
-                pt => new ParentTransactionViewModel(pt, this, SubTransactionViewModelService));
+                pt => new ParentTransactionViewModel(
+                    pt,
+                    hpvm => new NewPayeeViewModel(hpvm, _bffRepository.PayeeRepository, CommonPropertyProvider.PayeeViewModelService), 
+                    this,
+                    SubTransactionViewModelService));
             ParentIncomeViewModelService = new ParentIncomeViewModelService(
-                pi => new ParentIncomeViewModel(pi, this, SubIncomeViewModelService));
+                pi => new ParentIncomeViewModel(
+                    pi,
+                    hpvm => new NewPayeeViewModel(hpvm, _bffRepository.PayeeRepository, CommonPropertyProvider.PayeeViewModelService),
+                    this,
+                    SubIncomeViewModelService));
         }
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options

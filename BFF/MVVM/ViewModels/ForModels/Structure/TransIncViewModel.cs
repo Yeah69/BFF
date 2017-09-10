@@ -39,12 +39,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="categoryViewModelService">Service of categories.</param>
         protected TransIncViewModel(
             ITransInc transInc,
-            Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory, 
+            Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
+            Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IBffOrm orm, 
             AccountViewModelService accountViewModelService,
             PayeeViewModelService payeeViewModelService, 
             CategoryViewModelService categoryViewModelService)
-            : base(orm, transInc, accountViewModelService, payeeViewModelService)
+            : base(orm, transInc, newPayeeViewModelFactory, accountViewModelService, payeeViewModelService)
         {
             Category = transInc.ToReactivePropertyAsSynchronized(
                 ti => ti.Category, 

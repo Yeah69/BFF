@@ -65,8 +65,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <param name="subTransactionViewModelService">A service for fetching sub-transactions.</param>
         public ParentTransactionViewModel(
             IParentTransaction parentTransaction,
+            Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IBffOrm orm,
-            SubTransactionViewModelService subTransactionViewModelService) : base(parentTransaction, orm)
+            SubTransactionViewModelService subTransactionViewModelService) : base(parentTransaction, newPayeeViewModelFactory, orm)
         {
             _newTransactions = new ObservableCollection<ISubTransactionViewModel>();
             NewSubElements = new ReadOnlyObservableCollection<ISubTransactionViewModel>(_newTransactions);

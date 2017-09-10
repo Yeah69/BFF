@@ -12,17 +12,13 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    public interface ITransIncBaseViewModel : ITitBaseViewModel
+    public interface ITransIncBaseViewModel : ITitBaseViewModel, IHavePayeeViewModel
     {
         /// <summary>
         /// The assigned Account, where this Transaction/Income is registered.
         /// </summary>
         IReactiveProperty<IAccountViewModel> Account { get; }
-
-        /// <summary>
-        /// Someone or something, who got paid or paid the user by the Transaction/Income.
-        /// </summary>
-        IReactiveProperty<IPayeeViewModel> Payee { get; }
+        INewPayeeViewModel NewPayeeViewModel { get; }
     }
 
     /// <summary>
@@ -39,6 +35,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public virtual IReactiveProperty<IAccountViewModel> Account { get; }
 
+        public INewPayeeViewModel NewPayeeViewModel { get; }
+
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction/Income.
         /// </summary>
@@ -53,7 +51,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="payeeViewModelService">Service of payees.</param>
         protected TransIncBaseViewModel(
             IBffOrm orm, 
-            ITransIncBase parentTransIncBase, 
+            ITransIncBase parentTransIncBase,
+            Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             AccountViewModelService accountViewModelService,
             PayeeViewModelService payeeViewModelService) : base(orm, parentTransIncBase)
         {
@@ -84,38 +83,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 tib => tib.Payee,
                 payeeViewModelService.GetViewModel,
                 payeeViewModelService.GetModel);
+
+            NewPayeeViewModel = newPayeeViewModelFactory(this);
         }
-
-        #region Payee Editing
-
-        /// <summary>
-        /// User input of the to be searched or to be created Payee.
-        /// </summary>
-        public string PayeeText { get; set; }
-
-        /// <summary>
-        /// Creates a new Payee.
-        /// </summary>
-        public ICommand AddPayeeCommand => new RelayCommand(obj =>
-        {
-            IPayee newPayee = Orm.BffRepository.PayeeRepository.Create();
-            newPayee.Name = PayeeText.Trim();
-            newPayee.Insert();
-            OnPropertyChanged(nameof(AllPayees));
-            Payee.Value = _payeeViewModelService.GetViewModel(newPayee);
-        }, obj =>
-        {
-            string trimmedPayeeText = PayeeText?.Trim();
-            return !string.IsNullOrEmpty(trimmedPayeeText) &&
-                   AllPayees.Count(payee => payee.Name.Value == trimmedPayeeText) == 0;
-        });
-
-        /// <summary>
-        /// All currently available Payees.
-        /// </summary>
-        public IObservableReadOnlyList<IPayeeViewModel> AllPayees => CommonPropertyProvider?.AllPayeeViewModels;
-
-        #endregion
 
         protected override void InitializeDeleteCommand()
         {

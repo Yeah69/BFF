@@ -295,6 +295,7 @@
     <Compile Include="MVVM\ViewModels\ForModels\PayeeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\DataModelViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\IncomeViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Structure\IHavePayeeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\IHaveCategoryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\TitBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\TransIncBaseViewModel.cs" />
@@ -319,6 +320,7 @@
     <Compile Include="MVVM\ViewModels\AccountTabsViewModel.cs" />
     <Compile Include="MVVM\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="MVVM\ViewModels\NewCategoryViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\NewPayeeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ParentTitViewModel.cs" />
     <Compile Include="MVVM\ViewModels\SessionViewModelBase.cs" />
     <Compile Include="MVVM\AttachedBehaviors\AdditionalTabItemsBehavior.cs" />

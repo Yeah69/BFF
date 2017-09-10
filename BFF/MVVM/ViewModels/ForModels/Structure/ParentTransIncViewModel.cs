@@ -1,4 +1,5 @@
-﻿using BFF.DB;
+﻿using System;
+using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
@@ -24,10 +25,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="parentTransInc">The associated Model of this ViewModel.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        protected ParentTransIncViewModel(IParentTransInc parentTransInc, IBffOrm orm) 
+        protected ParentTransIncViewModel(
+            IParentTransInc parentTransInc,
+            Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory, 
+            IBffOrm orm) 
             : base(
                   orm, 
-                  parentTransInc,
+                  parentTransInc, 
+                  newPayeeViewModelFactory,
                   orm.CommonPropertyProvider.AccountViewModelService,
                   orm.CommonPropertyProvider.PayeeViewModelService)
         {

@@ -184,22 +184,22 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}" >
                             <DockPanel LastChildFill="True">
-                                <Button DockPanel.Dock="Right" x:Name="AddPayeeButton" Command="{Binding AddPayeeCommand}" Padding="0">
+                                <Button DockPanel.Dock="Right" x:Name="AddPayeeButton" Command="{Binding NewPayeeViewModel.AddPayeeCommand}" Padding="0">
                                     <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Foreground="{DynamicResource BlackColorBrush}" Style="{StaticResource CellIconMaterial}" />
                                 </Button>
                                 <Popup PlacementTarget="{Binding ElementName=AddPayeeButton}" Placement="Bottom" PopupAnimation="Slide"
                                        IsOpen="{Binding ElementName=AddPayeeButton, Path=IsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                                     <TextBox Focusable="True" 
-                                             Text="{Binding PayeeText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                             Text="{Binding NewPayeeViewModel.PayeeText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                              Height="{Binding ElementName=AddPayeeButton, Path=ActualHeight}"
                                              MinWidth="{Binding ElementName=AddPayeeButton, Path=ActualWidth}" />
                                 </Popup>
                                 <ComboBox TextSearch.TextPath="Name.Value" 
-                                          Text="{Binding PayeeText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                          Text="{Binding NewPayeeViewModel.PayeeText.Value, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                                           IsEditable="True"
                                           IsTextSearchEnabled="True"
-                                          IsTextSearchCaseSensitive="False"
-                                          ItemsSource="{Binding AllPayees}"
+                                          IsTextSearchCaseSensitive="True"
+                                          ItemsSource="{Binding NewPayeeViewModel.AllPayees}"
                                           HorizontalAlignment="Stretch"
                                           DisplayMemberPath="Name.Value">
                                     <ComboBox.SelectedItem>

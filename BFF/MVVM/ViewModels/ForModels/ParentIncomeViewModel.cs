@@ -65,8 +65,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <param name="subIncomeViewModelService">A service for fetching sub-incomes.</param>
         public ParentIncomeViewModel(
             IParentIncome parentIncome,
+            Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IBffOrm orm,
-            SubIncomeViewModelService subIncomeViewModelService) : base(parentIncome, orm)
+            SubIncomeViewModelService subIncomeViewModelService) : base(parentIncome, newPayeeViewModelFactory, orm)
         {
             _newIncomes = new ObservableCollection<ISubIncomeViewModel>();
             NewSubElements = new ReadOnlyObservableCollection<ISubIncomeViewModel>(_newIncomes);

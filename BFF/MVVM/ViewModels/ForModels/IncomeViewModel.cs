@@ -24,6 +24,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IncomeViewModel(
             IIncome parentTransInc,
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
+            Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IBffOrm orm,
             AccountViewModelService accountViewModelService,
             PayeeViewModelService payeeViewModelService,
@@ -31,6 +32,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             : base(
                   parentTransInc,
                   newCategoryViewModelFactory,
+                  newPayeeViewModelFactory,
                   orm,
                   accountViewModelService,
                   payeeViewModelService,
