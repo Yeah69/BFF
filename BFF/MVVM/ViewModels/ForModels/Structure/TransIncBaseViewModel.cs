@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Reactive.Linq;
-using System.Windows.Input;
 using BFF.DB;
-using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using MuVaViMo;
@@ -26,8 +23,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class TransIncBaseViewModel : TitBaseViewModel, ITransIncBaseViewModel
     {
-        private readonly PayeeViewModelService _payeeViewModelService;
-
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
 
         /// <summary>
@@ -61,8 +56,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 account?.RefreshTits();
                 account?.RefreshBalance();
             }
-
-            _payeeViewModelService = payeeViewModelService;
 
             Account = parentTransIncBase.ToReactivePropertyAsSynchronized(
                 tib => tib.Account,
