@@ -1,6 +1,6 @@
 namespace BFF.DB.PersistenceModels
 {
-    public class SubIncome : IPersistenceModel
+    public class SubIncome : IPersistenceModel, IHaveCategory
     {
         public long Id { get; set; }
         public long ParentId { get; set; }

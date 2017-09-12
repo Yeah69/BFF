@@ -8,8 +8,7 @@ using BFF.DB;
 using BFF.DB.Dapper;
 using BFF.DB.SQLite;
 using BFF.MVVM;
-using Domain = BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
+using Persistence = BFF.DB.PersistenceModels;
 using BFF.Properties;
 using NLog;
 using BudgetEntry = BFF.MVVM.Models.Conversion.YNAB.BudgetEntry;
@@ -75,7 +74,7 @@ namespace BFF.Helper.Import
         internal static readonly Regex TransferPayeeRegex = new Regex(@"Transfer : (?<accountName>.+)$", RegexOptions.RightToLeft);
         internal static readonly Regex PayeePartsRegex = new Regex(@"^(?<payeeStr>.+)?(( / )?Transfer : (?<accountName>.+))?$", RegexOptions.RightToLeft);
         internal static readonly Regex SplitMemoRegex = new Regex(@"^\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) ");
-        internal static readonly Regex MemoPartsRegex = new Regex(@"^(\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) )?((?<subTransMemo>.*) / )?(?<parentTransMemo>.*)$");
+        internal static readonly Regex MemoPartsRegex = new Regex(@"^(\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) )?(?<subTransMemo>.*)( \/ (?<parentTransMemo>.*))?$");
 
         internal static long ExtractLong(string text)
         {
@@ -101,21 +100,21 @@ namespace BFF.Helper.Import
 
             ImportLists lists = new ImportLists
             {
-                Accounts = new List<Domain.IAccount>(),
+                Accounts = new List<Persistence.Account>(),
                 Categories = new List<CategoryImportWrapper>(),
-                Payees = new List<Domain.IPayee>(),
-                Incomes = new List<Domain.IIncome>(),
-                ParentIncomes = new List<Domain.IParentIncome>(),
-                ParentTransactions = new List<Domain.IParentTransaction>(),
-                SubIncomes = new List<Domain.ISubIncome>(),
-                SubTransactions = new List<Domain.ISubTransaction>(),
-                Transactions = new List<Domain.ITransaction>(),
-                Transfers = new List<Domain.ITransfer>()
+                Payees = new List<Persistence.Payee>(),
+                Incomes = new List<Persistence.Income>(),
+                ParentIncomes = new List<Persistence.ParentIncome>(),
+                ParentTransactions = new List<Persistence.ParentTransaction>(),
+                SubIncomes = new List<Persistence.SubIncome>(),
+                SubTransactions = new List<Persistence.SubTransaction>(),
+                Transactions = new List<Persistence.Transaction>(),
+                Transfers = new List<Persistence.Transfer>()
             };
 
             //Second step: Convert conversion objects into native models
-            ConvertTransactionsToNative(ynabTransactions, lists, bffRepository);
-            lists.BudgetEntries = ConvertBudgetEntryToNative(budgets, bffRepository).ToList();
+            ConvertTransactionsToNative(ynabTransactions, lists);
+            lists.BudgetEntries = ConvertBudgetEntryToNative(budgets).ToList();
             lists.Accounts = GetAllAccountCache();
             lists.Payees = GetAllPayeeCache();
             lists.Categories = _categoryImportWrappers;
@@ -127,7 +126,7 @@ namespace BFF.Helper.Import
                 ToAccountToTransfer = _toAccountAssignment,
                 PayeeToTransIncBase = _payeeAssignment,
                 ParentTransactionToSubTransaction = _parentTransactionAssignment,
-                ParentIncomeToSubIncome = new Dictionary<Domain.IParentIncome, IList<Domain.ISubIncome>>() //In YNAB4 are no ParentIncomes
+                ParentIncomeToSubIncome = new Dictionary<Persistence.ParentIncome, IList<Persistence.SubIncome>>() //In YNAB4 are no ParentIncomes
             };
 
             //Third step: Create new database for imported data
@@ -202,7 +201,7 @@ namespace BFF.Helper.Import
         }
 
         private void ConvertTransactionsToNative(
-            Queue<Transaction> ynabTransactions, ImportLists lists, BffRepository bffRepository)
+            Queue<Transaction> ynabTransactions, ImportLists lists)
         {
             //Account pre-processing
             //First create all available Accounts. The reason for this is to make the Account all assignable from the beginning
@@ -210,8 +209,7 @@ namespace BFF.Helper.Import
                 .Where(ynabTransaction => ynabTransaction.Payee == "Starting Balance"))
             {
                 CreateAccount(ynabTransaction.Account, 
-                              ynabTransaction.Inflow - ynabTransaction.Outflow, 
-                              bffRepository.AccountRepository);
+                              ynabTransaction.Inflow - ynabTransaction.Outflow);
             }
             //Now process the queue
             while (ynabTransactions.Count > 0)
@@ -226,58 +224,125 @@ namespace BFF.Helper.Import
                 Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Memo);
                 if (splitMatch.Success)
                 {
-                    Domain.IParentTransaction parent = TransformToParentTransaction(ynabTransaction, bffRepository);
-                    int splitCount = int.Parse(splitMatch.Groups[nameof(splitCount)].Value);
-                    int count = 0;
-                    for (int i = 0; i < splitCount; i++)
-                    {
-                        Transaction newYnabTransaction = i==0 ? ynabTransaction : ynabTransactions.Dequeue();
-                        Match transferMatch = TransferPayeeRegex.Match(newYnabTransaction.Payee);
-                        if (transferMatch.Success)
-                            AddTransfer(lists.Transfers, newYnabTransaction, bffRepository.TransferRepository);
-                        else if (newYnabTransaction.MasterCategory == "Income")
-                            lists.Incomes.Add(TransformToIncome(newYnabTransaction, bffRepository));
-                        else
-                        {
-                            Domain.ISubTransaction subTransaction = TransformToSubTransaction(
-                                newYnabTransaction, parent, bffRepository);
-                            lists.SubTransactions.Add(subTransaction);
-                            count++;
-                        }
-                    }
-                    if (count > 0)
-                    {
-                        lists.ParentTransactions.Add(parent);
-                    }
+                    ProcessSplitTransactions(ynabTransactions, lists, ynabTransaction, splitMatch);
                 }
                 else
                 {
                     Match transferMatch = TransferPayeeRegex.Match(ynabTransaction.Payee);
                     if (transferMatch.Success)
-                        AddTransfer(lists.Transfers, ynabTransaction, bffRepository.TransferRepository);
+                        AddTransfer(lists.Transfers, ynabTransaction);
                     else if (ynabTransaction.MasterCategory == "Income")
-                        lists.Incomes.Add(TransformToIncome(ynabTransaction, bffRepository));
+                        lists.Incomes.Add(TransformToIncome(ynabTransaction));
                     else
-                        lists.Transactions.Add(TransformToTransaction(ynabTransaction, bffRepository));
+                        lists.Transactions.Add(TransformToTransaction(ynabTransaction));
                 }
             }
         }
 
-        private IEnumerable<Domain.IBudgetEntry> ConvertBudgetEntryToNative(IEnumerable<BudgetEntry> ynabBudgetEntries, 
-                                                                            BffRepository bffRepository)
+        private void ProcessSplitTransactions(
+            Queue<Transaction> ynabTransactions, 
+            ImportLists lists, 
+            Transaction ynabTransaction,
+            Match splitMatch)
         {
-            IEnumerable<MVVM.Models.Native.IBudgetEntry> ConvertBudgetEntryToNativeInner()
+            void CleanMemoFromSplitTag(Transaction t)
+            {
+                var match = SplitMemoRegex.Match(t.Memo);
+                if (match.Success)
+                    t.Memo = t.Memo.Remove(0, match.Value.Length);
+            }
+
+            string CleanMemosFromParentMessage(Transaction[] ts)
+            {
+                string parentMessage = "";
+
+
+                if (ts.Any(t => t.Memo.Contains(" / ")))
+                {
+                    bool shouldContinue;
+                    do
+                    {
+                        shouldContinue = false;
+                        int index = ts.FirstOrDefault(t => t.Memo.Contains(" / "))?.Memo.LastIndexOf(" / ", StringComparison.Ordinal) ?? -1;
+                        if (index == -1) break;
+                        string potentialMessagePart = ts.First(t => t.Memo.Contains(" / ")).Memo.Substring(index);
+                        var part = potentialMessagePart;
+                        if (ts.All(t => t.Memo.EndsWith(part) || t.Memo == part.Substring(3)))
+                        {
+                            potentialMessagePart = potentialMessagePart.Substring(3);
+                            parentMessage = parentMessage != ""
+                                ? $"{potentialMessagePart} / {parentMessage}"
+                                : potentialMessagePart;
+
+                            foreach (Transaction t in ts)
+                            {
+                                t.Memo = t.Memo.Remove(t.Memo.Length - Math.Min(potentialMessagePart.Length + 3, t.Memo.Length));
+                            }
+
+                            shouldContinue = true;
+                        }
+                    } while (shouldContinue);
+                }
+
+                return parentMessage;
+            }
+
+            int splitCount = int.Parse(splitMatch.Groups[nameof(splitCount)].Value);
+
+            Transaction[] splitTransactions = new Transaction[splitCount];
+
+            splitTransactions[0] = ynabTransaction;
+            CleanMemoFromSplitTag(splitTransactions[0]);
+
+            for (int i = 1; i < splitCount; i++)
+            {
+                splitTransactions[i] = ynabTransactions.Dequeue();
+                CleanMemoFromSplitTag(splitTransactions[i]);
+            }
+
+            string parentMemo = CleanMemosFromParentMessage(splitTransactions);
+
+            Persistence.ParentTransaction parent = TransformToParentTransaction(ynabTransaction, parentMemo);
+
+            bool createdSubTransactions = false;
+            foreach (var splitTransaction in splitTransactions)
+            {
+                Match transferMatch = TransferPayeeRegex.Match(splitTransaction.Payee);
+                if (transferMatch.Success)
+                    AddTransfer(lists.Transfers, splitTransaction);
+                else if (splitTransaction.MasterCategory == "Income")
+                    lists.Incomes.Add(TransformToIncome(splitTransaction));
+                else
+                {
+                    Persistence.SubTransaction subTransaction = TransformToSubTransaction(
+                        splitTransaction, parent);
+                    lists.SubTransactions.Add(subTransaction);
+                    createdSubTransactions = true;
+                }
+            }
+            
+            if (createdSubTransactions)
+            {
+                lists.ParentTransactions.Add(parent);
+            }
+        }
+
+        private IEnumerable<Persistence.BudgetEntry> ConvertBudgetEntryToNative(IEnumerable<BudgetEntry> ynabBudgetEntries)
+        {
+            IEnumerable<Persistence.BudgetEntry> ConvertBudgetEntryToNativeInner()
             {
                 foreach(var ynabBudgetEntry in ynabBudgetEntries)
                 {
                     if(ynabBudgetEntry.Budgeted != 0L)
                     {
                         var month = DateTime.ParseExact(ynabBudgetEntry.Month, "MMMM yyyy", null);
-                        Domain.IBudgetEntry budgetEntry = bffRepository.BudgetEntryRepository.Create();
-                        budgetEntry.Month = month;
-                        budgetEntry.Budget = ynabBudgetEntry.Budgeted;
+                        Persistence.BudgetEntry budgetEntry = new Persistence.BudgetEntry
+                        {
+                            Month = month,
+                            Budget = ynabBudgetEntry.Budgeted
+                        };
 
-                        AssignCategory(ynabBudgetEntry.Category, budgetEntry, bffRepository.CategoryRepository);
+                        AssignCategory(ynabBudgetEntry.Category, budgetEntry);
                         yield return budgetEntry;
                     }
                 }
@@ -297,9 +362,8 @@ namespace BFF.Helper.Import
            That way if one of the Accounts of the Transfer points to an already processed Account,
            then it means that this Transfer is already created and can be skipped. */
         private readonly List<string> _processedAccountsList = new List<string>();
-        private void AddTransfer(IList<Domain.ITransfer> transfers, 
-                                 Transaction ynabTransfer,
-                                 IRepository<Domain.ITransfer> transferRepository)
+        private void AddTransfer(IList<Persistence.Transfer> transfers, 
+                                 Transaction ynabTransfer)
         {
             if (_processedAccountsList.Count == 0)
             {
@@ -313,7 +377,7 @@ namespace BFF.Helper.Import
             string otherAccount = PayeePartsRegex.Match(ynabTransfer.Payee).Groups["accountName"].Value;
             if (!_processedAccountsList.Contains(otherAccount))
             {
-                transfers.Add(TransformToTransfer(ynabTransfer, transferRepository));
+                transfers.Add(TransformToTransfer(ynabTransfer));
             }
         }
 
@@ -323,18 +387,18 @@ namespace BFF.Helper.Import
         /// Creates a Transaction-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private Domain.ITransaction TransformToTransaction(Transaction ynabTransaction, BffRepository bffRepository)
+        private Persistence.Transaction TransformToTransaction(Transaction ynabTransaction)
         {
-            Domain.ITransaction ret = bffRepository.TransactionRepository.Create();
-            ret.Date = ynabTransaction.Date;
-            ret.Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value;
-            ret.Sum = ynabTransaction.Inflow - ynabTransaction.Outflow;
-            ret.Cleared = ynabTransaction.Cleared;
+            Persistence.Transaction ret = new Persistence.Transaction
+            {
+                Date = ynabTransaction.Date,
+                Memo = ynabTransaction.Memo,
+                Sum = ynabTransaction.Inflow - ynabTransaction.Outflow,
+                Cleared = ynabTransaction.Cleared ? 1 : 0
+            };
             AssignAccount(ynabTransaction.Account, ret);
-            CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value, 
-                                   ret,
-                                   bffRepository.PayeeRepository);
-            AssignCategory(ynabTransaction.Category, ret, bffRepository.CategoryRepository);
+            CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value, ret);
+            AssignCategory(ynabTransaction.Category, ret);
             return ret;
         }
 
@@ -342,18 +406,18 @@ namespace BFF.Helper.Import
         /// Creates a Income-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private Domain.IIncome TransformToIncome(Transaction ynabTransaction, BffRepository bffRepository)
+        private Persistence.Income TransformToIncome(Transaction ynabTransaction)
         {
-            Domain.IIncome ret = bffRepository.IncomeRepository.Create();
-            ret.Date = ynabTransaction.Date;
-            ret.Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value;
-            ret.Sum = ynabTransaction.Inflow - ynabTransaction.Outflow;
-            ret.Cleared = ynabTransaction.Cleared;
+            Persistence.Income ret = new Persistence.Income
+            {
+                Date = ynabTransaction.Date,
+                Memo = ynabTransaction.Memo,
+                Sum = ynabTransaction.Inflow - ynabTransaction.Outflow,
+                Cleared = ynabTransaction.Cleared ? 1 : 0
+            };
             AssignAccount(ynabTransaction.Account, ret);
-            CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value, 
-                                   ret,
-                                   bffRepository.PayeeRepository);
-            AssignCategory(ynabTransaction.Category, ret, bffRepository.CategoryRepository);
+            CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value, ret);
+            AssignCategory(ynabTransaction.Category, ret);
             return ret;
         }
 
@@ -361,15 +425,16 @@ namespace BFF.Helper.Import
         /// Creates a Transfer-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private Domain.ITransfer TransformToTransfer(Transaction ynabTransaction, 
-                                                     IRepository<Domain.ITransfer> transferRepository)
+        private Persistence.Transfer TransformToTransfer(Transaction ynabTransaction)
         {
             long tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;
-            Domain.ITransfer ret = transferRepository.Create();
-            ret.Date = ynabTransaction.Date;
-            ret.Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value;
-            ret.Sum = Math.Abs(tempSum);
-            ret.Cleared = ynabTransaction.Cleared;
+            Persistence.Transfer ret = new Persistence.Transfer
+            {
+                Date = ynabTransaction.Date,
+                Memo = ynabTransaction.Memo,
+                Sum = Math.Abs(tempSum),
+                Cleared = ynabTransaction.Cleared ? 1 : 0
+            };
             if(tempSum < 0)
             {
                 AssignFormAccount(ynabTransaction.Account, ret);
@@ -383,36 +448,39 @@ namespace BFF.Helper.Import
             return ret;
         }
 
-        private readonly IDictionary<Domain.IParentTransaction, IList<Domain.ISubTransaction>> 
-            _parentTransactionAssignment = new Dictionary<Domain.IParentTransaction, IList<Domain.ISubTransaction>>();
+        private readonly IDictionary<Persistence.ParentTransaction, IList<Persistence.SubTransaction>> 
+            _parentTransactionAssignment = new Dictionary<Persistence.ParentTransaction, IList<Persistence.SubTransaction>>();
 
         /// <summary>
         /// Creates a Transaction-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private Domain.IParentTransaction TransformToParentTransaction(Transaction ynabTransaction, 
-                                                                       BffRepository bffRepository)
+        /// <param name="parentMemo">Parent memo which is extracted from the split transactions</param>
+        private Persistence.ParentTransaction TransformToParentTransaction(Transaction ynabTransaction, string parentMemo)
         {
-            Domain.IParentTransaction ret = bffRepository.ParentTransactionRepository.Create();
-            ret.Date = ynabTransaction.Date;
-            ret.Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["parentTransMemo"].Value;
-            ret.Cleared = ynabTransaction.Cleared;
+            Persistence.ParentTransaction ret = new Persistence.ParentTransaction
+            {
+                Date = ynabTransaction.Date,
+                Memo = parentMemo,
+                Cleared = ynabTransaction.Cleared ? 1 : 0
+            };
             AssignAccount(ynabTransaction.Account, ret);
-            CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value,
-                                   ret, 
-                                   bffRepository.PayeeRepository);
+            CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value, ret);
             return ret;
         }
 
-        private Domain.ISubTransaction TransformToSubTransaction(
-            Transaction ynabTransaction, Domain.IParentTransaction parent, BffRepository bffRepository)
+        private Persistence.SubTransaction TransformToSubTransaction(
+            Transaction ynabTransaction, Persistence.ParentTransaction parent)
         {
-            Domain.ISubTransaction ret = bffRepository.SubTransactionRepository.Create();
-            ret.Memo = MemoPartsRegex.Match(ynabTransaction.Memo).Groups["subTransMemo"].Value;
-            ret.Sum = ynabTransaction.Inflow - ynabTransaction.Outflow;
-            AssignCategory(ynabTransaction.Category, ret, bffRepository.CategoryRepository);
+            Persistence.SubTransaction ret =
+                new Persistence.SubTransaction
+                {
+                    Memo = ynabTransaction.Memo,
+                    Sum = ynabTransaction.Inflow - ynabTransaction.Outflow
+                };
+            AssignCategory(ynabTransaction.Category, ret);
             if(!_parentTransactionAssignment.ContainsKey(parent))
-                _parentTransactionAssignment.Add(parent, new List<Domain.ISubTransaction> {ret});
+                _parentTransactionAssignment.Add(parent, new List<Persistence.SubTransaction> {ret});
             else _parentTransactionAssignment[parent].Add(ret);
             return ret;
         }
@@ -421,49 +489,51 @@ namespace BFF.Helper.Import
         
         #region Accounts
 
-        private readonly IDictionary<string, Domain.IAccount> _accountCache = new Dictionary<string, Domain.IAccount>();
+        private readonly IDictionary<string, Persistence.Account> _accountCache = new Dictionary<string, Persistence.Account>();
 
-        private readonly IDictionary<Domain.IAccount, IList<ITransIncBase>> _accountAssignment =
-            new Dictionary<Domain.IAccount, IList<ITransIncBase>>();
+        private readonly IDictionary<Persistence.Account, IList<Persistence.IHaveAccount>> _accountAssignment =
+            new Dictionary<Persistence.Account, IList<Persistence.IHaveAccount>>();
 
-        private readonly IDictionary<Domain.IAccount, IList<Domain.ITransfer>> _fromAccountAssignment =
-            new Dictionary<Domain.IAccount, IList<Domain.ITransfer>>();
+        private readonly IDictionary<Persistence.Account, IList<Persistence.Transfer>> _fromAccountAssignment =
+            new Dictionary<Persistence.Account, IList<Persistence.Transfer>>();
 
-        private readonly IDictionary<Domain.IAccount, IList<Domain.ITransfer>> _toAccountAssignment =
-            new Dictionary<Domain.IAccount, IList<Domain.ITransfer>>();
+        private readonly IDictionary<Persistence.Account, IList<Persistence.Transfer>> _toAccountAssignment =
+            new Dictionary<Persistence.Account, IList<Persistence.Transfer>>();
 
-        private void CreateAccount(string name, long startingBalance, IRepository<Domain.IAccount> accountRepository)
+        private void CreateAccount(string name, long startingBalance)
         {
             if(string.IsNullOrWhiteSpace(name)) return;
 
-            Domain.IAccount account = accountRepository.Create();
-            account.Name = name;
-            account.StartingBalance = startingBalance;
+            Persistence.Account account = new Persistence.Account
+            {
+                Name = name,
+                StartingBalance = startingBalance
+            };
             _accountCache.Add(name, account);
-            _accountAssignment.Add(account, new List<ITransIncBase>());
-            _fromAccountAssignment.Add(account, new List<Domain.ITransfer>());
-            _toAccountAssignment.Add(account, new List<Domain.ITransfer>());
+            _accountAssignment.Add(account, new List<Persistence.IHaveAccount>());
+            _fromAccountAssignment.Add(account, new List<Persistence.Transfer>());
+            _toAccountAssignment.Add(account, new List<Persistence.Transfer>());
         }
 
-        private void AssignAccount(string name, ITransIncBase titNoTransfer)
+        private void AssignAccount(string name, Persistence.IHaveAccount titNoTransfer)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
             _accountAssignment[_accountCache[name]].Add(titNoTransfer);
         }
 
-        private void AssignToAccount(string name, Domain.ITransfer transfer)
+        private void AssignToAccount(string name, Persistence.Transfer transfer)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
             _toAccountAssignment[_accountCache[name]].Add(transfer);
         }
 
-        private void AssignFormAccount(string name, Domain.ITransfer transfer)
+        private void AssignFormAccount(string name, Persistence.Transfer transfer)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
             _fromAccountAssignment[_accountCache[name]].Add(transfer);
         }
 
-        private List<Domain.IAccount> GetAllAccountCache()
+        private List<Persistence.Account> GetAllAccountCache()
         {
             return _accountCache.Values.ToList();
         }
@@ -480,21 +550,20 @@ namespace BFF.Helper.Import
 
         #region Payees
 
-        private readonly IDictionary<string, Domain.IPayee> _payeeCache = new Dictionary<string, Domain.IPayee>();
-        private readonly IDictionary<Domain.IPayee, IList<ITransIncBase>> _payeeAssignment = 
-            new Dictionary<Domain.IPayee, IList<ITransIncBase>>();
+        private readonly IDictionary<string, Persistence.Payee> _payeeCache = new Dictionary<string, Persistence.Payee>();
+        private readonly IDictionary<Persistence.Payee, IList<Persistence.IHavePayee>> _payeeAssignment = 
+            new Dictionary<Persistence.Payee, IList<Persistence.IHavePayee>>();
 
         private void CreateAndOrAssignPayee(
-            string name, ITransIncBase titBase, IRepository<Domain.IPayee> payeeRepository)
+            string name, Persistence.IHavePayee titBase)
         {
             if(string.IsNullOrWhiteSpace(name))
                 return;
             if(!_payeeCache.ContainsKey(name))
             {
-                Domain.IPayee payee = payeeRepository.Create();
-                payee.Name = name;
+                Persistence.Payee payee = new Persistence.Payee {Name = name};
                 _payeeCache.Add(name, payee);
-                _payeeAssignment.Add(payee, new List<ITransIncBase> {titBase});
+                _payeeAssignment.Add(payee, new List<Persistence.IHavePayee> {titBase});
             }
             else
             {
@@ -502,7 +571,7 @@ namespace BFF.Helper.Import
             }
         }
 
-        private List<Domain.IPayee> GetAllPayeeCache()
+        private List<Persistence.Payee> GetAllPayeeCache()
         {
             return _payeeCache.Values.ToList();
         }
@@ -520,7 +589,7 @@ namespace BFF.Helper.Import
         private readonly IList<CategoryImportWrapper> _categoryImportWrappers = new List<CategoryImportWrapper>();
 
         private void AssignCategory(
-            string namePath, IHaveCategory titLike, IRepository<Domain.ICategory> categoryRepository)
+            string namePath, Persistence.IHaveCategory titLike)
         {
             string masterCategoryName = namePath.Split(':').First();
             string subCategoryName = namePath.Split(':').Last();
@@ -528,8 +597,7 @@ namespace BFF.Helper.Import
                 _categoryImportWrappers.SingleOrDefault(ciw => ciw.Category.Name == masterCategoryName);
             if(masterCategoryWrapper == null)
             {
-                Domain.ICategory category = categoryRepository.Create();
-                category.Name = masterCategoryName;
+                Persistence.Category category = new Persistence.Category {Name = masterCategoryName};
                 masterCategoryWrapper = new CategoryImportWrapper { Parent = null, Category = category };
                 _categoryImportWrappers.Add(masterCategoryWrapper);
             }
@@ -537,8 +605,7 @@ namespace BFF.Helper.Import
                 masterCategoryWrapper.Categories.SingleOrDefault(c => c.Category.Name == subCategoryName);
             if(subCategoryWrapper == null)
             {
-                Domain.ICategory category = categoryRepository.Create();
-                category.Name = subCategoryName;
+                Persistence.Category category = new Persistence.Category {Name = subCategoryName};
                 subCategoryWrapper = new CategoryImportWrapper {Parent = masterCategoryWrapper, Category = category};
                 masterCategoryWrapper.Categories.Add(subCategoryWrapper);
             }

@@ -2,7 +2,7 @@ using System;
 
 namespace BFF.DB.PersistenceModels
 {
-    public class Income : IPersistenceModel
+    public class Income : IPersistenceModel, IHaveAccount, IHavePayee, IHaveCategory
     {
         public long Id { get; set; }
         public long AccountId { get; set; }

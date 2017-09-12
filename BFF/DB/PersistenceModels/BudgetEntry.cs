@@ -2,7 +2,7 @@ using System;
 
 namespace BFF.DB.PersistenceModels
 {
-    public class BudgetEntry : IPersistenceModel
+    public class BudgetEntry : IPersistenceModel, IHaveCategory
     {
         public long Id { get; set; }
         public long? CategoryId { get; set; }

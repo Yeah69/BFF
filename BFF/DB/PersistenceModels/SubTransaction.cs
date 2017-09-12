@@ -1,6 +1,6 @@
 namespace BFF.DB.PersistenceModels
 {
-    public class SubTransaction : IPersistenceModel
+    public class SubTransaction : IPersistenceModel, IHaveCategory
     {
         public long Id { get; set; }
         public long ParentId { get; set; }

@@ -6,8 +6,7 @@ using BFF.DB.Dapper;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
-using BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
+using BFF.DB.PersistenceModels;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using DbSetting = BFF.DB.PersistenceModels.DbSetting;
@@ -93,7 +92,7 @@ namespace BFF.DB
         public abstract ITransferRepository TransferRepository { get; }
         public abstract ITitRepository TitRepository { get; }
 
-        private void PopulateDatabaseInner(ImportLists importLists, ImportAssignments importAssignments, DbConnection connection = null)
+        private void PopulateDatabaseInner(ImportLists importLists, ImportAssignments importAssignments, DbConnection connection)
         {
             /*  
             Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
@@ -104,69 +103,69 @@ namespace BFF.DB
             while (categoriesOrder.Count > 0)
             {
                 CategoryImportWrapper current = categoriesOrder.Dequeue();
-                CategoryRepository.Add(current.Category, connection);
+                var id = connection.Insert(current.Category);
                 foreach (IHaveCategory currentTitAssignment in current.TitAssignments)
                 {
-                    currentTitAssignment.Category = current.Category;
+                    currentTitAssignment.CategoryId = id;
                 }
                 foreach (CategoryImportWrapper categoryImportWrapper in current.Categories)
                 {
-                    categoryImportWrapper.Category.Parent = current.Category;
+                    categoryImportWrapper.Category.ParentId = id;
                     categoriesOrder.Enqueue(categoryImportWrapper);
                 }
             }
-            foreach (IPayee payee in importLists.Payees)
+            foreach (Payee payee in importLists.Payees)
             {
-                PayeeRepository.Add(payee, connection);
-                foreach (ITransIncBase transIncBase in importAssignments.PayeeToTransIncBase[payee])
+                var id = connection.Insert(payee);
+                foreach (IHavePayee transIncBase in importAssignments.PayeeToTransIncBase[payee])
                 {
-                    transIncBase.Payee = payee;
+                    transIncBase.PayeeId = id;
                 }
             }
-            foreach (IAccount account in importLists.Accounts)
+            foreach (Account account in importLists.Accounts)
             {
-                AccountRepository.Add(account, connection);
-                foreach (ITransIncBase transIncBase in importAssignments.AccountToTransIncBase[account])
+                var id = connection.Insert(account);
+                foreach (IHaveAccount transIncBase in importAssignments.AccountToTransIncBase[account])
                 {
-                    transIncBase.Account = account;
+                    transIncBase.AccountId = id;
                 }
-                foreach (ITransfer transfer in importAssignments.FromAccountToTransfer[account])
+                foreach (Transfer transfer in importAssignments.FromAccountToTransfer[account])
                 {
-                    transfer.FromAccount = account;
+                    transfer.FromAccountId = id;
                 }
-                foreach (ITransfer transfer in importAssignments.ToAccountToTransfer[account])
+                foreach (Transfer transfer in importAssignments.ToAccountToTransfer[account])
                 {
-                    transfer.ToAccount = account;
+                    transfer.ToAccountId = id;
                 }
             }
-            foreach (ITransaction transaction in importLists.Transactions)
-                TransactionRepository.Add(transaction, connection);
-            foreach (IParentTransaction parentTransaction in importLists.ParentTransactions)
+            foreach (PersistenceModels.Transaction transaction in importLists.Transactions)
+                connection.Insert(transaction);
+            foreach (ParentTransaction parentTransaction in importLists.ParentTransactions)
             {
-                ParentTransactionRepository.Add(parentTransaction, connection);
-                foreach (ISubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
+                var id = connection.Insert(parentTransaction);
+                foreach (SubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
                 {
-                    subTransaction.Parent = parentTransaction;
+                    subTransaction.ParentId = id;
                 }
             }
-            foreach (ISubTransaction subTransaction in importLists.SubTransactions) 
-                SubTransactionRepository.Add(subTransaction, connection);
-            foreach (IIncome income in importLists.Incomes) 
-                IncomeRepository.Add(income, connection);
-            foreach (IParentIncome parentIncome in importLists.ParentIncomes)
+            foreach (SubTransaction subTransaction in importLists.SubTransactions) 
+                connection.Insert(subTransaction);
+            foreach (Income income in importLists.Incomes) 
+                connection.Insert(income);
+            foreach (ParentIncome parentIncome in importLists.ParentIncomes)
             {
-                ParentIncomeRepository.Add(parentIncome, connection);
-                foreach (ISubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
+                var id = connection.Insert(parentIncome);
+                foreach (SubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
                 {
-                    subIncome.Parent = parentIncome;
+                    subIncome.ParentId = id;
                 }
             }
-            foreach (ISubIncome subIncome in importLists.SubIncomes) 
-                SubIncomeRepository.Add(subIncome, connection);
-            foreach (ITransfer transfer in importLists.Transfers) 
-                TransferRepository.Add(transfer, connection);
-            foreach (IBudgetEntry budgetEntry in importLists.BudgetEntries) 
-                BudgetEntryRepository.Add(budgetEntry, connection);
+            foreach (SubIncome subIncome in importLists.SubIncomes) 
+                connection.Insert(subIncome);
+            foreach (Transfer transfer in importLists.Transfers) 
+                connection.Insert(transfer);
+            foreach (BudgetEntry budgetEntry in importLists.BudgetEntries) 
+                connection.Insert(budgetEntry);
         }
 
         public void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments, DbConnection connection = null)

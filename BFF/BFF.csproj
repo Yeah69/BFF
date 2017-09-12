@@ -239,6 +239,9 @@
     <Compile Include="DB\PersistenceModels\BudgetEntry.cs" />
     <Compile Include="DB\PersistenceModels\Category.cs" />
     <Compile Include="DB\PersistenceModels\DbSetting.cs" />
+    <Compile Include="DB\PersistenceModels\IHaveAccount.cs" />
+    <Compile Include="DB\PersistenceModels\IHaveCategory.cs" />
+    <Compile Include="DB\PersistenceModels\IHavePayee.cs" />
     <Compile Include="DB\PersistenceModels\Income.cs" />
     <Compile Include="DB\PersistenceModels\IPersistenceModel.cs" />
     <Compile Include="DB\PersistenceModels\ParentIncome.cs" />
