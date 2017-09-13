@@ -26,7 +26,7 @@ namespace BFF.MVVM.ViewModels
         
         public ReactiveCommand NewAccountCommand { get; }
 
-        public AccountTabsViewModel(IBffOrm orm, AccountViewModelService accountViewModelService)
+        public AccountTabsViewModel(IBffOrm orm, IAccountViewModelService accountViewModelService)
         {
             _orm = orm;
             NewAccount = accountViewModelService.GetNewNonInsertedViewModel();

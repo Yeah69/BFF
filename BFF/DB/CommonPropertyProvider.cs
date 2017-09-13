@@ -9,9 +9,9 @@ namespace BFF.DB
 {
     public interface ICommonPropertyProvider 
     {
-        AccountViewModelService AccountViewModelService { get; }
-        CategoryViewModelService CategoryViewModelService { get; }
-        PayeeViewModelService PayeeViewModelService { get; }
+        IAccountViewModelService AccountViewModelService { get; }
+        ICategoryViewModelService CategoryViewModelService { get; }
+        IPayeeViewModelService PayeeViewModelService { get; }
         ObservableCollection<IAccount> Accounts { get; }
         IObservableReadOnlyList<IAccountViewModel> AllAccountViewModels { get; }
         IObservableReadOnlyList<ICategoryViewModel> AllCategoryViewModels { get; }
@@ -22,10 +22,10 @@ namespace BFF.DB
 
     public class CommonPropertyProvider : ICommonPropertyProvider
     {
-        public AccountViewModelService AccountViewModelService { get; }
+        public IAccountViewModelService AccountViewModelService { get; }
         
-        public CategoryViewModelService CategoryViewModelService { get; }
-        public PayeeViewModelService PayeeViewModelService { get; }
+        public ICategoryViewModelService CategoryViewModelService { get; }
+        public IPayeeViewModelService PayeeViewModelService { get; }
 
         public ObservableCollection<IAccount> Accounts { get;  }
 

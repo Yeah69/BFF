@@ -26,9 +26,9 @@ namespace BFF.MVVM.ViewModels.ForModels
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IBffOrm orm,
-            AccountViewModelService accountViewModelService, 
-            PayeeViewModelService payeeViewModelService, 
-            CategoryViewModelService categoryViewModelService) 
+            IAccountViewModelService accountViewModelService,
+            IPayeeViewModelService payeeViewModelService,
+            ICategoryViewModelService categoryViewModelService) 
             : base(
                   parentTransInc, 
                   newCategoryViewModelFactory,

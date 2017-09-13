@@ -4,7 +4,12 @@ using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.MVVM.Services
 {
-    public class SubTransactionViewModelService : ModelToViewModelServiceBase<ISubTransaction, ISubTransactionViewModel>
+    public interface ISubTransactionViewModelService : IModelToViewModelServiceBase<ISubTransaction, ISubTransactionViewModel>
+    {
+        ISubTransactionViewModel Create(IParentTransaction parent);
+    }
+
+    public class SubTransactionViewModelService : ModelToViewModelServiceBase<ISubTransaction, ISubTransactionViewModel>, ISubTransactionViewModelService
     {
         private readonly Func<ISubTransaction, ISubTransactionViewModel> _subTransactionViewModelFactory;
         private readonly Func<ISubTransaction> _subTransactionFactory;

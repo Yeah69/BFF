@@ -1,11 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.Services
 {
-    public abstract class ModelToViewModelServiceBase<TDomain, TViewModel> 
+    public interface IModelToViewModelServiceBase<in TDomain, out TViewModel>
+        where TDomain : class, IDataModel
+        where TViewModel : class, IDataModelViewModel
+    {
+        TViewModel GetViewModel(TDomain model);
+    }
+
+    public abstract class ModelToViewModelServiceBase<TDomain, TViewModel> : IModelToViewModelServiceBase<TDomain, TViewModel>
         where TDomain : class, IDataModel
         where TViewModel : class, IDataModelViewModel
     {

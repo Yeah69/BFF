@@ -1,14 +1,15 @@
-using System.Reactive.Disposables;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
-using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.Services
 {
-    public class CategoryViewModelService : CommonPropertyViewModelServiceBase<ICategory, ICategoryViewModel>
+    public interface ICategoryViewModelService : ICommonPropertyViewModelServiceBase<ICategory, ICategoryViewModel>
+    {
+    }
+
+    public class CategoryViewModelService : CommonPropertyViewModelServiceBase<ICategory, ICategoryViewModel>, ICategoryViewModelService
     {
         private readonly ICategoryRepository _repository;
         private readonly IBffOrm _orm;

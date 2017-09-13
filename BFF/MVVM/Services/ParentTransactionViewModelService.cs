@@ -4,7 +4,11 @@ using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.MVVM.Services
 {
-    public class ParentTransactionViewModelService : ModelToViewModelServiceBase<IParentTransaction, IParentTransactionViewModel>
+    public interface IParentTransactionViewModelService : IModelToViewModelServiceBase<IParentTransaction, IParentTransactionViewModel>
+    {
+    }
+
+    public class ParentTransactionViewModelService : ModelToViewModelServiceBase<IParentTransaction, IParentTransactionViewModel>, IParentTransactionViewModelService
     {
         private readonly Func<IParentTransaction, IParentTransactionViewModel> _parentTransactionViewModelFactory;
 

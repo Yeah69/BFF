@@ -53,7 +53,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <param name="transfer">A Transfer Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
         /// <param name="accountViewModelService"></param>
-        public TransferViewModel(ITransfer transfer, IBffOrm orm, AccountViewModelService accountViewModelService) : base(orm, transfer)
+        public TransferViewModel(ITransfer transfer, IBffOrm orm, IAccountViewModelService accountViewModelService) : base(orm, transfer)
         {
 
             FromAccount = transfer

@@ -25,12 +25,12 @@ namespace BFF.MVVM.ViewModels
 
     public sealed class NewCategoryViewModel : ObservableObject, INewCategoryViewModel
     {
-        private readonly CategoryViewModelService _categoryViewModelService;
+        private readonly ICategoryViewModelService _categoryViewModelService;
 
         public NewCategoryViewModel(
             IHaveCategoryViewModel categoryOwner, 
             ICategoryRepository categoryRepository,
-            CategoryViewModelService categoryViewModelService)
+            ICategoryViewModelService categoryViewModelService)
         {
             _categoryViewModelService = categoryViewModelService;
 

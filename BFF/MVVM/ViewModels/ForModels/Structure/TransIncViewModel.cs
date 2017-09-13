@@ -41,10 +41,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             ITransInc transInc,
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
-            IBffOrm orm, 
-            AccountViewModelService accountViewModelService,
-            PayeeViewModelService payeeViewModelService, 
-            CategoryViewModelService categoryViewModelService)
+            IBffOrm orm,
+            IAccountViewModelService accountViewModelService,
+            IPayeeViewModelService payeeViewModelService,
+            ICategoryViewModelService categoryViewModelService)
             : base(orm, transInc, newPayeeViewModelFactory, accountViewModelService, payeeViewModelService)
         {
             Category = transInc.ToReactivePropertyAsSynchronized(

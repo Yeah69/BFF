@@ -4,7 +4,11 @@ using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.MVVM.Services
 {
-    public class ParentIncomeViewModelService : ModelToViewModelServiceBase<IParentIncome, IParentIncomeViewModel>
+    public interface IParentIncomeViewModelService : IModelToViewModelServiceBase<IParentIncome, IParentIncomeViewModel>
+    {
+    }
+
+    public class ParentIncomeViewModelService : ModelToViewModelServiceBase<IParentIncome, IParentIncomeViewModel>, IParentIncomeViewModelService
     {
         private readonly Func<IParentIncome, IParentIncomeViewModel> _parentIncomeViewModelFactory;
 

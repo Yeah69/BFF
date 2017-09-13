@@ -67,7 +67,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IParentIncome parentIncome,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IBffOrm orm,
-            SubIncomeViewModelService subIncomeViewModelService) : base(parentIncome, newPayeeViewModelFactory, orm)
+            ISubIncomeViewModelService subIncomeViewModelService) : base(parentIncome, newPayeeViewModelFactory, orm)
         {
             _newIncomes = new ObservableCollection<ISubIncomeViewModel>();
             NewSubElements = new ReadOnlyObservableCollection<ISubIncomeViewModel>(_newIncomes);

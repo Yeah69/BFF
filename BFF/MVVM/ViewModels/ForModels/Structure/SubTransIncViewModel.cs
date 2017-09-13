@@ -38,8 +38,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected SubTransIncViewModel(
             ISubTransInc subIncome, 
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory, 
-            IBffOrm orm, 
-            CategoryViewModelService categoryViewModelService) : base(orm, subIncome)
+            IBffOrm orm,
+            ICategoryViewModelService categoryViewModelService) : base(orm, subIncome)
         {
             Category = subIncome.ToReactivePropertyAsSynchronized(
                 sti => sti.Category,

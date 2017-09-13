@@ -67,7 +67,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IParentTransaction parentTransaction,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IBffOrm orm,
-            SubTransactionViewModelService subTransactionViewModelService) : base(parentTransaction, newPayeeViewModelFactory, orm)
+            ISubTransactionViewModelService subTransactionViewModelService) : base(parentTransaction, newPayeeViewModelFactory, orm)
         {
             _newTransactions = new ObservableCollection<ISubTransactionViewModel>();
             NewSubElements = new ReadOnlyObservableCollection<ISubTransactionViewModel>(_newTransactions);

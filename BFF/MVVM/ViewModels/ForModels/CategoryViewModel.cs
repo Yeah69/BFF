@@ -33,9 +33,9 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public class CategoryViewModelInitializer
         {
-            private readonly CategoryViewModelService _service;
+            private readonly ICategoryViewModelService _service;
 
-            public CategoryViewModelInitializer(CategoryViewModelService service)
+            public CategoryViewModelInitializer(ICategoryViewModelService service)
             {
                 _service = service;
             }
@@ -78,7 +78,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             return $"{Parent.Value?.GetIndent()}. ";
         }
 
-        public CategoryViewModel(ICategory category, IBffOrm orm, CategoryViewModelService service) : base(orm, category)
+        public CategoryViewModel(ICategory category, IBffOrm orm, ICategoryViewModelService service) : base(orm, category)
         {
             _category = category;
             Parent = category.ToReactivePropertyAsSynchronized(

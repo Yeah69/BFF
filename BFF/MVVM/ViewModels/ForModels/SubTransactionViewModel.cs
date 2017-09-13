@@ -22,8 +22,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         public SubTransactionViewModel(
             ISubTransaction subTransaction,
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
-            IBffOrm orm, 
-            CategoryViewModelService categoryViewModelService) :
+            IBffOrm orm,
+            ICategoryViewModelService categoryViewModelService) :
             base(subTransaction, newCategoryViewModelFactory, orm, categoryViewModelService)
         {
         }

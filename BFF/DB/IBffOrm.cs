@@ -9,10 +9,10 @@ namespace BFF.DB
     {
         ICommonPropertyProvider CommonPropertyProvider { get; }
         BffRepository BffRepository { get; }
-        ParentTransactionViewModelService ParentTransactionViewModelService { get; }
-        ParentIncomeViewModelService ParentIncomeViewModelService { get; }
-        SubTransactionViewModelService SubTransactionViewModelService { get; }
-        SubIncomeViewModelService SubIncomeViewModelService { get; }
+        IParentTransactionViewModelService ParentTransactionViewModelService { get; }
+        IParentIncomeViewModelService ParentIncomeViewModelService { get; }
+        ISubTransactionViewModelService SubTransactionViewModelService { get; }
+        ISubIncomeViewModelService SubIncomeViewModelService { get; }
 
         long? GetAccountBalance(IAccount account);
         long? GetSummaryAccountBalance();

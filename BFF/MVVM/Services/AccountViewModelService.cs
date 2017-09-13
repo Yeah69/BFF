@@ -6,7 +6,12 @@ using MuVaViMo;
 
 namespace BFF.MVVM.Services
 {
-    public class AccountViewModelService : CommonPropertyViewModelServiceBase<IAccount, IAccountViewModel>
+    public interface IAccountViewModelService : ICommonPropertyViewModelServiceBase<IAccount, IAccountViewModel>
+    {
+        ISummaryAccountViewModel SummaryAccountViewModel { get; }
+    }
+
+    public class AccountViewModelService : CommonPropertyViewModelServiceBase<IAccount, IAccountViewModel>, IAccountViewModelService
     {
         private readonly IBffOrm _orm;
 

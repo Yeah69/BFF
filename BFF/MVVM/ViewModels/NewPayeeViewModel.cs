@@ -31,12 +31,12 @@ namespace BFF.MVVM.ViewModels
 
     public class NewPayeeViewModel : INewPayeeViewModel
     {
-        private readonly PayeeViewModelService _payeeViewModelService;
+        private readonly IPayeeViewModelService _payeeViewModelService;
 
         public NewPayeeViewModel(
             IHavePayeeViewModel payeeOwner,
             IPayeeRepository payeeRepository,
-            PayeeViewModelService payeeViewModelService)
+            IPayeeViewModelService payeeViewModelService)
         {
             _payeeViewModelService = payeeViewModelService;
             

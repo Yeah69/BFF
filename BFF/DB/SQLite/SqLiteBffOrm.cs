@@ -16,13 +16,13 @@ namespace BFF.DB.SQLite
         
         public ICommonPropertyProvider CommonPropertyProvider { get; }
 
-        public ParentTransactionViewModelService ParentTransactionViewModelService { get; }
+        public IParentTransactionViewModelService ParentTransactionViewModelService { get; }
 
-        public ParentIncomeViewModelService ParentIncomeViewModelService { get; }
+        public IParentIncomeViewModelService ParentIncomeViewModelService { get; }
 
-        public SubTransactionViewModelService SubTransactionViewModelService { get; }
+        public ISubTransactionViewModelService SubTransactionViewModelService { get; }
 
-        public SubIncomeViewModelService SubIncomeViewModelService { get; }
+        public ISubIncomeViewModelService SubIncomeViewModelService { get; }
 
         public BffRepository BffRepository => _bffRepository;
 

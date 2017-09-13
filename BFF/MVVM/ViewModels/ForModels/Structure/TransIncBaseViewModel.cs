@@ -48,8 +48,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             IBffOrm orm, 
             ITransIncBase parentTransIncBase,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
-            AccountViewModelService accountViewModelService,
-            PayeeViewModelService payeeViewModelService) : base(orm, parentTransIncBase)
+            IAccountViewModelService accountViewModelService,
+            IPayeeViewModelService payeeViewModelService) : base(orm, parentTransIncBase)
         {
             void RefreshAnAccountViewModel(IAccountViewModel account)
             {
