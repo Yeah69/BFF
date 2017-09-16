@@ -7,7 +7,6 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:validationRules="clr-namespace:BFF.MVVM.ValidationRules"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
              xmlns:attachedBehaviors="clr-namespace:BFF.MVVM.AttachedBehaviors"
              xmlns:views="clr-namespace:BFF.MVVM.Views"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
@@ -23,10 +22,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <!-- todo: try Padding for spacing between the Headers, should be in MahApps.Metro 1.2.0 -->
-        <!-- The Account-specific Tabs are added in the code behind through the DependencyProperty AllAccountsProperty.
-             Sorry, I did not find another way for it. -->
-        <TabControl Name="AccountsTabControl" Margin="10" controls:TabControlHelper.IsUnderlined="True">
+        <TabControl Name="AccountsTabControl" Margin="10" controls:TabControlHelper.Underlined="TabItems">
             <TabControl.Resources>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
             </TabControl.Resources>

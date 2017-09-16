@@ -58,15 +58,16 @@ namespace BFF.DataVirtualizingObservableCollection
             _compositeDisposable.Add(_itemRequests);
             _compositeDisposable.Add(_pageRequests);
 
+            _count = dataAccess.CountFetch();
+
             _pageRequests
                 .Distinct()
-                .Do(pageKey =>
+                .Select(pageKey =>
                 {
                     int offset = pageKey * _pageSize;
-                    Console.WriteLine($"!!!!!!!!!!!!!!! Fetch page: {pageKey}");
                     T[] page = _dataAccess.PageFetch(offset, _pageSize);
-                    Console.WriteLine($"!!!!!!!!!!!!!!! Fetch page: {pageKey}");
                     _pageStore[pageKey] = page;
+                    return pageKey;
                 })
                 .SubscribeOn(subscribeScheduler)
                 .ObserveOn(observeScheduler)
@@ -75,7 +76,6 @@ namespace BFF.DataVirtualizingObservableCollection
                     T[] page = _pageStore[pageKey];
                     foreach (var tuple in _itemRequestsStore[pageKey])
                     {
-                        Console.WriteLine($"!!!!!!!!!!!!!!! Update for PageKey: {pageKey}; Index: {tuple.Item1}");
                         OnCollectionChangedReplace(page[tuple.Item1], tuple.Item2, pageKey * _pageSize + tuple.Item1);
                     }
                 });
@@ -126,8 +126,9 @@ namespace BFF.DataVirtualizingObservableCollection
         }
         bool ICollection<T>.IsReadOnly => false;
 
+        private readonly int _count;
 
-        int GetCountInner() => _dataAccess.CountFetch();
+        int GetCountInner() => _count;
 
         int ICollection<T>.Count => GetCountInner();
 
@@ -233,9 +234,9 @@ namespace BFF.DataVirtualizingObservableCollection
             set => throw new NotImplementedException();
         }
 
-        public bool IsFixedSize => false;
+        public bool IsFixedSize => true;
 
-        bool IList.IsReadOnly => false;
+        bool IList.IsReadOnly => true;
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
         public event PropertyChangedEventHandler PropertyChanged;
