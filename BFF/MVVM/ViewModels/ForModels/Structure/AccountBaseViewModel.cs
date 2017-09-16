@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Windows.Input;
-using AlphaChiTech.Virtualization;
+using System.Threading;
+using System.Windows;
+using System.Windows.Threading;
+using BFF.DataVirtualizingObservableCollection;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using BFF.Properties;
 using MuVaViMo;
 using Reactive.Bindings;
@@ -25,7 +29,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        VirtualizingObservableCollection<ITitLikeViewModel> Tits { get; }
+        DataVirtualizingCollection<ITitLikeViewModel> Tits { get; }
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
@@ -82,7 +86,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
-        protected VirtualizingObservableCollection<ITitLikeViewModel> _tits;
+        protected DataVirtualizingCollection<ITitLikeViewModel> _tits;
 
         /// <summary>
         /// Starting balance of the Account
@@ -92,7 +96,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        public abstract VirtualizingObservableCollection<ITitLikeViewModel> Tits { get; }
+        public abstract DataVirtualizingCollection<ITitLikeViewModel> Tits { get; }
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
@@ -247,5 +251,52 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         {
             PostVirtualizedRefresh?.Invoke(this, new EventArgs());
         }
+
+        protected ITitLikeViewModel[] CreatePacket(IEnumerable<ITitBase> items)
+        {
+            IList<ITitLikeViewModel> vmItems = new List<ITitLikeViewModel>();
+            foreach (ITitBase item in items)
+            {
+                switch (item)
+                {
+                    case ITransfer transfer:
+                        vmItems.Add(new TransferViewModel(transfer, Orm, Orm.CommonPropertyProvider.AccountViewModelService));
+                        break;
+                    case IParentTransaction parentTransaction:
+                        vmItems.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
+                        break;
+                    case IParentIncome parentIncome:
+                        vmItems.Add(Orm.ParentIncomeViewModelService.GetViewModel(parentIncome));
+                        break;
+                    case ITransaction transaction:
+                        vmItems.Add(new TransactionViewModel(
+                            transaction,
+                            hcvm => new NewCategoryViewModel(hcvm, Orm.BffRepository.CategoryRepository, Orm.CommonPropertyProvider.CategoryViewModelService),
+                            hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
+                            Orm,
+                            Orm.CommonPropertyProvider.AccountViewModelService,
+                            Orm.CommonPropertyProvider.PayeeViewModelService,
+                            Orm.CommonPropertyProvider.CategoryViewModelService));
+                        break;
+                    case IIncome income:
+                        vmItems.Add(new IncomeViewModel(
+                            income,
+                            hcvm => new NewCategoryViewModel(hcvm, Orm.BffRepository.CategoryRepository, Orm.CommonPropertyProvider.CategoryViewModelService),
+                            hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
+                            Orm,
+                            Orm.CommonPropertyProvider.AccountViewModelService,
+                            Orm.CommonPropertyProvider.PayeeViewModelService,
+                            Orm.CommonPropertyProvider.CategoryViewModelService));
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+            return vmItems.ToArray();
+        }
+
+        protected IScheduler SubscriptionScheduler = ThreadPoolScheduler.Instance;
+
+        protected IScheduler ObserveScheduler = new DispatcherScheduler(Application.Current.Dispatcher);
     }
 }

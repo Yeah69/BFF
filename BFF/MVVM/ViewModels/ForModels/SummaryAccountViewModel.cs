@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Windows;
 using AlphaChiTech.Virtualization;
+using BFF.DataVirtualizingObservableCollection;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -163,8 +167,15 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        public override VirtualizingObservableCollection<ITitLikeViewModel> Tits => _tits ?? 
-            (_tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, null, Orm))));
+        public override DataVirtualizingCollection<ITitLikeViewModel> Tits => _tits ??
+                                                                              (_tits = new DataVirtualizingCollection<ITitLikeViewModel>(new RelayBasicDataAccess<ITitLikeViewModel>(
+                                                                                  (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize)),
+                                                                                  () => Orm.GetCount<ITitBase>(),
+                                                                                  () => new TitLikeViewModelPlaceholder()),
+                                                                                  SubscriptionScheduler,
+                                                                                  ObserveScheduler));
+
+
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
@@ -179,7 +190,12 @@ namespace BFF.MVVM.ViewModels.ForModels
             if(IsOpen.Value)
             {
                 OnPreVirtualizedRefresh();
-                _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, null, Orm)));
+                _tits = new DataVirtualizingCollection<ITitLikeViewModel>(new RelayBasicDataAccess<ITitLikeViewModel>(
+                    (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize)),
+                    () => Orm.GetCount<ITitBase>(),
+                    () => new TitLikeViewModelPlaceholder()),
+                    SubscriptionScheduler,
+                    ObserveScheduler);
                 OnPropertyChanged(nameof(Tits));
                 OnPostVirtualizedRefresh();
             }

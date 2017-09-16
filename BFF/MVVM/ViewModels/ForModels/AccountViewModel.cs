@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Windows;
 using AlphaChiTech.Virtualization;
+using BFF.DataVirtualizingObservableCollection;
 using BFF.DB;
 using BFF.Helper;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -143,8 +149,13 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        public override VirtualizingObservableCollection<ITitLikeViewModel> Tits => _tits ?? 
-            (_tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, _account, Orm))));
+        public override DataVirtualizingCollection<ITitLikeViewModel> Tits => _tits ?? 
+            (_tits = new DataVirtualizingCollection<ITitLikeViewModel>(new RelayBasicDataAccess<ITitLikeViewModel>(
+                (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize, _account)),
+                () => Orm.GetCount<ITitBase>(_account), 
+                () => new TitLikeViewModelPlaceholder()),
+                SubscriptionScheduler, 
+                ObserveScheduler));
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
@@ -175,7 +186,12 @@ namespace BFF.MVVM.ViewModels.ForModels
             if(IsOpen.Value)
             {
                 OnPreVirtualizedRefresh();
-                _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm.BffRepository.TitRepository, Orm, _account, Orm)));
+                _tits = new DataVirtualizingCollection<ITitLikeViewModel>(new RelayBasicDataAccess<ITitLikeViewModel>(
+                    (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize, _account)),
+                    () => Orm.GetCount<ITitBase>(_account),
+                    () => new TitLikeViewModelPlaceholder()),
+                    SubscriptionScheduler,
+                    ObserveScheduler);
                 OnPropertyChanged(nameof(Tits));
                 OnPostVirtualizedRefresh();
             }
