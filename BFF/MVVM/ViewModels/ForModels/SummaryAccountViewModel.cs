@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Windows;
-using AlphaChiTech.Virtualization;
+using System.Threading.Tasks;
 using BFF.DataVirtualizingObservableCollection;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
@@ -146,7 +144,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             ApplyCommand = NewTits.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
                 .Select(count => count > 0)
-                .ToReactiveCommand();
+                .ToReactiveCommand().AddTo(CompositeDisposable);
 
             ApplyCommand.Subscribe(_ => ApplyTits()).AddTo(CompositeDisposable);
         }
@@ -190,6 +188,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             if(IsOpen.Value)
             {
                 OnPreVirtualizedRefresh();
+                var temp = _tits;
                 _tits = new DataVirtualizingCollection<ITitLikeViewModel>(new RelayBasicDataAccess<ITitLikeViewModel>(
                     (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize)),
                     () => Orm.GetCount<ITitBase>(),
@@ -198,6 +197,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                     ObserveScheduler);
                 OnPropertyChanged(nameof(Tits));
                 OnPostVirtualizedRefresh();
+                Task.Run(() => temp?.Dispose());
             }
         }
 

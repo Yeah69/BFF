@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
@@ -84,7 +83,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Parent = category.ToReactivePropertyAsSynchronized(
                 c => c.Parent,
                 service.GetViewModel,
-                service.GetModel);
+                service.GetModel).AddTo(CompositeDisposable);
         }
 
         #region Overrides of DataModelViewModel

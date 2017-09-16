@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Windows;
-using AlphaChiTech.Virtualization;
+using System.Threading.Tasks;
 using BFF.DataVirtualizingObservableCollection;
 using BFF.DB;
 using BFF.Helper;
@@ -186,6 +182,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             if(IsOpen.Value)
             {
                 OnPreVirtualizedRefresh();
+                var temp = _tits;
                 _tits = new DataVirtualizingCollection<ITitLikeViewModel>(new RelayBasicDataAccess<ITitLikeViewModel>(
                     (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize, _account)),
                     () => Orm.GetCount<ITitBase>(_account),
@@ -194,6 +191,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                     ObserveScheduler);
                 OnPropertyChanged(nameof(Tits));
                 OnPostVirtualizedRefresh();
+                Task.Run(() => temp?.Dispose());
             }
         }
 

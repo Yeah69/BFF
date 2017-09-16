@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -55,8 +56,10 @@ namespace BFF.DataVirtualizingObservableCollection
         {
             _dataAccess = dataAccess;
             _compositeDisposable.Add(_itemRequests);
+            _compositeDisposable.Add(_pageRequests);
 
-            _pageRequests.Distinct()
+            _pageRequests
+                .Distinct()
                 .Do(pageKey =>
                 {
                     int offset = pageKey * _pageSize;
@@ -240,6 +243,16 @@ namespace BFF.DataVirtualizingObservableCollection
         public void Dispose()
         {
             _compositeDisposable?.Dispose();
+            foreach (var disposable in _pageStore.SelectMany(ps => ps.Value).OfType<IDisposable>())
+            {
+                disposable.Dispose();
+            }
+            _pageStore.Clear();
+            foreach (var list in _itemRequestsStore.Values)
+            {
+                list.Clear();
+            }
+            _itemRequestsStore.Clear();
         }
 
         protected virtual void OnCollectionChangedReplace(T newItem, T oldItem, int index)

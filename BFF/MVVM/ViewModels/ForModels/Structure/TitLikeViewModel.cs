@@ -48,7 +48,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="titLike">The model.</param>
         protected TitLikeViewModel(IBffOrm orm, ITitLike titLike) : base(orm, titLike)
         {
-            Memo = titLike.ToReactivePropertyAsSynchronized(tl => tl.Memo);
+            Memo = titLike.ToReactivePropertyAsSynchronized(tl => tl.Memo).AddTo(CompositeDisposable);
 
             InitializeDeleteCommand();
         }

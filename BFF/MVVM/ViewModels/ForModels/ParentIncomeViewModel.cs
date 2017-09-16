@@ -74,7 +74,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             SubIncomes =
                 parentIncome.SubIncomes.ToReadOnlyReactiveCollection(subIncomeViewModelService
-                    .GetViewModel);
+                    .GetViewModel).AddTo(CompositeDisposable);
             Sum = new ReactiveProperty<long>(SubIncomes.Sum(sivw => sivw.Sum.Value))
                 .AddTo(CompositeDisposable);
 
@@ -104,7 +104,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             {
                 var newSubTransactionViewModel = subIncomeViewModelService.Create(parentIncome);
                 _newIncomes.Add(newSubTransactionViewModel);
-            });
+            }).AddTo(CompositeDisposable);
 
             ApplyCommand.Subscribe(_ =>
             {
@@ -116,10 +116,10 @@ namespace BFF.MVVM.ViewModels.ForModels
                 _newIncomes.Clear();
                 OnPropertyChanged(nameof(Sum));
                 NotifyRelevantAccountsToRefreshBalance();
-            });
+            }).AddTo(CompositeDisposable);
 
             OpenParentTitView.Subscribe(
-                avm => Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", avm)));
+                avm => Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", avm))).AddTo(CompositeDisposable);
         }
         
         /// <summary>

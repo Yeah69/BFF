@@ -60,7 +60,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             Account = parentTransIncBase.ToReactivePropertyAsSynchronized(
                 tib => tib.Account,
                 accountViewModelService.GetViewModel, 
-                accountViewModelService.GetModel);
+                accountViewModelService.GetModel).AddTo(CompositeDisposable);
 
             Account
                 .SkipLast(1)
@@ -75,7 +75,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             Payee = parentTransIncBase.ToReactivePropertyAsSynchronized(
                 tib => tib.Payee,
                 payeeViewModelService.GetViewModel,
-                payeeViewModelService.GetModel);
+                payeeViewModelService.GetModel).AddTo(CompositeDisposable);
 
             NewPayeeViewModel = newPayeeViewModelFactory(this);
         }

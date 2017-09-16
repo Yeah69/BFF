@@ -1,7 +1,4 @@
-﻿using System.Reactive.Concurrency;
-using System.Windows;
-using System.Windows.Input;
-using BFF.MVVM.ViewModels.ForModels.Structure;
+﻿using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
