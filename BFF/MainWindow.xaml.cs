@@ -1,20 +1,16 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using AlphaChiTech.Virtualization;
 using BFF.Helper.Import;
 using BFF.MVVM.ViewModels;
 using BFF.MVVM.Views;
 using BFF.Properties;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
-using Reactive.Bindings;
 
 namespace BFF
 {
