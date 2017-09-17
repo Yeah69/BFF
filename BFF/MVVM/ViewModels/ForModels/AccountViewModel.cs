@@ -142,17 +142,23 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region ViewModel_Part
 
+        private IDataVirtualizingCollection<ITitLikeViewModel> CreateDataVirtualizingCollection()
+            => DataVirtualizingCollection<ITitLikeViewModel>
+                .CreateBuilder()
+                .With(
+                    (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize, _account)),
+                    () => Orm.GetCount<ITitBase>(_account),
+                    () => new TitLikeViewModelPlaceholder(),
+                    SubscriptionScheduler,
+                    ObserveScheduler)
+                .WithPageSize(PageSize)
+                .Build();
+
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        public override DataVirtualizingCollection<ITitLikeViewModel> Tits => _tits ?? 
-            (_tits = new DataVirtualizingCollection<ITitLikeViewModel>(new RelayBasicDataAccess<ITitLikeViewModel>(
-                (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize, _account)),
-                () => Orm.GetCount<ITitBase>(_account), 
-                () => new TitLikeViewModelPlaceholder()),
-                SubscriptionScheduler, 
-                ObserveScheduler));
-
+        public override IDataVirtualizingCollection<ITitLikeViewModel> Tits => _tits ?? CreateDataVirtualizingCollection();
+        
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
@@ -183,12 +189,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             {
                 OnPreVirtualizedRefresh();
                 var temp = _tits;
-                _tits = new DataVirtualizingCollection<ITitLikeViewModel>(new RelayBasicDataAccess<ITitLikeViewModel>(
-                    (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize, _account)),
-                    () => Orm.GetCount<ITitBase>(_account),
-                    () => new TitLikeViewModelPlaceholder()),
-                    SubscriptionScheduler,
-                    ObserveScheduler);
+                _tits = CreateDataVirtualizingCollection();
                 OnPropertyChanged(nameof(Tits));
                 OnPostVirtualizedRefresh();
                 Task.Run(() => temp?.Dispose());

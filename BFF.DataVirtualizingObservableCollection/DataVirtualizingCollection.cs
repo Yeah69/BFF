@@ -12,47 +12,75 @@ using System.Runtime.CompilerServices;
 
 namespace BFF.DataVirtualizingObservableCollection
 {
-    public interface IBasicDataAccess<out T>
+    public interface IDataVirtualizingCollectionBuilderRequired<T>
     {
-        T[] PageFetch(int offSet, int pageSize);
-        int CountFetch();
-        T CreatePlaceHolder();
+        IDataVirtualizingCollectionBuilderOptional<T> With(IBasicDataAccess<T> dataAccess, IScheduler subscribeScheduler, IScheduler observeScheduler);
+        IDataVirtualizingCollectionBuilderOptional<T> With(Func<int, int, T[]> pageFetcher, Func<int> countFetcher, Func<T> placeholderFactory, IScheduler subscribeScheduler, IScheduler observeScheduler);
+    }
+    public interface IDataVirtualizingCollectionBuilderOptional<T>
+    {
+        IDataVirtualizingCollectionBuilderOptional<T> WithPageSize(int pageSize);
+        IDataVirtualizingCollection<T> Build();
     }
 
-    public class RelayBasicDataAccess<T> : IBasicDataAccess<T>
+    public interface IDataVirtualizingCollection<T> 
+        : IList,
+        IList<T>, 
+        INotifyCollectionChanged,
+        INotifyPropertyChanged, 
+        IDisposable
     {
-        private readonly Func<int, int, T[]> _pageFetcher;
-        private readonly Func<int> _countFetcher;
-        private readonly Func<T> _placeHolderFactory;
-
-        public RelayBasicDataAccess(Func<int, int, T[]> pageFetcher, Func<int> countFetcher, Func<T> placeHolderFactory)
-        {
-            _pageFetcher = pageFetcher;
-            _countFetcher = countFetcher;
-            _placeHolderFactory = placeHolderFactory;
-        }
-
-        public T[] PageFetch(int offSet, int pageSize)
-        {
-            return _pageFetcher(offSet, pageSize);
-        }
-
-        public int CountFetch()
-        {
-            return _countFetcher();
-        }
-
-        public T CreatePlaceHolder()
-        {
-            return _placeHolderFactory();
-        }
     }
 
-    public class DataVirtualizingCollection<T> : IList, IList<T>, INotifyCollectionChanged, INotifyPropertyChanged, IDisposable
+    public class DataVirtualizingCollection<T> : IDataVirtualizingCollection<T>
     {
+        public static IDataVirtualizingCollectionBuilderRequired<T> CreateBuilder() => new Builder<T>();
+
+        public class Builder<TItem> : IDataVirtualizingCollectionBuilderRequired<TItem>, IDataVirtualizingCollectionBuilderOptional<TItem>
+        {
+            private IBasicDataAccess<TItem> _dataAccess;
+            private int _pageSize = 100;
+            private IScheduler _subscribeScheduler;
+            private IScheduler _observeScheduler;
+
+            public IDataVirtualizingCollectionBuilderOptional<TItem> With(IBasicDataAccess<TItem> dataAccess, IScheduler subscribeScheduler, IScheduler observeScheduler)
+            {
+                _dataAccess = dataAccess;
+                _subscribeScheduler = subscribeScheduler;
+                _observeScheduler = observeScheduler;
+                return this;
+            }
+
+            public IDataVirtualizingCollectionBuilderOptional<TItem> With(Func<int, int, TItem[]> pageFetcher, Func<int> countFetcher, Func<TItem> placeholderFactory, IScheduler subscribeScheduler,
+                IScheduler observeScheduler)
+            {
+                _dataAccess = new RelayBasicDataAccess<TItem>(pageFetcher, countFetcher, placeholderFactory);
+                _subscribeScheduler = subscribeScheduler;
+                _observeScheduler = observeScheduler;
+                return this;
+            }
+
+            public IDataVirtualizingCollectionBuilderOptional<TItem> WithPageSize(int pageSize)
+            {
+                _pageSize = 100;
+                return this;
+            }
+
+            public IDataVirtualizingCollection<TItem> Build()
+            {
+                var dataVirtualizingCollection =
+                    new DataVirtualizingCollection<TItem>(_dataAccess, _subscribeScheduler, _observeScheduler)
+                    {
+                        _pageSize = _pageSize
+                    };
+                return dataVirtualizingCollection;
+            }
+        }
+
+
         private readonly IBasicDataAccess<T> _dataAccess;
 
-        public DataVirtualizingCollection(IBasicDataAccess<T> dataAccess, IScheduler subscribeScheduler, IScheduler observeScheduler)
+        private DataVirtualizingCollection(IBasicDataAccess<T> dataAccess, IScheduler subscribeScheduler, IScheduler observeScheduler)
         {
             _dataAccess = dataAccess;
             _compositeDisposable.Add(_itemRequests);

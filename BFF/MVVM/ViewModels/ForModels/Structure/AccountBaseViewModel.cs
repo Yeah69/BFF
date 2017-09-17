@@ -27,7 +27,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        DataVirtualizingCollection<ITitLikeViewModel> Tits { get; }
+        IDataVirtualizingCollection<ITitLikeViewModel> Tits { get; }
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
@@ -84,7 +84,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
-        protected DataVirtualizingCollection<ITitLikeViewModel> _tits;
+        protected IDataVirtualizingCollection<ITitLikeViewModel> _tits;
 
         /// <summary>
         /// Starting balance of the Account
@@ -94,7 +94,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        public abstract DataVirtualizingCollection<ITitLikeViewModel> Tits { get; }
+        public abstract IDataVirtualizingCollection<ITitLikeViewModel> Tits { get; }
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
@@ -296,5 +296,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected IScheduler SubscriptionScheduler = ThreadPoolScheduler.Instance;
 
         protected IScheduler ObserveScheduler = new DispatcherScheduler(Application.Current.Dispatcher);
+
+        protected int PageSize = 50;
     }
 }
