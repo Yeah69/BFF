@@ -22,16 +22,7 @@ namespace BFF.DataVirtualizingObservableCollection
         IDataVirtualizingCollectionBuilderOptional<T> WithPageSize(int pageSize);
         IDataVirtualizingCollection<T> Build();
     }
-
-    public interface IDataVirtualizingCollection<T> 
-        : IList,
-        IList<T>, 
-        INotifyCollectionChanged,
-        INotifyPropertyChanged, 
-        IDisposable
-    {
-    }
-
+    
     public class DataVirtualizingCollection<T> : IDataVirtualizingCollection<T>
     {
         public static IDataVirtualizingCollectionBuilderRequired<T> CreateBuilder() => new Builder<T>();
@@ -80,6 +71,16 @@ namespace BFF.DataVirtualizingObservableCollection
 
         private readonly IBasicDataAccess<T> _dataAccess;
 
+        private readonly int _count;
+        private int _pageSize = 100;
+
+        private readonly Subject<(int, T)> _itemRequests = new Subject<(int, T)>();
+        private readonly Subject<int> _pageRequests = new Subject<int>();
+        private readonly IDictionary<int, T[]> _pageStore = new Dictionary<int, T[]>();
+        private readonly IDictionary<int, IList<(int, T)>> _itemRequestsStore = new Dictionary<int, IList<(int, T)>>();
+
+        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+
         private DataVirtualizingCollection(IBasicDataAccess<T> dataAccess, IScheduler subscribeScheduler, IScheduler observeScheduler)
         {
             _dataAccess = dataAccess;
@@ -124,117 +125,6 @@ namespace BFF.DataVirtualizingObservableCollection
             _compositeDisposable.Add(itemRequestSubscription);
         }
 
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
-
-        private readonly Subject<(int, T)> _itemRequests = new Subject<(int, T)>();
-        private readonly Subject<int> _pageRequests = new Subject<int>();
-
-        private int _pageSize = 100;
-        private readonly IDictionary<int, T[]> _pageStore = new Dictionary<int, T[]>();
-        private readonly IDictionary<int, IList<(int, T)>> _itemRequestsStore = new Dictionary<int, IList<(int, T)>>();
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            yield return _dataAccess.CreatePlaceHolder();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public void CopyTo(Array array, int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(T item)
-        {
-            throw new NotImplementedException();
-        }
-        bool ICollection<T>.IsReadOnly => false;
-
-        private readonly int _count;
-
-        int GetCountInner() => _count;
-
-        int ICollection<T>.Count => GetCountInner();
-
-        int ICollection.Count => GetCountInner();
-
-        public bool IsSynchronized { get; } = false;
-        public object SyncRoot { get; } = new object();
-
-        public int Add(object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Add(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICollection<T>.Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IList.Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Insert(int index, object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int IndexOf(object value)
-        {
-            return -1;
-        }
-
-        public int IndexOf(T item)
-        {
-            return -1;
-        }
-
-        public void Insert(int index, T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Remove(object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IList<T>.RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IList.RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
-
         private T GetItemInner(int index)
         {
             int pageIndex = index / _pageSize;
@@ -253,18 +143,119 @@ namespace BFF.DataVirtualizingObservableCollection
         public T this[int index]
         {
             get => GetItemInner(index);
-            set => throw new NotImplementedException();
+            set => throw new NotSupportedException();
         }
 
         object IList.this[int index]
         {
             get => GetItemInner(index);
-            set => throw new NotImplementedException();
+            set => throw new NotSupportedException();
+        }
+
+        int GetCountInner() => _count;
+
+        int ICollection<T>.Count => GetCountInner();
+
+        int ICollection.Count => GetCountInner();
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            yield return _dataAccess.CreatePlaceHolder();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         public bool IsFixedSize => true;
 
         bool IList.IsReadOnly => true;
+
+        bool ICollection<T>.IsReadOnly => true;
+
+        public bool IsSynchronized { get; } = false;
+        public object SyncRoot { get; } = new object();
+
+        public int IndexOf(object value)
+        {
+            return -1;
+        }
+
+        public int IndexOf(T item)
+        {
+            return -1;
+        }
+
+        public int Add(object value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void Add(T item)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void Insert(int index, object value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void Insert(int index, T item)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool Remove(T item)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void Remove(object value)
+        {
+            throw new NotSupportedException();
+        }
+
+        void IList<T>.RemoveAt(int index)
+        {
+            throw new NotSupportedException();
+        }
+
+        void IList.RemoveAt(int index)
+        {
+            throw new NotSupportedException();
+        }
+
+        void IList.Clear()
+        {
+            throw new NotSupportedException();
+        }
+
+        void ICollection<T>.Clear()
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool Contains(T item)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool Contains(object value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void CopyTo(Array array, int index)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            throw new NotSupportedException();
+        }
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
         public event PropertyChangedEventHandler PropertyChanged;
