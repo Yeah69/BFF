@@ -73,69 +73,67 @@ namespace BFF.DataVirtualizingObservableCollection
 
         private readonly int _count;
         private int _pageSize = 100;
-
-        private readonly Subject<(int, T)> _itemRequests = new Subject<(int, T)>();
+        
         private readonly Subject<int> _pageRequests = new Subject<int>();
+
+        private readonly IDictionary<int, ReplaySubject<(int, T)>> _deferredRequests = new Dictionary<int, ReplaySubject<(int, T)>>();
         private readonly IDictionary<int, T[]> _pageStore = new Dictionary<int, T[]>();
-        private readonly IDictionary<int, IList<(int, T)>> _itemRequestsStore = new Dictionary<int, IList<(int, T)>>();
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
         private DataVirtualizingCollection(IBasicDataAccess<T> dataAccess, IScheduler subscribeScheduler, IScheduler observeScheduler)
         {
             _dataAccess = dataAccess;
-            _compositeDisposable.Add(_itemRequests);
             _compositeDisposable.Add(_pageRequests);
 
             _count = dataAccess.CountFetch();
 
             _pageRequests
                 .Distinct()
-                .Select(pageKey =>
+                .SubscribeOn(subscribeScheduler)
+                .ObserveOn(subscribeScheduler)
+                .Subscribe(pageKey =>
                 {
                     int offset = pageKey * _pageSize;
                     T[] page = _dataAccess.PageFetch(offset, _pageSize);
                     _pageStore[pageKey] = page;
-                    return pageKey;
-                })
-                .SubscribeOn(subscribeScheduler)
-                .ObserveOn(observeScheduler)
-                .Subscribe(pageKey =>
-                {
-                    T[] page = _pageStore[pageKey];
-                    foreach (var tuple in _itemRequestsStore[pageKey])
+                    if (_deferredRequests.ContainsKey(pageKey))
                     {
-                        OnCollectionChangedReplace(page[tuple.Item1], tuple.Item2, pageKey * _pageSize + tuple.Item1);
+                        var disposable = _deferredRequests[pageKey]
+                            .Distinct()
+                            .ObserveOn(observeScheduler)
+                            .Subscribe(tuple =>
+                            {
+                                OnCollectionChangedReplace(
+                                    page[tuple.Item1],
+                                    tuple.Item2,
+                                    pageKey * _pageSize + tuple.Item1);
+                            }, () => _deferredRequests.Remove(pageKey));
+                        _compositeDisposable.Add(disposable);
                     }
                 });
-
-            var itemRequestSubscription = _itemRequests
-                .SubscribeOn(subscribeScheduler)
-                .ObserveOn(subscribeScheduler)
-                .Subscribe(tuple =>
-                {
-                    int pageKey = tuple.Item1 / _pageSize;
-                    int index = tuple.Item1 % _pageSize;
-                    if (!_itemRequestsStore.ContainsKey(pageKey))
-                    {
-                        _itemRequestsStore[pageKey] = new List<(int, T)>();
-                    }
-                    _itemRequestsStore[pageKey].Add((index, tuple.Item2));
-                });
-            _compositeDisposable.Add(itemRequestSubscription);
         }
 
         private T GetItemInner(int index)
         {
-            int pageIndex = index / _pageSize;
-            if (_pageStore.ContainsKey(pageIndex))
-                return _pageStore[pageIndex][index % _pageSize];
+            int pageKey = index / _pageSize;
+            int pageIndex = index % _pageSize;
+
+            if (_pageStore.ContainsKey(pageKey))
+            {
+                if (_deferredRequests.ContainsKey(pageKey))
+                    _deferredRequests[pageKey].OnCompleted();
+
+                return _pageStore[pageKey][pageIndex];
+            }
 
             var placeHolder = _dataAccess.CreatePlaceHolder();
 
-            _pageRequests.OnNext(index / _pageSize);
+            if(!_deferredRequests.ContainsKey(pageKey))
+                _deferredRequests[pageKey] = new ReplaySubject<(int, T)>();
+            _deferredRequests[pageKey].OnNext((pageIndex, placeHolder));
 
-            _itemRequests.OnNext((index, placeHolder));
+            _pageRequests.OnNext(pageKey);
 
             return placeHolder;
         }
@@ -268,11 +266,10 @@ namespace BFF.DataVirtualizingObservableCollection
                 disposable.Dispose();
             }
             _pageStore.Clear();
-            foreach (var list in _itemRequestsStore.Values)
+            foreach (var subject in _deferredRequests.Values)
             {
-                list.Clear();
+                subject.Dispose();
             }
-            _itemRequestsStore.Clear();
         }
 
         protected virtual void OnCollectionChangedReplace(T newItem, T oldItem, int index)
