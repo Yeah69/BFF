@@ -142,17 +142,11 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region ViewModel_Part
 
-        private IDataVirtualizingCollection<ITitLikeViewModel> CreateDataVirtualizingCollection()
-            => DataVirtualizingCollection<ITitLikeViewModel>
-                .CreateBuilder()
-                .With(
-                    (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize, _account)),
-                    () => Orm.GetCount<ITitBase>(_account),
-                    () => new TitLikeViewModelPlaceholder(),
-                    SubscriptionScheduler,
-                    ObserveScheduler)
-                .WithPageSize(PageSize)
-                .Build();
+        protected override IBasicDataAccess<ITitLikeViewModel> BasicAccess
+            => new RelayBasicDataAccess<ITitLikeViewModel>(
+                (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize, _account)),
+                () => Orm.GetCount<ITitBase>(_account),
+                () => new TitLikeViewModelPlaceholder());
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.

@@ -38,7 +38,7 @@ namespace BFF.DataVirtualizingObservableCollection
         }
 
         /// <inheritdoc />
-        public T CreatePlaceHolder()
+        public T CreatePlaceholder()
         {
             return _placeHolderFactory();
         }

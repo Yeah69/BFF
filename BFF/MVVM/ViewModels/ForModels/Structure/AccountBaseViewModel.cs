@@ -293,10 +293,22 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             return vmItems.ToArray();
         }
 
+        
+        protected IDataVirtualizingCollection<ITitLikeViewModel> CreateDataVirtualizingCollection()
+            => DataVirtualizingCollection<ITitLikeViewModel>
+                .CreateBuilder()
+                .WithHoardingPageStore(
+                    HoardingPageStore<ITitLikeViewModel>.CreateBuilder().With(BasicAccess, SubscriptionScheduler).Build(),
+                    BasicAccess,
+                    ObserveScheduler)
+                .Build();
+
         protected IScheduler SubscriptionScheduler = ThreadPoolScheduler.Instance;
 
         protected IScheduler ObserveScheduler = new DispatcherScheduler(Application.Current.Dispatcher);
 
-        protected int PageSize = 50;
+        protected int PageSize = 10;
+
+        protected abstract IBasicDataAccess<ITitLikeViewModel> BasicAccess { get; }
     }
 }
