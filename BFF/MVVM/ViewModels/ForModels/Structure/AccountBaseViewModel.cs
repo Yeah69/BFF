@@ -297,7 +297,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected IDataVirtualizingCollection<ITitLikeViewModel> CreateDataVirtualizingCollection()
             => CollectionBuilder<ITitLikeViewModel>
                 .CreateBuilder()
-                .BuildAHoardingAsyncCollection(BasicAccess, SubscriptionScheduler, ObserveScheduler, PageSize);
+                .BuildAHoardingSyncCollection(BasicAccess, SubscriptionScheduler, ObserveScheduler, PageSize);
 
         protected IScheduler SubscriptionScheduler = ThreadPoolScheduler.Instance;
 

@@ -28,6 +28,12 @@ namespace BFF.DataVirtualizingObservableCollection
             IScheduler subscribeScheduler,
             IScheduler observeScheduler,
             int pageSize = 100);
+
+        IDataVirtualizingCollection<T> BuildAHoardingSyncCollection(
+            IBasicDataAccess<T> dataAccess,
+            IScheduler subscribeScheduler,
+            IScheduler observeScheduler,
+            int pageSize = 100);
     }
 
     /// <inheritdoc />
@@ -50,10 +56,28 @@ namespace BFF.DataVirtualizingObservableCollection
                 .Build();
             return DataVirtualizingCollection<T>
                 .CreateBuilder()
-                .WithHoardingPageStore(
+                .WithPageStore(
                     hoardingPageStore, 
                     dataAccess, 
                     subscribeScheduler, 
+                    observeScheduler)
+                .Build();
+        }
+
+        public IDataVirtualizingCollection<T> BuildAHoardingSyncCollection(IBasicDataAccess<T> dataAccess, IScheduler subscribeScheduler,
+            IScheduler observeScheduler, int pageSize = 100)
+        {
+            var hoardingPageStore = HoardingSyncPageStore<T>
+                .CreateBuilder()
+                .With(dataAccess)
+                .WithPageSize(pageSize)
+                .Build();
+            return DataVirtualizingCollection<T>
+                .CreateBuilder()
+                .WithPageStore(
+                    hoardingPageStore,
+                    dataAccess,
+                    subscribeScheduler,
                     observeScheduler)
                 .Build();
         }

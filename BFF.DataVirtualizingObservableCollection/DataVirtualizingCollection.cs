@@ -36,8 +36,8 @@ namespace BFF.DataVirtualizingObservableCollection
 
         internal interface IDataVirtualizingCollectionBuilderRequired<TItem>
         {
-            IDataVirtualizingCollectionBuilderOptional<TItem> WithHoardingPageStore(
-                IHoardingPageStore<TItem> pageStore,
+            IDataVirtualizingCollectionBuilderOptional<TItem> WithPageStore(
+                IPageStore<TItem> pageStore,
                 ICountFetcher countFetcher,
                 IScheduler subscribeScheduler,
                 IScheduler observeScheduler);
@@ -65,8 +65,8 @@ namespace BFF.DataVirtualizingObservableCollection
                     _observeScheduler);
             }
 
-            public IDataVirtualizingCollectionBuilderOptional<TItem> WithHoardingPageStore(
-                IHoardingPageStore<TItem> pageStore,
+            public IDataVirtualizingCollectionBuilderOptional<TItem> WithPageStore(
+                IPageStore<TItem> pageStore,
                 ICountFetcher countFetcher,
                 IScheduler subscribeScheduler,
                 IScheduler observeScheduler)
