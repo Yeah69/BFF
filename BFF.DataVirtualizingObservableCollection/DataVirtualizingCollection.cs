@@ -7,186 +7,47 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
 
 namespace BFF.DataVirtualizingObservableCollection
 {
-    public interface IDataVirtualizingCollectionBuilderRequired<T>
-    {
-        IDataVirtualizingCollectionBuilderOptional<T> WithHoardingPageStore(
-            IHoardingPageStore<T> pageStore, 
-            ICountFetcher countFetcher,
-            IScheduler observeScheduler);
-    }
-    public interface IDataVirtualizingCollectionBuilderOptional<T>
-    {
-        IDataVirtualizingCollection<T> Build();
-    }
 
+    // ReSharper disable once PossibleInterfaceMemberAmbiguity
+    // Ambiguous Members should be implemented explicitly
     /// <summary>
-    /// Stores pages retrieved from some data access.
+    /// Defines a data virtualizing collection.
+    /// The IList interfaces are necessary for offering an indexer to access the data.
+    /// The notification interfaces can be used in order to notify the UI of certain changes (such as replacement of a placeholder).
     /// </summary>
-    /// <typeparam name="T">Type of the elements stored in the data access.</typeparam>
-    public interface IPageStore<T> : IDisposable
+    /// <typeparam name="T">Type of the collection items.</typeparam>
+    public interface IDataVirtualizingCollection<T> :
+        IList,
+        IList<T>,
+        INotifyCollectionChanged,
+        INotifyPropertyChanged,
+        IDisposable
     {
-        /// <summary>
-        /// Tries to fetch
-        /// </summary>
-        /// <returns>IsSuccess is true if the Element could be retrieved; otherwise, false.
-        /// Element is the requested element from data access, if the fetch was successful.</returns>
-        T Fetch(int index);
-
-        /// <summary>
-        /// Sequence on pending replacements in the collection.
-        /// First argument is new element,
-        /// Second argument is the placeholder,
-        /// Third argument is the index of the element in the data access.
-        /// </summary>
-        IObservable<(T, T, int)> OnCollectionChangedReplace { get; }
     }
 
-    public interface IHoardingPageStoreBuilderRequired<T>
+    /// <inheritdoc />
+    internal class DataVirtualizingCollection<T> : IDataVirtualizingCollection<T>
     {
-        IHoardingPageStoreBuilderOptional<T> With(IBasicDataAccess<T> dataAccess, IScheduler subscribeScheduler);
-    }
-    public interface IHoardingPageStoreBuilderOptional<T>
-    {
-        IHoardingPageStoreBuilderOptional<T> WithPageSize(int pageSize);
+        internal static IDataVirtualizingCollectionBuilderRequired<T> CreateBuilder() => new Builder<T>();
 
-        IHoardingPageStore<T> Build();
-    }
-
-    public interface IHoardingPageStore<T> : IPageStore<T>
-    {
-        IScheduler SubscribeScheduler { get; }
-    }
-
-    public class HoardingPageStore<T> : IHoardingPageStore<T>
-    {
-        public static IHoardingPageStoreBuilderRequired<T> CreateBuilder() => new Builder<T>(); 
-
-        public class Builder<TItem> : IHoardingPageStoreBuilderRequired<TItem>, IHoardingPageStoreBuilderOptional<TItem>
+        internal interface IDataVirtualizingCollectionBuilderRequired<TItem>
         {
-            private IBasicDataAccess<TItem> _dataAccess;
-            private int _pageSize = 100;
-            private IScheduler _subscribeScheduler;
-
-            public IHoardingPageStoreBuilderOptional<TItem> With(IBasicDataAccess<TItem> dataAccess, IScheduler subscribeScheduler)
-            {
-                _dataAccess = dataAccess;
-                _subscribeScheduler = subscribeScheduler;
-                return this;
-            }
-
-            public IHoardingPageStoreBuilderOptional<TItem> WithPageSize(int pageSize)
-            {
-                _pageSize = pageSize;
-                return this;
-            }
-
-            public IHoardingPageStore<TItem> Build()
-            {
-                return new HoardingPageStore<TItem>(_dataAccess, _dataAccess, _subscribeScheduler)
-                {
-                    _pageSize = _pageSize
-                };
-            }
+            IDataVirtualizingCollectionBuilderOptional<TItem> WithHoardingPageStore(
+                IHoardingPageStore<TItem> pageStore,
+                ICountFetcher countFetcher,
+                IScheduler subscribeScheduler,
+                IScheduler observeScheduler);
+        }
+        internal interface IDataVirtualizingCollectionBuilderOptional<TItem>
+        {
+            IDataVirtualizingCollection<TItem> Build();
         }
 
-        private readonly IPlaceholderFactory<T> _placeholderFactory;
-        private int _pageSize = 100;
-
-        private readonly Subject<int> _pageRequests = new Subject<int>();
-
-        private readonly IDictionary<int, ReplaySubject<(int, T)>> _deferredRequests = new Dictionary<int, ReplaySubject<(int, T)>>();
-        private readonly IDictionary<int, T[]> _pageStore = new Dictionary<int, T[]>();
-
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
-
-        public HoardingPageStore(IPageFetcher<T> pageFetcher, IPlaceholderFactory<T> placeholderFactory, IScheduler subscribeScheduler)
-        {
-            _placeholderFactory = placeholderFactory;
-            SubscribeScheduler = subscribeScheduler;
-
-            var onCollectionChangedReplace = new Subject<(T, T, int)>();
-            OnCollectionChangedReplace = onCollectionChangedReplace;
-
-            _compositeDisposable.Add(onCollectionChangedReplace);
-            _compositeDisposable.Add(_pageRequests);
-
-            _pageRequests
-                .Distinct()
-                .SubscribeOn(subscribeScheduler)
-                .ObserveOn(subscribeScheduler)
-                .Subscribe(pageKey =>
-                {
-                    int offset = pageKey * _pageSize;
-                    T[] page = pageFetcher.PageFetch(offset, _pageSize);
-                    _pageStore[pageKey] = page;
-                    if (_deferredRequests.ContainsKey(pageKey))
-                    {
-                        var disposable = _deferredRequests[pageKey]
-                            .Distinct()
-                            .SubscribeOn(subscribeScheduler)
-                            .ObserveOn(subscribeScheduler)
-                            .Subscribe(tuple =>
-                            {
-                                onCollectionChangedReplace.OnNext(
-                                    (page[tuple.Item1], tuple.Item2, pageKey * _pageSize + tuple.Item1));
-                            }, () => _deferredRequests.Remove(pageKey));
-                        _compositeDisposable.Add(disposable);
-                    }
-                });
-        }
-
-        public T Fetch(int index)
-        {
-            int pageKey = index / _pageSize;
-            int pageIndex = index % _pageSize;
-
-            if (_pageStore.ContainsKey(pageKey))
-            {
-                if (_deferredRequests.ContainsKey(pageKey))
-                    _deferredRequests[pageKey].OnCompleted();
-
-                return _pageStore[pageKey][pageIndex];
-            }
-
-            var placeholder = _placeholderFactory.CreatePlaceholder();
-
-            if (!_deferredRequests.ContainsKey(pageKey))
-                _deferredRequests[pageKey] = new ReplaySubject<(int, T)>();
-            _deferredRequests[pageKey].OnNext((pageIndex, placeholder));
-
-            _pageRequests.OnNext(pageKey);
-
-            return placeholder;
-        }
-
-        public IObservable<(T, T, int)> OnCollectionChangedReplace { get; }
-
-        public void Dispose()
-        {
-            _compositeDisposable?.Dispose();
-            foreach (var disposable in _pageStore.SelectMany(ps => ps.Value).OfType<IDisposable>())
-            {
-                disposable.Dispose();
-            }
-            foreach (var subject in _deferredRequests.Values)
-            {
-                subject.Dispose();
-            }
-        }
-
-        public IScheduler SubscribeScheduler { get; }
-    }
-
-    public class DataVirtualizingCollection<T> : IDataVirtualizingCollection<T>
-    {
-        public static IDataVirtualizingCollectionBuilderRequired<T> CreateBuilder() => new Builder<T>();
-
-        public class Builder<TItem> : IDataVirtualizingCollectionBuilderRequired<TItem>, IDataVirtualizingCollectionBuilderOptional<TItem>
+        internal class Builder<TItem> : IDataVirtualizingCollectionBuilderRequired<TItem>, IDataVirtualizingCollectionBuilderOptional<TItem>
         {
             private IPageStore<TItem> _pageStore;
             private IScheduler _subscribeScheduler;
@@ -207,19 +68,20 @@ namespace BFF.DataVirtualizingObservableCollection
             public IDataVirtualizingCollectionBuilderOptional<TItem> WithHoardingPageStore(
                 IHoardingPageStore<TItem> pageStore,
                 ICountFetcher countFetcher,
+                IScheduler subscribeScheduler,
                 IScheduler observeScheduler)
             {
                 _pageStore = pageStore;
                 _countFetcher = countFetcher;
                 _observeScheduler = observeScheduler;
-                _subscribeScheduler = pageStore.SubscribeScheduler;
+                _subscribeScheduler = subscribeScheduler;
                 return this;
             }
         }
 
         private readonly int _count;
 
-        private IPageStore<T> _pageStore;
+        private readonly IPageStore<T> _pageStore;
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
