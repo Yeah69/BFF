@@ -7,6 +7,8 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Windows;
 using BFF.DataVirtualizingObservableCollection;
+using BFF.DataVirtualizingObservableCollection.DataAccesses;
+using BFF.DataVirtualizingObservableCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
@@ -297,7 +299,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected IDataVirtualizingCollection<ITitLikeViewModel> CreateDataVirtualizingCollection()
             => CollectionBuilder<ITitLikeViewModel>
                 .CreateBuilder()
-                .BuildAHoardingSyncCollection(BasicAccess, SubscriptionScheduler, ObserveScheduler, PageSize);
+                .BuildAHoardingAsyncCollection(BasicAccess, SubscriptionScheduler, ObserveScheduler, PageSize);
 
         protected IScheduler SubscriptionScheduler = ThreadPoolScheduler.Instance;
 
@@ -305,6 +307,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         protected int PageSize = 50;
 
-        protected abstract IBasicDataAccess<ITitLikeViewModel> BasicAccess { get; }
+        protected abstract IBasicAsyncDataAccess<ITitLikeViewModel> BasicAccess { get; }
     }
 }

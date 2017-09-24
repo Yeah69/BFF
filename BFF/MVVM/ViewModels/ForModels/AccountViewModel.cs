@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.DataVirtualizingObservableCollection;
+using BFF.DataVirtualizingObservableCollection.DataAccesses;
+using BFF.DataVirtualizingObservableCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.Helper;
 using BFF.MVVM.Models.Native;
@@ -142,8 +144,8 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region ViewModel_Part
 
-        protected override IBasicDataAccess<ITitLikeViewModel> BasicAccess
-            => new RelayBasicDataAccess<ITitLikeViewModel>(
+        protected override IBasicAsyncDataAccess<ITitLikeViewModel> BasicAccess
+            => new RelayBasicAsyncDataAccess<ITitLikeViewModel>(
                 (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize, _account)),
                 () => Orm.GetCount<ITitBase>(_account),
                 () => new TitLikeViewModelPlaceholder());

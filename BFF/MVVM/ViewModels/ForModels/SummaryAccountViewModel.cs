@@ -5,6 +5,8 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using BFF.DataVirtualizingObservableCollection;
+using BFF.DataVirtualizingObservableCollection.DataAccesses;
+using BFF.DataVirtualizingObservableCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
@@ -162,8 +164,8 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region ViewModel_Part
 
-        protected override IBasicDataAccess<ITitLikeViewModel> BasicAccess
-            => new RelayBasicDataAccess<ITitLikeViewModel>(
+        protected override IBasicAsyncDataAccess<ITitLikeViewModel> BasicAccess
+            => new RelayBasicAsyncDataAccess<ITitLikeViewModel>(
                 (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize)),
                 () => Orm.GetCount<ITitBase>(),
                 () => new TitLikeViewModelPlaceholder());

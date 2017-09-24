@@ -5,8 +5,9 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using BFF.DataVirtualizingObservableCollection.DataAccesses;
 
-namespace BFF.DataVirtualizingObservableCollection
+namespace BFF.DataVirtualizingObservableCollection.PageStores
 {
     /// <summary>
     /// Operates in async way, which means that it doesn't block the current thread and in case the element isn't available a placeholder is provided.
@@ -14,49 +15,49 @@ namespace BFF.DataVirtualizingObservableCollection
     /// On Dispose all stored disposable elements are disposed before this store disposes itself.
     /// </summary>
     /// <typeparam name="T">The type of the stored elements.</typeparam>
-    public interface IHoardingPageStore<T> : IPageStore<T>
+    public interface IHoardingAsyncPageStore<T> : IAsyncPageStore<T>
     {
     }
 
     /// <inheritdoc />
-    internal class HoardingPageStore<T> : IHoardingPageStore<T>
+    internal class HoardingAsyncPageStore<T> : IHoardingAsyncPageStore<T>
     {
-        internal static IHoardingPageStoreBuilderRequired<T> CreateBuilder() => new Builder<T>();
+        internal static IBuilderRequired<T> CreateBuilder() => new Builder<T>();
 
-        internal interface IHoardingPageStoreBuilderOptional<TItem>
+        internal interface IBuilderOptional<TItem>
         {
-            IHoardingPageStoreBuilderOptional<TItem> WithPageSize(int pageSize);
+            IBuilderOptional<TItem> WithPageSize(int pageSize);
 
-            IHoardingPageStore<TItem> Build();
+            IHoardingAsyncPageStore<TItem> Build();
         }
 
-        internal interface IHoardingPageStoreBuilderRequired<TItem>
+        internal interface IBuilderRequired<TItem>
         {
-            IHoardingPageStoreBuilderOptional<TItem> With(IBasicDataAccess<TItem> dataAccess, IScheduler subscribeScheduler);
+            IBuilderOptional<TItem> With(IBasicAsyncDataAccess<TItem> dataAccess, IScheduler subscribeScheduler);
         }
 
-        internal class Builder<TItem> : IHoardingPageStoreBuilderRequired<TItem>, IHoardingPageStoreBuilderOptional<TItem>
+        internal class Builder<TItem> : IBuilderRequired<TItem>, IBuilderOptional<TItem>
         {
-            private IBasicDataAccess<TItem> _dataAccess;
+            private IBasicAsyncDataAccess<TItem> _dataAccess;
             private int _pageSize = 100;
             private IScheduler _subscribeScheduler;
 
-            public IHoardingPageStoreBuilderOptional<TItem> With(IBasicDataAccess<TItem> dataAccess, IScheduler subscribeScheduler)
+            public IBuilderOptional<TItem> With(IBasicAsyncDataAccess<TItem> dataAccess, IScheduler subscribeScheduler)
             {
                 _dataAccess = dataAccess;
                 _subscribeScheduler = subscribeScheduler;
                 return this;
             }
 
-            public IHoardingPageStoreBuilderOptional<TItem> WithPageSize(int pageSize)
+            public IBuilderOptional<TItem> WithPageSize(int pageSize)
             {
                 _pageSize = pageSize;
                 return this;
             }
 
-            public IHoardingPageStore<TItem> Build()
+            public IHoardingAsyncPageStore<TItem> Build()
             {
-                return new HoardingPageStore<TItem>(_dataAccess, _dataAccess, _subscribeScheduler)
+                return new HoardingAsyncPageStore<TItem>(_dataAccess, _dataAccess, _subscribeScheduler)
                 {
                     _pageSize = _pageSize
                 };
@@ -73,7 +74,7 @@ namespace BFF.DataVirtualizingObservableCollection
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
-        private HoardingPageStore(IPageFetcher<T> pageFetcher, IPlaceholderFactory<T> placeholderFactory, IScheduler subscribeScheduler)
+        private HoardingAsyncPageStore(IPageFetcher<T> pageFetcher, IPlaceholderFactory<T> placeholderFactory, IScheduler subscribeScheduler)
         {
             _placeholderFactory = placeholderFactory;
 

@@ -1,4 +1,4 @@
-namespace BFF.DataVirtualizingObservableCollection
+namespace BFF.DataVirtualizingObservableCollection.DataAccesses
 {
     /// <summary>
     /// The fundamental interface of the data virtualizing collection to get access to the data.
@@ -6,7 +6,16 @@ namespace BFF.DataVirtualizingObservableCollection
     /// Additionally, a factory method is required as well.
     /// </summary>
     /// <typeparam name="T">The type of the collection items.</typeparam>
-    public interface IBasicDataAccess<out T> : IPageFetcher<T>, ICountFetcher, IPlaceholderFactory<T>
+    public interface IBasicAsyncDataAccess<out T> : IBasicSyncDataAccess<T>, IPlaceholderFactory<T>
+    {
+    }
+    /// <summary>
+    /// The fundamental interface of the data virtualizing collection to get access to the data.
+    /// It should be possible to fetch the count and pages of data of arbitrary size.
+    /// Additionally, a factory method is required as well.
+    /// </summary>
+    /// <typeparam name="T">The type of the collection items.</typeparam>
+    public interface IBasicSyncDataAccess<out T> : IPageFetcher<T>, ICountFetcher
     {
     }
 

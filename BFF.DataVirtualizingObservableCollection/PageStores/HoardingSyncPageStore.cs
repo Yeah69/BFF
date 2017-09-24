@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Linq;
+using BFF.DataVirtualizingObservableCollection.DataAccesses;
 
-namespace BFF.DataVirtualizingObservableCollection
+namespace BFF.DataVirtualizingObservableCollection.PageStores
 {
     /// <summary>
     /// Operates in sync way, which means that it does block the current thread if the element isn't available yet.
@@ -11,39 +11,39 @@ namespace BFF.DataVirtualizingObservableCollection
     /// On Dispose all stored disposable elements are disposed before this store disposes itself.
     /// </summary>
     /// <typeparam name="T">The type of the stored elements.</typeparam>
-    public interface IHoardingSyncPageStore<T> : IPageStore<T>
+    public interface IHoardingSyncPageStore<T> : ISyncPageStore<T>
     {
     }
 
     /// <inheritdoc />
     internal class HoardingSyncPageStore<T> : IHoardingSyncPageStore<T>
     {
-        internal static IHoardingSyncPageStoreBuilderRequired<T> CreateBuilder() => new Builder<T>();
+        internal static IBuilderRequired<T> CreateBuilder() => new Builder<T>();
 
-        internal interface IHoardingSyncPageStoreBuilderOptional<TItem>
+        internal interface IBuilderOptional<TItem>
         {
-            IHoardingSyncPageStoreBuilderOptional<TItem> WithPageSize(int pageSize);
+            IBuilderOptional<TItem> WithPageSize(int pageSize);
 
             IHoardingSyncPageStore<TItem> Build();
         }
 
-        internal interface IHoardingSyncPageStoreBuilderRequired<TItem>
+        internal interface IBuilderRequired<TItem>
         {
-            IHoardingSyncPageStoreBuilderOptional<TItem> With(IBasicDataAccess<TItem> dataAccess);
+            IBuilderOptional<TItem> With(IBasicSyncDataAccess<TItem> dataAccess);
         }
 
-        internal class Builder<TItem> : IHoardingSyncPageStoreBuilderRequired<TItem>, IHoardingSyncPageStoreBuilderOptional<TItem>
+        internal class Builder<TItem> : IBuilderRequired<TItem>, IBuilderOptional<TItem>
         {
-            private IBasicDataAccess<TItem> _dataAccess;
+            private IBasicSyncDataAccess<TItem> _dataAccess;
             private int _pageSize = 100;
 
-            public IHoardingSyncPageStoreBuilderOptional<TItem> With(IBasicDataAccess<TItem> dataAccess)
+            public IBuilderOptional<TItem> With(IBasicSyncDataAccess<TItem> dataAccess)
             {
                 _dataAccess = dataAccess;
                 return this;
             }
 
-            public IHoardingSyncPageStoreBuilderOptional<TItem> WithPageSize(int pageSize)
+            public IBuilderOptional<TItem> WithPageSize(int pageSize)
             {
                 _pageSize = pageSize;
                 return this;
@@ -65,7 +65,6 @@ namespace BFF.DataVirtualizingObservableCollection
 
         private HoardingSyncPageStore(IPageFetcher<T> pageFetcher)
         {
-            OnCollectionChangedReplace = Observable.Never<(T, T, int)>();
             _pageFetcher = pageFetcher;
         }
 
@@ -82,11 +81,9 @@ namespace BFF.DataVirtualizingObservableCollection
             return _pageStore[pageKey][pageIndex];
         }
 
-        public IObservable<(T, T, int)> OnCollectionChangedReplace { get; }
-
         public void Dispose()
         {
-            foreach (var disposable in Enumerable.SelectMany(_pageStore, ps => ps.Value).OfType<IDisposable>())
+            foreach (var disposable in _pageStore.SelectMany(ps => ps.Value).OfType<IDisposable>())
             {
                 disposable.Dispose();
             }

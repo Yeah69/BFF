@@ -4,43 +4,22 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
+using BFF.DataVirtualizingObservableCollection.DataAccesses;
+using BFF.DataVirtualizingObservableCollection.PageStores;
 
-namespace BFF.DataVirtualizingObservableCollection
+namespace BFF.DataVirtualizingObservableCollection.DataVirtualizingCollections
 {
-
-    // ReSharper disable once PossibleInterfaceMemberAmbiguity
-    // Ambiguous Members should be implemented explicitly
-    /// <summary>
-    /// Defines a data virtualizing collection.
-    /// The IList interfaces are necessary for offering an indexer to access the data.
-    /// The notification interfaces can be used in order to notify the UI of certain changes (such as replacement of a placeholder).
-    /// </summary>
-    /// <typeparam name="T">Type of the collection items.</typeparam>
-    public interface IDataVirtualizingCollection<T> :
-        IList,
-        IList<T>,
-        INotifyCollectionChanged,
-        INotifyPropertyChanged,
-        IDisposable
-    {
-    }
-
-    /// <inheritdoc />
-    internal class DataVirtualizingCollection<T> : IDataVirtualizingCollection<T>
+    internal class SyncDataVirtualizingCollection<T> : IDataVirtualizingCollection<T>
     {
         internal static IDataVirtualizingCollectionBuilderRequired<T> CreateBuilder() => new Builder<T>();
 
         internal interface IDataVirtualizingCollectionBuilderRequired<TItem>
         {
             IDataVirtualizingCollectionBuilderOptional<TItem> WithPageStore(
-                IPageStore<TItem> pageStore,
-                ICountFetcher countFetcher,
-                IScheduler subscribeScheduler,
-                IScheduler observeScheduler);
+                ISyncPageStore<TItem> pageStore,
+                ICountFetcher countFetcher);
         }
         internal interface IDataVirtualizingCollectionBuilderOptional<TItem>
         {
@@ -49,51 +28,38 @@ namespace BFF.DataVirtualizingObservableCollection
 
         internal class Builder<TItem> : IDataVirtualizingCollectionBuilderRequired<TItem>, IDataVirtualizingCollectionBuilderOptional<TItem>
         {
-            private IPageStore<TItem> _pageStore;
-            private IScheduler _subscribeScheduler;
-            private IScheduler _observeScheduler;
+            private ISyncPageStore<TItem> _pageStore;
             private ICountFetcher _countFetcher;
 
             
 
             public IDataVirtualizingCollection<TItem> Build()
             {
-                return new DataVirtualizingCollection<TItem>(
+                return new SyncDataVirtualizingCollection<TItem>(
                     _pageStore, 
-                    _countFetcher, 
-                    _subscribeScheduler,
-                    _observeScheduler);
+                    _countFetcher);
             }
 
             public IDataVirtualizingCollectionBuilderOptional<TItem> WithPageStore(
-                IPageStore<TItem> pageStore,
-                ICountFetcher countFetcher,
-                IScheduler subscribeScheduler,
-                IScheduler observeScheduler)
+                ISyncPageStore<TItem> pageStore,
+                ICountFetcher countFetcher)
             {
                 _pageStore = pageStore;
                 _countFetcher = countFetcher;
-                _observeScheduler = observeScheduler;
-                _subscribeScheduler = subscribeScheduler;
                 return this;
             }
         }
 
         private readonly int _count;
 
-        private readonly IPageStore<T> _pageStore;
+        private readonly ISyncPageStore<T> _pageStore;
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
-        private DataVirtualizingCollection(IPageStore<T> pageStore, ICountFetcher countFetcher, IScheduler subscribeScheduler, IScheduler observeScheduler)
+        private SyncDataVirtualizingCollection(ISyncPageStore<T> pageStore, ICountFetcher countFetcher)
         {
             _pageStore = pageStore;
-
-            var disposable = _pageStore.OnCollectionChangedReplace
-                .SubscribeOn(subscribeScheduler)
-                .ObserveOn(observeScheduler)
-                .Subscribe(tuple => OnCollectionChangedReplace(tuple.Item1, tuple.Item2, tuple.Item3));
-            _compositeDisposable.Add(disposable);
+            
             _compositeDisposable.Add(_pageStore);
 
             _count = countFetcher.CountFetch();
