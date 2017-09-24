@@ -299,13 +299,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected IDataVirtualizingCollection<ITitLikeViewModel> CreateDataVirtualizingCollection()
             => CollectionBuilder<ITitLikeViewModel>
                 .CreateBuilder()
-                .BuildAHoardingAsyncCollection(BasicAccess, SubscriptionScheduler, ObserveScheduler, PageSize);
+                .BuildAHoardingPreloadingAsyncCollection(
+                    BasicAccess, 
+                    SubscriptionScheduler,
+                    ObserveScheduler,
+                    PageSize);
 
         protected IScheduler SubscriptionScheduler = ThreadPoolScheduler.Instance;
 
         protected IScheduler ObserveScheduler = new DispatcherScheduler(Application.Current.Dispatcher);
 
-        protected int PageSize = 50;
+        protected int PageSize = 100;
 
         protected abstract IBasicAsyncDataAccess<ITitLikeViewModel> BasicAccess { get; }
     }
