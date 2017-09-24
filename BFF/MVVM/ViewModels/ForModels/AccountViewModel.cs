@@ -2,9 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using BFF.DataVirtualizingObservableCollection;
-using BFF.DataVirtualizingObservableCollection.DataAccesses;
-using BFF.DataVirtualizingObservableCollection.DataVirtualizingCollections;
+using BFF.DataVirtualizingCollection.DataAccesses;
+using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.Helper;
 using BFF.MVVM.Models.Native;

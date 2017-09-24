@@ -4,9 +4,8 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
-using BFF.DataVirtualizingObservableCollection;
-using BFF.DataVirtualizingObservableCollection.DataAccesses;
-using BFF.DataVirtualizingObservableCollection.DataVirtualizingCollections;
+using BFF.DataVirtualizingCollection.DataAccesses;
+using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
@@ -77,10 +76,8 @@ namespace BFF.MVVM.ViewModels.ForModels
                 }
             });
 
-            StartingBalance = new ReactiveProperty<long>(
-                repository.All.ToObservable().Select(
-                    a => repository.All.Sum(acc => acc.StartingBalance)))
-                .AddTo(CompositeDisposable);
+            StartingBalance = new ReactiveProperty<long>(CommonPropertyProvider?.Accounts.Sum(account => account.StartingBalance)
+                                                         ?? 0L).AddTo(CompositeDisposable);
 
             NewTransactionCommand.Subscribe(_ =>
             {
