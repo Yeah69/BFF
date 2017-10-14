@@ -56,8 +56,8 @@
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BFF.DataVirtualizingCollection, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BFF.DataVirtualizingCollection.1.0.1\lib\netstandard1.4\BFF.DataVirtualizingCollection.dll</HintPath>
+    <Reference Include="BFF.DataVirtualizingCollection, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BFF.DataVirtualizingCollection.1.0.2\lib\netstandard1.4\BFF.DataVirtualizingCollection.dll</HintPath>
     </Reference>
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
