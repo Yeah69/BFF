@@ -18,7 +18,7 @@ namespace BFF.DB.Dapper
         where TPersistence : class, IPersistenceModel
     {
         private readonly Comparer<TDomain> _comparer;
-        public ObservableCollection<TDomain> All { get; }
+        public ObservableCollection<TDomain> All { get; } // TODO use externally the IReadOnlyObservableCollection interface
 
         protected ObservableRepositoryBase(IProvideConnection provideConnection, Comparer<TDomain> comparer) : base(provideConnection)
         {
@@ -49,6 +49,15 @@ namespace BFF.DB.Dapper
             if(All.Contains(dataModel))
             {
                 All.Remove(dataModel);
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                All.Clear();
             }
         }
     }

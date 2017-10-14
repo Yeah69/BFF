@@ -222,5 +222,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public sealed override ReactiveCommand ApplyCommand { get; }
 
         #endregion
+
+
     }
 }

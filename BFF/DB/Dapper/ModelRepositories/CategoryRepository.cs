@@ -18,7 +18,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             {nameof(Category.Name)} VARCHAR(100),
             FOREIGN KEY({nameof(Category.ParentId)}) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
     }
-    
+
     public class CategoryComparer : Comparer<Domain.ICategory>
     {
         public override int Compare(Domain.ICategory x, Domain.ICategory y)

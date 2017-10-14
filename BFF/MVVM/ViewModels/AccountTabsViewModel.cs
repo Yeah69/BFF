@@ -91,11 +91,12 @@ namespace BFF.MVVM.ViewModels
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-            foreach(IAccountViewModel accountViewModel in AllAccounts)
+            foreach (IAccountViewModel accountViewModel in AllAccounts)
             {
                 (accountViewModel as IDisposable)?.Dispose();
             }
             (SummaryAccountViewModel as IDisposable)?.Dispose();
+            _orm?.Dispose();
             Messenger.Default.Unregister<CultureMessage>(this);
         }
 

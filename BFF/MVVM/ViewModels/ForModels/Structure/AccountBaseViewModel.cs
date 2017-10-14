@@ -310,5 +310,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected int PageSize = 100;
 
         protected abstract IBasicAsyncDataAccess<ITitLikeViewModel> BasicAccess { get; }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _tits?.Dispose();
+            }
+            Messenger.Default.Unregister<CultureMessage>(this);
+            base.Dispose(disposing);
+        }
     }
 }

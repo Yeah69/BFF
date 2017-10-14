@@ -69,7 +69,29 @@ namespace BFF.DB
         }
     }
 
-    public abstract class BffRepository
+    public interface IBffRepository : IDisposable
+    {
+        IAccountRepository AccountRepository { get; }
+        IBudgetEntryRepository BudgetEntryRepository { get; }
+        ICategoryRepository CategoryRepository { get; }
+        IDbSettingRepository DbSettingRepository { get; }
+        IIncomeRepository IncomeRepository { get; }
+        IParentIncomeRepository ParentIncomeRepository { get; }
+        IParentTransactionRepository ParentTransactionRepository { get; }
+        IPayeeRepository PayeeRepository { get; }
+        ISubIncomeRepository SubIncomeRepository { get; }
+        ISubTransactionRepository SubTransactionRepository { get; }
+        ITransactionRepository TransactionRepository { get; }
+        ITransferRepository TransferRepository { get; }
+        ITitRepository TitRepository { get; }
+
+        void PopulateDatabase(
+            ImportLists importLists, 
+            ImportAssignments importAssignments,
+            DbConnection connection = null);
+    }
+
+    public abstract class BffRepository : IBffRepository
     {
         private readonly IProvideConnection _provideConnection;
         
@@ -174,6 +196,19 @@ namespace BFF.DB
                 conn => PopulateDatabaseInner(importLists, importAssignments, conn),
                 _provideConnection, 
                 connection);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

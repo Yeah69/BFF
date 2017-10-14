@@ -29,7 +29,7 @@ namespace BFF.DB.Dapper.ModelRepositories
     {
     }
 
-    public class IncomeRepository : RepositoryBase<Domain.IIncome, Income>, IIncomeRepository
+    public sealed class IncomeRepository : RepositoryBase<Domain.IIncome, Income>, IIncomeRepository
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
         private readonly Func<long?, DbConnection, Domain.ICategory> _categoryFetcher;

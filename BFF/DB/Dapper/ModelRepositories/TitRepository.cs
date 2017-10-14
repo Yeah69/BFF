@@ -31,7 +31,7 @@ namespace BFF.DB.Dapper.ModelRepositories
     }
 
 
-    public class TitRepository : ViewRepositoryBase<Domain.Structure.ITitBase, TheTit, MVVM.Models.Native.IAccount>, ITitRepository
+    public sealed class TitRepository : ViewRepositoryBase<Domain.Structure.ITitBase, TheTit, MVVM.Models.Native.IAccount>, ITitRepository
     {
         private readonly IRepository<Domain.ITransaction> _transactionRepository;
         private readonly IRepository<Domain.IIncome> _incomeRepository;

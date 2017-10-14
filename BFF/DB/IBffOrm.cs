@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 
 namespace BFF.DB
 {
-    public interface IBffOrm : IPagedOrm
+    public interface IBffOrm : IPagedOrm, IDisposable
     {
         ICommonPropertyProvider CommonPropertyProvider { get; }
-        BffRepository BffRepository { get; }
+        IBffRepository BffRepository { get; }
         IParentTransactionViewModelService ParentTransactionViewModelService { get; }
         IParentIncomeViewModelService ParentIncomeViewModelService { get; }
         ISubTransactionViewModelService SubTransactionViewModelService { get; }

@@ -38,7 +38,7 @@ namespace BFF.DB
         public IObservableReadOnlyList<IPayeeViewModel> AllPayeeViewModels { get; }
 
 
-        public CommonPropertyProvider(IBffOrm orm, BffRepository bffRepository)
+        public CommonPropertyProvider(IBffOrm orm, IBffRepository bffRepository)
         {
             
             Accounts = bffRepository.AccountRepository.All;

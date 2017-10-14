@@ -32,7 +32,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         long? GetBalance(Domain.IAccount account, DbConnection connection = null);
     }
 
-    public class AccountRepository : ObservableRepositoryBase<Domain.IAccount, Account>, IAccountRepository
+    public sealed class AccountRepository : ObservableRepositoryBase<Domain.IAccount, Account>, IAccountRepository
     {
         public AccountRepository(IProvideConnection provideConnection) : base(provideConnection, new AccountComparer())
         { }

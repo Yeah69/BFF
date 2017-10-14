@@ -54,5 +54,26 @@ namespace BFF.DB.Dapper
         public sealed override ITransactionRepository TransactionRepository { get; }
         public sealed override ITransferRepository TransferRepository { get; }
         public sealed override ITitRepository TitRepository { get; }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                AccountRepository?.Dispose();
+                BudgetEntryRepository?.Dispose();
+                CategoryRepository?.Dispose();
+                DbSettingRepository?.Dispose();
+                IncomeRepository?.Dispose();
+                ParentIncomeRepository?.Dispose();
+                ParentTransactionRepository?.Dispose();
+                PayeeRepository?.Dispose();
+                SubIncomeRepository?.Dispose();
+                SubTransactionRepository?.Dispose();
+                TransactionRepository?.Dispose();
+                TransferRepository?.Dispose();
+                TitRepository?.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

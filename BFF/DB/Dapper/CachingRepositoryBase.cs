@@ -60,5 +60,14 @@ namespace BFF.DB.Dapper
             }
             Logger.Debug("Finished converting all POCOs of type {0}", typeof(TPersistence).Name);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                _cache.Clear();
+            }
+        }
     }
 }

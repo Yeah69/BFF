@@ -29,7 +29,7 @@ namespace BFF.DB.Dapper.ModelRepositories
     {
     }
 
-    public class TransactionRepository : RepositoryBase<Domain.ITransaction, Transaction>, ITransactionRepository
+    public sealed class TransactionRepository : RepositoryBase<Domain.ITransaction, Transaction>, ITransactionRepository
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
         private readonly Func<long?, DbConnection, Domain.ICategory> _categoryFetcher;

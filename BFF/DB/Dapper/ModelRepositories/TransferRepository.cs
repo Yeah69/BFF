@@ -27,7 +27,7 @@ namespace BFF.DB.Dapper.ModelRepositories
     {
     }
 
-    public class TransferRepository : RepositoryBase<Domain.ITransfer, Transfer>, ITransferRepository
+    public sealed class TransferRepository : RepositoryBase<Domain.ITransfer, Transfer>, ITransferRepository
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
 

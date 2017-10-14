@@ -24,7 +24,7 @@ namespace BFF.DB.Dapper.ModelRepositories
     {
     }
 
-    public class SubIncomeRepository : SubTransIncRepository<Domain.ISubIncome, SubIncome>, ISubIncomeRepository
+    public sealed class SubIncomeRepository : SubTransIncRepository<Domain.ISubIncome, SubIncome>, ISubIncomeRepository
     {
         private readonly Func<long?, DbConnection, Domain.ICategory> _categoryFetcher;
 

@@ -20,7 +20,7 @@ namespace BFF.DB.Dapper.ModelRepositories
     {
     }
 
-    public class DbSettingRepository : RepositoryBase<Domain.IDbSetting, DbSetting>, IDbSettingRepository
+    public sealed class DbSettingRepository : RepositoryBase<Domain.IDbSetting, DbSetting>, IDbSettingRepository
     {
         public DbSettingRepository(IProvideConnection provideConnection) : base(provideConnection) { }
 

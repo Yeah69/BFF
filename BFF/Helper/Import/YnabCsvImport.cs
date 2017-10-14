@@ -88,7 +88,7 @@ namespace BFF.Helper.Import
         {
             //Initialization
             IProvideConnection provideConnection = new CreateSqLiteDatabase(savePath).Create();
-            BffRepository bffRepository = new SqLiteBffOrm(provideConnection).BffRepository;
+            IBffRepository bffRepository = new SqLiteBffOrm(provideConnection).BffRepository;
             _processedAccountsList.Clear();
             ClearAccountCache(); 
             ClearPayeeCache();

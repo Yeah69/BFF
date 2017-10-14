@@ -76,5 +76,18 @@ namespace BFF.DB.Dapper
         protected abstract string GetOrderingPageSuffix(TSpecifying specifyingObject);
         protected abstract string GetSpecifyingPageSuffix(TSpecifying specifyingObject);
         protected abstract string GetSpecifyingCountSuffix(TSpecifying specifyingObject);
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

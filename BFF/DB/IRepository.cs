@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB
 {
-    public interface IRepository<T> where T : class, IDataModel
+    public interface IRepository<T> : IDisposable where T : class, IDataModel
     {
         T Create();
         void Add(T dataModel, DbConnection connection = null);
@@ -46,7 +47,7 @@ namespace BFF.DB
     }
 
     public interface IViewRepository<out TDomainBase, in TSpecifying>
-        : ISpecifiedPagedAccess<TDomainBase, TSpecifying>
+        : ISpecifiedPagedAccess<TDomainBase, TSpecifying>, IDisposable
         where TDomainBase : class, IDataModel
     { }
 

@@ -29,7 +29,7 @@ namespace BFF.DB.Dapper.ModelRepositories
     {
     }
 
-    public class PayeeRepository : ObservableRepositoryBase<Domain.IPayee, Payee>, IPayeeRepository
+    public sealed class PayeeRepository : ObservableRepositoryBase<Domain.IPayee, Payee>, IPayeeRepository
     {
         public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection, new PayeeComparer()) {}
 

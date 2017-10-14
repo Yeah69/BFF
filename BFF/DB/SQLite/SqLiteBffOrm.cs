@@ -12,7 +12,7 @@ namespace BFF.DB.SQLite
 
     class SqLiteBffOrm : IBffOrm
     {
-        private readonly BffRepository _bffRepository;
+        private readonly IBffRepository _bffRepository;
         
         public ICommonPropertyProvider CommonPropertyProvider { get; }
 
@@ -24,7 +24,7 @@ namespace BFF.DB.SQLite
 
         public ISubIncomeViewModelService SubIncomeViewModelService { get; }
 
-        public BffRepository BffRepository => _bffRepository;
+        public IBffRepository BffRepository => _bffRepository;
 
         public long? GetAccountBalance(IAccount account) => 
             _bffRepository.AccountRepository?.GetBalance(account);
@@ -85,5 +85,10 @@ namespace BFF.DB.SQLite
 
         public int GetCount<T>(object specifyingObject = null) => 
             _bffRepository.TitRepository.GetCount(specifyingObject as IAccount);
+
+        public void Dispose()
+        {
+            _bffRepository?.Dispose();
+        }
     }
 }
