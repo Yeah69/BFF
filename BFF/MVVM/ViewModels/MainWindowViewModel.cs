@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Forms;
 using BFF.DB;
+using BFF.DB.Dapper;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.Properties;
@@ -153,6 +154,7 @@ namespace BFF.MVVM.ViewModels
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
+                    new CreateSqLiteDatabase(saveFileDialog.FileName).Create();
                     Reset(saveFileDialog.FileName);
                 }
             });
