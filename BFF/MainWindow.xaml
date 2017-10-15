@@ -18,14 +18,38 @@
         Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" 
         RightWindowCommandsOverlayBehavior="Never" LeftWindowCommandsOverlayBehavior="Never" BorderThickness="2" TitleCaps="False"
         BorderBrush="{DynamicResource AccentColorBrush}">
+    
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
+                <ResourceDictionary>
+                    <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type controls:HamburgerMenuGlyphItem}">
+                        <Grid Height="48">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="48" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       FontSize="16"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       Foreground="White"
+                                       Text="{Binding Glyph}" />
+                            <TextBlock Grid.Column="1"
+                                       VerticalAlignment="Center"
+                                       FontSize="16"
+                                       Foreground="White"
+                                       Text="{Binding Label}" />
+                        </Grid>
+                    </DataTemplate>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
+    
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
             <controls:Flyout Name="SettingsFlyout" Header="{lex:Loc MainWindow_Settings}" Position="Right" Width="400">
@@ -130,11 +154,13 @@
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
+    
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands>
             <Button Name="FileButt" Content="{lex:Loc MainWindow_File}" Click="FileButt_Click" />
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
+    
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button Name="SettingsButt" Click="SettingsButt_Click">
@@ -143,16 +169,25 @@
             <Button Name="AboutButt" Content="{lex:Loc MainWindow_About}"/>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
-    <Grid>
-        <ContentControl Name="MainContentControl"  Content="{Binding ContentViewModel}">
-            <ContentControl.Resources>
-                <DataTemplate DataType="{x:Type viewModel:AccountTabsViewModel}">
-                    <views:AccountTabsView x:Name="MainContent" />
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type viewModel:EmptyContentViewModel}">
-                    <!-- todo: Something like a StartPage here -->
-                </DataTemplate>
-            </ContentControl.Resources>
-        </ContentControl>
-    </Grid>
+
+
+    <TabControl TabStripPlacement="Left">
+        <TabItem Header="Budget">
+            <views:BudgetOverviewView DataContext="" />
+        </TabItem>
+        <TabItem Header="Accounts">
+            <ContentControl Name="MaContentControl"  Content="{Binding ContentViewModel}">
+                <ContentControl.Resources>
+                    <DataTemplate DataType="{x:Type viewModel:AccountTabsViewModel}">
+                        <views:AccountTabsView x:Name="MainContent" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewModel:EmptyContentViewModel}">
+                        <!-- todo: Something like a StartPage here -->
+                    </DataTemplate>
+                </ContentControl.Resources>
+            </ContentControl>
+        </TabItem>
+    </TabControl>
+
+    
 </controls:MetroWindow>

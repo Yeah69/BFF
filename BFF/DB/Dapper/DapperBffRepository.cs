@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using BFF.DB.Dapper.ModelRepositories;
@@ -39,6 +40,8 @@ namespace BFF.DB.Dapper
                                               PayeeFetcher, 
                                               SubTransactionsFetcher,
                                               SubIncomesFetcher);
+
+            BudgetEntryRepository.GetBudgetEntries(DateTime.Now, null);
         }
 
         public sealed override IAccountRepository AccountRepository { get; }

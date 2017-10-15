@@ -11,8 +11,12 @@
              xmlns:views="clr-namespace:BFF.MVVM.Views"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" x:Name="AccountTabsUserControl">
+             d:DesignHeight="300" 
+             d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance Type=viewModels:AccountTabsViewModel}"
+             x:Name="AccountTabsUserControl">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
