@@ -19,6 +19,7 @@ namespace BFF.DB.SQLite
     
     internal class MonthOutflowBudgetResponseDto
     {
+        public long? Id { get; set; }
         public string Month { get; set; }
         public string Year { get; set; }
         public long? Outflow { get; set; }
@@ -26,7 +27,7 @@ namespace BFF.DB.SQLite
 
         public override string ToString()
         {
-            return $"{nameof(Month)}: {Month}, {nameof(Year)}: {Year}, {nameof(Outflow)}: {Outflow}, {nameof(Budget)}: {Budget}";
+            return $"{nameof(Id)}: {Id}, {nameof(Month)}: {Month}, {nameof(Year)}: {Year}, {nameof(Outflow)}: {Outflow}, {nameof(Budget)}: {Budget}";
         }
     }
 
@@ -63,8 +64,8 @@ namespace BFF.DB.SQLite
 
 
 
-        private static string _selectBudgetEntriesForCategoryUntilMonth =
-            $@"SELECT strftime('%Y', {nameof(BudgetEntry.Month)}) AS {nameof(MonthOutflowBudgetResponseDto.Year)}, strftime('%m', {nameof(BudgetEntry.Month)}) AS {nameof(MonthOutflowBudgetResponseDto.Month)}, {nameof(BudgetEntry.CategoryId)}, {nameof(BudgetEntry.Budget)}
+        private static readonly string _selectBudgetEntriesForCategoryUntilMonth =
+            $@"SELECT strftime('%Y', {nameof(BudgetEntry.Month)}) AS {nameof(MonthOutflowBudgetResponseDto.Year)}, strftime('%m', {nameof(BudgetEntry.Month)}) AS {nameof(MonthOutflowBudgetResponseDto.Month)}, {nameof(BudgetEntry.CategoryId)}, {nameof(BudgetEntry.Budget)}, {nameof(BudgetEntry.Id)}
   FROM {nameof(BudgetEntry)}s
   {WhereClauseCategoryAndUntilMonth(nameof(BudgetEntry.Month))}";
 
@@ -105,7 +106,7 @@ namespace BFF.DB.SQLite
 
         internal static string SelectBudgetOutflowData =
             $@"SELECT * FROM
-(SELECT {nameof(MonthOutflowBudgetResponseDto.Year)}, {nameof(MonthOutflowBudgetResponseDto.Month)}, {nameof(MonthOutflowBudgetResponseDto.Budget)}, {nameof(MonthOutflowBudgetResponseDto.Outflow)}
+(SELECT {nameof(MonthOutflowBudgetResponseDto.Year)}, {nameof(MonthOutflowBudgetResponseDto.Month)}, {nameof(MonthOutflowBudgetResponseDto.Budget)}, {nameof(MonthOutflowBudgetResponseDto.Outflow)}, {nameof(MonthOutflowBudgetResponseDto.Id)}
 FROM
 (
     {_selectYearMonthCategoryTotalSumFromAllExternalTits}
@@ -115,7 +116,7 @@ INNER JOIN (
   ) USING ({nameof(MonthCategoryRequestDto.Year)}, {nameof(MonthCategoryRequestDto.Month)}, {nameof(MonthCategoryRequestDto.CategoryId)})
 
 UNION ALL
-SELECT {nameof(MonthOutflowBudgetResponseDto.Year)}, {nameof(MonthOutflowBudgetResponseDto.Month)}, {nameof(MonthOutflowBudgetResponseDto.Budget)}, {nameof(MonthOutflowBudgetResponseDto.Outflow)}
+SELECT {nameof(MonthOutflowBudgetResponseDto.Year)}, {nameof(MonthOutflowBudgetResponseDto.Month)}, {nameof(MonthOutflowBudgetResponseDto.Budget)}, {nameof(MonthOutflowBudgetResponseDto.Outflow)}, {nameof(MonthOutflowBudgetResponseDto.Id)}
 FROM
 (
     {_selectYearMonthCategoryTotalSumFromAllExternalTits}
@@ -126,7 +127,7 @@ LEFT OUTER JOIN (
 WHERE r.Year IS NULL
 
 UNION ALL
-SELECT {nameof(MonthOutflowBudgetResponseDto.Year)}, {nameof(MonthOutflowBudgetResponseDto.Month)}, {nameof(MonthOutflowBudgetResponseDto.Budget)}, {nameof(MonthOutflowBudgetResponseDto.Outflow)}
+SELECT {nameof(MonthOutflowBudgetResponseDto.Year)}, {nameof(MonthOutflowBudgetResponseDto.Month)}, {nameof(MonthOutflowBudgetResponseDto.Budget)}, {nameof(MonthOutflowBudgetResponseDto.Outflow)}, {nameof(MonthOutflowBudgetResponseDto.Id)}
 FROM
 (
   {_selectBudgetEntriesForCategoryUntilMonth}

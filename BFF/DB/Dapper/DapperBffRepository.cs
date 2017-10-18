@@ -41,7 +41,7 @@ namespace BFF.DB.Dapper
                                               SubTransactionsFetcher,
                                               SubIncomesFetcher);
 
-            BudgetEntryRepository.GetBudgetEntries(DateTime.Now, null);
+            BudgetEntryRepository.GetBudgetEntries(DateTime.Now, DateTime.Now, null, null);
         }
 
         public sealed override IAccountRepository AccountRepository { get; }

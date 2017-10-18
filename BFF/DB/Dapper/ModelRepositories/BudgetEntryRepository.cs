@@ -5,6 +5,7 @@ using System.Linq;
 using BFF.DB.PersistenceModels;
 using BFF.DB.SQLite;
 using Dapper;
+using MoreLinq;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -24,7 +25,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public interface IBudgetEntryRepository : IRepositoryBase<Domain.IBudgetEntry>
     {
-        IList<Domain.IBudgetEntry> GetBudgetEntries(DateTime month, DbConnection connection);
+        IList<Domain.IBudgetEntry> GetBudgetEntries(DateTime fromMonth, DateTime toMonth, Domain.ICategory category, DbConnection connection);
     }
 
 
@@ -174,17 +175,61 @@ WHERE CategoryId = @CategoryId
                     }).First() ?? 0L);
         };
 
-        public IList<Domain.IBudgetEntry> GetBudgetEntries(DateTime month, DbConnection connection)
+        public IList<Domain.IBudgetEntry> GetBudgetEntries(DateTime fromMonth, DateTime toMonth, Domain.ICategory category, DbConnection connection)
         {
-            month = new DateTime(2017, 1, 1);
-            var budgetEntries = ConnectionHelper.QueryOnExistingOrNewConnection(
+            fromMonth = new DateTime(2016, 8, 1);
+            toMonth = new DateTime(2017, 1, 1);
+            category = new Domain.Category(null, 49, "", null);
+
+            var complementedResponses =
+                // Fetch the budget responses from the database
+                ConnectionHelper.QueryOnExistingOrNewConnection(
                 c =>
                 {
                     var entries = c.Query<MonthOutflowBudgetResponseDto>(
                         SqLiteQueries.SelectBudgetOutflowData,
-                        new MonthCategoryRequestDto(49, $"{month.Month:00}", $"{month.Year:0000}"));
+                        new MonthCategoryRequestDto(category.Id, $"{toMonth.Month:00}", $"{toMonth.Year:0000}"));
                     return entries;
-                }, ProvideConnection, connection);
+                }, ProvideConnection, connection)
+                // Complement responses with balance
+                .Scan(
+                (new MonthOutflowBudgetResponseDto
+                {
+                    Month = "00",
+                    Year = "0000",
+                    Budget = 0L,
+                    Outflow = 0L
+                },
+                0L),
+                (previousResult, currentResponse) =>
+                {
+                    (_, var previousBalance) = previousResult;
+                    return (currentResponse, Math.Max(0L,
+                        previousBalance + (currentResponse.Budget ?? 0L) - (currentResponse.Outflow ?? 0L)));
+                })
+                // Skip all responses before fromMonth
+                .SkipWhile(responseAndBalance =>
+                {
+                    (var response, _) = responseAndBalance;
+                    int year = int.Parse(response.Year);
+                    int month = int.Parse(response.Month);
+                    return year < fromMonth.Year || month < fromMonth.Month;
+                })
+                .Select(responseAndBalance =>
+                {
+                    (var response, var balance) = responseAndBalance;
+                    return new Domain.BudgetEntry(
+                        this,
+                        response.Id ?? -1L,
+                        new DateTime(int.Parse(response.Year), int.Parse(response.Month), 1),
+                        category,
+                        response.Budget ?? 0L,
+                        response.Outflow ?? 0L,
+                        balance);
+                });
+
+            
+
             return null;
         }
     }
