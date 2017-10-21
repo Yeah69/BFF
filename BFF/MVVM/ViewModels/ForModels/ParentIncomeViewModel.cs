@@ -143,7 +143,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return Account != null && Payee != null && NewSubElements.All(subElement => subElement.ValidToInsert());
+            return Account.Value != null && Payee.Value != null && NewSubElements.All(subElement => subElement.ValidToInsert());
         }
 
         protected override void InitializeDeleteCommand()

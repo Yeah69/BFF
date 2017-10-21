@@ -69,7 +69,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return Account != null && Payee != null && Category != null;
+            return Account.Value != null && Payee.Value != null && Category.Value != null;
         }
     }
 }

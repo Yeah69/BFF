@@ -126,9 +126,6 @@
                                       DisplayMemberPath="Name.Value">
                                 <ComboBox.SelectedItem>
                                     <Binding Path="Account.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
-                                        <Binding.ValidationRules>
-                                            <validationRules:NoNullRule />
-                                        </Binding.ValidationRules>
                                     </Binding>
                                 </ComboBox.SelectedItem>
                             </ComboBox>
@@ -204,9 +201,6 @@
                                           DisplayMemberPath="Name.Value">
                                     <ComboBox.SelectedItem>
                                         <Binding Path="Payee.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
-                                            <Binding.ValidationRules>
-                                                <validationRules:NoNullRule />
-                                            </Binding.ValidationRules>
                                         </Binding>
                                     </ComboBox.SelectedItem>
                                 </ComboBox>
@@ -304,9 +298,6 @@
                                           ShouldPreserveUserEnteredPrefix="True">
                                     <ComboBox.SelectedItem>
                                         <Binding Path="Category.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
-                                            <!--<Binding.ValidationRules>
-                                                <validationRules:NoNullRule />
-                                            </Binding.ValidationRules>-->
                                         </Binding>
                                     </ComboBox.SelectedItem>
                                 </ComboBox>
