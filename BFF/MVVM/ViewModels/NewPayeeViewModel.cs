@@ -1,5 +1,6 @@
-﻿using System.Collections.Specialized;
+﻿using System;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
@@ -8,6 +9,7 @@ using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using MuVaViMo;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels
 {
@@ -29,36 +31,51 @@ namespace BFF.MVVM.ViewModels
         IObservableReadOnlyList<IPayeeViewModel> AllPayees { get; }
     }
 
-    public class NewPayeeViewModel : INewPayeeViewModel
+    public class NewPayeeViewModel : INewPayeeViewModel, IDisposable
     {
         private readonly IPayeeViewModelService _payeeViewModelService;
+
+        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
         public NewPayeeViewModel(
             IHavePayeeViewModel payeeOwner,
             IPayeeRepository payeeRepository,
             IPayeeViewModelService payeeViewModelService)
         {
-            _payeeViewModelService = payeeViewModelService;
-            
-            var observeCollection = Observable.FromEventPattern<NotifyCollectionChangedEventArgs>(AllPayees, "CollectionChanged");
-
-            AddPayeeCommand = PayeeText.CombineLatest(observeCollection, (text, _) =>
-                !string.IsNullOrEmpty(PayeeText?.Value?.Trim()) &&
-                AllPayees.All(payee => payee.Name.Value != PayeeText?.Value.Trim())).ToReactiveCommand();
-
-            AddPayeeCommand.Subscribe(() =>
+            string ValidatePayeeName(string text)
             {
-                IPayee newPayee = payeeRepository.Create();
-                newPayee.Name = PayeeText.Value.Trim();
-                newPayee.Insert();
-                payeeOwner.Payee.Value = _payeeViewModelService.GetViewModel(newPayee);
-            });
+                return !string.IsNullOrWhiteSpace(text) &&
+                    AllPayees.All(payee => payee.Name.Value != text.Trim()) 
+                    ? null 
+                    : "The name of a payee isn't allowed to be empty or an already existing one."; // TODO Localize 
+            }
+
+            _payeeViewModelService = payeeViewModelService;
+
+            PayeeText = new ReactiveProperty<string>().SetValidateNotifyError(
+                text => ValidatePayeeName(text)).AddTo(_compositeDisposable);
+
+            AddPayeeCommand = new ReactiveCommand().AddTo(_compositeDisposable);
+
+            AddPayeeCommand.Where(
+                _ =>
+                {
+                    (PayeeText as ReactiveProperty<string>)?.ForceValidate();
+                    return !PayeeText.HasErrors;
+                })
+                .Subscribe(_ =>
+                {
+                    IPayee newPayee = payeeRepository.Create();
+                    newPayee.Name = PayeeText.Value.Trim();
+                    newPayee.Insert();
+                    payeeOwner.Payee.Value = _payeeViewModelService.GetViewModel(newPayee);
+                }).AddTo(_compositeDisposable);
         }
 
         /// <summary>
         /// User input of the to be searched or to be created Payee.
         /// </summary>
-        public IReactiveProperty<string> PayeeText { get; } = new ReactiveProperty<string>();
+        public IReactiveProperty<string> PayeeText { get; }
 
         /// <summary>
         /// Creates a new Payee.
@@ -69,5 +86,10 @@ namespace BFF.MVVM.ViewModels
         /// All currently available Payees.
         /// </summary>
         public IObservableReadOnlyList<IPayeeViewModel> AllPayees => _payeeViewModelService.All;
+
+        public void Dispose()
+        {
+            _compositeDisposable?.Dispose();
+        }
     }
 }

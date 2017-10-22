@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:validationRules="clr-namespace:BFF.MVVM.ValidationRules"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              xmlns:structure="clr-namespace:BFF.MVVM.ViewModels.ForModels.Structure"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
@@ -181,18 +180,18 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}" >
                             <DockPanel LastChildFill="True">
-                                <Button DockPanel.Dock="Right" x:Name="AddPayeeButton" Command="{Binding NewPayeeViewModel.AddPayeeCommand}" Padding="0">
+                                <Button DockPanel.Dock="Right" x:Name="AddPayeeButton" Command="{Binding NewPayeeViewModel.AddPayeeCommand}"
+                                        MouseEnter="AddPayeeButton_OnMouseEnter">
                                     <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Foreground="{DynamicResource BlackColorBrush}" Style="{StaticResource CellIconMaterial}" />
                                 </Button>
-                                <Popup PlacementTarget="{Binding ElementName=AddPayeeButton}" Placement="Bottom" PopupAnimation="Slide"
-                                       IsOpen="{Binding ElementName=AddPayeeButton, Path=IsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                <Popup x:Name="Popup" PlacementTarget="{Binding ElementName=AddPayeeButton}" Placement="Right" PopupAnimation="Slide" StaysOpen="False">
                                     <TextBox Focusable="True" 
                                              Text="{Binding NewPayeeViewModel.PayeeText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                              Height="{Binding ElementName=AddPayeeButton, Path=ActualHeight}"
-                                             MinWidth="{Binding ElementName=AddPayeeButton, Path=ActualWidth}" />
+                                             MinWidth="50"
+                                             BorderBrush="{StaticResource AccentColorBrush}"/>
                                 </Popup>
                                 <ComboBox TextSearch.TextPath="Name.Value" 
-                                          Text="{Binding NewPayeeViewModel.PayeeText.Value, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                                           IsEditable="True"
                                           IsTextSearchEnabled="True"
                                           IsTextSearchCaseSensitive="True"
@@ -266,28 +265,29 @@
                                         </StackPanel>
                                     </DataTemplate>
                                 </DockPanel.Resources>
-                                <controls:SplitButton DockPanel.Dock="Right" 
-                                                      x:Name="AddCategoryButton" 
-                                                      Orientation="Horizontal"
-                                                      Command="{Binding NewCategoryViewModel.AddCategoryCommand}" 
-                                                      SelectedItem="{Binding NewCategoryViewModel.AddingCategoryParent.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      ItemsSource="{Binding NewCategoryViewModel.AllCategories}"
-                                                      ItemTemplate="{StaticResource CategoryItemTemplate}">
-                                    <controls:SplitButton.IconTemplate>
-                                        <DataTemplate>
-                                            <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}"
-                                                                        Foreground="{DynamicResource BlackColorBrush}"
-                                                                        Style="{StaticResource CellIconMaterial}" />
-                                        </DataTemplate>
-                                    </controls:SplitButton.IconTemplate>
-                                </controls:SplitButton>
-                                <Popup PlacementTarget="{Binding ElementName=AddCategoryButton}" 
-                                       Placement="Bottom" PopupAnimation="Slide"
-                                       IsOpen="{Binding ElementName=AddCategoryButton, Path=IsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <TextBox Focusable="True" 
-                                             Text="{Binding NewCategoryViewModel.CategoryText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                             Height="{Binding ElementName=AddCategoryButton, Path=ActualHeight}"
-                                             MinWidth="{Binding ElementName=AddCategoryButton, Path=ActualWidth}" />
+                                <Button DockPanel.Dock="Right"
+                                        x:Name="AddCategoryButton" MouseEnter="AddCategoryButton_OnMouseEnter"
+                                        Command="{Binding NewCategoryViewModel.AddCategoryCommand}">
+                                    <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}"
+                                                                Foreground="{DynamicResource BlackColorBrush}"
+                                                                Style="{StaticResource CellIconMaterial}" />
+                                </Button>
+                                <Popup x:Name="Popup" PlacementTarget="{Binding ElementName=AddCategoryButton}" 
+                                       Placement="Right" PopupAnimation="Slide" StaysOpen="False">
+                                    <Border Padding="0" BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1" MinWidth="50">
+                                        <StackPanel>
+                                            <ComboBox TextSearch.TextPath="Name.Value"
+                                                  IsEditable="True" 
+                                                  IsTextSearchCaseSensitive="True"
+                                                  IsTextSearchEnabled="True"
+                                                  SelectedItem="{Binding NewCategoryViewModel.AddingCategoryParent.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  ItemsSource="{Binding NewCategoryViewModel.AllCategories}"
+                                                  ItemTemplate="{StaticResource CategoryItemTemplate}"
+                                                  ShouldPreserveUserEnteredPrefix="True" />
+                                            <TextBox x:Name="TextBox" Focusable="True"
+                                                 Text="{Binding NewCategoryViewModel.CategoryText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </StackPanel>
+                                    </Border>
                                 </Popup>
                                 <ComboBox TextSearch.TextPath="Name.Value"
                                           IsEditable="True" 
@@ -295,12 +295,8 @@
                                           IsTextSearchEnabled="True"
                                           ItemsSource="{Binding NewCategoryViewModel.AllCategories}"
                                           ItemTemplate="{StaticResource CategoryItemTemplate}"
-                                          ShouldPreserveUserEnteredPrefix="True">
-                                    <ComboBox.SelectedItem>
-                                        <Binding Path="Category.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
-                                        </Binding>
-                                    </ComboBox.SelectedItem>
-                                </ComboBox>
+                                          ShouldPreserveUserEnteredPrefix="True"
+                                          SelectedItem="{Binding Path=Category.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                             </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
@@ -777,40 +773,40 @@
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
             </DataGrid>
-            <DockPanel>
+            <DockPanel Margin="0,5,0,0">
                 <Button ToolTip="{lex:Loc AccountView_ToolTip_NewTransaction}" Command="{Binding NewTransactionCommand}" Visibility="{Binding NewTransactionVisibility}">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <iconPacks:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
+                        <iconPacks:PackIconMaterial Margin="5,0,0,0"  Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
                     </StackPanel>
                 </Button>
-                <Button ToolTip="{lex:Loc AccountView_ToolTip_NewIncome}" Command="{Binding NewIncomeCommand}" Visibility="{Binding NewIncomeVisibility}">
+                <Button Margin="5,0,0,0" ToolTip="{lex:Loc AccountView_ToolTip_NewIncome}" Command="{Binding NewIncomeCommand}" Visibility="{Binding NewIncomeVisibility}">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <iconPacks:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
+                        <iconPacks:PackIconMaterial Margin="5,0,0,0" Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
                     </StackPanel>
                 </Button>
-                <Button ToolTip="{lex:Loc AccountView_ToolTip_NewTransfer}" Command="{Binding NewTransferCommand}" Visibility="{Binding NewTransferVisibility}">
+                <Button Margin="5,0,0,0" ToolTip="{lex:Loc AccountView_ToolTip_NewTransfer}" Command="{Binding NewTransferCommand}" Visibility="{Binding NewTransferVisibility}">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <iconPacks:PackIconMaterial Kind="{StaticResource TransferIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransferBrush}" />
+                        <iconPacks:PackIconMaterial Margin="5,0,0,0" Kind="{StaticResource TransferIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransferBrush}" />
                     </StackPanel>
                 </Button>
-                <Button ToolTip="{lex:Loc AccountView_ToolTip_NewParentTransaction}" Command="{Binding NewParentTransactionCommand}" Visibility="{Binding NewParentTransactionVisibility}">
+                <Button Margin="5,0,0,0" ToolTip="{lex:Loc AccountView_ToolTip_NewParentTransaction}" Command="{Binding NewParentTransactionCommand}" Visibility="{Binding NewParentTransactionVisibility}">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <iconPacks:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <iconPacks:PackIconMaterial Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
+                        <iconPacks:PackIconMaterial Margin="5,0,0,0" Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <iconPacks:PackIconMaterial Margin="5,0,0,0" Kind="{StaticResource TransactionIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource TransactionBrush}" />
                     </StackPanel>
                 </Button>
-                <Button ToolTip="{lex:Loc AccountView_ToolTip_NewParentIncome}" Command="{Binding NewParentIncomeCommand}" Visibility="{Binding NewParentIncomeVisibility}">
+                <Button Margin="5,0,0,0" ToolTip="{lex:Loc AccountView_ToolTip_NewParentIncome}" Command="{Binding NewParentIncomeCommand}" Visibility="{Binding NewParentIncomeVisibility}">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <iconPacks:PackIconMaterial Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
-                        <iconPacks:PackIconMaterial Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
+                        <iconPacks:PackIconMaterial Margin="5,0,0,0" Kind="{StaticResource ParentIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
+                        <iconPacks:PackIconMaterial Margin="5,0,0,0" Kind="{StaticResource IncomeIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource IncomeBrush}" />
                     </StackPanel>
                 </Button>
-                <Button ToolTip="{lex:Loc AccountView_ToolTip_AddToTable}" Command="{Binding ApplyCommand}" HorizontalAlignment="Right" Visibility="{Binding ApplyVisibility}">
+                <Button Margin="5,0,0,0" ToolTip="{lex:Loc AccountView_ToolTip_AddToTable}" Command="{Binding ApplyCommand}" HorizontalAlignment="Right" Visibility="{Binding ApplyVisibility}">
                     <iconPacks:PackIconMaterial Kind="{StaticResource AddToTableIcon}" Height="{StaticResource IconSize}" Width="{StaticResource IconSize}" Foreground="{DynamicResource BlackColorBrush}" />
                 </Button>
             </DockPanel>

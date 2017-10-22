@@ -31,7 +31,7 @@
         <!-- "Status bar" -->
         <StackPanel Grid.Row="1" 
                     Orientation="Horizontal">
-            <GroupBox Header="{lex:Loc AccountView_StartingBalance}" 
+            <GroupBox Header="{lex:Loc AccountView_StartingBalance}" Margin="0,5,5,5"
                       HorizontalAlignment="Left">
                 <TextBlock Name="StartingBalanceTextBlock" 
                            Text="{Binding StartingBalance.Value, Converter={x:Static mvvm:Converters.SumToString}}" />

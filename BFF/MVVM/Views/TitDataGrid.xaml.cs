@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -232,6 +233,24 @@ namespace BFF.MVVM.Views
                     TitGrid.ScrollIntoView(TitGrid.CurrentItem);
                 }
                 TitGrid.SelectedIndex = _previousPosition;
+            }
+        }
+
+        private void AddCategoryButton_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is FrameworkElement button)
+            {
+                if (button.FindName("Popup") is Popup popup)
+                    popup.IsOpen = true;
+            }
+        }
+
+        private void AddPayeeButton_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is FrameworkElement button)
+            {
+                if (button.FindName("Popup") is Popup popup)
+                    popup.IsOpen = true;
             }
         }
     }

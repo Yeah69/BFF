@@ -33,7 +33,7 @@
                     <attachedBehaviors:AdditionalTabItemsBehavior.HeaderTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="CreditCard" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
+                                <iconPacks:PackIconMaterial VerticalAlignment="Center" Kind="CreditCard" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
                                 <TextBlock Text="{Binding DataContext.Name.Value, RelativeSource={RelativeSource AncestorType=TabItem}}" />
                             </StackPanel>
                         </DataTemplate>
@@ -50,7 +50,7 @@
                 <TabItem.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="{StaticResource AllAccountsIcon}" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
+                            <iconPacks:PackIconMaterial VerticalAlignment="Center" Kind="{StaticResource AllAccountsIcon}" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
                             <TextBlock Text="{lex:Loc AccountTabsView_AllAccounts}" />
                         </StackPanel>
                     </DataTemplate>
@@ -61,8 +61,8 @@
                 <TabItem.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
-                            <iconPacks:PackIconMaterial Kind="{StaticResource AccountIcon}" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
+                            <iconPacks:PackIconMaterial VerticalAlignment="Center" Kind="{StaticResource AddIcon}" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
+                            <iconPacks:PackIconMaterial VerticalAlignment="Center" Margin="5,0,0,0" Kind="{StaticResource AccountIcon}" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
                             <TextBlock /> <!-- Workaround: Without the TextBlock the underline of the Tabs would not fit anymore -->
                         </StackPanel>
                     </DataTemplate>
