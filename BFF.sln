@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BFF", "BFF\BFF.csproj", "{C3840DDB-2348-4CC6-9D64-442FA4F1C329}"
 EndProject
@@ -26,6 +26,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_ResXSortingComparison = Ordinal
+		RESX_SortFileContentOnSave = True
 		SolutionGuid = {CB48FD93-B139-482F-AECA-4F0ED2800AAA}
 	EndGlobalSection
 EndGlobal

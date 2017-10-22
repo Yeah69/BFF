@@ -273,6 +273,7 @@
     <Compile Include="DB\SQLite\SqLiteBffOrm.cs" />
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
     <Compile Include="DB\SQLite\SqLiteQueries.cs" />
+    <Compile Include="Helper\Extensions\StringExtensions.cs" />
     <Compile Include="Helper\Import\CategoryImportWrapper.cs" />
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />

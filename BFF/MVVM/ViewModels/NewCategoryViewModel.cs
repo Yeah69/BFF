@@ -3,13 +3,16 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using BFF.Properties;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using WPFLocalizeExtension.Engine;
 
 namespace BFF.MVVM.ViewModels
 {
@@ -44,19 +47,19 @@ namespace BFF.MVVM.ViewModels
             {
                 return ValidateNewCategoryRelationCondition(text, parent)
                         ? null
-                        : "This name already exists on the chosen category level!"; // TODO Localize
+                        : "ErrorMessageWrongCategoryName".Localize<string>();
             }
             string ValidateNewCategoryRelationParent(string text, ICategoryViewModel parent)
             {
                 return ValidateNewCategoryRelationCondition(text, parent)
                     ? null
-                    : "This category level already contains a category of chosen name!"; // TODO Localize
+                    : "ErrorMessageWrongCategoryParent".Localize<string>();
             }
             string ValidateNewCategoryName(string text)
             {
                 return !string.IsNullOrWhiteSpace(text) 
                     ? null
-                    : "The name of the new category is not allowed to be empty!"; // TODO Localize
+                    : "ErrorMessageCategoryNameEmpty".Localize<string>();
             }
 
             _categoryViewModelService = categoryViewModelService;

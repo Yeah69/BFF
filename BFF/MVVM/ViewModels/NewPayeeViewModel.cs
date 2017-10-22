@@ -3,10 +3,13 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using BFF.Properties;
+using JetBrains.dotMemoryUnit.Util;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -47,7 +50,7 @@ namespace BFF.MVVM.ViewModels
                 return !string.IsNullOrWhiteSpace(text) &&
                     AllPayees.All(payee => payee.Name.Value != text.Trim()) 
                     ? null 
-                    : "The name of a payee isn't allowed to be empty or an already existing one."; // TODO Localize 
+                    : "ErrorMessageWrongPayeeName".Localize<string>();
             }
 
             _payeeViewModelService = payeeViewModelService;

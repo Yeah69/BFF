@@ -22,6 +22,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         IReactiveProperty<ICategoryViewModel> Parent { get; }
 
         string FullName { get; }
+        IEnumerable<ICategoryViewModel> FullChainOfCategories { get; }
         int Depth { get; }
         string GetIndent();
     }
@@ -60,6 +61,21 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IReactiveProperty<ICategoryViewModel> Parent { get; }
 
         public string FullName => $"{(Parent.Value != null ? $"{Parent.Value.FullName}." : "")}{Name.Value}";
+
+        public IEnumerable<ICategoryViewModel> FullChainOfCategories
+        {
+            get
+            {
+                ICategoryViewModel current = this;
+                IList<ICategoryViewModel> temp = new List<ICategoryViewModel> {current};
+                while (current.Parent.Value != null)
+                {
+                    current = current.Parent.Value;
+                    temp.Add(current);
+                }
+                return temp.Reverse();
+            }
+        }
 
         public int Depth => Parent.Value?.Depth + 1 ?? 0;
 

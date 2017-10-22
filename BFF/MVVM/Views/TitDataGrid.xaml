@@ -22,6 +22,27 @@
                 <ResourceDictionary Source="/MVVM/Resources/BFF_ModifiedMAMCheckBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <DataTemplate x:Key="IndentedCategoryItemTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Height="16"
+                               Width="4" 
+                               Fill="{DynamicResource AccentColorBrush}" 
+                               Margin="{Binding Depth, Converter={x:Static mvvm:Converters.CategoryDepthToMargin}}"/>
+                    <TextBlock Text="{Binding Name.Value}" />
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate x:Key="CategoryItemTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Height="16"
+                               Width="4" 
+                               Fill="{DynamicResource AccentColorBrush}" 
+                               Margin="0,0,5,0"/>
+                    <TextBlock Text="{Binding Name.Value}" 
+                               Margin="0,0,5,0" />
+                </StackPanel>
+            </DataTemplate>
+
             <iconPacks:PackIconMaterialKind x:Key="TransactionIcon">Logout</iconPacks:PackIconMaterialKind>
             <iconPacks:PackIconMaterialKind x:Key="IncomeIcon">Login</iconPacks:PackIconMaterialKind>
             <iconPacks:PackIconMaterialKind x:Key="TransferIcon">ShuffleVariant</iconPacks:PackIconMaterialKind>
@@ -181,15 +202,18 @@
                         <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}" >
                             <DockPanel LastChildFill="True">
                                 <Button DockPanel.Dock="Right" x:Name="AddPayeeButton" Command="{Binding NewPayeeViewModel.AddPayeeCommand}"
-                                        MouseEnter="AddPayeeButton_OnMouseEnter">
+                                        MouseEnter="AddPayeeButton_OnMouseEnter" ToolTip="{lex:Loc CreateNewPayee}">
                                     <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Foreground="{DynamicResource BlackColorBrush}" Style="{StaticResource CellIconMaterial}" />
                                 </Button>
                                 <Popup x:Name="Popup" PlacementTarget="{Binding ElementName=AddPayeeButton}" Placement="Right" PopupAnimation="Slide" StaysOpen="False">
-                                    <TextBox Focusable="True" 
-                                             Text="{Binding NewPayeeViewModel.PayeeText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                             Height="{Binding ElementName=AddPayeeButton, Path=ActualHeight}"
-                                             MinWidth="50"
-                                             BorderBrush="{StaticResource AccentColorBrush}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{lex:LocText NameOfNewPayee, Suffix=:}" VerticalAlignment="Center" Margin="5,0,5,0" />
+                                        <TextBox Focusable="True" 
+                                                 Text="{Binding NewPayeeViewModel.PayeeText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Height="{Binding ElementName=AddPayeeButton, Path=ActualHeight}"
+                                                 MinWidth="50"
+                                                 BorderBrush="{StaticResource AccentColorBrush}"/>
+                                    </StackPanel>
                                 </Popup>
                                 <ComboBox TextSearch.TextPath="Name.Value" 
                                           IsEditable="True"
@@ -227,7 +251,20 @@
                 <ContentControl Content="{Binding}" Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
-                            <TextBlock Text="{Binding Category.Value.Name.Value}" ToolTip="{Binding Category.Value.FullName}" Style="{StaticResource CellTextBlock}" />
+                            <TextBlock Text="{Binding Category.Value.Name.Value}"
+                                       Style="{StaticResource CellTextBlock}">
+                                <TextBlock.ToolTip>
+                                    <ToolTip>
+                                        <ListBox ItemsSource="{Binding Category.Value.FullChainOfCategories}" ItemTemplate="{StaticResource CategoryItemTemplate}">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                        </ListBox>
+                                    </ToolTip>
+                                </TextBlock.ToolTip>
+                            </TextBlock>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
                             <Button Command="{Binding OpenParentTitView}" CommandParameter="{Binding Account.Value}" BorderThickness="0" HorizontalContentAlignment="Left" Margin="0" Padding="0" Background="Transparent">
@@ -255,18 +292,10 @@
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
                             <DockPanel LastChildFill="True">
                                 <DockPanel.Resources>
-                                    <DataTemplate x:Key="CategoryItemTemplate">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Rectangle Height="16"
-                                                       Width="4" 
-                                                       Fill="{DynamicResource AccentColorBrush}" 
-                                                       Margin="{Binding Depth, Converter={x:Static mvvm:Converters.CategoryDepthToMargin}}"/>
-                                            <TextBlock Text="{Binding Name.Value}" />
-                                        </StackPanel>
-                                    </DataTemplate>
                                 </DockPanel.Resources>
                                 <Button DockPanel.Dock="Right"
                                         x:Name="AddCategoryButton" MouseEnter="AddCategoryButton_OnMouseEnter"
+                                        ToolTip="{lex:Loc CreateNewCategory}"
                                         Command="{Binding NewCategoryViewModel.AddCategoryCommand}">
                                     <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}"
                                                                 Foreground="{DynamicResource BlackColorBrush}"
@@ -276,27 +305,63 @@
                                        Placement="Right" PopupAnimation="Slide" StaysOpen="False">
                                     <Border Padding="0" BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1" MinWidth="50">
                                         <StackPanel>
-                                            <ComboBox TextSearch.TextPath="Name.Value"
-                                                  IsEditable="True" 
-                                                  IsTextSearchCaseSensitive="True"
-                                                  IsTextSearchEnabled="True"
-                                                  SelectedItem="{Binding NewCategoryViewModel.AddingCategoryParent.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  ItemsSource="{Binding NewCategoryViewModel.AllCategories}"
-                                                  ItemTemplate="{StaticResource CategoryItemTemplate}"
-                                                  ShouldPreserveUserEnteredPrefix="True" />
-                                            <TextBox x:Name="TextBox" Focusable="True"
-                                                 Text="{Binding NewCategoryViewModel.CategoryText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{lex:LocText SuperiorCategory, Suffix=:}" VerticalAlignment="Center" Margin="5,0,5,0" />
+                                                <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ParentCategoryComboBox" TextSearch.TextPath="Name.Value"
+                                                      IsEditable="True" 
+                                                      IsTextSearchCaseSensitive="True"
+                                                      IsTextSearchEnabled="True"
+                                                      SelectedItem="{Binding NewCategoryViewModel.AddingCategoryParent.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      ItemsSource="{Binding NewCategoryViewModel.AllCategories}"
+                                                      ItemTemplate="{StaticResource IndentedCategoryItemTemplate}"
+                                                      ShouldPreserveUserEnteredPrefix="True">
+                                                    <ComboBox.ToolTip>
+                                                        <ToolTip>
+                                                            <ListBox ItemsSource="{Binding NewCategoryViewModel.AddingCategoryParent.Value.FullChainOfCategories}" ItemTemplate="{StaticResource CategoryItemTemplate}">
+                                                                <ListBox.ItemsPanel>
+                                                                    <ItemsPanelTemplate>
+                                                                        <StackPanel Orientation="Horizontal" />
+                                                                    </ItemsPanelTemplate>
+                                                                </ListBox.ItemsPanel>
+                                                            </ListBox>
+                                                        </ToolTip>
+                                                    </ComboBox.ToolTip>
+                                                </ComboBox>
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="{lex:LocText NameOfNewCategory, Suffix=:}" VerticalAlignment="Center" Margin="5,0,5,0" />
+                                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="TextBox" Focusable="True"
+                                                     Text="{Binding NewCategoryViewModel.CategoryText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </Grid>
                                         </StackPanel>
                                     </Border>
                                 </Popup>
-                                <ComboBox TextSearch.TextPath="Name.Value"
+                                <ComboBox x:Name="EditCategoryComboBox" TextSearch.TextPath="Name.Value"
                                           IsEditable="True" 
                                           IsTextSearchCaseSensitive="True"
                                           IsTextSearchEnabled="True"
                                           ItemsSource="{Binding NewCategoryViewModel.AllCategories}"
-                                          ItemTemplate="{StaticResource CategoryItemTemplate}"
+                                          ItemTemplate="{StaticResource IndentedCategoryItemTemplate}"
                                           ShouldPreserveUserEnteredPrefix="True"
-                                          SelectedItem="{Binding Path=Category.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                          SelectedItem="{Binding Category.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ToolTip>
+                                        <ToolTip>
+                                            <ListBox ItemsSource="{Binding Category.Value.FullChainOfCategories}" ItemTemplate="{StaticResource CategoryItemTemplate}">
+                                                <ListBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal" />
+                                                    </ItemsPanelTemplate>
+                                                </ListBox.ItemsPanel>
+                                            </ListBox>
+                                        </ToolTip>
+                                    </ComboBox.ToolTip>
+                                </ComboBox>
                             </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">

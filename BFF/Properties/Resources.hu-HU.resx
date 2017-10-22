@@ -183,6 +183,24 @@
   <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
     <value>Neuer Transfer</value>
   </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>asdf</value>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>asdf</value>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>asdf</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>asdf</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>asdf</value>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>asdf</value>
+  </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
     <value>Die Datei "{0}" konnte nicht gefunden werden.</value>
   </data>
@@ -255,6 +273,12 @@
   <data name="MainWindow_Settings_Theme" xml:space="preserve">
     <value>Theme:</value>
   </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>asdf</value>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>asdf</value>
+  </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
     <value>BFF Finanzplan (*.sqlite)|*.sqlite</value>
   </data>
@@ -263,6 +287,9 @@
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Öffne einen Finanzplan</value>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>asdf</value>
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
     <value>Dieser Text konnte nicht als Währung geparst werden!</value>
