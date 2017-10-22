@@ -192,6 +192,12 @@
   <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
     <value>The name of the new category is not allowed to be empty!</value>
   </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>A category has to be chosen.</value>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>A payee has to be chosen.</value>
+  </data>
   <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
     <value>This name already exists on the chosen category level!</value>
   </data>

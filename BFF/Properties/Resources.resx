@@ -192,6 +192,12 @@
   <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
     <value></value>
   </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
     <value></value>
   </data>

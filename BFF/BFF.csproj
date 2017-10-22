@@ -302,6 +302,7 @@
     <Compile Include="MVVM\Models\Native\SubTransaction.cs" />
     <Compile Include="MVVM\Models\Native\Income.cs" />
     <Compile Include="MVVM\Models\Native\ParentTransaction.cs" />
+    <Compile Include="MVVM\Rules.cs" />
     <Compile Include="MVVM\Services\AccountViewModelService.cs" />
     <Compile Include="MVVM\Services\CategoryViewModelService.cs" />
     <Compile Include="MVVM\Services\ParentIncomeViewModelService.cs" />

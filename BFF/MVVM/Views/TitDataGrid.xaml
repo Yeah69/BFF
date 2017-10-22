@@ -224,6 +224,9 @@
                                           DisplayMemberPath="Name.Value">
                                     <ComboBox.SelectedItem>
                                         <Binding Path="Payee.Value" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
+                                            <Binding.ValidationRules>
+                                                <x:Static Member="mvvm:Rules.EmptyPayee" />
+                                            </Binding.ValidationRules>
                                         </Binding>
                                     </ComboBox.SelectedItem>
                                 </ComboBox>
@@ -348,8 +351,14 @@
                                           IsTextSearchEnabled="True"
                                           ItemsSource="{Binding NewCategoryViewModel.AllCategories}"
                                           ItemTemplate="{StaticResource IndentedCategoryItemTemplate}"
-                                          ShouldPreserveUserEnteredPrefix="True"
-                                          SelectedItem="{Binding Category.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                          ShouldPreserveUserEnteredPrefix="True">
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="Category.Value" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <x:Static Member="mvvm:Rules.EmptyCategory" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </ComboBox.SelectedItem>
                                     <ComboBox.ToolTip>
                                         <ToolTip>
                                             <ListBox ItemsSource="{Binding Category.Value.FullChainOfCategories}" ItemTemplate="{StaticResource CategoryItemTemplate}">
