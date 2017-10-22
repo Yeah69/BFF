@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Controls;
+using BFF.Helper.Extensions;
 using BFF.Properties;
 
 namespace BFF.MVVM.ValidationRules
@@ -11,7 +12,7 @@ namespace BFF.MVVM.ValidationRules
         {
             CultureInfo currencyCulture = Settings.Default.Culture_SessionCurrency;
             decimal factor = (decimal)Math.Pow(10, currencyCulture.NumberFormat.CurrencyDecimalDigits);
-            string message = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("ValidationRule_CurrencyLongRange", null, Settings.Default.Culture_DefaultLanguage);
+            string message = "ValidationRule_CurrencyLongRange".Localize<string>();
             message = string.Format(message, (long.MinValue/factor).ToString("C", currencyCulture.NumberFormat), (long.MaxValue/factor).ToString("C", currencyCulture.NumberFormat));
             bool parsed = decimal.TryParse((string)value, NumberStyles.Currency,
               currencyCulture.NumberFormat, out decimal outVar);

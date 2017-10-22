@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.IO;
 using System.Windows.Controls;
-using BFF.Properties;
+using BFF.Helper.Extensions;
 
 namespace BFF.MVVM.ValidationRules
 {
@@ -10,8 +10,8 @@ namespace BFF.MVVM.ValidationRules
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             string possibleFilePath = (string) value;
-            bool validate = Directory.Exists(new FileInfo(possibleFilePath).DirectoryName);
-            return new ValidationResult(validate, validate ? null : (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("ValidationRule_NotExistingSavePath", null, Settings.Default.Culture_DefaultLanguage));
+            bool validate = possibleFilePath != null && Directory.Exists(new FileInfo(possibleFilePath).DirectoryName);
+            return new ValidationResult(validate, validate ? null : "ValidationRule_NotExistingSavePath".Localize<string>());
             // The "Invalid"-Message is only relevant if validate is false
         }
     }

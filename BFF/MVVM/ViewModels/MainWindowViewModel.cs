@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using BFF.DB;
 using BFF.DB.Dapper;
 using BFF.DB.SQLite;
+using BFF.Helper.Extensions;
 using BFF.Helper.Import;
 using BFF.Properties;
 using NLog;
@@ -146,10 +147,8 @@ namespace BFF.MVVM.ViewModels
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
-                    Title = (string) WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject(
-                        "OpenSaveDialog_TitleNew", null, Settings.Default.Culture_DefaultLanguage),
-                    Filter = (string) WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject(
-                        "OpenSaveDialog_Filter", null, Settings.Default.Culture_DefaultLanguage),
+                    Title = "OpenSaveDialog_TitleNew".Localize<string>(),
+                    Filter = "OpenSaveDialog_Filter".Localize<string>(),
                     DefaultExt = "*.sqlite"
                 };
                 if (saveFileDialog.ShowDialog() == true)
@@ -163,10 +162,8 @@ namespace BFF.MVVM.ViewModels
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog
                 {
-                    Title = (string) WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject(
-                        "OpenSaveDialog_TitleOpen", null, Settings.Default.Culture_DefaultLanguage),
-                    Filter = (string) WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject(
-                        "OpenSaveDialog_Filter", null, Settings.Default.Culture_DefaultLanguage),
+                    Title = "OpenSaveDialog_TitleOpen".Localize<string>(),
+                    Filter = "OpenSaveDialog_Filter".Localize<string>(),
                     DefaultExt = "*.sqlite"
                 };
                 if (openFileDialog.ShowDialog() == true)

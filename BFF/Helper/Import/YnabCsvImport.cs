@@ -7,9 +7,9 @@ using System.Text.RegularExpressions;
 using BFF.DB;
 using BFF.DB.Dapper;
 using BFF.DB.SQLite;
+using BFF.Helper.Extensions;
 using BFF.MVVM;
 using Persistence = BFF.DB.PersistenceModels;
-using BFF.Properties;
 using NLog;
 using BudgetEntry = BFF.MVVM.Models.Conversion.YNAB.BudgetEntry;
 using Transaction = BFF.MVVM.Models.Conversion.YNAB.Transaction;
@@ -60,7 +60,7 @@ namespace BFF.Helper.Import
         public string Import()
         {
 
-            string exceptionTemplate = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("Exception_FileNotFound", null, Settings.Default.Culture_DefaultLanguage);
+            string exceptionTemplate = "Exception_FileNotFound".Localize<string>();
             if (!File.Exists(TransactionPath))
                 throw new FileNotFoundException(string.Format(exceptionTemplate, TransactionPath));
             if(!File.Exists(BudgetPath))
