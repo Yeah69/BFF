@@ -361,13 +361,6 @@
     <Compile Include="MVVM\Views\TitDataGrid.xaml.cs">
       <DependentUpon>TitDataGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\ValidationRules\CurrencyLongRangeRule.cs" />
-    <Compile Include="MVVM\ValidationRules\NoEmptyFileNameRule.cs" />
-    <Compile Include="MVVM\ValidationRules\NotExistingSavePathRule.cs" />
-    <Compile Include="MVVM\ValidationRules\NotExistingFilePathRule.cs" />
-    <Compile Include="MVVM\ValidationRules\NoNullRule.cs" />
-    <Compile Include="MVVM\ValidationRules\NoEmptyNullStringRule.cs" />
-    <Compile Include="MVVM\ValidationRules\CurrencyRule.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

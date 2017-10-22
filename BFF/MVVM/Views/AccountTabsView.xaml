@@ -5,12 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
-             xmlns:validationRules="clr-namespace:BFF.MVVM.ValidationRules"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:attachedBehaviors="clr-namespace:BFF.MVVM.AttachedBehaviors"
              xmlns:views="clr-namespace:BFF.MVVM.Views"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
+             xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
+             d:DataContext="{d:DesignInstance viewModels:AccountTabsViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" x:Name="AccountTabsUserControl">
     <UserControl.Resources>
@@ -80,8 +82,8 @@
                         <TextBox.Text>
                             <Binding Path="StartingBalance.Value" Mode="TwoWay" Converter="{x:Static mvvm:Converters.SumToString}" UpdateSourceTrigger="LostFocus" >
                                 <Binding.ValidationRules>
-                                    <validationRules:CurrencyRule />
-                                    <validationRules:CurrencyLongRangeRule />
+                                    <x:Static Member="mvvm:Rules.Currency" />
+                                    <x:Static Member="mvvm:Rules.CurrencyLongRange" />
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>

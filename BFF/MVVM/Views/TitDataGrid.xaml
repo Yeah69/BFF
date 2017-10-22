@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
-             xmlns:validationRules="clr-namespace:BFF.MVVM.ValidationRules"
              xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              xmlns:structure="clr-namespace:BFF.MVVM.ViewModels.ForModels.Structure"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
@@ -463,8 +462,8 @@
                                 <TextBox.Text>
                                     <Binding Path="Sum.Value" Converter="{x:Static mvvm:Converters.SumToString}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>
-                                            <validationRules:CurrencyRule />
-                                            <validationRules:CurrencyLongRangeRule />
+                                            <x:Static Member="mvvm:Rules.Currency" />
+                                            <x:Static Member="mvvm:Rules.CurrencyLongRange" />
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
@@ -476,8 +475,8 @@
                                 <TextBox.Text>
                                     <Binding Path="Sum.Value" Converter="{x:Static mvvm:Converters.SumToString}" Mode="TwoWay" UpdateSourceTrigger="LostFocus">
                                         <Binding.ValidationRules>
-                                            <validationRules:CurrencyRule />
-                                            <validationRules:CurrencyLongRangeRule />
+                                            <x:Static Member="mvvm:Rules.Currency" />
+                                            <x:Static Member="mvvm:Rules.CurrencyLongRange" />
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>

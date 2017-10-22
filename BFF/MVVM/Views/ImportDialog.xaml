@@ -8,7 +8,7 @@
              lex:ResxLocalizationProvider.DefaultAssembly="BFF"
              lex:ResxLocalizationProvider.DefaultDictionary="Resources"
              xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-             xmlns:validationRules="clr-namespace:BFF.MVVM.ValidationRules"
+             xmlns:mvvm="clr-namespace:BFF.MVVM"
              mc:Ignorable="d" Loaded="ImportDialog_OnLoaded"
              d:DesignHeight="300" d:DesignWidth="300" Title="{lex:Loc ImportView_YNAB4}">
     <Grid>
@@ -30,7 +30,7 @@
             <TextBox.Text>
                 <Binding Path="Importable.TransactionPath" Mode="TwoWay">
                     <Binding.ValidationRules>
-                        <validationRules:NotExistingFilePathRule />
+                        <x:Static Member="mvvm:Rules.NotExistingFilePath" />
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
@@ -41,7 +41,7 @@
             <TextBox.Text>
                 <Binding Path="Importable.BudgetPath" Mode="TwoWay">
                     <Binding.ValidationRules>
-                        <validationRules:NotExistingFilePathRule />
+                        <x:Static Member="mvvm:Rules.NotExistingFilePath" />
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
@@ -52,8 +52,8 @@
             <TextBox.Text>
                 <Binding Path="Importable.SavePath" Mode="TwoWay">
                     <Binding.ValidationRules>
-                        <validationRules:NotExistingSavePathRule />
-                        <validationRules:NoEmptyFileNameRule />
+                        <x:Static Member="mvvm:Rules.NotExistingSavePath" />
+                        <x:Static Member="mvvm:Rules.NoEmptyFileName" />
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
