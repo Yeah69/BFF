@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.Linq;
 using BFF.DB.PersistenceModels;
@@ -177,8 +178,41 @@ WHERE CategoryId = @CategoryId
 
         public IList<Domain.IBudgetEntry> GetBudgetEntries(DateTime fromMonth, DateTime toMonth, Domain.ICategory category, DbConnection connection)
         {
-            fromMonth = new DateTime(2016, 8, 1);
-            toMonth = new DateTime(2017, 1, 1);
+            void FillPlaceholderBudgetEntries(
+                ICollection<Domain.IBudgetEntry> c, 
+                int fromY, 
+                int fromM, 
+                int y,
+                int m,
+                long b)
+            {
+                int currentYear = fromY;
+                int currentMonth = fromM;
+                do
+                {
+                    c.Add(new Domain.BudgetEntry(
+                        this,
+                        -1L,
+                        new DateTime(currentYear, currentMonth, 1),
+                        category,
+                        0L,
+                        0L,
+                        b));
+
+                    if (currentMonth != 12)
+                    {
+                        currentMonth = currentMonth + 1;
+                    }
+                    else
+                    {
+                        currentYear = currentYear + 1;
+                        currentMonth = 1;
+                    }
+                } while (currentYear <= y && currentMonth != m);
+            }
+
+            fromMonth = new DateTime(2017, 7, 1);
+            toMonth = new DateTime(2017, 12, 1);
             category = new Domain.Category(null, 49, "", null);
 
             var complementedResponses =
@@ -191,44 +225,114 @@ WHERE CategoryId = @CategoryId
                         new MonthCategoryRequestDto(category.Id, $"{toMonth.Month:00}", $"{toMonth.Year:0000}"));
                     return entries;
                 }, ProvideConnection, connection)
+
                 // Complement responses with balance
                 .Scan(
                 (new MonthOutflowBudgetResponseDto
                 {
-                    Month = "00",
+                    Month = "11",
+                    Year = "0000",
+                    Budget = 0L,
+                    Outflow = 0L
+                },
+                0L, 
+                new MonthOutflowBudgetResponseDto
+                {
+                    Month = "12",
                     Year = "0000",
                     Budget = 0L,
                     Outflow = 0L
                 },
                 0L),
-                (previousResult, currentResponse) =>
+                (previousTwoResults, currentResponse) =>
                 {
-                    (_, var previousBalance) = previousResult;
-                    return (currentResponse, Math.Max(0L,
-                        previousBalance + (currentResponse.Budget ?? 0L) - (currentResponse.Outflow ?? 0L)));
+                    (_ , _, var previousResponse , var previousBalance) = previousTwoResults;
+                    return (
+                    previousResponse, 
+                    previousBalance, 
+                    currentResponse, 
+                    Math.Max(0L, previousBalance + (currentResponse.Budget ?? 0L) - (currentResponse.Outflow ?? 0L)));
                 })
+
                 // Skip all responses before fromMonth
                 .SkipWhile(responseAndBalance =>
                 {
-                    (var response, _) = responseAndBalance;
+                    (_, _, var response, _) = responseAndBalance;
                     int year = int.Parse(response.Year);
                     int month = int.Parse(response.Month);
                     return year < fromMonth.Year || month < fromMonth.Month;
                 })
-                .Select(responseAndBalance =>
+
+                // Select BudgetEntries from fromMonth until last retrieved month
+                .SelectMany(responseAndBalance =>
                 {
-                    (var response, var balance) = responseAndBalance;
-                    return new Domain.BudgetEntry(
+                    (var previousResponse, var previousBalance, var response, var balance) = responseAndBalance;
+
+                    int previousYear = int.Parse(previousResponse.Year);
+                    int previousMonth = int.Parse(previousResponse.Month);
+                    int year = int.Parse(response.Year);
+                    int month = int.Parse(response.Month);
+
+                    if(previousYear == year && previousMonth + 1 == month || // same year, one month apart
+                    previousYear + 1 == year && previousMonth == 12 && month == 1) // consecutive years, one month apart
+                        return new[] { new Domain.BudgetEntry(
+                            this,
+                            response.Id ?? -1L,
+                            new DateTime(int.Parse(response.Year), int.Parse(response.Month), 1),
+                            category,
+                            response.Budget ?? 0L,
+                            response.Outflow ?? 0L,
+                            balance)};
+
+                    // From this point the two responses are more than a month apart
+                    int currentYear;
+                    int currentMonth;
+                    if (previousYear < fromMonth.Year || previousMonth < fromMonth.Month)
+                    {
+                        currentYear = fromMonth.Year;
+                        currentMonth = fromMonth.Month;
+                    }
+                    else if (previousMonth != 12)
+                    {
+                        currentYear = previousYear;
+                        currentMonth = previousMonth + 1;
+                    }
+                    else
+                    {
+                        currentYear = previousYear + 1;
+                        currentMonth = 1;
+                    }
+
+                    ICollection<Domain.IBudgetEntry> collection = new Collection<Domain.IBudgetEntry>();
+                    FillPlaceholderBudgetEntries(
+                        collection,
+                        currentYear,
+                        currentMonth,
+                        month != 1 ? year : year - 1,
+                        month != 1 ? month - 1 : 12,
+                        previousBalance);
+
+                    collection.Add(new Domain.BudgetEntry(
                         this,
                         response.Id ?? -1L,
-                        new DateTime(int.Parse(response.Year), int.Parse(response.Month), 1),
+                        new DateTime(year, month, 1),
                         category,
                         response.Budget ?? 0L,
                         response.Outflow ?? 0L,
-                        balance);
-                });
+                        balance));
+                    return collection;
+                }).ToList();
 
-            
+            var last = complementedResponses.Last();
+
+            if(last.Month.Year < toMonth.Year || last.Month.Month < toMonth.Month)
+                FillPlaceholderBudgetEntries(
+                    complementedResponses,
+                    last.Month.Month != 12 ? last.Month.Year : last.Month.Year + 1,
+                    last.Month.Month != 12 ? last.Month.Month + 1 : 1,
+                    toMonth.Year,
+                    toMonth.Month,
+                    last.Balance);
 
             return null;
         }
