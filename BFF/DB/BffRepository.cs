@@ -84,6 +84,7 @@ namespace BFF.DB
         ITransactionRepository TransactionRepository { get; }
         ITransferRepository TransferRepository { get; }
         ITitRepository TitRepository { get; }
+        IBudgetMonthRepository BudgetMonthRepository { get; }
 
         void PopulateDatabase(
             ImportLists importLists, 
@@ -113,6 +114,7 @@ namespace BFF.DB
         public abstract ITransactionRepository TransactionRepository { get; }
         public abstract ITransferRepository TransferRepository { get; }
         public abstract ITitRepository TitRepository { get; }
+        public abstract IBudgetMonthRepository BudgetMonthRepository { get; }
 
         private void PopulateDatabaseInner(ImportLists importLists, ImportAssignments importAssignments, DbConnection connection)
         {

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace BFF.MVVM.Models.Native
 {
@@ -17,6 +18,11 @@ namespace BFF.MVVM.Models.Native
 
     public class BudgetMonth : IBudgetMonth
     {
+        public BudgetMonth(IEnumerable<IBudgetEntry> budgetEntries)
+        {
+            BudgetEntries = new ObservableCollection<IBudgetEntry>(budgetEntries);
+        }
+
         public ObservableCollection<IBudgetEntry> BudgetEntries { get; }
         public long NotBudgetedInPreviousMonth { get; }
         public long OverspentInPreviousMonth { get; }

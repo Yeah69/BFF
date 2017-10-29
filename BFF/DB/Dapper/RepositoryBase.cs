@@ -30,54 +30,19 @@ namespace BFF.DB.Dapper
         protected abstract string CreateTableStatement { get; }
     }
 
-    public interface IRepositoryBase<TDomain> : IDbTableRepository<TDomain> where TDomain : class, IDataModel
+    public interface IRepositoryBase<TDomain> : IWriteOnlyRepositoryBase<TDomain>, IDbTableRepository<TDomain> where TDomain : class, IDataModel
     {
     }
 
-    public abstract class RepositoryBase<TDomain, TPersistence> : IRepositoryBase<TDomain>
+    public abstract class RepositoryBase<TDomain, TPersistence> : WriteOnlyRepositoryBase<TDomain, TPersistence>, IRepositoryBase<TDomain>
         where TDomain : class, IDataModel
         where TPersistence : class, IPersistenceModel
     {
-        protected IProvideConnection ProvideConnection { get; }
-
-        protected RepositoryBase(IProvideConnection provideConnection)
+        protected RepositoryBase(IProvideConnection provideConnection) : base(provideConnection)
         {
-            ProvideConnection = provideConnection;
         }
 
         public abstract TDomain Create();
-
-        public virtual void Add(TDomain dataModel, DbConnection connection = null)
-        {
-            if(dataModel.Id > 0) return;
-            ConnectionHelper.ExecuteOnExistingOrNewConnection(
-                c =>
-                {
-                    TPersistence persistenceModel = ConvertToPersistence(dataModel);
-                    c.Insert(persistenceModel);
-                    dataModel.Id = persistenceModel.Id;
-                }, 
-                ProvideConnection,
-                connection);
-        }
-
-        public virtual void Update(TDomain dataModel, DbConnection connection = null)
-        {
-            if(dataModel.Id < 0) return;
-            ConnectionHelper.ExecuteOnExistingOrNewConnection(
-                c => c.Update(ConvertToPersistence(dataModel)), 
-                ProvideConnection,
-                connection);
-        }
-
-        public virtual void Delete(TDomain dataModel, DbConnection connection = null)
-        {
-            if(dataModel.Id < 0) return;
-            ConnectionHelper.ExecuteOnExistingOrNewConnection(
-                c => c.Delete(ConvertToPersistence(dataModel)), 
-                ProvideConnection,
-                connection);
-        }
 
         public virtual TDomain Find(long id, DbConnection connection = null)
         {
@@ -95,7 +60,6 @@ namespace BFF.DB.Dapper
             return ret;
         }
 
-        protected abstract Converter<TDomain, TPersistence> ConvertToPersistence { get; }
         protected abstract Converter<(TPersistence, DbConnection), TDomain> ConvertToDomain { get; }
         public virtual IEnumerable<TDomain> FindAll(DbConnection connection = null)
         {
@@ -115,19 +79,6 @@ namespace BFF.DB.Dapper
                 transactionScope.Complete();
             }
             return ret;
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

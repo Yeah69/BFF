@@ -24,113 +24,17 @@ namespace BFF.DB.Dapper.ModelRepositories
             FOREIGN KEY({nameof(BudgetEntry.CategoryId)}) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
     }
 
-    public interface IBudgetEntryRepository : IRepositoryBase<Domain.IBudgetEntry>
+    public interface IBudgetEntryRepository : IWriteOnlyRepositoryBase<Domain.IBudgetEntry>
     {
         IList<Domain.IBudgetEntry> GetBudgetEntries(DateTime fromMonth, DateTime toMonth, Domain.ICategory category, DbConnection connection);
     }
 
 
-    public sealed class BudgetEntryRepository : RepositoryBase<Domain.IBudgetEntry, BudgetEntry>, IBudgetEntryRepository
+    public sealed class BudgetEntryRepository : WriteOnlyRepositoryBase<Domain.IBudgetEntry, BudgetEntry>, IBudgetEntryRepository
     {
-        private static string MonthQuery =>
-            $@"SELECT * FROM [{nameof(BudgetEntry)}s] WHERE strftime('%m', {nameof(BudgetEntry.Month)}) == @Month AND strftime('%Y', {nameof(BudgetEntry.Month)}) == @Year;";
-
-        private static string OutflowQuery =>
-            $@"Select SUM(Sum) FROM
-(
-  SELECT SUM({nameof(Transaction.Sum)}) AS Sum
-  FROM {nameof(Transaction)}s
-  WHERE {nameof(Transaction.CategoryId)} = @CategoryId
-        AND strftime('%m', {nameof(Transaction.Date)}) = @Month
-        AND strftime('%Y', {nameof(Transaction.Date)}) = @Year
-  UNION ALL
-  SELECT SUM({nameof(Income.Sum)}) AS Sum
-  FROM {nameof(Income)}s
-  WHERE {nameof(Income.CategoryId)} = @CategoryId
-        AND strftime('%m', {nameof(Income.Date)}) = @Month
-        AND strftime('%Y', {nameof(Income.Date)}) = @Year
-  UNION ALL
-  SELECT SUM({nameof(SubTransaction.Sum)}) AS Sum FROM
-  (
-    SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)}, {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)}, {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Date)}
-    FROM {nameof(SubTransaction)}s
-      INNER JOIN {nameof(ParentTransaction)}s
-        ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Id)}
-  )
-  WHERE {nameof(SubTransaction.CategoryId)} = @CategoryId
-        AND strftime('%m', {nameof(ParentTransaction.Date)}) = @Month
-        AND strftime('%Y', {nameof(ParentTransaction.Date)}) = @Year
-  UNION ALL
-  SELECT SUM({nameof(SubIncome.Sum)}) AS Sum FROM
-  (
-    SELECT {nameof(SubIncome)}s.{nameof(SubIncome.Sum)}, {nameof(SubIncome)}s.{nameof(SubIncome.CategoryId)}, {nameof(ParentIncome)}s.{nameof(ParentIncome.Date)}
-    FROM {nameof(SubIncome)}s
-      INNER JOIN {nameof(ParentIncome)}s
-        ON {nameof(SubIncome)}s.{nameof(SubIncome.ParentId)} = {nameof(ParentIncome)}s.{nameof(ParentIncome.Id)}
-  )
-  WHERE {nameof(SubIncome.CategoryId)} = @CategoryId
-        AND strftime('%m', {nameof(ParentIncome.Date)}) = @Month
-        AND strftime('%Y', {nameof(ParentIncome.Date)}) = @Year
-);";
-
-        private static string TotalOutflowQuery =>
-            $@"Select SUM(Sum) FROM
-(
-  SELECT SUM(Sum) AS Sum
-  FROM Transactions
-  WHERE CategoryId = @CategoryId
-        AND (strftime('%Y', Date) < @Year
-        OR strftime('%m', Date) <= @Month
-        AND strftime('%Y', Date) = @Year)
-  UNION ALL
-  SELECT SUM(Sum) AS Sum
-  FROM Incomes
-  WHERE CategoryId = @CategoryId
-        AND (strftime('%Y', Date) < @Year
-        OR strftime('%m', Date) <= @Month
-        AND strftime('%Y', Date) = @Year)
-  UNION ALL
-  SELECT SUM(Sum) AS Sum FROM
-  (
-    SELECT SubTransactions.Sum, SubTransactions.CategoryId, ParentTransactions.Date
-    FROM SubTransactions
-      INNER JOIN ParentTransactions
-        ON SubTransactions.ParentId = ParentTransactions.Id
-  )
-  WHERE CategoryId = @CategoryId
-        AND (strftime('%Y', Date) < @Year
-        OR strftime('%m', Date) <= @Month
-        AND strftime('%Y', Date) = @Year)
-  UNION ALL
-  SELECT SUM(Sum) AS Sum FROM
-  (
-    SELECT SubIncomes.Sum, SubIncomes.CategoryId, ParentIncomes.Date
-    FROM SubIncomes
-      INNER JOIN ParentIncomes
-        ON SubIncomes.ParentId = ParentIncomes.Id
-  )
-  WHERE CategoryId = @CategoryId
-        AND (strftime('%Y', Date) < @Year
-        OR strftime('%m', Date) <= @Month
-        AND strftime('%Y', Date) = @Year)
-);";
-
-        private static string TotalBudgetQuery =>
-            $@"SELECT SUM(Budget)
-FROM BudgetEntrys
-WHERE CategoryId = @CategoryId
-      AND (strftime('%Y', Month) < @Year
-      OR strftime('%m', Month) <= @Month
-      AND strftime('%Y', Month) = @Year);";
-
-        private readonly Func<long?, DbConnection, Domain.ICategory> _categoryFetcher;
-        public BudgetEntryRepository(IProvideConnection provideConnection, Func<long?, DbConnection, Domain.ICategory> categoryFetcher) : base(provideConnection)
+        public BudgetEntryRepository(IProvideConnection provideConnection) : base(provideConnection)
         {
-            _categoryFetcher = categoryFetcher;
         }
-
-        public override Domain.IBudgetEntry Create() =>
-            new Domain.BudgetEntry(this, -1L, DateTime.MinValue);
         
         protected override Converter<Domain.IBudgetEntry, BudgetEntry> ConvertToPersistence => domainBudgetEntry => 
             new BudgetEntry
@@ -140,41 +44,6 @@ WHERE CategoryId = @CategoryId
                 Month = domainBudgetEntry.Month,
                 Budget = domainBudgetEntry.Budget
             };
-
-        protected override Converter<(BudgetEntry, DbConnection), Domain.IBudgetEntry> ConvertToDomain => tuple =>
-        {
-            (BudgetEntry persistenceBudgetEntry, DbConnection connection) = tuple;
-            return new Domain.BudgetEntry(
-                this,
-                persistenceBudgetEntry.Id,
-                persistenceBudgetEntry.Month,
-                _categoryFetcher(persistenceBudgetEntry.CategoryId, connection),
-                persistenceBudgetEntry.Budget,
-                connection.Query<long?>(
-                    OutflowQuery,
-                    new
-                    {
-                        Month = $"{persistenceBudgetEntry.Month.Month:00}",
-                        Year = $"{persistenceBudgetEntry.Month.Year:0000}",
-                        persistenceBudgetEntry.CategoryId
-                    }).First() ?? 0L,
-                connection.Query<long?>(
-                    TotalOutflowQuery,
-                    new
-                    {
-                        Month = $"{persistenceBudgetEntry.Month.Month:00}",
-                        Year = $"{persistenceBudgetEntry.Month.Year:0000}",
-                        persistenceBudgetEntry.CategoryId
-                    }).First() ?? 0L +
-                connection.Query<long?>(
-                    TotalBudgetQuery,
-                    new
-                    {
-                        Month = $"{persistenceBudgetEntry.Month.Month:00}",
-                        Year = $"{persistenceBudgetEntry.Month.Year:0000}",
-                        persistenceBudgetEntry.CategoryId
-                    }).First() ?? 0L);
-        };
 
         public IList<Domain.IBudgetEntry> GetBudgetEntries(DateTime fromMonth, DateTime toMonth, Domain.ICategory category, DbConnection connection)
         {
@@ -188,7 +57,7 @@ WHERE CategoryId = @CategoryId
             {
                 int currentYear = fromY;
                 int currentMonth = fromM;
-                do
+                while (currentYear <= y && currentMonth <= m)
                 {
                     c.Add(new Domain.BudgetEntry(
                         this,
@@ -208,12 +77,8 @@ WHERE CategoryId = @CategoryId
                         currentYear = currentYear + 1;
                         currentMonth = 1;
                     }
-                } while (currentYear <= y && currentMonth != m);
+                }
             }
-
-            fromMonth = new DateTime(2017, 7, 1);
-            toMonth = new DateTime(2017, 12, 1);
-            category = new Domain.Category(null, 49, "", null);
 
             var complementedResponses =
                 // Fetch the budget responses from the database
@@ -323,18 +188,30 @@ WHERE CategoryId = @CategoryId
                     return collection;
                 }).ToList();
 
-            var last = complementedResponses.Last();
+            if(complementedResponses.Count > 0)
+            {
+                var last = complementedResponses.Last();
 
-            if(last.Month.Year < toMonth.Year || last.Month.Month < toMonth.Month)
+                if(last.Month.Year < toMonth.Year || last.Month.Month < toMonth.Month)
+                    FillPlaceholderBudgetEntries(
+                        complementedResponses,
+                        last.Month.Month != 12 ? last.Month.Year : last.Month.Year + 1,
+                        last.Month.Month != 12 ? last.Month.Month + 1 : 1,
+                        toMonth.Year,
+                        toMonth.Month,
+                        last.Balance);
+            }
+            else
+            {
                 FillPlaceholderBudgetEntries(
                     complementedResponses,
-                    last.Month.Month != 12 ? last.Month.Year : last.Month.Year + 1,
-                    last.Month.Month != 12 ? last.Month.Month + 1 : 1,
+                    fromMonth.Year,
+                    fromMonth.Month,
                     toMonth.Year,
                     toMonth.Month,
-                    last.Balance);
-
-            return null;
+                    0);
+            }
+            return complementedResponses;
         }
     }
 }

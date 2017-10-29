@@ -12,8 +12,7 @@ namespace BFF.MVVM.Models.Native
         long Outflow { get; }
         long Balance { get; }
     }
-
-    [DebuggerDisplay("Month = {Month}; Budget = {Budget}; Outflow = {Outflow}; Balance = {Balance}")]
+    
     public class BudgetEntry : DataModel<IBudgetEntry>, IBudgetEntry
     {
         /// <summary>
@@ -23,7 +22,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="category">Categorizes this</param>
         /// <param name="budget">The amount of money, which was budgeted in the set month</param>
         public BudgetEntry(
-            IRepository<IBudgetEntry> repository, 
+            IWriteOnlyRepository<IBudgetEntry> repository, 
             long id, DateTime month,
             ICategory category = null,
             long budget = 0L,
@@ -111,6 +110,10 @@ namespace BFF.MVVM.Models.Native
                 Update();
                 OnPropertyChanged();
             }
+        }
+        public override string ToString()
+        {
+            return $"{nameof(Month)}: {Month}, {nameof(Category)}: {Category}, {nameof(Budget)}: {Budget}, {nameof(Outflow)}: {Outflow}, {nameof(Balance)}: {Balance}";
         }
     }
 }

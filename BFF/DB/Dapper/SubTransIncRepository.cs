@@ -8,7 +8,7 @@ using Domain = BFF.MVVM.Models.Native.Structure;
 namespace BFF.DB.Dapper
 {
 
-    public interface ISubTransIncRepository<TDomain> : IRepository<TDomain> where TDomain : class, Domain.IDataModel
+    public interface ISubTransIncRepository<TDomain> : IRepositoryBase<TDomain> where TDomain : class, Domain.IDataModel
     {
         IEnumerable<TDomain> GetChildrenOf(long parentId, DbConnection connection = null);
     }

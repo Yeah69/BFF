@@ -227,6 +227,7 @@
     </ApplicationDefinition>
     <Compile Include="DB\BffRepository.cs" />
     <Compile Include="DB\CommonPropertyProvider.cs" />
+    <Compile Include="DB\Dapper\BudgetMonthRepository.cs" />
     <Compile Include="DB\Dapper\CachingRepositoryBase.cs" />
     <Compile Include="DB\Dapper\CreateSqLiteDatabase.cs" />
     <Compile Include="DB\Dapper\DapperBffRepository.cs" />
@@ -248,6 +249,7 @@
     <Compile Include="DB\Dapper\RepositoryBase.cs" />
     <Compile Include="DB\Dapper\SubTransIncRepository.cs" />
     <Compile Include="DB\Dapper\ViewRepositoryBase.cs" />
+    <Compile Include="DB\Dapper\WriteOnlyRepositoryBase.cs" />
     <Compile Include="DB\IBffOrmAsync.cs" />
     <Compile Include="DB\IBffOrm.cs" />
     <Compile Include="DB\IProvideConnection.cs" />

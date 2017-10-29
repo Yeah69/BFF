@@ -18,7 +18,7 @@ namespace BFF.DB.Dapper
             IEnumerable<ISubIncome> SubIncomesFetcher(long parentId, DbConnection connection) => SubIncomeRepository.GetChildrenOf(parentId, connection);
 
             AccountRepository = new AccountRepository(provideConnection);
-            BudgetEntryRepository = new BudgetEntryRepository(provideConnection, CategoryFetcher);
+            BudgetEntryRepository = new BudgetEntryRepository(provideConnection);
             CategoryRepository = new CategoryRepository(provideConnection);
             DbSettingRepository = new DbSettingRepository(provideConnection);
             IncomeRepository = new IncomeRepository(provideConnection, AccountFetcher, CategoryFetcher, PayeeFetcher);
@@ -41,7 +41,10 @@ namespace BFF.DB.Dapper
                                               SubTransactionsFetcher,
                                               SubIncomesFetcher);
 
-            BudgetEntryRepository.GetBudgetEntries(DateTime.Now, DateTime.Now, null, null);
+            BudgetMonthRepository = new BudgetMonthRepository(BudgetEntryRepository, CategoryRepository, provideConnection);
+
+
+            var result = BudgetMonthRepository.Find(new DateTime(2017, 02, 01), new DateTime(2017, 07, 01), null);
         }
 
         public sealed override IAccountRepository AccountRepository { get; }
@@ -57,6 +60,7 @@ namespace BFF.DB.Dapper
         public sealed override ITransactionRepository TransactionRepository { get; }
         public sealed override ITransferRepository TransferRepository { get; }
         public sealed override ITitRepository TitRepository { get; }
+        public sealed override IBudgetMonthRepository BudgetMonthRepository { get; }
 
         protected override void Dispose(bool disposing)
         {
@@ -75,6 +79,7 @@ namespace BFF.DB.Dapper
                 TransactionRepository?.Dispose();
                 TransferRepository?.Dispose();
                 TitRepository?.Dispose();
+                BudgetMonthRepository?.Dispose();
             }
             base.Dispose(disposing);
         }

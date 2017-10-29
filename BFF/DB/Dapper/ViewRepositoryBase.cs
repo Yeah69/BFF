@@ -10,7 +10,7 @@ using Dapper;
 namespace BFF.DB.Dapper
 {
     public interface IViewRepositoryBase<TDomainBase, in TSpecifying>
-        : IViewRepository<TDomainBase, TSpecifying>, IViewRepositoryAsync<TDomainBase, TSpecifying>
+        : IViewRepository<TDomainBase, TSpecifying>, IViewRepositoryAsync<TDomainBase, TSpecifying>, IDisposable
         where TDomainBase : class, IDataModel
     {
     }
