@@ -100,7 +100,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                     Budget = 0L,
                     Outflow = 0L
                 },
-                0L, 
+                0L,
                 new MonthOutflowBudgetResponseDto
                 {
                     Month = "12",
@@ -112,11 +112,13 @@ namespace BFF.DB.Dapper.ModelRepositories
                 (previousTwoResults, currentResponse) =>
                 {
                     (_ , _, var previousResponse , var previousBalance) = previousTwoResults;
+                    long currentBalance = Math.Max(0, previousBalance) + (currentResponse.Budget ?? 0L) -
+                                         (currentResponse.Outflow ?? 0L);
                     return (
-                    previousResponse, 
-                    previousBalance, 
-                    currentResponse, 
-                    Math.Max(0L, previousBalance + (currentResponse.Budget ?? 0L) - (currentResponse.Outflow ?? 0L)));
+                        previousResponse, 
+                        previousBalance,
+                        currentResponse,
+                        currentBalance);
                 })
 
                 // Skip all responses before fromMonth
@@ -175,7 +177,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                         currentMonth,
                         month != 1 ? year : year - 1,
                         month != 1 ? month - 1 : 12,
-                        previousBalance);
+                        Math.Max(0L, previousBalance));
 
                     collection.Add(new Domain.BudgetEntry(
                         this,
@@ -199,7 +201,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                         last.Month.Month != 12 ? last.Month.Month + 1 : 1,
                         toMonth.Year,
                         toMonth.Month,
-                        last.Balance);
+                        Math.Max(0L, last.Balance));
             }
             else
             {

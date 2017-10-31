@@ -44,7 +44,7 @@ namespace BFF.DB.Dapper
             BudgetMonthRepository = new BudgetMonthRepository(BudgetEntryRepository, CategoryRepository, provideConnection);
 
 
-            var result = BudgetMonthRepository.Find(new DateTime(2017, 02, 01), new DateTime(2017, 07, 01), null);
+            var result = BudgetMonthRepository.Find(new DateTime(2017, 05, 01), new DateTime(2017, 11, 01), null);
         }
 
         public sealed override IAccountRepository AccountRepository { get; }

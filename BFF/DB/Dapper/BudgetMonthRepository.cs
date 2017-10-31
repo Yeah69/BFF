@@ -32,12 +32,15 @@ namespace BFF.DB.Dapper
         {
             return ConnectionHelper.QueryOnExistingOrNewConnection<IBudgetMonth>(c =>
             {
-                return _categoryRepository.All.Select(category =>
+                return _categoryRepository
+                    .All
+                    .Where(category => category.Name != "Available this month" && category.Name != "Available next month") // TODO this is proprietary to YNAB. Adjust ASAP! 
+                    .Select(category =>
                     _budgetEntryRepository.GetBudgetEntries(fromMonth, toMonth, category, c))
                     .SelectMany(l => l)
                     .GroupBy(be => be.Month)
                     .OrderBy(grouping => grouping.Key)
-                    .Select(grouping => new BudgetMonth(grouping))
+                    .Select(grouping => new BudgetMonth(grouping.Key, grouping, 0L, 0L, 0L))
                     .ToList();
             }, _provideConnection, connection).ToList();
         }
