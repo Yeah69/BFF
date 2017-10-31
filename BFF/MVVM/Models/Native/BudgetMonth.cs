@@ -39,7 +39,7 @@ namespace BFF.MVVM.Models.Native
 
             AvailableToBudget = NotBudgetedInPreviousMonth +
                 OverspentInPreviousMonth +
-                IncomeForThisMonth +
+                IncomeForThisMonth -
                 BudgetedThisMonth;
         }
 
