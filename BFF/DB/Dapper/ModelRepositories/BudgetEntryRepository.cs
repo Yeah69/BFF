@@ -112,7 +112,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                 (previousTwoResults, currentResponse) =>
                 {
                     (_ , _, var previousResponse , var previousBalance) = previousTwoResults;
-                    long currentBalance = Math.Max(0, previousBalance) + (currentResponse.Budget ?? 0L) -
+                    long currentBalance = Math.Max(0, previousBalance) + (currentResponse.Budget ?? 0L) +
                                          (currentResponse.Outflow ?? 0L);
                     return (
                         previousResponse, 
