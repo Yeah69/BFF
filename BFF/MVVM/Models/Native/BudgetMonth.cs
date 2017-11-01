@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using BFF.DB.Dapper.ModelRepositories;
 
 namespace BFF.MVVM.Models.Native
 {
 
-    public interface IBudgetMonth
+    public interface IBudgetMonth : INotifyPropertyChanged
     {
         ObservableCollection<IBudgetEntry> BudgetEntries { get; }
         long NotBudgetedInPreviousMonth { get; }
@@ -18,7 +20,7 @@ namespace BFF.MVVM.Models.Native
         long Balance { get; }
     }
 
-    public class BudgetMonth : IBudgetMonth
+    public class BudgetMonth : ObservableObject, IBudgetMonth
     {
         public BudgetMonth(
             DateTime month,
@@ -31,7 +33,7 @@ namespace BFF.MVVM.Models.Native
             OverspentInPreviousMonth = overspentInPreviousMonth;
             NotBudgetedInPreviousMonth = notBudgetedInPreviousMonth;
             IncomeForThisMonth = incomeForThisMonth;
-            BudgetEntries = new ObservableCollection<IBudgetEntry>(budgetEntries);
+            BudgetEntries = new ObservableCollection<IBudgetEntry>(budgetEntries.OrderBy(be => be.Category, new CategoryComparer()));
 
             BudgetedThisMonth = BudgetEntries.Sum(be => be.Budget);
             Outflows = BudgetEntries.Sum(be => be.Outflow);

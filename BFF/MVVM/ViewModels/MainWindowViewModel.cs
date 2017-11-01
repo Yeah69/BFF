@@ -204,7 +204,11 @@ namespace BFF.MVVM.ViewModels
             {
                 IBffOrm orm = new SqLiteBffOrm(new ProvideSqLiteConnection(dbPath));
                 ContentViewModel = new AccountTabsViewModel(orm, orm.CommonPropertyProvider.AccountViewModelService);
-                BudgetOverviewViewModel = new BudgetOverviewViewModel();
+                BudgetOverviewViewModel = 
+                    new BudgetOverviewViewModel(
+                        orm.BffRepository.BudgetMonthRepository,
+                        orm.BudgetEntryViewModelService, 
+                        orm.CommonPropertyProvider.CategoryViewModelService);
                 Title = $"{new FileInfo(dbPath).Name} - BFF";
                 Settings.Default.DBLocation = dbPath;
                 Settings.Default.Save();

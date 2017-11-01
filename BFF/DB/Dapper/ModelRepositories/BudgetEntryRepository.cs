@@ -57,7 +57,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             {
                 int currentYear = fromY;
                 int currentMonth = fromM;
-                while (currentYear <= y && currentMonth <= m)
+                while (currentYear < y || currentYear == y && currentMonth <= m)
                 {
                     c.Add(new Domain.BudgetEntry(
                         this,
@@ -79,6 +79,8 @@ namespace BFF.DB.Dapper.ModelRepositories
                     }
                 }
             }
+
+            long lastSkippedBalance = 0;
 
             var complementedResponses =
                 // Fetch the budget responses from the database
@@ -124,10 +126,16 @@ namespace BFF.DB.Dapper.ModelRepositories
                 // Skip all responses before fromMonth
                 .SkipWhile(responseAndBalance =>
                 {
-                    (_, _, var response, _) = responseAndBalance;
+                    (_, _, var response, var balance) = responseAndBalance;
                     int year = int.Parse(response.Year);
                     int month = int.Parse(response.Month);
-                    return year < fromMonth.Year || month < fromMonth.Month;
+                    bool isSkipped = year < fromMonth.Year || year == fromMonth.Year && month < fromMonth.Month;
+                    if (isSkipped)
+                    {
+                        lastSkippedBalance = balance;
+                    }
+
+                    return isSkipped;
                 })
 
                 // Select BudgetEntries from fromMonth until last retrieved month
@@ -154,7 +162,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                     // From this point the two responses are more than a month apart
                     int currentYear;
                     int currentMonth;
-                    if (previousYear < fromMonth.Year || previousMonth < fromMonth.Month)
+                    if (previousYear < fromMonth.Year || previousYear == fromMonth.Year && previousMonth < fromMonth.Month)
                     {
                         currentYear = fromMonth.Year;
                         currentMonth = fromMonth.Month;
@@ -194,7 +202,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             {
                 var last = complementedResponses.Last();
 
-                if(last.Month.Year < toMonth.Year || last.Month.Month < toMonth.Month)
+                if(last.Month.Year < toMonth.Year || last.Month.Year == toMonth.Year && last.Month.Month < toMonth.Month)
                     FillPlaceholderBudgetEntries(
                         complementedResponses,
                         last.Month.Month != 12 ? last.Month.Year : last.Month.Year + 1,
@@ -211,7 +219,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                     fromMonth.Month,
                     toMonth.Year,
                     toMonth.Month,
-                    0);
+                    lastSkippedBalance);
             }
             return complementedResponses;
         }

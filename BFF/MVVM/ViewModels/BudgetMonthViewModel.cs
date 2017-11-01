@@ -1,53 +1,47 @@
-﻿using System.Collections.ObjectModel;
+﻿using BFF.Helper;
+using BFF.MVVM.Models.Native;
+using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
+using Reactive.Bindings;
+
 
 namespace BFF.MVVM.ViewModels
 {
     public interface IBudgetMonthViewModel
     {
-        ObservableCollection<IBudgetEntryViewModel> BudgetEntries { get; }
-        long NotBudgetedInPreviousMonth { get; }
-        long OverspentInPreviousMonth { get; }
-        long IncomeForThisMonth { get; }
-        long BudgetedThisMonth { get; }
-        long AvailableToBudget { get; }
-        long Outflows { get; }
-        long Balance { get; }
+        ReadOnlyReactiveCollection<IBudgetEntryViewModel> BudgetEntries { get; }
+        IReadOnlyReactiveProperty<long> NotBudgetedInPreviousMonth { get; }
+        IReadOnlyReactiveProperty<long> OverspentInPreviousMonth { get; }
+        IReadOnlyReactiveProperty<long> IncomeForThisMonth { get; }
+        IReadOnlyReactiveProperty<long> BudgetedThisMonth { get; }
+        IReadOnlyReactiveProperty<long> AvailableToBudget { get; }
+        IReadOnlyReactiveProperty<long> Outflows { get; }
+        IReadOnlyReactiveProperty<long> Balance { get; }
     }
 
     public class BudgetMonthViewModel : IBudgetMonthViewModel
     {
-        public BudgetMonthViewModel(
-            ObservableCollection<IBudgetEntryViewModel> budgetEntries,
-            long notBudgetedInPreviousMonth, 
-            long overspentInPreviousMonth, 
-            long incomeForThisMonth,
-            long budgetedThisMonth, 
-            long outflows, 
-            long balance)
+        public BudgetMonthViewModel(IBudgetMonth budgetMonth, IBudgetEntryViewModelService budgetEntryViewModelService)
         {
-            BudgetEntries = budgetEntries;
-            NotBudgetedInPreviousMonth = notBudgetedInPreviousMonth;
-            OverspentInPreviousMonth = overspentInPreviousMonth;
-            IncomeForThisMonth = incomeForThisMonth;
-            BudgetedThisMonth = budgetedThisMonth;
-            Outflows = outflows;
-            Balance = balance;
+            BudgetEntries = budgetMonth.BudgetEntries.ToReadOnlyReactiveCollection(budgetEntryViewModelService.GetViewModel);
+            NotBudgetedInPreviousMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.NotBudgetedInPreviousMonth);
+            OverspentInPreviousMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.OverspentInPreviousMonth);
+            IncomeForThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.IncomeForThisMonth);
+            BudgetedThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.BudgetedThisMonth);
+            Outflows = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.Outflows);
+            Balance = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.Balance);
+            AvailableToBudget = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.AvailableToBudget);
         }
 
-        public ObservableCollection<IBudgetEntryViewModel> BudgetEntries { get; }
-        public long NotBudgetedInPreviousMonth { get; }
-        public long OverspentInPreviousMonth { get; }
-        public long IncomeForThisMonth { get; }
-        public long BudgetedThisMonth { get; }
+        public ReadOnlyReactiveCollection<IBudgetEntryViewModel> BudgetEntries { get; }
+        public IReadOnlyReactiveProperty<long> NotBudgetedInPreviousMonth { get; }
+        public IReadOnlyReactiveProperty<long> OverspentInPreviousMonth { get; }
+        public IReadOnlyReactiveProperty<long> IncomeForThisMonth { get; }
+        public IReadOnlyReactiveProperty<long> BudgetedThisMonth { get; }
 
-        public long AvailableToBudget => 
-            NotBudgetedInPreviousMonth + 
-            OverspentInPreviousMonth + 
-            IncomeForThisMonth +
-            BudgetedThisMonth;
+        public IReadOnlyReactiveProperty<long> AvailableToBudget { get; }
 
-        public long Outflows { get; }
-        public long Balance { get; }
+        public IReadOnlyReactiveProperty<long> Outflows { get; }
+        public IReadOnlyReactiveProperty<long> Balance { get; }
     }
 }

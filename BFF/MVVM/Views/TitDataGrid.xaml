@@ -21,6 +21,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/MVVM/Resources/BFF_ModifiedMAMCheckBox.xaml" />
+                <ResourceDictionary Source="/MVVM/Resources/CategoryTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <iconPacks:PackIconMaterialKind x:Key="TransactionIcon">Logout</iconPacks:PackIconMaterialKind>
@@ -261,17 +262,6 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
                             <DockPanel LastChildFill="True">
-                                <DockPanel.Resources>
-                                    <DataTemplate x:Key="CategoryItemTemplate">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Rectangle Height="16"
-                                                       Width="4" 
-                                                       Fill="{DynamicResource AccentColorBrush}" 
-                                                       Margin="{Binding Depth, Converter={x:Static mvvm:Converters.CategoryDepthToMargin}}"/>
-                                            <TextBlock Text="{Binding Name.Value}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DockPanel.Resources>
                                 <controls:SplitButton DockPanel.Dock="Right" 
                                                       x:Name="AddCategoryButton" 
                                                       Orientation="Horizontal"

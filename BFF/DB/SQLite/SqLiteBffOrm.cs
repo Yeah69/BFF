@@ -24,6 +24,8 @@ namespace BFF.DB.SQLite
 
         public ISubIncomeViewModelService SubIncomeViewModelService { get; }
 
+        public IBudgetEntryViewModelService BudgetEntryViewModelService { get; }
+
         public IBffRepository BffRepository => _bffRepository;
 
         public long? GetAccountBalance(IAccount account) => 
@@ -78,6 +80,8 @@ namespace BFF.DB.SQLite
                     hpvm => new NewPayeeViewModel(hpvm, _bffRepository.PayeeRepository, CommonPropertyProvider.PayeeViewModelService),
                     this,
                     SubIncomeViewModelService));
+
+            BudgetEntryViewModelService = new BudgetEntryViewModelService(be => new BudgetEntryViewModel(this, be, CommonPropertyProvider.CategoryViewModelService));
         }
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options

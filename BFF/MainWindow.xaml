@@ -2,9 +2,10 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:lex="http://wpflocalizeextension.codeplex.com"
-                      xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:bff="clr-namespace:BFF"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
         xmlns:views="clr-namespace:BFF.MVVM.Views"
         xmlns:viewModel="clr-namespace:BFF.MVVM.ViewModels"
@@ -17,7 +18,9 @@
         Height="{Binding Height, Mode=TwoWay}" Width="{Binding Width, Mode=TwoWay}" Left="{Binding X, Mode=TwoWay}" Top="{Binding Y, Mode=TwoWay}"
         Icon="Icons/logo_quadratic.png" ResizeMode="CanResizeWithGrip" WindowButtonCommandsOverlayBehavior="Never" 
         RightWindowCommandsOverlayBehavior="Never" LeftWindowCommandsOverlayBehavior="Never" BorderThickness="2" TitleCaps="False"
-        BorderBrush="{DynamicResource AccentColorBrush}">
+        BorderBrush="{DynamicResource AccentColorBrush}"
+                      mc:Ignorable="d"
+                      d:DataContext="{d:DesignInstance viewModel:MainWindowViewModel}">
     
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
@@ -173,7 +176,7 @@
 
     <TabControl TabStripPlacement="Left">
         <TabItem Header="Budget">
-            <views:BudgetOverviewView DataContext="" />
+            <views:BudgetOverviewView DataContext="{Binding BudgetOverviewViewModel}" />
         </TabItem>
         <TabItem Header="Accounts">
             <ContentControl Name="MaContentControl"  Content="{Binding ContentViewModel}">

@@ -275,11 +275,13 @@
     <Compile Include="DB\SQLite\SqLiteBffOrm.cs" />
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
     <Compile Include="DB\SQLite\SqLiteQueries.cs" />
+    <Compile Include="Helper\Extensions\VisualExtensions.cs" />
     <Compile Include="Helper\Import\CategoryImportWrapper.cs" />
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />
     <Compile Include="Helper\Output.cs" />
     <Compile Include="Helper\ReactivePropertyHelper.cs" />
+    <Compile Include="MVVM\AttachedBehaviors\ScrollViewerSync.cs" />
     <Compile Include="MVVM\Converters.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
@@ -305,6 +307,7 @@
     <Compile Include="MVVM\Models\Native\Income.cs" />
     <Compile Include="MVVM\Models\Native\ParentTransaction.cs" />
     <Compile Include="MVVM\Services\AccountViewModelService.cs" />
+    <Compile Include="MVVM\Services\BudgetEntyViewModelService.cs" />
     <Compile Include="MVVM\Services\CategoryViewModelService.cs" />
     <Compile Include="MVVM\Services\ParentIncomeViewModelService.cs" />
     <Compile Include="MVVM\Services\ParentTransactionViewModelService.cs" />
@@ -390,6 +393,10 @@
     <Page Include="MVVM\Resources\BFF_ModifiedMAMCheckBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Resources\CategoryTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MVVM\Views\AccountTabsView.xaml">
       <SubType>Designer</SubType>
