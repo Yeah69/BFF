@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataAccesses;
@@ -9,7 +8,8 @@ using BFF.DB.Dapper;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
-using MuVaViMo;
+using Reactive.Bindings;
+using Reactive.Bindings.Helpers;
 
 namespace BFF.MVVM.ViewModels
 {
@@ -22,13 +22,12 @@ namespace BFF.MVVM.ViewModels
     {
         private readonly IBudgetMonthRepository _budgetMonthRepository;
         private readonly IBudgetEntryViewModelService _budgetEntryViewModelService;
-        private readonly ICategoryViewModelService _categoryViewModelService;
         private double _verticalOffset;
         public IList<IBudgetMonthViewModel> BudgetMonths { get; }
 
-        public IObservableReadOnlyList<ICategoryViewModel> Categories => _categoryViewModelService.All;
+        public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
 
-        public IBudgetMonthViewModel SelectedBudgetMonth { get; private set; }
+        public IBudgetMonthViewModel SelectedBudgetMonth { get; }
 
         public double VerticalOffset
         {
@@ -36,15 +35,27 @@ namespace BFF.MVVM.ViewModels
             set
             {
                 _verticalOffset = value;
-                this.OnPropertyChanged();
+                OnPropertyChanged();
             }
         }
 
-        public BudgetOverviewViewModel(IBudgetMonthRepository budgetMonthRepository, IBudgetEntryViewModelService budgetEntryViewModelService, ICategoryViewModelService categoryViewModelService)
+        public BudgetOverviewViewModel(
+            IBudgetMonthRepository budgetMonthRepository, 
+            IBudgetEntryViewModelService budgetEntryViewModelService, 
+            ICategoryViewModelService categoryViewModelService,
+            ICategoryRepository categoryRepository)
         {
             _budgetMonthRepository = budgetMonthRepository;
             _budgetEntryViewModelService = budgetEntryViewModelService;
-            _categoryViewModelService = categoryViewModelService;
+
+            Categories = 
+                categoryRepository
+                    .All
+                    .ToFilteredReadOnlyObservableCollection(
+                        c => c.Name != "Available this month" // TODO this is proprietary to YNAB. Adjust ASAP (Income-Categories required)! 
+                        && c.Name != "Available next month")// TODO this is proprietary to YNAB. Adjust ASAP (Income-Categories required)! 
+                    .ToReadOnlyReactiveCollection(categoryViewModelService.GetViewModel);
+
             BudgetMonths = CreateBudgetMonths();
             SelectedBudgetMonth = BudgetMonths[monthToIndex(DateTime.Now)];
         }

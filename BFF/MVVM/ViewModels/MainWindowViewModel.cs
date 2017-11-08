@@ -208,7 +208,8 @@ namespace BFF.MVVM.ViewModels
                     new BudgetOverviewViewModel(
                         orm.BffRepository.BudgetMonthRepository,
                         orm.BudgetEntryViewModelService, 
-                        orm.CommonPropertyProvider.CategoryViewModelService);
+                        orm.CommonPropertyProvider.CategoryViewModelService,
+                        orm.BffRepository.CategoryRepository);
                 Title = $"{new FileInfo(dbPath).Name} - BFF";
                 Settings.Default.DBLocation = dbPath;
                 Settings.Default.Save();
