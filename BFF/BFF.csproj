@@ -316,6 +316,9 @@
     <Compile Include="MVVM\Services\SubIncomeViewModelService.cs" />
     <Compile Include="MVVM\Services\SubTransactionViewModelService.cs" />
     <Compile Include="MVVM\Services\CommonPropertyViewModelServiceBase.cs" />
+    <Compile Include="MVVM\UserControls\MasterColumnSlaveColumns.xaml.cs">
+      <DependentUpon>MasterColumnSlaveColumns.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\ViewModels\BudgetMonthViewModel.cs" />
     <Compile Include="MVVM\ViewModels\BudgetOverviewViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\CategoryViewModel.cs" />
@@ -395,6 +398,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MVVM\Resources\CategoryTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\UserControls\MasterColumnSlaveColumns.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

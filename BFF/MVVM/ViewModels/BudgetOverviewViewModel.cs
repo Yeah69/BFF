@@ -23,6 +23,8 @@ namespace BFF.MVVM.ViewModels
         private readonly IBudgetMonthRepository _budgetMonthRepository;
         private readonly IBudgetEntryViewModelService _budgetEntryViewModelService;
         private double _verticalOffset;
+        private int _selectedIndex;
+        private int _currentMonthStartIndex;
         public IList<IBudgetMonthViewModel> BudgetMonths { get; }
 
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
@@ -34,7 +36,30 @@ namespace BFF.MVVM.ViewModels
             get => _verticalOffset;
             set
             {
+                if (Math.Abs(_verticalOffset - value) < 0.001) return;
                 _verticalOffset = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SelectedIndex
+        {
+            get => _selectedIndex;
+            set
+            {
+                if (_selectedIndex == value) return;
+                _selectedIndex = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public int CurrentMonthStartIndex
+        {
+            get => _currentMonthStartIndex;
+            set
+            {
+                if (_currentMonthStartIndex == value) return;
+                _currentMonthStartIndex = value;
                 OnPropertyChanged();
             }
         }
@@ -48,6 +73,8 @@ namespace BFF.MVVM.ViewModels
             _budgetMonthRepository = budgetMonthRepository;
             _budgetEntryViewModelService = budgetEntryViewModelService;
 
+            SelectedIndex = -1;
+
             Categories = 
                 categoryRepository
                     .All
@@ -57,7 +84,9 @@ namespace BFF.MVVM.ViewModels
                     .ToReadOnlyReactiveCollection(categoryViewModelService.GetViewModel);
 
             BudgetMonths = CreateBudgetMonths();
-            SelectedBudgetMonth = BudgetMonths[monthToIndex(DateTime.Now)];
+            int index = monthToIndex(DateTime.Now);
+            SelectedBudgetMonth = BudgetMonths[index];
+            CurrentMonthStartIndex = index;
         }
 
         private IDataVirtualizingCollection<IBudgetMonthViewModel> CreateBudgetMonths()

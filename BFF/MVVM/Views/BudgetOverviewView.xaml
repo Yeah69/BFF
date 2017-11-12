@@ -6,9 +6,11 @@
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
              xmlns:attachedBehaviors="clr-namespace:BFF.MVVM.AttachedBehaviors"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:userControls="clr-namespace:BFF.MVVM.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance Type=viewModels:BudgetOverviewViewModel}">
+             d:DataContext="{d:DesignInstance Type=viewModels:BudgetOverviewViewModel}"
+             x:Name="BudgetOverview">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -16,28 +18,47 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <UniformGrid Columns="2">
-        <ListBox ItemsSource="{Binding Categories}"
-                 ItemTemplate="{StaticResource CategoryItemTemplate}"
-                 ScrollViewer.VerticalScrollBarVisibility="Hidden">
-            <i:Interaction.Behaviors>
-                <attachedBehaviors:ScrollViewerSync VerticalOffset="{Binding VerticalOffset, Mode=TwoWay}" />
-            </i:Interaction.Behaviors>
-        </ListBox>
-        <ListBox ItemsSource="{Binding SelectedBudgetMonth.BudgetEntries}"
-                 ScrollViewer.VerticalScrollBarVisibility="Hidden">
-            <i:Interaction.Behaviors>
-                <attachedBehaviors:ScrollViewerSync VerticalOffset="{Binding VerticalOffset, Mode=TwoWay}" />
-            </i:Interaction.Behaviors>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <UniformGrid Columns="3">
-                        <TextBlock Text="{Binding Budget.Value}" />
-                        <TextBlock Text="{Binding Outflow.Value}" />
-                        <TextBlock Text="{Binding Balance.Value}" />
-                    </UniformGrid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </UniformGrid>
+    <userControls:MasterColumnSlaveColumns MasterContent="{Binding Categories}" 
+                                               SlaveCount="5" 
+                                               StartIndex="{Binding CurrentMonthStartIndex}"
+                                               ItemsSource="{Binding BudgetMonths}">
+        <userControls:MasterColumnSlaveColumns.MasterTemplate>
+            <DataTemplate>
+                <ListBox ItemsSource="{Binding}" 
+                         Margin="5" 
+                         BorderBrush="{StaticResource AccentColorBrush}" 
+                         BorderThickness="1"
+                         ItemTemplate="{StaticResource CategoryItemTemplate}"
+                         SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference BudgetOverview}}"
+                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <i:Interaction.Behaviors>
+                        <attachedBehaviors:ScrollViewerSync VerticalOffset="{Binding DataContext.VerticalOffset, Source={x:Reference BudgetOverview}, Mode=TwoWay}" />
+                    </i:Interaction.Behaviors>
+                </ListBox>
+            </DataTemplate>
+        </userControls:MasterColumnSlaveColumns.MasterTemplate>
+        <userControls:MasterColumnSlaveColumns.SlaveTemplate>
+            <DataTemplate>
+                <ListBox ItemsSource="{Binding BudgetEntries}" d:DataContext="{d:DesignInstance viewModels:BudgetMonthViewModel}" 
+                         Margin="5" 
+                         BorderBrush="{StaticResource AccentColorBrush}" 
+                         BorderThickness="1"
+                         SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference BudgetOverview}}"
+                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <i:Interaction.Behaviors>
+                        <attachedBehaviors:ScrollViewerSync VerticalOffset="{Binding DataContext.VerticalOffset, Source={x:Reference BudgetOverview}, Mode=TwoWay}" />
+                    </i:Interaction.Behaviors>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <UniformGrid Columns="3">
+                                <TextBlock Text="{Binding Budget.Value}" />
+                                <TextBlock Text="{Binding Outflow.Value}" />
+                                <TextBlock Text="{Binding Balance.Value}" />
+                            </UniformGrid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DataTemplate>
+        </userControls:MasterColumnSlaveColumns.SlaveTemplate>
+    </userControls:MasterColumnSlaveColumns>
 </UserControl>
