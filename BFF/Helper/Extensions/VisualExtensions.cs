@@ -9,7 +9,7 @@ namespace BFF.Helper.Extensions
         {
             if (element == null)
             {
-                return default(T);
+                return default;
             }
             if (element.GetType() == typeof(T))
             {

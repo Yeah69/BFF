@@ -11,6 +11,7 @@ namespace BFF.MVVM.Models.Native
     public interface IBudgetMonth : INotifyPropertyChanged
     {
         ObservableCollection<IBudgetEntry> BudgetEntries { get; }
+        DateTime Month { get; }
         long NotBudgetedInPreviousMonth { get; }
         long OverspentInPreviousMonth { get; }
         long IncomeForThisMonth { get; }
@@ -46,8 +47,8 @@ namespace BFF.MVVM.Models.Native
         }
 
         public ObservableCollection<IBudgetEntry> BudgetEntries { get; }
-        public long NotBudgetedInPreviousMonth { get; }
         public DateTime Month { get; }
+        public long NotBudgetedInPreviousMonth { get; }
         public long OverspentInPreviousMonth { get; }
         public long IncomeForThisMonth { get; }
         public long BudgetedThisMonth { get; }

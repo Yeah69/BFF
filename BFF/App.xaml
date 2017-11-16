@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:metro="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              Startup="Application_Startup">
@@ -31,7 +30,7 @@
             <system:Double x:Key="IconSize">20.0</system:Double>
             <system:Double x:Key="TabHeaderIconSize">30.0</system:Double>
             <system:Double x:Key="WindowCommandIconSize">15.0</system:Double>
-
+            
             <Style x:Key="BffGeneralButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource SquareButtonStyle}">
                 <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
             </Style>

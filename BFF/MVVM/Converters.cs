@@ -26,6 +26,8 @@ namespace BFF.MVVM
 
         private static SolidColorBrush TransferBrush => (SolidColorBrush)Application.Current.TryFindResource("TransferBrush") ?? Brushes.RoyalBlue;
 
+        private static SolidColorBrush NeutralForegroundBrush => (SolidColorBrush)Application.Current.TryFindResource("BlackBrush") ?? Brushes.Black;
+
         //Single Value Converters
 
         /// <summary>
@@ -121,7 +123,11 @@ namespace BFF.MVVM
         /// </summary>
         public static readonly IValueConverter SumToSolidColorBrush =
             ValueConverter.Create<long, SolidColorBrush>(
-                e => e.Value < 0L ? TransactionBrush : IncomeBrush);
+                e => e.Value == 0L 
+                    ? NeutralForegroundBrush 
+                    : e.Value < 0L 
+                        ? TransactionBrush 
+                        : IncomeBrush);
 
         //Multi Value Converters
 

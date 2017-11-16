@@ -1,4 +1,5 @@
-﻿using BFF.Helper;
+﻿using System;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
@@ -10,6 +11,7 @@ namespace BFF.MVVM.ViewModels
     public interface IBudgetMonthViewModel
     {
         ReadOnlyReactiveCollection<IBudgetEntryViewModel> BudgetEntries { get; }
+        IReadOnlyReactiveProperty<DateTime> Month { get; }
         IReadOnlyReactiveProperty<long> NotBudgetedInPreviousMonth { get; }
         IReadOnlyReactiveProperty<long> OverspentInPreviousMonth { get; }
         IReadOnlyReactiveProperty<long> IncomeForThisMonth { get; }
@@ -24,6 +26,7 @@ namespace BFF.MVVM.ViewModels
         public BudgetMonthViewModel(IBudgetMonth budgetMonth, IBudgetEntryViewModelService budgetEntryViewModelService)
         {
             BudgetEntries = budgetMonth.BudgetEntries.ToReadOnlyReactiveCollection(budgetEntryViewModelService.GetViewModel);
+            Month = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.Month);
             NotBudgetedInPreviousMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.NotBudgetedInPreviousMonth);
             OverspentInPreviousMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.OverspentInPreviousMonth);
             IncomeForThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.IncomeForThisMonth);
@@ -34,6 +37,7 @@ namespace BFF.MVVM.ViewModels
         }
 
         public ReadOnlyReactiveCollection<IBudgetEntryViewModel> BudgetEntries { get; }
+        public IReadOnlyReactiveProperty<DateTime> Month { get; }
         public IReadOnlyReactiveProperty<long> NotBudgetedInPreviousMonth { get; }
         public IReadOnlyReactiveProperty<long> OverspentInPreviousMonth { get; }
         public IReadOnlyReactiveProperty<long> IncomeForThisMonth { get; }

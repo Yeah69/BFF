@@ -161,7 +161,7 @@ namespace BFF.MVVM.UserControls
 
                 if (newValue - oldValue > 0)
                 {
-                    int diff = newValue - oldValue;
+                    int diff = newValue - oldValue + 1;
                     for (int i = 0; i < diff; i++)
                     {
                         @this.UniformGrid.Children.Add(
@@ -179,7 +179,9 @@ namespace BFF.MVVM.UserControls
                         diff);
                 }
 
-                @this.UniformGrid.Columns = newValue;
+                @this.UniformGrid.Columns = newValue + 1;
+
+                FillContent(@this, @this.ItemsSource ?? new List<object>(), @this.StartIndex);
             }
         }
 
@@ -199,7 +201,7 @@ namespace BFF.MVVM.UserControls
             {
                 if (@this.UniformGrid.Children[i] is ContentControl contentControl)
                 {
-                    int index = startIndex + i - 1;
+                    int index = startIndex + i;
                     contentControl.Content =
                         list.Count >= index
                             ? list[index - 1]

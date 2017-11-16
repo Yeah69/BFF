@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataAccesses;
@@ -18,7 +19,7 @@ namespace BFF.MVVM.ViewModels
         IList<IBudgetMonthViewModel> BudgetMonths { get; }
     }
 
-    public class BudgetOverviewViewModel : ObservableObject, IBudgetOverviewViewModel
+    public class BudgetOverviewViewModel : ObservableObject, IBudgetOverviewViewModel, IDisposable
     {
         private readonly IBudgetMonthRepository _budgetMonthRepository;
         private readonly IBudgetEntryViewModelService _budgetEntryViewModelService;
@@ -84,9 +85,29 @@ namespace BFF.MVVM.ViewModels
                     .ToReadOnlyReactiveCollection(categoryViewModelService.GetViewModel);
 
             BudgetMonths = CreateBudgetMonths();
-            int index = monthToIndex(DateTime.Now);
+            int index = monthToIndex(DateTime.Now) - 6;
             SelectedBudgetMonth = BudgetMonths[index];
             CurrentMonthStartIndex = index;
+
+
+            Messenger.Default.Register<CultureMessage>(this, message =>
+            {
+                switch (message)
+                {
+                    case CultureMessage.Refresh:
+                        OnPropertyChanged(nameof(BudgetMonths));
+                        break;
+                    case CultureMessage.RefreshCurrency:
+                        OnPropertyChanged(null);
+                        break;
+                    case CultureMessage.RefreshDate:
+                        OnPropertyChanged(null);
+                        break;
+                    default:
+                        throw new InvalidEnumArgumentException();
+
+                }
+            });
         }
 
         private IDataVirtualizingCollection<IBudgetMonthViewModel> CreateBudgetMonths()
@@ -119,6 +140,11 @@ namespace BFF.MVVM.ViewModels
         private int monthToIndex(DateTime month)
         {
             return (month.Year - 1) * 12 + month.Month - 1;
+        }
+
+        public void Dispose()
+        {
+            Messenger.Default.Unregister<CultureMessage>(this);
         }
     }
 }

@@ -7,58 +7,142 @@
              xmlns:attachedBehaviors="clr-namespace:BFF.MVVM.AttachedBehaviors"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:userControls="clr-namespace:BFF.MVVM.UserControls"
+             xmlns:mvvm="clr-namespace:BFF.MVVM"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=viewModels:BudgetOverviewViewModel}"
-             x:Name="BudgetOverview">
+             x:Name="BudgetOverview" PreviewKeyDown="OnPreviewKeyDown">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/MVVM/Resources/CategoryTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style  TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                <Style.Triggers>
+                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                        <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
+                    </Trigger>
+                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                        <Setter Property="Background" Value="{DynamicResource GrayBrush8}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <userControls:MasterColumnSlaveColumns MasterContent="{Binding Categories}" 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <userControls:MasterColumnSlaveColumns x:Name="BudgetMonthHeaders" 
+                                               Grid.Row="0"
+                                               MasterContent="{x:Null}" 
                                                SlaveCount="5" 
                                                StartIndex="{Binding CurrentMonthStartIndex}"
                                                ItemsSource="{Binding BudgetMonths}">
-        <userControls:MasterColumnSlaveColumns.MasterTemplate>
-            <DataTemplate>
-                <ListBox ItemsSource="{Binding}" 
-                         Margin="5" 
+            <userControls:MasterColumnSlaveColumns.MasterTemplate>
+                <DataTemplate />
+            </userControls:MasterColumnSlaveColumns.MasterTemplate>
+            <userControls:MasterColumnSlaveColumns.SlaveTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="{StaticResource AccentColorBrush}"
+                            BorderThickness="1"
+                            Margin="5"
+                            Padding="5"
+                            d:DataContext="{d:DesignInstance viewModels:BudgetMonthViewModel}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Month.Value, StringFormat=MMM}"
+                                       FontSize="25"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Month.Value, StringFormat=yyyy}"
+                                       FontSize="10"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,5"/>
+                            <UniformGrid Columns="2">
+                                <TextBlock Text="Not Budgeted" />
+                                <TextBlock Text="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                           Foreground="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                           TextAlignment="Right" />
+                                <TextBlock Text="Overspent" />
+                                <TextBlock Text="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                           Foreground="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                           TextAlignment="Right" />
+                                <TextBlock Text="Income" />
+                                <TextBlock Text="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                           Foreground="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                           TextAlignment="Right" />
+                                <TextBlock Text="Budgeted" />
+                                <TextBlock Text="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                           Foreground="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                           TextAlignment="Right" />
+                            </UniformGrid>
+                            <TextBlock Text="{Binding AvailableToBudget.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                       Foreground="{Binding AvailableToBudget.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                       FontSize="25"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,5,0,0"/>
+                            <TextBlock Text="Available"
+                                       FontSize="10"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </userControls:MasterColumnSlaveColumns.SlaveTemplate>
+        </userControls:MasterColumnSlaveColumns>
+        <userControls:MasterColumnSlaveColumns x:Name="BudgetEntriesData"
+                                               Grid.Row="1"
+                                               MasterContent="{Binding Categories}" 
+                                               SlaveCount="5" 
+                                               StartIndex="{Binding CurrentMonthStartIndex}"
+                                               ItemsSource="{Binding BudgetMonths}">
+            <userControls:MasterColumnSlaveColumns.MasterTemplate>
+                <DataTemplate>
+                    <ListBox ItemsSource="{Binding}" 
+                         Margin="5"
+                             Padding="5" AlternationCount="2"
                          BorderBrush="{StaticResource AccentColorBrush}" 
                          BorderThickness="1"
                          ItemTemplate="{StaticResource CategoryItemTemplate}"
                          SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference BudgetOverview}}"
                          ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                    <i:Interaction.Behaviors>
-                        <attachedBehaviors:ScrollViewerSync VerticalOffset="{Binding DataContext.VerticalOffset, Source={x:Reference BudgetOverview}, Mode=TwoWay}" />
-                    </i:Interaction.Behaviors>
-                </ListBox>
-            </DataTemplate>
-        </userControls:MasterColumnSlaveColumns.MasterTemplate>
-        <userControls:MasterColumnSlaveColumns.SlaveTemplate>
-            <DataTemplate>
-                <ListBox ItemsSource="{Binding BudgetEntries}" d:DataContext="{d:DesignInstance viewModels:BudgetMonthViewModel}" 
+                        <i:Interaction.Behaviors>
+                            <attachedBehaviors:ScrollViewerSync VerticalOffset="{Binding DataContext.VerticalOffset, Source={x:Reference BudgetOverview}, Mode=TwoWay}" />
+                        </i:Interaction.Behaviors>
+                    </ListBox>
+                </DataTemplate>
+            </userControls:MasterColumnSlaveColumns.MasterTemplate>
+            <userControls:MasterColumnSlaveColumns.SlaveTemplate>
+                <DataTemplate>
+                    <ListBox ItemsSource="{Binding BudgetEntries}" d:DataContext="{d:DesignInstance viewModels:BudgetMonthViewModel}" 
                          Margin="5" 
+                             Padding="5" AlternationCount="2"
                          BorderBrush="{StaticResource AccentColorBrush}" 
                          BorderThickness="1"
                          SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference BudgetOverview}}"
                          ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                    <i:Interaction.Behaviors>
-                        <attachedBehaviors:ScrollViewerSync VerticalOffset="{Binding DataContext.VerticalOffset, Source={x:Reference BudgetOverview}, Mode=TwoWay}" />
-                    </i:Interaction.Behaviors>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <UniformGrid Columns="3">
-                                <TextBlock Text="{Binding Budget.Value}" />
-                                <TextBlock Text="{Binding Outflow.Value}" />
-                                <TextBlock Text="{Binding Balance.Value}" />
-                            </UniformGrid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </DataTemplate>
-        </userControls:MasterColumnSlaveColumns.SlaveTemplate>
-    </userControls:MasterColumnSlaveColumns>
+                        <i:Interaction.Behaviors>
+                            <attachedBehaviors:ScrollViewerSync VerticalOffset="{Binding DataContext.VerticalOffset, Source={x:Reference BudgetOverview}, Mode=TwoWay}" />
+                        </i:Interaction.Behaviors>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <UniformGrid Columns="3">
+                                    <TextBlock Text="{Binding Budget.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               Foreground="{Binding Budget.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               TextAlignment="Right" />
+                                    <TextBlock Text="{Binding Outflow.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               Foreground="{Binding Outflow.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               TextAlignment="Right" />
+                                    <TextBlock Text="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               Foreground="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               TextAlignment="Right" />
+                                </UniformGrid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DataTemplate>
+            </userControls:MasterColumnSlaveColumns.SlaveTemplate>
+        </userControls:MasterColumnSlaveColumns>
+    </Grid>
 </UserControl>
