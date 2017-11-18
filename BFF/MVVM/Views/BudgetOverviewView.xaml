@@ -116,7 +116,7 @@
                                 </Style>
                             </ListBox.ItemContainerStyle>
                             <i:Interaction.Behaviors>
-                                <attachedBehaviors:ScrollViewerSync VerticalOffset="{Binding DataContext.VerticalOffset, Source={x:Reference BudgetOverview}, Mode=TwoWay}" />
+                                <attachedBehaviors:ScrollViewerSync GroupName="BudgetOverview" />
                             </i:Interaction.Behaviors>
                         </ListBox>
                 </DataTemplate>
@@ -133,7 +133,7 @@
                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
                              SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference BudgetOverview}}">
                         <i:Interaction.Behaviors>
-                            <attachedBehaviors:ScrollViewerSync VerticalOffset="{Binding DataContext.VerticalOffset, Source={x:Reference BudgetOverview}, Mode=TwoWay}" />
+                            <attachedBehaviors:ScrollViewerSync GroupName="BudgetOverview" />
                         </i:Interaction.Behaviors>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
