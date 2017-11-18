@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
@@ -15,7 +16,11 @@ namespace BFF.MVVM.AttachedBehaviors
             nameof(VerticalOffset),
             typeof(double),
             typeof(ScrollViewerSync),
-            new PropertyMetadata(default(double), (o, args) => (o as ScrollViewerSync)?._associatedScrollViewer?.ScrollToVerticalOffset((double)args.NewValue)));
+            new PropertyMetadata(default(double), (o, args) =>
+            {
+                Thread.Sleep(10);
+                (o as ScrollViewerSync)?._associatedScrollViewer?.ScrollToVerticalOffset((double) args.NewValue);
+            }));
 
         public double VerticalOffset
         {
@@ -36,6 +41,7 @@ namespace BFF.MVVM.AttachedBehaviors
 
                 _associatedScrollViewer = this.AssociatedObject.GetDescendantByType<ScrollViewer>();
                 Observable.FromEventPattern<ScrollChangedEventArgs>(_associatedScrollViewer, "ScrollChanged")
+                    .ObserveOn(Dispatcher)
                     .Subscribe(ep => this.VerticalOffset = ep.EventArgs.VerticalOffset)
                     .AddTo(_compositeDisposable);
             }

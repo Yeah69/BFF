@@ -1,11 +1,11 @@
 ﻿<Application x:Class="BFF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              Startup="Application_Startup">
-    <!--DispatcherUnhandledException="Application_DispatcherUnhandledException">-->
+    <!--  DispatcherUnhandledException="Application_DispatcherUnhandledException">  -->
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -30,11 +30,13 @@
             <system:Double x:Key="IconSize">20.0</system:Double>
             <system:Double x:Key="TabHeaderIconSize">30.0</system:Double>
             <system:Double x:Key="WindowCommandIconSize">15.0</system:Double>
-            
-            <Style x:Key="BffGeneralButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource SquareButtonStyle}">
+
+            <Style x:Key="BffGeneralButtonStyle"
+                   BasedOn="{StaticResource SquareButtonStyle}"
+                   TargetType="{x:Type Button}">
                 <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
             </Style>
-            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BffGeneralButtonStyle}" />
+            <Style BasedOn="{StaticResource BffGeneralButtonStyle}" TargetType="{x:Type Button}" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

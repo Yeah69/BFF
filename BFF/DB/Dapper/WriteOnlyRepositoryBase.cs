@@ -54,7 +54,11 @@ namespace BFF.DB.Dapper
         {
             if (dataModel.Id < 0) return;
             ConnectionHelper.ExecuteOnExistingOrNewConnection(
-                c => c.Delete(ConvertToPersistence(dataModel)),
+                c =>
+                {
+                    c.Delete(ConvertToPersistence(dataModel));
+                    dataModel.Id = -1;
+                },
                 ProvideConnection,
                 connection);
         }

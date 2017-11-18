@@ -1,22 +1,22 @@
 ﻿<UserControl x:Class="BFF.MVVM.Views.AccountTabsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:attachedBehaviors="clr-namespace:BFF.MVVM.AttachedBehaviors"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:lex="http://wpflocalizeextension.codeplex.com"
-             xmlns:validationRules="clr-namespace:BFF.MVVM.ValidationRules"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:attachedBehaviors="clr-namespace:BFF.MVVM.AttachedBehaviors"
-             xmlns:views="clr-namespace:BFF.MVVM.Views"
-             xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mvvm="clr-namespace:BFF.MVVM"
+             xmlns:validationRules="clr-namespace:BFF.MVVM.ValidationRules"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" 
-             d:DesignWidth="300"
+             xmlns:views="clr-namespace:BFF.MVVM.Views"
+             x:Name="AccountTabsUserControl"
              d:DataContext="{d:DesignInstance Type=viewModels:AccountTabsViewModel}"
-             x:Name="AccountTabsUserControl">
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -26,18 +26,22 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <TabControl Name="AccountsTabControl" Margin="10" controls:TabControlHelper.Underlined="TabItems">
+        <TabControl Name="AccountsTabControl"
+                    Margin="10"
+                    controls:TabControlHelper.Underlined="TabItems">
             <TabControl.Resources>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
             </TabControl.Resources>
             <i:Interaction.Behaviors>
-                <attachedBehaviors:AdditionalTabItemsBehavior ItemsSource="{Binding AllAccounts}" 
-                                                              StartingIndex="1"
-                                                              IsSelectedMemberPath="IsOpen.Value">
+                <attachedBehaviors:AdditionalTabItemsBehavior IsSelectedMemberPath="IsOpen.Value"
+                                                              ItemsSource="{Binding AllAccounts}"
+                                                              StartingIndex="1">
                     <attachedBehaviors:AdditionalTabItemsBehavior.HeaderTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="CreditCard" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
+                                <iconPacks:PackIconMaterial Width="{StaticResource TabHeaderIconSize}"
+                                                            Height="{StaticResource TabHeaderIconSize}"
+                                                            Kind="CreditCard" />
                                 <TextBlock Text="{Binding DataContext.Name.Value, RelativeSource={RelativeSource AncestorType=TabItem}}" />
                             </StackPanel>
                         </DataTemplate>
@@ -49,12 +53,13 @@
                     </attachedBehaviors:AdditionalTabItemsBehavior.ContentTemplate>
                 </attachedBehaviors:AdditionalTabItemsBehavior>
             </i:Interaction.Behaviors>
-            <TabItem x:Name="SummaryAccountTab"
-                     IsSelected="{Binding SummaryAccountViewModel.IsOpen.Value}">
+            <TabItem x:Name="SummaryAccountTab" IsSelected="{Binding SummaryAccountViewModel.IsOpen.Value}">
                 <TabItem.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="{StaticResource AllAccountsIcon}" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
+                            <iconPacks:PackIconMaterial Width="{StaticResource TabHeaderIconSize}"
+                                                        Height="{StaticResource TabHeaderIconSize}"
+                                                        Kind="{StaticResource AllAccountsIcon}" />
                             <TextBlock Text="{lex:Loc AccountTabsView_AllAccounts}" />
                         </StackPanel>
                     </DataTemplate>
@@ -65,24 +70,33 @@
                 <TabItem.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="{StaticResource AddIcon}" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
-                            <iconPacks:PackIconMaterial Kind="{StaticResource AccountIcon}" Height="{StaticResource TabHeaderIconSize}" Width="{StaticResource TabHeaderIconSize}" />
-                            <TextBlock /> <!-- Workaround: Without the TextBlock the underline of the Tabs would not fit anymore -->
+                            <iconPacks:PackIconMaterial Width="{StaticResource TabHeaderIconSize}"
+                                                        Height="{StaticResource TabHeaderIconSize}"
+                                                        Kind="{StaticResource AddIcon}" />
+                            <iconPacks:PackIconMaterial Width="{StaticResource TabHeaderIconSize}"
+                                                        Height="{StaticResource TabHeaderIconSize}"
+                                                        Kind="{StaticResource AccountIcon}" />
+                            <TextBlock /> 
+                            <!--  Workaround: Without the TextBlock the underline of the Tabs would not fit anymore  -->
                         </StackPanel>
                     </DataTemplate>
                 </TabItem.HeaderTemplate>
                 <StackPanel Width="500" DataContext="{Binding NewAccount}">
-                    <Label Content="{lex:Loc AccountTabsView_NewAccount_Name}"/>
+                    <Label Content="{lex:Loc AccountTabsView_NewAccount_Name}" />
                     <TextBox Name="NewAccountName">
                         <TextBox.Text>
-                            <Binding Path="Name.Value" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                            </Binding>
+                            <Binding Mode="TwoWay"
+                                     Path="Name.Value"
+                                     UpdateSourceTrigger="PropertyChanged" />
                         </TextBox.Text>
                     </TextBox>
-                    <Label Content="{lex:Loc AccountTabsView_NewAccount_StartingBalance}"/>
-                    <TextBox MaxLength="30" Name="NewAccountStartingBalance">
+                    <Label Content="{lex:Loc AccountTabsView_NewAccount_StartingBalance}" />
+                    <TextBox Name="NewAccountStartingBalance" MaxLength="30">
                         <TextBox.Text>
-                            <Binding Path="StartingBalance.Value" Mode="TwoWay" Converter="{x:Static mvvm:Converters.SumToString}" UpdateSourceTrigger="LostFocus" >
+                            <Binding Converter="{x:Static mvvm:Converters.SumToString}"
+                                     Mode="TwoWay"
+                                     Path="StartingBalance.Value"
+                                     UpdateSourceTrigger="LostFocus">
                                 <Binding.ValidationRules>
                                     <validationRules:CurrencyRule />
                                     <validationRules:CurrencyLongRangeRule />
@@ -90,8 +104,9 @@
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
-                    <Button HorizontalAlignment="Right" Content="{lex:Loc AccountTabsView_NewAccount_Create}" Command="{Binding DataContext.NewAccountCommand, ElementName=AccountTabsUserControl}">
-                    </Button>
+                    <Button HorizontalAlignment="Right"
+                            Command="{Binding DataContext.NewAccountCommand, ElementName=AccountTabsUserControl}"
+                            Content="{lex:Loc AccountTabsView_NewAccount_Create}" />
                 </StackPanel>
             </TabItem>
         </TabControl>

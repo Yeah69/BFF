@@ -11,7 +11,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 {
     public interface IBudgetEntryViewModel : IDataModelViewModel, IHaveCategoryViewModel
     {
-        IReactiveProperty<DateTime> Month { get; }
+        IReadOnlyReactiveProperty<DateTime> Month { get; }
         IReactiveProperty<long> Budget { get; }
         IReadOnlyReactiveProperty<long> Outflow { get; }
         IReadOnlyReactiveProperty<long> Balance { get; }
@@ -20,7 +20,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     public class BudgetEntryViewModel : DataModelViewModel, IBudgetEntryViewModel
     {
         public IReactiveProperty<ICategoryViewModel> Category { get; }
-        public IReactiveProperty<DateTime> Month { get; }
+        public IReadOnlyReactiveProperty<DateTime> Month { get; }
         public IReactiveProperty<long> Budget { get; }
         public IReadOnlyReactiveProperty<long> Outflow { get; }
         public IReadOnlyReactiveProperty<long> Balance { get; }
@@ -30,7 +30,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Category = budgetEntry.ToReactivePropertyAsSynchronized(be => be.Category, categoryViewModelService.GetViewModel,
                 categoryViewModelService.GetModel).AddTo(CompositeDisposable);
 
-            Month = budgetEntry.ToReactivePropertyAsSynchronized(be => be.Month);
+            Month = budgetEntry.ToReadOnlyReactivePropertyAsSynchronized(be => be.Month);
 
             Budget = budgetEntry.ToReactivePropertyAsSynchronized(be => be.Budget);
 

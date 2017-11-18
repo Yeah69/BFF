@@ -37,7 +37,6 @@ namespace BFF.MVVM.ViewModels
             get => _verticalOffset;
             set
             {
-                if (Math.Abs(_verticalOffset - value) < 0.001) return;
                 _verticalOffset = value;
                 OnPropertyChanged();
             }

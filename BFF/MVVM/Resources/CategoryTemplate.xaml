@@ -3,10 +3,10 @@
                     xmlns:mvvm="clr-namespace:BFF.MVVM">
     <DataTemplate x:Key="CategoryItemTemplate">
         <StackPanel Orientation="Horizontal">
-            <Rectangle Height="16"
-                       Width="4" 
-                       Fill="{DynamicResource AccentColorBrush}" 
-                       Margin="{Binding Depth, Converter={x:Static mvvm:Converters.CategoryDepthToMargin}}"/>
+            <Rectangle Width="4"
+                       Height="16"
+                       Margin="{Binding Depth, Converter={x:Static mvvm:Converters.CategoryDepthToMargin}}"
+                       Fill="{DynamicResource AccentColorBrush}" />
             <TextBlock Text="{Binding Name.Value}" />
         </StackPanel>
     </DataTemplate>

@@ -18,6 +18,7 @@ namespace BFF.MVVM.Views
             {
                 BudgetEntriesData.SlaveCount = newCount;
                 BudgetMonthHeaders.SlaveCount = newCount;
+                e.Handled = true;
             }
 
             switch (e.Key)
@@ -51,7 +52,6 @@ namespace BFF.MVVM.Views
                     break;
 
             }
-            e.Handled = true;
         }
     }
 }

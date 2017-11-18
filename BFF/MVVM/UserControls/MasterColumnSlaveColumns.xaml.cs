@@ -30,7 +30,7 @@ namespace BFF.MVVM.UserControls
             nameof(StartIndex),
             typeof(int),
             typeof(MasterColumnSlaveColumns),
-            new PropertyMetadata(default(int), OnStartIndexChanged));
+            new PropertyMetadata(69, OnStartIndexChanged));
 
         public static readonly DependencyProperty SlaveCountProperty = DependencyProperty.Register(
             nameof(SlaveCount),

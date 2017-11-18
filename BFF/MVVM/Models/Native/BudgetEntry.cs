@@ -6,7 +6,7 @@ namespace BFF.MVVM.Models.Native
 {
     public interface IBudgetEntry : IDataModel, IHaveCategory
     {
-        DateTime Month { get; set; }
+        DateTime Month { get; }
         long Budget { get; set; }
         long Outflow { get; }
         long Balance { get; }
@@ -29,27 +29,14 @@ namespace BFF.MVVM.Models.Native
             long balance = 0L)
             : base(repository, id)
         {
-            _month = month;
+            Month = month;
             _category = category;
             _budget = budget;
             _outflow = outflow;
             _balance = balance;
         }
 
-        private DateTime _month;
-
-        public DateTime Month
-        {
-            get => _month;
-            set
-            {
-                if(_month == value) return;
-
-                _month = value;
-                Update();
-                OnPropertyChanged();
-            }
-        }
+        public DateTime Month { get; }
 
         private ICategory _category;
 
@@ -75,8 +62,21 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_budget == value) return;
 
-                _budget = value;
-                Update();
+                if (_budget == 0 && Id == -1)
+                {
+                    _budget = value;
+                    Insert();
+                }
+                else if (_budget != 0 && value == 0 && Id > -1)
+                {
+                    _budget = value;
+                    Delete();
+                }
+                else
+                {
+                    _budget = value;
+                    Update();
+                }
                 OnPropertyChanged();
             }
         }
