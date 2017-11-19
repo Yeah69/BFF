@@ -130,8 +130,8 @@
                                 <TextBlock Text="Budgeted" TextAlignment="Right" />
                                 <TextBlock Text="Outflow" TextAlignment="Right" />
                                 <TextBlock Text="Balance" TextAlignment="Right" />
-                                <TextBlock Foreground="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                           Text="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                <TextBlock Foreground="{Binding BudgetedThisMonthPositive.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                           Text="{Binding BudgetedThisMonthPositive.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                            TextAlignment="Right" />
                                 <TextBlock Foreground="{Binding Outflows.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                            Text="{Binding Outflows.Value, Converter={x:Static mvvm:Converters.SumToString}}"
