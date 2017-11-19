@@ -21,7 +21,11 @@
             <SolidColorBrush x:Key="IncomeBrush" Color="LimeGreen" />
             <SolidColorBrush x:Key="TransferBrush" Color="RoyalBlue" />
             <SolidColorBrush x:Key="NeutralBrush" Color="DimGray" />
-            <SolidColorBrush x:Key="DataGridSecondRowBrush" Color="#CF363636" />
+
+            <!--  Following Brushes are configured in code-behind  -->
+            <SolidColorBrush x:Key="AlternatingRowBrush" />
+            <SolidColorBrush x:Key="OpaqueZeroBrush" />
+
             <iconPacks:PackIconMaterialKind x:Key="AddIcon">PlusOne</iconPacks:PackIconMaterialKind>
             <iconPacks:PackIconMaterialKind x:Key="AccountIcon">CreditCard</iconPacks:PackIconMaterialKind>
             <iconPacks:PackIconMaterialKind x:Key="AllAccountsIcon">CreditCardMultiple</iconPacks:PackIconMaterialKind>
@@ -40,18 +44,3 @@
         </ResourceDictionary>
     </Application.Resources>
 </Application>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

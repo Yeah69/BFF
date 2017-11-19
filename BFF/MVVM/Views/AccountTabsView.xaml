@@ -76,7 +76,7 @@
                             <iconPacks:PackIconMaterial Width="{StaticResource TabHeaderIconSize}"
                                                         Height="{StaticResource TabHeaderIconSize}"
                                                         Kind="{StaticResource AccountIcon}" />
-                            <TextBlock /> 
+                            <TextBlock />
                             <!--  Workaround: Without the TextBlock the underline of the Tabs would not fit anymore  -->
                         </StackPanel>
                     </DataTemplate>

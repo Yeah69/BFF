@@ -218,7 +218,7 @@
             <controls:Flyout Name="ParentTitFlyout"
                              IsModal="True"
                              IsOpen="{Binding ParentTitFlyoutOpen}"
-                             Position="Top"> 
+                             Position="Top">
                 <!--  todo lex  -->
                 <views:TitDataGrid AccountViewModel="{Binding ParentTitViewModel.Account}"
                                    ShowRowDetailsMode="Visible"

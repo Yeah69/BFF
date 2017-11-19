@@ -68,7 +68,7 @@
             </Style>
 
             <Style BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
-                <Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush8}" />
+                <Setter Property="AlternatingRowBackground" Value="{DynamicResource AlternatingRowBrush}" />
                 <Setter Property="AutoGenerateColumns" Value="False" />
                 <Setter Property="CanUserSortColumns" Value="False" />
                 <Setter Property="CanUserAddRows" Value="False" />
@@ -443,7 +443,7 @@
                                 </TextBlock.Text>
                                 <TextBlock.Foreground>
                                     <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumToSolidColorBrush}">
-                                        <Binding ElementName="LayoutRoot" Path="DataContext.AccountViewModel" /> 
+                                        <Binding ElementName="LayoutRoot" Path="DataContext.AccountViewModel" />
                                         <!--  todo: Make TransferViewModel aware of in which AccountViewModel it is inside  -->
                                         <Binding Path="FromAccount.Value" />
                                         <Binding Path="ToAccount.Value" />

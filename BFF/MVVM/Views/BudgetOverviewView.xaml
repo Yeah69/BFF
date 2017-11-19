@@ -25,7 +25,7 @@
                         <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
                     </Trigger>
                     <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                        <Setter Property="Background" Value="{DynamicResource GrayBrush8}" />
+                        <Setter Property="Background" Value="{DynamicResource AlternatingRowBrush}" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -102,23 +102,23 @@
             <userControls:MasterColumnSlaveColumns.MasterTemplate>
                 <DataTemplate>
                     <ListBox Margin="5"
-                                 Padding="5"
-                                 AlternationCount="2"
-                                 BorderBrush="{StaticResource AccentColorBrush}"
-                                 BorderThickness="1"
-                                 ItemTemplate="{StaticResource CategoryItemTemplate}"
-                                 ItemsSource="{Binding}"
-                                 ScrollViewer.VerticalScrollBarVisibility="Visible"
-                                 SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference BudgetOverview}}">
-                            <ListBox.ItemContainerStyle>
-                                <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Height" Value="25" />
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            <i:Interaction.Behaviors>
-                                <attachedBehaviors:ScrollViewerSync GroupName="BudgetOverview" />
-                            </i:Interaction.Behaviors>
-                        </ListBox>
+                             Padding="5"
+                             AlternationCount="2"
+                             BorderBrush="{StaticResource AccentColorBrush}"
+                             BorderThickness="1"
+                             ItemTemplate="{StaticResource CategoryItemTemplate}"
+                             ItemsSource="{Binding}"
+                             ScrollViewer.VerticalScrollBarVisibility="Visible"
+                             SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference BudgetOverview}}">
+                        <ListBox.ItemContainerStyle>
+                            <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Height" Value="25" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <i:Interaction.Behaviors>
+                            <attachedBehaviors:ScrollViewerSync GroupName="BudgetOverview" />
+                        </i:Interaction.Behaviors>
+                    </ListBox>
                 </DataTemplate>
             </userControls:MasterColumnSlaveColumns.MasterTemplate>
             <userControls:MasterColumnSlaveColumns.SlaveTemplate>
@@ -140,7 +140,6 @@
                                 <UniformGrid Columns="3">
                                     <TextBox Height="25"
                                              MinHeight="0"
-                                             Foreground="{Binding Budget.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                              Text="{Binding Budget.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                              TextAlignment="Right">
                                         <TextBox.Style>
@@ -153,19 +152,43 @@
                                                     <Trigger Property="IsFocused" Value="True">
                                                         <Setter Property="IsReadOnly" Value="False" />
                                                     </Trigger>
+                                                    <DataTrigger Binding="{Binding Budget.Value}" Value="0">
+                                                        <Setter Property="Foreground" Value="{DynamicResource OpaqueZeroBrush}" />
+                                                    </DataTrigger>
                                                 </Style.Triggers>
                                                 <Setter Property="IsReadOnly" Value="True" />
+                                                <Setter Property="Foreground" Value="{Binding Budget.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
                                             </Style>
                                         </TextBox.Style>
                                     </TextBox>
                                     <TextBlock VerticalAlignment="Center"
-                                               Foreground="{Binding Outflow.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding Outflow.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                               TextAlignment="Right" />
+                                               TextAlignment="Right">
+                                        <TextBlock.Style>
+                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Outflow.Value}" Value="0">
+                                                        <Setter Property="Foreground" Value="{DynamicResource OpaqueZeroBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                                <Setter Property="Foreground" Value="{Binding Outflow.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                     <TextBlock VerticalAlignment="Center"
-                                               Foreground="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                               TextAlignment="Right" />
+                                               TextAlignment="Right">
+                                        <TextBlock.Style>
+                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Balance.Value}" Value="0">
+                                                        <Setter Property="Foreground" Value="{DynamicResource OpaqueZeroBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                                <Setter Property="Foreground" Value="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                 </UniformGrid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
