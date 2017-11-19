@@ -36,13 +36,13 @@ namespace BFF.MVVM.Models.Native
             IncomeForThisMonth = incomeForThisMonth;
             BudgetEntries = new ObservableCollection<IBudgetEntry>(budgetEntries.OrderBy(be => be.Category, new CategoryComparer()));
 
-            BudgetedThisMonth = BudgetEntries.Sum(be => be.Budget);
+            BudgetedThisMonth = - BudgetEntries.Sum(be => be.Budget);
             Outflows = BudgetEntries.Sum(be => be.Outflow);
             Balance = BudgetEntries.Sum(be => be.Balance);
 
             AvailableToBudget = NotBudgetedInPreviousMonth +
                 OverspentInPreviousMonth +
-                IncomeForThisMonth -
+                IncomeForThisMonth +
                 BudgetedThisMonth;
         }
 
