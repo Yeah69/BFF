@@ -47,49 +47,74 @@
             </userControls:MasterColumnSlaveColumns.MasterTemplate>
             <userControls:MasterColumnSlaveColumns.SlaveTemplate>
                 <DataTemplate>
-                    <Border Margin="5"
-                            Padding="5"
-                            d:DataContext="{d:DesignInstance viewModels:BudgetMonthViewModel}"
-                            BorderBrush="{StaticResource AccentColorBrush}"
-                            BorderThickness="1">
-                        <StackPanel>
-                            <TextBlock Margin="0,0,0,5"
-                                       HorizontalAlignment="Center"
-                                       FontSize="25"
-                                       Text="{Binding Month.Value, StringFormat=MMM}" />
-                            <TextBlock Margin="0,0,0,5"
-                                       HorizontalAlignment="Center"
-                                       FontSize="10"
-                                       Text="{Binding Month.Value, StringFormat=yyyy}" />
-                            <UniformGrid Columns="2">
-                                <TextBlock Text="Not Budgeted" />
-                                <TextBlock Foreground="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                           Text="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                           TextAlignment="Right" />
-                                <TextBlock Text="Overspent" />
-                                <TextBlock Foreground="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                           Text="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                           TextAlignment="Right" />
-                                <TextBlock Text="Income" />
-                                <TextBlock Foreground="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                           Text="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                           TextAlignment="Right" />
-                                <TextBlock Text="Budgeted" />
+                    <StackPanel>
+                        <Border Margin="5"
+                                Padding="5"
+                                d:DataContext="{d:DesignInstance viewModels:BudgetMonthViewModel}"
+                                BorderBrush="{StaticResource AccentColorBrush}"
+                                BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Margin="0,0,0,5"
+                                           HorizontalAlignment="Center"
+                                           FontSize="25"
+                                           Text="{Binding Month.Value, StringFormat=MMM}" />
+                                <TextBlock Margin="0,0,0,5"
+                                           HorizontalAlignment="Center"
+                                           FontSize="10"
+                                           Text="{Binding Month.Value, StringFormat=yyyy}" />
+                                <UniformGrid Columns="2">
+                                    <TextBlock Text="Not Budgeted" />
+                                    <TextBlock Foreground="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Text="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               TextAlignment="Right" />
+                                    <TextBlock Text="Overspent" />
+                                    <TextBlock Foreground="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Text="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               TextAlignment="Right" />
+                                    <TextBlock Text="Income" />
+                                    <TextBlock Foreground="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Text="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               TextAlignment="Right" />
+                                    <TextBlock Text="Budgeted" />
+                                    <TextBlock Foreground="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Text="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               TextAlignment="Right" />
+                                </UniformGrid>
+                                <TextBlock Margin="0,5,0,0"
+                                           HorizontalAlignment="Center"
+                                           FontSize="25"
+                                           Foreground="{Binding AvailableToBudget.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                           Text="{Binding AvailableToBudget.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
+                                <TextBlock Margin="0,5,0,0"
+                                           HorizontalAlignment="Center"
+                                           FontSize="10"
+                                           Text="Available" />
+                            </StackPanel>
+                        </Border>
+                        <Border Margin="5"
+                                Padding="5"
+                                d:DataContext="{d:DesignInstance viewModels:BudgetMonthViewModel}"
+                                BorderBrush="{StaticResource AccentColorBrush}"
+                                BorderThickness="1">
+                            <UniformGrid Columns="3" Rows="2">
+                                <TextBlock Text="Budgeted"
+                                           TextAlignment="Right"  />
+                                <TextBlock Text="Outflow"
+                                           TextAlignment="Right"  />
+                                <TextBlock Text="Balance"
+                                           TextAlignment="Right"  />
                                 <TextBlock Foreground="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                           Text="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                           TextAlignment="Right" />
+                                               Text="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               TextAlignment="Right" />
+                                <TextBlock Foreground="{Binding Outflows.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Text="{Binding Outflows.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               TextAlignment="Right" />
+                                <TextBlock Foreground="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Text="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               TextAlignment="Right" />
                             </UniformGrid>
-                            <TextBlock Margin="0,5,0,0"
-                                       HorizontalAlignment="Center"
-                                       FontSize="25"
-                                       Foreground="{Binding AvailableToBudget.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                       Text="{Binding AvailableToBudget.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
-                            <TextBlock Margin="0,5,0,0"
-                                       HorizontalAlignment="Center"
-                                       FontSize="10"
-                                       Text="Available" />
-                        </StackPanel>
-                    </Border>
+                        </Border>
+                    </StackPanel>
                 </DataTemplate>
             </userControls:MasterColumnSlaveColumns.SlaveTemplate>
         </userControls:MasterColumnSlaveColumns>
