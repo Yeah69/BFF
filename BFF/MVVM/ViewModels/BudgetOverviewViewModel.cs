@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
@@ -10,6 +12,7 @@ using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Helpers;
 
 namespace BFF.MVVM.ViewModels
@@ -21,26 +24,17 @@ namespace BFF.MVVM.ViewModels
 
     public class BudgetOverviewViewModel : ObservableObject, IBudgetOverviewViewModel, IDisposable
     {
+        private static readonly int LastMonthIndex = MonthToIndex(DateTime.MaxValue);
+
         private readonly IBudgetMonthRepository _budgetMonthRepository;
         private readonly IBudgetEntryViewModelService _budgetEntryViewModelService;
-        private double _verticalOffset;
+        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
         private int _selectedIndex;
-        private int _currentMonthStartIndex;
         public IList<IBudgetMonthViewModel> BudgetMonths { get; }
 
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
 
         public IBudgetMonthViewModel SelectedBudgetMonth { get; }
-
-        public double VerticalOffset
-        {
-            get => _verticalOffset;
-            set
-            {
-                _verticalOffset = value;
-                OnPropertyChanged();
-            }
-        }
 
         public int SelectedIndex
         {
@@ -53,16 +47,11 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public int CurrentMonthStartIndex
-        {
-            get => _currentMonthStartIndex;
-            set
-            {
-                if (_currentMonthStartIndex == value) return;
-                _currentMonthStartIndex = value;
-                OnPropertyChanged();
-            }
-        }
+        public IReactiveProperty<int> CurrentMonthStartIndex { get; }
+
+        public ReactiveCommand IncreaseMonthStartIndex { get; }
+
+        public ReactiveCommand DecreaseMonthStartIndex { get; }
 
         public BudgetOverviewViewModel(
             IBudgetMonthRepository budgetMonthRepository, 
@@ -84,9 +73,14 @@ namespace BFF.MVVM.ViewModels
                     .ToReadOnlyReactiveCollection(categoryViewModelService.GetViewModel);
 
             BudgetMonths = CreateBudgetMonths();
-            int index = monthToIndex(DateTime.Now) - 6;
+            int index = MonthToIndex(DateTime.Now) - 1;
             SelectedBudgetMonth = BudgetMonths[index];
-            CurrentMonthStartIndex = index;
+            CurrentMonthStartIndex = new ReactiveProperty<int>(index);
+
+            IncreaseMonthStartIndex = CurrentMonthStartIndex.Select(i => i < LastMonthIndex - 1).ToReactiveCommand().AddTo(_compositeDisposable);
+            IncreaseMonthStartIndex.Subscribe(_ => CurrentMonthStartIndex.Value = CurrentMonthStartIndex.Value + 1).AddTo(_compositeDisposable);
+            DecreaseMonthStartIndex = CurrentMonthStartIndex.Select(i => i > 0).ToReactiveCommand().AddTo(_compositeDisposable);
+            DecreaseMonthStartIndex.Subscribe(_ => CurrentMonthStartIndex.Value = CurrentMonthStartIndex.Value - 1).AddTo(_compositeDisposable);
 
 
             Messenger.Default.Register<CultureMessage>(this, message =>
@@ -117,18 +111,18 @@ namespace BFF.MVVM.ViewModels
                     new RelayBasicSyncDataAccess<IBudgetMonthViewModel>(
                         (offset, pageSize) =>
                         {
-                            DateTime fromMonth = indexToMonth(offset);
-                            DateTime toMonth = indexToMonth(offset + pageSize - 1);
+                            DateTime fromMonth = IndexToMonth(offset);
+                            DateTime toMonth = IndexToMonth(offset + pageSize - 1);
 
                             return _budgetMonthRepository.Find(fromMonth, toMonth, null)
                                 .Select(bm => (IBudgetMonthViewModel) new BudgetMonthViewModel(bm, _budgetEntryViewModelService))
                                 .ToArray();
                         },
-                        () => 119988),
+                        () => LastMonthIndex),
                     6);
         }
 
-        private DateTime indexToMonth(int index)
+        private static DateTime IndexToMonth(int index)
         {
             int year = index / 12 + 1;
             int month = index % 12 + 1;
@@ -136,13 +130,14 @@ namespace BFF.MVVM.ViewModels
             return new DateTime(year, month, 1);
         }
 
-        private int monthToIndex(DateTime month)
+        private static int MonthToIndex(DateTime month)
         {
             return (month.Year - 1) * 12 + month.Month - 1;
         }
 
         public void Dispose()
         {
+            _compositeDisposable.Dispose();
             Messenger.Default.Unregister<CultureMessage>(this);
         }
     }

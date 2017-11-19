@@ -4,6 +4,7 @@
              xmlns:attachedBehaviors="clr-namespace:BFF.MVVM.AttachedBehaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:userControls="clr-namespace:BFF.MVVM.UserControls"
@@ -41,9 +42,24 @@
                                                ItemsSource="{Binding BudgetMonths}"
                                                MasterContent="{x:Null}"
                                                SlaveCount="5"
-                                               StartIndex="{Binding CurrentMonthStartIndex}">
+                                               StartIndex="{Binding CurrentMonthStartIndex.Value}">
             <userControls:MasterColumnSlaveColumns.MasterTemplate>
-                <DataTemplate />
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Orientation="Horizontal">
+                        <Button Margin="5" Command="{Binding DataContext.DecreaseMonthStartIndex, Source={x:Reference BudgetOverview}}">
+                            <iconPacks:PackIconModern Width="{StaticResource IconSize}"
+                                                      Height="{StaticResource IconSize}"
+                                                      Kind="ChevronLeft" />
+                        </Button>
+                        <Button Margin="5" Command="{Binding DataContext.IncreaseMonthStartIndex, Source={x:Reference BudgetOverview}}">
+                            <iconPacks:PackIconModern Width="{StaticResource IconSize}"
+                                                      Height="{StaticResource IconSize}"
+                                                      Kind="ChevronRight" />
+                        </Button>
+                    </StackPanel>
+                </DataTemplate>
             </userControls:MasterColumnSlaveColumns.MasterTemplate>
             <userControls:MasterColumnSlaveColumns.SlaveTemplate>
                 <DataTemplate>
@@ -134,7 +150,7 @@
                                                ItemsSource="{Binding BudgetMonths}"
                                                MasterContent="{Binding Categories}"
                                                SlaveCount="5"
-                                               StartIndex="{Binding CurrentMonthStartIndex}">
+                                               StartIndex="{Binding CurrentMonthStartIndex.Value}">
             <userControls:MasterColumnSlaveColumns.MasterTemplate>
                 <DataTemplate>
                     <ListBox Margin="5"
