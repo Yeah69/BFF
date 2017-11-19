@@ -129,6 +129,17 @@ namespace BFF.MVVM
                         ? TransactionBrush 
                         : IncomeBrush);
 
+        /// <summary>
+        /// True if value is current month, otherwise false.
+        /// </summary>
+        public static readonly IValueConverter IsCurrentMonth =
+            ValueConverter.Create<DateTime, bool>(
+                e =>
+                {
+                    var now = DateTime.Now;
+                    return e.Value.Month == now.Month && e.Value.Year == now.Year;
+                });
+
         //Multi Value Converters
 
         /// <summary>

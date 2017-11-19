@@ -54,13 +54,27 @@
                                 BorderBrush="{StaticResource AccentColorBrush}"
                                 BorderThickness="1">
                             <StackPanel>
+                                <StackPanel.Resources>
+                                    <Style x:Key="CurrentMonthMarking"
+                                           BasedOn="{StaticResource {x:Type TextBlock}}"
+                                           TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Month.Value, Converter={x:Static mvvm:Converters.IsCurrentMonth}}" Value="True">
+                                                <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                        <Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
+                                    </Style>
+                                </StackPanel.Resources>
                                 <TextBlock Margin="0,0,0,5"
                                            HorizontalAlignment="Center"
                                            FontSize="25"
+                                           Style="{StaticResource CurrentMonthMarking}"
                                            Text="{Binding Month.Value, StringFormat=MMM}" />
                                 <TextBlock Margin="0,0,0,5"
                                            HorizontalAlignment="Center"
                                            FontSize="10"
+                                           Style="{StaticResource CurrentMonthMarking}"
                                            Text="{Binding Month.Value, StringFormat=yyyy}" />
                                 <UniformGrid Columns="2">
                                     <TextBlock Text="Not Budgeted" />
@@ -97,21 +111,18 @@
                                 BorderBrush="{StaticResource AccentColorBrush}"
                                 BorderThickness="1">
                             <UniformGrid Columns="3" Rows="2">
-                                <TextBlock Text="Budgeted"
-                                           TextAlignment="Right"  />
-                                <TextBlock Text="Outflow"
-                                           TextAlignment="Right"  />
-                                <TextBlock Text="Balance"
-                                           TextAlignment="Right"  />
+                                <TextBlock Text="Budgeted" TextAlignment="Right" />
+                                <TextBlock Text="Outflow" TextAlignment="Right" />
+                                <TextBlock Text="Balance" TextAlignment="Right" />
                                 <TextBlock Foreground="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                               Text="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                               TextAlignment="Right" />
+                                           Text="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                           TextAlignment="Right" />
                                 <TextBlock Foreground="{Binding Outflows.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                               Text="{Binding Outflows.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                               TextAlignment="Right" />
+                                           Text="{Binding Outflows.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                           TextAlignment="Right" />
                                 <TextBlock Foreground="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                               Text="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                               TextAlignment="Right" />
+                                           Text="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                           TextAlignment="Right" />
                             </UniformGrid>
                         </Border>
                     </StackPanel>
