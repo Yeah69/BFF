@@ -219,7 +219,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                     fromMonth.Month,
                     toMonth.Year,
                     toMonth.Month,
-                    lastSkippedBalance);
+                    Math.Max(0L, lastSkippedBalance));
             }
             return complementedResponses;
         }
