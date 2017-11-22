@@ -18,7 +18,7 @@ namespace BFF.DB.Dapper
             IEnumerable<ISubIncome> SubIncomesFetcher(long parentId, DbConnection connection) => SubIncomeRepository.GetChildrenOf(parentId, connection);
 
             AccountRepository = new AccountRepository(provideConnection);
-            BudgetEntryRepository = new BudgetEntryRepository(provideConnection);
+            BudgetEntryRepository = new BudgetEntryRepository(provideConnection, CategoryFetcher);
             CategoryRepository = new CategoryRepository(provideConnection);
             DbSettingRepository = new DbSettingRepository(provideConnection);
             IncomeRepository = new IncomeRepository(provideConnection, AccountFetcher, CategoryFetcher, PayeeFetcher);
