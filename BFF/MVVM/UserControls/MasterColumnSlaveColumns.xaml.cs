@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,7 +43,7 @@ namespace BFF.MVVM.UserControls
             nameof(MasterContent),
             typeof(object),
             typeof(MasterColumnSlaveColumns),
-            new PropertyMetadata(default, PropertyChangedCallback));
+            new PropertyMetadata(default, OnMasterContentChanged));
 
         public object MasterContent
         {
@@ -137,7 +138,19 @@ namespace BFF.MVVM.UserControls
                 var list = args.NewValue as IList ?? new List<object>();
                 int startIndex = @this.StartIndex;
 
-                FillContent(@this, list, startIndex);
+                for (int i = 1; i < @this.UniformGrid.Children.Count; i++)
+                {
+                    int index = startIndex + i;
+
+                    @this.UniformGrid.Children.Insert(i, new ContentControl
+                    {
+                        ContentTemplate = @this.SlaveTemplate,
+                        Content = list.Count >= index
+                            ? list[index - 1]
+                            : null
+                    });
+                    @this.UniformGrid.Children.RemoveAt(@this.UniformGrid.Children.Count - 1);
+                }
             }
         }
 
@@ -147,8 +160,58 @@ namespace BFF.MVVM.UserControls
             {
                 var list = @this.ItemsSource ?? new List<object>();
                 int startIndex = args.NewValue is int i1 ? i1 : 0;
+                int oldStartIndex = args.OldValue is int i2 ? i2 : 0;
 
-                FillContent(@this, list, startIndex);
+                int diff = oldStartIndex - startIndex;
+
+                if (Math.Abs(diff) >= @this.SlaveCount)
+                {
+                    for (int i = 1; i < @this.UniformGrid.Children.Count; i++)
+                    {
+                        int index = startIndex + i;
+
+                        @this.UniformGrid.Children.Insert(i, new ContentControl
+                        {
+                            ContentTemplate = @this.SlaveTemplate,
+                            Content = list.Count > index
+                                ? list[index - 1]
+                                : null
+                        });
+                        @this.UniformGrid.Children.RemoveAt(@this.UniformGrid.Children.Count - 1);
+                    }
+                }
+                else if (diff > 0)
+                {
+                    for (int i = diff - 1 ; i >= 0; i--)
+                    {
+                        int index = startIndex;
+                        @this.UniformGrid.Children.RemoveAt(@this.UniformGrid.Children.Count - 1);
+                        @this.UniformGrid.Children.Insert(1, new ContentControl
+                        {
+                            ContentTemplate = @this.SlaveTemplate,
+                            Content = list.Count > index
+                                ? list[index]
+                                : null
+                        });
+                    }
+                }
+                else if (diff < 0)
+                {
+                    for (int i = diff; i < 0; i++)
+                    {
+                        int index = startIndex + @this.SlaveCount + i;
+                        @this.UniformGrid.Children.RemoveAt(1);
+                        @this.UniformGrid.Children.Insert(
+                            @this.UniformGrid.Children.Count, 
+                            new ContentControl
+                            {
+                                ContentTemplate = @this.SlaveTemplate,
+                                Content = list.Count > index
+                                    ? list[index]
+                                    : null
+                            });
+                    }
+                }
             }
         }
 
@@ -156,18 +219,25 @@ namespace BFF.MVVM.UserControls
         {
             if (sender is MasterColumnSlaveColumns @this)
             {
-                int oldValue = (int)args.OldValue;
+                int oldValue = @this.UniformGrid.Children.Count - 1;
                 int newValue = (int)args.NewValue;
+                var list = @this.ItemsSource ?? new List<object>();
+
+                @this.UniformGrid.Columns = newValue + 1;
 
                 if (newValue - oldValue > 0)
                 {
-                    int diff = newValue - oldValue + 1;
+                    int diff = newValue - oldValue;
                     for (int i = 0; i < diff; i++)
                     {
-                        @this.UniformGrid.Children.Add(
+                        int index = @this.StartIndex + oldValue + i;
+                        @this.UniformGrid.Children.Insert(@this.UniformGrid.Children.Count,
                             new ContentControl
                             {
-                                ContentTemplate = @this.SlaveTemplate
+                                ContentTemplate = @this.SlaveTemplate,
+                                Content = list.Count >= index
+                                    ? list[index]
+                                    : null
                             });
                     }
                 }
@@ -180,33 +250,16 @@ namespace BFF.MVVM.UserControls
                 }
 
                 @this.UniformGrid.Columns = newValue + 1;
-
-                FillContent(@this, @this.ItemsSource ?? new List<object>(), @this.StartIndex);
             }
         }
 
-        private static void PropertyChangedCallback(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        private static void OnMasterContentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
             if (sender is MasterColumnSlaveColumns @this && 
                 @this.UniformGrid.Children.Count > 0 &&
                 @this.UniformGrid.Children[0] is ContentControl masterContentControl)
             {
                 masterContentControl.Content = args.NewValue;
-            }
-        }
-
-        private static void FillContent(MasterColumnSlaveColumns @this, IList list, int startIndex)
-        {
-            for (int i = 1; i < @this.UniformGrid.Children.Count; i++)
-            {
-                if (@this.UniformGrid.Children[i] is ContentControl contentControl)
-                {
-                    int index = startIndex + i;
-                    contentControl.Content =
-                        list.Count >= index
-                            ? list[index - 1]
-                            : null;
-                }
             }
         }
     }
