@@ -6,55 +6,36 @@ using System.Windows.Controls;
 
 namespace BFF.MVVM.UserControls
 {
-    public partial class MasterColumnSlaveColumns
+    public partial class UniformList
     {
-
-        public static readonly DependencyProperty MasterTemplateProperty = DependencyProperty.Register(
-            nameof(MasterTemplate),
+        public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
+            nameof(ItemTemplate),
             typeof(DataTemplate),
-            typeof(MasterColumnSlaveColumns),
-            new PropertyMetadata(default, OnMasterTemplateChanged));
-
-        public static readonly DependencyProperty SlaveTemplateProperty = DependencyProperty.Register(
-            nameof(SlaveTemplate),
-            typeof(DataTemplate),
-            typeof(MasterColumnSlaveColumns),
+            typeof(UniformList),
             new PropertyMetadata(default, OnSlaveTemplateChanged));
 
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
             nameof(ItemsSource),
             typeof(IList),
-            typeof(MasterColumnSlaveColumns),
+            typeof(UniformList),
             new PropertyMetadata(default, OnItemsSourceChanged));
 
         public static readonly DependencyProperty StartIndexProperty = DependencyProperty.Register(
             nameof(StartIndex),
             typeof(int),
-            typeof(MasterColumnSlaveColumns),
+            typeof(UniformList),
             new PropertyMetadata(69, OnStartIndexChanged));
 
-        public static readonly DependencyProperty SlaveCountProperty = DependencyProperty.Register(
-            nameof(SlaveCount),
+        public static readonly DependencyProperty DisplayCountProperty = DependencyProperty.Register(
+            nameof(DisplayCount),
             typeof(int),
-            typeof(MasterColumnSlaveColumns),
+            typeof(UniformList),
             new PropertyMetadata(1, OnSlaveCountChanged));
 
-        public static readonly DependencyProperty MasterContentProperty = DependencyProperty.Register(
-            nameof(MasterContent),
-            typeof(object),
-            typeof(MasterColumnSlaveColumns),
-            new PropertyMetadata(default, OnMasterContentChanged));
-
-        public object MasterContent
+        public int DisplayCount
         {
-            get => GetValue(MasterContentProperty);
-            set => SetValue(MasterContentProperty, value);
-        }
-
-        public int SlaveCount
-        {
-            get => (int) GetValue(SlaveCountProperty);
-            set => SetValue(SlaveCountProperty, value);
+            get => (int) GetValue(DisplayCountProperty);
+            set => SetValue(DisplayCountProperty, value);
         }
 
         public int StartIndex
@@ -69,31 +50,19 @@ namespace BFF.MVVM.UserControls
             set => SetValue(ItemsSourceProperty, value);
         }
 
-        public DataTemplate SlaveTemplate
+        public DataTemplate ItemTemplate
         {
-            get => (DataTemplate) GetValue(SlaveTemplateProperty);
-            set => SetValue(SlaveTemplateProperty, value);
+            get => (DataTemplate) GetValue(ItemTemplateProperty);
+            set => SetValue(ItemTemplateProperty, value);
         }
 
-        public DataTemplate MasterTemplate
-        {
-            get => (DataTemplate) GetValue(MasterTemplateProperty);
-            set => SetValue(MasterTemplateProperty, value);
-        }
-
-        public MasterColumnSlaveColumns()
+        public UniformList()
         {
             InitializeComponent();
 
-            UniformGrid.Children.Add(new ContentControl
-            {
-                Content = MasterContent,
-                ContentTemplate = MasterTemplate
-            });
-
             if (ItemsSource != null)
             {
-                for (int i = 0; i < SlaveCount; i++)
+                for (int i = 0; i < DisplayCount; i++)
                 {
                     UniformGrid.Children.Add(new ContentControl
                     {
@@ -101,27 +70,17 @@ namespace BFF.MVVM.UserControls
                             ItemsSource.Count > StartIndex + i
                                 ? ItemsSource[StartIndex + i]
                                 : null,
-                        ContentTemplate = SlaveTemplate
+                        ContentTemplate = ItemTemplate
                     });
                 }
             }
         }
 
-        private static void OnMasterTemplateChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
-        {
-            if (sender is MasterColumnSlaveColumns @this &&
-                @this.UniformGrid.Children.Count > 0 &&
-                @this.UniformGrid.Children[0] is ContentControl masterContentControl)
-            {
-                masterContentControl.ContentTemplate = args.NewValue as DataTemplate;
-            }
-        }
-
         private static void OnSlaveTemplateChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            if (sender is MasterColumnSlaveColumns @this && @this.UniformGrid.Children.Count > 1)
+            if (sender is UniformList @this && @this.UniformGrid.Children.Count > 1)
             {
-                for (int i = 1; i < @this.UniformGrid.Children.Count; i++)
+                for (int i = 0; i < @this.UniformGrid.Children.Count; i++)
                 {
                     if (@this.UniformGrid.Children[i] is ContentControl contentControl)
                     {
@@ -133,20 +92,20 @@ namespace BFF.MVVM.UserControls
 
         private static void OnItemsSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            if (sender is MasterColumnSlaveColumns @this)
+            if (sender is UniformList @this)
             {
                 var list = args.NewValue as IList ?? new List<object>();
                 int startIndex = @this.StartIndex;
 
-                for (int i = 1; i < @this.UniformGrid.Children.Count; i++)
+                for (int i = 0; i < @this.UniformGrid.Children.Count; i++)
                 {
                     int index = startIndex + i;
 
                     @this.UniformGrid.Children.Insert(i, new ContentControl
                     {
-                        ContentTemplate = @this.SlaveTemplate,
-                        Content = list.Count >= index
-                            ? list[index - 1]
+                        ContentTemplate = @this.ItemTemplate,
+                        Content = list.Count > index
+                            ? list[index]
                             : null
                     });
                     @this.UniformGrid.Children.RemoveAt(@this.UniformGrid.Children.Count - 1);
@@ -156,7 +115,7 @@ namespace BFF.MVVM.UserControls
 
         private static void OnStartIndexChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            if (sender is MasterColumnSlaveColumns @this)
+            if (sender is UniformList @this)
             {
                 var list = @this.ItemsSource ?? new List<object>();
                 int startIndex = args.NewValue is int i1 ? i1 : 0;
@@ -164,17 +123,17 @@ namespace BFF.MVVM.UserControls
 
                 int diff = oldStartIndex - startIndex;
 
-                if (Math.Abs(diff) >= @this.SlaveCount)
+                if (Math.Abs(diff) >= @this.DisplayCount)
                 {
-                    for (int i = 1; i < @this.UniformGrid.Children.Count; i++)
+                    for (int i = 0; i < @this.UniformGrid.Children.Count; i++)
                     {
                         int index = startIndex + i;
 
                         @this.UniformGrid.Children.Insert(i, new ContentControl
                         {
-                            ContentTemplate = @this.SlaveTemplate,
+                            ContentTemplate = @this.ItemTemplate,
                             Content = list.Count > index
-                                ? list[index - 1]
+                                ? list[index]
                                 : null
                         });
                         @this.UniformGrid.Children.RemoveAt(@this.UniformGrid.Children.Count - 1);
@@ -186,9 +145,9 @@ namespace BFF.MVVM.UserControls
                     {
                         int index = startIndex;
                         @this.UniformGrid.Children.RemoveAt(@this.UniformGrid.Children.Count - 1);
-                        @this.UniformGrid.Children.Insert(1, new ContentControl
+                        @this.UniformGrid.Children.Insert(0, new ContentControl
                         {
-                            ContentTemplate = @this.SlaveTemplate,
+                            ContentTemplate = @this.ItemTemplate,
                             Content = list.Count > index
                                 ? list[index]
                                 : null
@@ -199,13 +158,13 @@ namespace BFF.MVVM.UserControls
                 {
                     for (int i = diff; i < 0; i++)
                     {
-                        int index = startIndex + @this.SlaveCount + i;
-                        @this.UniformGrid.Children.RemoveAt(1);
+                        int index = startIndex + @this.DisplayCount + i;
+                        @this.UniformGrid.Children.RemoveAt(0);
                         @this.UniformGrid.Children.Insert(
                             @this.UniformGrid.Children.Count, 
                             new ContentControl
                             {
-                                ContentTemplate = @this.SlaveTemplate,
+                                ContentTemplate = @this.ItemTemplate,
                                 Content = list.Count > index
                                     ? list[index]
                                     : null
@@ -217,13 +176,13 @@ namespace BFF.MVVM.UserControls
 
         private static void OnSlaveCountChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
         {
-            if (sender is MasterColumnSlaveColumns @this)
+            if (sender is UniformList @this)
             {
-                int oldValue = @this.UniformGrid.Children.Count - 1;
+                int oldValue = @this.UniformGrid.Children.Count;
                 int newValue = (int)args.NewValue;
                 var list = @this.ItemsSource ?? new List<object>();
 
-                @this.UniformGrid.Columns = newValue + 1;
+                @this.UniformGrid.Columns = newValue;
 
                 if (newValue - oldValue > 0)
                 {
@@ -234,8 +193,8 @@ namespace BFF.MVVM.UserControls
                         @this.UniformGrid.Children.Insert(@this.UniformGrid.Children.Count,
                             new ContentControl
                             {
-                                ContentTemplate = @this.SlaveTemplate,
-                                Content = list.Count >= index
+                                ContentTemplate = @this.ItemTemplate,
+                                Content = list.Count > index
                                     ? list[index]
                                     : null
                             });
@@ -248,18 +207,6 @@ namespace BFF.MVVM.UserControls
                         (@this.UniformGrid.Children.Count - diff, 
                         diff);
                 }
-
-                @this.UniformGrid.Columns = newValue + 1;
-            }
-        }
-
-        private static void OnMasterContentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
-        {
-            if (sender is MasterColumnSlaveColumns @this && 
-                @this.UniformGrid.Children.Count > 0 &&
-                @this.UniformGrid.Children[0] is ContentControl masterContentControl)
-            {
-                masterContentControl.Content = args.NewValue;
             }
         }
     }

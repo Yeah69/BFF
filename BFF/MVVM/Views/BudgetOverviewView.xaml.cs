@@ -16,8 +16,8 @@ namespace BFF.MVVM.Views
         {
             void UpdateSlaveCount(int newCount)
             {
-                BudgetEntriesData.SlaveCount = newCount;
-                BudgetMonthHeaders.SlaveCount = newCount;
+                BudgetEntriesData.DisplayCount = newCount;
+                BudgetMonthHeaders.DisplayCount = newCount;
                 e.Handled = true;
             }
 

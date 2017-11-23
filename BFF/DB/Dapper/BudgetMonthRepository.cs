@@ -75,7 +75,7 @@ $@"SELECT Sum(Sum) as Sum FROM
                 fromMonth.Month == 1 ? fromMonth.Year - 1 : fromMonth.Year,
                 fromMonth.Month == 1 ? 12 : fromMonth.Month - 1,
                 1);
-            return ConnectionHelper.QueryOnExistingOrNewConnection<IBudgetMonth>(c =>
+            return ConnectionHelper.QueryOnExistingOrNewConnection(c =>
             {
                 var groupings = _categoryRepository
                     .All

@@ -17,30 +17,50 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <SolidColorBrush x:Key="TransactionBrush" Color="DarkOrange" />
-            <SolidColorBrush x:Key="IncomeBrush" Color="LimeGreen" />
-            <SolidColorBrush x:Key="TransferBrush" Color="RoyalBlue" />
-            <SolidColorBrush x:Key="NeutralBrush" Color="DimGray" />
+            <SolidColorBrush x:Key="TransactionBrush"
+                             Color="DarkOrange" />
+            <SolidColorBrush x:Key="IncomeBrush"
+                             Color="LimeGreen" />
+            <SolidColorBrush x:Key="TransferBrush"
+                             Color="RoyalBlue" />
+            <SolidColorBrush x:Key="NeutralBrush"
+                             Color="DimGray" />
 
             <!--  Following Brushes are configured in code-behind  -->
             <SolidColorBrush x:Key="AlternatingRowBrush" />
             <SolidColorBrush x:Key="OpaqueZeroBrush" />
 
-            <iconPacks:PackIconMaterialKind x:Key="AddIcon">PlusOne</iconPacks:PackIconMaterialKind>
-            <iconPacks:PackIconMaterialKind x:Key="AccountIcon">CreditCard</iconPacks:PackIconMaterialKind>
-            <iconPacks:PackIconMaterialKind x:Key="AllAccountsIcon">CreditCardMultiple</iconPacks:PackIconMaterialKind>
-            <iconPacks:PackIconMaterialKind x:Key="SettingsIcon">Settings</iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="AddIcon">
+                PlusOne
+            </iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="AccountIcon">
+                CreditCard
+            </iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="AllAccountsIcon">
+                CreditCardMultiple
+            </iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="SettingsIcon">
+                Settings
+            </iconPacks:PackIconMaterialKind>
 
-            <system:Double x:Key="IconSize">20.0</system:Double>
-            <system:Double x:Key="TabHeaderIconSize">30.0</system:Double>
-            <system:Double x:Key="WindowCommandIconSize">15.0</system:Double>
+            <system:Double x:Key="IconSize">
+                20.0
+            </system:Double>
+            <system:Double x:Key="TabHeaderIconSize">
+                30.0
+            </system:Double>
+            <system:Double x:Key="WindowCommandIconSize">
+                15.0
+            </system:Double>
 
             <Style x:Key="BffGeneralButtonStyle"
                    BasedOn="{StaticResource SquareButtonStyle}"
                    TargetType="{x:Type Button}">
-                <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
+                <Setter Property="controls:ControlsHelper.ContentCharacterCasing"
+                        Value="Normal" />
             </Style>
-            <Style BasedOn="{StaticResource BffGeneralButtonStyle}" TargetType="{x:Type Button}" />
+            <Style BasedOn="{StaticResource BffGeneralButtonStyle}"
+                   TargetType="{x:Type Button}" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

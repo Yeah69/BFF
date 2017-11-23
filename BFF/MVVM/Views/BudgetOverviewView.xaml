@@ -20,13 +20,18 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/MVVM/Resources/CategoryTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
+            <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
+                   TargetType="{x:Type ListBoxItem}">
                 <Style.Triggers>
-                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                        <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
+                    <Trigger Property="ItemsControl.AlternationIndex"
+                             Value="0">
+                        <Setter Property="Background"
+                                Value="{DynamicResource WhiteBrush}" />
                     </Trigger>
-                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                        <Setter Property="Background" Value="{DynamicResource AlternatingRowBrush}" />
+                    <Trigger Property="ItemsControl.AlternationIndex"
+                             Value="1">
+                        <Setter Property="Background"
+                                Value="{DynamicResource AlternatingRowBrush}" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -37,37 +42,66 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <userControls:MasterColumnSlaveColumns x:Name="BudgetMonthHeaders"
-                                               Grid.Row="0"
-                                               ItemsSource="{Binding BudgetMonths}"
-                                               MasterContent="{x:Null}"
-                                               SlaveCount="5"
-                                               StartIndex="{Binding CurrentMonthStartIndex.Value}">
-            <userControls:MasterColumnSlaveColumns.MasterTemplate>
-                <DataTemplate>
-                    <StackPanel HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Orientation="Horizontal">
-                        <Button Margin="5" Command="{Binding DataContext.DecreaseMonthStartIndex, Source={x:Reference BudgetOverview}}">
-                            <iconPacks:PackIconModern Width="{StaticResource IconSize}"
-                                                      Height="{StaticResource IconSize}"
-                                                      Kind="ChevronLeft" />
-                        </Button>
-                        <Button Margin="5" Command="{Binding DataContext.IncreaseMonthStartIndex, Source={x:Reference BudgetOverview}}">
-                            <iconPacks:PackIconModern Width="{StaticResource IconSize}"
-                                                      Height="{StaticResource IconSize}"
-                                                      Kind="ChevronRight" />
-                        </Button>
-                    </StackPanel>
-                </DataTemplate>
-            </userControls:MasterColumnSlaveColumns.MasterTemplate>
-            <userControls:MasterColumnSlaveColumns.SlaveTemplate>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0"
+                    Grid.Column="0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+            <Button Margin="5"
+                    HorizontalAlignment="Right"
+                    Command="{Binding DecreaseMonthStartIndex}">
+                <iconPacks:PackIconModern Width="{StaticResource IconSize}"
+                                          Height="{StaticResource IconSize}"
+                                          Kind="ChevronLeft" />
+            </Button>
+            <Button Margin="5"
+                    HorizontalAlignment="Right"
+                    Command="{Binding IncreaseMonthStartIndex}">
+                <iconPacks:PackIconModern Width="{StaticResource IconSize}"
+                                          Height="{StaticResource IconSize}"
+                                          Kind="ChevronRight" />
+            </Button>
+        </StackPanel>
+        <GridSplitter Grid.Row="0"
+                      Grid.RowSpan="2"
+                      Grid.Column="1"
+                      Width="5"
+                      Margin="0,5"
+                      ResizeBehavior="PreviousAndNext"
+                      ResizeDirection="Columns">
+            <GridSplitter.Style>
+                <Style BasedOn="{StaticResource {x:Type GridSplitter}}"
+                       TargetType="{x:Type GridSplitter}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    Value="{DynamicResource AccentColorBrush}" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter Property="Background"
+                            Value="Transparent" />
+                </Style>
+            </GridSplitter.Style>
+        </GridSplitter>
+        <userControls:UniformList x:Name="BudgetMonthHeaders"
+                                  Grid.Row="0"
+                                  Grid.Column="2"
+                                  DisplayCount="5"
+                                  ItemsSource="{Binding BudgetMonths}"
+                                  StartIndex="{Binding CurrentMonthStartIndex.Value}">
+            <userControls:UniformList.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <Border Margin="5"
                                 Padding="5"
                                 d:DataContext="{d:DesignInstance viewModels:BudgetMonthViewModel}"
-                                BorderBrush="{StaticResource AccentColorBrush}"
+                                BorderBrush="{DynamicResource AccentColorBrush}"
                                 BorderThickness="1">
                             <StackPanel>
                                 <StackPanel.Resources>
@@ -75,11 +109,14 @@
                                            BasedOn="{StaticResource {x:Type TextBlock}}"
                                            TargetType="{x:Type TextBlock}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Month.Value, Converter={x:Static mvvm:Converters.IsCurrentMonth}}" Value="True">
-                                                <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                                            <DataTrigger Binding="{Binding Month.Value, Converter={x:Static mvvm:Converters.IsCurrentMonth}}"
+                                                         Value="True">
+                                                <Setter Property="Foreground"
+                                                        Value="{DynamicResource AccentColorBrush}" />
                                             </DataTrigger>
                                         </Style.Triggers>
-                                        <Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
+                                        <Setter Property="Foreground"
+                                                Value="{DynamicResource BlackBrush}" />
                                     </Style>
                                 </StackPanel.Resources>
                                 <TextBlock Margin="0,0,0,5"
@@ -124,12 +161,16 @@
                         <Border Margin="5"
                                 Padding="5"
                                 d:DataContext="{d:DesignInstance viewModels:BudgetMonthViewModel}"
-                                BorderBrush="{StaticResource AccentColorBrush}"
+                                BorderBrush="{DynamicResource AccentColorBrush}"
                                 BorderThickness="1">
-                            <UniformGrid Columns="3" Rows="2">
-                                <TextBlock Text="Budgeted" TextAlignment="Right" />
-                                <TextBlock Text="Outflow" TextAlignment="Right" />
-                                <TextBlock Text="Balance" TextAlignment="Right" />
+                            <UniformGrid Columns="3"
+                                         Rows="2">
+                                <TextBlock Text="Budgeted"
+                                           TextAlignment="Right" />
+                                <TextBlock Text="Outflow"
+                                           TextAlignment="Right" />
+                                <TextBlock Text="Balance"
+                                           TextAlignment="Right" />
                                 <TextBlock Foreground="{Binding BudgetedThisMonthPositive.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                            Text="{Binding BudgetedThisMonthPositive.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                            TextAlignment="Right" />
@@ -143,43 +184,38 @@
                         </Border>
                     </StackPanel>
                 </DataTemplate>
-            </userControls:MasterColumnSlaveColumns.SlaveTemplate>
-        </userControls:MasterColumnSlaveColumns>
-        <userControls:MasterColumnSlaveColumns x:Name="BudgetEntriesData"
-                                               Grid.Row="1"
-                                               ItemsSource="{Binding BudgetMonths}"
-                                               MasterContent="{Binding Categories}"
-                                               SlaveCount="5"
-                                               StartIndex="{Binding CurrentMonthStartIndex.Value}">
-            <userControls:MasterColumnSlaveColumns.MasterTemplate>
-                <DataTemplate>
-                    <ListBox Margin="5"
-                             Padding="5"
-                             AlternationCount="2"
-                             BorderBrush="{StaticResource AccentColorBrush}"
-                             BorderThickness="1"
-                             ItemTemplate="{StaticResource CategoryItemTemplate}"
-                             ItemsSource="{Binding}"
-                             ScrollViewer.VerticalScrollBarVisibility="Visible"
-                             SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference BudgetOverview}}">
-                        <ListBox.ItemContainerStyle>
-                            <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
-                                <Setter Property="Height" Value="25" />
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <i:Interaction.Behaviors>
-                            <attachedBehaviors:ScrollViewerSync GroupName="BudgetOverview" />
-                        </i:Interaction.Behaviors>
-                    </ListBox>
-                </DataTemplate>
-            </userControls:MasterColumnSlaveColumns.MasterTemplate>
-            <userControls:MasterColumnSlaveColumns.SlaveTemplate>
+            </userControls:UniformList.ItemTemplate>
+        </userControls:UniformList>
+        <ListBox Grid.Row="1"
+                 Grid.Column="0"
+                 Margin="5"
+                 Padding="5"
+                 HorizontalAlignment="Stretch"
+                 AlternationCount="2"
+                 BorderBrush="{DynamicResource AccentColorBrush}"
+                 BorderThickness="1"
+                 ItemTemplate="{StaticResource CategoryItemTemplate}"
+                 ItemsSource="{Binding Categories}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                 SelectedIndex="{Binding SelectedIndex}">
+            <i:Interaction.Behaviors>
+                <attachedBehaviors:ScrollViewerSync GroupName="BudgetOverview" />
+            </i:Interaction.Behaviors>
+        </ListBox>
+        <userControls:UniformList x:Name="BudgetEntriesData"
+                                  Grid.Row="1"
+                                  Grid.Column="2"
+                                  DisplayCount="5"
+                                  ItemsSource="{Binding BudgetMonths}"
+                                  StartIndex="{Binding CurrentMonthStartIndex.Value}">
+            <userControls:UniformList.ItemTemplate>
                 <DataTemplate>
                     <ListBox Margin="5"
                              Padding="5"
                              d:DataContext="{d:DesignInstance viewModels:BudgetMonthViewModel}"
                              AlternationCount="2"
-                             BorderBrush="{StaticResource AccentColorBrush}"
+                             BorderBrush="{DynamicResource AccentColorBrush}"
                              BorderThickness="1"
                              ItemsSource="{Binding BudgetEntries}"
                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
@@ -195,21 +231,31 @@
                                              Text="{Binding Budget.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                              TextAlignment="Right">
                                         <TextBox.Style>
-                                            <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
+                                            <Style BasedOn="{StaticResource {x:Type TextBox}}"
+                                                   TargetType="{x:Type TextBox}">
                                                 <Style.Triggers>
-                                                    <Trigger Property="IsReadOnly" Value="True">
-                                                        <Setter Property="BorderBrush" Value="Transparent" />
-                                                        <Setter Property="Background" Value="Transparent" />
+                                                    <Trigger Property="IsReadOnly"
+                                                             Value="True">
+                                                        <Setter Property="BorderBrush"
+                                                                Value="Transparent" />
+                                                        <Setter Property="Background"
+                                                                Value="Transparent" />
                                                     </Trigger>
-                                                    <Trigger Property="IsFocused" Value="True">
-                                                        <Setter Property="IsReadOnly" Value="False" />
+                                                    <Trigger Property="IsFocused"
+                                                             Value="True">
+                                                        <Setter Property="IsReadOnly"
+                                                                Value="False" />
                                                     </Trigger>
-                                                    <DataTrigger Binding="{Binding Budget.Value}" Value="0">
-                                                        <Setter Property="Foreground" Value="{DynamicResource OpaqueZeroBrush}" />
+                                                    <DataTrigger Binding="{Binding Budget.Value}"
+                                                                 Value="0">
+                                                        <Setter Property="Foreground"
+                                                                Value="{DynamicResource OpaqueZeroBrush}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
-                                                <Setter Property="IsReadOnly" Value="True" />
-                                                <Setter Property="Foreground" Value="{Binding Budget.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
+                                                <Setter Property="IsReadOnly"
+                                                        Value="True" />
+                                                <Setter Property="Foreground"
+                                                        Value="{Binding Budget.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
                                             </Style>
                                         </TextBox.Style>
                                     </TextBox>
@@ -217,13 +263,17 @@
                                                Text="{Binding Outflow.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right">
                                         <TextBlock.Style>
-                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
+                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}"
+                                                   TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Outflow.Value}" Value="0">
-                                                        <Setter Property="Foreground" Value="{DynamicResource OpaqueZeroBrush}" />
+                                                    <DataTrigger Binding="{Binding Outflow.Value}"
+                                                                 Value="0">
+                                                        <Setter Property="Foreground"
+                                                                Value="{DynamicResource OpaqueZeroBrush}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
-                                                <Setter Property="Foreground" Value="{Binding Outflow.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
+                                                <Setter Property="Foreground"
+                                                        Value="{Binding Outflow.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
@@ -231,13 +281,17 @@
                                                Text="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right">
                                         <TextBlock.Style>
-                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
+                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}"
+                                                   TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Balance.Value}" Value="0">
-                                                        <Setter Property="Foreground" Value="{DynamicResource OpaqueZeroBrush}" />
+                                                    <DataTrigger Binding="{Binding Balance.Value}"
+                                                                 Value="0">
+                                                        <Setter Property="Foreground"
+                                                                Value="{DynamicResource OpaqueZeroBrush}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
-                                                <Setter Property="Foreground" Value="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
+                                                <Setter Property="Foreground"
+                                                        Value="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
@@ -246,7 +300,70 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </DataTemplate>
-            </userControls:MasterColumnSlaveColumns.SlaveTemplate>
-        </userControls:MasterColumnSlaveColumns>
+            </userControls:UniformList.ItemTemplate>
+        </userControls:UniformList>
     </Grid>
 </UserControl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
