@@ -282,4 +282,46 @@
   <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
     <value>Der Dateiname von diesem Speicherpfad ist leer!</value>
   </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Überschreitung</value>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Summe der Budgetüberschreitungen aufsummiert über alle Kategorien letzten Monats.</value>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Nicht Verbucht</value>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Die Geldmenge die letzten Monat gegeben war jedoch in keiner Kategorie verbucht wurde.</value>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Die Geldmenge die letzten Monat fehlte um alle Kategorien zu erfüllen.</value>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Überbucht</value>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Einkünfte</value>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Verdiente Geldmenge die für die Ausgaben diesen Monats zugewiesen wurde.</value>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Verbucht</value>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Summe aller Gelder, die diesen Monat Kategorien zugewiesen sind.</value>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Ausgaben</value>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Saldo</value>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Budget</value>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Konten</value>
+  </data>
 </root>

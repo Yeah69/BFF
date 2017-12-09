@@ -253,7 +253,7 @@
                 <TextBlock FontWeight="Bold" FontSize="23" Text="{Binding}" Margin="0,0,5,0" />
             </DataTemplate>
         </hm:HamburgerMenu.Resources>
-        <hm:HamburgerMenuItem Header="Budget" HeaderTemplate="{StaticResource HeaderTemplate}">
+        <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Budget}" HeaderTemplate="{StaticResource HeaderTemplate}">
             <views:BudgetOverviewView DataContext="{Binding BudgetOverviewViewModel}" />
             <hm:HamburgerMenuItem.Icon>
                 <Viewbox Margin="10">
@@ -261,7 +261,7 @@
                 </Viewbox>
             </hm:HamburgerMenuItem.Icon>
         </hm:HamburgerMenuItem>
-        <hm:HamburgerMenuItem Header="Accounts" HeaderTemplate="{StaticResource HeaderTemplate}">
+        <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Accounts}" HeaderTemplate="{StaticResource HeaderTemplate}">
             <views:AccountTabsView DataContext="{Binding ContentViewModel}" HorizontalContentAlignment="Stretch" />
             <hm:HamburgerMenuItem.Icon>
                 <Viewbox Margin="10">

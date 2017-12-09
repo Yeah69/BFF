@@ -146,6 +146,15 @@ namespace BFF.MVVM
         public static readonly IValueConverter DoubleToGridLength =
             ValueConverter.Create<double, GridLength>(
                 e => new GridLength(e.Value));
+
+        /// <summary>
+        /// True if value is lesser than zero, otherwise false.
+        /// </summary>
+        public static readonly IValueConverter LongLesserThanZero =
+            ValueConverter.Create<long, bool>(
+                e => e.Value < 0);
+
+
         //Multi Value Converters
 
         /// <summary>

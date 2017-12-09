@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:userControls="clr-namespace:BFF.MVVM.UserControls"
@@ -130,19 +131,39 @@
                                            Style="{StaticResource CurrentMonthMarking}"
                                            Text="{Binding Month.Value, StringFormat=yyyy}" />
                                 <UniformGrid Columns="2">
-                                    <TextBlock Text="Not Budgeted" />
+                                    <TextBlock>
+                                        <TextBlock.Style>
+                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}"
+                                                   TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.LongLesserThanZero}}"
+                                                                 Value="True">
+                                                        <Setter Property="Text"
+                                                                Value="{lex:Loc Budgeting_Overbudgeted}" />
+                                                        <Setter Property="ToolTip"
+                                                                Value="{lex:Loc Budgeting_OverbudgetedExplanation}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                                <Setter Property="Text"
+                                                        Value="{lex:Loc Budgeting_NotBudgeted}" />
+                                                <Setter Property="ToolTip"
+                                                        Value="{lex:Loc Budgeting_NotBudgetedExplanation}" />
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                     <TextBlock Foreground="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
-                                    <TextBlock Text="Overspent" />
+                                    <TextBlock Text="{lex:Loc Budgeting_Overspend}"
+                                               ToolTip="{lex:Loc Budgeting_OverspendExplanation}" />
                                     <TextBlock Foreground="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
-                                    <TextBlock Text="Income" />
+                                    <TextBlock Text="{lex:Loc Budgeting_Income}" ToolTip="{lex:Loc Budgeting_IncomeExplanation}" />
                                     <TextBlock Foreground="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
-                                    <TextBlock Text="Budgeted" />
+                                    <TextBlock Text="{lex:Loc Budgeting_Budgeted}" ToolTip="{lex:Loc Budgeting_BudgetedExplanation}" />
                                     <TextBlock Foreground="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
@@ -165,11 +186,11 @@
                                 BorderThickness="1">
                             <UniformGrid Columns="3"
                                          Rows="2">
-                                <TextBlock Text="Budgeted"
+                                <TextBlock Text="{lex:Loc Budgeting_Budgeted}"
                                            TextAlignment="Right" />
-                                <TextBlock Text="Outflow"
+                                <TextBlock Text="{lex:Loc Budgeting_Outflows}"
                                            TextAlignment="Right" />
-                                <TextBlock Text="Balance"
+                                <TextBlock Text="{lex:Loc Budgeting_Balance}"
                                            TextAlignment="Right" />
                                 <TextBlock Foreground="{Binding BudgetedThisMonthPositive.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                            Text="{Binding BudgetedThisMonthPositive.Value, Converter={x:Static mvvm:Converters.SumToString}}"
