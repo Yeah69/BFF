@@ -131,26 +131,33 @@
                                            Style="{StaticResource CurrentMonthMarking}"
                                            Text="{Binding Month.Value, StringFormat=yyyy}" />
                                 <UniformGrid Columns="2">
-                                    <TextBlock>
-                                        <TextBlock.Style>
-                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}"
-                                                   TargetType="{x:Type TextBlock}">
+                                    <ContentControl Foreground="{DynamicResource BlackBrush}">
+                                        <ContentControl.Style>
+                                            <Style TargetType="{x:Type ContentControl}">
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.LongLesserThanZero}}"
                                                                  Value="True">
-                                                        <Setter Property="Text"
-                                                                Value="{lex:Loc Budgeting_Overbudgeted}" />
-                                                        <Setter Property="ToolTip"
-                                                                Value="{lex:Loc Budgeting_OverbudgetedExplanation}" />
+                                                        <Setter Property="ContentTemplate">
+                                                            <Setter.Value>
+                                                                <DataTemplate>
+                                                                <TextBlock Text="{lex:Loc Budgeting_Overbudgeted}"
+                                                                           ToolTip="{lex:Loc Budgeting_OverbudgetedExplanation}" />
+                                                                </DataTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
                                                     </DataTrigger>
                                                 </Style.Triggers>
-                                                <Setter Property="Text"
-                                                        Value="{lex:Loc Budgeting_NotBudgeted}" />
-                                                <Setter Property="ToolTip"
-                                                        Value="{lex:Loc Budgeting_NotBudgetedExplanation}" />
+                                                <Setter Property="ContentTemplate">
+                                                    <Setter.Value>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{lex:Loc Budgeting_NotBudgeted}"
+                                                                   ToolTip="{lex:Loc Budgeting_NotBudgetedExplanation}" />
+                                                            </DataTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
                                             </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                                        </ContentControl.Style>
+                                    </ContentControl>
                                     <TextBlock Foreground="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
@@ -159,11 +166,13 @@
                                     <TextBlock Foreground="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
-                                    <TextBlock Text="{lex:Loc Budgeting_Income}" ToolTip="{lex:Loc Budgeting_IncomeExplanation}" />
+                                    <TextBlock Text="{lex:Loc Budgeting_Income}"
+                                               ToolTip="{lex:Loc Budgeting_IncomeExplanation}" />
                                     <TextBlock Foreground="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
-                                    <TextBlock Text="{lex:Loc Budgeting_Budgeted}" ToolTip="{lex:Loc Budgeting_BudgetedExplanation}" />
+                                    <TextBlock Text="{lex:Loc Budgeting_Budgeted}"
+                                               ToolTip="{lex:Loc Budgeting_BudgetedExplanation}" />
                                     <TextBlock Foreground="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
