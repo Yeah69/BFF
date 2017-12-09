@@ -76,6 +76,9 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="HamburgerMenu, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BFF.HamburgerMenu.1.0.0\lib\net461\HamburgerMenu.dll</HintPath>
+    </Reference>
     <Reference Include="LambdaConverters.Wpf, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6258cb5075259882, processorArchitecture=MSIL">
       <HintPath>..\packages\LambdaConverters.3.0.0\lib\net46\LambdaConverters.Wpf.dll</HintPath>
     </Reference>
@@ -398,6 +401,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MVVM\Resources\CategoryTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\Resources\HamburgerMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

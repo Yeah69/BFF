@@ -140,6 +140,12 @@ namespace BFF.MVVM
                     return e.Value.Month == now.Month && e.Value.Year == now.Year;
                 });
 
+        /// <summary>
+        /// True if value is current month, otherwise false.
+        /// </summary>
+        public static readonly IValueConverter DoubleToGridLength =
+            ValueConverter.Create<double, GridLength>(
+                e => new GridLength(e.Value));
         //Multi Value Converters
 
         /// <summary>

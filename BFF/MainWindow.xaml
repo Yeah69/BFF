@@ -11,6 +11,7 @@
                       xmlns:mvvm="clr-namespace:BFF.MVVM"
                       xmlns:viewModel="clr-namespace:BFF.MVVM.ViewModels"
                       xmlns:views="clr-namespace:BFF.MVVM.Views"
+                      xmlns:hm="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
                       Title="{Binding Title}"
                       Width="{Binding Width, Mode=TwoWay}"
                       Height="{Binding Height, Mode=TwoWay}"
@@ -246,24 +247,30 @@
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 
-
-    <TabControl TabStripPlacement="Left">
-        <TabItem Header="Budget">
+    <hm:HamburgerMenu ClosePaneOnItemSelection="True">
+        <hm:HamburgerMenu.Resources>
+            <DataTemplate x:Key="HeaderTemplate">
+                <TextBlock FontWeight="Bold" FontSize="23" Text="{Binding}" Margin="0,0,5,0" />
+            </DataTemplate>
+        </hm:HamburgerMenu.Resources>
+        <hm:HamburgerMenuItem Header="Budget" HeaderTemplate="{StaticResource HeaderTemplate}">
             <views:BudgetOverviewView DataContext="{Binding BudgetOverviewViewModel}" />
-        </TabItem>
-        <TabItem Header="Accounts">
-            <ContentControl Name="MaContentControl" Content="{Binding ContentViewModel}">
-                <ContentControl.Resources>
-                    <DataTemplate DataType="{x:Type viewModel:AccountTabsViewModel}">
-                        <views:AccountTabsView x:Name="MainContent" />
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type viewModel:EmptyContentViewModel}">
-                        <!--  todo: Something like a StartPage here  -->
-                    </DataTemplate>
-                </ContentControl.Resources>
-            </ContentControl>
-        </TabItem>
-    </TabControl>
+            <hm:HamburgerMenuItem.Icon>
+                <Viewbox Margin="10">
+                    <iconPacks:PackIconFontAwesome Kind="Money" />
+                </Viewbox>
+            </hm:HamburgerMenuItem.Icon>
+        </hm:HamburgerMenuItem>
+        <hm:HamburgerMenuItem Header="Accounts" HeaderTemplate="{StaticResource HeaderTemplate}">
+            <views:AccountTabsView DataContext="{Binding ContentViewModel}" HorizontalContentAlignment="Stretch" />
+            <hm:HamburgerMenuItem.Icon>
+                <Viewbox Margin="10">
+                    <iconPacks:PackIconOcticons Kind="CreditCard" />
+                </Viewbox>
+            </hm:HamburgerMenuItem.Icon>
+        </hm:HamburgerMenuItem>
+    </hm:HamburgerMenu>
 
 
 </controls:MetroWindow>
+
