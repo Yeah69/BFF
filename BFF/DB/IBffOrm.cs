@@ -14,6 +14,7 @@ namespace BFF.DB
         IParentIncomeViewModelService ParentIncomeViewModelService { get; }
         ISubTransactionViewModelService SubTransactionViewModelService { get; }
         ISubIncomeViewModelService SubIncomeViewModelService { get; }
+        IBudgetEntryViewModelService BudgetEntryViewModelService { get; }
 
         long? GetAccountBalance(IAccount account);
         long? GetSummaryAccountBalance();

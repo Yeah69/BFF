@@ -23,7 +23,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     }
 
-    public interface ITransferRepository : IRepository<Domain.ITransfer>
+    public interface ITransferRepository : IRepositoryBase<Domain.ITransfer>
     {
     }
 

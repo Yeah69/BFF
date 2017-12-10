@@ -181,8 +181,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 }
             });
 
-            IsOpen = new ReactiveProperty<bool>(false);
-            IsOpen.AddTo(CompositeDisposable);
+            IsOpen = new ReactiveProperty<bool>(false).AddTo(CompositeDisposable);
 
             IsOpen.Where(isOpen => isOpen).Subscribe(_ =>
             {

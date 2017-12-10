@@ -36,9 +36,8 @@ namespace BFF.Helper
 
         public static long CurrencyAsLong(this string value, CultureInfo culture)
         {
-            decimal decimalValue;
             bool isConverted = Decimal.TryParse(value, NumberStyles.Currency,
-              culture.NumberFormat, out decimalValue);
+              culture.NumberFormat, out var decimalValue);
             if(!isConverted)
                 throw new ValidationException();
             return (long) (decimalValue*(decimal)Math.Pow(10, culture.NumberFormat.CurrencyDecimalDigits));

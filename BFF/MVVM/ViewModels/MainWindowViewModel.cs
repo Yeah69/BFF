@@ -49,6 +49,18 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
+        public BudgetOverviewViewModel BudgetOverviewViewModel
+        {
+            get => _budgetOverviewViewModel;
+            set
+            {
+                if (value == _budgetOverviewViewModel)
+                    return;
+                _budgetOverviewViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
         public CultureInfo LanguageCulture
         {
             get => Settings.Default.Culture_DefaultLanguage;
@@ -67,6 +79,7 @@ namespace BFF.MVVM.ViewModels
             {
                 Settings.Default.Culture_SessionCurrency = value;
                 _contentViewModel?.ManageCultures();
+                Messenger.Default.Send(CultureMessage.RefreshCurrency);
                 OnPropertyChanged();
             }
         }
@@ -78,6 +91,7 @@ namespace BFF.MVVM.ViewModels
             {
                 Settings.Default.Culture_SessionDate = value;
                 _contentViewModel?.ManageCultures();
+                Messenger.Default.Send(CultureMessage.RefreshDate);
                 OnPropertyChanged();
             }
         }
@@ -110,6 +124,7 @@ namespace BFF.MVVM.ViewModels
         }
 
         private bool _parentTitFlyoutOpen;
+        private BudgetOverviewViewModel _budgetOverviewViewModel;
 
         public bool ParentTitFlyoutOpen
         {
@@ -188,6 +203,12 @@ namespace BFF.MVVM.ViewModels
             {
                 IBffOrm orm = new SqLiteBffOrm(new ProvideSqLiteConnection(dbPath));
                 ContentViewModel = new AccountTabsViewModel(orm, orm.CommonPropertyProvider.AccountViewModelService);
+                BudgetOverviewViewModel = 
+                    new BudgetOverviewViewModel(
+                        orm.BffRepository.BudgetMonthRepository,
+                        orm.BudgetEntryViewModelService, 
+                        orm.CommonPropertyProvider.CategoryViewModelService,
+                        orm.BffRepository.CategoryRepository);
                 Title = $"{new FileInfo(dbPath).Name} - BFF";
                 Settings.Default.DBLocation = dbPath;
                 Settings.Default.Save();

@@ -61,7 +61,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to All Accounts.
         /// </summary>
         public static string AccountTabsView_AllAccounts {
             get {
@@ -70,7 +70,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Create.
         /// </summary>
         public static string AccountTabsView_NewAccount_Create {
             get {
@@ -79,7 +79,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Account Name:.
         /// </summary>
         public static string AccountTabsView_NewAccount_Name {
             get {
@@ -88,7 +88,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Starting Balance:.
         /// </summary>
         public static string AccountTabsView_NewAccount_StartingBalance {
             get {
@@ -97,7 +97,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Balance:.
         /// </summary>
         public static string AccountView_Balance {
             get {
@@ -106,7 +106,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Transfer.
         /// </summary>
         public static string AccountView_Column_Transfer {
             get {
@@ -115,7 +115,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string AccountView_ConMenu_Delete {
             get {
@@ -124,7 +124,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Account.
         /// </summary>
         public static string AccountView_Header_Account {
             get {
@@ -133,7 +133,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Category.
         /// </summary>
         public static string AccountView_Header_Category {
             get {
@@ -142,7 +142,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Cleared.
         /// </summary>
         public static string AccountView_Header_Cleared {
             get {
@@ -151,7 +151,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string AccountView_Header_Date {
             get {
@@ -160,7 +160,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Memo.
         /// </summary>
         public static string AccountView_Header_Memo {
             get {
@@ -169,7 +169,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Payee.
         /// </summary>
         public static string AccountView_Header_Payee {
             get {
@@ -178,7 +178,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Sum.
         /// </summary>
         public static string AccountView_Header_Sum {
             get {
@@ -187,7 +187,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to S.
         /// </summary>
         public static string AccountView_Header_SymbolAbbr {
             get {
@@ -196,7 +196,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Starting Balance:.
         /// </summary>
         public static string AccountView_StartingBalance {
             get {
@@ -205,7 +205,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Add to the table.
         /// </summary>
         public static string AccountView_ToolTip_AddToTable {
             get {
@@ -214,7 +214,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to New Income.
         /// </summary>
         public static string AccountView_ToolTip_NewIncome {
             get {
@@ -223,7 +223,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to New splitted Income.
         /// </summary>
         public static string AccountView_ToolTip_NewParentIncome {
             get {
@@ -232,7 +232,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to New splitted Transaction.
         /// </summary>
         public static string AccountView_ToolTip_NewParentTransaction {
             get {
@@ -241,7 +241,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to New Transaction.
         /// </summary>
         public static string AccountView_ToolTip_NewTransaction {
             get {
@@ -250,7 +250,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to New Transfer.
         /// </summary>
         public static string AccountView_ToolTip_NewTransfer {
             get {
@@ -259,7 +259,214 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Available.
+        /// </summary>
+        public static string Budgeting_Available {
+            get {
+                return ResourceManager.GetString("Budgeting_Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount of money which is available in this month but not assigned to any category yet..
+        /// </summary>
+        public static string Budgeting_AvailableExplanation {
+            get {
+                return ResourceManager.GetString("Budgeting_AvailableExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Balance.
+        /// </summary>
+        public static string Budgeting_Balance {
+            get {
+                return ResourceManager.GetString("Budgeting_Balance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Budgeted.
+        /// </summary>
+        public static string Budgeting_Budgeted {
+            get {
+                return ResourceManager.GetString("Budgeting_Budgeted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sum of all amounts of money which are budgeted on a category in this month..
+        /// </summary>
+        public static string Budgeting_BudgetedExplanation {
+            get {
+                return ResourceManager.GetString("Budgeting_BudgetedExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Income.
+        /// </summary>
+        public static string Budgeting_Income {
+            get {
+                return ResourceManager.GetString("Budgeting_Income", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount of earned money which is assigned for the expenses of this month..
+        /// </summary>
+        public static string Budgeting_IncomeExplanation {
+            get {
+                return ResourceManager.GetString("Budgeting_IncomeExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Budgeted.
+        /// </summary>
+        public static string Budgeting_NotBudgeted {
+            get {
+                return ResourceManager.GetString("Budgeting_NotBudgeted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount of money which was available last month but not assigned to any category..
+        /// </summary>
+        public static string Budgeting_NotBudgetedExplanation {
+            get {
+                return ResourceManager.GetString("Budgeting_NotBudgetedExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outflows.
+        /// </summary>
+        public static string Budgeting_Outflows {
+            get {
+                return ResourceManager.GetString("Budgeting_Outflows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overbudgeted.
+        /// </summary>
+        public static string Budgeting_Overbudgeted {
+            get {
+                return ResourceManager.GetString("Budgeting_Overbudgeted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount of money which was missing to satisfy all categories in last month..
+        /// </summary>
+        public static string Budgeting_OverbudgetedExplanation {
+            get {
+                return ResourceManager.GetString("Budgeting_OverbudgetedExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount of money which is missing to satisfy all categories in this month..
+        /// </summary>
+        public static string Budgeting_OverbudgetedThisMonthExplanation {
+            get {
+                return ResourceManager.GetString("Budgeting_OverbudgetedThisMonthExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overspend.
+        /// </summary>
+        public static string Budgeting_Overspend {
+            get {
+                return ResourceManager.GetString("Budgeting_Overspend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sum of overspend amounts of money accumulated from all categories in last month..
+        /// </summary>
+        public static string Budgeting_OverspendExplanation {
+            get {
+                return ResourceManager.GetString("Budgeting_OverspendExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new category.
+        /// </summary>
+        public static string CreateNewCategory {
+            get {
+                return ResourceManager.GetString("CreateNewCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new payee.
+        /// </summary>
+        public static string CreateNewPayee {
+            get {
+                return ResourceManager.GetString("CreateNewPayee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name of the new category is not allowed to be empty!.
+        /// </summary>
+        public static string ErrorMessageCategoryNameEmpty {
+            get {
+                return ResourceManager.GetString("ErrorMessageCategoryNameEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A category has to be chosen..
+        /// </summary>
+        public static string ErrorMessageEmptyCategory {
+            get {
+                return ResourceManager.GetString("ErrorMessageEmptyCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A payee has to be chosen..
+        /// </summary>
+        public static string ErrorMessageEmptyPayee {
+            get {
+                return ResourceManager.GetString("ErrorMessageEmptyPayee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This name already exists on the chosen category level!.
+        /// </summary>
+        public static string ErrorMessageWrongCategoryName {
+            get {
+                return ResourceManager.GetString("ErrorMessageWrongCategoryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This category level already contains a category of chosen name!.
+        /// </summary>
+        public static string ErrorMessageWrongCategoryParent {
+            get {
+                return ResourceManager.GetString("ErrorMessageWrongCategoryParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name of a new payee isn&apos;t allowed to be empty or an already existing one..
+        /// </summary>
+        public static string ErrorMessageWrongPayeeName {
+            get {
+                return ResourceManager.GetString("ErrorMessageWrongPayeeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file &quot;{0}&quot; could not be found..
         /// </summary>
         public static string Exception_FileNotFound {
             get {
@@ -268,7 +475,25 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Accounts.
+        /// </summary>
+        public static string HamburgerMenu_Accounts {
+            get {
+                return ResourceManager.GetString("HamburgerMenu_Accounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Budget.
+        /// </summary>
+        public static string HamburgerMenu_Budget {
+            get {
+                return ResourceManager.GetString("HamburgerMenu_Budget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse.
         /// </summary>
         public static string ImportView_Browse {
             get {
@@ -277,7 +502,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string ImportView_Cancel {
             get {
@@ -286,7 +511,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string ImportView_Import {
             get {
@@ -295,7 +520,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Import and save to this path:.
         /// </summary>
         public static string ImportView_SaveFile {
             get {
@@ -304,7 +529,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Import a YNAB4 CSV-file.
         /// </summary>
         public static string ImportView_YNAB4 {
             get {
@@ -313,7 +538,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Path to the YNAB Budget CSV:.
         /// </summary>
         public static string ImportView_YNAB4_Budget {
             get {
@@ -322,7 +547,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Path to the YNAB Transaction CSV:.
         /// </summary>
         public static string ImportView_YNAB4_Transaction {
             get {
@@ -331,7 +556,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to About.
         /// </summary>
         public static string MainWindow_About {
             get {
@@ -340,7 +565,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to File.
         /// </summary>
         public static string MainWindow_File {
             get {
@@ -349,7 +574,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string MainWindow_File_Import {
             get {
@@ -358,7 +583,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to New.
         /// </summary>
         public static string MainWindow_File_New {
             get {
@@ -367,7 +592,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Open.
         /// </summary>
         public static string MainWindow_File_Open {
             get {
@@ -376,7 +601,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string MainWindow_Settings {
             get {
@@ -385,7 +610,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Accents:.
         /// </summary>
         public static string MainWindow_Settings_Accents {
             get {
@@ -394,7 +619,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Currency format:.
         /// </summary>
         public static string MainWindow_Settings_Currency {
             get {
@@ -403,7 +628,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Negative:.
         /// </summary>
         public static string MainWindow_Settings_Currency_Negative {
             get {
@@ -412,7 +637,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Positive:.
         /// </summary>
         public static string MainWindow_Settings_Currency_Positive {
             get {
@@ -421,7 +646,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Date format:.
         /// </summary>
         public static string MainWindow_Settings_Date {
             get {
@@ -430,7 +655,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Long:.
         /// </summary>
         public static string MainWindow_Settings_Date_Long {
             get {
@@ -439,7 +664,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to :Long.
         /// </summary>
         public static string MainWindow_Settings_Date_Long_Inverted {
             get {
@@ -448,7 +673,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Short:.
         /// </summary>
         public static string MainWindow_Settings_Date_Short {
             get {
@@ -457,7 +682,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Language:.
         /// </summary>
         public static string MainWindow_Settings_Language {
             get {
@@ -466,7 +691,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Theme:.
         /// </summary>
         public static string MainWindow_Settings_Theme {
             get {
@@ -475,7 +700,25 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Name of new category.
+        /// </summary>
+        public static string NameOfNewCategory {
+            get {
+                return ResourceManager.GetString("NameOfNewCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of new payee.
+        /// </summary>
+        public static string NameOfNewPayee {
+            get {
+                return ResourceManager.GetString("NameOfNewPayee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BFF budget plan (*.sqlite)|*.sqlite.
         /// </summary>
         public static string OpenSaveDialog_Filter {
             get {
@@ -484,7 +727,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Create a new Budget Plan.
         /// </summary>
         public static string OpenSaveDialog_TitleNew {
             get {
@@ -493,7 +736,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Open a Budget Plan.
         /// </summary>
         public static string OpenSaveDialog_TitleOpen {
             get {
@@ -502,7 +745,16 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Superior Category.
+        /// </summary>
+        public static string SuperiorCategory {
+            get {
+                return ResourceManager.GetString("SuperiorCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This text could not be parsed as a currency!.
         /// </summary>
         public static string ValidationRule_Currency {
             get {
@@ -511,7 +763,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The value is out of range: [ {0} .. {1} ]!.
         /// </summary>
         public static string ValidationRule_CurrencyLongRange {
             get {
@@ -520,7 +772,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to This input field may not be empty!.
         /// </summary>
         public static string ValidationRule_NoNull {
             get {
@@ -529,7 +781,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to This file path does not exist!.
         /// </summary>
         public static string ValidationRule_NotExistingFilePath {
             get {
@@ -538,7 +790,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The directory of the save path does not exist!.
         /// </summary>
         public static string ValidationRule_NotExistingSavePath {
             get {
@@ -547,7 +799,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The file name of this save path is empty!.
         /// </summary>
         public static string ValidationRule_NotExistingSavePath_EmptyName {
             get {

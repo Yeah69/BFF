@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using BFF.DB.Dapper.ModelRepositories;
@@ -39,6 +40,8 @@ namespace BFF.DB.Dapper
                                               PayeeFetcher, 
                                               SubTransactionsFetcher,
                                               SubIncomesFetcher);
+
+            BudgetMonthRepository = new BudgetMonthRepository(BudgetEntryRepository, CategoryRepository, provideConnection);
         }
 
         public sealed override IAccountRepository AccountRepository { get; }
@@ -54,6 +57,7 @@ namespace BFF.DB.Dapper
         public sealed override ITransactionRepository TransactionRepository { get; }
         public sealed override ITransferRepository TransferRepository { get; }
         public sealed override ITitRepository TitRepository { get; }
+        public sealed override IBudgetMonthRepository BudgetMonthRepository { get; }
 
         protected override void Dispose(bool disposing)
         {
@@ -72,6 +76,7 @@ namespace BFF.DB.Dapper
                 TransactionRepository?.Dispose();
                 TransferRepository?.Dispose();
                 TitRepository?.Dispose();
+                BudgetMonthRepository?.Dispose();
             }
             base.Dispose(disposing);
         }

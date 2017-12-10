@@ -6,13 +6,22 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB
 {
-    public interface IRepository<T> : IDisposable where T : class, IDataModel
+    public interface IWriteOnlyRepository<in T> where T : class, IDataModel
     {
-        T Create();
         void Add(T dataModel, DbConnection connection = null);
         void Update(T dataModel, DbConnection connection = null);
         void Delete(T dataModel, DbConnection connection = null);
+    }
+    public interface IReadOnlyRepository<out T> where T : class, IDataModel
+    {
+        T Create();
         T Find(long id, DbConnection connection = null);
+    }
+
+    public interface IRepository<T> : 
+        IReadOnlyRepository<T>, IWriteOnlyRepository<T>
+        where T : class, IDataModel
+    {
     }
 
     public interface ISpecifiedPagedAccess<out TDomainBase, in TSpecifying>
@@ -47,7 +56,7 @@ namespace BFF.DB
     }
 
     public interface IViewRepository<out TDomainBase, in TSpecifying>
-        : ISpecifiedPagedAccess<TDomainBase, TSpecifying>, IDisposable
+        : ISpecifiedPagedAccess<TDomainBase, TSpecifying>
         where TDomainBase : class, IDataModel
     { }
 

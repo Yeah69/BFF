@@ -14,4 +14,9 @@
         RefreshBalance,
         RefreshStartingBalance
     }
+
+    public enum BudgetOverviewMessage
+    {
+        Refresh
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -25,6 +26,8 @@ namespace BFF.MVVM
         private static SolidColorBrush IncomeBrush => (SolidColorBrush)Application.Current.TryFindResource("IncomeBrush") ?? Brushes.LimeGreen;
 
         private static SolidColorBrush TransferBrush => (SolidColorBrush)Application.Current.TryFindResource("TransferBrush") ?? Brushes.RoyalBlue;
+
+        private static SolidColorBrush NeutralForegroundBrush => (SolidColorBrush)Application.Current.TryFindResource("BlackBrush") ?? Brushes.Black;
 
         //Single Value Converters
 
@@ -121,7 +124,44 @@ namespace BFF.MVVM
         /// </summary>
         public static readonly IValueConverter SumToSolidColorBrush =
             ValueConverter.Create<long, SolidColorBrush>(
-                e => e.Value < 0L ? TransactionBrush : IncomeBrush);
+                e => e.Value == 0L 
+                    ? NeutralForegroundBrush 
+                    : e.Value < 0L 
+                        ? TransactionBrush 
+                        : IncomeBrush);
+
+        /// <summary>
+        /// True if value is current month, otherwise false.
+        /// </summary>
+        public static readonly IValueConverter IsCurrentMonth =
+            ValueConverter.Create<DateTime, bool>(
+                e =>
+                {
+                    var now = DateTime.Now;
+                    return e.Value.Month == now.Month && e.Value.Year == now.Year;
+                });
+
+        /// <summary>
+        /// Abbreviated localized month name from given month.
+        /// </summary>
+        public static readonly IValueConverter LocalizedMonthShort =
+            ValueConverter.Create<DateTime, string>(
+                e => Thread.CurrentThread.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(e.Value.Month));
+
+        /// <summary>
+        /// True if value is current month, otherwise false.
+        /// </summary>
+        public static readonly IValueConverter DoubleToGridLength =
+            ValueConverter.Create<double, GridLength>(
+                e => new GridLength(e.Value));
+
+        /// <summary>
+        /// True if value is lesser than zero, otherwise false.
+        /// </summary>
+        public static readonly IValueConverter LongLesserThanZero =
+            ValueConverter.Create<long, bool>(
+                e => e.Value < 0);
+
 
         //Multi Value Converters
 

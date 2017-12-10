@@ -78,7 +78,7 @@ namespace BFF.Helper.Import
 
         internal static long ExtractLong(string text)
         {
-            string number = text.ToCharArray().Where(char.IsDigit).Aggregate("", (current, character) => $"{current}{character}");
+            string number = text.ToCharArray().Where(c => char.IsDigit(c) || c == '-').Aggregate("", (current, character) => $"{current}{character}");
             return number == "" ? 0L : long.Parse(number);
         }
 

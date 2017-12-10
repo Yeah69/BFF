@@ -8,8 +8,6 @@ using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
-using BFF.Properties;
-using JetBrains.dotMemoryUnit.Util;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;

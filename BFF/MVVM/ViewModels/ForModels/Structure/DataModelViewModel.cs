@@ -1,11 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reactive.Disposables;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    public interface IDataModelViewModel {
+    public interface IDataModelViewModel
+    {
 
         /// <summary>
         /// Before a model object is inserted into the database, it has to be valid.

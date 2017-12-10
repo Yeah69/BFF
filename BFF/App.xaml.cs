@@ -1,11 +1,9 @@
-﻿using System.Reactive.Concurrency;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using NLog;
-using Reactive.Bindings;
 
 namespace BFF
 {
@@ -23,13 +21,39 @@ namespace BFF
 
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
+            
+            
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            void SetColorsDependingOnTheChosenTheme(AppTheme theme)
+            {
+                switch (theme.Name)
+                {
+                    case "BaseLight":
+                        Resources["AlternatingRowBrush"] = Resources["GrayBrush8"];
+                        Resources["OpaqueZeroBrush"] = Resources["GrayBrush6"];
+                        break;
+                    case "BaseDark":
+                        Resources["AlternatingRowBrush"] = Resources["GrayBrush8"];
+                        Resources["OpaqueZeroBrush"] = Resources["GrayBrush9"];
+                        break;
+                }
+            }
+
+            void ThemeManagerOnIsThemeChanged(object s, OnThemeChangedEventArgs args)
+            {
+                SetColorsDependingOnTheChosenTheme(args.AppTheme);
+            }
+
+            ThemeManager.IsThemeChanged += ThemeManagerOnIsThemeChanged;
             Accent initialAccent = ThemeManager.GetAccent(BFF.Properties.Settings.Default.MahApps_Accent);
             AppTheme initialAppTheme = ThemeManager.GetAppTheme(BFF.Properties.Settings.Default.MahApps_AppTheme);
+
+            SetColorsDependingOnTheChosenTheme(initialAppTheme);
             ThemeManager.ChangeAppStyle(Current, initialAccent, initialAppTheme);
+            
             Logger.Info("BFF started. (Version: {0})", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
         }
 

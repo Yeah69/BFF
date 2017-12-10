@@ -25,7 +25,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     }
 
-    public interface ITransactionRepository : IRepository<Domain.ITransaction>
+    public interface ITransactionRepository : IRepositoryBase<Domain.ITransaction>
     {
     }
 
