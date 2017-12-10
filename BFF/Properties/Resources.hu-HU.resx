@@ -292,10 +292,10 @@
     <value>Nicht Verbucht</value>
   </data>
   <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
-    <value>Die Geldmenge die letzten Monat gegeben war jedoch in keiner Kategorie verbucht wurde.</value>
+    <value>Die Geldmenge, die letzten Monat gegeben war, jedoch in keiner Kategorie verbucht wurde.</value>
   </data>
   <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>Die Geldmenge die letzten Monat fehlte um alle Kategorien zu erfüllen.</value>
+    <value>Die Geldmenge, die letzten Monat fehlte um alle Kategorien zu erfüllen.</value>
   </data>
   <data name="Budgeting_Overbudgeted" xml:space="preserve">
     <value>Überbucht</value>
@@ -304,7 +304,7 @@
     <value>Einkünfte</value>
   </data>
   <data name="Budgeting_IncomeExplanation" xml:space="preserve">
-    <value>Verdiente Geldmenge die für die Ausgaben diesen Monats zugewiesen wurde.</value>
+    <value>Verdiente Geldmenge, die für die Ausgaben diesen Monats zugewiesen wurde.</value>
   </data>
   <data name="Budgeting_Budgeted" xml:space="preserve">
     <value>Verbucht</value>
@@ -323,5 +323,14 @@
   </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
     <value>Konten</value>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Verfügbar</value>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Die Geldmenge, die diesen Monat gegeben ist, jedoch noch in keiner Kategorie verbucht wurde.</value>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Die Geldmenge, die letzten Monat fehlt um alle Kategorien zu erfüllen.</value>
   </data>
 </root>

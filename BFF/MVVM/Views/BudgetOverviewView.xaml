@@ -140,8 +140,8 @@
                                                         <Setter Property="ContentTemplate">
                                                             <Setter.Value>
                                                                 <DataTemplate>
-                                                                <TextBlock Text="{lex:Loc Budgeting_Overbudgeted}"
-                                                                           ToolTip="{lex:Loc Budgeting_OverbudgetedExplanation}" />
+                                                                    <TextBlock Text="{lex:Loc Budgeting_Overbudgeted}"
+                                                                               ToolTip="{lex:Loc Budgeting_OverbudgetedExplanation}" />
                                                                 </DataTemplate>
                                                             </Setter.Value>
                                                         </Setter>
@@ -151,8 +151,8 @@
                                                     <Setter.Value>
                                                         <DataTemplate>
                                                             <TextBlock Text="{lex:Loc Budgeting_NotBudgeted}"
-                                                                   ToolTip="{lex:Loc Budgeting_NotBudgetedExplanation}" />
-                                                            </DataTemplate>
+                                                                       ToolTip="{lex:Loc Budgeting_NotBudgetedExplanation}" />
+                                                        </DataTemplate>
                                                     </Setter.Value>
                                                 </Setter>
                                             </Style>
@@ -182,10 +182,37 @@
                                            FontSize="25"
                                            Foreground="{Binding AvailableToBudget.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                            Text="{Binding AvailableToBudget.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
-                                <TextBlock Margin="0,5,0,0"
-                                           HorizontalAlignment="Center"
-                                           FontSize="10"
-                                           Text="Available" />
+                                <ContentControl Margin="0,5,0,0"
+                                                HorizontalAlignment="Center"
+                                                Foreground="{DynamicResource BlackBrush}">
+                                    <ContentControl.Style>
+                                        <Style TargetType="{x:Type ContentControl}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding AvailableToBudget.Value, Converter={x:Static mvvm:Converters.LongLesserThanZero}}"
+                                                             Value="True">
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <TextBlock FontSize="10"
+                                                                           Text="{lex:Loc Budgeting_Overbudgeted}"
+                                                                           ToolTip="{lex:Loc Budgeting_OverbudgetedThisMonthExplanation}" />
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                            <Setter Property="ContentTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <TextBlock FontSize="10"
+                                                                   Text="{lex:Loc Budgeting_Available}"
+                                                                   ToolTip="{lex:Loc Budgeting_AvailableExplanation}" />
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ContentControl.Style>
+                                </ContentControl>
                             </StackPanel>
                         </Border>
                         <Border Margin="5"

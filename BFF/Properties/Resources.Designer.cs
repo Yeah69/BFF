@@ -259,6 +259,24 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Available.
+        /// </summary>
+        public static string Budgeting_Available {
+            get {
+                return ResourceManager.GetString("Budgeting_Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount of money which is available in this month but not assigned to any category yet..
+        /// </summary>
+        public static string Budgeting_AvailableExplanation {
+            get {
+                return ResourceManager.GetString("Budgeting_AvailableExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Balance.
         /// </summary>
         public static string Budgeting_Balance {
@@ -340,11 +358,20 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount of money which was missing to satisfy all categories..
+        ///   Looks up a localized string similar to Amount of money which was missing to satisfy all categories in last month..
         /// </summary>
         public static string Budgeting_OverbudgetedExplanation {
             get {
                 return ResourceManager.GetString("Budgeting_OverbudgetedExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount of money which is missing to satisfy all categories in this month..
+        /// </summary>
+        public static string Budgeting_OverbudgetedThisMonthExplanation {
+            get {
+                return ResourceManager.GetString("Budgeting_OverbudgetedThisMonthExplanation", resourceCulture);
             }
         }
         

@@ -301,7 +301,7 @@
     <value>Amount of money which was available last month but not assigned to any category.</value>
   </data>
   <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>Amount of money which was missing to satisfy all categories.</value>
+    <value>Amount of money which was missing to satisfy all categories in last month.</value>
   </data>
   <data name="Budgeting_Overbudgeted" xml:space="preserve">
     <value>Overbudgeted</value>
@@ -329,5 +329,14 @@
   </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
     <value>Accounts</value>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Amount of money which is available in this month but not assigned to any category yet.</value>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Amount of money which is missing to satisfy all categories in this month.</value>
   </data>
 </root>
