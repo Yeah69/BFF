@@ -30,7 +30,7 @@ namespace BFF.MVVM.ViewModels
         private readonly IBudgetEntryViewModelService _budgetEntryViewModelService;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
         private int _selectedIndex;
-        public IList<IBudgetMonthViewModel> BudgetMonths { get; }
+        public IList<IBudgetMonthViewModel> BudgetMonths { get; private set; }
 
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
 
@@ -88,13 +88,11 @@ namespace BFF.MVVM.ViewModels
                 switch (message)
                 {
                     case CultureMessage.Refresh:
-                        OnPropertyChanged(nameof(BudgetMonths));
                         break;
                     case CultureMessage.RefreshCurrency:
-                        OnPropertyChanged(null);
-                        break;
                     case CultureMessage.RefreshDate:
-                        OnPropertyChanged(null);
+                        BudgetMonths = CreateBudgetMonths();
+                        OnPropertyChanged(nameof(BudgetMonths));
                         break;
                     default:
                         throw new InvalidEnumArgumentException();

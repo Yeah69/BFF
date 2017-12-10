@@ -124,7 +124,7 @@
                                            HorizontalAlignment="Center"
                                            FontSize="25"
                                            Style="{StaticResource CurrentMonthMarking}"
-                                           Text="{Binding Month.Value, StringFormat=MMM}" />
+                                           Text="{Binding Month.Value, Converter={x:Static mvvm:Converters.LocalizedMonthShort}}" />
                                 <TextBlock Margin="0,0,0,5"
                                            HorizontalAlignment="Center"
                                            FontSize="10"

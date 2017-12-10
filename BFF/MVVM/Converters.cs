@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -139,6 +140,13 @@ namespace BFF.MVVM
                     var now = DateTime.Now;
                     return e.Value.Month == now.Month && e.Value.Year == now.Year;
                 });
+
+        /// <summary>
+        /// Abbreviated localized month name from given month.
+        /// </summary>
+        public static readonly IValueConverter LocalizedMonthShort =
+            ValueConverter.Create<DateTime, string>(
+                e => Thread.CurrentThread.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(e.Value.Month));
 
         /// <summary>
         /// True if value is current month, otherwise false.

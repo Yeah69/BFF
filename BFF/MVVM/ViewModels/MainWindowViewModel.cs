@@ -78,6 +78,7 @@ namespace BFF.MVVM.ViewModels
             {
                 Settings.Default.Culture_SessionCurrency = value;
                 _contentViewModel?.ManageCultures();
+                Messenger.Default.Send(CultureMessage.RefreshCurrency);
                 OnPropertyChanged();
             }
         }
@@ -89,6 +90,7 @@ namespace BFF.MVVM.ViewModels
             {
                 Settings.Default.Culture_SessionDate = value;
                 _contentViewModel?.ManageCultures();
+                Messenger.Default.Send(CultureMessage.RefreshDate);
                 OnPropertyChanged();
             }
         }
