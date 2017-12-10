@@ -20,6 +20,10 @@ namespace BFF.MVVM.ViewModels
     public interface IBudgetOverviewViewModel
     {
         IList<IBudgetMonthViewModel> BudgetMonths { get; }
+
+        IReactiveProperty<int> CurrentMonthStartIndex { get; }
+
+        IReactiveProperty<bool> IsOpen { get; }
     }
 
     public class BudgetOverviewViewModel : ObservableObject, IBudgetOverviewViewModel, IDisposable
@@ -48,6 +52,8 @@ namespace BFF.MVVM.ViewModels
         }
 
         public IReactiveProperty<int> CurrentMonthStartIndex { get; }
+
+        public IReactiveProperty<bool> IsOpen { get; }
 
         public ReactiveCommand IncreaseMonthStartIndex { get; }
 
@@ -81,8 +87,11 @@ namespace BFF.MVVM.ViewModels
             IncreaseMonthStartIndex.Subscribe(_ => CurrentMonthStartIndex.Value = CurrentMonthStartIndex.Value + 1).AddTo(_compositeDisposable);
             DecreaseMonthStartIndex = CurrentMonthStartIndex.Select(i => i > 0).ToReactiveCommand().AddTo(_compositeDisposable);
             DecreaseMonthStartIndex.Subscribe(_ => CurrentMonthStartIndex.Value = CurrentMonthStartIndex.Value - 1).AddTo(_compositeDisposable);
+            IsOpen = new ReactiveProperty<bool>(false, ReactivePropertyMode.DistinctUntilChanged).AddTo(_compositeDisposable);
+            IsOpen.Where(b => b).Subscribe(b => Refresh()).AddTo(_compositeDisposable);
 
-
+            IsOpen.Value = true;
+            
             Messenger.Default.Register<CultureMessage>(this, message =>
             {
                 switch (message)
@@ -91,14 +100,38 @@ namespace BFF.MVVM.ViewModels
                         break;
                     case CultureMessage.RefreshCurrency:
                     case CultureMessage.RefreshDate:
-                        BudgetMonths = CreateBudgetMonths();
-                        OnPropertyChanged(nameof(BudgetMonths));
+                        Refresh();
                         break;
                     default:
                         throw new InvalidEnumArgumentException();
 
                 }
             });
+
+            Messenger.Default.Register<BudgetOverviewMessage>(this, message =>
+            {
+                switch (message)
+                {
+                    case BudgetOverviewMessage.Refresh:
+                        Refresh();
+                        break;
+                    default:
+                        throw new InvalidEnumArgumentException();
+
+                }
+            });
+
+            Disposable.Create(() =>
+            {
+                Messenger.Default.Unregister<CultureMessage>(this);
+                Messenger.Default.Unregister<BudgetOverviewMessage>(this);
+            }).AddTo(_compositeDisposable);
+        }
+
+        private void Refresh()
+        {
+            BudgetMonths = CreateBudgetMonths();
+            OnPropertyChanged(nameof(BudgetMonths));
         }
 
         private IDataVirtualizingCollection<IBudgetMonthViewModel> CreateBudgetMonths()
@@ -136,7 +169,6 @@ namespace BFF.MVVM.ViewModels
         public void Dispose()
         {
             _compositeDisposable.Dispose();
-            Messenger.Default.Unregister<CultureMessage>(this);
         }
     }
 }

@@ -27,6 +27,11 @@ namespace BFF.MVVM.ViewModels
             Settings.Default.Save();
         }
 
+        protected override void OnIsOpenChanged(bool isOpen)
+        {
+            
+        }
+
         #endregion
     }
 }

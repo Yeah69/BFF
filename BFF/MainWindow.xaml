@@ -5,13 +5,13 @@
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
+                      xmlns:hm="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                       xmlns:lex="http://wpflocalizeextension.codeplex.com"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:mvvm="clr-namespace:BFF.MVVM"
                       xmlns:viewModel="clr-namespace:BFF.MVVM.ViewModels"
                       xmlns:views="clr-namespace:BFF.MVVM.Views"
-                      xmlns:hm="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
                       Title="{Binding Title}"
                       Width="{Binding Width, Mode=TwoWay}"
                       Height="{Binding Height, Mode=TwoWay}"
@@ -41,7 +41,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
                 <ResourceDictionary>
-                    <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type controls:HamburgerMenuGlyphItem}">
+                    <DataTemplate x:Key="MenuItemTemplate"
+                                  DataType="{x:Type controls:HamburgerMenuGlyphItem}">
                         <Grid Height="48">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="48" />
@@ -74,7 +75,8 @@
                              Position="Right">
                 <StackPanel Orientation="Vertical">
                     <Label Content="{lex:Loc MainWindow_Settings_Theme}" />
-                    <ComboBox Name="ThemeCombo" SelectionChanged="ThemeCombo_SelectionChanged">
+                    <ComboBox Name="ThemeCombo"
+                              SelectionChanged="ThemeCombo_SelectionChanged">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="bff:ThemeWrap">
                                 <StackPanel Orientation="Horizontal">
@@ -89,7 +91,8 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <Label Content="{lex:Loc MainWindow_Settings_Accents}" />
-                    <ComboBox Name="AccentCombo" SelectionChanged="AccentCombo_SelectionChanged">
+                    <ComboBox Name="AccentCombo"
+                              SelectionChanged="AccentCombo_SelectionChanged">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="bff:AccentWrap">
                                 <StackPanel Orientation="Horizontal">
@@ -104,7 +107,8 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <Label Content="{lex:Loc MainWindow_Settings_Language}" />
-                    <ComboBox Name="LanguageCombo" SelectedItem="{Binding LanguageCulture, Mode=TwoWay}">
+                    <ComboBox Name="LanguageCombo"
+                              SelectedItem="{Binding LanguageCulture, Mode=TwoWay}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="globalization:CultureInfo">
                                 <StackPanel Orientation="Horizontal">
@@ -238,22 +242,29 @@
 
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Name="SettingsButt" Click="SettingsButt_Click">
+            <Button Name="SettingsButt"
+                    Click="SettingsButt_Click">
                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"
                                             Kind="{StaticResource SettingsIcon}" />
             </Button>
-            <Button Name="AboutButt" Content="{lex:Loc MainWindow_About}" />
+            <Button Name="AboutButt"
+                    Content="{lex:Loc MainWindow_About}" />
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 
     <hm:HamburgerMenu ClosePaneOnItemSelection="True">
         <hm:HamburgerMenu.Resources>
             <DataTemplate x:Key="HeaderTemplate">
-                <TextBlock FontWeight="Bold" FontSize="23" Text="{Binding}" Margin="0,0,5,0" />
+                <TextBlock Margin="0,0,5,0"
+                           FontSize="23"
+                           FontWeight="Bold"
+                           Text="{Binding}" />
             </DataTemplate>
         </hm:HamburgerMenu.Resources>
-        <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Budget}" HeaderTemplate="{StaticResource HeaderTemplate}">
+        <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Budget}"
+                              HeaderTemplate="{StaticResource HeaderTemplate}"
+                              IsSelected="{Binding BudgetOverviewViewModel.IsOpen.Value}">
             <views:BudgetOverviewView DataContext="{Binding BudgetOverviewViewModel}" />
             <hm:HamburgerMenuItem.Icon>
                 <Viewbox Margin="10">
@@ -261,8 +272,11 @@
                 </Viewbox>
             </hm:HamburgerMenuItem.Icon>
         </hm:HamburgerMenuItem>
-        <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Accounts}" HeaderTemplate="{StaticResource HeaderTemplate}">
-            <views:AccountTabsView DataContext="{Binding ContentViewModel}" HorizontalContentAlignment="Stretch" />
+        <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Accounts}"
+                              HeaderTemplate="{StaticResource HeaderTemplate}"
+                              IsSelected="{Binding ContentViewModel.IsOpen.Value}">
+            <views:AccountTabsView HorizontalContentAlignment="Stretch"
+                                   DataContext="{Binding ContentViewModel}" />
             <hm:HamburgerMenuItem.Icon>
                 <Viewbox Margin="10">
                     <iconPacks:PackIconOcticons Kind="CreditCard" />

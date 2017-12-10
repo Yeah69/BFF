@@ -12,7 +12,7 @@ using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels
 {
-    public class AccountTabsViewModel : SessionViewModelBase, IDisposable
+    public class AccountTabsViewModel : SessionViewModelBase
     {
         private readonly IBffOrm _orm;
 
@@ -84,20 +84,32 @@ namespace BFF.MVVM.ViewModels
             dbSetting.DateCulture = Settings.Default.Culture_SessionDate;
         }
 
+        protected override void OnIsOpenChanged(bool isOpen)
+        {
+            if (isOpen && SummaryAccountViewModel.IsOpen.Value)
+            {
+                Messenger.Default.Send(SummaryAccountMessage.Refresh);
+            }
+        }
+
         #endregion
 
         #region Implementation of IDisposable
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            foreach (IAccountViewModel accountViewModel in AllAccounts)
+            if (disposing)
             {
-                (accountViewModel as IDisposable)?.Dispose();
+                foreach (IAccountViewModel accountViewModel in AllAccounts)
+                {
+                    (accountViewModel as IDisposable)?.Dispose();
+                }
+                (SummaryAccountViewModel as IDisposable)?.Dispose();
+                _orm?.Dispose();
+                Messenger.Default.Unregister<CultureMessage>(this);
             }
-            (SummaryAccountViewModel as IDisposable)?.Dispose();
-            _orm?.Dispose();
-            Messenger.Default.Unregister<CultureMessage>(this);
+            base.Dispose(disposing);
         }
 
         #endregion

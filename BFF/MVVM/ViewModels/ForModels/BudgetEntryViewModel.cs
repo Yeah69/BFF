@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using BFF.DB;
 using BFF.Helper;
 using BFF.MVVM.Models.Native;
@@ -27,16 +28,31 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public BudgetEntryViewModel(IBffOrm orm, IBudgetEntry budgetEntry, ICategoryViewModelService categoryViewModelService) : base(orm, budgetEntry)
         {
-            Category = budgetEntry.ToReactivePropertyAsSynchronized(be => be.Category, categoryViewModelService.GetViewModel,
-                categoryViewModelService.GetModel).AddTo(CompositeDisposable);
+            Category = budgetEntry
+                .ToReactivePropertyAsSynchronized(
+                    be => be.Category, categoryViewModelService.GetViewModel,
+                    categoryViewModelService.GetModel)
+                .AddTo(CompositeDisposable);
 
-            Month = budgetEntry.ToReadOnlyReactivePropertyAsSynchronized(be => be.Month);
+            Month = budgetEntry
+                .ToReadOnlyReactivePropertyAsSynchronized(be => be.Month)
+                .AddTo(CompositeDisposable);
 
-            Budget = budgetEntry.ToReactivePropertyAsSynchronized(be => be.Budget);
+            Budget = budgetEntry
+                .ToReactivePropertyAsSynchronized(be => be.Budget, ReactivePropertyMode.DistinctUntilChanged)
+                .AddTo(CompositeDisposable);
 
-            Outflow = budgetEntry.ToReadOnlyReactivePropertyAsSynchronized(be => be.Outflow);
+            Budget
+                .Subscribe(l => Messenger.Default.Send(BudgetOverviewMessage.Refresh))
+                .AddTo(CompositeDisposable);
 
-            Balance = budgetEntry.ToReadOnlyReactivePropertyAsSynchronized(be => be.Balance);
+            Outflow = budgetEntry
+                .ToReadOnlyReactivePropertyAsSynchronized(be => be.Outflow)
+                .AddTo(CompositeDisposable);
+
+            Balance = budgetEntry
+                .ToReadOnlyReactivePropertyAsSynchronized(be => be.Balance)
+                .AddTo(CompositeDisposable);
         }
 
         public override bool ValidToInsert()

@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +10,7 @@ using BFF.Helper.Import;
 using BFF.MVVM.ViewModels;
 using BFF.MVVM.Views;
 using BFF.Properties;
+using HamburgerMenu;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 
