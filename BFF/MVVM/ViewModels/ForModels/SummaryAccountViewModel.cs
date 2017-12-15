@@ -2,12 +2,10 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
-using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
@@ -30,7 +28,6 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel
     {
-        private readonly Subject<long> _startingBalanceSubject = new Subject<long>();
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
@@ -47,10 +44,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
         /// <param name="summaryAccount">The model.</param>
-        /// <param name="repository">Repository for accounts.</param>
         public SummaryAccountViewModel(IBffOrm orm,
-                                       ISummaryAccount summaryAccount,
-                                       IAccountRepository repository) : base(orm, summaryAccount)
+                                       ISummaryAccount summaryAccount) : base(orm, summaryAccount)
         {
             IsOpen.Value = true;
             Messenger.Default.Register<SummaryAccountMessage>(this, message =>
@@ -76,8 +71,8 @@ namespace BFF.MVVM.ViewModels.ForModels
                 }
             });
 
-            StartingBalance = new ReactiveProperty<long>(CommonPropertyProvider?.Accounts.Sum(account => account.StartingBalance)
-                                                         ?? 0L).AddTo(CompositeDisposable);
+            StartingBalance = new ReactiveProperty<long>().AddTo(CompositeDisposable);
+            RefreshStartingBalance();
 
             NewTransactionCommand.Subscribe(_ =>
             {
@@ -236,8 +231,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public void RefreshStartingBalance()
         {
-            _startingBalanceSubject.OnNext(CommonPropertyProvider?.Accounts.Sum(account => account.StartingBalance) 
-                                           ?? 0L);
+            StartingBalance.Value = CommonPropertyProvider?.AccountViewModelService.All.Sum(account => account.StartingBalance.Value) ?? 0L;
         }
 
         #region Overrides of DataModelViewModel

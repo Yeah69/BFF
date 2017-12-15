@@ -76,6 +76,8 @@ namespace BFF.MVVM.ViewModels
                     newAccount.StartingBalance = StartingBalance.Value;
                     newAccount.StartingDate = StartingDate.Value;
                     newAccount.Insert();
+                    Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
+                    Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
                 }).AddTo(_compositeDisposable);
 
 

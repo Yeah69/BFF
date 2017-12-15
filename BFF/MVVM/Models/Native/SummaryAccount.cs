@@ -1,5 +1,4 @@
 ﻿using System;
-using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 
 namespace BFF.MVVM.Models.Native

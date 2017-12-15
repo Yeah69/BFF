@@ -24,7 +24,7 @@ namespace BFF.MVVM.Services
             _orm = orm;
             _repository = repository;
 
-            SummaryAccountViewModel = new SummaryAccountViewModel(orm, new SummaryAccount(repository), repository);
+            SummaryAccountViewModel = new SummaryAccountViewModel(orm, new SummaryAccount(repository));
             
             All = new TransformingObservableReadOnlyList<IAccount ,IAccountViewModel>(
                 new WrappingObservableReadOnlyList<IAccount>(repository.All),
