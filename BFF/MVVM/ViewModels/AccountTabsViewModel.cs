@@ -1,14 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Globalization;
-using System.Reactive.Linq;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
-using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.Properties;
 using MuVaViMo;
-using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels
 {
@@ -22,48 +18,17 @@ namespace BFF.MVVM.ViewModels
         public ISummaryAccountViewModel SummaryAccountViewModel => 
             _orm.CommonPropertyProvider.AccountViewModelService.SummaryAccountViewModel;
 
-        public IAccountViewModel NewAccount { get; set; }
-        
-        public ReactiveCommand NewAccountCommand { get; }
+        public INewAccountViewModel NewAccountViewModel { get; }
 
-        public AccountTabsViewModel(IBffOrm orm, IAccountViewModelService accountViewModelService)
+        public AccountTabsViewModel(IBffOrm orm, INewAccountViewModel newAccountViewModel)
         {
             _orm = orm;
-            NewAccount = accountViewModelService.GetNewNonInsertedViewModel();
+            NewAccountViewModel = newAccountViewModel;
 
             IDbSetting dbSetting = _orm.BffRepository.DbSettingRepository.Find(1);
             Settings.Default.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultureName);
             Settings.Default.Culture_SessionDate = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
             ManageCultures();
-
-            Messenger.Default.Register<CultureMessage>(this, message =>
-            {
-                switch(message)
-                {
-                    case CultureMessage.Refresh:
-                    case CultureMessage.RefreshCurrency:
-                        OnPropertyChanged(nameof(NewAccount));
-                        break;
-                    case CultureMessage.RefreshDate:
-                        break;
-                    default:
-                        throw new InvalidEnumArgumentException();
-                }
-            });
-
-            NewAccountCommand = NewAccount.Name.Select(name => !string.IsNullOrEmpty(name)).ToReactiveCommand();
-            NewAccountCommand.Subscribe(_ =>
-            {
-                //Insert Account to Database
-                NewAccount.Insert();
-                //Refresh all relevant properties
-                NewAccount.RefreshBalance();
-                Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
-                Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
-                //Refresh dummy-Account
-                NewAccount = accountViewModelService.GetNewNonInsertedViewModel();
-                OnPropertyChanged(nameof(NewAccount));
-            });
         }
 
         #region Overrides of SessionViewModelBase
@@ -107,7 +72,6 @@ namespace BFF.MVVM.ViewModels
                 }
                 (SummaryAccountViewModel as IDisposable)?.Dispose();
                 _orm?.Dispose();
-                Messenger.Default.Unregister<CultureMessage>(this);
             }
             base.Dispose(disposing);
         }

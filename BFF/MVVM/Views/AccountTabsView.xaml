@@ -87,15 +87,9 @@
                     </DataTemplate>
                 </TabItem.HeaderTemplate>
                 <StackPanel Width="500"
-                            DataContext="{Binding NewAccount}">
+                            DataContext="{Binding NewAccountViewModel}">
                     <Label Content="{lex:Loc AccountTabsView_NewAccount_Name}" />
-                    <TextBox Name="NewAccountName">
-                        <TextBox.Text>
-                            <Binding Mode="TwoWay"
-                                     Path="Name.Value"
-                                     UpdateSourceTrigger="PropertyChanged" />
-                        </TextBox.Text>
-                    </TextBox>
+                    <TextBox Text="{Binding Mode=TwoWay, Path=Name.Value, UpdateSourceTrigger=PropertyChanged}" />
                     <Label Content="{lex:Loc AccountTabsView_NewAccount_StartingBalance}" />
                     <TextBox Name="NewAccountStartingBalance"
                              MaxLength="30">
@@ -111,8 +105,13 @@
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
-                    <Button HorizontalAlignment="Right"
-                            Command="{Binding DataContext.NewAccountCommand, ElementName=AccountTabsUserControl}"
+                    <Label Content="{lex:Loc AccountTabsView_NewAccount_StartingDate}" />
+                    <DatePicker x:Name="NewAccountDatePicker"
+                                SelectedDate="{Binding StartingDate.Value}"
+                                SelectedDateFormat="{Binding IsDateFormatLong, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
+                    <Button Margin="0,5,0,0"
+                            HorizontalAlignment="Right"
+                            Command="{Binding AddCommand}"
                             Content="{lex:Loc AccountTabsView_NewAccount_Create}" />
                 </StackPanel>
             </TabItem>

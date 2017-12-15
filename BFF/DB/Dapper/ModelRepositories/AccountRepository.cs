@@ -16,7 +16,8 @@ namespace BFF.DB.Dapper.ModelRepositories
             $@"CREATE TABLE [{nameof(Account)}s](
             {nameof(Account.Id)} INTEGER PRIMARY KEY,
             {nameof(Account.Name)} VARCHAR(100),
-            {nameof(Account.StartingBalance)} INTEGER NOT NULL DEFAULT 0);";
+            {nameof(Account.StartingBalance)} INTEGER NOT NULL DEFAULT 0,
+            {nameof(Account.StartingDate)} DATETIME NOT NULL);";
     }
     
     public class AccountComparer : Comparer<Domain.IAccount>
@@ -38,20 +39,22 @@ namespace BFF.DB.Dapper.ModelRepositories
         { }
 
         public override Domain.IAccount Create() =>
-            new Domain.Account(this);
+            new Domain.Account(this, DateTime.Today);
 
         protected override Converter<Domain.IAccount, Account> ConvertToPersistence => domainAccount => 
             new Account
             {
                 Id = domainAccount.Id,
                 Name = domainAccount.Name,
-                StartingBalance = domainAccount.StartingBalance
+                StartingBalance = domainAccount.StartingBalance,
+                StartingDate = domainAccount.StartingDate
             };
 
         protected override Converter<(Account, DbConnection), Domain.IAccount> ConvertToDomain => tuple =>
         {
             (Account persistenceAccount, _) = tuple;
             return new Domain.Account(this,
+                persistenceAccount.StartingDate,
                 persistenceAccount.Id,
                 persistenceAccount.Name,
                 persistenceAccount.StartingBalance);

@@ -202,7 +202,11 @@ namespace BFF.MVVM.ViewModels
             if (File.Exists(dbPath))
             {
                 IBffOrm orm = new SqLiteBffOrm(new ProvideSqLiteConnection(dbPath));
-                ContentViewModel = new AccountTabsViewModel(orm, orm.CommonPropertyProvider.AccountViewModelService);
+                ContentViewModel = new AccountTabsViewModel(
+                    orm, 
+                    new NewAccountViewModel(
+                        orm.BffRepository.AccountRepository,
+                        orm.CommonPropertyProvider.AccountViewModelService));
                 BudgetOverviewViewModel = 
                     new BudgetOverviewViewModel(
                         orm.BffRepository.BudgetMonthRepository,

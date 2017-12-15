@@ -73,6 +73,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         ReactiveCommand ApplyCommand { get; }
 
+        bool IsDateFormatLong { get; }
+
         /// <summary>
         /// Refreshes the Balance.
         /// </summary>

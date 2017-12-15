@@ -97,6 +97,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Starting Date:.
+        /// </summary>
+        public static string AccountTabsView_NewAccount_StartingDate {
+            get {
+                return ResourceManager.GetString("AccountTabsView_NewAccount_StartingDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Balance:.
         /// </summary>
         public static string AccountView_Balance {
@@ -435,6 +444,15 @@ namespace BFF.Properties {
         public static string ErrorMessageEmptyPayee {
             get {
                 return ResourceManager.GetString("ErrorMessageEmptyPayee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new account&apos;s name isn&apos;t allowed to be empty or match a name of the existing accounts!.
+        /// </summary>
+        public static string ErrorMessageWrongAccountName {
+            get {
+                return ResourceManager.GetString("ErrorMessageWrongAccountName", resourceCulture);
             }
         }
         

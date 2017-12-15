@@ -16,6 +16,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 {
     public interface IAccountViewModel : IAccountBaseViewModel
     {
+        IReactiveProperty<DateTime> StartingDate { get; }
     }
 
     /// <summary>
@@ -29,6 +30,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Starting balance of the Account
         /// </summary>
         public sealed override IReactiveProperty<long> StartingBalance { get; }
+
+
+        public IReactiveProperty<DateTime> StartingDate { get; }
 
         /// <summary>
         /// Before a model object is inserted into the database, it has to be valid.
@@ -61,10 +65,16 @@ namespace BFF.MVVM.ViewModels.ForModels
             : base(orm, account)
         {
             _account = account;
-            StartingBalance = account.ToReactivePropertyAsSynchronized(a => a.StartingBalance)
-                                     .AddTo(CompositeDisposable);
+            StartingBalance = account
+                .ToReactivePropertyAsSynchronized(a => a.StartingBalance)
+                .AddTo(CompositeDisposable);
             StartingBalance.Subscribe(_ => summaryAccountViewModel.RefreshStartingBalance())
                            .AddTo(CompositeDisposable);
+
+            StartingDate = account
+                .ToReactivePropertyAsSynchronized(a => a.StartingDate)
+                .AddTo(CompositeDisposable);
+
             summaryAccountViewModel.RefreshStartingBalance();
 
             NewTransactionCommand.Subscribe(_ =>
@@ -222,7 +232,5 @@ namespace BFF.MVVM.ViewModels.ForModels
         public sealed override ReactiveCommand ApplyCommand { get; }
 
         #endregion
-
-
     }
 }

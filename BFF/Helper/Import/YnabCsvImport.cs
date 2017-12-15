@@ -208,8 +208,10 @@ namespace BFF.Helper.Import
             foreach(Transaction ynabTransaction in ynabTransactions
                 .Where(ynabTransaction => ynabTransaction.Payee == "Starting Balance"))
             {
-                CreateAccount(ynabTransaction.Account, 
-                              ynabTransaction.Inflow - ynabTransaction.Outflow);
+                CreateAccount(
+                    ynabTransaction.Account, 
+                    ynabTransaction.Inflow - ynabTransaction.Outflow,
+                    ynabTransactions.Min(yt => yt.Date).Date);
             }
             //Now process the queue
             while (ynabTransactions.Count > 0)
@@ -500,14 +502,15 @@ namespace BFF.Helper.Import
         private readonly IDictionary<Persistence.Account, IList<Persistence.Transfer>> _toAccountAssignment =
             new Dictionary<Persistence.Account, IList<Persistence.Transfer>>();
 
-        private void CreateAccount(string name, long startingBalance)
+        private void CreateAccount(string name, long startingBalance, DateTime startingDateTime)
         {
             if(string.IsNullOrWhiteSpace(name)) return;
 
             Persistence.Account account = new Persistence.Account
             {
                 Name = name,
-                StartingBalance = startingBalance
+                StartingBalance = startingBalance,
+                StartingDate = startingDateTime
             };
             _accountCache.Add(name, account);
             _accountAssignment.Add(account, new List<Persistence.IHaveAccount>());
