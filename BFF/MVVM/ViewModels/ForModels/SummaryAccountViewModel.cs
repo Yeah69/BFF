@@ -151,6 +151,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             if (IsOpen.Value)
             {
                 OnPropertyChanged(nameof(Balance));
+                OnPropertyChanged(nameof(BalanceUntilNow));
             }
         }
 
@@ -192,6 +193,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The sum of all accounts balances.
         /// </summary>
         public override long? Balance => Orm?.GetSummaryAccountBalance();
+
+        public override long? BalanceUntilNow => Orm?.GetSummaryAccountBalanceUntilNow();
 
         /// <summary>
         /// Creates a new Transaction.

@@ -110,6 +110,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public abstract long? Balance { get; }
 
+        /// <summary>
+        /// The Balance of this Account considering future out- and inflows.
+        /// </summary>
+        public abstract long? BalanceUntilNow { get; }
+
         public IReactiveProperty<bool> IsOpen { get; }
 
         /// <summary>

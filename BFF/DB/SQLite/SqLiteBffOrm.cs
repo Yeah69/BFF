@@ -28,7 +28,14 @@ namespace BFF.DB.SQLite
 
         public IBffRepository BffRepository => _bffRepository;
 
-        public long? GetAccountBalance(IAccount account) => 
+        public long? GetAccountBalanceUntilNow(IAccount account) =>
+            _bffRepository.AccountRepository?.GetBalanceUntilNow(account);
+
+        public long? GetSummaryAccountBalanceUntilNow() =>
+            _bffRepository.AccountRepository?.GetBalanceUntilNow(
+                new SummaryAccount(_bffRepository.AccountRepository));
+
+        public long? GetAccountBalance(IAccount account) =>
             _bffRepository.AccountRepository?.GetBalance(account);
 
         public long? GetSummaryAccountBalance() =>

@@ -175,6 +175,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override long? Balance => Orm?.GetAccountBalance(_account);
 
         /// <summary>
+        /// The current Balance of this Account.
+        /// </summary>
+        public override long? BalanceUntilNow => Orm?.GetAccountBalanceUntilNow(_account);
+
+        /// <summary>
         /// Refreshes the Balance.
         /// </summary>
         public override void RefreshBalance()
@@ -182,6 +187,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             if (IsOpen.Value)
             {
                 OnPropertyChanged(nameof(Balance));
+                OnPropertyChanged(nameof(BalanceUntilNow));
             }
         }
 

@@ -31,6 +31,8 @@ namespace BFF.DB.Dapper.ModelRepositories
     public interface IAccountRepository : IObservableRepositoryBase<Domain.IAccount>
     {
         long? GetBalance(Domain.IAccount account, DbConnection connection = null);
+
+        long? GetBalanceUntilNow(Domain.IAccount account, DbConnection connection = null);
     }
 
     public sealed class AccountRepository : ObservableRepositoryBase<Domain.IAccount, Account>, IAccountRepository
@@ -59,7 +61,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                 persistenceAccount.Name,
                 persistenceAccount.StartingBalance);
         };
-        
+
         private string AllAccountsBalanceStatement =>
             $@"SELECT Total({nameof(Transaction.Sum)}) FROM (
             SELECT {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s UNION ALL 
@@ -67,6 +69,14 @@ namespace BFF.DB.Dapper.ModelRepositories
             SELECT {nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s UNION ALL 
             SELECT {nameof(SubIncome.Sum)} FROM {nameof(SubIncome)}s UNION ALL 
             SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s);";
+
+        private string AllAccountsBalanceUntilNowStatement =>
+            $@"SELECT Total({nameof(Transaction.Sum)}) FROM (
+            SELECT {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.Date)} <= @DateTimeNow UNION ALL 
+            SELECT {nameof(Income.Sum)} FROM {nameof(Income)}s WHERE {nameof(Income.Date)} <= @DateTimeNow UNION ALL 
+            SELECT {nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(ParentTransaction)}s ON {nameof(SubTransaction.ParentId)} = {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Id)} AND {nameof(ParentTransaction.Date)} <= @DateTimeNow UNION ALL 
+            SELECT {nameof(SubIncome.Sum)} FROM {nameof(SubIncome)}s INNER JOIN {nameof(ParentIncome)}s ON {nameof(SubIncome.ParentId)} = {nameof(ParentIncome)}s.{nameof(ParentIncome.Id)} AND {nameof(ParentIncome.Date)} <= @DateTimeNow UNION ALL 
+            SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.StartingBalance)} <= @DateTimeNow);";
 
         private string AccountSpecificBalanceStatement =>
             $@"SELECT (SELECT Total({nameof(Transaction.Sum)}) FROM (
@@ -78,16 +88,38 @@ namespace BFF.DB.Dapper.ModelRepositories
             SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.Id)} = @accountId)) 
             - (SELECT Total({nameof(Transfer.Sum)}) FROM {nameof(Transfer)}s WHERE {nameof(Transfer.FromAccountId)} = @accountId);";
 
-        private long? GetAccountBalance(Domain.IAccount account, DbConnection connection = null) => 
+        private string AccountSpecificBalanceUntilNowStatement =>
+            $@"SELECT (SELECT Total({nameof(Transaction.Sum)}) FROM (
+            SELECT {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.AccountId)} = @accountId AND {nameof(Transaction.Date)} <= @DateTimeNow UNION ALL 
+            SELECT {nameof(Income.Sum)} FROM {nameof(Income)}s WHERE {nameof(Income.AccountId)} = @accountId AND {nameof(Income.Date)} <= @DateTimeNow UNION ALL
+            SELECT {nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(ParentTransaction)}s ON {nameof(SubTransaction.ParentId)} = {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Id)} AND {nameof(ParentTransaction.AccountId)} = @accountId AND {nameof(ParentTransaction.Date)} <= @DateTimeNow UNION ALL
+            SELECT {nameof(SubIncome.Sum)} FROM {nameof(SubIncome)}s INNER JOIN {nameof(ParentIncome)}s ON {nameof(SubIncome.ParentId)} = {nameof(ParentIncome)}s.{nameof(ParentIncome.Id)} AND {nameof(ParentIncome.AccountId)} = @accountId AND {nameof(ParentIncome.Date)} <= @DateTimeNow UNION ALL
+            SELECT {nameof(Transfer.Sum)} FROM {nameof(Transfer)}s WHERE {nameof(Transfer.ToAccountId)} = @accountId AND {nameof(Transfer.Date)} <= @DateTimeNow UNION ALL
+            SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.Id)} = @accountId AND {nameof(Account.StartingBalance)} <= @DateTimeNow)) 
+            - (SELECT Total({nameof(Transfer.Sum)}) FROM {nameof(Transfer)}s WHERE {nameof(Transfer.FromAccountId)} = @accountId AND {nameof(Transfer.Date)} <= @DateTimeNow);";
+
+        private long? GetAccountBalance(Domain.IAccount account, DbConnection connection = null) =>
             ConnectionHelper.QueryOnExistingOrNewConnection(
-                c => c.Query<long>(AccountSpecificBalanceStatement, new { accountId = account?.Id ?? -1 }), 
-                ProvideConnection, 
+                c => c.Query<long>(AccountSpecificBalanceStatement, new { accountId = account?.Id ?? -1 }),
+                ProvideConnection,
                 connection).First();
 
-        private long? GetSummaryAccountBalance(DbConnection connection = null) => 
+        private long? GetAccountBalanceUntilNow(Domain.IAccount account, DbConnection connection = null) =>
             ConnectionHelper.QueryOnExistingOrNewConnection(
-                c => c.Query<long>(AllAccountsBalanceStatement), 
-                ProvideConnection, 
+                c => c.Query<long>(AccountSpecificBalanceUntilNowStatement, new { accountId = account?.Id ?? -1, DateTimeNow = DateTime.Now }),
+                ProvideConnection,
+                connection).First();
+
+        private long? GetSummaryAccountBalance(DbConnection connection = null) =>
+            ConnectionHelper.QueryOnExistingOrNewConnection(
+                c => c.Query<long>(AllAccountsBalanceStatement),
+                ProvideConnection,
+                connection).First();
+
+        private long? GetSummaryAccountBalanceUntilNow(DbConnection connection = null) =>
+            ConnectionHelper.QueryOnExistingOrNewConnection(
+                c => c.Query<long>(AllAccountsBalanceUntilNowStatement, new { DateTimeNow = DateTime.Now }),
+                ProvideConnection,
                 connection).First();
 
         public long? GetBalance(Domain.IAccount account, DbConnection connection = null)
@@ -100,6 +132,26 @@ namespace BFF.DB.Dapper.ModelRepositories
                         return GetSummaryAccountBalance(connection);
                     case Domain.IAccount specificAccount:
                         return GetAccountBalance(specificAccount, connection);
+                    default:
+                        return null;
+                }
+            }
+            catch (OverflowException)
+            {
+                return null;
+            }
+        }
+
+        public long? GetBalanceUntilNow(Domain.IAccount account, DbConnection connection = null)
+        {
+            try
+            {
+                switch (account)
+                {
+                    case Domain.ISummaryAccount _:
+                        return GetSummaryAccountBalanceUntilNow(connection);
+                    case Domain.IAccount specificAccount:
+                        return GetAccountBalanceUntilNow(specificAccount, connection);
                     default:
                         return null;
                 }

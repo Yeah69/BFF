@@ -16,6 +16,8 @@ namespace BFF.DB
         ISubIncomeViewModelService SubIncomeViewModelService { get; }
         IBudgetEntryViewModelService BudgetEntryViewModelService { get; }
 
+        long? GetAccountBalanceUntilNow(IAccount account);
+        long? GetSummaryAccountBalanceUntilNow();
         long? GetAccountBalance(IAccount account);
         long? GetSummaryAccountBalance();
         IEnumerable<ISubTransInc> GetSubTransInc<T>(long parentId) where T : ISubTransInc;

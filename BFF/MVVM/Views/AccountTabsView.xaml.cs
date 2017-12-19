@@ -1,8 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-
-namespace BFF.MVVM.Views
+﻿namespace BFF.MVVM.Views
 {
     /// <summary>
     /// Interaction logic for FilledMainWindow.xaml

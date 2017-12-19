@@ -27,9 +27,15 @@
             <SolidColorBrush x:Key="NeutralBrush"
                              Color="DimGray" />
 
-            <system:Double x:Key="IconSize">16.0</system:Double>
-            <system:Double x:Key="TabHeaderIconSize">30.0</system:Double>
-            <system:Double x:Key="WindowCommandIconSize">15.0</system:Double>
+            <system:Double x:Key="IconSize">
+                16.0
+            </system:Double>
+            <system:Double x:Key="TabHeaderIconSize">
+                30.0
+            </system:Double>
+            <system:Double x:Key="WindowCommandIconSize">
+                15.0
+            </system:Double>
             <!--  Following Brushes are configured in code-behind  -->
             <SolidColorBrush x:Key="AlternatingRowBrush" />
             <SolidColorBrush x:Key="OpaqueZeroBrush" />
