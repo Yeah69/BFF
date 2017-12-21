@@ -7,15 +7,21 @@ using MuVaViMo;
 
 namespace BFF.MVVM.Services
 {
-    public interface ICommonPropertyViewModelServiceBase<TDomain, TViewModel>
+    public interface ICommonPropertyViewModelServiceBase<TDomain, TViewModel> : IConvertingViewModelServiceBase<TDomain, TViewModel>
+        where TDomain : class, IDataModel
+        where TViewModel : class, IDataModelViewModel
+    {
+        TViewModel GetNewNonInsertedViewModel();
+
+        IObservableReadOnlyList<TViewModel> All { get; }
+    }
+
+    public interface IConvertingViewModelServiceBase<TDomain, TViewModel>
         where TDomain : class, IDataModel
         where TViewModel : class, IDataModelViewModel
     {
         TViewModel GetViewModel(TDomain model);
         TDomain GetModel(TViewModel viewModel);
-        TViewModel GetNewNonInsertedViewModel();
-
-        IObservableReadOnlyList<TViewModel> All { get; }
     }
 
     public abstract class CommonPropertyViewModelServiceBase<TDomain, TViewModel> : ICommonPropertyViewModelServiceBase<TDomain, TViewModel>

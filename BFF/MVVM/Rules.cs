@@ -17,7 +17,7 @@ namespace BFF.MVVM
                     : new ValidationResult(false, "ErrorMessageEmptyPayee".Localize<string>()));
 
         public static ValidationRule EmptyCategory =
-            LambdaConverters.Validator.Create<ICategoryViewModel>(
+            LambdaConverters.Validator.Create<ICategoryBaseViewModel>(
                 e => e.Value != null
                     ? ValidationResult.ValidResult
                     : new ValidationResult(false, "ErrorMessageEmptyCategory".Localize<string>()));

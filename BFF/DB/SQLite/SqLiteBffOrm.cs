@@ -62,17 +62,27 @@ namespace BFF.DB.SQLite
             SubTransactionViewModelService = new SubTransactionViewModelService(
                 st => new SubTransactionViewModel(
                     st,
-                    hcvm => new NewCategoryViewModel(hcvm, _bffRepository.CategoryRepository, CommonPropertyProvider.CategoryViewModelService),
+                    hcvm => new NewCategoryViewModel(
+                        hcvm,
+                        _bffRepository.CategoryRepository,
+                        _bffRepository.IncomeCategoryRepository, 
+                        CommonPropertyProvider.CategoryViewModelService,
+                        CommonPropertyProvider.IncomeCategoryViewModelService),
                     this, 
-                    CommonPropertyProvider.CategoryViewModelService),
+                    CommonPropertyProvider.CategoryBaseViewModelService),
                 () => BffRepository.SubTransactionRepository.Create());
 
             SubIncomeViewModelService = new SubIncomeViewModelService(
                 si => new SubIncomeViewModel(
                     si,
-                    hcvm => new NewCategoryViewModel(hcvm, _bffRepository.CategoryRepository, CommonPropertyProvider.CategoryViewModelService),
+                    hcvm => new NewCategoryViewModel(
+                        hcvm, 
+                        _bffRepository.CategoryRepository,
+                        _bffRepository.IncomeCategoryRepository,
+                        CommonPropertyProvider.CategoryViewModelService,
+                        CommonPropertyProvider.IncomeCategoryViewModelService),
                     this,
-                    CommonPropertyProvider.CategoryViewModelService),
+                    CommonPropertyProvider.CategoryBaseViewModelService),
                 () => BffRepository.SubIncomeRepository.Create());
 
             ParentTransactionViewModelService = new ParentTransactionViewModelService(

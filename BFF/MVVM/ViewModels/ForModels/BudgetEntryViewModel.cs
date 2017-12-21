@@ -10,8 +10,13 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public interface IBudgetEntryViewModel : IDataModelViewModel, IHaveCategoryViewModel
+    public interface IBudgetEntryViewModel : IDataModelViewModel
     {
+        /// <summary>
+        /// Each SubTransaction or SubIncome can be budgeted to a category.
+        /// </summary>
+        IReactiveProperty<ICategoryViewModel> Category { get; }
+
         IReadOnlyReactiveProperty<DateTime> Month { get; }
         IReactiveProperty<long> Budget { get; }
         IReadOnlyReactiveProperty<long> Outflow { get; }

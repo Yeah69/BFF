@@ -57,15 +57,18 @@ $@"SELECT Sum(Sum) as Sum FROM
 
         private readonly IBudgetEntryRepository _budgetEntryRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IIncomeCategoryRepository _incomeCategoryRepository;
         private readonly IProvideConnection _provideConnection;
 
         public BudgetMonthRepository(
             IBudgetEntryRepository budgetEntryRepository, 
             ICategoryRepository categoryRepository,
+            IIncomeCategoryRepository incomeCategoryRepository,
             IProvideConnection provideConnection)
         {
             _budgetEntryRepository = budgetEntryRepository;
             _categoryRepository = categoryRepository;
+            _incomeCategoryRepository = incomeCategoryRepository;
             _provideConnection = provideConnection;
         }
 
@@ -79,9 +82,6 @@ $@"SELECT Sum(Sum) as Sum FROM
             {
                 var groupings = _categoryRepository
                     .All
-                    .Where(category =>
-                        category.Name != "Available this month" &&
-                        category.Name != "Available next month") // TODO this is proprietary to YNAB. Adjust ASAP (Income-Categories required)! 
                     .Select(category => _budgetEntryRepository.GetBudgetEntries(actualFromMonth, toMonth, category, c))
                     .SelectMany(l => l)
                     .GroupBy(be => be.Month)
@@ -89,8 +89,8 @@ $@"SELECT Sum(Sum) as Sum FROM
 
                 var budgetMonths = new List<IBudgetMonth>();
 
-                long thisCategoryId = _categoryRepository.All.Single(cat => cat.Name == "Available this month").Id; // TODO this is proprietary to YNAB. Adjust ASAP (Income-Categories required)! 
-                long nextCategoryId = _categoryRepository.All.Single(cat => cat.Name == "Available next month").Id; // TODO this is proprietary to YNAB. Adjust ASAP (Income-Categories required)! 
+                long thisCategoryId = _incomeCategoryRepository.All.Single(cat => cat.Name == "This Month").Id; // TODO this is proprietary to YNAB. Adjust ASAP (Income-Categories required)! 
+                long nextCategoryId = _incomeCategoryRepository.All.Single(cat => cat.Name == "Next Month").Id; // TODO this is proprietary to YNAB. Adjust ASAP (Income-Categories required)! 
 
                 long firstBalance = groupings[0].Where(be => be.Balance > 0).Sum(be => be.Balance);
                 long currentNotBudgetedOrOverbudgeted =

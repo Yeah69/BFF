@@ -4,7 +4,11 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface ICategory : ICommonProperty
+    public interface ICategoryBase : ICommonProperty
+    {
+    }
+
+    public interface ICategory : ICategoryBase
     {
         /// <summary>
         /// Id of Parent
@@ -18,10 +22,26 @@ namespace BFF.MVVM.Models.Native
         void RemoveCategory(ICategory category);
     }
 
+    public interface IIncomeCategory: ICategoryBase
+    {
+        int MonthOffset { get; set; }
+    }
+
     /// <summary>
     /// This CommonProperty is used to categorize Tits
     /// </summary>
-    public class Category : CommonProperty<ICategory>, ICategory
+    public class CategoryBase<T> : CommonProperty<T>, ICategoryBase where T : class, ICategoryBase
+    {
+        /// <summary>
+        /// Initializes the Object
+        /// </summary>
+        /// <param name="name">Name of the Category</param>
+        public CategoryBase(IRepository<T> repository, long id, string name) : base(repository, id, name)
+        {
+        }
+    }
+
+    public class Category : CategoryBase<ICategory>, ICategory
     {
         private ICategory _parent;
         private readonly ObservableCollection<ICategory> _categories = new ObservableCollection<ICategory>();
@@ -34,20 +54,15 @@ namespace BFF.MVVM.Models.Native
             get => _parent;
             set
             {
-                if(_parent == value) return;
+                if (_parent == value) return;
                 _parent = value;
                 Update();
-                OnPropertyChanged(); 
+                OnPropertyChanged();
             }
         }
 
         public ReadOnlyObservableCollection<ICategory> Categories { get; }
 
-        /// <summary>
-        /// Initializes the Object
-        /// </summary>
-        /// <param name="name">Name of the Category</param>
-        /// <param name="parentId"></param>
         public Category(IRepository<ICategory> repository, long id, string name, ICategory parent) : base(repository, id, name)
         {
             _parent = parent;
@@ -62,6 +77,32 @@ namespace BFF.MVVM.Models.Native
         public void RemoveCategory(ICategory category)
         {
             _categories.Remove(category);
+        }
+    }
+
+    public class IncomeCategory : CategoryBase<IIncomeCategory>, IIncomeCategory
+    {
+        private int _monthOffset;
+
+        public int MonthOffset
+        {
+            get => _monthOffset;
+            set
+            {
+                if (_monthOffset == value) return;
+                _monthOffset = value;
+                Update();
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Initializes the Object
+        /// </summary>
+        /// <param name="name">Name of the Category</param>
+        public IncomeCategory(IRepository<IIncomeCategory> repository, long id, string name, int monthOffset) : base(repository, id, name)
+        {
+            _monthOffset = monthOffset;
         }
     }
 }

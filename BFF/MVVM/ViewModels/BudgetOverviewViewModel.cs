@@ -13,7 +13,6 @@ using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using Reactive.Bindings.Helpers;
 
 namespace BFF.MVVM.ViewModels
 {
@@ -73,9 +72,6 @@ namespace BFF.MVVM.ViewModels
             Categories = 
                 categoryRepository
                     .All
-                    .ToFilteredReadOnlyObservableCollection(
-                        c => c.Name != "Available this month" // TODO this is proprietary to YNAB. Adjust ASAP (Income-Categories required)! 
-                        && c.Name != "Available next month")// TODO this is proprietary to YNAB. Adjust ASAP (Income-Categories required)! 
                     .ToReadOnlyReactiveCollection(categoryViewModelService.GetViewModel);
 
             BudgetMonths = CreateBudgetMonths();

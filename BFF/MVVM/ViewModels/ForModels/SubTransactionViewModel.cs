@@ -23,7 +23,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             ISubTransaction subTransaction,
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
             IBffOrm orm,
-            ICategoryViewModelService categoryViewModelService) :
+            ICategoryBaseViewModelService categoryViewModelService) :
             base(subTransaction, newCategoryViewModelFactory, orm, categoryViewModelService)
         {
         }

@@ -21,7 +21,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Each Transaction or Income can be budgeted to a category.
         /// </summary>
-        public IReactiveProperty<ICategoryViewModel> Category { get; }
+        public IReactiveProperty<ICategoryBaseViewModel> Category { get; }
 
         /// <summary>
         /// The amount of money of the exchange of the Transaction or Income.
@@ -44,7 +44,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             IBffOrm orm,
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
-            ICategoryViewModelService categoryViewModelService)
+            ICategoryBaseViewModelService categoryViewModelService)
             : base(orm, transInc, newPayeeViewModelFactory, accountViewModelService, payeeViewModelService)
         {
             Category = transInc.ToReactivePropertyAsSynchronized(

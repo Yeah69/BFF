@@ -11,7 +11,7 @@ namespace BFF.DB
         string DbPath { get; }
         Task CreateNewDatabaseAsync(string dbPath);
         Task PopulateDatabaseAsync(IEnumerable<ITransaction> transactions, IEnumerable<ISubTransaction> subTransactions, IEnumerable<IIncome> incomes, IEnumerable<ISubIncome> subIncomes,
-            IEnumerable<ITransfer> transfers, IEnumerable<IAccount> accounts, IEnumerable<IPayee> payees, IEnumerable<ICategory> categories);
+            IEnumerable<ITransfer> transfers, IEnumerable<IAccount> accounts, IEnumerable<IPayee> payees, IEnumerable<ICategoryBase> categories);
         IEnumerable<ITitBase> GetAllTitsAsync(DateTime startTime, DateTime endTime, IAccount account = null);
         Task<long?> GetAccountBalanceAsync(IAccount account = null);
         IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : class, ISubTransInc;

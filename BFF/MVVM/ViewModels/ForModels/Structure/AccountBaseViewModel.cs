@@ -277,22 +277,32 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     case ITransaction transaction:
                         vmItems.Add(new TransactionViewModel(
                             transaction,
-                            hcvm => new NewCategoryViewModel(hcvm, Orm.BffRepository.CategoryRepository, Orm.CommonPropertyProvider.CategoryViewModelService),
+                            hcvm => new NewCategoryViewModel(
+                                hcvm,
+                                Orm.BffRepository.CategoryRepository, 
+                                Orm.BffRepository.IncomeCategoryRepository,
+                                Orm.CommonPropertyProvider.CategoryViewModelService,
+                                Orm.CommonPropertyProvider.IncomeCategoryViewModelService),
                             hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
                             Orm,
                             Orm.CommonPropertyProvider.AccountViewModelService,
                             Orm.CommonPropertyProvider.PayeeViewModelService,
-                            Orm.CommonPropertyProvider.CategoryViewModelService));
+                            Orm.CommonPropertyProvider.CategoryBaseViewModelService));
                         break;
                     case IIncome income:
                         vmItems.Add(new IncomeViewModel(
                             income,
-                            hcvm => new NewCategoryViewModel(hcvm, Orm.BffRepository.CategoryRepository, Orm.CommonPropertyProvider.CategoryViewModelService),
+                            hcvm => new NewCategoryViewModel(
+                                hcvm, 
+                                Orm.BffRepository.CategoryRepository,
+                                Orm.BffRepository.IncomeCategoryRepository,
+                                Orm.CommonPropertyProvider.CategoryViewModelService,
+                                Orm.CommonPropertyProvider.IncomeCategoryViewModelService),
                             hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
                             Orm,
                             Orm.CommonPropertyProvider.AccountViewModelService,
                             Orm.CommonPropertyProvider.PayeeViewModelService,
-                            Orm.CommonPropertyProvider.CategoryViewModelService));
+                            Orm.CommonPropertyProvider.CategoryBaseViewModelService));
                         break;
                     default:
                         throw new NotImplementedException();

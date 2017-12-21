@@ -45,10 +45,12 @@ namespace BFF.DB.Dapper
                 _cache.Remove(dataModel.Id);
         }
 
+        
+
         public override IEnumerable<TDomain> FindAll(DbConnection connection = null)
         {
             IEnumerable<TPersistence> elements = ConnectionHelper.QueryOnExistingOrNewConnection(
-                c => c.GetAll<TPersistence>(), 
+                FindAllInner, 
                 ProvideConnection, 
                 connection);
             Logger.Debug("Starting to convert all POCOs of type {0}", typeof(TPersistence).Name);

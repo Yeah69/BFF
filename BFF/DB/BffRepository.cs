@@ -74,6 +74,7 @@ namespace BFF.DB
         IAccountRepository AccountRepository { get; }
         IBudgetEntryRepository BudgetEntryRepository { get; }
         ICategoryRepository CategoryRepository { get; }
+        IIncomeCategoryRepository IncomeCategoryRepository { get; }
         IDbSettingRepository DbSettingRepository { get; }
         IIncomeRepository IncomeRepository { get; }
         IParentIncomeRepository ParentIncomeRepository { get; }
@@ -104,6 +105,7 @@ namespace BFF.DB
         public abstract IAccountRepository AccountRepository { get; }
         public abstract IBudgetEntryRepository BudgetEntryRepository { get; }
         public abstract ICategoryRepository CategoryRepository { get; }
+        public abstract IIncomeCategoryRepository IncomeCategoryRepository { get; }
         public abstract IDbSettingRepository DbSettingRepository { get; }
         public abstract IIncomeRepository IncomeRepository { get; }
         public abstract IParentIncomeRepository ParentIncomeRepository { get; }

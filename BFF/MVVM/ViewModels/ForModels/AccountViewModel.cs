@@ -87,12 +87,17 @@ namespace BFF.MVVM.ViewModels.ForModels
                 transaction.Cleared = false;
                 NewTits.Add(new TransactionViewModel(
                     transaction,
-                    hcvm => new NewCategoryViewModel(hcvm, Orm.BffRepository.CategoryRepository, Orm.CommonPropertyProvider.CategoryViewModelService),
+                    hcvm => new NewCategoryViewModel(
+                        hcvm,
+                        Orm.BffRepository.CategoryRepository, 
+                        Orm.BffRepository.IncomeCategoryRepository, 
+                        Orm.CommonPropertyProvider.CategoryViewModelService,
+                        Orm.CommonPropertyProvider.IncomeCategoryViewModelService),
                     hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
                     Orm,
                     Orm.CommonPropertyProvider.AccountViewModelService,
                     Orm.CommonPropertyProvider.PayeeViewModelService,
-                    Orm.CommonPropertyProvider.CategoryViewModelService));
+                    Orm.CommonPropertyProvider.CategoryBaseViewModelService));
             }).AddTo(CompositeDisposable);
 
             NewIncomeCommand.Subscribe(_ =>
@@ -105,12 +110,17 @@ namespace BFF.MVVM.ViewModels.ForModels
                 income.Cleared = false;
                 NewTits.Add(new IncomeViewModel(
                     income,
-                    hcvm => new NewCategoryViewModel(hcvm, Orm.BffRepository.CategoryRepository, Orm.CommonPropertyProvider.CategoryViewModelService),
+                    hcvm => new NewCategoryViewModel(
+                        hcvm,
+                        Orm.BffRepository.CategoryRepository, 
+                        Orm.BffRepository.IncomeCategoryRepository, 
+                        Orm.CommonPropertyProvider.CategoryViewModelService,
+                        Orm.CommonPropertyProvider.IncomeCategoryViewModelService),
                     hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
                     Orm,
                     Orm.CommonPropertyProvider.AccountViewModelService,
                     Orm.CommonPropertyProvider.PayeeViewModelService,
-                    Orm.CommonPropertyProvider.CategoryViewModelService));
+                    Orm.CommonPropertyProvider.CategoryBaseViewModelService));
             }).AddTo(CompositeDisposable);
 
             NewTransferCommand.Subscribe(_ =>

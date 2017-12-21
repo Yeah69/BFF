@@ -291,12 +291,12 @@
     <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
     <Compile Include="MVVM\Models\Native\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Native\BudgetMonth.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\IHaveCategory.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\IHaveBaseCategory.cs" />
     <Compile Include="MVVM\Models\Native\Structure\ParentTransInc.cs" />
     <Compile Include="MVVM\Models\Native\Structure\TransInc.cs" />
     <Compile Include="MVVM\Models\Native\SummaryAccount.cs" />
     <Compile Include="MVVM\Models\Native\Account.cs" />
-    <Compile Include="MVVM\Models\Native\Category.cs" />
+    <Compile Include="MVVM\Models\Native\CategoryBase.cs" />
     <Compile Include="MVVM\Models\Native\DbSetting.cs" />
     <Compile Include="MVVM\Models\Native\ParentIncome.cs" />
     <Compile Include="MVVM\Models\Native\Payee.cs" />
@@ -326,7 +326,7 @@
     </Compile>
     <Compile Include="MVVM\ViewModels\BudgetMonthViewModel.cs" />
     <Compile Include="MVVM\ViewModels\BudgetOverviewViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\CategoryViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\CategoryBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\BudgetEntryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\CommonPropertyViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\PayeeViewModel.cs" />

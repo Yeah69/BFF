@@ -15,12 +15,12 @@ namespace BFF.MVVM.Models.Native.Structure
     /// </summary>
     public abstract class SubTransInc<T> : TitLike<T>, ISubTransInc where T : class, ISubTransInc
     {
-        private ICategory _category;
+        private ICategoryBase _category;
 
         /// <summary>
         /// Id of the Category
         /// </summary>
-        public ICategory Category
+        public ICategoryBase Category
         {
             get => _category;
             set
@@ -63,7 +63,7 @@ namespace BFF.MVVM.Models.Native.Structure
         protected SubTransInc(
             IRepository<T> repository, 
             long id,
-            ICategory category = null,
+            ICategoryBase category = null,
             string memo = null,
             long sum = 0L) : base(repository, id, memo)
         {

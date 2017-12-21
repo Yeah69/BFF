@@ -61,11 +61,14 @@ namespace BFF.DB.Dapper
         }
 
         protected abstract Converter<(TPersistence, DbConnection), TDomain> ConvertToDomain { get; }
+
+        protected virtual IEnumerable<TPersistence> FindAllInner(DbConnection connection) => connection.GetAll<TPersistence>();
+
         public virtual IEnumerable<TDomain> FindAll(DbConnection connection = null)
         {
             IEnumerable<TDomain> Inner(DbConnection conn)
             {
-                return conn.GetAll<TPersistence>().Select(p => ConvertToDomain((p, conn)));
+                return FindAllInner(conn).Select(p => ConvertToDomain((p, conn)));
             }
 
             if(connection != null) return Inner(connection);

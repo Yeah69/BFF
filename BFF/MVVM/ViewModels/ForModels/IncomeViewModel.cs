@@ -28,7 +28,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IBffOrm orm,
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
-            ICategoryViewModelService categoryViewModelService)
+            ICategoryBaseViewModelService categoryViewModelService)
             : base(
                   parentTransInc,
                   newCategoryViewModelFactory,

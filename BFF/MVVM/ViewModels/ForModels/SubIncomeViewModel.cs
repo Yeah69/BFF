@@ -23,6 +23,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             ISubIncome subIncome,
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
             IBffOrm orm,
-            ICategoryViewModelService categoryViewModelService) : base(subIncome, newCategoryViewModelFactory, orm, categoryViewModelService) {}
+            ICategoryBaseViewModelService categoryViewModelService) : base(subIncome, newCategoryViewModelFactory, orm, categoryViewModelService) {}
     }
 }

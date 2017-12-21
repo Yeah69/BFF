@@ -12,6 +12,7 @@ namespace BFF.DB.Dapper
             : base(provideConnection)
         {
             IAccount AccountFetcher(long id, DbConnection connection) => AccountRepository.Find(id, connection);
+            ICategoryBase CategoryBaseFetcher(long? id, DbConnection connection) => id != null ? CategoryRepository.Find((long)id, connection) : null;
             ICategory CategoryFetcher(long? id, DbConnection connection) => id != null ? CategoryRepository.Find((long)id, connection) : null;
             IPayee PayeeFetcher(long id, DbConnection connection) => PayeeRepository.Find(id, connection);
             IEnumerable<ISubTransaction> SubTransactionsFetcher(long parentId, DbConnection connection) => SubTransactionRepository.GetChildrenOf(parentId, connection);
@@ -20,14 +21,15 @@ namespace BFF.DB.Dapper
             AccountRepository = new AccountRepository(provideConnection);
             BudgetEntryRepository = new BudgetEntryRepository(provideConnection, CategoryFetcher);
             CategoryRepository = new CategoryRepository(provideConnection);
+            IncomeCategoryRepository = new IncomeCategoryRepository(provideConnection);
             DbSettingRepository = new DbSettingRepository(provideConnection);
-            IncomeRepository = new IncomeRepository(provideConnection, AccountFetcher, CategoryFetcher, PayeeFetcher);
+            IncomeRepository = new IncomeRepository(provideConnection, AccountFetcher, CategoryBaseFetcher, PayeeFetcher);
             ParentIncomeRepository = new ParentIncomeRepository(provideConnection, AccountFetcher, PayeeFetcher, SubIncomesFetcher);
             ParentTransactionRepository = new ParentTransactionRepository(provideConnection, AccountFetcher, PayeeFetcher, SubTransactionsFetcher);
             PayeeRepository = new PayeeRepository(provideConnection);
-            SubIncomeRepository = new SubIncomeRepository(provideConnection, CategoryFetcher);
-            SubTransactionRepository = new SubTransactionRepository(provideConnection, CategoryFetcher);
-            TransactionRepository = new TransactionRepository(provideConnection, AccountFetcher, CategoryFetcher, PayeeFetcher);
+            SubIncomeRepository = new SubIncomeRepository(provideConnection, CategoryBaseFetcher);
+            SubTransactionRepository = new SubTransactionRepository(provideConnection, CategoryBaseFetcher);
+            TransactionRepository = new TransactionRepository(provideConnection, AccountFetcher, CategoryBaseFetcher, PayeeFetcher);
             TransferRepository = new TransferRepository(provideConnection, AccountFetcher);
             TitRepository = new TitRepository(provideConnection,
                                               TransactionRepository, 
@@ -41,12 +43,13 @@ namespace BFF.DB.Dapper
                                               SubTransactionsFetcher,
                                               SubIncomesFetcher);
 
-            BudgetMonthRepository = new BudgetMonthRepository(BudgetEntryRepository, CategoryRepository, provideConnection);
+            BudgetMonthRepository = new BudgetMonthRepository(BudgetEntryRepository, CategoryRepository, IncomeCategoryRepository, provideConnection);
         }
 
         public sealed override IAccountRepository AccountRepository { get; }
         public sealed override IBudgetEntryRepository BudgetEntryRepository { get; }
         public sealed override ICategoryRepository CategoryRepository { get; }
+        public sealed override IIncomeCategoryRepository IncomeCategoryRepository { get; }
         public sealed override IDbSettingRepository DbSettingRepository { get; }
         public sealed override IIncomeRepository IncomeRepository { get; }
         public sealed override IParentIncomeRepository ParentIncomeRepository { get; }

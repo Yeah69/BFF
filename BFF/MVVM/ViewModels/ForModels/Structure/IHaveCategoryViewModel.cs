@@ -7,6 +7,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Each SubTransaction or SubIncome can be budgeted to a category.
         /// </summary>
-        IReactiveProperty<ICategoryViewModel> Category { get; }
+        IReactiveProperty<ICategoryBaseViewModel> Category { get; }
     }
 }

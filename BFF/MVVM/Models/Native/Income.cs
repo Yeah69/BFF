@@ -27,7 +27,7 @@ namespace BFF.MVVM.Models.Native
             DateTime date, 
             IAccount account = null, 
             IPayee payee = null,
-            ICategory category = null, 
+            ICategoryBase category = null, 
             string memo = null, 
             long sum = 0L, 
             bool? cleared = null)

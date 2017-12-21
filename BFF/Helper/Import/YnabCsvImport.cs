@@ -117,6 +117,8 @@ namespace BFF.Helper.Import
             lists.BudgetEntries = ConvertBudgetEntryToNative(budgets).ToList();
             lists.Accounts = GetAllAccountCache();
             lists.Payees = GetAllPayeeCache();
+            _categoryImportWrappers.Add(_thisMonthCategoryImportWrapper);
+            _categoryImportWrappers.Add(_nextMonthCategoryImportWrapper);
             lists.Categories = _categoryImportWrappers;
 
             ImportAssignments assignments = new ImportAssignments
@@ -591,28 +593,62 @@ namespace BFF.Helper.Import
 
         private readonly IList<CategoryImportWrapper> _categoryImportWrappers = new List<CategoryImportWrapper>();
 
+        private readonly CategoryImportWrapper _thisMonthCategoryImportWrapper = new CategoryImportWrapper
+        {
+            Category = new Persistence.Category
+            {
+                Name = "This Month",
+                IsIncomeRelevant = true,
+                MonthOffset = 0,
+                ParentId = null
+            },
+            Parent = null
+        };
+
+        private readonly CategoryImportWrapper _nextMonthCategoryImportWrapper = new CategoryImportWrapper
+        {
+            Category = new Persistence.Category
+            {
+                Name = "Next Month",
+                IsIncomeRelevant = true,
+                MonthOffset = 1,
+                ParentId = null
+            },
+            Parent = null
+        };
+
         private void AssignCategory(
             string namePath, Persistence.IHaveCategory titLike)
         {
             string masterCategoryName = namePath.Split(':').First();
             string subCategoryName = namePath.Split(':').Last();
-            CategoryImportWrapper masterCategoryWrapper =
-                _categoryImportWrappers.SingleOrDefault(ciw => ciw.Category.Name == masterCategoryName);
-            if(masterCategoryWrapper == null)
+            if (masterCategoryName == "Income")
             {
-                Persistence.Category category = new Persistence.Category {Name = masterCategoryName};
-                masterCategoryWrapper = new CategoryImportWrapper { Parent = null, Category = category };
-                _categoryImportWrappers.Add(masterCategoryWrapper);
+                if(subCategoryName == "Available this month")
+                    _thisMonthCategoryImportWrapper.TitAssignments.Add(titLike);
+                else
+                    _nextMonthCategoryImportWrapper.TitAssignments.Add(titLike);
             }
-            CategoryImportWrapper subCategoryWrapper =
-                masterCategoryWrapper.Categories.SingleOrDefault(c => c.Category.Name == subCategoryName);
-            if(subCategoryWrapper == null)
+            else
             {
-                Persistence.Category category = new Persistence.Category {Name = subCategoryName};
-                subCategoryWrapper = new CategoryImportWrapper {Parent = masterCategoryWrapper, Category = category};
-                masterCategoryWrapper.Categories.Add(subCategoryWrapper);
+                CategoryImportWrapper masterCategoryWrapper =
+                    _categoryImportWrappers.SingleOrDefault(ciw => ciw.Category.Name == masterCategoryName);
+                if (masterCategoryWrapper == null)
+                {
+                    Persistence.Category category = new Persistence.Category { Name = masterCategoryName };
+                    masterCategoryWrapper = new CategoryImportWrapper { Parent = null, Category = category };
+                    _categoryImportWrappers.Add(masterCategoryWrapper);
+                }
+                CategoryImportWrapper subCategoryWrapper =
+                    masterCategoryWrapper.Categories.SingleOrDefault(c => c.Category.Name == subCategoryName);
+                if (subCategoryWrapper == null)
+                {
+                    Persistence.Category category = new Persistence.Category { Name = subCategoryName };
+                    subCategoryWrapper = new CategoryImportWrapper { Parent = masterCategoryWrapper, Category = category };
+                    masterCategoryWrapper.Categories.Add(subCategoryWrapper);
+                }
+                subCategoryWrapper.TitAssignments.Add(titLike);
             }
-            subCategoryWrapper.TitAssignments.Add(titLike);
         }
 
         private void ClearCategoryCache()

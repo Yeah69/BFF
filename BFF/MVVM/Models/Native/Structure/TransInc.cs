@@ -13,13 +13,13 @@ namespace BFF.MVVM.Models.Native.Structure
 
     public abstract class TransInc<T> : TransIncBase<T>, ITransInc where T : class, ITransInc
     {
-        private ICategory _category;
+        private ICategoryBase _category;
         private long _sum;
 
         /// <summary>
         /// Id of Category
         /// </summary>
-        public ICategory Category
+        public ICategoryBase Category
         {
             get => _category;
             set
@@ -66,7 +66,7 @@ namespace BFF.MVVM.Models.Native.Structure
                            DateTime date, 
                            IAccount account = null,
                            IPayee payee = null, 
-                           ICategory category = null,
+                           ICategoryBase category = null,
                            string memo = null, 
                            long sum = 0, 
                            bool? cleared = null) 

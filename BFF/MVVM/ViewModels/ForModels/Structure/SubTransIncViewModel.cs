@@ -22,7 +22,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Each SubTransaction or SubIncome can be budgeted to a category.
         /// </summary>
-        public IReactiveProperty<ICategoryViewModel> Category { get; }
+        public IReactiveProperty<ICategoryBaseViewModel> Category { get; }
 
         /// <summary>
         /// The amount of money of the exchange of the SubTransaction or SubIncome.
@@ -39,7 +39,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             ISubTransInc subIncome, 
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory, 
             IBffOrm orm,
-            ICategoryViewModelService categoryViewModelService) : base(orm, subIncome)
+            ICategoryBaseViewModelService categoryViewModelService) : base(orm, subIncome)
         {
             Category = subIncome.ToReactivePropertyAsSynchronized(
                 sti => sti.Category,

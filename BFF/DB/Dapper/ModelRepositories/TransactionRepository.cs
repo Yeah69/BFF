@@ -32,13 +32,13 @@ namespace BFF.DB.Dapper.ModelRepositories
     public sealed class TransactionRepository : RepositoryBase<Domain.ITransaction, Transaction>, ITransactionRepository
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
-        private readonly Func<long?, DbConnection, Domain.ICategory> _categoryFetcher;
+        private readonly Func<long?, DbConnection, Domain.ICategoryBase> _categoryFetcher;
         private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
 
         public TransactionRepository(
             IProvideConnection provideConnection,
             Func<long, DbConnection, Domain.IAccount> accountFetcher,
-            Func<long?, DbConnection, Domain.ICategory> categoryFetcher,
+            Func<long?, DbConnection, Domain.ICategoryBase> categoryFetcher,
             Func<long, DbConnection, Domain.IPayee> payeeFetcher) : base(provideConnection)
         {
             _accountFetcher = accountFetcher;

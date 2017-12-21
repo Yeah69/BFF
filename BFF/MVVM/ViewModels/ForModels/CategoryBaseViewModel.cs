@@ -9,7 +9,18 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public interface ICategoryViewModel : ICommonPropertyViewModel
+    public interface ICategoryBaseViewModel : ICommonPropertyViewModel
+    {
+        string FullName { get; }
+        IEnumerable<ICategoryBaseViewModel> FullChainOfCategories { get; }
+        int Depth { get; }
+        string GetIndent();
+    }
+    public interface IIncomeCategoryViewModel : ICategoryBaseViewModel
+    {
+    }
+
+    public interface ICategoryViewModel : ICategoryBaseViewModel
     {
         /// <summary>
         /// The Child-Categories
@@ -20,14 +31,60 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The Parent
         /// </summary>
         IReactiveProperty<ICategoryViewModel> Parent { get; }
-
-        string FullName { get; }
-        IEnumerable<ICategoryViewModel> FullChainOfCategories { get; }
-        int Depth { get; }
-        string GetIndent();
     }
 
-    public class CategoryViewModel : CommonPropertyViewModel, ICategoryViewModel
+    public abstract class CategoryBaseViewModel : CommonPropertyViewModel, ICategoryBaseViewModel
+    {
+        public abstract string FullName { get; }
+
+        public abstract IEnumerable<ICategoryBaseViewModel> FullChainOfCategories { get; }
+
+        public abstract int Depth { get; }
+
+        /// <summary>
+        /// Representing string
+        /// </summary>
+        /// <returns>Name with preceding dots (foreach Ancestor one)</returns>
+        public override string ToString() => Name.Value;
+
+        public abstract string GetIndent();
+
+        protected CategoryBaseViewModel(ICategoryBase category, IBffOrm orm) : base(orm, category)
+        {
+        }
+    }
+
+    public class IncomeCategoryViewModel : CategoryBaseViewModel, IIncomeCategoryViewModel
+    {
+        public override string FullName => Name.Value;
+
+        public override IEnumerable<ICategoryBaseViewModel> FullChainOfCategories
+        {
+            get
+            {
+                yield return this;
+            }
+        }
+
+        public override int Depth { get; } = 0;
+
+        public override string GetIndent() => "";
+
+        public IncomeCategoryViewModel(IIncomeCategory category, IBffOrm orm) : base(category, orm)
+        {
+        }
+
+        #region Overrides of DataModelViewModel
+
+        public override bool ValidToInsert()
+        {
+            return !string.IsNullOrWhiteSpace(Name.Value);
+        }
+
+        #endregion
+    }
+
+    public class CategoryViewModel : CategoryBaseViewModel, ICategoryViewModel
     {
         private readonly ICategory _category;
 
@@ -54,20 +111,20 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The Child-Categories
         /// </summary>
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; private set; }
-        
+
         /// <summary>
         /// The Parent
         /// </summary>
         public IReactiveProperty<ICategoryViewModel> Parent { get; }
 
-        public string FullName => $"{(Parent.Value != null ? $"{Parent.Value.FullName}." : "")}{Name.Value}";
+        public override string FullName => $"{(Parent.Value != null ? $"{Parent.Value.FullName}." : "")}{Name.Value}";
 
-        public IEnumerable<ICategoryViewModel> FullChainOfCategories
+        public override IEnumerable<ICategoryBaseViewModel> FullChainOfCategories
         {
             get
             {
                 ICategoryViewModel current = this;
-                IList<ICategoryViewModel> temp = new List<ICategoryViewModel> {current};
+                IList<ICategoryBaseViewModel> temp = new List<ICategoryBaseViewModel> { current };
                 while (current.Parent.Value != null)
                 {
                     current = current.Parent.Value;
@@ -77,7 +134,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             }
         }
 
-        public int Depth => Parent.Value?.Depth + 1 ?? 0;
+        public override int Depth => Parent.Value?.Depth + 1 ?? 0;
 
         /// <summary>
         /// Representing string
@@ -88,12 +145,12 @@ namespace BFF.MVVM.ViewModels.ForModels
             return Name.Value;
         }
 
-        public string GetIndent()
+        public override string GetIndent()
         {
             return $"{Parent.Value?.GetIndent()}. ";
         }
 
-        public CategoryViewModel(ICategory category, IBffOrm orm, ICategoryViewModelService service) : base(orm, category)
+        public CategoryViewModel(ICategory category, IBffOrm orm, ICategoryViewModelService service) : base(category, orm)
         {
             _category = category;
             Parent = category.ToReactivePropertyAsSynchronized(
@@ -106,7 +163,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override bool ValidToInsert()
         {
-            return !string.IsNullOrWhiteSpace(Name.Value) && CommonPropertyProvider.IsValidToInsert(this);
+            return !string.IsNullOrWhiteSpace(Name.Value);
         }
 
         #endregion

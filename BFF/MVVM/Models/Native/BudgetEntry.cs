@@ -4,8 +4,9 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface IBudgetEntry : IDataModel, IHaveCategory
+    public interface IBudgetEntry : IDataModel
     {
+        ICategory Category { get; set; }
         DateTime Month { get; }
         long Budget { get; set; }
         long Outflow { get; }
