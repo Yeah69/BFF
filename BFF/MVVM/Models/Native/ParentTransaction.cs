@@ -7,7 +7,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface IParentTransaction : IParentTransInc
+    public interface IParentTransaction : ITransIncBase
     {
         ReadOnlyObservableCollection<ISubTransaction> SubTransactions { get; }
 
@@ -19,7 +19,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// A Transaction, which is split into several SubTransactions
     /// </summary>
-    public class ParentTransaction : ParentTransInc<IParentTransaction>, IParentTransaction
+    public class ParentTransaction : TransIncBase<IParentTransaction>, IParentTransaction
     {
         private readonly ObservableCollection<ISubTransaction> _subTransactions;
 

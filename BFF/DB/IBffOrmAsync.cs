@@ -19,7 +19,7 @@ namespace BFF.DB
             IEnumerable<ICategoryBase> categories);
         IEnumerable<ITitBase> GetAllTitsAsync(DateTime startTime, DateTime endTime, IAccount account = null);
         Task<long?> GetAccountBalanceAsync(IAccount account = null);
-        IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : class, ISubTransInc;
+        IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : class, ISubTransaction;
         Task ResetAsync();
     }
 

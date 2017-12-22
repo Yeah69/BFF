@@ -38,12 +38,10 @@ namespace BFF.DB.SQLite
             _bffRepository.AccountRepository?.GetBalance(
                 new SummaryAccount(_bffRepository.AccountRepository));
 
-        public IEnumerable<ISubTransInc> GetSubTransInc<T>(long parentId) where T : ISubTransInc
+        public IEnumerable<ISubTransaction> GetSubTransInc(long parentId)
         {
-            if(typeof(T) == typeof(SubTransaction))
-                return _bffRepository.SubTransactionRepository?.GetChildrenOf(parentId) 
-                       ?? Enumerable.Empty<ISubTransaction>();
-            return Enumerable.Empty<ISubTransInc>();
+            return _bffRepository.SubTransactionRepository?.GetChildrenOf(parentId) 
+                    ?? Enumerable.Empty<ISubTransaction>();
         }
 
         public SqLiteBffOrm(IProvideConnection provideConnection)

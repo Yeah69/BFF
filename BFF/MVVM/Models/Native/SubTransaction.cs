@@ -3,20 +3,27 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface ISubTransaction : ISubTransInc
+    public interface ISubTransaction : ITitLike, IHaveCategory
     {
         /// <summary>
         /// The parent transaction.
         /// </summary>
         IParentTransaction Parent { get; set; }
+
+        /// <summary>
+        /// The amount of money, which was payed or received
+        /// </summary>
+        long Sum { get; set; }
     }
 
     /// <summary>
     /// A SubElement of a Transaction
     /// </summary>
-    public class SubTransaction : SubTransInc<ISubTransaction>, ISubTransaction
+    public class SubTransaction : TitLike<ISubTransaction>, ISubTransaction
     {
         private IParentTransaction _parent;
+        private ICategoryBase _category;
+        private long _sum;
 
         /// <summary>
         /// Initializes the object
@@ -30,7 +37,11 @@ namespace BFF.MVVM.Models.Native
             ICategoryBase category = null,
             string memo = null,
             long sum = 0L) 
-            : base(repository, id, category, memo, sum) {}
+            : base(repository, id, memo)
+        {
+            _category = category;
+            _sum = sum;
+        }
 
         public IParentTransaction Parent
         {
@@ -39,6 +50,41 @@ namespace BFF.MVVM.Models.Native
             {
                 if (_parent == value) return;
                 _parent = value;
+                Update();
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Id of the Category
+        /// </summary>
+        public ICategoryBase Category
+        {
+            get => _category;
+            set
+            {
+                if (value == null)
+                {
+                    OnPropertyChanged();
+                    return;
+                }
+                if (_category == value) return;
+                _category = value;
+                Update();
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// The amount of money, which was payed or received
+        /// </summary>
+        public long Sum
+        {
+            get => _sum;
+            set
+            {
+                if(_sum == value) return;
+                _sum = value;
                 Update();
                 OnPropertyChanged();
             }

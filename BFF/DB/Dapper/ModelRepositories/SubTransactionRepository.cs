@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using BFF.DB.PersistenceModels;
+using Dapper;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -20,11 +23,12 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     }
 
-    public interface ISubTransactionRepository : ISubTransIncRepository<Domain.ISubTransaction>
+    public interface ISubTransactionRepository : IRepositoryBase<Domain.ISubTransaction>
     {
+        IEnumerable<Domain.ISubTransaction> GetChildrenOf(long parentId, DbConnection connection = null);
     }
 
-    public sealed class SubTransactionRepository : SubTransIncRepository<Domain.ISubTransaction, SubTransaction>, ISubTransactionRepository
+    public sealed class SubTransactionRepository : RepositoryBase<Domain.ISubTransaction, SubTransaction>, ISubTransactionRepository
     {
         private readonly Func<long?, DbConnection, Domain.ICategoryBase> _categoryFetcher;
 
@@ -58,5 +62,14 @@ namespace BFF.DB.Dapper.ModelRepositories
                 persistenceSubTransaction.Memo,
                 persistenceSubTransaction.Sum);
         };
+
+        private string ParentalQuery => 
+            $"SELECT * FROM [{typeof(SubTransaction).Name}s] WHERE {nameof(SubTransaction.ParentId)} = @ParentId;";
+
+        public IEnumerable<Domain.ISubTransaction> GetChildrenOf(long parentId, DbConnection connection = null) => 
+            ConnectionHelper.QueryOnExistingOrNewConnection(
+                c => c.Query<SubTransaction>(ParentalQuery, new {ParentId = parentId}).Select(sti => ConvertToDomain( (sti, c) )),
+                ProvideConnection,
+                connection);
     }
 }

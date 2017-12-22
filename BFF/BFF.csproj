@@ -249,7 +249,6 @@
     <Compile Include="DB\Dapper\ModelRepositories\TransferRepository.cs" />
     <Compile Include="DB\Dapper\ObservableRepositoryBase.cs" />
     <Compile Include="DB\Dapper\RepositoryBase.cs" />
-    <Compile Include="DB\Dapper\SubTransIncRepository.cs" />
     <Compile Include="DB\Dapper\ViewRepositoryBase.cs" />
     <Compile Include="DB\Dapper\WriteOnlyRepositoryBase.cs" />
     <Compile Include="DB\IBffOrmAsync.cs" />
@@ -288,8 +287,6 @@
     <Compile Include="MVVM\Models\Native\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Native\BudgetMonth.cs" />
     <Compile Include="MVVM\Models\Native\Structure\IHaveBaseCategory.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\ParentTransInc.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\TransInc.cs" />
     <Compile Include="MVVM\Models\Native\SummaryAccount.cs" />
     <Compile Include="MVVM\Models\Native\Account.cs" />
     <Compile Include="MVVM\Models\Native\CategoryBase.cs" />
@@ -298,7 +295,6 @@
     <Compile Include="MVVM\Models\Native\Structure\CommonProperty.cs" />
     <Compile Include="MVVM\Models\Native\Structure\DataModel.cs" />
     <Compile Include="MVVM\Models\Native\Structure\TitLike.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\SubTransInc.cs" />
     <Compile Include="MVVM\Models\Native\Structure\TitBase.cs" />
     <Compile Include="MVVM\Models\Native\Structure\TransIncBase.cs" />
     <Compile Include="MVVM\Models\Native\SubTransaction.cs" />
@@ -336,12 +332,9 @@
     <Compile Include="MVVM\ViewModels\ForModels\SummaryAccountViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\AccountViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\ParentTransactionViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\ParentTransIncViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\TitLikeViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\SubTransIncViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TransactionViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TransferViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\TransIncViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ImportDialogViewModel.cs" />
     <Compile Include="MVVM\ViewModels\EmptyContentViewModel.cs" />
     <Compile Include="MVVM\ViewModels\AccountTabsViewModel.cs" />
@@ -447,6 +440,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>

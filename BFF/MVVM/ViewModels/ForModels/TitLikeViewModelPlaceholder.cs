@@ -11,11 +11,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Needed to mimic a TIT.
         /// </summary>
-        public long Id => -2L;
-
-        /// <summary>
-        /// Needed to mimic a TIT.
-        /// </summary>
         public IReactiveProperty<string> Memo { get;}
 
         /// <summary>

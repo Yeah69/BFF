@@ -4,13 +4,22 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface ITransaction : ITransInc {}
+    public interface ITransaction : ITransIncBase, IHaveCategory
+    {
+        /// <summary>
+        /// The amount of money, which was payed or received
+        /// </summary>
+        long Sum { get; set; }
+    }
 
     /// <summary>
     /// The Transaction documents payment to or from externals
     /// </summary>
-    public class Transaction : TransInc<ITransaction>, ITransaction
+    public class Transaction : TransIncBase<ITransaction>, ITransaction
     {
+        private ICategoryBase _category;
+        private long _sum;
+
         /// <summary>
         /// Initializes the object
         /// </summary>
@@ -31,8 +40,45 @@ namespace BFF.MVVM.Models.Native
             string memo = null, 
             long sum = 0L, 
             bool? cleared = null)
-            : base(repository, id, date, account, payee, category, memo, sum, cleared)
+            : base(repository, id, date, account, payee, memo, cleared)
         {
+            _category = category;
+            _sum = sum;
+        }
+
+        /// <summary>
+        /// Id of Category
+        /// </summary>
+        public ICategoryBase Category
+        {
+            get => _category;
+            set
+            {
+                if (value == null)
+                {
+                    OnPropertyChanged();
+                    return;
+                }
+                if(_category == value) return;
+                _category = value;
+                Update();
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// The amount of money, which was payed or received
+        /// </summary>
+        public long Sum
+        {
+            get => _sum;
+            set
+            {
+                if(_sum == value) return;
+                _sum = value;
+                Update();
+                OnPropertyChanged();
+            }
         }
     }
 }

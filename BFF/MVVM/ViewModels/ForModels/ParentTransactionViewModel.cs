@@ -13,7 +13,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public interface IParentTransactionViewModel : IParentTransIncViewModel
+    public interface IParentTransactionViewModel : ITransIncBaseViewModel
     {
         ReadOnlyReactiveCollection<ISubTransactionViewModel> SubTransactions { get; }
 
@@ -47,7 +47,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model ParentTransaction.
     /// </summary>
-    public class ParentTransactionViewModel : ParentTransIncViewModel, IParentTransactionViewModel
+    public class ParentTransactionViewModel : TransIncBaseViewModel, IParentTransactionViewModel
     {
         private readonly ObservableCollection<ISubTransactionViewModel> _newTransactions;
 
@@ -67,7 +67,13 @@ namespace BFF.MVVM.ViewModels.ForModels
             IParentTransaction parentTransaction,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IBffOrm orm,
-            ISubTransactionViewModelService subTransactionViewModelService) : base(parentTransaction, newPayeeViewModelFactory, orm)
+            ISubTransactionViewModelService subTransactionViewModelService) 
+            : base(
+                orm,
+                parentTransaction,
+                newPayeeViewModelFactory,
+                orm.CommonPropertyProvider.AccountViewModelService,
+                orm.CommonPropertyProvider.PayeeViewModelService)
         {
             _newTransactions = new ObservableCollection<ISubTransactionViewModel>();
             NewSubElements = new ReadOnlyObservableCollection<ISubTransactionViewModel>(_newTransactions);
@@ -129,9 +135,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="subElement">The SubElement, which gets a ViewModel.</param>
         /// <returns>A new ViewModel for a SubElement.</returns>
-        protected override ISubTransIncViewModel CreateNewSubViewModel(ISubTransInc subElement)
+        protected ISubTransactionViewModel CreateNewSubViewModel(ISubTransaction subElement)
         {
-            return Orm.SubTransactionViewModelService.GetViewModel(subElement as ISubTransaction);
+            return Orm.SubTransactionViewModelService.GetViewModel(subElement);
         }
 
         public ReadOnlyReactiveCollection<ISubTransactionViewModel> SubTransactions { get; }
