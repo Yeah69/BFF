@@ -9,7 +9,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    public interface ITransIncBaseViewModel : ITitBaseViewModel, IHavePayeeViewModel
+    public interface ITransactionBaseViewModel : ITransBaseViewModel, IHavePayeeViewModel
     {
         /// <summary>
         /// The assigned Account, where this Transaction is registered.
@@ -21,7 +21,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// <summary>
     /// Base class for ViewModels of the models Transaction, Income, ParentTransaction and ParentIncome.
     /// </summary>
-    public abstract class TransIncBaseViewModel : TitBaseViewModel, ITransIncBaseViewModel
+    public abstract class TransactionBaseViewModel : TransBaseViewModel, ITransactionBaseViewModel
     {
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
 
@@ -41,15 +41,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Initializes a TransIncBaseViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
-        /// <param name="parentTransIncBase">The model.</param>
+        /// <param name="parentTransactionBase">The model.</param>
         /// <param name="accountViewModelService">Service of accounts.</param>
         /// <param name="payeeViewModelService">Service of payees.</param>
-        protected TransIncBaseViewModel(
+        protected TransactionBaseViewModel(
             IBffOrm orm, 
-            ITransIncBase parentTransIncBase,
+            ITransactionBase parentTransactionBase,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IAccountViewModelService accountViewModelService,
-            IPayeeViewModelService payeeViewModelService) : base(orm, parentTransIncBase)
+            IPayeeViewModelService payeeViewModelService) : base(orm, parentTransactionBase)
         {
             void RefreshAnAccountViewModel(IAccountViewModel account)
             {
@@ -57,7 +57,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 account?.RefreshBalance();
             }
 
-            Account = parentTransIncBase.ToReactivePropertyAsSynchronized(
+            Account = parentTransactionBase.ToReactivePropertyAsSynchronized(
                 tib => tib.Account,
                 accountViewModelService.GetViewModel, 
                 accountViewModelService.GetModel).AddTo(CompositeDisposable);
@@ -72,7 +72,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 .Subscribe(RefreshAnAccountViewModel)
                 .AddTo(CompositeDisposable);
 
-            Payee = parentTransIncBase.ToReactivePropertyAsSynchronized(
+            Payee = parentTransactionBase.ToReactivePropertyAsSynchronized(
                 tib => tib.Payee,
                 payeeViewModelService.GetViewModel,
                 payeeViewModelService.GetModel).AddTo(CompositeDisposable);

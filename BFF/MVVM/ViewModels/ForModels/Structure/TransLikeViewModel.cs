@@ -6,7 +6,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    public interface ITitLikeViewModel : IDataModelViewModel
+    public interface ITransLikeViewModel : IDataModelViewModel
     {
         /// <summary>
         /// A note, which a user can attach to each TIT as a reminder for himself.
@@ -28,7 +28,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// Base class for all ViewModel classes of Models related to TITs (Transaction, Income, Transfer).
     /// This includes also the Parent and SubElement models.
     /// </summary>
-    public abstract class TitLikeViewModel : DataModelViewModel, ITitLikeViewModel
+    public abstract class TransLikeViewModel : DataModelViewModel, ITransLikeViewModel
     {
 
         /// <summary>
@@ -42,13 +42,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public abstract IReactiveProperty<long> Sum { get; }
 
         /// <summary>
-        /// Initializes a TitLikeViewModel.
+        /// Initializes a TransLikeViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
-        /// <param name="titLike">The model.</param>
-        protected TitLikeViewModel(IBffOrm orm, ITitLike titLike) : base(orm, titLike)
+        /// <param name="transLike">The model.</param>
+        protected TransLikeViewModel(IBffOrm orm, ITransLike transLike) : base(orm, transLike)
         {
-            Memo = titLike.ToReactivePropertyAsSynchronized(tl => tl.Memo).AddTo(CompositeDisposable);
+            Memo = transLike.ToReactivePropertyAsSynchronized(tl => tl.Memo).AddTo(CompositeDisposable);
 
             InitializeDeleteCommand();
         }
@@ -58,12 +58,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <remarks>
         /// In order to subscribe a different callback on the DeleteCommand override <see cref="InitializeDeleteCommand" /> and do the subscription the.
-        /// However, do not call the overridden function. It will be called in the constructor of <see cref="TitLikeViewModel"/>.
+        /// However, do not call the overridden function. It will be called in the constructor of <see cref="TransLikeViewModel"/>.
         /// </remarks>
         public ReactiveCommand DeleteCommand { get; } = new ReactiveCommand();
 
         /// <summary>
-        /// Override this function for internal subscription to the DeleteCommand. This will be called once in the constructor of the <see cref="TitLikeViewModel"/>.
+        /// Override this function for internal subscription to the DeleteCommand. This will be called once in the constructor of the <see cref="TransLikeViewModel"/>.
         /// Hence, by only subscribing in this overridden function a single subscription is guaranteed. 
         /// </summary>
         protected virtual void InitializeDeleteCommand()

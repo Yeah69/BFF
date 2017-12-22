@@ -137,21 +137,21 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region ViewModel_Part
 
-        protected override IBasicAsyncDataAccess<ITitLikeViewModel> BasicAccess
-            => new RelayBasicAsyncDataAccess<ITitLikeViewModel>(
-                (offset, pageSize) => CreatePacket(Orm.GetPage<ITitBase>(offset, pageSize)),
-                () => Orm.GetCount<ITitBase>(),
-                () => new TitLikeViewModelPlaceholder());
+        protected override IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess
+            => new RelayBasicAsyncDataAccess<ITransLikeViewModel>(
+                (offset, pageSize) => CreatePacket(Orm.GetPage<ITransBase>(offset, pageSize)),
+                () => Orm.GetCount<ITransBase>(),
+                () => new TransLikeViewModelPlaceholder());
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        public override IDataVirtualizingCollection<ITitLikeViewModel> Tits => _tits ?? (_tits = CreateDataVirtualizingCollection());
+        public override IDataVirtualizingCollection<ITransLikeViewModel> Tits => _tits ?? (_tits = CreateDataVirtualizingCollection());
         
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public sealed override ObservableCollection<ITitLikeViewModel> NewTits { get; } = new ObservableCollection<ITitLikeViewModel>();
+        public sealed override ObservableCollection<ITransLikeViewModel> NewTits { get; } = new ObservableCollection<ITransLikeViewModel>();
         
         /// <summary>
         /// Refreshes the TITs of this Account.

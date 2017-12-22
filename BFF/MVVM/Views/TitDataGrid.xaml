@@ -160,7 +160,7 @@
                                                         Kind="{StaticResource TransferIcon}"
                                                         Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}">
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}">
                             <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackBrush}"
                                                         Kind="{StaticResource PlaceholderIcon}"
                                                         Style="{StaticResource CellIconMaterial}" />
@@ -173,7 +173,7 @@
                 <ContentControl Content="{Binding}"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
                             <TextBlock Style="{StaticResource CellTextBlock}"
                                        Text="{Binding Account.Value.Name.Value}" />
                         </DataTemplate>
@@ -182,7 +182,7 @@
                                        Style="{StaticResource CellTextBlock}"
                                        Text="{lex:Loc AccountView_Column_Transfer}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -190,7 +190,7 @@
                 <ContentControl Content="{Binding}"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
                             <ComboBox DisplayMemberPath="Name.Value"
                                       IsEditable="True"
                                       IsTextSearchCaseSensitive="False"
@@ -209,7 +209,7 @@
                                        Style="{StaticResource CellTextBlock}"
                                        Text="{lex:Loc AccountView_Column_Transfer}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -218,11 +218,11 @@
                 <ContentControl Content="{Binding}"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitBaseViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
                             <TextBlock Style="{StaticResource CellTextBlock}"
                                        Text="{Binding Date.Value, Converter={x:Static mvvm:Converters.DateTimeToString}}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -230,12 +230,12 @@
                 <ContentControl Content="{Binding}"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitBaseViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
                             <DatePicker VerticalContentAlignment="Center"
                                         SelectedDate="{Binding Date.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         SelectedDateFormat="{Binding DataContext.IsDateLong, ElementName=LayoutRoot, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -245,7 +245,7 @@
                                 Content="{Binding}"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
                             <TextBlock Style="{StaticResource CellTextBlock}"
                                        Text="{Binding Payee.Value.Name.Value}" />
                         </DataTemplate>
@@ -258,7 +258,7 @@
                                                             Style="{StaticResource CellIconMaterial}" />
                             </StackPanel>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -267,7 +267,7 @@
                                 Content="{Binding}"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransIncBaseViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
                             <DockPanel LastChildFill="True">
                                 <Button x:Name="AddPayeeButton"
                                         Padding="0"
@@ -329,7 +329,7 @@
                                 </ComboBox.SelectedItem>
                             </ComboBox>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -338,7 +338,7 @@
                 <ContentControl Content="{Binding}"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                             <TextBlock Style="{StaticResource CellTextBlock}"
                                        Text="{Binding Category.Value.Name.Value}">
                                 <TextBlock.ToolTip>
@@ -378,7 +378,7 @@
                                                             Style="{StaticResource CellIconMaterial}" />
                             </StackPanel>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -386,7 +386,7 @@
                 <ContentControl Content="{Binding}"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                             <DockPanel LastChildFill="True">
                                 <Button x:Name="AddCategoryButton"
                                         Command="{Binding NewCategoryViewModel.AddCommand}"
@@ -589,7 +589,7 @@
                                 </ComboBox.SelectedItem>
                             </ComboBox>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -598,7 +598,7 @@
                 <ContentControl Content="{Binding}"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                             <TextBlock Style="{StaticResource CellTextBlock}"
                                        Text="{Binding Memo.Value, Mode=OneWay}"
                                        TextTrimming="CharacterEllipsis"
@@ -611,7 +611,7 @@
                 <ContentControl Content="{Binding}"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                             <TextBox VerticalAlignment="Stretch"
                                      VerticalContentAlignment="Center"
                                      Text="{Binding Memo.Value, UpdateSourceTrigger=LostFocus}"
@@ -649,7 +649,7 @@
                                 </TextBlock.Foreground>
                             </TextBlock>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                             <TextBlock Name="TitGrid_SumBox"
                                        Padding="0,0,5,0"
                                        Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
@@ -657,7 +657,7 @@
                                        Text="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                        TextAlignment="Right" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -690,7 +690,7 @@
                                 </TextBox.Text>
                             </TextBox>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
+                        <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                             <TextBox Name="TitGrid_SumBox"
                                      VerticalContentAlignment="Center"
                                      Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
@@ -708,7 +708,7 @@
                                 </TextBox.Text>
                             </TextBox>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TitLikeViewModelPlaceholder}" />
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
                 </ContentControl>
             </DataTemplate>
@@ -1045,7 +1045,7 @@
                                 <ContentControl Content="{Binding}"
                                                 ContentTemplate="{StaticResource SubElementsShowFormTemplate}" />
                             </DataTemplate>
-                            <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
+                            <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                                 <ContentControl Content="{Binding}"
                                                 ContentTemplate="{StaticResource EmptyDataTemplate}" />
                             </DataTemplate>
@@ -1175,7 +1175,7 @@
                                     <ContentControl Content="{Binding}"
                                                     ContentTemplate="{StaticResource SubElementsEditingFormTemplate}" />
                                 </DataTemplate>
-                                <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
+                                <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                                     <ContentControl Content="{Binding}"
                                                     ContentTemplate="{StaticResource EmptyDataTemplate}" />
                                 </DataTemplate>

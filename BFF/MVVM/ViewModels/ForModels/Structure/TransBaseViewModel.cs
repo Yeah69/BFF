@@ -7,7 +7,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    public interface ITitBaseViewModel : ITitLikeViewModel
+    public interface ITransBaseViewModel : ITransLikeViewModel
     {
         /// <summary>
         /// This timestamp marks the time point, when the TIT happened.
@@ -26,7 +26,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// Base class for all ViewModels of Models of TITs excluding the SubElements.
     /// From this point in the documentation of the ViewModel hierarchy TIT is referring to all TIT-like Elements except SubElements.
     /// </summary>
-    public abstract class TitBaseViewModel : TitLikeViewModel, ITitBaseViewModel
+    public abstract class TransBaseViewModel : TransLikeViewModel, ITransBaseViewModel
     {
         /// <summary>
         /// This timestamp marks the time point, when the TIT happened.
@@ -45,17 +45,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected abstract void NotifyRelevantAccountsToRefreshBalance();
 
         /// <summary>
-        /// Initializes a TitBaseViewModel.
+        /// Initializes a TransBaseViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
-        /// <param name="titBase">The model.</param>
-        protected TitBaseViewModel(IBffOrm orm, ITitBase titBase) : base(orm, titBase)
+        /// <param name="transBase">The model.</param>
+        protected TransBaseViewModel(IBffOrm orm, ITransBase transBase) : base(orm, transBase)
         {
-            Date = titBase.ToReactivePropertyAsSynchronized(tb => tb.Date).AddTo(CompositeDisposable);
+            Date = transBase.ToReactivePropertyAsSynchronized(tb => tb.Date).AddTo(CompositeDisposable);
 
             Date.Skip(1).Subscribe(_ => NotifyRelevantAccountsToRefreshTits()).AddTo(CompositeDisposable);
 
-            Cleared = titBase.ToReactivePropertyAsSynchronized(tb => tb.Cleared).AddTo(CompositeDisposable);
+            Cleared = transBase.ToReactivePropertyAsSynchronized(tb => tb.Cleared).AddTo(CompositeDisposable);
         }
     }
 }

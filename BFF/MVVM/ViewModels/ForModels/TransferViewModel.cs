@@ -10,7 +10,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    internal interface ITransferViewModel : ITitBaseViewModel
+    internal interface ITransferViewModel : ITransBaseViewModel
     {
         /// <summary>
         /// The account from where the money is transfered.
@@ -26,7 +26,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model Transfer.
     /// </summary>
-    public class TransferViewModel : TitBaseViewModel, ITransferViewModel
+    public class TransferViewModel : TransBaseViewModel, ITransferViewModel
     {
 
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;

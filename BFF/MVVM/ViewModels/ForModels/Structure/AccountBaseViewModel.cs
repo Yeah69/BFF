@@ -29,12 +29,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        IDataVirtualizingCollection<ITitLikeViewModel> Tits { get; }
+        IDataVirtualizingCollection<ITransLikeViewModel> Tits { get; }
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        ObservableCollection<ITitLikeViewModel> NewTits { get; }
+        ObservableCollection<ITransLikeViewModel> NewTits { get; }
 
         /// <summary>
         /// The current Balance of this Account.
@@ -78,7 +78,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
-        protected IDataVirtualizingCollection<ITitLikeViewModel> _tits;
+        protected IDataVirtualizingCollection<ITransLikeViewModel> _tits;
 
         /// <summary>
         /// Starting balance of the Account
@@ -88,12 +88,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        public abstract IDataVirtualizingCollection<ITitLikeViewModel> Tits { get; }
+        public abstract IDataVirtualizingCollection<ITransLikeViewModel> Tits { get; }
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public abstract ObservableCollection<ITitLikeViewModel> NewTits { get; }
+        public abstract ObservableCollection<ITransLikeViewModel> NewTits { get; }
 
         /// <summary>
         /// The current Balance of this Account.
@@ -201,8 +201,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected void ApplyTits()
         {
-            List<ITitLikeViewModel> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
-            foreach (ITitLikeViewModel tit in insertTits)
+            List<ITransLikeViewModel> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
+            foreach (ITransLikeViewModel tit in insertTits)
             {
                 tit.Insert();
                 NewTits.Remove(tit);
@@ -238,10 +238,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             PostVirtualizedRefresh?.Invoke(this, new EventArgs());
         }
 
-        protected ITitLikeViewModel[] CreatePacket(IEnumerable<ITitBase> items)
+        protected ITransLikeViewModel[] CreatePacket(IEnumerable<ITransBase> items)
         {
-            IList<ITitLikeViewModel> vmItems = new List<ITitLikeViewModel>();
-            foreach (ITitBase item in items)
+            IList<ITransLikeViewModel> vmItems = new List<ITransLikeViewModel>();
+            foreach (ITransBase item in items)
             {
                 switch (item)
                 {
@@ -275,8 +275,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         }
 
 
-        protected IDataVirtualizingCollection<ITitLikeViewModel> CreateDataVirtualizingCollection()
-            => CollectionBuilder<ITitLikeViewModel>
+        protected IDataVirtualizingCollection<ITransLikeViewModel> CreateDataVirtualizingCollection()
+            => CollectionBuilder<ITransLikeViewModel>
                 .CreateBuilder()
                 .BuildAHoardingPreloadingSyncCollection(
                     BasicAccess, 
@@ -288,7 +288,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         protected int PageSize = 100;
 
-        protected abstract IBasicAsyncDataAccess<ITitLikeViewModel> BasicAccess { get; }
+        protected abstract IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess { get; }
 
         protected override void Dispose(bool disposing)
         {

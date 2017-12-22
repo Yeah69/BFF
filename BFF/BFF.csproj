@@ -294,9 +294,9 @@
     <Compile Include="MVVM\Models\Native\Payee.cs" />
     <Compile Include="MVVM\Models\Native\Structure\CommonProperty.cs" />
     <Compile Include="MVVM\Models\Native\Structure\DataModel.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\TitLike.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\TitBase.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\TransIncBase.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\TransLike.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\TransBase.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\TransactionBase.cs" />
     <Compile Include="MVVM\Models\Native\SubTransaction.cs" />
     <Compile Include="MVVM\Models\Native\ParentTransaction.cs" />
     <Compile Include="MVVM\Rules.cs" />
@@ -322,8 +322,8 @@
     <Compile Include="MVVM\ViewModels\ForModels\Structure\DataModelViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\IHavePayeeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\IHaveCategoryViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\TitBaseViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\TransIncBaseViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Structure\TransBaseViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Structure\TransactionBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\SubTransactionViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TitLikeViewModelPlaceholder.cs" />
     <Compile Include="MVVM\Models\Native\Transfer.cs" />
@@ -332,7 +332,7 @@
     <Compile Include="MVVM\ViewModels\ForModels\SummaryAccountViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\AccountViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\ParentTransactionViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\TitLikeViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Structure\TransLikeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TransactionViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TransferViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ImportDialogViewModel.cs" />
@@ -440,7 +440,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="ClassDiagram1.cd" />
     <None Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>

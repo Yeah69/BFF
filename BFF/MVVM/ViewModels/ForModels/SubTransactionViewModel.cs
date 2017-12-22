@@ -8,7 +8,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public interface ISubTransactionViewModel : ITitLikeViewModel, IHaveCategoryViewModel
+    public interface ISubTransactionViewModel : ITransLikeViewModel, IHaveCategoryViewModel
     {
         INewCategoryViewModel NewCategoryViewModel { get; }
     }
@@ -16,7 +16,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model SubTransaction.
     /// </summary>
-    public class SubTransactionViewModel : TitLikeViewModel, ISubTransactionViewModel
+    public class SubTransactionViewModel : TransLikeViewModel, ISubTransactionViewModel
     {
         /// <summary>
         /// Initializes a SubTransactionViewModel.

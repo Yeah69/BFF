@@ -19,14 +19,14 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        private ITitLikeViewModel _parentTit;
+        private ITransLikeViewModel _parentTransaction;
 
-        public ITitLikeViewModel ParentTit
+        public ITransLikeViewModel ParentTransaction
         {
-            get => _parentTit;
+            get => _parentTransaction;
             set
             {
-                _parentTit = value;
+                _parentTransaction = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ParentTitSource));
             }
@@ -44,13 +44,13 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public IList<ITitLikeViewModel> ParentTitSource => new List<ITitLikeViewModel> {ParentTit};
+        public IList<ITransLikeViewModel> ParentTitSource => new List<ITransLikeViewModel> {ParentTransaction};
 
-        public ParentTitViewModel(ITitLikeViewModel parent, string title, IAccountViewModel account)
+        public ParentTitViewModel(ITransLikeViewModel parent, string title, IAccountViewModel account)
         {
              _title = title;
             _account = account;
-            _parentTit = parent;
+            _parentTransaction = parent;
         }
     }
 }

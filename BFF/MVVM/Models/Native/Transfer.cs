@@ -4,7 +4,7 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface ITransfer : ITitBase {
+    public interface ITransfer : ITransBase {
         /// <summary>
         /// Id of FromAccount
         /// </summary>
@@ -24,7 +24,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// A Transfer is basically a Transaction from one owned Account to another owned Account
     /// </summary>
-    public class Transfer : TitBase<ITransfer>, ITransfer
+    public class Transfer : TransBase<ITransfer>, ITransfer
     {
         private IAccount _fromAccount;
         private IAccount _toAccount;

@@ -3,7 +3,7 @@ using BFF.DB;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
-    public interface ITransIncBase : ITitBase
+    public interface ITransactionBase : ITransBase
     {
         /// <summary>
         /// Id of Account
@@ -19,7 +19,7 @@ namespace BFF.MVVM.Models.Native.Structure
     /// <summary>
     /// Base of all Tit-classes except Transfer (TIT := Transaction Income Transfer)
     /// </summary>
-    public abstract class TransIncBase<T> : TitBase<T>, ITransIncBase where T : class, ITransIncBase
+    public abstract class TransactionBase<T> : TransBase<T>, ITransactionBase where T : class, ITransactionBase
     {
         private IAccount _account;
         private IPayee _payee;
@@ -62,7 +62,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="payee">To whom was payed or who payed</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TransIncBase(IRepository<T> repository,
+        protected TransactionBase(IRepository<T> repository,
                                long id,
                                DateTime date,
                                IAccount account = null, 

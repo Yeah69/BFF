@@ -6,14 +6,14 @@ namespace BFF.MVVM.Models.Native.Structure
     /// <summary>
     /// Enumerates all Types of Tits
     /// </summary>
-    public enum TitType
+    public enum TransType
     {
         Transaction = 1,
         Transfer = 2,
         ParentTransaction = 3
     }
 
-    public interface ITitBase : ITitLike
+    public interface ITransBase : ITransLike
     {
         /// <summary>
         /// Marks when the Tit happened
@@ -29,7 +29,7 @@ namespace BFF.MVVM.Models.Native.Structure
     /// <summary>
     /// Base class for all Tit classes, which are not SubElements (TIT := Transaction Income Transfer)
     /// </summary>
-    public abstract class TitBase<T> : TitLike<T>, ITitBase where T : class, ITitBase
+    public abstract class TransBase<T> : TransLike<T>, ITransBase where T : class, ITransBase
     {
         private DateTime _date;
         private bool _cleared;
@@ -65,13 +65,13 @@ namespace BFF.MVVM.Models.Native.Structure
         }
 
         /// <summary>
-        /// Initializes the TitBase-parts of the object
+        /// Initializes the TransBase-parts of the object
         /// </summary>
         /// <param name="date">Marks when the Tit happened</param>
         /// <param name="id">Identification number for the database</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TitBase(IRepository<T> repository, 
+        protected TransBase(IRepository<T> repository, 
                           DateTime date, 
                           long id, 
                           string memo, 

@@ -6,7 +6,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// A TIT ViewModel Placeholder used for async lazy loaded TIT's.
     /// </summary>
-    sealed class TitLikeViewModelPlaceholder : ITitLikeViewModel
+    sealed class TransLikeViewModelPlaceholder : ITransLikeViewModel
     {
         /// <summary>
         /// Needed to mimic a TIT.
@@ -26,9 +26,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IReactiveProperty<bool> Cleared { get; }
 
         /// <summary>
-        /// Initializes the TitBase-parts of the object
+        /// Initializes the TransBase-parts of the object
         /// </summary>
-        public TitLikeViewModelPlaceholder()
+        public TransLikeViewModelPlaceholder()
         {
             Memo = new ReactiveProperty<string>("Content is loading…");
             Sum = new ReactiveProperty<long>(0L);
@@ -36,7 +36,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             DeleteCommand = new ReactiveCommand();
         }
 
-        #region Overrides of TitLikeViewModel
+        #region Overrides of TransLikeViewModel
 
         /// <summary>
         /// Does only return False, because a Placeholder may not be inserted to the database. Needed to mimic a TIT.

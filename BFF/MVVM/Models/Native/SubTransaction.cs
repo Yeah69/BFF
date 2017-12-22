@@ -3,7 +3,7 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface ISubTransaction : ITitLike, IHaveCategory
+    public interface ISubTransaction : ITransLike, IHaveCategory
     {
         /// <summary>
         /// The parent transaction.
@@ -19,7 +19,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// A SubElement of a Transaction
     /// </summary>
-    public class SubTransaction : TitLike<ISubTransaction>, ISubTransaction
+    public class SubTransaction : TransLike<ISubTransaction>, ISubTransaction
     {
         private IParentTransaction _parent;
         private ICategoryBase _category;

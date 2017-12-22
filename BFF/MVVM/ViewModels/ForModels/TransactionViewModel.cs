@@ -9,7 +9,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public interface ITransactionViewModel : ITransIncBaseViewModel, IHaveCategoryViewModel
+    public interface ITransactionViewModel : ITransactionBaseViewModel, IHaveCategoryViewModel
     {
         INewCategoryViewModel NewCategoryViewModel { get; }
     }
@@ -17,7 +17,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model Transaction.
     /// </summary>
-    public class TransactionViewModel : TransIncBaseViewModel, ITransactionViewModel
+    public class TransactionViewModel : TransactionBaseViewModel, ITransactionViewModel
     {
         /// <summary>
         /// Initializes a TransactionViewModel.

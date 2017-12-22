@@ -13,7 +13,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public interface IParentTransactionViewModel : ITransIncBaseViewModel
+    public interface IParentTransactionViewModel : ITransactionBaseViewModel
     {
         ReadOnlyReactiveCollection<ISubTransactionViewModel> SubTransactions { get; }
 
@@ -47,7 +47,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model ParentTransaction.
     /// </summary>
-    public class ParentTransactionViewModel : TransIncBaseViewModel, IParentTransactionViewModel
+    public class ParentTransactionViewModel : TransactionBaseViewModel, IParentTransactionViewModel
     {
         private readonly ObservableCollection<ISubTransactionViewModel> _newTransactions;
 

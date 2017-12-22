@@ -4,7 +4,7 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface ITransaction : ITransIncBase, IHaveCategory
+    public interface ITransaction : ITransactionBase, IHaveCategory
     {
         /// <summary>
         /// The amount of money, which was payed or received
@@ -15,7 +15,7 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// The Transaction documents payment to or from externals
     /// </summary>
-    public class Transaction : TransIncBase<ITransaction>, ITransaction
+    public class Transaction : TransactionBase<ITransaction>, ITransaction
     {
         private ICategoryBase _category;
         private long _sum;
