@@ -103,10 +103,7 @@ namespace BFF.Helper.Import
                 Accounts = new List<Persistence.Account>(),
                 Categories = new List<CategoryImportWrapper>(),
                 Payees = new List<Persistence.Payee>(),
-                Incomes = new List<Persistence.Income>(),
-                ParentIncomes = new List<Persistence.ParentIncome>(),
                 ParentTransactions = new List<Persistence.ParentTransaction>(),
-                SubIncomes = new List<Persistence.SubIncome>(),
                 SubTransactions = new List<Persistence.SubTransaction>(),
                 Transactions = new List<Persistence.Transaction>(),
                 Transfers = new List<Persistence.Transfer>()
@@ -127,8 +124,7 @@ namespace BFF.Helper.Import
                 FromAccountToTransfer = _fromAccountAssignment,
                 ToAccountToTransfer = _toAccountAssignment,
                 PayeeToTransIncBase = _payeeAssignment,
-                ParentTransactionToSubTransaction = _parentTransactionAssignment,
-                ParentIncomeToSubIncome = new Dictionary<Persistence.ParentIncome, IList<Persistence.SubIncome>>() //In YNAB4 are no ParentIncomes
+                ParentTransactionToSubTransaction = _parentTransactionAssignment
             };
 
             //Third step: Create new database for imported data
@@ -235,8 +231,6 @@ namespace BFF.Helper.Import
                     Match transferMatch = TransferPayeeRegex.Match(ynabTransaction.Payee);
                     if (transferMatch.Success)
                         AddTransfer(lists.Transfers, ynabTransaction);
-                    else if (ynabTransaction.MasterCategory == "Income")
-                        lists.Transactions.Add(TransformToIncome(ynabTransaction));
                     else
                         lists.Transactions.Add(TransformToTransaction(ynabTransaction));
                 }
@@ -315,7 +309,7 @@ namespace BFF.Helper.Import
                 if (transferMatch.Success)
                     AddTransfer(lists.Transfers, splitTransaction);
                 else if (splitTransaction.MasterCategory == "Income")
-                    lists.Transactions.Add(TransformToIncome(splitTransaction));
+                    lists.Transactions.Add(TransformToTransaction(splitTransaction)); // TODO better do a subtransaction with IncomeCategory
                 else
                 {
                     Persistence.SubTransaction subTransaction = TransformToSubTransaction(
@@ -392,25 +386,6 @@ namespace BFF.Helper.Import
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
         private Persistence.Transaction TransformToTransaction(Transaction ynabTransaction)
-        {
-            Persistence.Transaction ret = new Persistence.Transaction
-            {
-                Date = ynabTransaction.Date,
-                Memo = ynabTransaction.Memo,
-                Sum = ynabTransaction.Inflow - ynabTransaction.Outflow,
-                Cleared = ynabTransaction.Cleared ? 1 : 0
-            };
-            AssignAccount(ynabTransaction.Account, ret);
-            CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value, ret);
-            AssignCategory(ynabTransaction.Category, ret);
-            return ret;
-        }
-
-        /// <summary>
-        /// Creates a Income-object depending on a YNAB-Transaction
-        /// </summary>
-        /// <param name="ynabTransaction">The YNAB-model</param>
-        private Persistence.Transaction TransformToIncome(Transaction ynabTransaction)
         {
             Persistence.Transaction ret = new Persistence.Transaction
             {

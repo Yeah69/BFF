@@ -12,7 +12,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     public interface ITransIncBaseViewModel : ITitBaseViewModel, IHavePayeeViewModel
     {
         /// <summary>
-        /// The assigned Account, where this Transaction/Income is registered.
+        /// The assigned Account, where this Transaction is registered.
         /// </summary>
         IReactiveProperty<IAccountViewModel> Account { get; }
         INewPayeeViewModel NewPayeeViewModel { get; }
@@ -26,14 +26,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
 
         /// <summary>
-        /// The assigned Account, where this Transaction/Income is registered.
+        /// The assigned Account, where this Transaction is registered.
         /// </summary>
         public virtual IReactiveProperty<IAccountViewModel> Account { get; }
 
         public INewPayeeViewModel NewPayeeViewModel { get; }
 
         /// <summary>
-        /// Someone or something, who got paid or paid the user by the Transaction/Income.
+        /// Someone or something, who got paid or paid the user by the Transaction.
         /// </summary>
         public virtual IReactiveProperty<IPayeeViewModel> Payee { get; }
 

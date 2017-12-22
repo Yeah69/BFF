@@ -24,8 +24,6 @@
                            AccountViewModel="{Binding}"
                            ApplyCommand="{Binding ApplyCommand}"
                            IsDateLong="{Binding IsDateFormatLong}"
-                           NewIncomeCommand="{Binding NewIncomeCommand}"
-                           NewParentIncomeCommand="{Binding NewParentIncomeCommand}"
                            NewParentTransactionCommand="{Binding NewParentTransactionCommand}"
                            NewTits="{Binding NewTits}"
                            NewTransactionCommand="{Binding NewTransactionCommand}"

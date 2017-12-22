@@ -13,39 +13,39 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     }
 
     /// <summary>
-    /// Base class for ViewModels of the Models SubTransaction and SubIncome
+    /// Base class for ViewModels of the Models SubTransaction
     /// </summary>
     public abstract class SubTransIncViewModel : TitLikeViewModel, ISubTransIncViewModel
     {
         public INewCategoryViewModel NewCategoryViewModel { get; }
 
         /// <summary>
-        /// Each SubTransaction or SubIncome can be budgeted to a category.
+        /// Each SubTransaction can be budgeted to a category.
         /// </summary>
         public IReactiveProperty<ICategoryBaseViewModel> Category { get; }
 
         /// <summary>
-        /// The amount of money of the exchange of the SubTransaction or SubIncome.
+        /// The amount of money of the exchange of the SubTransaction.
         /// </summary>
         public override IReactiveProperty<long> Sum { get;  }
 
         /// <summary>
         /// Initializes a SubTransIncViewModel.
         /// </summary>
-        /// <param name="subIncome">The associated Model of this ViewModel.</param>
+        /// <param name="subTransaction">The associated Model of this ViewModel.</param>
         /// <param name="orm">Used for the database accesses.</param>
         /// <param name="categoryViewModelService">Service for categories.</param>
         protected SubTransIncViewModel(
-            ISubTransInc subIncome, 
+            ISubTransInc subTransaction, 
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory, 
             IBffOrm orm,
-            ICategoryBaseViewModelService categoryViewModelService) : base(orm, subIncome)
+            ICategoryBaseViewModelService categoryViewModelService) : base(orm, subTransaction)
         {
-            Category = subIncome.ToReactivePropertyAsSynchronized(
+            Category = subTransaction.ToReactivePropertyAsSynchronized(
                 sti => sti.Category,
                 categoryViewModelService.GetViewModel, 
                 categoryViewModelService.GetModel).AddTo(CompositeDisposable);
-            Sum = subIncome.ToReactivePropertyAsSynchronized(sti => sti.Sum).AddTo(CompositeDisposable);
+            Sum = subTransaction.ToReactivePropertyAsSynchronized(sti => sti.Sum).AddTo(CompositeDisposable);
 
             NewCategoryViewModel = newCategoryViewModelFactory(this);
         }

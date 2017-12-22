@@ -11,11 +11,8 @@ namespace BFF.DB.Dapper
         protected override ICreateTable CreateBudgetEntryTable { get; }
         protected override ICreateTable CreateCategoryTable { get; }
         protected override ICreateTable CreateDbSettingTable { get; }
-        protected override ICreateTable CreateIncomeTable { get; }
-        protected override ICreateTable CreateParentIncomeTable { get; }
         protected override ICreateTable CreateParentTransactionTable { get; }
         protected override ICreateTable CreatePayeeTable { get; }
-        protected override ICreateTable CreateSubIncomeTable { get; }
         protected override ICreateTable CreateSubTransactionTable { get; }
         protected override ICreateTable CreateTransactionTable { get; }
         protected override ICreateTable CreateTransferTable { get; }
@@ -34,11 +31,8 @@ namespace BFF.DB.Dapper
             CreateBudgetEntryTable = new CreateBudgetEntryTable(ProvideConnection);
             CreateCategoryTable = new CreateCategoryTable(ProvideConnection);
             CreateDbSettingTable = new CreateDbSettingTable(ProvideConnection);
-            CreateIncomeTable = new CreateIncomeTable(ProvideConnection);
-            CreateParentIncomeTable = new CreateParentIncomeTable(ProvideConnection);
             CreateParentTransactionTable = new CreateParentTransactionTable(ProvideConnection);
             CreatePayeeTable = new CreatePayeeTable(ProvideConnection);
-            CreateSubIncomeTable = new CreateSubIncomeTable(ProvideConnection);
             CreateSubTransactionTable = new CreateSubTransactionTable(ProvideConnection);
             CreateTransactionTable = new CreateTransactionTable(ProvideConnection);
             CreateTransferTable = new CreateTransferTable(ProvideConnection);

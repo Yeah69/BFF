@@ -240,10 +240,7 @@
     <Compile Include="DB\Dapper\ModelRepositories\CategoryBaseRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\CategoryRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\IncomeCategoryRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\IncomeRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\ParentIncomeRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\ParentTransactionRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\SubIncomeRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\SubTransactionRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\DbSettingRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\PayeeRepository.cs" />
@@ -267,12 +264,9 @@
     <Compile Include="DB\PersistenceModels\IHaveAccount.cs" />
     <Compile Include="DB\PersistenceModels\IHaveCategory.cs" />
     <Compile Include="DB\PersistenceModels\IHavePayee.cs" />
-    <Compile Include="DB\PersistenceModels\Income.cs" />
     <Compile Include="DB\PersistenceModels\IPersistenceModel.cs" />
-    <Compile Include="DB\PersistenceModels\ParentIncome.cs" />
     <Compile Include="DB\PersistenceModels\ParentTransaction.cs" />
     <Compile Include="DB\PersistenceModels\Payee.cs" />
-    <Compile Include="DB\PersistenceModels\SubIncome.cs" />
     <Compile Include="DB\PersistenceModels\SubTransaction.cs" />
     <Compile Include="DB\PersistenceModels\TheTit.cs" />
     <Compile Include="DB\PersistenceModels\Transaction.cs" />
@@ -300,7 +294,6 @@
     <Compile Include="MVVM\Models\Native\Account.cs" />
     <Compile Include="MVVM\Models\Native\CategoryBase.cs" />
     <Compile Include="MVVM\Models\Native\DbSetting.cs" />
-    <Compile Include="MVVM\Models\Native\ParentIncome.cs" />
     <Compile Include="MVVM\Models\Native\Payee.cs" />
     <Compile Include="MVVM\Models\Native\Structure\CommonProperty.cs" />
     <Compile Include="MVVM\Models\Native\Structure\DataModel.cs" />
@@ -308,9 +301,7 @@
     <Compile Include="MVVM\Models\Native\Structure\SubTransInc.cs" />
     <Compile Include="MVVM\Models\Native\Structure\TitBase.cs" />
     <Compile Include="MVVM\Models\Native\Structure\TransIncBase.cs" />
-    <Compile Include="MVVM\Models\Native\SubIncome.cs" />
     <Compile Include="MVVM\Models\Native\SubTransaction.cs" />
-    <Compile Include="MVVM\Models\Native\Income.cs" />
     <Compile Include="MVVM\Models\Native\ParentTransaction.cs" />
     <Compile Include="MVVM\Rules.cs" />
     <Compile Include="MVVM\Services\AccountViewModelService.cs" />
@@ -318,11 +309,9 @@
     <Compile Include="MVVM\Services\CategoryBaseViewModelService.cs" />
     <Compile Include="MVVM\Services\CategoryViewModelService.cs" />
     <Compile Include="MVVM\Services\IncomeCategoryViewModelService.cs" />
-    <Compile Include="MVVM\Services\ParentIncomeViewModelService.cs" />
     <Compile Include="MVVM\Services\ParentTransactionViewModelService.cs" />
     <Compile Include="MVVM\Services\ModelToViewModelServiceBase.cs" />
     <Compile Include="MVVM\Services\PayeeViewModelService.cs" />
-    <Compile Include="MVVM\Services\SubIncomeViewModelService.cs" />
     <Compile Include="MVVM\Services\SubTransactionViewModelService.cs" />
     <Compile Include="MVVM\Services\CommonPropertyViewModelServiceBase.cs" />
     <Compile Include="MVVM\UserControls\UniformList.xaml.cs">
@@ -335,12 +324,10 @@
     <Compile Include="MVVM\ViewModels\ForModels\Structure\CommonPropertyViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\PayeeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\DataModelViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\IncomeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\IHavePayeeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\IHaveCategoryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\TitBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\TransIncBaseViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\SubIncomeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\SubTransactionViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TitLikeViewModelPlaceholder.cs" />
     <Compile Include="MVVM\Models\Native\Transfer.cs" />
@@ -348,7 +335,6 @@
     <Compile Include="MVVM\ViewModels\ForModels\Structure\AccountBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\SummaryAccountViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\AccountViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\ParentIncomeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\ParentTransactionViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\ParentTransIncViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\TitLikeViewModel.cs" />

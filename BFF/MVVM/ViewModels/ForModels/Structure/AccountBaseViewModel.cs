@@ -49,11 +49,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         ReactiveCommand NewTransactionCommand { get; }
 
         /// <summary>
-        /// Creates a new Income.
-        /// </summary>
-        ReactiveCommand NewIncomeCommand { get; }
-
-        /// <summary>
         /// Creates a new Transfer.
         /// </summary>
         ReactiveCommand NewTransferCommand { get; }
@@ -62,11 +57,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Creates a new ParentTransaction.
         /// </summary>
         ReactiveCommand NewParentTransactionCommand { get; }
-
-        /// <summary>
-        /// Creates a new ParentIncome.
-        /// </summary>
-        ReactiveCommand NewParentIncomeCommand { get; }
 
         /// <summary>
         /// Flushes all valid and not yet inserted TITs to the database.
@@ -128,11 +118,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public abstract ReactiveCommand NewTransactionCommand { get; }
 
         /// <summary>
-        /// Creates a new Income.
-        /// </summary>
-        public abstract ReactiveCommand NewIncomeCommand { get; }
-
-        /// <summary>
         /// Creates a new Transfer.
         /// </summary>
         public abstract ReactiveCommand NewTransferCommand { get; }
@@ -141,11 +126,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Creates a new ParentTransaction.
         /// </summary>
         public abstract ReactiveCommand NewParentTransactionCommand { get; }
-
-        /// <summary>
-        /// Creates a new ParentIncome.
-        /// </summary>
-        public abstract ReactiveCommand NewParentIncomeCommand { get; }
 
         /// <summary>
         /// Flushes all valid and not yet inserted TITs to the database.
@@ -271,9 +251,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     case IParentTransaction parentTransaction:
                         vmItems.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
                         break;
-                    case IParentIncome parentIncome:
-                        vmItems.Add(Orm.ParentIncomeViewModelService.GetViewModel(parentIncome));
-                        break;
                     case ITransaction transaction:
                         vmItems.Add(new TransactionViewModel(
                             transaction,
@@ -284,22 +261,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                                 Orm.CommonPropertyProvider.CategoryViewModelService,
                                 Orm.CommonPropertyProvider.IncomeCategoryViewModelService,
                                 CommonPropertyProvider.CategoryBaseViewModelService),
-                            hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
-                            Orm,
-                            Orm.CommonPropertyProvider.AccountViewModelService,
-                            Orm.CommonPropertyProvider.PayeeViewModelService,
-                            Orm.CommonPropertyProvider.CategoryBaseViewModelService));
-                        break;
-                    case IIncome income:
-                        vmItems.Add(new IncomeViewModel(
-                            income,
-                            hcvm => new NewCategoryViewModel(
-                                hcvm, 
-                                Orm.BffRepository.CategoryRepository,
-                                Orm.BffRepository.IncomeCategoryRepository,
-                                Orm.CommonPropertyProvider.CategoryViewModelService,
-                                Orm.CommonPropertyProvider.IncomeCategoryViewModelService,
-                                Orm.CommonPropertyProvider.CategoryBaseViewModelService),
                             hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
                             Orm,
                             Orm.CommonPropertyProvider.AccountViewModelService,

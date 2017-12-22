@@ -57,18 +57,6 @@ namespace BFF.MVVM.Views
             set => SetValue(NewTransactionCommandProperty, value);
         }
 
-        public static readonly DependencyProperty NewIncomeCommandProperty = DependencyProperty.Register(
-            nameof(NewIncomeCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand),(o, args) =>
-            {
-                ((TitDataGrid)o).NewIncomeVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
-            }));
-
-        public ICommand NewIncomeCommand
-        {
-            get => (ICommand) GetValue(NewIncomeCommandProperty);
-            set => SetValue(NewIncomeCommandProperty, value);
-        }
-
         public static readonly DependencyProperty NewTransferCommandProperty = DependencyProperty.Register(
             nameof(NewTransferCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
             {
@@ -93,18 +81,6 @@ namespace BFF.MVVM.Views
             set => SetValue(NewParentTransactionCommandProperty, value);
         }
 
-        public static readonly DependencyProperty NewParentIncomeCommandProperty = DependencyProperty.Register(
-            nameof(NewParentIncomeCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
-            {
-                ((TitDataGrid)o).NewParentIncomeVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
-            }));
-
-        public ICommand NewParentIncomeCommand
-        {
-            get => (ICommand) GetValue(NewParentIncomeCommandProperty);
-            set => SetValue(NewParentIncomeCommandProperty, value);
-        }
-
         public static readonly DependencyProperty ApplyCommandProperty = DependencyProperty.Register(
             nameof(ApplyCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
             {
@@ -126,15 +102,6 @@ namespace BFF.MVVM.Views
             set => SetValue(NewTransactionVisibilityProperty, value);
         }
 
-        public static readonly DependencyProperty NewIncomeVisibilityProperty = DependencyProperty.Register(
-            nameof(NewIncomeVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
-
-        public Visibility NewIncomeVisibility
-        {
-            get => (Visibility) GetValue(NewIncomeVisibilityProperty);
-            set => SetValue(NewIncomeVisibilityProperty, value);
-        }
-
         public static readonly DependencyProperty NewTransferVisibilityProperty = DependencyProperty.Register(
             nameof(NewTransferVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
 
@@ -151,15 +118,6 @@ namespace BFF.MVVM.Views
         {
             get => (Visibility) GetValue(NewParentTransactionVisibilityProperty);
             set => SetValue(NewParentTransactionVisibilityProperty, value);
-        }
-
-        public static readonly DependencyProperty NewParentIncomeVisibilityProperty = DependencyProperty.Register(
-            nameof(NewParentIncomeVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
-
-        public Visibility NewParentIncomeVisibility
-        {
-            get => (Visibility) GetValue(NewParentIncomeVisibilityProperty);
-            set => SetValue(NewParentIncomeVisibilityProperty, value);
         }
 
         public static readonly DependencyProperty ApplyVisibilityProperty = DependencyProperty.Register(

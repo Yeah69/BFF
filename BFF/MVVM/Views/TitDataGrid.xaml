@@ -155,16 +155,6 @@
                                                         Kind="{StaticResource TransactionIcon}"
                                                         Style="{StaticResource CellIconMaterial}" />
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:IncomeViewModel}">
-                            <iconPacks:PackIconMaterial Foreground="{DynamicResource IncomeBrush}"
-                                                        Kind="{StaticResource IncomeIcon}"
-                                                        Style="{StaticResource CellIconMaterial}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
-                            <iconPacks:PackIconMaterial Foreground="{DynamicResource IncomeBrush}"
-                                                        Kind="{StaticResource IncomeIcon}"
-                                                        Style="{StaticResource CellIconMaterial}" />
-                        </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <iconPacks:PackIconMaterial Foreground="{DynamicResource TransferBrush}"
                                                         Kind="{StaticResource TransferIcon}"
@@ -379,20 +369,6 @@
                                                             Style="{StaticResource CellIconMaterial}" />
                             </Button>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
-                            <Button Margin="0"
-                                    Padding="0"
-                                    HorizontalContentAlignment="Left"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Command="{Binding OpenParentTitView}"
-                                    CommandParameter="{Binding Account.Value}">
-                                <iconPacks:PackIconMaterial Margin="5,0,0,0"
-                                                            Foreground="{DynamicResource GrayBrush4}"
-                                                            Kind="{StaticResource ParentIcon}"
-                                                            Style="{StaticResource CellIconMaterial}" />
-                            </Button>
-                        </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Style="{StaticResource CellTextBlock}"
@@ -593,13 +569,6 @@
                             </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
-                            <!--  todo  -->
-                            <iconPacks:PackIconMaterial Margin="5,0,0,0"
-                                                        Foreground="{DynamicResource GrayBrush4}"
-                                                        Kind="{StaticResource ParentIcon}"
-                                                        Style="{StaticResource CellIconMaterial}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
                             <!--  todo  -->
                             <iconPacks:PackIconMaterial Margin="5,0,0,0"
                                                         Foreground="{DynamicResource GrayBrush4}"
@@ -1076,10 +1045,6 @@
                                 <ContentControl Content="{Binding}"
                                                 ContentTemplate="{StaticResource SubElementsShowFormTemplate}" />
                             </DataTemplate>
-                            <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource SubElementsShowFormTemplate}" />
-                            </DataTemplate>
                             <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
                                 <ContentControl Content="{Binding}"
                                                 ContentTemplate="{StaticResource EmptyDataTemplate}" />
@@ -1210,10 +1175,6 @@
                                     <ContentControl Content="{Binding}"
                                                     ContentTemplate="{StaticResource SubElementsEditingFormTemplate}" />
                                 </DataTemplate>
-                                <DataTemplate DataType="{x:Type forModels:ParentIncomeViewModel}">
-                                    <ContentControl Content="{Binding}"
-                                                    ContentTemplate="{StaticResource SubElementsEditingFormTemplate}" />
-                                </DataTemplate>
                                 <DataTemplate DataType="{x:Type structure:TitLikeViewModel}">
                                     <ContentControl Content="{Binding}"
                                                     ContentTemplate="{StaticResource EmptyDataTemplate}" />
@@ -1237,22 +1198,6 @@
                                                     Margin="5,0,0,0"
                                                     Foreground="{DynamicResource TransactionBrush}"
                                                     Kind="{StaticResource TransactionIcon}" />
-                    </StackPanel>
-                </Button>
-                <Button Margin="5,0,0,0"
-                        Command="{Binding NewIncomeCommand}"
-                        ToolTip="{lex:Loc AccountView_ToolTip_NewIncome}"
-                        Visibility="{Binding NewIncomeVisibility}">
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                    Height="{StaticResource IconSize}"
-                                                    Foreground="{DynamicResource BlackColorBrush}"
-                                                    Kind="{StaticResource AddIcon}" />
-                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                    Height="{StaticResource IconSize}"
-                                                    Margin="5,0,0,0"
-                                                    Foreground="{DynamicResource IncomeBrush}"
-                                                    Kind="{StaticResource IncomeIcon}" />
                     </StackPanel>
                 </Button>
                 <Button Margin="5,0,0,0"
@@ -1290,27 +1235,6 @@
                                                     Margin="5,0,0,0"
                                                     Foreground="{DynamicResource TransactionBrush}"
                                                     Kind="{StaticResource TransactionIcon}" />
-                    </StackPanel>
-                </Button>
-                <Button Margin="5,0,0,0"
-                        Command="{Binding NewParentIncomeCommand}"
-                        ToolTip="{lex:Loc AccountView_ToolTip_NewParentIncome}"
-                        Visibility="{Binding NewParentIncomeVisibility}">
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                    Height="{StaticResource IconSize}"
-                                                    Foreground="{DynamicResource BlackColorBrush}"
-                                                    Kind="{StaticResource AddIcon}" />
-                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                    Height="{StaticResource IconSize}"
-                                                    Margin="5,0,0,0"
-                                                    Foreground="{DynamicResource BlackColorBrush}"
-                                                    Kind="{StaticResource ParentIcon}" />
-                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                    Height="{StaticResource IconSize}"
-                                                    Margin="5,0,0,0"
-                                                    Foreground="{DynamicResource IncomeBrush}"
-                                                    Kind="{StaticResource IncomeIcon}" />
                     </StackPanel>
                 </Button>
                 <Button Margin="5,0,0,0"

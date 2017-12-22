@@ -77,16 +77,9 @@ namespace BFF.DB.SQLite
             $@"SELECT {nameof(Transaction.Date)}, {nameof(Transaction.CategoryId)}, {nameof(Transaction.Sum)}
     FROM {nameof(Transaction)}s
     UNION ALL
-    SELECT {nameof(Income.Date)}, {nameof(Income.CategoryId)}, {nameof(Income.Sum)}
-    FROM {nameof(Income)}s
-    UNION ALL
     SELECT {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Date)}, {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)}, {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)}
       FROM {nameof(SubTransaction)}s
-        INNER JOIN {nameof(ParentTransaction)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Id)}
-    UNION ALL
-    SELECT {nameof(ParentIncome)}s.{nameof(ParentIncome.Date)}, {nameof(SubIncome)}s.{nameof(SubIncome.CategoryId)}, {nameof(SubIncome)}s.{nameof(SubIncome.Sum)}
-      FROM {nameof(SubIncome)}s
-        INNER JOIN {nameof(ParentIncome)}s ON {nameof(SubIncome)}s.{nameof(SubIncome.ParentId)} = {nameof(ParentIncome)}s.{nameof(ParentIncome.Id)}";
+        INNER JOIN {nameof(ParentTransaction)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Id)}";
 
 
 

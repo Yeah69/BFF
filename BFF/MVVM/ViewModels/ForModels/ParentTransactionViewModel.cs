@@ -52,7 +52,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         private readonly ObservableCollection<ISubTransactionViewModel> _newTransactions;
 
         /// <summary>
-        /// The amount of money of the exchange of the ParentTransaction or ParentIncome.
+        /// The amount of money of the exchange of the ParentTransaction.
         /// A ParentElement's Sum is defined by the Sum of all Sum's of its SubElements.
         /// </summary>
         public override IReactiveProperty<long> Sum { get; }

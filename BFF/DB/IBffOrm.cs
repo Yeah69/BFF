@@ -11,9 +11,7 @@ namespace BFF.DB
         ICommonPropertyProvider CommonPropertyProvider { get; }
         IBffRepository BffRepository { get; }
         IParentTransactionViewModelService ParentTransactionViewModelService { get; }
-        IParentIncomeViewModelService ParentIncomeViewModelService { get; }
         ISubTransactionViewModelService SubTransactionViewModelService { get; }
-        ISubIncomeViewModelService SubIncomeViewModelService { get; }
         IBudgetEntryViewModelService BudgetEntryViewModelService { get; }
 
         long? GetAccountBalanceUntilNow(IAccount account);

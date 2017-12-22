@@ -17,14 +17,11 @@ namespace BFF.Helper.Import
         public IList<CategoryImportWrapper> Categories;
 
         public IList<Transaction> Transactions;
-        public IList<Income> Incomes;
         public IList<Transfer> Transfers;
 
         public IList<ParentTransaction> ParentTransactions;
-        public IList<ParentIncome> ParentIncomes;
 
         public IList<SubTransaction> SubTransactions;
-        public IList<SubIncome> SubIncomes;
 
         public IList<BudgetEntry> BudgetEntries;
     }
@@ -38,6 +35,5 @@ namespace BFF.Helper.Import
         public IDictionary<Payee, IList<IHavePayee>> PayeeToTransIncBase;
 
         public IDictionary<ParentTransaction, IList<SubTransaction>> ParentTransactionToSubTransaction;
-        public IDictionary<ParentIncome, IList<SubIncome>> ParentIncomeToSubIncome;
     }
 }

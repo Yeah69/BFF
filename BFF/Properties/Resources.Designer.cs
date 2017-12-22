@@ -223,24 +223,6 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Income.
-        /// </summary>
-        public static string AccountView_ToolTip_NewIncome {
-            get {
-                return ResourceManager.GetString("AccountView_ToolTip_NewIncome", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New splitted Income.
-        /// </summary>
-        public static string AccountView_ToolTip_NewParentIncome {
-            get {
-                return ResourceManager.GetString("AccountView_ToolTip_NewParentIncome", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to New splitted Transaction.
         /// </summary>
         public static string AccountView_ToolTip_NewParentTransaction {

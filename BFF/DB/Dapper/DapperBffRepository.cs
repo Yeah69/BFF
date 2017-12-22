@@ -16,7 +16,6 @@ namespace BFF.DB.Dapper
             ICategory CategoryFetcher(long? id, DbConnection connection) => id != null ? CategoryRepository.Find((long)id, connection) : null;
             IPayee PayeeFetcher(long id, DbConnection connection) => PayeeRepository.Find(id, connection);
             IEnumerable<ISubTransaction> SubTransactionsFetcher(long parentId, DbConnection connection) => SubTransactionRepository.GetChildrenOf(parentId, connection);
-            IEnumerable<ISubIncome> SubIncomesFetcher(long parentId, DbConnection connection) => SubIncomeRepository.GetChildrenOf(parentId, connection);
 
             AccountRepository = new AccountRepository(provideConnection);
             BudgetEntryRepository = new BudgetEntryRepository(provideConnection, CategoryFetcher);
@@ -24,25 +23,19 @@ namespace BFF.DB.Dapper
             IncomeCategoryRepository = new IncomeCategoryRepository(provideConnection);
             CategoryBaseRepository = new CategoryBaseRepository(CategoryRepository, IncomeCategoryRepository);
             DbSettingRepository = new DbSettingRepository(provideConnection);
-            IncomeRepository = new IncomeRepository(provideConnection, AccountFetcher, CategoryBaseFetcher, PayeeFetcher);
-            ParentIncomeRepository = new ParentIncomeRepository(provideConnection, AccountFetcher, PayeeFetcher, SubIncomesFetcher);
             ParentTransactionRepository = new ParentTransactionRepository(provideConnection, AccountFetcher, PayeeFetcher, SubTransactionsFetcher);
             PayeeRepository = new PayeeRepository(provideConnection);
-            SubIncomeRepository = new SubIncomeRepository(provideConnection, CategoryBaseFetcher);
             SubTransactionRepository = new SubTransactionRepository(provideConnection, CategoryBaseFetcher);
             TransactionRepository = new TransactionRepository(provideConnection, AccountFetcher, CategoryBaseFetcher, PayeeFetcher);
             TransferRepository = new TransferRepository(provideConnection, AccountFetcher);
             TitRepository = new TitRepository(provideConnection,
                                               TransactionRepository, 
-                                              IncomeRepository,
                                               TransferRepository,
                                               ParentTransactionRepository,
-                                              ParentIncomeRepository,
                                               AccountFetcher, 
                                               CategoryBaseFetcher, 
                                               PayeeFetcher, 
-                                              SubTransactionsFetcher,
-                                              SubIncomesFetcher);
+                                              SubTransactionsFetcher);
 
             BudgetMonthRepository = new BudgetMonthRepository(BudgetEntryRepository, CategoryRepository, IncomeCategoryRepository, provideConnection);
         }
@@ -53,11 +46,8 @@ namespace BFF.DB.Dapper
         public sealed override IIncomeCategoryRepository IncomeCategoryRepository { get; }
         public override ICategoryBaseRepository CategoryBaseRepository { get; }
         public sealed override IDbSettingRepository DbSettingRepository { get; }
-        public sealed override IIncomeRepository IncomeRepository { get; }
-        public sealed override IParentIncomeRepository ParentIncomeRepository { get; }
         public sealed override IParentTransactionRepository ParentTransactionRepository { get; }
         public sealed override IPayeeRepository PayeeRepository { get; }
-        public sealed override ISubIncomeRepository SubIncomeRepository { get; }
         public sealed override ISubTransactionRepository SubTransactionRepository { get; }
         public sealed override ITransactionRepository TransactionRepository { get; }
         public sealed override ITransferRepository TransferRepository { get; }
@@ -72,11 +62,8 @@ namespace BFF.DB.Dapper
                 BudgetEntryRepository?.Dispose();
                 CategoryRepository?.Dispose();
                 DbSettingRepository?.Dispose();
-                IncomeRepository?.Dispose();
-                ParentIncomeRepository?.Dispose();
                 ParentTransactionRepository?.Dispose();
                 PayeeRepository?.Dispose();
-                SubIncomeRepository?.Dispose();
                 SubTransactionRepository?.Dispose();
                 TransactionRepository?.Dispose();
                 TransferRepository?.Dispose();

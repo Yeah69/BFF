@@ -13,7 +13,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     public interface IBudgetEntryViewModel : IDataModelViewModel
     {
         /// <summary>
-        /// Each SubTransaction or SubIncome can be budgeted to a category.
+        /// Each SubTransaction can be budgeted to a category.
         /// </summary>
         IReactiveProperty<ICategoryViewModel> Category { get; }
 

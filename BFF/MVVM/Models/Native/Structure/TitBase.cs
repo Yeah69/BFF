@@ -9,10 +9,8 @@ namespace BFF.MVVM.Models.Native.Structure
     public enum TitType
     {
         Transaction = 1,
-        Income = 2,
-        Transfer = 3,
-        ParentTransaction = 4,
-        ParentIncome = 5
+        Transfer = 2,
+        ParentTransaction = 3
     }
 
     public interface ITitBase : ITitLike

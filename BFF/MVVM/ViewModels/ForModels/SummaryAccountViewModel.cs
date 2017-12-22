@@ -97,29 +97,6 @@ namespace BFF.MVVM.ViewModels.ForModels
                     Orm.CommonPropertyProvider.CategoryBaseViewModelService));
             }).AddTo(CompositeDisposable);
 
-            NewIncomeCommand.Subscribe(_ =>
-            {
-                IIncome income = Orm.BffRepository.IncomeRepository.Create();
-                income.Date = DateTime.Today;
-                income.Memo = "";
-                income.Sum = 0L;
-                income.Cleared = false;
-                NewTits.Add(new IncomeViewModel(
-                    income,
-                    hcvm => new NewCategoryViewModel(
-                        hcvm, 
-                        Orm.BffRepository.CategoryRepository,
-                        Orm.BffRepository.IncomeCategoryRepository, 
-                        Orm.CommonPropertyProvider.CategoryViewModelService,
-                        Orm.CommonPropertyProvider.IncomeCategoryViewModelService,
-                        Orm.CommonPropertyProvider.CategoryBaseViewModelService),
-                    hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
-                    Orm,
-                    Orm.CommonPropertyProvider.AccountViewModelService,
-                    Orm.CommonPropertyProvider.PayeeViewModelService,
-                    Orm.CommonPropertyProvider.CategoryBaseViewModelService));
-            }).AddTo(CompositeDisposable);
-
             NewTransferCommand.Subscribe(_ =>
             {
                 ITransfer transfer = Orm.BffRepository.TransferRepository.Create();
@@ -137,15 +114,6 @@ namespace BFF.MVVM.ViewModels.ForModels
                 parentTransaction.Memo = "";
                 parentTransaction.Cleared = false;
                 NewTits.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
-            }).AddTo(CompositeDisposable);
-
-            NewParentIncomeCommand.Subscribe(_ =>
-            {
-                IParentIncome parentIncome = Orm.BffRepository.ParentIncomeRepository.Create();
-                parentIncome.Date = DateTime.Today;
-                parentIncome.Memo = "";
-                parentIncome.Cleared = false;
-                NewTits.Add(Orm.ParentIncomeViewModelService.GetViewModel(parentIncome));
             }).AddTo(CompositeDisposable);
 
             ApplyCommand = NewTits.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
@@ -214,11 +182,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         public sealed override ReactiveCommand NewTransactionCommand { get; } = new ReactiveCommand();
 
         /// <summary>
-        /// Creates a new Income.
-        /// </summary>
-        public sealed override ReactiveCommand NewIncomeCommand { get; } = new ReactiveCommand();
-
-        /// <summary>
         /// Creates a new Transfer.
         /// </summary>
         public sealed override ReactiveCommand NewTransferCommand { get; } = new ReactiveCommand();
@@ -227,11 +190,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Creates a new ParentTransaction.
         /// </summary>
         public sealed override ReactiveCommand NewParentTransactionCommand { get; } = new ReactiveCommand();
-
-        /// <summary>
-        /// Creates a new ParentIncome.
-        /// </summary>
-        public sealed override ReactiveCommand NewParentIncomeCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// Flushes all valid and not yet inserted TITs to the database.

@@ -19,11 +19,8 @@ namespace BFF.DB
         protected abstract ICreateTable CreateBudgetEntryTable { get; }
         protected abstract ICreateTable CreateCategoryTable { get; }
         protected abstract ICreateTable CreateDbSettingTable { get; }
-        protected abstract ICreateTable CreateIncomeTable { get; }
-        protected abstract ICreateTable CreateParentIncomeTable { get; }
         protected abstract ICreateTable CreateParentTransactionTable { get; }
         protected abstract ICreateTable CreatePayeeTable { get; }
-        protected abstract ICreateTable CreateSubIncomeTable { get; }
         protected abstract ICreateTable CreateSubTransactionTable { get; }
         protected abstract ICreateTable CreateTransactionTable { get; }
         protected abstract ICreateTable CreateTransferTable { get; }
@@ -39,10 +36,6 @@ namespace BFF.DB
             CreateTransactionTable.CreateTable(connection);
             CreateParentTransactionTable.CreateTable(connection);
             CreateSubTransactionTable.CreateTable(connection);
-
-            CreateIncomeTable.CreateTable(connection);
-            CreateParentIncomeTable.CreateTable(connection);
-            CreateSubIncomeTable.CreateTable(connection);
 
             CreateTransferTable.CreateTable(connection);
 
@@ -77,11 +70,8 @@ namespace BFF.DB
         IIncomeCategoryRepository IncomeCategoryRepository { get; }
         ICategoryBaseRepository CategoryBaseRepository { get; }
         IDbSettingRepository DbSettingRepository { get; }
-        IIncomeRepository IncomeRepository { get; }
-        IParentIncomeRepository ParentIncomeRepository { get; }
         IParentTransactionRepository ParentTransactionRepository { get; }
         IPayeeRepository PayeeRepository { get; }
-        ISubIncomeRepository SubIncomeRepository { get; }
         ISubTransactionRepository SubTransactionRepository { get; }
         ITransactionRepository TransactionRepository { get; }
         ITransferRepository TransferRepository { get; }
@@ -109,11 +99,8 @@ namespace BFF.DB
         public abstract IIncomeCategoryRepository IncomeCategoryRepository { get; }
         public abstract ICategoryBaseRepository CategoryBaseRepository { get; }
         public abstract IDbSettingRepository DbSettingRepository { get; }
-        public abstract IIncomeRepository IncomeRepository { get; }
-        public abstract IParentIncomeRepository ParentIncomeRepository { get; }
         public abstract IParentTransactionRepository ParentTransactionRepository { get; }
         public abstract IPayeeRepository PayeeRepository { get; }
-        public abstract ISubIncomeRepository SubIncomeRepository { get; }
         public abstract ISubTransactionRepository SubTransactionRepository { get; }
         public abstract ITransactionRepository TransactionRepository { get; }
         public abstract ITransferRepository TransferRepository { get; }
@@ -178,18 +165,6 @@ namespace BFF.DB
             }
             foreach (SubTransaction subTransaction in importLists.SubTransactions) 
                 connection.Insert(subTransaction);
-            foreach (Income income in importLists.Incomes) 
-                connection.Insert(income);
-            foreach (ParentIncome parentIncome in importLists.ParentIncomes)
-            {
-                var id = connection.Insert(parentIncome);
-                foreach (SubIncome subIncome in importAssignments.ParentIncomeToSubIncome[parentIncome])
-                {
-                    subIncome.ParentId = id;
-                }
-            }
-            foreach (SubIncome subIncome in importLists.SubIncomes) 
-                connection.Insert(subIncome);
             foreach (Transfer transfer in importLists.Transfers) 
                 connection.Insert(transfer);
             foreach (BudgetEntry budgetEntry in importLists.BudgetEntries) 

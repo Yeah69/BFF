@@ -9,7 +9,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     }
 
     /// <summary>
-    /// Base class for ViewModels of the Models ParentTransaction and ParentIncome
+    /// Base class for ViewModels of the Models ParentTransaction
     /// </summary>
     public abstract class ParentTransIncViewModel : TransIncBaseViewModel, IParentTransIncViewModel
     {

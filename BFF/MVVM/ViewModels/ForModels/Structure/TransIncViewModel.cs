@@ -14,17 +14,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     }
 
     /// <summary>
-    /// Base class for ViewModels of Transaction and Income
+    /// Base class for ViewModels of Transaction
     /// </summary>
     public abstract class TransIncViewModel : TransIncBaseViewModel, ITransIncViewModel
     {
         /// <summary>
-        /// Each Transaction or Income can be budgeted to a category.
+        /// Each Transaction can be budgeted to a category.
         /// </summary>
         public IReactiveProperty<ICategoryBaseViewModel> Category { get; }
 
         /// <summary>
-        /// The amount of money of the exchange of the Transaction or Income.
+        /// The amount of money of the exchange of the Transaction.
         /// </summary>
         public override IReactiveProperty<long> Sum { get; }
         public INewCategoryViewModel NewCategoryViewModel { get; }

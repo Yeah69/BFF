@@ -18,11 +18,7 @@ namespace BFF.DB.SQLite
 
         public IParentTransactionViewModelService ParentTransactionViewModelService { get; }
 
-        public IParentIncomeViewModelService ParentIncomeViewModelService { get; }
-
         public ISubTransactionViewModelService SubTransactionViewModelService { get; }
-
-        public ISubIncomeViewModelService SubIncomeViewModelService { get; }
 
         public IBudgetEntryViewModelService BudgetEntryViewModelService { get; }
 
@@ -44,9 +40,6 @@ namespace BFF.DB.SQLite
 
         public IEnumerable<ISubTransInc> GetSubTransInc<T>(long parentId) where T : ISubTransInc
         {
-            if(typeof(T) == typeof(SubIncome))
-                return _bffRepository.SubIncomeRepository?.GetChildrenOf(parentId) 
-                       ?? Enumerable.Empty<ISubIncome>();
             if(typeof(T) == typeof(SubTransaction))
                 return _bffRepository.SubTransactionRepository?.GetChildrenOf(parentId) 
                        ?? Enumerable.Empty<ISubTransaction>();
@@ -73,32 +66,12 @@ namespace BFF.DB.SQLite
                     CommonPropertyProvider.CategoryBaseViewModelService),
                 () => BffRepository.SubTransactionRepository.Create());
 
-            SubIncomeViewModelService = new SubIncomeViewModelService(
-                si => new SubIncomeViewModel(
-                    si,
-                    hcvm => new NewCategoryViewModel(
-                        hcvm, 
-                        _bffRepository.CategoryRepository,
-                        _bffRepository.IncomeCategoryRepository,
-                        CommonPropertyProvider.CategoryViewModelService,
-                        CommonPropertyProvider.IncomeCategoryViewModelService,
-                        CommonPropertyProvider.CategoryBaseViewModelService),
-                    this,
-                    CommonPropertyProvider.CategoryBaseViewModelService),
-                () => BffRepository.SubIncomeRepository.Create());
-
             ParentTransactionViewModelService = new ParentTransactionViewModelService(
                 pt => new ParentTransactionViewModel(
                     pt,
                     hpvm => new NewPayeeViewModel(hpvm, _bffRepository.PayeeRepository, CommonPropertyProvider.PayeeViewModelService), 
                     this,
                     SubTransactionViewModelService));
-            ParentIncomeViewModelService = new ParentIncomeViewModelService(
-                pi => new ParentIncomeViewModel(
-                    pi,
-                    hpvm => new NewPayeeViewModel(hpvm, _bffRepository.PayeeRepository, CommonPropertyProvider.PayeeViewModelService),
-                    this,
-                    SubIncomeViewModelService));
 
             BudgetEntryViewModelService = new BudgetEntryViewModelService(be => new BudgetEntryViewModel(this, be, CommonPropertyProvider.CategoryViewModelService));
         }
