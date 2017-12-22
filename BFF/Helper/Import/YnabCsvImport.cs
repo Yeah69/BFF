@@ -236,7 +236,7 @@ namespace BFF.Helper.Import
                     if (transferMatch.Success)
                         AddTransfer(lists.Transfers, ynabTransaction);
                     else if (ynabTransaction.MasterCategory == "Income")
-                        lists.Incomes.Add(TransformToIncome(ynabTransaction));
+                        lists.Transactions.Add(TransformToIncome(ynabTransaction));
                     else
                         lists.Transactions.Add(TransformToTransaction(ynabTransaction));
                 }
@@ -315,7 +315,7 @@ namespace BFF.Helper.Import
                 if (transferMatch.Success)
                     AddTransfer(lists.Transfers, splitTransaction);
                 else if (splitTransaction.MasterCategory == "Income")
-                    lists.Incomes.Add(TransformToIncome(splitTransaction));
+                    lists.Transactions.Add(TransformToIncome(splitTransaction));
                 else
                 {
                     Persistence.SubTransaction subTransaction = TransformToSubTransaction(
@@ -410,9 +410,9 @@ namespace BFF.Helper.Import
         /// Creates a Income-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private Persistence.Income TransformToIncome(Transaction ynabTransaction)
+        private Persistence.Transaction TransformToIncome(Transaction ynabTransaction)
         {
-            Persistence.Income ret = new Persistence.Income
+            Persistence.Transaction ret = new Persistence.Transaction
             {
                 Date = ynabTransaction.Date,
                 Memo = ynabTransaction.Memo,

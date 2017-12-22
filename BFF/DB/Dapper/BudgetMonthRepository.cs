@@ -19,41 +19,24 @@ namespace BFF.DB.Dapper
         private static readonly string NotBudgetedOrOverbudgetedQuery =
 $@"SELECT Sum(Sum) as Sum FROM
     (
-        SELECT {nameof(Persistence.Income.Sum)}
-        FROM {nameof(Persistence.Income)}s
-        WHERE {nameof(Persistence.Income.CategoryId)} == @NextCategoryId AND (strftime('%Y', {nameof(Persistence.Income.Date)}, '+1 month') < @Year OR strftime('%Y', {nameof(Persistence.Income.Date)}, '+1 month') == @Year AND strftime('%m', {nameof(Persistence.Income.Date)}, '+1 month') <= @Month)
-        UNION ALL
-        SELECT {nameof(Persistence.Income.Sum)}
-        FROM {nameof(Persistence.Income)}s
-        WHERE {nameof(Persistence.Income.CategoryId)} == @ThisCategoryId AND (strftime('%Y', {nameof(Persistence.Income.Date)}) < @Year OR strftime('%Y', {nameof(Persistence.Income.Date)}) == @Year AND strftime('%m', {nameof(Persistence.Income.Date)}) <= @Month)
-        UNION ALL
         SELECT Sum({nameof(Persistence.Account.StartingBalance)}) AS Sum FROM {nameof(Persistence.Account)}s
+        WHERE strftime('%Y', {nameof(Persistence.Account.StartingDate)}) < @Year OR strftime('%Y', {nameof(Persistence.Account.StartingDate)}) == @Year AND strftime('%m', {nameof(Persistence.Account.StartingDate)}) <= @Month
         UNION ALL
         SELECT {nameof(Persistence.Transaction.Sum)}
         FROM {nameof(Persistence.Transaction)}s
+        INNER JOIN {nameof(Persistence.Category)}s ON {nameof(Persistence.Transaction.CategoryId)} == {nameof(Persistence.Category)}s.{nameof(Persistence.Category.Id)} AND {nameof(Persistence.Category)}s.{nameof(Persistence.Category.IsIncomeRelevant)} == 0
         WHERE strftime('%Y', {nameof(Persistence.Transaction.Date)}) < @Year
             OR strftime('%m', {nameof(Persistence.Transaction.Date)}) <= @Month
             AND strftime('%Y', {nameof(Persistence.Transaction.Date)}) = @Year
         UNION ALL
         SELECT {nameof(Persistence.SubTransaction)}s.{nameof(Persistence.SubTransaction.Sum)}
         FROM {nameof(Persistence.SubTransaction)}s
+        INNER JOIN {nameof(Persistence.Category)}s ON {nameof(Persistence.SubTransaction.CategoryId)} == {nameof(Persistence.Category)}s.{nameof(Persistence.Category.Id)} AND {nameof(Persistence.Category)}s.{nameof(Persistence.Category.IsIncomeRelevant)} == 0
         INNER JOIN {nameof(Persistence.ParentTransaction)}s ON {nameof(Persistence.SubTransaction)}s.{nameof(Persistence.SubTransaction.ParentId)} = {nameof(Persistence.ParentTransaction)}s.{nameof(Persistence.ParentTransaction.Id)}
         WHERE strftime('%Y', {nameof(Persistence.ParentTransaction.Date)}) < @Year
             OR strftime('%m', {nameof(Persistence.ParentTransaction.Date)}) <= @Month
             AND strftime('%Y', {nameof(Persistence.ParentTransaction.Date)}) = @Year
-    );"; // TODO this is proprietary to YNAB. Adjust ASAP (Income-Categories required)! // TODO Accounts need a StartMonth to locate the StartingBalance precisely
-
-        private static readonly string IncomeForGivenMonthQuery =
-            $@"SELECT Sum({nameof(Persistence.Income.Sum)}) as Sum FROM
-  (
-    SELECT {nameof(Persistence.Income.Sum)}
-    FROM {nameof(Persistence.Income)}s
-    WHERE {nameof(Persistence.Income.CategoryId)} == @NextCategoryId AND strftime('%Y', {nameof(Persistence.Income.Date)}, '+1 month') == @Year AND strftime('%m', {nameof(Persistence.Income.Date)}, '+1 month') == @Month
-    UNION ALL
-    SELECT {nameof(Persistence.Income.Sum)}
-    FROM {nameof(Persistence.Income)}s
-    WHERE {nameof(Persistence.Income.CategoryId)} == @ThisCategoryId AND strftime('%Y', {nameof(Persistence.Income.Date)}) == @Year AND strftime('%m', {nameof(Persistence.Income.Date)}) == @Month
-  );"; // TODO this is proprietary to YNAB. Adjust ASAP (Income-Categories required)! // TODO Accounts need a StartMonth to locate the StartingBalance precisely
+    );";
 
         private readonly IBudgetEntryRepository _budgetEntryRepository;
         private readonly ICategoryRepository _categoryRepository;
@@ -89,9 +72,6 @@ $@"SELECT Sum(Sum) as Sum FROM
 
                 var budgetMonths = new List<IBudgetMonth>();
 
-                long thisCategoryId = _incomeCategoryRepository.All.Single(cat => cat.Name == "This Month").Id; // TODO this is proprietary to YNAB. Adjust ASAP (Income-Categories required)! 
-                long nextCategoryId = _incomeCategoryRepository.All.Single(cat => cat.Name == "Next Month").Id; // TODO this is proprietary to YNAB. Adjust ASAP (Income-Categories required)! 
-
                 long firstBalance = groupings[0].Where(be => be.Balance > 0).Sum(be => be.Balance);
                 long currentNotBudgetedOrOverbudgeted =
                     c.QuerySingleOrDefault<long?>(
@@ -99,10 +79,9 @@ $@"SELECT Sum(Sum) as Sum FROM
                         new
                         {
                             Year = $"{actualFromMonth.Year:0000}",
-                            Month = $"{actualFromMonth.Month:00}",
-                            ThisCategoryId = thisCategoryId,
-                            NextCategoryId = nextCategoryId
+                            Month = $"{actualFromMonth.Month:00}"
                         }) ?? 0L;
+                currentNotBudgetedOrOverbudgeted += _incomeCategoryRepository.GetIncomeUntilMonth(actualFromMonth, c);
 
                 currentNotBudgetedOrOverbudgeted -= firstBalance;
 
@@ -114,16 +93,7 @@ $@"SELECT Sum(Sum) as Sum FROM
                             groupings[i],
                             groupings[i - 1].Where(be => be.Balance < 0).Sum(be => be.Balance),
                             currentNotBudgetedOrOverbudgeted,
-                            c.QuerySingleOrDefault<long?>(
-                                IncomeForGivenMonthQuery,
-                                new
-                                {
-                                    Year = $"{groupings[i].Key.Year:0000}",
-                                    Month = $"{groupings[i].Key.Month:00}",
-                                    ThisCategoryId = thisCategoryId,
-                                    NextCategoryId = nextCategoryId
-                                }
-                            ) ?? 0L);
+                            _incomeCategoryRepository.GetMonthsIncome(groupings[i].Key, c));
                     budgetMonths.Add(newBudgetMonth);
                     currentNotBudgetedOrOverbudgeted = newBudgetMonth.AvailableToBudget;
                 }

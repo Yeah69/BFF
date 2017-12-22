@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Globalization;
 using System.Linq;
 using BFF.DB.PersistenceModels;
 using Dapper;
@@ -104,52 +103,6 @@ namespace BFF.DB.Dapper.ModelRepositories
                 persistenceCategory.Id,
                 persistenceCategory.Name,
                 persistenceCategory.ParentId != null ? Find((long)persistenceCategory.ParentId, connection) : null);
-        };
-    }
-
-    public class IncomeCategoryComparer : Comparer<Domain.IIncomeCategory>
-    {
-        public override int Compare(Domain.IIncomeCategory x, Domain.IIncomeCategory y) => StringComparer.Create(CultureInfo.InvariantCulture, false).Compare(x.Name, y.Name);
-    }
-
-    public interface IIncomeCategoryRepository : IObservableRepositoryBase<Domain.IIncomeCategory>
-    {
-    }
-
-    public sealed class IncomeCategoryRepository : ObservableRepositoryBase<Domain.IIncomeCategory, Category>, IIncomeCategoryRepository
-    {
-        private static readonly string GetAllQuery = $"SELECT * FROM {nameof(Category)}s WHERE {nameof(Category.IsIncomeRelevant)} == 1;";
-
-        public IncomeCategoryRepository(IProvideConnection provideConnection)
-            : base(provideConnection, new IncomeCategoryComparer())
-        {
-        }
-        
-        public override Domain.IIncomeCategory Create() =>
-            new Domain.IncomeCategory(this, -1, "", 0);
-
-        protected override IEnumerable<Category> FindAllInner(DbConnection connection)
-        {
-            return connection.Query<Category>(GetAllQuery);
-        }
-
-        protected override Converter<Domain.IIncomeCategory, Category> ConvertToPersistence => domainCategory =>
-            new Category
-            {
-                Id = domainCategory.Id,
-                Name = domainCategory.Name,
-                ParentId = null,
-                IsIncomeRelevant = true,
-                MonthOffset = domainCategory.MonthOffset
-            };
-
-        protected override Converter<(Category, DbConnection), Domain.IIncomeCategory> ConvertToDomain => tuple =>
-        {
-            (Category persistenceCategory, DbConnection _) = tuple;
-            return new Domain.IncomeCategory(this,
-                persistenceCategory.Id,
-                persistenceCategory.Name,
-                persistenceCategory.MonthOffset);
         };
     }
 }

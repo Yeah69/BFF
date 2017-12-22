@@ -238,6 +238,7 @@
     <Compile Include="DB\Dapper\ModelRepositories\AccountRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\BudgetEntryRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\CategoryRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\IncomeCategoryRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\IncomeRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\ParentIncomeRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\ParentTransactionRepository.cs" />
