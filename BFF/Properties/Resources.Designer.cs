@@ -736,6 +736,24 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Income Relevant?.
+        /// </summary>
+        public static string NewCategory_IsIncomeRelevant {
+            get {
+                return ResourceManager.GetString("NewCategory_IsIncomeRelevant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Month Offset.
+        /// </summary>
+        public static string NewCategory_MonthOffset {
+            get {
+                return ResourceManager.GetString("NewCategory_MonthOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BFF budget plan (*.sqlite)|*.sqlite.
         /// </summary>
         public static string OpenSaveDialog_Filter {

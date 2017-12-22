@@ -342,6 +342,12 @@
   <data name="NameOfNewPayee" xml:space="preserve">
     <value>Name des neuen Bezahlten</value>
   </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Einkommensrelevant?</value>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Monatsversatz</value>
+  </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
     <value>BFF Finanzplan (*.sqlite)|*.sqlite</value>
   </data>

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Globalization;
 using System.Linq;
-using BFF.DB.PersistenceModels;
 using Dapper;
+using Category = BFF.DB.PersistenceModels.Category;
+using Transaction = BFF.DB.PersistenceModels.Transaction;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {

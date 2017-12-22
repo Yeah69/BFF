@@ -26,12 +26,15 @@ namespace BFF.MVVM.ViewModels
 
         ReactiveCommand AddCommand { get; }
 
-        IObservableReadOnlyList<ICategoryViewModel> All { get; }
+        IObservableReadOnlyList<ICategoryViewModel> AllPotentialParents { get; }
+
+        IObservableReadOnlyList<ICategoryBaseViewModel> All { get; }
     }
 
     public sealed class NewCategoryViewModel : ObservableObject, INewCategoryViewModel, IDisposable
     {
         private readonly ICategoryViewModelService _categoryViewModelService;
+        private readonly ICategoryBaseViewModelService _categoryBaseViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
@@ -40,11 +43,14 @@ namespace BFF.MVVM.ViewModels
             ICategoryRepository categoryRepository,
             IIncomeCategoryRepository incomeCategoryRepository,
             ICategoryViewModelService categoryViewModelService,
-            IIncomeCategoryViewModelService incomeCategoryViewModelService)
+            IIncomeCategoryViewModelService incomeCategoryViewModelService,
+            ICategoryBaseViewModelService categoryBaseViewModelService)
         {
             bool ValidateNewCategoryRelationCondition(string text, ICategoryViewModel parent)
             {
-                return parent == null && All.Where(cvw => cvw.Parent.Value == null).All(cvm => cvm.Name.Value != text) ||
+                if(IsIncomeRelevant?.Value ?? false)
+                    return incomeCategoryViewModelService.All.All(icvm => icvm.Name.Value != text);
+                return parent == null && AllPotentialParents.Where(cvw => cvw.Parent.Value == null).All(cvm => cvm.Name.Value != text) ||
                        parent != null && parent.Categories.All(cvm => cvm != null && cvm.Name.Value != text);
             }
             string ValidateNewCategoryRelationName(string text, ICategoryViewModel parent)
@@ -67,6 +73,7 @@ namespace BFF.MVVM.ViewModels
             }
 
             _categoryViewModelService = categoryViewModelService;
+            _categoryBaseViewModelService = categoryBaseViewModelService;
 
             AddCommand = new ReactiveCommand();
 
@@ -93,7 +100,7 @@ namespace BFF.MVVM.ViewModels
                         newCategory.Parent = _categoryViewModelService.GetModel(Parent.Value);
                         newCategory.Parent?.AddCategory(newCategory);
                         newCategory.Insert();
-                        OnPropertyChanged(nameof(All));
+                        OnPropertyChanged(nameof(AllPotentialParents));
                         categoryOwner.Category.Value = _categoryViewModelService.GetViewModel(newCategory);
                     }
                 })
@@ -112,6 +119,12 @@ namespace BFF.MVVM.ViewModels
             IsIncomeRelevant = new ReactiveProperty<bool>()
                 .AddTo(_compositeDisposable);
 
+            IsIncomeRelevant.Subscribe(_ =>
+            {
+                (Parent as ReactiveProperty<ICategoryViewModel>)?.ForceValidate();
+                (Name as ReactiveProperty<string>)?.ForceValidate();
+            }).AddTo(_compositeDisposable);
+       
             MonthOffset = new ReactiveProperty<int>()
                 .AddTo(_compositeDisposable);
 
@@ -143,7 +156,9 @@ namespace BFF.MVVM.ViewModels
         /// <summary>
         /// All currently available Categories.
         /// </summary>
-        public IObservableReadOnlyList<ICategoryViewModel> All => _categoryViewModelService.All;
+        public IObservableReadOnlyList<ICategoryViewModel> AllPotentialParents => _categoryViewModelService.All;
+
+        public IObservableReadOnlyList<ICategoryBaseViewModel> All => _categoryBaseViewModelService.All;
 
         public void Dispose()
         {

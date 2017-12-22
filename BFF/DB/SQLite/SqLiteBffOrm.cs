@@ -67,7 +67,8 @@ namespace BFF.DB.SQLite
                         _bffRepository.CategoryRepository,
                         _bffRepository.IncomeCategoryRepository, 
                         CommonPropertyProvider.CategoryViewModelService,
-                        CommonPropertyProvider.IncomeCategoryViewModelService),
+                        CommonPropertyProvider.IncomeCategoryViewModelService,
+                        CommonPropertyProvider.CategoryBaseViewModelService),
                     this, 
                     CommonPropertyProvider.CategoryBaseViewModelService),
                 () => BffRepository.SubTransactionRepository.Create());
@@ -80,7 +81,8 @@ namespace BFF.DB.SQLite
                         _bffRepository.CategoryRepository,
                         _bffRepository.IncomeCategoryRepository,
                         CommonPropertyProvider.CategoryViewModelService,
-                        CommonPropertyProvider.IncomeCategoryViewModelService),
+                        CommonPropertyProvider.IncomeCategoryViewModelService,
+                        CommonPropertyProvider.CategoryBaseViewModelService),
                     this,
                     CommonPropertyProvider.CategoryBaseViewModelService),
                 () => BffRepository.SubIncomeRepository.Create());

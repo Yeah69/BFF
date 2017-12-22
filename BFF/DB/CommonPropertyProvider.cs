@@ -52,7 +52,7 @@ namespace BFF.DB
             CategoryViewModelService = new CategoryViewModelService(bffRepository.CategoryRepository, orm);
             IncomeCategoryViewModelService = new IncomeCategoryViewModelService(bffRepository.IncomeCategoryRepository, orm);
             AllCategoryViewModels = CategoryViewModelService.All;
-            CategoryBaseViewModelService = new CategoryBaseViewModelService(CategoryViewModelService, new IncomeCategoryViewModelService(bffRepository.IncomeCategoryRepository, orm));
+            CategoryBaseViewModelService = new CategoryBaseViewModelService(CategoryViewModelService, IncomeCategoryViewModelService);
 
             PayeeViewModelService = new PayeeViewModelService(bffRepository.PayeeRepository, orm);
             AllPayeeViewModels = PayeeViewModelService.All;

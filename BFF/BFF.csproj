@@ -237,6 +237,7 @@
     <Compile Include="DB\Dapper\ConnectionHelper.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\AccountRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\BudgetEntryRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\CategoryBaseRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\CategoryRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\IncomeCategoryRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\IncomeRepository.cs" />
@@ -314,7 +315,9 @@
     <Compile Include="MVVM\Rules.cs" />
     <Compile Include="MVVM\Services\AccountViewModelService.cs" />
     <Compile Include="MVVM\Services\BudgetEntyViewModelService.cs" />
+    <Compile Include="MVVM\Services\CategoryBaseViewModelService.cs" />
     <Compile Include="MVVM\Services\CategoryViewModelService.cs" />
+    <Compile Include="MVVM\Services\IncomeCategoryViewModelService.cs" />
     <Compile Include="MVVM\Services\ParentIncomeViewModelService.cs" />
     <Compile Include="MVVM\Services\ParentTransactionViewModelService.cs" />
     <Compile Include="MVVM\Services\ModelToViewModelServiceBase.cs" />

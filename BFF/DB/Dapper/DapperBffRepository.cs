@@ -12,7 +12,7 @@ namespace BFF.DB.Dapper
             : base(provideConnection)
         {
             IAccount AccountFetcher(long id, DbConnection connection) => AccountRepository.Find(id, connection);
-            ICategoryBase CategoryBaseFetcher(long? id, DbConnection connection) => id != null ? CategoryRepository.Find((long)id, connection) : null;
+            ICategoryBase CategoryBaseFetcher(long? id, DbConnection connection) => id != null ? CategoryBaseRepository.Find((long)id, connection) : null;
             ICategory CategoryFetcher(long? id, DbConnection connection) => id != null ? CategoryRepository.Find((long)id, connection) : null;
             IPayee PayeeFetcher(long id, DbConnection connection) => PayeeRepository.Find(id, connection);
             IEnumerable<ISubTransaction> SubTransactionsFetcher(long parentId, DbConnection connection) => SubTransactionRepository.GetChildrenOf(parentId, connection);
@@ -22,6 +22,7 @@ namespace BFF.DB.Dapper
             BudgetEntryRepository = new BudgetEntryRepository(provideConnection, CategoryFetcher);
             CategoryRepository = new CategoryRepository(provideConnection);
             IncomeCategoryRepository = new IncomeCategoryRepository(provideConnection);
+            CategoryBaseRepository = new CategoryBaseRepository(CategoryRepository, IncomeCategoryRepository);
             DbSettingRepository = new DbSettingRepository(provideConnection);
             IncomeRepository = new IncomeRepository(provideConnection, AccountFetcher, CategoryBaseFetcher, PayeeFetcher);
             ParentIncomeRepository = new ParentIncomeRepository(provideConnection, AccountFetcher, PayeeFetcher, SubIncomesFetcher);
@@ -38,7 +39,7 @@ namespace BFF.DB.Dapper
                                               ParentTransactionRepository,
                                               ParentIncomeRepository,
                                               AccountFetcher, 
-                                              CategoryFetcher, 
+                                              CategoryBaseFetcher, 
                                               PayeeFetcher, 
                                               SubTransactionsFetcher,
                                               SubIncomesFetcher);
@@ -50,6 +51,7 @@ namespace BFF.DB.Dapper
         public sealed override IBudgetEntryRepository BudgetEntryRepository { get; }
         public sealed override ICategoryRepository CategoryRepository { get; }
         public sealed override IIncomeCategoryRepository IncomeCategoryRepository { get; }
+        public override ICategoryBaseRepository CategoryBaseRepository { get; }
         public sealed override IDbSettingRepository DbSettingRepository { get; }
         public sealed override IIncomeRepository IncomeRepository { get; }
         public sealed override IParentIncomeRepository ParentIncomeRepository { get; }
