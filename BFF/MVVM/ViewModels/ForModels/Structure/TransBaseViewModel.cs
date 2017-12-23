@@ -9,6 +9,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
     public interface ITransBaseViewModel : ITransLikeViewModel
     {
+        IReactiveProperty<string> CheckNumber { get; }
+
         /// <summary>
         /// This timestamp marks the time point, when the TIT happened.
         /// </summary>
@@ -28,6 +30,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class TransBaseViewModel : TransLikeViewModel, ITransBaseViewModel
     {
+        public IReactiveProperty<string> CheckNumber { get; }
+
         /// <summary>
         /// This timestamp marks the time point, when the TIT happened.
         /// </summary>
@@ -51,6 +55,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="transBase">The model.</param>
         protected TransBaseViewModel(IBffOrm orm, ITransBase transBase) : base(orm, transBase)
         {
+            CheckNumber = transBase.ToReactivePropertyAsSynchronized(tb => tb.CheckNumber).AddTo(CompositeDisposable);
+
             Date = transBase.ToReactivePropertyAsSynchronized(tb => tb.Date).AddTo(CompositeDisposable);
 
             Date.Skip(1).Subscribe(_ => NotifyRelevantAccountsToRefreshTits()).AddTo(CompositeDisposable);

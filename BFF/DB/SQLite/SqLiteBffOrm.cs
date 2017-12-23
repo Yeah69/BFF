@@ -75,10 +75,10 @@ namespace BFF.DB.SQLite
         }
 
         public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
-            => _bffRepository.TitRepository.GetPage(offset, pageSize, specifyingObject as IAccount) as IEnumerable<T>;
+            => _bffRepository.TransViewRepository.GetPage(offset, pageSize, specifyingObject as IAccount) as IEnumerable<T>;
 
         public int GetCount<T>(object specifyingObject = null) => 
-            _bffRepository.TitRepository.GetCount(specifyingObject as IAccount);
+            _bffRepository.TransViewRepository.GetCount(specifyingObject as IAccount);
 
         public void Dispose()
         {

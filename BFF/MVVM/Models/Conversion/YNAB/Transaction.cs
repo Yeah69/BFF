@@ -12,7 +12,7 @@ namespace BFF.MVVM.Models.Conversion.YNAB
 
         public Color Flag { get; set; }
 
-        public int CheckNumber { get; set; }
+        public string CheckNumber { get; set; }
 
         public DateTime Date { get; set; }
 
@@ -83,14 +83,12 @@ namespace BFF.MVVM.Models.Conversion.YNAB
                     tempColor = Colors.Transparent;
                     break;
             }
-
-            if (!int.TryParse(entries[2], out int temp))
-                temp = -1;
+            
             Transaction ret = new Transaction
             {
                 Account = entries[0].Trim('"'),
                 Flag = tempColor,
-                CheckNumber = temp,
+                CheckNumber = entries[2],
                 Date = DateTime.ParseExact(entries[3], "dd.MM.yyyy", CultureInfo.InvariantCulture),
                 Payee = entries[4].Trim('"'),
                 Category = entries[5].Trim('"'),

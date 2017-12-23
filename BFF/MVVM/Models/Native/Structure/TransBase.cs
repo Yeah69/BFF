@@ -15,6 +15,8 @@ namespace BFF.MVVM.Models.Native.Structure
 
     public interface ITransBase : ITransLike
     {
+        string CheckNumber { get; set; }
+
         /// <summary>
         /// Marks when the Tit happened
         /// </summary>
@@ -33,6 +35,19 @@ namespace BFF.MVVM.Models.Native.Structure
     {
         private DateTime _date;
         private bool _cleared;
+        private string _checkNumber;
+
+        public string CheckNumber
+        {
+            get => _checkNumber;
+            set
+            {
+                if (_checkNumber == value) return;
+                _checkNumber = value;
+                Update();
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Marks when the Tit happened
@@ -72,11 +87,13 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         protected TransBase(IRepository<T> repository, 
-                          DateTime date, 
-                          long id, 
-                          string memo, 
-                          bool? cleared) : base(repository, id, memo)
+                            string checkNumber,
+                            DateTime date, 
+                            long id, 
+                            string memo, 
+                            bool? cleared) : base(repository, id, memo)
         {
+            _checkNumber = checkNumber;
             _date = date;
             _cleared = cleared ?? _cleared;
         }

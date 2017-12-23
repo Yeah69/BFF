@@ -151,6 +151,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check Number.
+        /// </summary>
+        public static string AccountView_Header_CheckNumber {
+            get {
+                return ResourceManager.GetString("AccountView_Header_CheckNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cleared.
         /// </summary>
         public static string AccountView_Header_Cleared {

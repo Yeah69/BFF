@@ -244,7 +244,7 @@
     <Compile Include="DB\Dapper\ModelRepositories\SubTransactionRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\DbSettingRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\PayeeRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\TitRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\TransViewRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\TransactionRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\TransferRepository.cs" />
     <Compile Include="DB\Dapper\ObservableRepositoryBase.cs" />
@@ -267,7 +267,7 @@
     <Compile Include="DB\PersistenceModels\ParentTransaction.cs" />
     <Compile Include="DB\PersistenceModels\Payee.cs" />
     <Compile Include="DB\PersistenceModels\SubTransaction.cs" />
-    <Compile Include="DB\PersistenceModels\TheTit.cs" />
+    <Compile Include="DB\PersistenceModels\Trans.cs" />
     <Compile Include="DB\PersistenceModels\Transaction.cs" />
     <Compile Include="DB\PersistenceModels\Transfer.cs" />
     <Compile Include="DB\SQLite\SqLiteBffOrm.cs" />

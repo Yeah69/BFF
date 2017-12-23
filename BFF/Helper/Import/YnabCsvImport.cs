@@ -389,6 +389,7 @@ namespace BFF.Helper.Import
         {
             Persistence.Transaction ret = new Persistence.Transaction
             {
+                CheckNumber = ynabTransaction.CheckNumber,
                 Date = ynabTransaction.Date,
                 Memo = ynabTransaction.Memo,
                 Sum = ynabTransaction.Inflow - ynabTransaction.Outflow,
@@ -409,6 +410,7 @@ namespace BFF.Helper.Import
             long tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;
             Persistence.Transfer ret = new Persistence.Transfer
             {
+                CheckNumber = ynabTransaction.CheckNumber,
                 Date = ynabTransaction.Date,
                 Memo = ynabTransaction.Memo,
                 Sum = Math.Abs(tempSum),
@@ -439,6 +441,7 @@ namespace BFF.Helper.Import
         {
             Persistence.ParentTransaction ret = new Persistence.ParentTransaction
             {
+                CheckNumber = ynabTransaction.CheckNumber,
                 Date = ynabTransaction.Date,
                 Memo = parentMemo,
                 Cleared = ynabTransaction.Cleared ? 1 : 0

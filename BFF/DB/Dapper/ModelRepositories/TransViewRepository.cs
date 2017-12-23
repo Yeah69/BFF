@@ -6,28 +6,28 @@ using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateTitTable : CreateTableBase
+    public class CreateTransViewTable : CreateTableBase
     {
-        public CreateTitTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected string ViewName => "The Tit";
+        public static readonly string ViewName = "TransView";
+
+        public CreateTransViewTable(IProvideConnection provideConnection) : base(provideConnection) { }
         
         protected override string CreateTableStatement =>
             $@"CREATE VIEW IF NOT EXISTS [{ViewName}] AS
-            SELECT {nameof(Transaction.Id)}, {nameof(Transaction.AccountId)}, {nameof(Transaction.PayeeId)}, {nameof(Transaction.CategoryId)}, {nameof(Transaction.Date)}, {nameof(Transaction.Memo)}, {nameof(Transaction.Sum)}, {nameof(Transaction.Cleared)}, '{Domain.Structure.TransType.Transaction}' AS Type FROM [{nameof(Transaction)}s]
+            SELECT {nameof(Transaction.Id)}, {nameof(Transaction.AccountId)}, {nameof(Transaction.CheckNumber)}, {nameof(Transaction.PayeeId)}, {nameof(Transaction.CategoryId)}, {nameof(Transaction.Date)}, {nameof(Transaction.Memo)}, {nameof(Transaction.Sum)}, {nameof(Transaction.Cleared)}, '{Domain.Structure.TransType.Transaction}' AS Type FROM [{nameof(Transaction)}s]
             UNION ALL
-            SELECT {nameof(ParentTransaction.Id)}, {nameof(ParentTransaction.AccountId)}, {nameof(ParentTransaction.PayeeId)}, -69 AS CategoryFiller, {nameof(ParentTransaction.Date)}, {nameof(ParentTransaction.Memo)}, -69 AS SumFiller, {nameof(ParentTransaction.Cleared)}, '{Domain.Structure.TransType.ParentTransaction}' AS Type FROM [{nameof(ParentTransaction)}s]
+            SELECT {nameof(ParentTransaction.Id)}, {nameof(ParentTransaction.AccountId)}, {nameof(ParentTransaction.CheckNumber)}, {nameof(ParentTransaction.PayeeId)}, -69 AS CategoryFiller, {nameof(ParentTransaction.Date)}, {nameof(ParentTransaction.Memo)}, -69 AS SumFiller, {nameof(ParentTransaction.Cleared)}, '{Domain.Structure.TransType.ParentTransaction}' AS Type FROM [{nameof(ParentTransaction)}s]
             UNION ALL
-            SELECT {nameof(Transfer.Id)}, -69 AS AccountFiller, {nameof(Transfer.FromAccountId)}, {nameof(Transfer.ToAccountId)}, {nameof(Transfer.Date)}, {nameof(Transfer.Memo)}, {nameof(Transfer.Sum)}, {nameof(Transfer.Cleared)}, '{Domain.Structure.TransType.Transfer}' AS Type FROM [{nameof(Transfer)}s];";
+            SELECT {nameof(Transfer.Id)}, -69 AS AccountFiller, {nameof(Transfer.CheckNumber)}, {nameof(Transfer.FromAccountId)}, {nameof(Transfer.ToAccountId)}, {nameof(Transfer.Date)}, {nameof(Transfer.Memo)}, {nameof(Transfer.Sum)}, {nameof(Transfer.Cleared)}, '{Domain.Structure.TransType.Transfer}' AS Type FROM [{nameof(Transfer)}s];";
         
     }
 
-    public interface ITitRepository : IViewRepositoryBase<Domain.Structure.ITransBase, MVVM.Models.Native.IAccount>
+    public interface ITransViewRepository : IViewRepositoryBase<Domain.Structure.ITransBase, MVVM.Models.Native.IAccount>
     {
     }
 
 
-    public sealed class TitRepository : ViewRepositoryBase<Domain.Structure.ITransBase, TheTit, MVVM.Models.Native.IAccount>, ITitRepository
+    public sealed class TransViewRepository : ViewRepositoryBase<Domain.Structure.ITransBase, Trans, MVVM.Models.Native.IAccount>, ITransViewRepository
     {
 
         private readonly IRepository<Domain.ITransaction> _transactionRepository;
@@ -38,7 +38,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
         private readonly Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> _subTransactionsFetcher;
 
-        public TitRepository(
+        public TransViewRepository(
             IProvideConnection provideConnection, 
             IRepository<Domain.ITransaction> transactionRepository, 
             IRepository<Domain.ITransfer> transferRepository, 
@@ -58,9 +58,9 @@ namespace BFF.DB.Dapper.ModelRepositories
             _subTransactionsFetcher = subTransactionsFetcher;
         }
 
-        protected override Converter<(TheTit, DbConnection), Domain.Structure.ITransBase> ConvertToDomain => tuple =>
+        protected override Converter<(Trans, DbConnection), Domain.Structure.ITransBase> ConvertToDomain => tuple =>
         {
-            (TheTit theTit, DbConnection connection) = tuple;
+            (Trans theTit, DbConnection connection) = tuple;
             Enum.TryParse(theTit.Type, true, out Domain.Structure.TransType type);
             Domain.Structure.ITransBase ret;
             switch(type)
@@ -69,6 +69,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                     ret = new Domain.Transaction(
                         _transactionRepository, 
                         theTit.Id,
+                        theTit.CheckNumber,
                         theTit.Date,
                         _accountFetcher(theTit.AccountId, connection),
                         _payeeFetcher(theTit.PayeeId, connection),
@@ -81,6 +82,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                     ret = new Domain.Transfer(
                         _transferRepository,
                         theTit.Id,
+                        theTit.CheckNumber,
                         theTit.Date,
                         _accountFetcher(theTit.PayeeId, connection),
                         _accountFetcher(theTit.CategoryId ?? -1, connection), // This CategoryId should never be a null, because it comes from a transfer
@@ -93,6 +95,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                         _parentTransactionRepository,
                         _subTransactionsFetcher(theTit.Id, connection), 
                         theTit.Id,
+                        theTit.CheckNumber,
                         theTit.Date,
                         _accountFetcher(theTit.AccountId, connection),
                         _payeeFetcher(theTit.PayeeId, connection),
@@ -100,7 +103,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                         theTit.Cleared == 1L);
                     break;
                 default:
-                    ret = new Domain.Transaction(_transactionRepository, -1L, DateTime.Today)
+                    ret = new Domain.Transaction(_transactionRepository, -1L, "", DateTime.Today)
                         {Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR"};
                     break;
             }
@@ -108,14 +111,14 @@ namespace BFF.DB.Dapper.ModelRepositories
             return ret;
         };
 
-        protected override string GetOrderingPageSuffix(Domain.IAccount specifyingObject) => $"ORDER BY {nameof(TheTit.Date)}";
+        protected override string GetOrderingPageSuffix(Domain.IAccount specifyingObject) => $"ORDER BY {nameof(Trans.Date)}";
         
-        protected override string ViewName => "The Tit";
+        protected override string ViewName => CreateTransViewTable.ViewName;
         
         private string CommonSuffix(Domain.IAccount specifyingObject)
         {
             if(specifyingObject != null && !(specifyingObject is Domain.ISummaryAccount))
-                return $"WHERE {nameof(TheTit.AccountId)} = {specifyingObject.Id} OR {nameof(TheTit.AccountId)} = -69 AND ({nameof(TheTit.PayeeId)} = {specifyingObject.Id} OR {nameof(TheTit.CategoryId)} = {specifyingObject.Id})";
+                return $"WHERE {nameof(Trans.AccountId)} = {specifyingObject.Id} OR {nameof(Trans.AccountId)} = -69 AND ({nameof(Trans.PayeeId)} = {specifyingObject.Id} OR {nameof(Trans.CategoryId)} = {specifyingObject.Id})";
 
             return "";
         }

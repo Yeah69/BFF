@@ -12,6 +12,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         protected override string CreateTableStatement =>
             $@"CREATE TABLE [{nameof(Transaction)}s](
             {nameof(Transaction.Id)} INTEGER PRIMARY KEY,
+            {nameof(Transaction.CheckNumber)} TEXT,
             {nameof(Transaction.AccountId)} INTEGER,
             {nameof(Transaction.PayeeId)} INTEGER,
             {nameof(Transaction.CategoryId)} INTEGER,
@@ -47,13 +48,14 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
 
         public override Domain.ITransaction Create() =>
-            new Domain.Transaction(this, -1L, DateTime.Now, null, null, null, "", 0L, false);
+            new Domain.Transaction(this, -1L, "", DateTime.Now, null, null, null, "", 0L, false);
         
         protected override Converter<Domain.ITransaction, Transaction> ConvertToPersistence => domainTransaction => 
             new Transaction
             {
                 Id = domainTransaction.Id,
                 AccountId = domainTransaction.Account.Id,
+                CheckNumber = domainTransaction.CheckNumber,
                 CategoryId = domainTransaction.Category?.Id,
                 PayeeId = domainTransaction.Payee.Id,
                 Date = domainTransaction.Date,
@@ -68,6 +70,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             return new Domain.Transaction(
                 this,
                 persistenceTransaction.Id,
+                persistenceTransaction.CheckNumber,
                 persistenceTransaction.Date,
                 _accountFetcher(persistenceTransaction.AccountId, connection),
                 _payeeFetcher(persistenceTransaction.PayeeId, connection),

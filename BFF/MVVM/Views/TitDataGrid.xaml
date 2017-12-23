@@ -4,7 +4,6 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
-             xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -234,6 +233,33 @@
                             <DatePicker VerticalContentAlignment="Center"
                                         SelectedDate="{Binding Date.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         SelectedDateFormat="{Binding DataContext.IsDateLong, ElementName=LayoutRoot, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
+                    </ContentControl.Resources>
+                </ContentControl>
+            </DataTemplate>
+            <!--  CheckNumber  -->
+            <DataTemplate x:Key="CheckNumberColumnTemplate">
+                <ContentControl Content="{Binding}"
+                                Style="{StaticResource CellContent}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
+                            <TextBlock Style="{StaticResource CellTextBlock}"
+                                       Text="{Binding CheckNumber.Value}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
+                    </ContentControl.Resources>
+                </ContentControl>
+            </DataTemplate>
+            <DataTemplate x:Key="CheckNumberEditingColumnTemplate">
+                <ContentControl Content="{Binding}"
+                                Style="{StaticResource CellContent}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
+                            <TextBox VerticalAlignment="Stretch"
+                                     VerticalContentAlignment="Center"
+                                     Text="{Binding CheckNumber.Value, UpdateSourceTrigger=LostFocus}"
+                                     TextWrapping="NoWrap" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
@@ -915,7 +941,7 @@
                 <!--  Date  -->
                 <DataGridTemplateColumn x:Name="DateColumn"
                                         Header="{lex:Loc AccountView_Header_Date}"
-                                        SortMemberPath="Date">
+                                        SortMemberPath="Date.Value">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}"
@@ -926,6 +952,23 @@
                         <DataTemplate>
                             <ContentControl Content="{Binding}"
                                             ContentTemplate="{StaticResource DateEditingColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <!--  CheckNumber  -->
+                <DataGridTemplateColumn x:Name="CheckNumberColumn"
+                                        Header="{lex:Loc AccountView_Header_CheckNumber}"
+                                        SortMemberPath="CheckNumber.Value">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}"
+                                            ContentTemplate="{StaticResource CheckNumberColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}"
+                                            ContentTemplate="{StaticResource CheckNumberEditingColumnTemplate}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -1025,6 +1068,8 @@
                                 <Binding Path="Width"
                                          Source="{x:Reference DateColumn}" />
                                 <Binding Path="Width"
+                                         Source="{x:Reference CheckNumberColumn}" />
+                                <Binding Path="Width"
                                          Source="{x:Reference PayeeColumn}" />
                             </MultiBinding>
                         </ContentControl.Margin>
@@ -1094,6 +1139,15 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    <!--  CheckNumber  -->
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CheckNumberColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}"
+                                                ContentTemplate="{StaticResource CheckNumberEditingColumnTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <!--  Payee  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference PayeeColumn}, Mode=TwoWay}">
                         <DataGridTemplateColumn.CellTemplate>
@@ -1154,6 +1208,8 @@
                                              Source="{x:Reference AccountColumn}" />
                                     <Binding Path="Width"
                                              Source="{x:Reference DateColumn}" />
+                                    <Binding Path="Width"
+                                             Source="{x:Reference CheckNumberColumn}" />
                                     <Binding Path="Width"
                                              Source="{x:Reference PayeeColumn}" />
                                 </MultiBinding>

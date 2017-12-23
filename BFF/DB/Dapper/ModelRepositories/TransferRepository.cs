@@ -12,6 +12,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         protected override string CreateTableStatement =>
             $@"CREATE TABLE [{nameof(Transfer)}s](
             {nameof(Transfer.Id)} INTEGER PRIMARY KEY,
+            {nameof(Transfer.CheckNumber)} TEXT,
             {nameof(Transfer.FromAccountId)} INTEGER,
             {nameof(Transfer.ToAccountId)} INTEGER,
             {nameof(Transfer.Date)} DATE,
@@ -39,12 +40,13 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
 
         public override Domain.ITransfer Create() =>
-            new Domain.Transfer(this, -1L, DateTime.MinValue, null, null, "", 0L);
+            new Domain.Transfer(this, -1L, "", DateTime.MinValue, null, null, "", 0L);
         
         protected override Converter<Domain.ITransfer, Transfer> ConvertToPersistence => domainTransfer => 
             new Transfer
             {
                 Id = domainTransfer.Id,
+                CheckNumber = domainTransfer.CheckNumber,
                 FromAccountId = domainTransfer.FromAccount.Id,
                 ToAccountId = domainTransfer.ToAccount.Id,
                 Date = domainTransfer.Date,
@@ -59,6 +61,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             return new Domain.Transfer(
                 this,
                 persistenceTransfer.Id,
+                persistenceTransfer.CheckNumber,
                 persistenceTransfer.Date,
                 _accountFetcher(persistenceTransfer.FromAccountId, connection),
                 _accountFetcher(persistenceTransfer.ToAccountId, connection),

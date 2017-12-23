@@ -32,7 +32,7 @@ namespace BFF.MVVM.Models.Native.Structure
             get => _account;
             set
             {
-                if(_account == value) return;
+                if (_account == value) return;
                 _account = value;
                 Update();
                 OnPropertyChanged();
@@ -47,7 +47,7 @@ namespace BFF.MVVM.Models.Native.Structure
             get => _payee;
             set
             {
-                if(_payee == value) return;
+                if (_payee == value) return;
                 _payee = value;
                 Update();
                 OnPropertyChanged();
@@ -62,14 +62,16 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="payee">To whom was payed or who payed</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TransactionBase(IRepository<T> repository,
-                               long id,
-                               DateTime date,
-                               IAccount account = null, 
-                               IPayee payee = null, 
-                               string memo = null, 
-                               bool? cleared = null)
-            : base(repository, date, id, memo, cleared)
+        protected TransactionBase(
+            IRepository<T> repository,
+            long id,
+            string checkNumber,
+            DateTime date,
+            IAccount account = null,
+            IPayee payee = null,
+            string memo = null,
+            bool? cleared = null)
+            : base(repository, checkNumber, date, id, memo, cleared)
         {
             _account = account;
             _payee = payee;

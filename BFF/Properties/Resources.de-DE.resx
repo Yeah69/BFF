@@ -147,6 +147,9 @@
   <data name="AccountView_Header_Category" xml:space="preserve">
     <value>Kategorie</value>
   </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Schecknummer</value>
+  </data>
   <data name="AccountView_Header_Cleared" xml:space="preserve">
     <value>Erledigt</value>
   </data>

@@ -36,7 +36,7 @@ namespace BFF.DB.Dapper
             CreateSubTransactionTable = new CreateSubTransactionTable(ProvideConnection);
             CreateTransactionTable = new CreateTransactionTable(ProvideConnection);
             CreateTransferTable = new CreateTransferTable(ProvideConnection);
-            CreateTitTable = new CreateTitTable(ProvideConnection);
+            CreateTitTable = new CreateTransViewTable(ProvideConnection);
         }
     }
 }

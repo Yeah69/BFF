@@ -28,7 +28,7 @@ namespace BFF.DB.Dapper
             SubTransactionRepository = new SubTransactionRepository(provideConnection, CategoryBaseFetcher);
             TransactionRepository = new TransactionRepository(provideConnection, AccountFetcher, CategoryBaseFetcher, PayeeFetcher);
             TransferRepository = new TransferRepository(provideConnection, AccountFetcher);
-            TitRepository = new TitRepository(provideConnection,
+            TransViewRepository = new TransViewRepository(provideConnection,
                                               TransactionRepository, 
                                               TransferRepository,
                                               ParentTransactionRepository,
@@ -51,7 +51,7 @@ namespace BFF.DB.Dapper
         public sealed override ISubTransactionRepository SubTransactionRepository { get; }
         public sealed override ITransactionRepository TransactionRepository { get; }
         public sealed override ITransferRepository TransferRepository { get; }
-        public sealed override ITitRepository TitRepository { get; }
+        public sealed override ITransViewRepository TransViewRepository { get; }
         public sealed override IBudgetMonthRepository BudgetMonthRepository { get; }
 
         protected override void Dispose(bool disposing)
@@ -67,7 +67,7 @@ namespace BFF.DB.Dapper
                 SubTransactionRepository?.Dispose();
                 TransactionRepository?.Dispose();
                 TransferRepository?.Dispose();
-                TitRepository?.Dispose();
+                TransViewRepository?.Dispose();
                 BudgetMonthRepository?.Dispose();
             }
             base.Dispose(disposing);

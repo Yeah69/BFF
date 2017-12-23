@@ -14,6 +14,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         protected override string CreateTableStatement =>
             $@"CREATE TABLE [{nameof(ParentTransaction)}s](
             {nameof(ParentTransaction.Id)} INTEGER PRIMARY KEY,
+            {nameof(ParentTransaction.CheckNumber)} TEXT,
             {nameof(ParentTransaction.AccountId)} INTEGER,
             {nameof(ParentTransaction.PayeeId)} INTEGER,
             {nameof(ParentTransaction.Date)} DATE,
@@ -46,13 +47,14 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
 
         public override Domain.IParentTransaction Create() =>
-            new Domain.ParentTransaction(this, Enumerable.Empty<Domain.SubTransaction>(), -1L, DateTime.MinValue, null, null, "", false);
+            new Domain.ParentTransaction(this, Enumerable.Empty<Domain.SubTransaction>(), -1L, "", DateTime.MinValue, null, null, "", false);
         
         protected override Converter<Domain.IParentTransaction, ParentTransaction> ConvertToPersistence => domainParentTransaction => 
             new ParentTransaction
             {
                 Id = domainParentTransaction.Id,
                 AccountId = domainParentTransaction.Account.Id,
+                CheckNumber = domainParentTransaction.CheckNumber,
                 PayeeId = domainParentTransaction.Payee.Id,
                 Date = domainParentTransaction.Date,
                 Memo = domainParentTransaction.Memo,
@@ -67,6 +69,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                 this,
                 _subTransactionsFetcher(persistenceParentTransaction.Id, connection),
                 persistenceParentTransaction.Id,
+                persistenceParentTransaction.CheckNumber,
                 persistenceParentTransaction.Date,
                 _accountFetcher(persistenceParentTransaction.AccountId, connection),
                 _payeeFetcher(persistenceParentTransaction.PayeeId, connection),
