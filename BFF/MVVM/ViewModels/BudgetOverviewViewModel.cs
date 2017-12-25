@@ -85,8 +85,6 @@ namespace BFF.MVVM.ViewModels
             DecreaseMonthStartIndex.Subscribe(_ => CurrentMonthStartIndex.Value = CurrentMonthStartIndex.Value - 1).AddTo(_compositeDisposable);
             IsOpen = new ReactiveProperty<bool>(false, ReactivePropertyMode.DistinctUntilChanged).AddTo(_compositeDisposable);
             IsOpen.Where(b => b).Subscribe(b => Refresh()).AddTo(_compositeDisposable);
-
-            IsOpen.Value = true;
             
             Messenger.Default.Register<CultureMessage>(this, message =>
             {

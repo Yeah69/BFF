@@ -263,16 +263,6 @@
                            Text="{Binding}" />
             </DataTemplate>
         </hm:HamburgerMenu.Resources>
-        <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Budget}"
-                              HeaderTemplate="{StaticResource HeaderTemplate}"
-                              IsSelected="{Binding BudgetOverviewViewModel.IsOpen.Value}">
-            <views:BudgetOverviewView DataContext="{Binding BudgetOverviewViewModel}" />
-            <hm:HamburgerMenuItem.Icon>
-                <Viewbox Margin="10">
-                    <iconPacks:PackIconFontAwesome Kind="Money" />
-                </Viewbox>
-            </hm:HamburgerMenuItem.Icon>
-        </hm:HamburgerMenuItem>
         <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Accounts}"
                               HeaderTemplate="{StaticResource HeaderTemplate}"
                               IsSelected="{Binding ContentViewModel.IsOpen.Value}">
@@ -281,6 +271,16 @@
             <hm:HamburgerMenuItem.Icon>
                 <Viewbox Margin="10">
                     <iconPacks:PackIconOcticons Kind="CreditCard" />
+                </Viewbox>
+            </hm:HamburgerMenuItem.Icon>
+        </hm:HamburgerMenuItem>
+        <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Budget}"
+                              HeaderTemplate="{StaticResource HeaderTemplate}"
+                              IsSelected="{Binding BudgetOverviewViewModel.IsOpen.Value}">
+            <views:BudgetOverviewView DataContext="{Binding BudgetOverviewViewModel}" />
+            <hm:HamburgerMenuItem.Icon>
+                <Viewbox Margin="10">
+                    <iconPacks:PackIconFontAwesome Kind="Money" />
                 </Viewbox>
             </hm:HamburgerMenuItem.Icon>
         </hm:HamburgerMenuItem>
