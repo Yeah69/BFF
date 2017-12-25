@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Concurrent;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
@@ -15,18 +16,21 @@ namespace BFF.MVVM.Services
         where TDomain : class, IDataModel
         where TViewModel : class, IDataModelViewModel
     {
-        private readonly IDictionary<TDomain, TViewModel> _modelToViewModel
-            = new Dictionary<TDomain, TViewModel>();
+        /// <summary>
+        /// Before removing the Lazy abstraction read https://andrewlock.net/making-getoradd-on-concurrentdictionary-thread-safe-using-lazy/
+        /// In cases were two ViewModels are generated, the other wouldn't be garbage collected because it would subscribe to the given model.
+        /// The Lazy objects prevent from generating one unnecessary ViewModel. Hence, eliminates this problem.
+        /// </summary>
+        private readonly ConcurrentDictionary<TDomain, Lazy<TViewModel>> _modelToViewModel
+            = new ConcurrentDictionary<TDomain, Lazy<TViewModel>>();
 
         protected abstract TViewModel Create(TDomain model);
 
         public TViewModel GetViewModel(TDomain model)
         {
             if (model == null) return null;
-            if (!_modelToViewModel.ContainsKey(model))
-                _modelToViewModel[model] = Create(model);
-
-            return _modelToViewModel[model];
+            
+            return _modelToViewModel.GetOrAdd(model, new Lazy<TViewModel>(() => Create(model))).Value;
         }
     }
 }
