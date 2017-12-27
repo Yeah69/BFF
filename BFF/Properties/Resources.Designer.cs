@@ -223,6 +223,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Symbol.
+        /// </summary>
+        public static string AccountView_Header_SymbolAbbr_Tooltip {
+            get {
+                return ResourceManager.GetString("AccountView_Header_SymbolAbbr_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Starting Balance:.
         /// </summary>
         public static string AccountView_StartingBalance {

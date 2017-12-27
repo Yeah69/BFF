@@ -118,55 +118,55 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value>All Accounts</value>
+    <value>Alle Konten</value>
   </data>
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
-    <value>Create</value>
+    <value>Erstellen</value>
   </data>
   <data name="AccountTabsView_NewAccount_Name" xml:space="preserve">
-    <value>Account Name:</value>
+    <value>Kontoname:</value>
   </data>
   <data name="AccountTabsView_NewAccount_StartingBalance" xml:space="preserve">
-    <value>Starting Balance:</value>
+    <value>Anfangskontostand:</value>
   </data>
   <data name="AccountTabsView_NewAccount_StartingDate" xml:space="preserve">
     <value>Starting Date:</value>
   </data>
   <data name="AccountView_Balance" xml:space="preserve">
-    <value>Balance:</value>
+    <value>Kontostand:</value>
   </data>
   <data name="AccountView_Column_Transfer" xml:space="preserve">
     <value>Transfer</value>
   </data>
   <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Löschen</value>
   </data>
   <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>Account</value>
+    <value>Konto</value>
   </data>
   <data name="AccountView_Header_Category" xml:space="preserve">
-    <value>Category</value>
+    <value>Kategorie</value>
   </data>
   <data name="AccountView_Header_CheckNumber" xml:space="preserve">
     <value>Check Number</value>
   </data>
   <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>Cleared</value>
+    <value>Erledigt</value>
   </data>
   <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>Date</value>
+    <value>Datum</value>
   </data>
   <data name="AccountView_Header_Flag" xml:space="preserve">
     <value>F</value>
-  <comment>Abbreviation of Flag or Markierung (German)</comment></data>
+  </data>
   <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value>Memo</value>
+    <value>Notiz</value>
   </data>
   <data name="AccountView_Header_Payee" xml:space="preserve">
-    <value>Payee</value>
+    <value>Zahlungsempfänger</value>
   </data>
   <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>Sum</value>
+    <value>Betrag</value>
   </data>
   <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
     <value>S</value>
@@ -175,19 +175,19 @@
     <value>Symbol</value>
   </data>
   <data name="AccountView_StartingBalance" xml:space="preserve">
-    <value>Starting Balance:</value>
+    <value>Anfangskontostand:</value>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>Add to the table</value>
+    <value>In die Tabelle aufnehmen</value>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>New splitted Transaction</value>
+    <value>Neue aufgeteilte Ausgabe</value>
   </data>
   <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>New Transaction</value>
+    <value>Neue Ausgabe</value>
   </data>
   <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>New Transfer</value>
+    <value>Neue Umbuchung</value>
   </data>
   <data name="Budgeting_Available" xml:space="preserve">
     <value>Available</value>
@@ -262,7 +262,7 @@
     <value>The name of a new payee isn't allowed to be empty or an already existing one.</value>
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
-    <value>The file "{0}" could not be found.</value>
+    <value>Die Datei "{0}" konnte nicht gefunden werden.</value>
   </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
     <value>Accounts</value>
@@ -271,73 +271,73 @@
     <value>Budget</value>
   </data>
   <data name="ImportView_Browse" xml:space="preserve">
-    <value>Browse</value>
+    <value>Durchsuchen</value>
   </data>
   <data name="ImportView_Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Abbrechen</value>
   </data>
   <data name="ImportView_Import" xml:space="preserve">
-    <value>Import</value>
+    <value>Importieren</value>
   </data>
   <data name="ImportView_SaveFile" xml:space="preserve">
-    <value>Import and save to this path:</value>
+    <value>Importiere und speichere unter folgendem Pfad:</value>
   </data>
   <data name="ImportView_YNAB4" xml:space="preserve">
-    <value>Import a YNAB4 CSV-file</value>
+    <value>Import von YNAB4 CSV-Dateien</value>
   </data>
   <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>Path to the YNAB Budget CSV:</value>
+    <value>Pfad zu der YNAB-Budget-CSV:</value>
   </data>
   <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>Path to the YNAB Transaction CSV:</value>
+    <value>Pfad zu der YNAB-Transaktions-CSV:</value>
   </data>
   <data name="MainWindow_About" xml:space="preserve">
-    <value>About</value>
+    <value>Über</value>
   </data>
   <data name="MainWindow_File" xml:space="preserve">
-    <value>File</value>
+    <value>Datei</value>
   </data>
   <data name="MainWindow_File_Import" xml:space="preserve">
     <value>Import</value>
   </data>
   <data name="MainWindow_File_New" xml:space="preserve">
-    <value>New</value>
+    <value>Neu</value>
   </data>
   <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>Open</value>
+    <value>Öffnen</value>
   </data>
   <data name="MainWindow_Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Einstellungen</value>
   </data>
   <data name="MainWindow_Settings_Accents" xml:space="preserve">
-    <value>Accents:</value>
+    <value>Akzente:</value>
   </data>
   <data name="MainWindow_Settings_Currency" xml:space="preserve">
-    <value>Currency format:</value>
+    <value>Währungsformat:</value>
   </data>
   <data name="MainWindow_Settings_Currency_Negative" xml:space="preserve">
-    <value>Negative:</value>
+    <value>Positiv:</value>
   </data>
   <data name="MainWindow_Settings_Currency_Positive" xml:space="preserve">
-    <value>Positive:</value>
+    <value>Negativ:</value>
   </data>
   <data name="MainWindow_Settings_Date" xml:space="preserve">
-    <value>Date format:</value>
+    <value>Datumsformat:</value>
   </data>
   <data name="MainWindow_Settings_Date_Long" xml:space="preserve">
-    <value>Long:</value>
+    <value>Lang:</value>
   </data>
   <data name="MainWindow_Settings_Date_Long_Inverted" xml:space="preserve">
-    <value>:Long</value>
+    <value>:Lang</value>
   </data>
   <data name="MainWindow_Settings_Date_Short" xml:space="preserve">
-    <value>Short:</value>
+    <value>Kurz:</value>
   </data>
   <data name="MainWindow_Settings_Language" xml:space="preserve">
-    <value>Language:</value>
+    <value>Sprache:</value>
   </data>
   <data name="MainWindow_Settings_Theme" xml:space="preserve">
-    <value>Theme:</value>
+    <value>Thema:</value>
   </data>
   <data name="NameOfNewCategory" xml:space="preserve">
     <value>Name of new category</value>
@@ -352,39 +352,33 @@
     <value>Month Offset</value>
   </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value>BFF budget plan (*.sqlite)|*.sqlite</value>
+    <value>BFF Finanzplan</value>
   </data>
   <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>Create a new Budget Plan</value>
+    <value>Erstelle einen neuen Finanzplan</value>
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
-    <value>Open a Budget Plan</value>
+    <value>Öffne einen Finanzplan</value>
   </data>
   <data name="SuperiorCategory" xml:space="preserve">
     <value>Superior Category</value>
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
-    <value>This text could not be parsed as a currency!</value>
-    <comment>Validation message saying that the text is not validly formated as currency.</comment>
+    <value>Der Wert ist keine Währung!</value>
   </data>
   <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value>The value is out of range: [ {0} .. {1} ]!</value>
-    <comment>Validation message, which tells the long range as currency to the user.</comment>
+    <value>Der Wert liegt außerhalb des Gültigkeitsbereiches: [ {0} .. {1} ]!</value>
   </data>
   <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>This input field may not be empty!</value>
-    <comment>Validation message saying that the property is not allowed to be empty.</comment>
+    <value>Dieses Eingabefeld darf nicht leer bleiben!</value>
   </data>
   <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value>This file path does not exist!</value>
-    <comment>Validation message saying that file path does not exist.</comment>
+    <value>Dieser Dateipfad existiert nicht!</value>
   </data>
   <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>The directory of the save path does not exist!</value>
-    <comment>Validation message saying that directory of the save path does not exist.</comment>
+    <value>Das Verzeichnis vom Speicherpfad existiert nicht!</value>
   </data>
   <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>The file name of this save path is empty!</value>
-    <comment>Validation message saying that the file name of the save path is empty.</comment>
+    <value>Der Dateiname von diesem Speicherpfad ist leer!</value>
   </data>
 </root>

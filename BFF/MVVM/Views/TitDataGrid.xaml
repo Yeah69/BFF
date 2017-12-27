@@ -993,6 +993,11 @@
                 <!--  Symbol  -->
                 <DataGridTemplateColumn x:Name="SymbolColumn"
                                         Header="{lex:Loc AccountView_Header_SymbolAbbr}">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" ToolTip="{lex:Loc AccountView_Header_SymbolAbbr_Tooltip}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}"

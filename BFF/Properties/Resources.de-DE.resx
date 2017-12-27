@@ -171,6 +171,9 @@
   <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
     <value>S</value>
   </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Symbol</value>
+  </data>
   <data name="AccountView_StartingBalance" xml:space="preserve">
     <value>Anfangskontostand:</value>
   </data>
