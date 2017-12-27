@@ -7,7 +7,7 @@ namespace BFF.DB.SQLite
     {
         public DbConnection Connection  => new SQLiteConnection(ConnectionString) ;
         
-        private string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;";
+        private string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;Pooling=True;Max Pool Size=100;";
 
         private string DbPath { get; }
 

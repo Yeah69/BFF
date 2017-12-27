@@ -98,7 +98,8 @@ namespace BFF.MVVM.ViewModels.ForModels
                     Orm,
                     Orm.CommonPropertyProvider.AccountViewModelService,
                     Orm.CommonPropertyProvider.PayeeViewModelService,
-                    Orm.CommonPropertyProvider.CategoryBaseViewModelService));
+                    Orm.CommonPropertyProvider.CategoryBaseViewModelService,
+                    Orm.CommonPropertyProvider.FlagViewModelService));
             }).AddTo(CompositeDisposable);
 
             NewTransferCommand.Subscribe(_ =>
@@ -108,7 +109,11 @@ namespace BFF.MVVM.ViewModels.ForModels
                 transfer.Memo = "";
                 transfer.Sum = 0L;
                 transfer.Cleared = false;
-                NewTits.Add(new TransferViewModel(transfer, Orm, Orm.CommonPropertyProvider.AccountViewModelService));
+                NewTits.Add(new TransferViewModel(
+                    transfer,
+                    Orm,
+                    Orm.CommonPropertyProvider.AccountViewModelService,
+                    Orm.CommonPropertyProvider.FlagViewModelService));
             }).AddTo(CompositeDisposable);
 
             NewParentTransactionCommand.Subscribe(_ =>

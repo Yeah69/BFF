@@ -65,13 +65,14 @@ namespace BFF.MVVM.Models.Native.Structure
         protected TransactionBase(
             IRepository<T> repository,
             long id,
+            IFlag flag,
             string checkNumber,
             DateTime date,
             IAccount account = null,
             IPayee payee = null,
             string memo = null,
             bool? cleared = null)
-            : base(repository, checkNumber, date, id, memo, cleared)
+            : base(repository, flag, checkNumber, date, id, memo, cleared)
         {
             _account = account;
             _payee = payee;

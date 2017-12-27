@@ -67,13 +67,14 @@ namespace BFF.MVVM.ViewModels.ForModels
             IParentTransaction parentTransaction,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IBffOrm orm,
-            ISubTransactionViewModelService subTransactionViewModelService) 
+            ISubTransactionViewModelService subTransactionViewModelService, IFlagViewModelService flagViewModelService) 
             : base(
                 orm,
                 parentTransaction,
                 newPayeeViewModelFactory,
                 orm.CommonPropertyProvider.AccountViewModelService,
-                orm.CommonPropertyProvider.PayeeViewModelService)
+                orm.CommonPropertyProvider.PayeeViewModelService,
+                flagViewModelService)
         {
             _newTransactions = new ObservableCollection<ISubTransactionViewModel>();
             NewSubElements = new ReadOnlyObservableCollection<ISubTransactionViewModel>(_newTransactions);

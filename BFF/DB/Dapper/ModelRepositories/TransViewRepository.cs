@@ -14,11 +14,11 @@ namespace BFF.DB.Dapper.ModelRepositories
         
         protected override string CreateTableStatement =>
             $@"CREATE VIEW IF NOT EXISTS [{ViewName}] AS
-            SELECT {nameof(Transaction.Id)}, {nameof(Transaction.AccountId)}, {nameof(Transaction.CheckNumber)}, {nameof(Transaction.PayeeId)}, {nameof(Transaction.CategoryId)}, {nameof(Transaction.Date)}, {nameof(Transaction.Memo)}, {nameof(Transaction.Sum)}, {nameof(Transaction.Cleared)}, '{Domain.Structure.TransType.Transaction}' AS Type FROM [{nameof(Transaction)}s]
+            SELECT {nameof(Transaction.Id)}, {nameof(Transaction.AccountId)}, {nameof(Transaction.FlagId)}, {nameof(Transaction.CheckNumber)}, {nameof(Transaction.PayeeId)}, {nameof(Transaction.CategoryId)}, {nameof(Transaction.Date)}, {nameof(Transaction.Memo)}, {nameof(Transaction.Sum)}, {nameof(Transaction.Cleared)}, '{Domain.Structure.TransType.Transaction}' AS Type FROM [{nameof(Transaction)}s]
             UNION ALL
-            SELECT {nameof(ParentTransaction.Id)}, {nameof(ParentTransaction.AccountId)}, {nameof(ParentTransaction.CheckNumber)}, {nameof(ParentTransaction.PayeeId)}, -69 AS CategoryFiller, {nameof(ParentTransaction.Date)}, {nameof(ParentTransaction.Memo)}, -69 AS SumFiller, {nameof(ParentTransaction.Cleared)}, '{Domain.Structure.TransType.ParentTransaction}' AS Type FROM [{nameof(ParentTransaction)}s]
+            SELECT {nameof(ParentTransaction.Id)}, {nameof(ParentTransaction.AccountId)}, {nameof(ParentTransaction.FlagId)}, {nameof(ParentTransaction.CheckNumber)}, {nameof(ParentTransaction.PayeeId)}, -69 AS CategoryFiller, {nameof(ParentTransaction.Date)}, {nameof(ParentTransaction.Memo)}, -69 AS SumFiller, {nameof(ParentTransaction.Cleared)}, '{Domain.Structure.TransType.ParentTransaction}' AS Type FROM [{nameof(ParentTransaction)}s]
             UNION ALL
-            SELECT {nameof(Transfer.Id)}, -69 AS AccountFiller, {nameof(Transfer.CheckNumber)}, {nameof(Transfer.FromAccountId)}, {nameof(Transfer.ToAccountId)}, {nameof(Transfer.Date)}, {nameof(Transfer.Memo)}, {nameof(Transfer.Sum)}, {nameof(Transfer.Cleared)}, '{Domain.Structure.TransType.Transfer}' AS Type FROM [{nameof(Transfer)}s];";
+            SELECT {nameof(Transfer.Id)}, -69 AS AccountFiller, {nameof(Transfer.FlagId)}, {nameof(Transfer.CheckNumber)}, {nameof(Transfer.FromAccountId)}, {nameof(Transfer.ToAccountId)}, {nameof(Transfer.Date)}, {nameof(Transfer.Memo)}, {nameof(Transfer.Sum)}, {nameof(Transfer.Cleared)}, '{Domain.Structure.TransType.Transfer}' AS Type FROM [{nameof(Transfer)}s];";
         
     }
 
@@ -37,6 +37,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         private readonly Func<long?, DbConnection, Domain.ICategoryBase> _categoryFetcher;
         private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
         private readonly Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> _subTransactionsFetcher;
+        private readonly Func<long?, DbConnection, Domain.IFlag> _flagFetcher;
 
         public TransViewRepository(
             IProvideConnection provideConnection, 
@@ -46,7 +47,8 @@ namespace BFF.DB.Dapper.ModelRepositories
             Func<long, DbConnection, Domain.IAccount> accountFetcher,
             Func<long?, DbConnection, Domain.ICategoryBase> categoryFetcher,
             Func<long, DbConnection, Domain.IPayee> payeeFetcher,
-            Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> subTransactionsFetcher)
+            Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> subTransactionsFetcher, 
+            Func<long?, DbConnection, Domain.IFlag> flagFetcher)
             : base(provideConnection)
         {
             _transactionRepository = transactionRepository;
@@ -56,6 +58,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             _categoryFetcher = categoryFetcher;
             _payeeFetcher = payeeFetcher;
             _subTransactionsFetcher = subTransactionsFetcher;
+            _flagFetcher = flagFetcher;
         }
 
         protected override Converter<(Trans, DbConnection), Domain.Structure.ITransBase> ConvertToDomain => tuple =>
@@ -69,6 +72,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                     ret = new Domain.Transaction(
                         _transactionRepository, 
                         theTit.Id,
+                        _flagFetcher(theTit.FlagId, connection),
                         theTit.CheckNumber,
                         theTit.Date,
                         _accountFetcher(theTit.AccountId, connection),
@@ -82,6 +86,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                     ret = new Domain.Transfer(
                         _transferRepository,
                         theTit.Id,
+                        _flagFetcher(theTit.FlagId, connection),
                         theTit.CheckNumber,
                         theTit.Date,
                         _accountFetcher(theTit.PayeeId, connection),
@@ -95,6 +100,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                         _parentTransactionRepository,
                         _subTransactionsFetcher(theTit.Id, connection), 
                         theTit.Id,
+                        _flagFetcher(theTit.FlagId, connection),
                         theTit.CheckNumber,
                         theTit.Date,
                         _accountFetcher(theTit.AccountId, connection),
@@ -103,7 +109,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                         theTit.Cleared == 1L);
                     break;
                 default:
-                    ret = new Domain.Transaction(_transactionRepository, -1L, "", DateTime.Today)
+                    ret = new Domain.Transaction(_transactionRepository, -1L, null, "", DateTime.Today)
                         {Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR"};
                     break;
             }

@@ -156,6 +156,9 @@
   <data name="AccountView_Header_Date" xml:space="preserve">
     <value>Date</value>
   </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>F</value>
+  </data>
   <data name="AccountView_Header_Memo" xml:space="preserve">
     <value>Memo</value>
   </data>

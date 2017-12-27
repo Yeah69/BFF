@@ -93,6 +93,7 @@ namespace BFF.Helper.Import
             ClearAccountCache(); 
             ClearPayeeCache();
             ClearCategoryCache();
+            ClearFlagCache();
             
             //First step: Parse CSV data into conversion objects
             Queue<Transaction> ynabTransactions = new Queue<Transaction>(ParseTransactionCsv(filePathTransaction));
@@ -103,6 +104,7 @@ namespace BFF.Helper.Import
                 Accounts = new List<Persistence.Account>(),
                 Categories = new List<CategoryImportWrapper>(),
                 Payees = new List<Persistence.Payee>(),
+                Flags = new List<Persistence.Flag>(),
                 ParentTransactions = new List<Persistence.ParentTransaction>(),
                 SubTransactions = new List<Persistence.SubTransaction>(),
                 Transactions = new List<Persistence.Transaction>(),
@@ -114,17 +116,19 @@ namespace BFF.Helper.Import
             lists.BudgetEntries = ConvertBudgetEntryToNative(budgets).ToList();
             lists.Accounts = GetAllAccountCache();
             lists.Payees = GetAllPayeeCache();
+            lists.Flags = GetAllFlagCache();
             _categoryImportWrappers.Add(_thisMonthCategoryImportWrapper);
             _categoryImportWrappers.Add(_nextMonthCategoryImportWrapper);
             lists.Categories = _categoryImportWrappers;
 
             ImportAssignments assignments = new ImportAssignments
             {
-                AccountToTransIncBase = _accountAssignment,
+                AccountToTransactionBase = _accountAssignment,
                 FromAccountToTransfer = _fromAccountAssignment,
                 ToAccountToTransfer = _toAccountAssignment,
-                PayeeToTransIncBase = _payeeAssignment,
-                ParentTransactionToSubTransaction = _parentTransactionAssignment
+                PayeeToTransactionBase = _payeeAssignment,
+                ParentTransactionToSubTransaction = _parentTransactionAssignment,
+                FlagToTransBase = _flagAssignment
             };
 
             //Third step: Create new database for imported data
@@ -398,6 +402,7 @@ namespace BFF.Helper.Import
             AssignAccount(ynabTransaction.Account, ret);
             CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value, ret);
             AssignCategory(ynabTransaction.Category, ret);
+            CreateAndOrAssignFlag(ynabTransaction.Flag, ret);
             return ret;
         }
 
@@ -426,6 +431,7 @@ namespace BFF.Helper.Import
                 AssignFormAccount(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["accountName"].Value, ret);
                 AssignToAccount(ynabTransaction.Account, ret);
             }
+            CreateAndOrAssignFlag(ynabTransaction.Flag, ret);
             return ret;
         }
 
@@ -448,6 +454,7 @@ namespace BFF.Helper.Import
             };
             AssignAccount(ynabTransaction.Account, ret);
             CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value, ret);
+            CreateAndOrAssignFlag(ynabTransaction.Flag, ret);
             return ret;
         }
 
@@ -534,19 +541,19 @@ namespace BFF.Helper.Import
         #region Payees
 
         private readonly IDictionary<string, Persistence.Payee> _payeeCache = new Dictionary<string, Persistence.Payee>();
-        private readonly IDictionary<Persistence.Payee, IList<Persistence.IHavePayee>> _payeeAssignment = 
+        private readonly IDictionary<Persistence.Payee, IList<Persistence.IHavePayee>> _payeeAssignment =
             new Dictionary<Persistence.Payee, IList<Persistence.IHavePayee>>();
 
         private void CreateAndOrAssignPayee(
             string name, Persistence.IHavePayee titBase)
         {
-            if(string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name))
                 return;
-            if(!_payeeCache.ContainsKey(name))
+            if (!_payeeCache.ContainsKey(name))
             {
-                Persistence.Payee payee = new Persistence.Payee {Name = name};
+                Persistence.Payee payee = new Persistence.Payee { Name = name };
                 _payeeCache.Add(name, payee);
-                _payeeAssignment.Add(payee, new List<Persistence.IHavePayee> {titBase});
+                _payeeAssignment.Add(payee, new List<Persistence.IHavePayee> { titBase });
             }
             else
             {
@@ -563,6 +570,63 @@ namespace BFF.Helper.Import
         {
             _payeeCache.Clear();
             _payeeAssignment.Clear();
+        }
+
+        #endregion
+
+        #region Flags
+
+        private readonly IDictionary<string, Persistence.Flag> _flagCache = new Dictionary<string, Persistence.Flag>();
+        private readonly IDictionary<Persistence.Flag, IList<Persistence.IHaveFlag>> _flagAssignment =
+            new Dictionary<Persistence.Flag, IList<Persistence.IHaveFlag>>();
+
+        private void CreateAndOrAssignFlag(
+            string name, Persistence.IHaveFlag titBase)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return;
+            if (!_flagCache.ContainsKey(name))
+            {
+                Persistence.Flag flag = new Persistence.Flag { Name = name };
+                switch (name)
+                {
+                    case "Red":
+                        flag.Color = 0xffff0000;
+                        break;
+                    case "Green":
+                        flag.Color = 0xff00ff00;
+                        break;
+                    case "Blue":
+                        flag.Color = 0xff0000ff;
+                        break;
+                    case "Orange":
+                        flag.Color = 0xffffa500;
+                        break;
+                    case "Yellow":
+                        flag.Color = 0xffffff00;
+                        break;
+                    case "Purple":
+                        flag.Color = 0xff551A8B;
+                        break;
+                }
+                _flagCache.Add(name, flag);
+                _flagAssignment.Add(flag, new List<Persistence.IHaveFlag> { titBase });
+            }
+            else
+            {
+                _flagAssignment[_flagCache[name]].Add(titBase);
+            }
+        }
+
+        private List<Persistence.Flag> GetAllFlagCache()
+        {
+            return _flagCache.Values.ToList();
+        }
+
+        private void ClearFlagCache()
+        {
+            _flagCache.Clear();
+            _flagAssignment.Clear();
         }
 
         #endregion

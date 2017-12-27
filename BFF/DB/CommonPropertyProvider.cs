@@ -14,6 +14,7 @@ namespace BFF.DB
         ICategoryBaseViewModelService CategoryBaseViewModelService { get; }
         IIncomeCategoryViewModelService IncomeCategoryViewModelService { get; }
         IPayeeViewModelService PayeeViewModelService { get; }
+        IFlagViewModelService FlagViewModelService { get; }
         ObservableCollection<IAccount> Accounts { get; }
         IObservableReadOnlyList<IAccountViewModel> AllAccountViewModels { get; }
         IObservableReadOnlyList<ICategoryBaseViewModel> AllCategoryViewModels { get; }
@@ -29,6 +30,7 @@ namespace BFF.DB
         public IIncomeCategoryViewModelService IncomeCategoryViewModelService { get; }
         public ICategoryBaseViewModelService CategoryBaseViewModelService { get; }
         public IPayeeViewModelService PayeeViewModelService { get; }
+        public IFlagViewModelService FlagViewModelService { get; }
 
         public ObservableCollection<IAccount> Accounts { get;  }
 
@@ -55,6 +57,7 @@ namespace BFF.DB
             CategoryBaseViewModelService = new CategoryBaseViewModelService(CategoryViewModelService, IncomeCategoryViewModelService);
 
             PayeeViewModelService = new PayeeViewModelService(bffRepository.PayeeRepository, orm);
+            FlagViewModelService = new FlagViewModelService(orm.BffRepository.FlagRepository, orm);
             AllPayeeViewModels = PayeeViewModelService.All;
         }
     }

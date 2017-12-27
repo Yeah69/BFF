@@ -11,23 +11,31 @@ namespace BFF.DB.Dapper
         public DapperBffRepository(IProvideConnection provideConnection) 
             : base(provideConnection)
         {
-            IAccount AccountFetcher(long id, DbConnection connection) => AccountRepository.Find(id, connection);
-            ICategoryBase CategoryBaseFetcher(long? id, DbConnection connection) => id != null ? CategoryBaseRepository.Find((long)id, connection) : null;
-            ICategory CategoryFetcher(long? id, DbConnection connection) => id != null ? CategoryRepository.Find((long)id, connection) : null;
-            IPayee PayeeFetcher(long id, DbConnection connection) => PayeeRepository.Find(id, connection);
-            IEnumerable<ISubTransaction> SubTransactionsFetcher(long parentId, DbConnection connection) => SubTransactionRepository.GetChildrenOf(parentId, connection);
+            IAccount AccountFetcher(long id, DbConnection connection) 
+                => AccountRepository.Find(id, connection);
+            ICategoryBase CategoryBaseFetcher(long? id, DbConnection connection) 
+                => id != null ? CategoryBaseRepository.Find((long)id, connection) : null;
+            ICategory CategoryFetcher(long? id, DbConnection connection) 
+                => id != null ? CategoryRepository.Find((long)id, connection) : null;
+            IPayee PayeeFetcher(long id, DbConnection connection)
+                => PayeeRepository.Find(id, connection);
+            IFlag FlagFetcher(long? id, DbConnection connection) 
+                => id != null ? FlagRepository.Find((long) id, connection) : Flag.Default;
+            IEnumerable<ISubTransaction> SubTransactionsFetcher(long parentId, DbConnection connection)
+                => SubTransactionRepository.GetChildrenOf(parentId, connection);
 
             AccountRepository = new AccountRepository(provideConnection);
             BudgetEntryRepository = new BudgetEntryRepository(provideConnection, CategoryFetcher);
             CategoryRepository = new CategoryRepository(provideConnection);
             IncomeCategoryRepository = new IncomeCategoryRepository(provideConnection);
             CategoryBaseRepository = new CategoryBaseRepository(CategoryRepository, IncomeCategoryRepository);
+            FlagRepository = new FlagRepository(provideConnection);
             DbSettingRepository = new DbSettingRepository(provideConnection);
-            ParentTransactionRepository = new ParentTransactionRepository(provideConnection, AccountFetcher, PayeeFetcher, SubTransactionsFetcher);
+            ParentTransactionRepository = new ParentTransactionRepository(provideConnection, AccountFetcher, PayeeFetcher, SubTransactionsFetcher, FlagFetcher);
             PayeeRepository = new PayeeRepository(provideConnection);
             SubTransactionRepository = new SubTransactionRepository(provideConnection, CategoryBaseFetcher);
-            TransactionRepository = new TransactionRepository(provideConnection, AccountFetcher, CategoryBaseFetcher, PayeeFetcher);
-            TransferRepository = new TransferRepository(provideConnection, AccountFetcher);
+            TransactionRepository = new TransactionRepository(provideConnection, AccountFetcher, CategoryBaseFetcher, PayeeFetcher, FlagFetcher);
+            TransferRepository = new TransferRepository(provideConnection, AccountFetcher, FlagFetcher);
             TransViewRepository = new TransViewRepository(provideConnection,
                                               TransactionRepository, 
                                               TransferRepository,
@@ -35,7 +43,7 @@ namespace BFF.DB.Dapper
                                               AccountFetcher, 
                                               CategoryBaseFetcher, 
                                               PayeeFetcher, 
-                                              SubTransactionsFetcher);
+                                              SubTransactionsFetcher, FlagFetcher);
 
             BudgetMonthRepository = new BudgetMonthRepository(BudgetEntryRepository, CategoryRepository, IncomeCategoryRepository, provideConnection);
         }
@@ -53,6 +61,7 @@ namespace BFF.DB.Dapper
         public sealed override ITransferRepository TransferRepository { get; }
         public sealed override ITransViewRepository TransViewRepository { get; }
         public sealed override IBudgetMonthRepository BudgetMonthRepository { get; }
+        public override IFlagRepository FlagRepository { get; }
 
         protected override void Dispose(bool disposing)
         {
@@ -69,6 +78,7 @@ namespace BFF.DB.Dapper
                 TransferRepository?.Dispose();
                 TransViewRepository?.Dispose();
                 BudgetMonthRepository?.Dispose();
+                FlagRepository?.Dispose();
             }
             base.Dispose(disposing);
         }

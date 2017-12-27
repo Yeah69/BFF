@@ -246,7 +246,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 switch (item)
                 {
                     case ITransfer transfer:
-                        vmItems.Add(new TransferViewModel(transfer, Orm, Orm.CommonPropertyProvider.AccountViewModelService));
+                        vmItems.Add(new TransferViewModel(
+                            transfer, 
+                            Orm, 
+                            Orm.CommonPropertyProvider.AccountViewModelService,
+                            Orm.CommonPropertyProvider.FlagViewModelService));
                         break;
                     case IParentTransaction parentTransaction:
                         vmItems.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
@@ -265,7 +269,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                             Orm,
                             Orm.CommonPropertyProvider.AccountViewModelService,
                             Orm.CommonPropertyProvider.PayeeViewModelService,
-                            Orm.CommonPropertyProvider.CategoryBaseViewModelService));
+                            Orm.CommonPropertyProvider.CategoryBaseViewModelService,
+                            Orm.CommonPropertyProvider.FlagViewModelService));
                         break;
                     default:
                         throw new NotImplementedException();

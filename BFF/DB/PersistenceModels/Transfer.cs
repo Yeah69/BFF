@@ -2,9 +2,10 @@ using System;
 
 namespace BFF.DB.PersistenceModels
 {
-    public class Transfer : IPersistenceModel
+    public class Transfer : IPersistenceModel, IHaveFlag
     {
         public long Id { get; set; }
+        public long? FlagId { get; set; }
         public string CheckNumber { get; set; }
         public long FromAccountId { get; set; }
         public long ToAccountId { get; set; }

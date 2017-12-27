@@ -12,6 +12,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         protected override string CreateTableStatement =>
             $@"CREATE TABLE [{nameof(Transfer)}s](
             {nameof(Transfer.Id)} INTEGER PRIMARY KEY,
+            {nameof(Transfer.FlagId)} INTEGER,
             {nameof(Transfer.CheckNumber)} TEXT,
             {nameof(Transfer.FromAccountId)} INTEGER,
             {nameof(Transfer.ToAccountId)} INTEGER,
@@ -20,7 +21,8 @@ namespace BFF.DB.Dapper.ModelRepositories
             {nameof(Transfer.Sum)} INTEGER,
             {nameof(Transfer.Cleared)} INTEGER,
             FOREIGN KEY({nameof(Transfer.FromAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT,
-            FOREIGN KEY({nameof(Transfer.ToAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT);";
+            FOREIGN KEY({nameof(Transfer.ToAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT,
+            FOREIGN KEY({nameof(Transfer.FlagId)}) REFERENCES {nameof(Flag)}s({nameof(Flag.Id)}) ON DELETE SET NULL);";
 
     }
 
@@ -31,21 +33,25 @@ namespace BFF.DB.Dapper.ModelRepositories
     public sealed class TransferRepository : RepositoryBase<Domain.ITransfer, Transfer>, ITransferRepository
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
+        private readonly Func<long?, DbConnection, Domain.IFlag> _flagFetcher;
 
         public TransferRepository(
             IProvideConnection provideConnection,
-            Func<long, DbConnection, Domain.IAccount> accountFetcher) : base(provideConnection)
+            Func<long, DbConnection, Domain.IAccount> accountFetcher,
+            Func<long?, DbConnection, Domain.IFlag> flagFetcher) : base(provideConnection)
         {
             _accountFetcher = accountFetcher;
+            _flagFetcher = flagFetcher;
         }
 
         public override Domain.ITransfer Create() =>
-            new Domain.Transfer(this, -1L, "", DateTime.MinValue, null, null, "", 0L);
+            new Domain.Transfer(this, -1L, null, "", DateTime.MinValue, null, null, "", 0L);
         
         protected override Converter<Domain.ITransfer, Transfer> ConvertToPersistence => domainTransfer => 
             new Transfer
             {
                 Id = domainTransfer.Id,
+                FlagId = domainTransfer.Flag == null || domainTransfer.Flag == Domain.Flag.Default ? (long?)null : domainTransfer.Flag.Id,
                 CheckNumber = domainTransfer.CheckNumber,
                 FromAccountId = domainTransfer.FromAccount.Id,
                 ToAccountId = domainTransfer.ToAccount.Id,
@@ -61,6 +67,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             return new Domain.Transfer(
                 this,
                 persistenceTransfer.Id,
+                _flagFetcher(persistenceTransfer.Id, connection),
                 persistenceTransfer.CheckNumber,
                 persistenceTransfer.Date,
                 _accountFetcher(persistenceTransfer.FromAccountId, connection),

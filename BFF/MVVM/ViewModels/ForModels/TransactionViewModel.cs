@@ -34,8 +34,9 @@ namespace BFF.MVVM.ViewModels.ForModels
             IBffOrm orm,
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
-            ICategoryBaseViewModelService categoryViewModelService)
-            : base(orm, transaction, newPayeeViewModelFactory, accountViewModelService, payeeViewModelService)
+            ICategoryBaseViewModelService categoryViewModelService,
+            IFlagViewModelService flagViewModelService)
+            : base(orm, transaction, newPayeeViewModelFactory, accountViewModelService, payeeViewModelService, flagViewModelService)
         {
             Category = transaction.ToReactivePropertyAsSynchronized(
                     ti => ti.Category,

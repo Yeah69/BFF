@@ -49,7 +49,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             ITransactionBase parentTransactionBase,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IAccountViewModelService accountViewModelService,
-            IPayeeViewModelService payeeViewModelService) : base(orm, parentTransactionBase)
+            IPayeeViewModelService payeeViewModelService,
+            IFlagViewModelService flagViewModelService) : base(orm, parentTransactionBase, flagViewModelService)
         {
             void RefreshAnAccountViewModel(IAccountViewModel account)
             {

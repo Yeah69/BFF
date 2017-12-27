@@ -178,6 +178,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to F.
+        /// </summary>
+        public static string AccountView_Header_Flag {
+            get {
+                return ResourceManager.GetString("AccountView_Header_Flag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Memo.
         /// </summary>
         public static string AccountView_Header_Memo {

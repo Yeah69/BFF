@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows.Media;
 using BFF.Helper;
 using BFF.Helper.Import;
 
@@ -10,7 +9,7 @@ namespace BFF.MVVM.Models.Conversion.YNAB
     {
         public string Account { get; set; }
 
-        public Color Flag { get; set; }
+        public string Flag { get; set; }
 
         public string CheckNumber { get; set; }
 
@@ -58,36 +57,11 @@ namespace BFF.MVVM.Models.Conversion.YNAB
         public static implicit operator Transaction(string csvLine)
         {
             string[] entries = csvLine.Split('\t');
-            Color tempColor;
-            switch (entries[1])
-            {
-                case "Red":
-                    tempColor = Colors.Red;
-                    break;
-                case "Orange":
-                    tempColor = Colors.Orange;
-                    break;
-                case "Yellow":
-                    tempColor = Colors.Yellow;
-                    break;
-                case "Green":
-                    tempColor = Colors.Green;
-                    break;
-                case "Blue":
-                    tempColor = Colors.Blue;
-                    break;
-                case "Purple":
-                    tempColor = Colors.Purple;
-                    break;
-                default:
-                    tempColor = Colors.Transparent;
-                    break;
-            }
             
             Transaction ret = new Transaction
             {
                 Account = entries[0].Trim('"'),
-                Flag = tempColor,
+                Flag = entries[1],
                 CheckNumber = entries[2],
                 Date = DateTime.ParseExact(entries[3], "dd.MM.yyyy", CultureInfo.InvariantCulture),
                 Payee = entries[4].Trim('"'),

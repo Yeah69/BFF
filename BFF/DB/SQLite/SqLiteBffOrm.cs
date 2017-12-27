@@ -2,7 +2,6 @@
 using System.Linq;
 using BFF.DB.Dapper;
 using BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels;
 using BFF.MVVM.ViewModels.ForModels;
@@ -69,7 +68,8 @@ namespace BFF.DB.SQLite
                     pt,
                     hpvm => new NewPayeeViewModel(hpvm, _bffRepository.PayeeRepository, CommonPropertyProvider.PayeeViewModelService), 
                     this,
-                    SubTransactionViewModelService));
+                    SubTransactionViewModelService,
+                    CommonPropertyProvider.FlagViewModelService));
 
             BudgetEntryViewModelService = new BudgetEntryViewModelService(be => new BudgetEntryViewModel(this, be, CommonPropertyProvider.CategoryViewModelService));
         }

@@ -65,6 +65,9 @@
             <iconPacks:PackIconMaterialKind x:Key="RemoveFromTableIcon">
                 TableRowRemove
             </iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="FlagIcon">
+                Bookmark
+            </iconPacks:PackIconMaterialKind>
 
             <Style x:Key="CellContent"
                    TargetType="ContentControl">
@@ -233,6 +236,82 @@
                             <DatePicker VerticalContentAlignment="Center"
                                         SelectedDate="{Binding Date.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         SelectedDateFormat="{Binding DataContext.IsDateLong, ElementName=LayoutRoot, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
+                    </ContentControl.Resources>
+                </ContentControl>
+            </DataTemplate>
+            <!--  Flag  -->
+            <DataTemplate x:Key="FlagColumnTemplate">
+                <ContentControl Content="{Binding}"
+                                Style="{StaticResource CellContent}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
+                            <ContentControl Content="{Binding}">
+                                <ContentControl.Style>
+                                    <Style BasedOn="{StaticResource {x:Type ContentControl}}"
+                                           TargetType="{x:Type ContentControl}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Flag.Value}"
+                                                         Value="{x:Null}">
+                                                <Setter Property="Visibility"
+                                                        Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ContentControl.Style>
+                                <ContentControl.ContentTemplate>
+                                    <DataTemplate>
+                                        <iconPacks:PackIconMaterial Foreground="{Binding Flag.Value.Color.Value}"
+                                                                    Kind="{StaticResource FlagIcon}"
+                                                                    Style="{StaticResource CellIconMaterial}" />
+                                    </DataTemplate>
+                                </ContentControl.ContentTemplate>
+                            </ContentControl>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
+                    </ContentControl.Resources>
+                </ContentControl>
+            </DataTemplate>
+            <DataTemplate x:Key="FlagEditingColumnTemplate">
+                <ContentControl Content="{Binding}"
+                                Style="{StaticResource CellContent}">
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
+                            <DockPanel LastChildFill="True">
+                                <Button Command="{Binding RemoveFlag}"
+                                        Content="X"
+                                        DockPanel.Dock="Right">
+                                    <Button.Style>
+                                        <Style BasedOn="{StaticResource {x:Type Button}}"
+                                               TargetType="{x:Type Button}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Flag.Value}"
+                                                             Value="{x:Null}">
+                                                    <Setter Property="Visibility"
+                                                            Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <ComboBox HorizontalAlignment="Stretch"
+                                          DockPanel.Dock="Left"
+                                          ItemsSource="{Binding AllFlags}"
+                                          SelectedItem="{Binding Mode=TwoWay, Path=Flag.Value, UpdateSourceTrigger=LostFocus}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Foreground="{Binding Color.Value}"
+                                                                            Kind="{StaticResource FlagIcon}"
+                                                                            Style="{StaticResource CellIconMaterial}" />
+                                                <TextBlock Margin="5,0,0,0"
+                                                           Text="{Binding Name.Value}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
@@ -955,6 +1034,23 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
+                <!--  Flag  -->
+                <DataGridTemplateColumn x:Name="FlagColumn"
+                                        Header="{lex:Loc AccountView_Header_Flag}"
+                                        SortMemberPath="Flag.Value">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}"
+                                            ContentTemplate="{StaticResource FlagColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}"
+                                            ContentTemplate="{StaticResource FlagEditingColumnTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
                 <!--  CheckNumber  -->
                 <DataGridTemplateColumn x:Name="CheckNumberColumn"
                                         Header="{lex:Loc AccountView_Header_CheckNumber}"
@@ -1068,6 +1164,8 @@
                                 <Binding Path="Width"
                                          Source="{x:Reference DateColumn}" />
                                 <Binding Path="Width"
+                                         Source="{x:Reference FlagColumn}" />
+                                <Binding Path="Width"
                                          Source="{x:Reference CheckNumberColumn}" />
                                 <Binding Path="Width"
                                          Source="{x:Reference PayeeColumn}" />
@@ -1136,6 +1234,15 @@
                             <DataTemplate>
                                 <ContentControl Content="{Binding}"
                                                 ContentTemplate="{StaticResource DateEditingColumnTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--  Flag  -->
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference FlagColumn}, Mode=TwoWay}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}"
+                                                ContentTemplate="{StaticResource FlagEditingColumnTemplate}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -1208,6 +1315,8 @@
                                              Source="{x:Reference AccountColumn}" />
                                     <Binding Path="Width"
                                              Source="{x:Reference DateColumn}" />
+                                    <Binding Path="Width"
+                                             Source="{x:Reference FlagColumn}" />
                                     <Binding Path="Width"
                                              Source="{x:Reference CheckNumberColumn}" />
                                     <Binding Path="Width"

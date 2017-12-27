@@ -5,6 +5,7 @@ namespace BFF.DB.PersistenceModels
     public class Trans : IPersistenceModel
     {
         public long Id { get; set; }
+        public long? FlagId { get; set; }
         public string CheckNumber { get; set; }
         public long AccountId { get; set; }
         public long PayeeId { get; set; }

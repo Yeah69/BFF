@@ -21,6 +21,7 @@ namespace BFF.DB
         protected abstract ICreateTable CreateDbSettingTable { get; }
         protected abstract ICreateTable CreateParentTransactionTable { get; }
         protected abstract ICreateTable CreatePayeeTable { get; }
+        protected abstract ICreateTable CreateFlagTable { get; }
         protected abstract ICreateTable CreateSubTransactionTable { get; }
         protected abstract ICreateTable CreateTransactionTable { get; }
         protected abstract ICreateTable CreateTransferTable { get; }
@@ -29,6 +30,7 @@ namespace BFF.DB
         
         private void CreateTablesInner(DbConnection connection)
         {
+            CreateFlagTable.CreateTable(connection);
             CreatePayeeTable.CreateTable(connection);
             CreateCategoryTable.CreateTable(connection);
             CreateAccountTable.CreateTable(connection);
@@ -77,6 +79,7 @@ namespace BFF.DB
         ITransferRepository TransferRepository { get; }
         ITransViewRepository TransViewRepository { get; }
         IBudgetMonthRepository BudgetMonthRepository { get; }
+        IFlagRepository FlagRepository { get; }
 
         void PopulateDatabase(
             ImportLists importLists, 
@@ -106,6 +109,7 @@ namespace BFF.DB
         public abstract ITransferRepository TransferRepository { get; }
         public abstract ITransViewRepository TransViewRepository { get; }
         public abstract IBudgetMonthRepository BudgetMonthRepository { get; }
+        public abstract IFlagRepository FlagRepository { get; }
 
         private void PopulateDatabaseInner(ImportLists importLists, ImportAssignments importAssignments, DbConnection connection)
         {
@@ -132,15 +136,23 @@ namespace BFF.DB
             foreach (Payee payee in importLists.Payees)
             {
                 var id = connection.Insert(payee);
-                foreach (IHavePayee transIncBase in importAssignments.PayeeToTransIncBase[payee])
+                foreach (IHavePayee transIncBase in importAssignments.PayeeToTransactionBase[payee])
                 {
                     transIncBase.PayeeId = id;
+                }
+            }
+            foreach (Flag flag in importLists.Flags)
+            {
+                var id = connection.Insert(flag);
+                foreach (IHaveFlag transBase in importAssignments.FlagToTransBase[flag])
+                {
+                    transBase.FlagId = id;
                 }
             }
             foreach (Account account in importLists.Accounts)
             {
                 var id = connection.Insert(account);
-                foreach (IHaveAccount transIncBase in importAssignments.AccountToTransIncBase[account])
+                foreach (IHaveAccount transIncBase in importAssignments.AccountToTransactionBase[account])
                 {
                     transIncBase.AccountId = id;
                 }

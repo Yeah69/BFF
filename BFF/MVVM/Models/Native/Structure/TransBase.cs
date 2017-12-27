@@ -15,6 +15,8 @@ namespace BFF.MVVM.Models.Native.Structure
 
     public interface ITransBase : ITransLike
     {
+        IFlag Flag { get; set; }
+
         string CheckNumber { get; set; }
 
         /// <summary>
@@ -36,6 +38,19 @@ namespace BFF.MVVM.Models.Native.Structure
         private DateTime _date;
         private bool _cleared;
         private string _checkNumber;
+        private IFlag _flag;
+
+        public IFlag Flag
+        {
+            get => _flag;
+            set
+            {
+                if (_flag == value) return;
+                _flag = value;
+                Update();
+                OnPropertyChanged();
+            }
+        }
 
         public string CheckNumber
         {
@@ -57,7 +72,7 @@ namespace BFF.MVVM.Models.Native.Structure
             get => _date;
             set
             {
-                if(_date == value) return;
+                if (_date == value) return;
                 _date = value;
                 Update();
                 OnPropertyChanged();
@@ -72,7 +87,7 @@ namespace BFF.MVVM.Models.Native.Structure
             get => _cleared;
             set
             {
-                if(_cleared == value) return;
+                if (_cleared == value) return;
                 _cleared = value;
                 Update();
                 OnPropertyChanged();
@@ -86,13 +101,16 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <param name="id">Identification number for the database</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        protected TransBase(IRepository<T> repository, 
-                            string checkNumber,
-                            DateTime date, 
-                            long id, 
-                            string memo, 
-                            bool? cleared) : base(repository, id, memo)
+        protected TransBase(
+            IRepository<T> repository,
+            IFlag flag,
+            string checkNumber,
+            DateTime date,
+            long id,
+            string memo,
+            bool? cleared) : base(repository, id, memo)
         {
+            _flag = flag;
             _checkNumber = checkNumber;
             _date = date;
             _cleared = cleared ?? _cleared;

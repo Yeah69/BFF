@@ -2,9 +2,10 @@ using System;
 
 namespace BFF.DB.PersistenceModels
 {
-    public class Transaction : IPersistenceModel, IHaveAccount, IHavePayee, IHaveCategory
+    public class Transaction : IPersistenceModel, IHaveAccount, IHavePayee, IHaveCategory, IHaveFlag
     {
         public long Id { get; set; }
+        public long? FlagId { get; set; }
         public string CheckNumber { get; set; }
         public long AccountId { get; set; }
         public long PayeeId { get; set; }

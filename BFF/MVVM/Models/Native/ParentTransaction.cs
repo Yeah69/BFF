@@ -35,13 +35,14 @@ namespace BFF.MVVM.Models.Native
             IRepository<IParentTransaction> repository,
             IEnumerable<ISubTransaction> subTransactions,
             long id,
+            IFlag flag,
             string checkNumber,
             DateTime date,
             IAccount account = null,
             IPayee payee = null,
             string memo = null,
             bool? cleared = null)
-            : base(repository, id, checkNumber, date, account, payee, memo, cleared)
+            : base(repository, id, flag, checkNumber, date, account, payee, memo, cleared)
         {
             _subTransactions = new ObservableCollection<ISubTransaction>(subTransactions);
             SubTransactions = new ReadOnlyObservableCollection<ISubTransaction>(_subTransactions);

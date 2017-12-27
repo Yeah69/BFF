@@ -33,6 +33,7 @@ namespace BFF.MVVM.Models.Native
         public Transaction(
             IRepository<ITransaction> repository,
             long id,
+            IFlag flag,
             string checkNumber,
             DateTime date, 
             IAccount account = null, 
@@ -41,7 +42,7 @@ namespace BFF.MVVM.Models.Native
             string memo = null, 
             long sum = 0L, 
             bool? cleared = null)
-            : base(repository, id, checkNumber, date, account, payee, memo, cleared)
+            : base(repository, id, flag, checkNumber, date, account, payee, memo, cleared)
         {
             _category = category;
             _sum = sum;

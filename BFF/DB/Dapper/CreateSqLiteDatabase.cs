@@ -13,6 +13,7 @@ namespace BFF.DB.Dapper
         protected override ICreateTable CreateDbSettingTable { get; }
         protected override ICreateTable CreateParentTransactionTable { get; }
         protected override ICreateTable CreatePayeeTable { get; }
+        protected override ICreateTable CreateFlagTable { get; }
         protected override ICreateTable CreateSubTransactionTable { get; }
         protected override ICreateTable CreateTransactionTable { get; }
         protected override ICreateTable CreateTransferTable { get; }
@@ -33,6 +34,7 @@ namespace BFF.DB.Dapper
             CreateDbSettingTable = new CreateDbSettingTable(ProvideConnection);
             CreateParentTransactionTable = new CreateParentTransactionTable(ProvideConnection);
             CreatePayeeTable = new CreatePayeeTable(ProvideConnection);
+            CreateFlagTable = new CreateFlagTable(ProvideConnection);
             CreateSubTransactionTable = new CreateSubTransactionTable(ProvideConnection);
             CreateTransactionTable = new CreateTransactionTable(ProvideConnection);
             CreateTransferTable = new CreateTransferTable(ProvideConnection);

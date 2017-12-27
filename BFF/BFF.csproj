@@ -239,6 +239,7 @@
     <Compile Include="DB\Dapper\ModelRepositories\BudgetEntryRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\CategoryBaseRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\CategoryRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\FlagRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\IncomeCategoryRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\ParentTransactionRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\SubTransactionRepository.cs" />
@@ -260,8 +261,10 @@
     <Compile Include="DB\PersistenceModels\BudgetEntry.cs" />
     <Compile Include="DB\PersistenceModels\Category.cs" />
     <Compile Include="DB\PersistenceModels\DbSetting.cs" />
+    <Compile Include="DB\PersistenceModels\Flag.cs" />
     <Compile Include="DB\PersistenceModels\IHaveAccount.cs" />
     <Compile Include="DB\PersistenceModels\IHaveCategory.cs" />
+    <Compile Include="DB\PersistenceModels\IHaveFlag.cs" />
     <Compile Include="DB\PersistenceModels\IHavePayee.cs" />
     <Compile Include="DB\PersistenceModels\IPersistenceModel.cs" />
     <Compile Include="DB\PersistenceModels\ParentTransaction.cs" />
@@ -286,6 +289,7 @@
     <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
     <Compile Include="MVVM\Models\Native\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Native\BudgetMonth.cs" />
+    <Compile Include="MVVM\Models\Native\Flag.cs" />
     <Compile Include="MVVM\Models\Native\Structure\IHaveBaseCategory.cs" />
     <Compile Include="MVVM\Models\Native\SummaryAccount.cs" />
     <Compile Include="MVVM\Models\Native\Account.cs" />
@@ -307,6 +311,7 @@
     <Compile Include="MVVM\Services\IncomeCategoryViewModelService.cs" />
     <Compile Include="MVVM\Services\ParentTransactionViewModelService.cs" />
     <Compile Include="MVVM\Services\ModelToViewModelServiceBase.cs" />
+    <Compile Include="MVVM\Services\FlagViewModelService.cs" />
     <Compile Include="MVVM\Services\PayeeViewModelService.cs" />
     <Compile Include="MVVM\Services\SubTransactionViewModelService.cs" />
     <Compile Include="MVVM\Services\CommonPropertyViewModelServiceBase.cs" />
@@ -317,6 +322,7 @@
     <Compile Include="MVVM\ViewModels\BudgetOverviewViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\CategoryBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\BudgetEntryViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\FlagViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\CommonPropertyViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\PayeeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\DataModelViewModel.cs" />
@@ -439,6 +445,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

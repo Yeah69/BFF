@@ -99,6 +99,7 @@ namespace BFF.MVVM.Models.Native
         public Transfer(
             IRepository<ITransfer> repository,
             long id,
+            IFlag flag,
             string checkNumber,
             DateTime date,
             IAccount fromAccount = null,
@@ -106,7 +107,7 @@ namespace BFF.MVVM.Models.Native
             string memo = null,
             long sum = 0L,
             bool? cleared = null)
-            : base(repository, checkNumber, date, id, memo, cleared)
+            : base(repository, flag, checkNumber, date, id, memo, cleared)
         {
             _fromAccount = fromAccount;
             _toAccount = toAccount;
