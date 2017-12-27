@@ -312,8 +312,6 @@ namespace BFF.Helper.Import
                 Match transferMatch = TransferPayeeRegex.Match(splitTransaction.Payee);
                 if (transferMatch.Success)
                     AddTransfer(lists.Transfers, splitTransaction);
-                else if (splitTransaction.MasterCategory == "Income")
-                    lists.Transactions.Add(TransformToTransaction(splitTransaction)); // TODO better do a subtransaction with IncomeCategory
                 else
                 {
                     Persistence.SubTransaction subTransaction = TransformToSubTransaction(
