@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using BFF.DB.PersistenceModels;
+using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -63,32 +64,32 @@ namespace BFF.DB.Dapper.ModelRepositories
         };
 
         private string AllAccountsBalanceStatement =>
-            $@"SELECT Total({nameof(Transaction.Sum)}) FROM (
-            SELECT {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s UNION ALL 
-            SELECT {nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s UNION ALL 
+            $@"SELECT Total({nameof(Trans.Sum)}) FROM (
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' UNION ALL 
+            SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s UNION ALL 
             SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s);";
 
         private string AllAccountsBalanceUntilNowStatement =>
-            $@"SELECT Total({nameof(Transaction.Sum)}) FROM (
-            SELECT {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.Date)} <= @DateTimeNow UNION ALL 
-            SELECT {nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(ParentTransaction)}s ON {nameof(SubTransaction.ParentId)} = {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Id)} AND {nameof(ParentTransaction.Date)} <= @DateTimeNow UNION ALL 
+            $@"SELECT Total({nameof(Trans.Sum)}) FROM (
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.Date)} <= @DateTimeNow UNION ALL 
+            SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)} AND {nameof(Trans.Date)} <= @DateTimeNow UNION ALL 
             SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.StartingBalance)} <= @DateTimeNow);";
 
         private string AccountSpecificBalanceStatement =>
-            $@"SELECT (SELECT Total({nameof(Transaction.Sum)}) FROM (
-            SELECT {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.AccountId)} = @accountId UNION ALL 
-            SELECT {nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(ParentTransaction)}s ON {nameof(SubTransaction.ParentId)} = {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Id)} AND {nameof(ParentTransaction.AccountId)} = @accountId UNION ALL
-            SELECT {nameof(Transfer.Sum)} FROM {nameof(Transfer)}s WHERE {nameof(Transfer.ToAccountId)} = @accountId UNION ALL
+            $@"SELECT (SELECT Total({nameof(Trans.Sum)}) FROM (
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.AccountId)} = @accountId UNION ALL 
+            SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)} AND {nameof(Trans.AccountId)} = @accountId UNION ALL
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} = @accountId UNION ALL
             SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.Id)} = @accountId)) 
-            - (SELECT Total({nameof(Transfer.Sum)}) FROM {nameof(Transfer)}s WHERE {nameof(Transfer.FromAccountId)} = @accountId);";
+            - (SELECT Total({nameof(Trans.Sum)}) FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} = @accountId);";
 
         private string AccountSpecificBalanceUntilNowStatement =>
-            $@"SELECT (SELECT Total({nameof(Transaction.Sum)}) FROM (
-            SELECT {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.AccountId)} = @accountId AND {nameof(Transaction.Date)} <= @DateTimeNow UNION ALL 
-            SELECT {nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(ParentTransaction)}s ON {nameof(SubTransaction.ParentId)} = {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Id)} AND {nameof(ParentTransaction.AccountId)} = @accountId AND {nameof(ParentTransaction.Date)} <= @DateTimeNow UNION ALL
-            SELECT {nameof(Transfer.Sum)} FROM {nameof(Transfer)}s WHERE {nameof(Transfer.ToAccountId)} = @accountId AND {nameof(Transfer.Date)} <= @DateTimeNow UNION ALL
+            $@"SELECT (SELECT Total({nameof(Trans.Sum)}) FROM (
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.AccountId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow UNION ALL 
+            SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)} AND {nameof(Trans.AccountId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow UNION ALL
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow UNION ALL
             SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.Id)} = @accountId AND {nameof(Account.StartingBalance)} <= @DateTimeNow)) 
-            - (SELECT Total({nameof(Transfer.Sum)}) FROM {nameof(Transfer)}s WHERE {nameof(Transfer.FromAccountId)} = @accountId AND {nameof(Transfer.Date)} <= @DateTimeNow);";
+            - (SELECT Total({nameof(Trans.Sum)}) FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow);";
 
         private long? GetAccountBalance(Domain.IAccount account, DbConnection connection = null) =>
             ConnectionHelper.QueryOnExistingOrNewConnection(

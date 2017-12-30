@@ -18,10 +18,10 @@ namespace BFF.Helper.Import
         public IList<CategoryImportWrapper> Categories;
         public IList<Flag> Flags;
 
-        public IList<Transaction> Transactions;
-        public IList<Transfer> Transfers;
+        public IList<Trans> Transactions;
+        public IList<Trans> Transfers;
 
-        public IList<ParentTransaction> ParentTransactions;
+        public IList<Trans> ParentTransactions;
 
         public IList<SubTransaction> SubTransactions;
 
@@ -31,12 +31,12 @@ namespace BFF.Helper.Import
     public struct ImportAssignments
     {
         public IDictionary<Account, IList<IHaveAccount>> AccountToTransactionBase;
-        public IDictionary<Account, IList<Transfer>> FromAccountToTransfer;
-        public IDictionary<Account, IList<Transfer>> ToAccountToTransfer;
+        public IDictionary<Account, IList<Trans>> FromAccountToTransfer;
+        public IDictionary<Account, IList<Trans>> ToAccountToTransfer;
 
         public IDictionary<Payee, IList<IHavePayee>> PayeeToTransactionBase;
 
-        public IDictionary<ParentTransaction, IList<SubTransaction>> ParentTransactionToSubTransaction;
+        public IDictionary<Trans, IList<SubTransaction>> ParentTransactionToSubTransaction;
         
         public IDictionary<Flag, IList<IHaveFlag>> FlagToTransBase;
     }

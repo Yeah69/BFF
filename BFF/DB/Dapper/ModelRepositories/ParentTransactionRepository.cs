@@ -3,35 +3,16 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using BFF.DB.PersistenceModels;
+using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateParentTransactionTable : CreateTableBase
-    {
-        public CreateParentTransactionTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(ParentTransaction)}s](
-            {nameof(ParentTransaction.Id)} INTEGER PRIMARY KEY,
-            {nameof(ParentTransaction.FlagId)} INTEGER,
-            {nameof(ParentTransaction.CheckNumber)} TEXT,
-            {nameof(ParentTransaction.AccountId)} INTEGER,
-            {nameof(ParentTransaction.PayeeId)} INTEGER,
-            {nameof(ParentTransaction.Date)} DATE,
-            {nameof(ParentTransaction.Memo)} TEXT,
-            {nameof(ParentTransaction.Cleared)} INTEGER,
-            FOREIGN KEY({nameof(ParentTransaction.AccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE CASCADE,
-            FOREIGN KEY({nameof(ParentTransaction.PayeeId)}) REFERENCES {nameof(Payee)}s({nameof(Payee.Id)}) ON DELETE SET NULL,
-            FOREIGN KEY({nameof(ParentTransaction.FlagId)}) REFERENCES {nameof(Flag)}s({nameof(Flag.Id)}) ON DELETE SET NULL);";
-
-    }
-
     public interface IParentTransactionRepository : IRepositoryBase<Domain.IParentTransaction>
     {
     }
 
-    public sealed class ParentTransactionRepository : RepositoryBase<Domain.IParentTransaction, ParentTransaction>, IParentTransactionRepository
+    public sealed class ParentTransactionRepository : RepositoryBase<Domain.IParentTransaction, Trans>, IParentTransactionRepository
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
         private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
@@ -54,22 +35,25 @@ namespace BFF.DB.Dapper.ModelRepositories
         public override Domain.IParentTransaction Create() =>
             new Domain.ParentTransaction(this, Enumerable.Empty<Domain.SubTransaction>(), -1L, null, "", DateTime.MinValue, null, null, "", false);
         
-        protected override Converter<Domain.IParentTransaction, ParentTransaction> ConvertToPersistence => domainParentTransaction => 
-            new ParentTransaction
+        protected override Converter<Domain.IParentTransaction, Trans> ConvertToPersistence => domainParentTransaction => 
+            new Trans
             {
                 Id = domainParentTransaction.Id,
                 AccountId = domainParentTransaction.Account.Id,
+                CategoryId = -69,
                 FlagId = domainParentTransaction.Flag == null || domainParentTransaction.Flag == Domain.Flag.Default ? (long?) null : domainParentTransaction.Flag.Id,
                 CheckNumber = domainParentTransaction.CheckNumber,
                 PayeeId = domainParentTransaction.Payee.Id,
                 Date = domainParentTransaction.Date,
                 Memo = domainParentTransaction.Memo,
-                Cleared = domainParentTransaction.Cleared ? 1L : 0L
+                Cleared = domainParentTransaction.Cleared ? 1L : 0L,
+                Sum = -69,
+                Type = nameof(TransType.ParentTransaction)
             };
 
-        protected override Converter<(ParentTransaction, DbConnection), Domain.IParentTransaction> ConvertToDomain => tuple =>
+        protected override Converter<(Trans, DbConnection), Domain.IParentTransaction> ConvertToDomain => tuple =>
         {
-            (ParentTransaction persistenceParentTransaction, DbConnection connection) = tuple;
+            (Trans persistenceParentTransaction, DbConnection connection) = tuple;
 
             var parentTransaction = new Domain.ParentTransaction(
                 this,

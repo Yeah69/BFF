@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Linq;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 using Persistence = BFF.DB.PersistenceModels;
 
@@ -17,41 +18,44 @@ namespace BFF.DB.Dapper
     public class BudgetMonthRepository : IBudgetMonthRepository
     {
         private static readonly string NotBudgetedOrOverbudgetedQuery =
-$@"SELECT Sum(Sum) as Sum FROM
+            $@"SELECT Sum(Sum) as Sum FROM
     (
         SELECT Sum({nameof(Persistence.Account.StartingBalance)}) AS Sum FROM {nameof(Persistence.Account)}s
         WHERE strftime('%Y', {nameof(Persistence.Account.StartingDate)}) < @Year OR strftime('%Y', {nameof(Persistence.Account.StartingDate)}) == @Year AND strftime('%m', {nameof(Persistence.Account.StartingDate)}) <= @Month
         UNION ALL
-        SELECT {nameof(Persistence.Transaction.Sum)}
-        FROM {nameof(Persistence.Transaction)}s
-        INNER JOIN {nameof(Persistence.Category)}s ON {nameof(Persistence.Transaction.CategoryId)} == {nameof(Persistence.Category)}s.{nameof(Persistence.Category.Id)} AND {nameof(Persistence.Category)}s.{nameof(Persistence.Category.IsIncomeRelevant)} == 0
-        WHERE strftime('%Y', {nameof(Persistence.Transaction.Date)}) < @Year
-            OR strftime('%m', {nameof(Persistence.Transaction.Date)}) <= @Month
-            AND strftime('%Y', {nameof(Persistence.Transaction.Date)}) = @Year
+        SELECT {nameof(Persistence.Trans.Sum)}
+        FROM {nameof(Persistence.Trans)}s
+        INNER JOIN {nameof(Persistence.Category)}s ON {nameof(Persistence.Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Persistence.Trans.CategoryId)} == {nameof(Persistence.Category)}s.{nameof(Persistence.Category.Id)} AND {nameof(Persistence.Category)}s.{nameof(Persistence.Category.IsIncomeRelevant)} == 0
+        WHERE strftime('%Y', {nameof(Persistence.Trans.Date)}) < @Year
+            OR strftime('%m', {nameof(Persistence.Trans.Date)}) <= @Month
+            AND strftime('%Y', {nameof(Persistence.Trans.Date)}) = @Year
         UNION ALL
         SELECT {nameof(Persistence.SubTransaction)}s.{nameof(Persistence.SubTransaction.Sum)}
         FROM {nameof(Persistence.SubTransaction)}s
-        INNER JOIN {nameof(Persistence.Category)}s ON {nameof(Persistence.SubTransaction.CategoryId)} == {nameof(Persistence.Category)}s.{nameof(Persistence.Category.Id)} AND {nameof(Persistence.Category)}s.{nameof(Persistence.Category.IsIncomeRelevant)} == 0
-        INNER JOIN {nameof(Persistence.ParentTransaction)}s ON {nameof(Persistence.SubTransaction)}s.{nameof(Persistence.SubTransaction.ParentId)} = {nameof(Persistence.ParentTransaction)}s.{nameof(Persistence.ParentTransaction.Id)}
-        WHERE strftime('%Y', {nameof(Persistence.ParentTransaction.Date)}) < @Year
-            OR strftime('%m', {nameof(Persistence.ParentTransaction.Date)}) <= @Month
-            AND strftime('%Y', {nameof(Persistence.ParentTransaction.Date)}) = @Year
+        INNER JOIN {nameof(Persistence.Category)}s ON {nameof(Persistence.SubTransaction)}s.{nameof(Persistence.SubTransaction.CategoryId)} == {nameof(Persistence.Category)}s.{nameof(Persistence.Category.Id)} AND {nameof(Persistence.Category)}s.{nameof(Persistence.Category.IsIncomeRelevant)} == 0
+        INNER JOIN {nameof(Persistence.Trans)}s ON {nameof(Persistence.SubTransaction)}s.{nameof(Persistence.SubTransaction.ParentId)} = {nameof(Persistence.Trans)}s.{nameof(Persistence.Trans.Id)}
+        WHERE strftime('%Y', {nameof(Persistence.Trans.Date)}) < @Year
+            OR strftime('%m', {nameof(Persistence.Trans.Date)}) <= @Month
+            AND strftime('%Y', {nameof(Persistence.Trans.Date)}) = @Year
     );";
 
         private readonly IBudgetEntryRepository _budgetEntryRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IIncomeCategoryRepository _incomeCategoryRepository;
+        private readonly IAccountRepository _accountRepository;
         private readonly IProvideConnection _provideConnection;
 
         public BudgetMonthRepository(
             IBudgetEntryRepository budgetEntryRepository, 
             ICategoryRepository categoryRepository,
             IIncomeCategoryRepository incomeCategoryRepository,
+            IAccountRepository accountRepository,
             IProvideConnection provideConnection)
         {
             _budgetEntryRepository = budgetEntryRepository;
             _categoryRepository = categoryRepository;
             _incomeCategoryRepository = incomeCategoryRepository;
+            _accountRepository = accountRepository;
             _provideConnection = provideConnection;
         }
 
@@ -85,15 +89,18 @@ $@"SELECT Sum(Sum) as Sum FROM
 
                 currentNotBudgetedOrOverbudgeted -= firstBalance;
 
+                currentNotBudgetedOrOverbudgeted -= groupings[0].Where(be => be.Balance < 0).Sum(be => be.Balance);
+
                 for (int i = 1; i < groupings.Length; i++)
                 {
                     var newBudgetMonth =
                         new BudgetMonth(
-                            groupings[i].Key,
-                            groupings[i],
-                            groupings[i - 1].Where(be => be.Balance < 0).Sum(be => be.Balance),
-                            currentNotBudgetedOrOverbudgeted,
-                            _incomeCategoryRepository.GetMonthsIncome(groupings[i].Key, c));
+                            month: groupings[i].Key,
+                            budgetEntries: groupings[i],
+                            overspentInPreviousMonth: groupings[i - 1].Where(be => be.Balance < 0).Sum(be => be.Balance),
+                            notBudgetedInPreviousMonth: currentNotBudgetedOrOverbudgeted,
+                            incomeForThisMonth: _incomeCategoryRepository.GetMonthsIncome(groupings[i].Key, c) 
+                                                + _accountRepository.All.Where(a => a.StartingDate.Year == groupings[i].Key.Year && a.StartingDate.Month == groupings[i].Key.Month).Select(a => a.StartingBalance).Sum());
                     budgetMonths.Add(newBudgetMonth);
                     currentNotBudgetedOrOverbudgeted = newBudgetMonth.AvailableToBudget;
                 }

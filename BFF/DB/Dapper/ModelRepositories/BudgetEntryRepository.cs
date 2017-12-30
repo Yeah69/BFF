@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using BFF.DB.PersistenceModels;
+using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -49,13 +50,13 @@ $@"SELECT {nameof(BudgetEntry.Id)}, {nameof(BudgetEntry.CategoryId)}, {nameof(Bu
   ORDER BY {nameof(BudgetEntry.Month)};";
 
         private static readonly string OutflowQuery =
-$@"SELECT Date as Month, Sum(Sum) as Sum FROM
+            $@"SELECT Date as Month, Sum(Sum) as Sum FROM
 (
-  SELECT strftime('%Y', {nameof(Transaction.Date)}) || '-' || strftime('%m', {nameof(Transaction.Date)}) || '-' || '01' AS Date, {nameof(Transaction.Sum)} FROM {nameof(Transaction)}s WHERE {nameof(Transaction.CategoryId)} = @CategoryId AND (strftime('%Y', {nameof(Transaction.Date)}) < @Year OR strftime('%Y', {nameof(Transaction.Date)}) = @Year AND strftime('%m', {nameof(Transaction.Date)}) <= @Month)
+  SELECT strftime('%Y', {nameof(Trans.Date)}) || '-' || strftime('%m', {nameof(Trans.Date)}) || '-' || '01' AS Date, {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.CategoryId)} = @CategoryId AND (strftime('%Y', {nameof(Trans.Date)}) < @Year OR strftime('%Y', {nameof(Trans.Date)}) = @Year AND strftime('%m', {nameof(Trans.Date)}) <= @Month)
   UNION ALL
-  SELECT strftime('%Y', {nameof(ParentTransaction.Date)}) || '-' || strftime('%m', {nameof(ParentTransaction.Date)}) || '-'  || '01' AS Date, subs.{nameof(SubTransaction.Sum)} FROM
-    (SELECT {nameof(SubTransaction.ParentId)}, {nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s WHERE {nameof(SubTransaction.CategoryId)} = @CategoryId) subs
-      INNER JOIN {nameof(ParentTransaction)}s ON subs.{nameof(SubTransaction.ParentId)} = {nameof(ParentTransaction)}s.{nameof(ParentTransaction.Id)}
+  SELECT strftime('%Y', {nameof(Trans.Date)}) || '-' || strftime('%m', {nameof(Trans.Date)}) || '-'  || '01' AS Date, subs.{nameof(SubTransaction.Sum)} FROM
+    (SELECT {nameof(SubTransaction.ParentId)}, {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s WHERE {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} = @CategoryId) subs
+      INNER JOIN {nameof(Trans)}s ON subs.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}
   WHERE strftime('%Y', Date) < @Year OR strftime('%Y', Date) = @Year AND strftime('%m', Date) <= @Month
 )
   GROUP BY Date

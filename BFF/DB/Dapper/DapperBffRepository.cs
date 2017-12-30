@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using BFF.DB.Dapper.ModelRepositories;
@@ -36,16 +35,18 @@ namespace BFF.DB.Dapper
             SubTransactionRepository = new SubTransactionRepository(provideConnection, CategoryBaseFetcher);
             TransactionRepository = new TransactionRepository(provideConnection, AccountFetcher, CategoryBaseFetcher, PayeeFetcher, FlagFetcher);
             TransferRepository = new TransferRepository(provideConnection, AccountFetcher, FlagFetcher);
-            TransViewRepository = new TransViewRepository(provideConnection,
-                                              TransactionRepository, 
-                                              TransferRepository,
-                                              ParentTransactionRepository,
-                                              AccountFetcher, 
-                                              CategoryBaseFetcher, 
-                                              PayeeFetcher, 
-                                              SubTransactionsFetcher, FlagFetcher);
+            TransRepository = new TransRepository(
+                provideConnection,
+                TransactionRepository,
+                TransferRepository,
+                ParentTransactionRepository,
+                AccountFetcher,
+                CategoryBaseFetcher,
+                PayeeFetcher,
+                SubTransactionsFetcher,
+                FlagFetcher);
 
-            BudgetMonthRepository = new BudgetMonthRepository(BudgetEntryRepository, CategoryRepository, IncomeCategoryRepository, provideConnection);
+            BudgetMonthRepository = new BudgetMonthRepository(BudgetEntryRepository, CategoryRepository, IncomeCategoryRepository, AccountRepository, provideConnection);
         }
 
         public sealed override IAccountRepository AccountRepository { get; }
@@ -58,8 +59,8 @@ namespace BFF.DB.Dapper
         public sealed override IPayeeRepository PayeeRepository { get; }
         public sealed override ISubTransactionRepository SubTransactionRepository { get; }
         public sealed override ITransactionRepository TransactionRepository { get; }
+        public override ITransRepository TransRepository { get; }
         public sealed override ITransferRepository TransferRepository { get; }
-        public sealed override ITransViewRepository TransViewRepository { get; }
         public sealed override IBudgetMonthRepository BudgetMonthRepository { get; }
         public override IFlagRepository FlagRepository { get; }
 
@@ -76,7 +77,6 @@ namespace BFF.DB.Dapper
                 SubTransactionRepository?.Dispose();
                 TransactionRepository?.Dispose();
                 TransferRepository?.Dispose();
-                TransViewRepository?.Dispose();
                 BudgetMonthRepository?.Dispose();
                 FlagRepository?.Dispose();
             }

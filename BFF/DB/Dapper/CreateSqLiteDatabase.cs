@@ -11,13 +11,10 @@ namespace BFF.DB.Dapper
         protected override ICreateTable CreateBudgetEntryTable { get; }
         protected override ICreateTable CreateCategoryTable { get; }
         protected override ICreateTable CreateDbSettingTable { get; }
-        protected override ICreateTable CreateParentTransactionTable { get; }
         protected override ICreateTable CreatePayeeTable { get; }
         protected override ICreateTable CreateFlagTable { get; }
         protected override ICreateTable CreateSubTransactionTable { get; }
-        protected override ICreateTable CreateTransactionTable { get; }
-        protected override ICreateTable CreateTransferTable { get; }
-        protected override ICreateTable CreateTitTable { get; }
+        protected override ICreateTable CreateTransTable { get; }
         protected sealed override IProvideConnection ProvideConnection { get; }
 
         public CreateSqLiteDatabase(string fileName)
@@ -32,13 +29,10 @@ namespace BFF.DB.Dapper
             CreateBudgetEntryTable = new CreateBudgetEntryTable(ProvideConnection);
             CreateCategoryTable = new CreateCategoryTable(ProvideConnection);
             CreateDbSettingTable = new CreateDbSettingTable(ProvideConnection);
-            CreateParentTransactionTable = new CreateParentTransactionTable(ProvideConnection);
             CreatePayeeTable = new CreatePayeeTable(ProvideConnection);
             CreateFlagTable = new CreateFlagTable(ProvideConnection);
             CreateSubTransactionTable = new CreateSubTransactionTable(ProvideConnection);
-            CreateTransactionTable = new CreateTransactionTable(ProvideConnection);
-            CreateTransferTable = new CreateTransferTable(ProvideConnection);
-            CreateTitTable = new CreateTransViewTable(ProvideConnection);
+            CreateTransTable = new CreateTransTable(ProvideConnection);
         }
     }
 }

@@ -6,7 +6,7 @@ using BFF.MVVM.Services;
 
 namespace BFF.DB
 {
-    public interface IBffOrm : IPagedOrm, IDisposable
+    public interface IBffOrm : IDisposable
     {
         ICommonPropertyProvider CommonPropertyProvider { get; }
         IBffRepository BffRepository { get; }
@@ -19,11 +19,5 @@ namespace BFF.DB
         long? GetAccountBalance(IAccount account);
         long? GetSummaryAccountBalance();
         IEnumerable<ISubTransaction> GetSubTransInc(long parentId);
-    }
-
-    public interface IPagedOrm
-    {
-        int GetCount<T>(object specifyingObject = null);
-        IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null);
     }
 }

@@ -1,36 +1,16 @@
 using System;
 using System.Data.Common;
 using BFF.DB.PersistenceModels;
+using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateTransferTable : CreateTableBase
-    {
-        public CreateTransferTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Transfer)}s](
-            {nameof(Transfer.Id)} INTEGER PRIMARY KEY,
-            {nameof(Transfer.FlagId)} INTEGER,
-            {nameof(Transfer.CheckNumber)} TEXT,
-            {nameof(Transfer.FromAccountId)} INTEGER,
-            {nameof(Transfer.ToAccountId)} INTEGER,
-            {nameof(Transfer.Date)} DATE,
-            {nameof(Transfer.Memo)} TEXT,
-            {nameof(Transfer.Sum)} INTEGER,
-            {nameof(Transfer.Cleared)} INTEGER,
-            FOREIGN KEY({nameof(Transfer.FromAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT,
-            FOREIGN KEY({nameof(Transfer.ToAccountId)}) REFERENCES {nameof(Account)}s({nameof(Account.Id)}) ON DELETE RESTRICT,
-            FOREIGN KEY({nameof(Transfer.FlagId)}) REFERENCES {nameof(Flag)}s({nameof(Flag.Id)}) ON DELETE SET NULL);";
-
-    }
-
     public interface ITransferRepository : IRepositoryBase<Domain.ITransfer>
     {
     }
 
-    public sealed class TransferRepository : RepositoryBase<Domain.ITransfer, Transfer>, ITransferRepository
+    public sealed class TransferRepository : RepositoryBase<Domain.ITransfer, Trans>, ITransferRepository
     {
         private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
         private readonly Func<long?, DbConnection, Domain.IFlag> _flagFetcher;
@@ -47,31 +27,33 @@ namespace BFF.DB.Dapper.ModelRepositories
         public override Domain.ITransfer Create() =>
             new Domain.Transfer(this, -1L, null, "", DateTime.MinValue, null, null, "", 0L);
         
-        protected override Converter<Domain.ITransfer, Transfer> ConvertToPersistence => domainTransfer => 
-            new Transfer
+        protected override Converter<Domain.ITransfer, Trans> ConvertToPersistence => domainTransfer => 
+            new Trans
             {
                 Id = domainTransfer.Id,
+                AccountId = -69,
                 FlagId = domainTransfer.Flag == null || domainTransfer.Flag == Domain.Flag.Default ? (long?)null : domainTransfer.Flag.Id,
                 CheckNumber = domainTransfer.CheckNumber,
-                FromAccountId = domainTransfer.FromAccount.Id,
-                ToAccountId = domainTransfer.ToAccount.Id,
+                PayeeId = domainTransfer.FromAccount.Id,
+                CategoryId = domainTransfer.ToAccount.Id,
                 Date = domainTransfer.Date,
                 Memo = domainTransfer.Memo,
                 Sum = domainTransfer.Sum,
-                Cleared = domainTransfer.Cleared ? 1L : 0L
+                Cleared = domainTransfer.Cleared ? 1L : 0L,
+                Type = nameof(TransType.Transfer)
             };
 
-        protected override Converter<(Transfer, DbConnection), Domain.ITransfer> ConvertToDomain => tuple =>
+        protected override Converter<(Trans, DbConnection), Domain.ITransfer> ConvertToDomain => tuple =>
         {
-            (Transfer persistenceTransfer, DbConnection connection) = tuple;
+            (Trans persistenceTransfer, DbConnection connection) = tuple;
             return new Domain.Transfer(
                 this,
                 persistenceTransfer.Id,
                 _flagFetcher(persistenceTransfer.Id, connection),
                 persistenceTransfer.CheckNumber,
                 persistenceTransfer.Date,
-                _accountFetcher(persistenceTransfer.FromAccountId, connection),
-                _accountFetcher(persistenceTransfer.ToAccountId, connection),
+                _accountFetcher(persistenceTransfer.PayeeId, connection),
+                _accountFetcher(persistenceTransfer.CategoryId ?? -1, connection),  // This CategoryId should never be a null, because it comes from a transfer
                 persistenceTransfer.Memo,
                 persistenceTransfer.Sum,
                 persistenceTransfer.Cleared == 1L);

@@ -9,6 +9,7 @@ using BFF.DB.Dapper;
 using BFF.DB.SQLite;
 using BFF.Helper.Extensions;
 using BFF.MVVM;
+using BFF.MVVM.Models.Native.Structure;
 using Persistence = BFF.DB.PersistenceModels;
 using NLog;
 using BudgetEntry = BFF.MVVM.Models.Conversion.YNAB.BudgetEntry;
@@ -105,10 +106,10 @@ namespace BFF.Helper.Import
                 Categories = new List<CategoryImportWrapper>(),
                 Payees = new List<Persistence.Payee>(),
                 Flags = new List<Persistence.Flag>(),
-                ParentTransactions = new List<Persistence.ParentTransaction>(),
+                ParentTransactions = new List<Persistence.Trans>(),
                 SubTransactions = new List<Persistence.SubTransaction>(),
-                Transactions = new List<Persistence.Transaction>(),
-                Transfers = new List<Persistence.Transfer>()
+                Transactions = new List<Persistence.Trans>(),
+                Transfers = new List<Persistence.Trans>()
             };
 
             //Second step: Convert conversion objects into native models
@@ -304,7 +305,7 @@ namespace BFF.Helper.Import
 
             string parentMemo = CleanMemosFromParentMessage(splitTransactions);
 
-            Persistence.ParentTransaction parent = TransformToParentTransaction(ynabTransaction, parentMemo);
+            Persistence.Trans parent = TransformToParentTransaction(ynabTransaction, parentMemo);
 
             bool createdSubTransactions = false;
             foreach (var splitTransaction in splitTransactions)
@@ -362,7 +363,7 @@ namespace BFF.Helper.Import
            That way if one of the Accounts of the Transfer points to an already processed Account,
            then it means that this Transfer is already created and can be skipped. */
         private readonly List<string> _processedAccountsList = new List<string>();
-        private void AddTransfer(IList<Persistence.Transfer> transfers, 
+        private void AddTransfer(IList<Persistence.Trans> transfers, 
                                  Transaction ynabTransfer)
         {
             if (_processedAccountsList.Count == 0)
@@ -387,15 +388,16 @@ namespace BFF.Helper.Import
         /// Creates a Transaction-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private Persistence.Transaction TransformToTransaction(Transaction ynabTransaction)
+        private Persistence.Trans TransformToTransaction(Transaction ynabTransaction)
         {
-            Persistence.Transaction ret = new Persistence.Transaction
+            Persistence.Trans ret = new Persistence.Trans
             {
                 CheckNumber = ynabTransaction.CheckNumber,
                 Date = ynabTransaction.Date,
                 Memo = ynabTransaction.Memo,
                 Sum = ynabTransaction.Inflow - ynabTransaction.Outflow,
-                Cleared = ynabTransaction.Cleared ? 1 : 0
+                Cleared = ynabTransaction.Cleared ? 1 : 0,
+                Type = nameof(TransType.Transaction)
             };
             AssignAccount(ynabTransaction.Account, ret);
             CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value, ret);
@@ -408,16 +410,18 @@ namespace BFF.Helper.Import
         /// Creates a Transfer-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private Persistence.Transfer TransformToTransfer(Transaction ynabTransaction)
+        private Persistence.Trans TransformToTransfer(Transaction ynabTransaction)
         {
             long tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;
-            Persistence.Transfer ret = new Persistence.Transfer
+            Persistence.Trans ret = new Persistence.Trans
             {
+                AccountId = -69,
                 CheckNumber = ynabTransaction.CheckNumber,
                 Date = ynabTransaction.Date,
                 Memo = ynabTransaction.Memo,
                 Sum = Math.Abs(tempSum),
-                Cleared = ynabTransaction.Cleared ? 1 : 0
+                Cleared = ynabTransaction.Cleared ? 1 : 0,
+                Type = nameof(TransType.Transfer)
             };
             if(tempSum < 0)
             {
@@ -433,22 +437,25 @@ namespace BFF.Helper.Import
             return ret;
         }
 
-        private readonly IDictionary<Persistence.ParentTransaction, IList<Persistence.SubTransaction>> 
-            _parentTransactionAssignment = new Dictionary<Persistence.ParentTransaction, IList<Persistence.SubTransaction>>();
+        private readonly IDictionary<Persistence.Trans, IList<Persistence.SubTransaction>> 
+            _parentTransactionAssignment = new Dictionary<Persistence.Trans, IList<Persistence.SubTransaction>>();
 
         /// <summary>
         /// Creates a Transaction-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
         /// <param name="parentMemo">Parent memo which is extracted from the split transactions</param>
-        private Persistence.ParentTransaction TransformToParentTransaction(Transaction ynabTransaction, string parentMemo)
+        private Persistence.Trans TransformToParentTransaction(Transaction ynabTransaction, string parentMemo)
         {
-            Persistence.ParentTransaction ret = new Persistence.ParentTransaction
+            Persistence.Trans ret = new Persistence.Trans
             {
+                CategoryId = -69,
                 CheckNumber = ynabTransaction.CheckNumber,
                 Date = ynabTransaction.Date,
                 Memo = parentMemo,
-                Cleared = ynabTransaction.Cleared ? 1 : 0
+                Sum = -69,
+                Cleared = ynabTransaction.Cleared ? 1 : 0,
+                Type = nameof(TransType.ParentTransaction)
             };
             AssignAccount(ynabTransaction.Account, ret);
             CreateAndOrAssignPayee(PayeePartsRegex.Match(ynabTransaction.Payee).Groups["payeeStr"].Value, ret);
@@ -457,7 +464,7 @@ namespace BFF.Helper.Import
         }
 
         private Persistence.SubTransaction TransformToSubTransaction(
-            Transaction ynabTransaction, Persistence.ParentTransaction parent)
+            Transaction ynabTransaction, Persistence.Trans parent)
         {
             Persistence.SubTransaction ret =
                 new Persistence.SubTransaction
@@ -481,11 +488,11 @@ namespace BFF.Helper.Import
         private readonly IDictionary<Persistence.Account, IList<Persistence.IHaveAccount>> _accountAssignment =
             new Dictionary<Persistence.Account, IList<Persistence.IHaveAccount>>();
 
-        private readonly IDictionary<Persistence.Account, IList<Persistence.Transfer>> _fromAccountAssignment =
-            new Dictionary<Persistence.Account, IList<Persistence.Transfer>>();
+        private readonly IDictionary<Persistence.Account, IList<Persistence.Trans>> _fromAccountAssignment =
+            new Dictionary<Persistence.Account, IList<Persistence.Trans>>();
 
-        private readonly IDictionary<Persistence.Account, IList<Persistence.Transfer>> _toAccountAssignment =
-            new Dictionary<Persistence.Account, IList<Persistence.Transfer>>();
+        private readonly IDictionary<Persistence.Account, IList<Persistence.Trans>> _toAccountAssignment =
+            new Dictionary<Persistence.Account, IList<Persistence.Trans>>();
 
         private void CreateAccount(string name, long startingBalance, DateTime startingDateTime)
         {
@@ -499,8 +506,8 @@ namespace BFF.Helper.Import
             };
             _accountCache.Add(name, account);
             _accountAssignment.Add(account, new List<Persistence.IHaveAccount>());
-            _fromAccountAssignment.Add(account, new List<Persistence.Transfer>());
-            _toAccountAssignment.Add(account, new List<Persistence.Transfer>());
+            _fromAccountAssignment.Add(account, new List<Persistence.Trans>());
+            _toAccountAssignment.Add(account, new List<Persistence.Trans>());
         }
 
         private void AssignAccount(string name, Persistence.IHaveAccount titNoTransfer)
@@ -509,13 +516,13 @@ namespace BFF.Helper.Import
             _accountAssignment[_accountCache[name]].Add(titNoTransfer);
         }
 
-        private void AssignToAccount(string name, Persistence.Transfer transfer)
+        private void AssignToAccount(string name, Persistence.Trans transfer)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
             _toAccountAssignment[_accountCache[name]].Add(transfer);
         }
 
-        private void AssignFormAccount(string name, Persistence.Transfer transfer)
+        private void AssignFormAccount(string name, Persistence.Trans transfer)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
             _fromAccountAssignment[_accountCache[name]].Add(transfer);

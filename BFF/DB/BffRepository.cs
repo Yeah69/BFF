@@ -7,9 +7,11 @@ using BFF.DB.Dapper.ModelRepositories;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.DB.PersistenceModels;
+using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using DbSetting = BFF.DB.PersistenceModels.DbSetting;
+using IHaveCategory = BFF.DB.PersistenceModels.IHaveCategory;
 
 namespace BFF.DB
 {
@@ -19,13 +21,10 @@ namespace BFF.DB
         protected abstract ICreateTable CreateBudgetEntryTable { get; }
         protected abstract ICreateTable CreateCategoryTable { get; }
         protected abstract ICreateTable CreateDbSettingTable { get; }
-        protected abstract ICreateTable CreateParentTransactionTable { get; }
         protected abstract ICreateTable CreatePayeeTable { get; }
         protected abstract ICreateTable CreateFlagTable { get; }
         protected abstract ICreateTable CreateSubTransactionTable { get; }
-        protected abstract ICreateTable CreateTransactionTable { get; }
-        protected abstract ICreateTable CreateTransferTable { get; }
-        protected abstract ICreateTable CreateTitTable { get; }
+        protected abstract ICreateTable CreateTransTable { get; }
         protected abstract IProvideConnection ProvideConnection { get; }
         
         private void CreateTablesInner(DbConnection connection)
@@ -34,19 +33,14 @@ namespace BFF.DB
             CreatePayeeTable.CreateTable(connection);
             CreateCategoryTable.CreateTable(connection);
             CreateAccountTable.CreateTable(connection);
-
-            CreateTransactionTable.CreateTable(connection);
-            CreateParentTransactionTable.CreateTable(connection);
+            
+            CreateTransTable.CreateTable(connection);
             CreateSubTransactionTable.CreateTable(connection);
-
-            CreateTransferTable.CreateTable(connection);
 
             CreateDbSettingTable.CreateTable(connection);
             connection.Insert(new DbSetting());
 
             CreateBudgetEntryTable.CreateTable(connection);
-            
-            CreateTitTable.CreateTable(connection);
 
             connection.Execute(SqLiteQueries.SetDatabaseSchemaVersion);
         }
@@ -76,8 +70,8 @@ namespace BFF.DB
         IPayeeRepository PayeeRepository { get; }
         ISubTransactionRepository SubTransactionRepository { get; }
         ITransactionRepository TransactionRepository { get; }
+        ITransRepository TransRepository { get; }
         ITransferRepository TransferRepository { get; }
-        ITransViewRepository TransViewRepository { get; }
         IBudgetMonthRepository BudgetMonthRepository { get; }
         IFlagRepository FlagRepository { get; }
 
@@ -106,8 +100,8 @@ namespace BFF.DB
         public abstract IPayeeRepository PayeeRepository { get; }
         public abstract ISubTransactionRepository SubTransactionRepository { get; }
         public abstract ITransactionRepository TransactionRepository { get; }
+        public abstract ITransRepository TransRepository { get; }
         public abstract ITransferRepository TransferRepository { get; }
-        public abstract ITransViewRepository TransViewRepository { get; }
         public abstract IBudgetMonthRepository BudgetMonthRepository { get; }
         public abstract IFlagRepository FlagRepository { get; }
 
@@ -156,18 +150,20 @@ namespace BFF.DB
                 {
                     transIncBase.AccountId = id;
                 }
-                foreach (Transfer transfer in importAssignments.FromAccountToTransfer[account])
+                foreach (Trans transfer in importAssignments.FromAccountToTransfer[account])
                 {
-                    transfer.FromAccountId = id;
+                    transfer.PayeeId = id;
                 }
-                foreach (Transfer transfer in importAssignments.ToAccountToTransfer[account])
+                foreach (Trans transfer in importAssignments.ToAccountToTransfer[account])
                 {
-                    transfer.ToAccountId = id;
+                    transfer.CategoryId = id;
                 }
             }
-            foreach (PersistenceModels.Transaction transaction in importLists.Transactions)
+            foreach (PersistenceModels.Trans transaction in importLists.Transactions)
+            {
                 connection.Insert(transaction);
-            foreach (ParentTransaction parentTransaction in importLists.ParentTransactions)
+            }
+            foreach (Trans parentTransaction in importLists.ParentTransactions)
             {
                 var id = connection.Insert(parentTransaction);
                 foreach (SubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
@@ -177,8 +173,10 @@ namespace BFF.DB
             }
             foreach (SubTransaction subTransaction in importLists.SubTransactions) 
                 connection.Insert(subTransaction);
-            foreach (Transfer transfer in importLists.Transfers) 
+            foreach (Trans transfer in importLists.Transfers)
+            {
                 connection.Insert(transfer);
+            }
             foreach (BudgetEntry budgetEntry in importLists.BudgetEntries) 
                 connection.Insert(budgetEntry);
         }

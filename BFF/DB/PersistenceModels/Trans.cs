@@ -2,7 +2,7 @@ using System;
 
 namespace BFF.DB.PersistenceModels
 {
-    public class Trans : IPersistenceModel
+    public class Trans : IPersistenceModel, IHaveAccount, IHaveCategory, IHavePayee, IHaveFlag
     {
         public long Id { get; set; }
         public long? FlagId { get; set; }

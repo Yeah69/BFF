@@ -83,10 +83,10 @@ namespace BFF.MVVM.ViewModels.ForModels
                 parentTransaction.SubTransactions.ToReadOnlyReactiveCollection(subTransactionViewModelService
                     .GetViewModel).AddTo(CompositeDisposable);
 
-            Sum = new ReactiveProperty<long>(SubTransactions.Sum(stvw => stvw.Sum.Value))
+            Sum = new ReactiveProperty<long>(SubTransactions.Sum(stvw => stvw.Sum.Value), ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
-            Sum.DistinctUntilChanged().Subscribe(_ =>
+            Sum.Subscribe(_ =>
             {
                 Account.Value?.RefreshBalance();
                 Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);

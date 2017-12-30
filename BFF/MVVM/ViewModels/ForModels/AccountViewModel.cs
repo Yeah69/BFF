@@ -7,7 +7,6 @@ using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.Helper;
 using BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -138,8 +137,8 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         protected override IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess
             => new RelayBasicAsyncDataAccess<ITransLikeViewModel>(
-                (offset, pageSize) => CreatePacket(Orm.GetPage<ITransBase>(offset, pageSize, _account)),
-                () => Orm.GetCount<ITransBase>(_account),
+                (offset, pageSize) => CreatePacket(Orm.BffRepository.TransRepository.GetPage(offset, pageSize, _account)),
+                () => Orm.BffRepository.TransRepository.GetCount(_account),
                 () => new TransLikeViewModelPlaceholder());
 
         /// <summary>

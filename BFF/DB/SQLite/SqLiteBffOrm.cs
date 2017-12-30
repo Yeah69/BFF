@@ -74,12 +74,6 @@ namespace BFF.DB.SQLite
             BudgetEntryViewModelService = new BudgetEntryViewModelService(be => new BudgetEntryViewModel(this, be, CommonPropertyProvider.CategoryViewModelService));
         }
 
-        public IEnumerable<T> GetPage<T>(int offset, int pageSize, object specifyingObject = null) //todo: sorting options
-            => _bffRepository.TransViewRepository.GetPage(offset, pageSize, specifyingObject as IAccount) as IEnumerable<T>;
-
-        public int GetCount<T>(object specifyingObject = null) => 
-            _bffRepository.TransViewRepository.GetCount(specifyingObject as IAccount);
-
         public void Dispose()
         {
             _bffRepository?.Dispose();

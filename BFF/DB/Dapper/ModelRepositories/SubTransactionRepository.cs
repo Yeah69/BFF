@@ -19,7 +19,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             {nameof(SubTransaction.CategoryId)} INTEGER,
             {nameof(SubTransaction.Memo)} TEXT,
             {nameof(SubTransaction.Sum)} INTEGER,
-            FOREIGN KEY({nameof(SubTransaction.ParentId)}) REFERENCES {nameof(ParentTransaction)}s({nameof(ParentTransaction.Id)}) ON DELETE CASCADE);";
+            FOREIGN KEY({nameof(SubTransaction.ParentId)}) REFERENCES {nameof(Trans)}s({nameof(Trans.Id)}) ON DELETE CASCADE);";
 
     }
 

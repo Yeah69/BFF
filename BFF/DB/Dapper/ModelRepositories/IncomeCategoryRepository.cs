@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using Dapper;
 using Category = BFF.DB.PersistenceModels.Category;
-using Transaction = BFF.DB.PersistenceModels.Transaction;
+using Trans = BFF.DB.PersistenceModels.Trans;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -29,15 +29,15 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         private static string IncomeForCategoryQuery(int offset) =>
             $@"
-    SELECT Sum({nameof(Transaction.Sum)})
-    FROM {nameof(Transaction)}s
-    WHERE {nameof(Transaction.CategoryId)} == @CategoryId AND strftime('%Y', {nameof(Transaction.Date)}{(offset == 0 ? "" : $", '{offset:+0;-0;0} month'")}) == @Year AND strftime('%m', {nameof(Transaction.Date)}{(offset == 0 ? "" : $", '{offset:+0;-0;0} month'")}) == @Month;";
+    SELECT Sum({nameof(Trans.Sum)})
+    FROM {nameof(Trans)}s
+    WHERE {nameof(Trans.CategoryId)} == @CategoryId AND strftime('%Y', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) == @Year AND strftime('%m', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) == @Month;";
 
         private static string IncomeForCategoryUntilMonthQuery(int offset) =>
             $@"
-    SELECT Sum({nameof(Transaction.Sum)})
-    FROM {nameof(Transaction)}s
-    WHERE {nameof(Transaction.CategoryId)} == @CategoryId AND (strftime('%Y', {nameof(Transaction.Date)}{(offset == 0 ? "" : $", '{offset:+0;-0;0} month'")}) < @Year OR strftime('%Y', {nameof(Transaction.Date)}{(offset == 0 ? "" : $", '{offset:+0;-0;0} month'")}) == @Year AND strftime('%m', {nameof(Transaction.Date)}{(offset == 0 ? "" : $", '{offset:+0;-0;0} month'")}) <= @Month);";
+    SELECT Sum({nameof(Trans.Sum)})
+    FROM {nameof(Trans)}s
+    WHERE {nameof(Trans.CategoryId)} == @CategoryId AND (strftime('%Y', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) < @Year OR strftime('%Y', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) == @Year AND strftime('%m', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) <= @Month);";
 
 
         public IncomeCategoryRepository(IProvideConnection provideConnection)
