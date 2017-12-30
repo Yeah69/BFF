@@ -106,8 +106,8 @@
                 Margin="5"
                 Content="{lex:Loc ImportView_Import}">
             <Button.Style>
-                <Style BasedOn="{StaticResource MetroButton}"
-                       TargetType="Button">
+                <Style BasedOn="{StaticResource {x:Type Button}}"
+                       TargetType="{x:Type Button}">
                     <Setter Property="IsEnabled"
                             Value="False" />
                     <Style.Triggers>
