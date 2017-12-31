@@ -156,7 +156,8 @@ namespace BFF.MVVM.ViewModels.ForModels
             Parent = category.ToReactivePropertyAsSynchronized(
                 c => c.Parent,
                 service.GetViewModel,
-                service.GetModel).AddTo(CompositeDisposable);
+                service.GetModel, 
+                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
         }
 
         #region Overrides of DataModelViewModel

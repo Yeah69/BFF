@@ -60,7 +60,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
 
             FromAccount = transfer
-                .ToReactivePropertyAsSynchronized(t => t.FromAccount, accountViewModelService.GetViewModel, accountViewModelService.GetModel)
+                .ToReactivePropertyAsSynchronized(
+                    t => t.FromAccount,
+                    accountViewModelService.GetViewModel, 
+                    accountViewModelService.GetModel, 
+                    ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
             FromAccount
@@ -69,12 +73,15 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .AddTo(CompositeDisposable);
 
             FromAccount
-                .Skip(1)
                 .Subscribe(RefreshAnAccountViewModel)
                 .AddTo(CompositeDisposable);
 
             ToAccount = transfer
-                .ToReactivePropertyAsSynchronized(t => t.ToAccount, accountViewModelService.GetViewModel, accountViewModelService.GetModel)
+                .ToReactivePropertyAsSynchronized(
+                    t => t.ToAccount, 
+                    accountViewModelService.GetViewModel,
+                    accountViewModelService.GetModel,
+                    ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
             ToAccount
@@ -83,7 +90,6 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .AddTo(CompositeDisposable);
 
             ToAccount
-                .Skip(1)
                 .Subscribe(RefreshAnAccountViewModel)
                 .AddTo(CompositeDisposable);
 

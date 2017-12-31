@@ -27,7 +27,8 @@ namespace BFF.MVVM.ViewModels.ForModels
             Color = flag.ToReactivePropertyAsSynchronized(
                 f => f.Color,
                 color => new SolidColorBrush(color),
-                brush => brush.Color).AddTo(CompositeDisposable);
+                brush => brush.Color, 
+                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
         }
 
         #region Overrides of DataModelViewModel

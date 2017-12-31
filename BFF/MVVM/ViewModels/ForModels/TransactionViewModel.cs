@@ -41,13 +41,13 @@ namespace BFF.MVVM.ViewModels.ForModels
             Category = transaction.ToReactivePropertyAsSynchronized(
                     ti => ti.Category,
                     categoryViewModelService.GetViewModel,
-                    categoryViewModelService.GetModel)
+                    categoryViewModelService.GetModel,
+                    ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
-            Sum = transaction.ToReactivePropertyAsSynchronized(ti => ti.Sum).AddTo(CompositeDisposable);
+            Sum = transaction.ToReactivePropertyAsSynchronized(ti => ti.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
-            Sum.Skip(1)
-                .Subscribe(sum => NotifyRelevantAccountsToRefreshBalance())
+            Sum.Subscribe(sum => NotifyRelevantAccountsToRefreshBalance())
                 .AddTo(CompositeDisposable);
 
             NewCategoryViewModel = newCategoryViewModelFactory(this);

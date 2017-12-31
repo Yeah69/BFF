@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reactive.Linq;
 using BFF.DB;
 using BFF.Helper;
 using BFF.MVVM.Models.Native;
@@ -36,11 +35,12 @@ namespace BFF.MVVM.ViewModels.ForModels
             Category = budgetEntry
                 .ToReactivePropertyAsSynchronized(
                     be => be.Category, categoryViewModelService.GetViewModel,
-                    categoryViewModelService.GetModel)
+                    categoryViewModelService.GetModel, 
+                    ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
             Month = budgetEntry
-                .ToReadOnlyReactivePropertyAsSynchronized(be => be.Month)
+                .ToReadOnlyReactivePropertyAsSynchronized(be => be.Month, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
             Budget = budgetEntry
@@ -52,11 +52,11 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .AddTo(CompositeDisposable);
 
             Outflow = budgetEntry
-                .ToReadOnlyReactivePropertyAsSynchronized(be => be.Outflow)
+                .ToReadOnlyReactivePropertyAsSynchronized(be => be.Outflow, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
             Balance = budgetEntry
-                .ToReadOnlyReactivePropertyAsSynchronized(be => be.Balance)
+                .ToReadOnlyReactivePropertyAsSynchronized(be => be.Balance, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
         }
 

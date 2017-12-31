@@ -48,7 +48,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="transLike">The model.</param>
         protected TransLikeViewModel(IBffOrm orm, ITransLike transLike) : base(orm, transLike)
         {
-            Memo = transLike.ToReactivePropertyAsSynchronized(tl => tl.Memo).AddTo(CompositeDisposable);
+            Memo = transLike.ToReactivePropertyAsSynchronized(tl => tl.Memo, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             InitializeDeleteCommand();
         }

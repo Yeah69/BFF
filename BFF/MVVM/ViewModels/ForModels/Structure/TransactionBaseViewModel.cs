@@ -61,7 +61,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             Account = parentTransactionBase.ToReactivePropertyAsSynchronized(
                 tib => tib.Account,
                 accountViewModelService.GetViewModel, 
-                accountViewModelService.GetModel).AddTo(CompositeDisposable);
+                accountViewModelService.GetModel, 
+                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             Account
                 .SkipLast(1)
@@ -69,14 +70,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 .AddTo(CompositeDisposable);
 
             Account
-                .Skip(1)
                 .Subscribe(RefreshAnAccountViewModel)
                 .AddTo(CompositeDisposable);
 
             Payee = parentTransactionBase.ToReactivePropertyAsSynchronized(
                 tib => tib.Payee,
                 payeeViewModelService.GetViewModel,
-                payeeViewModelService.GetModel).AddTo(CompositeDisposable);
+                payeeViewModelService.GetModel, 
+                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             NewPayeeViewModel = newPayeeViewModelFactory(this);
         }

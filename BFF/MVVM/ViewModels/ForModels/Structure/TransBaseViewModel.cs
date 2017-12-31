@@ -68,19 +68,23 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="transBase">The model.</param>
         protected TransBaseViewModel(IBffOrm orm, ITransBase transBase, IFlagViewModelService flagViewModelService) : base(orm, transBase)
         {
-            Flag = transBase.ToReactivePropertyAsSynchronized(tb => tb.Flag, flagViewModelService.GetViewModel, flagViewModelService.GetModel);
+            Flag = transBase.ToReactivePropertyAsSynchronized(
+                tb => tb.Flag, 
+                flagViewModelService.GetViewModel,
+                flagViewModelService.GetModel,
+                ReactivePropertyMode.DistinctUntilChanged);
 
             RemoveFlag = new ReactiveCommand().AddTo(CompositeDisposable);
 
             RemoveFlag.Subscribe(() => Flag.Value = null);
 
-            CheckNumber = transBase.ToReactivePropertyAsSynchronized(tb => tb.CheckNumber).AddTo(CompositeDisposable);
+            CheckNumber = transBase.ToReactivePropertyAsSynchronized(tb => tb.CheckNumber, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
-            Date = transBase.ToReactivePropertyAsSynchronized(tb => tb.Date).AddTo(CompositeDisposable);
+            Date = transBase.ToReactivePropertyAsSynchronized(tb => tb.Date, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
-            Date.Skip(1).Subscribe(_ => NotifyRelevantAccountsToRefreshTits()).AddTo(CompositeDisposable);
+            Date.Subscribe(_ => NotifyRelevantAccountsToRefreshTits()).AddTo(CompositeDisposable);
 
-            Cleared = transBase.ToReactivePropertyAsSynchronized(tb => tb.Cleared).AddTo(CompositeDisposable);
+            Cleared = transBase.ToReactivePropertyAsSynchronized(tb => tb.Cleared, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     {
         protected CommonPropertyViewModel(IBffOrm orm, ICommonProperty commonProperty) : base(orm, commonProperty)
         {
-            Name = commonProperty.ToReactivePropertyAsSynchronized(cp => cp.Name).AddTo(CompositeDisposable);
+            Name = commonProperty.ToReactivePropertyAsSynchronized(cp => cp.Name, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
         }
         public virtual IReactiveProperty<string> Name { get; }
     }

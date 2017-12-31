@@ -65,13 +65,13 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             _account = account;
             StartingBalance = account
-                .ToReactivePropertyAsSynchronized(a => a.StartingBalance)
+                .ToReactivePropertyAsSynchronized(a => a.StartingBalance, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
             StartingBalance.Subscribe(_ => summaryAccountViewModel.RefreshStartingBalance())
                            .AddTo(CompositeDisposable);
 
             StartingDate = account
-                .ToReactivePropertyAsSynchronized(a => a.StartingDate)
+                .ToReactivePropertyAsSynchronized(a => a.StartingDate, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
             summaryAccountViewModel.RefreshStartingBalance();
