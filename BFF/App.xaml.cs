@@ -18,15 +18,42 @@ namespace BFF
         {
             Logger.Trace("Initializing App");
             InitializeComponent();
+
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
+            
+            
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            void SetColorsDependingOnTheChosenTheme(AppTheme theme)
+            {
+                switch (theme.Name)
+                {
+                    case "BaseLight":
+                        Resources["AlternatingRowBrush"] = Resources["GrayBrush8"];
+                        Resources["OpaqueZeroBrush"] = Resources["GrayBrush6"];
+                        break;
+                    case "BaseDark":
+                        Resources["AlternatingRowBrush"] = Resources["GrayBrush8"];
+                        Resources["OpaqueZeroBrush"] = Resources["GrayBrush9"];
+                        break;
+                }
+            }
+
+            void ThemeManagerOnIsThemeChanged(object s, OnThemeChangedEventArgs args)
+            {
+                SetColorsDependingOnTheChosenTheme(args.AppTheme);
+            }
+
+            ThemeManager.IsThemeChanged += ThemeManagerOnIsThemeChanged;
             Accent initialAccent = ThemeManager.GetAccent(BFF.Properties.Settings.Default.MahApps_Accent);
             AppTheme initialAppTheme = ThemeManager.GetAppTheme(BFF.Properties.Settings.Default.MahApps_AppTheme);
+
+            SetColorsDependingOnTheChosenTheme(initialAppTheme);
             ThemeManager.ChangeAppStyle(Current, initialAccent, initialAppTheme);
+            
             Logger.Info("BFF started. (Version: {0})", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
         }
 
@@ -38,10 +65,9 @@ namespace BFF
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
 
-            Logger.Fatal(e.Exception, "An unhandled error occured!");
+            Logger.Fatal(e.Exception, "An unhandled error occurred!");
             var mySettings = new MetroDialogSettings { AffirmativeButtonText = "Okay" };
-            //(MainWindow as MetroWindow).ShowMessageAsync("An unhandled error occured!", $"Error message:\r\n{e.Exception.Message}\r\nStackTrace:\r\n{e.Exception.StackTrace}", MessageDialogStyle.Affirmative, mySettings);
-            (MainWindow as MetroWindow).ShowMessageAsync("An unhandled error occured!", $"Error message:\r\n{e.Exception.Message}", MessageDialogStyle.Affirmative, mySettings);
+            (MainWindow as MetroWindow).ShowMessageAsync("An unhandled error occurred!", $"Error message:\r\n{e.Exception.Message}", MessageDialogStyle.Affirmative, mySettings);
             e.Handled = true;
         }
     }

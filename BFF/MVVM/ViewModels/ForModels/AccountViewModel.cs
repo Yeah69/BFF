@@ -1,55 +1,37 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
-using AlphaChiTech.Virtualization;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
+using BFF.DataVirtualizingCollection.DataAccesses;
+using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public interface IAccountViewModel : IAccountBaseViewModel {}
+    public interface IAccountViewModel : IAccountBaseViewModel
+    {
+        IReactiveProperty<DateTime> StartingDate { get; }
+    }
 
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
     public class AccountViewModel : AccountBaseViewModel, IAccountViewModel
     {
+        private readonly IAccount _account;
+
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        public override long StartingBalance
-        {
-            get { return Account.StartingBalance; }
-            set
-            {
-                if(Account.StartingBalance == value) return;
-                Account.StartingBalance = value;
-                Account.Update(Orm);
-                OnPropertyChanged();
-                Orm.CommonPropertyProvider.SummaryAccountViewModel.RefreshStartingBalance();
-            }
-        }
+        public sealed override IReactiveProperty<long> StartingBalance { get; }
 
-        /// <summary>
-        /// Name of the Account Model
-        /// </summary>
-        public override string Name
-        {
-            get { return Account.Name; }
-            set
-            {
-                if(Account.Name == value) return;
-                Account.Name = value;
-                Account.Update(Orm);
-                OnPropertyChanged();
-            }
-        }
 
-        /// <summary>
-        /// The object's Id in the table of the database.
-        /// </summary>
-        public override long Id => Account.Id;
+        public IReactiveProperty<DateTime> StartingDate { get; }
 
         /// <summary>
         /// Before a model object is inserted into the database, it has to be valid.
@@ -58,7 +40,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return !string.IsNullOrWhiteSpace(Name);
+            return !string.IsNullOrWhiteSpace(Name.Value);
         }
 
         /// <summary>
@@ -66,31 +48,10 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The Orm works in a generic way and determines the right table by the given type.
         /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
         /// </summary>
-        protected override void InsertToDb()
+        protected override void OnInsert()
         {
-            Orm?.CommonPropertyProvider.Add(Account);
             Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
             Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
-        }
-
-        /// <summary>
-        /// Uses the OR mapper to update the model in the database. Inner function for the Update method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected override void UpdateToDb()
-        {
-            Account.Update(Orm);
-        }
-
-        /// <summary>
-        /// Uses the OR mapper to delete the model from the database. Inner function for the Delete method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected override void DeleteFromDb()
-        {
-            Orm?.CommonPropertyProvider?.Remove(Account);
         }
 
         /// <summary>
@@ -98,54 +59,118 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="account">An Account Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public AccountViewModel(IAccount account, IBffOrm orm) : base(orm)
+        /// <param name="summaryAccountViewModel">This account summarizes all accounts.</param>
+        public AccountViewModel(IAccount account, IBffOrm orm, ISummaryAccountViewModel summaryAccountViewModel) 
+            : base(orm, account)
         {
-            Account = account;
-            Messenger.Default.Register<AccountMessage>(this, message =>
+            _account = account;
+            StartingBalance = account
+                .ToReactivePropertyAsSynchronized(a => a.StartingBalance, ReactivePropertyMode.DistinctUntilChanged)
+                .AddTo(CompositeDisposable);
+            StartingBalance.Subscribe(_ => summaryAccountViewModel.RefreshStartingBalance())
+                           .AddTo(CompositeDisposable);
+
+            StartingDate = account
+                .ToReactivePropertyAsSynchronized(a => a.StartingDate, ReactivePropertyMode.DistinctUntilChanged)
+                .AddTo(CompositeDisposable);
+
+            summaryAccountViewModel.RefreshStartingBalance();
+
+            NewTransactionCommand.Subscribe(_ =>
             {
-                switch(message)
-                {
-                    case AccountMessage.Refresh:
-                        RefreshTits();
-                        RefreshBalance();
-                        break;
-                    case AccountMessage.RefreshBalance:
-                        RefreshBalance();
-                        break;
-                    case AccountMessage.RefreshTits:
-                        RefreshTits();
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
-            }, Account);
+                ITransaction transaction = Orm.BffRepository.TransactionRepository.Create();
+                transaction.Date = DateTime.Today;
+                transaction.Account = _account;
+                transaction.Memo = "";
+                transaction.Sum = 0L;
+                transaction.Cleared = false;
+                NewTits.Add(new TransactionViewModel(
+                    transaction,
+                    hcvm => new NewCategoryViewModel(
+                        hcvm,
+                        Orm.BffRepository.CategoryRepository, 
+                        Orm.BffRepository.IncomeCategoryRepository, 
+                        Orm.CommonPropertyProvider.CategoryViewModelService,
+                        Orm.CommonPropertyProvider.IncomeCategoryViewModelService,
+                        Orm.CommonPropertyProvider.CategoryBaseViewModelService),
+                    hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
+                    Orm,
+                    Orm.CommonPropertyProvider.AccountViewModelService,
+                    Orm.CommonPropertyProvider.PayeeViewModelService,
+                    Orm.CommonPropertyProvider.CategoryBaseViewModelService,
+                    Orm.CommonPropertyProvider.FlagViewModelService));
+            }).AddTo(CompositeDisposable);
+
+            NewTransferCommand.Subscribe(_ =>
+            {
+                ITransfer transfer = Orm.BffRepository.TransferRepository.Create();
+                transfer.Date = DateTime.Today;
+                transfer.Memo = "";
+                transfer.Sum = 0L;
+                transfer.Cleared = false;
+                NewTits.Add(new TransferViewModel(
+                    transfer,
+                    Orm,
+                    Orm.CommonPropertyProvider.AccountViewModelService,
+                    Orm.CommonPropertyProvider.FlagViewModelService));
+            }).AddTo(CompositeDisposable);
+
+            NewParentTransactionCommand.Subscribe(_ =>
+            {
+                IParentTransaction parentTransaction = Orm.BffRepository.ParentTransactionRepository.Create();
+                parentTransaction.Date = DateTime.Today;
+                parentTransaction.Account = _account;
+                parentTransaction.Memo = "";
+                parentTransaction.Cleared = false;
+                NewTits.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
+            }).AddTo(CompositeDisposable);
+
+            ApplyCommand = NewTits.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
+                .Select(count => count > 0)
+                .ToReactiveCommand();
+
+            ApplyCommand.Subscribe(_ => ApplyTits()).AddTo(CompositeDisposable);
+
         }
 
         #region ViewModel_Part
 
+        protected override IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess
+            => new RelayBasicAsyncDataAccess<ITransLikeViewModel>(
+                (offset, pageSize) => CreatePacket(Orm.BffRepository.TransRepository.GetPage(offset, pageSize, _account)),
+                () => Orm.BffRepository.TransRepository.GetCount(_account),
+                () => new TransLikeViewModelPlaceholder());
+
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        public override VirtualizingObservableCollection<ITitLikeViewModel> Tits => _tits ?? 
-            (_tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, Account, Orm))));
-
+        public override IDataVirtualizingCollection<ITransLikeViewModel> Tits => _tits ?? CreateDataVirtualizingCollection();
+        
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public override ObservableCollection<ITitLikeViewModel> NewTits { get; set; } = new ObservableCollection<ITitLikeViewModel>();
+        public sealed override ObservableCollection<ITransLikeViewModel> NewTits { get; } = new ObservableCollection<ITransLikeViewModel>();
 
         /// <summary>
         /// The current Balance of this Account.
         /// </summary>
-        public override long? Balance => Orm?.GetAccountBalance(Account);
+        public override long? Balance => Orm?.GetAccountBalance(_account);
+
+        /// <summary>
+        /// The current Balance of this Account.
+        /// </summary>
+        public override long? BalanceUntilNow => Orm?.GetAccountBalanceUntilNow(_account);
 
         /// <summary>
         /// Refreshes the Balance.
         /// </summary>
         public override void RefreshBalance()
         {
-            OnPropertyChanged(nameof(Balance));
-            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance); //todo: Necsessary?
+            if (IsOpen.Value)
+            {
+                OnPropertyChanged(nameof(Balance));
+                OnPropertyChanged(nameof(BalanceUntilNow));
+            }
         }
 
         /// <summary>
@@ -153,59 +178,36 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override void RefreshTits()
         {
-            OnPreVirtualizedRefresh();
-            _tits = new VirtualizingObservableCollection<ITitLikeViewModel>(new PaginationManager<ITitLikeViewModel>(new PagedTitBaseProviderAsync(Orm, Account, Orm)));
-            OnPropertyChanged(nameof(Tits));
-            OnPostVirtualizedRefresh();
+            if(IsOpen.Value)
+            {
+                OnPreVirtualizedRefresh();
+                var temp = _tits;
+                _tits = CreateDataVirtualizingCollection();
+                OnPropertyChanged(nameof(Tits));
+                OnPostVirtualizedRefresh();
+                Task.Run(() => temp?.Dispose());
+            }
         }
 
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        public override ICommand NewTransactionCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new TransactionViewModel(new Transaction(DateTime.Today, Account, memo: "", sum: 0L, cleared: false), Orm));
-        });
-
-        /// <summary>
-        /// Creates a new Income.
-        /// </summary>
-        public override ICommand NewIncomeCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new IncomeViewModel(new Income(DateTime.Today, Account, memo: "", sum: 0L, cleared: false), Orm));
-        });
+        public sealed override ReactiveCommand NewTransactionCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        public override ICommand NewTransferCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new TransferViewModel(new Transfer(DateTime.Today, memo: "", sum: 0L, cleared: false), Orm));
-        });
+        public sealed override ReactiveCommand NewTransferCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        public override ICommand NewParentTransactionCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new ParentTransactionViewModel(new ParentTransaction(DateTime.Today, Account, memo: "", cleared: false), Orm));
-        });
-
-        /// <summary>
-        /// Creates a new ParentIncome.
-        /// </summary>
-        public override ICommand NewParentIncomeCommand => new RelayCommand(obj =>
-        {
-            NewTits.Add(new ParentIncomeViewModel(new ParentIncome(DateTime.Today, Account, memo: "", cleared: false), Orm));
-        });
+        public sealed override ReactiveCommand NewParentTransactionCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// Flushes all valid and not yet inserted TITs to the database.
         /// </summary>
-        public override ICommand ApplyCommand => new RelayCommand(obj =>
-        {
-            ApplyTits();
-        }, obj => NewTits.Count > 0);
+        public sealed override ReactiveCommand ApplyCommand { get; }
 
         #endregion
     }

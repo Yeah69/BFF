@@ -118,174 +118,273 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value />
+    <value>All Accounts</value>
   </data>
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
-    <value />
+    <value>Create</value>
   </data>
   <data name="AccountTabsView_NewAccount_Name" xml:space="preserve">
-    <value />
+    <value>Account Name:</value>
   </data>
   <data name="AccountTabsView_NewAccount_StartingBalance" xml:space="preserve">
-    <value />
+    <value>Starting Balance:</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_StartingDate" xml:space="preserve">
+    <value>Starting Date:</value>
   </data>
   <data name="AccountView_Balance" xml:space="preserve">
-    <value />
+    <value>Balance:</value>
   </data>
   <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value />
+    <value>Transfer</value>
   </data>
   <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value />
+    <value>Delete</value>
   </data>
   <data name="AccountView_Header_Account" xml:space="preserve">
-    <value />
+    <value>Account</value>
   </data>
   <data name="AccountView_Header_Category" xml:space="preserve">
-    <value />
+    <value>Category</value>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Check Number</value>
   </data>
   <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value />
+    <value>Cleared</value>
   </data>
   <data name="AccountView_Header_Date" xml:space="preserve">
-    <value />
+    <value>Date</value>
   </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>F</value>
+  <comment>Abbreviation of Flag or Markierung (German)</comment></data>
   <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value />
+    <value>Memo</value>
   </data>
   <data name="AccountView_Header_Payee" xml:space="preserve">
-    <value />
+    <value>Payee</value>
   </data>
   <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value />
+    <value>Sum</value>
   </data>
   <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value />
+    <value>S</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Symbol</value>
   </data>
   <data name="AccountView_StartingBalance" xml:space="preserve">
-    <value />
+    <value>Starting Balance:</value>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value />
-  </data>
-  <data name="AccountView_ToolTip_NewIncome" xml:space="preserve">
-    <value />
-  </data>
-  <data name="AccountView_ToolTip_NewParentIncome" xml:space="preserve">
-    <value />
+    <value>Add to the table</value>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value />
+    <value>New splitted Transaction</value>
   </data>
   <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value />
+    <value>New Transaction</value>
   </data>
   <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value />
+    <value>New Transfer</value>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Amount of money which is available in this month but not assigned to any category yet.</value>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Budgeted</value>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Sum of all amounts of money which are budgeted on a category in this month.</value>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Income</value>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Amount of earned money which is assigned for the expenses of this month.</value>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Not Budgeted</value>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Amount of money which was available last month but not assigned to any category.</value>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Outflows</value>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Overbudgeted</value>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Amount of money which was missing to satisfy all categories in last month.</value>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Amount of money which is missing to satisfy all categories in this month.</value>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Overspend</value>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Sum of overspend amounts of money accumulated from all categories in last month.</value>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Create new category</value>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Create new payee</value>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>The name of the new category is not allowed to be empty!</value>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>A category has to be chosen.</value>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>A payee has to be chosen.</value>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>A new account's name isn't allowed to be empty or match a name of the existing accounts!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>This name already exists on the chosen category level!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>This category level already contains a category of chosen name!</value>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>The name of a new payee isn't allowed to be empty or an already existing one.</value>
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
-    <value />
+    <value>The file "{0}" could not be found.</value>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Accounts</value>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Budget</value>
   </data>
   <data name="ImportView_Browse" xml:space="preserve">
-    <value />
+    <value>Browse</value>
   </data>
   <data name="ImportView_Cancel" xml:space="preserve">
-    <value />
+    <value>Cancel</value>
   </data>
   <data name="ImportView_Import" xml:space="preserve">
-    <value />
+    <value>Import</value>
   </data>
   <data name="ImportView_SaveFile" xml:space="preserve">
-    <value />
+    <value>Import and save to this path:</value>
   </data>
   <data name="ImportView_YNAB4" xml:space="preserve">
-    <value />
+    <value>Import a YNAB4 CSV-file</value>
   </data>
   <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value />
+    <value>Path to the YNAB Budget CSV:</value>
   </data>
   <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value />
+    <value>Path to the YNAB Transaction CSV:</value>
   </data>
   <data name="MainWindow_About" xml:space="preserve">
-    <value />
+    <value>About</value>
   </data>
   <data name="MainWindow_File" xml:space="preserve">
-    <value />
+    <value>File</value>
   </data>
   <data name="MainWindow_File_Import" xml:space="preserve">
-    <value />
+    <value>Import</value>
   </data>
   <data name="MainWindow_File_New" xml:space="preserve">
-    <value />
+    <value>New</value>
   </data>
   <data name="MainWindow_File_Open" xml:space="preserve">
-    <value />
+    <value>Open</value>
   </data>
   <data name="MainWindow_Settings" xml:space="preserve">
-    <value />
+    <value>Settings</value>
   </data>
   <data name="MainWindow_Settings_Accents" xml:space="preserve">
-    <value />
+    <value>Accents:</value>
   </data>
   <data name="MainWindow_Settings_Currency" xml:space="preserve">
-    <value />
+    <value>Currency format:</value>
   </data>
   <data name="MainWindow_Settings_Currency_Negative" xml:space="preserve">
-    <value />
+    <value>Negative:</value>
   </data>
   <data name="MainWindow_Settings_Currency_Positive" xml:space="preserve">
-    <value />
+    <value>Positive:</value>
   </data>
   <data name="MainWindow_Settings_Date" xml:space="preserve">
-    <value />
+    <value>Date format:</value>
   </data>
   <data name="MainWindow_Settings_Date_Long" xml:space="preserve">
-    <value />
+    <value>Long:</value>
   </data>
   <data name="MainWindow_Settings_Date_Long_Inverted" xml:space="preserve">
-    <value />
+    <value>:Long</value>
   </data>
   <data name="MainWindow_Settings_Date_Short" xml:space="preserve">
-    <value />
+    <value>Short:</value>
   </data>
   <data name="MainWindow_Settings_Language" xml:space="preserve">
-    <value />
+    <value>Language:</value>
   </data>
   <data name="MainWindow_Settings_Theme" xml:space="preserve">
-    <value />
+    <value>Theme:</value>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Name of new category</value>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Name of new payee</value>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Income Relevant?</value>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Month Offset</value>
   </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value />
+    <value>BFF budget plan (*.sqlite)|*.sqlite</value>
   </data>
   <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value />
+    <value>Create a new Budget Plan</value>
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
-    <value />
+    <value>Open a Budget Plan</value>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Superior Category</value>
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
-    <value />
+    <value>This text could not be parsed as a currency!</value>
     <comment>Validation message saying that the text is not validly formated as currency.</comment>
   </data>
   <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value />
+    <value>The value is out of range: [ {0} .. {1} ]!</value>
     <comment>Validation message, which tells the long range as currency to the user.</comment>
   </data>
   <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value />
+    <value>This input field may not be empty!</value>
     <comment>Validation message saying that the property is not allowed to be empty.</comment>
   </data>
   <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value />
+    <value>This file path does not exist!</value>
     <comment>Validation message saying that file path does not exist.</comment>
   </data>
   <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value />
+    <value>The directory of the save path does not exist!</value>
     <comment>Validation message saying that directory of the save path does not exist.</comment>
   </data>
   <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value />
+    <value>The file name of this save path is empty!</value>
     <comment>Validation message saying that the file name of the save path is empty.</comment>
   </data>
 </root>

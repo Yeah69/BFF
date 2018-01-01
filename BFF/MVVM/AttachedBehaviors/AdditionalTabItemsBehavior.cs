@@ -16,12 +16,16 @@ namespace BFF.MVVM.AttachedBehaviors
 
         public IEnumerable<object> ItemsSource
         {
-            get { return (IEnumerable<object>)GetValue(ItemsSourceProperty); }
-            set { SetValue(ItemsSourceProperty, value); }
+            get => (IEnumerable<object>) GetValue(ItemsSourceProperty);
+            set => SetValue(ItemsSourceProperty, value);
         }
 
         public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(IEnumerable<object>), typeof(AdditionalTabItemsBehavior), new UIPropertyMetadata(null, OnItemsSourceChanged));
+            DependencyProperty.Register(
+                nameof(ItemsSource),
+                typeof(IEnumerable<object>), 
+                typeof(AdditionalTabItemsBehavior),
+                new UIPropertyMetadata(null, OnItemsSourceChanged));
 
         private static void OnItemsSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
@@ -29,6 +33,7 @@ namespace BFF.MVVM.AttachedBehaviors
             DataTemplate headerTemplate = ((AdditionalTabItemsBehavior)sender).HeaderTemplate;
             DataTemplate contentTemplate = ((AdditionalTabItemsBehavior) sender).ContentTemplate;
             int startingIndex = ((AdditionalTabItemsBehavior) sender).StartingIndex;
+            string isSelectedMemberPath = ((AdditionalTabItemsBehavior) sender).IsSelectedMemberPath;
             Dictionary<object, TabItem> objectToTabItem = ((AdditionalTabItemsBehavior) sender)._objectToTabItem;
             if (e.NewValue != null)
             {
@@ -36,7 +41,7 @@ namespace BFF.MVVM.AttachedBehaviors
                 int i = 0;
                 foreach (object obj in newEnumerable)
                 {
-                    AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + i, objectToTabItem);
+                    AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + i, isSelectedMemberPath, objectToTabItem);
                     i++;
                 }
                 if (newEnumerable is INotifyCollectionChanged)
@@ -51,7 +56,7 @@ namespace BFF.MVVM.AttachedBehaviors
                                 j = 0;
                                 foreach (object obj in args.NewItems)
                                 {
-                                    AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + args.NewStartingIndex + j, objectToTabItem);
+                                    AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + args.NewStartingIndex + j, isSelectedMemberPath, objectToTabItem);
                                     j++;
                                 }
                                 break;
@@ -77,7 +82,7 @@ namespace BFF.MVVM.AttachedBehaviors
                                     if(collection != null)
                                         foreach (object obj in collection)
                                         {
-                                            AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + j, objectToTabItem);
+                                            AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + j, isSelectedMemberPath, objectToTabItem);
                                             j++;
                                         }
                                 }
@@ -94,17 +99,26 @@ namespace BFF.MVVM.AttachedBehaviors
 
         }
 
-        private static void AddTabItem(TabControl tabControl, object obj, DataTemplate headerTemplate, DataTemplate contenTemplate, int index, Dictionary<object, TabItem> objectToTabItem)
+        private static void AddTabItem(
+            TabControl tabControl,
+            object obj, 
+            DataTemplate headerTemplate, 
+            DataTemplate contentTemplate, 
+            int index, 
+            string isSelectedMemberPath,
+            Dictionary<object, TabItem> objectToTabItem)
         {
             TabItem newTabItem = new TabItem
             {
                 DataContext = obj,
-                Content = contenTemplate.LoadContent()
+                Content = contentTemplate.LoadContent()
             };
             if (headerTemplate != null)
                 newTabItem.HeaderTemplate = headerTemplate;
             else
                 newTabItem.Header = obj?.ToString() ?? "NULL";
+            if(isSelectedMemberPath != default)
+                newTabItem.SetBinding(TabItem.IsSelectedProperty, isSelectedMemberPath);
             tabControl.Items.Insert(index, newTabItem);
             if(obj != null) objectToTabItem.Add(obj, newTabItem);
         }
@@ -115,16 +129,17 @@ namespace BFF.MVVM.AttachedBehaviors
 
         public DataTemplate ContentTemplate
         {
-            get { return (DataTemplate)GetValue(ContentTemplateProperty); }
-            set { SetValue(ContentTemplateProperty, value); }
+            get => (DataTemplate) GetValue(ContentTemplateProperty);
+            set => SetValue(ContentTemplateProperty, value);
         }
 
         public static readonly DependencyProperty ContentTemplateProperty =
-            DependencyProperty.Register("ContentTemplate", typeof(DataTemplate), typeof(AdditionalTabItemsBehavior), new UIPropertyMetadata(null, OnContentTemplateChanged));
-
-        private static void OnContentTemplateChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-        }
+            DependencyProperty.Register(
+                nameof(ContentTemplate),
+                typeof(DataTemplate), 
+                typeof(AdditionalTabItemsBehavior),
+                new UIPropertyMetadata(null));
+        
 
         #endregion
 
@@ -132,16 +147,17 @@ namespace BFF.MVVM.AttachedBehaviors
 
         public DataTemplate HeaderTemplate
         {
-            get { return (DataTemplate)GetValue(HeaderTemplateProperty); }
-            set { SetValue(HeaderTemplateProperty, value); }
+            get => (DataTemplate) GetValue(HeaderTemplateProperty);
+            set => SetValue(HeaderTemplateProperty, value);
         }
 
         public static readonly DependencyProperty HeaderTemplateProperty =
-            DependencyProperty.Register("HeaderTemplate", typeof(DataTemplate), typeof(AdditionalTabItemsBehavior), new UIPropertyMetadata(null, OnHeaderTemplateChanged));
-
-        private static void OnHeaderTemplateChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-        }
+            DependencyProperty.Register(
+                nameof(HeaderTemplate), 
+                typeof(DataTemplate), 
+                typeof(AdditionalTabItemsBehavior), 
+                new UIPropertyMetadata(null));
+        
 
         #endregion
 
@@ -149,18 +165,31 @@ namespace BFF.MVVM.AttachedBehaviors
 
         public int StartingIndex
         {
-            get { return (int)GetValue(StartingIndexProperty); }
-            set { SetValue(StartingIndexProperty, value); }
+            get => (int) GetValue(StartingIndexProperty);
+            set => SetValue(StartingIndexProperty, value);
         }
 
         public static readonly DependencyProperty StartingIndexProperty =
-            DependencyProperty.Register("StartingIndex", typeof(int), typeof(AdditionalTabItemsBehavior), new UIPropertyMetadata(0, OnStartingIndexChanged));
-
-        private static void OnStartingIndexChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-        }
+            DependencyProperty.Register(
+                nameof(StartingIndex),
+                typeof(int), 
+                typeof(AdditionalTabItemsBehavior), 
+                new UIPropertyMetadata(0));
+        
 
         #endregion
+
+        public static readonly DependencyProperty IsSelectedMemberPathProperty = DependencyProperty.Register(
+            nameof(IsSelectedMemberPath),
+            typeof(string),
+            typeof(AdditionalTabItemsBehavior),
+            new PropertyMetadata(default(string)));
+
+        public string IsSelectedMemberPath
+        {
+            get => (string) GetValue(IsSelectedMemberPathProperty);
+            set => SetValue(IsSelectedMemberPathProperty, value);
+        }
 
         protected override void OnAttached()
         {

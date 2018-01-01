@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
+using BFF.DB.PersistenceModels;
 
 namespace BFF.Helper.Import
 {
     public class CategoryImportWrapper
     {
-        public ICategory Category { get; set; }
+        public Category Category { get; set; }
 
         public CategoryImportWrapper Parent { get; set; }
 

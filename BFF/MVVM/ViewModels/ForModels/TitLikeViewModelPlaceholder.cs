@@ -1,65 +1,58 @@
-﻿using BFF.DB;
-using BFF.MVVM.ViewModels.ForModels.Structure;
+﻿using BFF.MVVM.ViewModels.ForModels.Structure;
+using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
     /// <summary>
-    /// A TIT ViewModel Placeholder used for asyncron lazy loaded TIT's.
+    /// A TIT ViewModel Placeholder used for async lazy loaded TIT's.
     /// </summary>
-    sealed class TitLikeViewModelPlaceholder : TitLikeViewModel
+    sealed class TransLikeViewModelPlaceholder : ITransLikeViewModel
     {
         /// <summary>
         /// Needed to mimic a TIT.
         /// </summary>
-        public override long Id => -2L;
+        public IReactiveProperty<string> Memo { get;}
 
         /// <summary>
         /// Needed to mimic a TIT.
         /// </summary>
-        public override string Memo { get; set; }
+        public IReactiveProperty<long> Sum { get; }
+
+        public ReactiveCommand DeleteCommand { get; }
 
         /// <summary>
         /// Needed to mimic a TIT.
         /// </summary>
-        public override long Sum { get; set; }
+        public IReactiveProperty<bool> Cleared { get; }
 
         /// <summary>
-        /// Needed to mimic a TIT.
+        /// Initializes the TransBase-parts of the object
         /// </summary>
-        public bool Cleared { get; set; }
-
-        /// <summary>
-        /// Initializes the TitBase-parts of the object
-        /// </summary>
-        /// <param name="orm">Needed to mimic a TIT.</param>
-        public TitLikeViewModelPlaceholder(IBffOrm orm)
-            : base(orm)
+        public TransLikeViewModelPlaceholder()
         {
-            Memo = "Content is loading…";
+            Memo = new ReactiveProperty<string>("Content is loading…");
+            Sum = new ReactiveProperty<long>(0L);
+            Cleared = new ReactiveProperty<bool>(false);
+            DeleteCommand = new ReactiveCommand();
         }
 
-        #region Overrides of TitLikeViewModel
+        #region Overrides of TransLikeViewModel
 
         /// <summary>
         /// Does only return False, because a Placeholder may not be inserted to the database. Needed to mimic a TIT.
         /// </summary>
         /// <returns>Only False.</returns>
-        public override bool ValidToInsert() => false;
+        public bool ValidToInsert() => false;
 
-        /// <summary>
-        /// Does nothing, because this is a Placeholder. Needed to mimic a TIT.
-        /// </summary>
-        protected override void InsertToDb() { }
+        public void Insert()
+        {
+            throw new System.NotImplementedException();
+        }
 
-        /// <summary>
-        /// Does nothing, because this is a Placeholder. Needed to mimic a TIT.
-        /// </summary>
-        protected override void UpdateToDb() { }
-
-        /// <summary>
-        /// Does nothing, because this is a Placeholder. Needed to mimic a TIT.
-        /// </summary>
-        protected override void DeleteFromDb() { }
+        public void Delete()
+        {
+            throw new System.NotImplementedException();
+        }
 
         #endregion
     }

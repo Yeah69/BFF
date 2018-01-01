@@ -1,12 +1,12 @@
-﻿using BFF.DB;
+﻿using System;
+using System.Reactive.Disposables;
+using BFF.DB;
+using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    public interface IDataModelViewModel {
-        /// <summary>
-        /// The object's Id in the table of the database.
-        /// </summary>
-        long Id { get; }
+    public interface IDataModelViewModel
+    {
 
         /// <summary>
         /// Before a model object is inserted into the database, it has to be valid.
@@ -30,25 +30,31 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// Base class to all ViewModels for Models, which are read from the database.
     /// Offers CRUD functionality (except for Read, because the Models are not read from within itself).
     /// </summary>
-    public abstract class DataModelViewModel : ObservableObject, IDataModelViewModel
+    public abstract class DataModelViewModel : ObservableObject, IDataModelViewModel, IDisposable
     {
+        private readonly IDataModel _dataModel;
+
         /// <summary>
         /// The Orm object, which handles all database accesses.
         /// </summary>
         protected IBffOrm Orm;
 
         /// <summary>
-        /// The object's Id in the table of the database.
+        /// Provides common properties, such as Accounts, Categories and Payees.
         /// </summary>
-        public abstract long Id { get; }
+        protected ICommonPropertyProvider CommonPropertyProvider => Orm?.CommonPropertyProvider;
+
+        protected CompositeDisposable CompositeDisposable { get; } = new CompositeDisposable();
 
         /// <summary>
         /// Initializes a DataModelViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
-        protected DataModelViewModel(IBffOrm orm)
+        /// <param name="dataModel">The model.</param>
+        protected DataModelViewModel(IBffOrm orm, IDataModel dataModel)
         {
             Orm = orm;
+            _dataModel = dataModel;
         }
 
         /// <summary>
@@ -63,45 +69,42 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// The Orm works in a generic way and determines the right table by the given type.
         /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
         /// </summary>
-        protected abstract void InsertToDb();
+        protected virtual void OnInsert() { }
 
-        /// <summary>
-        /// Uses the OR mapper to update the object in the database. Inner function for the Update method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected abstract void UpdateToDb();
-
-        /// <summary>
-        /// Uses the OR mapper to delete the object from the database. Inner function for the Delete method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected abstract void DeleteFromDb();
 
         /// <summary>
         /// Inserts the model object to the database.
         /// </summary>
         public void Insert()
         {
-            if (Id == -1L && ValidToInsert()) InsertToDb();
+            if (ValidToInsert())
+            {
+                _dataModel.Insert();
+                OnInsert();
+            }
         }
 
         /// <summary>
         /// Updates the model object in the database.
         /// </summary>
-        protected void Update()
-        {
-            if (Id > 0L) UpdateToDb();
-        }
+        protected virtual void OnUpdate() {}
 
 
         /// <summary>
         /// Deletes the model object from the database.
         /// </summary>
-        public void Delete()
+        public void Delete() => _dataModel.Delete();
+
+        protected virtual void Dispose(bool disposing)
         {
-            if (Id > 0L) DeleteFromDb();
+            if(disposing) { }
+            CompositeDisposable.Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

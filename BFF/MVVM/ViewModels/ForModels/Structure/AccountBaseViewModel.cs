@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Input;
-using AlphaChiTech.Virtualization;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Windows;
+using BFF.DataVirtualizingCollection;
+using BFF.DataVirtualizingCollection.DataAccesses;
+using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using BFF.Properties;
+using MuVaViMo;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -16,52 +24,46 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        long StartingBalance { get; set; }
+        IReactiveProperty<long> StartingBalance { get; }
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        VirtualizingObservableCollection<ITitLikeViewModel> Tits { get; }
+        IDataVirtualizingCollection<ITransLikeViewModel> Tits { get; }
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        ObservableCollection<ITitLikeViewModel> NewTits { get; set; }
+        ObservableCollection<ITransLikeViewModel> NewTits { get; }
 
         /// <summary>
         /// The current Balance of this Account.
         /// </summary>
         long? Balance { get; }
 
+        IReactiveProperty<bool> IsOpen { get; }
+
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        ICommand NewTransactionCommand { get; }
-
-        /// <summary>
-        /// Creates a new Income.
-        /// </summary>
-        ICommand NewIncomeCommand { get; }
+        ReactiveCommand NewTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        ICommand NewTransferCommand { get; }
+        ReactiveCommand NewTransferCommand { get; }
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        ICommand NewParentTransactionCommand { get; }
-
-        /// <summary>
-        /// Creates a new ParentIncome.
-        /// </summary>
-        ICommand NewParentIncomeCommand { get; }
+        ReactiveCommand NewParentTransactionCommand { get; }
 
         /// <summary>
         /// Flushes all valid and not yet inserted TITs to the database.
         /// </summary>
-        ICommand ApplyCommand { get; }
+        ReactiveCommand ApplyCommand { get; }
+
+        bool IsDateFormatLong { get; }
 
         /// <summary>
         /// Refreshes the Balance.
@@ -76,22 +78,22 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
-        protected VirtualizingObservableCollection<ITitLikeViewModel> _tits;
+        protected IDataVirtualizingCollection<ITransLikeViewModel> _tits;
 
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
-        public abstract long StartingBalance { get; set; }
+        public abstract IReactiveProperty<long> StartingBalance { get; }
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        public abstract VirtualizingObservableCollection<ITitLikeViewModel> Tits { get; }
+        public abstract IDataVirtualizingCollection<ITransLikeViewModel> Tits { get; }
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public abstract ObservableCollection<ITitLikeViewModel> NewTits { get; set; }
+        public abstract ObservableCollection<ITransLikeViewModel> NewTits { get; }
 
         /// <summary>
         /// The current Balance of this Account.
@@ -99,49 +101,36 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public abstract long? Balance { get; }
 
         /// <summary>
+        /// The Balance of this Account considering future out- and inflows.
+        /// </summary>
+        public abstract long? BalanceUntilNow { get; }
+
+        public IReactiveProperty<bool> IsOpen { get; }
+
+        /// <summary>
         /// All available Accounts.
         /// </summary>
-        public ObservableCollection<IAccount> AllAccounts => Orm?.CommonPropertyProvider.Accounts;
-
-        /// <summary>
-        /// All available Payees.
-        /// </summary>
-        public ObservableCollection<IPayee> AllPayees => Orm?.CommonPropertyProvider.Payees;
-
-        /// <summary>
-        /// All available Categories.
-        /// </summary>
-        public ObservableCollection<ICategory> AllCategories => Orm?.CommonPropertyProvider.Categories;
+        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
 
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        public abstract ICommand NewTransactionCommand { get; }
-
-        /// <summary>
-        /// Creates a new Income.
-        /// </summary>
-        public abstract ICommand NewIncomeCommand { get; }
+        public abstract ReactiveCommand NewTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        public abstract ICommand NewTransferCommand { get; }
+        public abstract ReactiveCommand NewTransferCommand { get; }
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        public abstract ICommand NewParentTransactionCommand { get; }
-
-        /// <summary>
-        /// Creates a new ParentIncome.
-        /// </summary>
-        public abstract ICommand NewParentIncomeCommand { get; }
+        public abstract ReactiveCommand NewParentTransactionCommand { get; }
 
         /// <summary>
         /// Flushes all valid and not yet inserted TITs to the database.
         /// </summary>
-        public abstract ICommand ApplyCommand { get; }
+        public abstract ReactiveCommand ApplyCommand { get; }
 
         /// <summary>
         /// Indicates if the date format should be display in short or long fashion.
@@ -149,32 +138,28 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public bool IsDateFormatLong => Settings.Default.Culture_DefaultDateLong;
 
         /// <summary>
-        /// The Account Model.
-        /// </summary>
-        public IAccount Account { get; protected set; }
-
-        /// <summary>
         /// Initializes a AccountBaseViewModel.
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
-        protected AccountBaseViewModel(IBffOrm orm) : base(orm)
+        /// <param name="account">The model.</param>
+        protected AccountBaseViewModel(IBffOrm orm, IAccount account) : base(orm, account)
         {
             Orm = orm;
-            Messenger.Default.Register<CutlureMessage>(this, message =>
+            Messenger.Default.Register<CultureMessage>(this, message =>
             {
                 switch (message)
                 {
-                    case CutlureMessage.Refresh:
+                    case CultureMessage.Refresh:
                         OnPropertyChanged(nameof(StartingBalance));
                         OnPropertyChanged(nameof(Balance));
                         RefreshTits();
                         break;
-                    case CutlureMessage.RefreshCurrency:
+                    case CultureMessage.RefreshCurrency:
                         OnPropertyChanged(nameof(StartingBalance));
                         OnPropertyChanged(nameof(Balance));
                         RefreshTits();
                         break;
-                    case CutlureMessage.RefreshDate:
+                    case CultureMessage.RefreshDate:
                         OnPropertyChanged(nameof(IsDateFormatLong));
                         break;
                     default:
@@ -182,6 +167,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
                 }
             });
+
+            IsOpen = new ReactiveProperty<bool>(false).AddTo(CompositeDisposable);
+
+            IsOpen.Where(isOpen => isOpen).Subscribe(_ =>
+            {
+                RefreshTits();
+                RefreshBalance();
+            }).AddTo(CompositeDisposable);
         }
 
         /// <summary>
@@ -190,7 +183,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <returns>Just the Name-property.</returns>
         public override string ToString()
         {
-            return Name;
+            return Name.Value;
         }
 
         /// <summary>
@@ -208,53 +201,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected void ApplyTits()
         {
-            List<IAccountViewModel> accountViewModels = new List<IAccountViewModel>();
-            List<ITitLikeViewModel> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
-            foreach (ITitLikeViewModel tit in insertTits)
+            List<ITransLikeViewModel> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
+            foreach (ITransLikeViewModel tit in insertTits)
             {
                 tit.Insert();
                 NewTits.Remove(tit);
-                if (tit is IParentTransactionViewModel)
-                {
-                    IParentTransactionViewModel parentTransaction = tit as IParentTransactionViewModel;
-                    foreach(ISubTransIncViewModel subTransaction in parentTransaction.NewSubElements)
-                    {
-                        subTransaction.Insert();
-                        parentTransaction.SubElements.Add(subTransaction);
-                    }
-                    parentTransaction.NewSubElements.Clear();
-                }
-                else if (tit is IParentIncomeViewModel) // todo unify this and the above if-clause?
-                {
-                    IParentIncomeViewModel parentIncome = tit as IParentIncomeViewModel;
-                    foreach (ISubTransIncViewModel subIncome in parentIncome.NewSubElements)
-                    {
-                        subIncome.Insert();
-                        parentIncome.SubElements.Add(subIncome);
-                    }
-                    parentIncome.NewSubElements.Clear();
-                }
-                else if (tit is ITransIncViewModel)
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel((tit as ITransIncViewModel).Account.Id));
-                else if (tit is ITransferViewModel)
-                {
-                    ITransferViewModel transfer = tit as ITransferViewModel;
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transfer.FromAccount.Id));
-                    accountViewModels.Add(Orm.CommonPropertyProvider.GetAccountViewModel(transfer.ToAccount.Id));
-                }
             }
-            
-            Refresh(Orm.CommonPropertyProvider.SummaryAccountViewModel);
-            foreach (IAccountViewModel accountViewModel in accountViewModels.Distinct())
-            {
-                Refresh(accountViewModel);
-            }
-            
-            void Refresh(IAccountBaseViewModel accountViewModel)
-            {
-                accountViewModel.RefreshTits();
-                accountViewModel.RefreshBalance();
-            }
+
+            RefreshBalance();
+            RefreshTits();
         }
 
         /// <summary>
@@ -281,6 +236,73 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public void OnPostVirtualizedRefresh()
         {
             PostVirtualizedRefresh?.Invoke(this, new EventArgs());
+        }
+
+        protected ITransLikeViewModel[] CreatePacket(IEnumerable<ITransBase> items)
+        {
+            IList<ITransLikeViewModel> vmItems = new List<ITransLikeViewModel>();
+            foreach (ITransBase item in items)
+            {
+                switch (item)
+                {
+                    case ITransfer transfer:
+                        vmItems.Add(new TransferViewModel(
+                            transfer, 
+                            Orm, 
+                            Orm.CommonPropertyProvider.AccountViewModelService,
+                            Orm.CommonPropertyProvider.FlagViewModelService));
+                        break;
+                    case IParentTransaction parentTransaction:
+                        vmItems.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
+                        break;
+                    case ITransaction transaction:
+                        vmItems.Add(new TransactionViewModel(
+                            transaction,
+                            hcvm => new NewCategoryViewModel(
+                                hcvm,
+                                Orm.BffRepository.CategoryRepository, 
+                                Orm.BffRepository.IncomeCategoryRepository,
+                                Orm.CommonPropertyProvider.CategoryViewModelService,
+                                Orm.CommonPropertyProvider.IncomeCategoryViewModelService,
+                                CommonPropertyProvider.CategoryBaseViewModelService),
+                            hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
+                            Orm,
+                            Orm.CommonPropertyProvider.AccountViewModelService,
+                            Orm.CommonPropertyProvider.PayeeViewModelService,
+                            Orm.CommonPropertyProvider.CategoryBaseViewModelService,
+                            Orm.CommonPropertyProvider.FlagViewModelService));
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+            return vmItems.ToArray();
+        }
+
+
+        protected IDataVirtualizingCollection<ITransLikeViewModel> CreateDataVirtualizingCollection()
+            => CollectionBuilder<ITransLikeViewModel>
+                .CreateBuilder()
+                .BuildAHoardingPreloadingSyncCollection(
+                    BasicAccess, 
+                    PageSize);
+
+        protected IScheduler SubscriptionScheduler = ThreadPoolScheduler.Instance;
+
+        protected IScheduler ObserveScheduler = new DispatcherScheduler(Application.Current.Dispatcher);
+
+        protected int PageSize = 100;
+
+        protected abstract IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess { get; }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _tits?.Dispose();
+            }
+            Messenger.Default.Unregister<CultureMessage>(this);
+            base.Dispose(disposing);
         }
     }
 }

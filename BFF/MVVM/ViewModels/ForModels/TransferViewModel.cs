@@ -1,194 +1,104 @@
 ﻿using System;
-using System.Windows.Input;
+using System.Reactive.Linq;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using MuVaViMo;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    internal interface ITransferViewModel : ITitBaseViewModel
+    internal interface ITransferViewModel : ITransBaseViewModel
     {
         /// <summary>
         /// The account from where the money is transfered.
         /// </summary>
-        IAccountViewModel FromAccount { get; set; }
+        IReactiveProperty<IAccountViewModel> FromAccount { get; }
 
         /// <summary>
         /// The account to where the money is transfered.
         /// </summary>
-        IAccountViewModel ToAccount { get; set; }
+        IReactiveProperty<IAccountViewModel> ToAccount { get; }
     }
 
     /// <summary>
     /// The ViewModel of the Model Transfer.
     /// </summary>
-    public class TransferViewModel : TitBaseViewModel, ITransferViewModel
+    public class TransferViewModel : TransBaseViewModel, ITransferViewModel
     {
-        /// <summary>
-        /// The Transfer Model.
-        /// </summary>
-        protected readonly ITransfer Transfer;
 
-        #region Transfer Properties
-
-        /// <summary>
-        /// The object's Id in the table of the database.
-        /// </summary>
-        public override long Id => Transfer.Id;
-
-        /// <summary>
-        /// This timestamp marks the time point, when the Transfer happened.
-        /// </summary>
-        public override DateTime Date
-        {
-            get { return Transfer.Date; }
-            set
-            {
-                Transfer.Date = value;
-                Update();
-                OnPropertyChanged();
-            }
-        }
+        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
 
         /// <summary>
         /// The account from where the money is transfered.
         /// </summary>
-        public IAccountViewModel FromAccount
-        {
-            get {
-                return Transfer.FromAccountId == -1 ? null : 
-                    Orm?.CommonPropertyProvider.GetAccountViewModel(Transfer.FromAccountId);
-            }
-            set
-            {
-                if(value?.Id == Transfer.FromAccountId) return;
-                IAccountViewModel temp = FromAccount;
-                bool accountSwitch = false;
-                if (ToAccount == value) // If value equals ToAccount, then the FromAccount and ToAccount switch values
-                {
-                    Transfer.ToAccountId = Transfer.FromAccountId;
-                    OnPropertyChanged(nameof(ToAccount));
-                    accountSwitch = true;
-                }
-                Transfer.FromAccountId = value?.Id ?? -1;
-                Update();
-                if(accountSwitch && ToAccount != null) //Refresh ToAccount if switch occured
-                {
-                    Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
-                    Messenger.Default.Send(AccountMessage.RefreshBalance, ToAccount);
-                }
-                if(FromAccount != null) //Refresh FromAccount if it exists
-                {
-                    Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
-                    Messenger.Default.Send(AccountMessage.RefreshBalance, FromAccount);
-                }
-                if(!accountSwitch && temp != null && temp != FromAccount) //if switch happened then with temp is now ToAccount and was refreshed already, if not then refresh if it exists and is not FromAccount
-                { 
-                    Messenger.Default.Send(AccountMessage.RefreshTits, temp);
-                    Messenger.Default.Send(AccountMessage.RefreshBalance, temp);
-                }
-                OnPropertyChanged();
-            }
-        }
+        public IReactiveProperty<IAccountViewModel> FromAccount { get; }
 
         /// <summary>
-        /// The account to where the money is transfered.
+        /// The account to where the money is transferred.
         /// </summary>
-        public IAccountViewModel ToAccount
-        {
-            get
-            {
-                return Transfer.ToAccountId == -1 ? null :
-                    Orm?.CommonPropertyProvider.GetAccountViewModel(Transfer.ToAccountId);
-            }
-            set
-            {
-                if (value?.Id == Transfer.ToAccountId) return;
-                IAccountViewModel temp = ToAccount;
-                bool accountSwitch = false;
-                if (FromAccount == value) // If value equals FromAccount, then the ToAccount and FromAccount switch values
-                {
-                    Transfer.FromAccountId = Transfer.ToAccountId;
-                    OnPropertyChanged(nameof(FromAccount));
-                    accountSwitch = true;
-                }
-                Transfer.ToAccountId = value?.Id ?? -1;
-                Update();
-                if (accountSwitch && FromAccount != null) //Refresh ToAccount if switch occured
-                {
-                    Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
-                    Messenger.Default.Send(AccountMessage.RefreshBalance, FromAccount);
-                }
-                if (ToAccount != null) //Refresh FromAccount if it exists
-                {
-                    Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
-                    Messenger.Default.Send(AccountMessage.RefreshBalance, ToAccount);
-                }
-                if (!accountSwitch && temp != null && temp != ToAccount) //if switch happened then with temp is now FromAccount and was refreshed already, if not then refresh if it exists and is not ToAccount
-                {
-                    Messenger.Default.Send(AccountMessage.RefreshTits, temp);
-                    Messenger.Default.Send(AccountMessage.RefreshBalance, temp);
-                }
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// A note, which a user can attach to each TIT as a reminder for himself.
-        /// </summary>
-        public override string Memo
-        {
-            get { return Transfer.Memo; }
-            set
-            {
-                Transfer.Memo = value;
-                Update();
-                OnPropertyChanged();
-            }
-        }
+        public IReactiveProperty<IAccountViewModel> ToAccount { get; }
 
         /// <summary>
         /// The amount of money, which is transfered.
         /// </summary>
-        public override long Sum
-        {
-            get { return Transfer.Sum; }
-            set
-            {
-                Transfer.Sum = value;
-                Update();
-                Messenger.Default.Send(AccountMessage.RefreshBalance, FromAccount);
-                Messenger.Default.Send(AccountMessage.RefreshBalance, ToAccount);
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// Like the Memo the Cleared flag is an aid for the user.
-        /// It can be used to mark TITs, which the user thinks is processed enough (True) or needs to be changed later (False).
-        /// This maybe needed, if the user does not remember everything clearly and wants to finish the Tit later.
-        /// </summary>
-        public override bool Cleared
-        {
-            get { return Transfer.Cleared; }
-            set
-            {
-                Transfer.Cleared = value;
-                Update();
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
+        public sealed override IReactiveProperty<long> Sum { get; }
 
         /// <summary>
         /// Initializes a TransferViewModel.
         /// </summary>
         /// <param name="transfer">A Transfer Model.</param>
         /// <param name="orm">Used for the database accesses.</param>
-        public TransferViewModel(ITransfer transfer, IBffOrm orm) : base(orm)
+        /// <param name="accountViewModelService"></param>
+        public TransferViewModel(
+            ITransfer transfer, 
+            IBffOrm orm, 
+            IAccountViewModelService accountViewModelService,
+            IFlagViewModelService flagViewModelService) : base(orm, transfer, flagViewModelService)
         {
-            Transfer = transfer;
+
+            FromAccount = transfer
+                .ToReactivePropertyAsSynchronized(
+                    t => t.FromAccount,
+                    accountViewModelService.GetViewModel, 
+                    accountViewModelService.GetModel, 
+                    ReactivePropertyMode.DistinctUntilChanged)
+                .AddTo(CompositeDisposable);
+
+            FromAccount
+                .SkipLast(1)
+                .Subscribe(RefreshAnAccountViewModel)
+                .AddTo(CompositeDisposable);
+
+            FromAccount
+                .Subscribe(RefreshAnAccountViewModel)
+                .AddTo(CompositeDisposable);
+
+            ToAccount = transfer
+                .ToReactivePropertyAsSynchronized(
+                    t => t.ToAccount, 
+                    accountViewModelService.GetViewModel,
+                    accountViewModelService.GetModel,
+                    ReactivePropertyMode.DistinctUntilChanged)
+                .AddTo(CompositeDisposable);
+
+            ToAccount
+                .SkipLast(1)
+                .Subscribe(RefreshAnAccountViewModel)
+                .AddTo(CompositeDisposable);
+
+            ToAccount
+                .Subscribe(RefreshAnAccountViewModel)
+                .AddTo(CompositeDisposable);
+
+            Sum = transfer.ToReactivePropertyAsSynchronized(t => t.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            Sum.Subscribe(sum =>
+            {
+                FromAccount.Value?.RefreshBalance();
+                ToAccount.Value?.RefreshBalance();
+            }).AddTo(CompositeDisposable);
         }
 
         /// <summary>
@@ -198,52 +108,40 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>True if valid, else false</returns>
         public override bool ValidToInsert()
         {
-            return FromAccount != null && (Orm?.CommonPropertyProvider.AllAccountViewModels.Contains(FromAccount) ?? false) &&
-                   ToAccount != null   &&  Orm .CommonPropertyProvider.AllAccountViewModels.Contains(ToAccount);
+            return FromAccount.Value != null && ToAccount.Value != null;
         }
 
-        /// <summary>
-        /// Uses the OR mapper to insert the model into the database. Inner function for the Insert method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected override void InsertToDb()
+        protected override void InitializeDeleteCommand()
         {
-            Transfer.Insert(Orm);
+            DeleteCommand.Subscribe(_ =>
+            {
+                Delete();
+                RefreshAnAccountViewModel(FromAccount.Value);
+                RefreshAnAccountViewModel(ToAccount.Value);
+                Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+                Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+            });
         }
 
-        /// <summary>
-        /// Uses the OR mapper to update the model in the database. Inner function for the Update method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected override void UpdateToDb()
+        protected override void NotifyRelevantAccountsToRefreshTits()
         {
-            Transfer.Update(Orm);
-            Messenger.Default.Send(AccountMessage.RefreshTits, FromAccount);
-            Messenger.Default.Send(AccountMessage.RefreshTits, ToAccount);
+            FromAccount.Value?.RefreshTits();
+            ToAccount.Value?.RefreshTits();
             Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
         }
 
-        /// <summary>
-        /// Uses the OR mapper to delete the model from the database. Inner function for the Delete method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected override void DeleteFromDb()
+        protected override void NotifyRelevantAccountsToRefreshBalance()
         {
-            Transfer.Delete(Orm);
+            FromAccount.Value?.RefreshBalance();
+            ToAccount.Value?.RefreshBalance();
+            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
         }
 
-        /// <summary>
-        /// Deletes the model from the database and refreshes the accounts, which it belonged to, and the summary account.
-        /// </summary>
-        public override ICommand DeleteCommand => new RelayCommand(obj =>
+
+        private void RefreshAnAccountViewModel(IAccountBaseViewModel accountViewModel)
         {
-            Delete();
-            Messenger.Default.Send(AccountMessage.Refresh, FromAccount);
-            Messenger.Default.Send(AccountMessage.Refresh, ToAccount);
-            Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
-        });
+            accountViewModel?.RefreshTits();
+            accountViewModel?.RefreshBalance();
+        }
     }
 }

@@ -4,19 +4,19 @@ using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface ITransfer : ITitBase {
+    public interface ITransfer : ITransBase {
         /// <summary>
         /// Id of FromAccount
         /// </summary>
-        long FromAccountId { get; set; }
+        IAccount FromAccount { get; set; }
 
         /// <summary>
         /// Id of ToAccount
         /// </summary>
-        long ToAccountId { get; set; }
+        IAccount ToAccount { get; set; }
 
         /// <summary>
-        /// The amount of money, which was payeed or recieved
+        /// The amount of money, which was payed or received
         /// </summary>
         long Sum { get; set; }
     }
@@ -24,22 +24,28 @@ namespace BFF.MVVM.Models.Native
     /// <summary>
     /// A Transfer is basically a Transaction from one owned Account to another owned Account
     /// </summary>
-    public class Transfer : TitBase, ITransfer
+    public class Transfer : TransBase<ITransfer>, ITransfer
     {
-        private long _fromAccountId;
-        private long _toAccountId;
+        private IAccount _fromAccount;
+        private IAccount _toAccount;
         private long _sum;
 
         /// <summary>
         /// Id of FromAccount
         /// </summary>
-        public long FromAccountId
+        public IAccount FromAccount
         {
-            get { return _fromAccountId; }
+            get => _fromAccount;
             set
             {
-                if(_fromAccountId == value) return;
-                _fromAccountId = value; 
+                if(_fromAccount == value) return;
+                if (value != null && _toAccount == value) // If value equals ToAccount, then the FromAccount and ToAccount switch values
+                {
+                    _toAccount = _fromAccount;
+                    OnPropertyChanged(nameof(ToAccount));
+                }
+                _fromAccount = value; 
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -47,27 +53,34 @@ namespace BFF.MVVM.Models.Native
         /// <summary>
         /// Id of ToAccount
         /// </summary>
-        public long ToAccountId
+        public IAccount ToAccount
         {
-            get { return _toAccountId; }
+            get => _toAccount;
             set
             {
-                if(_toAccountId == value) return;
-                _toAccountId = value;
+                if (_toAccount == value) return;
+                if (value != null && _fromAccount == value) // If value equals ToAccount, then the FromAccount and ToAccount switch values
+                {
+                    _fromAccount = _toAccount;
+                    OnPropertyChanged(nameof(FromAccount));
+                }
+                _toAccount = value;
+                Update();
                 OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// The amount of money, which was payeed or recieved
+        /// The amount of money, which was payed or received
         /// </summary>
         public long Sum
         {
-            get { return _sum; }
+            get => _sum;
             set
             {
                 if(_sum == value) return;
                 _sum = value;
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -75,60 +88,30 @@ namespace BFF.MVVM.Models.Native
         /// <summary>
         /// Initializes the object
         /// </summary>
+        /// <param name="id">Identifier of this model object.</param>
         /// <param name="date">Marks when the Tit happened</param>
         /// <param name="fromAccount">The Sum is transfered from this Account</param>
         /// <param name="toAccount">The Sum is transfered to this Account</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         /// <param name="sum">The transfered Sum</param>
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public Transfer(DateTime date, IAccount fromAccount = null, IAccount toAccount = null, string memo = null,
-            long sum = 0L, bool? cleared = null)
-            : base(date, memo: memo, cleared: cleared)
+        /// <param name="repository">This repository manages the persistence access to elements of this type.</param>
+        public Transfer(
+            IRepository<ITransfer> repository,
+            long id,
+            IFlag flag,
+            string checkNumber,
+            DateTime date,
+            IAccount fromAccount = null,
+            IAccount toAccount = null,
+            string memo = null,
+            long sum = 0L,
+            bool? cleared = null)
+            : base(repository, flag, checkNumber, date, id, memo, cleared)
         {
-            _fromAccountId = fromAccount?.Id ?? -1;
-            _toAccountId = toAccount?.Id ?? -1;
+            _fromAccount = fromAccount;
+            _toAccount = toAccount;
             _sum = sum;
         }
-
-        /// <summary>
-        /// Safe ORM-constructor
-        /// </summary>
-        /// <param name="id">This objects Id</param>
-        /// <param name="fromAccountId">Id of FromAccount</param>
-        /// <param name="toAccountId">Id of ToAccount</param>
-        /// <param name="date">Marks when the Tit happened</param>
-        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        /// <param name="sum">The transfered Sum</param>
-        /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
-        public Transfer(long id, long fromAccountId, long toAccountId, DateTime date, string memo,
-            long sum, bool cleared)
-            : base(date, id, memo, cleared)
-        {
-            _fromAccountId = fromAccountId;
-            _toAccountId = toAccountId;
-            _sum = sum;
-        }
-
-        #region Overrides of ExteriorCrudBase
-
-        public override void Insert(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Insert(this);
-        }
-
-        public override void Update(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Update(this);
-        }
-
-        public override void Delete(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Delete(this);
-        }
-
-        #endregion
     }
 }

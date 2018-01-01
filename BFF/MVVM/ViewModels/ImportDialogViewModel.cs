@@ -1,42 +1,69 @@
-﻿using System.Windows.Input;
+﻿using System;
 using BFF.Helper.Import;
 using Microsoft.Win32;
+using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels
 {
     class ImportDialogViewModel : ObservableObject
     {
-        public IImportable Importable { get; set; }
+        public IImportable Importable { get; }
 
-        public ICommand BrowseYnabCsvTransactionCommand => new RelayCommand(param => BrowseYnabCsvTransaction(), param => true);
-        public ICommand BrowseYnabCsvBudgetCommand => new RelayCommand(param => BrowseYnabCsvBudget(), param => true);
-        public ICommand BrowseSaveCommand => new RelayCommand(param => BrowseSave(), param => true);
+        public ReactiveCommand BrowseYnabCsvTransactionCommand { get; } = new ReactiveCommand();
 
-        private void BrowseYnabCsvTransaction()
+        public ReactiveCommand BrowseYnabCsvBudgetCommand { get; } = new ReactiveCommand();
+
+        public ReactiveCommand BrowseSaveCommand { get; } = new ReactiveCommand();
+
+        public ImportDialogViewModel(IImportable importable)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog { Multiselect = false, DefaultExt = "csv", Filter = "YNAB Transaction Export (*.csv)|*.csv", FileName = ((YnabCsvImport)Importable).TransactionPath };
-            if (openFileDialog.ShowDialog() == true)
-            {
-                ((YnabCsvImport)Importable).TransactionPath = openFileDialog.FileName;
-            }
-        }
+            Importable = importable;
 
-        private void BrowseYnabCsvBudget()
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog { Multiselect = false, DefaultExt = "csv", Filter = "YNAB Transaction Export (*.csv)|*.csv", FileName = ((YnabCsvImport)Importable).BudgetPath };
-            if (openFileDialog.ShowDialog() == true)
+            BrowseYnabCsvTransactionCommand.Subscribe(_ =>
             {
-                ((YnabCsvImport)Importable).BudgetPath = openFileDialog.FileName;
-            }
-        }
+                OpenFileDialog openFileDialog =
+                    new OpenFileDialog
+                    {
+                        Multiselect = false,
+                        DefaultExt = "csv",
+                        Filter = "YNAB Transaction Export (*.csv)|*.csv",
+                        FileName = ((YnabCsvImport) Importable).TransactionPath
+                    };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    ((YnabCsvImport) Importable).TransactionPath = openFileDialog.FileName;
+                }
+            });
 
-        private void BrowseSave()
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog { DefaultExt = "sqlite", Filter = "SQLite Budget Plan (*.sqlite)|*.sqlite", FileName = Importable.SavePath};
-            if (saveFileDialog.ShowDialog() == true)
+            BrowseYnabCsvBudgetCommand.Subscribe(_ =>
             {
-                Importable.SavePath = saveFileDialog.FileName;
-            }
+                OpenFileDialog openFileDialog = new OpenFileDialog
+                {
+                    Multiselect = false,
+                    DefaultExt = "csv",
+                    Filter = "YNAB Transaction Export (*.csv)|*.csv",
+                    FileName = ((YnabCsvImport)Importable).BudgetPath
+                };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    ((YnabCsvImport)Importable).BudgetPath = openFileDialog.FileName;
+                }
+            });
+
+            BrowseSaveCommand.Subscribe(_ =>
+            {
+                SaveFileDialog saveFileDialog =
+                    new SaveFileDialog
+                    {
+                        DefaultExt = "sqlite",
+                        Filter = "SQLite Budget Plan (*.sqlite)|*.sqlite",
+                        FileName = Importable.SavePath
+                    };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    Importable.SavePath = saveFileDialog.FileName;
+                }
+            });
         }
     }
 }

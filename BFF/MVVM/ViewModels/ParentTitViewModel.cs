@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels
@@ -10,7 +11,7 @@ namespace BFF.MVVM.ViewModels
 
         public string Title
         {
-            get { return _title; }
+            get => _title;
             set
             {
                 _title = value;
@@ -18,24 +19,24 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        private ITitLikeViewModel _parentTit;
+        private ITransLikeViewModel _parentTransaction;
 
-        public ITitLikeViewModel ParentTit
+        public ITransLikeViewModel ParentTransaction
         {
-            get { return _parentTit; }
+            get => _parentTransaction;
             set
             {
-                _parentTit = value;
+                _parentTransaction = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ParentTitSource));
             }
         }
 
-        private IAccount _account;
+        private IAccountViewModel _account;
 
-        public IAccount Account
+        public IAccountViewModel Account
         {
-            get { return _account; }
+            get => _account;
             set
             {
                 _account = value;
@@ -43,13 +44,13 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public IList<ITitLikeViewModel> ParentTitSource => new List<ITitLikeViewModel> {ParentTit};
+        public IList<ITransLikeViewModel> ParentTitSource => new List<ITransLikeViewModel> {ParentTransaction};
 
-        public ParentTitViewModel(ITitLikeViewModel parent, string title, IAccount account)
+        public ParentTitViewModel(ITransLikeViewModel parent, string title, IAccountViewModel account)
         {
              _title = title;
             _account = account;
-            _parentTit = parent;
+            _parentTransaction = parent;
         }
     }
 }

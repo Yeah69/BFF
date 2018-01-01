@@ -1,82 +1,36 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Globalization;
-using System.Windows.Input;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.Properties;
+using MuVaViMo;
 
 namespace BFF.MVVM.ViewModels
 {
-    public class AccountTabsViewModel : SessionViewModelBase, IDisposable
+    public class AccountTabsViewModel : SessionViewModelBase
     {
-        protected readonly IBffOrm _orm;
+        private readonly IBffOrm _orm;
 
-        public IBffOrm Orm => _orm;
+        public IObservableReadOnlyList<IAccountViewModel> AllAccounts =>
+            _orm.CommonPropertyProvider.AllAccountViewModels;
 
-        public ObservableCollection<IAccountViewModel> AllAccounts => _orm.CommonPropertyProvider.AllAccountViewModels;
+        public ISummaryAccountViewModel SummaryAccountViewModel => 
+            _orm.CommonPropertyProvider.AccountViewModelService.SummaryAccountViewModel;
 
-        public ObservableCollection<ICategory> AllCategories => _orm.CommonPropertyProvider.Categories; 
+        public INewAccountViewModel NewAccountViewModel { get; }
 
-        public ISummaryAccountViewModel SummaryAccountViewModel
-        {
-            get { return _orm.CommonPropertyProvider.SummaryAccountViewModel; }
-            set
-            {
-                OnPropertyChanged();
-            }
-        }
-
-        public IAccount NewAccount { get; set; } = new Account {Id = -1, Name = "", StartingBalance = 0L};
-        
-        public ICommand NewAccountCommand => new RelayCommand(param =>
-        {
-            //Insert Account to Database
-            _orm.CommonPropertyProvider.Add(NewAccount);
-            //Refresh all relevant properties
-            Messenger.Default.Send(AccountMessage.RefreshBalance, NewAccount);
-            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
-            Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
-            //Refresh dummy-Account
-            NewAccount = new Account { Id = -1, Name = "", StartingBalance = 0L };
-            OnPropertyChanged(nameof(NewAccount));
-        }
-        , param => !string.IsNullOrEmpty(NewAccount.Name));
-        
-
-        //todo: Delete CreatePayeFunc?
-        public Func<string, IPayee> CreatePayeeFunc => name => 
-        {
-            IPayee ret = new Payee {Name = name};
-            ret.Insert(_orm);
-            return ret;
-        }; 
-
-        public AccountTabsViewModel(IBffOrm orm)
+        public AccountTabsViewModel(IBffOrm orm, INewAccountViewModel newAccountViewModel)
         {
             _orm = orm;
+            NewAccountViewModel = newAccountViewModel;
 
-            IDbSetting dbSetting = orm.Get<DbSetting>(1);
+            IDbSetting dbSetting = _orm.BffRepository.DbSettingRepository.Find(1);
             Settings.Default.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultureName);
             Settings.Default.Culture_SessionDate = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
             ManageCultures();
 
-            Messenger.Default.Register<CutlureMessage>(this, message =>
-            {
-                switch(message)
-                {
-                    case CutlureMessage.Refresh:
-                    case CutlureMessage.RefreshCurrency:
-                        OnPropertyChanged(nameof(NewAccount));
-                        break;
-                    case CutlureMessage.RefreshDate:
-                        break;
-                    default:
-                        throw new InvalidEnumArgumentException();
-                }
-            });
+            IsOpen.Value = true;
         }
 
         #region Overrides of SessionViewModelBase
@@ -92,10 +46,17 @@ namespace BFF.MVVM.ViewModels
         protected override void SaveCultures()
         {
             Settings.Default.Save();
-            IDbSetting dbSetting = _orm.Get<DbSetting>(1);
+            IDbSetting dbSetting = _orm.BffRepository.DbSettingRepository.Find(1);
             dbSetting.CurrencyCulture = Settings.Default.Culture_SessionCurrency;
             dbSetting.DateCulture = Settings.Default.Culture_SessionDate;
-            dbSetting.Update(_orm);
+        }
+
+        protected override void OnIsOpenChanged(bool isOpen)
+        {
+            if (isOpen && SummaryAccountViewModel.IsOpen.Value)
+            {
+                Messenger.Default.Send(SummaryAccountMessage.Refresh);
+            }
         }
 
         #endregion
@@ -103,15 +64,18 @@ namespace BFF.MVVM.ViewModels
         #region Implementation of IDisposable
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            foreach(IAccountViewModel accountViewModel in AllAccounts)
+            if (disposing)
             {
-                (accountViewModel as IDisposable)?.Dispose();
+                foreach (IAccountViewModel accountViewModel in AllAccounts)
+                {
+                    (accountViewModel as IDisposable)?.Dispose();
+                }
+                (SummaryAccountViewModel as IDisposable)?.Dispose();
+                _orm?.Dispose();
             }
-            AllAccounts.Clear();
-            (SummaryAccountViewModel as IDisposable)?.Dispose();
-            Messenger.Default.Unregister<CutlureMessage>(this);
+            base.Dispose(disposing);
         }
 
         #endregion

@@ -10,61 +10,61 @@ namespace BFF.MVVM.Models.Native
         /// Starting balance of the Account
         /// </summary>
         long StartingBalance { get; set; }
+
+        DateTime StartingDate { get; set; }
     }
 
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class Account : CommonProperty, IAccount
+    public class Account : CommonProperty<IAccount>, IAccount
     {
         private long _startingBalance;
+        private DateTime _startingDate;
 
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
         public virtual long StartingBalance
         {
-            get { return _startingBalance; }
+            get => _startingBalance;
             set
             {
                 if(_startingBalance == value) return;
                 _startingBalance = value;
+                Update();
                 OnPropertyChanged();
             }
         }
-        
+
+        public DateTime StartingDate
+        {
+            get => _startingDate;
+            set
+            {
+                if (_startingDate == value) return;
+                _startingDate = value; 
+                Update();
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Initializes the object
         /// </summary>
         /// <param name="id">This objects Id</param>
         /// <param name="name">Name of the Account</param>
         /// <param name="startingBalance">Starting balance of the Account</param>
-        public Account(long id = -1L, string name = null, long startingBalance = 0L) : base(name)
+        public Account(IRepository<IAccount> repository,
+            DateTime startingDate, 
+            long id = -1L, 
+            string name = null, 
+            long startingBalance = 0L) 
+            : base(repository, name: name)
         {
             Id = id;
             _startingBalance = startingBalance;
+            _startingDate = startingDate;
         }
-
-        #region Overrides of ExteriorCrudBase
-
-        public override void Insert(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Insert(this);
-        }
-
-        public override void Update(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Update(this);
-        }
-
-        public override void Delete(IBffOrm orm)
-        {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Delete(this);
-        }
-
-        #endregion
     }
 }

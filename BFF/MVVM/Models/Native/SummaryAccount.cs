@@ -1,4 +1,5 @@
-﻿using BFF.DB;
+﻿using System;
+using BFF.DB.Dapper.ModelRepositories;
 
 namespace BFF.MVVM.Models.Native
 {
@@ -13,18 +14,18 @@ namespace BFF.MVVM.Models.Native
         /// <summary>
         /// Initializes the object
         /// </summary>
-        public SummaryAccount()
+        public SummaryAccount(IAccountRepository repository) : base(repository, DateTime.MinValue)
         {
             Name = "All Accounts"; //todo Localize! Maybe then override the Name property
         }
 
         #region Overrides of ExteriorCrudBase
 
-        public override void Insert(IBffOrm orm) {}
+        public override void Insert() {}
 
-        public override void Update(IBffOrm orm) {}
+        public override void Update() {}
 
-        public override void Delete(IBffOrm orm){}
+        public override void Delete(){}
 
         #endregion
     }

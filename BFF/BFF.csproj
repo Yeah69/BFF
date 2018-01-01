@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BFF</RootNamespace>
     <AssemblyName>BFF</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -31,6 +31,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -42,6 +43,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,18 +53,20 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AlphaChiTech.Virtualization, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\VirtualizingObservableCollection.1.2.0\lib\AlphaChiTech.Virtualization.dll</HintPath>
+    <Reference Include="BFF.DataVirtualizingCollection, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BFF.DataVirtualizingCollection.1.0.2\lib\netstandard1.4\BFF.DataVirtualizingCollection.dll</HintPath>
     </Reference>
-    <Reference Include="Dapper">
-      <HintPath>..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
     </Reference>
-    <Reference Include="Dapper.Contrib, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.Contrib.1.43\lib\net45\Dapper.Contrib.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Dapper.Contrib, Version=1.50.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Dapper.Contrib.1.50.0\lib\net45\Dapper.Contrib.dll</HintPath>
+    </Reference>
+    <Reference Include="dotMemory.Unit, Version=103.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.dotMemoryUnit.2.3.20160517.113140\Lib\dotMemory.Unit.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -72,50 +76,130 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.3.0.28, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.3.0-ALPHA028\lib\net45\MahApps.Metro.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="HamburgerMenu, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BFF.HamburgerMenu.1.0.0\lib\net461\HamburgerMenu.dll</HintPath>
+    </Reference>
+    <Reference Include="LambdaConverters.Wpf, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6258cb5075259882, processorArchitecture=MSIL">
+      <HintPath>..\packages\LambdaConverters.3.0.0\lib\net46\LambdaConverters.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.1.9.0\lib\net46\MahApps.Metro.IconPacks.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro.SimpleChildWindow, Version=1.3.0.0, Culture=neutral, PublicKeyToken=bbbfdff7f500a992, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.SimpleChildWindow.1.3.0\lib\net45\MahApps.Metro.SimpleChildWindow.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="MoreLinq, Version=2.6.20831.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.2.7.0\lib\net40\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="MuVaViMo, Version=0.2.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\MuVaViMo.0.2.0\lib\netstandard1.0\MuVaViMo.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.3.4\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\NLog.4.4.9\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="ReactiveProperty, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveProperty.3.6.0\lib\net46\ReactiveProperty.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveProperty.NET46, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveProperty.3.6.0\lib\net46\ReactiveProperty.NET46.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.AppContext.4.3.0\lib\net46\System.AppContext.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.102.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Core.1.0.102.0\lib\net46\System.Data.SQLite.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.SQLite, Version=1.0.105.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.105.1\lib\net46\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.SQLite.EF6, Version=1.0.102.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.102.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.105.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.105.1\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.102.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.102.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.105.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.105.1\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.3.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    <Reference Include="System.Globalization.Calendars, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Globalization.Calendars.4.3.0\lib\net46\System.Globalization.Calendars.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.0\lib\net46\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Sockets, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Sockets.4.3.0\lib\net46\System.Net.Sockets.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Reactive.Core, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Core.3.1.1\lib\net46\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Interfaces.3.1.1\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Linq.3.1.1\lib\net46\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.PlatformServices.3.1.1\lib\net46\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.3.0-ALPHA028\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
@@ -126,16 +210,17 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WPFLocalizeExtension, Version=2.3.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WpfLocalizeExtension.2.3.2\lib\net35\WPFLocalizeExtension.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="WPFLocalizeExtension, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFLocalizeExtension.3.0.1\lib\net35\WPFLocalizeExtension.dll</HintPath>
     </Reference>
-    <Reference Include="XAMLMarkupExtensions, Version=1.2.1.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\XAMLMarkupExtensions.1.2.1.4\lib\net40\XAMLMarkupExtensions.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="XAMLMarkupExtensions, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XAMLMarkupExtensions.1.2.2\lib\net40\XAMLMarkupExtensions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -143,48 +228,105 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DB\BffRepository.cs" />
     <Compile Include="DB\CommonPropertyProvider.cs" />
+    <Compile Include="DB\Dapper\BudgetMonthRepository.cs" />
+    <Compile Include="DB\Dapper\CachingRepositoryBase.cs" />
+    <Compile Include="DB\Dapper\CreateSqLiteDatabase.cs" />
+    <Compile Include="DB\Dapper\DapperBffRepository.cs" />
+    <Compile Include="DB\Dapper\ConnectionHelper.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\AccountRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\BudgetEntryRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\CategoryBaseRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\CategoryRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\FlagRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\IncomeCategoryRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\ParentTransactionRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\SubTransactionRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\DbSettingRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\PayeeRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\TransRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\TransactionRepository.cs" />
+    <Compile Include="DB\Dapper\ModelRepositories\TransferRepository.cs" />
+    <Compile Include="DB\Dapper\ObservableRepositoryBase.cs" />
+    <Compile Include="DB\Dapper\RepositoryBase.cs" />
+    <Compile Include="DB\Dapper\ViewRepositoryBase.cs" />
+    <Compile Include="DB\Dapper\WriteOnlyRepositoryBase.cs" />
     <Compile Include="DB\IBffOrmAsync.cs" />
     <Compile Include="DB\IBffOrm.cs" />
-    <Compile Include="DB\ITitViewModelOrm.cs" />
+    <Compile Include="DB\IProvideConnection.cs" />
+    <Compile Include="DB\IRepository.cs" />
     <Compile Include="DB\IVirtualizedRefresh.cs" />
-    <Compile Include="DB\SQLite\SqLiteBffOrmAsync.cs" />
+    <Compile Include="DB\PersistenceModels\Account.cs" />
+    <Compile Include="DB\PersistenceModels\BudgetEntry.cs" />
+    <Compile Include="DB\PersistenceModels\Category.cs" />
+    <Compile Include="DB\PersistenceModels\DbSetting.cs" />
+    <Compile Include="DB\PersistenceModels\Flag.cs" />
+    <Compile Include="DB\PersistenceModels\IHaveAccount.cs" />
+    <Compile Include="DB\PersistenceModels\IHaveCategory.cs" />
+    <Compile Include="DB\PersistenceModels\IHaveFlag.cs" />
+    <Compile Include="DB\PersistenceModels\IHavePayee.cs" />
+    <Compile Include="DB\PersistenceModels\IPersistenceModel.cs" />
+    <Compile Include="DB\PersistenceModels\Payee.cs" />
+    <Compile Include="DB\PersistenceModels\SubTransaction.cs" />
+    <Compile Include="DB\PersistenceModels\Trans.cs" />
     <Compile Include="DB\SQLite\SqLiteBffOrm.cs" />
+    <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
     <Compile Include="DB\SQLite\SqLiteQueries.cs" />
-    <Compile Include="DB\PagedTitBaseProvider.cs" />
+    <Compile Include="Helper\Extensions\StringExtensions.cs" />
+    <Compile Include="Helper\Extensions\VisualExtensions.cs" />
     <Compile Include="Helper\Import\CategoryImportWrapper.cs" />
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />
     <Compile Include="Helper\Output.cs" />
+    <Compile Include="Helper\ReactivePropertyHelper.cs" />
+    <Compile Include="MVVM\AttachedBehaviors\ScrollViewerSync.cs" />
+    <Compile Include="MVVM\Converters.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\IHaveCategory.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\ParentTransInc.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\TransInc.cs" />
+    <Compile Include="MVVM\Models\Native\BudgetEntry.cs" />
+    <Compile Include="MVVM\Models\Native\BudgetMonth.cs" />
+    <Compile Include="MVVM\Models\Native\Flag.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\IHaveBaseCategory.cs" />
     <Compile Include="MVVM\Models\Native\SummaryAccount.cs" />
     <Compile Include="MVVM\Models\Native\Account.cs" />
-    <Compile Include="MVVM\Models\Native\Category.cs" />
+    <Compile Include="MVVM\Models\Native\CategoryBase.cs" />
     <Compile Include="MVVM\Models\Native\DbSetting.cs" />
-    <Compile Include="MVVM\Models\Native\ParentIncome.cs" />
     <Compile Include="MVVM\Models\Native\Payee.cs" />
     <Compile Include="MVVM\Models\Native\Structure\CommonProperty.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\DataModelBase.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\TitLike.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\SubTransInc.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\TitBase.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\TransIncBase.cs" />
-    <Compile Include="MVVM\Models\Native\SubIncome.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\DataModel.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\TransLike.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\TransBase.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\TransactionBase.cs" />
     <Compile Include="MVVM\Models\Native\SubTransaction.cs" />
-    <Compile Include="MVVM\Models\Native\Income.cs" />
     <Compile Include="MVVM\Models\Native\ParentTransaction.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\CategoryViewModel.cs" />
+    <Compile Include="MVVM\Rules.cs" />
+    <Compile Include="MVVM\Services\AccountViewModelService.cs" />
+    <Compile Include="MVVM\Services\BudgetEntyViewModelService.cs" />
+    <Compile Include="MVVM\Services\CategoryBaseViewModelService.cs" />
+    <Compile Include="MVVM\Services\CategoryViewModelService.cs" />
+    <Compile Include="MVVM\Services\IncomeCategoryViewModelService.cs" />
+    <Compile Include="MVVM\Services\ParentTransactionViewModelService.cs" />
+    <Compile Include="MVVM\Services\ModelToViewModelServiceBase.cs" />
+    <Compile Include="MVVM\Services\FlagViewModelService.cs" />
+    <Compile Include="MVVM\Services\PayeeViewModelService.cs" />
+    <Compile Include="MVVM\Services\SubTransactionViewModelService.cs" />
+    <Compile Include="MVVM\Services\CommonPropertyViewModelServiceBase.cs" />
+    <Compile Include="MVVM\UserControls\UniformList.xaml.cs">
+      <DependentUpon>UniformList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\ViewModels\BudgetMonthViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\BudgetOverviewViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\CategoryBaseViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\BudgetEntryViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\FlagViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\CommonPropertyViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\PayeeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\DataModelViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\IncomeViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\TitBaseViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\TransIncBaseViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\SubIncomeViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Structure\IHavePayeeViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Structure\IHaveCategoryViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Structure\TransBaseViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Structure\TransactionBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\SubTransactionViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TitLikeViewModelPlaceholder.cs" />
     <Compile Include="MVVM\Models\Native\Transfer.cs" />
@@ -192,37 +334,27 @@
     <Compile Include="MVVM\ViewModels\ForModels\Structure\AccountBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\SummaryAccountViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\AccountViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\ParentIncomeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\ParentTransactionViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\ParentTransIncViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\TitLikeViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\SubTransIncViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Structure\TransLikeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TransactionViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TransferViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\TransIncViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ImportDialogViewModel.cs" />
     <Compile Include="MVVM\ViewModels\EmptyContentViewModel.cs" />
     <Compile Include="MVVM\ViewModels\AccountTabsViewModel.cs" />
     <Compile Include="MVVM\ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\NewCategoryViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\NewAccountViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\NewPayeeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ParentTitViewModel.cs" />
     <Compile Include="MVVM\ViewModels\SessionViewModelBase.cs" />
     <Compile Include="MVVM\AttachedBehaviors\AdditionalTabItemsBehavior.cs" />
-    <Compile Include="MVVM\Converters\BooleanToNullableBooleanConverter.cs" />
-    <Compile Include="MVVM\Converters\DateToStringConverter.cs" />
-    <Compile Include="MVVM\Converters\DateComboConverter.cs" />
-    <Compile Include="MVVM\Converters\DataGridLengthsToDoubleConverter.cs" />
-    <Compile Include="MVVM\Converters\CurrencyComboConverter.cs" />
-    <Compile Include="MVVM\Converters\DataGridWidthsToLeftMarginConverter.cs" />
-    <Compile Include="MVVM\Converters\NegativeTransferMultiConverter.cs" />
-    <Compile Include="MVVM\Converters\BooleanToDatePickerFormatConverter.cs" />
-    <Compile Include="MVVM\Converters\SumConverter.cs" />
-    <Compile Include="MVVM\Converters\SumColorMultiConverter.cs" />
-    <Compile Include="MVVM\Converters\SumToBrushConverter.cs" />
     <Compile Include="MVVM\Messages.cs" />
     <Compile Include="MVVM\Messenger.cs" />
-    <Compile Include="MVVM\RelayCommand.cs" />
     <Compile Include="MVVM\Views\AccountTabsView.xaml.cs">
       <DependentUpon>AccountTabsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\BudgetOverviewView.xaml.cs">
+      <DependentUpon>BudgetOverviewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\ImportDialog.xaml.cs">
       <DependentUpon>ImportDialog.xaml</DependentUpon>
@@ -234,13 +366,6 @@
     <Compile Include="MVVM\Views\TitDataGrid.xaml.cs">
       <DependentUpon>TitDataGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\ValidationRules\CurrencyLongRangeRule.cs" />
-    <Compile Include="MVVM\ValidationRules\NoEmptyFileNameRule.cs" />
-    <Compile Include="MVVM\ValidationRules\NotExistingSavePathRule.cs" />
-    <Compile Include="MVVM\ValidationRules\NotExistingFilePathRule.cs" />
-    <Compile Include="MVVM\ValidationRules\NoNullRule.cs" />
-    <Compile Include="MVVM\ValidationRules\NoEmptyNullStringRule.cs" />
-    <Compile Include="MVVM\ValidationRules\CurrencyRule.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -253,15 +378,27 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Resources\Icons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="MVVM\Resources\BFF_ModifiedMAMCheckBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="MVVM\Resources\CategoryTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\Resources\HamburgerMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\UserControls\UniformList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MVVM\Views\AccountTabsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\Views\BudgetOverviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -292,6 +429,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\Resources.de-AT.resx" />
     <EmbeddedResource Include="Properties\Resources.hu-HU.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -305,18 +443,21 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.ru-RU.resx" />
     <None Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -324,19 +465,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\WindowsIcons-license.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Entypo-license.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icons\logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\logo_quadratic.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MVVM\AttachedProperties\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -351,12 +483,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\System.Data.SQLite.Core.1.0.102.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.102.0\build\net46\System.Data.SQLite.Core.targets')" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.105.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.105.1\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.102.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.102.0\build\net46\System.Data.SQLite.Core.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.105.1\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.105.1\build\net46\System.Data.SQLite.Core.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

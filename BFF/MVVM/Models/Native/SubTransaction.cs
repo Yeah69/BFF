@@ -1,56 +1,105 @@
-﻿using System;
-using BFF.DB;
+﻿using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface ISubTransaction : ISubTransInc {}
+    public interface ISubTransaction : ITransLike, IHaveCategory
+    {
+        /// <summary>
+        /// The parent transaction.
+        /// </summary>
+        IParentTransaction Parent { get; set; }
+
+        /// <summary>
+        /// The amount of money, which was payed or received
+        /// </summary>
+        long Sum { get; set; }
+    }
 
     /// <summary>
     /// A SubElement of a Transaction
     /// </summary>
-    public class SubTransaction : SubTransInc, ISubTransaction
+    public class SubTransaction : TransLike<ISubTransaction>, ISubTransaction
     {
+        private IParentTransaction _parent;
+        private ICategoryBase _category;
+        private long _sum;
+
         /// <summary>
         /// Initializes the object
         /// </summary>
         /// <param name="category">Category of the SubElement</param>
         /// <param name="sum">The Sum of the SubElement</param>
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        public SubTransaction(IParentTransaction parent = null, ICategory category = null, long sum = 0L, string memo = null) 
-            : base(parent, category, memo, sum) {}
+        public SubTransaction(
+            IRepository<ISubTransaction> repository,
+            long id, 
+            ICategoryBase category = null,
+            string memo = null,
+            long sum = 0L) 
+            : base(repository, id, memo)
+        {
+            _category = category;
+            _sum = sum;
+        }
+
+        public IParentTransaction Parent
+        {
+            get => _parent;
+            set
+            {
+                if (_parent == value) return;
+                _parent = value;
+                Update();
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
-        /// Safe ORM-constructor
+        /// Id of the Category
         /// </summary>
-        /// <param name="id">This objects Id</param>
-        /// <param name="parentId">Id of the Parent</param>
-        /// <param name="categoryId">Id of the Category</param>
-        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        /// <param name="sum">The Sum of the SubElement</param>
-        public SubTransaction(long id, long parentId, long categoryId, string memo, long sum)
-            : base(id, parentId, categoryId, sum, memo) { }
-
-        #region Overrides of ExteriorCrudBase
-
-        public override void Insert(IBffOrm orm)
+        public ICategoryBase Category
         {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Insert(this);
+            get => _category;
+            set
+            {
+                if (value == null)
+                {
+                    OnPropertyChanged();
+                    return;
+                }
+                if (_category == value) return;
+                _category = value;
+                Update();
+                OnPropertyChanged();
+            }
         }
 
-        public override void Update(IBffOrm orm)
+        /// <summary>
+        /// The amount of money, which was payed or received
+        /// </summary>
+        public long Sum
         {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Update(this);
+            get => _sum;
+            set
+            {
+                if(_sum == value) return;
+                _sum = value;
+                Update();
+                OnPropertyChanged();
+            }
         }
 
-        public override void Delete(IBffOrm orm)
+        public override void Insert()
         {
-            if (orm == null) throw new ArgumentNullException(nameof(orm));
-            orm.Delete(this);
+            base.Insert();
+            Parent.AddSubElement(this);
         }
 
-        #endregion
+        public override void Delete()
+        {
+            base.Delete();
+            Parent.RemoveSubElement(this);
+        }
     }
 }

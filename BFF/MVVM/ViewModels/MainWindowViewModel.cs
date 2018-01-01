@@ -3,12 +3,14 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Input;
 using BFF.DB;
+using BFF.DB.Dapper;
 using BFF.DB.SQLite;
+using BFF.Helper.Extensions;
 using BFF.Helper.Import;
 using BFF.Properties;
 using NLog;
+using Reactive.Bindings;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
@@ -22,7 +24,7 @@ namespace BFF.MVVM.ViewModels
         private string _title;
         public string Title
         {
-            get { return _title; }
+            get => _title;
             set
             {
                 _title = value;
@@ -30,45 +32,16 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public ICommand NewBudgetPlanCommand => new RelayCommand(param => 
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog
-            {
-                Title = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_TitleNew", null, Settings.Default.Culture_DefaultLanguage),
-                Filter = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_Filter", null, Settings.Default.Culture_DefaultLanguage),
-                DefaultExt = "*.sqlite"
-            };
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                SqLiteBffOrm.CreateNewDatabase(saveFileDialog.FileName);
-                Reset(saveFileDialog.FileName);
-            }
-        });
+        public ReactiveCommand NewBudgetPlanCommand { get; } = new ReactiveCommand();
 
-        public ICommand OpenBudgetPlanCommand => new RelayCommand(param => 
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                Title = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_TitleOpen", null, Settings.Default.Culture_DefaultLanguage),
-                Filter = (string)WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.GetLocalizedObject("OpenSaveDialog_Filter", null, Settings.Default.Culture_DefaultLanguage),
-                DefaultExt = "*.sqlite"
-            };
-            if (openFileDialog.ShowDialog() == true)
-            {
-                Reset(openFileDialog.FileName);
-            }
-        });
+        public ReactiveCommand OpenBudgetPlanCommand { get; } = new ReactiveCommand();
 
-        public ICommand ImportBudgetPlanCommand => new RelayCommand(importableObject =>
-        {
-            string savePath = ((IImportable)importableObject).Import();
-            Reset(savePath);
-        });
+        public ReactiveCommand<IImportable> ImportBudgetPlanCommand { get; } = new ReactiveCommand<IImportable>();
 
         private SessionViewModelBase _contentViewModel;
         public SessionViewModelBase ContentViewModel
         {
-            get { return _contentViewModel; }
+            get => _contentViewModel;
             set
             {
                 _contentViewModel = value;
@@ -76,9 +49,21 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
+        public BudgetOverviewViewModel BudgetOverviewViewModel
+        {
+            get => _budgetOverviewViewModel;
+            set
+            {
+                if (value == _budgetOverviewViewModel)
+                    return;
+                _budgetOverviewViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
         public CultureInfo LanguageCulture
         {
-            get { return Settings.Default.Culture_DefaultLanguage; }
+            get => Settings.Default.Culture_DefaultLanguage;
             set
             {
                 Settings.Default.Culture_DefaultLanguage = value;
@@ -89,22 +74,24 @@ namespace BFF.MVVM.ViewModels
 
         public CultureInfo CurrencyCulture
         {
-            get { return Settings.Default.Culture_SessionCurrency; }
+            get => Settings.Default.Culture_SessionCurrency;
             set
             {
                 Settings.Default.Culture_SessionCurrency = value;
                 _contentViewModel?.ManageCultures();
+                Messenger.Default.Send(CultureMessage.RefreshCurrency);
                 OnPropertyChanged();
             }
         }
 
         public CultureInfo DateCulture
         {
-            get { return Settings.Default.Culture_SessionDate; }
+            get => Settings.Default.Culture_SessionDate;
             set
             {
                 Settings.Default.Culture_SessionDate = value;
                 _contentViewModel?.ManageCultures();
+                Messenger.Default.Send(CultureMessage.RefreshDate);
                 OnPropertyChanged();
             }
         }
@@ -112,12 +99,12 @@ namespace BFF.MVVM.ViewModels
         //todo: put DateLong into Database, too?
         public bool DateLong
         {
-            get { return Settings.Default.Culture_DefaultDateLong; }
+            get => Settings.Default.Culture_DefaultDateLong;
             set
             {
                 Settings.Default.Culture_DefaultDateLong = value;
                 _contentViewModel?.ManageCultures();
-                Messenger.Default.Send(CutlureMessage.RefreshDate);
+                Messenger.Default.Send(CultureMessage.RefreshDate);
                 OnPropertyChanged();
             }
         }
@@ -128,7 +115,7 @@ namespace BFF.MVVM.ViewModels
 
         public ParentTitViewModel ParentTitViewModel
         {
-            get { return _parentTitViewModel; }
+            get => _parentTitViewModel;
             set
             {
                 _parentTitViewModel = value;
@@ -137,10 +124,11 @@ namespace BFF.MVVM.ViewModels
         }
 
         private bool _parentTitFlyoutOpen;
+        private BudgetOverviewViewModel _budgetOverviewViewModel;
 
         public bool ParentTitFlyoutOpen
         {
-            get { return _parentTitFlyoutOpen; }
+            get => _parentTitFlyoutOpen;
             set
             {
                 _parentTitFlyoutOpen = value;
@@ -154,7 +142,7 @@ namespace BFF.MVVM.ViewModels
             Reset(Settings.Default.DBLocation);
 
             //If the application is not visible on screen, than reset the default position
-            //This might occure when one of multipe monitors is switched off or the screen resolution is changed while BFF is off
+            //This might occur when one of multiple monitors is switched off or the screen resolution is changed while BFF is off
             if (X - BorderOffset > SystemInformation.VirtualScreen.Right ||
                 Y - BorderOffset > SystemInformation.VirtualScreen.Bottom ||
                 X + Width - BorderOffset < SystemInformation.VirtualScreen.Left ||
@@ -169,6 +157,42 @@ namespace BFF.MVVM.ViewModels
                 ParentTitViewModel = parentTitViewModel;
                 ParentTitFlyoutOpen = true;
             });
+
+            NewBudgetPlanCommand.Subscribe(_ =>
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Title = "OpenSaveDialog_TitleNew".Localize<string>(),
+                    Filter = "OpenSaveDialog_Filter".Localize<string>(),
+                    DefaultExt = "*.sqlite"
+                };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    new CreateSqLiteDatabase(saveFileDialog.FileName).Create();
+                    Reset(saveFileDialog.FileName);
+                }
+            });
+
+            OpenBudgetPlanCommand.Subscribe(_ =>
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog
+                {
+                    Title = "OpenSaveDialog_TitleOpen".Localize<string>(),
+                    Filter = "OpenSaveDialog_Filter".Localize<string>(),
+                    DefaultExt = "*.sqlite"
+                };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    Reset(openFileDialog.FileName);
+                }
+            });
+
+            ImportBudgetPlanCommand.Subscribe(importableObject =>
+            {
+                string savePath = importableObject.Import();
+                Reset(savePath);
+            });
+
             Logger.Trace("Initializing done.");
         }
 
@@ -177,8 +201,18 @@ namespace BFF.MVVM.ViewModels
             (ContentViewModel as IDisposable)?.Dispose();
             if (File.Exists(dbPath))
             {
-                IBffOrm orm = new SqLiteBffOrm(dbPath);
-                ContentViewModel = new AccountTabsViewModel(orm);
+                IBffOrm orm = new SqLiteBffOrm(new ProvideSqLiteConnection(dbPath));
+                ContentViewModel = new AccountTabsViewModel(
+                    orm, 
+                    new NewAccountViewModel(
+                        orm.BffRepository.AccountRepository,
+                        orm.CommonPropertyProvider.AccountViewModelService));
+                BudgetOverviewViewModel = 
+                    new BudgetOverviewViewModel(
+                        orm.BffRepository.BudgetMonthRepository,
+                        orm.BudgetEntryViewModelService, 
+                        orm.CommonPropertyProvider.CategoryViewModelService,
+                        orm.BffRepository.CategoryRepository);
                 Title = $"{new FileInfo(dbPath).Name} - BFF";
                 Settings.Default.DBLocation = dbPath;
                 Settings.Default.Save();
@@ -198,7 +232,7 @@ namespace BFF.MVVM.ViewModels
 
         public double Width
         {
-            get { return Settings.Default.MainWindow_Width; }
+            get => Settings.Default.MainWindow_Width;
             set
             {
                 Settings.Default.MainWindow_Width = value;
@@ -209,7 +243,7 @@ namespace BFF.MVVM.ViewModels
 
         public double Height
         {
-            get { return Settings.Default.MainWindow_Height; }
+            get => Settings.Default.MainWindow_Height;
             set
             {
                 Settings.Default.MainWindow_Height = value;
@@ -220,7 +254,7 @@ namespace BFF.MVVM.ViewModels
 
         public double X
         {
-            get { return Settings.Default.MainWindow_X; }
+            get => Settings.Default.MainWindow_X;
             set
             {
                 Settings.Default.MainWindow_X = value;
@@ -231,7 +265,7 @@ namespace BFF.MVVM.ViewModels
 
         public double Y
         {
-            get { return Settings.Default.MainWindow_Y; }
+            get => Settings.Default.MainWindow_Y;
             set
             {
                 Settings.Default.MainWindow_Y = value;
@@ -242,7 +276,7 @@ namespace BFF.MVVM.ViewModels
 
         public WindowState WindowState
         {
-            get { return Settings.Default.MainWindow_WindowState; }
+            get => Settings.Default.MainWindow_WindowState;
             set
             {
                 Settings.Default.MainWindow_WindowState = value;

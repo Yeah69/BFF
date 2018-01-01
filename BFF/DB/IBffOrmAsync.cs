@@ -10,21 +10,26 @@ namespace BFF.DB
     {
         string DbPath { get; }
         Task CreateNewDatabaseAsync(string dbPath);
-        Task PopulateDatabaseAsync(IEnumerable<ITransaction> transactions, IEnumerable<ISubTransaction> subTransactions, IEnumerable<IIncome> incomes, IEnumerable<ISubIncome> subIncomes,
-            IEnumerable<ITransfer> transfers, IEnumerable<IAccount> accounts, IEnumerable<IPayee> payees, IEnumerable<ICategory> categories);
-        IEnumerable<ITitBase> GetAllTitsAsync(DateTime startTime, DateTime endTime, IAccount account = null);
+        Task PopulateDatabaseAsync(
+            IEnumerable<ITransaction> transactions,
+            IEnumerable<ISubTransaction> subTransactions,
+            IEnumerable<ITransfer> transfers,
+            IEnumerable<IAccount> accounts, 
+            IEnumerable<IPayee> payees, 
+            IEnumerable<ICategoryBase> categories);
+        IEnumerable<ITransBase> GetAllTitsAsync(DateTime startTime, DateTime endTime, IAccount account = null);
         Task<long?> GetAccountBalanceAsync(IAccount account = null);
-        IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : class, ISubTransInc;
+        IEnumerable<T> GetSubTransIncAsync<T>(long parentId) where T : class, ISubTransaction;
         Task ResetAsync();
     }
 
     public interface ICrudOrmAsync
     {
-        Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IDataModelBase;
-        Task<int> InsertAsync<T>(T dataModelBase) where T : class, IDataModelBase;
-        Task<T> GetAsync<T>(long id) where T : class, IDataModelBase;
-        Task UpdateAsync<T>(T dataModelBase) where T : class, IDataModelBase;
-        Task DeleteAsync<T>(T dataModelBase) where T : class, IDataModelBase;
+        Task<IEnumerable<T>> GetAllAsync<T>() where T : class, IDataModel;
+        Task<int> InsertAsync<T>(T dataModelBase) where T : class, IDataModel;
+        Task<T> GetAsync<T>(long id) where T : class, IDataModel;
+        Task UpdateAsync<T>(T dataModelBase) where T : class, IDataModel;
+        Task DeleteAsync<T>(T dataModelBase) where T : class, IDataModel;
     }
     
     public interface IPagedOrmAsync

@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using BFF.DB;
-using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.Views
@@ -16,23 +16,14 @@ namespace BFF.MVVM.Views
     {
         #region Depencency Properties
 
-        public static readonly DependencyProperty AccountProperty = DependencyProperty.Register(
-            nameof(Account), typeof(IAccount), typeof(TitDataGrid), new PropertyMetadata(default(IAccount)));
-
-        public IAccount Account
-        {
-            get { return (IAccount) GetValue(AccountProperty); }
-            set { SetValue(AccountProperty, value); }
-        }
-
         public static readonly DependencyProperty AccountViewModelProperty = DependencyProperty.Register(
             nameof(AccountViewModel), typeof(IAccountBaseViewModel), typeof(TitDataGrid), 
             new PropertyMetadata(default(IAccountBaseViewModel), OnAccountViewModelChanged));
 
         public IAccountBaseViewModel AccountViewModel
         {
-            get { return (IAccountBaseViewModel) GetValue(AccountViewModelProperty); }
-            set { SetValue(AccountViewModelProperty, value); }
+            get => (IAccountBaseViewModel) GetValue(AccountViewModelProperty);
+            set => SetValue(AccountViewModelProperty, value);
         }
 
         public static readonly DependencyProperty TitsProperty = DependencyProperty.Register(
@@ -41,8 +32,8 @@ namespace BFF.MVVM.Views
 
         public IEnumerable Tits
         {
-            get { return (IEnumerable) GetValue(TitsProperty); }
-            set { SetValue(TitsProperty, value); }
+            get => (IEnumerable) GetValue(TitsProperty);
+            set => SetValue(TitsProperty, value);
         }
 
         public static readonly DependencyProperty NewTitsProperty = DependencyProperty.Register(
@@ -50,8 +41,8 @@ namespace BFF.MVVM.Views
 
         public IEnumerable NewTits
         {
-            get { return (IEnumerable) GetValue(NewTitsProperty); }
-            set { SetValue(NewTitsProperty, value); }
+            get => (IEnumerable) GetValue(NewTitsProperty);
+            set => SetValue(NewTitsProperty, value);
         }
 
         public static readonly DependencyProperty NewTransactionCommandProperty = DependencyProperty.Register(
@@ -62,20 +53,8 @@ namespace BFF.MVVM.Views
 
         public ICommand NewTransactionCommand
         {
-            get { return (ICommand) GetValue(NewTransactionCommandProperty); }
-            set { SetValue(NewTransactionCommandProperty, value); }
-        }
-
-        public static readonly DependencyProperty NewIncomeCommandProperty = DependencyProperty.Register(
-            nameof(NewIncomeCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand),(o, args) =>
-            {
-                ((TitDataGrid)o).NewIncomeVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
-            }));
-
-        public ICommand NewIncomeCommand
-        {
-            get { return (ICommand) GetValue(NewIncomeCommandProperty); }
-            set { SetValue(NewIncomeCommandProperty, value); }
+            get => (ICommand) GetValue(NewTransactionCommandProperty);
+            set => SetValue(NewTransactionCommandProperty, value);
         }
 
         public static readonly DependencyProperty NewTransferCommandProperty = DependencyProperty.Register(
@@ -86,8 +65,8 @@ namespace BFF.MVVM.Views
 
         public ICommand NewTransferCommand
         {
-            get { return (ICommand) GetValue(NewTransferCommandProperty); }
-            set { SetValue(NewTransferCommandProperty, value); }
+            get => (ICommand) GetValue(NewTransferCommandProperty);
+            set => SetValue(NewTransferCommandProperty, value);
         }
 
         public static readonly DependencyProperty NewParentTransactionCommandProperty = DependencyProperty.Register(
@@ -98,20 +77,8 @@ namespace BFF.MVVM.Views
 
         public ICommand NewParentTransactionCommand
         {
-            get { return (ICommand) GetValue(NewParentTransactionCommandProperty); }
-            set { SetValue(NewParentTransactionCommandProperty, value); }
-        }
-
-        public static readonly DependencyProperty NewParentIncomeCommandProperty = DependencyProperty.Register(
-            nameof(NewParentIncomeCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
-            {
-                ((TitDataGrid)o).NewParentIncomeVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
-            }));
-
-        public ICommand NewParentIncomeCommand
-        {
-            get { return (ICommand) GetValue(NewParentIncomeCommandProperty); }
-            set { SetValue(NewParentIncomeCommandProperty, value); }
+            get => (ICommand) GetValue(NewParentTransactionCommandProperty);
+            set => SetValue(NewParentTransactionCommandProperty, value);
         }
 
         public static readonly DependencyProperty ApplyCommandProperty = DependencyProperty.Register(
@@ -122,8 +89,8 @@ namespace BFF.MVVM.Views
 
         public ICommand ApplyCommand
         {
-            get { return (ICommand) GetValue(ApplyCommandProperty); }
-            set { SetValue(ApplyCommandProperty, value); }
+            get => (ICommand) GetValue(ApplyCommandProperty);
+            set => SetValue(ApplyCommandProperty, value);
         }
 
         private static readonly DependencyProperty NewTransactionVisibilityProperty = DependencyProperty.Register(
@@ -131,17 +98,8 @@ namespace BFF.MVVM.Views
 
         private Visibility NewTransactionVisibility
         {
-            get { return (Visibility) GetValue(NewTransactionVisibilityProperty); }
-            set { SetValue(NewTransactionVisibilityProperty, value); }
-        }
-
-        public static readonly DependencyProperty NewIncomeVisibilityProperty = DependencyProperty.Register(
-            nameof(NewIncomeVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
-
-        public Visibility NewIncomeVisibility
-        {
-            get { return (Visibility) GetValue(NewIncomeVisibilityProperty); }
-            set { SetValue(NewIncomeVisibilityProperty, value); }
+            get => (Visibility) GetValue(NewTransactionVisibilityProperty);
+            set => SetValue(NewTransactionVisibilityProperty, value);
         }
 
         public static readonly DependencyProperty NewTransferVisibilityProperty = DependencyProperty.Register(
@@ -149,8 +107,8 @@ namespace BFF.MVVM.Views
 
         public Visibility NewTransferVisibility
         {
-            get { return (Visibility) GetValue(NewTransferVisibilityProperty); }
-            set { SetValue(NewTransferVisibilityProperty, value); }
+            get => (Visibility) GetValue(NewTransferVisibilityProperty);
+            set => SetValue(NewTransferVisibilityProperty, value);
         }
 
         public static readonly DependencyProperty NewParentTransactionVisibilityProperty = DependencyProperty.Register(
@@ -158,17 +116,8 @@ namespace BFF.MVVM.Views
 
         public Visibility NewParentTransactionVisibility
         {
-            get { return (Visibility) GetValue(NewParentTransactionVisibilityProperty); }
-            set { SetValue(NewParentTransactionVisibilityProperty, value); }
-        }
-
-        public static readonly DependencyProperty NewParentIncomeVisibilityProperty = DependencyProperty.Register(
-            nameof(NewParentIncomeVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
-
-        public Visibility NewParentIncomeVisibility
-        {
-            get { return (Visibility) GetValue(NewParentIncomeVisibilityProperty); }
-            set { SetValue(NewParentIncomeVisibilityProperty, value); }
+            get => (Visibility) GetValue(NewParentTransactionVisibilityProperty);
+            set => SetValue(NewParentTransactionVisibilityProperty, value);
         }
 
         public static readonly DependencyProperty ApplyVisibilityProperty = DependencyProperty.Register(
@@ -176,8 +125,8 @@ namespace BFF.MVVM.Views
 
         public Visibility ApplyVisibility
         {
-            get { return (Visibility) GetValue(ApplyVisibilityProperty); }
-            set { SetValue(ApplyVisibilityProperty, value); }
+            get => (Visibility) GetValue(ApplyVisibilityProperty);
+            set => SetValue(ApplyVisibilityProperty, value);
         }
 
         public static readonly DependencyProperty ShowRowDetailsModeProperty = DependencyProperty.Register(
@@ -185,8 +134,8 @@ namespace BFF.MVVM.Views
 
         public DataGridRowDetailsVisibilityMode ShowRowDetailsMode
         {
-            get { return (DataGridRowDetailsVisibilityMode) GetValue(ShowRowDetailsModeProperty); }
-            set { SetValue(ShowRowDetailsModeProperty, value); }
+            get => (DataGridRowDetailsVisibilityMode) GetValue(ShowRowDetailsModeProperty);
+            set => SetValue(ShowRowDetailsModeProperty, value);
         }
 
         public static readonly DependencyProperty IsDateLongProperty = DependencyProperty.Register(
@@ -194,8 +143,8 @@ namespace BFF.MVVM.Views
 
         public bool IsDateLong
         {
-            get { return (bool) GetValue(IsDateLongProperty); }
-            set { SetValue(IsDateLongProperty, value); }
+            get => (bool) GetValue(IsDateLongProperty);
+            set => SetValue(IsDateLongProperty, value);
         }
 
         #endregion
@@ -242,6 +191,24 @@ namespace BFF.MVVM.Views
                     TitGrid.ScrollIntoView(TitGrid.CurrentItem);
                 }
                 TitGrid.SelectedIndex = _previousPosition;
+            }
+        }
+
+        private void AddCategoryButton_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is FrameworkElement button)
+            {
+                if (button.FindName("Popup") is Popup popup)
+                    popup.IsOpen = true;
+            }
+        }
+
+        private void AddPayeeButton_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is FrameworkElement button)
+            {
+                if (button.FindName("Popup") is Popup popup)
+                    popup.IsOpen = true;
             }
         }
     }

@@ -1,6 +1,8 @@
-﻿namespace BFF.MVVM.Models.Native.Structure
+﻿using BFF.DB;
+
+namespace BFF.MVVM.Models.Native.Structure
 {
-    public interface ICommonProperty : IDataModelBase
+    public interface ICommonProperty : IDataModel
     {
         /// <summary>
         /// Name of the CommonProperty
@@ -11,7 +13,7 @@
     /// <summary>
     /// CommonProperties are classes, whose instances are shared among other model classes
     /// </summary>
-    public abstract class CommonProperty : DataModelBase, ICommonProperty
+    public abstract class CommonProperty<T> : DataModel<T>, ICommonProperty where T : class, ICommonProperty
     {
         private string _name;
 
@@ -20,11 +22,12 @@
         /// </summary>
         public string Name
         {
-            get { return _name; }
+            get => _name;
             set
             {
                 if (_name == value) return;
-                _name = value; 
+                _name = value;
+                Update();
                 OnPropertyChanged();
             }
         }
@@ -38,7 +41,7 @@
             return Name;
         }
 
-        protected CommonProperty(string name = null)
+        protected CommonProperty(IRepository<T> repository, long id = -1L, string name = null) : base(repository, id)
         {
             _name = name;
         }

@@ -118,168 +118,267 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value>Alle Konten</value>
+    <value>Összes számla</value>
   </data>
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
-    <value>Erstellen</value>
+    <value>Létrehozás</value>
   </data>
   <data name="AccountTabsView_NewAccount_Name" xml:space="preserve">
-    <value>Kontoname:</value>
+    <value>Számla neve:</value>
   </data>
   <data name="AccountTabsView_NewAccount_StartingBalance" xml:space="preserve">
-    <value>Initialler Kontostand:</value>
+    <value>Kiinduló számlaegyenleg:</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_StartingDate" xml:space="preserve">
+    <value>Starting Date:</value>
   </data>
   <data name="AccountView_Balance" xml:space="preserve">
-    <value>Kontostand:</value>
+    <value>Számlaegyenleg:</value>
   </data>
   <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value>Transfer</value>
+    <value>Átutalás</value>
   </data>
   <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value>Löschen</value>
+    <value>Töröl</value>
   </data>
   <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>Konto</value>
+    <value>Számla</value>
   </data>
   <data name="AccountView_Header_Category" xml:space="preserve">
-    <value>Kategorie</value>
+    <value>Kategória</value>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Check Number</value>
   </data>
   <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>Erledigt</value>
+    <value>Elintézve</value>
   </data>
   <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>Datum</value>
+    <value>Dátum</value>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>F</value>
   </data>
   <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value>Notiz</value>
+    <value>Megjegyzés</value>
   </data>
   <data name="AccountView_Header_Payee" xml:space="preserve">
-    <value>Bezahlter</value>
+    <value>Kedvezményezett</value>
   </data>
   <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>Betrag</value>
+    <value>Összeg</value>
   </data>
   <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value>S</value>
+    <value>Sz</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Szimbólum</value>
   </data>
   <data name="AccountView_StartingBalance" xml:space="preserve">
-    <value>Initialler Kontostand:</value>
+    <value>Kiinduló számlaegyenleg:</value>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>In die Tabelle aufnehmen</value>
-  </data>
-  <data name="AccountView_ToolTip_NewIncome" xml:space="preserve">
-    <value>Neues Einkommen</value>
-  </data>
-  <data name="AccountView_ToolTip_NewParentIncome" xml:space="preserve">
-    <value>Neues aufgeteiltes Einkommen</value>
+    <value>Táblázatba felvenni</value>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>Neue aufgeteilte Transaktion</value>
+    <value>Új felosztott tranzakció / kiadás</value>
   </data>
   <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>Neue Transaktion</value>
+    <value>Új tranzakció / kiadás</value>
   </data>
   <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>Neuer Transfer</value>
+    <value>Új átutalás</value>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Amount of money which is available in this month but not assigned to any category yet.</value>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Budgeted</value>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Sum of all amounts of money which are budgeted on a category in this month.</value>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Income</value>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Amount of earned money which is assigned for the expenses of this month.</value>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Not Budgeted</value>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Amount of money which was available last month but not assigned to any category.</value>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Outflows</value>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Overbudgeted</value>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Amount of money which was missing to satisfy all categories in last month.</value>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Amount of money which is missing to satisfy all categories in this month.</value>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Overspend</value>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Sum of overspend amounts of money accumulated from all categories in last month.</value>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Create new category</value>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Create new payee</value>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>The name of the new category is not allowed to be empty!</value>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>A category has to be chosen.</value>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>A payee has to be chosen.</value>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>A new account's name isn't allowed to be empty or match a name of the existing accounts!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>This name already exists on the chosen category level!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>This category level already contains a category of chosen name!</value>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>The name of a new payee isn't allowed to be empty or an already existing one.</value>
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
-    <value>Die Datei "{0}" konnte nicht gefunden werden.</value>
+    <value>A "{0}" fájl nem található </value>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Accounts</value>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Budget</value>
   </data>
   <data name="ImportView_Browse" xml:space="preserve">
-    <value>Durchsuchen</value>
+    <value>Keres</value>
   </data>
   <data name="ImportView_Cancel" xml:space="preserve">
-    <value>Abbrechen</value>
+    <value>Mégse</value>
   </data>
   <data name="ImportView_Import" xml:space="preserve">
-    <value>Importieren</value>
+    <value>Importál</value>
   </data>
   <data name="ImportView_SaveFile" xml:space="preserve">
-    <value>Importiere und speichere zu folgenden Pfad:</value>
+    <value>Importálás és mentés a következő elérési útvonalon</value>
   </data>
   <data name="ImportView_YNAB4" xml:space="preserve">
-    <value>Import von YNAB4 CSV-Dateien</value>
+    <value>Importálás a YNAB4 CDV fájlokból</value>
   </data>
   <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>Pfad zu der YNAB-Budget-CSV:</value>
+    <value>Elérési út a YNAB-költségvetés-CSV-hez</value>
   </data>
   <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>Pfad zu der YNAB-Transaktions-CSV:</value>
+    <value>Elérési út a YNAB-tranzaktiók-CSV-hez</value>
   </data>
   <data name="MainWindow_About" xml:space="preserve">
-    <value>Über</value>
+    <value>BFF</value>
   </data>
   <data name="MainWindow_File" xml:space="preserve">
-    <value>Datei</value>
+    <value>Fájl</value>
   </data>
   <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>Import</value>
+    <value>Importálás</value>
   </data>
   <data name="MainWindow_File_New" xml:space="preserve">
-    <value>Neu</value>
+    <value>Új</value>
   </data>
   <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>Öffnen</value>
+    <value>Megnyitás</value>
   </data>
   <data name="MainWindow_Settings" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>Beállítások</value>
   </data>
   <data name="MainWindow_Settings_Accents" xml:space="preserve">
-    <value>Akzente:</value>
+    <value>Szín</value>
   </data>
   <data name="MainWindow_Settings_Currency" xml:space="preserve">
-    <value>Währungsformat:</value>
+    <value>Pénznem</value>
   </data>
   <data name="MainWindow_Settings_Currency_Negative" xml:space="preserve">
-    <value>Positiv:</value>
+    <value>pozitív</value>
   </data>
   <data name="MainWindow_Settings_Currency_Positive" xml:space="preserve">
-    <value>Negativ:</value>
+    <value>negatív</value>
   </data>
   <data name="MainWindow_Settings_Date" xml:space="preserve">
-    <value>Datumsformat:</value>
+    <value>Dátumformátum</value>
   </data>
   <data name="MainWindow_Settings_Date_Long" xml:space="preserve">
-    <value>Lang:</value>
+    <value>hosszú</value>
   </data>
   <data name="MainWindow_Settings_Date_Long_Inverted" xml:space="preserve">
-    <value>:Lang</value>
+    <value>:hosszú</value>
   </data>
   <data name="MainWindow_Settings_Date_Short" xml:space="preserve">
-    <value>Kurz:</value>
+    <value>rövid:</value>
   </data>
   <data name="MainWindow_Settings_Language" xml:space="preserve">
-    <value>Sprache:</value>
+    <value>Nyelv:</value>
   </data>
   <data name="MainWindow_Settings_Theme" xml:space="preserve">
-    <value>Theme:</value>
+    <value>Téma:</value>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Name of new category</value>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Name of new payee</value>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Income Relevant?</value>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Month Offset</value>
   </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value>BFF Finanzplan (*.sqlite)|*.sqlite</value>
+    <value>BFF pénzügyi terv </value>
   </data>
   <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>Erstelle einen neuen Finanzplan</value>
+    <value>Új pénzügyi terv létrehozása</value>
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
-    <value>Öffne einen Finanzplan</value>
+    <value>Pénzügyi terv megnyitása</value>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Superior Category</value>
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
-    <value>Dieser Text konnte nicht als Währung geparst werden!</value>
+    <value>A beírt szöveg nem értelmezhető pénznemként</value>
   </data>
   <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value>Der Wert liegt außerhalb des Gültigkeitsbereiches: [ {0} .. {1} ]!</value>
+    <value>Az érték kívül esik a megengedett tartományon: [ {0} .. {1} ]</value>
   </data>
   <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>Dieses Eingabefeld darf nicht leer bleiben!</value>
+    <value>Ez a mező nem maradhat üresen!</value>
   </data>
   <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value>Dieser Dateipfad existiert nicht!</value>
+    <value>Ez az elérési út nem létezik!</value>
   </data>
   <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>Das Verzeichnis vom Speicherpfad existiert nicht!</value>
+    <value>A mentési útvonalhoz tartozó mappa nem létezik!</value>
   </data>
   <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>Der Dateiname von diesem Speicherpfad ist leer!</value>
+    <value>Ehhez a mentési útvonalhoz tartozó fájlnév nem létezik!</value>
   </data>
 </root>

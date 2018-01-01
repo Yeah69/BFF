@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Все счета</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_Name" xml:space="preserve">
+    <value>Название счета:</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_StartingBalance" xml:space="preserve">
+    <value>Начальное сальдо счёта:</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_StartingDate" xml:space="preserve">
+    <value>Starting Date:</value>
+  </data>
+  <data name="AccountView_Balance" xml:space="preserve">
+    <value>Сальдо счёта:</value>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Перевод</value>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Счёт</value>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Check Number</value>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Выполнено</value>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>F</value>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Заметка</value>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Получатель платежа</value>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Тип операции</value>
+  </data>
+  <data name="AccountView_StartingBalance" xml:space="preserve">
+    <value>Начальное сальдо счёта</value>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Ввести в таблицу</value>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Новый разделённый расход</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Новый расход</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Новый перевод</value>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Amount of money which is available in this month but not assigned to any category yet.</value>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Budgeted</value>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Sum of all amounts of money which are budgeted on a category in this month.</value>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Income</value>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Amount of earned money which is assigned for the expenses of this month.</value>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Not Budgeted</value>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Amount of money which was available last month but not assigned to any category.</value>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Outflows</value>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Overbudgeted</value>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Amount of money which was missing to satisfy all categories in last month.</value>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Amount of money which is missing to satisfy all categories in this month.</value>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Overspend</value>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Sum of overspend amounts of money accumulated from all categories in last month.</value>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Create new category</value>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Create new payee</value>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>The name of the new category is not allowed to be empty!</value>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>A category has to be chosen.</value>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>A payee has to be chosen.</value>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>A new account's name isn't allowed to be empty or match a name of the existing accounts!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>This name already exists on the chosen category level!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>This category level already contains a category of chosen name!</value>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>The name of a new payee isn't allowed to be empty or an already existing one.</value>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>Файл  "{0}" не найден.</value>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Accounts</value>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Budget</value>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Обзор...</value>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Импортировать</value>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Сохранить по следующему пути:</value>
+  </data>
+  <data name="ImportView_YNAB4" xml:space="preserve">
+    <value>Импортировать YNAB4 CSV-файлы</value>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Путь к YNAB-Budget-CSV:</value>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Путь к YNAB-Transaktions-CSV:</value>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>О программe</value>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Импорт</value>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Открыть</value>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Параметры</value>
+  </data>
+  <data name="MainWindow_Settings_Accents" xml:space="preserve">
+    <value>Цвет:</value>
+  </data>
+  <data name="MainWindow_Settings_Currency" xml:space="preserve">
+    <value>Формат валюты:</value>
+  </data>
+  <data name="MainWindow_Settings_Currency_Negative" xml:space="preserve">
+    <value>Положительно:</value>
+  </data>
+  <data name="MainWindow_Settings_Currency_Positive" xml:space="preserve">
+    <value>Отрицательно:</value>
+  </data>
+  <data name="MainWindow_Settings_Date" xml:space="preserve">
+    <value>Формат даты:</value>
+  </data>
+  <data name="MainWindow_Settings_Date_Long" xml:space="preserve">
+    <value>Полная:</value>
+  </data>
+  <data name="MainWindow_Settings_Date_Long_Inverted" xml:space="preserve">
+    <value>:Полная</value>
+  </data>
+  <data name="MainWindow_Settings_Date_Short" xml:space="preserve">
+    <value>Короткая:</value>
+  </data>
+  <data name="MainWindow_Settings_Language" xml:space="preserve">
+    <value>Язык:</value>
+  </data>
+  <data name="MainWindow_Settings_Theme" xml:space="preserve">
+    <value>Тема:</value>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Name of new category</value>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Name of new payee</value>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Income Relevant?</value>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Month Offset</value>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>BFF финансовый план</value>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Создать новый финасовый план</value>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Открыть финасовый план</value>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Superior Category</value>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Значение не соответствует формату валюты</value>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Значение выходит за пределы: [ {0} .. {1} ]!</value>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Поле ввода не может быть пустым!</value>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Путь к файлу не существует!</value>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Папка для сохранения не существует!</value>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Имя файла для сохранения отсутствует!</value>
+  </data>
+</root>
