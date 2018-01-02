@@ -3,7 +3,10 @@ using System.Data.SQLite;
 
 namespace BFF.DB.SQLite
 {
-    public class ProvideSqLiteConnection : IProvideConnection
+    public interface IProvideSqLiteConnetion : IProvideConnection
+    { }
+
+    public class ProvideSqLiteConnection : IProvideSqLiteConnetion
     {
         public DbConnection Connection  => new SQLiteConnection(ConnectionString) ;
         

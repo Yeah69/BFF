@@ -3,9 +3,8 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
-using BFF.DB;
+using Autofac.Features.OwnedInstances;
 using BFF.DB.Dapper;
-using BFF.DB.SQLite;
 using BFF.Helper.Extensions;
 using BFF.Helper.Import;
 using BFF.Properties;
@@ -16,8 +15,31 @@ using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace BFF.MVVM.ViewModels
 {
-    public class MainWindowViewModel : ObservableObject
+    public interface IMainWindowViewModel : IViewModel
     {
+        ReactiveCommand NewBudgetPlanCommand { get; }
+        ReactiveCommand OpenBudgetPlanCommand { get; }
+        ReactiveCommand<IImportable> ImportBudgetPlanCommand { get; }
+        IAccountTabsViewModel AccountTabsViewModel { get; set; }
+        IBudgetOverviewViewModel BudgetOverviewViewModel { get; set; }
+        IEmptyViewModel EmptyViewModel { get; }
+        bool IsEmpty { get; }
+        CultureInfo LanguageCulture { get; set; }
+        CultureInfo CurrencyCulture { get; set; }
+        CultureInfo DateCulture { get; set; }
+        bool DateLong { get; set; }
+        ParentTitViewModel ParentTitViewModel { get; set; }
+        bool ParentTitFlyoutOpen { get; set; }
+        double Width { get; set; }
+        double Height { get; set; }
+        double X { get; set; }
+        double Y { get; set; }
+        WindowState WindowState { get; set; }
+    }
+
+    public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
+    {
+        private readonly Func<Owned<Func<string, ISqLiteBackendContext>>> _sqliteBackendContextFactory;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
         protected bool FileFlyoutIsOpen;
@@ -38,18 +60,18 @@ namespace BFF.MVVM.ViewModels
 
         public ReactiveCommand<IImportable> ImportBudgetPlanCommand { get; } = new ReactiveCommand<IImportable>();
 
-        private SessionViewModelBase _contentViewModel;
-        public SessionViewModelBase ContentViewModel
+        private IAccountTabsViewModel _accountTabsViewModel;
+        public IAccountTabsViewModel AccountTabsViewModel
         {
-            get => _contentViewModel;
+            get => _accountTabsViewModel;
             set
             {
-                _contentViewModel = value;
+                _accountTabsViewModel = value;
                 OnPropertyChanged();
             }
         }
 
-        public BudgetOverviewViewModel BudgetOverviewViewModel
+        public IBudgetOverviewViewModel BudgetOverviewViewModel
         {
             get => _budgetOverviewViewModel;
             set
@@ -61,13 +83,16 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
+        public IEmptyViewModel EmptyViewModel { get; set; }
+        public bool IsEmpty => AccountTabsViewModel == null || BudgetOverviewViewModel == null;
+
         public CultureInfo LanguageCulture
         {
             get => Settings.Default.Culture_DefaultLanguage;
             set
             {
                 Settings.Default.Culture_DefaultLanguage = value;
-                _contentViewModel?.ManageCultures();
+                _accountTabsViewModel?.ManageCultures();
                 OnPropertyChanged();
             }
         }
@@ -78,7 +103,7 @@ namespace BFF.MVVM.ViewModels
             set
             {
                 Settings.Default.Culture_SessionCurrency = value;
-                _contentViewModel?.ManageCultures();
+                _accountTabsViewModel?.ManageCultures();
                 Messenger.Default.Send(CultureMessage.RefreshCurrency);
                 OnPropertyChanged();
             }
@@ -90,7 +115,7 @@ namespace BFF.MVVM.ViewModels
             set
             {
                 Settings.Default.Culture_SessionDate = value;
-                _contentViewModel?.ManageCultures();
+                _accountTabsViewModel?.ManageCultures();
                 Messenger.Default.Send(CultureMessage.RefreshDate);
                 OnPropertyChanged();
             }
@@ -103,7 +128,7 @@ namespace BFF.MVVM.ViewModels
             set
             {
                 Settings.Default.Culture_DefaultDateLong = value;
-                _contentViewModel?.ManageCultures();
+                _accountTabsViewModel?.ManageCultures();
                 Messenger.Default.Send(CultureMessage.RefreshDate);
                 OnPropertyChanged();
             }
@@ -124,7 +149,8 @@ namespace BFF.MVVM.ViewModels
         }
 
         private bool _parentTitFlyoutOpen;
-        private BudgetOverviewViewModel _budgetOverviewViewModel;
+        private IBudgetOverviewViewModel _budgetOverviewViewModel;
+        private Owned<Func<string, ISqLiteBackendContext>> _contextOwner;
 
         public bool ParentTitFlyoutOpen
         {
@@ -136,8 +162,12 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(
+            Func<Owned<Func<string, ISqLiteBackendContext>>> sqliteBackendContextFactory,
+            IEmptyViewModel emptyViewModel)
         {
+            EmptyViewModel = emptyViewModel;
+            _sqliteBackendContextFactory = sqliteBackendContextFactory;
             Logger.Debug("Initializing …");
             Reset(Settings.Default.DBLocation);
 
@@ -198,32 +228,40 @@ namespace BFF.MVVM.ViewModels
 
         protected void Reset(string dbPath)
         {
-            (ContentViewModel as IDisposable)?.Dispose();
+            (AccountTabsViewModel as IDisposable)?.Dispose();
+            _contextOwner?.Dispose();
             if (File.Exists(dbPath))
             {
-                IBffOrm orm = new SqLiteBffOrm(new ProvideSqLiteConnection(dbPath));
-                ContentViewModel = new AccountTabsViewModel(
-                    orm, 
-                    new NewAccountViewModel(
-                        orm.BffRepository.AccountRepository,
-                        orm.CommonPropertyProvider.AccountViewModelService));
-                BudgetOverviewViewModel = 
-                    new BudgetOverviewViewModel(
-                        orm.BffRepository.BudgetMonthRepository,
-                        orm.BudgetEntryViewModelService, 
-                        orm.CommonPropertyProvider.CategoryViewModelService,
-                        orm.BffRepository.CategoryRepository);
+                //_ormOwner = _ormFactory();
+                //IBffOrm orm = _ormOwner.Value(_provideSqLiteConnectionFactory(dbPath));
+                _contextOwner = _sqliteBackendContextFactory();
+                var context = _contextOwner.Value(dbPath);
+
+                AccountTabsViewModel = context.AccountTabsViewModel;
+                    //new AccountTabsViewModel(
+                    //orm, 
+                    //new NewAccountViewModel(
+                    //    orm.BffRepository.AccountRepository,
+                    //    orm.CommonPropertyProvider.AccountViewModelService));
+                BudgetOverviewViewModel = context.BudgetOverviewViewModel;
+                    //new BudgetOverviewViewModel(
+                    //    orm.BffRepository.BudgetMonthRepository,
+                    //    orm.BudgetEntryViewModelService, 
+                    //    orm.CommonPropertyProvider.CategoryViewModelService,
+                    //    orm.BffRepository.CategoryRepository);
                 Title = $"{new FileInfo(dbPath).Name} - BFF";
                 Settings.Default.DBLocation = dbPath;
                 Settings.Default.Save();
             }
             else
             {
-                ContentViewModel = new EmptyContentViewModel();
+                AccountTabsViewModel = null;
+                BudgetOverviewViewModel = null;
                 Title = "BFF";
                 Settings.Default.DBLocation = "";
                 Settings.Default.Save();
             }
+            OnPropertyChanged(nameof(IsEmpty));
             OnPropertyChanged(nameof(CurrencyCulture));
             OnPropertyChanged(nameof(DateCulture));
         }

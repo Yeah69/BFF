@@ -5,7 +5,7 @@ using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels
 {
-    class ImportDialogViewModel : ObservableObject
+    class ImportDialogViewModel : ViewModelBase
     {
         public IImportable Importable { get; }
 

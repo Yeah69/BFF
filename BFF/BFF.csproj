@@ -56,6 +56,9 @@
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="BFF.DataVirtualizingCollection, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BFF.DataVirtualizingCollection.1.0.2\lib\netstandard1.4\BFF.DataVirtualizingCollection.dll</HintPath>
     </Reference>
@@ -228,6 +231,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AutoFacBootStrapper.cs" />
+    <Compile Include="BackendContext.cs" />
     <Compile Include="DB\BffRepository.cs" />
     <Compile Include="DB\CommonPropertyProvider.cs" />
     <Compile Include="DB\Dapper\BudgetMonthRepository.cs" />
@@ -250,10 +255,10 @@
     <Compile Include="DB\Dapper\ModelRepositories\TransferRepository.cs" />
     <Compile Include="DB\Dapper\ObservableRepositoryBase.cs" />
     <Compile Include="DB\Dapper\RepositoryBase.cs" />
-    <Compile Include="DB\Dapper\ViewRepositoryBase.cs" />
     <Compile Include="DB\Dapper\WriteOnlyRepositoryBase.cs" />
     <Compile Include="DB\IBffOrmAsync.cs" />
     <Compile Include="DB\IBffOrm.cs" />
+    <Compile Include="DB\IOncePerBackend.cs" />
     <Compile Include="DB\IProvideConnection.cs" />
     <Compile Include="DB\IRepository.cs" />
     <Compile Include="DB\IVirtualizedRefresh.cs" />
@@ -319,7 +324,9 @@
     <Compile Include="MVVM\ViewModels\BudgetOverviewViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\CategoryBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\BudgetEntryViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\CategoryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\FlagViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\IncomeCategoryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\CommonPropertyViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\PayeeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\DataModelViewModel.cs" />
@@ -341,6 +348,8 @@
     <Compile Include="MVVM\ViewModels\ImportDialogViewModel.cs" />
     <Compile Include="MVVM\ViewModels\EmptyContentViewModel.cs" />
     <Compile Include="MVVM\ViewModels\AccountTabsViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ITransientViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelBase.cs" />
     <Compile Include="MVVM\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="MVVM\ViewModels\NewCategoryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\NewAccountViewModel.cs" />
@@ -366,6 +375,7 @@
     <Compile Include="MVVM\Views\TitDataGrid.xaml.cs">
       <DependentUpon>TitDataGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SqLiteBackendContext.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

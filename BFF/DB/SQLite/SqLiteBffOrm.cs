@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BFF.DB.Dapper;
 using BFF.MVVM.Models.Native;
@@ -43,7 +44,7 @@ namespace BFF.DB.SQLite
                     ?? Enumerable.Empty<ISubTransaction>();
         }
 
-        public SqLiteBffOrm(IProvideConnection provideConnection)
+        public SqLiteBffOrm(IProvideSqLiteConnetion provideConnection)
         {
             _bffRepository = new DapperBffRepository(provideConnection);
             

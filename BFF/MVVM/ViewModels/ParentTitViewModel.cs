@@ -5,7 +5,7 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels
 {
-    public class ParentTitViewModel : ObservableObject
+    public class ParentTitViewModel : ViewModelBase
     {
         private string _title;
 

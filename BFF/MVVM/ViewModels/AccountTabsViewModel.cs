@@ -1,31 +1,45 @@
 ﻿using System;
 using System.Globalization;
-using BFF.DB;
+using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.Properties;
 using MuVaViMo;
 
 namespace BFF.MVVM.ViewModels
 {
-    public class AccountTabsViewModel : SessionViewModelBase
+    public interface IAccountTabsViewModel
     {
-        private readonly IBffOrm _orm;
+        INewAccountViewModel NewAccountViewModel { get; }
+        IObservableReadOnlyList<IAccountViewModel> AllAccounts { get; }
+        ISummaryAccountViewModel SummaryAccountViewModel { get; }
+        void ManageCultures();
+    }
+
+    public class AccountTabsViewModel : SessionViewModelBase, IAccountTabsViewModel
+    {
+        private readonly IAccountViewModelService _accountViewModelService;
+        private readonly IDbSettingRepository _dbSettingRepository;
 
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts =>
-            _orm.CommonPropertyProvider.AllAccountViewModels;
+            _accountViewModelService.All;
 
-        public ISummaryAccountViewModel SummaryAccountViewModel => 
-            _orm.CommonPropertyProvider.AccountViewModelService.SummaryAccountViewModel;
+        public ISummaryAccountViewModel SummaryAccountViewModel =>
+            _accountViewModelService.SummaryAccountViewModel;
 
         public INewAccountViewModel NewAccountViewModel { get; }
 
-        public AccountTabsViewModel(IBffOrm orm, INewAccountViewModel newAccountViewModel)
+        public AccountTabsViewModel(
+            INewAccountViewModel newAccountViewModel,
+            IAccountViewModelService accountViewModelService, 
+            IDbSettingRepository dbSettingRepository)
         {
-            _orm = orm;
+            _accountViewModelService = accountViewModelService;
+            _dbSettingRepository = dbSettingRepository;
             NewAccountViewModel = newAccountViewModel;
 
-            IDbSetting dbSetting = _orm.BffRepository.DbSettingRepository.Find(1);
+            IDbSetting dbSetting = _dbSettingRepository.Find(1);
             Settings.Default.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultureName);
             Settings.Default.Culture_SessionDate = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
             ManageCultures();
@@ -46,7 +60,7 @@ namespace BFF.MVVM.ViewModels
         protected override void SaveCultures()
         {
             Settings.Default.Save();
-            IDbSetting dbSetting = _orm.BffRepository.DbSettingRepository.Find(1);
+            IDbSetting dbSetting = _dbSettingRepository.Find(1);
             dbSetting.CurrencyCulture = Settings.Default.Culture_SessionCurrency;
             dbSetting.DateCulture = Settings.Default.Culture_SessionDate;
         }
@@ -73,7 +87,6 @@ namespace BFF.MVVM.ViewModels
                     (accountViewModel as IDisposable)?.Dispose();
                 }
                 (SummaryAccountViewModel as IDisposable)?.Dispose();
-                _orm?.Dispose();
             }
             base.Dispose(disposing);
         }

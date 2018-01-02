@@ -7,7 +7,6 @@ using BFF.DB.Dapper.ModelRepositories;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.DB.PersistenceModels;
-using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using DbSetting = BFF.DB.PersistenceModels.DbSetting;
@@ -25,7 +24,7 @@ namespace BFF.DB
         protected abstract ICreateTable CreateFlagTable { get; }
         protected abstract ICreateTable CreateSubTransactionTable { get; }
         protected abstract ICreateTable CreateTransTable { get; }
-        protected abstract IProvideConnection ProvideConnection { get; }
+        protected abstract IProvideSqLiteConnetion ProvideConnection { get; }
         
         private void CreateTablesInner(DbConnection connection)
         {
@@ -45,7 +44,7 @@ namespace BFF.DB
             connection.Execute(SqLiteQueries.SetDatabaseSchemaVersion);
         }
         
-        public IProvideConnection Create()
+        public IProvideSqLiteConnetion Create()
         {
             using(TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
             using(DbConnection newConnection = ProvideConnection.Connection)

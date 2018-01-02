@@ -2,7 +2,7 @@ using System.Data.Common;
 
 namespace BFF.DB
 {
-    public interface IProvideConnection
+    public interface IProvideConnection : IOncePerBackend
     {
         DbConnection Connection { get; }    
     }

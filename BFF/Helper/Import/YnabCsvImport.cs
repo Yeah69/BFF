@@ -88,7 +88,7 @@ namespace BFF.Helper.Import
         public void ImportYnabTransactionsCsvToDb(string filePathTransaction, string filePathBudget, string savePath)
         {
             //Initialization
-            IProvideConnection provideConnection = new CreateSqLiteDatabase(savePath).Create();
+            IProvideSqLiteConnetion provideConnection = new CreateSqLiteDatabase(savePath).Create();
             IBffRepository bffRepository = new SqLiteBffOrm(provideConnection).BffRepository;
             _processedAccountsList.Clear();
             ClearAccountCache(); 

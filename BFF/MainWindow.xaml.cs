@@ -43,7 +43,7 @@ namespace BFF
             InitializeAppThemeAndAccentComboBoxes();
             SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
 
-            DataContext = new MainWindowViewModel();
+            DataContext = AutoFacBootStrapper.MainWindowViewModel;
 
             void InitializeCultureComboBoxes()
             {
