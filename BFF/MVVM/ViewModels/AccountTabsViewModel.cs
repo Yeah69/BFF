@@ -85,11 +85,11 @@ namespace BFF.MVVM.ViewModels
         {
             if (disposing)
             {
-                foreach (IAccountViewModel accountViewModel in AllAccounts)
-                {
-                    (accountViewModel as IDisposable)?.Dispose();
-                }
-                (SummaryAccountViewModel as IDisposable)?.Dispose();
+                //foreach (IAccountViewModel accountViewModel in AllAccounts)
+                //{
+                //    (accountViewModel as IDisposable)?.Dispose();
+                //}
+                //(SummaryAccountViewModel as IDisposable)?.Dispose();
             }
             base.Dispose(disposing);
         }

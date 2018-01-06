@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Transactions;
 using BFF.DB.Dapper;
-using BFF.DB.Dapper.ModelRepositories;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.DB.PersistenceModels;

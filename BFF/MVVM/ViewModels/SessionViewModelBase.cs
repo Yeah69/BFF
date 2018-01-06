@@ -7,7 +7,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels
 {
-    public abstract class SessionViewModelBase : ViewModelBase, IDisposable, ITransientViewModel
+    public abstract class SessionViewModelBase : ViewModelBase, IDisposable
     {
         protected CompositeDisposable CompositeDisposable { get; } = new CompositeDisposable();
 

@@ -4,8 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using BFF.DB;
-using BFF.DB.Dapper.ModelRepositories;
-using BFF.Helper.Import;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels;
@@ -14,7 +12,7 @@ using Transaction = BFF.MVVM.Models.Native.Transaction;
 
 namespace BFF
 {
-    public static class AutoFacBootStrapper
+    public static class AutoFacBootstrapper
     {
         private static ILifetimeScope _rootScope;
         private static IMainWindowViewModel _mainWindowViewModel;
@@ -52,13 +50,21 @@ namespace BFF
                 .AsImplementedInterfaces();
 
             builder.RegisterAssemblyTypes(assemblies)
-                .Where(t => typeof(IOncePerBackend).IsAssignableFrom(t))
-                .AsImplementedInterfaces()
-                .InstancePerOwned<Func<string, ISqLiteBackendContext>>();
+                .Where(t =>
+                {
+                    var isAssignable = typeof(IOncePerBackend).IsAssignableFrom(t) && !typeof(ITransientViewModel).IsAssignableFrom(t);
 
-            builder.RegisterAssemblyTypes(assemblies)
-                .Where(t => typeof(IViewModel).IsAssignableFrom(t))
-                .AsImplementedInterfaces();
+                    Debug.WriteLineIf(isAssignable, $"Once Per LifetimeScope - {t.Name}");
+
+                    return isAssignable;
+                })
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
+            //.InstancePerOwned<Func<string, ISqLiteBackendContext>>();
+
+            //builder.RegisterAssemblyTypes(assemblies)
+            //    .Where(t => typeof(IViewModel).IsAssignableFrom(t))
+            //    .AsImplementedInterfaces();
 
             // several view model instances are transitory and created on the fly, if these are tracked by the container then they
             // won't be disposed of in a timely manner
@@ -67,7 +73,7 @@ namespace BFF
                 .Where(t => typeof(IViewModel).IsAssignableFrom(t))
                 .Where(t =>
                 {
-                    var isAssignable = typeof(ITransientViewModel).IsAssignableFrom(t);
+                    var isAssignable = typeof(ITransientViewModel).IsAssignableFrom(t) && !typeof(IOncePerBackend).IsAssignableFrom(t);
                     if (isAssignable)
                     {
                         Debug.WriteLine("Transient view model - " + t.Name);

@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using BFF.DB;
+using BFF.DB.Dapper;
 using BFF.DB.SQLite;
 using BFF.Helper.Extensions;
 using BFF.MVVM;
@@ -22,6 +24,7 @@ namespace BFF.Helper.Import
 
     class YnabCsvImport : ObservableObject, IYnabCsvImport
     {
+        private readonly Func<string, ICreateSqLiteDatabase> _createSqLiteDatabaseFactory;
         private readonly Func<string, IProvideSqLiteConnetion> _connectionFactory;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -55,12 +58,16 @@ namespace BFF.Helper.Import
             }
         }
 
-        public YnabCsvImport(Func<string, IProvideSqLiteConnetion> connectionFactory, string transactionPath, string budgetPath, string savePath)
+        public YnabCsvImport(
+            (string TransactionPath, string BudgetPath, string SavePath) paths,
+            Func<string, ICreateSqLiteDatabase> createSqLiteDatabaseFactory,
+            Func<string, IProvideSqLiteConnetion> connectionFactory)
         {
+            _createSqLiteDatabaseFactory = createSqLiteDatabaseFactory;
             _connectionFactory = connectionFactory;
-            _transactionPath = transactionPath;
-            _budgetPath = budgetPath;
-            _savePath = savePath;
+            _transactionPath = paths.TransactionPath;
+            _budgetPath = paths.BudgetPath;
+            _savePath = paths.SavePath;
         }
 
         public string Import()
@@ -134,6 +141,7 @@ namespace BFF.Helper.Import
             };
 
             //Third step: Create new database for imported data
+            _createSqLiteDatabaseFactory(savePath).Create();
             PopulateDatabase(lists, assignments, _connectionFactory(savePath).Connection);
         }
         

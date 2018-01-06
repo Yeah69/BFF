@@ -1,5 +1,4 @@
 ﻿using System;
-using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -28,7 +27,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// Base class for all ViewModel classes of Models related to TITs (Transaction, Income, Transfer).
     /// This includes also the Parent and SubElement models.
     /// </summary>
-    public abstract class TransLikeViewModel : DataModelViewModel, ITransLikeViewModel
+    public abstract class TransLikeViewModel : DataModelViewModel, ITransLikeViewModel, ITransientViewModel
     {
 
         /// <summary>
@@ -44,7 +43,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Initializes a TransLikeViewModel.
         /// </summary>
-        /// <param name="orm">Used for the database accesses.</param>
         /// <param name="transLike">The model.</param>
         protected TransLikeViewModel(ITransLike transLike) : base(transLike)
         {

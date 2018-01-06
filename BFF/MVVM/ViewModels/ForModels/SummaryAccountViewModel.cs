@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection.DataAccesses;
@@ -16,7 +17,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public interface ISummaryAccountViewModel : IAccountBaseViewModel, IOncePerBackend {
+    public interface ISummaryAccountViewModel : IAccountBaseViewModel {
         /// <summary>
         /// Refreshes the starting balance.
         /// This is needed for the summary account, because on run-time the user may add a new account.
@@ -27,7 +28,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel
+    public class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel, IOncePerBackend
     {
         private readonly ISummaryAccount _summaryAccount;
         private readonly IAccountRepository _accountRepository;
@@ -110,6 +111,8 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .ToReactiveCommand().AddTo(CompositeDisposable);
 
             ApplyCommand.Subscribe(_ => ApplyTits()).AddTo(CompositeDisposable);
+
+            Disposable.Create(() => { Messenger.Default.Unregister<SummaryAccountMessage>(this); }).AddTo(CompositeDisposable);
         }
 
         /// <summary>

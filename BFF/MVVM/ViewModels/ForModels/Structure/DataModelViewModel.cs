@@ -22,7 +22,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// Base class to all ViewModels for Models, which are read from the database.
     /// Offers CRUD functionality (except for Read, because the Models are not read from within itself).
     /// </summary>
-    public abstract class DataModelViewModel : ViewModelBase, IDataModelViewModel, IDisposable, ITransientViewModel
+    public abstract class DataModelViewModel : ViewModelBase, IDataModelViewModel, IDisposable
     {
         private readonly IDataModel _dataModel;
 

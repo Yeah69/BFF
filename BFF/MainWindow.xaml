@@ -282,9 +282,9 @@
                                 </hm:HamburgerMenu.Resources>
                                 <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Accounts}"
                                                           HeaderTemplate="{StaticResource HeaderTemplate}"
-                                                          IsSelected="{Binding Context.AccountTabsViewModel.IsOpen.Value}">
+                                                          IsSelected="{Binding AccountTabsViewModel.IsOpen.Value}">
                                     <hm:HamburgerMenuItem.Content>
-                                        <views:AccountTabsView HorizontalContentAlignment="Stretch" DataContext="{Binding Context.AccountTabsViewModel}" />
+                                        <views:AccountTabsView HorizontalContentAlignment="Stretch" DataContext="{Binding AccountTabsViewModel}" />
                                     </hm:HamburgerMenuItem.Content>
                                     <hm:HamburgerMenuItem.Icon>
                                         <Viewbox Margin="10">
@@ -293,14 +293,9 @@
                                     </hm:HamburgerMenuItem.Icon>
                                 </hm:HamburgerMenuItem>
                                 <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Budget}"
-                                                          Content="{Binding Context.BudgetOverviewViewModel}"
-                                                          HeaderTemplate="{StaticResource HeaderTemplate}"
+                                                      HeaderTemplate="{StaticResource HeaderTemplate}"
                                                           IsSelected="{Binding BudgetOverviewViewModel.IsOpen.Value}">
-                                    <hm:HamburgerMenuItem.ContentTemplate>
-                                        <DataTemplate>
-                                            <views:BudgetOverviewView />
-                                        </DataTemplate>
-                                    </hm:HamburgerMenuItem.ContentTemplate>
+                                    <views:BudgetOverviewView DataContext="{Binding BudgetOverviewViewModel}" />
                                     <hm:HamburgerMenuItem.Icon>
                                         <Viewbox Margin="10">
                                             <iconPacks:PackIconFontAwesome Kind="Money" />

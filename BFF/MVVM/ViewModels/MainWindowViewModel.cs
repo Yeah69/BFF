@@ -84,19 +84,6 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public ISqLiteBackendContext Context
-        {
-            get => _context;
-            set
-            {
-                if (value == _context) return;
-                _context = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Text => "Hello, Worldddd";
-
         public IEmptyViewModel EmptyViewModel { get; set; }
         public bool IsEmpty => AccountTabsViewModel == null || BudgetOverviewViewModel == null;
 
@@ -165,7 +152,6 @@ namespace BFF.MVVM.ViewModels
         private bool _parentTitFlyoutOpen;
         private IBudgetOverviewViewModel _budgetOverviewViewModel;
         private Owned<Func<string, ISqLiteBackendContext>> _contextOwner;
-        private ISqLiteBackendContext _context;
 
         public bool ParentTitFlyoutOpen
         {
@@ -246,23 +232,12 @@ namespace BFF.MVVM.ViewModels
             _contextOwner?.Dispose();
             if (File.Exists(dbPath))
             {
-                //_ormOwner = _ormFactory();
-                //IBffOrm orm = _ormOwner.Value(_provideSqLiteConnectionFactory(dbPath));
+                _contextOwner = null;
                 _contextOwner = _sqliteBackendContextFactory();
-                Context = _contextOwner.Value(dbPath);
+                var context = _contextOwner.Value(dbPath);
                 
-                AccountTabsViewModel = Context.AccountTabsViewModel;
-                    //new AccountTabsViewModel(
-                    //orm, 
-                    //new NewAccountViewModel( 
-                    //    orm.BffRepository.AccountRepository,
-                    //    orm.CommonPropertyProvider.AccountViewModelService));
-                BudgetOverviewViewModel = Context.BudgetOverviewViewModel;
-                    //new BudgetOverviewViewModel(
-                    //    orm.BffRepository.BudgetMonthRepository,
-                    //    orm.BudgetEntryViewModelService, 
-                    //    orm.CommonPropertyProvider.CategoryViewModelService,
-                    //    orm.BffRepository.CategoryRepository);
+                AccountTabsViewModel = context.AccountTabsViewModel;
+                BudgetOverviewViewModel = context.BudgetOverviewViewModel;
                 Title = $"{new FileInfo(dbPath).Name} - BFF";
                 Settings.Default.DBLocation = dbPath;
                 Settings.Default.Save();

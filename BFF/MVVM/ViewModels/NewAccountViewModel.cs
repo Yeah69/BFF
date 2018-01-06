@@ -34,7 +34,7 @@ namespace BFF.MVVM.ViewModels
         ReactiveCommand AddCommand { get; }
     }
 
-    public class NewAccountViewModel : ViewModelBase, INewAccountViewModel, IDisposable, ITransientViewModel
+    public class NewAccountViewModel : ViewModelBase, INewAccountViewModel, IDisposable
     {
         private readonly IAccountViewModelService _viewModelService;
 

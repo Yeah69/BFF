@@ -30,7 +30,7 @@ namespace BFF.MVVM.ViewModels
         IObservableReadOnlyList<ICategoryBaseViewModel> All { get; }
     }
 
-    public sealed class NewCategoryViewModel : ViewModelBase, INewCategoryViewModel, IDisposable, ITransientViewModel
+    public sealed class NewCategoryViewModel : ViewModelBase, INewCategoryViewModel, IDisposable
     {
         private readonly ICategoryViewModelService _categoryViewModelService;
         private readonly ICategoryBaseViewModelService _categoryBaseViewModelService;

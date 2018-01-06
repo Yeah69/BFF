@@ -32,7 +32,7 @@ namespace BFF.MVVM.ViewModels
         IObservableReadOnlyList<IPayeeViewModel> AllPayees { get; }
     }
 
-    public class NewPayeeViewModel : INewPayeeViewModel, IDisposable, ITransientViewModel
+    public class NewPayeeViewModel : INewPayeeViewModel, IDisposable
     {
         private readonly IPayeeViewModelService _payeeViewModelService;
 

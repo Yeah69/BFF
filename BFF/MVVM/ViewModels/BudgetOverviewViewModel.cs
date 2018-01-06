@@ -30,7 +30,7 @@ namespace BFF.MVVM.ViewModels
         ReactiveCommand DecreaseMonthStartIndex { get; }
     }
 
-    public class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IDisposable, ITransientViewModel
+    public class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IDisposable
     {
         private static readonly int LastMonthIndex = MonthToIndex(DateTime.MaxValue);
 

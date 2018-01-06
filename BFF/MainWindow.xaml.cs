@@ -28,7 +28,7 @@ namespace BFF
                     mw.ImportCommand = (ICommand)args.NewValue;
                 }));
 
-        private readonly Func<string, string, string, IYnabCsvImport> _ynabCsvImportFactory;
+        private readonly Func<(string, string, string), IYnabCsvImport> _ynabCsvImportFactory;
         private Func<IYnabCsvImport, IImportDialogViewModel> _importDialogViewModelFactory;
 
         public ICommand ImportCommand
@@ -45,10 +45,10 @@ namespace BFF
             InitializeAppThemeAndAccentComboBoxes();
             SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
 
-            DataContext = AutoFacBootStrapper.MainWindowViewModel;
+            DataContext = AutoFacBootstrapper.MainWindowViewModel;
 
-            _ynabCsvImportFactory = AutoFacBootStrapper.Resolve<Func<string, string, string, IYnabCsvImport>>();
-            _importDialogViewModelFactory = AutoFacBootStrapper.Resolve<Func<IImportable, IImportDialogViewModel>>();
+            _ynabCsvImportFactory = AutoFacBootstrapper.Resolve<Func<(string, string, string), IYnabCsvImport>>();
+            _importDialogViewModelFactory = AutoFacBootstrapper.Resolve<Func<IImportable, IImportDialogViewModel>>();
 
             void InitializeCultureComboBoxes()
             {
@@ -129,10 +129,10 @@ namespace BFF
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
 
             IImportDialogViewModel importDialogVm = _importDialogViewModelFactory(
-                _ynabCsvImportFactory(
+                _ynabCsvImportFactory((
                     Settings.Default.Import_YnabCsvTransaction,
                     Settings.Default.Import_YnabCsvBudget, 
-                    Settings.Default.Import_SavePath
+                    Settings.Default.Import_SavePath)
                 ));
             ImportDialog importDialog = new ImportDialog{ DataContext = importDialogVm };
             importDialog.ButtCancel.Click += (o, args) => this.HideMetroDialogAsync(importDialog);
