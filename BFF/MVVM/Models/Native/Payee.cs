@@ -15,7 +15,7 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         /// <param name="id">The objects Id</param>
         /// <param name="name">Name of the Payee</param>
-        public Payee(IRepository<IPayee> repository, long id = -1L, string name = null) : base(repository, name: name)
+        public Payee(IRepository<IPayee> repository, long id = -1L, string name = "") : base(repository, name: name)
         {
             if (id > 0L) Id = id;
         }

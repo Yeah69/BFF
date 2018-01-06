@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using BFF.DB;
 using BFF.MVVM.Models.Native;
 
 namespace BFF.MVVM.ViewModels.ForModels
@@ -24,17 +23,8 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override string GetIndent() => "";
 
-        public IncomeCategoryViewModel(IIncomeCategory category, IBffOrm orm) : base(category, orm)
+        public IncomeCategoryViewModel(IIncomeCategory category) : base(category)
         {
         }
-
-        #region Overrides of DataModelViewModel
-
-        public override bool ValidToInsert()
-        {
-            return !string.IsNullOrWhiteSpace(Name.Value);
-        }
-
-        #endregion
     }
 }

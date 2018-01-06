@@ -12,26 +12,23 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class TransactionRepository : RepositoryBase<Domain.ITransaction, Trans>, ITransactionRepository
     {
-        private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
-        private readonly Func<long?, DbConnection, Domain.ICategoryBase> _categoryFetcher;
-        private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
-        private readonly Func<long?, DbConnection, Domain.IFlag> _flagFetcher;
+        private readonly IAccountRepository _accountRepository;
+        private readonly ICategoryBaseRepository _categoryBaseRepository;
+        private readonly IPayeeRepository _payeeRepository;
+        private readonly IFlagRepository _flagRepository;
 
         public TransactionRepository(
             IProvideConnection provideConnection,
-            Func<long, DbConnection, Domain.IAccount> accountFetcher,
-            Func<long?, DbConnection, Domain.ICategoryBase> categoryFetcher,
-            Func<long, DbConnection, Domain.IPayee> payeeFetcher, 
-            Func<long?, DbConnection, Domain.IFlag> flagFetcher) : base(provideConnection)
+            IAccountRepository accountRepository,
+            ICategoryBaseRepository categoryBaseRepository,
+            IPayeeRepository payeeRepository,
+            IFlagRepository flagRepository) : base(provideConnection)
         {
-            _accountFetcher = accountFetcher;
-            _categoryFetcher = categoryFetcher;
-            _payeeFetcher = payeeFetcher;
-            _flagFetcher = flagFetcher;
+            _accountRepository = accountRepository;
+            _categoryBaseRepository = categoryBaseRepository;
+            _payeeRepository = payeeRepository;
+            _flagRepository = flagRepository;
         }
-
-        public override Domain.ITransaction Create() =>
-            new Domain.Transaction(this, -1L, null, "", DateTime.Now, null, null, null, "", 0L, false);
         
         protected override Converter<Domain.ITransaction, Trans> ConvertToPersistence => domainTransaction => 
             new Trans
@@ -54,13 +51,13 @@ namespace BFF.DB.Dapper.ModelRepositories
             (Trans persistenceTransaction, DbConnection connection) = tuple;
             return new Domain.Transaction(
                 this,
-                persistenceTransaction.Id, 
-                _flagFetcher(persistenceTransaction.FlagId, connection),
-                persistenceTransaction.CheckNumber,
                 persistenceTransaction.Date,
-                _accountFetcher(persistenceTransaction.AccountId, connection),
-                _payeeFetcher(persistenceTransaction.PayeeId, connection),
-                _categoryFetcher(persistenceTransaction.CategoryId, connection),
+                persistenceTransaction.Id,
+                persistenceTransaction.FlagId == null ? null :_flagRepository.Find((long)persistenceTransaction.FlagId, connection),
+                persistenceTransaction.CheckNumber,
+                _accountRepository.Find(persistenceTransaction.AccountId, connection),
+                _payeeRepository.Find(persistenceTransaction.PayeeId, connection),
+                persistenceTransaction.CategoryId == null ? null : _categoryBaseRepository.Find((long)persistenceTransaction.CategoryId, connection),
                 persistenceTransaction.Memo,
                 persistenceTransaction.Sum,
                 persistenceTransaction.Cleared == 1L);

@@ -34,14 +34,14 @@ namespace BFF.MVVM.Models.Native
         public ParentTransaction(
             IRepository<IParentTransaction> repository,
             IEnumerable<ISubTransaction> subTransactions,
-            long id,
-            IFlag flag,
-            string checkNumber,
             DateTime date,
+            long id = -1L,
+            IFlag flag = null,
+            string checkNumber = "",
             IAccount account = null,
             IPayee payee = null,
-            string memo = null,
-            bool? cleared = null)
+            string memo = "",
+            bool? cleared = false)
             : base(repository, id, flag, checkNumber, date, account, payee, memo, cleared)
         {
             _subTransactions = new ObservableCollection<ISubTransaction>(subTransactions);

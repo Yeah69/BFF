@@ -46,7 +46,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
         /// <param name="transLike">The model.</param>
-        protected TransLikeViewModel(IBffOrm orm, ITransLike transLike) : base(orm, transLike)
+        protected TransLikeViewModel(ITransLike transLike) : base(transLike)
         {
             Memo = transLike.ToReactivePropertyAsSynchronized(tl => tl.Memo, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 

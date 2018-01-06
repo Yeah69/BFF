@@ -10,7 +10,6 @@ using BFF.Helper.Import;
 using BFF.MVVM.ViewModels;
 using BFF.MVVM.Views;
 using BFF.Properties;
-using HamburgerMenu;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 
@@ -29,6 +28,9 @@ namespace BFF
                     mw.ImportCommand = (ICommand)args.NewValue;
                 }));
 
+        private readonly Func<string, string, string, IYnabCsvImport> _ynabCsvImportFactory;
+        private Func<IYnabCsvImport, IImportDialogViewModel> _importDialogViewModelFactory;
+
         public ICommand ImportCommand
         {
             get => (ICommand)GetValue(ImportCommandProperty);
@@ -44,6 +46,9 @@ namespace BFF
             SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
 
             DataContext = AutoFacBootStrapper.MainWindowViewModel;
+
+            _ynabCsvImportFactory = AutoFacBootStrapper.Resolve<Func<string, string, string, IYnabCsvImport>>();
+            _importDialogViewModelFactory = AutoFacBootStrapper.Resolve<Func<IImportable, IImportDialogViewModel>>();
 
             void InitializeCultureComboBoxes()
             {
@@ -123,12 +128,12 @@ namespace BFF
 
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
 
-            ImportDialogViewModel importDialogVm = new ImportDialogViewModel(new YnabCsvImport
-                {
-                    TransactionPath = Settings.Default.Import_YnabCsvTransaction,
-                    BudgetPath = Settings.Default.Import_YnabCsvBudget,
-                    SavePath = Settings.Default.Import_SavePath
-                });
+            IImportDialogViewModel importDialogVm = _importDialogViewModelFactory(
+                _ynabCsvImportFactory(
+                    Settings.Default.Import_YnabCsvTransaction,
+                    Settings.Default.Import_YnabCsvBudget, 
+                    Settings.Default.Import_SavePath
+                ));
             ImportDialog importDialog = new ImportDialog{ DataContext = importDialogVm };
             importDialog.ButtCancel.Click += (o, args) => this.HideMetroDialogAsync(importDialog);
             importDialog.ButtImport.Click += (o, args) =>

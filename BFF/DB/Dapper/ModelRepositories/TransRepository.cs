@@ -47,87 +47,84 @@ namespace BFF.DB.Dapper.ModelRepositories
         private readonly IRepository<Domain.ITransaction> _transactionRepository;
         private readonly IRepository<Domain.ITransfer> _transferRepository;
         private readonly IRepository<Domain.IParentTransaction> _parentTransactionRepository;
-        private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
-        private readonly Func<long?, DbConnection, Domain.ICategoryBase> _categoryFetcher;
-        private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
-        private readonly Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> _subTransactionsFetcher;
-        private readonly Func<long?, DbConnection, Domain.IFlag> _flagFetcher;
+        private readonly IAccountRepository _accountRepository;
+        private readonly ICategoryBaseRepository _categoryBaseRepository;
+        private readonly IPayeeRepository _payeeRepository;
+        private readonly ISubTransactionRepository _subTransactionsRepository;
+        private readonly IFlagRepository _flagRepository;
 
         public TransRepository(
             IProvideConnection provideConnection, 
             IRepository<Domain.ITransaction> transactionRepository, 
             IRepository<Domain.ITransfer> transferRepository, 
             IRepository<Domain.IParentTransaction> parentTransactionRepository,
-            Func<long, DbConnection, Domain.IAccount> accountFetcher,
-            Func<long?, DbConnection, Domain.ICategoryBase> categoryFetcher,
-            Func<long, DbConnection, Domain.IPayee> payeeFetcher,
-            Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> subTransactionsFetcher, 
-            Func<long?, DbConnection, Domain.IFlag> flagFetcher)
+            IAccountRepository accountRepository,
+            ICategoryBaseRepository categoryBaseRepository,
+            IPayeeRepository payeeRepository,
+            ISubTransactionRepository subTransactionsRepository, 
+            IFlagRepository flagRepository)
             : base(provideConnection)
         {
             _provideConnection = provideConnection;
             _transactionRepository = transactionRepository;
             _transferRepository = transferRepository;
             _parentTransactionRepository = parentTransactionRepository;
-            _accountFetcher = accountFetcher;
-            _categoryFetcher = categoryFetcher;
-            _payeeFetcher = payeeFetcher;
-            _subTransactionsFetcher = subTransactionsFetcher;
-            _flagFetcher = flagFetcher;
+            _accountRepository = accountRepository;
+            _categoryBaseRepository = categoryBaseRepository;
+            _payeeRepository = payeeRepository;
+            _subTransactionsRepository = subTransactionsRepository;
+            _flagRepository = flagRepository;
         }
-
-        public override Domain.Structure.ITransBase Create() =>
-            null;
 
         protected override Converter<(Trans, DbConnection), Domain.Structure.ITransBase> ConvertToDomain => tuple =>
         {
-            (Trans theTit, DbConnection connection) = tuple;
-            Enum.TryParse(theTit.Type, true, out Domain.Structure.TransType type);
+            (Trans trans, DbConnection connection) = tuple;
+            Enum.TryParse(trans.Type, true, out Domain.Structure.TransType type);
             Domain.Structure.ITransBase ret;
             switch(type)
             {
                 case Domain.Structure.TransType.Transaction:
                     ret = new Domain.Transaction(
                         _transactionRepository, 
-                        theTit.Id,
-                        _flagFetcher(theTit.FlagId, connection),
-                        theTit.CheckNumber,
-                        theTit.Date,
-                        _accountFetcher(theTit.AccountId, connection),
-                        _payeeFetcher(theTit.PayeeId, connection),
-                        _categoryFetcher(theTit.CategoryId, connection), 
-                        theTit.Memo, 
-                        theTit.Sum,
-                        theTit.Cleared == 1L);
+                        trans.Date,
+                        trans.Id,
+                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId, connection),
+                        trans.CheckNumber,
+                        _accountRepository.Find(trans.AccountId, connection),
+                        _payeeRepository.Find(trans.PayeeId, connection),
+                        trans.CategoryId == null ? null : _categoryBaseRepository.Find((long)trans.CategoryId, connection), 
+                        trans.Memo, 
+                        trans.Sum,
+                        trans.Cleared == 1L);
                     break;
                 case Domain.Structure.TransType.Transfer:
                     ret = new Domain.Transfer(
                         _transferRepository,
-                        theTit.Id,
-                        _flagFetcher(theTit.FlagId, connection),
-                        theTit.CheckNumber,
-                        theTit.Date,
-                        _accountFetcher(theTit.PayeeId, connection),
-                        _accountFetcher(theTit.CategoryId ?? -1, connection), // This CategoryId should never be a null, because it comes from a transfer
-                        theTit.Memo,
-                        theTit.Sum, 
-                        theTit.Cleared == 1L);
+                        trans.Date,
+                        trans.Id,
+                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId, connection),
+                        trans.CheckNumber,
+                        _accountRepository.Find(trans.PayeeId, connection),
+                        _accountRepository.Find(trans.CategoryId ?? -1, connection), // This CategoryId should never be a null, because it comes from a transfer
+                        trans.Memo,
+                        trans.Sum, 
+                        trans.Cleared == 1L);
                     break;
                 case Domain.Structure.TransType.ParentTransaction:
                     ret = new Domain.ParentTransaction(
                         _parentTransactionRepository,
-                        _subTransactionsFetcher(theTit.Id, connection), 
-                        theTit.Id,
-                        _flagFetcher(theTit.FlagId, connection),
-                        theTit.CheckNumber,
-                        theTit.Date,
-                        _accountFetcher(theTit.AccountId, connection),
-                        _payeeFetcher(theTit.PayeeId, connection),
-                        theTit.Memo, 
-                        theTit.Cleared == 1L);
+                        _subTransactionsRepository.GetChildrenOf(trans.Id, connection), 
+                        trans.Date,
+                        trans.Id,
+                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId, connection),
+                        trans.CheckNumber,
+                        _accountRepository.Find(trans.AccountId, connection),
+                        _payeeRepository.Find(trans.PayeeId, connection),
+                        trans.Memo, 
+                        trans.Cleared == 1L);
                     break;
                 default:
-                    ret = new Domain.Transaction(_transactionRepository, -1L, null, "", DateTime.Today)
+                    ret = new Domain.Transaction(_transactionRepository, DateTime.Today)
                         {Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR"};
                     break;
             }

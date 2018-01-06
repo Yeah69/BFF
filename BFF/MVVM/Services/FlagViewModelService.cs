@@ -1,7 +1,8 @@
-﻿using BFF.DB;
+﻿using System;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
+using MuVaViMo;
 
 namespace BFF.MVVM.Services
 {
@@ -11,18 +12,11 @@ namespace BFF.MVVM.Services
 
     public class FlagViewModelService : CommonPropertyViewModelServiceBase<IFlag, IFlagViewModel>, IFlagViewModelService
     {
-        private readonly IFlagRepository _repository;
-        private readonly IBffOrm _orm;
-
-        public FlagViewModelService(IFlagRepository repository, IBffOrm orm) : base(repository)
+        public FlagViewModelService(IFlagRepository repository, Func<IFlag, IFlagViewModel> factory) : base(repository, factory, true)
         {
-            _repository = repository;
-            _orm = orm;
+            All = new TransformingObservableReadOnlyList<IFlag, IFlagViewModel>(
+                new WrappingObservableReadOnlyList<IFlag>(repository.All),
+                AddToDictionaries);
         }
-
-        protected override IFlagViewModel Create(IFlag model)
-            => new FlagViewModel(model, _orm, this);
-        public override IFlagViewModel GetNewNonInsertedViewModel()
-            => new FlagViewModel(_repository.Create(), _orm, this);
     }
 }

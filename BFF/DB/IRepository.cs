@@ -14,7 +14,6 @@ namespace BFF.DB
     }
     public interface IReadOnlyRepository<out T> : IOncePerBackend where T : class, IDataModel
     {
-        T Create();
         T Find(long id, DbConnection connection = null);
     }
 

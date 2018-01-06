@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -21,11 +18,6 @@ namespace BFF.DB.Dapper.ModelRepositories
         {
             _categoryRepository = categoryRepository;
             _incomeCategoryRepository = incomeCategoryRepository;
-        }
-
-        public ICategoryBase Create()
-        {
-            return null;
         }
 
         public ICategoryBase Find(long id, DbConnection connection = null)

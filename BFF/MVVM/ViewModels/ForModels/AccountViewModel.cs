@@ -4,9 +4,10 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
-using BFF.DB;
+using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -24,6 +25,8 @@ namespace BFF.MVVM.ViewModels.ForModels
     public class AccountViewModel : AccountBaseViewModel, IAccountViewModel
     {
         private readonly IAccount _account;
+        private readonly ITransRepository _transRepository;
+        private readonly IAccountRepository _accountRepository;
 
         /// <summary>
         /// Starting balance of the Account
@@ -32,16 +35,6 @@ namespace BFF.MVVM.ViewModels.ForModels
 
 
         public IReactiveProperty<DateTime> StartingDate { get; }
-
-        /// <summary>
-        /// Before a model object is inserted into the database, it has to be valid.
-        /// This function should guarantee that the object is valid to be inserted.
-        /// </summary>
-        /// <returns>True if valid, else false</returns>
-        public override bool ValidToInsert()
-        {
-            return !string.IsNullOrWhiteSpace(Name.Value);
-        }
 
         /// <summary>
         /// Uses the OR mapper to insert the model into the database. Inner function for the Insert method.
@@ -58,12 +51,29 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Initializes an AccountViewModel.
         /// </summary>
         /// <param name="account">An Account Model.</param>
-        /// <param name="orm">Used for the database accesses.</param>
         /// <param name="summaryAccountViewModel">This account summarizes all accounts.</param>
-        public AccountViewModel(IAccount account, IBffOrm orm, ISummaryAccountViewModel summaryAccountViewModel) 
-            : base(orm, account)
+        public AccountViewModel(
+            IAccount account, 
+            ISummaryAccountViewModel summaryAccountViewModel,
+            ITransRepository transRepository,
+            IAccountRepository accountRepository,
+            Lazy<IAccountViewModelService> accountViewModelService,
+            IParentTransactionViewModelService parentTransactionViewModelService,
+            Func<IAccount, ITransactionViewModel> transactionViewModelFactory,
+            Func<ITransferViewModel> transferViewModelFactory,
+            Func<IAccount, IParentTransactionViewModel> parentTransactionViewModelFactory,
+            Func<ITransaction, ITransactionViewModel> dependingTransactionViewModelFactory,
+            Func<ITransfer, ITransferViewModel> dependingTransferViewModelFactory) 
+            : base(
+                account,
+                accountViewModelService, 
+                parentTransactionViewModelService, 
+                dependingTransactionViewModelFactory, 
+                dependingTransferViewModelFactory)
         {
             _account = account;
+            _transRepository = transRepository;
+            _accountRepository = accountRepository;
             StartingBalance = account
                 .ToReactivePropertyAsSynchronized(a => a.StartingBalance, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
@@ -74,56 +84,13 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .ToReactivePropertyAsSynchronized(a => a.StartingDate, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
-            summaryAccountViewModel.RefreshStartingBalance();
+            //summaryAccountViewModel.RefreshStartingBalance();
 
-            NewTransactionCommand.Subscribe(_ =>
-            {
-                ITransaction transaction = Orm.BffRepository.TransactionRepository.Create();
-                transaction.Date = DateTime.Today;
-                transaction.Account = _account;
-                transaction.Memo = "";
-                transaction.Sum = 0L;
-                transaction.Cleared = false;
-                NewTits.Add(new TransactionViewModel(
-                    transaction,
-                    hcvm => new NewCategoryViewModel(
-                        hcvm,
-                        Orm.BffRepository.CategoryRepository, 
-                        Orm.BffRepository.IncomeCategoryRepository, 
-                        Orm.CommonPropertyProvider.CategoryViewModelService,
-                        Orm.CommonPropertyProvider.IncomeCategoryViewModelService,
-                        Orm.CommonPropertyProvider.CategoryBaseViewModelService),
-                    hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
-                    Orm,
-                    Orm.CommonPropertyProvider.AccountViewModelService,
-                    Orm.CommonPropertyProvider.PayeeViewModelService,
-                    Orm.CommonPropertyProvider.CategoryBaseViewModelService,
-                    Orm.CommonPropertyProvider.FlagViewModelService));
-            }).AddTo(CompositeDisposable);
+            NewTransactionCommand.Subscribe(_ => NewTits.Add(transactionViewModelFactory(_account))).AddTo(CompositeDisposable);
 
-            NewTransferCommand.Subscribe(_ =>
-            {
-                ITransfer transfer = Orm.BffRepository.TransferRepository.Create();
-                transfer.Date = DateTime.Today;
-                transfer.Memo = "";
-                transfer.Sum = 0L;
-                transfer.Cleared = false;
-                NewTits.Add(new TransferViewModel(
-                    transfer,
-                    Orm,
-                    Orm.CommonPropertyProvider.AccountViewModelService,
-                    Orm.CommonPropertyProvider.FlagViewModelService));
-            }).AddTo(CompositeDisposable);
+            NewTransferCommand.Subscribe(_ => NewTits.Add(transferViewModelFactory())).AddTo(CompositeDisposable);
 
-            NewParentTransactionCommand.Subscribe(_ =>
-            {
-                IParentTransaction parentTransaction = Orm.BffRepository.ParentTransactionRepository.Create();
-                parentTransaction.Date = DateTime.Today;
-                parentTransaction.Account = _account;
-                parentTransaction.Memo = "";
-                parentTransaction.Cleared = false;
-                NewTits.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
-            }).AddTo(CompositeDisposable);
+            NewParentTransactionCommand.Subscribe(_ => NewTits.Add(parentTransactionViewModelFactory(_account))).AddTo(CompositeDisposable);
 
             ApplyCommand = NewTits.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
                 .Select(count => count > 0)
@@ -137,8 +104,8 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         protected override IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess
             => new RelayBasicAsyncDataAccess<ITransLikeViewModel>(
-                (offset, pageSize) => CreatePacket(Orm.BffRepository.TransRepository.GetPage(offset, pageSize, _account)),
-                () => Orm.BffRepository.TransRepository.GetCount(_account),
+                (offset, pageSize) => CreatePacket(_transRepository.GetPage(offset, pageSize, _account)),
+                () => _transRepository.GetCount(_account),
                 () => new TransLikeViewModelPlaceholder());
 
         /// <summary>
@@ -154,12 +121,12 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The current Balance of this Account.
         /// </summary>
-        public override long? Balance => Orm?.GetAccountBalance(_account);
+        public override long? Balance => _accountRepository.GetBalance(_account);
 
         /// <summary>
         /// The current Balance of this Account.
         /// </summary>
-        public override long? BalanceUntilNow => Orm?.GetAccountBalanceUntilNow(_account);
+        public override long? BalanceUntilNow => _accountRepository.GetBalanceUntilNow(_account);
 
         /// <summary>
         /// Refreshes the Balance.

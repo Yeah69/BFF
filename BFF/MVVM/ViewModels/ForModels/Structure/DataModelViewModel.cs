@@ -7,14 +7,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
     public interface IDataModelViewModel
     {
-
-        /// <summary>
-        /// Before a model object is inserted into the database, it has to be valid.
-        /// This function should guarantee that the object is valid to be inserted.
-        /// </summary>
-        /// <returns>True if valid, else false</returns>
-        bool ValidToInsert();
-
         /// <summary>
         /// Inserts the model object to the database.
         /// </summary>
@@ -34,16 +26,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     {
         private readonly IDataModel _dataModel;
 
-        /// <summary>
-        /// The Orm object, which handles all database accesses.
-        /// </summary>
-        protected IBffOrm Orm;
-
-        /// <summary>
-        /// Provides common properties, such as Accounts, Categories and Payees.
-        /// </summary>
-        protected ICommonPropertyProvider CommonPropertyProvider => Orm?.CommonPropertyProvider;
-
         protected CompositeDisposable CompositeDisposable { get; } = new CompositeDisposable();
 
         /// <summary>
@@ -51,18 +33,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
         /// <param name="dataModel">The model.</param>
-        protected DataModelViewModel(IBffOrm orm, IDataModel dataModel)
+        protected DataModelViewModel(IDataModel dataModel)
         {
-            Orm = orm;
             _dataModel = dataModel;
         }
-
-        /// <summary>
-        /// Before a model object is inserted into the database, it has to be valid.
-        /// This function should guarantee that the object is valid to be inserted.
-        /// </summary>
-        /// <returns>True if valid, else false</returns>
-        public abstract bool ValidToInsert();
 
         /// <summary>
         /// Uses the OR mapper to insert the object into the database. Inner function for the Insert method.
@@ -77,11 +51,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public void Insert()
         {
-            if (ValidToInsert())
-            {
-                _dataModel.Insert();
-                OnInsert();
-            }
+            _dataModel.Insert();
+            OnInsert();
         }
 
         /// <summary>

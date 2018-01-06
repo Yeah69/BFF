@@ -6,6 +6,7 @@ using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.Properties;
 using MuVaViMo;
+using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels
 {
@@ -15,6 +16,7 @@ namespace BFF.MVVM.ViewModels
         IObservableReadOnlyList<IAccountViewModel> AllAccounts { get; }
         ISummaryAccountViewModel SummaryAccountViewModel { get; }
         void ManageCultures();
+        IReactiveProperty<bool> IsOpen { get; }
     }
 
     public class AccountTabsViewModel : SessionViewModelBase, IAccountTabsViewModel
@@ -25,18 +27,19 @@ namespace BFF.MVVM.ViewModels
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts =>
             _accountViewModelService.All;
 
-        public ISummaryAccountViewModel SummaryAccountViewModel =>
-            _accountViewModelService.SummaryAccountViewModel;
+        public ISummaryAccountViewModel SummaryAccountViewModel { get; }
 
         public INewAccountViewModel NewAccountViewModel { get; }
 
         public AccountTabsViewModel(
             INewAccountViewModel newAccountViewModel,
             IAccountViewModelService accountViewModelService, 
-            IDbSettingRepository dbSettingRepository)
+            IDbSettingRepository dbSettingRepository,
+            ISummaryAccountViewModel summaryAccountViewModel)
         {
             _accountViewModelService = accountViewModelService;
             _dbSettingRepository = dbSettingRepository;
+            SummaryAccountViewModel = summaryAccountViewModel;
             NewAccountViewModel = newAccountViewModel;
 
             IDbSetting dbSetting = _dbSettingRepository.Find(1);

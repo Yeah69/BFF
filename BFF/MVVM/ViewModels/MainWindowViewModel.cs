@@ -66,6 +66,7 @@ namespace BFF.MVVM.ViewModels
             get => _accountTabsViewModel;
             set
             {
+                if (_accountTabsViewModel == value) return;
                 _accountTabsViewModel = value;
                 OnPropertyChanged();
             }
@@ -82,6 +83,19 @@ namespace BFF.MVVM.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public ISqLiteBackendContext Context
+        {
+            get => _context;
+            set
+            {
+                if (value == _context) return;
+                _context = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Text => "Hello, Worldddd";
 
         public IEmptyViewModel EmptyViewModel { get; set; }
         public bool IsEmpty => AccountTabsViewModel == null || BudgetOverviewViewModel == null;
@@ -151,6 +165,7 @@ namespace BFF.MVVM.ViewModels
         private bool _parentTitFlyoutOpen;
         private IBudgetOverviewViewModel _budgetOverviewViewModel;
         private Owned<Func<string, ISqLiteBackendContext>> _contextOwner;
+        private ISqLiteBackendContext _context;
 
         public bool ParentTitFlyoutOpen
         {
@@ -228,22 +243,21 @@ namespace BFF.MVVM.ViewModels
 
         protected void Reset(string dbPath)
         {
-            (AccountTabsViewModel as IDisposable)?.Dispose();
             _contextOwner?.Dispose();
             if (File.Exists(dbPath))
             {
                 //_ormOwner = _ormFactory();
                 //IBffOrm orm = _ormOwner.Value(_provideSqLiteConnectionFactory(dbPath));
                 _contextOwner = _sqliteBackendContextFactory();
-                var context = _contextOwner.Value(dbPath);
-
-                AccountTabsViewModel = context.AccountTabsViewModel;
+                Context = _contextOwner.Value(dbPath);
+                
+                AccountTabsViewModel = Context.AccountTabsViewModel;
                     //new AccountTabsViewModel(
                     //orm, 
-                    //new NewAccountViewModel(
+                    //new NewAccountViewModel( 
                     //    orm.BffRepository.AccountRepository,
                     //    orm.CommonPropertyProvider.AccountViewModelService));
-                BudgetOverviewViewModel = context.BudgetOverviewViewModel;
+                BudgetOverviewViewModel = Context.BudgetOverviewViewModel;
                     //new BudgetOverviewViewModel(
                     //    orm.BffRepository.BudgetMonthRepository,
                     //    orm.BudgetEntryViewModelService, 

@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
+using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
+using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    public interface ISummaryAccountViewModel : IAccountBaseViewModel {
+    public interface ISummaryAccountViewModel : IAccountBaseViewModel, IOncePerBackend {
         /// <summary>
         /// Refreshes the starting balance.
         /// This is needed for the summary account, because on run-time the user may add a new account.
@@ -28,6 +29,11 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel
     {
+        private readonly ISummaryAccount _summaryAccount;
+        private readonly IAccountRepository _accountRepository;
+        private readonly Lazy<IAccountViewModelService> _service;
+        private readonly ITransRepository _transRepository;
+
         /// <summary>
         /// Starting balance of the Account
         /// </summary>
@@ -44,9 +50,28 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
         /// <param name="summaryAccount">The model.</param>
-        public SummaryAccountViewModel(IBffOrm orm,
-                                       ISummaryAccount summaryAccount) : base(orm, summaryAccount)
+        public SummaryAccountViewModel(
+            ISummaryAccount summaryAccount, 
+            IAccountRepository accountRepository, 
+            Lazy<IAccountViewModelService> service,
+            ITransRepository transRepository,
+            IParentTransactionViewModelService parentTransactionViewModelService,
+            Func<ITransactionViewModel> transactionViewModelFactory,
+            Func<ITransferViewModel> transferViewModelFactory,
+            Func<IParentTransactionViewModel> parentTransactionFactory,
+            Func<ITransaction, ITransactionViewModel> dependingTransactionViewModelFactory,
+            Func<ITransfer, ITransferViewModel> dependingTransferViewModelFactory) 
+            : base(
+                summaryAccount,
+                service, 
+                parentTransactionViewModelService,
+                dependingTransactionViewModelFactory,
+                dependingTransferViewModelFactory)
         {
+            _summaryAccount = summaryAccount;
+            _accountRepository = accountRepository;
+            _service = service;
+            _transRepository = transRepository;
             IsOpen.Value = true;
             Messenger.Default.Register<SummaryAccountMessage>(this, message =>
             {
@@ -72,54 +97,13 @@ namespace BFF.MVVM.ViewModels.ForModels
             });
 
             StartingBalance = new ReactiveProperty<long>().AddTo(CompositeDisposable);
-            RefreshStartingBalance();
+            //RefreshStartingBalance();
 
-            NewTransactionCommand.Subscribe(_ =>
-            {
-                ITransaction transaction = Orm.BffRepository.TransactionRepository.Create();
-                transaction.Date = DateTime.Today;
-                transaction.Memo = "";
-                transaction.Sum = 0L;
-                transaction.Cleared = false;
-                NewTits.Add(new TransactionViewModel(
-                    transaction,
-                    hcvm => new NewCategoryViewModel(
-                        hcvm, 
-                        Orm.BffRepository.CategoryRepository, 
-                        Orm.BffRepository.IncomeCategoryRepository,
-                        Orm.CommonPropertyProvider.CategoryViewModelService,
-                        Orm.CommonPropertyProvider.IncomeCategoryViewModelService,
-                        Orm.CommonPropertyProvider.CategoryBaseViewModelService),
-                    hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
-                    Orm,
-                    Orm.CommonPropertyProvider.AccountViewModelService,
-                    Orm.CommonPropertyProvider.PayeeViewModelService,
-                    Orm.CommonPropertyProvider.CategoryBaseViewModelService,
-                    Orm.CommonPropertyProvider.FlagViewModelService));
-            }).AddTo(CompositeDisposable);
+            NewTransactionCommand.Subscribe(_ => NewTits.Add(transactionViewModelFactory())).AddTo(CompositeDisposable);
 
-            NewTransferCommand.Subscribe(_ =>
-            {
-                ITransfer transfer = Orm.BffRepository.TransferRepository.Create();
-                transfer.Date = DateTime.Today;
-                transfer.Memo = "";
-                transfer.Sum = 0L;
-                transfer.Cleared = false;
-                NewTits.Add(new TransferViewModel(
-                    transfer, 
-                    Orm,
-                    Orm.CommonPropertyProvider.AccountViewModelService,
-                    Orm.CommonPropertyProvider.FlagViewModelService));
-            }).AddTo(CompositeDisposable);
+            NewTransferCommand.Subscribe(_ => NewTits.Add(transferViewModelFactory())).AddTo(CompositeDisposable);
 
-            NewParentTransactionCommand.Subscribe(_ =>
-            {
-                IParentTransaction parentTransaction = Orm.BffRepository.ParentTransactionRepository.Create();
-                parentTransaction.Date = DateTime.Today;
-                parentTransaction.Memo = "";
-                parentTransaction.Cleared = false;
-                NewTits.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
-            }).AddTo(CompositeDisposable);
+            NewParentTransactionCommand.Subscribe(_ => NewTits.Add(parentTransactionFactory())).AddTo(CompositeDisposable);
 
             ApplyCommand = NewTits.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
                 .Select(count => count > 0)
@@ -144,8 +128,8 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         protected override IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess
             => new RelayBasicAsyncDataAccess<ITransLikeViewModel>(
-                (offset, pageSize) => CreatePacket(Orm.BffRepository.TransRepository.GetPage(offset, pageSize, null)),
-                () => Orm.BffRepository.TransRepository.GetCount(null),
+                (offset, pageSize) => CreatePacket(_transRepository.GetPage(offset, pageSize, null)),
+                () => _transRepository.GetCount(null),
                 () => new TransLikeViewModelPlaceholder());
 
         /// <summary>
@@ -177,9 +161,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The sum of all accounts balances.
         /// </summary>
-        public override long? Balance => Orm?.GetSummaryAccountBalance();
+        public override long? Balance => _accountRepository.GetBalance(_summaryAccount);
 
-        public override long? BalanceUntilNow => Orm?.GetSummaryAccountBalanceUntilNow();
+        public override long? BalanceUntilNow => _accountRepository.GetBalanceUntilNow(_summaryAccount);
 
         /// <summary>
         /// Creates a new Transaction.
@@ -209,17 +193,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public void RefreshStartingBalance()
         {
-            StartingBalance.Value = CommonPropertyProvider?.AccountViewModelService.All.Sum(account => account.StartingBalance.Value) ?? 0L;
+            StartingBalance.Value = _service.Value.All.Sum(account => account.StartingBalance.Value);
         }
-
-        #region Overrides of DataModelViewModel
-
-        /// <summary>
-        /// Does only return False, because the summary account may not be inserted to the database. Needed to mimic an Account.
-        /// </summary>
-        /// <returns>Only False.</returns>
-        public override bool ValidToInsert() => false;
-
-        #endregion
     }
 }

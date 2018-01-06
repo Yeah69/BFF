@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using BFF.DB;
-using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
-using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
@@ -30,7 +28,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public abstract string GetIndent();
 
-        protected CategoryBaseViewModel(ICategoryBase category, IBffOrm orm) : base(orm, category)
+        protected CategoryBaseViewModel(ICategoryBase category) : base(category)
         {
         }
     }

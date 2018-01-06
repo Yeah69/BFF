@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BFF.MVVM;
 using BFF.MVVM.ViewModels;
 
 namespace BFF
 {
     public interface IBackendContext
     {
+        string Text { get; }
+
         IBudgetOverviewViewModel BudgetOverviewViewModel { get; }
         IAccountTabsViewModel AccountTabsViewModel { get; }
     }
 
-    public abstract class BackendContext : IBackendContext
+    public abstract class BackendContext : ObservableObject, IBackendContext
     {
-
-        protected BackendContext()
-        {
-        }
+        public string Text => "Hello, World!";
 
         public abstract IBudgetOverviewViewModel BudgetOverviewViewModel { get; }
         public abstract IAccountTabsViewModel AccountTabsViewModel { get; }

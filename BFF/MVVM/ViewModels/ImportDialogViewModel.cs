@@ -5,7 +5,18 @@ using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels
 {
-    class ImportDialogViewModel : ViewModelBase
+    public interface IImportDialogViewModel : IViewModel
+    {
+        IImportable Importable { get; }
+
+        ReactiveCommand BrowseYnabCsvTransactionCommand { get; }
+
+        ReactiveCommand BrowseYnabCsvBudgetCommand { get; }
+
+        ReactiveCommand BrowseSaveCommand { get; }
+    }
+
+    public class ImportDialogViewModel : ViewModelBase, IImportDialogViewModel
     {
         public IImportable Importable { get; }
 

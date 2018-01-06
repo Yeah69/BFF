@@ -35,9 +35,6 @@ namespace BFF.DB.Dapper.ModelRepositories
     {
         public FlagRepository(IProvideConnection provideConnection) : base(provideConnection, new FlagComparer()) { }
 
-        public override Domain.IFlag Create() =>
-            new Domain.Flag(this, -1, "", Colors.Transparent);
-
         protected override Converter<Domain.IFlag, Flag> ConvertToPersistence => domainModel =>
         {
             long color = domainModel.Color.A;

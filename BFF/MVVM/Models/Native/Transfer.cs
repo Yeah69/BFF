@@ -98,15 +98,15 @@ namespace BFF.MVVM.Models.Native
         /// <param name="repository">This repository manages the persistence access to elements of this type.</param>
         public Transfer(
             IRepository<ITransfer> repository,
-            long id,
-            IFlag flag,
-            string checkNumber,
             DateTime date,
+            long id = -1L,
+            IFlag flag = null,
+            string checkNumber = "",
             IAccount fromAccount = null,
             IAccount toAccount = null,
-            string memo = null,
+            string memo = "",
             long sum = 0L,
-            bool? cleared = null)
+            bool? cleared = false)
             : base(repository, flag, checkNumber, date, id, memo, cleared)
         {
             _fromAccount = fromAccount;
