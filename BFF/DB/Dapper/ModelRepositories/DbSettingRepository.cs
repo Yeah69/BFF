@@ -23,9 +23,6 @@ namespace BFF.DB.Dapper.ModelRepositories
     public sealed class DbSettingRepository : RepositoryBase<Domain.IDbSetting, DbSetting>, IDbSettingRepository
     {
         public DbSettingRepository(IProvideConnection provideConnection) : base(provideConnection) { }
-
-        public override Domain.IDbSetting Create() =>
-            new Domain.DbSetting(this, -1L);
         
         protected override Converter<Domain.IDbSetting, DbSetting> ConvertToPersistence => domainDbSetting => 
             new DbSetting

@@ -12,6 +12,7 @@ using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.MVVM.Services;
 using BFF.Properties;
 using MuVaViMo;
 using Reactive.Bindings;
@@ -78,6 +79,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
+        private readonly Lazy<IAccountViewModelService> _accountViewModelService;
+        private readonly IParentTransactionViewModelService _parentTransactionViewModelService;
+        private readonly Func<ITransaction, ITransactionViewModel> _transactionViewModelFactory;
+        private readonly Func<ITransfer, ITransferViewModel> _transferViewModelFactory;
         protected IDataVirtualizingCollection<ITransLikeViewModel> _tits;
 
         /// <summary>
@@ -110,7 +115,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// All available Accounts.
         /// </summary>
-        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
+        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => _accountViewModelService.Value.All;
 
         /// <summary>
         /// Creates a new Transaction.
@@ -142,9 +147,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
         /// <param name="account">The model.</param>
-        protected AccountBaseViewModel(IBffOrm orm, IAccount account) : base(orm, account)
+        protected AccountBaseViewModel(
+            IAccount account,
+            Lazy<IAccountViewModelService> accountViewModelService,
+            IParentTransactionViewModelService parentTransactionViewModelService,
+            Func<ITransaction, ITransactionViewModel> transactionViewModelFactory,
+            Func<ITransfer, ITransferViewModel> transferViewModelFactory) : base(account)
         {
-            Orm = orm;
+            _accountViewModelService = accountViewModelService;
+            _parentTransactionViewModelService = parentTransactionViewModelService;
+            _transactionViewModelFactory = transactionViewModelFactory;
+            _transferViewModelFactory = transferViewModelFactory;
             Messenger.Default.Register<CultureMessage>(this, message =>
             {
                 switch (message)
@@ -201,7 +214,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected void ApplyTits()
         {
-            List<ITransLikeViewModel> insertTits = NewTits.Where(tit => tit.ValidToInsert()).ToList();
+            List<ITransLikeViewModel> insertTits = NewTits.ToList();//.Where(tit => tit.ValidToInsert()).ToList();
             foreach (ITransLikeViewModel tit in insertTits)
             {
                 tit.Insert();
@@ -246,31 +259,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 switch (item)
                 {
                     case ITransfer transfer:
-                        vmItems.Add(new TransferViewModel(
-                            transfer, 
-                            Orm, 
-                            Orm.CommonPropertyProvider.AccountViewModelService,
-                            Orm.CommonPropertyProvider.FlagViewModelService));
+                        vmItems.Add(_transferViewModelFactory(transfer));
                         break;
                     case IParentTransaction parentTransaction:
-                        vmItems.Add(Orm.ParentTransactionViewModelService.GetViewModel(parentTransaction));
+                        vmItems.Add(_parentTransactionViewModelService.GetViewModel(parentTransaction));
                         break;
                     case ITransaction transaction:
-                        vmItems.Add(new TransactionViewModel(
-                            transaction,
-                            hcvm => new NewCategoryViewModel(
-                                hcvm,
-                                Orm.BffRepository.CategoryRepository, 
-                                Orm.BffRepository.IncomeCategoryRepository,
-                                Orm.CommonPropertyProvider.CategoryViewModelService,
-                                Orm.CommonPropertyProvider.IncomeCategoryViewModelService,
-                                CommonPropertyProvider.CategoryBaseViewModelService),
-                            hpvm => new NewPayeeViewModel(hpvm, Orm.BffRepository.PayeeRepository, Orm.CommonPropertyProvider.PayeeViewModelService),
-                            Orm,
-                            Orm.CommonPropertyProvider.AccountViewModelService,
-                            Orm.CommonPropertyProvider.PayeeViewModelService,
-                            Orm.CommonPropertyProvider.CategoryBaseViewModelService,
-                            Orm.CommonPropertyProvider.FlagViewModelService));
+                        vmItems.Add(_transactionViewModelFactory(transaction));
                         break;
                     default:
                         throw new NotImplementedException();

@@ -30,7 +30,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class BudgetEntryRepository : WriteOnlyRepositoryBase<Domain.IBudgetEntry, BudgetEntry>, IBudgetEntryRepository
     {
-        private readonly Func<long?, DbConnection, Domain.ICategory> _categoryFetcher;
+        private readonly ICategoryRepository _categoryRepository;
 
         private class BudgetResponse
         {
@@ -62,9 +62,9 @@ $@"SELECT {nameof(BudgetEntry.Id)}, {nameof(BudgetEntry.CategoryId)}, {nameof(Bu
   GROUP BY Date
   ORDER BY Date;";
 
-        public BudgetEntryRepository(IProvideConnection provideConnection, Func<long?, DbConnection, Domain.ICategory> categoryFetcher) : base(provideConnection)
+        public BudgetEntryRepository(IProvideConnection provideConnection, ICategoryRepository categoryRepository ) : base(provideConnection)
         {
-            _categoryFetcher = categoryFetcher;
+            _categoryRepository = categoryRepository;
         }
         
         protected override Converter<Domain.IBudgetEntry, BudgetEntry> ConvertToPersistence => domainBudgetEntry => 
@@ -139,7 +139,7 @@ $@"SELECT {nameof(BudgetEntry.Id)}, {nameof(BudgetEntry.CategoryId)}, {nameof(Bu
                 if (outflowList.ContainsKey(currentDate))
                     outflow = outflowList[currentDate];
                 long currentValue = entryBudgetValue + budgeted + outflow;
-                budgetEntries.Add(new Domain.BudgetEntry(this, id, currentDate, _categoryFetcher(category.Id, connection), budgeted, outflow, currentValue));
+                budgetEntries.Add(new Domain.BudgetEntry(this, id, currentDate, _categoryRepository.Find(category.Id, connection), budgeted, outflow, currentValue));
 
                 entryBudgetValue = Math.Max(0L, currentValue);
                 currentDate = new DateTime(

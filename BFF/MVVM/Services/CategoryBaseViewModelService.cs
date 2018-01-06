@@ -1,5 +1,6 @@
 ﻿using System;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels;
 using MuVaViMo;
 

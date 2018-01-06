@@ -41,6 +41,7 @@ namespace BFF.MVVM.ViewModels
         public NewPayeeViewModel(
             IHavePayeeViewModel payeeOwner,
             IPayeeRepository payeeRepository,
+            Func<IPayee> payeeFactory,
             IPayeeViewModelService payeeViewModelService)
         {
             string ValidatePayeeName(string text)
@@ -66,7 +67,7 @@ namespace BFF.MVVM.ViewModels
                 })
                 .Subscribe(_ =>
                 {
-                    IPayee newPayee = payeeRepository.Create();
+                    IPayee newPayee = payeeFactory();
                     newPayee.Name = PayeeText.Value.Trim();
                     newPayee.Insert();
                     payeeOwner.Payee.Value = _payeeViewModelService.GetViewModel(newPayee);

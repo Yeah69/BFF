@@ -1,5 +1,4 @@
 ﻿using System;
-using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -27,9 +26,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         public SubTransactionViewModel(
             ISubTransaction subTransaction,
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
-            IBffOrm orm,
             ICategoryBaseViewModelService categoryViewModelService) :
-            base(orm, subTransaction)
+            base(subTransaction)
         {
             Category = subTransaction.ToReactivePropertyAsSynchronized(
                 sti => sti.Category,
@@ -52,15 +50,5 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The amount of money of the exchange of the SubTransaction.
         /// </summary>
         public override IReactiveProperty<long> Sum { get;  }
-
-        /// <summary>
-        /// Before a model object is inserted into the database, it has to be valid.
-        /// This function should guarantee that the object is valid to be inserted.
-        /// </summary>
-        /// <returns>True if valid, else false</returns>
-        public override bool ValidToInsert()
-        {
-            return Category.Value != null;
-        }
     }
 }

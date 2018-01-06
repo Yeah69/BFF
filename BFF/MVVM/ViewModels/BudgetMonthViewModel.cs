@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 
 namespace BFF.MVVM.ViewModels
@@ -23,20 +25,22 @@ namespace BFF.MVVM.ViewModels
         IReadOnlyReactiveProperty<long> Balance { get; }
     }
 
-    public class BudgetMonthViewModel : IBudgetMonthViewModel
+    public sealed class BudgetMonthViewModel : IBudgetMonthViewModel, IDisposable, ITransientViewModel
     {
+        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+
         public BudgetMonthViewModel(IBudgetMonth budgetMonth, IBudgetEntryViewModelService budgetEntryViewModelService)
         {
-            BudgetEntries = budgetMonth.BudgetEntries.ToReadOnlyReactiveCollection(budgetEntryViewModelService.GetViewModel);
-            Month = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.Month);
-            NotBudgetedInPreviousMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.NotBudgetedInPreviousMonth);
-            OverspentInPreviousMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.OverspentInPreviousMonth);
-            IncomeForThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.IncomeForThisMonth);
-            BudgetedThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.BudgetedThisMonth);
-            BudgetedThisMonthPositive = BudgetedThisMonth.Select(l => -1 * l).ToReadOnlyReactiveProperty();
-            Outflows = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.Outflows);
-            Balance = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.Balance);
-            AvailableToBudget = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.AvailableToBudget);
+            BudgetEntries = budgetMonth.BudgetEntries.ToReadOnlyReactiveCollection(budgetEntryViewModelService.GetViewModel).AddTo(_compositeDisposable);
+            Month = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.Month).AddTo(_compositeDisposable);
+            NotBudgetedInPreviousMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.NotBudgetedInPreviousMonth).AddTo(_compositeDisposable);
+            OverspentInPreviousMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.OverspentInPreviousMonth).AddTo(_compositeDisposable);
+            IncomeForThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.IncomeForThisMonth).AddTo(_compositeDisposable);
+            BudgetedThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.BudgetedThisMonth).AddTo(_compositeDisposable);
+            BudgetedThisMonthPositive = BudgetedThisMonth.Select(l => -1 * l).ToReadOnlyReactiveProperty().AddTo(_compositeDisposable);
+            Outflows = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.Outflows).AddTo(_compositeDisposable);
+            Balance = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.Balance).AddTo(_compositeDisposable);
+            AvailableToBudget = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.AvailableToBudget).AddTo(_compositeDisposable);
         }
 
         public ReadOnlyReactiveCollection<IBudgetEntryViewModel> BudgetEntries { get; }
@@ -51,5 +55,10 @@ namespace BFF.MVVM.ViewModels
 
         public IReadOnlyReactiveProperty<long> Outflows { get; }
         public IReadOnlyReactiveProperty<long> Balance { get; }
+
+        public void Dispose()
+        {
+            _compositeDisposable.Dispose();
+        }
     }
 }

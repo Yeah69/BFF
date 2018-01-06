@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -31,7 +30,7 @@ namespace BFF.MVVM.ViewModels
         IObservableReadOnlyList<ICategoryBaseViewModel> All { get; }
     }
 
-    public sealed class NewCategoryViewModel : ObservableObject, INewCategoryViewModel, IDisposable
+    public sealed class NewCategoryViewModel : ViewModelBase, INewCategoryViewModel, IDisposable
     {
         private readonly ICategoryViewModelService _categoryViewModelService;
         private readonly ICategoryBaseViewModelService _categoryBaseViewModelService;
@@ -39,9 +38,9 @@ namespace BFF.MVVM.ViewModels
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
         public NewCategoryViewModel(
-            IHaveCategoryViewModel categoryOwner, 
-            ICategoryRepository categoryRepository,
-            IIncomeCategoryRepository incomeCategoryRepository,
+            IHaveCategoryViewModel categoryOwner,
+            Func<ICategory> categoryFactory,
+            Func<IIncomeCategory> incomeCategoryFactory,
             ICategoryViewModelService categoryViewModelService,
             IIncomeCategoryViewModelService incomeCategoryViewModelService,
             ICategoryBaseViewModelService categoryBaseViewModelService)
@@ -87,7 +86,7 @@ namespace BFF.MVVM.ViewModels
                 {
                     if (IsIncomeRelevant.Value)
                     {
-                        IIncomeCategory newCategory = incomeCategoryRepository.Create();
+                        IIncomeCategory newCategory = incomeCategoryFactory();
                         newCategory.Name = Name.Value.Trim();
                         newCategory.MonthOffset = MonthOffset.Value;
                         newCategory.Insert();
@@ -95,7 +94,7 @@ namespace BFF.MVVM.ViewModels
                     }
                     else
                     {
-                        ICategory newCategory = categoryRepository.Create();
+                        ICategory newCategory = categoryFactory();
                         newCategory.Name = Name.Value.Trim();
                         newCategory.Parent = _categoryViewModelService.GetModel(Parent.Value);
                         newCategory.Parent?.AddCategory(newCategory);

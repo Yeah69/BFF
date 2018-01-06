@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using BFF.DB;
 using BFF.DB.Dapper;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -7,11 +9,10 @@ using MuVaViMo;
 
 namespace BFF.MVVM.Services
 {
-    public interface ICommonPropertyViewModelServiceBase<TDomain, TViewModel> : IConvertingViewModelServiceBase<TDomain, TViewModel>
+    public interface ICommonPropertyViewModelServiceBase<TDomain, TViewModel> : IConvertingViewModelServiceBase<TDomain, TViewModel>, IOncePerBackend
         where TDomain : class, IDataModel
         where TViewModel : class, IDataModelViewModel
     {
-        TViewModel GetNewNonInsertedViewModel();
 
         IObservableReadOnlyList<TViewModel> All { get; }
     }
@@ -28,35 +29,39 @@ namespace BFF.MVVM.Services
         where TDomain : class, IDataModel 
         where TViewModel : class, IDataModelViewModel
     {
+        private readonly Func<TDomain, TViewModel> _factory;
+
         private readonly IDictionary<TDomain, TViewModel> _modelToViewModel 
             = new Dictionary<TDomain, TViewModel>();
         private readonly IDictionary<TViewModel, TDomain> _viewModelToModel 
             = new Dictionary<TViewModel, TDomain>();
+
         public IObservableReadOnlyList<TViewModel> All { get; protected set; }
 
-        protected CommonPropertyViewModelServiceBase(IObservableRepositoryBase<TDomain> repository, bool deferAllInitialization = false)
+        protected CommonPropertyViewModelServiceBase(
+            IObservableRepositoryBase<TDomain> repository, 
+            Func<TDomain, TViewModel> factory, bool deferAll = false)
         {
-            if(!deferAllInitialization)
-                All = new TransformingObservableReadOnlyList<TDomain ,TViewModel>(
+            _factory = factory;
+            if(!deferAll)
+                All = new TransformingObservableReadOnlyList<TDomain, TViewModel>(
                     new WrappingObservableReadOnlyList<TDomain>(repository.All),
                     AddToDictionaries);
         }
 
-        protected abstract TViewModel Create(TDomain model);
-
         protected TViewModel AddToDictionaries(TDomain model)
         {
-            TViewModel categoryViewModel;
+            TViewModel viewModel;
             if(!_modelToViewModel.ContainsKey(model))
             {
-                categoryViewModel = Create(model);
-                _modelToViewModel.Add(model, categoryViewModel);
+                viewModel = _factory(model);
+                _modelToViewModel.Add(model, viewModel);
             }
             else
-                categoryViewModel = _modelToViewModel[model];
-            if(!_viewModelToModel.ContainsKey(categoryViewModel))
-                _viewModelToModel.Add(categoryViewModel, model);
-            return categoryViewModel;
+                viewModel = _modelToViewModel[model];
+            if(!_viewModelToModel.ContainsKey(viewModel))
+                _viewModelToModel.Add(viewModel, model);
+            return viewModel;
         }
 
         public virtual TViewModel GetViewModel(TDomain model)
@@ -84,7 +89,5 @@ namespace BFF.MVVM.Services
 
             return null;
         }
-
-        public abstract TViewModel GetNewNonInsertedViewModel();
     }
 }

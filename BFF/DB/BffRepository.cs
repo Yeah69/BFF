@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Transactions;
 using BFF.DB.Dapper;
-using BFF.DB.Dapper.ModelRepositories;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using BFF.DB.PersistenceModels;
-using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using DbSetting = BFF.DB.PersistenceModels.DbSetting;
@@ -25,7 +23,7 @@ namespace BFF.DB
         protected abstract ICreateTable CreateFlagTable { get; }
         protected abstract ICreateTable CreateSubTransactionTable { get; }
         protected abstract ICreateTable CreateTransTable { get; }
-        protected abstract IProvideConnection ProvideConnection { get; }
+        protected abstract IProvideSqLiteConnetion ProvideConnection { get; }
         
         private void CreateTablesInner(DbConnection connection)
         {
@@ -45,7 +43,7 @@ namespace BFF.DB
             connection.Execute(SqLiteQueries.SetDatabaseSchemaVersion);
         }
         
-        public IProvideConnection Create()
+        public IProvideSqLiteConnetion Create()
         {
             using(TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
             using(DbConnection newConnection = ProvideConnection.Connection)
@@ -60,20 +58,6 @@ namespace BFF.DB
 
     public interface IBffRepository : IDisposable
     {
-        IAccountRepository AccountRepository { get; }
-        IBudgetEntryRepository BudgetEntryRepository { get; }
-        ICategoryRepository CategoryRepository { get; }
-        IIncomeCategoryRepository IncomeCategoryRepository { get; }
-        ICategoryBaseRepository CategoryBaseRepository { get; }
-        IDbSettingRepository DbSettingRepository { get; }
-        IParentTransactionRepository ParentTransactionRepository { get; }
-        IPayeeRepository PayeeRepository { get; }
-        ISubTransactionRepository SubTransactionRepository { get; }
-        ITransactionRepository TransactionRepository { get; }
-        ITransRepository TransRepository { get; }
-        ITransferRepository TransferRepository { get; }
-        IBudgetMonthRepository BudgetMonthRepository { get; }
-        IFlagRepository FlagRepository { get; }
 
         void PopulateDatabase(
             ImportLists importLists, 
@@ -90,20 +74,6 @@ namespace BFF.DB
             _provideConnection = provideConnection;
         }
 
-        public abstract IAccountRepository AccountRepository { get; }
-        public abstract IBudgetEntryRepository BudgetEntryRepository { get; }
-        public abstract ICategoryRepository CategoryRepository { get; }
-        public abstract IIncomeCategoryRepository IncomeCategoryRepository { get; }
-        public abstract ICategoryBaseRepository CategoryBaseRepository { get; }
-        public abstract IDbSettingRepository DbSettingRepository { get; }
-        public abstract IParentTransactionRepository ParentTransactionRepository { get; }
-        public abstract IPayeeRepository PayeeRepository { get; }
-        public abstract ISubTransactionRepository SubTransactionRepository { get; }
-        public abstract ITransactionRepository TransactionRepository { get; }
-        public abstract ITransRepository TransRepository { get; }
-        public abstract ITransferRepository TransferRepository { get; }
-        public abstract IBudgetMonthRepository BudgetMonthRepository { get; }
-        public abstract IFlagRepository FlagRepository { get; }
 
         private void PopulateDatabaseInner(ImportLists importLists, ImportAssignments importAssignments, DbConnection connection)
         {
@@ -171,13 +141,13 @@ namespace BFF.DB
                     subTransaction.ParentId = id;
                 }
             }
-            foreach (SubTransaction subTransaction in importLists.SubTransactions) 
+            foreach (SubTransaction subTransaction in importLists.SubTransactions)
                 connection.Insert(subTransaction);
             foreach (Trans transfer in importLists.Transfers)
             {
                 connection.Insert(transfer);
             }
-            foreach (BudgetEntry budgetEntry in importLists.BudgetEntries) 
+            foreach (BudgetEntry budgetEntry in importLists.BudgetEntries)
                 connection.Insert(budgetEntry);
         }
 
@@ -185,7 +155,7 @@ namespace BFF.DB
         {
             ConnectionHelper.ExecuteOnExistingOrNewConnection(
                 conn => PopulateDatabaseInner(importLists, importAssignments, conn),
-                _provideConnection, 
+                _provideConnection,
                 connection);
         }
 

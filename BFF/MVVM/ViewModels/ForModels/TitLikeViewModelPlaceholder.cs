@@ -38,12 +38,6 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region Overrides of TransLikeViewModel
 
-        /// <summary>
-        /// Does only return False, because a Placeholder may not be inserted to the database. Needed to mimic a TIT.
-        /// </summary>
-        /// <returns>Only False.</returns>
-        public bool ValidToInsert() => false;
-
         public void Insert()
         {
             throw new System.NotImplementedException();

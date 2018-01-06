@@ -41,9 +41,6 @@ namespace BFF.DB.Dapper.ModelRepositories
         public AccountRepository(IProvideConnection provideConnection) : base(provideConnection, new AccountComparer())
         { }
 
-        public override Domain.IAccount Create() =>
-            new Domain.Account(this, DateTime.Today);
-
         protected override Converter<Domain.IAccount, Account> ConvertToPersistence => domainAccount => 
             new Account
             {

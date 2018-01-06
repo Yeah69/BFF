@@ -1,7 +1,8 @@
-using BFF.DB;
+using System;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
+using MuVaViMo;
 
 namespace BFF.MVVM.Services
 {
@@ -11,20 +12,11 @@ namespace BFF.MVVM.Services
 
     public class CategoryViewModelService : CommonPropertyViewModelServiceBase<ICategory, ICategoryViewModel>, ICategoryViewModelService
     {
-        private readonly ICategoryRepository _repository;
-        private readonly IBffOrm _orm;
-
-        public CategoryViewModelService(ICategoryRepository repository, IBffOrm orm) : base(repository)
+        public CategoryViewModelService(ICategoryRepository repository, Func<ICategory, ICategoryViewModel> factory) : base(repository, factory, true)
         {
-            _repository = repository;
-            _orm = orm;
-
-            new CategoryViewModel.CategoryViewModelInitializer(this).Initialize(All);
+            All = new TransformingObservableReadOnlyList<ICategory, ICategoryViewModel>(
+                new WrappingObservableReadOnlyList<ICategory>(repository.All),
+                AddToDictionaries);
         }
-
-        protected override ICategoryViewModel Create(ICategory model) 
-            => new CategoryViewModel(model, _orm, this);
-        public override ICategoryViewModel GetNewNonInsertedViewModel() 
-            => new CategoryViewModel(_repository.Create(), _orm, this);
     }
 }

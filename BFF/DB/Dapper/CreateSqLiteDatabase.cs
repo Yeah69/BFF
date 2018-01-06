@@ -5,7 +5,11 @@ using BFF.DB.SQLite;
 
 namespace BFF.DB.Dapper
 {
-    public class CreateSqLiteDatabase : CreateDatabaseBase
+    public interface ICreateSqLiteDatabase : ICreateDatabase
+    {
+    }
+
+    public class CreateSqLiteDatabase : CreateDatabaseBase, ICreateSqLiteDatabase
     {
         protected override ICreateTable CreateAccountTable { get; }
         protected override ICreateTable CreateBudgetEntryTable { get; }
@@ -15,7 +19,7 @@ namespace BFF.DB.Dapper
         protected override ICreateTable CreateFlagTable { get; }
         protected override ICreateTable CreateSubTransactionTable { get; }
         protected override ICreateTable CreateTransTable { get; }
-        protected sealed override IProvideConnection ProvideConnection { get; }
+        protected sealed override IProvideSqLiteConnetion ProvideConnection { get; }
 
         public CreateSqLiteDatabase(string fileName)
         {

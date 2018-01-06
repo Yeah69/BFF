@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Reactive.Linq;
-using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -31,12 +29,11 @@ namespace BFF.MVVM.ViewModels.ForModels
             ITransaction transaction,
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
-            IBffOrm orm,
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
             ICategoryBaseViewModelService categoryViewModelService,
             IFlagViewModelService flagViewModelService)
-            : base(orm, transaction, newPayeeViewModelFactory, accountViewModelService, payeeViewModelService, flagViewModelService)
+            : base(transaction, newPayeeViewModelFactory, accountViewModelService, payeeViewModelService, flagViewModelService)
         {
             Category = transaction.ToReactivePropertyAsSynchronized(
                     ti => ti.Category,
@@ -64,15 +61,5 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override IReactiveProperty<long> Sum { get; }
 
         public INewCategoryViewModel NewCategoryViewModel { get; }
-
-        /// <summary>
-        /// Before a model object is inserted into the database, it has to be valid.
-        /// This function should guarantee that the object is valid to be inserted.
-        /// </summary>
-        /// <returns>True if valid, else false</returns>
-        public override bool ValidToInsert()
-        {
-            return Account.Value != null && Payee.Value != null && Category.Value != null;
-        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,7 @@ using BFF.DB.SQLite;
 using BFF.Helper.Extensions;
 using BFF.MVVM;
 using BFF.MVVM.Models.Native.Structure;
+using Dapper.Contrib.Extensions;
 using Persistence = BFF.DB.PersistenceModels;
 using NLog;
 using BudgetEntry = BFF.MVVM.Models.Conversion.YNAB.BudgetEntry;
@@ -17,8 +19,13 @@ using Transaction = BFF.MVVM.Models.Conversion.YNAB.Transaction;
 
 namespace BFF.Helper.Import
 {
-    class YnabCsvImport : ObservableObject, IImportable
+    public interface IYnabCsvImport : IImportable
+    { }
+
+    class YnabCsvImport : ObservableObject, IYnabCsvImport
     {
+        private readonly Func<string, ICreateSqLiteDatabase> _createSqLiteDatabaseFactory;
+        private readonly Func<string, IProvideSqLiteConnetion> _connectionFactory;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public string TransactionPath
@@ -51,11 +58,16 @@ namespace BFF.Helper.Import
             }
         }
 
-        public YnabCsvImport(string transactionPath, string budgetPath, string savePath)
+        public YnabCsvImport(
+            (string TransactionPath, string BudgetPath, string SavePath) paths,
+            Func<string, ICreateSqLiteDatabase> createSqLiteDatabaseFactory,
+            Func<string, IProvideSqLiteConnetion> connectionFactory)
         {
-            _transactionPath = transactionPath;
-            _budgetPath = budgetPath;
-            _savePath = savePath;
+            _createSqLiteDatabaseFactory = createSqLiteDatabaseFactory;
+            _connectionFactory = connectionFactory;
+            _transactionPath = paths.TransactionPath;
+            _budgetPath = paths.BudgetPath;
+            _savePath = paths.SavePath;
         }
 
         public string Import()
@@ -83,13 +95,9 @@ namespace BFF.Helper.Import
             return number == "" ? 0L : long.Parse(number);
         }
 
-        public YnabCsvImport(){ }
-
         public void ImportYnabTransactionsCsvToDb(string filePathTransaction, string filePathBudget, string savePath)
         {
             //Initialization
-            IProvideConnection provideConnection = new CreateSqLiteDatabase(savePath).Create();
-            IBffRepository bffRepository = new SqLiteBffOrm(provideConnection).BffRepository;
             _processedAccountsList.Clear();
             ClearAccountCache(); 
             ClearPayeeCache();
@@ -133,7 +141,84 @@ namespace BFF.Helper.Import
             };
 
             //Third step: Create new database for imported data
-            bffRepository.PopulateDatabase(lists, assignments);
+            _createSqLiteDatabaseFactory(savePath).Create();
+            PopulateDatabase(lists, assignments, _connectionFactory(savePath).Connection);
+        }
+        
+        private void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments, DbConnection connection)
+        {
+            /*  
+            Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
+            because the structure of the imported csv-Entry of Categories allows to get the master category first and
+            then the sub category. Thus, the parents id is known beforehand.
+            */
+            Queue<CategoryImportWrapper> categoriesOrder = new Queue<CategoryImportWrapper>(importLists.Categories);
+            while (categoriesOrder.Count > 0)
+            {
+                CategoryImportWrapper current = categoriesOrder.Dequeue();
+                var id = connection.Insert(current.Category);
+                foreach (Persistence.IHaveCategory currentTitAssignment in current.TitAssignments)
+                {
+                    currentTitAssignment.CategoryId = id;
+                }
+                foreach (CategoryImportWrapper categoryImportWrapper in current.Categories)
+                {
+                    categoryImportWrapper.Category.ParentId = id;
+                    categoriesOrder.Enqueue(categoryImportWrapper);
+                }
+            }
+            foreach (Persistence.Payee payee in importLists.Payees)
+            {
+                var id = connection.Insert(payee);
+                foreach (Persistence.IHavePayee transIncBase in importAssignments.PayeeToTransactionBase[payee])
+                {
+                    transIncBase.PayeeId = id;
+                }
+            }
+            foreach (Persistence.Flag flag in importLists.Flags)
+            {
+                var id = connection.Insert(flag);
+                foreach (Persistence.IHaveFlag transBase in importAssignments.FlagToTransBase[flag])
+                {
+                    transBase.FlagId = id;
+                }
+            }
+            foreach (Persistence.Account account in importLists.Accounts)
+            {
+                var id = connection.Insert(account);
+                foreach (Persistence.IHaveAccount transIncBase in importAssignments.AccountToTransactionBase[account])
+                {
+                    transIncBase.AccountId = id;
+                }
+                foreach (Persistence.Trans transfer in importAssignments.FromAccountToTransfer[account])
+                {
+                    transfer.PayeeId = id;
+                }
+                foreach (Persistence.Trans transfer in importAssignments.ToAccountToTransfer[account])
+                {
+                    transfer.CategoryId = id;
+                }
+            }
+            foreach (Persistence.Trans transaction in importLists.Transactions)
+            {
+                connection.Insert(transaction);
+            }
+            foreach (Persistence.Trans parentTransaction in importLists.ParentTransactions)
+            {
+                var id = connection.Insert(parentTransaction);
+                foreach (Persistence.SubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
+                {
+                    subTransaction.ParentId = id;
+                }
+            }
+            foreach (Persistence.SubTransaction subTransaction in importLists.SubTransactions)
+                connection.Insert(subTransaction);
+            foreach (Persistence.Trans transfer in importLists.Transfers)
+            {
+                connection.Insert(transfer);
+            }
+            foreach (Persistence.BudgetEntry budgetEntry in importLists.BudgetEntries)
+                connection.Insert(budgetEntry);
         }
 
         private static List<Transaction> ParseTransactionCsv(string filePath)

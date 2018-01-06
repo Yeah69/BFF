@@ -34,7 +34,7 @@ namespace BFF.MVVM.ViewModels
         ReactiveCommand AddCommand { get; }
     }
 
-    public class NewAccountViewModel : ObservableObject, INewAccountViewModel, IDisposable
+    public class NewAccountViewModel : ViewModelBase, INewAccountViewModel, IDisposable
     {
         private readonly IAccountViewModelService _viewModelService;
 
@@ -42,6 +42,7 @@ namespace BFF.MVVM.ViewModels
 
         public NewAccountViewModel(
             IAccountRepository repository,
+            Func<IAccount> factory,
             IAccountViewModelService viewModelService)
         {
             string ValidateName(string text)
@@ -71,7 +72,7 @@ namespace BFF.MVVM.ViewModels
                 })
                 .Subscribe(_ =>
                 {
-                    IAccount newAccount = repository.Create();
+                    IAccount newAccount = factory();
                     newAccount.Name = Name.Value.Trim();
                     newAccount.StartingBalance = StartingBalance.Value;
                     newAccount.StartingDate = StartingDate.Value;

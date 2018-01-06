@@ -46,9 +46,6 @@ namespace BFF.DB.Dapper.ModelRepositories
             _provideConnection = provideConnection;
         }
 
-        public override MVVM.Models.Native.IIncomeCategory Create() =>
-            new MVVM.Models.Native.IncomeCategory(this, -1, "", 0);
-
         public long GetMonthsIncome(DateTime month, DbConnection connection)
         {
             long incomeSum = 0;

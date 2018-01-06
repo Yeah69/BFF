@@ -3,7 +3,11 @@ using BFF.Properties;
 
 namespace BFF.MVVM.ViewModels
 {
-    public class EmptyContentViewModel : SessionViewModelBase
+    public interface IEmptyViewModel
+    {
+    }
+
+    public class EmptyContentViewModel : SessionViewModelBase, IEmptyViewModel
     {
         public EmptyContentViewModel()
         {

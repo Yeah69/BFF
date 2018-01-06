@@ -32,16 +32,16 @@ namespace BFF.MVVM.Models.Native
         /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
         public Transaction(
             IRepository<ITransaction> repository,
-            long id,
-            IFlag flag,
-            string checkNumber,
-            DateTime date, 
+            DateTime date,
+            long id = -1L,
+            IFlag flag = null,
+            string checkNumber = "",
             IAccount account = null, 
             IPayee payee = null, 
             ICategoryBase category = null,
-            string memo = null, 
+            string memo = "", 
             long sum = 0L, 
-            bool? cleared = null)
+            bool? cleared = false)
             : base(repository, id, flag, checkNumber, date, account, payee, memo, cleared)
         {
             _category = category;

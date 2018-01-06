@@ -1,7 +1,8 @@
-﻿using BFF.DB;
+﻿using System;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
+using MuVaViMo;
 
 namespace BFF.MVVM.Services
 {
@@ -11,18 +12,12 @@ namespace BFF.MVVM.Services
 
     public class IncomeCategoryViewModelService : CommonPropertyViewModelServiceBase<IIncomeCategory, IIncomeCategoryViewModel>, IIncomeCategoryViewModelService
     {
-        private readonly IIncomeCategoryRepository _repository;
-        private readonly IBffOrm _orm;
-
-        public IncomeCategoryViewModelService(IIncomeCategoryRepository repository, IBffOrm orm) : base(repository)
+        public IncomeCategoryViewModelService(IIncomeCategoryRepository repository, Func<IIncomeCategory, IIncomeCategoryViewModel> factory) 
+            : base(repository, factory, true)
         {
-            _repository = repository;
-            _orm = orm;
+            All = new TransformingObservableReadOnlyList<IIncomeCategory, IIncomeCategoryViewModel>(
+                new WrappingObservableReadOnlyList<IIncomeCategory>(repository.All),
+                AddToDictionaries);
         }
-
-        protected override IIncomeCategoryViewModel Create(IIncomeCategory model)
-            => new IncomeCategoryViewModel(model, _orm);
-        public override IIncomeCategoryViewModel GetNewNonInsertedViewModel()
-            => new IncomeCategoryViewModel(_repository.Create(), _orm);
     }
 }

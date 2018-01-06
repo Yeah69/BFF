@@ -12,20 +12,17 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class TransferRepository : RepositoryBase<Domain.ITransfer, Trans>, ITransferRepository
     {
-        private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
-        private readonly Func<long?, DbConnection, Domain.IFlag> _flagFetcher;
+        private readonly IAccountRepository _accountRepository;
+        private readonly IFlagRepository _flagRepository;
 
         public TransferRepository(
             IProvideConnection provideConnection,
-            Func<long, DbConnection, Domain.IAccount> accountFetcher,
-            Func<long?, DbConnection, Domain.IFlag> flagFetcher) : base(provideConnection)
+            IAccountRepository accountRepository,
+            IFlagRepository flagRepository) : base(provideConnection)
         {
-            _accountFetcher = accountFetcher;
-            _flagFetcher = flagFetcher;
+            _accountRepository = accountRepository;
+            _flagRepository = flagRepository;
         }
-
-        public override Domain.ITransfer Create() =>
-            new Domain.Transfer(this, -1L, null, "", DateTime.MinValue, null, null, "", 0L);
         
         protected override Converter<Domain.ITransfer, Trans> ConvertToPersistence => domainTransfer => 
             new Trans
@@ -48,12 +45,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             (Trans persistenceTransfer, DbConnection connection) = tuple;
             return new Domain.Transfer(
                 this,
-                persistenceTransfer.Id,
-                _flagFetcher(persistenceTransfer.Id, connection),
-                persistenceTransfer.CheckNumber,
                 persistenceTransfer.Date,
-                _accountFetcher(persistenceTransfer.PayeeId, connection),
-                _accountFetcher(persistenceTransfer.CategoryId ?? -1, connection),  // This CategoryId should never be a null, because it comes from a transfer
+                persistenceTransfer.Id,
+                persistenceTransfer.FlagId == null ? null : _flagRepository.Find((long)persistenceTransfer.FlagId, connection),
+                persistenceTransfer.CheckNumber,
+                _accountRepository.Find(persistenceTransfer.PayeeId, connection),
+                _accountRepository.Find(persistenceTransfer.CategoryId ?? -1, connection),  // This CategoryId should never be a null, because it comes from a transfer
                 persistenceTransfer.Memo,
                 persistenceTransfer.Sum,
                 persistenceTransfer.Cleared == 1L);
