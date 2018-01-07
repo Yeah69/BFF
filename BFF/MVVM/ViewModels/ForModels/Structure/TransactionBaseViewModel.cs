@@ -11,6 +11,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
     public interface ITransactionBaseViewModel : ITransBaseViewModel, IHavePayeeViewModel
     {
+        IObservableReadOnlyList<IAccountViewModel> AllAccounts { get; }
         /// <summary>
         /// The assigned Account, where this Transaction is registered.
         /// </summary>
@@ -23,6 +24,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class TransactionBaseViewModel : TransBaseViewModel, ITransactionBaseViewModel
     {
+        private readonly IAccountViewModelService _accountViewModelService;
+         
+        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => _accountViewModelService.All;
+
         /// <summary>
         /// The assigned Account, where this Transaction is registered.
         /// </summary>
@@ -49,6 +54,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             IPayeeViewModelService payeeViewModelService,
             IFlagViewModelService flagViewModelService) : base(parentTransactionBase, flagViewModelService)
         {
+            _accountViewModelService = accountViewModelService;
+
             void RefreshAnAccountViewModel(IAccountViewModel account)
             {
                 account?.RefreshTits();
