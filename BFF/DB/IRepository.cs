@@ -51,7 +51,7 @@ namespace BFF.DB
 
     public interface ICreateDatabase : IOncePerBackend
     {
-        IProvideSqLiteConnetion Create();
+        IProvideSqLiteConnection Create();
     }
 
     public interface IDbTableRepository<T> : IRepository<T>, ICollectiveRepository<T>

@@ -6,6 +6,7 @@ using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;

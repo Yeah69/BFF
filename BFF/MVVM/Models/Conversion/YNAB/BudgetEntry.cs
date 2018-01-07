@@ -1,10 +1,12 @@
-﻿using BFF.Helper;
-using BFF.Helper.Import;
+﻿using BFF.Helper.Import;
+using NLog;
 
 namespace BFF.MVVM.Models.Conversion.YNAB
 {
     class BudgetEntry
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public string Month { get; set; }
 
         public string Category { get; set; }
@@ -23,15 +25,15 @@ namespace BFF.MVVM.Models.Conversion.YNAB
 
         public static void ToOutput(BudgetEntry budgetEntry)
         {
-            Output.WriteLine("BEGIN YNAB budget entry");
-            Output.WriteLine("\tMonth: \t\t\t\t" + budgetEntry.Month);
-            Output.WriteLine("\tCategory: \t\t\t" + budgetEntry.Category);
-            Output.WriteLine("\tMaster Category: \t" + budgetEntry.MasterCategory);
-            Output.WriteLine("\tSub Category: \t\t" + budgetEntry.SubCategory);
-            Output.WriteLine("\tInflow: \t\t\t" + budgetEntry.Budgeted);
-            Output.WriteLine("\tOutflow: \t\t\t" + budgetEntry.Outflow);
-            Output.WriteLine("\tRunning Balance: \t" + budgetEntry.CategoryBalance);
-            Output.WriteLine("END YNAB budget entry");
+            Logger.Debug("BEGIN YNAB budget entry");
+            Logger.Debug("\tMonth: \t\t\t\t{0}", budgetEntry.Month);
+            Logger.Debug("\tCategory: \t\t\t{0}", budgetEntry.Category);
+            Logger.Debug("\tMaster Category: \t{0}", budgetEntry.MasterCategory);
+            Logger.Debug("\tSub Category: \t\t{0}", budgetEntry.SubCategory);
+            Logger.Debug("\tInflow: \t\t\t{0}", budgetEntry.Budgeted);
+            Logger.Debug("\tOutflow: \t\t\t{0}", budgetEntry.Outflow);
+            Logger.Debug("\tRunning Balance: \t{0}", budgetEntry.CategoryBalance);
+            Logger.Debug("END YNAB budget entry");
         }
 
         public static implicit operator BudgetEntry(string csvLine)

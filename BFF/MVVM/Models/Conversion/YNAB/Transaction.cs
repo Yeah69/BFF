@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Globalization;
-using BFF.Helper;
 using BFF.Helper.Import;
+using NLog;
 
 namespace BFF.MVVM.Models.Conversion.YNAB
 {
     public class Transaction
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public string Account { get; set; }
 
         public string Flag { get; set; }
@@ -37,21 +39,21 @@ namespace BFF.MVVM.Models.Conversion.YNAB
         
         public static void ToOutput(Transaction transaction)
         {
-            Output.WriteLine("BEGIN YNAB transaction");
-            Output.WriteLine("\tAccount: \t\t\t" + transaction.Account);
-            Output.WriteLine("\tFlag: \t\t\t\t" + transaction.Flag);
-            Output.WriteLine("\tCheckNumber: \t\t" + transaction.CheckNumber);
-            Output.WriteLine("\tDate: \t\t\t\t" + transaction.Date);
-            Output.WriteLine("\tPayee: \t\t\t\t" + transaction.Payee);
-            Output.WriteLine("\tCategory: \t\t\t" + transaction.Category);
-            Output.WriteLine("\tMaster Category: \t" + transaction.MasterCategory);
-            Output.WriteLine("\tSub Category: \t\t" + transaction.SubCategory);
-            Output.WriteLine("\tMemo: \t\t\t\t" + transaction.Memo);
-            Output.WriteLine("\tOutflow: \t\t\t" + transaction.Outflow);
-            Output.WriteLine("\tInflow: \t\t\t" + transaction.Inflow);
-            Output.WriteLine("\tCleared: \t\t\t" + transaction.Cleared);
-            Output.WriteLine("\tRunning Balance: \t" + transaction.RunningBalance);
-            Output.WriteLine("END YNAB transaction");
+            Logger.Debug("BEGIN YNAB transaction");
+            Logger.Debug("\tAccount: \t\t\t{0}", transaction.Account);
+            Logger.Debug("\tFlag: \t\t\t\t{0}", transaction.Flag);
+            Logger.Debug("\tCheckNumber: \t\t{0}", transaction.CheckNumber);
+            Logger.Debug("\tDate: \t\t\t\t{0}", transaction.Date);
+            Logger.Debug("\tPayee: \t\t\t\t{0}", transaction.Payee);
+            Logger.Debug("\tCategory: \t\t\t{0}", transaction.Category);
+            Logger.Debug("\tMaster Category: \t{0}", transaction.MasterCategory);
+            Logger.Debug("\tSub Category: \t\t{0}", transaction.SubCategory);
+            Logger.Debug("\tMemo: \t\t\t\t{0}", transaction.Memo);
+            Logger.Debug("\tOutflow: \t\t\t{0}", transaction.Outflow);
+            Logger.Debug("\tInflow: \t\t\t{0}", transaction.Inflow);
+            Logger.Debug("\tCleared: \t\t\t{0}", transaction.Cleared);
+            Logger.Debug("\tRunning Balance: \t{0}", transaction.RunningBalance);
+            Logger.Debug("END YNAB transaction");
         }
 
         public static implicit operator Transaction(string csvLine)

@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using BFF.DB;
 using BFF.DB.Dapper;
 using BFF.DB.SQLite;
 using BFF.Helper.Extensions;
@@ -25,7 +24,7 @@ namespace BFF.Helper.Import
     class YnabCsvImport : ObservableObject, IYnabCsvImport
     {
         private readonly Func<string, ICreateSqLiteDatabase> _createSqLiteDatabaseFactory;
-        private readonly Func<string, IProvideSqLiteConnetion> _connectionFactory;
+        private readonly Func<string, IProvideSqLiteConnection> _connectionFactory;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public string TransactionPath
@@ -61,7 +60,7 @@ namespace BFF.Helper.Import
         public YnabCsvImport(
             (string TransactionPath, string BudgetPath, string SavePath) paths,
             Func<string, ICreateSqLiteDatabase> createSqLiteDatabaseFactory,
-            Func<string, IProvideSqLiteConnetion> connectionFactory)
+            Func<string, IProvideSqLiteConnection> connectionFactory)
         {
             _createSqLiteDatabaseFactory = createSqLiteDatabaseFactory;
             _connectionFactory = connectionFactory;
@@ -231,10 +230,10 @@ namespace BFF.Helper.Import
                     string header = streamReader.ReadLine();
                     if (header != Transaction.CsvHeader)
                     {
-                        Output.WriteLine($"The file of path '{filePath}' is not a valid YNAB transactions CSV.");
+                        Logger.Error("The file of path '{0}' is not a valid YNAB transactions CSV.", filePath);
                         return null;
                     }
-                    Output.WriteLine("Starting to import YNAB transactions from the CSV file.");
+                    Logger.Info("Starting to import YNAB transactions from the CSV file.");
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
                     while (!streamReader.EndOfStream)
@@ -245,12 +244,12 @@ namespace BFF.Helper.Import
                     stopwatch.Stop();
                     TimeSpan ts = stopwatch.Elapsed;
                     string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds/10:00}";
-                    Output.WriteLine($"End of transaction import. Elapsed time was: {elapsedTime}");
+                    Logger.Info("End of transaction import. Elapsed time was: {0}", elapsedTime);
                 }
             }
             else
             {
-                Output.WriteLine($"The file of path '{filePath}' does not exist!");
+                Logger.Error($"The file of path '{0}' does not exist!", filePath);
                 return null;
             }
             return ret;

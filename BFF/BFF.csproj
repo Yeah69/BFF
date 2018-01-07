@@ -278,13 +278,13 @@
     <Compile Include="DB\PersistenceModels\Trans.cs" />
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
     <Compile Include="DB\SQLite\SqLiteQueries.cs" />
+    <Compile Include="Helper\Extensions\LongExtensions.cs" />
     <Compile Include="Helper\Extensions\StringExtensions.cs" />
     <Compile Include="Helper\Extensions\VisualExtensions.cs" />
     <Compile Include="Helper\Import\CategoryImportWrapper.cs" />
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />
-    <Compile Include="Helper\Output.cs" />
-    <Compile Include="Helper\ReactivePropertyHelper.cs" />
+    <Compile Include="Helper\Extensions\ReactivePropertyExtensions.cs" />
     <Compile Include="MVVM\AttachedBehaviors\ScrollViewerSync.cs" />
     <Compile Include="MVVM\Converters.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />

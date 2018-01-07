@@ -271,20 +271,21 @@
                     <Setter.Value>
                         <DataTemplate>
                             <hm:HamburgerMenu ClosePaneOnItemSelection="True"
-                                                  IsOverlaying="True">
+                                              IsOverlaying="True">
                                 <hm:HamburgerMenu.Resources>
                                     <DataTemplate x:Key="HeaderTemplate">
                                         <TextBlock Margin="0,0,5,0"
-                                                       FontSize="23"
-                                                       FontWeight="Bold"
-                                                       Text="{Binding}" />
+                                                   FontSize="23"
+                                                   FontWeight="Bold"
+                                                   Text="{Binding}" />
                                     </DataTemplate>
                                 </hm:HamburgerMenu.Resources>
                                 <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Accounts}"
-                                                          HeaderTemplate="{StaticResource HeaderTemplate}"
-                                                          IsSelected="{Binding AccountTabsViewModel.IsOpen.Value}">
+                                                      HeaderTemplate="{StaticResource HeaderTemplate}"
+                                                      IsSelected="{Binding AccountTabsViewModel.IsOpen.Value}">
                                     <hm:HamburgerMenuItem.Content>
-                                        <views:AccountTabsView HorizontalContentAlignment="Stretch" DataContext="{Binding AccountTabsViewModel}" />
+                                        <views:AccountTabsView HorizontalContentAlignment="Stretch"
+                                                               DataContext="{Binding AccountTabsViewModel}" />
                                     </hm:HamburgerMenuItem.Content>
                                     <hm:HamburgerMenuItem.Icon>
                                         <Viewbox Margin="10">
@@ -294,7 +295,7 @@
                                 </hm:HamburgerMenuItem>
                                 <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Budget}"
                                                       HeaderTemplate="{StaticResource HeaderTemplate}"
-                                                          IsSelected="{Binding BudgetOverviewViewModel.IsOpen.Value}">
+                                                      IsSelected="{Binding BudgetOverviewViewModel.IsOpen.Value}">
                                     <views:BudgetOverviewView DataContext="{Binding BudgetOverviewViewModel}" />
                                     <hm:HamburgerMenuItem.Icon>
                                         <Viewbox Margin="10">

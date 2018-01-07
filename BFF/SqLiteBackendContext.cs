@@ -17,7 +17,7 @@ namespace BFF
     {
         public SqLiteBackendContext(
             string dbPath, 
-            Func<string, IProvideSqLiteConnetion> provideSqLiteConnectionFactory,
+            Func<string, IProvideSqLiteConnection> provideSqLiteConnectionFactory,
             Func<IAccountRepository> accountRepository,
             Func<ICategoryRepository> categoryRepository,
             Func<IIncomeCategoryRepository> incomeCategoryRepository,

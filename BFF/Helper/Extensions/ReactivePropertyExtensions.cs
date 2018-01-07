@@ -6,9 +6,9 @@ using System.Reactive.Linq;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
-namespace BFF.Helper
+namespace BFF.Helper.Extensions
 {
-    public static class ReactivePropertyHelper
+    public static class ReactivePropertyExtensions
     {
 
         /// <summary>

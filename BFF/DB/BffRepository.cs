@@ -23,7 +23,7 @@ namespace BFF.DB
         protected abstract ICreateTable CreateFlagTable { get; }
         protected abstract ICreateTable CreateSubTransactionTable { get; }
         protected abstract ICreateTable CreateTransTable { get; }
-        protected abstract IProvideSqLiteConnetion ProvideConnection { get; }
+        protected abstract IProvideSqLiteConnection ProvideConnection { get; }
         
         private void CreateTablesInner(DbConnection connection)
         {
@@ -43,7 +43,7 @@ namespace BFF.DB
             connection.Execute(SqLiteQueries.SetDatabaseSchemaVersion);
         }
         
-        public IProvideSqLiteConnetion Create()
+        public IProvideSqLiteConnection Create()
         {
             using(TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
             using(DbConnection newConnection = ProvideConnection.Connection)
