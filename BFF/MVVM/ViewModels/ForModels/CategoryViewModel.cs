@@ -24,6 +24,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     public interface ICategoryViewModelInitializer
     {
         void Initialize(IEnumerable<ICategoryViewModel> categoryViewModels);
+        void Initialize(ICategoryViewModel categoryViewModel);
     }
 
     public class CategoryViewModel : CategoryBaseViewModel, ICategoryViewModel
@@ -41,15 +42,23 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             public void Initialize(IEnumerable<ICategoryViewModel> categoryViewModels)
             {
-                foreach (var categoryViewModel in categoryViewModels.OfType<CategoryViewModel>())
+                foreach (var categoryViewModel in categoryViewModels)
                 {
-                    categoryViewModel.Categories =
-                        categoryViewModel._category.Categories.ToReadOnlyReactiveCollection(_service.Value.GetViewModel).AddTo(categoryViewModel.CompositeDisposable);
-                    categoryViewModel.Parent = categoryViewModel._category.ToReactivePropertyAsSynchronized(
+                    Initialize(categoryViewModel);
+                }
+            }
+
+            public void Initialize(ICategoryViewModel categoryViewModel)
+            {
+                if (categoryViewModel is CategoryViewModel viewModel)
+                {
+                    viewModel.Categories =
+                        viewModel._category.Categories.ToReadOnlyReactiveCollection(_service.Value.GetViewModel).AddTo(viewModel.CompositeDisposable);
+                    viewModel.Parent = viewModel._category.ToReactivePropertyAsSynchronized(
                         c => c.Parent,
                         _service.Value.GetViewModel,
                         _service.Value.GetModel,
-                        ReactivePropertyMode.DistinctUntilChanged).AddTo(categoryViewModel.CompositeDisposable);
+                        ReactivePropertyMode.DistinctUntilChanged).AddTo(viewModel.CompositeDisposable);
                 }
             }
         }

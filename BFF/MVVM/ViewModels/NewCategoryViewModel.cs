@@ -41,6 +41,7 @@ namespace BFF.MVVM.ViewModels
             IHaveCategoryViewModel categoryOwner,
             Func<ICategory, ICategory> categoryFactory,
             Func<IIncomeCategory> incomeCategoryFactory,
+            ICategoryViewModelInitializer categoryViewModelInitializer,
             ICategoryViewModelService categoryViewModelService,
             IIncomeCategoryViewModelService incomeCategoryViewModelService,
             ICategoryBaseViewModelService categoryBaseViewModelService)
@@ -99,7 +100,9 @@ namespace BFF.MVVM.ViewModels
                         newCategory.Parent?.AddCategory(newCategory);
                         newCategory.Insert();
                         OnPropertyChanged(nameof(AllPotentialParents));
-                        categoryOwner.Category.Value = _categoryViewModelService.GetViewModel(newCategory);
+                        var categoryViewModel = _categoryViewModelService.GetViewModel(newCategory);
+                        categoryViewModelInitializer.Initialize(categoryViewModel);
+                        categoryOwner.Category.Value = categoryViewModel;
                     }
                 })
                 .AddTo(_compositeDisposable);
