@@ -39,7 +39,7 @@ namespace BFF.MVVM.ViewModels
 
         public NewCategoryViewModel(
             IHaveCategoryViewModel categoryOwner,
-            Func<ICategory> categoryFactory,
+            Func<ICategory, ICategory> categoryFactory,
             Func<IIncomeCategory> incomeCategoryFactory,
             ICategoryViewModelService categoryViewModelService,
             IIncomeCategoryViewModelService incomeCategoryViewModelService,
@@ -94,9 +94,8 @@ namespace BFF.MVVM.ViewModels
                     }
                     else
                     {
-                        ICategory newCategory = categoryFactory();
+                        ICategory newCategory = categoryFactory(_categoryViewModelService.GetModel(Parent.Value));
                         newCategory.Name = Name.Value.Trim();
-                        newCategory.Parent = _categoryViewModelService.GetModel(Parent.Value);
                         newCategory.Parent?.AddCategory(newCategory);
                         newCategory.Insert();
                         OnPropertyChanged(nameof(AllPotentialParents));

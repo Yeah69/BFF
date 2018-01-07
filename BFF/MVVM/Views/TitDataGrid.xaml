@@ -374,34 +374,41 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
                             <DockPanel LastChildFill="True">
-                                <Button x:Name="AddPayeeButton"
-                                        Padding="0"
-                                        Command="{Binding NewPayeeViewModel.AddPayeeCommand}"
-                                        DockPanel.Dock="Right"
-                                        MouseEnter="AddPayeeButton_OnMouseEnter"
+                                <Button DockPanel.Dock="Right"
+                                        Click="PayeeOpenPopup_OnClick"
                                         ToolTip="{lex:Loc CreateNewPayee}">
                                     <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
-                                                                Kind="{StaticResource AddIcon}"
-                                                                Style="{StaticResource CellIconMaterial}" />
+                                                                    Kind="{StaticResource AddIcon}"
+                                                                    Style="{StaticResource CellIconMaterial}" />
                                 </Button>
                                 <Popup x:Name="Popup"
                                        Placement="Right"
-                                       PlacementTarget="{Binding ElementName=AddPayeeButton}"
+                                       PlacementTarget="{Binding ElementName=EditPayeeComboBox}"
                                        PopupAnimation="Slide"
                                        StaysOpen="False">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Margin="5,0,5,0"
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="5,0,5,0"
                                                    VerticalAlignment="Center"
                                                    Text="{lex:LocText NameOfNewPayee,
                                                                       Suffix=:}" />
-                                        <TextBox Height="{Binding ElementName=AddPayeeButton, Path=ActualHeight}"
-                                                 MinWidth="50"
+                                            <TextBox MinWidth="50"
                                                  BorderBrush="{StaticResource AccentColorBrush}"
                                                  Focusable="True"
                                                  Text="{Binding NewPayeeViewModel.PayeeText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </StackPanel>
+                                        <Button Command="{Binding NewPayeeViewModel.AddPayeeCommand}"
+                                                HorizontalAlignment="Right"
+                                                Click="PayeeClosePopup_OnClick"
+                                                ToolTip="{lex:Loc CreateNewPayee}">
+                                            <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
+                                                                        Kind="{StaticResource AddIcon}"
+                                                                        Style="{StaticResource CellIconMaterial}" />
+                                        </Button>
                                     </StackPanel>
                                 </Popup>
-                                <ComboBox HorizontalAlignment="Stretch"
+                                <ComboBox x:Name="EditPayeeComboBox"
+                                          HorizontalAlignment="Stretch"
                                           DisplayMemberPath="Name.Value"
                                           IsEditable="True"
                                           IsTextSearchCaseSensitive="True"
@@ -493,10 +500,8 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                             <DockPanel LastChildFill="True">
-                                <Button x:Name="AddCategoryButton"
-                                        Command="{Binding NewCategoryViewModel.AddCommand}"
-                                        DockPanel.Dock="Right"
-                                        MouseEnter="AddCategoryButton_OnMouseEnter"
+                                <Button DockPanel.Dock="Right"
+                                        Click="CategoryOpenPopup_OnClick"
                                         ToolTip="{lex:Loc CreateNewCategory}">
                                     <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
                                                                 Kind="{StaticResource AddIcon}"
@@ -504,7 +509,7 @@
                                 </Button>
                                 <Popup x:Name="Popup"
                                        Placement="Right"
-                                       PlacementTarget="{Binding ElementName=AddCategoryButton}"
+                                       PlacementTarget="{Binding ElementName=EditCategoryComboBox}"
                                        PopupAnimation="Slide"
                                        StaysOpen="False">
                                     <Border MinWidth="50"
@@ -518,6 +523,7 @@
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
+                                                    <RowDefinition />
                                                     <RowDefinition />
                                                     <RowDefinition />
                                                     <RowDefinition />
@@ -564,7 +570,6 @@
                                                         </Style>
                                                     </TextBlock.Style>
                                                 </TextBlock>
-
                                                 <controls:NumericUpDown Grid.Row="2"
                                                                         Grid.Column="1"
                                                                         Value="{Binding NewCategoryViewModel.MonthOffset.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -637,6 +642,16 @@
                                                         </ToolTip>
                                                     </ComboBox.ToolTip>
                                                 </ComboBox>
+                                                <Button Grid.Row="3"
+                                                        Grid.Column="1"
+                                                        Command="{Binding NewCategoryViewModel.AddCommand}"
+                                                        Click="CategoryClosePopup_OnClick"
+                                                        HorizontalAlignment="Right"
+                                                        ToolTip="{lex:Loc CreateNewCategory}">
+                                                    <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
+                                                                                Kind="{StaticResource AddIcon}"
+                                                                                Style="{StaticResource CellIconMaterial}" />
+                                                </Button>
                                             </Grid>
                                         </StackPanel>
                                     </Border>
