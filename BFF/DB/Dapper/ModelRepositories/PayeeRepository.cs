@@ -32,9 +32,6 @@ namespace BFF.DB.Dapper.ModelRepositories
     public sealed class PayeeRepository : ObservableRepositoryBase<Domain.IPayee, Payee>, IPayeeRepository
     {
         public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection, new PayeeComparer()) {}
-
-        public override Domain.IPayee Create() =>
-            new Domain.Payee(this);
         
         protected override Converter<Domain.IPayee, Payee> ConvertToPersistence => domainPayee => 
             new Payee

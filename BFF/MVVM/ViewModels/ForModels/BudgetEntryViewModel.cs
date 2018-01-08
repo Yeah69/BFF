@@ -1,6 +1,6 @@
 ﻿using System;
-using BFF.DB;
 using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -30,7 +30,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IReadOnlyReactiveProperty<long> Outflow { get; }
         public IReadOnlyReactiveProperty<long> Balance { get; }
 
-        public BudgetEntryViewModel(IBffOrm orm, IBudgetEntry budgetEntry, ICategoryViewModelService categoryViewModelService) : base(orm, budgetEntry)
+        public BudgetEntryViewModel(IBudgetEntry budgetEntry, ICategoryViewModelService categoryViewModelService) : base(budgetEntry)
         {
             Category = budgetEntry
                 .ToReactivePropertyAsSynchronized(
@@ -58,11 +58,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             Balance = budgetEntry
                 .ToReadOnlyReactivePropertyAsSynchronized(be => be.Balance, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
-        }
-
-        public override bool ValidToInsert()
-        {
-            return Category.Value != null && Budget.Value != 0;
         }
     }
 }

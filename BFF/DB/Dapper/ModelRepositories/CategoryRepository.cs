@@ -80,9 +80,6 @@ namespace BFF.DB.Dapper.ModelRepositories
             }
         }
 
-        public override Domain.ICategory Create() =>
-            new Domain.Category(this, -1, "", null);
-
         protected override IEnumerable<Category> FindAllInner(DbConnection connection)
         {
             return connection.Query<Category>(GetAllQuery);

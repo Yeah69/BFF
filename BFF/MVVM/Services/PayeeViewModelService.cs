@@ -1,7 +1,8 @@
-﻿using BFF.DB;
+﻿using System;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels;
+using MuVaViMo;
 
 namespace BFF.MVVM.Services
 {
@@ -11,18 +12,12 @@ namespace BFF.MVVM.Services
 
     public class PayeeViewModelService : CommonPropertyViewModelServiceBase<IPayee, IPayeeViewModel>, IPayeeViewModelService
     {
-        private readonly IPayeeRepository _repository;
-        private readonly IBffOrm _orm;
 
-        public PayeeViewModelService(IPayeeRepository repository, IBffOrm orm) : base(repository)
+        public PayeeViewModelService(IPayeeRepository repository, Func<IPayee, IPayeeViewModel> factory) : base(repository, factory, true)
         {
-            _repository = repository;
-            _orm = orm;
+            All = new TransformingObservableReadOnlyList<IPayee, IPayeeViewModel>(
+                new WrappingObservableReadOnlyList<IPayee>(repository.All),
+                AddToDictionaries);
         }
-
-        protected override IPayeeViewModel Create(IPayee model)
-            => new PayeeViewModel(model, _orm);
-        public override IPayeeViewModel GetNewNonInsertedViewModel()
-            => new PayeeViewModel(_repository.Create(), _orm);
     }
 }

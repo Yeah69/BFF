@@ -1,9 +1,10 @@
 ﻿using System;
+using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 
 namespace BFF.MVVM.Models.Native
 {
-    public interface ISummaryAccount : IAccount {}
+    public interface ISummaryAccount : IAccount, IOncePerBackend {}
 
     /// <summary>
     /// Tits can be added to an Account

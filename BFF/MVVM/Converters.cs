@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using BFF.Properties;
@@ -161,6 +161,13 @@ namespace BFF.MVVM
         public static readonly IValueConverter LongLesserThanZero =
             ValueConverter.Create<long, bool>(
                 e => e.Value < 0);
+
+        /// <summary>
+        /// True if value is lesser than zero, otherwise false.
+        /// </summary>
+        public static readonly IValueConverter OfType =
+            ValueConverter.Create<object, bool, Type>(
+                e => e.Value?.GetType() == e.Parameter);
 
 
         //Multi Value Converters

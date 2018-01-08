@@ -194,21 +194,32 @@ namespace BFF.MVVM.Views
             }
         }
 
-        private void AddCategoryButton_OnMouseEnter(object sender, MouseEventArgs e)
+        private void CategoryOpenPopup_OnClick(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement button)
-            {
-                if (button.FindName("Popup") is Popup popup)
-                    popup.IsOpen = true;
-            }
+            SetIsOpenOfPopup(sender, true);
         }
 
-        private void AddPayeeButton_OnMouseEnter(object sender, MouseEventArgs e)
+        private void PayeeOpenPopup_OnClick(object sender, RoutedEventArgs e)
+        {
+            SetIsOpenOfPopup(sender, true);
+        }
+
+        private void CategoryClosePopup_OnClick(object sender, RoutedEventArgs e)
+        {
+            SetIsOpenOfPopup(sender, false);
+        }
+
+        private void PayeeClosePopup_OnClick(object sender, RoutedEventArgs e)
+        {
+            SetIsOpenOfPopup(sender, false);
+        }
+
+        private void SetIsOpenOfPopup(object sender, bool isOpen)
         {
             if (sender is FrameworkElement button)
             {
                 if (button.FindName("Popup") is Popup popup)
-                    popup.IsOpen = true;
+                    popup.IsOpen = isOpen;
             }
         }
     }

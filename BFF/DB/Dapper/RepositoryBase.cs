@@ -42,8 +42,6 @@ namespace BFF.DB.Dapper
         {
         }
 
-        public abstract TDomain Create();
-
         public virtual TDomain Find(long id, DbConnection connection = null)
         {
             if(connection != null) return ConvertToDomain((connection.Get<TPersistence>(id), connection));

@@ -30,17 +30,14 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class SubTransactionRepository : RepositoryBase<Domain.ISubTransaction, SubTransaction>, ISubTransactionRepository
     {
-        private readonly Func<long?, DbConnection, Domain.ICategoryBase> _categoryFetcher;
+        private readonly ICategoryRepository _categoryRepository;
 
         public SubTransactionRepository(
             IProvideConnection provideConnection,
-            Func<long?, DbConnection, Domain.ICategoryBase> categoryFetcher) : base(provideConnection)
+            ICategoryRepository categoryRepository) : base(provideConnection)
         {
-            _categoryFetcher = categoryFetcher;
+            _categoryRepository = categoryRepository;
         }
-
-        public override Domain.ISubTransaction Create() =>
-            new Domain.SubTransaction(this, -1L, null, "", 0L);
         
         protected override Converter<Domain.ISubTransaction, SubTransaction> ConvertToPersistence => domainSubTransaction => 
             new SubTransaction
@@ -58,7 +55,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             return new Domain.SubTransaction(
                 this,
                 persistenceSubTransaction.Id,
-                _categoryFetcher(persistenceSubTransaction.CategoryId, connection),
+                persistenceSubTransaction.CategoryId == null ? null : _categoryRepository.Find((long)persistenceSubTransaction.CategoryId, connection),
                 persistenceSubTransaction.Memo,
                 persistenceSubTransaction.Sum);
         };

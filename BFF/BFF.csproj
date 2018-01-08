@@ -56,6 +56,12 @@
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Extras.NLog, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extras.NLog.1.3.0\lib\net451\Autofac.Extras.NLog.dll</HintPath>
+    </Reference>
     <Reference Include="BFF.DataVirtualizingCollection, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BFF.DataVirtualizingCollection.1.0.2\lib\netstandard1.4\BFF.DataVirtualizingCollection.dll</HintPath>
     </Reference>
@@ -228,8 +234,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AutoFacBootstrapper.cs" />
+    <Compile Include="BackendContext.cs" />
     <Compile Include="DB\BffRepository.cs" />
-    <Compile Include="DB\CommonPropertyProvider.cs" />
     <Compile Include="DB\Dapper\BudgetMonthRepository.cs" />
     <Compile Include="DB\Dapper\CachingRepositoryBase.cs" />
     <Compile Include="DB\Dapper\CreateSqLiteDatabase.cs" />
@@ -250,10 +257,9 @@
     <Compile Include="DB\Dapper\ModelRepositories\TransferRepository.cs" />
     <Compile Include="DB\Dapper\ObservableRepositoryBase.cs" />
     <Compile Include="DB\Dapper\RepositoryBase.cs" />
-    <Compile Include="DB\Dapper\ViewRepositoryBase.cs" />
     <Compile Include="DB\Dapper\WriteOnlyRepositoryBase.cs" />
     <Compile Include="DB\IBffOrmAsync.cs" />
-    <Compile Include="DB\IBffOrm.cs" />
+    <Compile Include="DB\IOncePerBackend.cs" />
     <Compile Include="DB\IProvideConnection.cs" />
     <Compile Include="DB\IRepository.cs" />
     <Compile Include="DB\IVirtualizedRefresh.cs" />
@@ -270,27 +276,28 @@
     <Compile Include="DB\PersistenceModels\Payee.cs" />
     <Compile Include="DB\PersistenceModels\SubTransaction.cs" />
     <Compile Include="DB\PersistenceModels\Trans.cs" />
-    <Compile Include="DB\SQLite\SqLiteBffOrm.cs" />
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
     <Compile Include="DB\SQLite\SqLiteQueries.cs" />
+    <Compile Include="Helper\Extensions\LongExtensions.cs" />
     <Compile Include="Helper\Extensions\StringExtensions.cs" />
     <Compile Include="Helper\Extensions\VisualExtensions.cs" />
     <Compile Include="Helper\Import\CategoryImportWrapper.cs" />
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />
-    <Compile Include="Helper\Output.cs" />
-    <Compile Include="Helper\ReactivePropertyHelper.cs" />
+    <Compile Include="Helper\Extensions\ReactivePropertyExtensions.cs" />
     <Compile Include="MVVM\AttachedBehaviors\ScrollViewerSync.cs" />
     <Compile Include="MVVM\Converters.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
     <Compile Include="MVVM\Models\Native\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Native\BudgetMonth.cs" />
+    <Compile Include="MVVM\Models\Native\Category.cs" />
     <Compile Include="MVVM\Models\Native\Flag.cs" />
+    <Compile Include="MVVM\Models\Native\IncomeCategory.cs" />
     <Compile Include="MVVM\Models\Native\Structure\IHaveBaseCategory.cs" />
     <Compile Include="MVVM\Models\Native\SummaryAccount.cs" />
     <Compile Include="MVVM\Models\Native\Account.cs" />
-    <Compile Include="MVVM\Models\Native\CategoryBase.cs" />
+    <Compile Include="MVVM\Models\Native\Structure\CategoryBase.cs" />
     <Compile Include="MVVM\Models\Native\DbSetting.cs" />
     <Compile Include="MVVM\Models\Native\Payee.cs" />
     <Compile Include="MVVM\Models\Native\Structure\CommonProperty.cs" />
@@ -319,7 +326,9 @@
     <Compile Include="MVVM\ViewModels\BudgetOverviewViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\CategoryBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\BudgetEntryViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\CategoryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\FlagViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\IncomeCategoryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\CommonPropertyViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\PayeeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\DataModelViewModel.cs" />
@@ -341,6 +350,8 @@
     <Compile Include="MVVM\ViewModels\ImportDialogViewModel.cs" />
     <Compile Include="MVVM\ViewModels\EmptyContentViewModel.cs" />
     <Compile Include="MVVM\ViewModels\AccountTabsViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ITransientViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelBase.cs" />
     <Compile Include="MVVM\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="MVVM\ViewModels\NewCategoryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\NewAccountViewModel.cs" />
@@ -366,6 +377,7 @@
     <Compile Include="MVVM\Views\TitDataGrid.xaml.cs">
       <DependentUpon>TitDataGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SqLiteBackendContext.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -58,7 +58,7 @@ namespace BFF.MVVM.Models.Native
         public Account(IRepository<IAccount> repository,
             DateTime startingDate, 
             long id = -1L, 
-            string name = null, 
+            string name = "", 
             long startingBalance = 0L) 
             : base(repository, name: name)
         {

@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
@@ -14,26 +12,23 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class ParentTransactionRepository : RepositoryBase<Domain.IParentTransaction, Trans>, IParentTransactionRepository
     {
-        private readonly Func<long, DbConnection, Domain.IAccount> _accountFetcher;
-        private readonly Func<long, DbConnection, Domain.IPayee> _payeeFetcher;
-        private readonly Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> _subTransactionsFetcher;
-        private readonly Func<long?, DbConnection, Domain.IFlag> _flagFetcher;
+        private readonly IAccountRepository _accountRepository;
+        private readonly IPayeeRepository _payeeRepository;
+        private readonly ISubTransactionRepository _subTransactionRepository;
+        private readonly IFlagRepository _flagRepository;
 
         public ParentTransactionRepository(
             IProvideConnection provideConnection,
-            Func<long, DbConnection, Domain.IAccount> accountFetcher,
-            Func<long, DbConnection, Domain.IPayee> payeeFetcher,
-            Func<long, DbConnection, IEnumerable<Domain.ISubTransaction>> subTransactionsFetcher,
-            Func<long?, DbConnection, Domain.IFlag> flagFetcher) : base(provideConnection)
+            IAccountRepository accountRepository,
+            IPayeeRepository payeeRepository,
+            ISubTransactionRepository subTransactionRepository,
+            IFlagRepository flagRepository) : base(provideConnection)
         {
-            _accountFetcher = accountFetcher;
-            _payeeFetcher = payeeFetcher;
-            _subTransactionsFetcher = subTransactionsFetcher;
-            _flagFetcher = flagFetcher;
+            _accountRepository = accountRepository;
+            _payeeRepository = payeeRepository;
+            _subTransactionRepository = subTransactionRepository;
+            _flagRepository = flagRepository;
         }
-
-        public override Domain.IParentTransaction Create() =>
-            new Domain.ParentTransaction(this, Enumerable.Empty<Domain.SubTransaction>(), -1L, null, "", DateTime.MinValue, null, null, "", false);
         
         protected override Converter<Domain.IParentTransaction, Trans> ConvertToPersistence => domainParentTransaction => 
             new Trans
@@ -57,13 +52,13 @@ namespace BFF.DB.Dapper.ModelRepositories
 
             var parentTransaction = new Domain.ParentTransaction(
                 this,
-                _subTransactionsFetcher(persistenceParentTransaction.Id, connection),
-                persistenceParentTransaction.Id,
-                _flagFetcher(persistenceParentTransaction.FlagId, connection),
-                persistenceParentTransaction.CheckNumber,
+                _subTransactionRepository.GetChildrenOf(persistenceParentTransaction.Id, connection),
                 persistenceParentTransaction.Date,
-                _accountFetcher(persistenceParentTransaction.AccountId, connection),
-                _payeeFetcher(persistenceParentTransaction.PayeeId, connection),
+                persistenceParentTransaction.Id,
+                persistenceParentTransaction.FlagId == null ? null : _flagRepository.Find((long)persistenceParentTransaction.FlagId, connection),
+                persistenceParentTransaction.CheckNumber,
+                _accountRepository.Find(persistenceParentTransaction.AccountId, connection),
+                _payeeRepository.Find(persistenceParentTransaction.PayeeId, connection),
                 persistenceParentTransaction.Memo,
                 persistenceParentTransaction.Cleared == 1L);
 

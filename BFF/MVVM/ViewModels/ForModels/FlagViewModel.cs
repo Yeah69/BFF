@@ -16,13 +16,9 @@ namespace BFF.MVVM.ViewModels.ForModels
 
     public class FlagViewModel : CommonPropertyViewModel, IFlagViewModel
     {
-        private readonly IFlag _flag;
-        private readonly IFlagViewModelService _service;
 
-        public FlagViewModel(IFlag flag, IBffOrm orm, IFlagViewModelService service) : base(orm, flag)
+        public FlagViewModel(IFlag flag) : base(flag)
         {
-            _flag = flag;
-            _service = service;
 
             Color = flag.ToReactivePropertyAsSynchronized(
                 f => f.Color,
@@ -30,15 +26,6 @@ namespace BFF.MVVM.ViewModels.ForModels
                 brush => brush.Color, 
                 ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
         }
-
-        #region Overrides of DataModelViewModel
-
-        public override bool ValidToInsert()
-        {
-            return !string.IsNullOrWhiteSpace(Name.Value) && _service.All.All(f => f.Name.Value != Name.Value) && _flag != Flag.Default;
-        }
-
-        #endregion
 
         public IReactiveProperty<SolidColorBrush> Color { get; }
     }

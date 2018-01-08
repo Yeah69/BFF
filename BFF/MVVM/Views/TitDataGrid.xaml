@@ -27,8 +27,22 @@
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="4"
                                Height="16"
-                               Margin="{Binding Depth, Converter={x:Static mvvm:Converters.CategoryDepthToMargin}}"
-                               Fill="{DynamicResource AccentColorBrush}" />
+                               Margin="{Binding Depth, Converter={x:Static mvvm:Converters.CategoryDepthToMargin}}">
+                        <Rectangle.Style>
+                            <Style BasedOn="{StaticResource {x:Type Rectangle}}"
+                                   TargetType="{x:Type Rectangle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                                 Value="True">
+                                        <Setter Property="Fill"
+                                                Value="{StaticResource IncomeBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                                <Setter Property="Fill"
+                                        Value="{DynamicResource AccentColorBrush}" />
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
                     <TextBlock Text="{Binding Name.Value}" />
                 </StackPanel>
             </DataTemplate>
@@ -37,8 +51,22 @@
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="4"
                                Height="16"
-                               Margin="0,0,5,0"
-                               Fill="{DynamicResource AccentColorBrush}" />
+                               Margin="0,0,5,0">
+                        <Rectangle.Style>
+                            <Style BasedOn="{StaticResource {x:Type Rectangle}}"
+                                   TargetType="{x:Type Rectangle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                                 Value="True">
+                                        <Setter Property="Fill"
+                                                Value="{StaticResource IncomeBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                                <Setter Property="Fill"
+                                        Value="{DynamicResource AccentColorBrush}" />
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
                     <TextBlock Margin="0,0,5,0"
                                Text="{Binding Name.Value}" />
                 </StackPanel>
@@ -148,9 +176,26 @@
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type forModels:TransactionViewModel}">
-                            <iconPacks:PackIconMaterial Foreground="{DynamicResource TransactionBrush}"
-                                                        Kind="{StaticResource TransactionIcon}"
-                                                        Style="{StaticResource CellIconMaterial}" />
+                            <iconPacks:PackIconMaterial>
+                                <iconPacks:PackIconMaterial.Style>
+                                    <Style BasedOn="{StaticResource CellIconMaterial}"
+                                           TargetType="{x:Type iconPacks:PackIconMaterial}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Category.Value, Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                                         Value="True">
+                                                <Setter Property="Kind"
+                                                        Value="{StaticResource IncomeIcon}" />
+                                                <Setter Property="Foreground"
+                                                        Value="{DynamicResource IncomeBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                        <Setter Property="Kind"
+                                                Value="{StaticResource TransactionIcon}" />
+                                        <Setter Property="Foreground"
+                                                Value="{DynamicResource TransactionBrush}" />
+                                    </Style>
+                                </iconPacks:PackIconMaterial.Style>
+                            </iconPacks:PackIconMaterial>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
                             <iconPacks:PackIconMaterial Foreground="{DynamicResource TransactionBrush}"
@@ -374,11 +419,8 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
                             <DockPanel LastChildFill="True">
-                                <Button x:Name="AddPayeeButton"
-                                        Padding="0"
-                                        Command="{Binding NewPayeeViewModel.AddPayeeCommand}"
+                                <Button Click="PayeeOpenPopup_OnClick"
                                         DockPanel.Dock="Right"
-                                        MouseEnter="AddPayeeButton_OnMouseEnter"
                                         ToolTip="{lex:Loc CreateNewPayee}">
                                     <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
                                                                 Kind="{StaticResource AddIcon}"
@@ -386,22 +428,32 @@
                                 </Button>
                                 <Popup x:Name="Popup"
                                        Placement="Right"
-                                       PlacementTarget="{Binding ElementName=AddPayeeButton}"
+                                       PlacementTarget="{Binding ElementName=EditPayeeComboBox}"
                                        PopupAnimation="Slide"
                                        StaysOpen="False">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Margin="5,0,5,0"
-                                                   VerticalAlignment="Center"
-                                                   Text="{lex:LocText NameOfNewPayee,
-                                                                      Suffix=:}" />
-                                        <TextBox Height="{Binding ElementName=AddPayeeButton, Path=ActualHeight}"
-                                                 MinWidth="50"
-                                                 BorderBrush="{StaticResource AccentColorBrush}"
-                                                 Focusable="True"
-                                                 Text="{Binding NewPayeeViewModel.PayeeText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="5,0,5,0"
+                                                       VerticalAlignment="Center"
+                                                       Text="{lex:LocText NameOfNewPayee,
+                                                                          Suffix=:}" />
+                                            <TextBox MinWidth="50"
+                                                     BorderBrush="{StaticResource AccentColorBrush}"
+                                                     Focusable="True"
+                                                     Text="{Binding NewPayeeViewModel.PayeeText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </StackPanel>
+                                        <Button HorizontalAlignment="Right"
+                                                Click="PayeeClosePopup_OnClick"
+                                                Command="{Binding NewPayeeViewModel.AddPayeeCommand}"
+                                                ToolTip="{lex:Loc CreateNewPayee}">
+                                            <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
+                                                                        Kind="{StaticResource AddIcon}"
+                                                                        Style="{StaticResource CellIconMaterial}" />
+                                        </Button>
                                     </StackPanel>
                                 </Popup>
-                                <ComboBox HorizontalAlignment="Stretch"
+                                <ComboBox x:Name="EditPayeeComboBox"
+                                          HorizontalAlignment="Stretch"
                                           DisplayMemberPath="Name.Value"
                                           IsEditable="True"
                                           IsTextSearchCaseSensitive="True"
@@ -444,21 +496,50 @@
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                            <TextBlock Style="{StaticResource CellTextBlock}"
-                                       Text="{Binding Category.Value.Name.Value}">
-                                <TextBlock.ToolTip>
-                                    <ToolTip>
-                                        <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
-                                                 ItemsSource="{Binding Category.Value.FullChainOfCategories}">
-                                            <ListBox.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal" />
-                                                </ItemsPanelTemplate>
-                                            </ListBox.ItemsPanel>
-                                        </ListBox>
-                                    </ToolTip>
-                                </TextBlock.ToolTip>
-                            </TextBlock>
+                            <ContentControl Content="{Binding Category.Value}">
+                                <ContentControl.Resources>
+                                    <DataTemplate DataType="{x:Type forModels:CategoryViewModel}">
+                                        <TextBlock Style="{StaticResource CellTextBlock}"
+                                                   Text="{Binding Name.Value}">
+                                            <TextBlock.ToolTip>
+                                                <ToolTip>
+                                                    <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
+                                                             ItemsSource="{Binding FullChainOfCategories}">
+                                                        <ListBox.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ListBox.ItemsPanel>
+                                                    </ListBox>
+                                                </ToolTip>
+                                            </TextBlock.ToolTip>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type forModels:IncomeCategoryViewModel}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource CellTextBlock}"
+                                                       Text="{Binding Name.Value}">
+                                                <TextBlock.ToolTip>
+                                                    <ToolTip>
+                                                        <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
+                                                                 ItemsSource="{Binding FullChainOfCategories}">
+                                                            <ListBox.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <StackPanel Orientation="Horizontal" />
+                                                                </ItemsPanelTemplate>
+                                                            </ListBox.ItemsPanel>
+                                                        </ListBox>
+                                                    </ToolTip>
+                                                </TextBlock.ToolTip>
+                                            </TextBlock>
+                                            <iconPacks:PackIconMaterial Foreground="{StaticResource IncomeBrush}"
+                                                                        Kind="{StaticResource IncomeIcon}"
+                                                                        Opacity="0.5"
+                                                                        Style="{StaticResource CellIconMaterial}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ContentControl.Resources>
+                            </ContentControl>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
                             <Button Margin="0"
@@ -493,10 +574,8 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                             <DockPanel LastChildFill="True">
-                                <Button x:Name="AddCategoryButton"
-                                        Command="{Binding NewCategoryViewModel.AddCommand}"
+                                <Button Click="CategoryOpenPopup_OnClick"
                                         DockPanel.Dock="Right"
-                                        MouseEnter="AddCategoryButton_OnMouseEnter"
                                         ToolTip="{lex:Loc CreateNewCategory}">
                                     <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
                                                                 Kind="{StaticResource AddIcon}"
@@ -504,7 +583,7 @@
                                 </Button>
                                 <Popup x:Name="Popup"
                                        Placement="Right"
-                                       PlacementTarget="{Binding ElementName=AddCategoryButton}"
+                                       PlacementTarget="{Binding ElementName=EditCategoryComboBox}"
                                        PopupAnimation="Slide"
                                        StaysOpen="False">
                                     <Border MinWidth="50"
@@ -518,6 +597,7 @@
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
+                                                    <RowDefinition />
                                                     <RowDefinition />
                                                     <RowDefinition />
                                                     <RowDefinition />
@@ -564,7 +644,6 @@
                                                         </Style>
                                                     </TextBlock.Style>
                                                 </TextBlock>
-
                                                 <controls:NumericUpDown Grid.Row="2"
                                                                         Grid.Column="1"
                                                                         Value="{Binding NewCategoryViewModel.MonthOffset.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -608,7 +687,7 @@
                                                           IsTextSearchCaseSensitive="True"
                                                           IsTextSearchEnabled="True"
                                                           ItemTemplate="{StaticResource IndentedCategoryItemTemplate}"
-                                                          ItemsSource="{Binding NewCategoryViewModel.All}"
+                                                          ItemsSource="{Binding NewCategoryViewModel.AllPotentialParents}"
                                                           SelectedItem="{Binding NewCategoryViewModel.Parent.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           ShouldPreserveUserEnteredPrefix="True"
                                                           TextSearch.TextPath="Name.Value">
@@ -637,6 +716,16 @@
                                                         </ToolTip>
                                                     </ComboBox.ToolTip>
                                                 </ComboBox>
+                                                <Button Grid.Row="3"
+                                                        Grid.Column="1"
+                                                        HorizontalAlignment="Right"
+                                                        Click="CategoryClosePopup_OnClick"
+                                                        Command="{Binding NewCategoryViewModel.AddCommand}"
+                                                        ToolTip="{lex:Loc CreateNewCategory}">
+                                                    <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
+                                                                                Kind="{StaticResource AddIcon}"
+                                                                                Style="{StaticResource CellIconMaterial}" />
+                                                </Button>
                                             </Grid>
                                         </StackPanel>
                                     </Border>

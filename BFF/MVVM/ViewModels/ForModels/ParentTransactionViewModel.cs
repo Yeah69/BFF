@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
-using BFF.DB;
 using BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
@@ -49,6 +47,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class ParentTransactionViewModel : TransactionBaseViewModel, IParentTransactionViewModel
     {
+        private readonly ISubTransactionViewModelService _subTransactionViewModelService;
         private readonly ObservableCollection<ISubTransactionViewModel> _newTransactions;
 
         /// <summary>
@@ -61,26 +60,27 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Initializes a ParentTransactionViewModel.
         /// </summary>
         /// <param name="parentTransaction">A ParentTransaction Model.</param>
-        /// <param name="orm">Used for the database accesses.</param>
         /// <param name="subTransactionViewModelService">A service for fetching sub-transactions.</param>
         public ParentTransactionViewModel(
             IParentTransaction parentTransaction,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
-            IBffOrm orm,
-            ISubTransactionViewModelService subTransactionViewModelService, IFlagViewModelService flagViewModelService) 
+            ISubTransactionViewModelService subTransactionViewModelService, 
+            IFlagViewModelService flagViewModelService,
+            IAccountViewModelService accountViewModelService,
+            IPayeeViewModelService payeeViewModelService) 
             : base(
-                orm,
                 parentTransaction,
                 newPayeeViewModelFactory,
-                orm.CommonPropertyProvider.AccountViewModelService,
-                orm.CommonPropertyProvider.PayeeViewModelService,
+                accountViewModelService,
+                payeeViewModelService,
                 flagViewModelService)
         {
+            _subTransactionViewModelService = subTransactionViewModelService;
             _newTransactions = new ObservableCollection<ISubTransactionViewModel>();
             NewSubElements = new ReadOnlyObservableCollection<ISubTransactionViewModel>(_newTransactions);
 
             SubTransactions =
-                parentTransaction.SubTransactions.ToReadOnlyReactiveCollection(subTransactionViewModelService
+                parentTransaction.SubTransactions.ToReadOnlyReactiveCollection(_subTransactionViewModelService
                     .GetViewModel).AddTo(CompositeDisposable);
 
             Sum = new ReactiveProperty<long>(SubTransactions.Sum(stvw => stvw.Sum.Value), ReactivePropertyMode.DistinctUntilChanged)
@@ -110,7 +110,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             NewSubElementCommand.Subscribe(_ =>
             {
-                var newSubTransactionViewModel = subTransactionViewModelService.Create(parentTransaction);
+                var newSubTransactionViewModel = _subTransactionViewModelService.Create(parentTransaction);
                 _newTransactions.Add(newSubTransactionViewModel);
             }).AddTo(CompositeDisposable);
 
@@ -138,22 +138,12 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <returns>A new ViewModel for a SubElement.</returns>
         protected ISubTransactionViewModel CreateNewSubViewModel(ISubTransaction subElement)
         {
-            return Orm.SubTransactionViewModelService.GetViewModel(subElement);
+            return _subTransactionViewModelService.GetViewModel(subElement);
         }
 
         public ReadOnlyReactiveCollection<ISubTransactionViewModel> SubTransactions { get; }
         public ReadOnlyReactiveCollection<ISubTransactionViewModel> SubElements => SubTransactions;
         public ReadOnlyObservableCollection<ISubTransactionViewModel> NewSubElements { get; }
-
-        /// <summary>
-        /// Before a model object is inserted into the database, it has to be valid.
-        /// This function should guarantee that the object is valid to be inserted.
-        /// </summary>
-        /// <returns>True if valid, else false</returns>
-        public override bool ValidToInsert()
-        {
-            return Account.Value != null && Payee.Value != null && NewSubElements.All(subElement => subElement.ValidToInsert());
-        }
 
         protected override void InitializeDeleteCommand()
         {

@@ -38,7 +38,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class TransBaseViewModel : TransLikeViewModel, ITransBaseViewModel
     {
-        public IObservableReadOnlyList<IFlagViewModel> AllFlags => CommonPropertyProvider.FlagViewModelService.All;
+        private readonly IFlagViewModelService _flagViewModelService;
+        public IObservableReadOnlyList<IFlagViewModel> AllFlags => _flagViewModelService.All;
 
         public IReactiveProperty<IFlagViewModel> Flag { get; }
         public ReactiveCommand RemoveFlag { get; }
@@ -66,8 +67,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="orm">Used for the database accesses.</param>
         /// <param name="transBase">The model.</param>
-        protected TransBaseViewModel(IBffOrm orm, ITransBase transBase, IFlagViewModelService flagViewModelService) : base(orm, transBase)
+        protected TransBaseViewModel(ITransBase transBase, IFlagViewModelService flagViewModelService) : base(transBase)
         {
+            _flagViewModelService = flagViewModelService;
             Flag = transBase.ToReactivePropertyAsSynchronized(
                 tb => tb.Flag, 
                 flagViewModelService.GetViewModel,

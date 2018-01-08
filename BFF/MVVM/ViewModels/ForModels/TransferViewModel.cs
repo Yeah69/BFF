@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reactive.Linq;
-using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -10,7 +9,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    internal interface ITransferViewModel : ITransBaseViewModel
+    public interface ITransferViewModel : ITransBaseViewModel
     {
         /// <summary>
         /// The account from where the money is transfered.
@@ -28,8 +27,9 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class TransferViewModel : TransBaseViewModel, ITransferViewModel
     {
+        private readonly IAccountViewModelService _accountViewModelService;
 
-        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => CommonPropertyProvider.AllAccountViewModels;
+        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => _accountViewModelService.All;
 
         /// <summary>
         /// The account from where the money is transfered.
@@ -50,14 +50,13 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Initializes a TransferViewModel.
         /// </summary>
         /// <param name="transfer">A Transfer Model.</param>
-        /// <param name="orm">Used for the database accesses.</param>
         /// <param name="accountViewModelService"></param>
         public TransferViewModel(
             ITransfer transfer, 
-            IBffOrm orm, 
             IAccountViewModelService accountViewModelService,
-            IFlagViewModelService flagViewModelService) : base(orm, transfer, flagViewModelService)
+            IFlagViewModelService flagViewModelService) : base(transfer, flagViewModelService)
         {
+            _accountViewModelService = accountViewModelService;
 
             FromAccount = transfer
                 .ToReactivePropertyAsSynchronized(
@@ -99,16 +98,6 @@ namespace BFF.MVVM.ViewModels.ForModels
                 FromAccount.Value?.RefreshBalance();
                 ToAccount.Value?.RefreshBalance();
             }).AddTo(CompositeDisposable);
-        }
-
-        /// <summary>
-        /// Before a model object is inserted into the database, it has to be valid.
-        /// This function should guarantee that the object is valid to be inserted.
-        /// </summary>
-        /// <returns>True if valid, else false</returns>
-        public override bool ValidToInsert()
-        {
-            return FromAccount.Value != null && ToAccount.Value != null;
         }
 
         protected override void InitializeDeleteCommand()

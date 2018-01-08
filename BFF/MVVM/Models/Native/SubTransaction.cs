@@ -33,7 +33,7 @@ namespace BFF.MVVM.Models.Native
         /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
         public SubTransaction(
             IRepository<ISubTransaction> repository,
-            long id, 
+            long id = -1L, 
             ICategoryBase category = null,
             string memo = null,
             long sum = 0L) 
