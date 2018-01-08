@@ -162,6 +162,13 @@ namespace BFF.MVVM
             ValueConverter.Create<long, bool>(
                 e => e.Value < 0);
 
+        /// <summary>
+        /// True if value is lesser than zero, otherwise false.
+        /// </summary>
+        public static readonly IValueConverter OfType =
+            ValueConverter.Create<object, bool, Type>(
+                e => e.Value?.GetType() == e.Parameter);
+
 
         //Multi Value Converters
 

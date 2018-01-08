@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using BFF.DB.PersistenceModels;
-using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 using Domain = BFF.MVVM.Models.Native;
 
