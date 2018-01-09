@@ -85,12 +85,13 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             Sum = new ReactiveProperty<long>(SubTransactions.Sum(stvw => stvw.Sum.Value), ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
-
-            Sum.Subscribe(_ =>
-            {
-                Account.Value?.RefreshBalance();
-                Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
-            }).AddTo(CompositeDisposable);
+            
+            Sum.Where(_ => parentTransaction.Id != -1L)
+                .Subscribe(_ =>
+                {
+                    Account.Value?.RefreshBalance();
+                    Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+                }).AddTo(CompositeDisposable);
 
             SubTransactions.ObserveAddChanged().Concat(SubTransactions.ObserveRemoveChanged())
                 .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))//todo: Write an SQL query for that

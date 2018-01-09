@@ -93,7 +93,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .AddTo(CompositeDisposable);
 
             Sum = transfer.ToReactivePropertyAsSynchronized(t => t.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
-            Sum.Subscribe(sum =>
+            Sum.Where(_ => transfer.Id != -1).Subscribe(sum =>
             {
                 FromAccount.Value?.RefreshBalance();
                 ToAccount.Value?.RefreshBalance();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -44,7 +45,8 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             Sum = transaction.ToReactivePropertyAsSynchronized(ti => ti.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
-            Sum.Subscribe(sum => NotifyRelevantAccountsToRefreshBalance())
+            Sum.Where(_ => transaction.Id != -1)
+                .Subscribe(sum => NotifyRelevantAccountsToRefreshBalance())
                 .AddTo(CompositeDisposable);
 
             NewCategoryViewModel = newCategoryViewModelFactory(this);
