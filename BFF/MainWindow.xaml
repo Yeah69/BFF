@@ -227,7 +227,7 @@
                 <!--  todo lex  -->
                 <views:TitDataGrid AccountViewModel="{Binding ParentTitViewModel.Account}"
                                    ShowRowDetailsMode="Visible"
-                                   Tits="{Binding ParentTitViewModel.ParentTitSource}" />
+                                   TransList="{Binding ParentTitViewModel.ParentTitSource}" />
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>

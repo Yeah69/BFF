@@ -25,10 +25,10 @@
                            ApplyCommand="{Binding ApplyCommand}"
                            IsDateLong="{Binding IsDateFormatLong}"
                            NewParentTransactionCommand="{Binding NewParentTransactionCommand}"
-                           NewTits="{Binding NewTits}"
+                           NewTransList="{Binding NewTransList}"
                            NewTransactionCommand="{Binding NewTransactionCommand}"
                            NewTransferCommand="{Binding NewTransferCommand}"
-                           Tits="{Binding Tits}" />
+                           TransList="{Binding Tits}" />
         <!--  "Status bar"  -->
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal">

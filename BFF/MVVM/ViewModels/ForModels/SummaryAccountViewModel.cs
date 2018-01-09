@@ -101,13 +101,13 @@ namespace BFF.MVVM.ViewModels.ForModels
             StartingBalance = new ReactiveProperty<long>().AddTo(CompositeDisposable);
             //RefreshStartingBalance();
 
-            NewTransactionCommand.Subscribe(_ => NewTits.Add(transactionViewModelFactory())).AddTo(CompositeDisposable);
+            NewTransactionCommand.Subscribe(_ => NewTransList.Add(transactionViewModelFactory())).AddTo(CompositeDisposable);
 
-            NewTransferCommand.Subscribe(_ => NewTits.Add(transferViewModelFactory())).AddTo(CompositeDisposable);
+            NewTransferCommand.Subscribe(_ => NewTransList.Add(transferViewModelFactory())).AddTo(CompositeDisposable);
 
-            NewParentTransactionCommand.Subscribe(_ => NewTits.Add(parentTransactionFactory())).AddTo(CompositeDisposable);
+            NewParentTransactionCommand.Subscribe(_ => NewTransList.Add(parentTransactionFactory())).AddTo(CompositeDisposable);
 
-            ApplyCommand = NewTits.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
+            ApplyCommand = NewTransList.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
                 .Select(count => count > 0)
                 .ToReactiveCommand().AddTo(CompositeDisposable);
 
@@ -144,7 +144,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public sealed override ObservableCollection<ITransLikeViewModel> NewTits { get; } = new ObservableCollection<ITransLikeViewModel>();
+        public sealed override ObservableCollection<ITransLikeViewModel> NewTransList { get; } = new ObservableCollection<ITransLikeViewModel>();
         
         /// <summary>
         /// Refreshes the TITs of this Account.

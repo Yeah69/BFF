@@ -35,7 +35,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        ObservableCollection<ITransLikeViewModel> NewTits { get; }
+        ObservableCollection<ITransLikeViewModel> NewTransList { get; }
 
         /// <summary>
         /// The current Balance of this Account.
@@ -98,7 +98,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public abstract ObservableCollection<ITransLikeViewModel> NewTits { get; }
+        public abstract ObservableCollection<ITransLikeViewModel> NewTransList { get; }
 
         /// <summary>
         /// The current Balance of this Account.
@@ -214,11 +214,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected void ApplyTits()
         {
-            List<ITransLikeViewModel> insertTits = NewTits.ToList();//.Where(tit => tit.ValidToInsert()).ToList();
+            List<ITransLikeViewModel> insertTits = NewTransList.ToList();//.Where(tit => tit.ValidToInsert()).ToList();
             foreach (ITransLikeViewModel tit in insertTits)
             {
                 tit.Insert();
-                NewTits.Remove(tit);
+                NewTransList.Remove(tit);
             }
 
             RefreshBalance();

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reactive.Linq;
-using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using MuVaViMo;
@@ -65,8 +64,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Initializes a TransBaseViewModel.
         /// </summary>
-        /// <param name="orm">Used for the database accesses.</param>
         /// <param name="transBase">The model.</param>
+        /// <param name="flagViewModelService">Translates between flag models and flag view models.</param>
         protected TransBaseViewModel(ITransBase transBase, IFlagViewModelService flagViewModelService) : base(transBase)
         {
             _flagViewModelService = flagViewModelService;

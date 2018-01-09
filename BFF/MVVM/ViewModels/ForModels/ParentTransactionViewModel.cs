@@ -39,7 +39,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
-        ReactiveCommand<IAccountViewModel> OpenParentTitView { get; }
+        ReactiveCommand<IAccountViewModel> OpenParentTransactionView { get; }
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 Account.Value.RefreshBalance();
             }).AddTo(CompositeDisposable);
 
-            OpenParentTitView.Subscribe(avm =>
+            OpenParentTransactionView.Subscribe(avm =>
                 Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", avm))).AddTo(CompositeDisposable);
         }
 
@@ -174,7 +174,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
-        public ReactiveCommand<IAccountViewModel> OpenParentTitView { get; } = new ReactiveCommand<IAccountViewModel>();
+        public ReactiveCommand<IAccountViewModel> OpenParentTransactionView { get; } = new ReactiveCommand<IAccountViewModel>();
 
         protected override void OnInsert()
         {

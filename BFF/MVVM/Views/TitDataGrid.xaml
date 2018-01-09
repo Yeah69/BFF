@@ -547,7 +547,7 @@
                                     HorizontalContentAlignment="Left"
                                     Background="Transparent"
                                     BorderThickness="0"
-                                    Command="{Binding OpenParentTitView}"
+                                    Command="{Binding OpenParentTransactionView}"
                                     CommandParameter="{Binding Account.Value}">
                                 <iconPacks:PackIconMaterial Margin="5,0,0,0"
                                                             Foreground="{DynamicResource GrayBrush4}"
@@ -820,8 +820,7 @@
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <TextBlock Name="TitGrid_SumBox"
-                                       Padding="0,0,5,0"
+                            <TextBlock Padding="0,0,5,0"
                                        Style="{StaticResource CellTextBlock}"
                                        TextAlignment="Right">
                                 <TextBlock.Text>
@@ -844,8 +843,7 @@
                             </TextBlock>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                            <TextBlock Name="TitGrid_SumBox"
-                                       Padding="0,0,5,0"
+                            <TextBlock Padding="0,0,5,0"
                                        Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                        Style="{StaticResource CellTextBlock}"
                                        Text="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToString}}"
@@ -860,8 +858,7 @@
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <TextBox Name="TitGrid_SumBox"
-                                     VerticalContentAlignment="Center"
+                            <TextBox VerticalContentAlignment="Center"
                                      TextAlignment="Right">
                                 <TextBox.Foreground>
                                     <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumToSolidColorBrush}">
@@ -885,8 +882,7 @@
                             </TextBox>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                            <TextBox Name="TitGrid_SumBox"
-                                     VerticalContentAlignment="Center"
+                            <TextBox VerticalContentAlignment="Center"
                                      Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                      TextAlignment="Right">
                                 <TextBox.Text>
@@ -1067,12 +1063,13 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!--  TitsGrid  -->
+        <!--  TransGrid  -->
 
-        <!--  The DataGrid, which shows all saved Tits  -->
-        <DataGrid Name="TitGrid"
+        <!--  The DataGrid, which shows all saved Trans objects  -->
+        <DataGrid x:Name="TransGrid"
                   Grid.Row="0"
-                  ItemsSource="{Binding Tits, ElementName=Root}"
+                  ItemsSource="{Binding TransList, ElementName=Root}"
+                  Loaded="TransGrid_OnInitialized"
                   RowDetailsVisibilityMode="{Binding ShowRowDetailsMode}"
                   RowStyle="{StaticResource DefaultRowStyle}"
                   ScrollViewer.IsDeferredScrollingEnabled="True"
@@ -1297,12 +1294,11 @@
 
         <!--  The Editing-Form  -->
         <StackPanel Grid.Row="1">
-            <DataGrid Name="NewTitGrid"
-                      Width="{Binding ActualWidth, ElementName=TitGrid}"
+            <DataGrid Width="{Binding ActualWidth, ElementName=TransGrid}"
                       MaxHeight="200"
                       BorderThickness="0,2,0,0"
                       HeadersVisibility="None"
-                      ItemsSource="{Binding NewTits}"
+                      ItemsSource="{Binding NewTransList}"
                       RowDetailsVisibilityMode="Visible">
                 <DataGrid.Columns>
                     <!--  Symbol  -->

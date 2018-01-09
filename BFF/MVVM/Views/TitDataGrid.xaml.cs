@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
 using BFF.DB;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
@@ -26,23 +27,23 @@ namespace BFF.MVVM.Views
             set => SetValue(AccountViewModelProperty, value);
         }
 
-        public static readonly DependencyProperty TitsProperty = DependencyProperty.Register(
-            nameof(Tits), typeof(IEnumerable), typeof(TitDataGrid),
+        public static readonly DependencyProperty TransListProperty = DependencyProperty.Register(
+            nameof(TransList), typeof(IEnumerable), typeof(TitDataGrid),
             new PropertyMetadata(default(IEnumerable)));
 
-        public IEnumerable Tits
+        public IEnumerable TransList
         {
-            get => (IEnumerable) GetValue(TitsProperty);
-            set => SetValue(TitsProperty, value);
+            get => (IEnumerable) GetValue(TransListProperty);
+            set => SetValue(TransListProperty, value);
         }
 
-        public static readonly DependencyProperty NewTitsProperty = DependencyProperty.Register(
-            nameof(NewTits), typeof(IEnumerable), typeof(TitDataGrid), new PropertyMetadata(default(IEnumerable)));
+        public static readonly DependencyProperty NewTransListProperty = DependencyProperty.Register(
+            nameof(NewTransList), typeof(IEnumerable), typeof(TitDataGrid), new PropertyMetadata(default(IEnumerable)));
 
-        public IEnumerable NewTits
+        public IEnumerable NewTransList
         {
-            get => (IEnumerable) GetValue(NewTitsProperty);
-            set => SetValue(NewTitsProperty, value);
+            get => (IEnumerable) GetValue(NewTransListProperty);
+            set => SetValue(NewTransListProperty, value);
         }
 
         public static readonly DependencyProperty NewTransactionCommandProperty = DependencyProperty.Register(
@@ -177,20 +178,20 @@ namespace BFF.MVVM.Views
 
         private void PreVirtualizedRefresh(object sender, EventArgs args)
         {
-            _previousPosition = TitGrid.SelectedIndex;
-            TitGrid.UnselectAllCells();
+            _previousPosition = TransGrid.SelectedIndex;
+            TransGrid.UnselectAllCells();
         }
 
         private void PostVirtualizedRefresh(object sender, EventArgs args)
         {
-            if(TitGrid.Items.Count > _previousPosition)
+            if(TransGrid.Items.Count > _previousPosition)
             {
                 if(_previousPosition != -1)
                 {
-                    TitGrid.CurrentItem = TitGrid.Items[_previousPosition];
-                    TitGrid.ScrollIntoView(TitGrid.CurrentItem);
+                    TransGrid.CurrentItem = TransGrid.Items[_previousPosition];
+                    TransGrid.ScrollIntoView(TransGrid.CurrentItem);
                 }
-                TitGrid.SelectedIndex = _previousPosition;
+                TransGrid.SelectedIndex = _previousPosition;
             }
         }
 
@@ -220,6 +221,16 @@ namespace BFF.MVVM.Views
             {
                 if (button.FindName("Popup") is Popup popup)
                     popup.IsOpen = isOpen;
+            }
+        }
+
+        private void TransGrid_OnInitialized(object sender, EventArgs e)
+        {
+            if (VisualTreeHelper.GetChildrenCount(TransGrid) > 0)
+            {
+                Border border = (Border)VisualTreeHelper.GetChild(TransGrid, 0);
+                ScrollViewer scrollViewer = (ScrollViewer)VisualTreeHelper.GetChild(border, 0);
+                scrollViewer.ScrollToBottom();
             }
         }
     }
