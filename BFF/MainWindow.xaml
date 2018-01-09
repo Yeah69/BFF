@@ -23,7 +23,7 @@
                       lex:ResxLocalizationProvider.DefaultDictionary="Resources"
                       BorderBrush="{DynamicResource AccentColorBrush}"
                       BorderThickness="2"
-                      Icon="Icons/logo_quadratic.png"
+                      Icon="logo_quadratic.ico"
                       Left="{Binding X, Mode=TwoWay}"
                       LeftWindowCommandsOverlayBehavior="Never"
                       ResizeMode="CanResizeWithGrip"
