@@ -105,6 +105,8 @@
                         Value="Center" />
                 <Setter Property="MinHeight"
                         Value="30" />
+                <Setter Property="IsTabStop"
+                        Value="False" />
             </Style>
 
             <Style x:Key="CellTextBlock"
@@ -142,6 +144,18 @@
                    TargetType="{x:Type DataGridRow}">
                 <Setter Property="ContextMenu"
                         Value="{StaticResource RowMenu}" />
+            </Style>
+
+            <Style BasedOn="{StaticResource MetroDataGridCell}"
+                   TargetType="{x:Type DataGridCell}">
+                <Setter Property="IsTabStop"
+                        Value="False" />
+            </Style>
+
+            <Style BasedOn="{StaticResource {x:Type ContentControl}}"
+                   TargetType="{x:Type ContentControl}">
+                <Setter Property="IsTabStop"
+                        Value="False" />
             </Style>
 
             <Style BasedOn="{StaticResource MetroDataGrid}"
@@ -326,7 +340,8 @@
                             <DockPanel LastChildFill="True">
                                 <Button Command="{Binding RemoveFlag}"
                                         Content="X"
-                                        DockPanel.Dock="Right">
+                                        DockPanel.Dock="Right"
+                                        TabIndex="1">
                                     <Button.Style>
                                         <Style BasedOn="{StaticResource {x:Type Button}}"
                                                TargetType="{x:Type Button}">
@@ -343,7 +358,8 @@
                                 <ComboBox HorizontalAlignment="Stretch"
                                           DockPanel.Dock="Left"
                                           ItemsSource="{Binding AllFlags}"
-                                          SelectedItem="{Binding Mode=TwoWay, Path=Flag.Value, UpdateSourceTrigger=LostFocus}">
+                                          SelectedItem="{Binding Mode=TwoWay, Path=Flag.Value, UpdateSourceTrigger=LostFocus}"
+                                          TabIndex="0">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -421,6 +437,7 @@
                             <DockPanel LastChildFill="True">
                                 <Button Click="PayeeOpenPopup_OnClick"
                                         DockPanel.Dock="Right"
+                                        TabIndex="1"
                                         ToolTip="{lex:Loc CreateNewPayee}">
                                     <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
                                                                 Kind="{StaticResource AddIcon}"
@@ -459,6 +476,7 @@
                                           IsTextSearchCaseSensitive="True"
                                           IsTextSearchEnabled="True"
                                           ItemsSource="{Binding NewPayeeViewModel.AllPayees}"
+                                          TabIndex="0"
                                           TextSearch.TextPath="Name.Value">
                                     <ComboBox.SelectedItem>
                                         <Binding Mode="TwoWay"
@@ -576,6 +594,7 @@
                             <DockPanel LastChildFill="True">
                                 <Button Click="CategoryOpenPopup_OnClick"
                                         DockPanel.Dock="Right"
+                                        TabIndex="1"
                                         ToolTip="{lex:Loc CreateNewCategory}">
                                     <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
                                                                 Kind="{StaticResource AddIcon}"
@@ -737,6 +756,7 @@
                                           ItemTemplate="{StaticResource IndentedCategoryItemTemplate}"
                                           ItemsSource="{Binding NewCategoryViewModel.All}"
                                           ShouldPreserveUserEnteredPrefix="True"
+                                          TabIndex="0"
                                           TextSearch.TextPath="Name.Value">
                                     <ComboBox.SelectedItem>
                                         <Binding Mode="TwoWay"
@@ -808,6 +828,7 @@
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                             <TextBox VerticalAlignment="Stretch"
                                      VerticalContentAlignment="Center"
+                                     Focusable="True"
                                      Text="{Binding Memo.Value, UpdateSourceTrigger=LostFocus}"
                                      TextWrapping="NoWrap" />
                         </DataTemplate>
@@ -1075,6 +1096,7 @@
                   ScrollViewer.IsDeferredScrollingEnabled="True"
                   SelectionMode="Single"
                   SelectionUnit="FullRow">
+            <DataGrid.Resources />
             <DataGrid.Columns>
                 <!--  Symbol  -->
                 <DataGridTemplateColumn x:Name="SymbolColumn"
@@ -1198,7 +1220,7 @@
                 <DataGridTemplateColumn x:Name="MemoColumn"
                                         Width="*"
                                         Header="{lex:Loc AccountView_Header_Memo}"
-                                        SortMemberPath="Memo">
+                                        SortMemberPath="Memo.Value">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}"
@@ -1216,7 +1238,7 @@
                 <DataGridTemplateColumn x:Name="SumColumn"
                                         Header="{lex:Loc AccountView_Header_Sum}"
                                         IsReadOnly="False"
-                                        SortMemberPath="Sum">
+                                        SortMemberPath="Sum.Value">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}"
@@ -1234,7 +1256,7 @@
                 <DataGridTemplateColumn x:Name="ClearedColumn"
                                         Header="{lex:Loc AccountView_Header_Cleared}"
                                         IsReadOnly="True"
-                                        SortMemberPath="Cleared">
+                                        SortMemberPath="Cleared.Value">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ContentControl Content="{Binding}"
