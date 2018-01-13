@@ -232,6 +232,7 @@
             <!--  Account  -->
             <DataTemplate x:Key="AccountColumnTemplate">
                 <ContentControl Content="{Binding}"
+                                IsTabStop="True"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
@@ -277,6 +278,7 @@
             <!--  Date  -->
             <DataTemplate x:Key="DateColumnTemplate">
                 <ContentControl Content="{Binding}"
+                                IsTabStop="True"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
@@ -303,6 +305,7 @@
             <!--  Flag  -->
             <DataTemplate x:Key="FlagColumnTemplate">
                 <ContentControl Content="{Binding}"
+                                IsTabStop="True"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
@@ -381,6 +384,7 @@
             <!--  CheckNumber  -->
             <DataTemplate x:Key="CheckNumberColumnTemplate">
                 <ContentControl Content="{Binding}"
+                                IsTabStop="True"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
@@ -409,6 +413,7 @@
             <DataTemplate x:Key="PayeeColumnTemplate">
                 <ContentControl HorizontalAlignment="Stretch"
                                 Content="{Binding}"
+                                IsTabStop="True"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
@@ -511,6 +516,7 @@
             <!--  Category  -->
             <DataTemplate x:Key="CategoryColumnTemplate">
                 <ContentControl Content="{Binding}"
+                                IsTabStop="True"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
@@ -578,6 +584,7 @@
                                 <TextBlock Style="{StaticResource CellTextBlock}"
                                            Text="{Binding ToAccount.Value.Name.Value}" />
                                 <iconPacks:PackIconMaterial Foreground="{DynamicResource GrayBrush4}"
+                                                            IsTabStop="True"
                                                             Kind="{StaticResource IncomeIcon}"
                                                             Style="{StaticResource CellIconMaterial}" />
                             </StackPanel>
@@ -810,6 +817,7 @@
             <!--  Memo  -->
             <DataTemplate x:Key="MemoColumnTemplate">
                 <ContentControl Content="{Binding}"
+                                IsTabStop="True"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
@@ -838,6 +846,7 @@
             <!--  Sum  -->
             <DataTemplate x:Key="SumColumnTemplate">
                 <ContentControl Content="{Binding}"
+                                IsTabStop="True"
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
