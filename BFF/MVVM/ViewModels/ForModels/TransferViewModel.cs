@@ -50,7 +50,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Initializes a TransferViewModel.
         /// </summary>
         /// <param name="transfer">A Transfer Model.</param>
-        /// <param name="accountViewModelService"></param>
+        /// <param name="accountViewModelService">Fetches the accounts.</param>
+        /// <param name="flagViewModelService">Fetches the flags.</param>
         public TransferViewModel(
             ITransfer transfer, 
             IAccountViewModelService accountViewModelService,
@@ -68,10 +69,12 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             FromAccount
                 .SkipLast(1)
+                .Where(_ => transfer.Id != -1L)
                 .Subscribe(RefreshAnAccountViewModel)
                 .AddTo(CompositeDisposable);
 
             FromAccount
+                .Where(_ => transfer.Id != -1L)
                 .Subscribe(RefreshAnAccountViewModel)
                 .AddTo(CompositeDisposable);
 
@@ -85,19 +88,23 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             ToAccount
                 .SkipLast(1)
+                .Where(_ => transfer.Id != -1L)
                 .Subscribe(RefreshAnAccountViewModel)
                 .AddTo(CompositeDisposable);
 
             ToAccount
+                .Where(_ => transfer.Id != -1L)
                 .Subscribe(RefreshAnAccountViewModel)
                 .AddTo(CompositeDisposable);
 
             Sum = transfer.ToReactivePropertyAsSynchronized(t => t.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
-            Sum.Where(_ => transfer.Id != -1).Subscribe(sum =>
-            {
-                FromAccount.Value?.RefreshBalance();
-                ToAccount.Value?.RefreshBalance();
-            }).AddTo(CompositeDisposable);
+            Sum
+                .Where(_ => transfer.Id != -1L)
+                .Subscribe(sum =>
+                {
+                    FromAccount.Value?.RefreshBalance();
+                    ToAccount.Value?.RefreshBalance();
+                }).AddTo(CompositeDisposable);
         }
 
         protected override void InitializeDeleteCommand()
