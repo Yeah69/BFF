@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -17,10 +18,19 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         IReactiveProperty<long> Sum { get; }
 
+        Sign SumSign { get; }
+
+        long SumAbsolute { get; }
+
         /// <summary>
         /// Each TIT can be deleted from the GUI.
         /// </summary>
         ReactiveCommand DeleteCommand { get; }
+
+        /// <summary>
+        /// Each TIT can be deleted from the GUI.
+        /// </summary>
+        ReactiveCommand ToggleSign { get; }
     }
 
     /// <summary>
@@ -40,6 +50,30 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public abstract IReactiveProperty<long> Sum { get; }
 
+        private Sign _sumSign = Sign.Minus;
+
+        public Sign SumSign
+        {
+            get => Sum.Value == 0 ? _sumSign : Sum.Value > 0 ? Sign.Plus : Sign.Minus;
+            set
+            {
+                if (value == Sign.Plus && Sum.Value < 0 || value == Sign.Minus && Sum.Value > 0)
+                    Sum.Value *= -1;
+                _sumSign = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public long SumAbsolute
+        {
+            get => Math.Abs(Sum.Value);
+            set
+            {
+                Sum.Value = (SumSign == Sign.Plus ? 1 : -1) * value;
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Initializes a TransLikeViewModel.
         /// </summary>
@@ -47,6 +81,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected TransLikeViewModel(ITransLike transLike) : base(transLike)
         {
             Memo = transLike.ToReactivePropertyAsSynchronized(tl => tl.Memo, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+
+            ToggleSign = new ReactiveCommand();
+            ToggleSign.Subscribe(_ => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus);
 
             InitializeDeleteCommand();
         }
@@ -59,6 +96,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// However, do not call the overridden function. It will be called in the constructor of <see cref="TransLikeViewModel"/>.
         /// </remarks>
         public ReactiveCommand DeleteCommand { get; } = new ReactiveCommand();
+
+        public ReactiveCommand ToggleSign { get; }
 
         /// <summary>
         /// Override this function for internal subscription to the DeleteCommand. This will be called once in the constructor of the <see cref="TransLikeViewModel"/>.

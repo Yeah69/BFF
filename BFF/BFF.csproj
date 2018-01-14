@@ -288,6 +288,7 @@
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />
     <Compile Include="Helper\Extensions\ReactivePropertyExtensions.cs" />
+    <Compile Include="Helper\Sign.cs" />
     <Compile Include="MVVM\AttachedBehaviors\ScrollViewerSync.cs" />
     <Compile Include="MVVM\Converters.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />

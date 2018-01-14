@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -168,6 +171,18 @@ namespace BFF.MVVM
         public static readonly IValueConverter OfType =
             ValueConverter.Create<object, bool, Type>(
                 e => e.Value?.GetType() == e.Parameter);
+
+        /// <summary>
+        /// True if value is lesser than zero, otherwise false.
+        /// </summary>
+        public static readonly IValueConverter SignToString =
+            ValueConverter.Create<Sign, string>(
+                e => typeof(Sign)
+                    .GetMember(e.Value.ToString())[0]
+                    .GetCustomAttributes(false)
+                    .OfType<EnumMemberAttribute>()
+                    .FirstOrDefault()
+                    ?.Value);
 
 
         //Multi Value Converters

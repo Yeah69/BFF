@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -16,16 +17,18 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model Transaction.
     /// </summary>
-    public class TransactionViewModel : TransactionBaseViewModel, ITransactionViewModel
+    public sealed class TransactionViewModel : TransactionBaseViewModel, ITransactionViewModel
     {
         /// <summary>
         /// Initializes a TransactionViewModel.
         /// </summary>
         /// <param name="transaction">A Transaction Model.</param>
-        /// <param name="orm">Used for the database accesses.</param>
+        /// <param name="newPayeeViewModelFactory">Creates a payee factory.</param>
         /// <param name="accountViewModelService">Service of accounts.</param>
         /// <param name="payeeViewModelService">Service of payees.</param>
         /// <param name="categoryViewModelService">Service of categories.</param>
+        /// <param name="flagViewModelService">Fetches flags.</param>
+        /// <param name="newCategoryViewModelFactory">Creates a category factory.</param>
         public TransactionViewModel(
             ITransaction transaction,
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
@@ -41,6 +44,10 @@ namespace BFF.MVVM.ViewModels.ForModels
                     categoryViewModelService.GetViewModel,
                     categoryViewModelService.GetModel,
                     ReactivePropertyMode.DistinctUntilChanged)
+                .AddTo(CompositeDisposable);
+
+            Category
+                .Subscribe(c => SumSign = c is IncomeCategoryViewModel ? Sign.Plus : Sign.Minus)
                 .AddTo(CompositeDisposable);
 
             Sum = transaction.ToReactivePropertyAsSynchronized(ti => ti.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);

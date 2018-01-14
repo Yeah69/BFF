@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -25,7 +26,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model Transfer.
     /// </summary>
-    public class TransferViewModel : TransBaseViewModel, ITransferViewModel
+    public sealed class TransferViewModel : TransBaseViewModel, ITransferViewModel
     {
         private readonly IAccountViewModelService _accountViewModelService;
 
@@ -44,7 +45,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The amount of money, which is transfered.
         /// </summary>
-        public sealed override IReactiveProperty<long> Sum { get; }
+        public override IReactiveProperty<long> Sum { get; }
 
         /// <summary>
         /// Initializes a TransferViewModel.

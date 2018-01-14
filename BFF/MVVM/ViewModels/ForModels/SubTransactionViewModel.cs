@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reactive.Linq;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -15,7 +17,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model SubTransaction.
     /// </summary>
-    public class SubTransactionViewModel : TransLikeViewModel, ISubTransactionViewModel
+    public sealed class SubTransactionViewModel : TransLikeViewModel, ISubTransactionViewModel
     {
         /// <summary>
         /// Initializes a SubTransactionViewModel.
@@ -49,6 +51,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The amount of money of the exchange of the SubTransaction.
         /// </summary>
-        public override IReactiveProperty<long> Sum { get;  }
+        public override IReactiveProperty<long> Sum { get; }
     }
 }

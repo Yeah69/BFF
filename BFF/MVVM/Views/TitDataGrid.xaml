@@ -9,6 +9,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:structure="clr-namespace:BFF.MVVM.ViewModels.ForModels.Structure"
+             xmlns:helper="clr-namespace:BFF.Helper"
              x:Name="Root"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -910,21 +911,43 @@
                             </TextBox>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                            <TextBox VerticalContentAlignment="Center"
-                                     Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                     TextAlignment="Right">
-                                <TextBox.Text>
-                                    <Binding Converter="{x:Static mvvm:Converters.SumToString}"
-                                             Mode="TwoWay"
-                                             Path="Sum.Value"
-                                             UpdateSourceTrigger="LostFocus">
-                                        <Binding.ValidationRules>
-                                            <x:Static Member="mvvm:Rules.Currency" />
-                                            <x:Static Member="mvvm:Rules.CurrencyLongRange" />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                            </TextBox>
+                            <StackPanel HorizontalAlignment="Stretch"
+                                        Orientation="Horizontal">
+                                <ToggleButton Padding="5,0" MinWidth="20"
+                                              Command="{Binding ToggleSign}">
+                                    <ToggleButton.Style>
+                                        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+                                               TargetType="{x:Type ToggleButton}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SumSign}" Value="{x:Static helper:Sign.Plus}">
+                                                    <Setter Property="Background" Value="{StaticResource IncomeBrush}"></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                            <Setter Property="Background"
+                                                    Value="{StaticResource TransactionBrush}" />
+                                        </Style>
+                                    </ToggleButton.Style>
+                                    <TextBlock Background="Transparent"
+                                               FontWeight="Bold"
+                                               Text="{Binding SumSign, Converter={x:Static mvvm:Converters.SignToString}}" />
+                                </ToggleButton>
+                                <TextBox HorizontalAlignment="Stretch"
+                                         VerticalContentAlignment="Center"
+                                         Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                         TextAlignment="Right">
+                                    <TextBox.Text>
+                                        <Binding Converter="{x:Static mvvm:Converters.SumToString}"
+                                                 Mode="TwoWay"
+                                                 Path="SumAbsolute"
+                                                 UpdateSourceTrigger="LostFocus">
+                                            <Binding.ValidationRules>
+                                                <x:Static Member="mvvm:Rules.Currency" />
+                                                <x:Static Member="mvvm:Rules.CurrencyLongRange" />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                            </StackPanel>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>

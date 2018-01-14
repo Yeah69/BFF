@@ -1,4 +1,5 @@
-﻿using BFF.MVVM.ViewModels.ForModels.Structure;
+﻿using BFF.Helper;
+using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
@@ -18,7 +19,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public IReactiveProperty<long> Sum { get; }
 
+        public Sign SumSign => Sign.Plus;
+        public long SumAbsolute => 0L;
+
         public ReactiveCommand DeleteCommand { get; }
+        public ReactiveCommand ToggleSign { get; }
 
         /// <summary>
         /// Needed to mimic a TIT.
@@ -30,10 +35,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public TransLikeViewModelPlaceholder()
         {
-            Memo = new ReactiveProperty<string>("Content is loading…");
-            Sum = new ReactiveProperty<long>(0L);
-            Cleared = new ReactiveProperty<bool>(false);
+            Memo = new ReactiveProperty<string>("Content is loading…", ReactivePropertyMode.DistinctUntilChanged);
+            Sum = new ReactiveProperty<long>(0L, ReactivePropertyMode.DistinctUntilChanged);
+            Cleared = new ReactiveProperty<bool>(false, ReactivePropertyMode.DistinctUntilChanged);
             DeleteCommand = new ReactiveCommand();
+            ToggleSign = new ReactiveCommand();
         }
 
         #region Overrides of TransLikeViewModel

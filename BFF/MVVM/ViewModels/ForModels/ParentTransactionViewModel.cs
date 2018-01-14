@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -45,9 +46,8 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model ParentTransaction.
     /// </summary>
-    public class ParentTransactionViewModel : TransactionBaseViewModel, IParentTransactionViewModel
+    public sealed class ParentTransactionViewModel : TransactionBaseViewModel, IParentTransactionViewModel
     {
-        private readonly ISubTransactionViewModelService _subTransactionViewModelService;
         private readonly ObservableCollection<ISubTransactionViewModel> _newTransactions;
 
         /// <summary>
@@ -60,7 +60,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Initializes a ParentTransactionViewModel.
         /// </summary>
         /// <param name="parentTransaction">A ParentTransaction Model.</param>
+        /// <param name="newPayeeViewModelFactory">Creates a payee factory.</param>
         /// <param name="subTransactionViewModelService">A service for fetching sub-transactions.</param>
+        /// <param name="flagViewModelService">Fetches flags.</param>
+        /// <param name="accountViewModelService">Fetches accounts.</param>
+        /// <param name="payeeViewModelService">Fetches payees.</param>
         public ParentTransactionViewModel(
             IParentTransaction parentTransaction,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
@@ -75,15 +79,14 @@ namespace BFF.MVVM.ViewModels.ForModels
                 payeeViewModelService,
                 flagViewModelService)
         {
-            _subTransactionViewModelService = subTransactionViewModelService;
             _newTransactions = new ObservableCollection<ISubTransactionViewModel>();
             NewSubElements = new ReadOnlyObservableCollection<ISubTransactionViewModel>(_newTransactions);
 
             SubTransactions =
-                parentTransaction.SubTransactions.ToReadOnlyReactiveCollection(_subTransactionViewModelService
+                parentTransaction.SubTransactions.ToReadOnlyReactiveCollection(subTransactionViewModelService
                     .GetViewModel).AddTo(CompositeDisposable);
 
-            Sum = new ReactiveProperty<long>(SubTransactions.Sum(stvw => stvw.Sum.Value), ReactivePropertyMode.DistinctUntilChanged)
+            Sum = new ReactiveProperty<long>(SubTransactions.Sum(st => st.Sum.Value), ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
             
             Sum.Where(_ => parentTransaction.Id != -1L)
@@ -93,25 +96,31 @@ namespace BFF.MVVM.ViewModels.ForModels
                     Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
                 }).AddTo(CompositeDisposable);
 
-            SubTransactions.ObserveAddChanged().Concat(SubTransactions.ObserveRemoveChanged())
-                .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))//todo: Write an SQL query for that
+            SubTransactions
+                .ObserveAddChanged()
+                .Concat(SubTransactions.ObserveRemoveChanged())
+                .Subscribe(obj => Sum.Value = SubTransactions.Sum(st => st.Sum.Value))//todo: Write an SQL query for that
                 .AddTo(CompositeDisposable);
-            SubTransactions.ObserveReplaceChanged()
-                .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))
+            SubTransactions
+                .ObserveReplaceChanged()
+                .Subscribe(obj => Sum.Value = SubTransactions.Sum(st => st.Sum.Value))
                 .AddTo(CompositeDisposable);
-            SubTransactions.ObserveRemoveChanged()
-                .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))
+            SubTransactions
+                .ObserveRemoveChanged()
+                .Subscribe(obj => Sum.Value = SubTransactions.Sum(st => st.Sum.Value))
                 .AddTo(CompositeDisposable);
-            SubTransactions.ObserveResetChanged()
-                .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))
+            SubTransactions
+                .ObserveResetChanged()
+                .Subscribe(obj => Sum.Value = SubTransactions.Sum(st => st.Sum.Value))
                 .AddTo(CompositeDisposable);
-            SubTransactions.ObserveElementObservableProperty(stvw => stvw.Sum)
-                .Subscribe(obj => Sum.Value = SubTransactions.Sum(stvw => stvw.Sum.Value))
+            SubTransactions
+                .ObserveElementObservableProperty(st => st.Sum)
+                .Subscribe(obj => Sum.Value = SubTransactions.Sum(st => st.Sum.Value))
                 .AddTo(CompositeDisposable);
 
             NewSubElementCommand.Subscribe(_ =>
             {
-                var newSubTransactionViewModel = _subTransactionViewModelService.Create(parentTransaction);
+                var newSubTransactionViewModel = subTransactionViewModelService.Create(parentTransaction);
                 _newTransactions.Add(newSubTransactionViewModel);
             }).AddTo(CompositeDisposable);
 
@@ -130,16 +139,6 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             OpenParentTransactionView.Subscribe(avm =>
                 Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", avm))).AddTo(CompositeDisposable);
-        }
-
-        /// <summary>
-        /// Provides a ViewModel of the given SubElement.
-        /// </summary>
-        /// <param name="subElement">The SubElement, which gets a ViewModel.</param>
-        /// <returns>A new ViewModel for a SubElement.</returns>
-        protected ISubTransactionViewModel CreateNewSubViewModel(ISubTransaction subElement)
-        {
-            return _subTransactionViewModelService.GetViewModel(subElement);
         }
 
         public ReadOnlyReactiveCollection<ISubTransactionViewModel> SubTransactions { get; }
