@@ -299,7 +299,7 @@
                                     <views:BudgetOverviewView DataContext="{Binding BudgetOverviewViewModel}" />
                                     <hm:HamburgerMenuItem.Icon>
                                         <Viewbox Margin="10">
-                                            <iconPacks:PackIconFontAwesome Kind="Money" />
+                                            <iconPacks:PackIconFontAwesome Kind="MoneyBillAltRegular" />
                                         </Viewbox>
                                     </hm:HamburgerMenuItem.Icon>
                                 </hm:HamburgerMenuItem>
