@@ -4,12 +4,12 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
+             xmlns:helper="clr-namespace:BFF.Helper"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:structure="clr-namespace:BFF.MVVM.ViewModels.ForModels.Structure"
-             xmlns:helper="clr-namespace:BFF.Helper"
              x:Name="Root"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -451,6 +451,9 @@
                                        Placement="Right"
                                        PlacementTarget="{Binding ElementName=EditPayeeComboBox}"
                                        PopupAnimation="Slide"
+                                       Opened="Popup_OnOpened"
+                                       Closed="Popup_OnClosed"
+                                       PreviewKeyDown="Popup_OnPreviewKeyDown"
                                        StaysOpen="False">
                                     <StackPanel>
                                         <StackPanel Orientation="Horizontal">
@@ -458,7 +461,7 @@
                                                        VerticalAlignment="Center"
                                                        Text="{lex:LocText NameOfNewPayee,
                                                                           Suffix=:}" />
-                                            <TextBox MinWidth="50"
+                                            <TextBox x:Name="FocusMe" MinWidth="50"
                                                      BorderBrush="{StaticResource AccentColorBrush}"
                                                      Focusable="True"
                                                      Text="{Binding NewPayeeViewModel.PayeeText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -610,6 +613,9 @@
                                        Placement="Right"
                                        PlacementTarget="{Binding ElementName=EditCategoryComboBox}"
                                        PopupAnimation="Slide"
+                                       Opened="Popup_OnOpened"
+                                       Closed="Popup_OnClosed"
+                                       PreviewKeyDown="Popup_OnPreviewKeyDown"
                                        StaysOpen="False">
                                     <Border MinWidth="50"
                                             Padding="0"
@@ -633,7 +639,7 @@
                                                            VerticalAlignment="Center"
                                                            Text="{lex:LocText NameOfNewCategory,
                                                                               Suffix=:}" />
-                                                <TextBox x:Name="TextBox"
+                                                <TextBox x:Name="FocusMe"
                                                          Grid.Row="0"
                                                          Grid.Column="1"
                                                          Focusable="True"
@@ -913,14 +919,17 @@
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                             <StackPanel HorizontalAlignment="Stretch"
                                         Orientation="Horizontal">
-                                <ToggleButton Padding="5,0" MinWidth="20"
+                                <ToggleButton MinWidth="20"
+                                              Padding="5,0"
                                               Command="{Binding ToggleSign}">
                                     <ToggleButton.Style>
                                         <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
                                                TargetType="{x:Type ToggleButton}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding SumSign}" Value="{x:Static helper:Sign.Plus}">
-                                                    <Setter Property="Background" Value="{StaticResource IncomeBrush}"></Setter>
+                                                <DataTrigger Binding="{Binding SumSign}"
+                                                             Value="{x:Static helper:Sign.Plus}">
+                                                    <Setter Property="Background"
+                                                            Value="{StaticResource IncomeBrush}" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                             <Setter Property="Background"

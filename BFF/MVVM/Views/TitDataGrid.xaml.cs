@@ -233,5 +233,39 @@ namespace BFF.MVVM.Views
                 scrollViewer.ScrollToBottom();
             }
         }
+
+        private IInputElement focusedBeforeOpen = null;
+
+        private void Popup_OnOpened(object sender, EventArgs e)
+        {
+            if (sender is Popup popup)
+            {
+                focusedBeforeOpen = Keyboard.FocusedElement;
+                var focusMe = popup.FindName("FocusMe") as IInputElement;
+                focusMe?.Focus();
+                if(focusMe != null) Keyboard.Focus(focusMe);
+            }
+        }
+
+        private void Popup_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (sender is Popup popup)
+            {
+                switch (e.Key)
+                {
+                    case Key.Escape:
+                        popup.IsOpen = false;
+                        e.Handled = true;
+                        break;
+                }
+            }
+        }
+
+        private void Popup_OnClosed(object sender, EventArgs e)
+        {
+            focusedBeforeOpen?.Focus();
+            if (focusedBeforeOpen != null) Keyboard.Focus(focusedBeforeOpen);
+            focusedBeforeOpen = null;
+        }
     }
 }
