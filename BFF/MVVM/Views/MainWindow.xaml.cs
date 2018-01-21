@@ -8,12 +8,11 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using BFF.Helper.Import;
 using BFF.MVVM.ViewModels;
-using BFF.MVVM.Views;
 using BFF.Properties;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 
-namespace BFF
+namespace BFF.MVVM.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

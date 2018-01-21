@@ -19,7 +19,7 @@ namespace BFF
             Logger.Trace("Initializing App");
             InitializeComponent();
 
-            MainWindow mainWindow = new MainWindow();
+            MVVM.Views.MainWindow mainWindow = new MVVM.Views.MainWindow();
             mainWindow.Show();
             
             
