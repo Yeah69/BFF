@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reactive.Linq;
-using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using MuVaViMo;
@@ -43,16 +42,20 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Initializes a TransIncBaseViewModel.
         /// </summary>
-        /// <param name="orm">Used for the database accesses.</param>
         /// <param name="parentTransactionBase">The model.</param>
+        /// <param name="newPayeeViewModelFactory">Creates a new payee.</param>
         /// <param name="accountViewModelService">Service of accounts.</param>
+        /// <param name="createSumEdit">Creates a sum editing viewmodel.</param>
         /// <param name="payeeViewModelService">Service of payees.</param>
+        /// <param name="flagViewModelService">Fetches flags.</param>
         protected TransactionBaseViewModel(
             ITransactionBase parentTransactionBase,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IAccountViewModelService accountViewModelService,
+            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit,
             IPayeeViewModelService payeeViewModelService,
-            IFlagViewModelService flagViewModelService) : base(parentTransactionBase, flagViewModelService)
+            IFlagViewModelService flagViewModelService) 
+            : base(parentTransactionBase, flagViewModelService, createSumEdit)
         {
             _accountViewModelService = accountViewModelService;
 

@@ -727,6 +727,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name of new category.
         /// </summary>
         public static string NameOfNewCategory {
@@ -786,6 +795,24 @@ namespace BFF.Properties {
         public static string OpenSaveDialog_TitleOpen {
             get {
                 return ResourceManager.GetString("OpenSaveDialog_TitleOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting Balance.
+        /// </summary>
+        public static string StartingBalance {
+            get {
+                return ResourceManager.GetString("StartingBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting Date.
+        /// </summary>
+        public static string StartingDate {
+            get {
+                return ResourceManager.GetString("StartingDate", resourceCulture);
             }
         }
         

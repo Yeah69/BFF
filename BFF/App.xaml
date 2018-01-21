@@ -4,6 +4,9 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:helper="clr-namespace:BFF.Helper"
+             xmlns:mvvm="clr-namespace:BFF.MVVM"
+             xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
              Startup="Application_Startup">
     <!--  DispatcherUnhandledException="Application_DispatcherUnhandledException">  -->
     <Application.Resources>
@@ -61,6 +64,57 @@
             </Style>
             <Style BasedOn="{StaticResource BffGeneralButtonStyle}"
                    TargetType="{x:Type Button}" />
+
+            <Style x:Key="CellTextBlock"
+                   TargetType="TextBlock">
+                <Setter Property="Padding"
+                        Value="5,0,0,0" />
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+            </Style>
+
+            <DataTemplate x:Key="SumEditTemplate" DataType="{x:Type viewModels:ISumEditViewModel}">
+                <StackPanel HorizontalAlignment="Stretch"
+                                        Orientation="Horizontal">
+                    <ToggleButton MinWidth="20"
+                                              Padding="5,0"
+                                              Command="{Binding ToggleSign}">
+                        <ToggleButton.Style>
+                            <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+                                               TargetType="{x:Type ToggleButton}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SumSign}"
+                                                             Value="{x:Static helper:Sign.Plus}">
+                                        <Setter Property="Background"
+                                                            Value="{StaticResource IncomeBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                                <Setter Property="Background"
+                                                    Value="{StaticResource TransactionBrush}" />
+                            </Style>
+                        </ToggleButton.Style>
+                        <TextBlock Background="Transparent"
+                                               FontWeight="Bold"
+                                               Text="{Binding SumSign, Converter={x:Static mvvm:Converters.SignToString}}" />
+                    </ToggleButton>
+                    <TextBox HorizontalAlignment="Stretch"
+                                         VerticalContentAlignment="Center"
+                                         Foreground="{Binding Sum, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                         TextAlignment="Right">
+                        <TextBox.Text>
+                            <Binding Converter="{x:Static mvvm:Converters.SumToString}"
+                                                 Mode="TwoWay"
+                                                 Path="SumAbsolute"
+                                                 UpdateSourceTrigger="LostFocus">
+                                <Binding.ValidationRules>
+                                    <x:Static Member="mvvm:Rules.Currency" />
+                                    <x:Static Member="mvvm:Rules.CurrencyLongRange" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </StackPanel>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

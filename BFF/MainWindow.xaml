@@ -229,6 +229,13 @@
                                    ShowRowDetailsMode="Visible"
                                    TransList="{Binding ParentTitViewModel.ParentTitSource}" />
             </controls:Flyout>
+            <controls:Flyout x:Name="EditAccountsFlyout"
+                             IsModal="True"
+                             Position="Right">
+                <ContentControl Visibility="{Binding EditAccountsViewModel, Converter={x:Static mvvm:Converters.NullToCollapsed}}">
+                    <views:EditAccountsView DataContext="{Binding EditAccountsViewModel}" />
+                </ContentControl>
+            </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
 
@@ -242,14 +249,16 @@
 
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Name="SettingsButt"
-                    Click="SettingsButt_Click">
+            <Button Click="EditAccounts_OnClick"
+                    Content="{lex:Loc HamburgerMenu_Accounts}"
+                    Visibility="{Binding EditAccountsViewModel, Converter={x:Static mvvm:Converters.NullToCollapsed}}" />
+            <Button Content="{lex:Loc MainWindow_About}" />
+            <Button Click="SettingsButt_Click">
                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"
                                             Kind="{StaticResource SettingsIcon}" />
             </Button>
-            <Button Name="AboutButt"
-                    Content="{lex:Loc MainWindow_About}" />
+            <Button Content="{lex:Loc MainWindow_About}" />
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 

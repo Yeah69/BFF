@@ -9,6 +9,8 @@ namespace BFF
 
         IBudgetOverviewViewModel BudgetOverviewViewModel { get; }
         IAccountTabsViewModel AccountTabsViewModel { get; }
+
+        IEditAccountsViewModel EditAccountsViewModel { get; }
     }
 
     public abstract class BackendContext : ObservableObject, IBackendContext
@@ -17,5 +19,6 @@ namespace BFF
 
         public abstract IBudgetOverviewViewModel BudgetOverviewViewModel { get; }
         public abstract IAccountTabsViewModel AccountTabsViewModel { get; }
+        public abstract IEditAccountsViewModel EditAccountsViewModel { get; }
     }
 }

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB.Dapper.ModelRepositories;
-using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -18,6 +17,8 @@ namespace BFF.MVVM.ViewModels.ForModels
     public interface IAccountViewModel : IAccountBaseViewModel
     {
         IReactiveProperty<DateTime> StartingDate { get; }
+
+        ISumEditViewModel StartingBalanceEdit { get; }
     }
 
     /// <summary>
@@ -36,6 +37,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
 
         public IReactiveProperty<DateTime> StartingDate { get; }
+        public ISumEditViewModel StartingBalanceEdit { get; }
 
         /// <summary>
         /// Uses the OR mapper to insert the model into the database. Inner function for the Insert method.
@@ -60,6 +62,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IAccountRepository accountRepository,
             Lazy<IAccountViewModelService> accountViewModelService,
             IParentTransactionViewModelService parentTransactionViewModelService,
+            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit,
             Func<IAccount, ITransactionViewModel> transactionViewModelFactory,
             Func<ITransferViewModel> transferViewModelFactory,
             Func<IAccount, IParentTransactionViewModel> parentTransactionViewModelFactory,
@@ -75,6 +78,8 @@ namespace BFF.MVVM.ViewModels.ForModels
             _account = account;
             _transRepository = transRepository;
             _accountRepository = accountRepository;
+
+            StartingBalanceEdit = createSumEdit(() => StartingBalance.Value, l => StartingBalance.Value = l);
             StartingBalance = account
                 .ToReactivePropertyAsSynchronized(a => a.StartingBalance, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
@@ -84,8 +89,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             StartingDate = account
                 .ToReactivePropertyAsSynchronized(a => a.StartingDate, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
-
-            //summaryAccountViewModel.RefreshStartingBalance();
 
             NewTransactionCommand.Subscribe(_ => NewTransList.Add(transactionViewModelFactory(_account))).AddTo(CompositeDisposable);
 

@@ -108,14 +108,6 @@
                         Value="False" />
             </Style>
 
-            <Style x:Key="CellTextBlock"
-                   TargetType="TextBlock">
-                <Setter Property="Padding"
-                        Value="5,0,0,0" />
-                <Setter Property="VerticalAlignment"
-                        Value="Center" />
-            </Style>
-
             <Style x:Key="CellIconMaterial"
                    TargetType="iconPacks:PackIconMaterial">
                 <Setter Property="VerticalAlignment"
@@ -448,11 +440,11 @@
                                                                 Style="{StaticResource CellIconMaterial}" />
                                 </Button>
                                 <Popup x:Name="Popup"
+                                       Closed="Popup_OnClosed"
+                                       Opened="Popup_OnOpened"
                                        Placement="Right"
                                        PlacementTarget="{Binding ElementName=EditPayeeComboBox}"
                                        PopupAnimation="Slide"
-                                       Opened="Popup_OnOpened"
-                                       Closed="Popup_OnClosed"
                                        PreviewKeyDown="Popup_OnPreviewKeyDown"
                                        StaysOpen="False">
                                     <StackPanel>
@@ -461,7 +453,8 @@
                                                        VerticalAlignment="Center"
                                                        Text="{lex:LocText NameOfNewPayee,
                                                                           Suffix=:}" />
-                                            <TextBox x:Name="FocusMe" MinWidth="50"
+                                            <TextBox x:Name="FocusMe"
+                                                     MinWidth="50"
                                                      BorderBrush="{StaticResource AccentColorBrush}"
                                                      Focusable="True"
                                                      Text="{Binding NewPayeeViewModel.PayeeText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -610,11 +603,11 @@
                                                                 Style="{StaticResource CellIconMaterial}" />
                                 </Button>
                                 <Popup x:Name="Popup"
+                                       Closed="Popup_OnClosed"
+                                       Opened="Popup_OnOpened"
                                        Placement="Right"
                                        PlacementTarget="{Binding ElementName=EditCategoryComboBox}"
                                        PopupAnimation="Slide"
-                                       Opened="Popup_OnOpened"
-                                       Closed="Popup_OnClosed"
                                        PreviewKeyDown="Popup_OnPreviewKeyDown"
                                        StaysOpen="False">
                                     <Border MinWidth="50"
@@ -917,46 +910,7 @@
                             </TextBox>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                            <StackPanel HorizontalAlignment="Stretch"
-                                        Orientation="Horizontal">
-                                <ToggleButton MinWidth="20"
-                                              Padding="5,0"
-                                              Command="{Binding ToggleSign}">
-                                    <ToggleButton.Style>
-                                        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
-                                               TargetType="{x:Type ToggleButton}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding SumSign}"
-                                                             Value="{x:Static helper:Sign.Plus}">
-                                                    <Setter Property="Background"
-                                                            Value="{StaticResource IncomeBrush}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                            <Setter Property="Background"
-                                                    Value="{StaticResource TransactionBrush}" />
-                                        </Style>
-                                    </ToggleButton.Style>
-                                    <TextBlock Background="Transparent"
-                                               FontWeight="Bold"
-                                               Text="{Binding SumSign, Converter={x:Static mvvm:Converters.SignToString}}" />
-                                </ToggleButton>
-                                <TextBox HorizontalAlignment="Stretch"
-                                         VerticalContentAlignment="Center"
-                                         Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                         TextAlignment="Right">
-                                    <TextBox.Text>
-                                        <Binding Converter="{x:Static mvvm:Converters.SumToString}"
-                                                 Mode="TwoWay"
-                                                 Path="SumAbsolute"
-                                                 UpdateSourceTrigger="LostFocus">
-                                            <Binding.ValidationRules>
-                                                <x:Static Member="mvvm:Rules.Currency" />
-                                                <x:Static Member="mvvm:Rules.CurrencyLongRange" />
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                    </TextBox.Text>
-                                </TextBox>
-                            </StackPanel>
+                            <ContentControl Content="{Binding SumEdit}" ContentTemplate="{StaticResource SumEditTemplate}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>

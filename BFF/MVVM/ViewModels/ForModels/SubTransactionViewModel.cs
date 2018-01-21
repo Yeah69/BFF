@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Reactive.Linq;
-using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -23,13 +21,15 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Initializes a SubTransactionViewModel.
         /// </summary>
         /// <param name="subTransaction">A SubTransaction Model.</param>
-        /// <param name="parent">The ViewModel of the Model's ParentTransaction.</param>
-        /// <param name="orm">Used for the database accesses.</param>
+        /// <param name="newCategoryViewModelFactory">Creates a category factory.</param>
+        /// <param name="createSumEdit">Creates a sum editing viewmodel.</param>
+        /// <param name="categoryViewModelService">Fetches categories.</param>
         public SubTransactionViewModel(
             ISubTransaction subTransaction,
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
-            ICategoryBaseViewModelService categoryViewModelService) :
-            base(subTransaction)
+            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit,
+            ICategoryBaseViewModelService categoryViewModelService)
+            : base(subTransaction, createSumEdit)
         {
             Category = subTransaction.ToReactivePropertyAsSynchronized(
                 sti => sti.Category,

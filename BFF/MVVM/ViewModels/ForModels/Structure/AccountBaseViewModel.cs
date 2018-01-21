@@ -145,8 +145,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Initializes a AccountBaseViewModel.
         /// </summary>
-        /// <param name="orm">Used for the database accesses.</param>
         /// <param name="account">The model.</param>
+        /// <param name="accountViewModelService">Fetches accounts.</param>
+        /// <param name="parentTransactionViewModelService">Fetches parent transactions</param>
+        /// <param name="transactionViewModelFactory">Creates transactions.</param>
+        /// <param name="transferViewModelFactory">Creates transfers.</param>
         protected AccountBaseViewModel(
             IAccount account,
             Lazy<IAccountViewModelService> accountViewModelService,

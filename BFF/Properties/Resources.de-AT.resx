@@ -130,7 +130,7 @@
     <value>Anfangskontostand:</value>
   </data>
   <data name="AccountTabsView_NewAccount_StartingDate" xml:space="preserve">
-    <value>Starting Date:</value>
+    <value>Anfangsdatum:</value>
   </data>
   <data name="AccountView_Balance" xml:space="preserve">
     <value>Kontostand:</value>
@@ -339,6 +339,9 @@
   <data name="MainWindow_Settings_Theme" xml:space="preserve">
     <value>Thema:</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="NameOfNewCategory" xml:space="preserve">
     <value>Name of new category</value>
   </data>
@@ -359,6 +362,12 @@
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Öffne einen Finanzplan</value>
+  </data>
+  <data name="StartingBalance" xml:space="preserve">
+    <value>Anfangskontostand</value>
+  </data>
+  <data name="StartingDate" xml:space="preserve">
+    <value>Anfangsdatum</value>
   </data>
   <data name="SuperiorCategory" xml:space="preserve">
     <value>Superior Category</value>

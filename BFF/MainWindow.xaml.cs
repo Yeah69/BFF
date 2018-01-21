@@ -29,7 +29,7 @@ namespace BFF
                 }));
 
         private readonly Func<(string, string, string), IYnabCsvImport> _ynabCsvImportFactory;
-        private Func<IYnabCsvImport, IImportDialogViewModel> _importDialogViewModelFactory;
+        private readonly Func<IYnabCsvImport, IImportDialogViewModel> _importDialogViewModelFactory;
 
         public ICommand ImportCommand
         {
@@ -147,6 +147,11 @@ namespace BFF
                     Dispatcher.Invoke(() => ImportCommand.Execute(importDialogVm.Importable), DispatcherPriority.Background);
             };
             this.ShowMetroDialogAsync(importDialog);
+        }
+
+        private void EditAccounts_OnClick(object sender, RoutedEventArgs e)
+        {
+            EditAccountsFlyout.IsOpen = true;
         }
     }
 

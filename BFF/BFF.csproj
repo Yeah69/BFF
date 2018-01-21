@@ -104,8 +104,8 @@
     <Reference Include="MoreLinq, Version=2.9.21302.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
       <HintPath>..\packages\morelinq.2.9.0\lib\net40\MoreLinq.dll</HintPath>
     </Reference>
-    <Reference Include="MuVaViMo, Version=0.2.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MuVaViMo.0.2.0\lib\netstandard1.0\MuVaViMo.dll</HintPath>
+    <Reference Include="MuVaViMo, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MuVaViMo.0.3.0\lib\netstandard1.0\MuVaViMo.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
@@ -325,6 +325,7 @@
     </Compile>
     <Compile Include="MVVM\ViewModels\BudgetMonthViewModel.cs" />
     <Compile Include="MVVM\ViewModels\BudgetOverviewViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\EditAccountsViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\CategoryBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\BudgetEntryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\CategoryViewModel.cs" />
@@ -352,6 +353,7 @@
     <Compile Include="MVVM\ViewModels\EmptyContentViewModel.cs" />
     <Compile Include="MVVM\ViewModels\AccountTabsViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ITransientViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\SumEditViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelBase.cs" />
     <Compile Include="MVVM\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="MVVM\ViewModels\NewCategoryViewModel.cs" />
@@ -367,6 +369,9 @@
     </Compile>
     <Compile Include="MVVM\Views\BudgetOverviewView.xaml.cs">
       <DependentUpon>BudgetOverviewView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\EditAccountsView.xaml.cs">
+      <DependentUpon>EditAccountsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\ImportDialog.xaml.cs">
       <DependentUpon>ImportDialog.xaml</DependentUpon>
@@ -412,6 +417,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MVVM\Views\BudgetOverviewView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\Views\EditAccountsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

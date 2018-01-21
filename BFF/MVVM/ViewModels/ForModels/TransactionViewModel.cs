@@ -26,6 +26,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <param name="newPayeeViewModelFactory">Creates a payee factory.</param>
         /// <param name="accountViewModelService">Service of accounts.</param>
         /// <param name="payeeViewModelService">Service of payees.</param>
+        /// <param name="createSumEdit">Creates a sum editing viewmodel.</param>
         /// <param name="categoryViewModelService">Service of categories.</param>
         /// <param name="flagViewModelService">Fetches flags.</param>
         /// <param name="newCategoryViewModelFactory">Creates a category factory.</param>
@@ -35,9 +36,10 @@ namespace BFF.MVVM.ViewModels.ForModels
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
+            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit,
             ICategoryBaseViewModelService categoryViewModelService,
             IFlagViewModelService flagViewModelService)
-            : base(transaction, newPayeeViewModelFactory, accountViewModelService, payeeViewModelService, flagViewModelService)
+            : base(transaction, newPayeeViewModelFactory, accountViewModelService, createSumEdit, payeeViewModelService, flagViewModelService)
         {
             Category = transaction.ToReactivePropertyAsSynchronized(
                     ti => ti.Category,

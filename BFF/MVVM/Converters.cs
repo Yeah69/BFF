@@ -263,5 +263,8 @@ namespace BFF.MVVM
                         return IncomeBrush;
                     return Brushes.Transparent; //Error case
                 });
+
+        public static readonly IValueConverter NullToCollapsed =
+            ValueConverter.Create<object, Visibility>(e => e.Value == null ? Visibility.Collapsed : Visibility.Visible);
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
-using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -64,6 +63,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <param name="subTransactionViewModelService">A service for fetching sub-transactions.</param>
         /// <param name="flagViewModelService">Fetches flags.</param>
         /// <param name="accountViewModelService">Fetches accounts.</param>
+        /// <param name="createSumEdit">Creates sum editing viewmodel.</param>
         /// <param name="payeeViewModelService">Fetches payees.</param>
         public ParentTransactionViewModel(
             IParentTransaction parentTransaction,
@@ -71,11 +71,13 @@ namespace BFF.MVVM.ViewModels.ForModels
             ISubTransactionViewModelService subTransactionViewModelService, 
             IFlagViewModelService flagViewModelService,
             IAccountViewModelService accountViewModelService,
+            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit,
             IPayeeViewModelService payeeViewModelService) 
             : base(
                 parentTransaction,
                 newPayeeViewModelFactory,
                 accountViewModelService,
+                createSumEdit,
                 payeeViewModelService,
                 flagViewModelService)
         {

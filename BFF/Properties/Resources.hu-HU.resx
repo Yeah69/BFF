@@ -339,6 +339,9 @@
   <data name="MainWindow_Settings_Theme" xml:space="preserve">
     <value>Téma:</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="NameOfNewCategory" xml:space="preserve">
     <value>Name of new category</value>
   </data>
@@ -359,6 +362,12 @@
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Pénzügyi terv megnyitása</value>
+  </data>
+  <data name="StartingBalance" xml:space="preserve">
+    <value>Kiinduló számlaegyenleg</value>
+  </data>
+  <data name="StartingDate" xml:space="preserve">
+    <value>Starting Date</value>
   </data>
   <data name="SuperiorCategory" xml:space="preserve">
     <value>Superior Category</value>

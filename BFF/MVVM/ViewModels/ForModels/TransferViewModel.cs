@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reactive.Linq;
-using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -52,11 +51,13 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         /// <param name="transfer">A Transfer Model.</param>
         /// <param name="accountViewModelService">Fetches the accounts.</param>
+        /// <param name="createSumEdit">Creates a sum editing viewmodel.</param>
         /// <param name="flagViewModelService">Fetches the flags.</param>
         public TransferViewModel(
             ITransfer transfer, 
             IAccountViewModelService accountViewModelService,
-            IFlagViewModelService flagViewModelService) : base(transfer, flagViewModelService)
+            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit,
+            IFlagViewModelService flagViewModelService) : base(transfer, flagViewModelService, createSumEdit)
         {
             _accountViewModelService = accountViewModelService;
 

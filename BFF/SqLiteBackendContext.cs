@@ -32,7 +32,8 @@ namespace BFF
             Func<ISummaryAccount> summaryAccount,
             Func<ISummaryAccountViewModel> summaryAccountViewModel,
             Lazy<IBudgetOverviewViewModel> lazyBudgetOverviewViewModel,
-            Lazy<IAccountTabsViewModel> lazyAccountTabsViewModel)
+            Lazy<IAccountTabsViewModel> lazyAccountTabsViewModel,
+            Lazy<IEditAccountsViewModel> lazyEditAccountsViewModel)
         {
             provideSqLiteConnectionFactory(dbPath);
             accountRepository();
@@ -50,9 +51,11 @@ namespace BFF
             summaryAccountViewModel();
             BudgetOverviewViewModel = lazyBudgetOverviewViewModel.Value;
             AccountTabsViewModel = lazyAccountTabsViewModel.Value;
+            EditAccountsViewModel = lazyEditAccountsViewModel.Value;
         }
 
         public override IBudgetOverviewViewModel BudgetOverviewViewModel { get; } 
         public override IAccountTabsViewModel AccountTabsViewModel { get; }
+        public override IEditAccountsViewModel EditAccountsViewModel { get; }
     }
 }
