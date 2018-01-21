@@ -61,6 +61,42 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Balance.
+        /// </summary>
+        public static string Account_Balance {
+            get {
+                return ResourceManager.GetString("Account_Balance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Name.
+        /// </summary>
+        public static string Account_Name {
+            get {
+                return ResourceManager.GetString("Account_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting Balance.
+        /// </summary>
+        public static string Account_StartingBalance {
+            get {
+                return ResourceManager.GetString("Account_StartingBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting Date.
+        /// </summary>
+        public static string Account_StartingDate {
+            get {
+                return ResourceManager.GetString("Account_StartingDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Accounts.
         /// </summary>
         public static string AccountTabsView_AllAccounts {
@@ -75,42 +111,6 @@ namespace BFF.Properties {
         public static string AccountTabsView_NewAccount_Create {
             get {
                 return ResourceManager.GetString("AccountTabsView_NewAccount_Create", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Account Name:.
-        /// </summary>
-        public static string AccountTabsView_NewAccount_Name {
-            get {
-                return ResourceManager.GetString("AccountTabsView_NewAccount_Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Starting Balance:.
-        /// </summary>
-        public static string AccountTabsView_NewAccount_StartingBalance {
-            get {
-                return ResourceManager.GetString("AccountTabsView_NewAccount_StartingBalance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Starting Date:.
-        /// </summary>
-        public static string AccountTabsView_NewAccount_StartingDate {
-            get {
-                return ResourceManager.GetString("AccountTabsView_NewAccount_StartingDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Balance:.
-        /// </summary>
-        public static string AccountView_Balance {
-            get {
-                return ResourceManager.GetString("AccountView_Balance", resourceCulture);
             }
         }
         
@@ -228,15 +228,6 @@ namespace BFF.Properties {
         public static string AccountView_Header_SymbolAbbr_Tooltip {
             get {
                 return ResourceManager.GetString("AccountView_Header_SymbolAbbr_Tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Starting Balance:.
-        /// </summary>
-        public static string AccountView_StartingBalance {
-            get {
-                return ResourceManager.GetString("AccountView_StartingBalance", resourceCulture);
             }
         }
         
@@ -502,6 +493,51 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Long.
+        /// </summary>
+        public static string General_Long {
+            get {
+                return ResourceManager.GetString("General_Long", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string General_Name {
+            get {
+                return ResourceManager.GetString("General_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Negative.
+        /// </summary>
+        public static string General_Negative {
+            get {
+                return ResourceManager.GetString("General_Negative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Positive.
+        /// </summary>
+        public static string General_Positive {
+            get {
+                return ResourceManager.GetString("General_Positive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short.
+        /// </summary>
+        public static string General_Short {
+            get {
+                return ResourceManager.GetString("General_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Accounts.
         /// </summary>
         public static string HamburgerMenu_Accounts {
@@ -637,105 +673,6 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accents:.
-        /// </summary>
-        public static string MainWindow_Settings_Accents {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Accents", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Currency format:.
-        /// </summary>
-        public static string MainWindow_Settings_Currency {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Currency", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Negative:.
-        /// </summary>
-        public static string MainWindow_Settings_Currency_Negative {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Currency_Negative", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Positive:.
-        /// </summary>
-        public static string MainWindow_Settings_Currency_Positive {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Currency_Positive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date format:.
-        /// </summary>
-        public static string MainWindow_Settings_Date {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Long:.
-        /// </summary>
-        public static string MainWindow_Settings_Date_Long {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Date_Long", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to :Long.
-        /// </summary>
-        public static string MainWindow_Settings_Date_Long_Inverted {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Date_Long_Inverted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Short:.
-        /// </summary>
-        public static string MainWindow_Settings_Date_Short {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Date_Short", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Language:.
-        /// </summary>
-        public static string MainWindow_Settings_Language {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Language", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Theme:.
-        /// </summary>
-        public static string MainWindow_Settings_Theme {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Theme", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        public static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Name of new category.
         /// </summary>
         public static string NameOfNewCategory {
@@ -799,20 +736,47 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starting Balance.
+        ///   Looks up a localized string similar to Accents.
         /// </summary>
-        public static string StartingBalance {
+        public static string Settings_Accents {
             get {
-                return ResourceManager.GetString("StartingBalance", resourceCulture);
+                return ResourceManager.GetString("Settings_Accents", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starting Date.
+        ///   Looks up a localized string similar to Currency format.
         /// </summary>
-        public static string StartingDate {
+        public static string Settings_Currency {
             get {
-                return ResourceManager.GetString("StartingDate", resourceCulture);
+                return ResourceManager.GetString("Settings_Currency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date format.
+        /// </summary>
+        public static string Settings_Date {
+            get {
+                return ResourceManager.GetString("Settings_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Settings_Language {
+            get {
+                return ResourceManager.GetString("Settings_Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        public static string Settings_Theme {
+            get {
+                return ResourceManager.GetString("Settings_Theme", resourceCulture);
             }
         }
         

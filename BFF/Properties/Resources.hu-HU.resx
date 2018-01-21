@@ -123,17 +123,11 @@
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
     <value>Létrehozás</value>
   </data>
-  <data name="AccountTabsView_NewAccount_Name" xml:space="preserve">
-    <value>Számla neve:</value>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Számla neve</value>
   </data>
-  <data name="AccountTabsView_NewAccount_StartingBalance" xml:space="preserve">
-    <value>Kiinduló számlaegyenleg:</value>
-  </data>
-  <data name="AccountTabsView_NewAccount_StartingDate" xml:space="preserve">
-    <value>Starting Date:</value>
-  </data>
-  <data name="AccountView_Balance" xml:space="preserve">
-    <value>Számlaegyenleg:</value>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Számlaegyenleg</value>
   </data>
   <data name="AccountView_Column_Transfer" xml:space="preserve">
     <value>Átutalás</value>
@@ -173,9 +167,6 @@
   </data>
   <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
     <value>Szimbólum</value>
-  </data>
-  <data name="AccountView_StartingBalance" xml:space="preserve">
-    <value>Kiinduló számlaegyenleg:</value>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
     <value>Táblázatba felvenni</value>
@@ -309,37 +300,34 @@
   <data name="MainWindow_Settings" xml:space="preserve">
     <value>Beállítások</value>
   </data>
-  <data name="MainWindow_Settings_Accents" xml:space="preserve">
+  <data name="Settings_Accents" xml:space="preserve">
     <value>Szín</value>
   </data>
-  <data name="MainWindow_Settings_Currency" xml:space="preserve">
+  <data name="Settings_Currency" xml:space="preserve">
     <value>Pénznem</value>
   </data>
-  <data name="MainWindow_Settings_Currency_Negative" xml:space="preserve">
+  <data name="General_Negative" xml:space="preserve">
     <value>pozitív</value>
   </data>
-  <data name="MainWindow_Settings_Currency_Positive" xml:space="preserve">
+  <data name="General_Positive" xml:space="preserve">
     <value>negatív</value>
   </data>
-  <data name="MainWindow_Settings_Date" xml:space="preserve">
+  <data name="Settings_Date" xml:space="preserve">
     <value>Dátumformátum</value>
   </data>
-  <data name="MainWindow_Settings_Date_Long" xml:space="preserve">
+  <data name="General_Long" xml:space="preserve">
     <value>hosszú</value>
   </data>
-  <data name="MainWindow_Settings_Date_Long_Inverted" xml:space="preserve">
-    <value>:hosszú</value>
+  <data name="General_Short" xml:space="preserve">
+    <value>rövid</value>
   </data>
-  <data name="MainWindow_Settings_Date_Short" xml:space="preserve">
-    <value>rövid:</value>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Nyelv</value>
   </data>
-  <data name="MainWindow_Settings_Language" xml:space="preserve">
-    <value>Nyelv:</value>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Téma</value>
   </data>
-  <data name="MainWindow_Settings_Theme" xml:space="preserve">
-    <value>Téma:</value>
-  </data>
-  <data name="Name" xml:space="preserve">
+  <data name="General_Name" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="NameOfNewCategory" xml:space="preserve">
@@ -363,10 +351,10 @@
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Pénzügyi terv megnyitása</value>
   </data>
-  <data name="StartingBalance" xml:space="preserve">
+  <data name="Account_StartingBalance" xml:space="preserve">
     <value>Kiinduló számlaegyenleg</value>
   </data>
-  <data name="StartingDate" xml:space="preserve">
+  <data name="Account_StartingDate" xml:space="preserve">
     <value>Starting Date</value>
   </data>
   <data name="SuperiorCategory" xml:space="preserve">
