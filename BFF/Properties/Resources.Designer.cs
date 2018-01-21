@@ -70,6 +70,24 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create new Account.
+        /// </summary>
+        public static string Account_CreateNew {
+            get {
+                return ResourceManager.GetString("Account_CreateNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Accounts.
+        /// </summary>
+        public static string Account_Edit {
+            get {
+                return ResourceManager.GetString("Account_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account Name.
         /// </summary>
         public static string Account_Name {

@@ -380,6 +380,9 @@
       <DependentUpon>AccountView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\ObservableObject.cs" />
+    <Compile Include="MVVM\Views\NewAccountView.xaml.cs">
+      <DependentUpon>NewAccountView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\Views\TitDataGrid.xaml.cs">
       <DependentUpon>TitDataGrid.xaml</DependentUpon>
     </Compile>
@@ -429,6 +432,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MVVM\Views\AccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\Views\NewAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -16,15 +16,21 @@ namespace BFF.MVVM.ViewModels
         ReadOnlyObservableCollection<IAccountViewModel> All { get; }
 
         bool IsDateLong { get; }
+
+        INewAccountViewModel NewAccountViewModel { get; }
     }
 
     public class EditAccountsViewModel : ObservableObject, IEditAccountsViewModel, IDisposable, IOncePerBackend
     {
+        public INewAccountViewModel NewAccountViewModel { get; }
         public ReadOnlyObservableCollection<IAccountViewModel> All { get; }
         public bool IsDateLong => Settings.Default.Culture_DefaultDateLong;
 
-        public EditAccountsViewModel(IAccountViewModelService service)
+        public EditAccountsViewModel(
+            IAccountViewModelService service,
+            INewAccountViewModel newAccountViewModel)
         {
+            NewAccountViewModel = newAccountViewModel;
             All = service.All.ToReadOnlyObservableCollection();
             
             Messenger.Default.Register<CultureMessage>(this, message =>

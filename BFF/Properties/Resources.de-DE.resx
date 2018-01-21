@@ -123,12 +123,6 @@
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
     <value>Erstellen</value>
   </data>
-  <data name="Account_Name" xml:space="preserve">
-    <value>Kontoname</value>
-  </data>
-  <data name="Account_Balance" xml:space="preserve">
-    <value>Kontostand</value>
-  </data>
   <data name="AccountView_Column_Transfer" xml:space="preserve">
     <value>Transfer</value>
   </data>
@@ -179,6 +173,24 @@
   </data>
   <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
     <value>Neuer Umbuchung</value>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Kontostand</value>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Neues Konto erstellen</value>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Konten bearbeiten</value>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Kontoname</value>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Anfangskontostand</value>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Anfangsdatum</value>
   </data>
   <data name="Budgeting_Available" xml:space="preserve">
     <value>Verfügbar</value>
@@ -255,6 +267,21 @@
   <data name="Exception_FileNotFound" xml:space="preserve">
     <value>Die Datei "{0}" konnte nicht gefunden werden.</value>
   </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Lang</value>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Negativ</value>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positiv</value>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>Kurz</value>
+  </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
     <value>Konten</value>
   </data>
@@ -300,36 +327,6 @@
   <data name="MainWindow_Settings" xml:space="preserve">
     <value>Einstellungen</value>
   </data>
-  <data name="Settings_Accents" xml:space="preserve">
-    <value>Akzente</value>
-  </data>
-  <data name="Settings_Currency" xml:space="preserve">
-    <value>Währungsformat</value>
-  </data>
-  <data name="General_Negative" xml:space="preserve">
-    <value>Negativ</value>
-  </data>
-  <data name="General_Positive" xml:space="preserve">
-    <value>Positiv</value>
-  </data>
-  <data name="Settings_Date" xml:space="preserve">
-    <value>Datumsformat</value>
-  </data>
-  <data name="General_Long" xml:space="preserve">
-    <value>Lang</value>
-  </data>
-  <data name="General_Short" xml:space="preserve">
-    <value>Kurz</value>
-  </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Sprache</value>
-  </data>
-  <data name="Settings_Theme" xml:space="preserve">
-    <value>Thema</value>
-  </data>
-  <data name="General_Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
   <data name="NameOfNewCategory" xml:space="preserve">
     <value>Name der neuen Kategorie</value>
   </data>
@@ -351,11 +348,20 @@
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Öffne einen Finanzplan</value>
   </data>
-  <data name="Account_StartingBalance" xml:space="preserve">
-    <value>Anfangskontostand</value>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Akzente</value>
   </data>
-  <data name="Account_StartingDate" xml:space="preserve">
-    <value>Anfangsdatum</value>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Währungsformat</value>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Datumsformat</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Thema</value>
   </data>
   <data name="SuperiorCategory" xml:space="preserve">
     <value>Übergestellte Kategorie</value>

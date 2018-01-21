@@ -123,12 +123,6 @@
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
     <value>Создать</value>
   </data>
-  <data name="Account_Name" xml:space="preserve">
-    <value>Название счета</value>
-  </data>
-  <data name="Account_Balance" xml:space="preserve">
-    <value>Сальдо счёта</value>
-  </data>
   <data name="AccountView_Column_Transfer" xml:space="preserve">
     <value>Перевод</value>
   </data>
@@ -179,6 +173,24 @@
   </data>
   <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
     <value>Новый перевод</value>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Сальдо счёта</value>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Create new Account</value>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Edit Accounts</value>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Название счета</value>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Начальное сальдо счёта</value>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Starting Date</value>
   </data>
   <data name="Budgeting_Available" xml:space="preserve">
     <value>Available</value>
@@ -255,6 +267,21 @@
   <data name="Exception_FileNotFound" xml:space="preserve">
     <value>Файл  "{0}" не найден.</value>
   </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Полная</value>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Положительно</value>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Отрицательно</value>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>Короткая</value>
+  </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
     <value>Accounts</value>
   </data>
@@ -300,36 +327,6 @@
   <data name="MainWindow_Settings" xml:space="preserve">
     <value>Параметры</value>
   </data>
-  <data name="Settings_Accents" xml:space="preserve">
-    <value>Цвет</value>
-  </data>
-  <data name="Settings_Currency" xml:space="preserve">
-    <value>Формат валюты</value>
-  </data>
-  <data name="General_Negative" xml:space="preserve">
-    <value>Положительно</value>
-  </data>
-  <data name="General_Positive" xml:space="preserve">
-    <value>Отрицательно</value>
-  </data>
-  <data name="Settings_Date" xml:space="preserve">
-    <value>Формат даты</value>
-  </data>
-  <data name="General_Long" xml:space="preserve">
-    <value>Полная</value>
-  </data>
-  <data name="General_Short" xml:space="preserve">
-    <value>Короткая</value>
-  </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Язык</value>
-  </data>
-  <data name="Settings_Theme" xml:space="preserve">
-    <value>Тема</value>
-  </data>
-  <data name="General_Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
   <data name="NameOfNewCategory" xml:space="preserve">
     <value>Name of new category</value>
   </data>
@@ -351,11 +348,20 @@
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Открыть финасовый план</value>
   </data>
-  <data name="Account_StartingBalance" xml:space="preserve">
-    <value>Начальное сальдо счёта</value>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Цвет</value>
   </data>
-  <data name="Account_StartingDate" xml:space="preserve">
-    <value>Starting Date</value>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Формат валюты</value>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Формат даты</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Тема</value>
   </data>
   <data name="SuperiorCategory" xml:space="preserve">
     <value>Superior Category</value>

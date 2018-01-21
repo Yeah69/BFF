@@ -6,55 +6,65 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
+             xmlns:views="clr-namespace:BFF.MVVM.Views"
              d:DataContext="{d:DesignInstance viewModels:IEditAccountsViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
-    <DataGrid x:Name="LayoutRoot" ItemsSource="{Binding All}" AutoGenerateColumns="False" MinWidth="100" IsReadOnly="False">
-        <DataGrid.Columns>
-            <DataGridTemplateColumn Header="{lex:Loc General_Name}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name.Value}" />
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-                <DataGridTemplateColumn.CellEditingTemplate>
-                    <DataTemplate>
-                        <TextBox Text="{Binding Name.Value, Mode=TwoWay}" />
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellEditingTemplate>
-            </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="{lex:Loc Account_StartingBalance}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock Padding="0,0,5,0"
+    <StackPanel>
+        <TextBlock Text="{lex:Loc Account_Edit}" Margin="0,10" FontSize="30" />
+
+        <DataGrid x:Name="LayoutRoot" ItemsSource="{Binding All}" AutoGenerateColumns="False" MinWidth="100" IsReadOnly="False">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="{lex:Loc General_Name}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name.Value}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding Name.Value, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="{lex:Loc Account_StartingBalance}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Padding="0,0,5,0"
                                    Foreground="{Binding StartingBalance.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                    Style="{StaticResource CellTextBlock}"
                                    Text="{Binding StartingBalance.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                    TextAlignment="Right" />
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-                <DataGridTemplateColumn.CellEditingTemplate>
-                    <DataTemplate>
-                        <ContentControl Content="{Binding StartingBalanceEdit}" ContentTemplate="{StaticResource SumEditTemplate}" />
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellEditingTemplate>
-            </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="{lex:Loc Account_StartingDate}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock Style="{StaticResource CellTextBlock}"
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding StartingBalanceEdit}" ContentTemplate="{StaticResource SumEditTemplate}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="{lex:Loc Account_StartingDate}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{StaticResource CellTextBlock}"
                                    Text="{Binding StartingDate.Value, Converter={x:Static mvvm:Converters.DateTimeToString}}" />
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-                <DataGridTemplateColumn.CellEditingTemplate>
-                    <DataTemplate>
-                        <DatePicker VerticalContentAlignment="Center"
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <DatePicker VerticalContentAlignment="Center"
                                     SelectedDate="{Binding StartingDate.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     SelectedDateFormat="{Binding DataContext.IsDateLong, ElementName=LayoutRoot, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellEditingTemplate>
-            </DataGridTemplateColumn>
-        </DataGrid.Columns>
-    </DataGrid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <TextBlock Text="{lex:Loc Account_CreateNew}" Margin="0,10" FontSize="30" />
+
+        <views:NewAccountView HorizontalAlignment="Stretch"
+                              DataContext="{Binding NewAccountViewModel}" />
+    </StackPanel>
 </UserControl>
