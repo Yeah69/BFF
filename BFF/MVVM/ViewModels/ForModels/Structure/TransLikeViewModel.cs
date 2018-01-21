@@ -74,7 +74,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             }
         }
 
-        public ISumEditViewModel SumEdit { get; }
+        public abstract ISumEditViewModel SumEdit { get; }
 
         /// <summary>
         /// Initializes a TransLikeViewModel.
@@ -82,16 +82,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="transLike">The model.</param>
         /// <param name="createSumEdit">Creates sum editing viewmodel.</param>
         protected TransLikeViewModel(
-            ITransLike transLike,
-            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit) 
+            ITransLike transLike) 
             : base(transLike)
         {
             Memo = transLike.ToReactivePropertyAsSynchronized(tl => tl.Memo, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             ToggleSign = new ReactiveCommand();
             ToggleSign.Subscribe(_ => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus);
-
-            SumEdit = createSumEdit(() => Sum.Value, l => Sum.Value = l);
 
             InitializeDeleteCommand();
         }

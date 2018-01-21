@@ -27,9 +27,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         public SubTransactionViewModel(
             ISubTransaction subTransaction,
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
-            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit,
+            Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ICategoryBaseViewModelService categoryViewModelService)
-            : base(subTransaction, createSumEdit)
+            : base(subTransaction)
         {
             Category = subTransaction.ToReactivePropertyAsSynchronized(
                 sti => sti.Category,
@@ -37,6 +37,8 @@ namespace BFF.MVVM.ViewModels.ForModels
                 categoryViewModelService.GetModel,
                 ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
             Sum = subTransaction.ToReactivePropertyAsSynchronized(sti => sti.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+
+            SumEdit = createSumEdit(Sum);
 
             NewCategoryViewModel = newCategoryViewModelFactory(this);
         }
@@ -52,5 +54,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The amount of money of the exchange of the SubTransaction.
         /// </summary>
         public override IReactiveProperty<long> Sum { get; }
+
+        public override ISumEditViewModel SumEdit { get; }
     }
 }

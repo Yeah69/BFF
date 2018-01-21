@@ -99,7 +99,7 @@
                     </ToggleButton>
                     <TextBox HorizontalAlignment="Stretch"
                                          VerticalContentAlignment="Center"
-                                         Foreground="{Binding Sum, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                         Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                          TextAlignment="Right">
                         <TextBox.Text>
                             <Binding Converter="{x:Static mvvm:Converters.SumToString}"

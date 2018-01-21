@@ -265,7 +265,6 @@
             <Button Click="EditAccounts_OnClick"
                     Content="{lex:Loc HamburgerMenu_Accounts}"
                     Visibility="{Binding EditAccountsViewModel, Converter={x:Static mvvm:Converters.NullToCollapsed}}" />
-            <Button Content="{lex:Loc MainWindow_About}" />
             <Button Click="SettingsButt_Click">
                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"

@@ -56,8 +56,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         public TransferViewModel(
             ITransfer transfer, 
             IAccountViewModelService accountViewModelService,
-            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit,
-            IFlagViewModelService flagViewModelService) : base(transfer, flagViewModelService, createSumEdit)
+            Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
+            IFlagViewModelService flagViewModelService) : base(transfer, flagViewModelService)
         {
             _accountViewModelService = accountViewModelService;
 
@@ -107,7 +107,11 @@ namespace BFF.MVVM.ViewModels.ForModels
                     FromAccount.Value?.RefreshBalance();
                     ToAccount.Value?.RefreshBalance();
                 }).AddTo(CompositeDisposable);
+
+            SumEdit = createSumEdit(Sum);
         }
+
+        public override ISumEditViewModel SumEdit { get; }
 
         protected override void InitializeDeleteCommand()
         {

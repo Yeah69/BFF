@@ -71,13 +71,12 @@ namespace BFF.MVVM.ViewModels.ForModels
             ISubTransactionViewModelService subTransactionViewModelService, 
             IFlagViewModelService flagViewModelService,
             IAccountViewModelService accountViewModelService,
-            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit,
+            Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             IPayeeViewModelService payeeViewModelService) 
             : base(
                 parentTransaction,
                 newPayeeViewModelFactory,
                 accountViewModelService,
-                createSumEdit,
                 payeeViewModelService,
                 flagViewModelService)
         {
@@ -97,6 +96,8 @@ namespace BFF.MVVM.ViewModels.ForModels
                     Account.Value?.RefreshBalance();
                     Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
                 }).AddTo(CompositeDisposable);
+
+            SumEdit = createSumEdit(Sum);
 
             SubTransactions
                 .ObserveAddChanged()
@@ -146,6 +147,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         public ReadOnlyReactiveCollection<ISubTransactionViewModel> SubTransactions { get; }
         public ReadOnlyReactiveCollection<ISubTransactionViewModel> SubElements => SubTransactions;
         public ReadOnlyObservableCollection<ISubTransactionViewModel> NewSubElements { get; }
+
+        public override ISumEditViewModel SumEdit { get; }
 
         protected override void InitializeDeleteCommand()
         {

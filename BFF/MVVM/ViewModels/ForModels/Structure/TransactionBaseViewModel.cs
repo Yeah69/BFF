@@ -52,10 +52,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             ITransactionBase parentTransactionBase,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IAccountViewModelService accountViewModelService,
-            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit,
             IPayeeViewModelService payeeViewModelService,
             IFlagViewModelService flagViewModelService) 
-            : base(parentTransactionBase, flagViewModelService, createSumEdit)
+            : base(parentTransactionBase, flagViewModelService)
         {
             _accountViewModelService = accountViewModelService;
 

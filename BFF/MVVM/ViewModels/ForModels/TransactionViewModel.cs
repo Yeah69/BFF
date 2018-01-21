@@ -36,10 +36,10 @@ namespace BFF.MVVM.ViewModels.ForModels
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
-            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit,
+            Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ICategoryBaseViewModelService categoryViewModelService,
             IFlagViewModelService flagViewModelService)
-            : base(transaction, newPayeeViewModelFactory, accountViewModelService, createSumEdit, payeeViewModelService, flagViewModelService)
+            : base(transaction, newPayeeViewModelFactory, accountViewModelService, payeeViewModelService, flagViewModelService)
         {
             Category = transaction.ToReactivePropertyAsSynchronized(
                     ti => ti.Category,
@@ -58,6 +58,8 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .Subscribe(sum => NotifyRelevantAccountsToRefreshBalance())
                 .AddTo(CompositeDisposable);
 
+            SumEdit = createSumEdit(Sum);
+
             NewCategoryViewModel = newCategoryViewModelFactory(this);
         }
 
@@ -70,6 +72,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The amount of money of the exchange of the Transaction.
         /// </summary>
         public override IReactiveProperty<long> Sum { get; }
+
+        public override ISumEditViewModel SumEdit { get; }
 
         public INewCategoryViewModel NewCategoryViewModel { get; }
     }

@@ -62,7 +62,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IAccountRepository accountRepository,
             Lazy<IAccountViewModelService> accountViewModelService,
             IParentTransactionViewModelService parentTransactionViewModelService,
-            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit,
+            Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             Func<IAccount, ITransactionViewModel> transactionViewModelFactory,
             Func<ITransferViewModel> transferViewModelFactory,
             Func<IAccount, IParentTransactionViewModel> parentTransactionViewModelFactory,
@@ -79,10 +79,10 @@ namespace BFF.MVVM.ViewModels.ForModels
             _transRepository = transRepository;
             _accountRepository = accountRepository;
 
-            StartingBalanceEdit = createSumEdit(() => StartingBalance.Value, l => StartingBalance.Value = l);
             StartingBalance = account
                 .ToReactivePropertyAsSynchronized(a => a.StartingBalance, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
+            StartingBalanceEdit = createSumEdit(StartingBalance);
             StartingBalance.Subscribe(_ => summaryAccountViewModel.RefreshStartingBalance())
                            .AddTo(CompositeDisposable);
 

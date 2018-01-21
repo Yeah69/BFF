@@ -69,9 +69,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <param name="createSumEdit">Creates sum editing viewmodel.</param>
         protected TransBaseViewModel(
             ITransBase transBase,
-            IFlagViewModelService flagViewModelService,
-            Func<Func<long>, Action<long>, ISumEditViewModel> createSumEdit)
-            : base(transBase, createSumEdit)
+            IFlagViewModelService flagViewModelService)
+            : base(transBase)
         {
             _flagViewModelService = flagViewModelService;
             Flag = transBase.ToReactivePropertyAsSynchronized(
