@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Transactions;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper;
-using Dapper.Contrib.Extensions;
 
 namespace BFF.DB.Dapper
 {
@@ -38,48 +36,25 @@ namespace BFF.DB.Dapper
         where TDomain : class, IDataModel
         where TPersistence : class, IPersistenceModel
     {
-        protected RepositoryBase(IProvideConnection provideConnection) : base(provideConnection)
+        private readonly ICrudOrm _crudOrm;
+
+        protected RepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(provideConnection, crudOrm)
         {
+            _crudOrm = crudOrm;
         }
 
         public virtual TDomain Find(long id, DbConnection connection = null)
         {
-            if(connection != null) return ConvertToDomain((connection.Get<TPersistence>(id), connection));
-            
-            TDomain ret;
-            using(TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using(DbConnection newConnection = ProvideConnection.Connection)
-            {
-                newConnection.Open();
-                var result = newConnection.Get<TPersistence>(id);
-                ret = ConvertToDomain((result, newConnection));
-                transactionScope.Complete();
-            }
-            return ret;
+            return ConvertToDomain((_crudOrm.Read<TPersistence>(id), connection));
         }
 
         protected abstract Converter<(TPersistence, DbConnection), TDomain> ConvertToDomain { get; }
 
-        protected virtual IEnumerable<TPersistence> FindAllInner(DbConnection connection) => connection.GetAll<TPersistence>();
+        protected virtual IEnumerable<TPersistence> FindAllInner(DbConnection connection) => _crudOrm.ReadAll<TPersistence>();
 
         public virtual IEnumerable<TDomain> FindAll(DbConnection connection = null)
         {
-            IEnumerable<TDomain> Inner(DbConnection conn)
-            {
-                return FindAllInner(conn).Select(p => ConvertToDomain((p, conn)));
-            }
-
-            if(connection != null) return Inner(connection);
-            
-            IEnumerable<TDomain> ret;
-            using(TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using(DbConnection newConnection = ProvideConnection.Connection)
-            {
-                newConnection.Open();
-                ret = Inner(newConnection).ToList();
-                transactionScope.Complete();
-            }
-            return ret;
+            return FindAllInner(connection).Select(p => ConvertToDomain((p, connection)));
         }
     }
 }

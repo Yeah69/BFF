@@ -21,7 +21,7 @@ namespace BFF.DB.Dapper.ModelRepositories
     {
         public override int Compare(Domain.IPayee x, Domain.IPayee y)
         {
-            return Comparer<string>.Default.Compare(x.Name, y.Name);
+            return Comparer<string>.Default.Compare(x?.Name, y?.Name);
         }
     }
 
@@ -31,7 +31,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class PayeeRepository : ObservableRepositoryBase<Domain.IPayee, Payee>, IPayeeRepository
     {
-        public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection, new PayeeComparer()) {}
+        public PayeeRepository(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(provideConnection, crudOrm, new PayeeComparer()) {}
         
         protected override Converter<Domain.IPayee, Payee> ConvertToPersistence => domainPayee => 
             new Payee

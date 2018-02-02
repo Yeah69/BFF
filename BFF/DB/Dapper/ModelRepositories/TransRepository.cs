@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
-using Dapper;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -34,16 +33,15 @@ namespace BFF.DB.Dapper.ModelRepositories
     }
 
     public interface ITransRepository : 
-        IRepositoryBase<Domain.Structure.ITransBase>, 
-        ISpecifiedPagedAccess<Domain.Structure.ITransBase, Domain.IAccount>,
-        ISpecifiedPagedAccessAsync<Domain.Structure.ITransBase, Domain.IAccount>
+        IRepositoryBase<ITransBase>, 
+        ISpecifiedPagedAccess<ITransBase, Domain.IAccount>,
+        ISpecifiedPagedAccessAsync<ITransBase, Domain.IAccount>
     {
     }
 
 
-    public sealed class TransRepository : RepositoryBase<Domain.Structure.ITransBase, Trans>, ITransRepository
+    public sealed class TransRepository : RepositoryBase<ITransBase, Trans>, ITransRepository
     {
-        private readonly IProvideConnection _provideConnection;
         private readonly IRepository<Domain.ITransaction> _transactionRepository;
         private readonly IRepository<Domain.ITransfer> _transferRepository;
         private readonly IRepository<Domain.IParentTransaction> _parentTransactionRepository;
@@ -51,6 +49,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         private readonly ICategoryBaseRepository _categoryBaseRepository;
         private readonly IPayeeRepository _payeeRepository;
         private readonly ISubTransactionRepository _subTransactionsRepository;
+        private readonly ITransOrm _transOrm;
         private readonly IFlagRepository _flagRepository;
 
         public TransRepository(
@@ -62,10 +61,11 @@ namespace BFF.DB.Dapper.ModelRepositories
             ICategoryBaseRepository categoryBaseRepository,
             IPayeeRepository payeeRepository,
             ISubTransactionRepository subTransactionsRepository, 
+            ICrudOrm crudOrm,
+            ITransOrm transOrm,
             IFlagRepository flagRepository)
-            : base(provideConnection)
+            : base(provideConnection, crudOrm)
         {
-            _provideConnection = provideConnection;
             _transactionRepository = transactionRepository;
             _transferRepository = transferRepository;
             _parentTransactionRepository = parentTransactionRepository;
@@ -73,17 +73,18 @@ namespace BFF.DB.Dapper.ModelRepositories
             _categoryBaseRepository = categoryBaseRepository;
             _payeeRepository = payeeRepository;
             _subTransactionsRepository = subTransactionsRepository;
+            _transOrm = transOrm;
             _flagRepository = flagRepository;
         }
 
-        protected override Converter<(Trans, DbConnection), Domain.Structure.ITransBase> ConvertToDomain => tuple =>
+        protected override Converter<(Trans, DbConnection), ITransBase> ConvertToDomain => tuple =>
         {
             (Trans trans, DbConnection connection) = tuple;
-            Enum.TryParse(trans.Type, true, out Domain.Structure.TransType type);
-            Domain.Structure.ITransBase ret;
+            Enum.TryParse(trans.Type, true, out TransType type);
+            ITransBase ret;
             switch(type)
             {
-                case Domain.Structure.TransType.Transaction:
+                case TransType.Transaction:
                     ret = new Domain.Transaction(
                         _transactionRepository, 
                         trans.Date,
@@ -97,7 +98,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                         trans.Sum,
                         trans.Cleared == 1L);
                     break;
-                case Domain.Structure.TransType.Transfer:
+                case TransType.Transfer:
                     ret = new Domain.Transfer(
                         _transferRepository,
                         trans.Date,
@@ -110,7 +111,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                         trans.Sum, 
                         trans.Cleared == 1L);
                     break;
-                case Domain.Structure.TransType.ParentTransaction:
+                case TransType.ParentTransaction:
                     ret = new Domain.ParentTransaction(
                         _parentTransactionRepository,
                         _subTransactionsRepository.GetChildrenOf(trans.Id, connection), 
@@ -132,7 +133,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             return ret;
         };
 
-        protected override Converter<Domain.Structure.ITransBase, Trans> ConvertToPersistence => domainTransBase =>
+        protected override Converter<ITransBase, Trans> ConvertToPersistence => domainTransBase =>
         {
             long accountId = -69;
             long? categoryId = -69;
@@ -179,58 +180,34 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         };
 
-        private string GetOrderingPageSuffix() => $"ORDER BY {nameof(Trans.Date)}";
-
-        private string CommonSuffix(Domain.IAccount specifyingObject)
-        {
-            if (specifyingObject != null && !(specifyingObject is Domain.ISummaryAccount))
-                return $"WHERE {nameof(Trans.AccountId)} = {specifyingObject.Id} OR {nameof(Trans.AccountId)} = -69 AND {nameof(Trans.PayeeId)} = {specifyingObject.Id} OR {nameof(Trans.AccountId)} = -69 AND {nameof(Trans.CategoryId)} = {specifyingObject.Id}"; // TODO Replace specifyingObject.Id with @specifyingId
-
-            return "";
-        }
-
-        private string GetSpecifyingPageSuffix(Domain.IAccount specifyingObject) => CommonSuffix(specifyingObject);
-
-        private string GetSpecifyingCountSuffix(Domain.IAccount specifyingObject) => CommonSuffix(specifyingObject);
-
         public IEnumerable<ITransBase> GetPage(int offset, int pageSize, Domain.IAccount specifyingObject, DbConnection connection = null)
         {
-            string query = $"SELECT * FROM {nameof(Trans)}s {GetSpecifyingPageSuffix(specifyingObject)} {GetOrderingPageSuffix()} LIMIT @{nameof(offset)}, @{nameof(pageSize)};";
-
-            return ConnectionHelper.QueryOnExistingOrNewConnection(
-                c => c.Query<Trans>(query, new {offset, pageSize}).Select(tt => ConvertToDomain((tt, c))),
-                _provideConnection,
-                connection);
+            return (specifyingObject is Domain.IAccount account
+                ? _transOrm.GetPageFromSpecificAccount(offset, pageSize, account.Id)
+                : _transOrm.GetPageFromSummaryAccount(offset, pageSize))
+                .Select(t => ConvertToDomain((t, null)));
         }
 
-        public int GetCount(Domain.IAccount specifyingObject, DbConnection connection = null)
+        public long GetCount(Domain.IAccount specifyingObject, DbConnection connection = null)
         {
-            string query = $"SELECT COUNT(*) FROM {nameof(Trans)}s {GetSpecifyingCountSuffix(specifyingObject)};";
-
-            return ConnectionHelper.QueryOnExistingOrNewConnection(
-                c => c.Query<int>(query),
-                _provideConnection,
-                connection).First();
+            return specifyingObject is Domain.IAccount account
+                    ? _transOrm.GetCountFromSpecificAccount(account.Id)
+                    : _transOrm.GetCountFromSummaryAccount();
         }
 
         public async Task<IEnumerable<ITransBase>> GetPageAsync(int offset, int pageSize, Domain.IAccount specifyingObject, DbConnection connection = null)
         {
-            string query = $"SELECT * FROM {nameof(Trans)}s {GetSpecifyingPageSuffix(specifyingObject)} {GetOrderingPageSuffix()} LIMIT @{nameof(offset)}, @{nameof(pageSize)};";
-
-            return await ConnectionHelper.QueryOnExistingOrNewConnectionAsync(
-                async c => (await c.QueryAsync<Trans>(query, new {offset, pageSize })).Select(tt => ConvertToDomain((tt, c))),
-                _provideConnection,
-                connection);
+            return (await (specifyingObject is Domain.IAccount account
+                ? _transOrm.GetPageFromSpecificAccountAsync(offset, pageSize, account.Id)
+                : _transOrm.GetPageFromSummaryAccountAsync(offset, pageSize)).ConfigureAwait(false))
+                .Select(t => ConvertToDomain((t, null)));
         }
 
-        public async Task<int> GetCountAsync(Domain.IAccount specifyingObject, DbConnection connection = null)
+        public async Task<long> GetCountAsync(Domain.IAccount specifyingObject, DbConnection connection = null)
         {
-            string query = $"SELECT COUNT(*) FROM {nameof(Trans)}s {GetSpecifyingCountSuffix(specifyingObject)};";
-
-            return (await ConnectionHelper.QueryOnExistingOrNewConnectionAsync(
-                async c => await c.QueryAsync<int>(query),
-                _provideConnection,
-                connection)).First();
+            return await (specifyingObject is Domain.IAccount account
+                ? _transOrm.GetCountFromSpecificAccountAsync(account.Id)
+                : _transOrm.GetCountFromSummaryAccountAsync()).ConfigureAwait(false);
         }
     }
 }

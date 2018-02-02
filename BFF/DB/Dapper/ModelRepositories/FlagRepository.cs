@@ -33,7 +33,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class FlagRepository : ObservableRepositoryBase<Domain.IFlag, Flag>, IFlagRepository
     {
-        public FlagRepository(IProvideConnection provideConnection) : base(provideConnection, new FlagComparer()) { }
+        public FlagRepository(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(provideConnection, crudOrm, new FlagComparer()) { }
 
         protected override Converter<Domain.IFlag, Flag> ConvertToPersistence => domainModel =>
         {

@@ -18,12 +18,14 @@ namespace BFF.DB.Dapper
         where TPersistence : class, IPersistenceModel
     {
         private readonly Comparer<TDomain> _comparer;
-        public ObservableCollection<TDomain> All { get; } // TODO use externally the IReadOnlyObservableCollection interface
+        private ObservableCollection<TDomain> _all;
 
-        protected ObservableRepositoryBase(IProvideConnection provideConnection, Comparer<TDomain> comparer) : base(provideConnection)
+        public ObservableCollection<TDomain> All =>
+            _all ?? (_all = new ObservableCollection<TDomain>(FindAll().OrderBy(o => o, _comparer)));
+
+        protected ObservableRepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm, Comparer<TDomain> comparer) : base(provideConnection, crudOrm)
         {
             _comparer = comparer;
-            All = new ObservableCollection<TDomain>(FindAll().OrderBy(o => o, _comparer));
         }
 
         public sealed override IEnumerable<TDomain> FindAll(DbConnection connection = null)
@@ -34,21 +36,21 @@ namespace BFF.DB.Dapper
         public override void Add(TDomain dataModel, DbConnection connection = null)
         {
             base.Add(dataModel, connection);
-            if(!All.Contains(dataModel))
+            if(!_all.Contains(dataModel))
             {
                 int i = 0;
-                while(i < All.Count && _comparer.Compare(dataModel, All[i]) > 0)
+                while(i < _all.Count && _comparer.Compare(dataModel, _all[i]) > 0)
                     i++;
-                All.Insert(i, dataModel);
+                _all.Insert(i, dataModel);
             }
         }
 
         public override void Delete(TDomain dataModel, DbConnection connection = null)
         {
             base.Delete(dataModel, connection);
-            if(All.Contains(dataModel))
+            if(_all.Contains(dataModel))
             {
-                All.Remove(dataModel);
+                _all.Remove(dataModel);
             }
         }
 
@@ -57,7 +59,7 @@ namespace BFF.DB.Dapper
             base.Dispose(disposing);
             if (disposing)
             {
-                All.Clear();
+                _all.Clear();
             }
         }
     }

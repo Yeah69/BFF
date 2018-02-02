@@ -17,8 +17,9 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         public TransferRepository(
             IProvideConnection provideConnection,
+            ICrudOrm crudOrm,
             IAccountRepository accountRepository,
-            IFlagRepository flagRepository) : base(provideConnection)
+            IFlagRepository flagRepository) : base(provideConnection, crudOrm)
         {
             _accountRepository = accountRepository;
             _flagRepository = flagRepository;

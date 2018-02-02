@@ -41,23 +41,5 @@ namespace BFF.DB.Dapper
             }
             return ret;
         }
-
-        public static async Task<IEnumerable<T>> QueryOnExistingOrNewConnectionAsync<T>(
-            Func<DbConnection, Task<IEnumerable<T>>> action,
-            IProvideConnection provideConnection,
-            DbConnection connection = null)
-        {
-            if (connection != null) return await action(connection);
-
-            IEnumerable<T> ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = provideConnection.Connection)
-            {
-                newConnection.Open();
-                ret = (await action(newConnection)).ToList();
-                transactionScope.Complete();
-            }
-            return ret;
-        }
     }
 }

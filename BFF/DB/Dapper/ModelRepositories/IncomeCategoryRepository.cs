@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Globalization;
 using System.Linq;
-using Dapper;
 using Category = BFF.DB.PersistenceModels.Category;
-using Trans = BFF.DB.PersistenceModels.Trans;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -18,78 +16,20 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public interface IIncomeCategoryRepository : IObservableRepositoryBase<MVVM.Models.Native.IIncomeCategory>
     {
-        long GetMonthsIncome(DateTime month, DbConnection connection);
-        long GetIncomeUntilMonth(DateTime month, DbConnection connection);
     }
 
     public sealed class IncomeCategoryRepository : ObservableRepositoryBase<MVVM.Models.Native.IIncomeCategory, Category>, IIncomeCategoryRepository
     {
-        private readonly IProvideConnection _provideConnection;
-        private static readonly string GetAllQuery = $"SELECT * FROM {nameof(Category)}s WHERE {nameof(Category.IsIncomeRelevant)} == 1;";
+        private readonly ICategoryOrm _categoryOrm;
 
-        private static string IncomeForCategoryQuery(int offset) =>
-            $@"
-    SELECT Sum({nameof(Trans.Sum)})
-    FROM {nameof(Trans)}s
-    WHERE {nameof(Trans.CategoryId)} == @CategoryId AND strftime('%Y', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) == @Year AND strftime('%m', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) == @Month;";
-
-        private static string IncomeForCategoryUntilMonthQuery(int offset) =>
-            $@"
-    SELECT Sum({nameof(Trans.Sum)})
-    FROM {nameof(Trans)}s
-    WHERE {nameof(Trans.CategoryId)} == @CategoryId AND (strftime('%Y', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) < @Year OR strftime('%Y', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) == @Year AND strftime('%m', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) <= @Month);";
-
-
-        public IncomeCategoryRepository(IProvideConnection provideConnection)
-            : base(provideConnection, new IncomeCategoryComparer())
+        public IncomeCategoryRepository(IProvideConnection provideConnection, ICrudOrm crudOrm, ICategoryOrm categoryOrm)
+            : base(provideConnection, crudOrm, new IncomeCategoryComparer())
         {
-            _provideConnection = provideConnection;
-        }
-
-        public long GetMonthsIncome(DateTime month, DbConnection connection)
-        {
-            long incomeSum = 0;
-            foreach (var incomeCategory in All)
-            {
-                incomeSum += ConnectionHelper.QueryOnExistingOrNewConnection(
-                    c => c.Query<long?>(IncomeForCategoryQuery(incomeCategory.MonthOffset), new
-                    {
-                        CategoryId = incomeCategory.Id,
-                        Year = $"{month.Year:0000}",
-                        Month = $"{month.Month:00}"
-                    }),
-                    _provideConnection,
-                    connection).First() ?? 0L;
-            }
-
-            return incomeSum;
-        }
-
-        public long GetIncomeUntilMonth(DateTime month, DbConnection connection)
-        {
-
-            long incomeSum = 0;
-            foreach (var incomeCategory in All)
-            {
-                incomeSum += ConnectionHelper.QueryOnExistingOrNewConnection(
-                    c => c.Query<long?>(IncomeForCategoryUntilMonthQuery(incomeCategory.MonthOffset), new
-                    {
-                        CategoryId = incomeCategory.Id,
-                        Year = $"{month.Year:0000}",
-                        Month = $"{month.Month:00}"
-                    }),
-                    _provideConnection,
-                    connection).First() ?? 0L;
-            }
-
-            return incomeSum;
+            _categoryOrm = categoryOrm;
         }
 
 
-        protected override IEnumerable<Category> FindAllInner(DbConnection connection)
-        {
-            return connection.Query<Category>(GetAllQuery);
-        }
+        protected override IEnumerable<Category> FindAllInner(DbConnection connection) => _categoryOrm.ReadIncomeCategories();
 
         protected override Converter<MVVM.Models.Native.IIncomeCategory, Category> ConvertToPersistence => domainCategory =>
             new Category

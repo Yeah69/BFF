@@ -2,7 +2,6 @@ using System;
 using System.Data.Common;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
-using Dapper.Contrib.Extensions;
 
 namespace BFF.DB.Dapper
 {
@@ -18,10 +17,12 @@ namespace BFF.DB.Dapper
         where TDomain : class, IDataModel
         where TPersistence : class, IPersistenceModel
     {
+        private readonly ICrudOrm _crudOrm;
         protected IProvideConnection ProvideConnection { get; }
 
-        protected WriteOnlyRepositoryBase(IProvideConnection provideConnection)
+        protected WriteOnlyRepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm)
         {
+            _crudOrm = crudOrm;
             ProvideConnection = provideConnection;
         }
 
@@ -30,37 +31,19 @@ namespace BFF.DB.Dapper
         public virtual void Add(TDomain dataModel, DbConnection connection = null)
         {
             if (dataModel.Id > 0) return;
-            ConnectionHelper.ExecuteOnExistingOrNewConnection(
-                c =>
-                {
-                    TPersistence persistenceModel = ConvertToPersistence(dataModel);
-                    c.Insert(persistenceModel);
-                    dataModel.Id = persistenceModel.Id;
-                },
-                ProvideConnection,
-                connection);
+            _crudOrm.Create(ConvertToPersistence(dataModel));
         }
 
         public virtual void Update(TDomain dataModel, DbConnection connection = null)
         {
             if (dataModel.Id < 0) return;
-            ConnectionHelper.ExecuteOnExistingOrNewConnection(
-                c => c.Update(ConvertToPersistence(dataModel)),
-                ProvideConnection,
-                connection);
+            _crudOrm.Update(ConvertToPersistence(dataModel));
         }
 
         public virtual void Delete(TDomain dataModel, DbConnection connection = null)
         {
             if (dataModel.Id < 0) return;
-            ConnectionHelper.ExecuteOnExistingOrNewConnection(
-                c =>
-                {
-                    c.Delete(ConvertToPersistence(dataModel));
-                    dataModel.Id = -1;
-                },
-                ProvideConnection,
-                connection);
+            _crudOrm.Delete(ConvertToPersistence(dataModel));
         }
 
         protected virtual void Dispose(bool disposing)

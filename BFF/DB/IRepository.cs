@@ -28,7 +28,7 @@ namespace BFF.DB
     {
         IEnumerable<TDomainBase> GetPage(int offset, int pageSize, TSpecifying specifyingObject,
             DbConnection connection = null);
-        int GetCount(TSpecifying specifyingObject, DbConnection connection = null);
+        long GetCount(TSpecifying specifyingObject, DbConnection connection = null);
     }
 
     public interface ISpecifiedPagedAccessAsync<TDomainBase, in TSpecifying>
@@ -36,7 +36,7 @@ namespace BFF.DB
     {
         Task<IEnumerable<TDomainBase>> GetPageAsync(int offset, int pageSize, TSpecifying specifyingObject,
             DbConnection connection = null);
-        Task<int> GetCountAsync(TSpecifying specifyingObject, DbConnection connection = null);
+        Task<long> GetCountAsync(TSpecifying specifyingObject, DbConnection connection = null);
     }
 
     public interface ICollectiveRepository<out T> : IOncePerBackend where T : class, IDataModel

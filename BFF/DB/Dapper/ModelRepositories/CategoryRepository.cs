@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using BFF.DB.PersistenceModels;
-using Dapper;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -64,11 +63,12 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class CategoryRepository : ObservableRepositoryBase<Domain.ICategory, Category>, ICategoryRepository
     {
-        private static readonly string GetAllQuery = $"SELECT * FROM {nameof(Category)}s WHERE {nameof(Category.IsIncomeRelevant)} == 0;";
+        private readonly ICategoryOrm _categoryOrm;
 
-        public CategoryRepository(IProvideConnection provideConnection) 
-            : base(provideConnection, new CategoryComparer())
+        public CategoryRepository(IProvideConnection provideConnection, ICrudOrm crudOrm, ICategoryOrm categoryOrm) 
+            : base(provideConnection, crudOrm, new CategoryComparer())
         {
+            _categoryOrm = categoryOrm;
             var groupedByParent = All.GroupBy(c => c.Parent).Where(grouping => grouping.Key != null);
             foreach (var parentSubCategoryGrouping in groupedByParent)
             {
@@ -82,7 +82,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         protected override IEnumerable<Category> FindAllInner(DbConnection connection)
         {
-            return connection.Query<Category>(GetAllQuery);
+            return _categoryOrm.ReadCategories();
         }
 
         protected override Converter<Domain.ICategory, Category> ConvertToPersistence => domainCategory => 

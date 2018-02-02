@@ -22,7 +22,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class DbSettingRepository : RepositoryBase<Domain.IDbSetting, DbSetting>, IDbSettingRepository
     {
-        public DbSettingRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        public DbSettingRepository(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(provideConnection, crudOrm) { }
         
         protected override Converter<Domain.IDbSetting, DbSetting> ConvertToPersistence => domainDbSetting => 
             new DbSetting

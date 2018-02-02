@@ -240,7 +240,6 @@
     <Compile Include="DB\Dapper\BudgetMonthRepository.cs" />
     <Compile Include="DB\Dapper\CachingRepositoryBase.cs" />
     <Compile Include="DB\Dapper\CreateSqLiteDatabase.cs" />
-    <Compile Include="DB\Dapper\DapperBffRepository.cs" />
     <Compile Include="DB\Dapper\ConnectionHelper.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\AccountRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\BudgetEntryRepository.cs" />
@@ -258,8 +257,8 @@
     <Compile Include="DB\Dapper\ObservableRepositoryBase.cs" />
     <Compile Include="DB\Dapper\RepositoryBase.cs" />
     <Compile Include="DB\Dapper\WriteOnlyRepositoryBase.cs" />
-    <Compile Include="DB\IBffOrmAsync.cs" />
     <Compile Include="DB\IOncePerBackend.cs" />
+    <Compile Include="DB\ICrudOrm.cs" />
     <Compile Include="DB\IProvideConnection.cs" />
     <Compile Include="DB\IRepository.cs" />
     <Compile Include="DB\IVirtualizedRefresh.cs" />
@@ -276,7 +275,13 @@
     <Compile Include="DB\PersistenceModels\Payee.cs" />
     <Compile Include="DB\PersistenceModels\SubTransaction.cs" />
     <Compile Include="DB\PersistenceModels\Trans.cs" />
+    <Compile Include="DB\SQLite\DapperAccountOrm.cs" />
+    <Compile Include="DB\SQLite\DapperBudgetOrm.cs" />
+    <Compile Include="DB\SQLite\DapperCategoryOrm.cs" />
+    <Compile Include="DB\SQLite\DapperParentalOrm.cs" />
+    <Compile Include="DB\SQLite\DapperTransOrm.cs" />
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
+    <Compile Include="DB\SQLite\DapperCrudOrm.cs" />
     <Compile Include="DB\SQLite\SqLiteQueries.cs" />
     <Compile Include="Helper\Extensions\LongExtensions.cs" />
     <Compile Include="Helper\Extensions\StringExtensions.cs" />

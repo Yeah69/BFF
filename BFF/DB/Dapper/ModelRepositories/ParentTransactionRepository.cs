@@ -19,10 +19,11 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         public ParentTransactionRepository(
             IProvideConnection provideConnection,
+            ICrudOrm crudOrm,
             IAccountRepository accountRepository,
             IPayeeRepository payeeRepository,
             ISubTransactionRepository subTransactionRepository,
-            IFlagRepository flagRepository) : base(provideConnection)
+            IFlagRepository flagRepository) : base(provideConnection, crudOrm)
         {
             _accountRepository = accountRepository;
             _payeeRepository = payeeRepository;

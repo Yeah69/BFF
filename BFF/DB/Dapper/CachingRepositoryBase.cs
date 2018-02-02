@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using BFF.DB.PersistenceModels;
-using Dapper.Contrib.Extensions;
 using NLog;
 using Domain = BFF.MVVM.Models.Native.Structure;
 
@@ -20,7 +19,7 @@ namespace BFF.DB.Dapper
         
         private readonly Dictionary<long, TDomain> _cache = new Dictionary<long, TDomain>();
 
-        protected CachingRepositoryBase(IProvideConnection provideConnection) : base(provideConnection) { }
+        protected CachingRepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(provideConnection, crudOrm) { }
 
         public override void Add(TDomain dataModel, DbConnection connection = null)
         {
