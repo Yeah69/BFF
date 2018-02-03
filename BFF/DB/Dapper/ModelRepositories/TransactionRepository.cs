@@ -1,5 +1,4 @@
 using System;
-using System.Data.Common;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
@@ -47,21 +46,22 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Type = nameof(TransType.Transaction)
             };
 
-        protected override Converter<(Trans, DbConnection), Domain.ITransaction> ConvertToDomain => tuple =>
-        {
-            (Trans persistenceTransaction, DbConnection connection) = tuple;
-            return new Domain.Transaction(
+        protected override Converter<Trans, Domain.ITransaction> ConvertToDomain => persistenceTransaction => 
+            new Domain.Transaction(
                 this,
                 persistenceTransaction.Date,
                 persistenceTransaction.Id,
-                persistenceTransaction.FlagId == null ? null :_flagRepository.Find((long)persistenceTransaction.FlagId, connection),
+                persistenceTransaction.FlagId == null 
+                    ? null 
+                    :_flagRepository.Find((long)persistenceTransaction.FlagId),
                 persistenceTransaction.CheckNumber,
-                _accountRepository.Find(persistenceTransaction.AccountId, connection),
-                _payeeRepository.Find(persistenceTransaction.PayeeId, connection),
-                persistenceTransaction.CategoryId == null ? null : _categoryBaseRepository.Find((long)persistenceTransaction.CategoryId, connection),
+                _accountRepository.Find(persistenceTransaction.AccountId),
+                _payeeRepository.Find(persistenceTransaction.PayeeId),
+                persistenceTransaction.CategoryId == null
+                    ? null 
+                    : _categoryBaseRepository.Find((long)persistenceTransaction.CategoryId),
                 persistenceTransaction.Memo,
                 persistenceTransaction.Sum,
                 persistenceTransaction.Cleared == 1L);
-        };
     }
 }

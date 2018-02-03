@@ -1,5 +1,4 @@
 using System;
-using System.Data.Common;
 using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -21,14 +20,11 @@ namespace BFF.DB.Dapper.ModelRepositories
                 DateCultureName = domainDbSetting.DateCultureName
             };
 
-        protected override Converter<(DbSetting, DbConnection), Domain.IDbSetting> ConvertToDomain => tuple =>
-        {
-            (DbSetting persistenceDbSetting, _) = tuple;
-            return new Domain.DbSetting(this, persistenceDbSetting.Id)
+        protected override Converter<DbSetting, Domain.IDbSetting> ConvertToDomain => persistenceDbSetting => 
+            new Domain.DbSetting(this, persistenceDbSetting.Id)
             {
                 CurrencyCultureName = persistenceDbSetting.CurrencyCultureName,
                 DateCultureName = persistenceDbSetting.DateCultureName
             };
-        };
     }
 }

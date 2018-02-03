@@ -1,5 +1,4 @@
 using System;
-using System.Data.Common;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
 
@@ -28,19 +27,19 @@ namespace BFF.DB.Dapper
 
         protected abstract Converter<TDomain, TPersistence> ConvertToPersistence { get; }
 
-        public virtual void Add(TDomain dataModel, DbConnection connection = null)
+        public virtual void Add(TDomain dataModel)
         {
             if (dataModel.Id > 0) return;
             _crudOrm.Create(ConvertToPersistence(dataModel));
         }
 
-        public virtual void Update(TDomain dataModel, DbConnection connection = null)
+        public virtual void Update(TDomain dataModel)
         {
             if (dataModel.Id < 0) return;
             _crudOrm.Update(ConvertToPersistence(dataModel));
         }
 
-        public virtual void Delete(TDomain dataModel, DbConnection connection = null)
+        public virtual void Delete(TDomain dataModel)
         {
             if (dataModel.Id < 0) return;
             _crudOrm.Delete(ConvertToPersistence(dataModel));

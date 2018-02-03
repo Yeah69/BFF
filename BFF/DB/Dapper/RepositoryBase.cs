@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
@@ -22,18 +21,18 @@ namespace BFF.DB.Dapper
             _crudOrm = crudOrm;
         }
 
-        public virtual TDomain Find(long id, DbConnection connection = null)
+        public virtual TDomain Find(long id)
         {
-            return ConvertToDomain((_crudOrm.Read<TPersistence>(id), connection));
+            return ConvertToDomain(_crudOrm.Read<TPersistence>(id));
         }
 
-        protected abstract Converter<(TPersistence, DbConnection), TDomain> ConvertToDomain { get; }
+        protected abstract Converter<TPersistence, TDomain> ConvertToDomain { get; }
 
-        protected virtual IEnumerable<TPersistence> FindAllInner(DbConnection connection) => _crudOrm.ReadAll<TPersistence>();
+        protected virtual IEnumerable<TPersistence> FindAllInner() => _crudOrm.ReadAll<TPersistence>();
 
-        public virtual IEnumerable<TDomain> FindAll(DbConnection connection = null)
+        public virtual IEnumerable<TDomain> FindAll()
         {
-            return FindAllInner(connection).Select(p => ConvertToDomain((p, connection)));
+            return FindAllInner().Select(p => ConvertToDomain(p));
         }
     }
 }

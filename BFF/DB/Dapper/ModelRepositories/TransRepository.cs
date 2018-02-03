@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
@@ -54,9 +53,8 @@ namespace BFF.DB.Dapper.ModelRepositories
             _flagRepository = flagRepository;
         }
 
-        protected override Converter<(Trans, DbConnection), ITransBase> ConvertToDomain => tuple =>
+        protected override Converter<Trans, ITransBase> ConvertToDomain => trans =>
         {
-            (Trans trans, DbConnection connection) = tuple;
             Enum.TryParse(trans.Type, true, out TransType type);
             ITransBase ret;
             switch(type)
@@ -66,11 +64,11 @@ namespace BFF.DB.Dapper.ModelRepositories
                         _transactionRepository, 
                         trans.Date,
                         trans.Id,
-                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId, connection),
+                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId),
                         trans.CheckNumber,
-                        _accountRepository.Find(trans.AccountId, connection),
-                        _payeeRepository.Find(trans.PayeeId, connection),
-                        trans.CategoryId == null ? null : _categoryBaseRepository.Find((long)trans.CategoryId, connection), 
+                        _accountRepository.Find(trans.AccountId),
+                        _payeeRepository.Find(trans.PayeeId),
+                        trans.CategoryId == null ? null : _categoryBaseRepository.Find((long)trans.CategoryId), 
                         trans.Memo, 
                         trans.Sum,
                         trans.Cleared == 1L);
@@ -80,10 +78,10 @@ namespace BFF.DB.Dapper.ModelRepositories
                         _transferRepository,
                         trans.Date,
                         trans.Id,
-                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId, connection),
+                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId),
                         trans.CheckNumber,
-                        _accountRepository.Find(trans.PayeeId, connection),
-                        _accountRepository.Find(trans.CategoryId ?? -1, connection), // This CategoryId should never be a null, because it comes from a transfer
+                        _accountRepository.Find(trans.PayeeId),
+                        _accountRepository.Find(trans.CategoryId ?? -1), // This CategoryId should never be a null, because it comes from a transfer
                         trans.Memo,
                         trans.Sum, 
                         trans.Cleared == 1L);
@@ -91,13 +89,13 @@ namespace BFF.DB.Dapper.ModelRepositories
                 case TransType.ParentTransaction:
                     ret = new Domain.ParentTransaction(
                         _parentTransactionRepository,
-                        _subTransactionsRepository.GetChildrenOf(trans.Id, connection), 
+                        _subTransactionsRepository.GetChildrenOf(trans.Id), 
                         trans.Date,
                         trans.Id,
-                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId, connection),
+                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId),
                         trans.CheckNumber,
-                        _accountRepository.Find(trans.AccountId, connection),
-                        _payeeRepository.Find(trans.PayeeId, connection),
+                        _accountRepository.Find(trans.AccountId),
+                        _payeeRepository.Find(trans.PayeeId),
                         trans.Memo, 
                         trans.Cleared == 1L);
                     break;
@@ -157,30 +155,30 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         };
 
-        public IEnumerable<ITransBase> GetPage(int offset, int pageSize, Domain.IAccount specifyingObject, DbConnection connection = null)
+        public IEnumerable<ITransBase> GetPage(int offset, int pageSize, Domain.IAccount specifyingObject)
         {
             return (specifyingObject is Domain.IAccount account
                 ? _transOrm.GetPageFromSpecificAccount(offset, pageSize, account.Id)
                 : _transOrm.GetPageFromSummaryAccount(offset, pageSize))
-                .Select(t => ConvertToDomain((t, null)));
+                .Select(t => ConvertToDomain(t));
         }
 
-        public long GetCount(Domain.IAccount specifyingObject, DbConnection connection = null)
+        public long GetCount(Domain.IAccount specifyingObject)
         {
             return specifyingObject is Domain.IAccount account
                     ? _transOrm.GetCountFromSpecificAccount(account.Id)
                     : _transOrm.GetCountFromSummaryAccount();
         }
 
-        public async Task<IEnumerable<ITransBase>> GetPageAsync(int offset, int pageSize, Domain.IAccount specifyingObject, DbConnection connection = null)
+        public async Task<IEnumerable<ITransBase>> GetPageAsync(int offset, int pageSize, Domain.IAccount specifyingObject)
         {
             return (await (specifyingObject is Domain.IAccount account
                 ? _transOrm.GetPageFromSpecificAccountAsync(offset, pageSize, account.Id)
                 : _transOrm.GetPageFromSummaryAccountAsync(offset, pageSize)).ConfigureAwait(false))
-                .Select(t => ConvertToDomain((t, null)));
+                .Select(t => ConvertToDomain(t));
         }
 
-        public async Task<long> GetCountAsync(Domain.IAccount specifyingObject, DbConnection connection = null)
+        public async Task<long> GetCountAsync(Domain.IAccount specifyingObject)
         {
             return await (specifyingObject is Domain.IAccount account
                 ? _transOrm.GetCountFromSpecificAccountAsync(account.Id)

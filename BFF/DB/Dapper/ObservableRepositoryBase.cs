@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Common;
 using System.Linq;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
@@ -28,14 +27,14 @@ namespace BFF.DB.Dapper
             _comparer = comparer;
         }
 
-        public sealed override IEnumerable<TDomain> FindAll(DbConnection connection = null)
+        public sealed override IEnumerable<TDomain> FindAll()
         {
-            return base.FindAll(connection);
+            return base.FindAll();
         }
 
-        public override void Add(TDomain dataModel, DbConnection connection = null)
+        public override void Add(TDomain dataModel)
         {
-            base.Add(dataModel, connection);
+            base.Add(dataModel);
             if(!_all.Contains(dataModel))
             {
                 int i = 0;
@@ -45,9 +44,9 @@ namespace BFF.DB.Dapper
             }
         }
 
-        public override void Delete(TDomain dataModel, DbConnection connection = null)
+        public override void Delete(TDomain dataModel)
         {
-            base.Delete(dataModel, connection);
+            base.Delete(dataModel);
             if(_all.Contains(dataModel))
             {
                 _all.Remove(dataModel);

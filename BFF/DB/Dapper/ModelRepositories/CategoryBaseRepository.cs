@@ -1,6 +1,4 @@
-﻿using System.Data.Common;
-using System.Linq;
-using BFF.MVVM.Models.Native;
+﻿using System.Linq;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -20,7 +18,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             _incomeCategoryRepository = incomeCategoryRepository;
         }
 
-        public ICategoryBase Find(long id, DbConnection connection = null)
+        public ICategoryBase Find(long id)
         {
             ICategoryBase ret = _categoryRepository.All.FirstOrDefault(c => c.Id == id);
             if (ret != null) return ret;

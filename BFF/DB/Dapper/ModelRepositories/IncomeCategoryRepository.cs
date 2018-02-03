@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Globalization;
-using System.Linq;
 using Category = BFF.DB.PersistenceModels.Category;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -29,7 +27,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
 
 
-        protected override IEnumerable<Category> FindAllInner(DbConnection connection) => _categoryOrm.ReadIncomeCategories();
+        protected override IEnumerable<Category> FindAllInner() => _categoryOrm.ReadIncomeCategories();
 
         protected override Converter<MVVM.Models.Native.IIncomeCategory, Category> ConvertToPersistence => domainCategory =>
             new Category
@@ -41,13 +39,10 @@ namespace BFF.DB.Dapper.ModelRepositories
                 MonthOffset = domainCategory.MonthOffset
             };
 
-        protected override Converter<(Category, DbConnection), MVVM.Models.Native.IIncomeCategory> ConvertToDomain => tuple =>
-        {
-            (Category persistenceCategory, DbConnection _) = tuple;
-            return new MVVM.Models.Native.IncomeCategory(this,
+        protected override Converter<Category, MVVM.Models.Native.IIncomeCategory> ConvertToDomain => persistenceCategory => 
+            new MVVM.Models.Native.IncomeCategory(this,
                 persistenceCategory.Id,
                 persistenceCategory.Name,
                 persistenceCategory.MonthOffset);
-        };
     }
 }

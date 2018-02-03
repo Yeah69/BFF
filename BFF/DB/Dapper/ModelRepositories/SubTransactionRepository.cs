@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
@@ -9,7 +8,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 {
     public interface ISubTransactionRepository : IRepositoryBase<Domain.ISubTransaction>
     {
-        IEnumerable<Domain.ISubTransaction> GetChildrenOf(long parentId, DbConnection connection = null);
+        IEnumerable<Domain.ISubTransaction> GetChildrenOf(long parentId);
     }
 
     public sealed class SubTransactionRepository : RepositoryBase<Domain.ISubTransaction, SubTransaction>, ISubTransactionRepository
@@ -37,18 +36,17 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Sum = domainSubTransaction.Sum
             };
 
-        protected override Converter<(SubTransaction, DbConnection), Domain.ISubTransaction> ConvertToDomain => tuple =>
-        {
-            (SubTransaction persistenceSubTransaction, DbConnection connection) = tuple;
-            return new Domain.SubTransaction(
+        protected override Converter<SubTransaction, Domain.ISubTransaction> ConvertToDomain => persistenceSubTransaction =>
+            new Domain.SubTransaction(
                 this,
                 persistenceSubTransaction.Id,
-                persistenceSubTransaction.CategoryId == null ? null : _categoryBaseRepository.Find((long)persistenceSubTransaction.CategoryId, connection),
+                persistenceSubTransaction.CategoryId == null 
+                    ? null 
+                    : _categoryBaseRepository.Find((long)persistenceSubTransaction.CategoryId),
                 persistenceSubTransaction.Memo,
                 persistenceSubTransaction.Sum);
-        };
 
-        public IEnumerable<Domain.ISubTransaction> GetChildrenOf(long parentId, DbConnection connection = null) =>
-            _parentalOrm.ReadSubTransactionsOf(parentId).Select(sti => ConvertToDomain((sti, connection)));
+        public IEnumerable<Domain.ISubTransaction> GetChildrenOf(long parentId) =>
+            _parentalOrm.ReadSubTransactionsOf(parentId).Select(sti => ConvertToDomain(sti));
     }
 }

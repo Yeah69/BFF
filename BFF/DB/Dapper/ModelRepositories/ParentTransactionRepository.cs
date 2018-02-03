@@ -1,5 +1,4 @@
 using System;
-using System.Data.Common;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
@@ -47,19 +46,17 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Type = nameof(TransType.ParentTransaction)
             };
 
-        protected override Converter<(Trans, DbConnection), Domain.IParentTransaction> ConvertToDomain => tuple =>
+        protected override Converter<Trans, Domain.IParentTransaction> ConvertToDomain => persistenceParentTransaction =>
         {
-            (Trans persistenceParentTransaction, DbConnection connection) = tuple;
-
             var parentTransaction = new Domain.ParentTransaction(
                 this,
-                _subTransactionRepository.GetChildrenOf(persistenceParentTransaction.Id, connection),
+                _subTransactionRepository.GetChildrenOf(persistenceParentTransaction.Id),
                 persistenceParentTransaction.Date,
                 persistenceParentTransaction.Id,
-                persistenceParentTransaction.FlagId == null ? null : _flagRepository.Find((long)persistenceParentTransaction.FlagId, connection),
+                persistenceParentTransaction.FlagId == null ? null : _flagRepository.Find((long)persistenceParentTransaction.FlagId),
                 persistenceParentTransaction.CheckNumber,
-                _accountRepository.Find(persistenceParentTransaction.AccountId, connection),
-                _payeeRepository.Find(persistenceParentTransaction.PayeeId, connection),
+                _accountRepository.Find(persistenceParentTransaction.AccountId),
+                _payeeRepository.Find(persistenceParentTransaction.PayeeId),
                 persistenceParentTransaction.Memo,
                 persistenceParentTransaction.Cleared == 1L);
 

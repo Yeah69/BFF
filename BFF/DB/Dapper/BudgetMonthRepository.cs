@@ -9,7 +9,7 @@ namespace BFF.DB.Dapper
 {
     public interface IBudgetMonthRepository : IDisposable
     {
-        IList<IBudgetMonth> Find(DateTime fromMonth, DateTime toMonth, DbConnection connection);
+        IList<IBudgetMonth> Find(DateTime fromMonth, DateTime toMonth);
     }
 
     public class BudgetMonthRepository : IBudgetMonthRepository
@@ -34,7 +34,7 @@ namespace BFF.DB.Dapper
             _budgetOrm = budgetOrm;
         }
 
-        public IList<IBudgetMonth> Find(DateTime fromMonth, DateTime toMonth, DbConnection connection)
+        public IList<IBudgetMonth> Find(DateTime fromMonth, DateTime toMonth)
         {
             DateTime actualFromMonth = new DateTime(
                 fromMonth.Month == 1 ? fromMonth.Year - 1 : fromMonth.Year,

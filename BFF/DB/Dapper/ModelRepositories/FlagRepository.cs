@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Windows.Media;
 using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
@@ -40,10 +39,8 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         };
 
-        protected override Converter<(Flag, DbConnection), Domain.IFlag> ConvertToDomain => tuple =>
-        {
-            (Flag persistenceModel, _) = tuple;
-            return new Domain.Flag(
+        protected override Converter<Flag, Domain.IFlag> ConvertToDomain => persistenceModel => 
+            new Domain.Flag(
                 this,
                 persistenceModel.Id, 
                 persistenceModel.Name,
@@ -52,6 +49,5 @@ namespace BFF.DB.Dapper.ModelRepositories
                     (byte)(persistenceModel.Color >> 16 & 0xff),
                     (byte)(persistenceModel.Color >> 8 & 0xff),
                     (byte)(persistenceModel.Color & 0xff)));
-        };
     }
 }

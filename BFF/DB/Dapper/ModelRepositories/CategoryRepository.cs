@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
@@ -66,7 +65,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             }
         }
 
-        protected override IEnumerable<Category> FindAllInner(DbConnection connection)
+        protected override IEnumerable<Category> FindAllInner()
         {
             return _categoryOrm.ReadCategories();
         }
@@ -79,13 +78,10 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Name = domainCategory.Name
             };
         
-        protected override Converter<(Category, DbConnection), Domain.ICategory> ConvertToDomain => tuple =>
-        {
-            (Category persistenceCategory, DbConnection connection) = tuple;
-            return new Domain.Category(this,
+        protected override Converter<Category, Domain.ICategory> ConvertToDomain => persistenceCategory => 
+            new Domain.Category(this,
                 persistenceCategory.Id,
                 persistenceCategory.Name,
-                persistenceCategory.ParentId != null ? Find((long)persistenceCategory.ParentId, connection) : null);
-        };
+                persistenceCategory.ParentId != null ? Find((long)persistenceCategory.ParentId) : null);
     }
 }

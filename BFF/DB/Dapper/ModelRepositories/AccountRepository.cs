@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -16,9 +15,9 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public interface IAccountRepository : IObservableRepositoryBase<Domain.IAccount>
     {
-        long? GetBalance(Domain.IAccount account, DbConnection connection = null);
+        long? GetBalance(Domain.IAccount account);
 
-        long? GetBalanceUntilNow(Domain.IAccount account, DbConnection connection = null);
+        long? GetBalanceUntilNow(Domain.IAccount account);
     }
 
     public sealed class AccountRepository : ObservableRepositoryBase<Domain.IAccount, Account>, IAccountRepository
@@ -39,17 +38,14 @@ namespace BFF.DB.Dapper.ModelRepositories
                 StartingDate = domainAccount.StartingDate
             };
 
-        protected override Converter<(Account, DbConnection), Domain.IAccount> ConvertToDomain => tuple =>
-        {
-            (Account persistenceAccount, _) = tuple;
-            return new Domain.Account(this,
+        protected override Converter<Account, Domain.IAccount> ConvertToDomain => persistenceAccount => 
+            new Domain.Account(this,
                 persistenceAccount.StartingDate,
                 persistenceAccount.Id,
                 persistenceAccount.Name,
                 persistenceAccount.StartingBalance);
-        };
 
-        public long? GetBalance(Domain.IAccount account, DbConnection connection = null)
+        public long? GetBalance(Domain.IAccount account)
         {
             try
             {
@@ -69,7 +65,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             }
         }
 
-        public long? GetBalanceUntilNow(Domain.IAccount account, DbConnection connection = null)
+        public long? GetBalanceUntilNow(Domain.IAccount account)
         {
             try
             {
