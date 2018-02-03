@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Transactions;
@@ -23,11 +22,11 @@ namespace BFF.DB.SQLite
         public IEnumerable<Category> ReadCategories()
         {
             IList<Category> ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = newConnection.Query<Category>(GetAllCategoriesQuery).ToList();
+                connection.Open();
+                ret = connection.Query<Category>(GetAllCategoriesQuery).ToList();
                 transactionScope.Complete();
             }
             return ret;
@@ -36,11 +35,11 @@ namespace BFF.DB.SQLite
         public IEnumerable<Category> ReadIncomeCategories()
         {
             IList<Category> ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = newConnection.Query<Category>(GetAllIncomeCategoriesQuery).ToList();
+                connection.Open();
+                ret = connection.Query<Category>(GetAllIncomeCategoriesQuery).ToList();
                 transactionScope.Complete();
             }
             return ret;

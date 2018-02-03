@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Transactions;
@@ -19,11 +18,11 @@ namespace BFF.DB.SQLite
 
         public void Create<T>(T model) where T : class, IPersistenceModel
         {
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                long id = newConnection.Insert(model);
+                connection.Open();
+                long id = connection.Insert(model);
                 model.Id = id;
                 transactionScope.Complete();
             }
@@ -31,11 +30,11 @@ namespace BFF.DB.SQLite
 
         public void Create<T>(IEnumerable<T> models) where T : class, IPersistenceModel
         {
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                newConnection.Insert(models);
+                connection.Open();
+                connection.Insert(models);
                 transactionScope.Complete();
             }
         }
@@ -43,11 +42,11 @@ namespace BFF.DB.SQLite
         public T Read<T>(long id) where T : class, IPersistenceModel
         {
             T ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = newConnection.Get<T>(id);
+                connection.Open();
+                ret = connection.Get<T>(id);
                 transactionScope.Complete();
             }
             return ret;
@@ -56,11 +55,11 @@ namespace BFF.DB.SQLite
         public IEnumerable<T> ReadAll<T>() where T : class, IPersistenceModel
         {
             IList<T> ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = newConnection.GetAll<T>().ToList();
+                connection.Open();
+                ret = connection.GetAll<T>().ToList();
                 transactionScope.Complete();
             }
             return ret;
@@ -68,24 +67,24 @@ namespace BFF.DB.SQLite
 
         public void Update<T>(T model) where T : class, IPersistenceModel
         {
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                newConnection.Update(model);
+                connection.Open();
+                connection.Update(model);
                 transactionScope.Complete();
             }
         }
 
         public void Update<T>(IEnumerable<T> models) where T : class, IPersistenceModel
         {
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
+                connection.Open();
                 foreach (var model in models)
                 {
-                    newConnection.Update(model);
+                    connection.Update(model);
                 }
                 transactionScope.Complete();
             }
@@ -93,24 +92,24 @@ namespace BFF.DB.SQLite
 
         public void Delete<T>(T model) where T : class, IPersistenceModel
         {
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                newConnection.Delete(model);
+                connection.Open();
+                connection.Delete(model);
                 transactionScope.Complete();
             }
         }
 
         public void Delete<T>(IEnumerable<T> models) where T : class, IPersistenceModel
         {
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
+                connection.Open();
                 foreach (var model in models)
                 {
-                    newConnection.Delete(model);
+                    connection.Delete(model);
                 }
                 transactionScope.Complete();
             }

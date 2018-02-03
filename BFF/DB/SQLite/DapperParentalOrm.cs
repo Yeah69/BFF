@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Transactions;
@@ -24,11 +23,11 @@ namespace BFF.DB.SQLite
         public IEnumerable<SubTransaction> ReadSubTransactionsOf(long parentTransactionId)
         {
             IList<SubTransaction> ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = newConnection.Query<SubTransaction>(ParentalQuery, new { ParentId = parentTransactionId }).ToList();
+                connection.Open();
+                ret = connection.Query<SubTransaction>(ParentalQuery, new { ParentId = parentTransactionId }).ToList();
                 transactionScope.Complete();
             }
             return ret;

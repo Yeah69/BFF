@@ -50,11 +50,11 @@ namespace BFF.DB.SQLite
         {
             long? ret;
 
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = newConnection.Query<long?>(AccountSpecificBalanceStatement, new { accountId = id }).FirstOrDefault();
+                connection.Open();
+                ret = connection.Query<long?>(AccountSpecificBalanceStatement, new { accountId = id }).FirstOrDefault();
                 transactionScope.Complete();
             }
 
@@ -65,11 +65,11 @@ namespace BFF.DB.SQLite
         {
             long? ret;
 
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = newConnection.Query<long?>(AccountSpecificBalanceUntilNowStatement, new { accountId = id, DateTimeNow = DateTime.Now }).FirstOrDefault();
+                connection.Open();
+                ret = connection.Query<long?>(AccountSpecificBalanceUntilNowStatement, new { accountId = id, DateTimeNow = DateTime.Now }).FirstOrDefault();
                 transactionScope.Complete();
             }
 
@@ -80,11 +80,11 @@ namespace BFF.DB.SQLite
         {
             long? ret;
 
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = newConnection.Query<long?>(AllAccountsBalanceStatement).FirstOrDefault();
+                connection.Open();
+                ret = connection.Query<long?>(AllAccountsBalanceStatement).FirstOrDefault();
                 transactionScope.Complete();
             }
 
@@ -95,11 +95,11 @@ namespace BFF.DB.SQLite
         {
             long? ret;
 
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = newConnection.Query<long?>(AllAccountsBalanceUntilNowStatement, new { DateTimeNow = DateTime.Now }).FirstOrDefault();
+                connection.Open();
+                ret = connection.Query<long?>(AllAccountsBalanceUntilNowStatement, new { DateTimeNow = DateTime.Now }).FirstOrDefault();
                 transactionScope.Complete();
             }
 

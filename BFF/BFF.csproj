@@ -278,6 +278,7 @@
     <Compile Include="DB\SQLite\DapperAccountOrm.cs" />
     <Compile Include="DB\SQLite\DapperBudgetOrm.cs" />
     <Compile Include="DB\SQLite\DapperCategoryOrm.cs" />
+    <Compile Include="DB\SQLite\DapperImportingOrm.cs" />
     <Compile Include="DB\SQLite\DapperParentalOrm.cs" />
     <Compile Include="DB\SQLite\DapperTransOrm.cs" />
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />

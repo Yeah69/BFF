@@ -86,16 +86,16 @@ namespace BFF.DB.SQLite
             long initialNotBudgetedOrOverbudgeted;
             IDictionary<DateTime, long> incomesPerMonth;
 
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
+                connection.Open();
 
                 var budgetEntries = new List<(BudgetEntry Entry, long Outflow, long Balance)>();
 
                 foreach (var categoryId in categoryIds)
                 {
-                    var budgetList = newConnection
+                    var budgetList = connection
                         .Query<BudgetEntry>(
                         BudgetQuery,
                         new
@@ -106,7 +106,7 @@ namespace BFF.DB.SQLite
                         })
                         .ToDictionary(be => new DateTime(be.Month.Year, be.Month.Month, 1), be => be);
 
-                    var outflowList = newConnection
+                    var outflowList = connection
                         .Query<OutflowResponse>(
                         OutflowQuery,
                         new
@@ -176,8 +176,8 @@ namespace BFF.DB.SQLite
 
                 long firstBalance = budgetEntriesPerMonth[0].Where(be => be.Balance > 0).Sum(be => be.Balance);
 
-                initialNotBudgetedOrOverbudgeted = 
-                    newConnection.QueryFirst<long?>(NotBudgetedOrOverbudgetedQuery,
+                initialNotBudgetedOrOverbudgeted =
+                    connection.QueryFirst<long?>(NotBudgetedOrOverbudgetedQuery,
                         new
                         {
                             Year = $"{fromMonth.Year:0000}",
@@ -186,7 +186,7 @@ namespace BFF.DB.SQLite
                 
                 foreach (var incomeCategory in incomeCategories)
                 {
-                    initialNotBudgetedOrOverbudgeted += newConnection.QueryFirst<long?>(IncomeForCategoryUntilMonthQuery(incomeCategory.MonthOffset), new
+                    initialNotBudgetedOrOverbudgeted += connection.QueryFirst<long?>(IncomeForCategoryUntilMonthQuery(incomeCategory.MonthOffset), new
                                      {
                                          CategoryId = incomeCategory.Id,
                                          Year = $"{fromMonth.Year:0000}",
@@ -202,7 +202,7 @@ namespace BFF.DB.SQLite
                     long incomeSum = 0;
                     foreach (var incomeCategory in incomeCategories)
                     {
-                        incomeSum += newConnection.QueryFirst<long?>(IncomeForCategoryQuery(incomeCategory.MonthOffset), new
+                        incomeSum += connection.QueryFirst<long?>(IncomeForCategoryQuery(incomeCategory.MonthOffset), new
                         {
                             CategoryId = incomeCategory.Id,
                             Year = $"{g.Key.Year:0000}",

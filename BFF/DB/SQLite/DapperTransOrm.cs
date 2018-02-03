@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,11 +31,11 @@ namespace BFF.DB.SQLite
         public IEnumerable<Trans> GetPageFromSpecificAccount(int offset, int pageSize, long accountId)
         {
             IList<Trans> ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = newConnection.Query<Trans>($"{PagePart} {SpecifyingPart} {OrderingPageSuffix} {LimitPart};", new { offset, pageSize, accountId}).ToList();
+                connection.Open();
+                ret = connection.Query<Trans>($"{PagePart} {SpecifyingPart} {OrderingPageSuffix} {LimitPart};", new { offset, pageSize, accountId}).ToList();
                 transactionScope.Complete();
             }
             return ret;
@@ -45,11 +44,11 @@ namespace BFF.DB.SQLite
         public IEnumerable<Trans> GetPageFromSummaryAccount(int offset, int pageSize)
         {
             IList<Trans> ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = newConnection.Query<Trans>($"{PagePart} {OrderingPageSuffix} {LimitPart};", new { offset, pageSize }).ToList();
+                connection.Open();
+                ret = connection.Query<Trans>($"{PagePart} {OrderingPageSuffix} {LimitPart};", new { offset, pageSize }).ToList();
                 transactionScope.Complete();
             }
             return ret;
@@ -58,11 +57,11 @@ namespace BFF.DB.SQLite
         public long GetCountFromSpecificAccount(long accountId)
         {
             long ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = newConnection.Query<long>($"{CountPart} {SpecifyingPart};", new { accountId }).First();
+                connection.Open();
+                ret = connection.Query<long>($"{CountPart} {SpecifyingPart};", new { accountId }).First();
                 transactionScope.Complete();
             }
             return ret;
@@ -71,11 +70,11 @@ namespace BFF.DB.SQLite
         public long GetCountFromSummaryAccount()
         {
             long ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = newConnection.Query<long>($"{CountPart};").First();
+                connection.Open();
+                ret = connection.Query<long>($"{CountPart};").First();
                 transactionScope.Complete();
             }
             return ret;
@@ -84,11 +83,11 @@ namespace BFF.DB.SQLite
         public async Task<IEnumerable<Trans>> GetPageFromSpecificAccountAsync(int offset, int pageSize, long accountId)
         {
             IList<Trans> ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = (await newConnection
+                connection.Open();
+                ret = (await connection
                     .QueryAsync<Trans>($"{PagePart} {SpecifyingPart} {OrderingPageSuffix} {LimitPart};", new { offset, pageSize, accountId })
                     .ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
@@ -99,11 +98,11 @@ namespace BFF.DB.SQLite
         public async Task<IEnumerable<Trans>> GetPageFromSummaryAccountAsync(int offset, int pageSize)
         {
             IList<Trans> ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = (await newConnection
+                connection.Open();
+                ret = (await connection
                     .QueryAsync<Trans>($"{PagePart} {OrderingPageSuffix} {LimitPart};", new { offset, pageSize })
                     .ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
@@ -114,11 +113,11 @@ namespace BFF.DB.SQLite
         public async Task<long> GetCountFromSpecificAccountAsync(long accountId)
         {
             long ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = (await newConnection.QueryAsync<long>($"{CountPart} {SpecifyingPart};", new { accountId }).ConfigureAwait(false)).First();
+                connection.Open();
+                ret = (await connection.QueryAsync<long>($"{CountPart} {SpecifyingPart};", new { accountId }).ConfigureAwait(false)).First();
                 transactionScope.Complete();
             }
             return ret;
@@ -127,11 +126,11 @@ namespace BFF.DB.SQLite
         public async Task<long> GetCountFromSummaryAccountAsync()
         {
             long ret;
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress, TimeSpan.FromSeconds(10)))
-            using (DbConnection newConnection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
             {
-                newConnection.Open();
-                ret = (await newConnection.QueryAsync<long>($"{CountPart};").ConfigureAwait(false)).First();
+                connection.Open();
+                ret = (await connection.QueryAsync<long>($"{CountPart};").ConfigureAwait(false)).First();
                 transactionScope.Complete();
             }
             return ret;
