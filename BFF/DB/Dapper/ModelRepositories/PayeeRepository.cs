@@ -6,17 +6,6 @@ using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreatePayeeTable : CreateTableBase
-    {
-        public CreatePayeeTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Payee)}s](
-            {nameof(Payee.Id)} INTEGER PRIMARY KEY,
-            {nameof(Payee.Name)} VARCHAR(100));";
-        
-    }
-    
     public class PayeeComparer : Comparer<Domain.IPayee>
     {
         public override int Compare(Domain.IPayee x, Domain.IPayee y)

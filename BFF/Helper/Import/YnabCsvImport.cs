@@ -4,9 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Autofac.Features.OwnedInstances;
 using BFF.DB;
-using BFF.DB.Dapper;
-using BFF.DB.SQLite;
 using BFF.Helper.Extensions;
 using BFF.MVVM;
 using BFF.MVVM.Models.Native.Structure;
@@ -23,7 +22,7 @@ namespace BFF.Helper.Import
     class YnabCsvImport : ObservableObject, IYnabCsvImport
     {
         private readonly IImportingOrm _importingOrm;
-        private readonly Func<string, ICreateSqLiteDatabase> _createSqLiteDatabaseFactory;
+        private readonly ICreateBackendOrm _createBackendOrm;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public string TransactionPath
@@ -58,12 +57,15 @@ namespace BFF.Helper.Import
 
         public YnabCsvImport(
             (string TransactionPath, string BudgetPath, string SavePath) paths,
-            Func<string, IProvideConnection> createProvideConnection,
+            Owned<Func<string, IProvideConnection>> ownedCreateProvideConnection,
             Func<IProvideConnection, IImportingOrm> createImportingOrm,
-            Func<string, ICreateSqLiteDatabase> createSqLiteDatabaseFactory)
+            Func<IProvideConnection, ICreateBackendOrm> createCreateBackendOrm)
         {
-            _importingOrm = createImportingOrm(createProvideConnection(paths.SavePath));
-            _createSqLiteDatabaseFactory = createSqLiteDatabaseFactory;
+            var provideConnection = ownedCreateProvideConnection.Value(paths.SavePath);
+            ownedCreateProvideConnection.Dispose();
+            _importingOrm = createImportingOrm(provideConnection);
+            _createBackendOrm = createCreateBackendOrm(provideConnection);
+            
             _transactionPath = paths.TransactionPath;
             _budgetPath = paths.BudgetPath;
             _savePath = paths.SavePath;
@@ -140,7 +142,7 @@ namespace BFF.Helper.Import
             };
 
             //Third step: Create new database for imported data
-            _createSqLiteDatabaseFactory(savePath).Create();
+            _createBackendOrm.Create();
             _importingOrm.PopulateDatabase(lists, assignments);
         }
 

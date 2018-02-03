@@ -9,29 +9,6 @@ using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateTransTable : CreateTableBase
-    {
-        public CreateTransTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE {nameof(Trans)}s(
-            {nameof(Trans.Id)} INTEGER PRIMARY KEY,
-            {nameof(Trans.FlagId)} INTEGER,
-            {nameof(Trans.CheckNumber)} TEXT,
-            {nameof(Trans.AccountId)} INTEGER,
-            {nameof(Trans.PayeeId)} INTEGER,
-            {nameof(Trans.CategoryId)} INTEGER,
-            {nameof(Trans.Date)} DATE,
-            {nameof(Trans.Memo)} TEXT,
-            {nameof(Trans.Sum)} INTEGER,
-            {nameof(Trans.Cleared)} INTEGER,
-            {nameof(Trans.Type)} VARCHAR(17),
-            FOREIGN KEY({nameof(Trans.FlagId)}) REFERENCES {nameof(Flag)}s({nameof(Flag.Id)}) ON DELETE SET NULL);
-            CREATE INDEX {nameof(Trans)}s_{nameof(Trans.AccountId)}_{nameof(Trans.PayeeId)}_index ON Transs ({nameof(Trans.AccountId)}, {nameof(Trans.PayeeId)});
-            CREATE INDEX {nameof(Trans)}s_{nameof(Trans.AccountId)}_{nameof(Trans.CategoryId)}_index ON {nameof(Trans)}s ({nameof(Trans.AccountId)}, {nameof(Trans.CategoryId)});
-            CREATE INDEX {nameof(Trans)}s_{nameof(Trans.Date)}_index ON {nameof(Trans)}s ({nameof(Trans.Date)});";      
-    }
-
     public interface ITransRepository : 
         IRepositoryBase<ITransBase>, 
         ISpecifiedPagedAccess<ITransBase, Domain.IAccount>,

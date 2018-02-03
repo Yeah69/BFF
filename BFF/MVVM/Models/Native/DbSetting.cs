@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
-using Dapper.Contrib.Extensions;
 
 namespace BFF.MVVM.Models.Native
 {
@@ -29,8 +28,7 @@ namespace BFF.MVVM.Models.Native
         }
 
         private CultureInfo _currencyCulture;
-
-        [Write(false)]
+        
         public CultureInfo CurrencyCulture
         {
             get => _currencyCulture;
@@ -58,8 +56,7 @@ namespace BFF.MVVM.Models.Native
         }
 
         private CultureInfo _dateCulture;
-
-        [Write(false)]
+        
         public CultureInfo DateCulture
         {
             get => _dateCulture;

@@ -4,30 +4,9 @@ using System.Data.Common;
 using System.Linq;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
-using Dapper;
 
 namespace BFF.DB.Dapper
 {
-    public abstract class CreateTableBase : ICreateTable
-    {
-        private readonly IProvideConnection _provideConnection;
-        
-        protected CreateTableBase(IProvideConnection provideConnection)
-        {
-            _provideConnection = provideConnection;
-        }
-
-        public virtual void CreateTable(DbConnection connection = null)
-        {
-            ConnectionHelper.ExecuteOnExistingOrNewConnection(
-                c => c.Execute(CreateTableStatement), 
-                _provideConnection,
-                connection);
-        }
-        
-        protected abstract string CreateTableStatement { get; }
-    }
-
     public interface IRepositoryBase<TDomain> : IWriteOnlyRepositoryBase<TDomain>, IDbTableRepository<TDomain> where TDomain : class, IDataModel
     {
     }

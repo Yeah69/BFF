@@ -1,9 +1,11 @@
 using System;
+using Dapper.Contrib.Extensions;
 
 namespace BFF.DB.PersistenceModels
 {
     public class Trans : IPersistenceModel, IHaveAccount, IHaveCategory, IHavePayee, IHaveFlag
     {
+        [Key]
         public long Id { get; set; }
         public long? FlagId { get; set; }
         public string CheckNumber { get; set; }

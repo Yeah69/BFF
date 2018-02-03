@@ -7,21 +7,6 @@ using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateSubTransactionTable : CreateTableBase
-    {
-        public CreateSubTransactionTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(SubTransaction)}s](
-            {nameof(SubTransaction.Id)} INTEGER PRIMARY KEY,
-            {nameof(SubTransaction.ParentId)} INTEGER,
-            {nameof(SubTransaction.CategoryId)} INTEGER,
-            {nameof(SubTransaction.Memo)} TEXT,
-            {nameof(SubTransaction.Sum)} INTEGER,
-            FOREIGN KEY({nameof(SubTransaction.ParentId)}) REFERENCES {nameof(Trans)}s({nameof(Trans.Id)}) ON DELETE CASCADE);";
-
-    }
-
     public interface ISubTransactionRepository : IRepositoryBase<Domain.ISubTransaction>
     {
         IEnumerable<Domain.ISubTransaction> GetChildrenOf(long parentId, DbConnection connection = null);

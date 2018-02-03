@@ -4,19 +4,6 @@ using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateBudgetEntryTable : CreateTableBase
-    {
-        public CreateBudgetEntryTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(BudgetEntry)}s](
-            {nameof(BudgetEntry.Id)} INTEGER PRIMARY KEY,
-            {nameof(BudgetEntry.CategoryId)} INTEGER,
-            {nameof(BudgetEntry.Month)} DATE,
-            {nameof(BudgetEntry.Budget)} INTEGER,
-            FOREIGN KEY({nameof(BudgetEntry.CategoryId)}) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
-    }
-
     public interface IBudgetEntryRepository : IWriteOnlyRepositoryBase<Domain.IBudgetEntry>
     {
         Domain.IBudgetEntry Convert(BudgetEntry budgetEntry, long outflow, long balance);

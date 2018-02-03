@@ -7,20 +7,6 @@ using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateCategoryTable : CreateTableBase
-    {
-        public CreateCategoryTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Category)}s](
-            {nameof(Category.Id)} INTEGER PRIMARY KEY,
-            {nameof(Category.ParentId)} INTEGER,
-            {nameof(Category.Name)} VARCHAR(100),
-            {nameof(Category.IsIncomeRelevant)} INTEGER,
-            {nameof(Category.MonthOffset)} INTEGER,
-            FOREIGN KEY({nameof(Category.ParentId)}) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
-    }
-
     public class CategoryComparer : Comparer<Domain.ICategory>
     {
         public override int Compare(Domain.ICategory x, Domain.ICategory y)

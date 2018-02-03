@@ -64,8 +64,13 @@ namespace BFF.DB
             Find(DateTime fromMonth, DateTime toMonth, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories);
     }
 
-    public interface IImportingOrm : IOncePerBackend
+    public interface IImportingOrm
     {
         void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments);
+    }
+
+    public interface ICreateBackendOrm
+    {
+        void Create();
     }
 }

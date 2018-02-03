@@ -1,5 +1,4 @@
 ﻿using BFF.DB;
-using Dapper.Contrib.Extensions;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
@@ -36,7 +35,6 @@ namespace BFF.MVVM.Models.Native.Structure
         /// <summary>
         /// Identification number for the database
         /// </summary>
-        [Key]
         public long Id { get; set; } = -1L;
 
         /// <summary>

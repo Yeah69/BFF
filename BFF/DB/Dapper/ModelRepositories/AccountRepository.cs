@@ -6,18 +6,6 @@ using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateAccountTable : CreateTableBase
-    {
-        public CreateAccountTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Account)}s](
-            {nameof(Account.Id)} INTEGER PRIMARY KEY,
-            {nameof(Account.Name)} VARCHAR(100),
-            {nameof(Account.StartingBalance)} INTEGER NOT NULL DEFAULT 0,
-            {nameof(Account.StartingDate)} DATETIME NOT NULL);";
-    }
-    
     public class AccountComparer : Comparer<Domain.IAccount>
     {
         public override int Compare(Domain.IAccount x, Domain.IAccount y)

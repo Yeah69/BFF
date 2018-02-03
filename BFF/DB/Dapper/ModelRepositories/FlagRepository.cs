@@ -7,18 +7,6 @@ using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateFlagTable : CreateTableBase
-    {
-        public CreateFlagTable(IProvideConnection provideConnection) : base(provideConnection) { }
-
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Flag)}s](
-            {nameof(Flag.Id)} INTEGER PRIMARY KEY,
-            {nameof(Flag.Name)} VARCHAR(100),
-            {nameof(Flag.Color)} INTEGER);";
-
-    }
-
     public class FlagComparer : Comparer<Domain.IFlag>
     {
         public override int Compare(Domain.IFlag x, Domain.IFlag y)

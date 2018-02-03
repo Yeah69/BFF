@@ -236,10 +236,8 @@
     </ApplicationDefinition>
     <Compile Include="AutoFacBootstrapper.cs" />
     <Compile Include="BackendContext.cs" />
-    <Compile Include="DB\BffRepository.cs" />
     <Compile Include="DB\Dapper\BudgetMonthRepository.cs" />
     <Compile Include="DB\Dapper\CachingRepositoryBase.cs" />
-    <Compile Include="DB\Dapper\CreateSqLiteDatabase.cs" />
     <Compile Include="DB\Dapper\ConnectionHelper.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\AccountRepository.cs" />
     <Compile Include="DB\Dapper\ModelRepositories\BudgetEntryRepository.cs" />
@@ -278,6 +276,7 @@
     <Compile Include="DB\SQLite\DapperAccountOrm.cs" />
     <Compile Include="DB\SQLite\DapperBudgetOrm.cs" />
     <Compile Include="DB\SQLite\DapperCategoryOrm.cs" />
+    <Compile Include="DB\SQLite\DapperCreateBackendOrm.cs" />
     <Compile Include="DB\SQLite\DapperImportingOrm.cs" />
     <Compile Include="DB\SQLite\DapperParentalOrm.cs" />
     <Compile Include="DB\SQLite\DapperTransOrm.cs" />

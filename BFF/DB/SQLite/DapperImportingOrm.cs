@@ -84,20 +84,12 @@ namespace BFF.DB.SQLite
                 }
 
                 connection.Insert(importLists.Transactions);
-                //foreach (PersistenceModels.Trans transaction in importLists.Transactions)
-                //    connection.Insert(transaction);
 
                 connection.Insert(importLists.SubTransactions);
-                //foreach (PersistenceModels.SubTransaction subTransaction in importLists.SubTransactions)
-                //    connection.Insert(subTransaction);
 
                 connection.Insert(importLists.Transfers);
-                //foreach (PersistenceModels.Trans transfer in importLists.Transfers)
-                //    connection.Insert(transfer);
 
                 connection.Insert(importLists.BudgetEntries);
-                //foreach (PersistenceModels.BudgetEntry budgetEntry in importLists.BudgetEntries)
-                //    connection.Insert(budgetEntry);
 
                 transactionScope.Complete();
             }

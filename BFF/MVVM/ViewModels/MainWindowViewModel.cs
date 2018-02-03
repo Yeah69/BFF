@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Forms;
 using Autofac.Features.OwnedInstances;
-using BFF.DB.Dapper;
+using BFF.DB;
 using BFF.Helper.Extensions;
 using BFF.Helper.Import;
 using BFF.Properties;
@@ -178,6 +178,8 @@ namespace BFF.MVVM.ViewModels
 
         public MainWindowViewModel(
             Func<Owned<Func<string, ISqLiteBackendContext>>> sqliteBackendContextFactory,
+            Func<Owned<Func<string, IProvideConnection>>> ownedCreateProvideConnectionFactory,
+            Func<IProvideConnection, ICreateBackendOrm> createCreateBackendOrm,
             IEmptyViewModel emptyViewModel)
         {
             EmptyViewModel = emptyViewModel;
@@ -212,7 +214,9 @@ namespace BFF.MVVM.ViewModels
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    new CreateSqLiteDatabase(saveFileDialog.FileName).Create();
+                    var ownedCreateProvideConnection = ownedCreateProvideConnectionFactory();
+                    createCreateBackendOrm(ownedCreateProvideConnection.Value(saveFileDialog.FileName)).Create();
+                    ownedCreateProvideConnection.Dispose();
                     Reset(saveFileDialog.FileName);
                 }
             });

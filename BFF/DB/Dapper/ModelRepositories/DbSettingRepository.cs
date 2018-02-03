@@ -5,17 +5,6 @@ using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateDbSettingTable : CreateTableBase
-    {
-        public CreateDbSettingTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(DbSetting)}s](
-            {nameof(DbSetting.Id)} INTEGER PRIMARY KEY, 
-            {nameof(DbSetting.CurrencyCultureName)} VARCHAR(10),
-            {nameof(DbSetting.DateCultureName)} VARCHAR(10));";
-    }
-
     public interface IDbSettingRepository : IRepositoryBase<Domain.IDbSetting>
     {
     }
