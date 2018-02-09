@@ -50,7 +50,7 @@ namespace BFF.MVVM.ViewModels
             {
                 if(IsIncomeRelevant?.Value ?? false)
                     return incomeCategoryViewModelService.All.All(icvm => icvm.Name.Value != text);
-                return parent == null && AllPotentialParents.Where(cvw => cvw.Parent.Value == null).All(cvm => cvm.Name.Value != text) ||
+                return parent is null && AllPotentialParents.Where(cvw => cvw.Parent.Value is null).All(cvm => cvm.Name.Value != text) ||
                        parent != null && parent.Categories.All(cvm => cvm != null && cvm.Name.Value != text);
             }
             string ValidateNewCategoryRelationName(string text, ICategoryViewModel parent)

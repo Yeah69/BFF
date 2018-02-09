@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -19,6 +18,7 @@ namespace BFF.MVVM.ViewModels
         IReadOnlyReactiveProperty<long> NotBudgetedInPreviousMonth { get; }
         IReadOnlyReactiveProperty<long> OverspentInPreviousMonth { get; }
         IReadOnlyReactiveProperty<long> IncomeForThisMonth { get; }
+        IReadOnlyReactiveProperty<long> DanglingTransferForThisMonth { get; }
         IReadOnlyReactiveProperty<long> BudgetedThisMonth { get; }
         IReadOnlyReactiveProperty<long> BudgetedThisMonthPositive { get; }
         IReadOnlyReactiveProperty<long> AvailableToBudget { get; }
@@ -37,6 +37,7 @@ namespace BFF.MVVM.ViewModels
             NotBudgetedInPreviousMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.NotBudgetedInPreviousMonth).AddTo(_compositeDisposable);
             OverspentInPreviousMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.OverspentInPreviousMonth).AddTo(_compositeDisposable);
             IncomeForThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.IncomeForThisMonth).AddTo(_compositeDisposable);
+            DanglingTransferForThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.DanglingTransferForThisMonth).AddTo(_compositeDisposable);
             BudgetedThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.BudgetedThisMonth).AddTo(_compositeDisposable);
             BudgetedThisMonthPositive = BudgetedThisMonth.Select(l => -1 * l).ToReadOnlyReactiveProperty().AddTo(_compositeDisposable);
             Outflows = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.Outflows).AddTo(_compositeDisposable);
@@ -49,6 +50,7 @@ namespace BFF.MVVM.ViewModels
         public IReadOnlyReactiveProperty<long> NotBudgetedInPreviousMonth { get; }
         public IReadOnlyReactiveProperty<long> OverspentInPreviousMonth { get; }
         public IReadOnlyReactiveProperty<long> IncomeForThisMonth { get; }
+        public IReadOnlyReactiveProperty<long> DanglingTransferForThisMonth { get; }
         public IReadOnlyReactiveProperty<long> BudgetedThisMonth { get; }
         public IReadOnlyReactiveProperty<long> BudgetedThisMonthPositive { get; }
 

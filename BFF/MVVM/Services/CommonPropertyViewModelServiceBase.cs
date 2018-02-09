@@ -66,7 +66,7 @@ namespace BFF.MVVM.Services
 
         public virtual TViewModel GetViewModel(TDomain model)
         {
-            if(model == null) return null;
+            if(model is null) return null;
             if(_modelToViewModel.ContainsKey(model))
                 return _modelToViewModel[model];
 
@@ -83,7 +83,7 @@ namespace BFF.MVVM.Services
 
         public TDomain GetModel(TViewModel viewModel)
         {
-            if(viewModel == null) return null;
+            if(viewModel is null) return null;
             if(_viewModelToModel.ContainsKey(viewModel))
                 return _viewModelToModel[viewModel];
 

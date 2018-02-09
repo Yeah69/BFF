@@ -36,7 +36,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Id = domainParentTransaction.Id,
                 AccountId = domainParentTransaction.Account.Id,
                 CategoryId = -69,
-                FlagId = domainParentTransaction.Flag == null || domainParentTransaction.Flag == Domain.Flag.Default ? (long?) null : domainParentTransaction.Flag.Id,
+                FlagId = domainParentTransaction.Flag is null || domainParentTransaction.Flag == Domain.Flag.Default 
+                    ? (long?) null 
+                    : domainParentTransaction.Flag.Id,
                 CheckNumber = domainParentTransaction.CheckNumber,
                 PayeeId = domainParentTransaction.Payee.Id,
                 Date = domainParentTransaction.Date,
@@ -53,10 +55,14 @@ namespace BFF.DB.Dapper.ModelRepositories
                 _subTransactionRepository.GetChildrenOf(persistenceParentTransaction.Id),
                 persistenceParentTransaction.Date,
                 persistenceParentTransaction.Id,
-                persistenceParentTransaction.FlagId == null ? null : _flagRepository.Find((long)persistenceParentTransaction.FlagId),
+                persistenceParentTransaction.FlagId is null 
+                    ? null 
+                    : _flagRepository.Find((long) persistenceParentTransaction.FlagId),
                 persistenceParentTransaction.CheckNumber,
                 _accountRepository.Find(persistenceParentTransaction.AccountId),
-                _payeeRepository.Find(persistenceParentTransaction.PayeeId),
+                persistenceParentTransaction.PayeeId is null
+                    ? null 
+                    : _payeeRepository.Find((long) persistenceParentTransaction.PayeeId),
                 persistenceParentTransaction.Memo,
                 persistenceParentTransaction.Cleared == 1L);
 

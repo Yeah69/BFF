@@ -150,18 +150,13 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override ISumEditViewModel SumEdit { get; }
 
-        protected override void InitializeDeleteCommand()
+        public override void Delete()
         {
-            DeleteCommand.Subscribe(_ =>
-            {
-                var tempList = new List<ISubTransactionViewModel>(SubElements);
-                foreach (ISubTransactionViewModel subTransaction in tempList)
-                    subTransaction.Delete();
-                _newTransactions.Clear();
-                Delete();
-                NotifyRelevantAccountsToRefreshBalance();
-                NotifyRelevantAccountsToRefreshTits();
-            });
+            var tempList = new List<ISubTransactionViewModel>(SubElements);
+            foreach (ISubTransactionViewModel subTransaction in tempList)
+                subTransaction.Delete();
+            _newTransactions.Clear();
+            base.Delete();
         }
 
 

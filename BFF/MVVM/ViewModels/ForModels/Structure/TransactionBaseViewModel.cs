@@ -88,14 +88,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             NewPayeeViewModel = newPayeeViewModelFactory(this);
         }
 
-        protected override void InitializeDeleteCommand()
+        public override void Delete()
         {
-            DeleteCommand.Subscribe(_ =>
-            {
-                Delete();
-                NotifyRelevantAccountsToRefreshTits();
-                NotifyRelevantAccountsToRefreshBalance();
-            });
+            base.Delete();
+            NotifyRelevantAccountsToRefreshTits();
+            NotifyRelevantAccountsToRefreshBalance();
         }
 
         protected override void NotifyRelevantAccountsToRefreshTits()

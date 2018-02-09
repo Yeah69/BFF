@@ -2,6 +2,6 @@
 {
     public interface IHavePayee
     {
-        long PayeeId { get; set; }
+        long? PayeeId { get; set; }
     }
 }

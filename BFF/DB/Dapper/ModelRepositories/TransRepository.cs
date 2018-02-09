@@ -64,11 +64,17 @@ namespace BFF.DB.Dapper.ModelRepositories
                         _transactionRepository, 
                         trans.Date,
                         trans.Id,
-                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId),
+                        trans.FlagId is null 
+                            ? null 
+                            : _flagRepository.Find((long) trans.FlagId),
                         trans.CheckNumber,
                         _accountRepository.Find(trans.AccountId),
-                        _payeeRepository.Find(trans.PayeeId),
-                        trans.CategoryId == null ? null : _categoryBaseRepository.Find((long)trans.CategoryId), 
+                        trans.PayeeId is null 
+                            ? null
+                            : _payeeRepository.Find((long) trans.PayeeId),
+                        trans.CategoryId is null 
+                            ? null 
+                            : _categoryBaseRepository.Find((long) trans.CategoryId), 
                         trans.Memo, 
                         trans.Sum,
                         trans.Cleared == 1L);
@@ -78,10 +84,16 @@ namespace BFF.DB.Dapper.ModelRepositories
                         _transferRepository,
                         trans.Date,
                         trans.Id,
-                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId),
+                        trans.FlagId is null 
+                            ? null 
+                            : _flagRepository.Find((long) trans.FlagId),
                         trans.CheckNumber,
-                        _accountRepository.Find(trans.PayeeId),
-                        _accountRepository.Find(trans.CategoryId ?? -1), // This CategoryId should never be a null, because it comes from a transfer
+                        trans.PayeeId is null 
+                            ? null 
+                            : _accountRepository.Find((long) trans.PayeeId),
+                        trans.CategoryId is null 
+                            ? null 
+                            : _accountRepository.Find(trans.CategoryId ?? -1),
                         trans.Memo,
                         trans.Sum, 
                         trans.Cleared == 1L);
@@ -92,10 +104,14 @@ namespace BFF.DB.Dapper.ModelRepositories
                         _subTransactionsRepository.GetChildrenOf(trans.Id), 
                         trans.Date,
                         trans.Id,
-                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId),
+                        trans.FlagId is null 
+                            ? null 
+                            : _flagRepository.Find((long) trans.FlagId),
                         trans.CheckNumber,
                         _accountRepository.Find(trans.AccountId),
-                        _payeeRepository.Find(trans.PayeeId),
+                        trans.PayeeId is null 
+                            ? null 
+                            : _payeeRepository.Find((long) trans.PayeeId),
                         trans.Memo, 
                         trans.Cleared == 1L);
                     break;
@@ -141,7 +157,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             {
                 Id = domainTransBase.Id,
                 AccountId = accountId,
-                FlagId = domainTransBase.Flag == null || domainTransBase.Flag == Domain.Flag.Default
+                FlagId = domainTransBase.Flag is null || domainTransBase.Flag == Domain.Flag.Default
                     ? (long?) null
                     : domainTransBase.Flag.Id,
                 CheckNumber = domainTransBase.CheckNumber,

@@ -79,7 +79,7 @@ namespace BFF.MVVM.Models.Native
             set
             {
                 if(_sum == value) return;
-                _sum = value;
+                _sum = Math.Abs(value);
                 Update();
                 OnPropertyChanged();
             }

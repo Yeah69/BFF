@@ -30,7 +30,9 @@ namespace BFF.DB.Dapper
         public virtual void Add(TDomain dataModel)
         {
             if (dataModel.Id > 0) return;
-            _crudOrm.Create(ConvertToPersistence(dataModel));
+            var persistenceModel = ConvertToPersistence(dataModel);
+            _crudOrm.Create(persistenceModel);
+            dataModel.Id = persistenceModel.Id;
         }
 
         public virtual void Update(TDomain dataModel)

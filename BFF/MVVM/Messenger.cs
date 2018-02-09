@@ -24,11 +24,11 @@ namespace BFF.MVVM
         {
             get
             {
-                if (_instance == null)
+                if (_instance is null)
                 {
                     lock (CreationLock)
                     {
-                        if (_instance == null)
+                        if (_instance is null)
                         {
                             _instance = new Messenger();
                         }
@@ -116,10 +116,10 @@ namespace BFF.MVVM
         {
             IEnumerable<KeyValuePair<(object, object, Type), object>> result;
 
-            if (context == null)
+            if (context is null)
             {
                 // Get all recipients where the context is null.
-                result = from r in Dictionary where r.Key.context == null select r;
+                result = from r in Dictionary where r.Key.context is null select r;
             }
             else
             {

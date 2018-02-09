@@ -115,6 +115,32 @@
                     </TextBox>
                 </StackPanel>
             </DataTemplate>
+
+            <iconPacks:PackIconMaterialKind x:Key="TransactionIcon">
+                Logout
+            </iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="IncomeIcon">
+                Login
+            </iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="TransferIcon">
+                ShuffleVariant
+            </iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="PlaceholderIcon">
+                ClockFast
+            </iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="ParentIcon">
+                Sitemap
+            </iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="AddToTableIcon">
+                TableRowPlusAfter
+            </iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="RemoveFromTableIcon">
+                TableRowRemove
+            </iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconMaterialKind x:Key="FlagIcon">
+                Bookmark
+            </iconPacks:PackIconMaterialKind>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

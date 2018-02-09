@@ -97,9 +97,9 @@ namespace BFF.MVVM
         /// </summary>
         public static readonly IValueConverter NullableSumToString =
             ValueConverter.Create<long?, string>(
-                e => e.Value == null
-                         ? ""
-                         : ((long) e.Value).AsCurrency(Settings.Default.Culture_SessionCurrency),
+                e => e.Value is null
+                    ? ""
+                    : ((long) e.Value).AsCurrency(Settings.Default.Culture_SessionCurrency),
                 e => e.Value.CurrencyAsLong(Settings.Default.Culture_SessionCurrency));
 
         /// <summary>
@@ -233,9 +233,9 @@ namespace BFF.MVVM
         /// </summary>
         public static readonly IMultiValueConverter TransferSumAsCorrectlySignedString =
             MultiValueConverter.Create<object, string>(
-                e => e.Values[0] == e.Values[1]
-                ? (-1 * (long)e.Values[2]).AsCurrency(Settings.Default.Culture_SessionCurrency) 
-                : ((long)e.Values[2]).AsCurrency(Settings.Default.Culture_SessionCurrency));
+                e => e.Values[0] == e.Values[1] || e.Values[2] == null
+                    ? (-1 * (long)e.Values[3]).AsCurrency(Settings.Default.Culture_SessionCurrency) 
+                    : ((long)e.Values[3]).AsCurrency(Settings.Default.Culture_SessionCurrency));
 
         /// <summary>
         /// The transfer color depends on the currently currently shown Account. Therefore this converter is applied on three specific bindings:
@@ -252,19 +252,25 @@ namespace BFF.MVVM
                 e =>
                 {
                     //Transfer in "All Accounts"-Tab
-                    if (e.Values[0] is ISummaryAccountViewModel)
+                    if (e.Values[0] is ISummaryAccountViewModel && e.Values[1] != null && e.Values[2] != null)
                         return TransferBrush;
-                    IAccountViewModel account = (IAccountViewModel)e.Values[0];
+                    var account = e.Values[0];
                     //Transfer in FromAccount-Tab
-                    if (account == (IAccountViewModel)e.Values[1])
+                    if (e.Values[0] is ISummaryAccountViewModel && e.Values[2] == null ||
+                        account == e.Values[1])
                         return TransactionBrush;
                     //Transfer in ToAccount-Tab
-                    if (account == (IAccountViewModel)e.Values[2])
+                    if (e.Values[0] is ISummaryAccountViewModel && e.Values[1] == null || 
+                        account == e.Values[2])
                         return IncomeBrush;
                     return Brushes.Transparent; //Error case
                 });
 
         public static readonly IValueConverter NullToCollapsed =
-            ValueConverter.Create<object, Visibility>(e => e.Value == null ? Visibility.Collapsed : Visibility.Visible);
+            ValueConverter.Create<object, Visibility>(e => e.Value is null ? Visibility.Collapsed : Visibility.Visible);
+
+
+        public static readonly IValueConverter ZeroLongToHidden =
+            ValueConverter.Create<long, Visibility>(e => e.Value == 0 ? Visibility.Hidden : Visibility.Visible);
     }
 }

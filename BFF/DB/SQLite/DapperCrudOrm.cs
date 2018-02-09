@@ -3,12 +3,26 @@ using System.Data.Common;
 using System.Linq;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
+using BFF.MVVM.Models.Native.Structure;
+using Dapper;
 using Dapper.Contrib.Extensions;
 
 namespace BFF.DB.SQLite
 {
     class DapperCrudOrm : ICrudOrm
     {
+        private static readonly string DeleteTransactionsOnAccountDeletion =
+            $@"DELETE FROM {nameof(Trans)}s WHERE {nameof(Trans.AccountId)} = @accountId AND ({nameof(Trans.Type)} = '{TransType.Transaction}' OR {nameof(Trans.Type)} = '{TransType.ParentTransaction}');";
+
+        private static readonly string DeleteOneSidedTransfersOnAccountDeletion =
+            $@"DELETE FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND ({nameof(Trans.PayeeId)} IS NULL AND {nameof(Trans.CategoryId)} = @accountId OR {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.CategoryId)} IS NULL);";
+
+        private static readonly string UpdateFromSideTransfersOnAccountDeletion =
+            $@"UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.CategoryId)} IS NOT NULL;";
+
+        private static readonly string UpdateToSideTransfersOnAccountDeletion =
+            $@"UPDATE {nameof(Trans)}s SET {nameof(Trans.CategoryId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.CategoryId)} = @accountId AND {nameof(Trans.PayeeId)} IS NOT NULL;";
+
         private readonly IProvideConnection _provideConnection;
 
         public DapperCrudOrm(IProvideConnection provideConnection)
@@ -34,7 +48,11 @@ namespace BFF.DB.SQLite
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                connection.Insert(models);
+                foreach (var model in models)
+                {
+                    long id = connection.Insert(model);
+                    model.Id = id;
+                }
                 transactionScope.Complete();
             }
         }
@@ -96,6 +114,17 @@ namespace BFF.DB.SQLite
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
+
+                switch (model)
+                {
+                    case Account account:
+                        connection.Execute(DeleteTransactionsOnAccountDeletion, new { accountId = account.Id });
+                        connection.Execute(DeleteOneSidedTransfersOnAccountDeletion, new { accountId = account.Id });
+                        connection.Execute(UpdateFromSideTransfersOnAccountDeletion, new { accountId = account.Id });
+                        connection.Execute(UpdateToSideTransfersOnAccountDeletion, new { accountId = account.Id });
+                        break;
+                }
+
                 connection.Delete(model);
                 transactionScope.Complete();
             }

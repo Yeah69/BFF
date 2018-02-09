@@ -21,7 +21,7 @@ namespace BFF
         {
             get
             {
-                if (_rootScope == null)
+                if (_rootScope is null)
                 {
                     Start();
                 }
@@ -163,22 +163,12 @@ namespace BFF
 
         public static T Resolve<T>()
         {
-            if (_rootScope == null)
+            if (_rootScope is null)
             {
                 throw new Exception("Bootstrapper hasn't been started!");
             }
 
             return _rootScope.Resolve<T>();
         }
-
-        //private static T Resolve<T>(Parameter[] parameters)
-        //{
-        //    if (_rootScope == null)
-        //    {
-        //        throw new Exception("Bootstrapper hasn't been started!");
-        //    }
-
-        //    return _rootScope.Resolve<T>(parameters);
-        //}
     }
 }

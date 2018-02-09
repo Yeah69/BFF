@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
@@ -63,7 +62,8 @@ namespace BFF.DB.Dapper
                                             + _accountRepository
                                                 .All
                                                 .Where(a => a.StartingDate.Year == _.BudgetEntriesPerMonth[i].Key.Year && a.StartingDate.Month == _.BudgetEntriesPerMonth[i].Key.Month)
-                                                .Select(a => a.StartingBalance).Sum());
+                                                .Select(a => a.StartingBalance).Sum(),
+                        danglingTransferForThisMonth: _.DanglingTransfersPerMonth[_.BudgetEntriesPerMonth[i].Key]);
                 budgetMonths.Add(newBudgetMonth);
                 currentNotBudgetedOrOverbudgeted = newBudgetMonth.AvailableToBudget;
             }

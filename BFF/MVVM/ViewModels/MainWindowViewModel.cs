@@ -97,7 +97,7 @@ namespace BFF.MVVM.ViewModels
         }
 
         public IEmptyViewModel EmptyViewModel { get; set; }
-        public bool IsEmpty => AccountTabsViewModel == null || BudgetOverviewViewModel == null;
+        public bool IsEmpty => AccountTabsViewModel is null || BudgetOverviewViewModel is null;
 
         public CultureInfo LanguageCulture
         {
@@ -256,7 +256,7 @@ namespace BFF.MVVM.ViewModels
                 AccountTabsViewModel = context.AccountTabsViewModel;
                 BudgetOverviewViewModel = context.BudgetOverviewViewModel;
                 EditAccountsViewModel = context.EditAccountsViewModel;
-                Title = $"{new FileInfo(dbPath).Name} - BFF";
+                Title = $"{new FileInfo(dbPath).FullName} - BFF";
                 Settings.Default.DBLocation = dbPath;
                 Settings.Default.Save();
             }

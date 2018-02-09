@@ -35,7 +35,9 @@ namespace BFF.DB.Dapper.ModelRepositories
             {
                 Id = domainTransaction.Id,
                 AccountId = domainTransaction.Account.Id,
-                FlagId = domainTransaction.Flag == null || domainTransaction.Flag == Domain.Flag.Default ? (long?)null : domainTransaction.Flag.Id,
+                FlagId = domainTransaction.Flag is null || domainTransaction.Flag == Domain.Flag.Default 
+                    ? (long?) null 
+                    : domainTransaction.Flag.Id,
                 CheckNumber = domainTransaction.CheckNumber,
                 CategoryId = domainTransaction.Category?.Id,
                 PayeeId = domainTransaction.Payee.Id,
@@ -51,15 +53,17 @@ namespace BFF.DB.Dapper.ModelRepositories
                 this,
                 persistenceTransaction.Date,
                 persistenceTransaction.Id,
-                persistenceTransaction.FlagId == null 
+                persistenceTransaction.FlagId is null 
                     ? null 
                     :_flagRepository.Find((long)persistenceTransaction.FlagId),
                 persistenceTransaction.CheckNumber,
                 _accountRepository.Find(persistenceTransaction.AccountId),
-                _payeeRepository.Find(persistenceTransaction.PayeeId),
-                persistenceTransaction.CategoryId == null
+                persistenceTransaction.PayeeId is null 
                     ? null 
-                    : _categoryBaseRepository.Find((long)persistenceTransaction.CategoryId),
+                    : _payeeRepository.Find((long) persistenceTransaction.PayeeId),
+                persistenceTransaction.CategoryId is null
+                    ? null 
+                    : _categoryBaseRepository.Find((long) persistenceTransaction.CategoryId),
                 persistenceTransaction.Memo,
                 persistenceTransaction.Sum,
                 persistenceTransaction.Cleared == 1L);

@@ -63,7 +63,7 @@ namespace BFF.MVVM.Models.Native
             get => _category;
             set
             {
-                if (value == null)
+                if (value is null)
                 {
                     OnPropertyChanged();
                     return;

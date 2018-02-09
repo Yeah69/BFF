@@ -60,7 +60,7 @@ namespace BFF.DB
 
     public interface IBudgetOrm : IOncePerBackend
     {
-        (IGrouping<DateTime, (BudgetEntry Entry, long Outflow, long Balance)>[] BudgetEntriesPerMonth, long InitialNotBudgetedOrOverbudgeted, IDictionary<DateTime, long> IncomesPerMonth) 
+        (IGrouping<DateTime, (BudgetEntry Entry, long Outflow, long Balance)>[] BudgetEntriesPerMonth, long InitialNotBudgetedOrOverbudgeted, IDictionary<DateTime, long> IncomesPerMonth, IDictionary<DateTime, long> DanglingTransfersPerMonth) 
             Find(DateTime fromMonth, DateTime toMonth, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories);
     }
 

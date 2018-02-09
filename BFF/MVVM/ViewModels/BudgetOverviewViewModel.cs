@@ -80,7 +80,7 @@ namespace BFF.MVVM.ViewModels
                     .ToReadOnlyReactiveCollection(categoryViewModelService.GetViewModel);
 
             BudgetMonths = CreateBudgetMonths();
-            int index = MonthToIndex(DateTime.Now) - 1;
+            int index = MonthToIndex(DateTime.Now) - 7;
             SelectedBudgetMonth = BudgetMonths[index];
             CurrentMonthStartIndex = new ReactiveProperty<int>(index);
 

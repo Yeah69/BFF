@@ -14,19 +14,25 @@ namespace BFF.DB.SQLite
     class DapperBudgetOrm : IBudgetOrm
     {
         private static readonly string NotBudgetedOrOverbudgetedQuery =
-            $@"SELECT Sum(Sum) as Sum FROM
+            $@"SELECT Total(Sum) as Sum FROM
     (
-        SELECT Sum({nameof(Account.StartingBalance)}) AS Sum FROM {nameof(Account)}s
+        SELECT Total({nameof(Account.StartingBalance)}) AS Sum FROM {nameof(Account)}s
         WHERE strftime('%Y', {nameof(Account.StartingDate)}) < @Year OR strftime('%Y', {nameof(Account.StartingDate)}) == @Year AND strftime('%m', {nameof(Account.StartingDate)}) <= @Month
         UNION ALL
-        SELECT {nameof(Trans.Sum)}
+        SELECT Total({nameof(Trans.Sum)}) AS Sum FROM {nameof(Trans)}s
+        WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} IS NOT NULL AND strftime('%Y', {nameof(Trans.Date)}) < @Year OR strftime('%Y', {nameof(Trans.Date)}) == @Year AND strftime('%m', {nameof(Trans.Date)}) <= @Month
+        UNION ALL
+        SELECT - Total({nameof(Trans.Sum)}) AS Sum FROM {nameof(Trans)}s
+        WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} IS NOT NULL AND strftime('%Y', {nameof(Trans.Date)}) < @Year OR strftime('%Y', {nameof(Trans.Date)}) == @Year AND strftime('%m', {nameof(Trans.Date)}) <= @Month
+        UNION ALL
+        SELECT Total({nameof(Trans.Sum)})
         FROM {nameof(Trans)}s
         INNER JOIN {nameof(Category)}s ON {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.CategoryId)} == {nameof(Category)}s.{nameof(Category.Id)} AND {nameof(Category)}s.{nameof(Category.IsIncomeRelevant)} == 0
         WHERE strftime('%Y', {nameof(Trans.Date)}) < @Year
             OR strftime('%m', {nameof(Trans.Date)}) <= @Month
             AND strftime('%Y', {nameof(Trans.Date)}) = @Year
         UNION ALL
-        SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)}
+        SELECT Total({nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)})
         FROM {nameof(SubTransaction)}s
         INNER JOIN {nameof(Category)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} == {nameof(Category)}s.{nameof(Category.Id)} AND {nameof(Category)}s.{nameof(Category.IsIncomeRelevant)} == 0
         INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}
@@ -37,16 +43,34 @@ namespace BFF.DB.SQLite
 
         private static string IncomeForCategoryQuery(int offset) =>
             $@"
-    SELECT Sum({nameof(Trans.Sum)})
+    SELECT Total({nameof(Trans.Sum)})
     FROM {nameof(Trans)}s
     WHERE {nameof(Trans.CategoryId)} == @CategoryId AND strftime('%Y', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) == @Year AND strftime('%m', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) == @Month;";
 
         private static string IncomeForCategoryUntilMonthQuery(int offset) =>
             $@"
-    SELECT Sum({nameof(Trans.Sum)})
+    SELECT Total({nameof(Trans.Sum)})
     FROM {nameof(Trans)}s
     WHERE {nameof(Trans.CategoryId)} == @CategoryId AND (strftime('%Y', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) < @Year OR strftime('%Y', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) == @Year AND strftime('%m', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) <= @Month);";
-        
+
+        private static string DanglingTransferQuery =>
+            $@"
+    SELECT (SELECT Total({nameof(Trans.Sum)}) 
+        FROM {nameof(Trans)}s 
+        WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.PayeeId)} IS NULL AND strftime('%Y', {nameof(Trans.Date)}) == @Year AND strftime('%m', {nameof(Trans.Date)}) == @Month)
+    - (SELECT Total({nameof(Trans.Sum)})
+        FROM {nameof(Trans)}s 
+        WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.CategoryId)} IS NULL AND strftime('%Y', {nameof(Trans.Date)}) == @Year AND strftime('%m', {nameof(Trans.Date)}) == @Month)";
+
+        private static string DanglingTransferUntilMonthQuery =>
+            $@"
+    SELECT (SELECT Total({nameof(Trans.Sum)}) 
+        FROM {nameof(Trans)}s 
+        WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.PayeeId)} IS NULL AND (strftime('%Y', {nameof(Trans.Date)}) < @Year OR strftime('%Y', {nameof(Trans.Date)}) == @Year AND strftime('%m', {nameof(Trans.Date)}) <= @Month))
+    - (SELECT Total({nameof(Trans.Sum)}) 
+        FROM {nameof(Trans)}s 
+        WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.CategoryId)} IS NULL AND (strftime('%Y', {nameof(Trans.Date)}) < @Year OR strftime('%Y', {nameof(Trans.Date)}) == @Year AND strftime('%m', {nameof(Trans.Date)}) <= @Month))";
+
         private class OutflowResponse
         {
             public DateTime Month { get; set; }
@@ -60,7 +84,7 @@ namespace BFF.DB.SQLite
   ORDER BY {nameof(BudgetEntry.Month)};";
 
         private static readonly string OutflowQuery =
-            $@"SELECT Date as Month, Sum(Sum) as Sum FROM
+            $@"SELECT Date as Month, Total(Sum) as Sum FROM
 (
   SELECT strftime('%Y', {nameof(Trans.Date)}) || '-' || strftime('%m', {nameof(Trans.Date)}) || '-' || '01' AS Date, {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.CategoryId)} = @CategoryId AND (strftime('%Y', {nameof(Trans.Date)}) < @Year OR strftime('%Y', {nameof(Trans.Date)}) = @Year AND strftime('%m', {nameof(Trans.Date)}) <= @Month)
   UNION ALL
@@ -79,12 +103,13 @@ namespace BFF.DB.SQLite
             _provideConnection = provideConnection;
         }
 
-        public (IGrouping<DateTime, (BudgetEntry Entry, long Outflow, long Balance)>[] BudgetEntriesPerMonth, long InitialNotBudgetedOrOverbudgeted, IDictionary<DateTime, long> IncomesPerMonth) Find(
+        public (IGrouping<DateTime, (BudgetEntry Entry, long Outflow, long Balance)>[] BudgetEntriesPerMonth, long InitialNotBudgetedOrOverbudgeted, IDictionary<DateTime, long> IncomesPerMonth, IDictionary<DateTime, long> DanglingTransfersPerMonth) Find(
             DateTime fromMonth, DateTime toMonth, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories)
         {
             IGrouping<DateTime, (BudgetEntry Entry, long Outflow, long Balance)>[] budgetEntriesPerMonth;
             long initialNotBudgetedOrOverbudgeted;
             IDictionary<DateTime, long> incomesPerMonth;
+            IDictionary<DateTime, long> danglingTransfersPerMonth;
 
             using (TransactionScope transactionScope = new TransactionScope())
             using (DbConnection connection = _provideConnection.Connection)
@@ -198,6 +223,12 @@ namespace BFF.DB.SQLite
 
                 initialNotBudgetedOrOverbudgeted -= budgetEntriesPerMonth[0].Where(be => be.Balance < 0).Sum(be => be.Balance);
 
+                initialNotBudgetedOrOverbudgeted += connection.QueryFirst<long?>(DanglingTransferUntilMonthQuery, new
+                {
+                    Year = $"{fromMonth.Year:0000}",
+                    Month = $"{fromMonth.Month:00}"
+                }) ?? 0L;
+
                 incomesPerMonth = budgetEntriesPerMonth.Select(g => {
                     long incomeSum = 0;
                     foreach (var incomeCategory in incomeCategories)
@@ -213,10 +244,17 @@ namespace BFF.DB.SQLite
                     return (g.Key, incomeSum);
                 }).ToDictionary(kvp => kvp.Key, kvp => kvp.incomeSum);
 
+                danglingTransfersPerMonth = budgetEntriesPerMonth.Select(g => 
+                    (g.Key, DanglingTransferSum: connection.QueryFirstOrDefault<long?>(DanglingTransferQuery, new
+                    {
+                        Year = $"{g.Key.Year:0000}",
+                        Month = $"{g.Key.Month:00}"
+                    }) ?? 0L)).ToDictionary(kvp => kvp.Key, kvp => kvp.DanglingTransferSum);
+
                 transactionScope.Complete();
             }
 
-            return (budgetEntriesPerMonth, initialNotBudgetedOrOverbudgeted, incomesPerMonth);
+            return (budgetEntriesPerMonth, initialNotBudgetedOrOverbudgeted, incomesPerMonth, danglingTransfersPerMonth);
         }
     }
 }

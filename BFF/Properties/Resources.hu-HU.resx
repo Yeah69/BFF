@@ -219,6 +219,12 @@
   <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
     <value>Amount of money which was available last month but not assigned to any category.</value>
   </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>One-Sided Transfers</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>One-Sided Transfers may occur after a deletion of an account. They have to be considered, because they are not neutral to the budget.</value>
+  </data>
   <data name="Budgeting_Outflows" xml:space="preserve">
     <value>Outflows</value>
   </data>

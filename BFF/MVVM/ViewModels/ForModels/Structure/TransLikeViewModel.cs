@@ -25,11 +25,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Each TIT can be deleted from the GUI.
         /// </summary>
-        ReactiveCommand DeleteCommand { get; }
-
-        /// <summary>
-        /// Each TIT can be deleted from the GUI.
-        /// </summary>
         ReactiveCommand ToggleSign { get; }
     }
 
@@ -80,7 +75,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Initializes a TransLikeViewModel.
         /// </summary>
         /// <param name="transLike">The model.</param>
-        /// <param name="createSumEdit">Creates sum editing viewmodel.</param>
         protected TransLikeViewModel(
             ITransLike transLike) 
             : base(transLike)
@@ -89,28 +83,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
             ToggleSign = new ReactiveCommand();
             ToggleSign.Subscribe(_ => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus);
-
-            InitializeDeleteCommand();
         }
-
-        /// <summary>
-        /// Each TIT can be deleted from the GUI.
-        /// </summary>
-        /// <remarks>
-        /// In order to subscribe a different callback on the DeleteCommand override <see cref="InitializeDeleteCommand" /> and do the subscription the.
-        /// However, do not call the overridden function. It will be called in the constructor of <see cref="TransLikeViewModel"/>.
-        /// </remarks>
-        public ReactiveCommand DeleteCommand { get; } = new ReactiveCommand();
 
         public ReactiveCommand ToggleSign { get; }
-
-        /// <summary>
-        /// Override this function for internal subscription to the DeleteCommand. This will be called once in the constructor of the <see cref="TransLikeViewModel"/>.
-        /// Hence, by only subscribing in this overridden function a single subscription is guaranteed. 
-        /// </summary>
-        protected virtual void InitializeDeleteCommand()
-        {
-            DeleteCommand.Subscribe(_ => Delete());
-        }
     }
 }

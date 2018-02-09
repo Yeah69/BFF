@@ -219,6 +219,12 @@
   <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
     <value>Die Geldmenge, die letzten Monat gegeben war, jedoch in keiner Kategorie verbucht wurde.</value>
   </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Einseitige Transfers</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Einseitige Transfers können nach der Löschung eines Kontos auftauchen. Sie müssen berücksichtigt werden, weil sie nicht neutral für die Buchhaltung sind.</value>
+  </data>
   <data name="Budgeting_Outflows" xml:space="preserve">
     <value>Ausgaben</value>
   </data>

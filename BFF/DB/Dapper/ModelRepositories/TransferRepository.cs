@@ -29,10 +29,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             {
                 Id = domainTransfer.Id,
                 AccountId = -69,
-                FlagId = domainTransfer.Flag == null || domainTransfer.Flag == Domain.Flag.Default ? (long?)null : domainTransfer.Flag.Id,
+                FlagId = domainTransfer.Flag is null || domainTransfer.Flag == Domain.Flag.Default 
+                    ? (long?)null 
+                    : domainTransfer.Flag.Id,
                 CheckNumber = domainTransfer.CheckNumber,
-                PayeeId = domainTransfer.FromAccount.Id,
-                CategoryId = domainTransfer.ToAccount.Id,
+                PayeeId = domainTransfer.FromAccount?.Id,
+                CategoryId = domainTransfer.ToAccount?.Id,
                 Date = domainTransfer.Date,
                 Memo = domainTransfer.Memo,
                 Sum = domainTransfer.Sum,
@@ -45,10 +47,16 @@ namespace BFF.DB.Dapper.ModelRepositories
                 this,
                 persistenceTransfer.Date,
                 persistenceTransfer.Id,
-                persistenceTransfer.FlagId == null ? null : _flagRepository.Find((long)persistenceTransfer.FlagId),
+                persistenceTransfer.FlagId is null 
+                    ? null
+                    : _flagRepository.Find((long)persistenceTransfer.FlagId),
                 persistenceTransfer.CheckNumber,
-                _accountRepository.Find(persistenceTransfer.PayeeId),
-                _accountRepository.Find(persistenceTransfer.CategoryId ?? -1),  // This CategoryId should never be a null, because it comes from a transfer
+                persistenceTransfer.PayeeId is null 
+                    ? null 
+                    : _accountRepository.Find((long) persistenceTransfer.PayeeId),
+                persistenceTransfer.CategoryId is null 
+                    ? null 
+                    : _accountRepository.Find((long) persistenceTransfer.CategoryId), 
                 persistenceTransfer.Memo,
                 persistenceTransfer.Sum,
                 persistenceTransfer.Cleared == 1L);

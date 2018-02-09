@@ -367,6 +367,24 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to One-Sided Transfers.
+        /// </summary>
+        public static string Budgeting_OneSidedTransfers {
+            get {
+                return ResourceManager.GetString("Budgeting_OneSidedTransfers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One-Sided Transfers may occur after a deletion of an account. They have to be considered, because they are not neutral to the budget..
+        /// </summary>
+        public static string Budgeting_OneSidedTransfersExplanation {
+            get {
+                return ResourceManager.GetString("Budgeting_OneSidedTransfersExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Outflows.
         /// </summary>
         public static string Budgeting_Outflows {

@@ -53,8 +53,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Initializes an AccountViewModel.
         /// </summary>
-        /// <param name="account">An Account Model.</param>
-        /// <param name="summaryAccountViewModel">This account summarizes all accounts.</param>
         public AccountViewModel(
             IAccount account, 
             ISummaryAccountViewModel summaryAccountViewModel,
@@ -103,8 +101,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             ApplyCommand.Subscribe(_ => ApplyTits()).AddTo(CompositeDisposable);
 
         }
-
-        #region ViewModel_Part
 
         protected override IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess
             => new RelayBasicAsyncDataAccess<ITransLikeViewModel>(
@@ -160,6 +156,16 @@ namespace BFF.MVVM.ViewModels.ForModels
             }
         }
 
+        public override void Delete()
+        {
+            base.Delete();
+            foreach (var accountViewModel in AllAccounts)
+            {
+                accountViewModel.RefreshTits();
+            }
+            Messenger.Default.Send(SummaryAccountMessage.Refresh);
+        }
+
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
@@ -179,7 +185,5 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Flushes all valid and not yet inserted TITs to the database.
         /// </summary>
         public sealed override ReactiveCommand ApplyCommand { get; }
-
-        #endregion
     }
 }

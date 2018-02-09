@@ -113,16 +113,13 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override ISumEditViewModel SumEdit { get; }
 
-        protected override void InitializeDeleteCommand()
+        public override void Delete()
         {
-            DeleteCommand.Subscribe(_ =>
-            {
-                Delete();
-                RefreshAnAccountViewModel(FromAccount.Value);
-                RefreshAnAccountViewModel(ToAccount.Value);
-                Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
-                Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
-            });
+            base.Delete();
+            RefreshAnAccountViewModel(FromAccount.Value);
+            RefreshAnAccountViewModel(ToAccount.Value);
+            Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
         }
 
         protected override void NotifyRelevantAccountsToRefreshTits()

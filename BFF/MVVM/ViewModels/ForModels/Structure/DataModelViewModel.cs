@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Reactive.Disposables;
-using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -16,6 +17,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Deletes the model object from the database.
         /// </summary>
         void Delete();
+
+        ReactiveCommand DeleteCommand { get; }
     }
 
     /// <summary>
@@ -31,11 +34,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Initializes a DataModelViewModel.
         /// </summary>
-        /// <param name="orm">Used for the database accesses.</param>
         /// <param name="dataModel">The model.</param>
         protected DataModelViewModel(IDataModel dataModel)
         {
             _dataModel = dataModel;
+
+            DeleteCommand = new ReactiveCommand().AddTo(CompositeDisposable);
+            DeleteCommand.Subscribe(_ => Delete()).AddTo(CompositeDisposable);
         }
 
         /// <summary>
@@ -64,18 +69,16 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Deletes the model object from the database.
         /// </summary>
-        public void Delete() => _dataModel.Delete();
-
-        protected virtual void Dispose(bool disposing)
+        public virtual void Delete()
         {
-            if(disposing) { }
-            CompositeDisposable.Dispose();
+            _dataModel.Delete();
         }
+
+        public ReactiveCommand DeleteCommand { get; }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            CompositeDisposable.Dispose();
         }
     }
 }

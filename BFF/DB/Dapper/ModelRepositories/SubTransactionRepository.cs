@@ -40,7 +40,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             new Domain.SubTransaction(
                 this,
                 persistenceSubTransaction.Id,
-                persistenceSubTransaction.CategoryId == null 
+                persistenceSubTransaction.CategoryId is null 
                     ? null 
                     : _categoryBaseRepository.Find((long)persistenceSubTransaction.CategoryId),
                 persistenceSubTransaction.Memo,

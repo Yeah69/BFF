@@ -359,7 +359,7 @@ namespace BFF.Helper.Import
                 }
             }
             
-            if(ynabBudgetEntries == null) throw new ArgumentNullException(nameof(ynabBudgetEntries));
+            if(ynabBudgetEntries is null) throw new ArgumentNullException(nameof(ynabBudgetEntries));
 
             return ConvertBudgetEntryToNativeInner();
         }
@@ -690,7 +690,7 @@ namespace BFF.Helper.Import
             {
                 CategoryImportWrapper masterCategoryWrapper =
                     _categoryImportWrappers.SingleOrDefault(ciw => ciw.Category.Name == masterCategoryName);
-                if (masterCategoryWrapper == null)
+                if (masterCategoryWrapper is null)
                 {
                     Persistence.Category category = new Persistence.Category { Name = masterCategoryName };
                     masterCategoryWrapper = new CategoryImportWrapper { Parent = null, Category = category };
@@ -698,7 +698,7 @@ namespace BFF.Helper.Import
                 }
                 CategoryImportWrapper subCategoryWrapper =
                     masterCategoryWrapper.Categories.SingleOrDefault(c => c.Category.Name == subCategoryName);
-                if (subCategoryWrapper == null)
+                if (subCategoryWrapper is null)
                 {
                     Persistence.Category category = new Persistence.Category { Name = subCategoryName };
                     subCategoryWrapper = new CategoryImportWrapper { Parent = masterCategoryWrapper, Category = category };

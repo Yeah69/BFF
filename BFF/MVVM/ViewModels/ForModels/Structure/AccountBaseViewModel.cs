@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
 using BFF.DataVirtualizingCollection;
@@ -191,6 +192,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 RefreshTits();
                 RefreshBalance();
             }).AddTo(CompositeDisposable);
+
+            Disposable.Create(() =>
+            {
+                _tits?.Dispose();
+                Messenger.Default.Unregister<CultureMessage>(this);
+            }).AddTo(CompositeDisposable);
         }
 
         /// <summary>
@@ -292,15 +299,5 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected int PageSize = 100;
 
         protected abstract IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess { get; }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _tits?.Dispose();
-            }
-            Messenger.Default.Unregister<CultureMessage>(this);
-            base.Dispose(disposing);
-        }
     }
 }
