@@ -49,7 +49,7 @@ namespace BFF.MVVM.ViewModels
                 return !string.IsNullOrWhiteSpace(text) &&
                     AllPayees.All(payee => payee.Name.Value != text.Trim()) 
                     ? null 
-                    : "ErrorMessageWrongPayeeName".Localize<string>();
+                    : "ErrorMessageWrongPayeeName".Localize();
             }
 
             _payeeViewModelService = payeeViewModelService;

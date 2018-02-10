@@ -11,6 +11,8 @@
                       xmlns:mvvm="clr-namespace:BFF.MVVM"
                       xmlns:viewModel="clr-namespace:BFF.MVVM.ViewModels"
                       xmlns:views="clr-namespace:BFF.MVVM.Views"
+                      xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                      dialogs:DialogParticipation.Register="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"
                       Title="{Binding Title}"
                       Width="{Binding Width, Mode=TwoWay}"
                       Height="{Binding Height, Mode=TwoWay}"

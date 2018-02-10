@@ -127,23 +127,23 @@ namespace BFF.MVVM.Views
 
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
 
-            IImportDialogViewModel importDialogVm = _importDialogViewModelFactory(
+            IImportDialogViewModel importDialogViewModel = _importDialogViewModelFactory(
                 _ynabCsvImportFactory((
                     Settings.Default.Import_YnabCsvTransaction,
                     Settings.Default.Import_YnabCsvBudget, 
                     Settings.Default.Import_SavePath)
                 ));
-            ImportDialog importDialog = new ImportDialog{ DataContext = importDialogVm };
+            ImportDialog importDialog = new ImportDialog{ DataContext = importDialogViewModel };
             importDialog.ButtCancel.Click += (o, args) => this.HideMetroDialogAsync(importDialog);
             importDialog.ButtImport.Click += (o, args) =>
             {
-                Settings.Default.Import_YnabCsvTransaction = ((YnabCsvImport)importDialogVm.Importable).TransactionPath;
-                Settings.Default.Import_YnabCsvBudget = ((YnabCsvImport)importDialogVm.Importable).BudgetPath;
-                Settings.Default.Import_SavePath = importDialogVm.Importable.SavePath;
+                Settings.Default.Import_YnabCsvTransaction = ((YnabCsvImport)importDialogViewModel.Importable).TransactionPath;
+                Settings.Default.Import_YnabCsvBudget = ((YnabCsvImport)importDialogViewModel.Importable).BudgetPath;
+                Settings.Default.Import_SavePath = importDialogViewModel.Importable.SavePath;
                 Settings.Default.Save();
                 this.HideMetroDialogAsync(importDialog);
-                if(ImportCommand.CanExecute(importDialogVm.Importable))
-                    Dispatcher.Invoke(() => ImportCommand.Execute(importDialogVm.Importable), DispatcherPriority.Background);
+                if(ImportCommand.CanExecute(importDialogViewModel.Importable))
+                    Dispatcher.Invoke(() => ImportCommand.Execute(importDialogViewModel.Importable), DispatcherPriority.Background);
             };
             this.ShowMetroDialogAsync(importDialog);
         }

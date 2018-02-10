@@ -180,6 +180,11 @@
   <data name="Account_CreateNew" xml:space="preserve">
     <value>Create new Account</value>
   </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>This will delete the account and all of its transactions, two-sided transfers will become one-sided, and the account-specific outflows in budgeting will disappear.
+
+Are you really sure? (A backup will be created automatically, if you would like to rewind the data afterwards)</value>
+  </data>
   <data name="Account_Edit" xml:space="preserve">
     <value>Edit Accounts</value>
   </data>
@@ -242,6 +247,9 @@
   </data>
   <data name="Budgeting_OverspendExplanation" xml:space="preserve">
     <value>Sum of overspend amounts of money accumulated from all categories in last month.</value>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Are you sure?</value>
   </data>
   <data name="CreateNewCategory" xml:space="preserve">
     <value>Create new category</value>

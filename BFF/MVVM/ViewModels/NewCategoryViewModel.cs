@@ -57,19 +57,19 @@ namespace BFF.MVVM.ViewModels
             {
                 return ValidateNewCategoryRelationCondition(text, parent)
                         ? null
-                        : "ErrorMessageWrongCategoryName".Localize<string>();
+                        : "ErrorMessageWrongCategoryName".Localize();
             }
             string ValidateNewCategoryRelationParent(string text, ICategoryViewModel parent)
             {
                 return ValidateNewCategoryRelationCondition(text, parent)
                     ? null
-                    : "ErrorMessageWrongCategoryParent".Localize<string>();
+                    : "ErrorMessageWrongCategoryParent".Localize();
             }
             string ValidateNewCategoryName(string text)
             {
                 return !string.IsNullOrWhiteSpace(text) 
                     ? null
-                    : "ErrorMessageCategoryNameEmpty".Localize<string>();
+                    : "ErrorMessageCategoryNameEmpty".Localize();
             }
 
             _categoryViewModelService = categoryViewModelService;

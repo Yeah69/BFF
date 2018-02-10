@@ -1,9 +1,7 @@
 ﻿
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using BFF.DB;
-using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.Properties;

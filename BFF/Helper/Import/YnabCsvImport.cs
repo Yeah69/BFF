@@ -74,7 +74,7 @@ namespace BFF.Helper.Import
         public string Import()
         {
 
-            string exceptionTemplate = "Exception_FileNotFound".Localize<string>();
+            string exceptionTemplate = "Exception_FileNotFound".Localize();
             if (!File.Exists(TransactionPath))
                 throw new FileNotFoundException(string.Format(exceptionTemplate, TransactionPath));
             if(!File.Exists(BudgetPath))

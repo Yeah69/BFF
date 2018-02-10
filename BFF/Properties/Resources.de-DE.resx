@@ -180,6 +180,11 @@
   <data name="Account_CreateNew" xml:space="preserve">
     <value>Neues Konto erstellen</value>
   </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>Dies wird das Konto und all ihre Transaktionen löschen, vollständige Transfers werden einseitig und die kontenspezifischen Ausgabe beim Budget werden verschwinden.
+
+Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es möglich zu machen auf den Stand vor der Löschung zurückzusetzen)</value>
+  </data>
   <data name="Account_Edit" xml:space="preserve">
     <value>Konten bearbeiten</value>
   </data>
@@ -242,6 +247,9 @@
   </data>
   <data name="Budgeting_OverspendExplanation" xml:space="preserve">
     <value>Summe der Budgetüberschreitungen aufsummiert über alle Kategorien letzten Monats.</value>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Bist Du dir sicher?</value>
   </data>
   <data name="CreateNewCategory" xml:space="preserve">
     <value>Erstelle eine neue Kategorie</value>

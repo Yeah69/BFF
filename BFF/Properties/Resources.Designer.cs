@@ -79,6 +79,17 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This will delete the account and all of its transactions, two-sided transfers will become one-sided, and the account-specific outflows in budgeting will disappear.
+        ///
+        ///Are you really sure? (A backup will be created automatically, if you would like to rewind the data afterwards).
+        /// </summary>
+        public static string Account_Delete_ConfirmationMessage {
+            get {
+                return ResourceManager.GetString("Account_Delete_ConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Accounts.
         /// </summary>
         public static string Account_Edit {
@@ -435,6 +446,15 @@ namespace BFF.Properties {
         public static string Budgeting_OverspendExplanation {
             get {
                 return ResourceManager.GetString("Budgeting_OverspendExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure?.
+        /// </summary>
+        public static string ConfirmationDialog_Title {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_Title", resourceCulture);
             }
         }
         

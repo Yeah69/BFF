@@ -208,8 +208,8 @@ namespace BFF.MVVM.ViewModels
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
-                    Title = "OpenSaveDialog_TitleNew".Localize<string>(),
-                    Filter = "OpenSaveDialog_Filter".Localize<string>(),
+                    Title = "OpenSaveDialog_TitleNew".Localize(),
+                    Filter = "OpenSaveDialog_Filter".Localize(),
                     DefaultExt = "*.sqlite"
                 };
                 if (saveFileDialog.ShowDialog() == true)
@@ -225,8 +225,8 @@ namespace BFF.MVVM.ViewModels
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog
                 {
-                    Title = "OpenSaveDialog_TitleOpen".Localize<string>(),
-                    Filter = "OpenSaveDialog_Filter".Localize<string>(),
+                    Title = "OpenSaveDialog_TitleOpen".Localize(),
+                    Filter = "OpenSaveDialog_Filter".Localize(),
                     DefaultExt = "*.sqlite"
                 };
                 if (openFileDialog.ShowDialog() == true)

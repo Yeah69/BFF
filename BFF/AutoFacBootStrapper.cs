@@ -8,6 +8,7 @@ using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels;
 using BFF.MVVM.ViewModels.ForModels;
+using MahApps.Metro.Controls.Dialogs;
 using Transaction = BFF.MVVM.Models.Native.Transaction;
 
 namespace BFF
@@ -84,6 +85,8 @@ namespace BFF
                 .AsImplementedInterfaces()
                 .ExternallyOwned();
 
+            builder.RegisterType<MainWindowViewModel>().As<IMainWindowViewModel>().SingleInstance();
+
             builder.Register<Func<ITransaction>>(cc =>
             {
                 var repository = cc.Resolve<IRepository<ITransaction>>();
@@ -152,6 +155,8 @@ namespace BFF
                 var repository = cc.Resolve<IRepository<IAccount>>();
                 return () => new Account(repository, DateTime.Today);
             }).As<Func<IAccount>>();
+
+            builder.Register(cc => DialogCoordinator.Instance).As<IDialogCoordinator>();
 
             _rootScope = builder.Build();
         }

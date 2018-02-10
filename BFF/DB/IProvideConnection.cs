@@ -4,6 +4,8 @@ namespace BFF.DB
 {
     public interface IProvideConnection : IOncePerBackend
     {
-        DbConnection Connection { get; }    
+        DbConnection Connection { get; }
+
+        void Backup(string reason);
     }
 }

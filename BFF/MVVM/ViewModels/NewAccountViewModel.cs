@@ -50,13 +50,14 @@ namespace BFF.MVVM.ViewModels
                 return !string.IsNullOrWhiteSpace(text) &&
                     All.All(a => a.Name.Value != text.Trim()) 
                     ? null 
-                    : "ErrorMessageWrongAccountName".Localize<string>();
+                    : "ErrorMessageWrongAccountName".Localize();
             }
 
             _viewModelService = viewModelService;
-
-            Name = new ReactiveProperty<string>().SetValidateNotifyError(
-                text => ValidateName(text)).AddTo(_compositeDisposable);
+            
+            Name = new ReactiveProperty<string>("", ReactivePropertyMode.DistinctUntilChanged)
+                .SetValidateNotifyError(text => ValidateName(text))
+                .AddTo(_compositeDisposable);
 
             StartingBalance = new ReactiveProperty<long>(0, ReactivePropertyMode.None).AddTo(_compositeDisposable);
 

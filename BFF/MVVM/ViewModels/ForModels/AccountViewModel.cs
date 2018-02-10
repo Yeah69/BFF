@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB.Dapper.ModelRepositories;
@@ -29,6 +31,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         private readonly IAccount _account;
         private readonly ITransRepository _transRepository;
         private readonly IAccountRepository _accountRepository;
+        private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
 
         /// <summary>
         /// Starting balance of the Account
@@ -60,6 +63,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IAccountRepository accountRepository,
             Lazy<IAccountViewModelService> accountViewModelService,
             IParentTransactionViewModelService parentTransactionViewModelService,
+            IMainBffDialogCoordinator mainBffDialogCoordinator,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             Func<IAccount, ITransactionViewModel> transactionViewModelFactory,
             Func<ITransferViewModel> transferViewModelFactory,
@@ -76,6 +80,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             _account = account;
             _transRepository = transRepository;
             _accountRepository = accountRepository;
+            _mainBffDialogCoordinator = mainBffDialogCoordinator;
 
             StartingBalance = account
                 .ToReactivePropertyAsSynchronized(a => a.StartingBalance, ReactivePropertyMode.DistinctUntilChanged)
@@ -158,12 +163,25 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override void Delete()
         {
-            base.Delete();
-            foreach (var accountViewModel in AllAccounts)
-            {
-                accountViewModel.RefreshTits();
-            }
-            Messenger.Default.Send(SummaryAccountMessage.Refresh);
+            _mainBffDialogCoordinator
+                .ShowMessageAsync(
+                    "ConfirmationDialog_Title".Localize(),
+                    "Account_Delete_ConfirmationMessage".Localize(),
+                    BffMessageDialogStyle.AffirmativeAndNegative)
+                .ToObservable()
+                .ObserveOn(Dispatcher.CurrentDispatcher)
+                .Subscribe(r =>
+                {
+                    if (r == BffMessageDialogResult.Affirmative)
+                    {
+                        base.Delete();
+                        foreach (var accountViewModel in AllAccounts)
+                        {
+                            accountViewModel.RefreshTits();
+                        }
+                        Messenger.Default.Send(SummaryAccountMessage.Refresh);
+                    }
+                });
         }
 
         /// <summary>

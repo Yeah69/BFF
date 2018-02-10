@@ -118,6 +118,7 @@ namespace BFF.DB.SQLite
                 switch (model)
                 {
                     case Account account:
+                        _provideConnection.Backup($"BeforeDeletionOfAccount{account.Name}");
                         connection.Execute(DeleteTransactionsOnAccountDeletion, new { accountId = account.Id });
                         connection.Execute(DeleteOneSidedTransfersOnAccountDeletion, new { accountId = account.Id });
                         connection.Execute(UpdateFromSideTransfersOnAccountDeletion, new { accountId = account.Id });

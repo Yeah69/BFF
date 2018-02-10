@@ -12,6 +12,9 @@ namespace BFF.Helper.Extensions
         public static T Localize<T>(this string key) =>
             LocExtension.GetLocalizedValue<T>(Assembly.GetCallingAssembly().GetName().Name + ":Resources:" + key);
 
+        public static string Localize(this string key) =>
+            LocExtension.GetLocalizedValue<string>(Assembly.GetCallingAssembly().GetName().Name + ":Resources:" + key);
+
         public static long CurrencyAsLong(this string value)
         {
             return value.CurrencyAsLong(Settings.Default.Culture_SessionCurrency ?? CultureInfo.CurrentCulture);
