@@ -103,13 +103,27 @@ namespace BFF.DB.SQLite
             _provideConnection = provideConnection;
         }
 
-        public (IGrouping<DateTime, (BudgetEntry Entry, long Outflow, long Balance)>[] BudgetEntriesPerMonth, long InitialNotBudgetedOrOverbudgeted, IDictionary<DateTime, long> IncomesPerMonth, IDictionary<DateTime, long> DanglingTransfersPerMonth) Find(
+        public (IDictionary<DateTime, IList<(BudgetEntry Entry, long Outflow, long Balance)>> BudgetEntriesPerMonth, long InitialNotBudgetedOrOverbudgeted, IDictionary<DateTime, long> IncomesPerMonth, IDictionary<DateTime, long> DanglingTransfersPerMonth) Find(
             DateTime fromMonth, DateTime toMonth, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories)
         {
-            IGrouping<DateTime, (BudgetEntry Entry, long Outflow, long Balance)>[] budgetEntriesPerMonth;
+            IDictionary<DateTime, IList<(BudgetEntry Entry, long Outflow, long Balance)>> budgetEntriesPerMonth;
             long initialNotBudgetedOrOverbudgeted;
             IDictionary<DateTime, long> incomesPerMonth;
             IDictionary<DateTime, long> danglingTransfersPerMonth;
+
+            IList<DateTime> monthRange = new List<DateTime>();
+ 
+            var currentMonth = new DateTime(fromMonth.Year, fromMonth.Month, 01);
+
+            do
+            {
+                monthRange.Add(currentMonth);
+                currentMonth = new DateTime(
+                    currentMonth.Month == 12 ? currentMonth.Year + 1 : currentMonth.Year,
+                    currentMonth.Month == 12 ? 1 : currentMonth.Month + 1,
+                    1);
+
+            } while (currentMonth.Year < toMonth.Year || currentMonth.Year == toMonth.Year && currentMonth.Month <= toMonth.Month);
 
             using (TransactionScope transactionScope = new TransactionScope())
             using (DbConnection connection = _provideConnection.Connection)
@@ -144,62 +158,67 @@ namespace BFF.DB.SQLite
 
                     long entryBudgetValue = 0L;
 
-                    var previous = budgetList.Keys.Where(dt => dt < fromMonth).Concat(outflowList.Keys.Where(dt => dt < fromMonth)).Distinct().OrderBy(dt => dt).Select(dt =>
-                    {
-                        (long Budget, long Outflow) ret = (0L, 0L);
-                        if (budgetList.ContainsKey(dt))
-                            ret.Budget = budgetList[dt].Budget;
-                        if (outflowList.ContainsKey(dt))
-                            ret.Outflow = outflowList[dt];
-                        return ret;
-                    });
+                    var previous = budgetList
+                        .Keys
+                        .Where(dt => dt < fromMonth)
+                        .Concat(outflowList.Keys.Where(dt => dt < fromMonth))
+                        .Distinct()
+                        .OrderBy(dt => dt)
+                        .Select(dt =>
+                        {
+                            (long Budget, long Outflow) ret = (0L, 0L);
+                            if (budgetList.ContainsKey(dt))
+                                ret.Budget = budgetList[dt].Budget;
+                            if (outflowList.ContainsKey(dt))
+                                ret.Outflow = outflowList[dt];
+                            return ret;
+                        });
 
                     foreach (var result in previous)
                     {
                         entryBudgetValue = Math.Max(0L, entryBudgetValue + result.Budget + result.Outflow);
                     }
 
-                    var currentDate = new DateTime(fromMonth.Year, fromMonth.Month, 01);
-                    
-                    do
+                    foreach (var month in monthRange)
                     {
                         long id = -1;
                         long budgeted = 0L;
-                        if (budgetList.ContainsKey(currentDate))
+                        if (budgetList.ContainsKey(month))
                         {
-                            var budgetEntry = budgetList[currentDate];
+                            var budgetEntry = budgetList[month];
                             budgeted = budgetEntry.Budget;
                             id = budgetEntry.Id;
                         }
                         long outflow = 0L;
-                        if (outflowList.ContainsKey(currentDate))
-                            outflow = outflowList[currentDate];
+                        if (outflowList.ContainsKey(month))
+                            outflow = outflowList[month];
                         long currentValue = entryBudgetValue + budgeted + outflow;
                         budgetEntries.Add((new BudgetEntry
                         {
                             Id = id,
                             CategoryId = categoryId,
                             Budget = budgeted,
-                            Month = currentDate
+                            Month = month
                         }, outflow, currentValue));
 
                         entryBudgetValue = Math.Max(0L, currentValue);
-                        currentDate = new DateTime(
-                            currentDate.Month == 12 ? currentDate.Year + 1 : currentDate.Year,
-                            currentDate.Month == 12 ? 1 : currentDate.Month + 1,
-                            1);
-
-                    } while (currentDate.Year < toMonth.Year || currentDate.Year == toMonth.Year && currentDate.Month <= toMonth.Month);
+                    }
                     
                 }
-
                 
+                var groupedBudgetEntriesPerMonth = budgetEntries
+                    .GroupBy(be => be.Entry.Month).ToDictionary(g => g.Key);
 
-                budgetEntriesPerMonth = budgetEntries
-                    .GroupBy(be => be.Entry.Month)
-                    .OrderBy(grouping => grouping.Key).ToArray();
+                budgetEntriesPerMonth = monthRange
+                    .Select(m =>
+                        (m, groupedBudgetEntriesPerMonth.ContainsKey(m)
+                            ? (IList<(BudgetEntry Entry, long Outflow, long Balance)>) groupedBudgetEntriesPerMonth[m].ToList()
+                            : new List<(BudgetEntry Entry, long Outflow, long Balance)>()))
+                    .ToDictionary(vt => vt.m, vt => vt.Item2);
 
-                long firstBalance = budgetEntriesPerMonth[0].Where(be => be.Balance > 0).Sum(be => be.Balance);
+                long firstBalance = 0;
+                if(budgetEntriesPerMonth.Any())
+                    firstBalance = budgetEntriesPerMonth[monthRange[0]].Where(be => be.Balance > 0).Sum(be => be.Balance);
 
                 initialNotBudgetedOrOverbudgeted =
                     connection.QueryFirst<long?>(NotBudgetedOrOverbudgetedQuery,
@@ -221,7 +240,8 @@ namespace BFF.DB.SQLite
 
                 initialNotBudgetedOrOverbudgeted -= firstBalance;
 
-                initialNotBudgetedOrOverbudgeted -= budgetEntriesPerMonth[0].Where(be => be.Balance < 0).Sum(be => be.Balance);
+                if (budgetEntriesPerMonth.Any())
+                    initialNotBudgetedOrOverbudgeted -= budgetEntriesPerMonth[monthRange[0]].Where(be => be.Balance < 0).Sum(be => be.Balance);
 
                 initialNotBudgetedOrOverbudgeted += connection.QueryFirst<long?>(DanglingTransferUntilMonthQuery, new
                 {
@@ -229,27 +249,32 @@ namespace BFF.DB.SQLite
                     Month = $"{fromMonth.Month:00}"
                 }) ?? 0L;
 
-                incomesPerMonth = budgetEntriesPerMonth.Select(g => {
-                    long incomeSum = 0;
-                    foreach (var incomeCategory in incomeCategories)
+                incomesPerMonth = monthRange
+                    .Select(m => 
                     {
-                        incomeSum += connection.QueryFirst<long?>(IncomeForCategoryQuery(incomeCategory.MonthOffset), new
+                        long incomeSum = 0;
+                        foreach (var incomeCategory in incomeCategories)
                         {
-                            CategoryId = incomeCategory.Id,
-                            Year = $"{g.Key.Year:0000}",
-                            Month = $"{g.Key.Month:00}"
-                        }) ?? 0L;
-                    }
+                            incomeSum += connection.QueryFirst<long?>(IncomeForCategoryQuery(incomeCategory.MonthOffset), new
+                            {
+                                CategoryId = incomeCategory.Id,
+                                Year = $"{m.Year:0000}",
+                                Month = $"{m.Month:00}"
+                            }) ?? 0L;
+                        }
 
-                    return (g.Key, incomeSum);
-                }).ToDictionary(kvp => kvp.Key, kvp => kvp.incomeSum);
+                        return (m, incomeSum);
+                    })
+                    .ToDictionary(kvp => kvp.m, kvp => kvp.incomeSum);
 
-                danglingTransfersPerMonth = budgetEntriesPerMonth.Select(g => 
-                    (g.Key, DanglingTransferSum: connection.QueryFirstOrDefault<long?>(DanglingTransferQuery, new
-                    {
-                        Year = $"{g.Key.Year:0000}",
-                        Month = $"{g.Key.Month:00}"
-                    }) ?? 0L)).ToDictionary(kvp => kvp.Key, kvp => kvp.DanglingTransferSum);
+                danglingTransfersPerMonth = monthRange
+                    .Select(m => 
+                        (m, DanglingTransferSum: connection.QueryFirstOrDefault<long?>(DanglingTransferQuery, new
+                        {
+                            Year = $"{m.Year:0000}",
+                            Month = $"{m.Month:00}"
+                        }) ?? 0L))
+                    .ToDictionary(kvp => kvp.m, kvp => kvp.DanglingTransferSum);
 
                 transactionScope.Complete();
             }

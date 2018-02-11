@@ -47,25 +47,33 @@ namespace BFF.DB.Dapper
                 _incomeCategoryRepository.All.Select(ic => (ic.Id, ic.MonthOffset)).ToArray());
 
             long currentNotBudgetedOrOverbudgeted = _.InitialNotBudgetedOrOverbudgeted;
+            long currentOverspentInPreviousMonth = _.BudgetEntriesPerMonth
+                .OrderBy(kvp => kvp.Key)
+                .First()
+                .Value
+                .Where(be => be.Balance < 0).Sum(be => be.Balance);
 
             var budgetMonths = new List<IBudgetMonth>();
 
-            for (int i = 1; i < _.BudgetEntriesPerMonth.Length; i++)
+            foreach (var monthWithBudgetEntries in _.BudgetEntriesPerMonth.Skip(1).OrderBy(kvp => kvp.Key))
             {
                 var newBudgetMonth =
                     new BudgetMonth(
-                        month: _.BudgetEntriesPerMonth[i].Key,
-                        budgetEntries: _.BudgetEntriesPerMonth[i].Select(g => _budgetEntryRepository.Convert(g.Entry, g.Outflow, g.Balance)),
-                        overspentInPreviousMonth: _.BudgetEntriesPerMonth[i - 1].Where(be => be.Balance < 0).Sum(be => be.Balance),
+                        month: monthWithBudgetEntries.Key,
+                        budgetEntries: monthWithBudgetEntries.Value.Select(g => _budgetEntryRepository.Convert(g.Entry, g.Outflow, g.Balance)),
+                        overspentInPreviousMonth: currentOverspentInPreviousMonth,
                         notBudgetedInPreviousMonth: currentNotBudgetedOrOverbudgeted,
-                        incomeForThisMonth: _.IncomesPerMonth[_.BudgetEntriesPerMonth[i].Key]
+                        incomeForThisMonth: _.IncomesPerMonth[monthWithBudgetEntries.Key]
                                             + _accountRepository
                                                 .All
-                                                .Where(a => a.StartingDate.Year == _.BudgetEntriesPerMonth[i].Key.Year && a.StartingDate.Month == _.BudgetEntriesPerMonth[i].Key.Month)
+                                                .Where(a => a.StartingDate.Year == monthWithBudgetEntries.Key.Year && a.StartingDate.Month == monthWithBudgetEntries.Key.Month)
                                                 .Select(a => a.StartingBalance).Sum(),
-                        danglingTransferForThisMonth: _.DanglingTransfersPerMonth[_.BudgetEntriesPerMonth[i].Key]);
+                        danglingTransferForThisMonth: _.DanglingTransfersPerMonth[monthWithBudgetEntries.Key]);
                 budgetMonths.Add(newBudgetMonth);
                 currentNotBudgetedOrOverbudgeted = newBudgetMonth.AvailableToBudget;
+                currentOverspentInPreviousMonth = monthWithBudgetEntries
+                    .Value
+                    .Where(be => be.Balance < 0).Sum(be => be.Balance);
             }
             return budgetMonths;
         }

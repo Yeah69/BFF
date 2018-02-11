@@ -93,7 +93,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                             : _accountRepository.Find((long) trans.PayeeId),
                         trans.CategoryId is null 
                             ? null 
-                            : _accountRepository.Find(trans.CategoryId ?? -1),
+                            : _accountRepository.Find((long)trans.CategoryId),
                         trans.Memo,
                         trans.Sum, 
                         trans.Cleared == 1L);
