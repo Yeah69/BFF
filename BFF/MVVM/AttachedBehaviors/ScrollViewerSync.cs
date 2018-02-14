@@ -14,6 +14,7 @@ namespace BFF.MVVM.AttachedBehaviors
     public class ScrollViewerSync : Behavior<FrameworkElement>
     {
         private static readonly IDictionary<string, IList<ScrollViewer>> GroupNameToScrollViewers = new Dictionary<string, IList<ScrollViewer>>();
+        private static readonly IDictionary<string, double> GroupNameToScrollPosition = new Dictionary<string, double>();
 
         public static readonly DependencyProperty GroupNameProperty = DependencyProperty.Register(
             nameof(GroupName),
@@ -49,7 +50,7 @@ namespace BFF.MVVM.AttachedBehaviors
 
         private CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
-        private ScrollViewer _associatedScrollViewer = null;
+        private ScrollViewer _associatedScrollViewer;
 
         protected override void OnAttached()
         {
@@ -58,12 +59,15 @@ namespace BFF.MVVM.AttachedBehaviors
                 _compositeDisposable?.Dispose();
                 _compositeDisposable = new CompositeDisposable();
 
-                _associatedScrollViewer = this.AssociatedObject.GetDescendantByType<ScrollViewer>();
+                _associatedScrollViewer = AssociatedObject.GetDescendantByType<ScrollViewer>();
 
                 if (!GroupNameToScrollViewers.ContainsKey(GroupName))
                     GroupNameToScrollViewers[GroupName] = new List<ScrollViewer>();
+                if (!GroupNameToScrollPosition.ContainsKey(GroupName))
+                    GroupNameToScrollPosition[GroupName] = 0;
                 if (!GroupNameToScrollViewers[GroupName].Contains(_associatedScrollViewer))
                     GroupNameToScrollViewers[GroupName].Add(_associatedScrollViewer);
+                _associatedScrollViewer.ScrollToVerticalOffset(GroupNameToScrollPosition[GroupName]);
 
                 Observable.FromEventPattern<ScrollChangedEventArgs>(_associatedScrollViewer, "ScrollChanged")
                     .ObserveOn(Dispatcher)
@@ -77,6 +81,8 @@ namespace BFF.MVVM.AttachedBehaviors
                             {
                                 scrollViewer?.ScrollToVerticalOffset(_associatedScrollViewer.VerticalOffset);
                             }
+
+                            GroupNameToScrollPosition[GroupName] = _associatedScrollViewer.VerticalOffset;
                         }
                     })
                     .AddTo(_compositeDisposable);
@@ -94,8 +100,8 @@ namespace BFF.MVVM.AttachedBehaviors
 
             base.OnAttached();
 
-            this.AssociatedObject.Loaded += OnLoaded;
-            this.AssociatedObject.Unloaded += OnUnloaded;
+            AssociatedObject.Loaded += OnLoaded;
+            AssociatedObject.Unloaded += OnUnloaded;
 
         }
     }

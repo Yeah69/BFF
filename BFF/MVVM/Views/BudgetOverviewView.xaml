@@ -90,10 +90,10 @@
         <userControls:UniformList x:Name="BudgetMonthHeaders"
                                   Grid.Row="0"
                                   Grid.Column="2"
+                                  VerticalAlignment="Stretch"
                                   DisplayCount="5"
                                   ItemsSource="{Binding BudgetMonths}"
-                                  StartIndex="{Binding CurrentMonthStartIndex.Value}"
-                                  VerticalAlignment="Stretch">
+                                  StartIndex="{Binding CurrentMonthStartIndex.Value}">
             <userControls:UniformList.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -256,7 +256,7 @@
                  AlternationCount="2"
                  BorderBrush="{DynamicResource AccentColorBrush}"
                  BorderThickness="1"
-                 ItemTemplate="{StaticResource CategoryItemTemplate}"
+                 ItemTemplate="{StaticResource IndentedCategoryItemTemplate}"
                  ItemsSource="{Binding Categories}"
                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"

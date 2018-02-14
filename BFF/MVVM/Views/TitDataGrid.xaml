@@ -23,7 +23,7 @@
                 <ResourceDictionary Source="/MVVM/Resources/BFF_ModifiedMAMCheckBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            
+
 
             <Style x:Key="CellContent"
                    TargetType="ContentControl">
@@ -533,7 +533,9 @@
                                             Padding="0"
                                             BorderBrush="{StaticResource AccentColorBrush}"
                                             BorderThickness="1">
-                                        <views:NewCategoryView DataContext="{Binding NewCategoryViewModel}" Tag="{Binding ElementName=Popup}" OnAddClicked="CategoryClosePopup_OnClick" />
+                                        <views:NewCategoryView DataContext="{Binding NewCategoryViewModel}"
+                                                               OnAddClicked="CategoryClosePopup_OnClick"
+                                                               Tag="{Binding ElementName=Popup}" />
                                     </Border>
                                 </Popup>
                                 <ComboBox x:Name="EditCategoryComboBox"
@@ -692,7 +694,8 @@
                             </TextBox>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                            <ContentControl Content="{Binding SumEdit}" ContentTemplate="{StaticResource SumEditTemplate}" />
+                            <ContentControl Content="{Binding SumEdit}"
+                                            ContentTemplate="{StaticResource SumEditTemplate}" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
                     </ContentControl.Resources>
