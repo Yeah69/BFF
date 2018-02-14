@@ -7,6 +7,7 @@
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
+             xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              Startup="Application_Startup">
     <!--  DispatcherUnhandledException="Application_DispatcherUnhandledException">  -->
     <Application.Resources>
@@ -118,6 +119,86 @@
                     </TextBox>
                 </DockPanel>
             </DataTemplate>
+
+            <DataTemplate x:Key="IndentedCategoryItemTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="4"
+                               Height="16"
+                               Margin="{Binding Depth, Converter={x:Static mvvm:Converters.CategoryDepthToMargin}}">
+                        <Rectangle.Style>
+                            <Style TargetType="{x:Type Rectangle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                                 Value="True">
+                                        <Setter Property="Fill"
+                                                Value="{StaticResource IncomeBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                                <Setter Property="Fill"
+                                        Value="{DynamicResource AccentColorBrush}" />
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
+                    <TextBlock Text="{Binding Name.Value}" />
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate x:Key="IndentedCategoryEditingItemTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="4"
+                               Height="16"
+                               Margin="{Binding Depth, Converter={x:Static mvvm:Converters.CategoryDepthToMargin}}">
+                        <Rectangle.Style>
+                            <Style TargetType="{x:Type Rectangle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                                 Value="True">
+                                        <Setter Property="Fill"
+                                                Value="{StaticResource IncomeBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                                <Setter Property="Fill"
+                                        Value="{DynamicResource AccentColorBrush}" />
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
+                    <TextBox Text="{Binding Name.Value}" />
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate x:Key="CategoryItemTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="4"
+                               Height="16"
+                               Margin="0,0,5,0">
+                        <Rectangle.Style>
+                            <Style TargetType="{x:Type Rectangle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                                 Value="True">
+                                        <Setter Property="Fill"
+                                                Value="{StaticResource IncomeBrush}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                                <Setter Property="Fill"
+                                        Value="{DynamicResource AccentColorBrush}" />
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
+                    <TextBlock Margin="0,0,5,0"
+                               Text="{Binding Name.Value}" />
+                </StackPanel>
+            </DataTemplate>
+
+            <Style x:Key="CellIconMaterial"
+                   TargetType="iconPacks:PackIconMaterial">
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                <Setter Property="Height"
+                        Value="{StaticResource IconSize}" />
+                <Setter Property="Width"
+                        Value="{StaticResource IconSize}" />
+            </Style>
 
             <iconPacks:PackIconMaterialKind x:Key="TransactionIcon">
                 Logout

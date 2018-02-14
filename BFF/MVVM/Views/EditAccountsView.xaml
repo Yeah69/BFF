@@ -3,98 +3,100 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
              xmlns:views="clr-namespace:BFF.MVVM.Views"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              d:DataContext="{d:DesignInstance viewModels:IEditAccountsViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
-    <StackPanel>
-        <TextBlock Margin="0,10"
-                   FontSize="30"
-                   Text="{lex:Loc Account_Edit}" />
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Margin="0,10"
+                       FontSize="30"
+                       Text="{lex:Loc Account_Edit}" />
 
-        <DataGrid x:Name="LayoutRoot"
-                  MinWidth="100"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="False"
-                  ItemsSource="{Binding All}">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Header="{lex:Loc General_Name}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
-                                       Text="{Binding Name.Value}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <TextBox d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
-                                     Text="{Binding Name.Value, Mode=TwoWay}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="{lex:Loc Account_StartingBalance}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Padding="0,0,5,0"
-                                       d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
-                                       Foreground="{Binding StartingBalance.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                       Style="{StaticResource CellTextBlock}"
-                                       Text="{Binding StartingBalance.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                       TextAlignment="Right" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ContentControl d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
-                                            Content="{Binding StartingBalanceEdit}"
-                                            ContentTemplate="{StaticResource SumEditTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="{lex:Loc Account_StartingDate}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
-                                       Style="{StaticResource CellTextBlock}"
-                                       Text="{Binding StartingDate.Value, Converter={x:Static mvvm:Converters.DateTimeToString}}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <DatePicker VerticalContentAlignment="Center"
-                                        d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
-                                        SelectedDate="{Binding StartingDate.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        SelectedDateFormat="{Binding DataContext.IsDateLong, ElementName=LayoutRoot, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
-                                    Command="{Binding DeleteCommand}">
-                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                            Height="{StaticResource IconSize}"
-                                                            Foreground="{StaticResource BlackBrush}"
-                                                            Kind="{StaticResource RemoveFromTableIcon}" />
-                            </Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+            <DataGrid MinWidth="100"
+                      MaxHeight="500"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="False"
+                      ItemsSource="{Binding All}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="{lex:Loc General_Name}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
+                                           Text="{Binding Name.Value}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <TextBox d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
+                                         Text="{Binding Name.Value, Mode=TwoWay}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="{lex:Loc Account_StartingBalance}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Padding="0,0,5,0"
+                                           d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
+                                           Foreground="{Binding StartingBalance.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                           Style="{StaticResource CellTextBlock}"
+                                           Text="{Binding StartingBalance.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                           TextAlignment="Right" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ContentControl d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
+                                                Content="{Binding StartingBalanceEdit}"
+                                                ContentTemplate="{StaticResource SumEditTemplate}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="{lex:Loc Account_StartingDate}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
+                                           Style="{StaticResource CellTextBlock}"
+                                           Text="{Binding StartingDate.Value, Converter={x:Static mvvm:Converters.DateTimeToString}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <DatePicker VerticalContentAlignment="Center"
+                                            d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
+                                            SelectedDate="{Binding StartingDate.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            SelectedDateFormat="{Binding DataContext.IsDateLong, ElementName=LayoutRoot, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
+                                        Command="{Binding DeleteCommand}">
+                                    <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                Height="{StaticResource IconSize}"
+                                                                Foreground="{StaticResource BlackBrush}"
+                                                                Kind="{StaticResource RemoveFromTableIcon}" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
 
-        <TextBlock Margin="0,10"
-                   FontSize="30"
-                   Text="{lex:Loc Account_CreateNew}" />
+            <TextBlock Margin="0,10"
+                       FontSize="30"
+                       Text="{lex:Loc Account_CreateNew}" />
 
-        <views:NewAccountView HorizontalAlignment="Stretch"
-                              DataContext="{Binding NewAccountViewModel}" />
-    </StackPanel>
+            <views:NewAccountView HorizontalAlignment="Stretch"
+                                  DataContext="{Binding NewAccountViewModel}" />
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

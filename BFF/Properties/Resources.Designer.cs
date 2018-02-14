@@ -450,6 +450,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create new Category.
+        /// </summary>
+        public static string Category_CreateNew {
+            get {
+                return ResourceManager.GetString("Category_CreateNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure?.
         /// </summary>
         public static string ConfirmationDialog_Title {
@@ -473,6 +482,24 @@ namespace BFF.Properties {
         public static string CreateNewPayee {
             get {
                 return ResourceManager.GetString("CreateNewPayee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categories.
+        /// </summary>
+        public static string Domain_Categories {
+            get {
+                return ResourceManager.GetString("Domain_Categories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Income Categories.
+        /// </summary>
+        public static string Domain_IncomeCategories {
+            get {
+                return ResourceManager.GetString("Domain_IncomeCategories", resourceCulture);
             }
         }
         

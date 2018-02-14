@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using BFF.MVVM.Models.Native;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
     public interface IIncomeCategoryViewModel : ICategoryBaseViewModel
     {
+        IReactiveProperty<int> MonthOffset { get; }
     }
 
     public class IncomeCategoryViewModel : CategoryBaseViewModel, IIncomeCategoryViewModel
@@ -25,6 +28,11 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public IncomeCategoryViewModel(IIncomeCategory category) : base(category)
         {
+            MonthOffset = category
+                .ToReactivePropertyAsSynchronized(c => c.MonthOffset, ReactivePropertyMode.DistinctUntilChanged)
+                .AddTo(CompositeDisposable);
         }
+
+        public IReactiveProperty<int> MonthOffset { get; }
     }
 }

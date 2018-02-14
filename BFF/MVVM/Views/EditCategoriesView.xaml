@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="BFF.MVVM.Views.EditCategoriesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
+             xmlns:views="clr-namespace:BFF.MVVM.Views"
+             d:DataContext="{d:DesignInstance viewModels:EditCategoriesViewModel}"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Margin="0,10"
+                       FontSize="30"
+                       Text="{lex:Loc Domain_Categories}" />
+
+            <DataGrid MinWidth="100"
+                      MaxHeight="500"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="False"
+                      ItemsSource="{Binding AllCategories}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn CellEditingTemplate="{StaticResource IndentedCategoryEditingItemTemplate}"
+                                            CellTemplate="{StaticResource IndentedCategoryItemTemplate}"
+                                            Header="{lex:Loc General_Name}" />
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}"
+                                        Command="{Binding DeleteCommand}">
+                                    <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                Height="{StaticResource IconSize}"
+                                                                Foreground="{StaticResource BlackBrush}"
+                                                                Kind="{StaticResource RemoveFromTableIcon}" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <TextBlock Margin="0,10"
+                       FontSize="30"
+                       Text="{lex:Loc Domain_IncomeCategories}" />
+
+            <DataGrid x:Name="LayoutRoot"
+                      MinWidth="100"
+                      MaxHeight="500"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="False"
+                      ItemsSource="{Binding AllIncomeCategories}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn CellEditingTemplate="{StaticResource IndentedCategoryEditingItemTemplate}"
+                                            CellTemplate="{StaticResource IndentedCategoryItemTemplate}"
+                                            Header="{lex:Loc General_Name}" />
+                    <DataGridTemplateColumn Header="{lex:Loc NewCategory_MonthOffset}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock d:DataContext="{d:DesignInstance forModels:IIncomeCategoryViewModel}"
+                                           Text="{Binding MonthOffset.Value}"
+                                           TextAlignment="Right" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <controls:NumericUpDown d:DataContext="{d:DesignInstance forModels:IIncomeCategoryViewModel}"
+                                                        Value="{Binding MonthOffset.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button d:DataContext="{d:DesignInstance forModels:IIncomeCategoryViewModel}"
+                                        Command="{Binding DeleteCommand}">
+                                    <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                Height="{StaticResource IconSize}"
+                                                                Foreground="{StaticResource BlackBrush}"
+                                                                Kind="{StaticResource RemoveFromTableIcon}" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <TextBlock Margin="0,10"
+                       FontSize="30"
+                       Text="{lex:Loc Category_CreateNew}" />
+
+            <views:NewCategoryView HorizontalAlignment="Stretch"
+                                   DataContext="{Binding NewCategoryViewModel}" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

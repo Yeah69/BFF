@@ -329,6 +329,7 @@
     </Compile>
     <Compile Include="MVVM\ViewModels\BudgetMonthViewModel.cs" />
     <Compile Include="MVVM\ViewModels\BudgetOverviewViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\EditCategoriesViewModel.cs" />
     <Compile Include="MVVM\ViewModels\EditAccountsViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\CategoryBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\BudgetEntryViewModel.cs" />
@@ -377,6 +378,9 @@
     <Compile Include="MVVM\Views\EditAccountsView.xaml.cs">
       <DependentUpon>EditAccountsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MVVM\Views\EditCategoriesView.xaml.cs">
+      <DependentUpon>EditCategoriesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\Views\ImportDialog.xaml.cs">
       <DependentUpon>ImportDialog.xaml</DependentUpon>
     </Compile>
@@ -387,10 +391,17 @@
     <Compile Include="MVVM\Views\NewAccountView.xaml.cs">
       <DependentUpon>NewAccountView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MVVM\Views\NewCategoryView.xaml.cs">
+      <DependentUpon>NewCategoryView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\Views\TitDataGrid.xaml.cs">
       <DependentUpon>TitDataGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="SqLiteBackendContext.cs" />
+    <Page Include="MVVM\Views\EditCategoriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MVVM\Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -406,10 +417,6 @@
     <Page Include="MVVM\Resources\BFF_ModifiedMAMCheckBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MVVM\Resources\CategoryTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MVVM\Resources\HamburgerMenu.xaml">
       <SubType>Designer</SubType>
@@ -440,6 +447,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MVVM\Views\NewAccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\Views\NewCategoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

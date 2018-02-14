@@ -251,12 +251,20 @@
                     <views:EditAccountsView DataContext="{Binding EditAccountsViewModel}" />
                 </ContentControl>
             </controls:Flyout>
+            <controls:Flyout x:Name="EditCategoriesFlyout"
+                             IsModal="True"
+                             Position="Right">
+                <ContentControl Margin="10"
+                                Visibility="{Binding EditCategoriesViewModel, Converter={x:Static mvvm:Converters.NullToCollapsed}}">
+                    <views:EditCategoriesView DataContext="{Binding EditCategoriesViewModel}" />
+                </ContentControl>
+            </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
 
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands>
-            <Button Name="FileButt"
+            <Button x:Name="FileButt"
                     Click="FileButt_Click"
                     Content="{lex:Loc MainWindow_File}" />
         </controls:WindowCommands>
@@ -267,6 +275,9 @@
             <Button Click="EditAccounts_OnClick"
                     Content="{lex:Loc HamburgerMenu_Accounts}"
                     Visibility="{Binding EditAccountsViewModel, Converter={x:Static mvvm:Converters.NullToCollapsed}}" />
+            <Button Click="EditCategories_OnClick"
+                    Content="{lex:Loc Domain_Categories}"
+                    Visibility="{Binding EditCategoriesViewModel, Converter={x:Static mvvm:Converters.NullToCollapsed}}" />
             <Button Click="SettingsButt_Click">
                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"

@@ -197,30 +197,38 @@ namespace BFF.MVVM.Views
 
         private void CategoryOpenPopup_OnClick(object sender, RoutedEventArgs e)
         {
-            SetIsOpenOfPopup(sender, true);
+            SetIsOpenTrueOfPopup(sender);
         }
 
         private void PayeeOpenPopup_OnClick(object sender, RoutedEventArgs e)
         {
-            SetIsOpenOfPopup(sender, true);
+            SetIsOpenTrueOfPopup(sender);
         }
 
-        private void CategoryClosePopup_OnClick(object sender, RoutedEventArgs e)
+        private void CategoryClosePopup_OnClick(object sender, EventArgs e)
         {
-            SetIsOpenOfPopup(sender, false);
+            if (sender is NewCategoryView newCategoryView)
+            {
+                if (newCategoryView.Tag is Popup popup)
+                    popup.IsOpen = false;
+            }
         }
 
         private void PayeeClosePopup_OnClick(object sender, RoutedEventArgs e)
         {
-            SetIsOpenOfPopup(sender, false);
+            if (sender is FrameworkElement element)
+            {
+                if (element.FindName("Popup") is Popup popup)
+                    popup.IsOpen = false;
+            }
         }
 
-        private void SetIsOpenOfPopup(object sender, bool isOpen)
+        private void SetIsOpenTrueOfPopup(object sender)
         {
-            if (sender is FrameworkElement button)
+            if (sender is FrameworkElement element)
             {
-                if (button.FindName("Popup") is Popup popup)
-                    popup.IsOpen = isOpen;
+                if (element.FindName("Popup") is Popup popup)
+                    popup.IsOpen = true;
             }
         }
 
@@ -234,13 +242,13 @@ namespace BFF.MVVM.Views
             }
         }
 
-        private IInputElement focusedBeforeOpen = null;
+        private IInputElement _focusedBeforeOpen;
 
         private void Popup_OnOpened(object sender, EventArgs e)
         {
             if (sender is Popup popup)
             {
-                focusedBeforeOpen = Keyboard.FocusedElement;
+                _focusedBeforeOpen = Keyboard.FocusedElement;
                 var focusMe = popup.FindName("FocusMe") as IInputElement;
                 focusMe?.Focus();
                 if(focusMe != null) Keyboard.Focus(focusMe);
@@ -263,9 +271,9 @@ namespace BFF.MVVM.Views
 
         private void Popup_OnClosed(object sender, EventArgs e)
         {
-            focusedBeforeOpen?.Focus();
-            if (focusedBeforeOpen != null) Keyboard.Focus(focusedBeforeOpen);
-            focusedBeforeOpen = null;
+            _focusedBeforeOpen?.Focus();
+            if (_focusedBeforeOpen != null) Keyboard.Focus(_focusedBeforeOpen);
+            _focusedBeforeOpen = null;
         }
     }
 }

@@ -91,7 +91,8 @@ namespace BFF.MVVM.ViewModels
                         newCategory.Name = Name.Value.Trim();
                         newCategory.MonthOffset = MonthOffset.Value;
                         newCategory.Insert();
-                        categoryOwner.Category.Value = incomeCategoryViewModelService.GetViewModel(newCategory);
+                        if(categoryOwner != null)
+                            categoryOwner.Category.Value = incomeCategoryViewModelService.GetViewModel(newCategory);
                     }
                     else
                     {
@@ -102,7 +103,8 @@ namespace BFF.MVVM.ViewModels
                         OnPropertyChanged(nameof(AllPotentialParents));
                         var categoryViewModel = _categoryViewModelService.GetViewModel(newCategory);
                         categoryViewModelInitializer.Initialize(categoryViewModel);
-                        categoryOwner.Category.Value = categoryViewModel;
+                        if (categoryOwner != null)
+                            categoryOwner.Category.Value = categoryViewModel;
                     }
                 })
                 .AddTo(_compositeDisposable);

@@ -1,8 +1,8 @@
 ﻿namespace BFF.MVVM.Views
 {
-    public partial class EditAccountsView
+    public partial class EditCategoriesView
     {
-        public EditAccountsView()
+        public EditCategoriesView()
         {
             InitializeComponent();
         }

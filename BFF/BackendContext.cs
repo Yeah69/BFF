@@ -5,20 +5,23 @@ namespace BFF
 {
     public interface IBackendContext
     {
-        string Text { get; }
-
         IBudgetOverviewViewModel BudgetOverviewViewModel { get; }
+
         IAccountTabsViewModel AccountTabsViewModel { get; }
 
         IEditAccountsViewModel EditAccountsViewModel { get; }
+
+        IEditCategoriesViewModel EditCategoriesViewModel { get; }
     }
 
     public abstract class BackendContext : ObservableObject, IBackendContext
     {
-        public string Text => "Hello, World!";
-
         public abstract IBudgetOverviewViewModel BudgetOverviewViewModel { get; }
+
         public abstract IAccountTabsViewModel AccountTabsViewModel { get; }
+
         public abstract IEditAccountsViewModel EditAccountsViewModel { get; }
+
+        public abstract IEditCategoriesViewModel EditCategoriesViewModel { get; }
     }
 }

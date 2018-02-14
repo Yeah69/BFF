@@ -4,12 +4,12 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
-             xmlns:helper="clr-namespace:BFF.Helper"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:structure="clr-namespace:BFF.MVVM.ViewModels.ForModels.Structure"
+             xmlns:views="clr-namespace:BFF.MVVM.Views"
              x:Name="Root"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -21,55 +21,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.checkbox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
                 <ResourceDictionary Source="/MVVM/Resources/BFF_ModifiedMAMCheckBox.xaml" />
-                <ResourceDictionary Source="/MVVM/Resources/CategoryTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <DataTemplate x:Key="IndentedCategoryItemTemplate">
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="4"
-                               Height="16"
-                               Margin="{Binding Depth, Converter={x:Static mvvm:Converters.CategoryDepthToMargin}}">
-                        <Rectangle.Style>
-                            <Style TargetType="{x:Type Rectangle}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
-                                                 Value="True">
-                                        <Setter Property="Fill"
-                                                Value="{StaticResource IncomeBrush}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                                <Setter Property="Fill"
-                                        Value="{DynamicResource AccentColorBrush}" />
-                            </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
-                    <TextBlock Text="{Binding Name.Value}" />
-                </StackPanel>
-            </DataTemplate>
-
-            <DataTemplate x:Key="CategoryItemTemplate">
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="4"
-                               Height="16"
-                               Margin="0,0,5,0">
-                        <Rectangle.Style>
-                            <Style TargetType="{x:Type Rectangle}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
-                                                 Value="True">
-                                        <Setter Property="Fill"
-                                                Value="{StaticResource IncomeBrush}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                                <Setter Property="Fill"
-                                        Value="{DynamicResource AccentColorBrush}" />
-                            </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
-                    <TextBlock Margin="0,0,5,0"
-                               Text="{Binding Name.Value}" />
-                </StackPanel>
-            </DataTemplate>
+            
 
             <Style x:Key="CellContent"
                    TargetType="ContentControl">
@@ -81,16 +35,6 @@
                         Value="30" />
                 <Setter Property="IsTabStop"
                         Value="False" />
-            </Style>
-
-            <Style x:Key="CellIconMaterial"
-                   TargetType="iconPacks:PackIconMaterial">
-                <Setter Property="VerticalAlignment"
-                        Value="Center" />
-                <Setter Property="Height"
-                        Value="{StaticResource IconSize}" />
-                <Setter Property="Width"
-                        Value="{StaticResource IconSize}" />
             </Style>
 
             <ContextMenu x:Key="RowMenu">
@@ -589,144 +533,7 @@
                                             Padding="0"
                                             BorderBrush="{StaticResource AccentColorBrush}"
                                             BorderThickness="1">
-                                        <StackPanel>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition />
-                                                    <RowDefinition />
-                                                    <RowDefinition />
-                                                    <RowDefinition />
-                                                </Grid.RowDefinitions>
-                                                <TextBlock Grid.Row="0"
-                                                           Grid.Column="0"
-                                                           Margin="5,0,5,0"
-                                                           VerticalAlignment="Center"
-                                                           Text="{lex:LocText NameOfNewCategory,
-                                                                              Suffix=:}" />
-                                                <TextBox x:Name="FocusMe"
-                                                         Grid.Row="0"
-                                                         Grid.Column="1"
-                                                         Focusable="True"
-                                                         Text="{Binding NewCategoryViewModel.Name.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                                <TextBlock Grid.Row="1"
-                                                           Grid.Column="0"
-                                                           Margin="5,0,5,0"
-                                                           VerticalAlignment="Center"
-                                                           Text="{lex:Loc NewCategory_IsIncomeRelevant}" />
-                                                <CheckBox x:Name="IsIncomeRelevant"
-                                                          Grid.Row="1"
-                                                          Grid.Column="1"
-                                                          Focusable="True"
-                                                          IsChecked="{Binding NewCategoryViewModel.IsIncomeRelevant.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                                <TextBlock Grid.Row="2"
-                                                           Grid.Column="0"
-                                                           Margin="5,0,5,0"
-                                                           VerticalAlignment="Center"
-                                                           Text="{lex:LocText NewCategory_MonthOffset,
-                                                                              Suffix=:}">
-                                                    <TextBlock.Style>
-                                                        <Style BasedOn="{StaticResource {x:Type TextBlock}}"
-                                                               TargetType="{x:Type TextBlock}">
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding NewCategoryViewModel.IsIncomeRelevant.Value, UpdateSourceTrigger=PropertyChanged}"
-                                                                             Value="False">
-                                                                    <Setter Property="Visibility"
-                                                                            Value="Collapsed" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-                                                <controls:NumericUpDown Grid.Row="2"
-                                                                        Grid.Column="1"
-                                                                        Value="{Binding NewCategoryViewModel.MonthOffset.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                                    <controls:NumericUpDown.Style>
-                                                        <Style BasedOn="{StaticResource {x:Type controls:NumericUpDown}}"
-                                                               TargetType="{x:Type controls:NumericUpDown}">
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding NewCategoryViewModel.IsIncomeRelevant.Value, UpdateSourceTrigger=PropertyChanged}"
-                                                                             Value="False">
-                                                                    <Setter Property="Visibility"
-                                                                            Value="Collapsed" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </controls:NumericUpDown.Style>
-                                                </controls:NumericUpDown>
-
-                                                <TextBlock Grid.Row="2"
-                                                           Grid.Column="0"
-                                                           Margin="5,0,5,0"
-                                                           VerticalAlignment="Center"
-                                                           Text="{lex:LocText SuperiorCategory,
-                                                                              Suffix=:}">
-                                                    <TextBlock.Style>
-                                                        <Style BasedOn="{StaticResource {x:Type TextBlock}}"
-                                                               TargetType="{x:Type TextBlock}">
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding NewCategoryViewModel.IsIncomeRelevant.Value, UpdateSourceTrigger=PropertyChanged}"
-                                                                             Value="True">
-                                                                    <Setter Property="Visibility"
-                                                                            Value="Collapsed" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-                                                <ComboBox x:Name="ParentCategoryComboBox"
-                                                          Grid.Row="2"
-                                                          Grid.Column="1"
-                                                          IsEditable="True"
-                                                          IsTextSearchCaseSensitive="True"
-                                                          IsTextSearchEnabled="True"
-                                                          ItemTemplate="{StaticResource IndentedCategoryItemTemplate}"
-                                                          ItemsSource="{Binding NewCategoryViewModel.AllPotentialParents}"
-                                                          SelectedItem="{Binding NewCategoryViewModel.Parent.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          ShouldPreserveUserEnteredPrefix="True"
-                                                          TextSearch.TextPath="Name.Value">
-                                                    <ComboBox.Style>
-                                                        <Style BasedOn="{StaticResource {x:Type ComboBox}}"
-                                                               TargetType="{x:Type ComboBox}">
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding NewCategoryViewModel.IsIncomeRelevant.Value, UpdateSourceTrigger=PropertyChanged}"
-                                                                             Value="True">
-                                                                    <Setter Property="Visibility"
-                                                                            Value="Collapsed" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </ComboBox.Style>
-                                                    <ComboBox.ToolTip>
-                                                        <ToolTip>
-                                                            <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
-                                                                     ItemsSource="{Binding NewCategoryViewModel.Parent.Value.FullChainOfCategories}">
-                                                                <ListBox.ItemsPanel>
-                                                                    <ItemsPanelTemplate>
-                                                                        <StackPanel Orientation="Horizontal" />
-                                                                    </ItemsPanelTemplate>
-                                                                </ListBox.ItemsPanel>
-                                                            </ListBox>
-                                                        </ToolTip>
-                                                    </ComboBox.ToolTip>
-                                                </ComboBox>
-                                                <Button Grid.Row="3"
-                                                        Grid.Column="1"
-                                                        HorizontalAlignment="Right"
-                                                        Click="CategoryClosePopup_OnClick"
-                                                        Command="{Binding NewCategoryViewModel.AddCommand}"
-                                                        ToolTip="{lex:Loc CreateNewCategory}">
-                                                    <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
-                                                                                Kind="{StaticResource AddIcon}"
-                                                                                Style="{StaticResource CellIconMaterial}" />
-                                                </Button>
-                                            </Grid>
-                                        </StackPanel>
+                                        <views:NewCategoryView DataContext="{Binding NewCategoryViewModel}" Tag="{Binding ElementName=Popup}" OnAddClicked="CategoryClosePopup_OnClick" />
                                     </Border>
                                 </Popup>
                                 <ComboBox x:Name="EditCategoryComboBox"

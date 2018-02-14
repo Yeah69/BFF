@@ -248,6 +248,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="Budgeting_OverspendExplanation" xml:space="preserve">
     <value>Summe der Budget√ºberschreitungen aufsummiert √ºber alle Kategorien letzten Monats.</value>
   </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Neue Kategorie erstellen</value>
+  </data>
   <data name="ConfirmationDialog_Title" xml:space="preserve">
     <value>Bist Du dir sicher?</value>
   </data>
@@ -256,6 +259,12 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   </data>
   <data name="CreateNewPayee" xml:space="preserve">
     <value>Erstelle einen neuen Bezahlten</value>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Kategorien</value>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Einkommenskategorien</value>
   </data>
   <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
     <value>Der Name einer neuen Kategorie darf nicht leer sein!</value>
