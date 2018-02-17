@@ -248,6 +248,12 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="Budgeting_OverspendExplanation" xml:space="preserve">
     <value>Summe der Budget√ºberschreitungen aufsummiert √ºber alle Kategorien letzten Monats.</value>
   </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Nicht-zugewiesen</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Die Summe aller Transaktionen, die keine Kategorie zugewiesen haben.</value>
+  </data>
   <data name="Category_CreateNew" xml:space="preserve">
     <value>Neue Kategorie erstellen</value>
   </data>
@@ -304,6 +310,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   </data>
   <data name="General_Short" xml:space="preserve">
     <value>Kurz</value>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Nicht zugewiesen</value>
   </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
     <value>Konten</value>

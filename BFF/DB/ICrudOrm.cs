@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using Category = BFF.DB.PersistenceModels.Category;
 using SubTransaction = BFF.DB.PersistenceModels.SubTransaction;
@@ -60,8 +61,7 @@ namespace BFF.DB
 
     public interface IBudgetOrm : IOncePerBackend
     {
-        (IDictionary<DateTime, IList<(BudgetEntry Entry, long Outflow, long Balance)>> BudgetEntriesPerMonth, long InitialNotBudgetedOrOverbudgeted, IDictionary<DateTime, long> IncomesPerMonth, IDictionary<DateTime, long> DanglingTransfersPerMonth) 
-            Find(DateTime fromMonth, DateTime toMonth, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories);
+        BudgetBlock Find(DateTime fromMonth, DateTime toMonth, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories);
     }
 
     public interface IImportingOrm

@@ -248,6 +248,12 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Budgeting_OverspendExplanation" xml:space="preserve">
     <value>Sum of overspend amounts of money accumulated from all categories in last month.</value>
   </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Unassigned</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>The sum of all transactions, which have no category assigned.</value>
+  </data>
   <data name="Category_CreateNew" xml:space="preserve">
     <value>Create new Category</value>
   </data>
@@ -304,6 +310,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   </data>
   <data name="General_Short" xml:space="preserve">
     <value>Короткая</value>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Unassigned</value>
   </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
     <value>Accounts</value>

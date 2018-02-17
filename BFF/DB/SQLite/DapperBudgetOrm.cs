@@ -39,6 +39,18 @@ namespace BFF.DB.SQLite
         WHERE strftime('%Y', {nameof(Trans.Date)}) < @Year
             OR strftime('%m', {nameof(Trans.Date)}) <= @Month
             AND strftime('%Y', {nameof(Trans.Date)}) = @Year
+        UNION ALL
+        SELECT Total({nameof(Trans.Sum)}) AS Sum FROM {nameof(Trans)}s 
+        WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transaction)}' AND {nameof(Trans.CategoryId)} IS NULL AND (strftime('%Y', {nameof(Trans.Date)}) < @Year
+            OR strftime('%m', {nameof(Trans.Date)}) <= @Month
+            AND strftime('%Y', {nameof(Trans.Date)}) = @Year)
+        UNION ALL
+        SELECT Total({nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)}) AS Sum
+        FROM {nameof(SubTransaction)}s
+        INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}
+        WHERE {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} IS NULL AND (strftime('%Y', {nameof(Trans.Date)}) < @Year
+            OR strftime('%m', {nameof(Trans.Date)}) <= @Month
+            AND strftime('%Y', {nameof(Trans.Date)}) = @Year)
     );";
 
         private static string IncomeForCategoryQuery(int offset) =>
@@ -96,6 +108,17 @@ namespace BFF.DB.SQLite
   GROUP BY Date
   ORDER BY Date;";
 
+        private static readonly string UnassignedTransactionsQuery = $@"
+SELECT Total(Sum) FROM
+(
+    SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transaction)}' AND {nameof(Trans.CategoryId)} IS NULL AND strftime('%Y', {nameof(Trans.Date)}) = @Year AND strftime('%m', {nameof(Trans.Date)}) = @Month
+    UNION ALL
+    SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)}
+    FROM {nameof(SubTransaction)}s
+    INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}
+    WHERE {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} IS NULL AND strftime('%Y', {nameof(Trans.Date)}) = @Year AND strftime('%m', {nameof(Trans.Date)}) = @Month
+)";
+
         private readonly IProvideConnection _provideConnection;
 
         public DapperBudgetOrm(IProvideConnection provideConnection)
@@ -103,13 +126,14 @@ namespace BFF.DB.SQLite
             _provideConnection = provideConnection;
         }
 
-        public (IDictionary<DateTime, IList<(BudgetEntry Entry, long Outflow, long Balance)>> BudgetEntriesPerMonth, long InitialNotBudgetedOrOverbudgeted, IDictionary<DateTime, long> IncomesPerMonth, IDictionary<DateTime, long> DanglingTransfersPerMonth) Find(
+        public BudgetBlock Find(
             DateTime fromMonth, DateTime toMonth, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories)
         {
             IDictionary<DateTime, IList<(BudgetEntry Entry, long Outflow, long Balance)>> budgetEntriesPerMonth;
             long initialNotBudgetedOrOverbudgeted;
             IDictionary<DateTime, long> incomesPerMonth;
             IDictionary<DateTime, long> danglingTransfersPerMonth;
+            IDictionary<DateTime, long> unassignedTransactionsPerMonth;
 
             IList<DateTime> monthRange = new List<DateTime>();
  
@@ -268,7 +292,7 @@ namespace BFF.DB.SQLite
                     .ToDictionary(kvp => kvp.m, kvp => kvp.incomeSum);
 
                 danglingTransfersPerMonth = monthRange
-                    .Select(m => 
+                    .Select(m =>
                         (m, DanglingTransferSum: connection.QueryFirstOrDefault<long?>(DanglingTransferQuery, new
                         {
                             Year = $"{m.Year:0000}",
@@ -276,10 +300,55 @@ namespace BFF.DB.SQLite
                         }) ?? 0L))
                     .ToDictionary(kvp => kvp.m, kvp => kvp.DanglingTransferSum);
 
+                unassignedTransactionsPerMonth = monthRange
+                    .Select(m =>
+                        (m, UnassignedTransactionsSum: connection.QueryFirstOrDefault<long?>(UnassignedTransactionsQuery, new
+                        {
+                            Year = $"{m.Year:0000}",
+                            Month = $"{m.Month:00}"
+                        }) ?? 0L))
+                    .ToDictionary(kvp => kvp.m, kvp => kvp.UnassignedTransactionsSum);
+
                 transactionScope.Complete();
             }
 
-            return (budgetEntriesPerMonth, initialNotBudgetedOrOverbudgeted, incomesPerMonth, danglingTransfersPerMonth);
+            return new BudgetBlock
+            {
+                BudgetEntriesPerMonth = budgetEntriesPerMonth,
+                InitialNotBudgetedOrOverbudgeted = initialNotBudgetedOrOverbudgeted,
+                IncomesPerMonth = incomesPerMonth,
+                DanglingTransfersPerMonth = danglingTransfersPerMonth,
+                UnassignedTransactionsPerMonth = unassignedTransactionsPerMonth
+            };
+        }
+    }
+
+    public class BudgetBlock
+    {
+        public IDictionary<DateTime, IList<(BudgetEntry Entry, long Outflow, long Balance)>> BudgetEntriesPerMonth
+        {
+            get;
+            set;
+        }
+
+        public long InitialNotBudgetedOrOverbudgeted {
+            get;
+            set;
+        }
+
+        public IDictionary<DateTime, long> IncomesPerMonth {
+            get;
+            set;
+        }
+
+        public IDictionary<DateTime, long> DanglingTransfersPerMonth {
+            get;
+            set;
+        }
+
+        public IDictionary<DateTime, long> UnassignedTransactionsPerMonth {
+            get;
+            set;
         }
     }
 }

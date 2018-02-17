@@ -68,7 +68,8 @@ namespace BFF.DB.Dapper
                                                 .All
                                                 .Where(a => a.StartingDate.Year == monthWithBudgetEntries.Key.Year && a.StartingDate.Month == monthWithBudgetEntries.Key.Month)
                                                 .Select(a => a.StartingBalance).Sum(),
-                        danglingTransferForThisMonth: _.DanglingTransfersPerMonth[monthWithBudgetEntries.Key]);
+                        danglingTransferForThisMonth: _.DanglingTransfersPerMonth[monthWithBudgetEntries.Key],
+                        unassignedTransactionSumForThisMonth: _.UnassignedTransactionsPerMonth[monthWithBudgetEntries.Key]);
                 budgetMonths.Add(newBudgetMonth);
                 currentNotBudgetedOrOverbudgeted = newBudgetMonth.AvailableToBudget;
                 currentOverspentInPreviousMonth = monthWithBudgetEntries

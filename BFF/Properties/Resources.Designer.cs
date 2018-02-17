@@ -450,6 +450,24 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unassigned.
+        /// </summary>
+        public static string Budgeting_UnassignedTransactions {
+            get {
+                return ResourceManager.GetString("Budgeting_UnassignedTransactions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The sum of all transactions, which have no category assigned..
+        /// </summary>
+        public static string Budgeting_UnassignedTransactionsExplanation {
+            get {
+                return ResourceManager.GetString("Budgeting_UnassignedTransactionsExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create new Category.
         /// </summary>
         public static string Category_CreateNew {
@@ -617,6 +635,15 @@ namespace BFF.Properties {
         public static string General_Short {
             get {
                 return ResourceManager.GetString("General_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unassigned.
+        /// </summary>
+        public static string General_Unassigned {
+            get {
+                return ResourceManager.GetString("General_Unassigned", resourceCulture);
             }
         }
         

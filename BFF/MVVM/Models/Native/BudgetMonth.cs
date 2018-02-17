@@ -16,6 +16,7 @@ namespace BFF.MVVM.Models.Native
         long OverspentInPreviousMonth { get; }
         long IncomeForThisMonth { get; }
         long DanglingTransferForThisMonth { get; }
+        long UnassignedTransactionSumForThisMonth { get; }
         long BudgetedThisMonth { get; }
         long AvailableToBudget { get; }
         long Outflows { get; }
@@ -30,13 +31,15 @@ namespace BFF.MVVM.Models.Native
             long overspentInPreviousMonth,
             long notBudgetedInPreviousMonth,
             long incomeForThisMonth,
-            long danglingTransferForThisMonth)
+            long danglingTransferForThisMonth, 
+            long unassignedTransactionSumForThisMonth)
         {
             Month = month;
             OverspentInPreviousMonth = overspentInPreviousMonth;
             NotBudgetedInPreviousMonth = notBudgetedInPreviousMonth;
             IncomeForThisMonth = incomeForThisMonth;
             DanglingTransferForThisMonth = danglingTransferForThisMonth;
+            UnassignedTransactionSumForThisMonth = unassignedTransactionSumForThisMonth;
             BudgetEntries = new ObservableCollection<IBudgetEntry>(budgetEntries.OrderBy(be => be.Category, new CategoryComparer()));
 
             BudgetedThisMonth = - BudgetEntries.Sum(be => be.Budget);
@@ -47,7 +50,8 @@ namespace BFF.MVVM.Models.Native
                 OverspentInPreviousMonth +
                 IncomeForThisMonth +
                 BudgetedThisMonth +
-                DanglingTransferForThisMonth;
+                DanglingTransferForThisMonth +
+                UnassignedTransactionSumForThisMonth;
         }
 
         public ObservableCollection<IBudgetEntry> BudgetEntries { get; }
@@ -56,6 +60,7 @@ namespace BFF.MVVM.Models.Native
         public long OverspentInPreviousMonth { get; }
         public long IncomeForThisMonth { get; }
         public long DanglingTransferForThisMonth { get; }
+        public long UnassignedTransactionSumForThisMonth { get; }
         public long BudgetedThisMonth { get; }
         public long AvailableToBudget { get; }
         public long Outflows { get; }

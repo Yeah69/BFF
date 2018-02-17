@@ -23,6 +23,11 @@ namespace BFF.DB.SQLite
         private static readonly string UpdateToSideTransfersOnAccountDeletion =
             $@"UPDATE {nameof(Trans)}s SET {nameof(Trans.CategoryId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.CategoryId)} = @accountId AND {nameof(Trans.PayeeId)} IS NOT NULL;";
 
+        private static readonly string UpdateTransactionsOnCategoryDeletion =
+            $@"
+UPDATE {nameof(Trans)}s SET {nameof(Trans.CategoryId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.Transaction}' AND {nameof(Trans.CategoryId)} = @categoryId;
+UPDATE {nameof(SubTransaction)}s SET {nameof(SubTransaction.CategoryId)} = NULL WHERE {nameof(SubTransaction.CategoryId)} = @categoryId;";
+
         private readonly IProvideConnection _provideConnection;
 
         public DapperCrudOrm(IProvideConnection provideConnection)
@@ -123,6 +128,9 @@ namespace BFF.DB.SQLite
                         connection.Execute(DeleteOneSidedTransfersOnAccountDeletion, new { accountId = account.Id });
                         connection.Execute(UpdateFromSideTransfersOnAccountDeletion, new { accountId = account.Id });
                         connection.Execute(UpdateToSideTransfersOnAccountDeletion, new { accountId = account.Id });
+                        break;
+                    case Category category:
+                        connection.Execute(UpdateTransactionsOnCategoryDeletion, new { categoryId = category.Id });
                         break;
                 }
 

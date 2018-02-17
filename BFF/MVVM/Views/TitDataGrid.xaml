@@ -434,11 +434,32 @@
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                            <ContentControl Content="{Binding Category.Value}">
+                            <ContentControl>
+                                <ContentControl.Style>
+                                    <Style TargetType="ContentControl">
+                                        <Setter Property="Content" Value="{Binding Category.Value}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Content}" Value="{x:Null}">
+                                                <Setter Property="ContentControl.ContentTemplate">
+                                                    <Setter.Value>
+                                                        <DataTemplate>
+                                                            <TextBlock Foreground="{StaticResource TransferBrush}"
+                                                                       Opacity="0.5"
+                                                                       Style="{StaticResource CellTextBlock}"
+                                                                       Text="{lex:LocText General_Unassigned,
+                                                                          Prefix=(,
+                                                                          Suffix=)}" />
+                                                        </DataTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ContentControl.Style>
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type forModels:CategoryViewModel}">
                                         <TextBlock Style="{StaticResource CellTextBlock}"
-                                                   Text="{Binding Name.Value}">
+                                                   Text="{Binding Path=Name.Value}">
                                             <TextBlock.ToolTip>
                                                 <ToolTip>
                                                     <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
