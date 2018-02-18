@@ -157,6 +157,11 @@ namespace BFF.MVVM.Views
         {
             EditCategoriesFlyout.IsOpen = true;
         }
+
+        private void EditPayees_OnClick(object sender, RoutedEventArgs e)
+        {
+            EditPayeesFlyout.IsOpen = true;
+        }
     }
 
     internal class ThemeWrap

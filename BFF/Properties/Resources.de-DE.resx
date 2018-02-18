@@ -272,6 +272,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m�
   <data name="Domain_IncomeCategories" xml:space="preserve">
     <value>Einkommenskategorien</value>
   </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Zahlungsempfänger</value>
+  </data>
   <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
     <value>Der Name einer neuen Kategorie darf nicht leer sein!</value>
   </data>
@@ -379,6 +382,12 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m�
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Öffne einen Finanzplan</value>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Neuen Zahlungsempfänger erstellen</value>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Zahlungsempfänger bearbeiten</value>
   </data>
   <data name="Settings_Accents" xml:space="preserve">
     <value>Akzente</value>

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -40,7 +39,6 @@ namespace BFF.MVVM.ViewModels
 
         public NewPayeeViewModel(
             IHavePayeeViewModel payeeOwner,
-            IPayeeRepository payeeRepository,
             Func<IPayee> payeeFactory,
             IPayeeViewModelService payeeViewModelService)
         {
@@ -70,7 +68,8 @@ namespace BFF.MVVM.ViewModels
                     IPayee newPayee = payeeFactory();
                     newPayee.Name = PayeeText.Value.Trim();
                     newPayee.Insert();
-                    payeeOwner.Payee.Value = _payeeViewModelService.GetViewModel(newPayee);
+                    if(payeeOwner != null)
+                        payeeOwner.Payee.Value = _payeeViewModelService.GetViewModel(newPayee);
                 }).AddTo(_compositeDisposable);
         }
 

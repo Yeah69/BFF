@@ -24,6 +24,7 @@ namespace BFF.MVVM.ViewModels
         IBudgetOverviewViewModel BudgetOverviewViewModel { get; set; }
         IEditAccountsViewModel EditAccountsViewModel { get; }
         IEditCategoriesViewModel EditCategoriesViewModel { get; }
+        IEditPayeesViewModel EditPayeesViewModel { get; }
         IEmptyViewModel EmptyViewModel { get; }
         bool IsEmpty { get; }
         CultureInfo LanguageCulture { get; set; }
@@ -108,6 +109,17 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
+        public IEditPayeesViewModel EditPayeesViewModel
+        {
+            get => _editPayeesViewModel;
+            private set
+            {
+                if (value == _editPayeesViewModel) return;
+                _editPayeesViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
         public IEmptyViewModel EmptyViewModel { get; set; }
         public bool IsEmpty => AccountTabsViewModel is null || BudgetOverviewViewModel is null;
 
@@ -178,6 +190,7 @@ namespace BFF.MVVM.ViewModels
         private Owned<Func<string, ISqLiteBackendContext>> _contextOwner;
         private IEditAccountsViewModel _editAccountsViewModel;
         private IEditCategoriesViewModel _editCategoriesViewModel;
+        private IEditPayeesViewModel _editPayeesViewModel;
 
         public bool ParentTitFlyoutOpen
         {
@@ -270,6 +283,7 @@ namespace BFF.MVVM.ViewModels
                 BudgetOverviewViewModel = context.BudgetOverviewViewModel;
                 EditAccountsViewModel = context.EditAccountsViewModel;
                 EditCategoriesViewModel = context.EditCategoriesViewModel;
+                EditPayeesViewModel = context.EditPayeesViewModel;
                 Title = $"{new FileInfo(dbPath).FullName} - BFF";
                 Settings.Default.DBLocation = dbPath;
                 Settings.Default.Save();
@@ -280,6 +294,7 @@ namespace BFF.MVVM.ViewModels
                 BudgetOverviewViewModel = null;
                 EditAccountsViewModel = null;
                 EditCategoriesViewModel = null;
+                EditPayeesViewModel = null;
                 Title = "BFF";
                 Settings.Default.DBLocation = "";
                 Settings.Default.Save();

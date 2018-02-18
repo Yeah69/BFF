@@ -10,6 +10,7 @@
              d:DataContext="{d:DesignInstance viewModels:NewCategoryViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
+             Loaded="OnLoaded"
              mc:Ignorable="d">
     <StackPanel>
         <Grid>
@@ -69,8 +70,7 @@
                                     Grid.Column="1"
                                     Value="{Binding MonthOffset.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <controls:NumericUpDown.Style>
-                    <Style BasedOn="{StaticResource {x:Type controls:NumericUpDown}}"
-                           TargetType="{x:Type controls:NumericUpDown}">
+                    <Style TargetType="{x:Type controls:NumericUpDown}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsIncomeRelevant.Value, UpdateSourceTrigger=PropertyChanged}"
                                          Value="False">
@@ -150,3 +150,10 @@
         </Grid>
     </StackPanel>
 </UserControl>
+
+
+
+
+
+
+

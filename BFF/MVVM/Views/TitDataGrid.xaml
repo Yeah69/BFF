@@ -1,7 +1,6 @@
 ﻿<UserControl x:Class="BFF.MVVM.Views.TitDataGrid"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -327,8 +326,38 @@
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
-                            <TextBlock Style="{StaticResource CellTextBlock}"
-                                       Text="{Binding Payee.Value.Name.Value}" />
+                            <ContentControl Content="{Binding Payee.Value}">
+                                <ContentControl.Style>
+                                    <Style BasedOn="{StaticResource CellContent}"
+                                           TargetType="ContentControl">
+                                        <Setter Property="ContentTemplate">
+                                            <Setter.Value>
+                                                <DataTemplate>
+                                                    <TextBlock Style="{StaticResource CellTextBlock}"
+                                                               Text="{Binding Name.Value}" />
+                                                </DataTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Content}"
+                                                         Value="{x:Null}">
+                                                <Setter Property="ContentControl.ContentTemplate">
+                                                    <Setter.Value>
+                                                        <DataTemplate>
+                                                            <TextBlock Foreground="{StaticResource TransferBrush}"
+                                                                       Opacity="0.75"
+                                                                       Style="{StaticResource CellTextBlock}"
+                                                                       Text="{lex:LocText General_Unassigned,
+                                                                                          Prefix=(,
+                                                                                          Suffix=)}" />
+                                                        </DataTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ContentControl.Style>
+                            </ContentControl>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                             <StackPanel Orientation="Horizontal">
@@ -350,7 +379,7 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
                             <DockPanel LastChildFill="True">
-                                <Button Click="PayeeOpenPopup_OnClick"
+                                <Button Click="OpenPopup_OnClick"
                                         DockPanel.Dock="Right"
                                         TabIndex="1"
                                         ToolTip="{lex:Loc CreateNewPayee}">
@@ -360,33 +389,14 @@
                                 </Button>
                                 <Popup x:Name="Popup"
                                        Closed="Popup_OnClosed"
-                                       Opened="Popup_OnOpened"
                                        Placement="Right"
                                        PlacementTarget="{Binding ElementName=EditPayeeComboBox}"
                                        PopupAnimation="Slide"
                                        PreviewKeyDown="Popup_OnPreviewKeyDown"
                                        StaysOpen="False">
-                                    <StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="5,0,5,0"
-                                                       VerticalAlignment="Center"
-                                                       Text="{lex:LocText NameOfNewPayee,
-                                                                          Suffix=:}" />
-                                            <TextBox x:Name="FocusMe"
-                                                     MinWidth="50"
-                                                     BorderBrush="{StaticResource AccentColorBrush}"
-                                                     Focusable="True"
-                                                     Text="{Binding NewPayeeViewModel.PayeeText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        </StackPanel>
-                                        <Button HorizontalAlignment="Right"
-                                                Click="PayeeClosePopup_OnClick"
-                                                Command="{Binding NewPayeeViewModel.AddPayeeCommand}"
-                                                ToolTip="{lex:Loc CreateNewPayee}">
-                                            <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
-                                                                        Kind="{StaticResource AddIcon}"
-                                                                        Style="{StaticResource CellIconMaterial}" />
-                                        </Button>
-                                    </StackPanel>
+                                    <views:NewPayeeView DataContext="{Binding NewPayeeViewModel}"
+                                                        OnAddClicked="ClosePopup_OnClick"
+                                                        Tag="{Binding ElementName=Popup}" />
                                 </Popup>
                                 <ComboBox x:Name="EditPayeeComboBox"
                                           HorizontalAlignment="Stretch"
@@ -437,18 +447,20 @@
                             <ContentControl>
                                 <ContentControl.Style>
                                     <Style TargetType="ContentControl">
-                                        <Setter Property="Content" Value="{Binding Category.Value}" />
+                                        <Setter Property="Content"
+                                                Value="{Binding Category.Value}" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Content}" Value="{x:Null}">
+                                            <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Content}"
+                                                         Value="{x:Null}">
                                                 <Setter Property="ContentControl.ContentTemplate">
                                                     <Setter.Value>
                                                         <DataTemplate>
                                                             <TextBlock Foreground="{StaticResource TransferBrush}"
-                                                                       Opacity="0.5"
+                                                                       Opacity="0.75"
                                                                        Style="{StaticResource CellTextBlock}"
                                                                        Text="{lex:LocText General_Unassigned,
-                                                                          Prefix=(,
-                                                                          Suffix=)}" />
+                                                                                          Prefix=(,
+                                                                                          Suffix=)}" />
                                                         </DataTemplate>
                                                     </Setter.Value>
                                                 </Setter>
@@ -493,7 +505,7 @@
                                             </TextBlock>
                                             <iconPacks:PackIconMaterial Foreground="{StaticResource IncomeBrush}"
                                                                         Kind="{StaticResource IncomeIcon}"
-                                                                        Opacity="0.5"
+                                                                        Opacity="0.75"
                                                                         Style="{StaticResource CellIconMaterial}" />
                                         </StackPanel>
                                     </DataTemplate>
@@ -534,7 +546,7 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                             <DockPanel LastChildFill="True">
-                                <Button Click="CategoryOpenPopup_OnClick"
+                                <Button Click="OpenPopup_OnClick"
                                         DockPanel.Dock="Right"
                                         TabIndex="1"
                                         ToolTip="{lex:Loc CreateNewCategory}">
@@ -544,7 +556,6 @@
                                 </Button>
                                 <Popup x:Name="Popup"
                                        Closed="Popup_OnClosed"
-                                       Opened="Popup_OnOpened"
                                        Placement="Right"
                                        PlacementTarget="{Binding ElementName=EditCategoryComboBox}"
                                        PopupAnimation="Slide"
@@ -555,7 +566,7 @@
                                             BorderBrush="{StaticResource AccentColorBrush}"
                                             BorderThickness="1">
                                         <views:NewCategoryView DataContext="{Binding NewCategoryViewModel}"
-                                                               OnAddClicked="CategoryClosePopup_OnClick"
+                                                               OnAddClicked="ClosePopup_OnClick"
                                                                Tag="{Binding ElementName=Popup}" />
                                     </Border>
                                 </Popup>

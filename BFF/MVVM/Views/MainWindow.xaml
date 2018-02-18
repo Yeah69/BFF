@@ -259,6 +259,14 @@
                     <views:EditCategoriesView DataContext="{Binding EditCategoriesViewModel}" />
                 </ContentControl>
             </controls:Flyout>
+            <controls:Flyout x:Name="EditPayeesFlyout"
+                             IsModal="True"
+                             Position="Right">
+                <ContentControl Margin="10"
+                                Visibility="{Binding EditPayeesViewModel, Converter={x:Static mvvm:Converters.NullToCollapsed}}">
+                    <views:EditPayeesView DataContext="{Binding EditPayeesViewModel}" />
+                </ContentControl>
+            </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
 
@@ -278,6 +286,9 @@
             <Button Click="EditCategories_OnClick"
                     Content="{lex:Loc Domain_Categories}"
                     Visibility="{Binding EditCategoriesViewModel, Converter={x:Static mvvm:Converters.NullToCollapsed}}" />
+            <Button Click="EditPayees_OnClick"
+                    Content="{lex:Loc Domain_Payees}"
+                    Visibility="{Binding EditPayeesViewModel, Converter={x:Static mvvm:Converters.NullToCollapsed}}" />
             <Button Click="SettingsButt_Click">
                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"

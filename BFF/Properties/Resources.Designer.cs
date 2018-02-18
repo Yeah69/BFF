@@ -522,6 +522,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payees.
+        /// </summary>
+        public static string Domain_Payees {
+            get {
+                return ResourceManager.GetString("Domain_Payees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The name of the new category is not allowed to be empty!.
         /// </summary>
         public static string ErrorMessageCategoryNameEmpty {
@@ -842,6 +851,24 @@ namespace BFF.Properties {
         public static string OpenSaveDialog_TitleOpen {
             get {
                 return ResourceManager.GetString("OpenSaveDialog_TitleOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new Payee.
+        /// </summary>
+        public static string Payee_CreateNew {
+            get {
+                return ResourceManager.GetString("Payee_CreateNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Payees.
+        /// </summary>
+        public static string Payee_Edit {
+            get {
+                return ResourceManager.GetString("Payee_Edit", resourceCulture);
             }
         }
         

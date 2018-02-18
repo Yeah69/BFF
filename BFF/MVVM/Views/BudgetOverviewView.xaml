@@ -141,7 +141,9 @@
                                         <RowDefinition />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <ContentControl Grid.Row="0" Grid.Column="0" Foreground="{DynamicResource BlackBrush}">
+                                    <ContentControl Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Foreground="{DynamicResource BlackBrush}">
                                         <ContentControl.Style>
                                             <Style TargetType="{x:Type ContentControl}">
                                                 <Style.Triggers>
@@ -168,35 +170,62 @@
                                             </Style>
                                         </ContentControl.Style>
                                     </ContentControl>
-                                    <TextBlock Grid.Row="0" Grid.Column="1" Foreground="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="1"
+                                               Foreground="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{lex:Loc Budgeting_Overspend}" TextTrimming="CharacterEllipsis"
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="0"
+                                               Text="{lex:Loc Budgeting_Overspend}"
+                                               TextTrimming="CharacterEllipsis"
                                                ToolTip="{lex:Loc Budgeting_OverspendExplanation}" />
-                                    <TextBlock Grid.Row="1" Grid.Column="1" Foreground="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="1"
+                                               Foreground="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
-                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{lex:Loc Budgeting_Income}" TextTrimming="CharacterEllipsis"
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="0"
+                                               Text="{lex:Loc Budgeting_Income}"
+                                               TextTrimming="CharacterEllipsis"
                                                ToolTip="{lex:Loc Budgeting_IncomeExplanation}" />
-                                    <TextBlock Grid.Row="2" Grid.Column="1" Foreground="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="1"
+                                               Foreground="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
-                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="{lex:Loc Budgeting_Budgeted}" TextTrimming="CharacterEllipsis"
+                                    <TextBlock Grid.Row="3"
+                                               Grid.Column="0"
+                                               Text="{lex:Loc Budgeting_Budgeted}"
+                                               TextTrimming="CharacterEllipsis"
                                                ToolTip="{lex:Loc Budgeting_BudgetedExplanation}" />
-                                    <TextBlock Grid.Row="3" Grid.Column="1" Foreground="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                    <TextBlock Grid.Row="3"
+                                               Grid.Column="1"
+                                               Foreground="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
-                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="{lex:Loc Budgeting_UnassignedTransactions}"
-                                               ToolTip="{lex:Loc Budgeting_UnassignedTransactionsExplanation}" TextTrimming="CharacterEllipsis"
+                                    <TextBlock Grid.Row="4"
+                                               Grid.Column="0"
+                                               Text="{lex:Loc Budgeting_UnassignedTransactions}"
+                                               TextTrimming="CharacterEllipsis"
+                                               ToolTip="{lex:Loc Budgeting_UnassignedTransactionsExplanation}"
                                                Visibility="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}" />
-                                    <TextBlock Grid.Row="4" Grid.Column="1" Foreground="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                    <TextBlock Grid.Row="4"
+                                               Grid.Column="1"
+                                               Foreground="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right"
                                                Visibility="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}" />
-                                    <TextBlock Grid.Row="5" Grid.Column="0" Text="{lex:Loc Budgeting_OneSidedTransfers}"
-                                               ToolTip="{lex:Loc Budgeting_OneSidedTransfersExplanation}" TextTrimming="CharacterEllipsis"
+                                    <TextBlock Grid.Row="5"
+                                               Grid.Column="0"
+                                               Text="{lex:Loc Budgeting_OneSidedTransfers}"
+                                               TextTrimming="CharacterEllipsis"
+                                               ToolTip="{lex:Loc Budgeting_OneSidedTransfersExplanation}"
                                                Visibility="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}" />
-                                    <TextBlock Grid.Row="5" Grid.Column="1" Foreground="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                    <TextBlock Grid.Row="5"
+                                               Grid.Column="1"
+                                               Foreground="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right"
                                                Visibility="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}" />

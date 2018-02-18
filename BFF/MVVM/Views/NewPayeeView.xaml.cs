@@ -4,11 +4,11 @@ using System.Windows.Input;
 
 namespace BFF.MVVM.Views
 {
-    public partial class NewCategoryView
+    public partial class NewPayeeView
     {
         public event EventHandler OnAddClicked;
 
-        public NewCategoryView()
+        public NewPayeeView()
         {
             InitializeComponent();
         }

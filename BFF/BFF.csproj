@@ -329,6 +329,7 @@
     </Compile>
     <Compile Include="MVVM\ViewModels\BudgetMonthViewModel.cs" />
     <Compile Include="MVVM\ViewModels\BudgetOverviewViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\EditPayeesViewModel.cs" />
     <Compile Include="MVVM\ViewModels\EditCategoriesViewModel.cs" />
     <Compile Include="MVVM\ViewModels\EditAccountsViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\CategoryBaseViewModel.cs" />
@@ -381,6 +382,9 @@
     <Compile Include="MVVM\Views\EditCategoriesView.xaml.cs">
       <DependentUpon>EditCategoriesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MVVM\Views\EditPayeesView.xaml.cs">
+      <DependentUpon>EditPayeesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\Views\ImportDialog.xaml.cs">
       <DependentUpon>ImportDialog.xaml</DependentUpon>
     </Compile>
@@ -394,11 +398,18 @@
     <Compile Include="MVVM\Views\NewCategoryView.xaml.cs">
       <DependentUpon>NewCategoryView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MVVM\Views\NewPayeeView.xaml.cs">
+      <DependentUpon>NewPayeeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\Views\TitDataGrid.xaml.cs">
       <DependentUpon>TitDataGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="SqLiteBackendContext.cs" />
     <Page Include="MVVM\Views\EditCategoriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\Views\EditPayeesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -451,6 +462,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MVVM\Views\NewCategoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\Views\NewPayeeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

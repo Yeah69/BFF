@@ -195,43 +195,6 @@ namespace BFF.MVVM.Views
             }
         }
 
-        private void CategoryOpenPopup_OnClick(object sender, RoutedEventArgs e)
-        {
-            SetIsOpenTrueOfPopup(sender);
-        }
-
-        private void PayeeOpenPopup_OnClick(object sender, RoutedEventArgs e)
-        {
-            SetIsOpenTrueOfPopup(sender);
-        }
-
-        private void CategoryClosePopup_OnClick(object sender, EventArgs e)
-        {
-            if (sender is NewCategoryView newCategoryView)
-            {
-                if (newCategoryView.Tag is Popup popup)
-                    popup.IsOpen = false;
-            }
-        }
-
-        private void PayeeClosePopup_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (sender is FrameworkElement element)
-            {
-                if (element.FindName("Popup") is Popup popup)
-                    popup.IsOpen = false;
-            }
-        }
-
-        private void SetIsOpenTrueOfPopup(object sender)
-        {
-            if (sender is FrameworkElement element)
-            {
-                if (element.FindName("Popup") is Popup popup)
-                    popup.IsOpen = true;
-            }
-        }
-
         private void TransGrid_OnInitialized(object sender, EventArgs e)
         {
             if (VisualTreeHelper.GetChildrenCount(TransGrid) > 0)
@@ -244,15 +207,19 @@ namespace BFF.MVVM.Views
 
         private IInputElement _focusedBeforeOpen;
 
-        private void Popup_OnOpened(object sender, EventArgs e)
+        private void OpenPopup_OnClick(object sender, RoutedEventArgs e)
         {
-            if (sender is Popup popup)
+            if (sender is FrameworkElement element && element.FindName("Popup") is Popup popup)
             {
-                _focusedBeforeOpen = Keyboard.FocusedElement;
-                var focusMe = popup.FindName("FocusMe") as IInputElement;
-                focusMe?.Focus();
-                if(focusMe != null) Keyboard.Focus(focusMe);
+                _focusedBeforeOpen = element;
+                popup.IsOpen = true;
             }
+        }
+
+        private void ClosePopup_OnClick(object sender, EventArgs e)
+        {
+            if (sender is UserControl control && control.Tag is Popup popup)
+                popup.IsOpen = false;
         }
 
         private void Popup_OnPreviewKeyDown(object sender, KeyEventArgs e)

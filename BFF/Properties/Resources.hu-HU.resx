@@ -272,6 +272,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Domain_IncomeCategories" xml:space="preserve">
     <value>Income Categories</value>
   </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Payees</value>
+  </data>
   <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
     <value>The name of the new category is not allowed to be empty!</value>
   </data>
@@ -379,6 +382,12 @@ Are you really sure? (A backup will be created automatically, if you would like 
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Pénzügyi terv megnyitása</value>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Create new Payee</value>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Edit Payees</value>
   </data>
   <data name="Settings_Accents" xml:space="preserve">
     <value>Szín</value>
