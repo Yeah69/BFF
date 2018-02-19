@@ -11,23 +11,17 @@ namespace BFF.DB.SQLite
 {
     class DapperCrudOrm : ICrudOrm
     {
-        private static readonly string DeleteTransactionsOnAccountDeletion = $@"
-DELETE FROM {nameof(Trans)}s WHERE {nameof(Trans.AccountId)} = @accountId AND ({nameof(Trans.Type)} = '{TransType.Transaction}' OR {nameof(Trans.Type)} = '{TransType.ParentTransaction}');";
-
-        private static readonly string DeleteOneSidedTransfersOnAccountDeletion = $@"
-DELETE FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND ({nameof(Trans.PayeeId)} IS NULL AND {nameof(Trans.CategoryId)} = @accountId OR {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.CategoryId)} IS NULL);";
-
-        private static readonly string UpdateFromSideTransfersOnAccountDeletion = $@"
-UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.CategoryId)} IS NOT NULL;";
-
-        private static readonly string UpdateToSideTransfersOnAccountDeletion = $@"
+        private static readonly string OnAccountDeletion = $@"
+DELETE FROM {nameof(Trans)}s WHERE {nameof(Trans.AccountId)} = @accountId AND ({nameof(Trans.Type)} = '{TransType.Transaction}' OR {nameof(Trans.Type)} = '{TransType.ParentTransaction}');
+DELETE FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND ({nameof(Trans.PayeeId)} IS NULL AND {nameof(Trans.CategoryId)} = @accountId OR {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.CategoryId)} IS NULL);
+UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.CategoryId)} IS NOT NULL;
 UPDATE {nameof(Trans)}s SET {nameof(Trans.CategoryId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.CategoryId)} = @accountId AND {nameof(Trans.PayeeId)} IS NOT NULL;";
-
-        private static readonly string UpdateTransactionsOnCategoryDeletion = $@"
+        
+        private static readonly string OnCategoryDeletion = $@"
 UPDATE {nameof(Trans)}s SET {nameof(Trans.CategoryId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.Transaction}' AND {nameof(Trans.CategoryId)} = @categoryId;
 UPDATE {nameof(SubTransaction)}s SET {nameof(SubTransaction.CategoryId)} = NULL WHERE {nameof(SubTransaction.CategoryId)} = @categoryId;";
 
-        private static readonly string UpdateTransactionsOnPayeeDeletion = $@"
+        private static readonly string OnPayeeDeletion = $@"
 UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.Transaction}' AND {nameof(Trans.PayeeId)} = @payeeId;
 UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.ParentTransaction}' AND {nameof(Trans.PayeeId)} = @payeeId;";
 
@@ -127,18 +121,15 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
                 {
                     case Account account:
                         _provideConnection.Backup($"BeforeDeletionOfAccount{account.Name}");
-                        connection.Execute(DeleteTransactionsOnAccountDeletion, new { accountId = account.Id });
-                        connection.Execute(DeleteOneSidedTransfersOnAccountDeletion, new { accountId = account.Id });
-                        connection.Execute(UpdateFromSideTransfersOnAccountDeletion, new { accountId = account.Id });
-                        connection.Execute(UpdateToSideTransfersOnAccountDeletion, new { accountId = account.Id });
+                        connection.Execute(OnAccountDeletion, new { accountId = account.Id });
                         break;
                     case Category category:
                         _provideConnection.Backup($"BeforeDeletionOfCategory{category.Name}");
-                        connection.Execute(UpdateTransactionsOnCategoryDeletion, new { categoryId = category.Id });
+                        connection.Execute(OnCategoryDeletion, new { categoryId = category.Id });
                         break;
                     case Payee payee:
                         _provideConnection.Backup($"BeforeDeletionOfPayee{payee.Name}");
-                        connection.Execute(UpdateTransactionsOnPayeeDeletion, new { payeeId = payee.Id });
+                        connection.Execute(OnPayeeDeletion, new { payeeId = payee.Id });
                         break;
                 }
 
