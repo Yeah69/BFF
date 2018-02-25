@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="BFF.MVVM.Views.ColorPickerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="UserControl"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <Border Padding="5"
+            DataContext="{Binding ElementName=UserControl}">
+        <StackPanel Orientation="Horizontal">
+            <Canvas x:Name="Swatch"
+                    Width="360"
+                    Height="360" />
+
+            <Canvas x:Name="HueScale"
+                    Width="20"
+                    Height="360"
+                    Margin="5,0,0,0">
+                <Rectangle x:Name="HuePointerOuter"
+                           Canvas.Left="1"
+                           Width="18"
+                           Height="12"
+                           Panel.ZIndex="-2"
+                           Fill="Transparent"
+                           Stroke="{StaticResource WhiteBrush}"
+                           StrokeThickness="2" />
+                <Rectangle x:Name="HuePointerInner"
+                           Canvas.Left="3"
+                           Width="14"
+                           Height="8"
+                           Panel.ZIndex="-1"
+                           Fill="Transparent"
+                           Stroke="{StaticResource AccentColorBrush}"
+                           StrokeThickness="2" />
+            </Canvas>
+        </StackPanel>
+    </Border>
+</UserControl>

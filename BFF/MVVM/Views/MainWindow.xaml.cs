@@ -162,6 +162,11 @@ namespace BFF.MVVM.Views
         {
             EditPayeesFlyout.IsOpen = true;
         }
+
+        private void EditFlags_OnClick(object sender, RoutedEventArgs e)
+        {
+            EditFlagsFlyout.IsOpen = true;
+        }
     }
 
     internal class ThemeWrap

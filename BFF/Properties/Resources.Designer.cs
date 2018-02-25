@@ -513,6 +513,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Flags.
+        /// </summary>
+        public static string Domain_Flags {
+            get {
+                return ResourceManager.GetString("Domain_Flags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Income Categories.
         /// </summary>
         public static string Domain_IncomeCategories {
@@ -599,6 +608,15 @@ namespace BFF.Properties {
         public static string Exception_FileNotFound {
             get {
                 return ResourceManager.GetString("Exception_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Flags.
+        /// </summary>
+        public static string Flag_Edit {
+            get {
+                return ResourceManager.GetString("Flag_Edit", resourceCulture);
             }
         }
         

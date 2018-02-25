@@ -281,6 +281,7 @@
     <Compile Include="DB\SQLite\DapperTransOrm.cs" />
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
     <Compile Include="DB\SQLite\DapperCrudOrm.cs" />
+    <Compile Include="Helper\Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Helper\Extensions\LongExtensions.cs" />
     <Compile Include="Helper\Extensions\StringExtensions.cs" />
     <Compile Include="Helper\Extensions\VisualExtensions.cs" />
@@ -329,6 +330,7 @@
     </Compile>
     <Compile Include="MVVM\ViewModels\BudgetMonthViewModel.cs" />
     <Compile Include="MVVM\ViewModels\BudgetOverviewViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\EditFlagsViewModel.cs" />
     <Compile Include="MVVM\ViewModels\EditPayeesViewModel.cs" />
     <Compile Include="MVVM\ViewModels\EditCategoriesViewModel.cs" />
     <Compile Include="MVVM\ViewModels\EditAccountsViewModel.cs" />
@@ -376,11 +378,17 @@
     <Compile Include="MVVM\Views\BudgetOverviewView.xaml.cs">
       <DependentUpon>BudgetOverviewView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MVVM\Views\ColorPickerView.xaml.cs">
+      <DependentUpon>ColorPickerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\Views\EditAccountsView.xaml.cs">
       <DependentUpon>EditAccountsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\EditCategoriesView.xaml.cs">
       <DependentUpon>EditCategoriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\EditFlagsView.xaml.cs">
+      <DependentUpon>EditFlagsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\EditPayeesView.xaml.cs">
       <DependentUpon>EditPayeesView.xaml</DependentUpon>
@@ -405,7 +413,15 @@
       <DependentUpon>TitDataGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="SqLiteBackendContext.cs" />
+    <Page Include="MVVM\Views\ColorPickerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MVVM\Views\EditCategoriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\Views\EditFlagsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

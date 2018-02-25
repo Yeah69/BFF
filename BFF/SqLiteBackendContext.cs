@@ -35,7 +35,7 @@ namespace BFF
             Lazy<IAccountTabsViewModel> lazyAccountTabsViewModel,
             Lazy<IEditAccountsViewModel> lazyEditAccountsViewModel,
             Lazy<IEditCategoriesViewModel> lazyEditCategoriesViewModel,
-            Lazy<IEditPayeesViewModel> lazyEditPayeesViewModel)
+            Lazy<IEditPayeesViewModel> lazyEditPayeesViewModel, Lazy<IEditFlagsViewModel> lazyEditFlagsViewModel)
         {
             provideSqLiteConnectionFactory(dbPath);
             accountRepository();
@@ -56,6 +56,7 @@ namespace BFF
             EditAccountsViewModel = lazyEditAccountsViewModel.Value;
             EditCategoriesViewModel = lazyEditCategoriesViewModel.Value;
             EditPayeesViewModel = lazyEditPayeesViewModel.Value;
+            EditFlagsViewModel = lazyEditFlagsViewModel.Value;
         }
 
         public override IBudgetOverviewViewModel BudgetOverviewViewModel { get; } 
@@ -63,5 +64,6 @@ namespace BFF
         public override IEditAccountsViewModel EditAccountsViewModel { get; }
         public override IEditCategoriesViewModel EditCategoriesViewModel { get; }
         public override IEditPayeesViewModel EditPayeesViewModel { get; }
+        public override IEditFlagsViewModel EditFlagsViewModel { get; }
     }
 }

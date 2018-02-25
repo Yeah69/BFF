@@ -218,26 +218,19 @@
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
-                            <ContentControl Content="{Binding}">
+                            <ContentControl Content="{Binding Flag.Value}" ContentTemplate="{StaticResource FlagTemplate}">
                                 <ContentControl.Style>
                                     <Style BasedOn="{StaticResource {x:Type ContentControl}}"
                                            TargetType="{x:Type ContentControl}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Flag.Value}"
+                                            <Trigger Property="Content"
                                                          Value="{x:Null}">
                                                 <Setter Property="Visibility"
                                                         Value="Collapsed" />
-                                            </DataTrigger>
+                                            </Trigger>
                                         </Style.Triggers>
                                     </Style>
                                 </ContentControl.Style>
-                                <ContentControl.ContentTemplate>
-                                    <DataTemplate>
-                                        <iconPacks:PackIconMaterial Foreground="{Binding Flag.Value.Color.Value}"
-                                                                    Kind="{StaticResource FlagIcon}"
-                                                                    Style="{StaticResource CellIconMaterial}" />
-                                    </DataTemplate>
-                                </ContentControl.ContentTemplate>
                             </ContentControl>
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />

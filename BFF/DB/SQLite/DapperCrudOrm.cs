@@ -131,6 +131,9 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
                         _provideConnection.Backup($"BeforeDeletionOfPayee{payee.Name}");
                         connection.Execute(OnPayeeDeletion, new { payeeId = payee.Id });
                         break;
+                    case Flag flag:
+                        _provideConnection.Backup($"BeforeDeletionOfFlag{flag.Name}");
+                        break;
                 }
 
                 connection.Delete(model);
@@ -140,15 +143,9 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
 
         public void Delete<T>(IEnumerable<T> models) where T : class, IPersistenceModel
         {
-            using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            foreach (var model in models)
             {
-                connection.Open();
-                foreach (var model in models)
-                {
-                    this.Delete(model);
-                }
-                transactionScope.Complete();
+                this.Delete(model);
             }
         }
     }

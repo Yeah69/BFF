@@ -1,11 +1,9 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using BFF.DB;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
-using BFF.Properties;
 using MuVaViMo;
 
 namespace BFF.MVVM.ViewModels

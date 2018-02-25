@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
@@ -69,6 +71,12 @@ namespace BFF
             var mySettings = new MetroDialogSettings { AffirmativeButtonText = "Okay" };
             (MainWindow as MetroWindow).ShowMessageAsync("An unhandled error occurred!", $"Error message:\r\n{e.Exception.Message}", MessageDialogStyle.Affirmative, mySettings);
             e.Handled = true;
+        }
+
+        private void Flag_OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.FindName("Popup") is Popup popup)
+                popup.IsOpen = true;
         }
     }
 }

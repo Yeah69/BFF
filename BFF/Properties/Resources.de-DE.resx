@@ -269,6 +269,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="Domain_Categories" xml:space="preserve">
     <value>Kategorien</value>
   </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Markierungen</value>
+  </data>
   <data name="Domain_IncomeCategories" xml:space="preserve">
     <value>Einkommenskategorien</value>
   </data>
@@ -298,6 +301,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
     <value>Die Datei "{0}" konnte nicht gefunden werden.</value>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Markierungen bearbeiten</value>
   </data>
   <data name="General_Long" xml:space="preserve">
     <value>Lang</value>

@@ -269,6 +269,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Domain_Categories" xml:space="preserve">
     <value>Categories</value>
   </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Flags</value>
+  </data>
   <data name="Domain_IncomeCategories" xml:space="preserve">
     <value>Income Categories</value>
   </data>
@@ -298,6 +301,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
     <value>The file "{0}" could not be found.</value>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Edit Flags</value>
   </data>
   <data name="General_Long" xml:space="preserve">
     <value>Long</value>

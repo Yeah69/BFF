@@ -14,6 +14,8 @@ namespace BFF
         IEditCategoriesViewModel EditCategoriesViewModel { get; }
 
         IEditPayeesViewModel EditPayeesViewModel { get; }
+
+        IEditFlagsViewModel EditFlagsViewModel { get; }
     }
 
     public abstract class BackendContext : ObservableObject, IBackendContext
@@ -26,5 +28,6 @@ namespace BFF
 
         public abstract IEditCategoriesViewModel EditCategoriesViewModel { get; }
         public abstract IEditPayeesViewModel EditPayeesViewModel { get; }
+        public abstract IEditFlagsViewModel EditFlagsViewModel { get; }
     }
 }
