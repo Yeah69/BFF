@@ -272,5 +272,8 @@ namespace BFF.MVVM
 
         public static readonly IValueConverter ZeroLongToHidden =
             ValueConverter.Create<long, Visibility>(e => e.Value == 0 ? Visibility.Hidden : Visibility.Visible);
+
+        public static readonly IValueConverter ColorToSolidColorBrush =
+            ValueConverter.Create<Color, SolidColorBrush>(e => new SolidColorBrush(e.Value));
     }
 }

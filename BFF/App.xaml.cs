@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -73,10 +74,12 @@ namespace BFF
             e.Handled = true;
         }
 
-        private void Flag_OnMouseUp(object sender, MouseButtonEventArgs e)
+        private void Flag_OnMouseUp(object sender, EventArgs e)
         {
             if (sender is FrameworkElement element && element.FindName("Popup") is Popup popup)
+            {
                 popup.IsOpen = true;
+            }
         }
     }
 }
