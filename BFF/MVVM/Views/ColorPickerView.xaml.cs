@@ -75,7 +75,7 @@ namespace BFF.MVVM.Views
                 var colorPickerView = o as ColorPickerView;
                 if (colorPickerView != null)
                 {
-                    colorPickerView.Color = colorPickerView.Brush.Color;
+                    colorPickerView.Color = colorPickerView.Brush?.Color ?? Colors.Transparent;
                     colorPickerView.UpdateColorProperties();
                     colorPickerView.ResetHuePointer();
                     colorPickerView.RedrawSwatch();
