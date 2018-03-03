@@ -464,5 +464,15 @@ namespace BFF.MVVM.Views
                 .TakeUntil(Observable.FromEventPattern<MouseButtonEventArgs>(Application.Current.MainWindow, "MouseUp"))
                 .Sample(TimeSpan.FromMilliseconds(20))
                 .ObserveOn(new DispatcherScheduler(Application.Current.Dispatcher));
+
+        private void Preview_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void Preview_OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Brush = new SolidColorBrush(Color);
+        }
     }
 }

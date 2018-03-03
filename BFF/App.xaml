@@ -236,7 +236,7 @@
                 <Grid d:DataContext="{d:DesignInstance forModels:IFlagViewModel}">
                     <Popup x:Name="Popup"
                            StaysOpen="False">
-                        <views:ColorPickerView Brush="{Binding Color.Value}" />
+                        <views:ColorPickerView Brush="{Binding Color.Value, Mode=TwoWay}" />
                     </Popup>
                     
                     <Button Click="Flag_OnMouseUp">

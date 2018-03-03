@@ -69,7 +69,9 @@
                 <Border BorderBrush="{DynamicResource BlackBrush}"
                         BorderThickness="1">
                     <Canvas Width="20"
-                            Height="20">
+                            Height="20"
+                            PreviewMouseDown="Preview_OnPreviewMouseDown"
+                            PreviewMouseUp="Preview_OnPreviewMouseUp">
                         <Canvas.Background>
                             <DrawingBrush TileMode="Tile"
                                           Viewport="0,0,20,20"
