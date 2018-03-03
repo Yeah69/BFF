@@ -8,8 +8,7 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
-    <Border Padding="5"
-            DataContext="{Binding ElementName=UserControl}">
+    <Border DataContext="{Binding ElementName=UserControl}">
         <StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Border BorderBrush="{DynamicResource BlackBrush}"
@@ -20,8 +19,7 @@
                             PreviewMouseDown="Swatch_OnPreviewMouseDown" />
                 </Border>
 
-                <Border Margin="5,0,0,0"
-                        BorderBrush="{DynamicResource BlackBrush}"
+                <Border BorderBrush="{DynamicResource BlackBrush}"
                         BorderThickness="1">
                     <Canvas x:Name="HueScale"
                             Width="20"
@@ -47,8 +45,7 @@
                 </Border>
             </StackPanel>
 
-            <StackPanel Margin="0,5,0,0"
-                        Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal">
 
                 <Border BorderBrush="{DynamicResource BlackBrush}"
                         BorderThickness="1">
@@ -69,8 +66,7 @@
                     </Canvas>
                 </Border>
 
-                <Border Margin="5,0,0,0"
-                        BorderBrush="{DynamicResource BlackBrush}"
+                <Border BorderBrush="{DynamicResource BlackBrush}"
                         BorderThickness="1">
                     <Canvas Width="20"
                             Height="20">

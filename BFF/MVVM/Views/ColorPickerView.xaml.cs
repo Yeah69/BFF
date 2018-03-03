@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -176,6 +180,8 @@ namespace BFF.MVVM.Views
             }
                 .SetDependencyProperty(Panel.ZIndexProperty, 3)
                 .SetDependencyProperty(Canvas.TopProperty, 3.0);
+
+        private readonly SerialDisposable _adjustmentOperation  = new SerialDisposable();
 
         public ColorPickerView()
         {
@@ -366,37 +372,97 @@ namespace BFF.MVVM.Views
 
         private void Swatch_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var position = e.GetPosition(e.OriginalSource as IInputElement);
-            Saturation = (float) position.X / 360.0f;
-            Value = 1.0f - (float) position.Y / 360.0f;
-            Color = HsvToColor(Hue, Saturation, Value);
-            UpdateRgbProperties();
-            RedrawAlphaScale();
-            ResetAlphaPointer();
-            ResetSwatchPointer();
+            void OnSwatchChange(Point p)
+            {
+                Saturation = (float)p.X / 360.0f;
+                Value = 1.0f - (float)p.Y / 360.0f;
+                Color = HsvToColor(Hue, Saturation, Value);
+                Color = Color.FromArgb(Alpha, Color.R, Color.G, Color.B);
+                UpdateRgbProperties();
+                RedrawAlphaScale();
+                ResetAlphaPointer();
+                ResetSwatchPointer();
+            }
+
+            var position = e.GetPosition(sender as IInputElement);
+            OnSwatchChange(position);
+            _adjustmentOperation.Disposable =
+                ObserveMouseMoveUntilMouseUp()
+                    .Subscribe(
+                        _ =>
+                        {
+                            var point = Mouse
+                                .GetPosition(Swatch)
+                                .Coerce(0, Swatch.Width, 0, Swatch.Height);
+                            OnSwatchChange(point);
+                        },
+                        () => _adjustmentOperation.Disposable = Disposable.Empty);
+            
             e.Handled = true;
         }
 
         private void HueScale_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var position = e.GetPosition(e.OriginalSource as IInputElement);
-            Hue = (float)position.Y;
-            Color = HsvToColor(Hue, Saturation, Value);
-            UpdateRgbProperties();
-            ResetHuePointer();
-            RedrawSwatch();
-            ResetSwatchPointer();
-            RedrawAlphaScale();
+            void OnHueScaleChange(Point p)
+            {
+                Hue = (float)p.Y;
+                Color = HsvToColor(Hue, Saturation, Value);
+                Color = Color.FromArgb(Alpha, Color.R, Color.G, Color.B);
+                UpdateRgbProperties();
+                ResetHuePointer();
+                RedrawSwatch();
+                ResetSwatchPointer();
+                RedrawAlphaScale();
+            }
+
+            var position = e.GetPosition(HueScale);
+            OnHueScaleChange(position);
+            _adjustmentOperation.Disposable =
+                ObserveMouseMoveUntilMouseUp()
+                    .Subscribe(
+                        _ =>
+                        {
+                            var point = Mouse
+                                .GetPosition(HueScale)
+                                .Coerce(0, 0, 0, HueScale.Height);
+                            OnHueScaleChange(point);
+                        },
+                        () => _adjustmentOperation.Disposable = Disposable.Empty);
+
             e.Handled = true;
         }
 
         private void AlphaScale_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var position = e.GetPosition(e.OriginalSource as IInputElement);
-            Alpha = (byte)(position.X / 360.0f * 255.0);
-            Color = Color.FromArgb(Alpha, Red, Green, Blue);
-            ResetAlphaPointer();
+            void OnAlphaScaleChange(Point p)
+            {
+                Alpha = (byte)(p.X / 360.0f * 255.0);
+                Color = Color.FromArgb(Alpha, Red, Green, Blue);
+                ResetAlphaPointer();
+            }
+
+            var position = e.GetPosition(AlphaScale);
+            OnAlphaScaleChange(position);
+            _adjustmentOperation.Disposable =
+                ObserveMouseMoveUntilMouseUp()
+                    .Subscribe(
+                        _ =>
+                        {
+                            var point = Mouse
+                                .GetPosition(AlphaScale)
+                                .Coerce(0, AlphaScale.Width, 0, 0);
+                            OnAlphaScaleChange(point);
+                        },
+                        () => _adjustmentOperation.Disposable = Disposable.Empty);
+
             e.Handled = true;
         }
+
+        private IObservable<EventPattern<MouseEventArgs>> ObserveMouseMoveUntilMouseUp() =>
+            Observable.FromEventPattern<MouseEventArgs>(Application.Current.MainWindow, "MouseMove")
+                .SubscribeOn(NewThreadScheduler.Default)
+                .TakeUntil(Observable.FromEventPattern<MouseButtonEventArgs>(Application.Current.MainWindow, "MouseUp"))
+                .Sample(TimeSpan.FromMilliseconds(20))
+                .ObserveOn(new DispatcherScheduler(Application.Current.Dispatcher));
     }
 }
