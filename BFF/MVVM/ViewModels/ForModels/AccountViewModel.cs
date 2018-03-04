@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
@@ -52,10 +51,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
             Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
         }
-
-        /// <summary>
-        /// Initializes an AccountViewModel.
-        /// </summary>
+        
         public AccountViewModel(
             IAccount account, 
             ISummaryAccountViewModel summaryAccountViewModel,
@@ -117,11 +113,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
         public override IDataVirtualizingCollection<ITransLikeViewModel> Tits => _tits ?? CreateDataVirtualizingCollection();
-        
-        /// <summary>
-        /// Collection of TITs, which are about to be inserted to this Account.
-        /// </summary>
-        public sealed override ObservableCollection<ITransLikeViewModel> NewTransList { get; } = new ObservableCollection<ITransLikeViewModel>();
 
         /// <summary>
         /// The current Balance of this Account.

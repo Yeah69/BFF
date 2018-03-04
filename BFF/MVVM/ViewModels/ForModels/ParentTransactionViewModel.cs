@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -47,6 +48,9 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public sealed class ParentTransactionViewModel : TransactionBaseViewModel, IParentTransactionViewModel
     {
+        private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
+        private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
+
         private readonly ObservableCollection<ISubTransactionViewModel> _newTransactions;
 
         /// <summary>
@@ -121,19 +125,35 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             ApplyCommand.Subscribe(_ =>
             {
-                foreach (ISubTransactionViewModel subTransaction in _newTransactions)
+                if (_newTransactions.All(st => st.IsInsertable()))
                 {
-                    if (parentTransaction.Id > 0L)
-                        subTransaction.Insert();
+                    _currentRemoveRequestSubscriptions = new CompositeDisposable();
+                    _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
+                    foreach (ISubTransactionViewModel subTransaction in _newTransactions)
+                    {
+                        if (parentTransaction.Id > 0L)
+                            subTransaction.Insert();
+                    }
+                    _newTransactions.Clear();
+                    OnPropertyChanged(nameof(Sum));
+                    Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+                    Account.Value.RefreshBalance();
                 }
-                _newTransactions.Clear();
-                OnPropertyChanged(nameof(Sum));
-                Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
-                Account.Value.RefreshBalance();
+                
             }).AddTo(CompositeDisposable);
 
             OpenParentTransactionView.Subscribe(avm =>
                 Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", avm))).AddTo(CompositeDisposable);
+
+            _removeRequestSubscriptions.AddTo(CompositeDisposable);
+            _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
+            _newTransactions.ObserveAddChanged().Subscribe(t =>
+            {
+                t.RemoveRequests
+                    .Take(1)
+                    .Subscribe(_ => _newTransactions.Remove(t))
+                    .AddTo(_currentRemoveRequestSubscriptions);
+            });
         }
 
         public ReadOnlyReactiveCollection<ISubTransactionViewModel> SubTransactions { get; }

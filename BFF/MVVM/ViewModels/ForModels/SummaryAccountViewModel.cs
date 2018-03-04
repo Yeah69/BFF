@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -8,7 +7,6 @@ using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
-using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -46,12 +44,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override IReactiveProperty<string> Name //todo Localization
             => new ReactiveProperty<string>("All Accounts");
-
-        /// <summary>
-        /// Initializes an SummaryAccountViewModel.
-        /// </summary>
-        /// <param name="orm">Used for the database accesses.</param>
-        /// <param name="summaryAccount">The model.</param>
+        
         public SummaryAccountViewModel(
             ISummaryAccount summaryAccount, 
             IAccountRepository accountRepository, 
@@ -140,11 +133,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
         public override IDataVirtualizingCollection<ITransLikeViewModel> Tits => _tits ?? (_tits = CreateDataVirtualizingCollection());
-        
-        /// <summary>
-        /// Collection of TITs, which are about to be inserted to this Account.
-        /// </summary>
-        public sealed override ObservableCollection<ITransLikeViewModel> NewTransList { get; } = new ObservableCollection<ITransLikeViewModel>();
         
         /// <summary>
         /// Refreshes the TITs of this Account.

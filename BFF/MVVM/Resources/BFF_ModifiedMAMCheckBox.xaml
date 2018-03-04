@@ -36,7 +36,7 @@
                                               Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid x:Name="PART_CHECKBOX">
-                            <Rectangle Margin="-6, 0"
+                            <Rectangle Margin="-6,0"
                                        Fill="{DynamicResource TransparentWhiteBrush}" />
                             <Border x:Name="normal"
                                     Width="18"

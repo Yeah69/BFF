@@ -1,4 +1,7 @@
-﻿using BFF.Helper;
+﻿using System;
+using System.Reactive;
+using System.Reactive.Linq;
+using BFF.Helper;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
 
@@ -23,7 +26,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         public long SumAbsolute => 0L;
 
         public ReactiveCommand DeleteCommand { get; }
-        public ReactiveCommand ToggleSign { get; }
+        public ReactiveCommand ToggleSign { get; } = new ReactiveCommand();
+        public IObservable<Unit> RemoveRequests => Observable.Never<Unit>();
+        public ReactiveCommand RemoveCommand { get; } = new ReactiveCommand();
 
         /// <summary>
         /// Needed to mimic a TIT.
@@ -39,7 +44,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             Sum = new ReactiveProperty<long>(0L, ReactivePropertyMode.DistinctUntilChanged);
             Cleared = new ReactiveProperty<bool>(false, ReactivePropertyMode.DistinctUntilChanged);
             DeleteCommand = new ReactiveCommand();
-            ToggleSign = new ReactiveCommand();
         }
 
         #region Overrides of TransLikeViewModel

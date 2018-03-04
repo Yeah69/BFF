@@ -84,6 +84,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         private readonly IParentTransactionViewModelService _parentTransactionViewModelService;
         private readonly Func<ITransaction, ITransactionViewModel> _transactionViewModelFactory;
         private readonly Func<ITransfer, ITransferViewModel> _transferViewModelFactory;
+        private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
+        private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
         protected IDataVirtualizingCollection<ITransLikeViewModel> _tits;
 
         /// <summary>
@@ -99,7 +101,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
-        public abstract ObservableCollection<ITransLikeViewModel> NewTransList { get; }
+        public ObservableCollection<ITransLikeViewModel> NewTransList { get; } = new ObservableCollection<ITransLikeViewModel>();
 
         /// <summary>
         /// The current Balance of this Account.
@@ -193,6 +195,16 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 RefreshBalance();
             }).AddTo(CompositeDisposable);
 
+            _removeRequestSubscriptions.AddTo(CompositeDisposable);
+            _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
+            NewTransList.ObserveAddChanged().Subscribe(t =>
+            {
+                t.RemoveRequests
+                    .Take(1)
+                    .Subscribe(_ => NewTransList.Remove(t))
+                    .AddTo(_currentRemoveRequestSubscriptions);
+            });
+
             Disposable.Create(() =>
             {
                 _tits?.Dispose();
@@ -226,13 +238,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         {
             if (NewTransList.All(t => t.IsInsertable()))
             {
+                _currentRemoveRequestSubscriptions = new CompositeDisposable();
+                _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
                 List<ITransLikeViewModel> insertTits = NewTransList.ToList();
                 foreach (ITransLikeViewModel tit in insertTits)
                 {
                     tit.Insert();
                     NewTransList.Remove(tit);
                 }
-
+                
                 RefreshBalance();
                 RefreshTits();
             }

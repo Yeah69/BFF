@@ -48,11 +48,30 @@
                 </MenuItem>
             </ContextMenu>
 
+            <ContextMenu x:Key="NewRowMenu">
+                <MenuItem Command="{Binding RemoveCommand}"
+                          Header="{lex:Loc AccountView_ConMenu_Remove}">
+                    <MenuItem.Icon>
+                        <iconPacks:PackIconOcticons Width="{StaticResource IconSize}"
+                                                    Height="{StaticResource IconSize}"
+                                                    Foreground="{StaticResource BlackBrush}"
+                                                    Kind="{StaticResource RemoveNotInsertedIcon}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </ContextMenu>
+
             <Style x:Key="DefaultRowStyle"
                    BasedOn="{StaticResource MetroDataGridRow}"
                    TargetType="{x:Type DataGridRow}">
                 <Setter Property="ContextMenu"
                         Value="{StaticResource RowMenu}" />
+            </Style>
+
+            <Style x:Key="DefaultNewRowStyle"
+                   BasedOn="{StaticResource MetroDataGridRow}"
+                   TargetType="{x:Type DataGridRow}">
+                <Setter Property="ContextMenu"
+                        Value="{StaticResource NewRowMenu}" />
             </Style>
 
             <Style BasedOn="{StaticResource MetroDataGridCell}"
@@ -761,7 +780,8 @@
             <DataTemplate x:Key="EmptyDataTemplate" />
             <DataTemplate x:Key="SubElementsEditingTemplatePart">
                 <DataGrid HeadersVisibility="None"
-                          ItemsSource="{Binding NewSubElements}">
+                          ItemsSource="{Binding NewSubElements}"
+                          RowStyle="{StaticResource DefaultNewRowStyle}">
                     <DataGrid.Columns>
                         <!--  Category  -->
                         <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}"
@@ -1145,7 +1165,8 @@
                       BorderThickness="0,2,0,0"
                       HeadersVisibility="None"
                       ItemsSource="{Binding NewTransList}"
-                      RowDetailsVisibilityMode="Visible">
+                      RowDetailsVisibilityMode="Visible"
+                      RowStyle="{StaticResource DefaultNewRowStyle}">
                 <DataGrid.Columns>
                     <!--  Symbol  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SymbolColumn}, Mode=TwoWay}">

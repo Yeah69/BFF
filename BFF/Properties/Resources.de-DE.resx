@@ -129,6 +129,9 @@
   <data name="AccountView_ConMenu_Delete" xml:space="preserve">
     <value>Löschen</value>
   </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Entferne</value>
+  </data>
   <data name="AccountView_Header_Account" xml:space="preserve">
     <value>Konto</value>
   </data>

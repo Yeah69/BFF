@@ -228,15 +228,19 @@
             <iconPacks:PackIconMaterialKind x:Key="RemoveFromTableIcon">
                 TableRowRemove
             </iconPacks:PackIconMaterialKind>
+            <iconPacks:PackIconOcticonsKind x:Key="RemoveNotInsertedIcon">
+                X
+            </iconPacks:PackIconOcticonsKind>
             <iconPacks:PackIconMaterialKind x:Key="FlagIcon">
                 Bookmark
             </iconPacks:PackIconMaterialKind>
 
             <DataTemplate x:Key="FlagTemplate">
-                <iconPacks:PackIconMaterial x:Name="PopHereUp" d:DataContext="{d:DesignInstance forModels:IFlagViewModel}"
-                                                            Foreground="{Binding Color.Value}"
-                                                            Kind="{StaticResource FlagIcon}"
-                                                            Style="{StaticResource CellIconMaterial}" />
+                <iconPacks:PackIconMaterial x:Name="PopHereUp"
+                                            d:DataContext="{d:DesignInstance forModels:IFlagViewModel}"
+                                            Foreground="{Binding Color.Value}"
+                                            Kind="{StaticResource FlagIcon}"
+                                            Style="{StaticResource CellIconMaterial}" />
             </DataTemplate>
 
             <DataTemplate x:Key="FlagEditTemplate">
@@ -245,7 +249,7 @@
                            StaysOpen="False">
                         <views:ColorPickerView Brush="{Binding Color.Value, Mode=TwoWay}" />
                     </Popup>
-                    
+
                     <Button Click="Flag_OnClick">
                         <Button.Template>
                             <ControlTemplate>

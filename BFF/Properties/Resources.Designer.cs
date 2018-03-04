@@ -162,6 +162,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string AccountView_ConMenu_Remove {
+            get {
+                return ResourceManager.GetString("AccountView_ConMenu_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account.
         /// </summary>
         public static string AccountView_Header_Account {

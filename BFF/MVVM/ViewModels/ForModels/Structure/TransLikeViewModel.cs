@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 using Reactive.Bindings;
@@ -26,6 +29,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Each TIT can be deleted from the GUI.
         /// </summary>
         ReactiveCommand ToggleSign { get; }
+
+        IObservable<Unit> RemoveRequests { get; }
+
+        ReactiveCommand RemoveCommand { get; }
     }
 
     /// <summary>
@@ -34,6 +41,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class TransLikeViewModel : DataModelViewModel, ITransLikeViewModel, ITransientViewModel
     {
+        private readonly Subject<Unit> _removeRequestSubject = new Subject<Unit>();
 
         /// <summary>
         /// A note, which a user can attach to each TIT as a reminder for himself.
@@ -79,12 +87,18 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             ITransLike transLike) 
             : base(transLike)
         {
+            _removeRequestSubject.AddTo(CompositeDisposable);
             Memo = transLike.ToReactivePropertyAsSynchronized(tl => tl.Memo, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             ToggleSign = new ReactiveCommand();
             ToggleSign.Subscribe(_ => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus);
+
+            RemoveCommand = new ReactiveCommand();
+            RemoveCommand.Subscribe(_ => _removeRequestSubject.OnNext(Unit.Default));
         }
 
         public ReactiveCommand ToggleSign { get; }
+        public IObservable<Unit> RemoveRequests => _removeRequestSubject.AsObservable();
+        public ReactiveCommand RemoveCommand { get; }
     }
 }
