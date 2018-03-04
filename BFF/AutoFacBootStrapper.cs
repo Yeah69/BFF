@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels;
@@ -90,7 +91,8 @@ namespace BFF
             builder.Register<Func<ITransaction>>(cc =>
             {
                 var repository = cc.Resolve<IRepository<ITransaction>>();
-                return () => new Transaction(repository, DateTime.Now);
+                var lastSetDate = cc.Resolve<ILastSetDate>();
+                return () => new Transaction(repository, lastSetDate.Date);
             }).As<Func<ITransaction>>();
 
             builder.Register<Func<ITransactionViewModel>>(cc =>
@@ -115,7 +117,8 @@ namespace BFF
             builder.Register<Func<ITransfer>>(cc =>
             {
                 var repository = cc.Resolve<IRepository<ITransfer>>();
-                return () => new Transfer(repository, DateTime.Today);
+                var lastSetDate = cc.Resolve<ILastSetDate>();
+                return () => new Transfer(repository, lastSetDate.Date);
             }).As<Func<ITransfer>>();
 
             builder.Register<Func<ITransferViewModel>>(cc =>
@@ -128,7 +131,8 @@ namespace BFF
             builder.Register<Func<IParentTransaction>>(cc =>
             {
                 var repository = cc.Resolve<IRepository<IParentTransaction>>();
-                return () => new ParentTransaction(repository, Enumerable.Empty<ISubTransaction>(), DateTime.Today);
+                var lastSetDate = cc.Resolve<ILastSetDate>();
+                return () => new ParentTransaction(repository, Enumerable.Empty<ISubTransaction>(), lastSetDate.Date);
             }).As<Func<IParentTransaction>>();
             
             builder.Register<Func<IParentTransactionViewModel>>(cc =>
@@ -153,7 +157,8 @@ namespace BFF
             builder.Register<Func<IAccount>>(cc =>
             {
                 var repository = cc.Resolve<IRepository<IAccount>>();
-                return () => new Account(repository, DateTime.Today);
+                var lastSetDate = cc.Resolve<ILastSetDate>();
+                return () => new Account(repository, lastSetDate.Date);
             }).As<Func<IAccount>>();
 
             builder.Register(cc => DialogCoordinator.Instance).As<IDialogCoordinator>();

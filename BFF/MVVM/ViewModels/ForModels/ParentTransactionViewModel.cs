@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -67,13 +68,15 @@ namespace BFF.MVVM.ViewModels.ForModels
             IFlagViewModelService flagViewModelService,
             IAccountViewModelService accountViewModelService,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
+            ILastSetDate lastSetDate,
             IPayeeViewModelService payeeViewModelService) 
             : base(
                 parentTransaction,
                 newPayeeViewModelFactory,
                 newFlagViewModelFactory,
                 accountViewModelService,
-                payeeViewModelService,
+                payeeViewModelService, 
+                lastSetDate,
                 flagViewModelService)
         {
             _newTransactions = new ObservableCollection<ISubTransactionViewModel>();

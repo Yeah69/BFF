@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
@@ -46,8 +47,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory,
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
+            ILastSetDate lastSetDate,
             IFlagViewModelService flagViewModelService) 
-            : base(parentTransactionBase, newFlagViewModelFactory, flagViewModelService)
+            : base(parentTransactionBase, newFlagViewModelFactory, lastSetDate, flagViewModelService)
         {
             _accountViewModelService = accountViewModelService;
 

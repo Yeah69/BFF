@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -52,7 +53,8 @@ namespace BFF.MVVM.ViewModels.ForModels
             IAccountViewModelService accountViewModelService,
             Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
-            IFlagViewModelService flagViewModelService) : base(transfer, newFlagViewModelFactory, flagViewModelService)
+            ILastSetDate lastSetDate,
+            IFlagViewModelService flagViewModelService) : base(transfer, newFlagViewModelFactory, lastSetDate, flagViewModelService)
         {
             _accountViewModelService = accountViewModelService;
 

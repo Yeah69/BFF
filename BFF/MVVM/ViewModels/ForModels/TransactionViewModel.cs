@@ -29,8 +29,9 @@ namespace BFF.MVVM.ViewModels.ForModels
             IPayeeViewModelService payeeViewModelService,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ICategoryBaseViewModelService categoryViewModelService,
+            ILastSetDate lastSetDate,
             IFlagViewModelService flagViewModelService)
-            : base(transaction, newPayeeViewModelFactory, newFlagViewModelFactory, accountViewModelService, payeeViewModelService, flagViewModelService)
+            : base(transaction, newPayeeViewModelFactory, newFlagViewModelFactory, accountViewModelService, payeeViewModelService, lastSetDate, flagViewModelService)
         {
             Category = transaction.ToReactivePropertyAsSynchronized(
                     ti => ti.Category,

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using MuVaViMo;
@@ -67,6 +68,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected TransBaseViewModel(
             ITransBase transBase,
             Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory,
+            ILastSetDate lastSetDate,
             IFlagViewModelService flagViewModelService)
             : base(transBase)
         {
@@ -87,6 +89,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             CheckNumber = transBase.ToReactivePropertyAsSynchronized(tb => tb.CheckNumber, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             Date = transBase.ToReactivePropertyAsSynchronized(tb => tb.Date, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+
+            Date.Subscribe(dt => lastSetDate.Date = dt).AddTo(CompositeDisposable);
 
             Date.Where(_ => transBase.Id != -1).Subscribe(_ => NotifyRelevantAccountsToRefreshTits()).AddTo(CompositeDisposable);
 
