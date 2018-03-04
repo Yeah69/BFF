@@ -308,6 +308,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
     <value>The name of a new payee isn't allowed to be empty or an already existing one.</value>
   </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>An account has to be chosen before the entry is inserted.</value>
+  </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
     <value>A "{0}" fájl nem található </value>
   </data>

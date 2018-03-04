@@ -40,7 +40,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                     : domainTransaction.Flag.Id,
                 CheckNumber = domainTransaction.CheckNumber,
                 CategoryId = domainTransaction.Category?.Id,
-                PayeeId = domainTransaction.Payee.Id,
+                PayeeId = domainTransaction.Payee?.Id,
                 Date = domainTransaction.Date,
                 Memo = domainTransaction.Memo,
                 Sum = domainTransaction.Sum,

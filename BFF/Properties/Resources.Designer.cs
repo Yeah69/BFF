@@ -558,6 +558,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An account has to be chosen before the entry is inserted..
+        /// </summary>
+        public static string ErrorMessage_AccountHasToBeChosen {
+            get {
+                return ResourceManager.GetString("ErrorMessage_AccountHasToBeChosen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The name of the new category is not allowed to be empty!.
         /// </summary>
         public static string ErrorMessageCategoryNameEmpty {

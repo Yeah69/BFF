@@ -13,6 +13,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         void Insert();
 
+        bool IsInsertable();
+
         /// <summary>
         /// Deletes the model object from the database.
         /// </summary>
@@ -59,6 +61,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             _dataModel.Insert();
             OnInsert();
         }
+
+        public virtual bool IsInsertable() => _dataModel.Id <= 0;
 
         /// <summary>
         /// Updates the model object in the database.

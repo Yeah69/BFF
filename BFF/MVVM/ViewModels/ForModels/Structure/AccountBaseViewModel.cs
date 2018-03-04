@@ -224,15 +224,18 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected void ApplyTits()
         {
-            List<ITransLikeViewModel> insertTits = NewTransList.ToList();//.Where(tit => tit.ValidToInsert()).ToList();
-            foreach (ITransLikeViewModel tit in insertTits)
+            if (NewTransList.All(t => t.IsInsertable()))
             {
-                tit.Insert();
-                NewTransList.Remove(tit);
-            }
+                List<ITransLikeViewModel> insertTits = NewTransList.ToList();
+                foreach (ITransLikeViewModel tit in insertTits)
+                {
+                    tit.Insert();
+                    NewTransList.Remove(tit);
+                }
 
-            RefreshBalance();
-            RefreshTits();
+                RefreshBalance();
+                RefreshTits();
+            }
         }
 
         /// <summary>

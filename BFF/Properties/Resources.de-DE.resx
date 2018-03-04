@@ -308,6 +308,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m�
   <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
     <value>Der Name eines neuen Bezahlten darf nicht leer sein oder bereit existieren.</value>
   </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Ein Konto muss ausgewählt werden bevor der Eintrag hinzugefügt wird.</value>
+  </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
     <value>Die Datei "{0}" konnte nicht gefunden werden.</value>
   </data>

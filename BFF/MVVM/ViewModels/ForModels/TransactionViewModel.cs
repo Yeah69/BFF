@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Linq;
 using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -19,17 +20,6 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public sealed class TransactionViewModel : TransactionBaseViewModel, ITransactionViewModel
     {
-        /// <summary>
-        /// Initializes a TransactionViewModel.
-        /// </summary>
-        /// <param name="transaction">A Transaction Model.</param>
-        /// <param name="newPayeeViewModelFactory">Creates a payee factory.</param>
-        /// <param name="accountViewModelService">Service of accounts.</param>
-        /// <param name="payeeViewModelService">Service of payees.</param>
-        /// <param name="createSumEdit">Creates a sum editing viewmodel.</param>
-        /// <param name="categoryViewModelService">Service of categories.</param>
-        /// <param name="flagViewModelService">Fetches flags.</param>
-        /// <param name="newCategoryViewModelFactory">Creates a category factory.</param>
         public TransactionViewModel(
             ITransaction transaction,
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
@@ -63,19 +53,15 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             NewCategoryViewModel = newCategoryViewModelFactory(this);
         }
-
-        /// <summary>
-        /// Each Transaction can be budgeted to a category.
-        /// </summary>
+        
         public IReactiveProperty<ICategoryBaseViewModel> Category { get; }
-
-        /// <summary>
-        /// The amount of money of the exchange of the Transaction.
-        /// </summary>
+        
         public override IReactiveProperty<long> Sum { get; }
 
         public override ISumEditViewModel SumEdit { get; }
 
         public INewCategoryViewModel NewCategoryViewModel { get; }
+
+        public override bool IsInsertable() => base.IsInsertable() && Category.Value.IsNotNull();
     }
 }

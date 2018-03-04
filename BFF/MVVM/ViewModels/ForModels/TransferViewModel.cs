@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -46,13 +47,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public override IReactiveProperty<long> Sum { get; }
 
-        /// <summary>
-        /// Initializes a TransferViewModel.
-        /// </summary>
-        /// <param name="transfer">A Transfer Model.</param>
-        /// <param name="accountViewModelService">Fetches the accounts.</param>
-        /// <param name="createSumEdit">Creates a sum editing viewmodel.</param>
-        /// <param name="flagViewModelService">Fetches the flags.</param>
         public TransferViewModel(
             ITransfer transfer, 
             IAccountViewModelService accountViewModelService,
@@ -113,6 +107,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         }
 
         public override ISumEditViewModel SumEdit { get; }
+
+        public override bool IsInsertable() => base.IsInsertable() && FromAccount.Value.IsNotNull() && ToAccount.IsNotNull();
 
         public override void Delete()
         {

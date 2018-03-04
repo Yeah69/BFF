@@ -54,17 +54,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// A ParentElement's Sum is defined by the Sum of all Sum's of its SubElements.
         /// </summary>
         public override IReactiveProperty<long> Sum { get; }
-
-        /// <summary>
-        /// Initializes a ParentTransactionViewModel.
-        /// </summary>
-        /// <param name="parentTransaction">A ParentTransaction Model.</param>
-        /// <param name="newPayeeViewModelFactory">Creates a payee factory.</param>
-        /// <param name="subTransactionViewModelService">A service for fetching sub-transactions.</param>
-        /// <param name="flagViewModelService">Fetches flags.</param>
-        /// <param name="accountViewModelService">Fetches accounts.</param>
-        /// <param name="createSumEdit">Creates sum editing viewmodel.</param>
-        /// <param name="payeeViewModelService">Fetches payees.</param>
+        
         public ParentTransactionViewModel(
             IParentTransaction parentTransaction,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
@@ -185,5 +175,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             }
             _newTransactions.Clear();
         }
+
+        public override bool IsInsertable() => base.IsInsertable() && NewSubElements.Any() && NewSubElements.All(st => st.IsInsertable());
     }
 }

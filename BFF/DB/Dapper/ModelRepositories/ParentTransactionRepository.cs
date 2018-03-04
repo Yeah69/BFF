@@ -40,7 +40,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                     ? (long?) null 
                     : domainParentTransaction.Flag.Id,
                 CheckNumber = domainParentTransaction.CheckNumber,
-                PayeeId = domainParentTransaction.Payee.Id,
+                PayeeId = domainParentTransaction.Payee?.Id,
                 Date = domainParentTransaction.Date,
                 Memo = domainParentTransaction.Memo,
                 Cleared = domainParentTransaction.Cleared ? 1L : 0L,

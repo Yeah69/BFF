@@ -49,6 +49,8 @@ namespace BFF.MVVM.ViewModels.ForModels
             throw new System.NotImplementedException();
         }
 
+        public bool IsInsertable() => false;
+
         public void Delete()
         {
             throw new System.NotImplementedException();

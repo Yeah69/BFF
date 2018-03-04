@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -11,19 +12,9 @@ namespace BFF.MVVM.ViewModels.ForModels
     {
         INewCategoryViewModel NewCategoryViewModel { get; }
     }
-
-    /// <summary>
-    /// The ViewModel of the Model SubTransaction.
-    /// </summary>
+    
     public sealed class SubTransactionViewModel : TransLikeViewModel, ISubTransactionViewModel
     {
-        /// <summary>
-        /// Initializes a SubTransactionViewModel.
-        /// </summary>
-        /// <param name="subTransaction">A SubTransaction Model.</param>
-        /// <param name="newCategoryViewModelFactory">Creates a category factory.</param>
-        /// <param name="createSumEdit">Creates a sum editing viewmodel.</param>
-        /// <param name="categoryViewModelService">Fetches categories.</param>
         public SubTransactionViewModel(
             ISubTransaction subTransaction,
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
@@ -56,5 +47,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override IReactiveProperty<long> Sum { get; }
 
         public override ISumEditViewModel SumEdit { get; }
+
+        public override bool IsInsertable() => base.IsInsertable() && Category.Value.IsNotNull();
     }
 }

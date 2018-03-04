@@ -282,6 +282,7 @@
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
     <Compile Include="DB\SQLite\DapperCrudOrm.cs" />
     <Compile Include="Helper\Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Helper\Extensions\GenericExtensions.cs" />
     <Compile Include="Helper\Extensions\LongExtensions.cs" />
     <Compile Include="Helper\Extensions\PointExtensions.cs" />
     <Compile Include="Helper\Extensions\StringExtensions.cs" />
