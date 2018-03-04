@@ -343,6 +343,7 @@
     <Compile Include="MVVM\ViewModels\ForModels\Structure\CommonPropertyViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\PayeeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\DataModelViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Structure\IHaveFlagViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\IHavePayeeViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\IHaveCategoryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\TransBaseViewModel.cs" />
@@ -362,6 +363,7 @@
     <Compile Include="MVVM\ViewModels\EmptyContentViewModel.cs" />
     <Compile Include="MVVM\ViewModels\AccountTabsViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ITransientViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\NewFlagViewModel.cs" />
     <Compile Include="MVVM\ViewModels\SumEditViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelBase.cs" />
     <Compile Include="MVVM\ViewModels\MainWindowViewModel.cs" />
@@ -406,6 +408,9 @@
     </Compile>
     <Compile Include="MVVM\Views\NewCategoryView.xaml.cs">
       <DependentUpon>NewCategoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\NewFlagView.xaml.cs">
+      <DependentUpon>NewFlagView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\NewPayeeView.xaml.cs">
       <DependentUpon>NewPayeeView.xaml</DependentUpon>
@@ -481,6 +486,10 @@
     <Page Include="MVVM\Views\NewCategoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\Views\NewFlagView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MVVM\Views\NewPayeeView.xaml">
       <SubType>Designer</SubType>

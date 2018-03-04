@@ -56,8 +56,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         public TransferViewModel(
             ITransfer transfer, 
             IAccountViewModelService accountViewModelService,
+            Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
-            IFlagViewModelService flagViewModelService) : base(transfer, flagViewModelService)
+            IFlagViewModelService flagViewModelService) : base(transfer, newFlagViewModelFactory, flagViewModelService)
         {
             _accountViewModelService = accountViewModelService;
 

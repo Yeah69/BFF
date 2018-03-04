@@ -51,10 +51,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected TransactionBaseViewModel(
             ITransactionBase parentTransactionBase,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
+            Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory,
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
             IFlagViewModelService flagViewModelService) 
-            : base(parentTransactionBase, flagViewModelService)
+            : base(parentTransactionBase, newFlagViewModelFactory, flagViewModelService)
         {
             _accountViewModelService = accountViewModelService;
 

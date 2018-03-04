@@ -42,12 +42,12 @@ namespace BFF.DB.Dapper.ModelRepositories
         protected override Converter<Flag, Domain.IFlag> ConvertToDomain => persistenceModel => 
             new Domain.Flag(
                 this,
-                persistenceModel.Id, 
-                persistenceModel.Name,
                 Color.FromArgb(
                     (byte)(persistenceModel.Color >> 24 & 0xff),
                     (byte)(persistenceModel.Color >> 16 & 0xff),
                     (byte)(persistenceModel.Color >> 8 & 0xff),
-                    (byte)(persistenceModel.Color & 0xff)));
+                    (byte)(persistenceModel.Color & 0xff)),
+                persistenceModel.Id, 
+                persistenceModel.Name);
     }
 }

@@ -473,6 +473,7 @@ namespace BFF.MVVM.Views
         private void Preview_OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             Brush = new SolidColorBrush(Color);
+            GetBindingExpression(BrushProperty)?.UpdateSource();
         }
     }
 }

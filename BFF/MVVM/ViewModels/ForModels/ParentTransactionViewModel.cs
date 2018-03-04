@@ -68,6 +68,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public ParentTransactionViewModel(
             IParentTransaction parentTransaction,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
+            Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory,
             ISubTransactionViewModelService subTransactionViewModelService, 
             IFlagViewModelService flagViewModelService,
             IAccountViewModelService accountViewModelService,
@@ -76,6 +77,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             : base(
                 parentTransaction,
                 newPayeeViewModelFactory,
+                newFlagViewModelFactory,
                 accountViewModelService,
                 payeeViewModelService,
                 flagViewModelService)

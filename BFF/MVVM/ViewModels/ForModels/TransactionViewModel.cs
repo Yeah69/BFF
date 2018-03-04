@@ -34,12 +34,13 @@ namespace BFF.MVVM.ViewModels.ForModels
             ITransaction transaction,
             Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
             Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
+            Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory,
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ICategoryBaseViewModelService categoryViewModelService,
             IFlagViewModelService flagViewModelService)
-            : base(transaction, newPayeeViewModelFactory, accountViewModelService, payeeViewModelService, flagViewModelService)
+            : base(transaction, newPayeeViewModelFactory, newFlagViewModelFactory, accountViewModelService, payeeViewModelService, flagViewModelService)
         {
             Category = transaction.ToReactivePropertyAsSynchronized(
                     ti => ti.Category,

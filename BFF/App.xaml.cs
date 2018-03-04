@@ -74,7 +74,7 @@ namespace BFF
             e.Handled = true;
         }
 
-        private void Flag_OnMouseUp(object sender, EventArgs e)
+        private void Flag_OnClick(object sender, EventArgs e)
         {
             if (sender is FrameworkElement element && element.FindName("Popup") is Popup popup)
             {

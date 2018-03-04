@@ -257,11 +257,17 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Category_CreateNew" xml:space="preserve">
     <value>Create new Category</value>
   </data>
+  <data name="Color" xml:space="preserve">
+    <value>Color</value>
+  </data>
   <data name="ConfirmationDialog_Title" xml:space="preserve">
     <value>Are you sure?</value>
   </data>
   <data name="CreateNewCategory" xml:space="preserve">
     <value>Create new category</value>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Create new flag</value>
   </data>
   <data name="CreateNewPayee" xml:space="preserve">
     <value>Create new payee</value>
@@ -296,11 +302,17 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
     <value>This category level already contains a category of chosen name!</value>
   </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>The name of a new flag isn't allowed to be empty or an already existing one.</value>
+  </data>
   <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
     <value>The name of a new payee isn't allowed to be empty or an already existing one.</value>
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
     <value>Файл  "{0}" не найден.</value>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Create new Flag</value>
   </data>
   <data name="Flag_Edit" xml:space="preserve">
     <value>Edit Flags</value>
@@ -370,6 +382,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   </data>
   <data name="NameOfNewCategory" xml:space="preserve">
     <value>Name of new category</value>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Name of new flag</value>
   </data>
   <data name="NameOfNewPayee" xml:space="preserve">
     <value>Name of new payee</value>

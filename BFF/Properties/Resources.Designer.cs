@@ -477,6 +477,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Color.
+        /// </summary>
+        public static string Color {
+            get {
+                return ResourceManager.GetString("Color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure?.
         /// </summary>
         public static string ConfirmationDialog_Title {
@@ -491,6 +500,15 @@ namespace BFF.Properties {
         public static string CreateNewCategory {
             get {
                 return ResourceManager.GetString("CreateNewCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new flag.
+        /// </summary>
+        public static string CreateNewFlag {
+            get {
+                return ResourceManager.GetString("CreateNewFlag", resourceCulture);
             }
         }
         
@@ -594,6 +612,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The name of a new flag isn&apos;t allowed to be empty or an already existing one..
+        /// </summary>
+        public static string ErrorMessageWrongFlagName {
+            get {
+                return ResourceManager.GetString("ErrorMessageWrongFlagName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The name of a new payee isn&apos;t allowed to be empty or an already existing one..
         /// </summary>
         public static string ErrorMessageWrongPayeeName {
@@ -608,6 +635,15 @@ namespace BFF.Properties {
         public static string Exception_FileNotFound {
             get {
                 return ResourceManager.GetString("Exception_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new Flag.
+        /// </summary>
+        public static string Flag_CreateNew {
+            get {
+                return ResourceManager.GetString("Flag_CreateNew", resourceCulture);
             }
         }
         
@@ -815,6 +851,15 @@ namespace BFF.Properties {
         public static string NameOfNewCategory {
             get {
                 return ResourceManager.GetString("NameOfNewCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of new flag.
+        /// </summary>
+        public static string NameOfNewFlag {
+            get {
+                return ResourceManager.GetString("NameOfNewFlag", resourceCulture);
             }
         }
         

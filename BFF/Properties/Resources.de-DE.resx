@@ -257,11 +257,17 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="Category_CreateNew" xml:space="preserve">
     <value>Neue Kategorie erstellen</value>
   </data>
+  <data name="Color" xml:space="preserve">
+    <value>Farbe</value>
+  </data>
   <data name="ConfirmationDialog_Title" xml:space="preserve">
     <value>Bist Du dir sicher?</value>
   </data>
   <data name="CreateNewCategory" xml:space="preserve">
     <value>Erstelle eine neue Kategorie</value>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Erstelle eine neue Markierung</value>
   </data>
   <data name="CreateNewPayee" xml:space="preserve">
     <value>Erstelle einen neuen Bezahlten</value>
@@ -296,11 +302,17 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
     <value>Auf dieser Kategorieebene existiert bereits eine Kategorie mit gew√§hlten Namen!</value>
   </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Der Name einer neuen Markierung darf nicht leer sein oder bereit existieren.</value>
+  </data>
   <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
     <value>Der Name eines neuen Bezahlten darf nicht leer sein oder bereit existieren.</value>
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
     <value>Die Datei "{0}" konnte nicht gefunden werden.</value>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Neue Markierung erstellen</value>
   </data>
   <data name="Flag_Edit" xml:space="preserve">
     <value>Markierungen bearbeiten</value>
@@ -370,6 +382,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   </data>
   <data name="NameOfNewCategory" xml:space="preserve">
     <value>Name der neuen Kategorie</value>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Name der neuen Markierung</value>
   </data>
   <data name="NameOfNewPayee" xml:space="preserve">
     <value>Name des neuen Bezahlten</value>

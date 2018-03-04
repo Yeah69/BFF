@@ -1,15 +1,17 @@
 ﻿<UserControl x:Class="BFF.MVVM.Views.EditFlagsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
-             xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
-             mc:Ignorable="d" 
+             xmlns:views="clr-namespace:BFF.MVVM.Views"
              d:DataContext="{d:DesignInstance viewModels:EditFlagsViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel>
             <TextBlock Margin="0,10"
@@ -36,7 +38,8 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Flag}" CellTemplate="{StaticResource FlagTemplate}" />
+                    <DataGridTemplateColumn CellTemplate="{StaticResource FlagEditTemplate}"
+                                            Header="{lex:Loc AccountView_Header_Flag}" />
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -53,12 +56,12 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <!--<TextBlock Margin="0,10"
+            <TextBlock Margin="0,10"
                        FontSize="30"
-                       Text="{lex:Loc Payee_CreateNew}" />
+                       Text="{lex:Loc Flag_CreateNew}" />
 
-            <views:NewPayeeView HorizontalAlignment="Stretch"
-                                DataContext="{Binding NewPayeeViewModel}" />-->
+            <views:NewFlagView HorizontalAlignment="Stretch"
+                               DataContext="{Binding NewFlagViewModel}" />
         </StackPanel>
     </ScrollViewer>
 </UserControl>

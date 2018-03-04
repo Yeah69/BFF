@@ -29,13 +29,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// This maybe needed, if the user does not remember everything clearly and wants to finish the Tit later.
         /// </summary>
         IReactiveProperty<bool> Cleared { get; }
+        INewFlagViewModel NewFlagViewModel { get; }
     }
 
     /// <summary>
     /// Base class for all ViewModels of Models of TITs excluding the SubElements.
     /// From this point in the documentation of the ViewModel hierarchy TIT is referring to all TIT-like Elements except SubElements.
     /// </summary>
-    public abstract class TransBaseViewModel : TransLikeViewModel, ITransBaseViewModel
+    public abstract class TransBaseViewModel : TransLikeViewModel, ITransBaseViewModel, IHaveFlagViewModel
     {
         private readonly IFlagViewModelService _flagViewModelService;
         public IObservableReadOnlyList<IFlagViewModel> AllFlags => _flagViewModelService.All;
@@ -57,22 +58,22 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public virtual IReactiveProperty<bool> Cleared { get; }
 
+        public INewFlagViewModel NewFlagViewModel { get; }
+
         protected abstract void NotifyRelevantAccountsToRefreshTits();
 
         protected abstract void NotifyRelevantAccountsToRefreshBalance();
 
-        /// <summary>
-        /// Initializes a TransBaseViewModel.
-        /// </summary>
-        /// <param name="transBase">The model.</param>
-        /// <param name="flagViewModelService">Translates between flag models and flag view models.</param>
-        /// <param name="createSumEdit">Creates sum editing viewmodel.</param>
         protected TransBaseViewModel(
             ITransBase transBase,
+            Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory,
             IFlagViewModelService flagViewModelService)
             : base(transBase)
         {
             _flagViewModelService = flagViewModelService;
+
+            NewFlagViewModel = newFlagViewModelFactory(this);
+
             Flag = transBase.ToReactivePropertyAsSynchronized(
                 tb => tb.Flag, 
                 flagViewModelService.GetViewModel,

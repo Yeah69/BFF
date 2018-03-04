@@ -218,13 +218,14 @@
                                 Style="{StaticResource CellContent}">
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
-                            <ContentControl Content="{Binding Flag.Value}" ContentTemplate="{StaticResource FlagTemplate}">
+                            <ContentControl Content="{Binding Flag.Value}"
+                                            ContentTemplate="{StaticResource FlagTemplate}">
                                 <ContentControl.Style>
                                     <Style BasedOn="{StaticResource {x:Type ContentControl}}"
                                            TargetType="{x:Type ContentControl}">
                                         <Style.Triggers>
                                             <Trigger Property="Content"
-                                                         Value="{x:Null}">
+                                                     Value="{x:Null}">
                                                 <Setter Property="Visibility"
                                                         Value="Collapsed" />
                                             </Trigger>
@@ -243,6 +244,25 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
                             <DockPanel LastChildFill="True">
+                                <Button Click="OpenPopup_OnClick"
+                                        DockPanel.Dock="Right"
+                                        TabIndex="1"
+                                        ToolTip="{lex:Loc CreateNewFlag}">
+                                    <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
+                                                                Kind="{StaticResource AddIcon}"
+                                                                Style="{StaticResource CellIconMaterial}" />
+                                </Button>
+                                <Popup x:Name="Popup"
+                                       Closed="Popup_OnClosed"
+                                       Placement="Right"
+                                       PlacementTarget="{Binding ElementName=EditFlagComboBox}"
+                                       PopupAnimation="Slide"
+                                       PreviewKeyDown="Popup_OnPreviewKeyDown"
+                                       StaysOpen="False">
+                                    <views:NewFlagView DataContext="{Binding NewFlagViewModel}"
+                                                       OnAddClicked="ClosePopup_OnClick"
+                                                       Tag="{Binding ElementName=Popup}" />
+                                </Popup>
                                 <Button Command="{Binding RemoveFlag}"
                                         Content="X"
                                         DockPanel.Dock="Right"
@@ -260,7 +280,8 @@
                                         </Style>
                                     </Button.Style>
                                 </Button>
-                                <ComboBox HorizontalAlignment="Stretch"
+                                <ComboBox x:Name="EditFlagComboBox"
+                                          HorizontalAlignment="Stretch"
                                           DockPanel.Dock="Left"
                                           ItemsSource="{Binding AllFlags}"
                                           SelectedItem="{Binding Mode=TwoWay, Path=Flag.Value, UpdateSourceTrigger=LostFocus}"

@@ -233,13 +233,20 @@
             </iconPacks:PackIconMaterialKind>
 
             <DataTemplate x:Key="FlagTemplate">
+                <iconPacks:PackIconMaterial x:Name="PopHereUp" d:DataContext="{d:DesignInstance forModels:IFlagViewModel}"
+                                                            Foreground="{Binding Color.Value}"
+                                                            Kind="{StaticResource FlagIcon}"
+                                                            Style="{StaticResource CellIconMaterial}" />
+            </DataTemplate>
+
+            <DataTemplate x:Key="FlagEditTemplate">
                 <Grid d:DataContext="{d:DesignInstance forModels:IFlagViewModel}">
                     <Popup x:Name="Popup"
                            StaysOpen="False">
                         <views:ColorPickerView Brush="{Binding Color.Value, Mode=TwoWay}" />
                     </Popup>
                     
-                    <Button Click="Flag_OnMouseUp">
+                    <Button Click="Flag_OnClick">
                         <Button.Template>
                             <ControlTemplate>
                                 <iconPacks:PackIconMaterial x:Name="PopHereUp"
