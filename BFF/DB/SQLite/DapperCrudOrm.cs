@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
@@ -32,19 +33,19 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
             _provideConnection = provideConnection;
         }
 
-        public void Create<T>(T model) where T : class, IPersistenceModel
+        public async Task CreateAsync<T>(T model) where T : class, IPersistenceModel
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                long id = connection.Insert(model);
+                long id = await connection.InsertAsync(model).ConfigureAwait(false);
                 model.Id = id;
                 transactionScope.Complete();
             }
         }
 
-        public void Create<T>(IEnumerable<T> models) where T : class, IPersistenceModel
+        public async Task CreateAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModel
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (DbConnection connection = _provideConnection.Connection)
@@ -52,51 +53,51 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
                 connection.Open();
                 foreach (var model in models)
                 {
-                    long id = connection.Insert(model);
+                    long id = await connection.InsertAsync(model).ConfigureAwait(false);
                     model.Id = id;
                 }
                 transactionScope.Complete();
             }
         }
 
-        public T Read<T>(long id) where T : class, IPersistenceModel
+        public async Task<T> ReadAsync<T>(long id) where T : class, IPersistenceModel
         {
             T ret;
             using (TransactionScope transactionScope = new TransactionScope())
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                ret = connection.Get<T>(id);
+                ret = await connection.GetAsync<T>(id).ConfigureAwait(false);
                 transactionScope.Complete();
             }
             return ret;
         }
 
-        public IEnumerable<T> ReadAll<T>() where T : class, IPersistenceModel
+        public async Task<IEnumerable<T>> ReadAllAsync<T>() where T : class, IPersistenceModel
         {
             IList<T> ret;
             using (TransactionScope transactionScope = new TransactionScope())
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                ret = connection.GetAll<T>().ToList();
+                ret = (await connection.GetAllAsync<T>().ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }
             return ret;
         }
 
-        public void Update<T>(T model) where T : class, IPersistenceModel
+        public async Task UpdateAsync<T>(T model) where T : class, IPersistenceModel
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                connection.Update(model);
+                await connection.UpdateAsync(model).ConfigureAwait(false);
                 transactionScope.Complete();
             }
         }
 
-        public void Update<T>(IEnumerable<T> models) where T : class, IPersistenceModel
+        public async Task UpdateAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModel
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (DbConnection connection = _provideConnection.Connection)
@@ -104,13 +105,13 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
                 connection.Open();
                 foreach (var model in models)
                 {
-                    connection.Update(model);
+                    await connection.UpdateAsync(model).ConfigureAwait(false);
                 }
                 transactionScope.Complete();
             }
         }
 
-        public void Delete<T>(T model) where T : class, IPersistenceModel
+        public async Task DeleteAsync<T>(T model) where T : class, IPersistenceModel
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (DbConnection connection = _provideConnection.Connection)
@@ -136,16 +137,16 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
                         break;
                 }
 
-                connection.Delete(model);
+                await connection.DeleteAsync(model).ConfigureAwait(false);
                 transactionScope.Complete();
             }
         }
 
-        public void Delete<T>(IEnumerable<T> models) where T : class, IPersistenceModel
+        public async Task DeleteAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModel
         {
             foreach (var model in models)
             {
-                this.Delete(model);
+                await DeleteAsync(model).ConfigureAwait(false);
             }
         }
     }

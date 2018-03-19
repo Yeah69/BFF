@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Threading.Tasks;
 using System.Transactions;
 using BFF.Helper.Import;
 using Dapper.Contrib.Extensions;
@@ -15,7 +16,7 @@ namespace BFF.DB.SQLite
             _provideConnection = provideConnection;
         }
 
-        public void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments)
+        public async Task PopulateDatabaseAsync(ImportLists importLists, ImportAssignments importAssignments)
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (DbConnection connection = _provideConnection.Connection)
@@ -31,7 +32,7 @@ namespace BFF.DB.SQLite
                 while (categoriesOrder.Count > 0)
                 {
                     CategoryImportWrapper current = categoriesOrder.Dequeue();
-                    var id = connection.Insert(current.Category);
+                    var id = await connection.InsertAsync(current.Category).ConfigureAwait(false);
                     foreach (PersistenceModels.IHaveCategory currentTitAssignment in current.TitAssignments)
                     {
                         currentTitAssignment.CategoryId = id;
@@ -44,7 +45,7 @@ namespace BFF.DB.SQLite
                 }
                 foreach (PersistenceModels.Payee payee in importLists.Payees)
                 {
-                    var id = connection.Insert(payee);
+                    var id = await connection.InsertAsync(payee).ConfigureAwait(false);
                     foreach (PersistenceModels.IHavePayee transIncBase in importAssignments.PayeeToTransactionBase[payee])
                     {
                         transIncBase.PayeeId = id;
@@ -52,7 +53,7 @@ namespace BFF.DB.SQLite
                 }
                 foreach (PersistenceModels.Flag flag in importLists.Flags)
                 {
-                    var id = connection.Insert(flag);
+                    var id = await connection.InsertAsync(flag).ConfigureAwait(false);
                     foreach (PersistenceModels.IHaveFlag transBase in importAssignments.FlagToTransBase[flag])
                     {
                         transBase.FlagId = id;
@@ -60,7 +61,7 @@ namespace BFF.DB.SQLite
                 }
                 foreach (PersistenceModels.Account account in importLists.Accounts)
                 {
-                    var id = connection.Insert(account);
+                    var id = await connection.InsertAsync(account).ConfigureAwait(false);
                     foreach (PersistenceModels.IHaveAccount transIncBase in importAssignments.AccountToTransactionBase[account])
                     {
                         transIncBase.AccountId = id;
@@ -76,20 +77,18 @@ namespace BFF.DB.SQLite
                 }
                 foreach (PersistenceModels.Trans parentTransaction in importLists.ParentTransactions)
                 {
-                    var id = connection.Insert(parentTransaction);
+                    var id = await connection.InsertAsync(parentTransaction).ConfigureAwait(false);
                     foreach (PersistenceModels.SubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
                     {
                         subTransaction.ParentId = id;
                     }
                 }
 
-                connection.Insert(importLists.Transactions);
-
-                connection.Insert(importLists.SubTransactions);
-
-                connection.Insert(importLists.Transfers);
-
-                connection.Insert(importLists.BudgetEntries);
+                await Task.WhenAll(
+                    connection.InsertAsync(importLists.Transactions),
+                    connection.InsertAsync(importLists.SubTransactions),
+                    connection.InsertAsync(importLists.Transfers),
+                    connection.InsertAsync(importLists.BudgetEntries)).ConfigureAwait(false);
 
                 transactionScope.Complete();
             }

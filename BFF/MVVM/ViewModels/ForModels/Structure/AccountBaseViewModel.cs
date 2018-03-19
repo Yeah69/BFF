@@ -6,11 +6,13 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
+using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
@@ -81,11 +83,16 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
         private readonly Lazy<IAccountViewModelService> _accountViewModelService;
+        private readonly IAccountRepository _accountRepository;
         private readonly IParentTransactionViewModelService _parentTransactionViewModelService;
         private readonly Func<ITransaction, ITransactionViewModel> _transactionViewModelFactory;
         private readonly Func<ITransfer, ITransferViewModel> _transferViewModelFactory;
         private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
         private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
+        private readonly IAccount _account;
+        private long? _balance = 0;
+        private long? _balanceUntilNow = 0;
+
         protected IDataVirtualizingCollection<ITransLikeViewModel> _tits;
 
         /// <summary>
@@ -102,16 +109,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Collection of TITs, which are about to be inserted to this Account.
         /// </summary>
         public ObservableCollection<ITransLikeViewModel> NewTransList { get; } = new ObservableCollection<ITransLikeViewModel>();
-
-        /// <summary>
-        /// The current Balance of this Account.
-        /// </summary>
-        public abstract long? Balance { get; }
-
-        /// <summary>
-        /// The Balance of this Account considering future out- and inflows.
-        /// </summary>
-        public abstract long? BalanceUntilNow { get; }
+        
+        public long? Balance => _balance;
+        
+        public long? BalanceUntilNow => _balanceUntilNow;
 
         public IReactiveProperty<bool> IsOpen { get; }
 
@@ -144,23 +145,18 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Indicates if the date format should be display in short or long fashion.
         /// </summary>
         public bool IsDateFormatLong => Settings.Default.Culture_DefaultDateLong;
-
-        /// <summary>
-        /// Initializes a AccountBaseViewModel.
-        /// </summary>
-        /// <param name="account">The model.</param>
-        /// <param name="accountViewModelService">Fetches accounts.</param>
-        /// <param name="parentTransactionViewModelService">Fetches parent transactions</param>
-        /// <param name="transactionViewModelFactory">Creates transactions.</param>
-        /// <param name="transferViewModelFactory">Creates transfers.</param>
+        
         protected AccountBaseViewModel(
             IAccount account,
             Lazy<IAccountViewModelService> accountViewModelService,
+            IAccountRepository accountRepository,
             IParentTransactionViewModelService parentTransactionViewModelService,
             Func<ITransaction, ITransactionViewModel> transactionViewModelFactory,
             Func<ITransfer, ITransferViewModel> transferViewModelFactory) : base(account)
         {
+            _account = account;
             _accountViewModelService = accountViewModelService;
+            _accountRepository = accountRepository;
             _parentTransactionViewModelService = parentTransactionViewModelService;
             _transactionViewModelFactory = transactionViewModelFactory;
             _transferViewModelFactory = transferViewModelFactory;
@@ -224,7 +220,24 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Refreshes the Balance.
         /// </summary>
-        public abstract void RefreshBalance();
+        public void RefreshBalance()
+        {
+            if (IsOpen.Value)
+            {
+                Task.Run(() => _accountRepository.GetBalanceAsync(_account))
+                    .ContinueWith(t =>
+                    {
+                        _balance = t.Result;
+                        OnPropertyChanged(nameof(Balance));
+                    });
+                Task.Run(() => _accountRepository.GetBalanceUntilNowAsync(_account))
+                    .ContinueWith(t =>
+                    {
+                        _balanceUntilNow = t.Result;
+                        OnPropertyChanged(nameof(BalanceUntilNow));
+                    });
+            }
+        }
 
         /// <summary>
         /// Refreshes the TITs of this Account.

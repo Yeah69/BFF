@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using Autofac.Features.OwnedInstances;
@@ -254,9 +255,14 @@ namespace BFF.MVVM.ViewModels
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     var ownedCreateProvideConnection = ownedCreateProvideConnectionFactory();
-                    createCreateBackendOrm(ownedCreateProvideConnection.Value(saveFileDialog.FileName)).Create();
-                    ownedCreateProvideConnection.Dispose();
-                    Reset(saveFileDialog.FileName);
+                    createCreateBackendOrm(ownedCreateProvideConnection.Value(saveFileDialog.FileName))
+                        .CreateAsync()
+                        .ContinueWith(
+                            t =>
+                            {
+                                ownedCreateProvideConnection.Dispose();
+                                Reset(saveFileDialog.FileName);
+                            }, TaskScheduler.Current);
                 }
             });
 

@@ -29,7 +29,6 @@ namespace BFF.MVVM.ViewModels.ForModels
     {
         private readonly IAccount _account;
         private readonly ITransRepository _transRepository;
-        private readonly IAccountRepository _accountRepository;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
 
         /// <summary>
@@ -68,14 +67,14 @@ namespace BFF.MVVM.ViewModels.ForModels
             Func<ITransfer, ITransferViewModel> dependingTransferViewModelFactory) 
             : base(
                 account,
-                accountViewModelService, 
+                accountViewModelService,
+                accountRepository,
                 parentTransactionViewModelService, 
                 dependingTransactionViewModelFactory, 
                 dependingTransferViewModelFactory)
         {
             _account = account;
             _transRepository = transRepository;
-            _accountRepository = accountRepository;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
 
             StartingBalance = account
@@ -105,36 +104,14 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         protected override IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess
             => new RelayBasicAsyncDataAccess<ITransLikeViewModel>(
-                (offset, pageSize) => CreatePacket(_transRepository.GetPage(offset, pageSize, _account)),
-                () => (int) _transRepository.GetCount(_account),
+                (offset, pageSize) => CreatePacket(_transRepository.GetPageAsync(offset, pageSize, _account).Result),
+                () => (int) _transRepository.GetCountAsync(_account).Result,
                 () => new TransLikeViewModelPlaceholder());
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
         public override IDataVirtualizingCollection<ITransLikeViewModel> Tits => _tits ?? CreateDataVirtualizingCollection();
-
-        /// <summary>
-        /// The current Balance of this Account.
-        /// </summary>
-        public override long? Balance => _accountRepository.GetBalance(_account);
-
-        /// <summary>
-        /// The current Balance of this Account.
-        /// </summary>
-        public override long? BalanceUntilNow => _accountRepository.GetBalanceUntilNow(_account);
-
-        /// <summary>
-        /// Refreshes the Balance.
-        /// </summary>
-        public override void RefreshBalance()
-        {
-            if (IsOpen.Value)
-            {
-                OnPropertyChanged(nameof(Balance));
-                OnPropertyChanged(nameof(BalanceUntilNow));
-            }
-        }
 
         /// <summary>
         /// Refreshes the TITs of this Account.

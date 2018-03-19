@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -6,7 +7,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 {
     public interface IBudgetEntryRepository : IWriteOnlyRepositoryBase<Domain.IBudgetEntry>
     {
-        Domain.IBudgetEntry Convert(BudgetEntry budgetEntry, long outflow, long balance);
+        Task<Domain.IBudgetEntry> Convert(BudgetEntry budgetEntry, long outflow, long balance);
     }
 
 
@@ -28,13 +29,13 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Budget = domainBudgetEntry.Budget
             };
 
-        public Domain.IBudgetEntry Convert(BudgetEntry budgetEntry, long outflow, long balance)
+        public async Task<Domain.IBudgetEntry> Convert(BudgetEntry budgetEntry, long outflow, long balance)
         {
             return new Domain.BudgetEntry(
                 this, 
                 budgetEntry.Id, 
                 budgetEntry.Month,
-                _categoryRepository.Find(budgetEntry.CategoryId ?? 0L), 
+                await _categoryRepository.FindAsync(budgetEntry.CategoryId ?? 0L), 
                 budgetEntry.Budget, 
                 outflow, 
                 balance);

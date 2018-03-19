@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
+using BFF.MVVM.Models.Native;
 using Category = BFF.DB.PersistenceModels.Category;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -27,7 +29,16 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
 
 
-        protected override IEnumerable<Category> FindAllInner() => _categoryOrm.ReadIncomeCategories();
+        protected override Task<IIncomeCategory> ConvertToDomainAsync(Category persistenceModel)
+        {
+            return Task.FromResult<IIncomeCategory>(
+                new IncomeCategory(this,
+                    persistenceModel.Id,
+                    persistenceModel.Name,
+                    persistenceModel.MonthOffset));
+        }
+
+        protected override Task<IEnumerable<Category>> FindAllInner() => _categoryOrm.ReadIncomeCategoriesAsync();
 
         protected override Converter<MVVM.Models.Native.IIncomeCategory, Category> ConvertToPersistence => domainCategory =>
             new Category
@@ -38,11 +49,5 @@ namespace BFF.DB.Dapper.ModelRepositories
                 IsIncomeRelevant = true,
                 MonthOffset = domainCategory.MonthOffset
             };
-
-        protected override Converter<Category, MVVM.Models.Native.IIncomeCategory> ConvertToDomain => persistenceCategory => 
-            new MVVM.Models.Native.IncomeCategory(this,
-                persistenceCategory.Id,
-                persistenceCategory.Name,
-                persistenceCategory.MonthOffset);
     }
 }

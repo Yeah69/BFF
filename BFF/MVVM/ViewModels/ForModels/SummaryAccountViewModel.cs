@@ -29,8 +29,6 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel, IOncePerBackend
     {
-        private readonly ISummaryAccount _summaryAccount;
-        private readonly IAccountRepository _accountRepository;
         private readonly Lazy<IAccountViewModelService> _service;
         private readonly ITransRepository _transRepository;
 
@@ -58,13 +56,12 @@ namespace BFF.MVVM.ViewModels.ForModels
             Func<ITransfer, ITransferViewModel> dependingTransferViewModelFactory) 
             : base(
                 summaryAccount,
-                service, 
+                service,
+                accountRepository,
                 parentTransactionViewModelService,
                 dependingTransactionViewModelFactory,
                 dependingTransferViewModelFactory)
         {
-            _summaryAccount = summaryAccount;
-            _accountRepository = accountRepository;
             _service = service;
             _transRepository = transRepository;
             IsOpen.Value = true;
@@ -109,24 +106,12 @@ namespace BFF.MVVM.ViewModels.ForModels
             Disposable.Create(() => { Messenger.Default.Unregister<SummaryAccountMessage>(this); }).AddTo(CompositeDisposable);
         }
 
-        /// <summary>
-        /// Refreshes the Balance.
-        /// </summary>
-        public override void RefreshBalance()
-        {
-            if (IsOpen.Value)
-            {
-                OnPropertyChanged(nameof(Balance));
-                OnPropertyChanged(nameof(BalanceUntilNow));
-            }
-        }
-
         #region ViewModel_Part
 
         protected override IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess
             => new RelayBasicAsyncDataAccess<ITransLikeViewModel>(
-                (offset, pageSize) => CreatePacket(_transRepository.GetPage(offset, pageSize, null)),
-                () => (int) _transRepository.GetCount(null),
+                (offset, pageSize) => CreatePacket(_transRepository.GetPageAsync(offset, pageSize, null).Result),
+                () => (int) _transRepository.GetCountAsync(null).Result,
                 () => new TransLikeViewModelPlaceholder());
 
         /// <summary>
@@ -149,13 +134,6 @@ namespace BFF.MVVM.ViewModels.ForModels
                 Task.Run(() => temp?.Dispose());
             }
         }
-
-        /// <summary>
-        /// The sum of all accounts balances.
-        /// </summary>
-        public override long? Balance => _accountRepository.GetBalance(_summaryAccount);
-
-        public override long? BalanceUntilNow => _accountRepository.GetBalanceUntilNow(_summaryAccount);
 
         /// <summary>
         /// Creates a new Transaction.

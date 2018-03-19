@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
@@ -48,24 +49,26 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Type = nameof(TransType.Transaction)
             };
 
-        protected override Converter<Trans, Domain.ITransaction> ConvertToDomain => persistenceTransaction => 
-            new Domain.Transaction(
+        protected override async Task<Domain.ITransaction> ConvertToDomainAsync(Trans persistenceModel)
+        {
+            return new Domain.Transaction(
                 this,
-                persistenceTransaction.Date,
-                persistenceTransaction.Id,
-                persistenceTransaction.FlagId is null 
-                    ? null 
-                    :_flagRepository.Find((long)persistenceTransaction.FlagId),
-                persistenceTransaction.CheckNumber,
-                _accountRepository.Find(persistenceTransaction.AccountId),
-                persistenceTransaction.PayeeId is null 
-                    ? null 
-                    : _payeeRepository.Find((long) persistenceTransaction.PayeeId),
-                persistenceTransaction.CategoryId is null
-                    ? null 
-                    : _categoryBaseRepository.Find((long) persistenceTransaction.CategoryId),
-                persistenceTransaction.Memo,
-                persistenceTransaction.Sum,
-                persistenceTransaction.Cleared == 1L);
+                persistenceModel.Date,
+                persistenceModel.Id,
+                persistenceModel.FlagId is null
+                    ? null
+                    : await _flagRepository.FindAsync((long) persistenceModel.FlagId),
+                persistenceModel.CheckNumber,
+                await _accountRepository.FindAsync(persistenceModel.AccountId),
+                persistenceModel.PayeeId is null
+                    ? null
+                    : await _payeeRepository.FindAsync((long) persistenceModel.PayeeId),
+                persistenceModel.CategoryId is null
+                    ? null
+                    : await _categoryBaseRepository.FindAsync((long) persistenceModel.CategoryId),
+                persistenceModel.Memo,
+                persistenceModel.Sum,
+                persistenceModel.Cleared == 1L);
+        }
     }
 }

@@ -282,6 +282,7 @@
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
     <Compile Include="DB\SQLite\DapperCrudOrm.cs" />
     <Compile Include="Helper\Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Helper\Extensions\EnumerableExtensions.cs" />
     <Compile Include="Helper\Extensions\GenericExtensions.cs" />
     <Compile Include="Helper\Extensions\LongExtensions.cs" />
     <Compile Include="Helper\Extensions\PointExtensions.cs" />
@@ -532,7 +533,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ru-RU.resx" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>

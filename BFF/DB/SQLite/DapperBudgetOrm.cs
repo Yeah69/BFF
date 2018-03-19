@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
@@ -126,8 +127,7 @@ SELECT Total(Sum) FROM
             _provideConnection = provideConnection;
         }
 
-        public BudgetBlock Find(
-            DateTime fromMonth, DateTime toMonth, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories)
+        public async Task<BudgetBlock> FindAsync(DateTime fromMonth, DateTime toMonth, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories)
         {
             IDictionary<DateTime, IList<(BudgetEntry Entry, long Outflow, long Balance)>> budgetEntriesPerMonth;
             long initialNotBudgetedOrOverbudgeted;
@@ -136,7 +136,7 @@ SELECT Total(Sum) FROM
             IDictionary<DateTime, long> unassignedTransactionsPerMonth;
 
             IList<DateTime> monthRange = new List<DateTime>();
- 
+
             var currentMonth = new DateTime(fromMonth.Year, fromMonth.Month, 01);
 
             do
@@ -158,29 +158,31 @@ SELECT Total(Sum) FROM
 
                 foreach (var categoryId in categoryIds)
                 {
-                    var budgetList = connection
-                        .Query<BudgetEntry>(
+                    var budgetEntriesTask = connection
+                        .QueryAsync<BudgetEntry>(
                         BudgetQuery,
                         new
                         {
                             CategoryId = categoryId,
                             Year = $"{toMonth.Year:0000}",
                             Month = $"{toMonth.Month:00}"
-                        })
-                        .ToDictionary(be => new DateTime(be.Month.Year, be.Month.Month, 1), be => be);
+                        });
 
-                    var outflowList = connection
-                        .Query<OutflowResponse>(
+                    var outflowTask = connection
+                        .QueryAsync<OutflowResponse>(
                         OutflowQuery,
                         new
                         {
                             CategoryId = categoryId,
                             Year = $"{toMonth.Year:0000}",
                             Month = $"{toMonth.Month:00}"
-                        })
-                        .ToDictionary(or => new DateTime(or.Month.Year, or.Month.Month, 1), or => or.Sum);
+                        });
 
                     long entryBudgetValue = 0L;
+
+                    var budgetList = (await budgetEntriesTask.ConfigureAwait(false)).ToDictionary(be => new DateTime(be.Month.Year, be.Month.Month, 1), be => be);
+
+                    var outflowList = (await outflowTask.ConfigureAwait(false)).ToDictionary(or => new DateTime(or.Month.Year, or.Month.Month, 1), or => or.Sum);
 
                     var previous = budgetList
                         .Keys
@@ -227,39 +229,39 @@ SELECT Total(Sum) FROM
 
                         entryBudgetValue = Math.Max(0L, currentValue);
                     }
-                    
+
                 }
-                
+
                 var groupedBudgetEntriesPerMonth = budgetEntries
                     .GroupBy(be => be.Entry.Month).ToDictionary(g => g.Key);
 
                 budgetEntriesPerMonth = monthRange
                     .Select(m =>
                         (m, groupedBudgetEntriesPerMonth.ContainsKey(m)
-                            ? (IList<(BudgetEntry Entry, long Outflow, long Balance)>) groupedBudgetEntriesPerMonth[m].ToList()
+                            ? (IList<(BudgetEntry Entry, long Outflow, long Balance)>)groupedBudgetEntriesPerMonth[m].ToList()
                             : new List<(BudgetEntry Entry, long Outflow, long Balance)>()))
                     .ToDictionary(vt => vt.m, vt => vt.Item2);
 
                 long firstBalance = 0;
-                if(budgetEntriesPerMonth.Any())
+                if (budgetEntriesPerMonth.Any())
                     firstBalance = budgetEntriesPerMonth[monthRange[0]].Where(be => be.Balance > 0).Sum(be => be.Balance);
 
                 initialNotBudgetedOrOverbudgeted =
-                    connection.QueryFirst<long?>(NotBudgetedOrOverbudgetedQuery,
+                    await connection.QueryFirstAsync<long?>(NotBudgetedOrOverbudgetedQuery,
                         new
                         {
                             Year = $"{fromMonth.Year:0000}",
                             Month = $"{fromMonth.Month:00}"
-                        }) ?? 0L;
-                
+                        }).ConfigureAwait(false) ?? 0L;
+
                 foreach (var incomeCategory in incomeCategories)
                 {
-                    initialNotBudgetedOrOverbudgeted += connection.QueryFirst<long?>(IncomeForCategoryUntilMonthQuery(incomeCategory.MonthOffset), new
-                                     {
-                                         CategoryId = incomeCategory.Id,
-                                         Year = $"{fromMonth.Year:0000}",
-                                         Month = $"{fromMonth.Month:00}"
-                                     }) ?? 0L;
+                    initialNotBudgetedOrOverbudgeted += await connection.QueryFirstAsync<long?>(IncomeForCategoryUntilMonthQuery(incomeCategory.MonthOffset), new
+                    {
+                        CategoryId = incomeCategory.Id,
+                        Year = $"{fromMonth.Year:0000}",
+                        Month = $"{fromMonth.Month:00}"
+                    }).ConfigureAwait(false) ?? 0L;
                 }
 
                 initialNotBudgetedOrOverbudgeted -= firstBalance;
@@ -267,14 +269,14 @@ SELECT Total(Sum) FROM
                 if (budgetEntriesPerMonth.Any())
                     initialNotBudgetedOrOverbudgeted -= budgetEntriesPerMonth[monthRange[0]].Where(be => be.Balance < 0).Sum(be => be.Balance);
 
-                initialNotBudgetedOrOverbudgeted += connection.QueryFirst<long?>(DanglingTransferUntilMonthQuery, new
+                initialNotBudgetedOrOverbudgeted += await connection.QueryFirstAsync<long?>(DanglingTransferUntilMonthQuery, new
                 {
                     Year = $"{fromMonth.Year:0000}",
                     Month = $"{fromMonth.Month:00}"
-                }) ?? 0L;
+                }).ConfigureAwait(false) ?? 0L;
 
                 incomesPerMonth = monthRange
-                    .Select(m => 
+                    .Select(m =>
                     {
                         long incomeSum = 0;
                         foreach (var incomeCategory in incomeCategories)

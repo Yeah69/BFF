@@ -142,8 +142,7 @@ namespace BFF.Helper.Import
             };
 
             //Third step: Create new database for imported data
-            _createBackendOrm.Create();
-            _importingOrm.PopulateDatabase(lists, assignments);
+            _createBackendOrm.CreateAsync().ContinueWith(t => _importingOrm.PopulateDatabaseAsync(lists, assignments));
         }
 
         private static List<Transaction> ParseTransactionCsv(string filePath)

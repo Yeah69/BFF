@@ -148,13 +148,14 @@ namespace BFF.MVVM.ViewModels
                             DateTime fromMonth = IndexToMonth(offset);
                             DateTime toMonth = IndexToMonth(offset + pageSize - 1);
 
-                            return _budgetMonthRepository.Find(fromMonth, toMonth)
+                            return _budgetMonthRepository.FindAsync(fromMonth, toMonth)
+                                .Result
                                 .Select(bm =>
                                     (IBudgetMonthViewModel) new BudgetMonthViewModel(bm, _budgetEntryViewModelService))
                                 .ToArray();
                         },
                         () => LastMonthIndex),
-                    6);
+                    pageSize: 6);
         }
 
         private static DateTime IndexToMonth(int index)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -65,10 +66,16 @@ namespace BFF.DB.Dapper.ModelRepositories
             }
         }
 
-        protected override IEnumerable<Category> FindAllInner()
+        protected override async Task<Domain.ICategory> ConvertToDomainAsync(Category persistenceModel)
         {
-            return _categoryOrm.ReadCategories();
+            return 
+                new Domain.Category(this,
+                    persistenceModel.Id,
+                    persistenceModel.Name,
+                    persistenceModel.ParentId != null ? await FindAsync((long)persistenceModel.ParentId) : null);
         }
+
+        protected override Task<IEnumerable<Category>> FindAllInner() => _categoryOrm.ReadCategoriesAsync();
 
         protected override Converter<Domain.ICategory, Category> ConvertToPersistence => domainCategory => 
             new Category
@@ -77,11 +84,5 @@ namespace BFF.DB.Dapper.ModelRepositories
                 ParentId = domainCategory.Parent?.Id,
                 Name = domainCategory.Name
             };
-        
-        protected override Converter<Category, Domain.ICategory> ConvertToDomain => persistenceCategory => 
-            new Domain.Category(this,
-                persistenceCategory.Id,
-                persistenceCategory.Name,
-                persistenceCategory.ParentId != null ? Find((long)persistenceCategory.ParentId) : null);
     }
 }

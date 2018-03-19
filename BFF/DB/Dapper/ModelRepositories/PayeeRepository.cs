@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -28,7 +29,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Name = domainPayee.Name
             };
 
-        protected override Converter<Payee, Domain.IPayee> ConvertToDomain => persistencePayee =>
-            new Domain.Payee(this, persistencePayee.Id, persistencePayee.Name);
+        protected override Task<Domain.IPayee> ConvertToDomainAsync(Payee persistenceModel)
+        {
+            return Task.FromResult<Domain.IPayee>(new Domain.Payee(this, persistenceModel.Id, persistenceModel.Name));
+        }
     }
 }

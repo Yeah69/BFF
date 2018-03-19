@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -18,11 +19,11 @@ namespace BFF.DB.Dapper.ModelRepositories
             _incomeCategoryRepository = incomeCategoryRepository;
         }
 
-        public ICategoryBase Find(long id)
+        public Task<ICategoryBase> FindAsync(long id)
         {
-            ICategoryBase ret = _categoryRepository.All.FirstOrDefault(c => c.Id == id);
-            if (ret != null) return ret;
-            return _incomeCategoryRepository.All.FirstOrDefault(ic => ic.Id == id);
+            ICategoryBase ret = _incomeCategoryRepository.All.FirstOrDefault(ic => ic.Id == id); 
+            if (ret != null) return Task.FromResult(ret);
+            return Task.FromResult<ICategoryBase>(_categoryRepository.All.FirstOrDefault(c => c.Id == id));
         }
     }
 }

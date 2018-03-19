@@ -1,4 +1,5 @@
 ﻿using System.Data.Common;
+using System.Threading.Tasks;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
 using Dapper;
@@ -90,27 +91,24 @@ namespace BFF.DB.SQLite
             _provideConnection = provideConnection;
         }
 
-        public void Create()
+        public async Task CreateAsync()
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
 
-                connection.Execute(CreateAccountTableStatement);
-                connection.Execute(CreateFlagTableStatement);
-                connection.Execute(CreatePayeeTableStatement);
-                connection.Execute(CreateCategoryTableStatement);
-
-                connection.Execute(CreateTransTableStatement);
-                connection.Execute(CreateSubTransactionTableStatement);
-
-                connection.Execute(CreateDbSettingTableStatement);
-                connection.Insert(new DbSetting());
-
-                connection.Execute(CreateBudgetEntryTableStatement);
-
-                connection.Execute(SetDatabaseSchemaVersion);
+                await Task.WhenAll(
+                    connection.ExecuteAsync(CreateAccountTableStatement),
+                    connection.ExecuteAsync(CreateFlagTableStatement),
+                    connection.ExecuteAsync(CreatePayeeTableStatement),
+                    connection.ExecuteAsync(CreateCategoryTableStatement),
+                    connection.ExecuteAsync(CreateTransTableStatement),
+                    connection.ExecuteAsync(CreateSubTransactionTableStatement),
+                    connection.ExecuteAsync(CreateDbSettingTableStatement),
+                    connection.ExecuteAsync(CreateBudgetEntryTableStatement),
+                    connection.ExecuteAsync(SetDatabaseSchemaVersion)).ConfigureAwait(false);
+                await connection.InsertAsync(new DbSetting()).ConfigureAwait(false);
 
                 transactionScope.Complete();
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -15,9 +16,9 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public interface IAccountRepository : IObservableRepositoryBase<Domain.IAccount>
     {
-        long? GetBalance(Domain.IAccount account);
+        Task<long?> GetBalanceAsync(Domain.IAccount account);
 
-        long? GetBalanceUntilNow(Domain.IAccount account);
+        Task<long?> GetBalanceUntilNowAsync(Domain.IAccount account);
     }
 
     public sealed class AccountRepository : ObservableRepositoryBase<Domain.IAccount, Account>, IAccountRepository
@@ -38,50 +39,51 @@ namespace BFF.DB.Dapper.ModelRepositories
                 StartingDate = domainAccount.StartingDate
             };
 
-        protected override Converter<Account, Domain.IAccount> ConvertToDomain => persistenceAccount => 
-            new Domain.Account(this,
-                persistenceAccount.StartingDate,
-                persistenceAccount.Id,
-                persistenceAccount.Name,
-                persistenceAccount.StartingBalance);
+        protected override Task<Domain.IAccount> ConvertToDomainAsync(Account persistenceModel) =>
+            Task.FromResult<Domain.IAccount>(
+                new Domain.Account(this,
+                persistenceModel.StartingDate,
+                persistenceModel.Id,
+                persistenceModel.Name,
+                persistenceModel.StartingBalance));
 
-        public long? GetBalance(Domain.IAccount account)
-        {
-            try
-            {
-                switch(account)
-                {
-                    case Domain.ISummaryAccount _:
-                        return _accountOrm.GetOverallBalance();
-                    case Domain.IAccount specificAccount:
-                        return _accountOrm.GetBalance(specificAccount.Id);
-                    default:
-                        return null;
-                }
-            }
-            catch (OverflowException)
-            {
-                return null;
-            }
-        }
-
-        public long? GetBalanceUntilNow(Domain.IAccount account)
+        public Task<long?> GetBalanceAsync(Domain.IAccount account)
         {
             try
             {
                 switch (account)
                 {
                     case Domain.ISummaryAccount _:
-                        return _accountOrm.GetOverallBalanceUntilNow();
+                        return _accountOrm.GetOverallBalanceAsync();
                     case Domain.IAccount specificAccount:
-                        return _accountOrm.GetBalanceUntilNow(specificAccount.Id);
+                        return _accountOrm.GetBalanceAsync(specificAccount.Id);
                     default:
-                        return null;
+                        return Task.FromResult<long?>(null);
                 }
             }
             catch (OverflowException)
             {
-                return null;
+                return Task.FromResult<long?>(null);
+            }
+        }
+
+        public Task<long?> GetBalanceUntilNowAsync(Domain.IAccount account)
+        {
+            try
+            {
+                switch (account)
+                {
+                    case Domain.ISummaryAccount _:
+                        return _accountOrm.GetOverallBalanceUntilNowAsync();
+                    case Domain.IAccount specificAccount:
+                        return _accountOrm.GetBalanceUntilNowAsync(specificAccount.Id);
+                    default:
+                        return Task.FromResult<long?>(null);
+                }
+            }
+            catch (OverflowException)
+            {
+                return Task.FromResult<long?>(null);
             }
         }
     }

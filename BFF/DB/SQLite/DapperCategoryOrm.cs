@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
 using Dapper;
@@ -19,27 +20,27 @@ namespace BFF.DB.SQLite
             _provideConnection = provideConnection;
         }
 
-        public IEnumerable<Category> ReadCategories()
+        public async Task<IEnumerable<Category>> ReadCategoriesAsync()
         {
             IList<Category> ret;
             using (TransactionScope transactionScope = new TransactionScope())
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                ret = connection.Query<Category>(GetAllCategoriesQuery).ToList();
+                ret = (await connection.QueryAsync<Category>(GetAllCategoriesQuery).ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }
             return ret;
         }
 
-        public IEnumerable<Category> ReadIncomeCategories()
+        public async Task<IEnumerable<Category>> ReadIncomeCategoriesAsync()
         {
             IList<Category> ret;
             using (TransactionScope transactionScope = new TransactionScope())
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                ret = connection.Query<Category>(GetAllIncomeCategoriesQuery).ToList();
+                ret = (await connection.QueryAsync<Category>(GetAllIncomeCategoriesQuery).ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }
             return ret;

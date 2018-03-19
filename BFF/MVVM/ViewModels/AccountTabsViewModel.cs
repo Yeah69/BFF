@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -42,7 +41,7 @@ namespace BFF.MVVM.ViewModels
             SummaryAccountViewModel = summaryAccountViewModel;
             NewAccountViewModel = newAccountViewModel;
 
-            IDbSetting dbSetting = _dbSettingRepository.Find(1);
+            IDbSetting dbSetting = _dbSettingRepository.FindAsync(1).Result;
             Settings.Default.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultureName);
             Settings.Default.Culture_SessionDate = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
             ManageCultures();
@@ -63,7 +62,7 @@ namespace BFF.MVVM.ViewModels
         protected override void SaveCultures()
         {
             Settings.Default.Save();
-            IDbSetting dbSetting = _dbSettingRepository.Find(1);
+            IDbSetting dbSetting = _dbSettingRepository.FindAsync(1).Result;
             dbSetting.CurrencyCulture = Settings.Default.Culture_SessionCurrency;
             dbSetting.DateCulture = Settings.Default.Culture_SessionDate;
         }

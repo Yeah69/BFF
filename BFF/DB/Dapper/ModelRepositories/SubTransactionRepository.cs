@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper.Extensions;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
     public interface ISubTransactionRepository : IRepositoryBase<Domain.ISubTransaction>
     {
-        IEnumerable<Domain.ISubTransaction> GetChildrenOf(long parentId);
+        Task<IEnumerable<Domain.ISubTransaction>> GetChildrenOfAsync(long parentId);
     }
 
     public sealed class SubTransactionRepository : RepositoryBase<Domain.ISubTransaction, SubTransaction>, ISubTransactionRepository
@@ -36,17 +38,20 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Sum = domainSubTransaction.Sum
             };
 
-        protected override Converter<SubTransaction, Domain.ISubTransaction> ConvertToDomain => persistenceSubTransaction =>
-            new Domain.SubTransaction(
-                this,
-                persistenceSubTransaction.Id,
-                persistenceSubTransaction.CategoryId is null 
-                    ? null 
-                    : _categoryBaseRepository.Find((long)persistenceSubTransaction.CategoryId),
-                persistenceSubTransaction.Memo,
-                persistenceSubTransaction.Sum);
+        public async Task<IEnumerable<Domain.ISubTransaction>> GetChildrenOfAsync(long parentId) =>
+            await (await _parentalOrm.ReadSubTransactionsOfAsync(parentId).ConfigureAwait(false))
+                .Select(async sti => await ConvertToDomainAsync(sti)).ToAwaitableEnumerable();
 
-        public IEnumerable<Domain.ISubTransaction> GetChildrenOf(long parentId) =>
-            _parentalOrm.ReadSubTransactionsOf(parentId).Select(sti => ConvertToDomain(sti));
+        protected override async Task<Domain.ISubTransaction> ConvertToDomainAsync(SubTransaction persistenceModel)
+        {
+            return new Domain.SubTransaction(
+                this,
+                persistenceModel.Id,
+                persistenceModel.CategoryId is null
+                    ? null
+                    : await _categoryBaseRepository.FindAsync((long)persistenceModel.CategoryId),
+                persistenceModel.Memo,
+                persistenceModel.Sum);
+        }
     }
 }

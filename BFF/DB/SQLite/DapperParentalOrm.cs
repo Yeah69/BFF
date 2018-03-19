@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
 using Dapper;
@@ -28,6 +29,19 @@ namespace BFF.DB.SQLite
             {
                 connection.Open();
                 ret = connection.Query<SubTransaction>(ParentalQuery, new { ParentId = parentTransactionId }).ToList();
+                transactionScope.Complete();
+            }
+            return ret;
+        }
+
+        public async Task<IEnumerable<SubTransaction>> ReadSubTransactionsOfAsync(long parentTransactionId)
+        {
+            IList<SubTransaction> ret;
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
+            {
+                connection.Open();
+                ret = (await connection.QueryAsync<SubTransaction>(ParentalQuery, new { ParentId = parentTransactionId }).ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }
             return ret;

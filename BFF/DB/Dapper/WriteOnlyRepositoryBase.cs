@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
 
@@ -27,37 +28,33 @@ namespace BFF.DB.Dapper
 
         protected abstract Converter<TDomain, TPersistence> ConvertToPersistence { get; }
 
-        public virtual void Add(TDomain dataModel)
+        public virtual async Task Add(TDomain dataModel)
         {
             if (dataModel.Id > 0) return;
             var persistenceModel = ConvertToPersistence(dataModel);
-            _crudOrm.Create(persistenceModel);
+            await _crudOrm.CreateAsync(persistenceModel);
             dataModel.Id = persistenceModel.Id;
         }
 
-        public virtual void Update(TDomain dataModel)
+        public virtual async Task Update(TDomain dataModel)
         {
             if (dataModel.Id < 0) return;
-            _crudOrm.Update(ConvertToPersistence(dataModel));
+            await _crudOrm.UpdateAsync(ConvertToPersistence(dataModel));
         }
 
-        public virtual void Delete(TDomain dataModel)
+        public virtual async Task Delete(TDomain dataModel)
         {
             if (dataModel.Id < 0) return;
-            _crudOrm.Delete(ConvertToPersistence(dataModel));
+            await _crudOrm.DeleteAsync(ConvertToPersistence(dataModel));
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-            }
         }
 
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

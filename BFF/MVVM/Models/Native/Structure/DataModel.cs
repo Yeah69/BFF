@@ -36,11 +36,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// Identification number for the database
         /// </summary>
         public long Id { get; set; } = -1L;
-
-        /// <summary>
-        /// Initializes the object
-        /// </summary>
-        /// <param name="id">Identification number for the database</param>
+        
         protected DataModel(IWriteOnlyRepository<T> repository, long id)
         {
             _repository = repository;
@@ -52,7 +48,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// </summary>
         public virtual void Insert()
         {
-            _repository.Add(this as T);
+            _repository.Add(this as T).Wait();
         }
 
         /// <summary>
@@ -60,7 +56,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// </summary>
         public virtual void Update()
         {
-            _repository.Update(this as T);
+            _repository.Update(this as T).Wait();
         }
 
         /// <summary>
@@ -68,7 +64,7 @@ namespace BFF.MVVM.Models.Native.Structure
         /// </summary>
         public virtual void Delete()
         {
-            _repository.Delete(this as T);
+            _repository.Delete(this as T).Wait();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -10,7 +11,6 @@ namespace BFF.DB.Dapper.ModelRepositories
 {
     public interface ITransRepository : 
         IRepositoryBase<ITransBase>, 
-        ISpecifiedPagedAccess<ITransBase, Domain.IAccount>,
         ISpecifiedPagedAccessAsync<ITransBase, Domain.IAccount>
     {
     }
@@ -52,77 +52,6 @@ namespace BFF.DB.Dapper.ModelRepositories
             _transOrm = transOrm;
             _flagRepository = flagRepository;
         }
-
-        protected override Converter<Trans, ITransBase> ConvertToDomain => trans =>
-        {
-            Enum.TryParse(trans.Type, true, out TransType type);
-            ITransBase ret;
-            switch(type)
-            {
-                case TransType.Transaction:
-                    ret = new Domain.Transaction(
-                        _transactionRepository, 
-                        trans.Date,
-                        trans.Id,
-                        trans.FlagId is null 
-                            ? null 
-                            : _flagRepository.Find((long) trans.FlagId),
-                        trans.CheckNumber,
-                        _accountRepository.Find(trans.AccountId),
-                        trans.PayeeId is null 
-                            ? null
-                            : _payeeRepository.Find((long) trans.PayeeId),
-                        trans.CategoryId is null 
-                            ? null 
-                            : _categoryBaseRepository.Find((long) trans.CategoryId), 
-                        trans.Memo, 
-                        trans.Sum,
-                        trans.Cleared == 1L);
-                    break;
-                case TransType.Transfer:
-                    ret = new Domain.Transfer(
-                        _transferRepository,
-                        trans.Date,
-                        trans.Id,
-                        trans.FlagId is null 
-                            ? null 
-                            : _flagRepository.Find((long) trans.FlagId),
-                        trans.CheckNumber,
-                        trans.PayeeId is null 
-                            ? null 
-                            : _accountRepository.Find((long) trans.PayeeId),
-                        trans.CategoryId is null 
-                            ? null 
-                            : _accountRepository.Find((long)trans.CategoryId),
-                        trans.Memo,
-                        trans.Sum, 
-                        trans.Cleared == 1L);
-                    break;
-                case TransType.ParentTransaction:
-                    ret = new Domain.ParentTransaction(
-                        _parentTransactionRepository,
-                        _subTransactionsRepository.GetChildrenOf(trans.Id), 
-                        trans.Date,
-                        trans.Id,
-                        trans.FlagId is null 
-                            ? null 
-                            : _flagRepository.Find((long) trans.FlagId),
-                        trans.CheckNumber,
-                        _accountRepository.Find(trans.AccountId),
-                        trans.PayeeId is null 
-                            ? null 
-                            : _payeeRepository.Find((long) trans.PayeeId),
-                        trans.Memo, 
-                        trans.Cleared == 1L);
-                    break;
-                default:
-                    ret = new Domain.Transaction(_transactionRepository, DateTime.Today)
-                        {Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR"};
-                    break;
-            }
-
-            return ret;
-        };
 
         protected override Converter<ITransBase, Trans> ConvertToPersistence => domainTransBase =>
         {
@@ -171,27 +100,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         };
 
-        public IEnumerable<ITransBase> GetPage(int offset, int pageSize, Domain.IAccount specifyingObject)
-        {
-            return (specifyingObject is Domain.IAccount account
-                ? _transOrm.GetPageFromSpecificAccount(offset, pageSize, account.Id)
-                : _transOrm.GetPageFromSummaryAccount(offset, pageSize))
-                .Select(t => ConvertToDomain(t));
-        }
-
-        public long GetCount(Domain.IAccount specifyingObject)
-        {
-            return specifyingObject is Domain.IAccount account
-                    ? _transOrm.GetCountFromSpecificAccount(account.Id)
-                    : _transOrm.GetCountFromSummaryAccount();
-        }
-
         public async Task<IEnumerable<ITransBase>> GetPageAsync(int offset, int pageSize, Domain.IAccount specifyingObject)
         {
-            return (await (specifyingObject is Domain.IAccount account
+            return await (await (specifyingObject is Domain.IAccount account
                 ? _transOrm.GetPageFromSpecificAccountAsync(offset, pageSize, account.Id)
                 : _transOrm.GetPageFromSummaryAccountAsync(offset, pageSize)).ConfigureAwait(false))
-                .Select(t => ConvertToDomain(t));
+                .Select(async t => await ConvertToDomainAsync(t)).ToAwaitableEnumerable();
         }
 
         public async Task<long> GetCountAsync(Domain.IAccount specifyingObject)
@@ -199,6 +113,77 @@ namespace BFF.DB.Dapper.ModelRepositories
             return await (specifyingObject is Domain.IAccount account
                 ? _transOrm.GetCountFromSpecificAccountAsync(account.Id)
                 : _transOrm.GetCountFromSummaryAccountAsync()).ConfigureAwait(false);
+        }
+
+        protected override async Task<ITransBase> ConvertToDomainAsync(Trans persistenceModel)
+        {
+            Enum.TryParse(persistenceModel.Type, true, out TransType type);
+            ITransBase ret;
+            switch (type)
+            {
+                case TransType.Transaction:
+                    ret = new Domain.Transaction(
+                        _transactionRepository,
+                        persistenceModel.Date,
+                        persistenceModel.Id,
+                        persistenceModel.FlagId is null
+                            ? null
+                            : await _flagRepository.FindAsync((long)persistenceModel.FlagId),
+                        persistenceModel.CheckNumber,
+                        await _accountRepository.FindAsync(persistenceModel.AccountId),
+                        persistenceModel.PayeeId is null
+                            ? null
+                            : await _payeeRepository.FindAsync((long)persistenceModel.PayeeId),
+                        persistenceModel.CategoryId is null
+                            ? null
+                            : await _categoryBaseRepository.FindAsync((long)persistenceModel.CategoryId),
+                        persistenceModel.Memo,
+                        persistenceModel.Sum,
+                        persistenceModel.Cleared == 1L);
+                    break;
+                case TransType.Transfer:
+                    ret = new Domain.Transfer(
+                        _transferRepository,
+                        persistenceModel.Date,
+                        persistenceModel.Id,
+                        persistenceModel.FlagId is null
+                            ? null
+                            : await _flagRepository.FindAsync((long)persistenceModel.FlagId),
+                        persistenceModel.CheckNumber,
+                        persistenceModel.PayeeId is null
+                            ? null
+                            : await _accountRepository.FindAsync((long)persistenceModel.PayeeId),
+                        persistenceModel.CategoryId is null
+                            ? null
+                            : await _accountRepository.FindAsync((long)persistenceModel.CategoryId),
+                        persistenceModel.Memo,
+                        persistenceModel.Sum,
+                        persistenceModel.Cleared == 1L);
+                    break;
+                case TransType.ParentTransaction:
+                    ret = new Domain.ParentTransaction(
+                        _parentTransactionRepository,
+                        await _subTransactionsRepository.GetChildrenOfAsync(persistenceModel.Id),
+                        persistenceModel.Date,
+                        persistenceModel.Id,
+                        persistenceModel.FlagId is null
+                            ? null
+                            : await _flagRepository.FindAsync((long)persistenceModel.FlagId),
+                        persistenceModel.CheckNumber,
+                        await _accountRepository.FindAsync(persistenceModel.AccountId),
+                        persistenceModel.PayeeId is null
+                            ? null
+                            : await _payeeRepository.FindAsync((long)persistenceModel.PayeeId),
+                        persistenceModel.Memo,
+                        persistenceModel.Cleared == 1L);
+                    break;
+                default:
+                    ret = new Domain.Transaction(_transactionRepository, DateTime.Today)
+                    { Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR" };
+                    break;
+            }
+
+            return ret;
         }
     }
 }

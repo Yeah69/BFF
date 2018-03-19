@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
@@ -39,15 +40,18 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         };
 
-        protected override Converter<Flag, Domain.IFlag> ConvertToDomain => persistenceModel => 
-            new Domain.Flag(
-                this,
-                Color.FromArgb(
-                    (byte)(persistenceModel.Color >> 24 & 0xff),
-                    (byte)(persistenceModel.Color >> 16 & 0xff),
-                    (byte)(persistenceModel.Color >> 8 & 0xff),
-                    (byte)(persistenceModel.Color & 0xff)),
-                persistenceModel.Id, 
-                persistenceModel.Name);
+        protected override Task<Domain.IFlag> ConvertToDomainAsync(Flag persistenceModel)
+        {
+            return Task.FromResult<Domain.IFlag>(
+                new Domain.Flag(
+                    this,
+                    Color.FromArgb(
+                        (byte) (persistenceModel.Color >> 24 & 0xff),
+                        (byte) (persistenceModel.Color >> 16 & 0xff),
+                        (byte) (persistenceModel.Color >> 8 & 0xff),
+                        (byte) (persistenceModel.Color & 0xff)),
+                    persistenceModel.Id,
+                    persistenceModel.Name));
+        }
     }
 }

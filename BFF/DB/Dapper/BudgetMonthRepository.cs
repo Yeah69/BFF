@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper
 {
     public interface IBudgetMonthRepository : IDisposable
     {
-        IList<IBudgetMonth> Find(DateTime fromMonth, DateTime toMonth);
+        Task<IList<IBudgetMonth>> FindAsync(DateTime fromMonth, DateTime toMonth);
     }
 
     public class BudgetMonthRepository : IBudgetMonthRepository
@@ -33,18 +35,18 @@ namespace BFF.DB.Dapper
             _budgetOrm = budgetOrm;
         }
 
-        public IList<IBudgetMonth> Find(DateTime fromMonth, DateTime toMonth)
+        public async Task<IList<IBudgetMonth>> FindAsync(DateTime fromMonth, DateTime toMonth)
         {
             DateTime actualFromMonth = new DateTime(
                 fromMonth.Month == 1 ? fromMonth.Year - 1 : fromMonth.Year,
                 fromMonth.Month == 1 ? 12 : fromMonth.Month - 1,
                 1);
 
-            var _ = _budgetOrm.Find(
+            var _ = await _budgetOrm.FindAsync(
                 actualFromMonth,
                 toMonth,
                 _categoryRepository.All.Select(c => c.Id).ToArray(),
-                _incomeCategoryRepository.All.Select(ic => (ic.Id, ic.MonthOffset)).ToArray());
+                _incomeCategoryRepository.All.Select(ic => (ic.Id, ic.MonthOffset)).ToArray()).ConfigureAwait(false);
 
             long currentNotBudgetedOrOverbudgeted = _.InitialNotBudgetedOrOverbudgeted;
             long currentOverspentInPreviousMonth = _.BudgetEntriesPerMonth
@@ -60,7 +62,11 @@ namespace BFF.DB.Dapper
                 var newBudgetMonth =
                     new BudgetMonth(
                         month: monthWithBudgetEntries.Key,
-                        budgetEntries: monthWithBudgetEntries.Value.Select(g => _budgetEntryRepository.Convert(g.Entry, g.Outflow, g.Balance)),
+                        budgetEntries: 
+                            await monthWithBudgetEntries
+                                .Value
+                                .Select(async g => await _budgetEntryRepository.Convert(g.Entry, g.Outflow, g.Balance))
+                                .ToAwaitableEnumerable(),
                         overspentInPreviousMonth: currentOverspentInPreviousMonth,
                         notBudgetedInPreviousMonth: currentNotBudgetedOrOverbudgeted,
                         incomeForThisMonth: _.IncomesPerMonth[monthWithBudgetEntries.Key]

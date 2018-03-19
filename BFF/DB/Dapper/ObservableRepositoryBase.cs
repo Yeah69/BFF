@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
 
@@ -17,39 +18,45 @@ namespace BFF.DB.Dapper
         where TPersistence : class, IPersistenceModel
     {
         private readonly Comparer<TDomain> _comparer;
-        private ObservableCollection<TDomain> _all;
+        private readonly Task<ObservableCollection<TDomain>> _fetchAll;
 
         public ObservableCollection<TDomain> All =>
-            _all ?? (_all = new ObservableCollection<TDomain>(FindAll().OrderBy(o => o, _comparer)));
+            _fetchAll.Result;
 
         protected ObservableRepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm, Comparer<TDomain> comparer) : base(provideConnection, crudOrm)
         {
             _comparer = comparer;
+            _fetchAll = Task.Run(FetchAll);
         }
 
-        public sealed override IEnumerable<TDomain> FindAll()
+        private async Task<ObservableCollection<TDomain>> FetchAll()
         {
-            return base.FindAll();
+            return new ObservableCollection<TDomain>((await FindAllAsync()).OrderBy(o => o, _comparer));
         }
 
-        public override void Add(TDomain dataModel)
+        public sealed override Task<IEnumerable<TDomain>> FindAllAsync()
         {
-            base.Add(dataModel);
-            if(!_all.Contains(dataModel))
+            return base.FindAllAsync();
+        }
+
+        public override async Task Add(TDomain dataModel)
+        {
+            await base.Add(dataModel);
+            if(!All.Contains(dataModel))
             {
                 int i = 0;
-                while(i < _all.Count && _comparer.Compare(dataModel, _all[i]) > 0)
+                while(i < All.Count && _comparer.Compare(dataModel, All[i]) > 0)
                     i++;
-                _all.Insert(i, dataModel);
+                All.Insert(i, dataModel);
             }
         }
 
-        public override void Delete(TDomain dataModel)
+        public override async Task Delete(TDomain dataModel)
         {
-            base.Delete(dataModel);
-            if(_all.Contains(dataModel))
+            await base.Delete(dataModel);
+            if(All.Contains(dataModel))
             {
-                _all.Remove(dataModel);
+                All.Remove(dataModel);
             }
         }
 
@@ -58,7 +65,7 @@ namespace BFF.DB.Dapper
             base.Dispose(disposing);
             if (disposing)
             {
-                _all.Clear();
+                All.Clear();
             }
         }
     }

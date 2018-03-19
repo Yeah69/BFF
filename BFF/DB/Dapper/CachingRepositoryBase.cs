@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper.Extensions;
 using NLog;
 using Domain = BFF.MVVM.Models.Native.Structure;
 
@@ -20,41 +22,43 @@ namespace BFF.DB.Dapper
 
         protected CachingRepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(provideConnection, crudOrm) { }
 
-        public override void Add(TDomain dataModel)
+        public override async Task Add(TDomain dataModel)
         {
-            base.Add(dataModel);
+            await base.Add(dataModel);
             if(!_cache.ContainsKey(dataModel.Id))
                 _cache.Add(dataModel.Id, dataModel);
         }
 
-        public override TDomain Find(long id)
+        public override async Task<TDomain> FindAsync(long id)
         {
             if(!_cache.ContainsKey(id))
             {
-                _cache.Add(id, base.Find(id));
+                _cache.Add(id, await base.FindAsync(id));
             }
             return _cache[id];
         }
 
-        public override void Delete(TDomain dataModel)
+        public override async Task Delete(TDomain dataModel)
         {
-            base.Delete(dataModel);
+            await base.Delete(dataModel);
             if(!_cache.ContainsKey(dataModel.Id))
                 _cache.Remove(dataModel.Id);
         }
 
         
 
-        public override IEnumerable<TDomain> FindAll()
+        public override async Task<IEnumerable<TDomain>> FindAllAsync()
         {
             Logger.Debug("Starting to convert all POCOs of type {0}", typeof(TPersistence).Name);
-            foreach(TPersistence element in FindAllInner())
+            ICollection<TDomain> ret = new List<TDomain>();
+            foreach(TPersistence element in await FindAllInner().ConfigureAwait(false))
             {
                 if(!_cache.ContainsKey(element.Id))
-                    _cache.Add(element.Id, ConvertToDomain(element));
-                yield return _cache[element.Id];
+                    _cache.Add(element.Id, await ConvertToDomainAsync(element).ConfigureAwait(false));
+                _cache[element.Id].AddTo(ret);
             }
             Logger.Debug("Finished converting all POCOs of type {0}", typeof(TPersistence).Name);
+            return ret;
         }
 
         protected override void Dispose(bool disposing)

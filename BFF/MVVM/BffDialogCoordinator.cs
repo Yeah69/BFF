@@ -56,7 +56,7 @@ namespace BFF.MVVM
                     break;
             }
 
-            var dialogResult = await _dialogCoordinator.ShowMessageAsync(_lazyMainWindowViewModel.Value, title, message, mahAppsDialogStyle);
+            var dialogResult = await _dialogCoordinator.ShowMessageAsync(_lazyMainWindowViewModel.Value, title, message, mahAppsDialogStyle).ConfigureAwait(false);
 
             switch (dialogResult)
             {

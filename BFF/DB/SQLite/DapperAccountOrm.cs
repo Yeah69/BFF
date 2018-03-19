@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data.Common;
-using System.Linq;
+using System.Threading.Tasks;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
@@ -50,7 +50,7 @@ namespace BFF.DB.SQLite
             _provideConnection = provideConnection;
         }
 
-        public long? GetBalance(long id)
+        public async Task<long?> GetBalanceAsync(long id)
         {
             long? ret;
 
@@ -58,14 +58,14 @@ namespace BFF.DB.SQLite
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                ret = connection.Query<long?>(AccountSpecificBalanceStatement, new { accountId = id }).FirstOrDefault();
+                ret = await connection.QueryFirstOrDefaultAsync<long?>(AccountSpecificBalanceStatement, new { accountId = id }).ConfigureAwait(false);
                 transactionScope.Complete();
             }
 
             return ret;
         }
 
-        public long? GetBalanceUntilNow(long id)
+        public async Task<long?> GetBalanceUntilNowAsync(long id)
         {
             long? ret;
 
@@ -73,14 +73,14 @@ namespace BFF.DB.SQLite
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                ret = connection.Query<long?>(AccountSpecificBalanceUntilNowStatement, new { accountId = id, DateTimeNow = DateTime.Now }).FirstOrDefault();
+                ret = await connection.QueryFirstOrDefaultAsync<long?>(AccountSpecificBalanceUntilNowStatement, new { accountId = id, DateTimeNow = DateTime.Now }).ConfigureAwait(false);
                 transactionScope.Complete();
             }
 
             return ret;
         }
 
-        public long? GetOverallBalance()
+        public async Task<long?> GetOverallBalanceAsync()
         {
             long? ret;
 
@@ -88,14 +88,14 @@ namespace BFF.DB.SQLite
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                ret = connection.Query<long?>(AllAccountsBalanceStatement).FirstOrDefault();
+                ret = await connection.QueryFirstOrDefaultAsync<long?>(AllAccountsBalanceStatement).ConfigureAwait(false);
                 transactionScope.Complete();
             }
 
             return ret;
         }
 
-        public long? GetOverallBalanceUntilNow()
+        public async Task<long?> GetOverallBalanceUntilNowAsync()
         {
             long? ret;
 
@@ -103,7 +103,7 @@ namespace BFF.DB.SQLite
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                ret = connection.Query<long?>(AllAccountsBalanceUntilNowStatement, new { DateTimeNow = DateTime.Now }).FirstOrDefault();
+                ret = await connection.QueryFirstOrDefaultAsync<long?>(AllAccountsBalanceUntilNowStatement, new { DateTimeNow = DateTime.Now }).ConfigureAwait(false);
                 transactionScope.Complete();
             }
 

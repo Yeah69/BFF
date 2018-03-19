@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -20,11 +21,14 @@ namespace BFF.DB.Dapper.ModelRepositories
                 DateCultureName = domainDbSetting.DateCultureName
             };
 
-        protected override Converter<DbSetting, Domain.IDbSetting> ConvertToDomain => persistenceDbSetting => 
-            new Domain.DbSetting(this, persistenceDbSetting.Id)
-            {
-                CurrencyCultureName = persistenceDbSetting.CurrencyCultureName,
-                DateCultureName = persistenceDbSetting.DateCultureName
-            };
+        protected override Task<Domain.IDbSetting> ConvertToDomainAsync(DbSetting persistenceModel)
+        {
+            return Task.FromResult<Domain.IDbSetting>(
+                new Domain.DbSetting(this, persistenceModel.Id)
+                {
+                    CurrencyCultureName = persistenceModel.CurrencyCultureName,
+                    DateCultureName = persistenceModel.DateCultureName
+                });
+        }
     }
 }

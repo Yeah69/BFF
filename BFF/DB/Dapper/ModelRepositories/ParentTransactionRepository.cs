@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
@@ -48,23 +49,23 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Type = nameof(TransType.ParentTransaction)
             };
 
-        protected override Converter<Trans, Domain.IParentTransaction> ConvertToDomain => persistenceParentTransaction =>
+        protected override async Task<Domain.IParentTransaction> ConvertToDomainAsync(Trans persistenceModel)
         {
             var parentTransaction = new Domain.ParentTransaction(
                 this,
-                _subTransactionRepository.GetChildrenOf(persistenceParentTransaction.Id),
-                persistenceParentTransaction.Date,
-                persistenceParentTransaction.Id,
-                persistenceParentTransaction.FlagId is null 
-                    ? null 
-                    : _flagRepository.Find((long) persistenceParentTransaction.FlagId),
-                persistenceParentTransaction.CheckNumber,
-                _accountRepository.Find(persistenceParentTransaction.AccountId),
-                persistenceParentTransaction.PayeeId is null
-                    ? null 
-                    : _payeeRepository.Find((long) persistenceParentTransaction.PayeeId),
-                persistenceParentTransaction.Memo,
-                persistenceParentTransaction.Cleared == 1L);
+                await _subTransactionRepository.GetChildrenOfAsync(persistenceModel.Id),
+                persistenceModel.Date,
+                persistenceModel.Id,
+                persistenceModel.FlagId is null
+                    ? null
+                    : await _flagRepository.FindAsync((long)persistenceModel.FlagId),
+                persistenceModel.CheckNumber,
+                await _accountRepository.FindAsync(persistenceModel.AccountId),
+                persistenceModel.PayeeId is null
+                    ? null
+                    : await _payeeRepository.FindAsync((long)persistenceModel.PayeeId),
+                persistenceModel.Memo,
+                persistenceModel.Cleared == 1L);
 
             foreach (var subTransaction in parentTransaction.SubTransactions)
             {
@@ -72,6 +73,6 @@ namespace BFF.DB.Dapper.ModelRepositories
             }
 
             return parentTransaction;
-        };
+        }
     }
 }
