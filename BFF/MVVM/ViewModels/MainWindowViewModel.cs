@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using System.Threading.Tasks;
+using System.Reactive;
+using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Forms;
 using Autofac.Features.OwnedInstances;
 using BFF.DB;
+using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.Helper.Import;
 using BFF.Properties;
@@ -220,6 +222,7 @@ namespace BFF.MVVM.ViewModels
             Func<Owned<Func<string, ISqLiteBackendContext>>> sqliteBackendContextFactory,
             Func<Owned<Func<string, IProvideConnection>>> ownedCreateProvideConnectionFactory,
             Func<IProvideConnection, ICreateBackendOrm> createCreateBackendOrm,
+            IRxSchedulerProvider schedulerProvider,
             IEmptyViewModel emptyViewModel)
         {
             EmptyViewModel = emptyViewModel;
@@ -260,9 +263,14 @@ namespace BFF.MVVM.ViewModels
                         .ContinueWith(
                             t =>
                             {
-                                ownedCreateProvideConnection.Dispose();
-                                Reset(saveFileDialog.FileName);
-                            }, TaskScheduler.Current);
+                                schedulerProvider.UI.Schedule(Unit.Default, (sc, st) =>
+                                {
+                                    ownedCreateProvideConnection.Dispose();
+                                    Reset(saveFileDialog.FileName);
+                                    return Disposable.Empty;
+                                });
+                                
+                            });
                 }
             });
 
