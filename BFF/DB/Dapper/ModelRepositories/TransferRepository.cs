@@ -52,14 +52,14 @@ namespace BFF.DB.Dapper.ModelRepositories
                     persistenceModel.Id,
                     persistenceModel.FlagId is null
                         ? null
-                        : await _flagRepository.FindAsync((long) persistenceModel.FlagId),
+                        : await _flagRepository.FindAsync((long) persistenceModel.FlagId).ConfigureAwait(false),
                     persistenceModel.CheckNumber,
                     persistenceModel.PayeeId is null
                         ? null
-                        : await _accountRepository.FindAsync((long) persistenceModel.PayeeId),
+                        : await _accountRepository.FindAsync((long) persistenceModel.PayeeId).ConfigureAwait(false),
                     persistenceModel.CategoryId is null
                         ? null
-                        : await _accountRepository.FindAsync((long) persistenceModel.CategoryId),
+                        : await _accountRepository.FindAsync((long) persistenceModel.CategoryId).ConfigureAwait(false),
                     persistenceModel.Memo,
                     persistenceModel.Sum,
                     persistenceModel.Cleared == 1L);

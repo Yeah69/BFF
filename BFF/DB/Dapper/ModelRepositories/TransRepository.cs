@@ -105,7 +105,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             return await (await (specifyingObject is Domain.IAccount account
                 ? _transOrm.GetPageFromSpecificAccountAsync(offset, pageSize, account.Id)
                 : _transOrm.GetPageFromSummaryAccountAsync(offset, pageSize)).ConfigureAwait(false))
-                .Select(async t => await ConvertToDomainAsync(t)).ToAwaitableEnumerable();
+                .Select(async t => await ConvertToDomainAsync(t)).ToAwaitableEnumerable().ConfigureAwait(false);
         }
 
         public async Task<long> GetCountAsync(Domain.IAccount specifyingObject)
@@ -128,15 +128,15 @@ namespace BFF.DB.Dapper.ModelRepositories
                         persistenceModel.Id,
                         persistenceModel.FlagId is null
                             ? null
-                            : await _flagRepository.FindAsync((long)persistenceModel.FlagId),
+                            : await _flagRepository.FindAsync((long)persistenceModel.FlagId).ConfigureAwait(false),
                         persistenceModel.CheckNumber,
-                        await _accountRepository.FindAsync(persistenceModel.AccountId),
+                        await _accountRepository.FindAsync(persistenceModel.AccountId).ConfigureAwait(false),
                         persistenceModel.PayeeId is null
                             ? null
-                            : await _payeeRepository.FindAsync((long)persistenceModel.PayeeId),
+                            : await _payeeRepository.FindAsync((long)persistenceModel.PayeeId).ConfigureAwait(false),
                         persistenceModel.CategoryId is null
                             ? null
-                            : await _categoryBaseRepository.FindAsync((long)persistenceModel.CategoryId),
+                            : await _categoryBaseRepository.FindAsync((long)persistenceModel.CategoryId).ConfigureAwait(false),
                         persistenceModel.Memo,
                         persistenceModel.Sum,
                         persistenceModel.Cleared == 1L);
@@ -148,14 +148,14 @@ namespace BFF.DB.Dapper.ModelRepositories
                         persistenceModel.Id,
                         persistenceModel.FlagId is null
                             ? null
-                            : await _flagRepository.FindAsync((long)persistenceModel.FlagId),
+                            : await _flagRepository.FindAsync((long)persistenceModel.FlagId).ConfigureAwait(false),
                         persistenceModel.CheckNumber,
                         persistenceModel.PayeeId is null
                             ? null
-                            : await _accountRepository.FindAsync((long)persistenceModel.PayeeId),
+                            : await _accountRepository.FindAsync((long)persistenceModel.PayeeId).ConfigureAwait(false),
                         persistenceModel.CategoryId is null
                             ? null
-                            : await _accountRepository.FindAsync((long)persistenceModel.CategoryId),
+                            : await _accountRepository.FindAsync((long)persistenceModel.CategoryId).ConfigureAwait(false),
                         persistenceModel.Memo,
                         persistenceModel.Sum,
                         persistenceModel.Cleared == 1L);
@@ -163,17 +163,17 @@ namespace BFF.DB.Dapper.ModelRepositories
                 case TransType.ParentTransaction:
                     ret = new Domain.ParentTransaction(
                         _parentTransactionRepository,
-                        await _subTransactionsRepository.GetChildrenOfAsync(persistenceModel.Id),
+                        await _subTransactionsRepository.GetChildrenOfAsync(persistenceModel.Id).ConfigureAwait(false),
                         persistenceModel.Date,
                         persistenceModel.Id,
                         persistenceModel.FlagId is null
                             ? null
-                            : await _flagRepository.FindAsync((long)persistenceModel.FlagId),
+                            : await _flagRepository.FindAsync((long)persistenceModel.FlagId).ConfigureAwait(false),
                         persistenceModel.CheckNumber,
                         await _accountRepository.FindAsync(persistenceModel.AccountId),
                         persistenceModel.PayeeId is null
                             ? null
-                            : await _payeeRepository.FindAsync((long)persistenceModel.PayeeId),
+                            : await _payeeRepository.FindAsync((long)persistenceModel.PayeeId).ConfigureAwait(false),
                         persistenceModel.Memo,
                         persistenceModel.Cleared == 1L);
                     break;

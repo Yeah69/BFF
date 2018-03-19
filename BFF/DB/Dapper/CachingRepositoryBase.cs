@@ -24,7 +24,7 @@ namespace BFF.DB.Dapper
 
         public override async Task Add(TDomain dataModel)
         {
-            await base.Add(dataModel);
+            await base.Add(dataModel).ConfigureAwait(false);
             if(!_cache.ContainsKey(dataModel.Id))
                 _cache.Add(dataModel.Id, dataModel);
         }
@@ -33,14 +33,14 @@ namespace BFF.DB.Dapper
         {
             if(!_cache.ContainsKey(id))
             {
-                _cache.Add(id, await base.FindAsync(id));
+                _cache.Add(id, await base.FindAsync(id).ConfigureAwait(false));
             }
             return _cache[id];
         }
 
         public override async Task Delete(TDomain dataModel)
         {
-            await base.Delete(dataModel);
+            await base.Delete(dataModel).ConfigureAwait(false);
             if(!_cache.ContainsKey(dataModel.Id))
                 _cache.Remove(dataModel.Id);
         }
@@ -51,7 +51,7 @@ namespace BFF.DB.Dapper
         {
             Logger.Debug("Starting to convert all POCOs of type {0}", typeof(TPersistence).Name);
             ICollection<TDomain> ret = new List<TDomain>();
-            foreach(TPersistence element in await FindAllInner().ConfigureAwait(false))
+            foreach(TPersistence element in await FindAllInnerAsync().ConfigureAwait(false))
             {
                 if(!_cache.ContainsKey(element.Id))
                     _cache.Add(element.Id, await ConvertToDomainAsync(element).ConfigureAwait(false));

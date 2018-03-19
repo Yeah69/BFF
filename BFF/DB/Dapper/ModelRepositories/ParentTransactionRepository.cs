@@ -53,17 +53,17 @@ namespace BFF.DB.Dapper.ModelRepositories
         {
             var parentTransaction = new Domain.ParentTransaction(
                 this,
-                await _subTransactionRepository.GetChildrenOfAsync(persistenceModel.Id),
+                await _subTransactionRepository.GetChildrenOfAsync(persistenceModel.Id).ConfigureAwait(false),
                 persistenceModel.Date,
                 persistenceModel.Id,
                 persistenceModel.FlagId is null
                     ? null
-                    : await _flagRepository.FindAsync((long)persistenceModel.FlagId),
+                    : await _flagRepository.FindAsync((long)persistenceModel.FlagId).ConfigureAwait(false),
                 persistenceModel.CheckNumber,
-                await _accountRepository.FindAsync(persistenceModel.AccountId),
+                await _accountRepository.FindAsync(persistenceModel.AccountId).ConfigureAwait(false),
                 persistenceModel.PayeeId is null
                     ? null
-                    : await _payeeRepository.FindAsync((long)persistenceModel.PayeeId),
+                    : await _payeeRepository.FindAsync((long)persistenceModel.PayeeId).ConfigureAwait(false),
                 persistenceModel.Memo,
                 persistenceModel.Cleared == 1L);
 

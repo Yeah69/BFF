@@ -32,20 +32,20 @@ namespace BFF.DB.Dapper
         {
             if (dataModel.Id > 0) return;
             var persistenceModel = ConvertToPersistence(dataModel);
-            await _crudOrm.CreateAsync(persistenceModel);
+            await _crudOrm.CreateAsync(persistenceModel).ConfigureAwait(false);
             dataModel.Id = persistenceModel.Id;
         }
 
         public virtual async Task Update(TDomain dataModel)
         {
             if (dataModel.Id < 0) return;
-            await _crudOrm.UpdateAsync(ConvertToPersistence(dataModel));
+            await _crudOrm.UpdateAsync(ConvertToPersistence(dataModel)).ConfigureAwait(false);
         }
 
         public virtual async Task Delete(TDomain dataModel)
         {
             if (dataModel.Id < 0) return;
-            await _crudOrm.DeleteAsync(ConvertToPersistence(dataModel));
+            await _crudOrm.DeleteAsync(ConvertToPersistence(dataModel)).ConfigureAwait(false);
         }
 
         protected virtual void Dispose(bool disposing)

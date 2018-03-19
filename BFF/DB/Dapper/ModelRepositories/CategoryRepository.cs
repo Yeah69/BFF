@@ -72,10 +72,10 @@ namespace BFF.DB.Dapper.ModelRepositories
                 new Domain.Category(this,
                     persistenceModel.Id,
                     persistenceModel.Name,
-                    persistenceModel.ParentId != null ? await FindAsync((long)persistenceModel.ParentId) : null);
+                    persistenceModel.ParentId != null ? await FindAsync((long)persistenceModel.ParentId).ConfigureAwait(false) : null);
         }
 
-        protected override Task<IEnumerable<Category>> FindAllInner() => _categoryOrm.ReadCategoriesAsync();
+        protected override Task<IEnumerable<Category>> FindAllInnerAsync() => _categoryOrm.ReadCategoriesAsync();
 
         protected override Converter<Domain.ICategory, Category> ConvertToPersistence => domainCategory => 
             new Category

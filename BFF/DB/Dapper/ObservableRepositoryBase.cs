@@ -31,7 +31,7 @@ namespace BFF.DB.Dapper
 
         private async Task<ObservableCollection<TDomain>> FetchAll()
         {
-            return new ObservableCollection<TDomain>((await FindAllAsync()).OrderBy(o => o, _comparer));
+            return new ObservableCollection<TDomain>((await FindAllAsync().ConfigureAwait(false)).OrderBy(o => o, _comparer));
         }
 
         public sealed override Task<IEnumerable<TDomain>> FindAllAsync()
@@ -41,7 +41,7 @@ namespace BFF.DB.Dapper
 
         public override async Task Add(TDomain dataModel)
         {
-            await base.Add(dataModel);
+            await base.Add(dataModel).ConfigureAwait(false);
             if(!All.Contains(dataModel))
             {
                 int i = 0;
@@ -53,7 +53,7 @@ namespace BFF.DB.Dapper
 
         public override async Task Delete(TDomain dataModel)
         {
-            await base.Delete(dataModel);
+            await base.Delete(dataModel).ConfigureAwait(false);
             if(All.Contains(dataModel))
             {
                 All.Remove(dataModel);

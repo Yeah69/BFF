@@ -40,7 +40,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         public async Task<IEnumerable<Domain.ISubTransaction>> GetChildrenOfAsync(long parentId) =>
             await (await _parentalOrm.ReadSubTransactionsOfAsync(parentId).ConfigureAwait(false))
-                .Select(async sti => await ConvertToDomainAsync(sti)).ToAwaitableEnumerable();
+                .Select(async sti => await ConvertToDomainAsync(sti)).ToAwaitableEnumerable().ConfigureAwait(false);
 
         protected override async Task<Domain.ISubTransaction> ConvertToDomainAsync(SubTransaction persistenceModel)
         {
@@ -49,7 +49,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                 persistenceModel.Id,
                 persistenceModel.CategoryId is null
                     ? null
-                    : await _categoryBaseRepository.FindAsync((long)persistenceModel.CategoryId),
+                    : await _categoryBaseRepository.FindAsync((long)persistenceModel.CategoryId).ConfigureAwait(false),
                 persistenceModel.Memo,
                 persistenceModel.Sum);
         }

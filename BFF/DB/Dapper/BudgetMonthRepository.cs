@@ -65,8 +65,9 @@ namespace BFF.DB.Dapper
                         budgetEntries: 
                             await monthWithBudgetEntries
                                 .Value
-                                .Select(async g => await _budgetEntryRepository.Convert(g.Entry, g.Outflow, g.Balance))
-                                .ToAwaitableEnumerable(),
+                                .Select(async g => await _budgetEntryRepository.Convert(g.Entry, g.Outflow, g.Balance).ConfigureAwait(false))
+                                .ToAwaitableEnumerable()
+                                .ConfigureAwait(false),
                         overspentInPreviousMonth: currentOverspentInPreviousMonth,
                         notBudgetedInPreviousMonth: currentNotBudgetedOrOverbudgeted,
                         incomeForThisMonth: _.IncomesPerMonth[monthWithBudgetEntries.Key]

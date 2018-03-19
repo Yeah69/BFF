@@ -38,7 +38,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                     persistenceModel.MonthOffset));
         }
 
-        protected override Task<IEnumerable<Category>> FindAllInner() => _categoryOrm.ReadIncomeCategoriesAsync();
+        protected override Task<IEnumerable<Category>> FindAllInnerAsync() => _categoryOrm.ReadIncomeCategoriesAsync();
 
         protected override Converter<MVVM.Models.Native.IIncomeCategory, Category> ConvertToPersistence => domainCategory =>
             new Category

@@ -24,16 +24,20 @@ namespace BFF.DB.Dapper
 
         public virtual async Task<TDomain> FindAsync(long id)
         {
-            return await ConvertToDomainAsync(await _crudOrm.ReadAsync<TPersistence>(id));
+            return await ConvertToDomainAsync(await _crudOrm.ReadAsync<TPersistence>(id).ConfigureAwait(false)).ConfigureAwait(false);
         }
 
         protected abstract Task<TDomain> ConvertToDomainAsync(TPersistence persistenceModel);
 
-        protected virtual Task<IEnumerable<TPersistence>> FindAllInner() => _crudOrm.ReadAllAsync<TPersistence>();
+        protected virtual Task<IEnumerable<TPersistence>> FindAllInnerAsync() => _crudOrm.ReadAllAsync<TPersistence>();
 
         public virtual async Task<IEnumerable<TDomain>> FindAllAsync()
         {
-            return await (await FindAllInner()).Select(async p => await ConvertToDomainAsync(p)).ToAwaitableEnumerable();
+            return await 
+                (await FindAllInnerAsync().ConfigureAwait(false))
+                .Select(async p => await ConvertToDomainAsync(p).ConfigureAwait(false))
+                .ToAwaitableEnumerable()
+                .ConfigureAwait(false);
         }
     }
 }

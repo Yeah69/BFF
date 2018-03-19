@@ -35,7 +35,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                 this, 
                 budgetEntry.Id, 
                 budgetEntry.Month,
-                await _categoryRepository.FindAsync(budgetEntry.CategoryId ?? 0L), 
+                await _categoryRepository.FindAsync(budgetEntry.CategoryId ?? 0L).ConfigureAwait(false), 
                 budgetEntry.Budget, 
                 outflow, 
                 balance);
