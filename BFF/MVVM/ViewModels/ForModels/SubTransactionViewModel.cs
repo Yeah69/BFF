@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -10,28 +11,31 @@ namespace BFF.MVVM.ViewModels.ForModels
 {
     public interface ISubTransactionViewModel : ITransLikeViewModel, IHaveCategoryViewModel
     {
-        INewCategoryViewModel NewCategoryViewModel { get; }
     }
     
     public sealed class SubTransactionViewModel : TransLikeViewModel, ISubTransactionViewModel
     {
         public SubTransactionViewModel(
             ISubTransaction subTransaction,
-            Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
+            INewCategoryViewModel newCategoryViewModel,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
+            IRxSchedulerProvider schedulerProvider,
             ICategoryBaseViewModelService categoryViewModelService)
-            : base(subTransaction)
+            : base(subTransaction, schedulerProvider)
         {
             Category = subTransaction.ToReactivePropertyAsSynchronized(
-                sti => sti.Category,
+                nameof(subTransaction.Category),
+                () => subTransaction.Category,
+                c => subTransaction.Category = c,
                 categoryViewModelService.GetViewModel,
                 categoryViewModelService.GetModel,
+                schedulerProvider.UI,
                 ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
             Sum = subTransaction.ToReactivePropertyAsSynchronized(sti => sti.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             SumEdit = createSumEdit(Sum);
 
-            NewCategoryViewModel = newCategoryViewModelFactory(this);
+            NewCategoryViewModel = newCategoryViewModel;
         }
 
         public INewCategoryViewModel NewCategoryViewModel { get; }

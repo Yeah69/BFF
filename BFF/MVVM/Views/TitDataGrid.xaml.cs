@@ -242,5 +242,32 @@ namespace BFF.MVVM.Views
             if (_focusedBeforeOpen != null) Keyboard.Focus(_focusedBeforeOpen);
             _focusedBeforeOpen = null;
         }
+
+        private void OpenFlagPopup_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element &&
+                element.DataContext is IHaveFlagViewModel haveFlagViewModel)
+                haveFlagViewModel.NewFlagViewModel.CurrentOwner = haveFlagViewModel;
+
+            OpenPopup_OnClick(sender, e);
+        }
+
+        private void OpenPayeePopup_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element &&
+                element.DataContext is IHavePayeeViewModel havePayeeViewModel)
+                havePayeeViewModel.NewPayeeViewModel.CurrentOwner = havePayeeViewModel;
+
+            OpenPopup_OnClick(sender, e);
+        }
+
+        private void OpenCategoryPopup_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element &&
+                element.DataContext is IHaveCategoryViewModel haveCategoryViewModel)
+                haveCategoryViewModel.NewCategoryViewModel.CurrentCategoryOwner = haveCategoryViewModel;
+
+            OpenPopup_OnClick(sender, e);
+        }
     }
 }

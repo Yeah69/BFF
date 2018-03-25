@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using BFF.DB;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -29,16 +30,17 @@ namespace BFF.MVVM.ViewModels
         /// All currently available Payees.
         /// </summary>
         IObservableReadOnlyList<IPayeeViewModel> AllPayees { get; }
+
+        IHavePayeeViewModel CurrentOwner { get; set; }
     }
 
-    public class NewPayeeViewModel : INewPayeeViewModel, IDisposable
+    public class NewPayeeViewModel : INewPayeeViewModel, IOncePerBackend, IDisposable
     {
         private readonly IPayeeViewModelService _payeeViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
         public NewPayeeViewModel(
-            IHavePayeeViewModel payeeOwner,
             Func<IPayee> payeeFactory,
             IPayeeViewModelService payeeViewModelService)
         {
@@ -68,8 +70,9 @@ namespace BFF.MVVM.ViewModels
                     IPayee newPayee = payeeFactory();
                     newPayee.Name = PayeeText.Value.Trim();
                     newPayee.Insert();
-                    if(payeeOwner != null)
-                        payeeOwner.Payee.Value = _payeeViewModelService.GetViewModel(newPayee);
+                    if(CurrentOwner != null)
+                        CurrentOwner.Payee.Value = _payeeViewModelService.GetViewModel(newPayee);
+                    CurrentOwner = null;
                 }).AddTo(_compositeDisposable);
         }
 
@@ -87,6 +90,8 @@ namespace BFF.MVVM.ViewModels
         /// All currently available Payees.
         /// </summary>
         public IObservableReadOnlyList<IPayeeViewModel> AllPayees => _payeeViewModelService.All;
+
+        public IHavePayeeViewModel CurrentOwner { get; set; }
 
         public void Dispose()
         {

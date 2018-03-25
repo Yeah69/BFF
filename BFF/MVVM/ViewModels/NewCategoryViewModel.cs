@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using BFF.DB;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -28,9 +29,11 @@ namespace BFF.MVVM.ViewModels
         IObservableReadOnlyList<ICategoryViewModel> AllPotentialParents { get; }
 
         IObservableReadOnlyList<ICategoryBaseViewModel> All { get; }
+
+        IHaveCategoryViewModel CurrentCategoryOwner { get; set; }
     }
 
-    public sealed class NewCategoryViewModel : ViewModelBase, INewCategoryViewModel, IDisposable
+    public sealed class NewCategoryViewModel : ViewModelBase, INewCategoryViewModel, IOncePerBackend, IDisposable
     {
         private readonly ICategoryViewModelService _categoryViewModelService;
         private readonly ICategoryBaseViewModelService _categoryBaseViewModelService;
@@ -38,7 +41,6 @@ namespace BFF.MVVM.ViewModels
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
         public NewCategoryViewModel(
-            IHaveCategoryViewModel categoryOwner,
             Func<ICategory, ICategory> categoryFactory,
             Func<IIncomeCategory> incomeCategoryFactory,
             ICategoryViewModelInitializer categoryViewModelInitializer,
@@ -91,8 +93,9 @@ namespace BFF.MVVM.ViewModels
                         newCategory.Name = Name.Value.Trim();
                         newCategory.MonthOffset = MonthOffset.Value;
                         newCategory.Insert();
-                        if(categoryOwner != null)
-                            categoryOwner.Category.Value = incomeCategoryViewModelService.GetViewModel(newCategory);
+                        if(CurrentCategoryOwner != null)
+                            CurrentCategoryOwner.Category.Value = incomeCategoryViewModelService.GetViewModel(newCategory);
+                        CurrentCategoryOwner = null;
                     }
                     else
                     {
@@ -103,23 +106,24 @@ namespace BFF.MVVM.ViewModels
                         OnPropertyChanged(nameof(AllPotentialParents));
                         var categoryViewModel = _categoryViewModelService.GetViewModel(newCategory);
                         categoryViewModelInitializer.Initialize(categoryViewModel);
-                        if (categoryOwner != null)
-                            categoryOwner.Category.Value = categoryViewModel;
+                        if (CurrentCategoryOwner != null)
+                            CurrentCategoryOwner.Category.Value = categoryViewModel;
+                        CurrentCategoryOwner = null;
                     }
                 })
                 .AddTo(_compositeDisposable);
-            Name = new ReactiveProperty<string>()
+            Name = new ReactiveProperty<string>(mode: ReactivePropertyMode.DistinctUntilChanged)
                 .SetValidateNotifyError(text =>
                 {
                     string ret = ValidateNewCategoryName(text);
                     return ret ?? ValidateNewCategoryRelationName(text, Parent?.Value);
                 })
                 .AddTo(_compositeDisposable);
-            Parent = new ReactiveProperty<ICategoryViewModel>()
+            Parent = new ReactiveProperty<ICategoryViewModel>(mode: ReactivePropertyMode.DistinctUntilChanged)
                 .SetValidateNotifyError(parent => ValidateNewCategoryRelationParent(Name.Value, parent))
                 .AddTo(_compositeDisposable);
 
-            IsIncomeRelevant = new ReactiveProperty<bool>()
+            IsIncomeRelevant = new ReactiveProperty<bool>(mode: ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(_compositeDisposable);
 
             IsIncomeRelevant.Subscribe(_ =>
@@ -128,7 +132,7 @@ namespace BFF.MVVM.ViewModels
                 (Name as ReactiveProperty<string>)?.ForceValidate();
             }).AddTo(_compositeDisposable);
        
-            MonthOffset = new ReactiveProperty<int>()
+            MonthOffset = new ReactiveProperty<int>(mode: ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(_compositeDisposable);
 
             Name
@@ -162,6 +166,8 @@ namespace BFF.MVVM.ViewModels
         public IObservableReadOnlyList<ICategoryViewModel> AllPotentialParents => _categoryViewModelService.All;
 
         public IObservableReadOnlyList<ICategoryBaseViewModel> All => _categoryBaseViewModelService.All;
+
+        public IHaveCategoryViewModel CurrentCategoryOwner { get; set; }
 
         public void Dispose()
         {

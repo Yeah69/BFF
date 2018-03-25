@@ -12,7 +12,6 @@ namespace BFF.MVVM.ViewModels.ForModels
 {
     public interface ITransactionViewModel : ITransactionBaseViewModel, IHaveCategoryViewModel
     {
-        INewCategoryViewModel NewCategoryViewModel { get; }
     }
 
     /// <summary>
@@ -22,21 +21,25 @@ namespace BFF.MVVM.ViewModels.ForModels
     {
         public TransactionViewModel(
             ITransaction transaction,
-            Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory,
-            Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
-            Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory,
+            INewCategoryViewModel newCategoryViewModel,
+            INewPayeeViewModel newPayeeViewModel,
+            INewFlagViewModel newFlagViewModelFactory,
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ICategoryBaseViewModelService categoryViewModelService,
             ILastSetDate lastSetDate,
+            IRxSchedulerProvider schedulerProvider,
             IFlagViewModelService flagViewModelService)
-            : base(transaction, newPayeeViewModelFactory, newFlagViewModelFactory, accountViewModelService, payeeViewModelService, lastSetDate, flagViewModelService)
+            : base(transaction, newPayeeViewModel, newFlagViewModelFactory, accountViewModelService, payeeViewModelService, lastSetDate, schedulerProvider, flagViewModelService)
         {
             Category = transaction.ToReactivePropertyAsSynchronized(
-                    ti => ti.Category,
+                    nameof(transaction.Category),
+                    () => transaction.Category,
+                    c => transaction.Category = c,
                     categoryViewModelService.GetViewModel,
                     categoryViewModelService.GetModel,
+                    schedulerProvider.UI,
                     ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
@@ -44,7 +47,12 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .Subscribe(c => SumSign = c is IncomeCategoryViewModel ? Sign.Plus : Sign.Minus)
                 .AddTo(CompositeDisposable);
 
-            Sum = transaction.ToReactivePropertyAsSynchronized(ti => ti.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            Sum = transaction.ToReactivePropertyAsSynchronized(
+                nameof(transaction.Sum),
+                () => transaction.Sum,
+                s => transaction.Sum = s,
+                schedulerProvider.UI,
+                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             Sum.Where(_ => transaction.Id != -1)
                 .Subscribe(sum => NotifyRelevantAccountsToRefreshBalance())
@@ -52,7 +60,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             SumEdit = createSumEdit(Sum);
 
-            NewCategoryViewModel = newCategoryViewModelFactory(this);
+            NewCategoryViewModel = newCategoryViewModel;
         }
         
         public IReactiveProperty<ICategoryBaseViewModel> Category { get; }

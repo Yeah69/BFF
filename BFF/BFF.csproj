@@ -66,7 +66,8 @@
       <HintPath>..\packages\Autofac.Extras.NLog.1.3.0\lib\net451\Autofac.Extras.NLog.dll</HintPath>
     </Reference>
     <Reference Include="BFF.DataVirtualizingCollection, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BFF.DataVirtualizingCollection.1.0.2\lib\netstandard1.4\BFF.DataVirtualizingCollection.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\BFF.DataVirtualizingCollection\BFF.DataVirtualizingCollection\bin\Release\netstandard1.4\BFF.DataVirtualizingCollection.dll</HintPath>
     </Reference>
     <Reference Include="Dapper, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.4\lib\net451\Dapper.dll</HintPath>
@@ -111,11 +112,11 @@
       <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
-    <Reference Include="ReactiveProperty, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ReactiveProperty.4.0.0\lib\net46\ReactiveProperty.dll</HintPath>
+    <Reference Include="ReactiveProperty, Version=4.0.0.0, Culture=neutral, PublicKeyToken=910d1732782c71cb, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveProperty.4.2.1\lib\net46\ReactiveProperty.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveProperty.NET46, Version=4.0.6582.30332, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ReactiveProperty.4.0.0\lib\net46\ReactiveProperty.NET46.dll</HintPath>
+    <Reference Include="ReactiveProperty.NET46, Version=4.2.6650.24705, Culture=neutral, PublicKeyToken=3d1fed915120cbde, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveProperty.4.2.1\lib\net46\ReactiveProperty.NET46.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">

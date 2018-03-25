@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -31,6 +33,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     {
         private readonly Lazy<IAccountViewModelService> _service;
         private readonly ITransRepository _transRepository;
+        private readonly IRxSchedulerProvider _schedulerProvider;
 
         /// <summary>
         /// Starting balance of the Account
@@ -49,6 +52,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Lazy<IAccountViewModelService> service,
             ITransRepository transRepository,
             IParentTransactionViewModelService parentTransactionViewModelService,
+            IRxSchedulerProvider schedulerProvider,
             Func<ITransactionViewModel> transactionViewModelFactory,
             Func<ITransferViewModel> transferViewModelFactory,
             Func<IParentTransactionViewModel> parentTransactionFactory,
@@ -59,11 +63,13 @@ namespace BFF.MVVM.ViewModels.ForModels
                 service,
                 accountRepository,
                 parentTransactionViewModelService,
+                schedulerProvider,
                 dependingTransactionViewModelFactory,
                 dependingTransferViewModelFactory)
         {
             _service = service;
             _transRepository = transRepository;
+            _schedulerProvider = schedulerProvider;
             IsOpen.Value = true;
             Messenger.Default.Register<SummaryAccountMessage>(this, message =>
             {
@@ -108,10 +114,10 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region ViewModel_Part
 
-        protected override IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess
-            => new RelayBasicAsyncDataAccess<ITransLikeViewModel>(
-                (offset, pageSize) => CreatePacket(_transRepository.GetPageAsync(offset, pageSize, null).Result),
-                () => (int) _transRepository.GetCountAsync(null).Result,
+        protected override IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess
+            => new RelayBasicTaskBasedAsyncDataAccess<ITransLikeViewModel>(
+                async (offset, pageSize) => CreatePacket(await _transRepository.GetPageAsync(offset, pageSize, null)),
+                async () => ((int) await _transRepository.GetCountAsync(null)),
                 () => new TransLikeViewModelPlaceholder());
 
         /// <summary>
@@ -126,12 +132,21 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             if(IsOpen.Value)
             {
-                OnPreVirtualizedRefresh();
-                var temp = _tits;
-                _tits = CreateDataVirtualizingCollection();
-                OnPropertyChanged(nameof(Tits));
-                OnPostVirtualizedRefresh();
-                Task.Run(() => temp?.Dispose());
+                Task.Run(() => CreateDataVirtualizingCollection())
+                    .ContinueWith(t =>
+                    {
+                        _schedulerProvider.UI.Schedule(Unit.Default, (sc, st) =>
+                        {
+                            OnPreVirtualizedRefresh();
+                            var temp = _tits;
+                            _tits = t.Result;
+                            OnPropertyChanged(nameof(Tits));
+                            OnPostVirtualizedRefresh();
+                            Task.Run(() => temp?.Dispose());
+                            return Disposable.Empty;
+                        });
+
+                    });
             }
         }
 

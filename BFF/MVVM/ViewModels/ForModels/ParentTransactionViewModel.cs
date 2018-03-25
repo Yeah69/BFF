@@ -62,21 +62,23 @@ namespace BFF.MVVM.ViewModels.ForModels
         
         public ParentTransactionViewModel(
             IParentTransaction parentTransaction,
-            Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
-            Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory,
+            INewPayeeViewModel newPayeeViewModel,
+            INewFlagViewModel newFlagViewModel,
             ISubTransactionViewModelService subTransactionViewModelService, 
             IFlagViewModelService flagViewModelService,
             IAccountViewModelService accountViewModelService,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ILastSetDate lastSetDate,
+            IRxSchedulerProvider schedulerProvider,
             IPayeeViewModelService payeeViewModelService) 
             : base(
                 parentTransaction,
-                newPayeeViewModelFactory,
-                newFlagViewModelFactory,
+                newPayeeViewModel,
+                newFlagViewModel,
                 accountViewModelService,
                 payeeViewModelService, 
                 lastSetDate,
+                schedulerProvider,
                 flagViewModelService)
         {
             _newTransactions = new ObservableCollection<ISubTransactionViewModel>();

@@ -263,7 +263,7 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
                             <DockPanel LastChildFill="True">
-                                <Button Click="OpenPopup_OnClick"
+                                <Button Click="OpenFlagPopup_OnClick"
                                         DockPanel.Dock="Right"
                                         TabIndex="1"
                                         ToolTip="{lex:Loc CreateNewFlag}">
@@ -412,7 +412,7 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
                             <DockPanel LastChildFill="True">
-                                <Button Click="OpenPopup_OnClick"
+                                <Button Click="OpenPayeePopup_OnClick"
                                         DockPanel.Dock="Right"
                                         TabIndex="1"
                                         ToolTip="{lex:Loc CreateNewPayee}">
@@ -579,7 +579,7 @@
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                             <DockPanel LastChildFill="True">
-                                <Button Click="OpenPopup_OnClick"
+                                <Button Click="OpenCategoryPopup_OnClick"
                                         DockPanel.Dock="Right"
                                         TabIndex="1"
                                         ToolTip="{lex:Loc CreateNewCategory}">

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using BFF.DB;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
-using BFF.MVVM.ViewModels.ForModels.Structure;
 using MuVaViMo;
 
 namespace BFF.MVVM.ViewModels
@@ -22,9 +20,9 @@ namespace BFF.MVVM.ViewModels
 
         public EditFlagsViewModel(
             IFlagViewModelService service,
-            Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory)
+            INewFlagViewModel newFlagViewModel)
         {
-            NewFlagViewModel = newFlagViewModelFactory(null);
+            NewFlagViewModel = newFlagViewModel;
             All = service.All.ToReadOnlyObservableCollection();
         }
     }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows.Media;
+using BFF.DB;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -16,32 +17,24 @@ namespace BFF.MVVM.ViewModels
 {
     public interface INewFlagViewModel
     {
-        /// <summary>
-        /// User input of the to be searched or to be created Payee.
-        /// </summary>
         IReactiveProperty<string> Text { get; }
 
         IReactiveProperty<SolidColorBrush> Brush { get; }
-
-        /// <summary>
-        /// Creates a new Payee.
-        /// </summary>
+        
         ReactiveCommand AddCommand { get; }
-
-        /// <summary>
-        /// All currently available Payees.
-        /// </summary>
+        
         IObservableReadOnlyList<IFlagViewModel> All { get; }
+
+        IHaveFlagViewModel CurrentOwner { get; set; }
     }
 
-    public class NewFlagViewModel : INewFlagViewModel, IDisposable
+    public class NewFlagViewModel : INewFlagViewModel, IOncePerBackend, IDisposable
     {
         private readonly IFlagViewModelService _flagViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
         public NewFlagViewModel(
-            IHaveFlagViewModel flagOwner,
             Func<Color, IFlag> flagFactory,
             IFlagViewModelService flagViewModelService)
         {
@@ -73,8 +66,9 @@ namespace BFF.MVVM.ViewModels
                     IFlag newFlag = flagFactory(Brush.Value.Color);
                     newFlag.Name = Text.Value.Trim();
                     newFlag.Insert();
-                    if(flagOwner != null)
-                        flagOwner.Flag.Value = _flagViewModelService.GetViewModel(newFlag);
+                    if(CurrentOwner != null)
+                        CurrentOwner.Flag.Value = _flagViewModelService.GetViewModel(newFlag);
+                    CurrentOwner = null;
                 }).AddTo(_compositeDisposable);
         }
 
@@ -94,6 +88,8 @@ namespace BFF.MVVM.ViewModels
         /// All currently available Payees.
         /// </summary>
         public IObservableReadOnlyList<IFlagViewModel> All => _flagViewModelService.All;
+
+        public IHaveFlagViewModel CurrentOwner { get; set; }
 
         public void Dispose()
         {

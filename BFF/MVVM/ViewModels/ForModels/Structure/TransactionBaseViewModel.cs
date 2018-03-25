@@ -17,7 +17,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// The assigned Account, where this Transaction is registered.
         /// </summary>
         IReactiveProperty<IAccountViewModel> Account { get; }
-        INewPayeeViewModel NewPayeeViewModel { get; }
     }
 
     /// <summary>
@@ -42,14 +41,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public virtual IReactiveProperty<IPayeeViewModel> Payee { get; }
         
         protected TransactionBaseViewModel(
-            ITransactionBase parentTransactionBase,
-            Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
-            Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory,
+            ITransactionBase transactionBase,
+            INewPayeeViewModel newPayeeViewModel,
+            INewFlagViewModel newFlagViewModel,
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
             ILastSetDate lastSetDate,
+            IRxSchedulerProvider schedulerProvider,
             IFlagViewModelService flagViewModelService) 
-            : base(parentTransactionBase, newFlagViewModelFactory, lastSetDate, flagViewModelService)
+            : base(transactionBase, newFlagViewModel, lastSetDate, schedulerProvider, flagViewModelService)
         {
             _accountViewModelService = accountViewModelService;
 
@@ -59,11 +59,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 account?.RefreshBalance();
             }
 
-            Account = parentTransactionBase
+            Account = transactionBase
                 .ToReactivePropertyAsSynchronized(
-                    tib => tib.Account,
+                    nameof(transactionBase.Account),
+                    () => transactionBase.Account,
+                    a => transactionBase.Account = a,
                     accountViewModelService.GetViewModel, 
-                    accountViewModelService.GetModel, 
+                    accountViewModelService.GetModel,
+                    schedulerProvider.UI,
                     ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
             
@@ -77,15 +80,18 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 .Subscribe(RefreshAnAccountViewModel)
                 .AddTo(CompositeDisposable);
 
-            Payee = parentTransactionBase
+            Payee = transactionBase
                 .ToReactivePropertyAsSynchronized(
-                    tib => tib.Payee,
+                    nameof(transactionBase.Payee),
+                    () => transactionBase.Payee,
+                    p => transactionBase.Payee = p,
                     payeeViewModelService.GetViewModel,
-                    payeeViewModelService.GetModel, 
+                    payeeViewModelService.GetModel,
+                    schedulerProvider.UI,
                     ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
-            NewPayeeViewModel = newPayeeViewModelFactory(this);
+            NewPayeeViewModel = newPayeeViewModel;
         }
 
         public override bool IsInsertable() => base.IsInsertable() && Account.Value.IsNotNull() && Payee.Value.IsNotNull();

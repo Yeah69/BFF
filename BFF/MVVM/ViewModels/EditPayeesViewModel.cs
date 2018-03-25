@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using BFF.DB;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
-using BFF.MVVM.ViewModels.ForModels.Structure;
 using MuVaViMo;
 
 namespace BFF.MVVM.ViewModels
@@ -22,9 +20,9 @@ namespace BFF.MVVM.ViewModels
 
         public EditPayeesViewModel(
             IPayeeViewModelService service,
-            Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory)
+            INewPayeeViewModel newPayeeViewModel)
         {
-            NewPayeeViewModel = newPayeeViewModelFactory(null);
+            NewPayeeViewModel = newPayeeViewModel;
             All = service.All.ToReadOnlyObservableCollection();
         }
     }

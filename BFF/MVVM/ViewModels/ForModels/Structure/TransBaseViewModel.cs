@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Linq;
 using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using MuVaViMo;
@@ -67,34 +68,53 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         protected TransBaseViewModel(
             ITransBase transBase,
-            Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory,
+            INewFlagViewModel newFlagViewModel,
             ILastSetDate lastSetDate,
+            IRxSchedulerProvider schedulerProvider,
             IFlagViewModelService flagViewModelService)
-            : base(transBase)
+            : base(transBase, schedulerProvider)
         {
             _flagViewModelService = flagViewModelService;
 
-            NewFlagViewModel = newFlagViewModelFactory(this);
+            NewFlagViewModel = newFlagViewModel;
 
             Flag = transBase.ToReactivePropertyAsSynchronized(
-                tb => tb.Flag, 
+                nameof(transBase.Flag),
+                () => transBase.Flag,
+                f => transBase.Flag = f,
                 flagViewModelService.GetViewModel,
                 flagViewModelService.GetModel,
+                schedulerProvider.UI,
                 ReactivePropertyMode.DistinctUntilChanged);
 
             RemoveFlag = new ReactiveCommand().AddTo(CompositeDisposable);
 
             RemoveFlag.Subscribe(() => Flag.Value = null);
 
-            CheckNumber = transBase.ToReactivePropertyAsSynchronized(tb => tb.CheckNumber, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            CheckNumber = transBase.ToReactivePropertyAsSynchronized(
+                nameof(transBase.CheckNumber),
+                () => transBase.CheckNumber,
+                f => transBase.CheckNumber = f,
+                schedulerProvider.UI,
+                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
-            Date = transBase.ToReactivePropertyAsSynchronized(tb => tb.Date, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            Date = transBase.ToReactivePropertyAsSynchronized(
+                nameof(transBase.Date),
+                () => transBase.Date,
+                d => transBase.Date = d,
+                schedulerProvider.UI,
+                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             Date.Subscribe(dt => lastSetDate.Date = dt).AddTo(CompositeDisposable);
 
             Date.Where(_ => transBase.Id != -1).Subscribe(_ => NotifyRelevantAccountsToRefreshTits()).AddTo(CompositeDisposable);
 
-            Cleared = transBase.ToReactivePropertyAsSynchronized(tb => tb.Cleared, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            Cleared = transBase.ToReactivePropertyAsSynchronized(
+                nameof(transBase.Cleared),
+                () => transBase.Cleared,
+                c => transBase.Cleared = c,
+                schedulerProvider.UI,
+                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
         }
     }
 }

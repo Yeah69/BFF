@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
@@ -6,6 +8,7 @@ using System.Windows.Threading;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -30,6 +33,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         private readonly IAccount _account;
         private readonly ITransRepository _transRepository;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
+        private readonly IRxSchedulerProvider _schedulerProvider;
 
         /// <summary>
         /// Starting balance of the Account
@@ -59,6 +63,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Lazy<IAccountViewModelService> accountViewModelService,
             IParentTransactionViewModelService parentTransactionViewModelService,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
+            IRxSchedulerProvider schedulerProvider,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             Func<IAccount, ITransactionViewModel> transactionViewModelFactory,
             Func<ITransferViewModel> transferViewModelFactory,
@@ -70,12 +75,14 @@ namespace BFF.MVVM.ViewModels.ForModels
                 accountViewModelService,
                 accountRepository,
                 parentTransactionViewModelService, 
+                schedulerProvider,
                 dependingTransactionViewModelFactory, 
                 dependingTransferViewModelFactory)
         {
             _account = account;
             _transRepository = transRepository;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
+            _schedulerProvider = schedulerProvider;
 
             StartingBalance = account
                 .ToReactivePropertyAsSynchronized(a => a.StartingBalance, ReactivePropertyMode.DistinctUntilChanged)
@@ -102,10 +109,10 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         }
 
-        protected override IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess
-            => new RelayBasicAsyncDataAccess<ITransLikeViewModel>(
-                (offset, pageSize) => CreatePacket(_transRepository.GetPageAsync(offset, pageSize, _account).Result),
-                () => (int) _transRepository.GetCountAsync(_account).Result,
+        protected override IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess
+            => new RelayBasicTaskBasedAsyncDataAccess<ITransLikeViewModel>(
+                async (offset, pageSize) => CreatePacket( await _transRepository.GetPageAsync(offset, pageSize, _account)),
+                async () => ((int) await _transRepository.GetCountAsync(_account)),
                 () => new TransLikeViewModelPlaceholder());
 
         /// <summary>
@@ -120,12 +127,21 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             if(IsOpen.Value)
             {
-                OnPreVirtualizedRefresh();
-                var temp = _tits;
-                _tits = CreateDataVirtualizingCollection();
-                OnPropertyChanged(nameof(Tits));
-                OnPostVirtualizedRefresh();
-                Task.Run(() => temp?.Dispose());
+                Task.Run(() => CreateDataVirtualizingCollection())
+                    .ContinueWith(t =>
+                    {
+                        _schedulerProvider.UI.Schedule(Unit.Default, (sc, st) =>
+                        {
+                            OnPreVirtualizedRefresh();
+                            var temp = _tits;
+                            _tits = t.Result;
+                            OnPropertyChanged(nameof(Tits));
+                            OnPostVirtualizedRefresh();
+                            Task.Run(() => temp?.Dispose());
+                            return Disposable.Empty;
+                        });
+                        
+                    });
             }
         }
 

@@ -51,18 +51,22 @@ namespace BFF.MVVM.ViewModels.ForModels
         public TransferViewModel(
             ITransfer transfer, 
             IAccountViewModelService accountViewModelService,
-            Func<IHaveFlagViewModel, INewFlagViewModel> newFlagViewModelFactory,
+            INewFlagViewModel newFlagViewModel,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ILastSetDate lastSetDate,
-            IFlagViewModelService flagViewModelService) : base(transfer, newFlagViewModelFactory, lastSetDate, flagViewModelService)
+            IRxSchedulerProvider schedulerProvider,
+            IFlagViewModelService flagViewModelService) : base(transfer, newFlagViewModel, lastSetDate, schedulerProvider, flagViewModelService)
         {
             _accountViewModelService = accountViewModelService;
 
             FromAccount = transfer
                 .ToReactivePropertyAsSynchronized(
-                    t => t.FromAccount,
+                    nameof(transfer.FromAccount),
+                    () => transfer.FromAccount,
+                    fa => transfer.FromAccount = fa,
                     accountViewModelService.GetViewModel, 
-                    accountViewModelService.GetModel, 
+                    accountViewModelService.GetModel,
+                    schedulerProvider.UI,
                     ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
@@ -79,9 +83,12 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             ToAccount = transfer
                 .ToReactivePropertyAsSynchronized(
-                    t => t.ToAccount, 
+                    nameof(transfer.ToAccount),
+                    () => transfer.ToAccount,
+                    ta => transfer.ToAccount = ta, 
                     accountViewModelService.GetViewModel,
                     accountViewModelService.GetModel,
+                    schedulerProvider.UI,
                     ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
@@ -96,7 +103,12 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .Subscribe(RefreshAnAccountViewModel)
                 .AddTo(CompositeDisposable);
 
-            Sum = transfer.ToReactivePropertyAsSynchronized(t => t.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            Sum = transfer.ToReactivePropertyAsSynchronized(
+                nameof(transfer.Sum),
+                () => transfer.Sum,
+                s => transfer.Sum = s,
+                schedulerProvider.UI,
+                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
             Sum
                 .Where(_ => transfer.Id != -1L)
                 .Subscribe(sum =>

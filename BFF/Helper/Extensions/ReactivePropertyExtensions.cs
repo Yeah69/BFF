@@ -87,5 +87,89 @@ namespace BFF.Helper.Extensions
 
             return result;
         }
+        
+        public static IObservable<TProperty> ObserveProperty<TSubject, TProperty>(
+            this TSubject subject, string propertyName, Func<TProperty> getter,
+            bool isPushCurrentValueAtFirst = true)
+            where TSubject : INotifyPropertyChanged
+        {
+            var isFirst = true;
+
+            var result = Observable.Defer(() =>
+            {
+                var flag = isFirst;
+                isFirst = false;
+
+                var q = subject.PropertyChangedAsObservable()
+                    .Where(e => e.PropertyName == propertyName)
+                    .Select(_ => getter());
+                return isPushCurrentValueAtFirst && flag ? q.StartWith(getter()) : q;
+            });
+            return result;
+        }
+        
+        public static ReactiveProperty<TProperty> ToReactivePropertyAsSynchronized<TSubject, TProperty>(
+            this TSubject subject,
+            string propertyName,
+            Func<TProperty> getter,
+            Action<TProperty> setter,
+            ReactivePropertyMode mode = ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
+            bool ignoreValidationErrorValue = false)
+            where TSubject : INotifyPropertyChanged =>
+            ToReactivePropertyAsSynchronized(subject, propertyName, getter, setter, ReactivePropertyScheduler.Default, mode, ignoreValidationErrorValue);
+        
+        public static ReactiveProperty<TProperty> ToReactivePropertyAsSynchronized<TSubject, TProperty>(
+            this TSubject subject,
+            string propertyName,
+            Func<TProperty> getter,
+            Action<TProperty> setter,
+            IScheduler raiseEventScheduler,
+            ReactivePropertyMode mode = ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
+            bool ignoreValidationErrorValue = false)
+            where TSubject : INotifyPropertyChanged
+        {
+            var result = subject.ObserveProperty(propertyName, getter, isPushCurrentValueAtFirst: true)
+                .ToReactiveProperty(raiseEventScheduler, mode: mode);
+            result
+                .Where(_ => !ignoreValidationErrorValue || !result.HasErrors)
+                .Subscribe(setter);
+
+            return result;
+        }
+        
+        public static ReactiveProperty<TResult> ToReactivePropertyAsSynchronized<TSubject, TProperty, TResult>(
+            this TSubject subject,
+            string propertyName,
+            Func<TProperty> getter,
+            Action<TProperty> setter,
+            Func<TProperty, TResult> convert,
+            Func<TResult, TProperty> convertBack,
+            ReactivePropertyMode mode = ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
+            bool ignoreValidationErrorValue = false)
+            where TSubject : INotifyPropertyChanged =>
+            ToReactivePropertyAsSynchronized(subject, propertyName, getter, setter, convert, convertBack, ReactivePropertyScheduler.Default, mode, ignoreValidationErrorValue);
+        
+        public static ReactiveProperty<TResult> ToReactivePropertyAsSynchronized<TSubject, TProperty, TResult>(
+            this TSubject subject,
+            string propertyName,
+            Func<TProperty> getter,
+            Action<TProperty> setter,
+            Func<TProperty, TResult> convert,
+            Func<TResult, TProperty> convertBack,
+            IScheduler raiseEventScheduler,
+            ReactivePropertyMode mode = ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
+            bool ignoreValidationErrorValue = false)
+            where TSubject : INotifyPropertyChanged
+        {
+            var result = subject.ObserveProperty(propertyName, getter, isPushCurrentValueAtFirst: true)
+                .Select(convert)
+                .ToReactiveProperty(raiseEventScheduler, initialValue: convert(getter()), mode: mode);
+            result
+                .Where(_ => !ignoreValidationErrorValue || !result.HasErrors)
+                .Select(convertBack)
+                .Subscribe(setter);
+
+            return result;
+        }
     }
 }

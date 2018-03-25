@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
@@ -85,6 +84,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         private readonly Lazy<IAccountViewModelService> _accountViewModelService;
         private readonly IAccountRepository _accountRepository;
         private readonly IParentTransactionViewModelService _parentTransactionViewModelService;
+        private readonly IRxSchedulerProvider _schedulerProvider;
         private readonly Func<ITransaction, ITransactionViewModel> _transactionViewModelFactory;
         private readonly Func<ITransfer, ITransferViewModel> _transferViewModelFactory;
         private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
@@ -151,6 +151,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             Lazy<IAccountViewModelService> accountViewModelService,
             IAccountRepository accountRepository,
             IParentTransactionViewModelService parentTransactionViewModelService,
+            IRxSchedulerProvider schedulerProvider,
             Func<ITransaction, ITransactionViewModel> transactionViewModelFactory,
             Func<ITransfer, ITransferViewModel> transferViewModelFactory) : base(account)
         {
@@ -158,6 +159,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             _accountViewModelService = accountViewModelService;
             _accountRepository = accountRepository;
             _parentTransactionViewModelService = parentTransactionViewModelService;
+            _schedulerProvider = schedulerProvider;
             _transactionViewModelFactory = transactionViewModelFactory;
             _transferViewModelFactory = transferViewModelFactory;
             Messenger.Default.Register<CultureMessage>(this, message =>
@@ -318,16 +320,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected IDataVirtualizingCollection<ITransLikeViewModel> CreateDataVirtualizingCollection()
             => CollectionBuilder<ITransLikeViewModel>
                 .CreateBuilder()
-                .BuildAHoardingPreloadingSyncCollection(
-                    BasicAccess, 
+                .BuildAHoardingTaskBasedAsyncCollection(
+                    BasicAccess,
+                    _schedulerProvider.Task,
+                    _schedulerProvider.UI,
                     PageSize);
-
-        protected IScheduler SubscriptionScheduler = ThreadPoolScheduler.Instance;
-
-        protected IScheduler ObserveScheduler = new DispatcherScheduler(Application.Current.Dispatcher);
 
         protected int PageSize = 100;
 
-        protected abstract IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess { get; }
+        protected abstract IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess { get; }
     }
 }

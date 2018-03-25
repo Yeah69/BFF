@@ -163,6 +163,8 @@ namespace BFF
 
             builder.Register(cc => DialogCoordinator.Instance).As<IDialogCoordinator>();
 
+            builder.RegisterType<WpfRxSchedulerProvider>().As<IRxSchedulerProvider>().SingleInstance();
+
             _rootScope = builder.Build();
         }
 

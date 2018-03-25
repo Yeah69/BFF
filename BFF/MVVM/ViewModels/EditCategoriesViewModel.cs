@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using BFF.DB;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
-using BFF.MVVM.ViewModels.ForModels.Structure;
 using MuVaViMo;
 
 namespace BFF.MVVM.ViewModels
@@ -28,9 +26,9 @@ namespace BFF.MVVM.ViewModels
         public EditCategoriesViewModel(
             ICategoryViewModelService categoryService,
             IIncomeCategoryViewModelService incomeService,
-            Func<IHaveCategoryViewModel, INewCategoryViewModel> newCategoryViewModelFactory)
+            INewCategoryViewModel newCategoryViewModel)
         {
-            NewCategoryViewModel = newCategoryViewModelFactory(null);
+            NewCategoryViewModel = newCategoryViewModel;
             AllCategories = categoryService.All.ToReadOnlyObservableCollection();
             AllIncomeCategories = incomeService.All.ToReadOnlyObservableCollection();
         }

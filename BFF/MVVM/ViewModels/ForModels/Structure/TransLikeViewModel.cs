@@ -3,6 +3,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -84,11 +85,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         /// <param name="transLike">The model.</param>
         protected TransLikeViewModel(
-            ITransLike transLike) 
+            ITransLike transLike,
+            IRxSchedulerProvider schedulerProvider) 
             : base(transLike)
         {
             _removeRequestSubject.AddTo(CompositeDisposable);
-            Memo = transLike.ToReactivePropertyAsSynchronized(tl => tl.Memo, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            Memo = transLike.ToReactivePropertyAsSynchronized(
+                nameof(transLike.Memo), 
+                () => transLike.Memo, 
+                m => transLike.Memo = m,
+                schedulerProvider.UI,
+                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             ToggleSign = new ReactiveCommand();
             ToggleSign.Subscribe(_ => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus);
