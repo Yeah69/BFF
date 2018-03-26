@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
@@ -95,7 +96,8 @@ namespace BFF.MVVM.ViewModels
             IsOpen =
                 new ReactiveProperty<bool>(false, ReactivePropertyMode.DistinctUntilChanged)
                     .AddTo(_compositeDisposable);
-            IsOpen.Where(b => b).Subscribe(b => Refresh()).AddTo(_compositeDisposable);
+            IsOpen.Where(b => b).Subscribe(b =>
+                Task.Factory.StartNew(Refresh)).AddTo(_compositeDisposable);
 
             Messenger.Default.Register<CultureMessage>(this, message =>
             {
@@ -105,7 +107,7 @@ namespace BFF.MVVM.ViewModels
                         break;
                     case CultureMessage.RefreshCurrency:
                     case CultureMessage.RefreshDate:
-                        Refresh();
+                        Task.Factory.StartNew(Refresh);
                         break;
                     default:
                         throw new InvalidEnumArgumentException();
@@ -117,7 +119,7 @@ namespace BFF.MVVM.ViewModels
                 switch (message)
                 {
                     case BudgetOverviewMessage.Refresh:
-                        Refresh();
+                        Task.Factory.StartNew(Refresh);
                         break;
                     default:
                         throw new InvalidEnumArgumentException();
@@ -131,9 +133,9 @@ namespace BFF.MVVM.ViewModels
             }).AddTo(_compositeDisposable);
         }
 
-        private void Refresh()
+        private async Task Refresh()
         {
-            BudgetMonths = CreateBudgetMonths();
+            BudgetMonths = await Task.Run(() => CreateBudgetMonths());
             OnPropertyChanged(nameof(BudgetMonths));
         }
 
@@ -141,20 +143,19 @@ namespace BFF.MVVM.ViewModels
         {
             return CollectionBuilder<IBudgetMonthViewModel>
                 .CreateBuilder()
-                .BuildAHoardingPreloadingSyncCollection(
-                    new RelayBasicSyncDataAccess<IBudgetMonthViewModel>(
-                        (offset, pageSize) =>
+                .BuildAHoardingPreloadingTaskBasedSyncCollection(
+                    new RelayBasicTaskBasedSyncDataAccess<IBudgetMonthViewModel>(
+                        async (offset, pageSize) =>
                         {
                             DateTime fromMonth = IndexToMonth(offset);
                             DateTime toMonth = IndexToMonth(offset + pageSize - 1);
 
-                            return _budgetMonthRepository.FindAsync(fromMonth, toMonth)
-                                .Result
+                            return (await _budgetMonthRepository.FindAsync(fromMonth, toMonth))
                                 .Select(bm =>
                                     (IBudgetMonthViewModel) new BudgetMonthViewModel(bm, _budgetEntryViewModelService))
                                 .ToArray();
                         },
-                        () => LastMonthIndex),
+                        () =>  Task.FromResult(LastMonthIndex)),
                     pageSize: 6);
         }
 

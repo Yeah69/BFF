@@ -128,13 +128,13 @@ namespace BFF.MVVM.ViewModels.ForModels
             if(IsOpen.Value)
             {
                 Task.Run(() => CreateDataVirtualizingCollection())
-                    .ContinueWith(t =>
+                    .ContinueWith(async t =>
                     {
+                        var temp = _tits;
+                        _tits = await t;
                         _schedulerProvider.UI.Schedule(Unit.Default, (sc, st) =>
                         {
                             OnPreVirtualizedRefresh();
-                            var temp = _tits;
-                            _tits = t.Result;
                             OnPropertyChanged(nameof(Tits));
                             OnPostVirtualizedRefresh();
                             Task.Run(() => temp?.Dispose());

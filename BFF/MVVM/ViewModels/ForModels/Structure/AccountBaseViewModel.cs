@@ -227,15 +227,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             if (IsOpen.Value)
             {
                 Task.Run(() => _accountRepository.GetBalanceAsync(_account))
-                    .ContinueWith(t =>
+                    .ContinueWith(async t =>
                     {
-                        _balance = t.Result;
+                        _balance = await t;
                         OnPropertyChanged(nameof(Balance));
                     });
                 Task.Run(() => _accountRepository.GetBalanceUntilNowAsync(_account))
-                    .ContinueWith(t =>
+                    .ContinueWith(async t =>
                     {
-                        _balanceUntilNow = t.Result;
+                        _balanceUntilNow = await t;
                         OnPropertyChanged(nameof(BalanceUntilNow));
                     });
             }
