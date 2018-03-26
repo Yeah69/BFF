@@ -65,9 +65,8 @@
     <Reference Include="Autofac.Extras.NLog, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.Extras.NLog.1.3.0\lib\net451\Autofac.Extras.NLog.dll</HintPath>
     </Reference>
-    <Reference Include="BFF.DataVirtualizingCollection, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\BFF.DataVirtualizingCollection\BFF.DataVirtualizingCollection\bin\Release\netstandard1.4\BFF.DataVirtualizingCollection.dll</HintPath>
+    <Reference Include="BFF.DataVirtualizingCollection, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BFF.DataVirtualizingCollection.1.1.0\lib\netstandard1.4\BFF.DataVirtualizingCollection.dll</HintPath>
     </Reference>
     <Reference Include="Dapper, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.4\lib\net451\Dapper.dll</HintPath>
