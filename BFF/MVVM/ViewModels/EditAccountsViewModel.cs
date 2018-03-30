@@ -1,7 +1,9 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
+using System.Reactive.Disposables;
 using BFF.DB;
+using BFF.Helper.Extensions;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.Properties;
@@ -20,18 +22,21 @@ namespace BFF.MVVM.ViewModels
 
     public class EditAccountsViewModel : ObservableObject, IEditAccountsViewModel, IDisposable, IOncePerBackend
     {
+        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
+
         public INewAccountViewModel NewAccountViewModel { get; }
         public ReadOnlyObservableCollection<IAccountViewModel> All { get; }
         public bool IsDateLong => Settings.Default.Culture_DefaultDateLong;
 
         public EditAccountsViewModel(
             IAccountViewModelService service,
+            IBackendCultureManager cultureManager,
             INewAccountViewModel newAccountViewModel)
         {
             NewAccountViewModel = newAccountViewModel;
             All = service.All.ToReadOnlyObservableCollection();
-            
-            Messenger.Default.Register<CultureMessage>(this, message =>
+
+            cultureManager.RefreshSignal.Subscribe(message =>
             {
                 switch (message)
                 {
@@ -39,11 +44,12 @@ namespace BFF.MVVM.ViewModels
                         OnPropertyChanged(nameof(IsDateLong));
                         break;
                 }
-            });
+            }).AddTo(CompositeDisposable);
         }
 
         public void Dispose()
         {
+            CompositeDisposable.Dispose();
             Messenger.Default.Unregister<CultureMessage>(this);
         }
     }

@@ -281,11 +281,13 @@
     <Compile Include="DB\SQLite\DapperTransOrm.cs" />
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
     <Compile Include="DB\SQLite\DapperCrudOrm.cs" />
+    <Compile Include="EmptyContext.cs" />
     <Compile Include="Helper\Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Helper\Extensions\EnumerableExtensions.cs" />
     <Compile Include="Helper\Extensions\GenericExtensions.cs" />
     <Compile Include="Helper\Extensions\LongExtensions.cs" />
     <Compile Include="Helper\Extensions\PointExtensions.cs" />
+    <Compile Include="Helper\Extensions\SchedulerExtensions.cs" />
     <Compile Include="Helper\Extensions\StringExtensions.cs" />
     <Compile Include="Helper\Extensions\VisualExtensions.cs" />
     <Compile Include="Helper\Import\CategoryImportWrapper.cs" />
@@ -298,6 +300,7 @@
     <Compile Include="MVVM\AttachedBehaviors\ScrollViewerSync.cs" />
     <Compile Include="MVVM\BffDialogCoordinator.cs" />
     <Compile Include="MVVM\Converters.cs" />
+    <Compile Include="MVVM\Managers\BackendCultureManager.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
     <Compile Include="MVVM\Models\Native\BudgetEntry.cs" />

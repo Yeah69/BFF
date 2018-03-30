@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BFF.DB;
 using BFF.Helper.Extensions;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
@@ -38,10 +39,11 @@ namespace BFF.MVVM.ViewModels
     {
         private readonly IAccountViewModelService _viewModelService;
 
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
 
         public NewAccountViewModel(
             Func<IAccount> factory,
+            ICultureManager cultureManager,
             IAccountViewModelService viewModelService)
         {
             string ValidateName(string text)
@@ -56,13 +58,13 @@ namespace BFF.MVVM.ViewModels
             
             Name = new ReactiveProperty<string>("", ReactivePropertyMode.DistinctUntilChanged)
                 .SetValidateNotifyError(text => ValidateName(text))
-                .AddTo(_compositeDisposable);
+                .AddTo(CompositeDisposable);
 
-            StartingBalance = new ReactiveProperty<long>(0, ReactivePropertyMode.None).AddTo(_compositeDisposable);
+            StartingBalance = new ReactiveProperty<long>(0, ReactivePropertyMode.None).AddTo(CompositeDisposable);
 
-            StartingDate = new ReactiveProperty<DateTime>(DateTime.Today, ReactivePropertyMode.None).AddTo(_compositeDisposable);
+            StartingDate = new ReactiveProperty<DateTime>(DateTime.Today, ReactivePropertyMode.None).AddTo(CompositeDisposable);
 
-            AddCommand = new ReactiveCommand().AddTo(_compositeDisposable);
+            AddCommand = new ReactiveCommand().AddTo(CompositeDisposable);
 
             AddCommand.Where(
                 _ =>
@@ -79,10 +81,9 @@ namespace BFF.MVVM.ViewModels
                     newAccount.Insert();
                     Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
                     Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
-                }).AddTo(_compositeDisposable);
+                }).AddTo(CompositeDisposable);
 
-
-            Messenger.Default.Register<CultureMessage>(this, message =>
+            cultureManager.RefreshSignal.Subscribe(message =>
             {
                 switch (message)
                 {
@@ -96,9 +97,9 @@ namespace BFF.MVVM.ViewModels
                     default:
                         throw new InvalidEnumArgumentException();
                 }
-            });
+            }).AddTo(CompositeDisposable);
 
-            Disposable.Create(() => Messenger.Default.Unregister<CultureMessage>(this)).AddTo(_compositeDisposable);
+            Disposable.Create(() => Messenger.Default.Unregister<CultureMessage>(this)).AddTo(CompositeDisposable);
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace BFF.MVVM.ViewModels
 
         public void Dispose()
         {
-            _compositeDisposable?.Dispose();
+            CompositeDisposable?.Dispose();
         }
     }
 }

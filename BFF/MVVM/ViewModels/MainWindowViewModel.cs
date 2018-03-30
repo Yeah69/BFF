@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Reactive;
 using System.Reactive.Disposables;
+using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using Autofac.Features.OwnedInstances;
@@ -10,6 +11,7 @@ using BFF.DB;
 using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.Helper.Import;
+using BFF.MVVM.Managers;
 using BFF.Properties;
 using NLog;
 using Reactive.Bindings;
@@ -30,10 +32,9 @@ namespace BFF.MVVM.ViewModels
         IEditPayeesViewModel EditPayeesViewModel { get; }
         IEditFlagsViewModel EditFlagsViewModel { get; }
         IEmptyViewModel EmptyViewModel { get; }
+        ICultureManager CultureManager { get; }
         bool IsEmpty { get; }
         CultureInfo LanguageCulture { get; set; }
-        CultureInfo CurrencyCulture { get; set; }
-        CultureInfo DateCulture { get; set; }
         bool DateLong { get; set; }
         ParentTitViewModel ParentTitViewModel { get; set; }
         bool ParentTitFlyoutOpen { get; set; }
@@ -47,6 +48,7 @@ namespace BFF.MVVM.ViewModels
     public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
     {
         private readonly Func<Owned<Func<string, ISqLiteBackendContext>>> _sqliteBackendContextFactory;
+        private readonly Func<Owned<Func<IEmptyContext>>> _emptyContextFactory;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
         protected bool FileFlyoutIsOpen;
@@ -135,6 +137,17 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
+        public ICultureManager CultureManager
+        {
+            get => _cultureManager;
+            private set
+            {
+                if (value == _cultureManager) return;
+                _cultureManager = value;
+                OnPropertyChanged();
+            }
+        }
+
         public IEmptyViewModel EmptyViewModel { get; set; }
         public bool IsEmpty => AccountTabsViewModel is null || BudgetOverviewViewModel is null;
 
@@ -144,31 +157,16 @@ namespace BFF.MVVM.ViewModels
             set
             {
                 Settings.Default.Culture_DefaultLanguage = value;
-                _accountTabsViewModel?.ManageCultures();
-                OnPropertyChanged();
-            }
-        }
 
-        public CultureInfo CurrencyCulture
-        {
-            get => Settings.Default.Culture_SessionCurrency;
-            set
-            {
-                Settings.Default.Culture_SessionCurrency = value;
-                _accountTabsViewModel?.ManageCultures();
-                Messenger.Default.Send(CultureMessage.RefreshCurrency);
-                OnPropertyChanged();
-            }
-        }
+                CultureInfo customCulture = CultureInfo.CreateSpecificCulture(Settings.Default.Culture_DefaultLanguage.Name);
+                customCulture.NumberFormat = CultureManager.CurrencyCulture.NumberFormat;
+                customCulture.DateTimeFormat = CultureManager.DateCulture.DateTimeFormat;
 
-        public CultureInfo DateCulture
-        {
-            get => Settings.Default.Culture_SessionDate;
-            set
-            {
-                Settings.Default.Culture_SessionDate = value;
-                _accountTabsViewModel?.ManageCultures();
-                Messenger.Default.Send(CultureMessage.RefreshDate);
+                WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = customCulture;
+                Thread.CurrentThread.CurrentCulture = customCulture;
+                Thread.CurrentThread.CurrentUICulture = customCulture;
+
+                Settings.Default.Save();
                 OnPropertyChanged();
             }
         }
@@ -180,7 +178,7 @@ namespace BFF.MVVM.ViewModels
             set
             {
                 Settings.Default.Culture_DefaultDateLong = value;
-                _accountTabsViewModel?.ManageCultures();
+                //_accountTabsViewModel?.ManageCultures(); TODO RefreshDate in CultureManger
                 Messenger.Default.Send(CultureMessage.RefreshDate);
                 OnPropertyChanged();
             }
@@ -202,11 +200,12 @@ namespace BFF.MVVM.ViewModels
 
         private bool _parentTitFlyoutOpen;
         private IBudgetOverviewViewModel _budgetOverviewViewModel;
-        private Owned<Func<string, ISqLiteBackendContext>> _contextOwner;
+        private readonly SerialDisposable _contextSequence = new SerialDisposable();
         private IEditAccountsViewModel _editAccountsViewModel;
         private IEditCategoriesViewModel _editCategoriesViewModel;
         private IEditPayeesViewModel _editPayeesViewModel;
         private IEditFlagsViewModel _editFlagsViewModel;
+        private ICultureManager _cultureManager;
 
         public bool ParentTitFlyoutOpen
         {
@@ -220,6 +219,7 @@ namespace BFF.MVVM.ViewModels
 
         public MainWindowViewModel(
             Func<Owned<Func<string, ISqLiteBackendContext>>> sqliteBackendContextFactory,
+            Func<Owned<Func<IEmptyContext>>> emptyContextFactory,
             Func<Owned<Func<string, IProvideConnection>>> ownedCreateProvideConnectionFactory,
             Func<IProvideConnection, ICreateBackendOrm> createCreateBackendOrm,
             IRxSchedulerProvider schedulerProvider,
@@ -227,6 +227,7 @@ namespace BFF.MVVM.ViewModels
         {
             EmptyViewModel = emptyViewModel;
             _sqliteBackendContextFactory = sqliteBackendContextFactory;
+            _emptyContextFactory = emptyContextFactory;
             Logger.Debug("Initializing …");
             Reset(Settings.Default.DBLocation);
 
@@ -299,38 +300,34 @@ namespace BFF.MVVM.ViewModels
 
         protected void Reset(string dbPath)
         {
-            _contextOwner?.Dispose();
+            IBackendContext context;
             if (File.Exists(dbPath))
             {
-                _contextOwner = null;
-                _contextOwner = _sqliteBackendContextFactory();
-                var context = _contextOwner.Value(dbPath);
-                
-                AccountTabsViewModel = context.AccountTabsViewModel;
-                BudgetOverviewViewModel = context.BudgetOverviewViewModel;
-                EditAccountsViewModel = context.EditAccountsViewModel;
-                EditCategoriesViewModel = context.EditCategoriesViewModel;
-                EditPayeesViewModel = context.EditPayeesViewModel;
-                EditFlagsViewModel = context.EditFlagsViewModel;
+                var contextOwner = _sqliteBackendContextFactory();
+                context = contextOwner.Value(dbPath);
+                _contextSequence.Disposable = contextOwner;
                 Title = $"{new FileInfo(dbPath).FullName} - BFF";
                 Settings.Default.DBLocation = dbPath;
-                Settings.Default.Save();
             }
             else
             {
-                AccountTabsViewModel = null;
-                BudgetOverviewViewModel = null;
-                EditAccountsViewModel = null;
-                EditCategoriesViewModel = null;
-                EditPayeesViewModel = null;
-                EditFlagsViewModel = null;
+                var contextOwner = _emptyContextFactory();
+                context = contextOwner.Value();
+                _contextSequence.Disposable = contextOwner;
                 Title = "BFF";
                 Settings.Default.DBLocation = "";
-                Settings.Default.Save();
             }
+            Settings.Default.Save();
+
+            AccountTabsViewModel = context.AccountTabsViewModel;
+            BudgetOverviewViewModel = context.BudgetOverviewViewModel;
+            EditAccountsViewModel = context.EditAccountsViewModel;
+            EditCategoriesViewModel = context.EditCategoriesViewModel;
+            EditPayeesViewModel = context.EditPayeesViewModel;
+            EditFlagsViewModel = context.EditFlagsViewModel;
+            CultureManager = context.CultureManager;
+
             OnPropertyChanged(nameof(IsEmpty));
-            OnPropertyChanged(nameof(CurrencyCulture));
-            OnPropertyChanged(nameof(DateCulture));
         }
 
         #region SizeLocationWindowState

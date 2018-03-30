@@ -10,6 +10,7 @@ using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB.Dapper;
 using BFF.DB.Dapper.ModelRepositories;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using Reactive.Bindings;
@@ -67,6 +68,7 @@ namespace BFF.MVVM.ViewModels
         public BudgetOverviewViewModel(
             IBudgetMonthRepository budgetMonthRepository,
             IBudgetEntryViewModelService budgetEntryViewModelService,
+            IBackendCultureManager cultureManager,
             ICategoryViewModelService categoryViewModelService,
             ICategoryRepository categoryRepository)
         {
@@ -99,7 +101,7 @@ namespace BFF.MVVM.ViewModels
             IsOpen.Where(b => b).Subscribe(b =>
                 Task.Factory.StartNew(Refresh)).AddTo(_compositeDisposable);
 
-            Messenger.Default.Register<CultureMessage>(this, message =>
+            cultureManager.RefreshSignal.Subscribe(message =>
             {
                 switch (message)
                 {
@@ -112,7 +114,7 @@ namespace BFF.MVVM.ViewModels
                     default:
                         throw new InvalidEnumArgumentException();
                 }
-            });
+            }).AddTo(_compositeDisposable);
 
             Messenger.Default.Register<BudgetOverviewMessage>(this, message =>
             {

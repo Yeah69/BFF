@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -345,7 +346,7 @@ namespace BFF.Helper.Import
                 {
                     if(ynabBudgetEntry.Budgeted != 0L)
                     {
-                        var month = DateTime.ParseExact(ynabBudgetEntry.Month, "MMMM yyyy", null);
+                        var month = DateTime.ParseExact(ynabBudgetEntry.Month, "MMMM yyyy", CultureInfo.GetCultureInfo("de-DE")); // TODO make this customizable + exception handling
                         Persistence.BudgetEntry budgetEntry = new Persistence.BudgetEntry
                         {
                             Month = month,

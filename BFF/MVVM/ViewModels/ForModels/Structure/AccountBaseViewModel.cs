@@ -12,6 +12,7 @@ using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
@@ -152,6 +153,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             IAccountRepository accountRepository,
             IParentTransactionViewModelService parentTransactionViewModelService,
             IRxSchedulerProvider schedulerProvider,
+            IBackendCultureManager cultureManager,
             Func<ITransaction, ITransactionViewModel> transactionViewModelFactory,
             Func<ITransfer, ITransferViewModel> transferViewModelFactory) : base(account)
         {
@@ -162,7 +164,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             _schedulerProvider = schedulerProvider;
             _transactionViewModelFactory = transactionViewModelFactory;
             _transferViewModelFactory = transferViewModelFactory;
-            Messenger.Default.Register<CultureMessage>(this, message =>
+
+            cultureManager.RefreshSignal.Subscribe(message =>
             {
                 switch (message)
                 {
@@ -178,12 +181,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                         break;
                     case CultureMessage.RefreshDate:
                         OnPropertyChanged(nameof(IsDateFormatLong));
+                        RefreshTits();
                         break;
                     default:
                         throw new InvalidEnumArgumentException();
 
                 }
-            });
+            }).AddTo(CompositeDisposable);
 
             IsOpen = new ReactiveProperty<bool>(false).AddTo(CompositeDisposable);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.DB.SQLite;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels;
@@ -35,7 +36,9 @@ namespace BFF
             Lazy<IAccountTabsViewModel> lazyAccountTabsViewModel,
             Lazy<IEditAccountsViewModel> lazyEditAccountsViewModel,
             Lazy<IEditCategoriesViewModel> lazyEditCategoriesViewModel,
-            Lazy<IEditPayeesViewModel> lazyEditPayeesViewModel, Lazy<IEditFlagsViewModel> lazyEditFlagsViewModel)
+            Lazy<IEditPayeesViewModel> lazyEditPayeesViewModel,
+            Lazy<IEditFlagsViewModel> lazyEditFlagsViewModel,
+            Lazy<IBackendCultureManager> lazyCultureManger)
         {
             provideSqLiteConnectionFactory(dbPath);
             accountRepository();
@@ -57,6 +60,7 @@ namespace BFF
             EditCategoriesViewModel = lazyEditCategoriesViewModel.Value;
             EditPayeesViewModel = lazyEditPayeesViewModel.Value;
             EditFlagsViewModel = lazyEditFlagsViewModel.Value;
+            CultureManager = lazyCultureManger.Value;
         }
 
         public override IBudgetOverviewViewModel BudgetOverviewViewModel { get; } 
@@ -65,5 +69,6 @@ namespace BFF
         public override IEditCategoriesViewModel EditCategoriesViewModel { get; }
         public override IEditPayeesViewModel EditPayeesViewModel { get; }
         public override IEditFlagsViewModel EditFlagsViewModel { get; }
+        public override ICultureManager CultureManager { get; }
     }
 }

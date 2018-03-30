@@ -10,6 +10,7 @@ using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.Helper.Extensions;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -64,6 +65,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IParentTransactionViewModelService parentTransactionViewModelService,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
             IRxSchedulerProvider schedulerProvider,
+            IBackendCultureManager cultureManager,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             Func<IAccount, ITransactionViewModel> transactionViewModelFactory,
             Func<ITransferViewModel> transferViewModelFactory,
@@ -76,6 +78,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 accountRepository,
                 parentTransactionViewModelService, 
                 schedulerProvider,
+                cultureManager,
                 dependingTransactionViewModelFactory, 
                 dependingTransferViewModelFactory)
         {

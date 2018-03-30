@@ -10,6 +10,7 @@ using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.Helper.Extensions;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -53,6 +54,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             ITransRepository transRepository,
             IParentTransactionViewModelService parentTransactionViewModelService,
             IRxSchedulerProvider schedulerProvider,
+            IBackendCultureManager cultureManager,
             Func<ITransactionViewModel> transactionViewModelFactory,
             Func<ITransferViewModel> transferViewModelFactory,
             Func<IParentTransactionViewModel> parentTransactionFactory,
@@ -64,6 +66,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 accountRepository,
                 parentTransactionViewModelService,
                 schedulerProvider,
+                cultureManager,
                 dependingTransactionViewModelFactory,
                 dependingTransferViewModelFactory)
         {

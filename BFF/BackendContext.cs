@@ -1,4 +1,5 @@
 ﻿using BFF.MVVM;
+using BFF.MVVM.Managers;
 using BFF.MVVM.ViewModels;
 
 namespace BFF
@@ -16,6 +17,8 @@ namespace BFF
         IEditPayeesViewModel EditPayeesViewModel { get; }
 
         IEditFlagsViewModel EditFlagsViewModel { get; }
+
+        ICultureManager CultureManager { get; }
     }
 
     public abstract class BackendContext : ObservableObject, IBackendContext
@@ -27,7 +30,11 @@ namespace BFF
         public abstract IEditAccountsViewModel EditAccountsViewModel { get; }
 
         public abstract IEditCategoriesViewModel EditCategoriesViewModel { get; }
+
         public abstract IEditPayeesViewModel EditPayeesViewModel { get; }
+
         public abstract IEditFlagsViewModel EditFlagsViewModel { get; }
+
+        public abstract ICultureManager CultureManager { get; }
     }
 }

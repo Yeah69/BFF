@@ -275,5 +275,9 @@ namespace BFF.MVVM
 
         public static readonly IValueConverter ColorToSolidColorBrush =
             ValueConverter.Create<Color, SolidColorBrush>(e => new SolidColorBrush(e.Value));
+
+        public static readonly IValueConverter CollapsedIfNull =
+            ValueConverter.Create<object, Visibility>(
+                e => e.Value is null ? Visibility.Collapsed : Visibility.Visible);
     }
 }
