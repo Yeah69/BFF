@@ -92,7 +92,7 @@ namespace BFF.MVVM.ViewModels
                         IIncomeCategory newCategory = incomeCategoryFactory();
                         newCategory.Name = Name.Value.Trim();
                         newCategory.MonthOffset = MonthOffset.Value;
-                        newCategory.Insert();
+                        newCategory.InsertAsync();
                         if(CurrentCategoryOwner != null)
                             CurrentCategoryOwner.Category.Value = incomeCategoryViewModelService.GetViewModel(newCategory);
                         CurrentCategoryOwner = null;
@@ -102,7 +102,7 @@ namespace BFF.MVVM.ViewModels
                         ICategory newCategory = categoryFactory(_categoryViewModelService.GetModel(Parent.Value));
                         newCategory.Name = Name.Value.Trim();
                         newCategory.Parent?.AddCategory(newCategory);
-                        newCategory.Insert();
+                        newCategory.InsertAsync();
                         OnPropertyChanged(nameof(AllPotentialParents));
                         var categoryViewModel = _categoryViewModelService.GetViewModel(newCategory);
                         categoryViewModelInitializer.Initialize(categoryViewModel);

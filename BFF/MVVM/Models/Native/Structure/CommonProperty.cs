@@ -27,7 +27,7 @@ namespace BFF.MVVM.Models.Native.Structure
             {
                 if (_name == value) return;
                 _name = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
             }
         }

@@ -300,7 +300,7 @@
     <Compile Include="MVVM\AttachedBehaviors\ScrollViewerSync.cs" />
     <Compile Include="MVVM\BffDialogCoordinator.cs" />
     <Compile Include="MVVM\Converters.cs" />
-    <Compile Include="MVVM\Managers\BackendCultureManager.cs" />
+    <Compile Include="MVVM\Managers\CultureManager.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
     <Compile Include="MVVM\Models\Native\BudgetEntry.cs" />

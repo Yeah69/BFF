@@ -39,9 +39,9 @@ namespace BFF.DB.Dapper
             return base.FindAllAsync();
         }
 
-        public override async Task Add(TDomain dataModel)
+        public override async Task AddAsync(TDomain dataModel)
         {
-            await base.Add(dataModel).ConfigureAwait(false);
+            await base.AddAsync(dataModel).ConfigureAwait(false);
             if(!All.Contains(dataModel))
             {
                 int i = 0;
@@ -51,9 +51,9 @@ namespace BFF.DB.Dapper
             }
         }
 
-        public override async Task Delete(TDomain dataModel)
+        public override async Task DeleteAsync(TDomain dataModel)
         {
-            await base.Delete(dataModel).ConfigureAwait(false);
+            await base.DeleteAsync(dataModel).ConfigureAwait(false);
             if(All.Contains(dataModel))
             {
                 All.Remove(dataModel);

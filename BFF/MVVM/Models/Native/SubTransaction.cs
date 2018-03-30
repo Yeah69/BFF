@@ -1,4 +1,5 @@
-﻿using BFF.DB;
+﻿using System.Threading.Tasks;
+using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -70,7 +71,7 @@ namespace BFF.MVVM.Models.Native
                 }
                 if (_category == value) return;
                 _category = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
             }
         }
@@ -85,20 +86,20 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_sum == value) return;
                 _sum = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
             }
         }
 
-        public override void Insert()
+        public override async Task InsertAsync()
         {
-            base.Insert();
+            await base.InsertAsync();
             Parent.AddSubElement(this);
         }
 
-        public override void Delete()
+        public override async Task DeleteAsync()
         {
-            base.Delete();
+            await base.DeleteAsync();
             Parent.RemoveSubElement(this);
         }
     }

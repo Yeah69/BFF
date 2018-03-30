@@ -6,9 +6,9 @@ namespace BFF.DB
 {
     public interface IWriteOnlyRepository<in T> : IOncePerBackend where T : class, IDataModel
     {
-        Task Add(T dataModel);
-        Task Update(T dataModel);
-        Task Delete(T dataModel);
+        Task AddAsync(T dataModel);
+        Task UpdateAsync(T dataModel);
+        Task DeleteAsync(T dataModel);
     }
     public interface IReadOnlyRepository<T> : IOncePerBackend where T : class, IDataModel
     {

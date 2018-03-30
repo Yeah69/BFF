@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Structure;
 
@@ -49,7 +50,7 @@ namespace BFF.MVVM.Models.Native
                 if(_category == value) return;
 
                 _category = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
             }
         }
@@ -66,19 +67,18 @@ namespace BFF.MVVM.Models.Native
                 if (_budget == 0 && Id == -1)
                 {
                     _budget = value;
-                    Insert();
+                    Task.Run(InsertAsync).ContinueWith(_ => OnPropertyChanged());
                 }
                 else if (_budget != 0 && value == 0 && Id > -1)
                 {
                     _budget = value;
-                    Delete();
+                    Task.Run(DeleteAsync).ContinueWith(_ => OnPropertyChanged());
                 }
                 else
                 {
                     _budget = value;
-                    Update();
+                    UpdateAndNotify();
                 }
-                OnPropertyChanged();
             }
         }
 
@@ -92,7 +92,7 @@ namespace BFF.MVVM.Models.Native
                 if (_outflow == value) return;
 
                 _outflow = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
             }
         }
@@ -107,7 +107,7 @@ namespace BFF.MVVM.Models.Native
                 if (_balance == value) return;
 
                 _balance = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
             }
         }

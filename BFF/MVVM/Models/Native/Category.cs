@@ -34,7 +34,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if (_parent == value) return;
                 _parent = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
             }
         }

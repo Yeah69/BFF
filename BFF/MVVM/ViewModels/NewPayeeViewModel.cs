@@ -69,7 +69,7 @@ namespace BFF.MVVM.ViewModels
                 {
                     IPayee newPayee = payeeFactory();
                     newPayee.Name = PayeeText.Value.Trim();
-                    newPayee.Insert();
+                    newPayee.InsertAsync();
                     if(CurrentOwner != null)
                         CurrentOwner.Payee.Value = _payeeViewModelService.GetViewModel(newPayee);
                     CurrentOwner = null;

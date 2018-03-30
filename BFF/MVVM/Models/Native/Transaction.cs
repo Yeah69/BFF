@@ -6,30 +6,14 @@ namespace BFF.MVVM.Models.Native
 {
     public interface ITransaction : ITransactionBase, IHaveCategory
     {
-        /// <summary>
-        /// The amount of money, which was payed or received
-        /// </summary>
         long Sum { get; set; }
     }
-
-    /// <summary>
-    /// The Transaction documents payment to or from externals
-    /// </summary>
+    
     public class Transaction : TransactionBase<ITransaction>, ITransaction
     {
         private ICategoryBase _category;
         private long _sum;
-
-        /// <summary>
-        /// Initializes the object
-        /// </summary>
-        /// <param name="date">Marks when the Tit happened</param>
-        /// <param name="account">The Account to which this belongs</param>
-        /// <param name="payee">To whom was payed or who payed</param>
-        /// <param name="category">Categorizes this</param>
-        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        /// <param name="sum">The amount of money, which was payed or received</param>
-        /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
+        
         public Transaction(
             IRepository<ITransaction> repository,
             DateTime date,
@@ -47,10 +31,7 @@ namespace BFF.MVVM.Models.Native
             _category = category;
             _sum = sum;
         }
-
-        /// <summary>
-        /// Id of Category
-        /// </summary>
+        
         public ICategoryBase Category
         {
             get => _category;
@@ -63,14 +44,11 @@ namespace BFF.MVVM.Models.Native
                 }
                 if(_category == value) return;
                 _category = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
             }
         }
-
-        /// <summary>
-        /// The amount of money, which was payed or received
-        /// </summary>
+        
         public long Sum
         {
             get => _sum;
@@ -78,7 +56,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_sum == value) return;
                 _sum = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
             }
         }

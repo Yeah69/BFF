@@ -27,7 +27,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if (_color == value) return;
                 _color = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
             }
         }

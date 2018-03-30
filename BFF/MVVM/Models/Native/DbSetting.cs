@@ -21,7 +21,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_currencyCulture.Equals(CultureInfo.GetCultureInfo(value))) return;
                 _currencyCulture = CultureInfo.GetCultureInfo(value);
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CurrencyCulture));
             }
@@ -36,7 +36,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_currencyCulture.Equals(value)) return;
                 _currencyCulture = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CurrencyCultureName));
             }
@@ -49,7 +49,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if (_dateCulture.Equals(CultureInfo.GetCultureInfo(value))) return;
                 _dateCulture = CultureInfo.GetCultureInfo(value);
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(DateCulture));
             }
@@ -64,7 +64,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if (_dateCulture.Equals(value)) return;
                 _dateCulture = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(DateCultureName));
             }

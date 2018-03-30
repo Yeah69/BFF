@@ -19,7 +19,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if (_monthOffset == value) return;
                 _monthOffset = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
             }
         }

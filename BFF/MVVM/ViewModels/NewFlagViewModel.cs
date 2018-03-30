@@ -65,7 +65,7 @@ namespace BFF.MVVM.ViewModels
                 {
                     IFlag newFlag = flagFactory(Brush.Value.Color);
                     newFlag.Name = Text.Value.Trim();
-                    newFlag.Insert();
+                    newFlag.InsertAsync();
                     if(CurrentOwner != null)
                         CurrentOwner.Flag.Value = _flagViewModelService.GetViewModel(newFlag);
                     CurrentOwner = null;

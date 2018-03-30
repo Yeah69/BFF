@@ -58,7 +58,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public void Insert()
         {
-            _dataModel.Insert();
+            _dataModel.InsertAsync();
             OnInsert();
         }
 
@@ -75,7 +75,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public virtual void Delete()
         {
-            _dataModel.Delete();
+            _dataModel.DeleteAsync();
         }
 
         public ReactiveCommand DeleteCommand { get; }

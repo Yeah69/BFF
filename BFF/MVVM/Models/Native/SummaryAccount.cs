@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 
@@ -22,11 +23,11 @@ namespace BFF.MVVM.Models.Native
 
         #region Overrides of ExteriorCrudBase
 
-        public override void Insert() {}
+        public override Task InsertAsync() => Task.CompletedTask;
 
-        public override void Update() {}
+        public override Task UpdateAsync() => Task.CompletedTask;
 
-        public override void Delete(){}
+        public override Task DeleteAsync() => Task.CompletedTask;
 
         #endregion
     }

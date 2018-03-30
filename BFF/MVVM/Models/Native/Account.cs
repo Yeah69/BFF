@@ -32,7 +32,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_startingBalance == value) return;
                 _startingBalance = value;
-                Update();
+                UpdateAndNotify();
                 OnPropertyChanged();
             }
         }
@@ -43,8 +43,8 @@ namespace BFF.MVVM.Models.Native
             set
             {
                 if (_startingDate == value) return;
-                _startingDate = value; 
-                Update();
+                _startingDate = value;
+                UpdateAndNotify();
                 OnPropertyChanged();
             }
         }

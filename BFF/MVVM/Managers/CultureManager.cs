@@ -21,12 +21,6 @@ namespace BFF.MVVM.Managers
         CultureInfo CurrencyCulture { get; set; }
 
         CultureInfo DateCulture { get; set; }
-
-        void Refresh();
-
-        void RefreshCurrency();
-
-        void RefreshDate();
     }
 
     public abstract class CultureManagerBase : ObservableObject, ICultureManager, IOncePerBackend, IDisposable
@@ -66,17 +60,17 @@ namespace BFF.MVVM.Managers
 
         public IObservable<CultureMessage> RefreshSignal => _refreshSignal.AsObservable();
 
-        public void Refresh()
+        protected void Refresh()
         {
             _refreshSignal.OnNext(CultureMessage.Refresh);
         }
 
-        public void RefreshCurrency()
+        protected void RefreshCurrency()
         {
             _refreshSignal.OnNext(CultureMessage.RefreshCurrency);
         }
 
-        public void RefreshDate()
+        protected void RefreshDate()
         {
             _refreshSignal.OnNext(CultureMessage.RefreshDate);
         }

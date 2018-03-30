@@ -22,9 +22,9 @@ namespace BFF.DB.Dapper
 
         protected CachingRepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(provideConnection, crudOrm) { }
 
-        public override async Task Add(TDomain dataModel)
+        public override async Task AddAsync(TDomain dataModel)
         {
-            await base.Add(dataModel).ConfigureAwait(false);
+            await base.AddAsync(dataModel).ConfigureAwait(false);
             if(!_cache.ContainsKey(dataModel.Id))
                 _cache.Add(dataModel.Id, dataModel);
         }
@@ -38,9 +38,9 @@ namespace BFF.DB.Dapper
             return _cache[id];
         }
 
-        public override async Task Delete(TDomain dataModel)
+        public override async Task DeleteAsync(TDomain dataModel)
         {
-            await base.Delete(dataModel).ConfigureAwait(false);
+            await base.DeleteAsync(dataModel).ConfigureAwait(false);
             if(!_cache.ContainsKey(dataModel.Id))
                 _cache.Remove(dataModel.Id);
         }

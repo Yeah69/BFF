@@ -28,7 +28,7 @@ namespace BFF.DB.Dapper
 
         protected abstract Converter<TDomain, TPersistence> ConvertToPersistence { get; }
 
-        public virtual async Task Add(TDomain dataModel)
+        public virtual async Task AddAsync(TDomain dataModel)
         {
             if (dataModel.Id > 0) return;
             var persistenceModel = ConvertToPersistence(dataModel);
@@ -36,13 +36,13 @@ namespace BFF.DB.Dapper
             dataModel.Id = persistenceModel.Id;
         }
 
-        public virtual async Task Update(TDomain dataModel)
+        public virtual async Task UpdateAsync(TDomain dataModel)
         {
             if (dataModel.Id < 0) return;
             await _crudOrm.UpdateAsync(ConvertToPersistence(dataModel)).ConfigureAwait(false);
         }
 
-        public virtual async Task Delete(TDomain dataModel)
+        public virtual async Task DeleteAsync(TDomain dataModel)
         {
             if (dataModel.Id < 0) return;
             await _crudOrm.DeleteAsync(ConvertToPersistence(dataModel)).ConfigureAwait(false);

@@ -24,8 +24,15 @@ namespace BFF
 
             MVVM.Views.MainWindow mainWindow = new MVVM.Views.MainWindow();
             mainWindow.Show();
-            
-            
+        }
+
+        public static Visibility IsDebug
+        {
+#if DEBUG
+            get { return Visibility.Visible; }
+#else
+            get { return Visibility.Collapsed; }
+#endif
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
