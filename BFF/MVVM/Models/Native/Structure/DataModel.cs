@@ -29,17 +29,17 @@ namespace BFF.MVVM.Models.Native.Structure
         
         public virtual async Task InsertAsync()
         {
-            await _repository.AddAsync(this as T);
+            await _repository.AddAsync(this as T).ConfigureAwait(false);
         }
         
         public virtual async Task UpdateAsync()
         {
-            await _repository.UpdateAsync(this as T);
+            await _repository.UpdateAsync(this as T).ConfigureAwait(false);
         }
         
         public virtual async Task DeleteAsync()
         {
-            await _repository.DeleteAsync(this as T);
+            await _repository.DeleteAsync(this as T).ConfigureAwait(false);
         }
 
         protected void UpdateAndNotify([CallerMemberName] string propertyName = "") => 

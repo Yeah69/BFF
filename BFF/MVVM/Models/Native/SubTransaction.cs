@@ -93,13 +93,13 @@ namespace BFF.MVVM.Models.Native
 
         public override async Task InsertAsync()
         {
-            await base.InsertAsync();
+            await base.InsertAsync().ConfigureAwait(false);
             Parent.AddSubElement(this);
         }
 
         public override async Task DeleteAsync()
         {
-            await base.DeleteAsync();
+            await base.DeleteAsync().ConfigureAwait(false);
             Parent.RemoveSubElement(this);
         }
     }

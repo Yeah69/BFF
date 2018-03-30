@@ -120,7 +120,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         protected override IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess
             => new RelayBasicTaskBasedAsyncDataAccess<ITransLikeViewModel>(
                 async (offset, pageSize) => CreatePacket(await _transRepository.GetPageAsync(offset, pageSize, null)),
-                async () => ((int) await _transRepository.GetCountAsync(null)),
+                async () => (int) await _transRepository.GetCountAsync(null),
                 () => new TransLikeViewModelPlaceholder());
 
         /// <summary>
