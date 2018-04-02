@@ -50,14 +50,14 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public void Insert()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public bool IsInsertable() => false;
 
         public void Delete()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         #endregion

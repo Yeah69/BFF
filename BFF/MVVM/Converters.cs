@@ -197,10 +197,15 @@ namespace BFF.MVVM
                     double sum = 0.0;
                     foreach (object value in e.Values)
                     {
-                        if (value is DataGridLength)
-                            sum += ((DataGridLength)value).DisplayValue;
-                        else if (value is double)
-                            sum += (double)value;
+                        switch (value)
+                        {
+                            case DataGridLength _:
+                                sum += ((DataGridLength)value).DisplayValue;
+                                break;
+                            case double _:
+                                sum += (double)value;
+                                break;
+                        }
                     }
                     return sum;
                 });
@@ -215,10 +220,15 @@ namespace BFF.MVVM
                     double sum = 0.0;
                     foreach (object value in e.Values)
                     {
-                        if (value is DataGridLength)
-                            sum += ((DataGridLength)value).DisplayValue;
-                        else if (value is double)
-                            sum += (double)value;
+                        switch (value)
+                        {
+                            case DataGridLength _:
+                                sum += ((DataGridLength)value).DisplayValue;
+                                break;
+                            case double _:
+                                sum += (double)value;
+                                break;
+                        }
                     }
                     return new Thickness(sum, 0.0, 0.0, 0.0);
                 });

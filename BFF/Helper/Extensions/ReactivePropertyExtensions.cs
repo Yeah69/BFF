@@ -10,14 +10,6 @@ namespace BFF.Helper.Extensions
 {
     public static class ReactivePropertyExtensions
     {
-
-        /// <summary>
-        /// <para>Converts NotificationObject's property to ReadOnlyReactiveProperty. Value is one-way synchronized.</para>
-        /// <para>PropertyChanged raise on ReactivePropertyScheduler.</para>
-        /// </summary>
-        /// <param name="propertySelector">Argument is self, Return is target property.</param>
-        /// <param name="mode">ReactiveProperty mode.</param>
-        /// <param name="ignoreValidationErrorValue">Ignore validation error value.</param>
         public static ReadOnlyReactiveProperty<TProperty> ToReadOnlyReactivePropertyAsSynchronized<TSubject, TProperty>(
             this TSubject subject,
             Expression<Func<TSubject, TProperty>> propertySelector,
@@ -26,13 +18,6 @@ namespace BFF.Helper.Extensions
             where TSubject : INotifyPropertyChanged =>
             ToReadOnlyReactivePropertyAsSynchronized(subject, propertySelector, ReactivePropertyScheduler.Default, mode, ignoreValidationErrorValue);
 
-        /// <summary>
-        /// <para>Converts NotificationObject's property to ReadOnlyReactiveProperty. Value is one-way synchronized.</para>
-        /// <para>PropertyChanged raise on selected scheduler.</para>
-        /// </summary>
-        /// <param name="propertySelector">Argument is self, Return is target property.</param>
-        /// <param name="mode">ReactiveProperty mode.</param>
-        /// <param name="ignoreValidationErrorValue">Ignore validation error value.</param>
         public static ReadOnlyReactiveProperty<TProperty> ToReadOnlyReactivePropertyAsSynchronized<TSubject, TProperty>(
             this TSubject subject,
             Expression<Func<TSubject, TProperty>> propertySelector,
@@ -41,20 +26,12 @@ namespace BFF.Helper.Extensions
             bool ignoreValidationErrorValue = false)
             where TSubject : INotifyPropertyChanged
         {
-            var result = subject.ObserveProperty(propertySelector, isPushCurrentValueAtFirst: true)
+            var result = subject.ObserveProperty(propertySelector)
                 .ToReadOnlyReactiveProperty(eventScheduler: raiseEventScheduler, mode: mode);
 
             return result;
         }
-
-        /// <summary>
-        /// <para>Converts NotificationObject's property to ReadOnlyReactiveProperty. Value is one-way synchronized.</para>
-        /// <para>PropertyChanged raise on ReactivePropertyScheduler.</para>
-        /// </summary>
-        /// <param name="propertySelector">Argument is self, Return is target property.</param>
-        /// <param name="convert">Convert selector to ReactiveProperty.</param>
-        /// <param name="mode">ReactiveProperty mode.</param>
-        /// <param name="ignoreValidationErrorValue">Ignore validation error value.</param>
+        
         public static ReadOnlyReactiveProperty<TResult> ToReadOnlyReactivePropertyAsSynchronized<TSubject, TProperty, TResult>(
             this TSubject subject,
             Expression<Func<TSubject, TProperty>> propertySelector,
@@ -63,15 +40,7 @@ namespace BFF.Helper.Extensions
             bool ignoreValidationErrorValue = false)
             where TSubject : INotifyPropertyChanged =>
             ToReadOnlyReactivePropertyAsSynchronized(subject, propertySelector, convert, ReactivePropertyScheduler.Default, mode, ignoreValidationErrorValue);
-
-        /// <summary>
-        /// <para>Converts NotificationObject's property to ReadOnlyReactiveProperty. Value is one-way synchronized.</para>
-        /// <para>PropertyChanged raise on selected scheduler.</para>
-        /// </summary>
-        /// <param name="propertySelector">Argument is self, Return is target property.</param>
-        /// <param name="convert">Convert selector to ReactiveProperty.</param>
-        /// <param name="mode">ReactiveProperty mode.</param>
-        /// <param name="ignoreValidationErrorValue">Ignore validation error value.</param>
+        
         public static ReadOnlyReactiveProperty<TResult> ToReadOnlyReactivePropertyAsSynchronized<TSubject, TProperty, TResult>(
             this TSubject subject,
             Expression<Func<TSubject, TProperty>> propertySelector,
@@ -81,7 +50,7 @@ namespace BFF.Helper.Extensions
             bool ignoreValidationErrorValue = false)
             where TSubject : INotifyPropertyChanged
         {
-            var result = subject.ObserveProperty(propertySelector, isPushCurrentValueAtFirst: true)
+            var result = subject.ObserveProperty(propertySelector)
                 .Select(convert)
                 .ToReadOnlyReactiveProperty(eventScheduler: raiseEventScheduler, mode: mode);
 
@@ -128,7 +97,7 @@ namespace BFF.Helper.Extensions
             bool ignoreValidationErrorValue = false)
             where TSubject : INotifyPropertyChanged
         {
-            var result = subject.ObserveProperty(propertyName, getter, isPushCurrentValueAtFirst: true)
+            var result = subject.ObserveProperty(propertyName, getter)
                 .ToReactiveProperty(raiseEventScheduler, mode: mode);
             result
                 .Where(_ => !ignoreValidationErrorValue || !result.HasErrors)
@@ -161,7 +130,7 @@ namespace BFF.Helper.Extensions
             bool ignoreValidationErrorValue = false)
             where TSubject : INotifyPropertyChanged
         {
-            var result = subject.ObserveProperty(propertyName, getter, isPushCurrentValueAtFirst: true)
+            var result = subject.ObserveProperty(propertyName, getter)
                 .Select(convert)
                 .ToReactiveProperty(raiseEventScheduler, initialValue: convert(getter()), mode: mode);
             result

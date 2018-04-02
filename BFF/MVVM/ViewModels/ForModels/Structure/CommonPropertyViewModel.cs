@@ -1,5 +1,4 @@
-﻿using BFF.DB;
-using BFF.MVVM.Models.Native.Structure;
+﻿using BFF.MVVM.Models.Native.Structure;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 

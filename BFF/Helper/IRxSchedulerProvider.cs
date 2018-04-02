@@ -8,6 +8,7 @@ namespace BFF.Helper
         IScheduler TimeBasedOperations { get; }
         IScheduler Task { get; }
         IScheduler Thread { get; }
+        // ReSharper disable once InconsistentNaming
         IScheduler UI { get; }
     }
 

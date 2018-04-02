@@ -15,22 +15,11 @@ namespace BFF.MVVM.Models.Native
 
         void RemoveSubElement(ISubTransaction subTransaction);
     }
-
-    /// <summary>
-    /// A Transaction, which is split into several SubTransactions
-    /// </summary>
+    
     public class ParentTransaction : TransactionBase<IParentTransaction>, IParentTransaction
     {
         private readonly ObservableCollection<ISubTransaction> _subTransactions;
-
-        /// <summary>
-        /// Initializes the object
-        /// </summary>
-        /// <param name="date">Marks when the Tit happened</param>
-        /// <param name="account">The Account to which this belongs</param>
-        /// <param name="payee">To whom was payed or who payed</param>
-        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
+        
         public ParentTransaction(
             IRepository<IParentTransaction> repository,
             IEnumerable<ISubTransaction> subTransactions,

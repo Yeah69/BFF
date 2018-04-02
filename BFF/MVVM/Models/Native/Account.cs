@@ -6,25 +6,16 @@ namespace BFF.MVVM.Models.Native
 {
     public interface IAccount : ICommonProperty
     {
-        /// <summary>
-        /// Starting balance of the Account
-        /// </summary>
         long StartingBalance { get; set; }
 
         DateTime StartingDate { get; set; }
     }
-
-    /// <summary>
-    /// Tits can be added to an Account
-    /// </summary>
+    
     public class Account : CommonProperty<IAccount>, IAccount
     {
         private long _startingBalance;
         private DateTime _startingDate;
-
-        /// <summary>
-        /// Starting balance of the Account
-        /// </summary>
+        
         public virtual long StartingBalance
         {
             get => _startingBalance;
@@ -48,13 +39,7 @@ namespace BFF.MVVM.Models.Native
                 OnPropertyChanged();
             }
         }
-
-        /// <summary>
-        /// Initializes the object
-        /// </summary>
-        /// <param name="id">This objects Id</param>
-        /// <param name="name">Name of the Account</param>
-        /// <param name="startingBalance">Starting balance of the Account</param>
+        
         public Account(IRepository<IAccount> repository,
             DateTime startingDate, 
             long id = -1L, 

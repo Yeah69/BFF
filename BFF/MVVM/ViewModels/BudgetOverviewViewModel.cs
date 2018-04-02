@@ -130,7 +130,6 @@ namespace BFF.MVVM.ViewModels
 
             Disposable.Create(() =>
             {
-                Messenger.Default.Unregister<CultureMessage>(this);
                 Messenger.Default.Unregister<BudgetOverviewMessage>(this);
             }).AddTo(_compositeDisposable);
         }

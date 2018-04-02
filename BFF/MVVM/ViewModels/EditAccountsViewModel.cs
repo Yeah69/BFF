@@ -50,7 +50,6 @@ namespace BFF.MVVM.ViewModels
         public void Dispose()
         {
             CompositeDisposable.Dispose();
-            Messenger.Default.Unregister<CultureMessage>(this);
         }
     }
 }

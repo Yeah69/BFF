@@ -210,7 +210,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             Disposable.Create(() =>
             {
                 _tits?.Dispose();
-                Messenger.Default.Unregister<CultureMessage>(this);
             }).AddTo(CompositeDisposable);
         }
 

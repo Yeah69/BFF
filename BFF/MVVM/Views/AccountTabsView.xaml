@@ -8,7 +8,6 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
              xmlns:views="clr-namespace:BFF.MVVM.Views"
              x:Name="AccountTabsUserControl"

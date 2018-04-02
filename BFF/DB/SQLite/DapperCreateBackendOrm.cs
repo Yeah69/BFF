@@ -73,7 +73,7 @@ namespace BFF.DB.SQLite
             {nameof(Trans.Cleared)} INTEGER,
             {nameof(Trans.Type)} VARCHAR(17),
             FOREIGN KEY({nameof(Trans.FlagId)}) REFERENCES {nameof(Flag)}s({nameof(Flag.Id)}) ON DELETE SET NULL);
-            CREATE INDEX {nameof(Trans)}s_{nameof(Trans.AccountId)}_{nameof(Trans.PayeeId)}_index ON Transs ({nameof(Trans.AccountId)}, {nameof(Trans.PayeeId)});
+            CREATE INDEX {nameof(Trans)}s_{nameof(Trans.AccountId)}_{nameof(Trans.PayeeId)}_index ON {nameof(Trans)}s ({nameof(Trans.AccountId)}, {nameof(Trans.PayeeId)});
             CREATE INDEX {nameof(Trans)}s_{nameof(Trans.AccountId)}_{nameof(Trans.CategoryId)}_index ON {nameof(Trans)}s ({nameof(Trans.AccountId)}, {nameof(Trans.CategoryId)});
             CREATE INDEX {nameof(Trans)}s_{nameof(Trans.Date)}_index ON {nameof(Trans)}s ({nameof(Trans.Date)});";
         

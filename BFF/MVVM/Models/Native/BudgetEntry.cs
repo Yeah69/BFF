@@ -16,12 +16,6 @@ namespace BFF.MVVM.Models.Native
     
     public class BudgetEntry : DataModel<IBudgetEntry>, IBudgetEntry
     {
-        /// <summary>
-        /// Initializes the object
-        /// </summary>
-        /// <param name="month">The month of the budget entry</param>
-        /// <param name="category">Categorizes this</param>
-        /// <param name="budget">The amount of money, which was budgeted in the set month</param>
         public BudgetEntry(
             IWriteOnlyRepository<IBudgetEntry> repository, 
             long id, DateTime month,

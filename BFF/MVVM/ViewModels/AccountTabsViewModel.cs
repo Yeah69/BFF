@@ -1,7 +1,4 @@
-﻿using System.Globalization;
-using BFF.DB.Dapper.ModelRepositories;
-using BFF.MVVM.Models.Native;
-using BFF.MVVM.Services;
+﻿using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using MuVaViMo;
 using Reactive.Bindings;

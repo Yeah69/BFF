@@ -8,17 +8,17 @@ using Category = BFF.DB.PersistenceModels.Category;
 namespace BFF.DB.Dapper.ModelRepositories
 {
 
-    public class IncomeCategoryComparer : Comparer<MVVM.Models.Native.IIncomeCategory>
+    public class IncomeCategoryComparer : Comparer<IIncomeCategory>
     {
-        public override int Compare(MVVM.Models.Native.IIncomeCategory x, MVVM.Models.Native.IIncomeCategory y) => 
+        public override int Compare(IIncomeCategory x, IIncomeCategory y) => 
             StringComparer.Create(CultureInfo.InvariantCulture, false).Compare(x?.Name, y?.Name);
     }
 
-    public interface IIncomeCategoryRepository : IObservableRepositoryBase<MVVM.Models.Native.IIncomeCategory>
+    public interface IIncomeCategoryRepository : IObservableRepositoryBase<IIncomeCategory>
     {
     }
 
-    public sealed class IncomeCategoryRepository : ObservableRepositoryBase<MVVM.Models.Native.IIncomeCategory, Category>, IIncomeCategoryRepository
+    public sealed class IncomeCategoryRepository : ObservableRepositoryBase<IIncomeCategory, Category>, IIncomeCategoryRepository
     {
         private readonly ICategoryOrm _categoryOrm;
 
@@ -40,7 +40,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         protected override Task<IEnumerable<Category>> FindAllInnerAsync() => _categoryOrm.ReadIncomeCategoriesAsync();
 
-        protected override Converter<MVVM.Models.Native.IIncomeCategory, Category> ConvertToPersistence => domainCategory =>
+        protected override Converter<IIncomeCategory, Category> ConvertToPersistence => domainCategory =>
             new Category
             {
                 Id = domainCategory.Id,

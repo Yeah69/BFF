@@ -191,15 +191,5 @@ namespace BFF.MVVM.AttachedBehaviors
             get => (string) GetValue(IsSelectedMemberPathProperty);
             set => SetValue(IsSelectedMemberPathProperty, value);
         }
-
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-        }
-
-        protected override void OnDetaching()
-        {
-            base.OnDetaching();
-        }
     }
 }

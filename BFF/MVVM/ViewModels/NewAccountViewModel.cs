@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using BFF.DB;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
@@ -98,8 +97,6 @@ namespace BFF.MVVM.ViewModels
                         throw new InvalidEnumArgumentException();
                 }
             }).AddTo(CompositeDisposable);
-
-            Disposable.Create(() => Messenger.Default.Unregister<CultureMessage>(this)).AddTo(CompositeDisposable);
         }
 
         /// <summary>

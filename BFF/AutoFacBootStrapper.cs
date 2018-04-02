@@ -43,11 +43,6 @@ namespace BFF
             var builder = new ContainerBuilder();
             var assemblies = new[] { Assembly.GetExecutingAssembly() };
 
-            //builder.RegisterAssemblyTypes(assemblies)
-            //    .Where(t => typeof(IService).IsAssignableFrom(t))
-            //    .SingleInstance()
-            //    .AsImplementedInterfaces();
-
             builder.RegisterAssemblyTypes(assemblies)
                 .AsImplementedInterfaces();
 
@@ -62,11 +57,6 @@ namespace BFF
                 })
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
-            //.InstancePerOwned<Func<string, ISqLiteBackendContext>>();
-
-            //builder.RegisterAssemblyTypes(assemblies)
-            //    .Where(t => typeof(IViewModel).IsAssignableFrom(t))
-            //    .AsImplementedInterfaces();
 
             // several view model instances are transitory and created on the fly, if these are tracked by the container then they
             // won't be disposed of in a timely manner
