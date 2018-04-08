@@ -126,11 +126,11 @@
                     </ComboBox>
                     <Label Content="{lex:LocText Settings_Currency,
                                                  Suffix=:}"
-                           Visibility="{Binding CultureManager, Converter={x:Static mvvm:Converters.CollapsedIfNull}}" />
+                           Visibility="{Binding CultureManager, Converter={x:Static mvvm:Converters.NullToCollapsed}}" />
                     <ComboBox x:Name="CurrencyCombo"
                               SelectedItem="{Binding CultureManager.CurrencyCulture, Mode=TwoWay}"
                               Style="{StaticResource VirtualisedMetroComboBox}"
-                              Visibility="{Binding CultureManager, Converter={x:Static mvvm:Converters.CollapsedIfNull}}">
+                              Visibility="{Binding CultureManager, Converter={x:Static mvvm:Converters.NullToCollapsed}}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="globalization:CultureInfo">
                                 <Grid>
@@ -171,11 +171,11 @@
                     </ComboBox>
                     <Label Content="{lex:LocText Settings_Date,
                                                  Suffix=:}"
-                           Visibility="{Binding CultureManager, Converter={x:Static mvvm:Converters.CollapsedIfNull}}" />
+                           Visibility="{Binding CultureManager, Converter={x:Static mvvm:Converters.NullToCollapsed}}" />
                     <ComboBox x:Name="DateCombo"
                               SelectedItem="{Binding CultureManager.DateCulture, Mode=TwoWay}"
                               Style="{StaticResource VirtualisedMetroComboBox}"
-                              Visibility="{Binding CultureManager, Converter={x:Static mvvm:Converters.CollapsedIfNull}}">
+                              Visibility="{Binding CultureManager, Converter={x:Static mvvm:Converters.NullToCollapsed}}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="globalization:CultureInfo">
                                 <Grid>
@@ -218,7 +218,7 @@
                                                     Prefix=:}"
                               FlowDirection="RightToLeft"
                               IsChecked="{Binding DateLong, Mode=TwoWay, Converter={x:Static mvvm:Converters.BooleanToNullableBoolean}}"
-                              Visibility="{Binding CultureManager, Converter={x:Static mvvm:Converters.CollapsedIfNull}}" />
+                              Visibility="{Binding CultureManager, Converter={x:Static mvvm:Converters.NullToCollapsed}}" />
                 </StackPanel>
             </controls:Flyout>
             <controls:Flyout Name="FileFlyout"

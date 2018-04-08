@@ -531,6 +531,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bank Statement.
+        /// </summary>
+        public static string Domain_BankStatement {
+            get {
+                return ResourceManager.GetString("Domain_BankStatement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Categories.
         /// </summary>
         public static string Domain_Categories {
@@ -554,6 +563,15 @@ namespace BFF.Properties {
         public static string Domain_IncomeCategories {
             get {
                 return ResourceManager.GetString("Domain_IncomeCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Bank Statement.
+        /// </summary>
+        public static string Domain_OpenBankStatement {
+            get {
+                return ResourceManager.GetString("Domain_OpenBankStatement", resourceCulture);
             }
         }
         
@@ -675,11 +693,56 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date Format.
+        /// </summary>
+        public static string General_DateFormat {
+            get {
+                return ResourceManager.GetString("General_DateFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delimiter.
+        /// </summary>
+        public static string General_Delimiter {
+            get {
+                return ResourceManager.GetString("General_Delimiter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Path.
+        /// </summary>
+        public static string General_FilePath {
+            get {
+                return ResourceManager.GetString("General_FilePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Header.
+        /// </summary>
+        public static string General_Header {
+            get {
+                return ResourceManager.GetString("General_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Long.
         /// </summary>
         public static string General_Long {
             get {
                 return ResourceManager.GetString("General_Long", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Memo Format.
+        /// </summary>
+        public static string General_MemoFormat {
+            get {
+                return ResourceManager.GetString("General_MemoFormat", resourceCulture);
             }
         }
         
@@ -702,6 +765,24 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create new payee if not existing?.
+        /// </summary>
+        public static string General_NewPayeeIfNotExisting {
+            get {
+                return ResourceManager.GetString("General_NewPayeeIfNotExisting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payee Format.
+        /// </summary>
+        public static string General_PayeeFormat {
+            get {
+                return ResourceManager.GetString("General_PayeeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Positive.
         /// </summary>
         public static string General_Positive {
@@ -711,11 +792,65 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        public static string General_Profile {
+            get {
+                return ResourceManager.GetString("General_Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Profile.
+        /// </summary>
+        public static string General_RemoveProfile {
+            get {
+                return ResourceManager.GetString("General_RemoveProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset Profile.
+        /// </summary>
+        public static string General_ResetProfile {
+            get {
+                return ResourceManager.GetString("General_ResetProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save new Profile.
+        /// </summary>
+        public static string General_SaveNewProfile {
+            get {
+                return ResourceManager.GetString("General_SaveNewProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Profile.
+        /// </summary>
+        public static string General_SaveProfile {
+            get {
+                return ResourceManager.GetString("General_SaveProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Short.
         /// </summary>
         public static string General_Short {
             get {
                 return ResourceManager.GetString("General_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sum Format.
+        /// </summary>
+        public static string General_SumFormat {
+            get {
+                return ResourceManager.GetString("General_SumFormat", resourceCulture);
             }
         }
         

@@ -275,6 +275,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="CreateNewPayee" xml:space="preserve">
     <value>Create new payee</value>
   </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Bank Statement</value>
+  </data>
   <data name="Domain_Categories" xml:space="preserve">
     <value>Categories</value>
   </data>
@@ -283,6 +286,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   </data>
   <data name="Domain_IncomeCategories" xml:space="preserve">
     <value>Income Categories</value>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Open Bank Statement</value>
   </data>
   <data name="Domain_Payees" xml:space="preserve">
     <value>Payees</value>
@@ -323,8 +329,23 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Flag_Edit" xml:space="preserve">
     <value>Edit Flags</value>
   </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Delimiter</value>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>File Path</value>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Header</value>
+  </data>
   <data name="General_Long" xml:space="preserve">
     <value>hosszú</value>
+  </data>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Memo Format</value>
   </data>
   <data name="General_Name" xml:space="preserve">
     <value>Name</value>
@@ -332,11 +353,35 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="General_Negative" xml:space="preserve">
     <value>pozitív</value>
   </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Create new payee if not existing?</value>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Payee Format</value>
+  </data>
   <data name="General_Positive" xml:space="preserve">
     <value>negatív</value>
   </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Remove Profile</value>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>Reset Profile</value>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Save new Profile</value>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Save Profile</value>
+  </data>
   <data name="General_Short" xml:space="preserve">
     <value>rövid</value>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Sum Format</value>
   </data>
   <data name="General_Unassigned" xml:space="preserve">
     <value>Unassigned</value>

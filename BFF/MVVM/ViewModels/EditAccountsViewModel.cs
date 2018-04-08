@@ -44,7 +44,7 @@ namespace BFF.MVVM.ViewModels
                         OnPropertyChanged(nameof(IsDateLong));
                         break;
                 }
-            }).AddTo(CompositeDisposable);
+            }).AddHere(CompositeDisposable);
         }
 
         public void Dispose()

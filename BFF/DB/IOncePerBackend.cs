@@ -3,4 +3,8 @@
     public interface IOncePerBackend
     {
     }
+
+    public interface IOncePerApplication
+    {
+    }
 }

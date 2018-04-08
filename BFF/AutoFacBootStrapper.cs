@@ -9,6 +9,7 @@ using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels;
 using BFF.MVVM.ViewModels.ForModels;
+using BFF.MVVM.Views;
 using MahApps.Metro.Controls.Dialogs;
 using Transaction = BFF.MVVM.Models.Native.Transaction;
 
@@ -17,23 +18,13 @@ namespace BFF
     public static class AutoFacBootstrapper
     {
         private static ILifetimeScope _rootScope;
-        private static IMainWindowViewModel _mainWindowViewModel;
 
-        public static IMainWindowViewModel MainWindowViewModel
+        static AutoFacBootstrapper()
         {
-            get
-            {
-                if (_rootScope is null)
-                {
-                    Start();
-                }
-
-                _mainWindowViewModel = _rootScope.Resolve<IMainWindowViewModel>();
-                return _mainWindowViewModel;
-            }
+            Start();
         }
 
-        public static void Start()
+        private static void Start()
         {
             if (_rootScope != null)
             {
@@ -49,7 +40,19 @@ namespace BFF
             builder.RegisterAssemblyTypes(assemblies)
                 .Where(t =>
                 {
-                    var isAssignable = typeof(IOncePerBackend).IsAssignableFrom(t) && !typeof(ITransientViewModel).IsAssignableFrom(t);
+                    var isAssignable = typeof(IOncePerApplication).IsAssignableFrom(t);
+
+                    Debug.WriteLineIf(isAssignable, $"Once Per Application - {t.Name}");
+
+                    return isAssignable;
+                })
+                .AsImplementedInterfaces()
+                .SingleInstance();
+
+            builder.RegisterAssemblyTypes(assemblies)
+                .Where(t =>
+                {
+                    var isAssignable = typeof(IOncePerBackend).IsAssignableFrom(t);
 
                     Debug.WriteLineIf(isAssignable, $"Once Per LifetimeScope - {t.Name}");
 
@@ -62,10 +65,9 @@ namespace BFF
             // won't be disposed of in a timely manner
 
             builder.RegisterAssemblyTypes(assemblies)
-                .Where(t => typeof(IViewModel).IsAssignableFrom(t))
                 .Where(t =>
                 {
-                    var isAssignable = typeof(ITransientViewModel).IsAssignableFrom(t) && !typeof(IOncePerBackend).IsAssignableFrom(t);
+                    var isAssignable = typeof(ITransientViewModel).IsAssignableFrom(t);
                     if (isAssignable)
                     {
                         Debug.WriteLine("Transient view model - " + t.Name);
@@ -154,6 +156,8 @@ namespace BFF
             builder.Register(cc => DialogCoordinator.Instance).As<IDialogCoordinator>();
 
             builder.RegisterType<WpfRxSchedulerProvider>().As<IRxSchedulerProvider>().SingleInstance();
+
+            builder.RegisterType<MainWindow>().AsSelf().SingleInstance();
 
             _rootScope = builder.Build();
         }

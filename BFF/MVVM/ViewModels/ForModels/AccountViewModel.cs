@@ -13,6 +13,7 @@ using BFF.Helper.Extensions;
 using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
+using BFF.MVVM.ViewModels.Dialogs;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -26,10 +27,15 @@ namespace BFF.MVVM.ViewModels.ForModels
         ISumEditViewModel StartingBalanceEdit { get; }
     }
 
+    public interface IImportCsvBankStatement
+    {
+        ReactiveCommand ImportCsvBankStatement { get; }
+    }
+
     /// <summary>
     /// Tits can be added to an Account
     /// </summary>
-    public class AccountViewModel : AccountBaseViewModel, IAccountViewModel
+    public class AccountViewModel : AccountBaseViewModel, IAccountViewModel, IImportCsvBankStatement
     {
         private readonly IAccount _account;
         private readonly ITransRepository _transRepository;
@@ -66,6 +72,8 @@ namespace BFF.MVVM.ViewModels.ForModels
             IMainBffDialogCoordinator mainBffDialogCoordinator,
             IRxSchedulerProvider schedulerProvider,
             IBackendCultureManager cultureManager,
+            IBffChildWindowManager childWindowManager,
+            Func<IImportCsvBankStatementViewModel> importCsvBankStatementFactory,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             Func<IAccount, ITransactionViewModel> transactionViewModelFactory,
             Func<ITransferViewModel> transferViewModelFactory,
@@ -110,6 +118,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             ApplyCommand.Subscribe(_ => ApplyTits()).AddTo(CompositeDisposable);
 
+            ImportCsvBankStatement.Subscribe(_ => childWindowManager.OpenImportCsvBankStatementDialogAsync(importCsvBankStatementFactory()));
         }
 
         protected override IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess
@@ -170,25 +179,15 @@ namespace BFF.MVVM.ViewModels.ForModels
                     }
                 });
         }
-
-        /// <summary>
-        /// Creates a new Transaction.
-        /// </summary>
+        
         public sealed override ReactiveCommand NewTransactionCommand { get; } = new ReactiveCommand();
-
-        /// <summary>
-        /// Creates a new Transfer.
-        /// </summary>
+        
         public sealed override ReactiveCommand NewTransferCommand { get; } = new ReactiveCommand();
-
-        /// <summary>
-        /// Creates a new ParentTransaction.
-        /// </summary>
+        
         public sealed override ReactiveCommand NewParentTransactionCommand { get; } = new ReactiveCommand();
-
-        /// <summary>
-        /// Flushes all valid and not yet inserted TITs to the database.
-        /// </summary>
+        
         public sealed override ReactiveCommand ApplyCommand { get; }
+
+        public override ReactiveCommand ImportCsvBankStatement { get; } = new ReactiveCommand();
     }
 }

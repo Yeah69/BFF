@@ -31,7 +31,7 @@ namespace BFF.MVVM.Managers
 
         protected CultureManagerBase()
         {
-            _refreshSignal.AddTo(CompositeDisposable);
+            _refreshSignal.AddHere(CompositeDisposable);
         }
 
         public CultureInfo CurrencyCulture
@@ -105,7 +105,7 @@ namespace BFF.MVVM.Managers
         public BackendCultureManager(IDbSettingRepository dbSettingRepository,
             IRxSchedulerProvider schedulerProvider)
         {
-            _saveDbSettingsSubject.AddTo(CompositeDisposable);
+            _saveDbSettingsSubject.AddHere(CompositeDisposable);
 
             schedulerProvider.Task.MinimalScheduleAsync(async () =>
             {
@@ -113,7 +113,7 @@ namespace BFF.MVVM.Managers
                 Settings.Default.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultureName);
                 Settings.Default.Culture_SessionDate = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
                 ManageCultures();
-            }).AddTo(CompositeDisposable);
+            }).AddHere(CompositeDisposable);
 
             _saveDbSettingsSubject
                 .ObserveOn(schedulerProvider.Task)
@@ -122,7 +122,7 @@ namespace BFF.MVVM.Managers
                 {
                     dbSetting.CurrencyCulture = Settings.Default.Culture_SessionCurrency;
                     dbSetting.DateCulture = Settings.Default.Culture_SessionDate;
-                }).AddTo(CompositeDisposable);
+                }).AddHere(CompositeDisposable);
         }
 
         protected override void SaveCultures()

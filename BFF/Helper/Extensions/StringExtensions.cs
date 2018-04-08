@@ -28,5 +28,9 @@ namespace BFF.Helper.Extensions
                 throw new ValidationException();
             return (long)(decimalValue * (decimal)Math.Pow(10, culture.NumberFormat.CurrencyDecimalDigits));
         }
+
+        public static bool IsNullOrWhiteSpace(this string @this) => string.IsNullOrWhiteSpace(@this);
+
+        public static bool IsNullOrEmpty(this string @this) => string.IsNullOrEmpty(@this);
     }
 }

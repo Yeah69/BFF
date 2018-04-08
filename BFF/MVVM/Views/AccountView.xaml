@@ -6,9 +6,10 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
+             xmlns:structure="clr-namespace:BFF.MVVM.ViewModels.ForModels.Structure"
              xmlns:views="clr-namespace:BFF.MVVM.Views"
-             Name="TitsView"
-             d:DataContext="{d:DesignInstance Type=forModels:AccountViewModel}"
+             x:Name="Root"
+             d:DataContext="{d:DesignInstance Type=structure:IAccountBaseViewModel}"
              d:DesignHeight="700"
              d:DesignWidth="1300"
              lex:LocalizeDictionary.DesignCulture="en-US"
@@ -23,6 +24,8 @@
         <views:TitDataGrid Grid.Row="0"
                            AccountViewModel="{Binding}"
                            ApplyCommand="{Binding ApplyCommand}"
+                           ImportCsvBankStatement="{Binding ImportCsvBankStatement}"
+                           ImportCsvBankStatementVisibility="{Binding Converter={x:Static mvvm:Converters.NotOfTypeToCollapsed}, ConverterParameter={x:Type forModels:IImportCsvBankStatement}}"
                            IsDateLong="{Binding IsDateFormatLong}"
                            NewParentTransactionCommand="{Binding NewParentTransactionCommand}"
                            NewTransList="{Binding NewTransList}"
@@ -34,11 +37,14 @@
                     Orientation="Horizontal">
             <GroupBox Margin="0,5,5,5"
                       HorizontalAlignment="Left"
-                      Header="{lex:LocText Account_StartingBalance, Suffix=:}">
+                      Header="{lex:LocText Account_StartingBalance,
+                                           Suffix=:}">
                 <TextBlock Text="{Binding StartingBalance.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
             </GroupBox>
-            <GroupBox HorizontalAlignment="Left"
-                      Header="{lex:LocText Account_Balance, Suffix=:}">
+            <GroupBox Margin="5"
+                      HorizontalAlignment="Left"
+                      Header="{lex:LocText Account_Balance,
+                                           Suffix=:}">
                 <TextBlock Text="{Binding BalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToString}}"
                            ToolTip="{Binding Balance, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
             </GroupBox>

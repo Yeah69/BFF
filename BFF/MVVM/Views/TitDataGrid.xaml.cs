@@ -148,14 +148,38 @@ namespace BFF.MVVM.Views
             set => SetValue(IsDateLongProperty, value);
         }
 
+        public static readonly DependencyProperty ImportCsvBankStatementProperty = DependencyProperty.Register(
+            nameof(ImportCsvBankStatement),
+            typeof(ICommand),
+            typeof(TitDataGrid),
+            new PropertyMetadata(default(ICommand)));
+
+        public static readonly DependencyProperty ImportCsvBankStatementVisibilityProperty = DependencyProperty.Register(
+            nameof(ImportCsvBankStatementVisibility),
+            typeof(Visibility),
+            typeof(TitDataGrid),
+            new PropertyMetadata(default(Visibility)));
+
+        
+
+        public Visibility ImportCsvBankStatementVisibility
+        {
+            get => (Visibility) GetValue(ImportCsvBankStatementVisibilityProperty);
+            set => SetValue(ImportCsvBankStatementVisibilityProperty, value);
+        }
+
+        public ICommand ImportCsvBankStatement
+        {
+            get => (ICommand) GetValue(ImportCsvBankStatementProperty);
+            set => SetValue(ImportCsvBankStatementProperty, value);
+        }
+
         #endregion
 
 
         public TitDataGrid()
         {
             InitializeComponent();
-
-            LayoutRoot.DataContext = this;
         }
 
         private static void OnAccountViewModelChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)

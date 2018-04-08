@@ -112,6 +112,8 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             ApplyCommand.Subscribe(_ => ApplyTits()).AddTo(CompositeDisposable);
 
+            ImportCsvBankStatement = new ReactiveCommand().AddTo(CompositeDisposable);
+
             Disposable.Create(() => { Messenger.Default.Unregister<SummaryAccountMessage>(this); }).AddTo(CompositeDisposable);
         }
 
@@ -172,6 +174,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Flushes all valid and not yet inserted TITs to the database.
         /// </summary>
         public sealed override ReactiveCommand ApplyCommand { get; }
+
+        public override ReactiveCommand ImportCsvBankStatement { get; }
 
         #endregion
 

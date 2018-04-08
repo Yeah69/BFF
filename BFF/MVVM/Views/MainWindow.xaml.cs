@@ -36,7 +36,10 @@ namespace BFF.MVVM.Views
             set => SetValue(ImportCommandProperty, value);
         }
 
-        public MainWindow()
+        public MainWindow(
+            IMainWindowViewModel dataContext,
+            Func<(string, string, string), IYnabCsvImport> ynabCsvImportFactory,
+            Func<IImportable, IImportDialogViewModel> importDialogViewModelFactory)
         {
             InitializeComponent();
             
@@ -44,10 +47,10 @@ namespace BFF.MVVM.Views
             InitializeAppThemeAndAccentComboBoxes();
             SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
 
-            DataContext = AutoFacBootstrapper.MainWindowViewModel;
+            DataContext = dataContext;
 
-            _ynabCsvImportFactory = AutoFacBootstrapper.Resolve<Func<(string, string, string), IYnabCsvImport>>();
-            _importDialogViewModelFactory = AutoFacBootstrapper.Resolve<Func<IImportable, IImportDialogViewModel>>();
+            _ynabCsvImportFactory = ynabCsvImportFactory;
+            _importDialogViewModelFactory = importDialogViewModelFactory;
 
             void InitializeCultureComboBoxes()
             {

@@ -922,7 +922,7 @@
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" DataContext="{Binding ElementName=Root}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -1360,6 +1360,10 @@
                                                     Kind="{StaticResource TransactionIcon}" />
                     </StackPanel>
                 </Button>
+                <Button Margin="5,0,0,0"
+                        Command="{Binding ImportCsvBankStatement}"
+                        Visibility="{Binding ImportCsvBankStatementVisibility}"
+                        Content="Import from CSV" />
                 <Button Margin="5,0,0,0"
                         HorizontalAlignment="Right"
                         Command="{Binding ApplyCommand}"

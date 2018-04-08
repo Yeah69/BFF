@@ -275,6 +275,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="CreateNewPayee" xml:space="preserve">
     <value>Erstelle einen neuen Bezahlten</value>
   </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Kontoauszug</value>
+  </data>
   <data name="Domain_Categories" xml:space="preserve">
     <value>Kategorien</value>
   </data>
@@ -283,6 +286,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   </data>
   <data name="Domain_IncomeCategories" xml:space="preserve">
     <value>Einkommenskategorien</value>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Kontoauszug √∂ffnen</value>
   </data>
   <data name="Domain_Payees" xml:space="preserve">
     <value>Zahlungsempf√§nger</value>
@@ -323,8 +329,23 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="Flag_Edit" xml:space="preserve">
     <value>Markierungen bearbeiten</value>
   </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Datumsformat</value>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Trennzeichen</value>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Dateipfad</value>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Kopfdaten</value>
+  </data>
   <data name="General_Long" xml:space="preserve">
     <value>Lang</value>
+  </data>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Notizformat</value>
   </data>
   <data name="General_Name" xml:space="preserve">
     <value>Name</value>
@@ -332,11 +353,35 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="General_Negative" xml:space="preserve">
     <value>Negativ</value>
   </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Erstelle einen neuen Zahlungsempf√§nger wenn er nicht existiert?</value>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Zahlungsempf√§ngerformat</value>
+  </data>
   <data name="General_Positive" xml:space="preserve">
     <value>Positiv</value>
   </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Profil entfernen</value>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>Profil zur√ºcksetzen</value>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Neues Profil speichern</value>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Profil speichern</value>
+  </data>
   <data name="General_Short" xml:space="preserve">
     <value>Kurz</value>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Betragsformat</value>
   </data>
   <data name="General_Unassigned" xml:space="preserve">
     <value>Nicht zugewiesen</value>

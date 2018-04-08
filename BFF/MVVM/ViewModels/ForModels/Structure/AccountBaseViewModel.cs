@@ -45,6 +45,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         long? Balance { get; }
 
+        
+        long? BalanceUntilNow { get; }
+
         IReactiveProperty<bool> IsOpen { get; }
 
         /// <summary>
@@ -66,6 +69,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Flushes all valid and not yet inserted TITs to the database.
         /// </summary>
         ReactiveCommand ApplyCommand { get; }
+
+        ReactiveCommand ImportCsvBankStatement { get; }
 
         bool IsDateFormatLong { get; }
 
@@ -141,6 +146,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Flushes all valid and not yet inserted TITs to the database.
         /// </summary>
         public abstract ReactiveCommand ApplyCommand { get; }
+
+        public abstract ReactiveCommand ImportCsvBankStatement { get; }
 
         /// <summary>
         /// Indicates if the date format should be display in short or long fashion.
