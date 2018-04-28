@@ -922,7 +922,8 @@
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid x:Name="LayoutRoot" DataContext="{Binding ElementName=Root}">
+    <Grid x:Name="LayoutRoot"
+          DataContext="{Binding ElementName=Root}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -1308,9 +1309,9 @@
                 </DataGrid.RowDetailsTemplate>
             </DataGrid>
             <DockPanel Margin="0,5,0,0">
-                <Button Command="{Binding NewTransactionCommand}"
-                        ToolTip="{lex:Loc AccountView_ToolTip_NewTransaction}"
-                        Visibility="{Binding NewTransactionVisibility}">
+                <Button Visibility="{Binding NewTransactionVisibility}"
+                        Command="{Binding NewTransactionCommand}"
+                        ToolTip="{lex:Loc AccountView_ToolTip_NewTransaction}">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                     Height="{StaticResource IconSize}"
@@ -1323,10 +1324,10 @@
                                                     Kind="{StaticResource TransactionIcon}" />
                     </StackPanel>
                 </Button>
-                <Button Margin="5,0,0,0"
+                <Button Visibility="{Binding NewTransferVisibility}"
+                        Margin="5,0,0,0"
                         Command="{Binding NewTransferCommand}"
-                        ToolTip="{lex:Loc AccountView_ToolTip_NewTransfer}"
-                        Visibility="{Binding NewTransferVisibility}">
+                        ToolTip="{lex:Loc AccountView_ToolTip_NewTransfer}">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                     Height="{StaticResource IconSize}"
@@ -1339,10 +1340,10 @@
                                                     Kind="{StaticResource TransferIcon}" />
                     </StackPanel>
                 </Button>
-                <Button Margin="5,0,0,0"
+                <Button Visibility="{Binding NewParentTransactionVisibility}"
+                        Margin="5,0,0,0"
                         Command="{Binding NewParentTransactionCommand}"
-                        ToolTip="{lex:Loc AccountView_ToolTip_NewParentTransaction}"
-                        Visibility="{Binding NewParentTransactionVisibility}">
+                        ToolTip="{lex:Loc AccountView_ToolTip_NewParentTransaction}">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                     Height="{StaticResource IconSize}"
@@ -1360,15 +1361,15 @@
                                                     Kind="{StaticResource TransactionIcon}" />
                     </StackPanel>
                 </Button>
-                <Button Margin="5,0,0,0"
+                <Button Visibility="{Binding ImportCsvBankStatementVisibility}"
+                        Margin="5,0,0,0"
                         Command="{Binding ImportCsvBankStatement}"
-                        Visibility="{Binding ImportCsvBankStatementVisibility}"
                         Content="Import from CSV" />
-                <Button Margin="5,0,0,0"
+                <Button Visibility="{Binding ApplyVisibility}"
+                        Margin="5,0,0,0"
                         HorizontalAlignment="Right"
                         Command="{Binding ApplyCommand}"
-                        ToolTip="{lex:Loc AccountView_ToolTip_AddToTable}"
-                        Visibility="{Binding ApplyVisibility}">
+                        ToolTip="{lex:Loc AccountView_ToolTip_AddToTable}">
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
                                                 Foreground="{DynamicResource BlackColorBrush}"

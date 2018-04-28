@@ -23,6 +23,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
                 <ResourceDictionary Source="MVVM/Resources/HamburgerMenu.xaml" />
             </ResourceDictionary.MergedDictionaries>
 

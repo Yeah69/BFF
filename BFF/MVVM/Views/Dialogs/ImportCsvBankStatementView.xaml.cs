@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Linq;
+using System.Windows;
 
 namespace BFF.MVVM.Views.Dialogs
 {
@@ -12,6 +14,12 @@ namespace BFF.MVVM.Views.Dialogs
         public ImportCsvBankStatementView()
         {
             InitializeComponent();
+
+            foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.Name))
+            {
+                SumDropDown.Items.Add(culture);
+                DateDropDown.Items.Add(culture);
+            }
         }
 
         private void OpenProfileManagementMenu_OnClick(object sender, RoutedEventArgs e)

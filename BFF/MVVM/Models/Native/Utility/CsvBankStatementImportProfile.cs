@@ -7,40 +7,48 @@ namespace BFF.MVVM.Models.Native.Utility
         string Name { get; }
         string Header { get; set; }
         char Delimiter { get; set; }
-        string DateFormat { get; set; }
+        string DateSegment { get; set; }
+        string DateLocalization { get; set; }
         string PayeeFormat { get; set; }
         bool ShouldCreateNewPayeeIfNotExisting { get; set; }
         string MemoFormat { get; set; }
         string SumFormat { get; set; }
+        string SumLocalization { get; set; }
     }
 
     public class CsvBankStatementImportProfile : ObservableObject, ICsvBankStatementImportProfile
     {
         private string _header;
         private char _delimiter;
-        private string _dateFormat;
+        private string _dateLocalization;
         private string _payeeFormat;
         private bool _shouldCreateNewPayeeIfNotExisting;
         private string _memoFormat;
         private string _sumFormat;
+        private string _sumLocalization;
+        private string _dateSegment;
 
         public CsvBankStatementImportProfile(
             string header, 
-            char delimiter, 
-            string dateFormat,
+            char delimiter,
+            string dateSegment,
+            string dateLocalization,
             string payeeFormat,
             bool shouldCreateNewPayeeIfNotExisting,
             string memoFormat, 
             string sumFormat, 
+            string sumLocalization,
             string name)
         {
             _header = header;
             _delimiter = delimiter;
-            _dateFormat = dateFormat;
+            _dateSegment = dateSegment;
+            _dateLocalization = dateLocalization;
             _payeeFormat = payeeFormat;
             _shouldCreateNewPayeeIfNotExisting = shouldCreateNewPayeeIfNotExisting;
             _memoFormat = memoFormat;
             _sumFormat = sumFormat;
+            _sumLocalization = sumLocalization;
             Name = name;
         }
 
@@ -68,13 +76,23 @@ namespace BFF.MVVM.Models.Native.Utility
             }
         }
 
-        public string DateFormat
+        public string DateSegment
         {
-            get => _dateFormat;
+            get => _dateSegment;
+            set {
+                if (_dateSegment == value) return;
+                _dateSegment = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DateLocalization
+        {
+            get => _dateLocalization;
             set
             {
-                if (_dateFormat == value) return;
-                _dateFormat = value;
+                if (_dateLocalization == value) return;
+                _dateLocalization = value;
                 OnPropertyChanged();
             }
         }
@@ -119,6 +137,17 @@ namespace BFF.MVVM.Models.Native.Utility
             {
                 if (_sumFormat == value) return;
                 _sumFormat = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SumLocalization
+        {
+            get => _sumLocalization;
+            set
+            {
+                if (_sumFormat == value) return;
+                _sumLocalization = value;
                 OnPropertyChanged();
             }
         }

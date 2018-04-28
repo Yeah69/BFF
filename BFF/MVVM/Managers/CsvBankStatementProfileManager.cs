@@ -24,11 +24,13 @@ namespace BFF.MVVM.Managers
         ICsvBankStatementImportProfile Create(
             string header,
             char delimiter,
+            string dateSegment,
             string dateFormat,
             string payeeFormat,
             bool shouldCreateNewPayeeIfNotExisting,
             string memoFormat,
             string sumFormat,
+            string sumLocalization,
             string name);
     }
 
@@ -64,11 +66,13 @@ namespace BFF.MVVM.Managers
         public ICsvBankStatementImportProfile Create(
             string header, 
             char delimiter,
+            string dateSegment,
             string dateFormat, 
             string payeeFormat,
             bool shouldCreateNewPayeeIfNotExisting,
             string memoFormat, 
             string sumFormat,
+            string sumLocalization,
             string name)
         {
             if (_profiles.Any(p => p.Name == name)) throw new Exception();
@@ -76,11 +80,13 @@ namespace BFF.MVVM.Managers
             var newProfile = new CsvBankStatementImportProfile(
                 header,
                 delimiter,
+                dateSegment,
                 dateFormat,
                 payeeFormat,
                 shouldCreateNewPayeeIfNotExisting,
                 memoFormat,
                 sumFormat,
+                sumLocalization,
                 name);
 
             _profiles.Add(newProfile);

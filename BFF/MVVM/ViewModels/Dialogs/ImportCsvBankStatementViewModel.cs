@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace BFF.MVVM.ViewModels.Dialogs
     public interface IImportCsvBankStatementViewModel
     {
         IObservableReadOnlyList<ICsvBankStatementImportProfileViewModel> Profiles { get; }
+
+        IList<CsvBankStatementImportItem> Items { get; }
 
         IReactiveProperty<ICsvBankStatementImportProfileViewModel> SelectedProfile { get; }
 
@@ -75,6 +78,8 @@ namespace BFF.MVVM.ViewModels.Dialogs
                 FilePath.Select(path => File.Exists(path) ? File.ReadLines(path, Encoding.Default).FirstOrDefault() : ""), 
                 mode: ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
 
+            Configuration.Subscribe(_ => OnPropertyChanged(nameof(HeaderDoMatch)));
+
             Header.ObserveOn(schedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(HeaderDoMatch)))
                 .AddHere(_compositeDisposable);
@@ -112,6 +117,7 @@ namespace BFF.MVVM.ViewModels.Dialogs
         }
 
         public IObservableReadOnlyList<ICsvBankStatementImportProfileViewModel> Profiles { get; }
+        public IList<CsvBankStatementImportItem> Items { get; }
         public IReactiveProperty<ICsvBankStatementImportProfileViewModel> SelectedProfile { get; }
         public IReactiveProperty<string> FilePath { get; }
         public IReadOnlyReactiveProperty<bool> FileExists { get; }

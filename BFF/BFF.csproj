@@ -316,6 +316,7 @@
     <Compile Include="MVVM\Models\Native\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Native\BudgetMonth.cs" />
     <Compile Include="MVVM\Models\Native\Category.cs" />
+    <Compile Include="MVVM\Models\Native\Utility\CsvBankStatementImportItem.cs" />
     <Compile Include="MVVM\Models\Native\Utility\CsvBankStatementImportProfile.cs" />
     <Compile Include="MVVM\Models\Native\Flag.cs" />
     <Compile Include="MVVM\Models\Native\IncomeCategory.cs" />
