@@ -5,6 +5,7 @@
                                xmlns:dialogs="clr-namespace:BFF.MVVM.ViewModels.Dialogs"
                                xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
                                xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                               xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                xmlns:mvvm="clr-namespace:BFF.MVVM"
                                xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
@@ -12,9 +13,19 @@
                                d:DataContext="{d:DesignInstance dialogs:IImportCsvBankStatementViewModel}"
                                d:DesignHeight="300"
                                d:DesignWidth="300"
-                               AllowMove="True"
+                               AllowMove="False"
+                               ChildWindowHeight="700"
+                               CloseButtonCommand="{Binding CancelCommand}"
+                               IsOpen="{Binding IsOpen.Value}"
                                ShowCloseButton="True"
                                mc:Ignorable="d">
+    <simpleChildWindow:ChildWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MVVM/Resources/TransCellTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </simpleChildWindow:ChildWindow.Resources>
     <simpleChildWindow:ChildWindow.OverlayBrush>
         <SolidColorBrush Opacity="0.7"
                          Color="{DynamicResource BlackColor}" />
@@ -25,15 +36,12 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
@@ -146,136 +154,211 @@
                        Text="{Binding Configuration.Value.Header.Value}" />
         </DockPanel>
 
-        <TextBlock Grid.Row="3"
-                   Grid.Column="0"
-                   Margin="2.5"
-                   VerticalAlignment="Center"
-                   Text="{lex:LocText Key=General_Delimiter,
-                                      Suffix=:}" />
-        <TextBox Grid.Row="3"
-                 Grid.Column="1"
-                 Margin="2.5"
-                 VerticalAlignment="Center"
-                 MaxLength="1"
-                 Text="{Binding Configuration.Value.Delimiter.Value}" />
+        <Expander Grid.Row="3"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  mah:ControlsHelper.ContentCharacterCasing="Normal"
+                  Background="{DynamicResource WhiteBrush}"
+                  BorderThickness="0"
+                  Header="{lex:Loc Common_Configuration}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Margin="2.5"
+                           VerticalAlignment="Center"
+                           Text="{lex:LocText Key=General_Delimiter,
+                                              Suffix=:}" />
+                <TextBox Grid.Row="0"
+                         Grid.Column="1"
+                         Margin="2.5"
+                         VerticalAlignment="Center"
+                         MaxLength="1"
+                         Text="{Binding Configuration.Value.Delimiter.Value}" />
+
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Margin="2.5"
+                           VerticalAlignment="Center"
+                           Text="{lex:LocText Key=General_DateFormat,
+                                              Suffix=:}" />
+                <DockPanel Grid.Row="1"
+                           Grid.Column="1"
+                           LastChildFill="True">
+
+                    <ComboBox x:Name="DateDropDown"
+                              Margin="2.5"
+                              DockPanel.Dock="Right"
+                              Grid.IsSharedSizeScope="True"
+                              SelectedItem="{Binding Configuration.Value.DateLocalization.Value}"
+                              Style="{StaticResource VirtualisedMetroComboBox}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate DataType="globalization:CultureInfo">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition SharedSizeGroup="Name" />
+                                        <ColumnDefinition SharedSizeGroup="DateFormat" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                               Margin="2.5"
+                                               Text="{Binding Name}" />
+                                    <TextBlock Grid.Column="1"
+                                               Margin="2.5"
+                                               Text="{Binding Name, Converter={x:Static mvvm:Converters.DateChoiceBoxExampleConversion}, ConverterParameter=short}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <ComboBox Margin="2.5"
+                              DockPanel.Dock="Left"
+                              ItemsSource="{Binding Configuration.Value.Segments.Value}"
+                              SelectedItem="{Binding Configuration.Value.DateSegment.Value}" />
+                </DockPanel>
+
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0"
+                           Margin="2.5"
+                           VerticalAlignment="Center"
+                           Text="{lex:LocText Key=General_PayeeFormat,
+                                              Suffix=:}" />
+                <TextBox Grid.Row="2"
+                         Grid.Column="1"
+                         MinWidth="200"
+                         Margin="2.5"
+                         DockPanel.Dock="Left"
+                         Text="{Binding Configuration.Value.PayeeFormat.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <CheckBox Grid.Row="3"
+                          Grid.Column="1"
+                          Margin="2.5"
+                          Content="{lex:Loc Key=General_NewPayeeIfNotExisting}"
+                          DockPanel.Dock="Right"
+                          IsChecked="{Binding Configuration.Value.ShouldCreateNewPayeeIfNotExisting.Value}" />
+
+                <TextBlock Grid.Row="4"
+                           Grid.Column="0"
+                           Margin="2.5"
+                           VerticalAlignment="Center"
+                           Text="{lex:LocText Key=General_MemoFormat,
+                                              Suffix=:}" />
+                <TextBox Grid.Row="4"
+                         Grid.Column="1"
+                         Margin="2.5"
+                         VerticalAlignment="Center"
+                         Text="{Binding Configuration.Value.MemoFormat.Value}" />
+
+                <TextBlock Grid.Row="5"
+                           Grid.Column="0"
+                           Margin="2.5"
+                           VerticalAlignment="Center"
+                           Text="{lex:LocText Key=General_SumFormat,
+                                              Suffix=:}" />
+                <DockPanel Grid.Row="5"
+                           Grid.Column="1"
+                           LastChildFill="True">
+                    <ComboBox x:Name="SumDropDown"
+                              Margin="2.5"
+                              DockPanel.Dock="Right"
+                              Grid.IsSharedSizeScope="True"
+                              SelectedItem="{Binding Configuration.Value.SumLocalization.Value}"
+                              Style="{StaticResource VirtualisedMetroComboBox}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate DataType="globalization:CultureInfo">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition SharedSizeGroup="Name" />
+                                        <ColumnDefinition SharedSizeGroup="Positive" />
+                                        <ColumnDefinition SharedSizeGroup="Negative" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                               Margin="2.5,0"
+                                               Text="{Binding Name}" />
+                                    <TextBlock Grid.Column="1"
+                                               Margin="2.5,0"
+                                               Foreground="{StaticResource IncomeBrush}"
+                                               Text="{Binding Name, Converter={x:Static mvvm:Converters.CurrencyChoiceBoxExampleConversion}, ConverterParameter=positive}" />
+                                    <TextBlock Grid.Column="2"
+                                               Margin="2.5,0"
+                                               Foreground="{StaticResource TransactionBrush}"
+                                               Text="{Binding Name, Converter={x:Static mvvm:Converters.CurrencyChoiceBoxExampleConversion}, ConverterParameter=negative}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <TextBox MinWidth="20"
+                             Margin="2.5"
+                             VerticalAlignment="Center"
+                             DockPanel.Dock="Left"
+                             Text="{Binding Configuration.Value.SumFormula.Value}" />
+                </DockPanel>
+            </Grid>
+        </Expander>
 
         <TextBlock Grid.Row="4"
                    Grid.Column="0"
                    Margin="2.5"
                    VerticalAlignment="Center"
-                   Text="{lex:LocText Key=General_DateFormat,
+                   Text="{lex:LocText Key=Common_Entries,
                                       Suffix=:}" />
-        <DockPanel Grid.Row="4"
-                   Grid.Column="1"
-                   LastChildFill="True">
-
-            <ComboBox x:Name="DateDropDown"
-                      Margin="2.5"
-                      DockPanel.Dock="Right"
-                      Grid.IsSharedSizeScope="True"
-                      SelectedItem="{Binding Configuration.Value.DateLocalization.Value}"
-                      Style="{StaticResource VirtualisedMetroComboBox}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate DataType="globalization:CultureInfo">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition SharedSizeGroup="Name" />
-                                <ColumnDefinition SharedSizeGroup="DateFormat" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0"
-                                       Margin="2.5"
-                                       Text="{Binding Name}" />
-                            <TextBlock Grid.Column="1"
-                                       Margin="2.5"
-                                       Text="{Binding Name, Converter={x:Static mvvm:Converters.DateChoiceBoxExampleConversion}, ConverterParameter=short}" />
-                        </Grid>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-
-            <ComboBox Margin="2.5"
-                      DockPanel.Dock="Left"
-                      ItemsSource="{Binding Configuration.Value.Segments.Value}"
-                      SelectedItem="{Binding Configuration.Value.DateSegment.Value}" />
-        </DockPanel>
-
-        <TextBlock Grid.Row="5"
-                   Grid.Column="0"
-                   Margin="2.5"
-                   VerticalAlignment="Center"
-                   Text="{lex:LocText Key=General_PayeeFormat,
-                                      Suffix=:}" />
-        <TextBox Grid.Row="5"
-                 Grid.Column="1"
-                 MinWidth="200"
-                 Margin="2.5"
-                 DockPanel.Dock="Left"
-                 Text="{Binding Configuration.Value.PayeeFormat.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-        <CheckBox Grid.Row="6"
+        <DataGrid Grid.Row="4"
                   Grid.Column="1"
-                  Margin="2.5"
-                  Content="{lex:Loc Key=General_NewPayeeIfNotExisting}"
-                  DockPanel.Dock="Right"
-                  IsChecked="{Binding Configuration.Value.ShouldCreateNewPayeeIfNotExisting.Value}" />
-
-        <TextBlock Grid.Row="7"
-                   Grid.Column="0"
-                   Margin="2.5"
-                   VerticalAlignment="Center"
-                   Text="{lex:LocText Key=General_MemoFormat,
-                                      Suffix=:}" />
-        <TextBox Grid.Row="7"
-                 Grid.Column="1"
-                 Margin="2.5"
-                 VerticalAlignment="Center"
-                 Text="{Binding Configuration.Value.MemoFormat.Value}" />
-
-        <TextBlock Grid.Row="8"
-                   Grid.Column="0"
-                   Margin="2.5"
-                   VerticalAlignment="Center"
-                   Text="{lex:LocText Key=General_SumFormat,
-                                      Suffix=:}" />
-        <DockPanel Grid.Row="8"
-                   Grid.Column="1"
-                   LastChildFill="True">
-            <ComboBox x:Name="SumDropDown"
-                      Margin="2.5"
-                      DockPanel.Dock="Right"
-                      Grid.IsSharedSizeScope="True"
-                      SelectedItem="{Binding Configuration.Value.SumLocalization.Value}"
-                      Style="{StaticResource VirtualisedMetroComboBox}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate DataType="globalization:CultureInfo">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition SharedSizeGroup="Name" />
-                                <ColumnDefinition SharedSizeGroup="Positive" />
-                                <ColumnDefinition SharedSizeGroup="Negative" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0"
-                                       Margin="2.5,0"
-                                       Text="{Binding Name}" />
-                            <TextBlock Grid.Column="1"
-                                       Margin="2.5,0"
-                                       Foreground="{StaticResource IncomeBrush}"
-                                       Text="{Binding Name, Converter={x:Static mvvm:Converters.CurrencyChoiceBoxExampleConversion}, ConverterParameter=positive}" />
-                            <TextBlock Grid.Column="2"
-                                       Margin="2.5,0"
-                                       Foreground="{StaticResource TransactionBrush}"
-                                       Text="{Binding Name, Converter={x:Static mvvm:Converters.CurrencyChoiceBoxExampleConversion}, ConverterParameter=negative}" />
-                        </Grid>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-
-            <TextBox MinWidth="20"
-                     Margin="2.5"
-                     VerticalAlignment="Center"
-                     DockPanel.Dock="Left"
-                     Text="{Binding Configuration.Value.SumFormula.Value}" />
-        </DockPanel>
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Items}">
+            <DataGrid.Columns>
+                <!--  Date  -->
+                <DataGridTemplateColumn x:Name="DateColumn"
+                                        CellEditingTemplate="{StaticResource DateEditingColumnTemplate}"
+                                        CellTemplate="{StaticResource DateColumnTemplate}"
+                                        Header="{lex:Loc AccountView_Header_Date}"
+                                        SortMemberPath="Date.Value" />
+                <!--  Payee  -->
+                <DataGridTemplateColumn x:Name="PayeeColumn"
+                                        CellEditingTemplate="{StaticResource PayeeEditingColumnTemplate}"
+                                        CellTemplate="{StaticResource PayeeColumnTemplate}"
+                                        Header="{lex:Loc AccountView_Header_Payee}"
+                                        SortMemberPath="Payee.Name.Value" />
+                <!--  Memo  -->
+                <DataGridTemplateColumn x:Name="MemoColumn"
+                                        Width="*"
+                                        CellEditingTemplate="{StaticResource MemoEditingColumnTemplate}"
+                                        CellTemplate="{StaticResource MemoColumnTemplate}"
+                                        Header="{lex:Loc AccountView_Header_Memo}"
+                                        SortMemberPath="Memo.Value" />
+                <!--  Sum  -->
+                <DataGridTemplateColumn CellEditingTemplate="{StaticResource SumEditingColumnTemplate}"
+                                        CellTemplate="{StaticResource SumColumnTemplate}"
+                                        Header="{lex:Loc AccountView_Header_Sum}"
+                                        IsReadOnly="False"
+                                        SortMemberPath="Sum.Value" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2" HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Margin="2.5"
+                    Command="{Binding OkCommand}"
+                    Content="{lex:Loc General_Okay}" />
+            <Button Margin="2.5"
+                    Command="{Binding CancelCommand}"
+                    Content="{lex:Loc General_Cancel}" />
+        </StackPanel>
     </Grid>
 </simpleChildWindow:ChildWindow>
+
+
 

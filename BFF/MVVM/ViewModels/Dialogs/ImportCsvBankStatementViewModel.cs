@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reactive.Disposables;
@@ -13,6 +14,7 @@ using BFF.MVVM.Models.Native.Utility;
 using BFF.MVVM.ViewModels.ForModels.Utility;
 using Microsoft.Win32;
 using MuVaViMo;
+using NCalc;
 using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.Dialogs
@@ -21,7 +23,7 @@ namespace BFF.MVVM.ViewModels.Dialogs
     {
         IObservableReadOnlyList<ICsvBankStatementImportProfileViewModel> Profiles { get; }
 
-        IList<CsvBankStatementImportItem> Items { get; }
+        IList<ICsvBankStatementImportItemViewModel> Items { get; }
 
         IReactiveProperty<ICsvBankStatementImportProfileViewModel> SelectedProfile { get; }
 
@@ -33,9 +35,15 @@ namespace BFF.MVVM.ViewModels.Dialogs
 
         IReactiveProperty<ICsvBankStatementImportNonProfileViewModel> Configuration { get; }
 
+        IReactiveProperty IsOpen { get; }
+
         ReactiveCommand BrowseCsvBankStatementFileCommand { get; }
 
         ReactiveCommand DeselectProfileCommand { get; }
+
+        ReactiveCommand OkCommand { get; }
+
+        ReactiveCommand CancelCommand { get; }
     }
 
     public class ImportCsvBankStatementViewModel : ObservableObject, IImportCsvBankStatementViewModel
@@ -45,10 +53,14 @@ namespace BFF.MVVM.ViewModels.Dialogs
         public ImportCsvBankStatementViewModel(
             Func<IReactiveProperty<string>, 
             ICsvBankStatementImportNonProfileViewModel> nonProfileViewModelFactory,
+            Action<IList<ICsvBankStatementImportItemViewModel>> onOk,
             IRxSchedulerProvider schedulerProvider,
+            Func<(DateTime? Date, string Payee, string Memo, long? Sum), ICsvBankStatementImportItemViewModel> createItem,
             ICsvBankStatementProfileManager csvBankStatementProfileManger,
             Func<ICsvBankStatementImportProfile, ICsvBankStatementImportProfileViewModel> profileViewModelFactory)
         {
+            IsOpen = new ReactiveProperty<bool>(false, ReactivePropertyMode.DistinctUntilChanged);
+
             Profiles = csvBankStatementProfileManger.Profiles.Transform(profileViewModelFactory);
             
             FilePath = new ReactivePropertySlim<string>(
@@ -78,9 +90,16 @@ namespace BFF.MVVM.ViewModels.Dialogs
                 FilePath.Select(path => File.Exists(path) ? File.ReadLines(path, Encoding.Default).FirstOrDefault() : ""), 
                 mode: ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
 
-            Configuration.Subscribe(_ => OnPropertyChanged(nameof(HeaderDoMatch)));
+            Configuration
+                .ObserveOn(schedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    OnPropertyChanged(nameof(HeaderDoMatch));
+                    ExtractItems();
+                });
 
-            Header.ObserveOn(schedulerProvider.UI)
+            Header
+                .ObserveOn(schedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(HeaderDoMatch)))
                 .AddHere(_compositeDisposable);
 
@@ -88,43 +107,129 @@ namespace BFF.MVVM.ViewModels.Dialogs
 
             Configuration
                 .Where(configuration => configuration != null)
-                .Subscribe(configuration => configuration
-                    .Header
-                    .Subscribe(_ => OnPropertyChanged(nameof(HeaderDoMatch)))
-                    .AssignTo(serialDisposable))
+                .ObserveOn(schedulerProvider.UI)
+                .Subscribe(configuration =>
+                {
+                    configuration
+                        .Header
+                        .Subscribe(_ =>
+                        {
+                            OnPropertyChanged(nameof(HeaderDoMatch));
+                            ExtractItems();
+                        })
+                        .AssignTo(serialDisposable);
+                })
                 .AddHere(_compositeDisposable);
 
 
-            BrowseCsvBankStatementFileCommand.Subscribe(_ =>
-            {
-                OpenFileDialog openFileDialog =
-                    new OpenFileDialog
-                    {
-                        Multiselect = false,
-                        DefaultExt = "csv",
-                        Filter = $"{"Domain_BankStatement".Localize()} (*.csv)|*.csv",
-                        FileName = "",
-                        Title = "Domain_OpenBankStatement".Localize()
-                    };
-                if (openFileDialog.ShowDialog() == true)
+            BrowseCsvBankStatementFileCommand
+                .Subscribe(_ =>
                 {
-                    FilePath.Value = openFileDialog.FileName;
+                    OpenFileDialog openFileDialog =
+                        new OpenFileDialog
+                        {
+                            Multiselect = false,
+                            DefaultExt = "csv",
+                            Filter = $"{"Domain_BankStatement".Localize()} (*.csv)|*.csv",
+                            FileName = "",
+                            Title = "Domain_OpenBankStatement".Localize()
+                        };
+                    if (openFileDialog.ShowDialog() == true)
+                    {
+                        FilePath.Value = openFileDialog.FileName;
+                    }
+                });
+
+            DeselectProfileCommand
+                .Subscribe(_ => SelectedProfile.Value = null)
+                .AddHere(_compositeDisposable);
+
+            OkCommand
+                .Subscribe(_ =>
+                {
+                    IsOpen.Value = false;
+                    onOk(Items);
+                })
+                .AddHere(_compositeDisposable);
+
+            CancelCommand
+                .Subscribe(_ =>
+                {
+                    IsOpen.Value = false;
+                })
+                .AddHere(_compositeDisposable);
+
+            void ExtractItems()
+            {
+                if (FileExists.Value && HeaderDoMatch)
+                {
+                    var indexToSegment = Configuration.Value.Segments.Value.Select((s, i) => (s, i))
+                        .ToDictionary(_ => _.i, _ => _.s);
+                    Items = File.ReadLines(FilePath.Value).Skip(1).Select(line =>
+                    {
+                        var segmentValues = line
+                            .Split(Configuration.Value.Delimiter.Value)
+                            .Select((v, i) => (v, i))
+                            .ToDictionary(_ => indexToSegment[_.i], _ => _.v);
+                        var payeeString = Configuration.Value.PayeeFormat.Value;
+                        var memoString = Configuration.Value.MemoFormat.Value;
+                        var sumString = Configuration.Value.SumFormula.Value;
+                        var date = DateTime.TryParse(
+                            segmentValues[Configuration.Value.DateSegment.Value],
+                            Configuration.Value.DateLocalization.Value, 
+                            DateTimeStyles.AllowWhiteSpaces, 
+                            out DateTime dateResult)
+                            ? dateResult
+                            : (DateTime?) null;
+
+                        foreach (var segment in Configuration.Value.Segments.Value)
+                        {
+                            payeeString = payeeString.Replace($"{{{segment}}}", segmentValues[segment].Trim('"'));
+                            memoString = memoString.Replace($"{{{segment}}}", segmentValues[segment].Trim('"'));
+
+                            if (sumString.Contains($"{{{segment}}}"))
+                            {
+                                var sumPartParsingSuccess = double.TryParse(segmentValues[segment], NumberStyles.Any, Configuration.Value.SumLocalization.Value, out var sumPartResult);
+                                long sum = (long)((sumPartParsingSuccess ? sumPartResult : 0.0) *
+                                       Math.Pow(10, Configuration.Value.SumLocalization.Value.NumberFormat.CurrencyDecimalDigits));
+                                sumString = sumString.Replace($"{{{segment}}}", sum.ToString());
+                            }
+
+                        }
+
+                        return createItem( 
+                            (date,
+                            payeeString.IsNullOrWhiteSpace() 
+                                ? null 
+                                : payeeString,
+                            memoString.IsNullOrWhiteSpace()
+                                ? null 
+                                : memoString,
+                            sumString.IsNullOrWhiteSpace()
+                                ? (long?) null
+                                : (int)new Expression(sumString).Evaluate()) );
+                    }).ToList();
                 }
-            });
-
-            DeselectProfileCommand.Subscribe(_ => SelectedProfile.Value = null).AddHere(_compositeDisposable);
-
+                else
+                {
+                    Items = new List<ICsvBankStatementImportItemViewModel>();
+                }
+                OnPropertyChanged(nameof(Items));
+            }
         }
 
         public IObservableReadOnlyList<ICsvBankStatementImportProfileViewModel> Profiles { get; }
-        public IList<CsvBankStatementImportItem> Items { get; }
+        public IList<ICsvBankStatementImportItemViewModel> Items { get; private set; }
         public IReactiveProperty<ICsvBankStatementImportProfileViewModel> SelectedProfile { get; }
         public IReactiveProperty<string> FilePath { get; }
         public IReadOnlyReactiveProperty<bool> FileExists { get; }
         public IReadOnlyReactiveProperty<string> Header { get; }
         public IReactiveProperty<ICsvBankStatementImportNonProfileViewModel> Configuration { get; }
+        public IReactiveProperty IsOpen { get; }
         public ReactiveCommand BrowseCsvBankStatementFileCommand { get; } = new ReactiveCommand();
         public ReactiveCommand DeselectProfileCommand { get; } = new ReactiveCommand();
+        public ReactiveCommand OkCommand { get; } = new ReactiveCommand();
+        public ReactiveCommand CancelCommand { get; } = new ReactiveCommand();
 
         public bool HeaderDoMatch => Configuration.Value != null && Header.Value == Configuration.Value.Header.Value;
     }

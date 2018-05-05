@@ -30,6 +30,7 @@ namespace BFF.MVVM.Managers
             if (_importCsvBankStatementViewFactory() is ChildWindow childWindow)
             {
                 childWindow.DataContext = dataContext;
+                dataContext.IsOpen.Value = true;
                 return _lazyMainWindow.Value.ShowChildWindowAsync(childWindow);
             }
 

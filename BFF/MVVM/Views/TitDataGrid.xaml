@@ -8,7 +8,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:structure="clr-namespace:BFF.MVVM.ViewModels.ForModels.Structure"
-             xmlns:views="clr-namespace:BFF.MVVM.Views"
              x:Name="Root"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -19,22 +18,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.datagrid.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.checkbox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
-                <ResourceDictionary Source="/MVVM/Resources/BFF_ModifiedMAMCheckBox.xaml" />
+                <ResourceDictionary Source="/MVVM/Resources/TransCellTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-
-
-            <Style x:Key="CellContent"
-                   TargetType="ContentControl">
-                <Setter Property="VerticalContentAlignment"
-                        Value="Center" />
-                <Setter Property="VerticalAlignment"
-                        Value="Center" />
-                <Setter Property="MinHeight"
-                        Value="30" />
-                <Setter Property="IsTabStop"
-                        Value="False" />
-            </Style>
 
             <ContextMenu x:Key="RowMenu">
                 <MenuItem Command="{Binding DeleteCommand}"
@@ -110,674 +95,8 @@
                         Value="True" />
             </Style>
 
-            <!--  ColumnTemplates  -->
-
-            <!--  Symbol  -->
-            <DataTemplate x:Key="SymbolColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type forModels:TransactionViewModel}">
-                            <iconPacks:PackIconMaterial>
-                                <iconPacks:PackIconMaterial.Style>
-                                    <Style BasedOn="{StaticResource CellIconMaterial}"
-                                           TargetType="{x:Type iconPacks:PackIconMaterial}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Category.Value, Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
-                                                         Value="True">
-                                                <Setter Property="Kind"
-                                                        Value="{StaticResource IncomeIcon}" />
-                                                <Setter Property="Foreground"
-                                                        Value="{DynamicResource IncomeBrush}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                        <Setter Property="Kind"
-                                                Value="{StaticResource TransactionIcon}" />
-                                        <Setter Property="Foreground"
-                                                Value="{DynamicResource TransactionBrush}" />
-                                    </Style>
-                                </iconPacks:PackIconMaterial.Style>
-                            </iconPacks:PackIconMaterial>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
-                            <iconPacks:PackIconMaterial Foreground="{DynamicResource TransactionBrush}"
-                                                        Kind="{StaticResource TransactionIcon}"
-                                                        Style="{StaticResource CellIconMaterial}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <iconPacks:PackIconMaterial Foreground="{DynamicResource TransferBrush}"
-                                                        Kind="{StaticResource TransferIcon}"
-                                                        Style="{StaticResource CellIconMaterial}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}">
-                            <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackBrush}"
-                                                        Kind="{StaticResource PlaceholderIcon}"
-                                                        Style="{StaticResource CellIconMaterial}" />
-                        </DataTemplate>
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <!--  Account  -->
-            <DataTemplate x:Key="AccountColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                IsTabStop="True"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
-                            <TextBlock Style="{StaticResource CellTextBlock}"
-                                       Text="{Binding Account.Value.Name.Value}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <TextBlock Foreground="{DynamicResource GrayBrush4}"
-                                       Style="{StaticResource CellTextBlock}"
-                                       Text="{lex:Loc AccountView_Column_Transfer}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <DataTemplate x:Key="AccountEditingColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
-                            <ComboBox DisplayMemberPath="Name.Value"
-                                      IsEditable="True"
-                                      IsTextSearchCaseSensitive="False"
-                                      IsTextSearchEnabled="True"
-                                      ItemsSource="{Binding AllAccounts}"
-                                      TextSearch.TextPath="Name.Value">
-                                <ComboBox.SelectedItem>
-                                    <Binding Mode="TwoWay"
-                                             Path="Account.Value"
-                                             UpdateSourceTrigger="LostFocus" />
-                                </ComboBox.SelectedItem>
-                            </ComboBox>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <TextBlock Foreground="{DynamicResource GrayBrush4}"
-                                       Style="{StaticResource CellTextBlock}"
-                                       Text="{lex:Loc AccountView_Column_Transfer}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <!--  Date  -->
-            <DataTemplate x:Key="DateColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                IsTabStop="True"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
-                            <TextBlock Style="{StaticResource CellTextBlock}"
-                                       Text="{Binding Date.Value, Converter={x:Static mvvm:Converters.DateTimeToString}}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <DataTemplate x:Key="DateEditingColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
-                            <DatePicker VerticalContentAlignment="Center"
-                                        SelectedDate="{Binding Date.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        SelectedDateFormat="{Binding DataContext.IsDateLong, ElementName=LayoutRoot, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <!--  Flag  -->
-            <DataTemplate x:Key="FlagColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                IsTabStop="True"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
-                            <ContentControl Content="{Binding Flag.Value}"
-                                            ContentTemplate="{StaticResource FlagTemplate}">
-                                <ContentControl.Style>
-                                    <Style BasedOn="{StaticResource {x:Type ContentControl}}"
-                                           TargetType="{x:Type ContentControl}">
-                                        <Style.Triggers>
-                                            <Trigger Property="Content"
-                                                     Value="{x:Null}">
-                                                <Setter Property="Visibility"
-                                                        Value="Collapsed" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ContentControl.Style>
-                            </ContentControl>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <DataTemplate x:Key="FlagEditingColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
-                            <DockPanel LastChildFill="True">
-                                <Button Click="OpenFlagPopup_OnClick"
-                                        DockPanel.Dock="Right"
-                                        TabIndex="1"
-                                        ToolTip="{lex:Loc CreateNewFlag}">
-                                    <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
-                                                                Kind="{StaticResource AddIcon}"
-                                                                Style="{StaticResource CellIconMaterial}" />
-                                </Button>
-                                <Popup x:Name="Popup"
-                                       Closed="Popup_OnClosed"
-                                       Placement="Right"
-                                       PlacementTarget="{Binding ElementName=EditFlagComboBox}"
-                                       PopupAnimation="Slide"
-                                       PreviewKeyDown="Popup_OnPreviewKeyDown"
-                                       StaysOpen="False">
-                                    <views:NewFlagView DataContext="{Binding NewFlagViewModel}"
-                                                       OnAddClicked="ClosePopup_OnClick"
-                                                       Tag="{Binding ElementName=Popup}" />
-                                </Popup>
-                                <Button Command="{Binding RemoveFlag}"
-                                        Content="X"
-                                        DockPanel.Dock="Right"
-                                        TabIndex="1">
-                                    <Button.Style>
-                                        <Style BasedOn="{StaticResource {x:Type Button}}"
-                                               TargetType="{x:Type Button}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Flag.Value}"
-                                                             Value="{x:Null}">
-                                                    <Setter Property="Visibility"
-                                                            Value="Collapsed" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                                <ComboBox x:Name="EditFlagComboBox"
-                                          HorizontalAlignment="Stretch"
-                                          DockPanel.Dock="Left"
-                                          ItemsSource="{Binding AllFlags}"
-                                          SelectedItem="{Binding Mode=TwoWay, Path=Flag.Value, UpdateSourceTrigger=LostFocus}"
-                                          TabIndex="0">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <iconPacks:PackIconMaterial Foreground="{Binding Color.Value}"
-                                                                            Kind="{StaticResource FlagIcon}"
-                                                                            Style="{StaticResource CellIconMaterial}" />
-                                                <TextBlock Margin="5,0,0,0"
-                                                           Text="{Binding Name.Value}" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-                            </DockPanel>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <!--  CheckNumber  -->
-            <DataTemplate x:Key="CheckNumberColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                IsTabStop="True"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
-                            <TextBlock Style="{StaticResource CellTextBlock}"
-                                       Text="{Binding CheckNumber.Value}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <DataTemplate x:Key="CheckNumberEditingColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
-                            <TextBox VerticalAlignment="Stretch"
-                                     VerticalContentAlignment="Center"
-                                     Text="{Binding CheckNumber.Value, UpdateSourceTrigger=LostFocus}"
-                                     TextWrapping="NoWrap" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <!--  Payee  -->
-            <DataTemplate x:Key="PayeeColumnTemplate">
-                <ContentControl HorizontalAlignment="Stretch"
-                                Content="{Binding}"
-                                IsTabStop="True"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
-                            <ContentControl Content="{Binding Payee.Value}">
-                                <ContentControl.Style>
-                                    <Style BasedOn="{StaticResource CellContent}"
-                                           TargetType="ContentControl">
-                                        <Setter Property="ContentTemplate">
-                                            <Setter.Value>
-                                                <DataTemplate>
-                                                    <TextBlock Style="{StaticResource CellTextBlock}"
-                                                               Text="{Binding Name.Value}" />
-                                                </DataTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Content}"
-                                                         Value="{x:Null}">
-                                                <Setter Property="ContentControl.ContentTemplate">
-                                                    <Setter.Value>
-                                                        <DataTemplate>
-                                                            <TextBlock Foreground="{StaticResource TransferBrush}"
-                                                                       Opacity="0.75"
-                                                                       Style="{StaticResource CellTextBlock}"
-                                                                       Text="{lex:LocText General_Unassigned,
-                                                                                          Prefix=(,
-                                                                                          Suffix=)}" />
-                                                        </DataTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ContentControl.Style>
-                            </ContentControl>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource CellTextBlock}"
-                                           Text="{Binding FromAccount.Value.Name.Value}" />
-                                <iconPacks:PackIconMaterial Foreground="{DynamicResource GrayBrush4}"
-                                                            Kind="{StaticResource TransactionIcon}"
-                                                            Style="{StaticResource CellIconMaterial}" />
-                            </StackPanel>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <DataTemplate x:Key="PayeeEditingColumnTemplate">
-                <ContentControl HorizontalAlignment="Stretch"
-                                Content="{Binding}"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
-                            <DockPanel LastChildFill="True">
-                                <Button Click="OpenPayeePopup_OnClick"
-                                        DockPanel.Dock="Right"
-                                        TabIndex="1"
-                                        ToolTip="{lex:Loc CreateNewPayee}">
-                                    <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
-                                                                Kind="{StaticResource AddIcon}"
-                                                                Style="{StaticResource CellIconMaterial}" />
-                                </Button>
-                                <Popup x:Name="Popup"
-                                       Closed="Popup_OnClosed"
-                                       Placement="Right"
-                                       PlacementTarget="{Binding ElementName=EditPayeeComboBox}"
-                                       PopupAnimation="Slide"
-                                       PreviewKeyDown="Popup_OnPreviewKeyDown"
-                                       StaysOpen="False">
-                                    <views:NewPayeeView DataContext="{Binding NewPayeeViewModel}"
-                                                        OnAddClicked="ClosePopup_OnClick"
-                                                        Tag="{Binding ElementName=Popup}" />
-                                </Popup>
-                                <ComboBox x:Name="EditPayeeComboBox"
-                                          HorizontalAlignment="Stretch"
-                                          DisplayMemberPath="Name.Value"
-                                          IsEditable="True"
-                                          IsTextSearchCaseSensitive="True"
-                                          IsTextSearchEnabled="True"
-                                          ItemsSource="{Binding NewPayeeViewModel.AllPayees}"
-                                          TabIndex="0"
-                                          TextSearch.TextPath="Name.Value">
-                                    <ComboBox.SelectedItem>
-                                        <Binding Mode="TwoWay"
-                                                 Path="Payee.Value"
-                                                 UpdateSourceTrigger="LostFocus">
-                                            <Binding.ValidationRules>
-                                                <x:Static Member="mvvm:Rules.EmptyPayee" />
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                    </ComboBox.SelectedItem>
-                                </ComboBox>
-                            </DockPanel>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <ComboBox DisplayMemberPath="Name.Value"
-                                      IsEditable="True"
-                                      IsTextSearchCaseSensitive="False"
-                                      IsTextSearchEnabled="True"
-                                      ItemsSource="{Binding AllAccounts}"
-                                      TextSearch.TextPath="Name.Value">
-                                <ComboBox.SelectedItem>
-                                    <Binding Mode="TwoWay"
-                                             Path="FromAccount.Value"
-                                             UpdateSourceTrigger="LostFocus" />
-                                </ComboBox.SelectedItem>
-                            </ComboBox>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <!--  Category  -->
-            <DataTemplate x:Key="CategoryColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                IsTabStop="True"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                            <ContentControl>
-                                <ContentControl.Style>
-                                    <Style TargetType="ContentControl">
-                                        <Setter Property="Content"
-                                                Value="{Binding Category.Value}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Content}"
-                                                         Value="{x:Null}">
-                                                <Setter Property="ContentControl.ContentTemplate">
-                                                    <Setter.Value>
-                                                        <DataTemplate>
-                                                            <TextBlock Foreground="{StaticResource TransferBrush}"
-                                                                       Opacity="0.75"
-                                                                       Style="{StaticResource CellTextBlock}"
-                                                                       Text="{lex:LocText General_Unassigned,
-                                                                                          Prefix=(,
-                                                                                          Suffix=)}" />
-                                                        </DataTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ContentControl.Style>
-                                <ContentControl.Resources>
-                                    <DataTemplate DataType="{x:Type forModels:CategoryViewModel}">
-                                        <TextBlock Style="{StaticResource CellTextBlock}"
-                                                   Text="{Binding Path=Name.Value}">
-                                            <TextBlock.ToolTip>
-                                                <ToolTip>
-                                                    <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
-                                                             ItemsSource="{Binding FullChainOfCategories}">
-                                                        <ListBox.ItemsPanel>
-                                                            <ItemsPanelTemplate>
-                                                                <StackPanel Orientation="Horizontal" />
-                                                            </ItemsPanelTemplate>
-                                                        </ListBox.ItemsPanel>
-                                                    </ListBox>
-                                                </ToolTip>
-                                            </TextBlock.ToolTip>
-                                        </TextBlock>
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type forModels:IncomeCategoryViewModel}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Style="{StaticResource CellTextBlock}"
-                                                       Text="{Binding Name.Value}">
-                                                <TextBlock.ToolTip>
-                                                    <ToolTip>
-                                                        <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
-                                                                 ItemsSource="{Binding FullChainOfCategories}">
-                                                            <ListBox.ItemsPanel>
-                                                                <ItemsPanelTemplate>
-                                                                    <StackPanel Orientation="Horizontal" />
-                                                                </ItemsPanelTemplate>
-                                                            </ListBox.ItemsPanel>
-                                                        </ListBox>
-                                                    </ToolTip>
-                                                </TextBlock.ToolTip>
-                                            </TextBlock>
-                                            <iconPacks:PackIconMaterial Foreground="{StaticResource IncomeBrush}"
-                                                                        Kind="{StaticResource IncomeIcon}"
-                                                                        Opacity="0.75"
-                                                                        Style="{StaticResource CellIconMaterial}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ContentControl.Resources>
-                            </ContentControl>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
-                            <Button Margin="0"
-                                    Padding="0"
-                                    HorizontalContentAlignment="Left"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Command="{Binding OpenParentTransactionView}"
-                                    CommandParameter="{Binding Account.Value}">
-                                <iconPacks:PackIconMaterial Margin="5,0,0,0"
-                                                            Foreground="{DynamicResource GrayBrush4}"
-                                                            Kind="{StaticResource ParentIcon}"
-                                                            Style="{StaticResource CellIconMaterial}" />
-                            </Button>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource CellTextBlock}"
-                                           Text="{Binding ToAccount.Value.Name.Value}" />
-                                <iconPacks:PackIconMaterial Foreground="{DynamicResource GrayBrush4}"
-                                                            IsTabStop="True"
-                                                            Kind="{StaticResource IncomeIcon}"
-                                                            Style="{StaticResource CellIconMaterial}" />
-                            </StackPanel>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <DataTemplate x:Key="CategoryEditingColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                            <DockPanel LastChildFill="True">
-                                <Button Click="OpenCategoryPopup_OnClick"
-                                        DockPanel.Dock="Right"
-                                        TabIndex="1"
-                                        ToolTip="{lex:Loc CreateNewCategory}">
-                                    <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
-                                                                Kind="{StaticResource AddIcon}"
-                                                                Style="{StaticResource CellIconMaterial}" />
-                                </Button>
-                                <Popup x:Name="Popup"
-                                       Closed="Popup_OnClosed"
-                                       Placement="Right"
-                                       PlacementTarget="{Binding ElementName=EditCategoryComboBox}"
-                                       PopupAnimation="Slide"
-                                       PreviewKeyDown="Popup_OnPreviewKeyDown"
-                                       StaysOpen="False">
-                                    <Border MinWidth="50"
-                                            Padding="0"
-                                            BorderBrush="{StaticResource AccentColorBrush}"
-                                            BorderThickness="1">
-                                        <views:NewCategoryView DataContext="{Binding NewCategoryViewModel}"
-                                                               OnAddClicked="ClosePopup_OnClick"
-                                                               Tag="{Binding ElementName=Popup}" />
-                                    </Border>
-                                </Popup>
-                                <ComboBox x:Name="EditCategoryComboBox"
-                                          IsEditable="True"
-                                          IsTextSearchCaseSensitive="True"
-                                          IsTextSearchEnabled="True"
-                                          ItemTemplate="{StaticResource IndentedCategoryItemTemplate}"
-                                          ItemsSource="{Binding NewCategoryViewModel.All}"
-                                          ShouldPreserveUserEnteredPrefix="True"
-                                          TabIndex="0"
-                                          TextSearch.TextPath="Name.Value">
-                                    <ComboBox.SelectedItem>
-                                        <Binding Mode="TwoWay"
-                                                 Path="Category.Value"
-                                                 UpdateSourceTrigger="PropertyChanged">
-                                            <Binding.ValidationRules>
-                                                <x:Static Member="mvvm:Rules.EmptyCategory" />
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                    </ComboBox.SelectedItem>
-                                    <ComboBox.ToolTip>
-                                        <ToolTip>
-                                            <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
-                                                     ItemsSource="{Binding Category.Value.FullChainOfCategories}">
-                                                <ListBox.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <StackPanel Orientation="Horizontal" />
-                                                    </ItemsPanelTemplate>
-                                                </ListBox.ItemsPanel>
-                                            </ListBox>
-                                        </ToolTip>
-                                    </ComboBox.ToolTip>
-                                </ComboBox>
-                            </DockPanel>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
-                            <!--  todo  -->
-                            <iconPacks:PackIconMaterial Margin="5,0,0,0"
-                                                        Foreground="{DynamicResource GrayBrush4}"
-                                                        Kind="{StaticResource ParentIcon}"
-                                                        Style="{StaticResource CellIconMaterial}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <ComboBox DisplayMemberPath="Name.Value"
-                                      IsEditable="True"
-                                      IsTextSearchCaseSensitive="False"
-                                      IsTextSearchEnabled="True"
-                                      ItemsSource="{Binding AllAccounts}"
-                                      TextSearch.TextPath="Name.Value">
-                                <ComboBox.SelectedItem>
-                                    <Binding Mode="TwoWay"
-                                             Path="ToAccount.Value"
-                                             UpdateSourceTrigger="LostFocus" />
-                                </ComboBox.SelectedItem>
-                            </ComboBox>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <!--  Memo  -->
-            <DataTemplate x:Key="MemoColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                IsTabStop="True"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                            <TextBlock Style="{StaticResource CellTextBlock}"
-                                       Text="{Binding Memo.Value, Mode=OneWay}"
-                                       TextTrimming="CharacterEllipsis"
-                                       ToolTip="{Binding Memo.Value}" />
-                        </DataTemplate>
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <DataTemplate x:Key="MemoEditingColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                            <TextBox VerticalAlignment="Stretch"
-                                     VerticalContentAlignment="Center"
-                                     Focusable="True"
-                                     Text="{Binding Memo.Value, UpdateSourceTrigger=LostFocus}"
-                                     TextWrapping="NoWrap" />
-                        </DataTemplate>
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <!--  Sum  -->
-            <DataTemplate x:Key="SumColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                IsTabStop="True"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <TextBlock Padding="0,0,5,0"
-                                       Style="{StaticResource CellTextBlock}"
-                                       TextAlignment="Right">
-                                <TextBlock.Text>
-                                    <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumAsCorrectlySignedString}">
-                                        <Binding ElementName="LayoutRoot"
-                                                 Path="DataContext.AccountViewModel" />
-                                        <Binding Path="FromAccount.Value" />
-                                        <Binding Path="ToAccount.Value" />
-                                        <Binding Path="Sum.Value" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                                <TextBlock.Foreground>
-                                    <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumToSolidColorBrush}">
-                                        <Binding ElementName="LayoutRoot"
-                                                 Path="DataContext.AccountViewModel" />
-                                        <Binding Path="FromAccount.Value" />
-                                        <Binding Path="ToAccount.Value" />
-                                    </MultiBinding>
-                                </TextBlock.Foreground>
-                            </TextBlock>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                            <TextBlock Padding="0,0,5,0"
-                                       Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                       Style="{StaticResource CellTextBlock}"
-                                       Text="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                       TextAlignment="Right" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <DataTemplate x:Key="SumEditingColumnTemplate">
-                <ContentControl Content="{Binding}"
-                                Style="{StaticResource CellContent}">
-                    <ContentControl.Resources>
-                        <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                            <TextBox VerticalContentAlignment="Center"
-                                     TextAlignment="Right">
-                                <TextBox.Foreground>
-                                    <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumToSolidColorBrush}">
-                                        <Binding ElementName="LayoutRoot"
-                                                 Path="DataContext.AccountViewModel" />
-                                        <Binding Path="FromAccount.Value" />
-                                        <Binding Path="ToAccount.Value" />
-                                    </MultiBinding>
-                                </TextBox.Foreground>
-                                <TextBox.Text>
-                                    <Binding Converter="{x:Static mvvm:Converters.SumToString}"
-                                             Mode="TwoWay"
-                                             Path="Sum.Value"
-                                             UpdateSourceTrigger="LostFocus">
-                                        <Binding.ValidationRules>
-                                            <x:Static Member="mvvm:Rules.Currency" />
-                                            <x:Static Member="mvvm:Rules.CurrencyLongRange" />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                            </TextBox>
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                            <ContentControl Content="{Binding SumEdit}"
-                                            ContentTemplate="{StaticResource SumEditTemplate}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
-                    </ContentControl.Resources>
-                </ContentControl>
-            </DataTemplate>
-            <!--  Cleared  -->
-            <DataTemplate x:Key="ClearedColumnTemplate">
-                <CheckBox MinHeight="30"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
-                          IsChecked="{Binding Cleared.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          Style="{StaticResource BffCheckBox}" />
-            </DataTemplate>
-
             <!--  SubElementsFormTemplate  -->
 
-            <DataTemplate x:Key="EmptyDataTemplate" />
             <DataTemplate x:Key="SubElementsEditingTemplatePart">
                 <DataGrid HeadersVisibility="None"
                           ItemsSource="{Binding NewSubElements}"
@@ -785,35 +104,17 @@
                     <DataGrid.Columns>
                         <!--  Category  -->
                         <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}"
-                                                SortMemberPath="Category.Value.Name.Value">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ContentControl Content="{Binding}"
-                                                    ContentTemplate="{StaticResource CategoryEditingColumnTemplate}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                                                CellTemplate="{StaticResource CategoryEditingColumnTemplate}"
+                                                SortMemberPath="Category.Value.Name.Value" />
                         <!--  Memo  -->
                         <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}"
-                                                SortMemberPath="Memo.Value">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ContentControl Content="{Binding}"
-                                                    ContentTemplate="{StaticResource MemoEditingColumnTemplate}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                                                CellTemplate="{StaticResource MemoEditingColumnTemplate}"
+                                                SortMemberPath="Memo.Value" />
                         <!--  Sum  -->
                         <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}"
+                                                CellTemplate="{StaticResource SumEditingColumnTemplate}"
                                                 IsReadOnly="False"
-                                                SortMemberPath="Sum.Value">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ContentControl Content="{Binding}"
-                                                    ContentTemplate="{StaticResource SumEditingColumnTemplate}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                                                SortMemberPath="Sum.Value" />
                         <!--  Cleared  -->
                         <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}"
                                                 CellTemplate="{StaticResource EmptyDataTemplate}"
@@ -831,53 +132,20 @@
                         <DataGrid.Columns>
                             <!--  Category  -->
                             <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}"
-                                                    SortMemberPath="Category.Value.Name.Value">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ContentControl Content="{Binding}"
-                                                        ContentTemplate="{StaticResource CategoryColumnTemplate}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <ContentControl Content="{Binding}"
-                                                        ContentTemplate="{StaticResource CategoryEditingColumnTemplate}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
+                                                    CellEditingTemplate="{StaticResource CategoryEditingColumnTemplate}"
+                                                    CellTemplate="{StaticResource CategoryColumnTemplate}"
+                                                    SortMemberPath="Category.Value.Name.Value" />
                             <!--  Memo  -->
                             <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}"
-                                                    SortMemberPath="Memo.Value">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ContentControl Content="{Binding}"
-                                                        ContentTemplate="{StaticResource MemoColumnTemplate}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <ContentControl Content="{Binding}"
-                                                        ContentTemplate="{StaticResource MemoEditingColumnTemplate}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
+                                                    CellEditingTemplate="{StaticResource MemoEditingColumnTemplate}"
+                                                    CellTemplate="{StaticResource MemoColumnTemplate}"
+                                                    SortMemberPath="Memo.Value" />
                             <!--  Sum  -->
                             <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}"
+                                                    CellEditingTemplate="{StaticResource SumEditingColumnTemplate}"
+                                                    CellTemplate="{StaticResource SumColumnTemplate}"
                                                     IsReadOnly="False"
-                                                    SortMemberPath="Sum.Value">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ContentControl Content="{Binding}"
-                                                        ContentTemplate="{StaticResource SumColumnTemplate}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <ContentControl Content="{Binding}"
-                                                        ContentTemplate="{StaticResource SumEditingColumnTemplate}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
+                                                    SortMemberPath="Sum.Value" />
                             <!--  Cleared  -->
                             <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}"
                                                     CellTemplate="{StaticResource EmptyDataTemplate}"
@@ -945,6 +213,7 @@
             <DataGrid.Columns>
                 <!--  Symbol  -->
                 <DataGridTemplateColumn x:Name="SymbolColumn"
+                                        CellTemplate="{StaticResource SymbolColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_SymbolAbbr}">
                     <DataGridTemplateColumn.HeaderTemplate>
                         <DataTemplate>
@@ -952,163 +221,63 @@
                                        ToolTip="{lex:Loc AccountView_Header_SymbolAbbr_Tooltip}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource SymbolColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <!--  Account  -->
                 <DataGridTemplateColumn x:Name="AccountColumn"
+                                        CellEditingTemplate="{StaticResource AccountEditingColumnTemplate}"
+                                        CellTemplate="{StaticResource AccountColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Account}"
-                                        SortMemberPath="Account.Name.Value">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource AccountColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource AccountEditingColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
+                                        SortMemberPath="Account.Name.Value" />
                 <!--  Date  -->
                 <DataGridTemplateColumn x:Name="DateColumn"
+                                        CellEditingTemplate="{StaticResource DateEditingColumnTemplate}"
+                                        CellTemplate="{StaticResource DateColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Date}"
-                                        SortMemberPath="Date.Value">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource DateColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource DateEditingColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
+                                        SortMemberPath="Date.Value" />
                 <!--  Flag  -->
                 <DataGridTemplateColumn x:Name="FlagColumn"
+                                        CellEditingTemplate="{StaticResource FlagEditingColumnTemplate}"
+                                        CellTemplate="{StaticResource FlagColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Flag}"
-                                        SortMemberPath="Flag.Value">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource FlagColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource FlagEditingColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
+                                        SortMemberPath="Flag.Value" />
                 <!--  CheckNumber  -->
                 <DataGridTemplateColumn x:Name="CheckNumberColumn"
+                                        CellEditingTemplate="{StaticResource CheckNumberEditingColumnTemplate}"
+                                        CellTemplate="{StaticResource CheckNumberColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_CheckNumber}"
-                                        SortMemberPath="CheckNumber.Value">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource CheckNumberColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource CheckNumberEditingColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
+                                        SortMemberPath="CheckNumber.Value" />
                 <!--  Payee  -->
                 <DataGridTemplateColumn x:Name="PayeeColumn"
+                                        CellEditingTemplate="{StaticResource PayeeEditingColumnTemplate}"
+                                        CellTemplate="{StaticResource PayeeColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Payee}"
-                                        SortMemberPath="Payee.Name.Value">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource PayeeColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource PayeeEditingColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
+                                        SortMemberPath="Payee.Name.Value" />
                 <!--  Category  -->
                 <DataGridTemplateColumn x:Name="CategoryColumn"
+                                        CellEditingTemplate="{StaticResource CategoryEditingColumnTemplate}"
+                                        CellTemplate="{StaticResource CategoryColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Category}"
-                                        SortMemberPath="Category.Name.Value">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource CategoryColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource CategoryEditingColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
+                                        SortMemberPath="Category.Name.Value" />
                 <!--  Memo  -->
                 <DataGridTemplateColumn x:Name="MemoColumn"
                                         Width="*"
+                                        CellEditingTemplate="{StaticResource MemoEditingColumnTemplate}"
+                                        CellTemplate="{StaticResource MemoColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Memo}"
-                                        SortMemberPath="Memo.Value">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource MemoColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource MemoEditingColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
+                                        SortMemberPath="Memo.Value" />
                 <!--  Sum  -->
                 <DataGridTemplateColumn x:Name="SumColumn"
+                                        CellEditingTemplate="{StaticResource SumEditingColumnTemplate}"
+                                        CellTemplate="{StaticResource SumColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Sum}"
                                         IsReadOnly="False"
-                                        SortMemberPath="Sum.Value">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource SumColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource SumEditingColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
+                                        SortMemberPath="Sum.Value" />
                 <!--  Cleared  -->
                 <DataGridTemplateColumn x:Name="ClearedColumn"
+                                        CellTemplate="{StaticResource ClearedColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Cleared}"
                                         IsReadOnly="True"
-                                        SortMemberPath="Cleared.Value">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource ClearedColumnTemplate}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                        SortMemberPath="Cleared.Value" />
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
@@ -1170,97 +339,37 @@
                       RowStyle="{StaticResource DefaultNewRowStyle}">
                 <DataGrid.Columns>
                     <!--  Symbol  -->
-                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SymbolColumn}, Mode=TwoWay}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource SymbolColumnTemplate}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SymbolColumn}, Mode=TwoWay}"
+                                            CellTemplate="{StaticResource SymbolColumnTemplate}" />
                     <!--  Account  -->
-                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference AccountColumn}, Mode=TwoWay}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource AccountEditingColumnTemplate}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference AccountColumn}, Mode=TwoWay}"
+                                            CellTemplate="{StaticResource AccountEditingColumnTemplate}" />
                     <!--  Date  -->
-                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference DateColumn}, Mode=TwoWay}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource DateEditingColumnTemplate}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference DateColumn}, Mode=TwoWay}"
+                                            CellTemplate="{StaticResource DateEditingColumnTemplate}" />
                     <!--  Flag  -->
-                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference FlagColumn}, Mode=TwoWay}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource FlagEditingColumnTemplate}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference FlagColumn}, Mode=TwoWay}"
+                                            CellTemplate="{StaticResource FlagEditingColumnTemplate}" />
                     <!--  CheckNumber  -->
-                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CheckNumberColumn}, Mode=TwoWay}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource CheckNumberEditingColumnTemplate}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CheckNumberColumn}, Mode=TwoWay}"
+                                            CellTemplate="{StaticResource CheckNumberEditingColumnTemplate}" />
                     <!--  Payee  -->
-                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference PayeeColumn}, Mode=TwoWay}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource PayeeEditingColumnTemplate}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference PayeeColumn}, Mode=TwoWay}"
+                                            CellTemplate="{StaticResource PayeeEditingColumnTemplate}" />
                     <!--  Category  -->
-                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource CategoryEditingColumnTemplate}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}"
+                                            CellTemplate="{StaticResource CategoryEditingColumnTemplate}" />
                     <!--  Memo  -->
-                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource MemoEditingColumnTemplate}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}"
+                                            CellTemplate="{StaticResource MemoEditingColumnTemplate}" />
                     <!--  Sum  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}"
-                                            IsReadOnly="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource SumEditingColumnTemplate}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                                            CellTemplate="{StaticResource SumEditingColumnTemplate}"
+                                            IsReadOnly="False" />
                     <!--  Cleared  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}"
-                                            IsReadOnly="True">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource ClearedColumnTemplate}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                                            CellTemplate="{StaticResource ClearedColumnTemplate}"
+                                            IsReadOnly="True" />
                 </DataGrid.Columns>
                 <DataGrid.RowDetailsTemplate>
                     <DataTemplate>

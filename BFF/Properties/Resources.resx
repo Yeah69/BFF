@@ -263,6 +263,12 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Color" xml:space="preserve">
     <value>Color</value>
   </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Entries</value>
+  </data>
   <data name="ConfirmationDialog_Title" xml:space="preserve">
     <value>Are you sure?</value>
   </data>
@@ -329,6 +335,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Flag_Edit" xml:space="preserve">
     <value>Edit Flags</value>
   </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="General_DateFormat" xml:space="preserve">
     <value>Date Format</value>
   </data>
@@ -355,6 +364,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   </data>
   <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
     <value>Create new payee if not existing?</value>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Okay</value>
   </data>
   <data name="General_PayeeFormat" xml:space="preserve">
     <value>Payee Format</value>

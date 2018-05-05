@@ -65,11 +65,11 @@ namespace BFF.MVVM.ViewModels
                     (PayeeText as ReactiveProperty<string>)?.ForceValidate();
                     return !PayeeText.HasErrors;
                 })
-                .Subscribe(_ =>
+                .Subscribe(async _ =>
                 {
                     IPayee newPayee = payeeFactory();
                     newPayee.Name = PayeeText.Value.Trim();
-                    newPayee.InsertAsync();
+                    await newPayee.InsertAsync();
                     if(CurrentOwner != null)
                         CurrentOwner.Payee.Value = _payeeViewModelService.GetViewModel(newPayee);
                     CurrentOwner = null;

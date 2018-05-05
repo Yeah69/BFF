@@ -110,6 +110,9 @@
     <Reference Include="MuVaViMo, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MuVaViMo.0.3.1\lib\netstandard1.0\MuVaViMo.dll</HintPath>
     </Reference>
+    <Reference Include="NCalc, Version=1.3.8.0, Culture=neutral, PublicKeyToken=973cde3f1cafed03, processorArchitecture=MSIL">
+      <HintPath>..\packages\ncalc.1.3.8\lib\NCalc.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -316,7 +319,7 @@
     <Compile Include="MVVM\Models\Native\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Native\BudgetMonth.cs" />
     <Compile Include="MVVM\Models\Native\Category.cs" />
-    <Compile Include="MVVM\Models\Native\Utility\CsvBankStatementImportItem.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Utility\CsvBankStatementImportItemViewModel.cs" />
     <Compile Include="MVVM\Models\Native\Utility\CsvBankStatementImportProfile.cs" />
     <Compile Include="MVVM\Models\Native\Flag.cs" />
     <Compile Include="MVVM\Models\Native\IncomeCategory.cs" />
@@ -333,6 +336,9 @@
     <Compile Include="MVVM\Models\Native\Structure\TransactionBase.cs" />
     <Compile Include="MVVM\Models\Native\SubTransaction.cs" />
     <Compile Include="MVVM\Models\Native\ParentTransaction.cs" />
+    <Compile Include="MVVM\Resources\TransCellTemplates.xaml.cs">
+      <DependentUpon>TransCellTemplates.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\Rules.cs" />
     <Compile Include="MVVM\Services\AccountViewModelService.cs" />
     <Compile Include="MVVM\Services\BudgetEntyViewModelService.cs" />
@@ -399,6 +405,9 @@
     <Compile Include="MVVM\Views\AccountTabsView.xaml.cs">
       <DependentUpon>AccountTabsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MVVM\Views\AlertSymbol.xaml.cs">
+      <DependentUpon>AlertSymbol.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\Views\StatusCheckMark.xaml.cs">
       <DependentUpon>StatusCheckMark.xaml</DependentUpon>
     </Compile>
@@ -446,6 +455,14 @@
       <DependentUpon>TitDataGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="SqLiteBackendContext.cs" />
+    <Page Include="MVVM\Resources\TransCellTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\Views\AlertSymbol.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MVVM\Views\StatusCheckMark.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

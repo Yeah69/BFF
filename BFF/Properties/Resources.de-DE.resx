@@ -263,6 +263,12 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="Color" xml:space="preserve">
     <value>Farbe</value>
   </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Konfiguration</value>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Eintr√§ge</value>
+  </data>
   <data name="ConfirmationDialog_Title" xml:space="preserve">
     <value>Bist Du dir sicher?</value>
   </data>
@@ -329,6 +335,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="Flag_Edit" xml:space="preserve">
     <value>Markierungen bearbeiten</value>
   </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
   <data name="General_DateFormat" xml:space="preserve">
     <value>Datumsformat</value>
   </data>
@@ -355,6 +364,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   </data>
   <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
     <value>Erstelle einen neuen Zahlungsempf√§nger wenn er nicht existiert?</value>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Okay</value>
   </data>
   <data name="General_PayeeFormat" xml:space="preserve">
     <value>Zahlungsempf√§ngerformat</value>

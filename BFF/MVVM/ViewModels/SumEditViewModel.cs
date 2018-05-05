@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Reactive.Disposables;
 using BFF.Helper;
+using BFF.Helper.Extensions;
 using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels
 {
-    public interface ISumEditViewModel
+    public interface ISumEditViewModel : IDisposable
     {
         Sign SumSign { get; set; }
 
@@ -20,11 +22,16 @@ namespace BFF.MVVM.ViewModels
 
         private Sign _sumSign = Sign.Minus;
 
+        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+
         public SumEditViewModel(IReactiveProperty<long> sum)
         {
             Sum = sum;
-            ToggleSign = new ReactiveCommand();
-            ToggleSign.Subscribe(_ => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus);
+            ToggleSign = new ReactiveCommand()
+                .AddHere(_compositeDisposable);
+            ToggleSign
+                .Subscribe(_ => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus)
+                .AddHere(_compositeDisposable);
         }
 
         public Sign SumSign
@@ -52,5 +59,10 @@ namespace BFF.MVVM.ViewModels
         public IReactiveProperty<long> Sum { get; }
 
         public ReactiveCommand ToggleSign { get; }
+
+        public void Dispose()
+        {
+            _compositeDisposable.Dispose();
+        }
     }
 }

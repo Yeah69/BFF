@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -15,6 +17,7 @@ using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.Dialogs;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using BFF.MVVM.ViewModels.ForModels.Utility;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -68,12 +71,14 @@ namespace BFF.MVVM.ViewModels.ForModels
             ITransRepository transRepository,
             IAccountRepository accountRepository,
             Lazy<IAccountViewModelService> accountViewModelService,
+            IPayeeViewModelService payeeService,
+            Func<IPayee> payeeFactory,
             IParentTransactionViewModelService parentTransactionViewModelService,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
             IRxSchedulerProvider schedulerProvider,
             IBackendCultureManager cultureManager,
             IBffChildWindowManager childWindowManager,
-            Func<IImportCsvBankStatementViewModel> importCsvBankStatementFactory,
+            Func<Action<IList<ICsvBankStatementImportItemViewModel>>, IImportCsvBankStatementViewModel> importCsvBankStatementFactory,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             Func<IAccount, ITransactionViewModel> transactionViewModelFactory,
             Func<ITransferViewModel> transferViewModelFactory,
@@ -118,7 +123,35 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             ApplyCommand.Subscribe(_ => ApplyTits()).AddTo(CompositeDisposable);
 
-            ImportCsvBankStatement.Subscribe(_ => childWindowManager.OpenImportCsvBankStatementDialogAsync(importCsvBankStatementFactory()));
+            ImportCsvBankStatement.Subscribe(_ => childWindowManager.OpenImportCsvBankStatementDialogAsync(importCsvBankStatementFactory(
+                items =>
+                {
+                    foreach (var item in items)
+                    {
+                        var transactionViewModel = transactionViewModelFactory(_account);
+
+                        if (item.HasDate.Value)
+                            transactionViewModel.Date.Value = item.Date.Value;
+                        if (item.HasPayee.Value)
+                        {
+                            if(payeeService.All.Any(p => p.Name.Value == item.Payee.Value))
+                                transactionViewModel.Payee.Value = payeeService.All.FirstOrDefault(p => p.Name.Value == item.Payee.Value);
+                            else
+                            {
+                                IPayee newPayee = payeeFactory();
+                                newPayee.Name = item.Payee.Value.Trim();
+                                newPayee.InsertAsync();
+                                transactionViewModel.Payee.Value = payeeService.GetViewModel(newPayee);
+                            }
+                        }
+                        if (item.HasMemo.Value)
+                            transactionViewModel.Memo.Value = item.Memo.Value;
+                        if (item.HasSum.Value)
+                            transactionViewModel.Sum.Value = item.Sum.Value;
+
+                        NewTransList.Add(transactionViewModel);
+                    }
+                })));
         }
 
         protected override IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess

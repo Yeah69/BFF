@@ -495,6 +495,24 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        public static string Common_Configuration {
+            get {
+                return ResourceManager.GetString("Common_Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entries.
+        /// </summary>
+        public static string Common_Entries {
+            get {
+                return ResourceManager.GetString("Common_Entries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure?.
         /// </summary>
         public static string ConfirmationDialog_Title {
@@ -693,6 +711,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string General_Cancel {
+            get {
+                return ResourceManager.GetString("General_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date Format.
         /// </summary>
         public static string General_DateFormat {
@@ -770,6 +797,15 @@ namespace BFF.Properties {
         public static string General_NewPayeeIfNotExisting {
             get {
                 return ResourceManager.GetString("General_NewPayeeIfNotExisting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Okay.
+        /// </summary>
+        public static string General_Okay {
+            get {
+                return ResourceManager.GetString("General_Okay", resourceCulture);
             }
         }
         

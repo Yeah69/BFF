@@ -27,6 +27,8 @@
                 <ResourceDictionary Source="MVVM/Resources/HamburgerMenu.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <DataTemplate x:Key="EmptyDataTemplate" />
+
             <SolidColorBrush x:Key="TransactionBrush"
                              Color="DarkOrange" />
             <SolidColorBrush x:Key="IncomeBrush"
