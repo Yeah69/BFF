@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using BFF.DB;
@@ -158,7 +157,7 @@ namespace BFF.MVVM.Views
             nameof(ImportCsvBankStatementVisibility),
             typeof(Visibility),
             typeof(TitDataGrid),
-            new PropertyMetadata(default(Visibility)));
+            new PropertyMetadata(Visibility.Collapsed));
 
         
 

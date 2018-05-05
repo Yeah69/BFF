@@ -136,7 +136,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                         {
                             if(payeeService.All.Any(p => p.Name.Value == item.Payee.Value))
                                 transactionViewModel.Payee.Value = payeeService.All.FirstOrDefault(p => p.Name.Value == item.Payee.Value);
-                            else
+                            else if(item.CreatePayeeIfNotExisting.Value)
                             {
                                 IPayee newPayee = payeeFactory();
                                 newPayee.Name = item.Payee.Value.Trim();

@@ -281,6 +281,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="CreateNewPayee" xml:space="preserve">
     <value>Create new payee</value>
   </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>An error occurred while creating the entries. Check the configuration.</value>
+  </data>
   <data name="Domain_BankStatement" xml:space="preserve">
     <value>Bank Statement</value>
   </data>

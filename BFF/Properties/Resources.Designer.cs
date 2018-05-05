@@ -549,6 +549,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred while creating the entries. Check the configuration..
+        /// </summary>
+        public static string CsvBankStatementImport_ErrorDuringItemsCreation {
+            get {
+                return ResourceManager.GetString("CsvBankStatementImport_ErrorDuringItemsCreation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bank Statement.
         /// </summary>
         public static string Domain_BankStatement {

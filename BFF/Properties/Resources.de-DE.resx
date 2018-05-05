@@ -281,6 +281,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m�
   <data name="CreateNewPayee" xml:space="preserve">
     <value>Erstelle einen neuen Bezahlten</value>
   </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>Beim Erstellen der Einträge ist ein Fehler aufgetreten. Überprüfe die Konfiguration.</value>
+  </data>
   <data name="Domain_BankStatement" xml:space="preserve">
     <value>Kontoauszug</value>
   </data>

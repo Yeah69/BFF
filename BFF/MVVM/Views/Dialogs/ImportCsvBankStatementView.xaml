@@ -40,6 +40,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -310,11 +311,21 @@
 
         <TextBlock Grid.Row="4"
                    Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   Margin="2.5"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch"
+                   Background="{StaticResource TransactionBrush}"
+                   Text="{lex:Loc CsvBankStatementImport_ErrorDuringItemsCreation}"
+                   Visibility="{Binding ShowItemsError.Value, Converter={x:Static mvvm:Converters.FalseToCollapsed}}"/>
+
+        <TextBlock Grid.Row="5"
+                   Grid.Column="0"
                    Margin="2.5"
                    VerticalAlignment="Center"
                    Text="{lex:LocText Key=Common_Entries,
                                       Suffix=:}" />
-        <DataGrid Grid.Row="4"
+        <DataGrid Grid.Row="5"
                   Grid.Column="1"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding Items}">
@@ -346,9 +357,10 @@
                                         SortMemberPath="Sum.Value" />
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="5"
+        <StackPanel Grid.Row="6"
                     Grid.Column="0"
-                    Grid.ColumnSpan="2" HorizontalAlignment="Right"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right"
                     Orientation="Horizontal">
             <Button Margin="2.5"
                     Command="{Binding OkCommand}"

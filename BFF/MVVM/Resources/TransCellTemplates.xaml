@@ -492,15 +492,11 @@
                                                                            DockPanel.Dock="Right" />
                                                         <ComboBox DisplayMemberPath="Name.Value"
                                                                   DockPanel.Dock="Right"
+                                                                  IsEditable="True"
+                                                                  IsTextSearchCaseSensitive="True"
+                                                                  IsTextSearchEnabled="True"
                                                                   ItemsSource="{Binding ExistingPayees}"
-                                                                  SelectedItem="{Binding SelectedExistingPayee.Value}" />
-                                                        <TextBox Margin="0,2.5"
-                                                                 VerticalAlignment="Stretch"
-                                                                 VerticalContentAlignment="Center"
-                                                                 DockPanel.Dock="Left"
-                                                                 Focusable="True"
-                                                                 Text="{Binding Payee.Value, UpdateSourceTrigger=LostFocus}"
-                                                                 TextWrapping="NoWrap" />
+                                                                  Text="{Binding Payee.Value}" />
                                                     </DockPanel>
                                                 </DataTemplate>
                                             </Setter.Value>

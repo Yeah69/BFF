@@ -27,6 +27,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
 
         IReactiveProperty<bool> HasPayee { get; }
 
+        IReadOnlyReactiveProperty<bool> CreatePayeeIfNotExisting { get; }
+
         ReactiveCommand AdmitPayee { get; }
 
         ReactiveCommand DismissPayee { get; }
@@ -34,10 +36,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
         IReadOnlyReactiveProperty<bool> PayeeExists { get; }
 
         IObservableReadOnlyList<IPayeeViewModel> ExistingPayees { get; }
-
-        IReactiveProperty<IPayeeViewModel> SelectedExistingPayee { get; }
-        
-        ReactiveCommand SelectExistingPayee { get; }
 
         IReactiveProperty<string> Memo { get; }
 
@@ -63,7 +61,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
         public CsvBankStatementImportItemViewModel(
-            (DateTime? Date, string Payee, string Memo, long? Sum) configuration,
+            (DateTime? Date, string Payee, bool CreatePayeeIfNotExisting, string Memo, long? Sum) configuration,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             IPayeeViewModelService payeeService,
             IRxSchedulerProvider schedulerProvider)
@@ -96,6 +94,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
                 .ToReadOnlyReactivePropertySlim(payeeService.All.Any(payee => payee.Name.Value == Payee.Value), ReactivePropertyMode.DistinctUntilChanged)
                 .AddHere(_compositeDisposable);
 
+            CreatePayeeIfNotExisting = new ReactiveProperty<bool>(configuration.CreatePayeeIfNotExisting, ReactivePropertyMode.DistinctUntilChanged);
+
+            ExistingPayees = payeeService.All;
+
             AdmitMemo = new ReactiveCommand().AddHere(_compositeDisposable);
             AdmitMemo
                 .ObserveOn(schedulerProvider.UI)
@@ -120,19 +122,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
                 .Subscribe(_ => HasPayee.Value = false)
                 .AddHere(_compositeDisposable);
 
-            ExistingPayees = payeeService.All;
-
-            SelectedExistingPayee = new ReactivePropertySlim<IPayeeViewModel>(ExistingPayees.FirstOrDefault(p => p.Name.Value == Payee.Value))
-                .AddHere(_compositeDisposable);
-            SelectedExistingPayee
-                .Subscribe(p =>
-                {
-                    if (p != null)
-                        Payee.Value = p.Name.Value;
-                })
-                .AddHere(_compositeDisposable);
-            Payee.Subscribe(p => SelectedExistingPayee.Value = ExistingPayees.FirstOrDefault(payee => payee.Name.Value == p));
-
             DismissMemo = new ReactiveCommand().AddHere(_compositeDisposable);
             DismissMemo
                 .ObserveOn(schedulerProvider.UI)
@@ -144,16 +133,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
                 .ObserveOn(schedulerProvider.UI)
                 .Subscribe(_ => HasSum.Value = false)
                 .AddHere(_compositeDisposable);
-
-            SelectExistingPayee = new ReactiveCommand().AddHere(_compositeDisposable);
-            SelectExistingPayee
-                .ObserveOn(schedulerProvider.UI)
-                .Subscribe(p =>
-                {
-                    if (p is string payee)
-                        Payee.Value = payee;
-                })
-                .AddHere(_compositeDisposable);
         }
 
         public IReactiveProperty<DateTime> Date { get; set; }
@@ -163,11 +142,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
 
         public IReactiveProperty<string> Payee { get; set; }
         public IReactiveProperty<bool> HasPayee { get; }
+        public IReadOnlyReactiveProperty<bool> CreatePayeeIfNotExisting { get; }
         public ReactiveCommand AdmitPayee { get; }
         public ReactiveCommand DismissPayee { get; }
         public IReadOnlyReactiveProperty<bool> PayeeExists { get; }
         public IObservableReadOnlyList<IPayeeViewModel> ExistingPayees { get; }
-        public IReactiveProperty<IPayeeViewModel> SelectedExistingPayee { get; }
 
         public IReactiveProperty<string> Memo { get; set; }
         public IReactiveProperty<bool> HasMemo { get; }
@@ -179,7 +158,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
         public IReactiveProperty<bool> HasSum { get; }
         public ReactiveCommand AdmitSum { get; }
         public ReactiveCommand DismissSum { get; }
-        public ReactiveCommand SelectExistingPayee { get; }
 
         public bool IsDateFormatLong => Settings.Default.Culture_DefaultDateLong;
 

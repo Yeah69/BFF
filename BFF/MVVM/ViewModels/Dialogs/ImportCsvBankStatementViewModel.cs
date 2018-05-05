@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
@@ -16,6 +17,7 @@ using Microsoft.Win32;
 using MuVaViMo;
 using NCalc;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.Dialogs
 {
@@ -32,6 +34,7 @@ namespace BFF.MVVM.ViewModels.Dialogs
         IReadOnlyReactiveProperty<string> Header { get; }
         bool HeaderDoMatch { get; }
 
+        IReactiveProperty<bool> ShowItemsError { get; }
 
         IReactiveProperty<ICsvBankStatementImportNonProfileViewModel> Configuration { get; }
 
@@ -55,7 +58,7 @@ namespace BFF.MVVM.ViewModels.Dialogs
             ICsvBankStatementImportNonProfileViewModel> nonProfileViewModelFactory,
             Action<IList<ICsvBankStatementImportItemViewModel>> onOk,
             IRxSchedulerProvider schedulerProvider,
-            Func<(DateTime? Date, string Payee, string Memo, long? Sum), ICsvBankStatementImportItemViewModel> createItem,
+            Func<(DateTime? Date, string Payee, bool CreatePayeeIfNotExisting, string Memo, long? Sum), ICsvBankStatementImportItemViewModel> createItem,
             ICsvBankStatementProfileManager csvBankStatementProfileManger,
             Func<ICsvBankStatementImportProfile, ICsvBankStatementImportProfileViewModel> profileViewModelFactory)
         {
@@ -71,7 +74,9 @@ namespace BFF.MVVM.ViewModels.Dialogs
             Configuration = new ReactivePropertySlim<ICsvBankStatementImportNonProfileViewModel>(nonProfileViewModel, ReactivePropertyMode.DistinctUntilChanged);
 
             SelectedProfile = new ReactivePropertySlim<ICsvBankStatementImportProfileViewModel>(null, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
-            SelectedProfile.Subscribe(sp => Configuration.Value = sp ?? nonProfileViewModel);
+            SelectedProfile
+                .Subscribe(sp => Configuration.Value = sp ?? nonProfileViewModel)
+                .AddHere(_compositeDisposable);
 
             
 
@@ -90,34 +95,62 @@ namespace BFF.MVVM.ViewModels.Dialogs
                 FilePath.Select(path => File.Exists(path) ? File.ReadLines(path, Encoding.Default).FirstOrDefault() : ""), 
                 mode: ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
 
+            Configuration.Select(_ => Unit.Default)
+                .Merge(FilePath.Select(_ => Unit.Default))
+                .ObserveOn(schedulerProvider.Task)
+                .Select(_ => ExtractItems())
+                .ObserveOn(schedulerProvider.UI)
+                .Subscribe(items =>
+                {
+                    Items = items;
+                    OnPropertyChanged(nameof(Items));
+                })
+                .AddHere(_compositeDisposable);
+
             Configuration
                 .ObserveOn(schedulerProvider.UI)
-                .Subscribe(_ =>
-                {
-                    OnPropertyChanged(nameof(HeaderDoMatch));
-                    ExtractItems();
-                });
+                .Subscribe(items => OnPropertyChanged(nameof(HeaderDoMatch)))
+                .AddHere(_compositeDisposable);
 
             Header
                 .ObserveOn(schedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(HeaderDoMatch)))
                 .AddHere(_compositeDisposable);
 
-            SerialDisposable serialDisposable = new SerialDisposable();
+            SerialDisposable configurationPropertyChanges = new SerialDisposable().AddHere(_compositeDisposable);
+            SerialDisposable configurationHeaderChanges = new SerialDisposable().AddHere(_compositeDisposable);
 
             Configuration
                 .Where(configuration => configuration != null)
                 .ObserveOn(schedulerProvider.UI)
                 .Subscribe(configuration =>
                 {
-                    configuration
-                        .Header
+                    Observable.Merge(
+                        configuration.Header.PropertyChangedAsObservable(),
+                        configuration.DateLocalization.PropertyChangedAsObservable(),
+                        configuration.DateSegment.PropertyChangedAsObservable(),
+                        configuration.Delimiter.PropertyChangedAsObservable(),
+                        configuration.MemoFormat.PropertyChangedAsObservable(),
+                        configuration.PayeeFormat.PropertyChangedAsObservable(),
+                        configuration.ShouldCreateNewPayeeIfNotExisting.PropertyChangedAsObservable(),
+                        configuration.SumFormula.PropertyChangedAsObservable(),
+                        configuration.SumLocalization.PropertyChangedAsObservable())
+                        .ObserveOn(schedulerProvider.Task)
+                        .Select(_ => ExtractItems())
+                        .ObserveOn(schedulerProvider.UI)
+                        .Subscribe(items =>
+                        {
+                            Items = items;
+                            OnPropertyChanged(nameof(Items));
+                        })
+                        .AssignTo(configurationPropertyChanges);
+                    configuration.Header
+                        .ObserveOn(schedulerProvider.UI)
                         .Subscribe(_ =>
                         {
                             OnPropertyChanged(nameof(HeaderDoMatch));
-                            ExtractItems();
                         })
-                        .AssignTo(serialDisposable);
+                        .AssignTo(configurationHeaderChanges);
                 })
                 .AddHere(_compositeDisposable);
 
@@ -138,7 +171,8 @@ namespace BFF.MVVM.ViewModels.Dialogs
                     {
                         FilePath.Value = openFileDialog.FileName;
                     }
-                });
+                })
+                .AddHere(_compositeDisposable);
 
             DeselectProfileCommand
                 .Subscribe(_ => SelectedProfile.Value = null)
@@ -149,6 +183,7 @@ namespace BFF.MVVM.ViewModels.Dialogs
                 {
                     IsOpen.Value = false;
                     onOk(Items);
+                    _compositeDisposable.Dispose();
                 })
                 .AddHere(_compositeDisposable);
 
@@ -156,65 +191,77 @@ namespace BFF.MVVM.ViewModels.Dialogs
                 .Subscribe(_ =>
                 {
                     IsOpen.Value = false;
+                    _compositeDisposable.Dispose();
                 })
                 .AddHere(_compositeDisposable);
 
-            void ExtractItems()
+            ShowItemsError = new ReactivePropertySlim<bool>(false, ReactivePropertyMode.DistinctUntilChanged);
+
+            IList<ICsvBankStatementImportItemViewModel> ExtractItems()
             {
-                if (FileExists.Value && HeaderDoMatch)
+                IList<ICsvBankStatementImportItemViewModel> ret = new List<ICsvBankStatementImportItemViewModel>();
+
+                try
                 {
-                    var indexToSegment = Configuration.Value.Segments.Value.Select((s, i) => (s, i))
-                        .ToDictionary(_ => _.i, _ => _.s);
-                    Items = File.ReadLines(FilePath.Value).Skip(1).Select(line =>
+                    if (FileExists.Value && HeaderDoMatch)
                     {
-                        var segmentValues = line
-                            .Split(Configuration.Value.Delimiter.Value)
-                            .Select((v, i) => (v, i))
-                            .ToDictionary(_ => indexToSegment[_.i], _ => _.v);
-                        var payeeString = Configuration.Value.PayeeFormat.Value;
-                        var memoString = Configuration.Value.MemoFormat.Value;
-                        var sumString = Configuration.Value.SumFormula.Value;
-                        var date = DateTime.TryParse(
-                            segmentValues[Configuration.Value.DateSegment.Value],
-                            Configuration.Value.DateLocalization.Value, 
-                            DateTimeStyles.AllowWhiteSpaces, 
-                            out DateTime dateResult)
-                            ? dateResult
-                            : (DateTime?) null;
-
-                        foreach (var segment in Configuration.Value.Segments.Value)
+                        var indexToSegment = Configuration.Value.Segments.Value.Select((s, i) => (s, i))
+                            .ToDictionary(_ => _.i, _ => _.s);
+                        ret = File.ReadLines(FilePath.Value).Skip(1).Select(line =>
                         {
-                            payeeString = payeeString.Replace($"{{{segment}}}", segmentValues[segment].Trim('"'));
-                            memoString = memoString.Replace($"{{{segment}}}", segmentValues[segment].Trim('"'));
+                            var segmentValues = line
+                                .Split(Configuration.Value.Delimiter.Value)
+                                .Select((v, i) => (v, i))
+                                .ToDictionary(_ => indexToSegment[_.i], _ => _.v);
+                            var payeeString = Configuration.Value.PayeeFormat.Value;
+                            var memoString = Configuration.Value.MemoFormat.Value;
+                            var sumString = Configuration.Value.SumFormula.Value;
+                            var date = DateTime.TryParse(
+                                segmentValues[Configuration.Value.DateSegment.Value],
+                                Configuration.Value.DateLocalization.Value, 
+                                DateTimeStyles.AllowWhiteSpaces, 
+                                out DateTime dateResult)
+                                ? dateResult
+                                : (DateTime?) null;
 
-                            if (sumString.Contains($"{{{segment}}}"))
+                            foreach (var segment in Configuration.Value.Segments.Value)
                             {
-                                var sumPartParsingSuccess = double.TryParse(segmentValues[segment], NumberStyles.Any, Configuration.Value.SumLocalization.Value, out var sumPartResult);
-                                long sum = (long)((sumPartParsingSuccess ? sumPartResult : 0.0) *
-                                       Math.Pow(10, Configuration.Value.SumLocalization.Value.NumberFormat.CurrencyDecimalDigits));
-                                sumString = sumString.Replace($"{{{segment}}}", sum.ToString());
+                                payeeString = payeeString.Replace($"{{{segment}}}", segmentValues[segment].Trim('"'));
+                                memoString = memoString.Replace($"{{{segment}}}", segmentValues[segment].Trim('"'));
+
+                                if (sumString.Contains($"{{{segment}}}"))
+                                {
+                                    var sumPartParsingSuccess = double.TryParse(segmentValues[segment], NumberStyles.Any, Configuration.Value.SumLocalization.Value, out var sumPartResult);
+                                    long sum = (long)((sumPartParsingSuccess ? sumPartResult : 0.0) *
+                                                      Math.Pow(10, Configuration.Value.SumLocalization.Value.NumberFormat.CurrencyDecimalDigits));
+                                    sumString = sumString.Replace($"{{{segment}}}", sum.ToString());
+                                }
+
                             }
 
-                        }
-
-                        return createItem( 
-                            (date,
-                            payeeString.IsNullOrWhiteSpace() 
-                                ? null 
-                                : payeeString,
-                            memoString.IsNullOrWhiteSpace()
-                                ? null 
-                                : memoString,
-                            sumString.IsNullOrWhiteSpace()
-                                ? (long?) null
-                                : (int)new Expression(sumString).Evaluate()) );
-                    }).ToList();
+                            return createItem( 
+                                (date,
+                                payeeString.IsNullOrWhiteSpace() 
+                                    ? null 
+                                    : payeeString,
+                                Configuration.Value.ShouldCreateNewPayeeIfNotExisting.Value,
+                                memoString.IsNullOrWhiteSpace()
+                                    ? null 
+                                    : memoString,
+                                sumString.IsNullOrWhiteSpace()
+                                    ? (long?) null
+                                    : (int)new Expression(sumString).Evaluate()) );
+                        }).ToList();
+                    }
+                    
+                    ShowItemsError.Value = false;
                 }
-                else
+                catch (Exception)
                 {
-                    Items = new List<ICsvBankStatementImportItemViewModel>();
+                    ShowItemsError.Value = true;
                 }
-                OnPropertyChanged(nameof(Items));
+
+                return ret;
             }
         }
 
@@ -224,6 +271,7 @@ namespace BFF.MVVM.ViewModels.Dialogs
         public IReactiveProperty<string> FilePath { get; }
         public IReadOnlyReactiveProperty<bool> FileExists { get; }
         public IReadOnlyReactiveProperty<string> Header { get; }
+        public IReactiveProperty<bool> ShowItemsError { get; }
         public IReactiveProperty<ICsvBankStatementImportNonProfileViewModel> Configuration { get; }
         public IReactiveProperty IsOpen { get; }
         public ReactiveCommand BrowseCsvBankStatementFileCommand { get; } = new ReactiveCommand();
