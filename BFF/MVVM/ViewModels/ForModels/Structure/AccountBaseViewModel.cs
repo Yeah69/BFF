@@ -221,15 +221,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         }
 
         /// <summary>
-        /// Representing String.
-        /// </summary>
-        /// <returns>Just the Name-property.</returns>
-        public override string ToString()
-        {
-            return Name.Value;
-        }
-
-        /// <summary>
         /// Refreshes the Balance.
         /// </summary>
         public void RefreshBalance()

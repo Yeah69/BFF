@@ -29,6 +29,10 @@
 
             <DataTemplate x:Key="EmptyDataTemplate" />
 
+            <DataTemplate x:Key="SimpleDataTemplate">
+                <TextBlock Text="{Binding}" />
+            </DataTemplate>
+
             <SolidColorBrush x:Key="TransactionBrush"
                              Color="DarkOrange" />
             <SolidColorBrush x:Key="IncomeBrush"

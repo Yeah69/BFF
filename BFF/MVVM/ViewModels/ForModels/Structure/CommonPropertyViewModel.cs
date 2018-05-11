@@ -16,5 +16,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             Name = commonProperty.ToReactivePropertyAsSynchronized(cp => cp.Name, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
         }
         public virtual IReactiveProperty<string> Name { get; }
+        public override string ToString() => Name.Value;
     }
 }

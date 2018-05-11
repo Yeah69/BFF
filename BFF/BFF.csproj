@@ -314,6 +314,7 @@
     <Compile Include="MVVM\Managers\BffChildWindowManager.cs" />
     <Compile Include="MVVM\Managers\CsvBankStatementProfileManager.cs" />
     <Compile Include="MVVM\Managers\CultureManager.cs" />
+    <Compile Include="MVVM\Managers\ParentTransactionFlyoutManager.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
     <Compile Include="MVVM\Models\Native\BudgetEntry.cs" />
@@ -397,7 +398,6 @@
     <Compile Include="MVVM\ViewModels\NewCategoryViewModel.cs" />
     <Compile Include="MVVM\ViewModels\NewAccountViewModel.cs" />
     <Compile Include="MVVM\ViewModels\NewPayeeViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ParentTitViewModel.cs" />
     <Compile Include="MVVM\ViewModels\SessionViewModelBase.cs" />
     <Compile Include="MVVM\AttachedBehaviors\AdditionalTabItemsBehavior.cs" />
     <Compile Include="MVVM\Messages.cs" />
@@ -407,6 +407,9 @@
     </Compile>
     <Compile Include="MVVM\Views\AlertSymbol.xaml.cs">
       <DependentUpon>AlertSymbol.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ParentTransactionView.xaml.cs">
+      <DependentUpon>ParentTransactionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\StatusCheckMark.xaml.cs">
       <DependentUpon>StatusCheckMark.xaml</DependentUpon>
@@ -459,7 +462,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MVVM\Resources\TransDataGridResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MVVM\Views\AlertSymbol.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\Views\ParentTransactionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -5,6 +5,7 @@
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                      xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
                       xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
                       xmlns:hm="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -237,15 +238,31 @@
                             Content="{lex:Loc MainWindow_File_Import}" />
                 </StackPanel>
             </controls:Flyout>
-            <controls:Flyout Name="ParentTitFlyout"
+            <!--  ParentTransaction Flyout  -->
+            <controls:Flyout CloseCommand=""
                              IsModal="True"
-                             IsOpen="{Binding ParentTitFlyoutOpen}"
+                             IsOpen="{Binding OpenParentTransaction.Value, Converter={x:Static mvvm:Converters.IsNotNull}}"
                              Position="Top">
-                <!--  todo lex  -->
-                <views:TitDataGrid Margin="10"
-                                   AccountViewModel="{Binding ParentTitViewModel.Account}"
-                                   ShowRowDetailsMode="Visible"
-                                   TransList="{Binding ParentTitViewModel.ParentTitSource}" />
+                <ContentControl Content="{Binding OpenParentTransaction.Value}">
+                    <ContentControl.Style>
+                        <Style TargetType="{x:Type ContentControl}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding OpenParentTransaction.Value, Converter={x:Static mvvm:Converters.IsNotNull}}"
+                                             Value="True">
+                                    <Setter Property="ContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <views:ParentTransactionView Margin="10" />
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                            <Setter Property="ContentTemplate"
+                                    Value="{StaticResource EmptyDataTemplate}" />
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
             </controls:Flyout>
             <controls:Flyout x:Name="EditAccountsFlyout"
                              IsModal="True"

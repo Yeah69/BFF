@@ -12,6 +12,7 @@ using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.Helper.Import;
 using BFF.MVVM.Managers;
+using BFF.MVVM.ViewModels.ForModels;
 using BFF.Properties;
 using NLog;
 using Reactive.Bindings;
@@ -24,6 +25,7 @@ namespace BFF.MVVM.ViewModels
     {
         ReactiveCommand NewBudgetPlanCommand { get; }
         ReactiveCommand OpenBudgetPlanCommand { get; }
+        ReactiveCommand ParentTransactionOnClose { get; }
         ReactiveCommand<IImportable> ImportBudgetPlanCommand { get; }
         IAccountTabsViewModel AccountTabsViewModel { get; set; }
         IBudgetOverviewViewModel BudgetOverviewViewModel { get; set; }
@@ -36,7 +38,7 @@ namespace BFF.MVVM.ViewModels
         bool IsEmpty { get; }
         CultureInfo LanguageCulture { get; set; }
         bool DateLong { get; set; }
-        ParentTitViewModel ParentTitViewModel { get; set; }
+        IReadOnlyReactiveProperty<IParentTransactionViewModel> OpenParentTransaction { get; }
         bool ParentTitFlyoutOpen { get; set; }
         double Width { get; set; }
         double Height { get; set; }
@@ -45,10 +47,11 @@ namespace BFF.MVVM.ViewModels
         WindowState WindowState { get; set; }
     }
 
-    public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
+    public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel, IOncePerApplication //todo IDisposable
     {
         private readonly Func<Owned<Func<string, ISqLiteBackendContext>>> _sqliteBackendContextFactory;
         private readonly Func<Owned<Func<IEmptyContext>>> _emptyContextFactory;
+        private readonly IParentTransactionFlyoutManager _parentTransactionFlyoutManager;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
         protected bool FileFlyoutIsOpen;
@@ -66,6 +69,7 @@ namespace BFF.MVVM.ViewModels
         public ReactiveCommand NewBudgetPlanCommand { get; } = new ReactiveCommand();
 
         public ReactiveCommand OpenBudgetPlanCommand { get; } = new ReactiveCommand();
+        public ReactiveCommand ParentTransactionOnClose { get; } = new ReactiveCommand();
 
         public ReactiveCommand<IImportable> ImportBudgetPlanCommand { get; } = new ReactiveCommand<IImportable>();
 
@@ -186,9 +190,9 @@ namespace BFF.MVVM.ViewModels
 
         private const double BorderOffset = 50.0;
 
-        private ParentTitViewModel _parentTitViewModel;
+        private IParentTransactionViewModel _parentTitViewModel;
 
-        public ParentTitViewModel ParentTitViewModel
+        public IParentTransactionViewModel ParentTransactionViewModel
         {
             get => _parentTitViewModel;
             set
@@ -207,6 +211,8 @@ namespace BFF.MVVM.ViewModels
         private IEditFlagsViewModel _editFlagsViewModel;
         private ICultureManager _cultureManager;
 
+        public IReadOnlyReactiveProperty<IParentTransactionViewModel> OpenParentTransaction { get; }
+
         public bool ParentTitFlyoutOpen
         {
             get => _parentTitFlyoutOpen;
@@ -222,12 +228,14 @@ namespace BFF.MVVM.ViewModels
             Func<Owned<Func<IEmptyContext>>> emptyContextFactory,
             Func<Owned<Func<string, IProvideConnection>>> ownedCreateProvideConnectionFactory,
             Func<IProvideConnection, ICreateBackendOrm> createCreateBackendOrm,
+            IParentTransactionFlyoutManager parentTransactionFlyoutManager,
             IRxSchedulerProvider schedulerProvider,
             IEmptyViewModel emptyViewModel)
         {
             EmptyViewModel = emptyViewModel;
             _sqliteBackendContextFactory = sqliteBackendContextFactory;
             _emptyContextFactory = emptyContextFactory;
+            _parentTransactionFlyoutManager = parentTransactionFlyoutManager;
             Logger.Debug("Initializing …");
             Reset(Settings.Default.DBLocation);
 
@@ -242,11 +250,7 @@ namespace BFF.MVVM.ViewModels
                 Y = 50.0;
             }
 
-            Messenger.Default.Register<ParentTitViewModel>(this, parentTitViewModel =>
-            {
-                ParentTitViewModel = parentTitViewModel;
-                ParentTitFlyoutOpen = true;
-            });
+            OpenParentTransaction = parentTransactionFlyoutManager.OpenParentTransaction;
 
             NewBudgetPlanCommand.Subscribe(_ =>
             {
@@ -288,6 +292,8 @@ namespace BFF.MVVM.ViewModels
                     Reset(openFileDialog.FileName);
                 }
             });
+
+            ParentTransactionOnClose.Subscribe(_ => parentTransactionFlyoutManager.Close());
 
             ImportBudgetPlanCommand.Subscribe(importableObject =>
             {

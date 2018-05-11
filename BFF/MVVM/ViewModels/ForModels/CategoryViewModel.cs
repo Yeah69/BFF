@@ -92,15 +92,6 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override int Depth => Parent.Value?.Depth + 1 ?? 0;
 
-        /// <summary>
-        /// Representing string
-        /// </summary>
-        /// <returns>Name with preceding dots (foreach Ancestor one)</returns>
-        public override string ToString()
-        {
-            return Name.Value;
-        }
-
         public override string GetIndent()
         {
             return $"{Parent.Value?.GetIndent()}. ";

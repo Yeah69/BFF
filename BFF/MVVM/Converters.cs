@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -310,5 +311,17 @@ namespace BFF.MVVM
         public static readonly IValueConverter NotOfTypeToCollapsed =
             ValueConverter.Create<object, Visibility, Type>(
                 e => e.Value?.IsInstanceOfType(e.Parameter) ?? false ? Visibility.Visible : Visibility.Collapsed);
+
+        public static readonly IValueConverter AsEnumerable =
+            ValueConverter.Create<object, IEnumerable>(
+                e => new[] { e.Value });
+
+        public static readonly IValueConverter IsNull =
+            ValueConverter.Create<object, bool>(
+                e => e.Value != null);
+
+        public static readonly IValueConverter IsNotNull =
+            ValueConverter.Create<object, bool>(
+                e => e.Value != null);
     }
 }

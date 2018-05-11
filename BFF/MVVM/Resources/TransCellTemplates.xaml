@@ -438,18 +438,18 @@
                                                 Tag="{Binding ElementName=Popup}" />
                         </Popup>
                         <ComboBox x:Name="EditPayeeComboBox"
-                                  HorizontalAlignment="Stretch"
                                   DisplayMemberPath="Name.Value"
                                   IsEditable="True"
                                   IsTextSearchCaseSensitive="True"
                                   IsTextSearchEnabled="True"
                                   ItemsSource="{Binding NewPayeeViewModel.AllPayees}"
+                                  ShouldPreserveUserEnteredPrefix="True"
                                   TabIndex="0"
                                   TextSearch.TextPath="Name.Value">
                             <ComboBox.SelectedItem>
                                 <Binding Mode="TwoWay"
                                          Path="Payee.Value"
-                                         UpdateSourceTrigger="LostFocus">
+                                         UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <x:Static Member="mvvm:Rules.EmptyPayee" />
                                     </Binding.ValidationRules>
@@ -688,11 +688,18 @@
                     </DockPanel>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
-                    <!--  todo  -->
-                    <iconPacks:PackIconMaterial Margin="5,0,0,0"
-                                                Foreground="{DynamicResource GrayBrush4}"
-                                                Kind="{StaticResource ParentIcon}"
-                                                Style="{StaticResource CellIconMaterial}" />
+                    <Button Margin="0"
+                            Padding="0"
+                            HorizontalContentAlignment="Left"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{Binding OpenParentTransactionView}"
+                            CommandParameter="{Binding Account.Value}">
+                        <iconPacks:PackIconMaterial Margin="5,0,0,0"
+                                                    Foreground="{DynamicResource GrayBrush4}"
+                                                    Kind="{StaticResource ParentIcon}"
+                                                    Style="{StaticResource CellIconMaterial}" />
+                    </Button>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                     <ComboBox DisplayMemberPath="Name.Value"
@@ -712,7 +719,13 @@
             </ContentControl.Resources>
         </ContentControl>
     </DataTemplate>
-    <!--  Memo  -->
+    <DataTemplate x:Key="ParentCategoryEditingColumnTemplate" DataType="{x:Type forModels:ParentTransactionViewModel}">
+        <iconPacks:PackIconMaterial Margin="5,0,0,0"
+                                    Foreground="{DynamicResource GrayBrush4}"
+                                    Kind="{StaticResource ParentIcon}"
+                                    Style="{StaticResource CellIconMaterial}" />
+    </DataTemplate>
+        <!--  Memo  -->
     <DataTemplate x:Key="MemoColumnTemplate">
         <ContentControl Content="{Binding}"
                         IsTabStop="True"
@@ -838,6 +851,21 @@
                         </TextBlock.Foreground>
                     </TextBlock>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
+                    <Button Margin="0"
+                            Padding="0"
+                            HorizontalContentAlignment="Stretch"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{Binding OpenParentTransactionView}"
+                            CommandParameter="{Binding Account.Value}">
+                        <TextBlock Padding="0,0,5,0"
+                                   Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                   Style="{StaticResource CellTextBlock}"
+                                   Text="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                   TextAlignment="Right" />
+                    </Button>
+                </DataTemplate>
                 <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                     <TextBlock Padding="0,0,5,0"
                                Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
@@ -903,6 +931,21 @@
                         </TextBox.Text>
                     </TextBox>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
+                    <Button Margin="0"
+                            Padding="0"
+                            HorizontalContentAlignment="Stretch"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{Binding OpenParentTransactionView}"
+                            CommandParameter="{Binding Account.Value}">
+                        <TextBlock Padding="0,0,5,0"
+                                   Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                   Style="{StaticResource CellTextBlock}"
+                                   Text="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                   TextAlignment="Right" />
+                    </Button>
+                </DataTemplate>
                 <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                     <ContentControl Content="{Binding SumEdit}"
                                     ContentTemplate="{StaticResource SumEditTemplate}" />
@@ -949,6 +992,10 @@
                 <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
             </ContentControl.Resources>
         </ContentControl>
+    </DataTemplate>
+    <DataTemplate x:Key="ParentSumEditingColumnTemplate" DataType="{x:Type forModels:ParentTransactionViewModel}">
+        <ContentControl Content="{Binding SumEdit}"
+                        ContentTemplate="{StaticResource SumEditTemplate}" />
     </DataTemplate>
     <!--  Cleared  -->
     <DataTemplate x:Key="ClearedColumnTemplate">

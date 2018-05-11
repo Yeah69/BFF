@@ -5,9 +5,11 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BFF.Helper;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using BFF.Properties;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -38,10 +40,14 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         ReactiveCommand ApplyCommand { get; }
 
+        bool IsDateLong { get; }
+
         /// <summary>
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
         ReactiveCommand<IAccountViewModel> OpenParentTransactionView { get; }
+
+        //IReactiveProperty<long> SumDuringEdit { get; }
     }
 
     /// <summary>
@@ -64,6 +70,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IParentTransaction parentTransaction,
             INewPayeeViewModel newPayeeViewModel,
             INewFlagViewModel newFlagViewModel,
+            IParentTransactionFlyoutManager parentTransactionFlyoutManager,
             ISubTransactionViewModelService subTransactionViewModelService, 
             IFlagViewModelService flagViewModelService,
             IAccountViewModelService accountViewModelService,
@@ -146,9 +153,10 @@ namespace BFF.MVVM.ViewModels.ForModels
                 }
                 
             }).AddTo(CompositeDisposable);
-
-            OpenParentTransactionView.Subscribe(avm =>
-                Messenger.Default.Send(new ParentTitViewModel(this, "Yeah69", avm))).AddTo(CompositeDisposable);
+            
+            OpenParentTransactionView
+                .Subscribe(avm => parentTransactionFlyoutManager.OpenFor(this))
+                .AddTo(CompositeDisposable);
 
             _removeRequestSubscriptions.AddTo(CompositeDisposable);
             _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
@@ -186,6 +194,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// All new SubElement, which are not inserted into the database yet, will be flushed to the database with this command.
         /// </summary>
         public ReactiveCommand ApplyCommand { get; } = new ReactiveCommand();
+
+        public bool IsDateLong => Settings.Default.Culture_DefaultDateLong;
 
         /// <summary>
         /// Opens the Parent master page for this ParentElement.

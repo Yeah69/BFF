@@ -312,12 +312,12 @@
         <TextBlock Grid.Row="4"
                    Grid.Column="0"
                    Grid.ColumnSpan="2"
+                   Visibility="{Binding ShowItemsError.Value, Converter={x:Static mvvm:Converters.FalseToCollapsed}}"
                    Margin="2.5"
                    HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch"
                    Background="{StaticResource TransactionBrush}"
-                   Text="{lex:Loc CsvBankStatementImport_ErrorDuringItemsCreation}"
-                   Visibility="{Binding ShowItemsError.Value, Converter={x:Static mvvm:Converters.FalseToCollapsed}}"/>
+                   Text="{lex:Loc CsvBankStatementImport_ErrorDuringItemsCreation}" />
 
         <TextBlock Grid.Row="5"
                    Grid.Column="0"

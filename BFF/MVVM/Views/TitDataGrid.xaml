@@ -2,12 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:mvvm="clr-namespace:BFF.MVVM"
-             xmlns:structure="clr-namespace:BFF.MVVM.ViewModels.ForModels.Structure"
              x:Name="Root"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -19,175 +16,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.checkbox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
                 <ResourceDictionary Source="/MVVM/Resources/TransCellTemplates.xaml" />
+                <ResourceDictionary Source="/MVVM/Resources/TransDataGridResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <ContextMenu x:Key="RowMenu">
-                <MenuItem Command="{Binding DeleteCommand}"
-                          Header="{lex:Loc AccountView_ConMenu_Delete}">
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                    Height="{StaticResource IconSize}"
-                                                    Foreground="{StaticResource BlackBrush}"
-                                                    Kind="{StaticResource RemoveFromTableIcon}" />
-                    </MenuItem.Icon>
-                </MenuItem>
-            </ContextMenu>
-
-            <ContextMenu x:Key="NewRowMenu">
-                <MenuItem Command="{Binding RemoveCommand}"
-                          Header="{lex:Loc AccountView_ConMenu_Remove}">
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconOcticons Width="{StaticResource IconSize}"
-                                                    Height="{StaticResource IconSize}"
-                                                    Foreground="{StaticResource BlackBrush}"
-                                                    Kind="{StaticResource RemoveNotInsertedIcon}" />
-                    </MenuItem.Icon>
-                </MenuItem>
-            </ContextMenu>
-
-            <Style x:Key="DefaultRowStyle"
-                   BasedOn="{StaticResource MetroDataGridRow}"
-                   TargetType="{x:Type DataGridRow}">
-                <Setter Property="ContextMenu"
-                        Value="{StaticResource RowMenu}" />
-            </Style>
-
-            <Style x:Key="DefaultNewRowStyle"
-                   BasedOn="{StaticResource MetroDataGridRow}"
-                   TargetType="{x:Type DataGridRow}">
-                <Setter Property="ContextMenu"
-                        Value="{StaticResource NewRowMenu}" />
-            </Style>
-
-            <Style BasedOn="{StaticResource MetroDataGridCell}"
-                   TargetType="{x:Type DataGridCell}">
-                <Setter Property="IsTabStop"
-                        Value="False" />
-            </Style>
-
-            <Style BasedOn="{StaticResource {x:Type ContentControl}}"
-                   TargetType="{x:Type ContentControl}">
-                <Setter Property="IsTabStop"
-                        Value="False" />
-            </Style>
-
-            <Style BasedOn="{StaticResource MetroDataGrid}"
-                   TargetType="{x:Type DataGrid}">
-                <Setter Property="AlternatingRowBackground"
-                        Value="{DynamicResource AlternatingRowBrush}" />
-                <Setter Property="AutoGenerateColumns"
-                        Value="False" />
-                <Setter Property="CanUserSortColumns"
-                        Value="False" />
-                <Setter Property="CanUserAddRows"
-                        Value="False" />
-                <Setter Property="CanUserDeleteRows"
-                        Value="False" />
-                <Setter Property="EnableRowVirtualization"
-                        Value="True" />
-                <Setter Property="EnableColumnVirtualization"
-                        Value="True" />
-                <Setter Property="VirtualizingStackPanel.IsVirtualizing"
-                        Value="True" />
-                <Setter Property="VirtualizingStackPanel.VirtualizationMode"
-                        Value="Recycling" />
-                <Setter Property="ScrollViewer.CanContentScroll"
-                        Value="True" />
-            </Style>
-
-            <!--  SubElementsFormTemplate  -->
-
-            <DataTemplate x:Key="SubElementsEditingTemplatePart">
-                <DataGrid HeadersVisibility="None"
-                          ItemsSource="{Binding NewSubElements}"
-                          RowStyle="{StaticResource DefaultNewRowStyle}">
-                    <DataGrid.Columns>
-                        <!--  Category  -->
-                        <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}"
-                                                CellTemplate="{StaticResource CategoryEditingColumnTemplate}"
-                                                SortMemberPath="Category.Value.Name.Value" />
-                        <!--  Memo  -->
-                        <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}"
-                                                CellTemplate="{StaticResource MemoEditingColumnTemplate}"
-                                                SortMemberPath="Memo.Value" />
-                        <!--  Sum  -->
-                        <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}"
-                                                CellTemplate="{StaticResource SumEditingColumnTemplate}"
-                                                IsReadOnly="False"
-                                                SortMemberPath="Sum.Value" />
-                        <!--  Cleared  -->
-                        <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}"
-                                                CellTemplate="{StaticResource EmptyDataTemplate}"
-                                                IsReadOnly="True"
-                                                SortMemberPath="Cleared.Value" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </DataTemplate>
-            <DataTemplate x:Key="SubElementsShowFormTemplate">
-                <StackPanel>
-                    <DataGrid BorderThickness="0,0,0,2"
-                              HeadersVisibility="None"
-                              ItemsSource="{Binding SubElements}"
-                              RowStyle="{StaticResource DefaultRowStyle}">
-                        <DataGrid.Columns>
-                            <!--  Category  -->
-                            <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}"
-                                                    CellEditingTemplate="{StaticResource CategoryEditingColumnTemplate}"
-                                                    CellTemplate="{StaticResource CategoryColumnTemplate}"
-                                                    SortMemberPath="Category.Value.Name.Value" />
-                            <!--  Memo  -->
-                            <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}"
-                                                    CellEditingTemplate="{StaticResource MemoEditingColumnTemplate}"
-                                                    CellTemplate="{StaticResource MemoColumnTemplate}"
-                                                    SortMemberPath="Memo.Value" />
-                            <!--  Sum  -->
-                            <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}"
-                                                    CellEditingTemplate="{StaticResource SumEditingColumnTemplate}"
-                                                    CellTemplate="{StaticResource SumColumnTemplate}"
-                                                    IsReadOnly="False"
-                                                    SortMemberPath="Sum.Value" />
-                            <!--  Cleared  -->
-                            <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}"
-                                                    CellTemplate="{StaticResource EmptyDataTemplate}"
-                                                    IsReadOnly="True"
-                                                    SortMemberPath="Cleared.Value" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <ContentControl Content="{Binding}"
-                                    ContentTemplate="{StaticResource SubElementsEditingTemplatePart}" />
-                    <DockPanel Background="{DynamicResource WhiteBrush}">
-                        <Button Command="{Binding NewSubElementCommand}"
-                                ToolTip="New Subelement">
-                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                        Height="{StaticResource IconSize}"
-                                                        Foreground="{DynamicResource BlackColorBrush}"
-                                                        Kind="{StaticResource AddIcon}" />
-                        </Button>
-                        <Button HorizontalAlignment="Right"
-                                Command="{Binding ApplyCommand}"
-                                ToolTip="Add to the table">
-                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                        Height="{StaticResource IconSize}"
-                                                        Foreground="{DynamicResource BlackColorBrush}"
-                                                        Kind="{StaticResource AddToTableIcon}" />
-                        </Button>
-                    </DockPanel>
-                </StackPanel>
-            </DataTemplate>
-            <DataTemplate x:Key="SubElementsEditingFormTemplate">
-                <StackPanel>
-                    <ContentControl Content="{Binding}"
-                                    ContentTemplate="{StaticResource SubElementsEditingTemplatePart}" />
-                    <Button HorizontalAlignment="Left"
-                            Command="{Binding NewSubElementCommand}"
-                            ToolTip="New Subelement">
-                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                    Height="{StaticResource IconSize}"
-                                                    Foreground="{DynamicResource BlackColorBrush}"
-                                                    Kind="{StaticResource AddIcon}" />
-                    </Button>
-                </StackPanel>
-            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot"
@@ -202,9 +32,9 @@
         <!--  The DataGrid, which shows all saved Trans objects  -->
         <DataGrid x:Name="TransGrid"
                   Grid.Row="0"
+                  HorizontalScrollBarVisibility="Disabled"
                   ItemsSource="{Binding TransList, ElementName=Root}"
                   Loaded="TransGrid_OnInitialized"
-                  RowDetailsVisibilityMode="{Binding ShowRowDetailsMode}"
                   RowStyle="{StaticResource DefaultRowStyle}"
                   ScrollViewer.IsDeferredScrollingEnabled="True"
                   SelectionMode="Single"
@@ -279,51 +109,6 @@
                                         IsReadOnly="True"
                                         SortMemberPath="Cleared.Value" />
             </DataGrid.Columns>
-            <DataGrid.RowDetailsTemplate>
-                <DataTemplate>
-                    <ContentControl HorizontalAlignment="Left"
-                                    Content="{Binding}">
-                        <ContentControl.Margin>
-                            <MultiBinding Converter="{x:Static mvvm:Converters.WidthsToLeftMargin}">
-                                <Binding Path="Width"
-                                         Source="{x:Reference SymbolColumn}" />
-                                <Binding Path="Width"
-                                         Source="{x:Reference AccountColumn}" />
-                                <Binding Path="Width"
-                                         Source="{x:Reference DateColumn}" />
-                                <Binding Path="Width"
-                                         Source="{x:Reference FlagColumn}" />
-                                <Binding Path="Width"
-                                         Source="{x:Reference CheckNumberColumn}" />
-                                <Binding Path="Width"
-                                         Source="{x:Reference PayeeColumn}" />
-                            </MultiBinding>
-                        </ContentControl.Margin>
-                        <ContentControl.Width>
-                            <MultiBinding Converter="{x:Static mvvm:Converters.WidthsToDouble}">
-                                <Binding Path="Width"
-                                         Source="{x:Reference CategoryColumn}" />
-                                <Binding Path="Width"
-                                         Source="{x:Reference MemoColumn}" />
-                                <Binding Path="Width"
-                                         Source="{x:Reference SumColumn}" />
-                                <Binding Path="Width"
-                                         Source="{x:Reference ClearedColumn}" />
-                            </MultiBinding>
-                        </ContentControl.Width>
-                        <ContentControl.Resources>
-                            <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource SubElementsShowFormTemplate}" />
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource EmptyDataTemplate}" />
-                            </DataTemplate>
-                        </ContentControl.Resources>
-                    </ContentControl>
-                </DataTemplate>
-            </DataGrid.RowDetailsTemplate>
         </DataGrid>
 
         <!--  EditingForm  -->
@@ -334,8 +119,8 @@
                       MaxHeight="200"
                       BorderThickness="0,2,0,0"
                       HeadersVisibility="None"
+                      HorizontalScrollBarVisibility="Hidden"
                       ItemsSource="{Binding NewTransList}"
-                      RowDetailsVisibilityMode="Visible"
                       RowStyle="{StaticResource DefaultNewRowStyle}">
                 <DataGrid.Columns>
                     <!--  Symbol  -->
@@ -371,51 +156,6 @@
                                             CellTemplate="{StaticResource ClearedColumnTemplate}"
                                             IsReadOnly="True" />
                 </DataGrid.Columns>
-                <DataGrid.RowDetailsTemplate>
-                    <DataTemplate>
-                        <ContentControl HorizontalAlignment="Left"
-                                        Content="{Binding}">
-                            <ContentControl.Margin>
-                                <MultiBinding Converter="{x:Static mvvm:Converters.WidthsToLeftMargin}">
-                                    <Binding Path="Width"
-                                             Source="{x:Reference SymbolColumn}" />
-                                    <Binding Path="Width"
-                                             Source="{x:Reference AccountColumn}" />
-                                    <Binding Path="Width"
-                                             Source="{x:Reference DateColumn}" />
-                                    <Binding Path="Width"
-                                             Source="{x:Reference FlagColumn}" />
-                                    <Binding Path="Width"
-                                             Source="{x:Reference CheckNumberColumn}" />
-                                    <Binding Path="Width"
-                                             Source="{x:Reference PayeeColumn}" />
-                                </MultiBinding>
-                            </ContentControl.Margin>
-                            <ContentControl.Width>
-                                <MultiBinding Converter="{x:Static mvvm:Converters.WidthsToDouble}">
-                                    <Binding ElementName="CategoryColumn"
-                                             Path="Width" />
-                                    <Binding Path="Width"
-                                             Source="{x:Reference MemoColumn}" />
-                                    <Binding Path="Width"
-                                             Source="{x:Reference SumColumn}" />
-                                    <Binding Path="Width"
-                                             Source="{x:Reference ClearedColumn}" />
-                                </MultiBinding>
-                            </ContentControl.Width>
-                            <ContentControl.Resources>
-                                <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
-                                    <ContentControl Content="{Binding}"
-                                                    ContentTemplate="{StaticResource SubElementsEditingFormTemplate}" />
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
-                                    <ContentControl Content="{Binding}"
-                                                    ContentTemplate="{StaticResource EmptyDataTemplate}" />
-                                </DataTemplate>
-                            </ContentControl.Resources>
-                        </ContentControl>
-                    </DataTemplate>
-                </DataGrid.RowDetailsTemplate>
             </DataGrid>
             <DockPanel Margin="0,5,0,0">
                 <Button Visibility="{Binding NewTransactionVisibility}"

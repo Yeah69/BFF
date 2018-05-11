@@ -20,12 +20,6 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public abstract int Depth { get; }
 
-        /// <summary>
-        /// Representing string
-        /// </summary>
-        /// <returns>Name with preceding dots (foreach Ancestor one)</returns>
-        public override string ToString() => Name.Value;
-
         public abstract string GetIndent();
 
         protected CategoryBaseViewModel(ICategoryBase category) : base(category)
