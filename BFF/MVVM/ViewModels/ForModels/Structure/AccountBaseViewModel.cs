@@ -162,7 +162,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             IRxSchedulerProvider schedulerProvider,
             IBackendCultureManager cultureManager,
             Func<ITransaction, ITransactionViewModel> transactionViewModelFactory,
-            Func<ITransfer, ITransferViewModel> transferViewModelFactory) : base(account)
+            Func<ITransfer, ITransferViewModel> transferViewModelFactory) : base(account, schedulerProvider)
         {
             _account = account;
             _accountViewModelService = accountViewModelService;

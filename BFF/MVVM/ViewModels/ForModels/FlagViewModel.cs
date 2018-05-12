@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
@@ -14,7 +15,9 @@ namespace BFF.MVVM.ViewModels.ForModels
     public class FlagViewModel : CommonPropertyViewModel, IFlagViewModel
     {
 
-        public FlagViewModel(IFlag flag) : base(flag)
+        public FlagViewModel(
+            IFlag flag,
+            IRxSchedulerProvider schedulerProvider) : base(flag, schedulerProvider)
         {
 
             Color = flag.ToReactivePropertyAsSynchronized(

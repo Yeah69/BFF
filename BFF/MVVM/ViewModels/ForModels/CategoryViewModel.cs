@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using Reactive.Bindings;
@@ -97,7 +98,9 @@ namespace BFF.MVVM.ViewModels.ForModels
             return $"{Parent.Value?.GetIndent()}. ";
         }
 
-        public CategoryViewModel(ICategory category) : base(category)
+        public CategoryViewModel(
+            ICategory category,
+            IRxSchedulerProvider schedulerProvider) : base(category, schedulerProvider)
         {
             _category = category;
         }

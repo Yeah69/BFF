@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
@@ -22,7 +23,9 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public abstract string GetIndent();
 
-        protected CategoryBaseViewModel(ICategoryBase category) : base(category)
+        protected CategoryBaseViewModel(
+            ICategoryBase category,
+            IRxSchedulerProvider schedulerProvider) : base(category, schedulerProvider)
         {
         }
     }

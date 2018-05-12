@@ -1,4 +1,5 @@
-﻿using BFF.MVVM.Models.Native.Structure;
+﻿using BFF.Helper;
+using BFF.MVVM.Models.Native.Structure;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -11,7 +12,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
     public abstract class CommonPropertyViewModel : DataModelViewModel, ICommonPropertyViewModel
     {
-        protected CommonPropertyViewModel(ICommonProperty commonProperty) : base(commonProperty)
+        protected CommonPropertyViewModel(
+            ICommonProperty commonProperty,
+            IRxSchedulerProvider schedulerProvider) : base(commonProperty, schedulerProvider)
         {
             Name = commonProperty.ToReactivePropertyAsSynchronized(cp => cp.Name, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
         }

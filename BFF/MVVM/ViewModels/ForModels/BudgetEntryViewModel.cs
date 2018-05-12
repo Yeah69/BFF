@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -29,7 +30,10 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IReadOnlyReactiveProperty<long> Outflow { get; }
         public IReadOnlyReactiveProperty<long> Balance { get; }
 
-        public BudgetEntryViewModel(IBudgetEntry budgetEntry, ICategoryViewModelService categoryViewModelService) : base(budgetEntry)
+        public BudgetEntryViewModel(
+            IBudgetEntry budgetEntry, 
+            ICategoryViewModelService categoryViewModelService,
+            IRxSchedulerProvider schedulerProvider) : base(budgetEntry, schedulerProvider)
         {
             Category = budgetEntry
                 .ToReactivePropertyAsSynchronized(

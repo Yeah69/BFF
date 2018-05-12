@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -26,7 +27,9 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override string GetIndent() => "";
 
-        public IncomeCategoryViewModel(IIncomeCategory category) : base(category)
+        public IncomeCategoryViewModel(
+            IIncomeCategory category,
+            IRxSchedulerProvider schedulerProvider) : base(category, schedulerProvider)
         {
             MonthOffset = category
                 .ToReactivePropertyAsSynchronized(c => c.MonthOffset, ReactivePropertyMode.DistinctUntilChanged)

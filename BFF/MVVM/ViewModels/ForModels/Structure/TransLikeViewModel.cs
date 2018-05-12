@@ -66,7 +66,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected TransLikeViewModel(
             ITransLike transLike,
             IRxSchedulerProvider schedulerProvider) 
-            : base(transLike)
+            : base(transLike, schedulerProvider)
         {
             _removeRequestSubject.AddTo(CompositeDisposable);
             Memo = transLike.ToReactivePropertyAsSynchronized(

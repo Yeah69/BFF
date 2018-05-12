@@ -1,4 +1,5 @@
-﻿using BFF.MVVM.Models.Native;
+﻿using BFF.Helper;
+using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels
@@ -7,7 +8,9 @@ namespace BFF.MVVM.ViewModels.ForModels
 
     public class PayeeViewModel : CommonPropertyViewModel, IPayeeViewModel
     {
-        public PayeeViewModel(IPayee payee) : base(payee)
+        public PayeeViewModel(
+            IPayee payee,
+            IRxSchedulerProvider schedulerProvider) : base(payee, schedulerProvider)
         {
         }
     }
