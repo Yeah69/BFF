@@ -101,6 +101,7 @@
             <ContentControl.ContentTemplate>
                 <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
                     <StackPanel>
+                        <!-- Submitted SubTransaction Entries -->
                         <DataGrid BorderThickness="0,0,0,2"
                                   HeadersVisibility="None"
                                   HorizontalScrollBarVisibility="Hidden"
@@ -129,6 +130,7 @@
                                                         IsReadOnly="True" />
                             </DataGrid.Columns>
                         </DataGrid>
+                        <!-- New SubTransaction Entries -->
                         <DataGrid HeadersVisibility="None"
                                   HorizontalScrollBarVisibility="Hidden"
                                   ItemsSource="{Binding NewSubElements}"
@@ -153,6 +155,7 @@
                                                         IsReadOnly="True" />
                             </DataGrid.Columns>
                         </DataGrid>
+                        <!-- Buttons -->
                         <DockPanel Background="{DynamicResource WhiteBrush}">
                             <Button Command="{Binding NewSubElementCommand}"
                                     ToolTip="New Subelement">
@@ -170,6 +173,7 @@
                                                             Kind="{StaticResource AddToTableIcon}" />
                             </Button>
                         </DockPanel>
+                        <!-- Sum Overview -->
                         <Grid HorizontalAlignment="Right">
                             <Grid.RowDefinitions>
                                 <RowDefinition />

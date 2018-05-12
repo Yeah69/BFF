@@ -23,6 +23,28 @@
         <Setter Property="IsTabStop"
                 Value="False" />
     </Style>
+    
+    <DataTemplate x:Key="ParentTransactionToolTipTemplate" DataType="{x:Type forModels:ParentTransactionViewModel}">
+        <DataGrid ItemsSource="{Binding SubElements}">
+            <DataGrid.Columns>
+                <!--  Category  -->
+                <DataGridTextColumn Binding="{Binding Category.Value.Name.Value}"
+                                    Header="{lex:Loc AccountView_Header_Category}" />
+                <!--  Category  -->
+                <DataGridTextColumn Binding="{Binding Memo.Value}"
+                                    Header="{lex:Loc AccountView_Header_Memo}" />
+                <!--  Sum  -->
+                <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Sum}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                       Text="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DataTemplate>
 
     <!--  Symbol  -->
     <DataTemplate x:Key="SymbolColumnTemplate">
@@ -604,6 +626,11 @@
                             BorderThickness="0"
                             Command="{Binding OpenParentTransactionView}"
                             CommandParameter="{Binding Account.Value}">
+                        <Button.ToolTip>
+                            <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
+                            </ToolTip>
+                        </Button.ToolTip>
                         <iconPacks:PackIconMaterial Margin="5,0,0,0"
                                                     Foreground="{DynamicResource GrayBrush4}"
                                                     Kind="{StaticResource ParentIcon}"
@@ -695,6 +722,11 @@
                             BorderThickness="0"
                             Command="{Binding OpenParentTransactionView}"
                             CommandParameter="{Binding Account.Value}">
+                        <Button.ToolTip>
+                            <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
+                            </ToolTip>
+                        </Button.ToolTip>
                         <iconPacks:PackIconMaterial Margin="5,0,0,0"
                                                     Foreground="{DynamicResource GrayBrush4}"
                                                     Kind="{StaticResource ParentIcon}"
@@ -860,6 +892,11 @@
                             BorderThickness="0"
                             Command="{Binding OpenParentTransactionView}"
                             CommandParameter="{Binding Account.Value}">
+                        <Button.ToolTip>
+                            <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
+                            </ToolTip>
+                        </Button.ToolTip>
                         <TextBlock Padding="0,0,5,0"
                                    Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                    Style="{StaticResource CellTextBlock}"
@@ -940,6 +977,11 @@
                             BorderThickness="0"
                             Command="{Binding OpenParentTransactionView}"
                             CommandParameter="{Binding Account.Value}">
+                        <Button.ToolTip>
+                            <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
+                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
+                            </ToolTip>
+                        </Button.ToolTip>
                         <TextBlock Padding="0,0,5,0"
                                    Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                    Style="{StaticResource CellTextBlock}"

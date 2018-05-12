@@ -323,5 +323,9 @@ namespace BFF.MVVM
         public static readonly IValueConverter IsNotNull =
             ValueConverter.Create<object, bool>(
                 e => e.Value != null);
+
+        public static readonly IValueConverter NoneToCollapsed =
+            ValueConverter.Create<IEnumerable, Visibility>(
+                e => e.Value.GetEnumerator().MoveNext() ? Visibility.Visible : Visibility.Collapsed);
     }
 }
