@@ -53,6 +53,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         IReadOnlyReactiveProperty<long> SumMissingWithoutNewSubs { get; }
 
         IReadOnlyReactiveProperty<long> SumMissingWithNewSubs { get; }
+
+        IReadOnlyReactiveProperty<long> TotalSum { get; }
     }
 
     /// <summary>
@@ -134,7 +136,12 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             SumEdit = createSumEdit(SumDuringEdit);
 
-            
+            TotalSum = EmitOnSumRelatedChanges(SubTransactions)
+                .Merge(EmitOnSumRelatedChanges(NewSubElements))
+                .Select(_ => SubTransactions.Sum(st => st.Sum.Value) + NewSubElements.Sum(st => st.Sum.Value))
+                .ToReadOnlyReactivePropertySlim(
+                    SubTransactions.Sum(st => st.Sum.Value) + NewSubElements.Sum(st => st.Sum.Value),
+                    ReactivePropertyMode.DistinctUntilChanged);
 
             NewSubElementCommand.Subscribe(_ =>
             {
@@ -235,6 +242,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IReactiveProperty<long> SumDuringEdit { get; }
         public IReadOnlyReactiveProperty<long> SumMissingWithoutNewSubs { get; }
         public IReadOnlyReactiveProperty<long> SumMissingWithNewSubs { get; }
+        public IReadOnlyReactiveProperty<long> TotalSum { get; }
 
         protected override void OnInsert()
         {

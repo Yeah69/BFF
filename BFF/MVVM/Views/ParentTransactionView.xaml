@@ -166,6 +166,7 @@
                             </Button>
                             <Button HorizontalAlignment="Right"
                                     Command="{Binding ApplyCommand}"
+                                    Visibility="{Binding IsInserted.Value, Converter={x:Static mvvm:Converters.FalseToCollapsed}}"
                                     ToolTip="Add to the table">
                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                             Height="{StaticResource IconSize}"

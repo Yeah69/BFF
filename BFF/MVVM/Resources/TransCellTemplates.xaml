@@ -23,8 +23,9 @@
         <Setter Property="IsTabStop"
                 Value="False" />
     </Style>
-    
-    <DataTemplate x:Key="ParentTransactionToolTipTemplate" DataType="{x:Type forModels:ParentTransactionViewModel}">
+
+    <DataTemplate x:Key="ParentTransactionToolTipTemplate"
+                  DataType="{x:Type forModels:ParentTransactionViewModel}">
         <DataGrid ItemsSource="{Binding SubElements}">
             <DataGrid.Columns>
                 <!--  Category  -->
@@ -628,7 +629,8 @@
                             CommandParameter="{Binding Account.Value}">
                         <Button.ToolTip>
                             <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
-                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
+                                <ContentControl Content="{Binding}"
+                                                ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
                             </ToolTip>
                         </Button.ToolTip>
                         <iconPacks:PackIconMaterial Margin="5,0,0,0"
@@ -724,7 +726,8 @@
                             CommandParameter="{Binding Account.Value}">
                         <Button.ToolTip>
                             <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
-                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
+                                <ContentControl Content="{Binding}"
+                                                ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
                             </ToolTip>
                         </Button.ToolTip>
                         <iconPacks:PackIconMaterial Margin="5,0,0,0"
@@ -894,14 +897,34 @@
                             CommandParameter="{Binding Account.Value}">
                         <Button.ToolTip>
                             <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
-                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
+                                <ContentControl Content="{Binding}"
+                                                ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
                             </ToolTip>
                         </Button.ToolTip>
-                        <TextBlock Padding="0,0,5,0"
-                                   Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                   Style="{StaticResource CellTextBlock}"
-                                   Text="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                   TextAlignment="Right" />
+                        <ContentControl>
+                            <ContentControl.Style>
+                                <Style TargetType="{x:Type ContentControl}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsInserted.Value}"
+                                                     Value="False">
+                                            <Setter Property="Content"
+                                                    Value="{Binding TotalSum.Value}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                    <Setter Property="Content"
+                                            Value="{Binding Sum.Value}" />
+                                </Style>
+                            </ContentControl.Style>
+                            <ContentControl.ContentTemplate>
+                                <DataTemplate>
+                                    <TextBlock Padding="0,0,5,0"
+                                               Foreground="{Binding ., Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Style="{StaticResource CellTextBlock}"
+                                               Text="{Binding ., Converter={x:Static mvvm:Converters.SumToString}}"
+                                               TextAlignment="Right" />
+                                </DataTemplate>
+                            </ContentControl.ContentTemplate>
+                        </ContentControl>
                     </Button>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
@@ -979,14 +1002,34 @@
                             CommandParameter="{Binding Account.Value}">
                         <Button.ToolTip>
                             <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
-                                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
+                                <ContentControl Content="{Binding}"
+                                                ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
                             </ToolTip>
                         </Button.ToolTip>
-                        <TextBlock Padding="0,0,5,0"
-                                   Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                   Style="{StaticResource CellTextBlock}"
-                                   Text="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                   TextAlignment="Right" />
+                        <ContentControl>
+                            <ContentControl.Style>
+                                <Style TargetType="{x:Type ContentControl}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsInserted.Value}"
+                                                     Value="False">
+                                            <Setter Property="Content"
+                                                    Value="{Binding TotalSum.Value}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                    <Setter Property="Content"
+                                            Value="{Binding Sum.Value}" />
+                                </Style>
+                            </ContentControl.Style>
+                            <ContentControl.ContentTemplate>
+                                <DataTemplate>
+                                    <TextBlock Padding="0,0,5,0"
+                                               Foreground="{Binding ., Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Style="{StaticResource CellTextBlock}"
+                                               Text="{Binding ., Converter={x:Static mvvm:Converters.SumToString}}"
+                                               TextAlignment="Right" />
+                                </DataTemplate>
+                            </ContentControl.ContentTemplate>
+                        </ContentControl>
                     </Button>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">

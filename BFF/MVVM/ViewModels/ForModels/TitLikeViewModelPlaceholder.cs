@@ -31,6 +31,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public long SumAbsolute => 0L;
 
         public ReactiveCommand DeleteCommand { get; }
+        public IReadOnlyReactiveProperty<bool> IsInserted { get; }
         public ReactiveCommand ToggleSign { get; } = new ReactiveCommand();
         public IObservable<Unit> RemoveRequests => Observable.Never<Unit>();
         public ReactiveCommand RemoveCommand { get; } = new ReactiveCommand();
@@ -50,6 +51,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             SumEdit = sumEditFactory(new ReactiveProperty<long>());
             Cleared = new ReactiveProperty<bool>(false, ReactivePropertyMode.DistinctUntilChanged);
             DeleteCommand = new ReactiveCommand();
+            IsInserted = new ReadOnlyReactivePropertySlim<bool>(Observable.Never<bool>(), false, ReactivePropertyMode.DistinctUntilChanged);
         }
 
         #region Overrides of TransLikeViewModel

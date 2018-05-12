@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
@@ -17,6 +18,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         void Delete();
 
         ReactiveCommand DeleteCommand { get; }
+
+        IReadOnlyReactiveProperty<bool> IsInserted { get; }
     }
     
     public abstract class DataModelViewModel : ViewModelBase, IDataModelViewModel, IDisposable
@@ -32,6 +35,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         {
             _dataModel = dataModel;
             _schedulerProvider = schedulerProvider;
+
+            IsInserted = dataModel
+                .ObserveProperty(d => d.Id)
+                .Select(id => id > 0L)
+                .ToReadOnlyReactivePropertySlim(dataModel.Id > 0L, ReactivePropertyMode.DistinctUntilChanged);
 
             DeleteCommand = new ReactiveCommand().AddTo(CompositeDisposable);
             DeleteCommand.Subscribe(_ => Delete()).AddTo(CompositeDisposable);
@@ -55,6 +63,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         }
 
         public ReactiveCommand DeleteCommand { get; }
+        public IReadOnlyReactiveProperty<bool> IsInserted { get; }
 
         public void Dispose() =>
             _schedulerProvider.UI.MinimalSchedule(() => CompositeDisposable.Dispose());
