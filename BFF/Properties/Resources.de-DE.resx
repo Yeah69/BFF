@@ -470,6 +470,15 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m�
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Öffne einen Finanzplan</value>
   </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Aktueller Betrag</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Fehlender Betrag exklusive der uneingereichten Einträge</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Fehlender Betrag</value>
+  </data>
   <data name="Payee_CreateNew" xml:space="preserve">
     <value>Neuen Zahlungsempfänger erstellen</value>
   </data>

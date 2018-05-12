@@ -42,6 +42,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     {
         private readonly IAccount _account;
         private readonly ITransRepository _transRepository;
+        private readonly Func<ITransLikeViewModelPlaceholder> _placeholderFactory;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
         private readonly IRxSchedulerProvider _schedulerProvider;
 
@@ -73,6 +74,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Lazy<IAccountViewModelService> accountViewModelService,
             IPayeeViewModelService payeeService,
             Func<IPayee> payeeFactory,
+            Func<ITransLikeViewModelPlaceholder> placeholderFactory,
             IParentTransactionViewModelService parentTransactionViewModelService,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
             IRxSchedulerProvider schedulerProvider,
@@ -97,6 +99,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             _account = account;
             _transRepository = transRepository;
+            _placeholderFactory = placeholderFactory;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _schedulerProvider = schedulerProvider;
 
@@ -158,7 +161,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             => new RelayBasicTaskBasedAsyncDataAccess<ITransLikeViewModel>(
                 async (offset, pageSize) => CreatePacket( await _transRepository.GetPageAsync(offset, pageSize, _account)),
                 async () => (int) await _transRepository.GetCountAsync(_account),
-                () => new TransLikeViewModelPlaceholder());
+                () => _placeholderFactory());
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.

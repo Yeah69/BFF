@@ -170,6 +170,47 @@
                                                             Kind="{StaticResource AddToTableIcon}" />
                             </Button>
                         </DockPanel>
+                        <Grid HorizontalAlignment="Right">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="0"
+                                       Margin="2.5"
+                                       Text="{lex:LocText Key=ParentTransEditingView_CurrentSum,
+                                                          Suffix=:}" />
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="0"
+                                       Margin="2.5"
+                                       Text="{lex:LocText Key=ParentTransEditingView_MissingSumWithoutSubs,
+                                                          Suffix=:}" />
+                            <TextBlock Grid.Row="2"
+                                       Grid.Column="0"
+                                       Margin="2.5"
+                                       Text="{lex:LocText Key=ParentTransEditingView_MissingSumWithSubs,
+                                                          Suffix=:}" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="1" HorizontalAlignment="Right"
+                                       Margin="2.5"
+                                       Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                       Text="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1" HorizontalAlignment="Right"
+                                       Margin="2.5"
+                                       Foreground="{Binding SumMissingWithoutNewSubs.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                       Text="{Binding SumMissingWithoutNewSubs.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
+                            <TextBlock Grid.Row="2"
+                                       Grid.Column="1" HorizontalAlignment="Right"
+                                       Margin="2.5"
+                                       Foreground="{Binding SumMissingWithNewSubs.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                       Text="{Binding SumMissingWithNewSubs.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
+                        </Grid>
                     </StackPanel>
                 </DataTemplate>
             </ContentControl.ContentTemplate>

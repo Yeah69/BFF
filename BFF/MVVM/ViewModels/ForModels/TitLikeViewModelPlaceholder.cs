@@ -7,10 +7,14 @@ using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
+    public interface ITransLikeViewModelPlaceholder : ITransLikeViewModel
+    {
+    }
+
     /// <summary>
     /// A TIT ViewModel Placeholder used for async lazy loaded TIT's.
     /// </summary>
-    sealed class TransLikeViewModelPlaceholder : ITransLikeViewModel
+    public sealed class TransLikeViewModelPlaceholder : ITransLikeViewModelPlaceholder
     {
         /// <summary>
         /// Needed to mimic a TIT.
@@ -23,6 +27,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IReactiveProperty<long> Sum { get; }
 
         public Sign SumSign => Sign.Plus;
+        public ISumEditViewModel SumEdit { get; }
         public long SumAbsolute => 0L;
 
         public ReactiveCommand DeleteCommand { get; }
@@ -38,10 +43,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Initializes the TransBase-parts of the object
         /// </summary>
-        public TransLikeViewModelPlaceholder()
+        public TransLikeViewModelPlaceholder(Func<IReactiveProperty<long>, ISumEditViewModel> sumEditFactory)
         {
-            Memo = new ReactiveProperty<string>("Content is loading…", ReactivePropertyMode.DistinctUntilChanged);
+            Memo = new ReactiveProperty<string>("Content is loading…", ReactivePropertyMode.DistinctUntilChanged); // ToDo Localize
             Sum = new ReactiveProperty<long>(0L, ReactivePropertyMode.DistinctUntilChanged);
+            SumEdit = sumEditFactory(new ReactiveProperty<long>());
             Cleared = new ReactiveProperty<bool>(false, ReactivePropertyMode.DistinctUntilChanged);
             DeleteCommand = new ReactiveCommand();
         }

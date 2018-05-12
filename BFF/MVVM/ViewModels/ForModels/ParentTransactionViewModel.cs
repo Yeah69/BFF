@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BFF.Helper;
@@ -47,7 +48,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         ReactiveCommand<IAccountViewModel> OpenParentTransactionView { get; }
 
-        //IReactiveProperty<long> SumDuringEdit { get; }
+        IReactiveProperty<long> SumDuringEdit { get; }
+
+        IReadOnlyReactiveProperty<long> SumMissingWithoutNewSubs { get; }
+
+        IReadOnlyReactiveProperty<long> SumMissingWithNewSubs { get; }
     }
 
     /// <summary>
@@ -95,9 +100,31 @@ namespace BFF.MVVM.ViewModels.ForModels
                 parentTransaction.SubTransactions.ToReadOnlyReactiveCollection(subTransactionViewModelService
                     .GetViewModel).AddTo(CompositeDisposable);
 
-            Sum = new ReactiveProperty<long>(SubTransactions.Sum(st => st.Sum.Value), ReactivePropertyMode.DistinctUntilChanged)
+            Sum = new ReactiveProperty<long>(
+                    EmitOnSumRelatedChanges(SubElements)
+                    .ObserveOn(schedulerProvider.Task)
+                    .Select(_ => SubTransactions.Sum(st => st.Sum.Value)), // todo: Write an SQL query for that
+                SubTransactions.Sum(st => st.Sum.Value),  // todo: Write an SQL query for that
+                ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
-            
+
+            SumDuringEdit = new ReactiveProperty<long>(Sum.Value, ReactivePropertyMode.DistinctUntilChanged);
+
+            SumMissingWithoutNewSubs = Sum
+                .Merge(SumDuringEdit)
+                .Select(_ => SumDuringEdit.Value - Sum.Value)
+                .ToReadOnlyReactivePropertySlim(
+                    SumDuringEdit.Value - Sum.Value,
+                    ReactivePropertyMode.DistinctUntilChanged);
+
+            SumMissingWithNewSubs =
+                EmitOnSumRelatedChanges(NewSubElements)
+                    .Merge(SumMissingWithoutNewSubs.Select(_ => Unit.Default))
+                    .Select(_ => SumMissingWithoutNewSubs.Value - NewSubElements.Sum(ns => ns.Sum.Value))
+                    .ToReadOnlyReactivePropertySlim(
+                        SumMissingWithoutNewSubs.Value - NewSubElements.Sum(ns => ns.Sum.Value),
+                        ReactivePropertyMode.DistinctUntilChanged);
+
             Sum.Where(_ => parentTransaction.Id != -1L)
                 .Subscribe(_ =>
                 {
@@ -105,33 +132,14 @@ namespace BFF.MVVM.ViewModels.ForModels
                     Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
                 }).AddTo(CompositeDisposable);
 
-            SumEdit = createSumEdit(Sum);
+            SumEdit = createSumEdit(SumDuringEdit);
 
-            SubTransactions
-                .ObserveAddChanged()
-                .Concat(SubTransactions.ObserveRemoveChanged())
-                .Subscribe(obj => Sum.Value = SubTransactions.Sum(st => st.Sum.Value))//todo: Write an SQL query for that
-                .AddTo(CompositeDisposable);
-            SubTransactions
-                .ObserveReplaceChanged()
-                .Subscribe(obj => Sum.Value = SubTransactions.Sum(st => st.Sum.Value))
-                .AddTo(CompositeDisposable);
-            SubTransactions
-                .ObserveRemoveChanged()
-                .Subscribe(obj => Sum.Value = SubTransactions.Sum(st => st.Sum.Value))
-                .AddTo(CompositeDisposable);
-            SubTransactions
-                .ObserveResetChanged()
-                .Subscribe(obj => Sum.Value = SubTransactions.Sum(st => st.Sum.Value))
-                .AddTo(CompositeDisposable);
-            SubTransactions
-                .ObserveElementObservableProperty(st => st.Sum)
-                .Subscribe(obj => Sum.Value = SubTransactions.Sum(st => st.Sum.Value))
-                .AddTo(CompositeDisposable);
+            
 
             NewSubElementCommand.Subscribe(_ =>
             {
                 var newSubTransactionViewModel = subTransactionViewModelService.Create(parentTransaction);
+                newSubTransactionViewModel.Sum.Value = SumDuringEdit.Value - (Sum.Value + NewSubElements.Sum(ns => ns.Sum.Value));
                 _newTransactions.Add(newSubTransactionViewModel);
             }).AddTo(CompositeDisposable);
 
@@ -167,6 +175,28 @@ namespace BFF.MVVM.ViewModels.ForModels
                     .Subscribe(_ => _newTransactions.Remove(t))
                     .AddTo(_currentRemoveRequestSubscriptions);
             });
+
+            IObservable<Unit> EmitOnSumRelatedChanges(ReadOnlyObservableCollection<ISubTransactionViewModel> collection)
+                => Observable
+                    .Merge(
+                        collection
+                            .ObserveAddChanged()
+                            .Select(_ => Unit.Default),
+                        collection
+                            .ObserveRemoveChanged()
+                            .Select(_ => Unit.Default),
+                        collection
+                            .ObserveReplaceChanged()
+                            .Select(_ => Unit.Default),
+                        collection
+                            .ObserveRemoveChanged()
+                            .Select(_ => Unit.Default),
+                        collection
+                            .ObserveResetChanged()
+                            .Select(_ => Unit.Default),
+                        collection
+                            .ObserveElementObservableProperty(st => st.Sum)
+                            .Select(_ => Unit.Default));
         }
 
         public ReadOnlyReactiveCollection<ISubTransactionViewModel> SubTransactions { get; }
@@ -201,6 +231,10 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
         public ReactiveCommand<IAccountViewModel> OpenParentTransactionView { get; } = new ReactiveCommand<IAccountViewModel>();
+
+        public IReactiveProperty<long> SumDuringEdit { get; }
+        public IReadOnlyReactiveProperty<long> SumMissingWithoutNewSubs { get; }
+        public IReadOnlyReactiveProperty<long> SumMissingWithNewSubs { get; }
 
         protected override void OnInsert()
         {

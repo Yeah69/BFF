@@ -1116,6 +1116,33 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current Sum.
+        /// </summary>
+        public static string ParentTransEditingView_CurrentSum {
+            get {
+                return ResourceManager.GetString("ParentTransEditingView_CurrentSum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing Sum.
+        /// </summary>
+        public static string ParentTransEditingView_MissingSumWithoutSubs {
+            get {
+                return ResourceManager.GetString("ParentTransEditingView_MissingSumWithoutSubs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing Sum exlusively unsubmitted entries.
+        /// </summary>
+        public static string ParentTransEditingView_MissingSumWithSubs {
+            get {
+                return ResourceManager.GetString("ParentTransEditingView_MissingSumWithSubs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create new Payee.
         /// </summary>
         public static string Payee_CreateNew {

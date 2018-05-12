@@ -34,6 +34,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     {
         private readonly Lazy<IAccountViewModelService> _service;
         private readonly ITransRepository _transRepository;
+        private readonly Func<ITransLikeViewModelPlaceholder> _placeholderFactory;
         private readonly IRxSchedulerProvider _schedulerProvider;
 
         /// <summary>
@@ -52,6 +53,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IAccountRepository accountRepository, 
             Lazy<IAccountViewModelService> service,
             ITransRepository transRepository,
+            Func<ITransLikeViewModelPlaceholder> placeholderFactory,
             IParentTransactionViewModelService parentTransactionViewModelService,
             IRxSchedulerProvider schedulerProvider,
             IBackendCultureManager cultureManager,
@@ -72,6 +74,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             _service = service;
             _transRepository = transRepository;
+            _placeholderFactory = placeholderFactory;
             _schedulerProvider = schedulerProvider;
             IsOpen.Value = true;
             Messenger.Default.Register<SummaryAccountMessage>(this, message =>
@@ -123,7 +126,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             => new RelayBasicTaskBasedAsyncDataAccess<ITransLikeViewModel>(
                 async (offset, pageSize) => CreatePacket(await _transRepository.GetPageAsync(offset, pageSize, null)),
                 async () => (int) await _transRepository.GetCountAsync(null),
-                () => new TransLikeViewModelPlaceholder());
+                () => _placeholderFactory());
 
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.

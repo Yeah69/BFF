@@ -719,13 +719,14 @@
             </ContentControl.Resources>
         </ContentControl>
     </DataTemplate>
-    <DataTemplate x:Key="ParentCategoryEditingColumnTemplate" DataType="{x:Type forModels:ParentTransactionViewModel}">
+    <DataTemplate x:Key="ParentCategoryEditingColumnTemplate"
+                  DataType="{x:Type forModels:ParentTransactionViewModel}">
         <iconPacks:PackIconMaterial Margin="5,0,0,0"
                                     Foreground="{DynamicResource GrayBrush4}"
                                     Kind="{StaticResource ParentIcon}"
                                     Style="{StaticResource CellIconMaterial}" />
     </DataTemplate>
-        <!--  Memo  -->
+    <!--  Memo  -->
     <DataTemplate x:Key="MemoColumnTemplate">
         <ContentControl Content="{Binding}"
                         IsTabStop="True"
@@ -993,7 +994,8 @@
             </ContentControl.Resources>
         </ContentControl>
     </DataTemplate>
-    <DataTemplate x:Key="ParentSumEditingColumnTemplate" DataType="{x:Type forModels:ParentTransactionViewModel}">
+    <DataTemplate x:Key="ParentSumEditingColumnTemplate"
+                  DataType="{x:Type forModels:ParentTransactionViewModel}">
         <ContentControl Content="{Binding SumEdit}"
                         ContentTemplate="{StaticResource SumEditTemplate}" />
     </DataTemplate>

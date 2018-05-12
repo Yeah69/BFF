@@ -470,6 +470,15 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Открыть финасовый план</value>
   </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Current Sum</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Missing Sum exlusively unsubmitted entries</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Missing Sum</value>
+  </data>
   <data name="Payee_CreateNew" xml:space="preserve">
     <value>Create new Payee</value>
   </data>

@@ -18,6 +18,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         Sign SumSign { get; }
 
+        ISumEditViewModel SumEdit { get; }
+
         long SumAbsolute { get; }
         
         ReactiveCommand ToggleSign { get; }
