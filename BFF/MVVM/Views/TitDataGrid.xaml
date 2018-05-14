@@ -2,9 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mvvm="clr-namespace:BFF.MVVM"
              x:Name="Root"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -18,6 +20,9 @@
                 <ResourceDictionary Source="/MVVM/Resources/TransCellTemplates.xaml" />
                 <ResourceDictionary Source="/MVVM/Resources/TransDataGridResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <mvvm:BindingProxy x:Key="AccountColumnVisibility"
+                               Data="{Binding AccountViewModel, ElementName=Root, Converter={x:Static mvvm:Converters.OfTypeToCollapsed}, ConverterParameter={x:Type forModels:IAccountViewModel}}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot"
@@ -54,6 +59,7 @@
                 </DataGridTemplateColumn>
                 <!--  Account  -->
                 <DataGridTemplateColumn x:Name="AccountColumn"
+                                        Visibility="{Binding Data, Source={StaticResource AccountColumnVisibility}}"
                                         CellEditingTemplate="{StaticResource AccountEditingColumnTemplate}"
                                         CellTemplate="{StaticResource AccountColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Account}"
@@ -127,7 +133,8 @@
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SymbolColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource SymbolColumnTemplate}" />
                     <!--  Account  -->
-                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference AccountColumn}, Mode=TwoWay}"
+                    <DataGridTemplateColumn Visibility="{Binding Data, Source={StaticResource AccountColumnVisibility}}"
+                                            Width="{Binding Width, Source={x:Reference AccountColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource AccountEditingColumnTemplate}" />
                     <!--  Date  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference DateColumn}, Mode=TwoWay}"

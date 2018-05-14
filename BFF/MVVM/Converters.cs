@@ -312,6 +312,13 @@ namespace BFF.MVVM
             ValueConverter.Create<object, Visibility, Type>(
                 e => e.Value?.IsInstanceOfType(e.Parameter) ?? false ? Visibility.Visible : Visibility.Collapsed);
 
+        /// <summary>
+        /// Visible if value is of given Type, otherwise Collapsed.
+        /// </summary>
+        public static readonly IValueConverter OfTypeToCollapsed =
+            ValueConverter.Create<object, Visibility, Type>(
+                e => e.Value?.IsInstanceOfType(e.Parameter) ?? false ? Visibility.Collapsed : Visibility.Visible);
+        
         public static readonly IValueConverter AsEnumerable =
             ValueConverter.Create<object, IEnumerable>(
                 e => new[] { e.Value });

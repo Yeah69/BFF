@@ -310,6 +310,7 @@
     <Compile Include="Helper\Sign.cs" />
     <Compile Include="MVVM\AttachedBehaviors\ScrollViewerSync.cs" />
     <Compile Include="MVVM\BffDialogCoordinator.cs" />
+    <Compile Include="MVVM\BindingProxy.cs" />
     <Compile Include="MVVM\Converters.cs" />
     <Compile Include="MVVM\Managers\BffChildWindowManager.cs" />
     <Compile Include="MVVM\Managers\CsvBankStatementProfileManager.cs" />
