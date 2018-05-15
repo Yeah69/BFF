@@ -20,8 +20,9 @@ namespace BFF.MVVM.ViewModels.ForModels
             INewCategoryViewModel newCategoryViewModel,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             IRxSchedulerProvider schedulerProvider,
-            ICategoryBaseViewModelService categoryViewModelService)
-            : base(subTransaction, schedulerProvider)
+            ICategoryBaseViewModelService categoryViewModelService,
+            IAccountBaseViewModel owner)
+            : base(subTransaction, schedulerProvider, owner)
         {
             Category = subTransaction.ToReactivePropertyAsSynchronized(
                 nameof(subTransaction.Category),

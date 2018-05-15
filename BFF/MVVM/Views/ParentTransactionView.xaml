@@ -21,6 +21,9 @@
                 <ResourceDictionary Source="/MVVM/Resources/TransCellTemplates.xaml" />
                 <ResourceDictionary Source="/MVVM/Resources/TransDataGridResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <mvvm:BindingProxy x:Key="ParentAccountColumnVisibility"
+                               Data="{Binding DataContext.Owner, ElementName=LayoutRoot, Converter={x:Static mvvm:Converters.OfTypeToCollapsed}, ConverterParameter={x:Type forModels:IAccountViewModel}, FallbackValue={x:Static Visibility.Collapsed}}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
@@ -56,6 +59,7 @@
                 </DataGridTemplateColumn>
                 <!--  Account  -->
                 <DataGridTemplateColumn x:Name="AccountColumn"
+                                        Visibility="{Binding Data, Source={StaticResource ParentAccountColumnVisibility}}"
                                         CellTemplate="{StaticResource AccountEditingColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Account}" />
                 <!--  Date  -->
@@ -96,7 +100,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <ContentControl Grid.Row="1"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Right"
                         Content="{Binding}">
             <ContentControl.ContentTemplate>
                 <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
@@ -219,22 +223,6 @@
                     </StackPanel>
                 </DataTemplate>
             </ContentControl.ContentTemplate>
-            <ContentControl.Margin>
-                <MultiBinding Converter="{x:Static mvvm:Converters.WidthsToLeftMargin}">
-                    <Binding ElementName="SymbolColumn"
-                             Path="Width" />
-                    <Binding ElementName="AccountColumn"
-                             Path="Width" />
-                    <Binding ElementName="DateColumn"
-                             Path="Width" />
-                    <Binding ElementName="FlagColumn"
-                             Path="Width" />
-                    <Binding ElementName="CheckNumberColumn"
-                             Path="Width" />
-                    <Binding ElementName="PayeeColumn"
-                             Path="Width" />
-                </MultiBinding>
-            </ContentControl.Margin>
             <ContentControl.Width>
                 <MultiBinding Converter="{x:Static mvvm:Converters.WidthsToDouble}">
                     <Binding ElementName="CategoryColumn"

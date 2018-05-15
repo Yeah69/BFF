@@ -48,8 +48,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             IPayeeViewModelService payeeViewModelService,
             ILastSetDate lastSetDate,
             IRxSchedulerProvider schedulerProvider,
-            IFlagViewModelService flagViewModelService) 
-            : base(transactionBase, newFlagViewModel, lastSetDate, schedulerProvider, flagViewModelService)
+            IFlagViewModelService flagViewModelService,
+            IAccountBaseViewModel owner) 
+            : base(
+                transactionBase, 
+                newFlagViewModel, 
+                lastSetDate, 
+                schedulerProvider, 
+                flagViewModelService, 
+                owner)
         {
             _accountViewModelService = accountViewModelService;
 

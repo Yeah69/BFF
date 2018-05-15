@@ -78,13 +78,15 @@ namespace BFF.MVVM.ViewModels.ForModels
             INewPayeeViewModel newPayeeViewModel,
             INewFlagViewModel newFlagViewModel,
             IParentTransactionFlyoutManager parentTransactionFlyoutManager,
-            ISubTransactionViewModelService subTransactionViewModelService, 
             IFlagViewModelService flagViewModelService,
             IAccountViewModelService accountViewModelService,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ILastSetDate lastSetDate,
             IRxSchedulerProvider schedulerProvider,
-            IPayeeViewModelService payeeViewModelService) 
+            IPayeeViewModelService payeeViewModelService,
+            Func<ISubTransaction> subTransactionFactory,
+            Func<ISubTransaction, IAccountBaseViewModel, ISubTransactionViewModel> subTransactionViewModelFactory, 
+            IAccountBaseViewModel owner) 
             : base(
                 parentTransaction,
                 newPayeeViewModel,
@@ -93,14 +95,14 @@ namespace BFF.MVVM.ViewModels.ForModels
                 payeeViewModelService, 
                 lastSetDate,
                 schedulerProvider,
-                flagViewModelService)
+                flagViewModelService,
+                owner)
         {
             _newTransactions = new ObservableCollection<ISubTransactionViewModel>();
             NewSubElements = new ReadOnlyObservableCollection<ISubTransactionViewModel>(_newTransactions);
 
             SubTransactions =
-                parentTransaction.SubTransactions.ToReadOnlyReactiveCollection(subTransactionViewModelService
-                    .GetViewModel).AddTo(CompositeDisposable);
+                parentTransaction.SubTransactions.ToReadOnlyReactiveCollection(st => subTransactionViewModelFactory(st, owner)).AddTo(CompositeDisposable);
 
             Sum = new ReactiveProperty<long>(
                     EmitOnSumRelatedChanges(SubElements)
@@ -145,7 +147,9 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             NewSubElementCommand.Subscribe(_ =>
             {
-                var newSubTransactionViewModel = subTransactionViewModelService.Create(parentTransaction);
+                var newSubTransaction = subTransactionFactory();
+                newSubTransaction.Parent = parentTransaction;
+                var newSubTransactionViewModel = subTransactionViewModelFactory(newSubTransaction, owner);
                 newSubTransactionViewModel.Sum.Value = SumDuringEdit.Value - (Sum.Value + NewSubElements.Sum(ns => ns.Sum.Value));
                 _newTransactions.Add(newSubTransactionViewModel);
             }).AddTo(CompositeDisposable);

@@ -347,11 +347,9 @@
     <Compile Include="MVVM\Services\CategoryBaseViewModelService.cs" />
     <Compile Include="MVVM\Services\CategoryViewModelService.cs" />
     <Compile Include="MVVM\Services\IncomeCategoryViewModelService.cs" />
-    <Compile Include="MVVM\Services\ParentTransactionViewModelService.cs" />
     <Compile Include="MVVM\Services\ModelToViewModelServiceBase.cs" />
     <Compile Include="MVVM\Services\FlagViewModelService.cs" />
     <Compile Include="MVVM\Services\PayeeViewModelService.cs" />
-    <Compile Include="MVVM\Services\SubTransactionViewModelService.cs" />
     <Compile Include="MVVM\Services\CommonPropertyViewModelServiceBase.cs" />
     <Compile Include="MVVM\UserControls\UniformList.xaml.cs">
       <DependentUpon>UniformList.xaml</DependentUpon>

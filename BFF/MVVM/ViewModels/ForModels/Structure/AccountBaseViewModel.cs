@@ -89,10 +89,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     {
         private readonly Lazy<IAccountViewModelService> _accountViewModelService;
         private readonly IAccountRepository _accountRepository;
-        private readonly IParentTransactionViewModelService _parentTransactionViewModelService;
         private readonly IRxSchedulerProvider _schedulerProvider;
-        private readonly Func<ITransaction, ITransactionViewModel> _transactionViewModelFactory;
-        private readonly Func<ITransfer, ITransferViewModel> _transferViewModelFactory;
+        private readonly Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> _transactionViewModelFactory;
+        private readonly Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> _parentTransactionViewModelFactory;
+        private readonly Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> _transferViewModelFactory;
         private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
         private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
         private readonly IAccount _account;
@@ -158,18 +158,18 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             IAccount account,
             Lazy<IAccountViewModelService> accountViewModelService,
             IAccountRepository accountRepository,
-            IParentTransactionViewModelService parentTransactionViewModelService,
             IRxSchedulerProvider schedulerProvider,
             IBackendCultureManager cultureManager,
-            Func<ITransaction, ITransactionViewModel> transactionViewModelFactory,
-            Func<ITransfer, ITransferViewModel> transferViewModelFactory) : base(account, schedulerProvider)
+            Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
+            Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory,
+            Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory) : base(account, schedulerProvider)
         {
             _account = account;
             _accountViewModelService = accountViewModelService;
             _accountRepository = accountRepository;
-            _parentTransactionViewModelService = parentTransactionViewModelService;
             _schedulerProvider = schedulerProvider;
             _transactionViewModelFactory = transactionViewModelFactory;
+            _parentTransactionViewModelFactory = parentTransactionViewModelFactory;
             _transferViewModelFactory = transferViewModelFactory;
 
             cultureManager.RefreshSignal.Subscribe(message =>
@@ -302,13 +302,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 switch (item)
                 {
                     case ITransfer transfer:
-                        vmItems.Add(_transferViewModelFactory(transfer));
+                        vmItems.Add(_transferViewModelFactory(transfer, this));
                         break;
                     case IParentTransaction parentTransaction:
-                        vmItems.Add(_parentTransactionViewModelService.GetViewModel(parentTransaction));
+                        vmItems.Add(_parentTransactionViewModelFactory(parentTransaction, this));
                         break;
                     case ITransaction transaction:
-                        vmItems.Add(_transactionViewModelFactory(transaction));
+                        vmItems.Add(_transactionViewModelFactory(transaction, this));
                         break;
                     default:
                         throw new NotImplementedException();

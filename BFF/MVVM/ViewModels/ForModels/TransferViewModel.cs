@@ -55,7 +55,15 @@ namespace BFF.MVVM.ViewModels.ForModels
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ILastSetDate lastSetDate,
             IRxSchedulerProvider schedulerProvider,
-            IFlagViewModelService flagViewModelService) : base(transfer, newFlagViewModel, lastSetDate, schedulerProvider, flagViewModelService)
+            IFlagViewModelService flagViewModelService,
+            IAccountBaseViewModel owner) 
+            : base(
+                transfer, 
+                newFlagViewModel, 
+                lastSetDate, 
+                schedulerProvider, 
+                flagViewModelService, 
+                owner)
         {
             _accountViewModelService = accountViewModelService;
 

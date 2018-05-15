@@ -75,26 +75,26 @@ namespace BFF.MVVM.ViewModels.ForModels
             IPayeeViewModelService payeeService,
             Func<IPayee> payeeFactory,
             Func<ITransLikeViewModelPlaceholder> placeholderFactory,
-            IParentTransactionViewModelService parentTransactionViewModelService,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
             IRxSchedulerProvider schedulerProvider,
             IBackendCultureManager cultureManager,
             IBffChildWindowManager childWindowManager,
             Func<Action<IList<ICsvBankStatementImportItemViewModel>>, IImportCsvBankStatementViewModel> importCsvBankStatementFactory,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
-            Func<IAccount, ITransactionViewModel> transactionViewModelFactory,
-            Func<ITransferViewModel> transferViewModelFactory,
-            Func<IAccount, IParentTransactionViewModel> parentTransactionViewModelFactory,
-            Func<ITransaction, ITransactionViewModel> dependingTransactionViewModelFactory,
-            Func<ITransfer, ITransferViewModel> dependingTransferViewModelFactory) 
+            Func<IAccount, IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
+            Func<IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
+            Func<IAccount, IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory,
+            Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> dependingTransactionViewModelFactory,
+            Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> dependingParentTransactionViewModelFactory,
+            Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> dependingTransferViewModelFactory) 
             : base(
                 account,
                 accountViewModelService,
                 accountRepository,
-                parentTransactionViewModelService, 
                 schedulerProvider,
                 cultureManager,
                 dependingTransactionViewModelFactory, 
+                dependingParentTransactionViewModelFactory,
                 dependingTransferViewModelFactory)
         {
             _account = account;
@@ -114,11 +114,11 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .ToReactivePropertyAsSynchronized(a => a.StartingDate, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
-            NewTransactionCommand.Subscribe(_ => NewTransList.Add(transactionViewModelFactory(_account))).AddTo(CompositeDisposable);
+            NewTransactionCommand.Subscribe(_ => NewTransList.Add(transactionViewModelFactory(_account, this))).AddTo(CompositeDisposable);
 
-            NewTransferCommand.Subscribe(_ => NewTransList.Add(transferViewModelFactory())).AddTo(CompositeDisposable);
+            NewTransferCommand.Subscribe(_ => NewTransList.Add(transferViewModelFactory(this))).AddTo(CompositeDisposable);
 
-            NewParentTransactionCommand.Subscribe(_ => NewTransList.Add(parentTransactionViewModelFactory(_account))).AddTo(CompositeDisposable);
+            NewParentTransactionCommand.Subscribe(_ => NewTransList.Add(parentTransactionViewModelFactory(_account, this))).AddTo(CompositeDisposable);
 
             ApplyCommand = NewTransList.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
                 .Select(count => count > 0)
@@ -131,7 +131,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 {
                     foreach (var item in items)
                     {
-                        var transactionViewModel = transactionViewModelFactory(_account);
+                        var transactionViewModel = transactionViewModelFactory(_account, this);
 
                         if (item.HasDate.Value)
                             transactionViewModel.Date.Value = item.Date.Value;

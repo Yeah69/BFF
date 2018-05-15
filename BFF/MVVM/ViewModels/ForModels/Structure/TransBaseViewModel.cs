@@ -71,8 +71,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             INewFlagViewModel newFlagViewModel,
             ILastSetDate lastSetDate,
             IRxSchedulerProvider schedulerProvider,
-            IFlagViewModelService flagViewModelService)
-            : base(transBase, schedulerProvider)
+            IFlagViewModelService flagViewModelService,
+            IAccountBaseViewModel owner)
+            : base(transBase, schedulerProvider, owner)
         {
             _flagViewModelService = flagViewModelService;
 

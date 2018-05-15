@@ -35,6 +35,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public ReactiveCommand ToggleSign { get; } = new ReactiveCommand();
         public IObservable<Unit> RemoveRequests => Observable.Never<Unit>();
         public ReactiveCommand RemoveCommand { get; } = new ReactiveCommand();
+        public IAccountBaseViewModel Owner => null;
 
         /// <summary>
         /// Needed to mimic a TIT.
@@ -44,7 +45,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Initializes the TransBase-parts of the object
         /// </summary>
-        public TransLikeViewModelPlaceholder(Func<IReactiveProperty<long>, ISumEditViewModel> sumEditFactory)
+        public TransLikeViewModelPlaceholder(
+            Func<IReactiveProperty<long>, 
+            ISumEditViewModel> sumEditFactory)
         {
             Memo = new ReactiveProperty<string>("Content is loading…", ReactivePropertyMode.DistinctUntilChanged); // ToDo Localize
             Sum = new ReactiveProperty<long>(0L, ReactivePropertyMode.DistinctUntilChanged);

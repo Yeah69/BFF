@@ -126,13 +126,6 @@ namespace BFF
                 var lastSetDate = cc.Resolve<ILastSetDate>();
                 return () => new ParentTransaction(repository, Enumerable.Empty<ISubTransaction>(), lastSetDate.Date);
             }).As<Func<IParentTransaction>>();
-            
-            builder.Register<Func<IParentTransactionViewModel>>(cc =>
-            {
-                var modelFactory = cc.Resolve<Func<IParentTransaction>>();
-                var service = cc.Resolve<IParentTransactionViewModelService>();
-                return () => service.GetViewModel(modelFactory());
-            }).As<Func<IParentTransactionViewModel>>();
 
             builder.Register<Func<IAccount, IParentTransactionViewModel>>(cc =>
             {

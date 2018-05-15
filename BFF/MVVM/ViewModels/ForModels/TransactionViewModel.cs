@@ -30,8 +30,18 @@ namespace BFF.MVVM.ViewModels.ForModels
             ICategoryBaseViewModelService categoryViewModelService,
             ILastSetDate lastSetDate,
             IRxSchedulerProvider schedulerProvider,
-            IFlagViewModelService flagViewModelService)
-            : base(transaction, newPayeeViewModel, newFlagViewModelFactory, accountViewModelService, payeeViewModelService, lastSetDate, schedulerProvider, flagViewModelService)
+            IFlagViewModelService flagViewModelService,
+            IAccountBaseViewModel owner)
+            : base(
+                transaction, 
+                newPayeeViewModel,
+                newFlagViewModelFactory,
+                accountViewModelService,
+                payeeViewModelService,
+                lastSetDate, 
+                schedulerProvider, 
+                flagViewModelService,
+                owner)
         {
             Category = transaction.ToReactivePropertyAsSynchronized(
                     nameof(transaction.Category),

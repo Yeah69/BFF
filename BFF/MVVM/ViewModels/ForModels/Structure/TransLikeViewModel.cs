@@ -27,6 +27,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         IObservable<Unit> RemoveRequests { get; }
 
         ReactiveCommand RemoveCommand { get; }
+
+        IAccountBaseViewModel Owner { get; }
     }
     
     public abstract class TransLikeViewModel : DataModelViewModel, ITransLikeViewModel, ITransientViewModel
@@ -65,9 +67,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         
         protected TransLikeViewModel(
             ITransLike transLike,
-            IRxSchedulerProvider schedulerProvider) 
+            IRxSchedulerProvider schedulerProvider,
+            IAccountBaseViewModel owner) 
             : base(transLike, schedulerProvider)
         {
+            Owner = owner;
             _removeRequestSubject.AddTo(CompositeDisposable);
             Memo = transLike.ToReactivePropertyAsSynchronized(
                 nameof(transLike.Memo), 
@@ -86,5 +90,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public ReactiveCommand ToggleSign { get; }
         public IObservable<Unit> RemoveRequests => _removeRequestSubject.AsObservable();
         public ReactiveCommand RemoveCommand { get; }
+        public IAccountBaseViewModel Owner { get; }
     }
 }

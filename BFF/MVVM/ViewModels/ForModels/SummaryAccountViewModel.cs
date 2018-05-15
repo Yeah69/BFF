@@ -54,22 +54,22 @@ namespace BFF.MVVM.ViewModels.ForModels
             Lazy<IAccountViewModelService> service,
             ITransRepository transRepository,
             Func<ITransLikeViewModelPlaceholder> placeholderFactory,
-            IParentTransactionViewModelService parentTransactionViewModelService,
             IRxSchedulerProvider schedulerProvider,
             IBackendCultureManager cultureManager,
-            Func<ITransactionViewModel> transactionViewModelFactory,
-            Func<ITransferViewModel> transferViewModelFactory,
-            Func<IParentTransactionViewModel> parentTransactionFactory,
-            Func<ITransaction, ITransactionViewModel> dependingTransactionViewModelFactory,
-            Func<ITransfer, ITransferViewModel> dependingTransferViewModelFactory) 
+            Func<IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
+            Func<IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
+            Func<IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionFactory,
+            Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> dependingTransactionViewModelFactory,
+            Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> dependingParentTransactionViewModelFactory,
+            Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> dependingTransferViewModelFactory) 
             : base(
                 summaryAccount,
                 service,
                 accountRepository,
-                parentTransactionViewModelService,
                 schedulerProvider,
                 cultureManager,
-                dependingTransactionViewModelFactory,
+                dependingTransactionViewModelFactory, 
+                dependingParentTransactionViewModelFactory,
                 dependingTransferViewModelFactory)
         {
             _service = service;
@@ -103,11 +103,11 @@ namespace BFF.MVVM.ViewModels.ForModels
             StartingBalance = new ReactiveProperty<long>().AddTo(CompositeDisposable);
             //RefreshStartingBalance();
 
-            NewTransactionCommand.Subscribe(_ => NewTransList.Add(transactionViewModelFactory())).AddTo(CompositeDisposable);
+            NewTransactionCommand.Subscribe(_ => NewTransList.Add(transactionViewModelFactory(this))).AddTo(CompositeDisposable);
 
-            NewTransferCommand.Subscribe(_ => NewTransList.Add(transferViewModelFactory())).AddTo(CompositeDisposable);
+            NewTransferCommand.Subscribe(_ => NewTransList.Add(transferViewModelFactory(this))).AddTo(CompositeDisposable);
 
-            NewParentTransactionCommand.Subscribe(_ => NewTransList.Add(parentTransactionFactory())).AddTo(CompositeDisposable);
+            NewParentTransactionCommand.Subscribe(_ => NewTransList.Add(parentTransactionFactory(this))).AddTo(CompositeDisposable);
 
             ApplyCommand = NewTransList.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
                 .Select(count => count > 0)
