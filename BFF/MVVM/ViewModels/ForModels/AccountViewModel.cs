@@ -81,9 +81,9 @@ namespace BFF.MVVM.ViewModels.ForModels
             IBffChildWindowManager childWindowManager,
             Func<Action<IList<ICsvBankStatementImportItemViewModel>>, IImportCsvBankStatementViewModel> importCsvBankStatementFactory,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
-            Func<IAccount, IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
+            Func<IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
             Func<IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
-            Func<IAccount, IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory,
+            Func<IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory,
             Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> dependingTransactionViewModelFactory,
             Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> dependingParentTransactionViewModelFactory,
             Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> dependingTransferViewModelFactory) 
@@ -114,11 +114,11 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .ToReactivePropertyAsSynchronized(a => a.StartingDate, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
-            NewTransactionCommand.Subscribe(_ => NewTransList.Add(transactionViewModelFactory(_account, this))).AddTo(CompositeDisposable);
+            NewTransactionCommand.Subscribe(_ => NewTransList.Add(transactionViewModelFactory(this))).AddTo(CompositeDisposable);
 
             NewTransferCommand.Subscribe(_ => NewTransList.Add(transferViewModelFactory(this))).AddTo(CompositeDisposable);
 
-            NewParentTransactionCommand.Subscribe(_ => NewTransList.Add(parentTransactionViewModelFactory(_account, this))).AddTo(CompositeDisposable);
+            NewParentTransactionCommand.Subscribe(_ => NewTransList.Add(parentTransactionViewModelFactory(this))).AddTo(CompositeDisposable);
 
             ApplyCommand = NewTransList.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
                 .Select(count => count > 0)
@@ -131,7 +131,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 {
                     foreach (var item in items)
                     {
-                        var transactionViewModel = transactionViewModelFactory(_account, this);
+                        var transactionViewModel = transactionViewModelFactory(this);
 
                         if (item.HasDate.Value)
                             transactionViewModel.Date.Value = item.Date.Value;

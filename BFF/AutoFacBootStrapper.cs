@@ -6,9 +6,9 @@ using Autofac;
 using BFF.DB;
 using BFF.Helper;
 using BFF.MVVM.Models.Native;
-using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels;
 using BFF.MVVM.ViewModels.ForModels;
+using BFF.MVVM.ViewModels.ForModels.Structure;
 using BFF.MVVM.Views;
 using MahApps.Metro.Controls.Dialogs;
 using Transaction = BFF.MVVM.Models.Native.Transaction;
@@ -87,24 +87,12 @@ namespace BFF
                 return () => new Transaction(repository, lastSetDate.Date);
             }).As<Func<ITransaction>>();
 
-            builder.Register<Func<ITransactionViewModel>>(cc =>
+            builder.Register<Func<IAccountBaseViewModel, ITransactionViewModel>>(cc =>
             {
                 var modelFactory = cc.Resolve<Func<ITransaction>>();
-                var factory = cc.Resolve<Func<ITransaction, ITransactionViewModel>>();
-                return () => factory(modelFactory());
-            }).As<Func<ITransactionViewModel>>();
-
-            builder.Register<Func<IAccount, ITransactionViewModel>>(cc =>
-            {
-                var modelFactory = cc.Resolve<Func<ITransaction>>();
-                var factory = cc.Resolve<Func<ITransaction, ITransactionViewModel>>();
-                return account =>
-                {
-                    var model = modelFactory();
-                    model.Account = account;
-                    return factory(model);
-                };
-            }).As<Func<IAccount, ITransactionViewModel>>();
+                var factory = cc.Resolve<Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel >>();
+                return abvm => factory(modelFactory(), abvm);
+            }).As<Func<IAccountBaseViewModel, ITransactionViewModel>>();
 
             builder.Register<Func<ITransfer>>(cc =>
             {
@@ -113,12 +101,12 @@ namespace BFF
                 return () => new Transfer(repository, lastSetDate.Date);
             }).As<Func<ITransfer>>();
 
-            builder.Register<Func<ITransferViewModel>>(cc =>
+            builder.Register<Func<IAccountBaseViewModel, ITransferViewModel>>(cc =>
             {
                 var modelFactory = cc.Resolve<Func<ITransfer>>();
-                var factory = cc.Resolve<Func<ITransfer, ITransferViewModel>>();
-                return () => factory(modelFactory());
-            }).As<Func<ITransferViewModel>>();
+                var factory = cc.Resolve<Func<ITransfer, IAccountBaseViewModel, ITransferViewModel>>();
+                return abvm => factory(modelFactory(), abvm);
+            }).As<Func<IAccountBaseViewModel, ITransferViewModel>>();
 
             builder.Register<Func<IParentTransaction>>(cc =>
             {
@@ -127,17 +115,12 @@ namespace BFF
                 return () => new ParentTransaction(repository, Enumerable.Empty<ISubTransaction>(), lastSetDate.Date);
             }).As<Func<IParentTransaction>>();
 
-            builder.Register<Func<IAccount, IParentTransactionViewModel>>(cc =>
+            builder.Register<Func<IAccountBaseViewModel, IParentTransactionViewModel>>(cc =>
             {
                 var modelFactory = cc.Resolve<Func<IParentTransaction>>();
-                var factory = cc.Resolve<Func<IParentTransaction, IParentTransactionViewModel>>();
-                return account =>
-                {
-                    var model = modelFactory();
-                    model.Account = account;
-                    return factory(model);
-                };
-            }).As<Func<IAccount, IParentTransactionViewModel>>();
+                var factory = cc.Resolve<Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel>>();
+                return abvm => factory(modelFactory(), abvm);
+            }).As<Func<IAccountBaseViewModel, IParentTransactionViewModel>>();
 
             builder.Register<Func<IAccount>>(cc =>
             {

@@ -76,7 +76,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     schedulerProvider.UI,
                     ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
-            
+
+            if (Account.Value is null && owner is IAccountViewModel specificAccount)
+                Account.Value = specificAccount;
 
             Account
                 .SkipLast(1)

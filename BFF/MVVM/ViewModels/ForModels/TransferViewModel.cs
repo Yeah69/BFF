@@ -78,6 +78,20 @@ namespace BFF.MVVM.ViewModels.ForModels
                     ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
+            ToAccount = transfer
+                .ToReactivePropertyAsSynchronized(
+                    nameof(transfer.ToAccount),
+                    () => transfer.ToAccount,
+                    ta => transfer.ToAccount = ta,
+                    accountViewModelService.GetViewModel,
+                    accountViewModelService.GetModel,
+                    schedulerProvider.UI,
+                    ReactivePropertyMode.DistinctUntilChanged)
+                .AddTo(CompositeDisposable);
+
+            if (FromAccount.Value is null && owner is IAccountViewModel specificAccount)
+                FromAccount.Value = specificAccount;
+
             FromAccount
                 .SkipLast(1)
                 .Where(_ => transfer.Id != -1L)
@@ -87,17 +101,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             FromAccount
                 .Where(_ => transfer.Id != -1L)
                 .Subscribe(RefreshAnAccountViewModel)
-                .AddTo(CompositeDisposable);
-
-            ToAccount = transfer
-                .ToReactivePropertyAsSynchronized(
-                    nameof(transfer.ToAccount),
-                    () => transfer.ToAccount,
-                    ta => transfer.ToAccount = ta, 
-                    accountViewModelService.GetViewModel,
-                    accountViewModelService.GetModel,
-                    schedulerProvider.UI,
-                    ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
             ToAccount
