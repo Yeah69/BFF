@@ -5,7 +5,6 @@
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-                      xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
                       xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
                       xmlns:hm="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -70,6 +69,7 @@
 
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
+            <!--  Settings Flyout  -->
             <controls:Flyout Name="SettingsFlyout"
                              Width="400"
                              Header="{lex:Loc MainWindow_Settings}"
@@ -218,8 +218,15 @@
                                                     Prefix=:}"
                               FlowDirection="RightToLeft"
                               IsChecked="{Binding DateLong, Mode=TwoWay, Converter={x:Static mvvm:Converters.BooleanToNullableBoolean}}" />
+                    <Label Content="{lex:LocText Settings_ShowFlags,
+                                                 Suffix=:}" />
+                    <CheckBox IsChecked="{Binding AccountModuleColumnManager.ShowFlags.Value}" />
+                    <Label Content="{lex:LocText Settings_ShowCheckNumbers,
+                                                 Suffix=:}" />
+                    <CheckBox IsChecked="{Binding AccountModuleColumnManager.ShowCheckNumbers.Value}" />
                 </StackPanel>
             </controls:Flyout>
+            <!--  File Flyout  -->
             <controls:Flyout Name="FileFlyout"
                              Header="{lex:Loc MainWindow_File}"
                              Position="Left">
@@ -239,8 +246,7 @@
                 </StackPanel>
             </controls:Flyout>
             <!--  ParentTransaction Flyout  -->
-            <controls:Flyout CloseCommand=""
-                             IsModal="True"
+            <controls:Flyout IsModal="True"
                              IsOpen="{Binding OpenParentTransaction.Value, Converter={x:Static mvvm:Converters.IsNotNull}}"
                              Position="Top">
                 <ContentControl Content="{Binding OpenParentTransaction.Value}">
@@ -264,6 +270,7 @@
                     </ContentControl.Style>
                 </ContentControl>
             </controls:Flyout>
+            <!--  Accounts Flyout  -->
             <controls:Flyout x:Name="EditAccountsFlyout"
                              IsModal="True"
                              Position="Right">
@@ -272,6 +279,7 @@
                     <views:EditAccountsView DataContext="{Binding EditAccountsViewModel}" />
                 </ContentControl>
             </controls:Flyout>
+            <!--  Categories Flyout  -->
             <controls:Flyout x:Name="EditCategoriesFlyout"
                              IsModal="True"
                              Position="Right">
@@ -280,6 +288,7 @@
                     <views:EditCategoriesView DataContext="{Binding EditCategoriesViewModel}" />
                 </ContentControl>
             </controls:Flyout>
+            <!--  Payee Flyout  -->
             <controls:Flyout x:Name="EditPayeesFlyout"
                              IsModal="True"
                              Position="Right">
@@ -288,6 +297,7 @@
                     <views:EditPayeesView DataContext="{Binding EditPayeesViewModel}" />
                 </ContentControl>
             </controls:Flyout>
+            <!--  Flags Flyout  -->
             <controls:Flyout x:Name="EditFlagsFlyout"
                              IsModal="True"
                              Position="Right">
@@ -394,4 +404,6 @@
         </ContentControl>
     </DockPanel>
 </controls:MetroWindow>
+
+
 

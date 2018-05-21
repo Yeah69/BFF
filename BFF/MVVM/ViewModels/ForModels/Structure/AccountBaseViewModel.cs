@@ -74,6 +74,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         bool IsDateFormatLong { get; }
 
+        IAccountModuleColumnManager AccountModuleColumnManager { get; }
         /// <summary>
         /// Refreshes the Balance.
         /// </summary>
@@ -153,7 +154,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Indicates if the date format should be display in short or long fashion.
         /// </summary>
         public bool IsDateFormatLong => Settings.Default.Culture_DefaultDateLong;
-        
+
+        public IAccountModuleColumnManager AccountModuleColumnManager { get; }
+
         protected AccountBaseViewModel(
             IAccount account,
             Lazy<IAccountViewModelService> accountViewModelService,
@@ -162,7 +165,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             IBackendCultureManager cultureManager,
             Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
             Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory,
-            Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory) : base(account, schedulerProvider)
+            Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
+            IAccountModuleColumnManager accountModuleColumnManager) : base(account, schedulerProvider)
         {
             _account = account;
             _accountViewModelService = accountViewModelService;
@@ -171,6 +175,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             _transactionViewModelFactory = transactionViewModelFactory;
             _parentTransactionViewModelFactory = parentTransactionViewModelFactory;
             _transferViewModelFactory = transferViewModelFactory;
+            AccountModuleColumnManager = accountModuleColumnManager;
 
             cultureManager.RefreshSignal.Subscribe(message =>
             {

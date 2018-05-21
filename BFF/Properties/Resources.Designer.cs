@@ -1197,6 +1197,24 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Check Numbers.
+        /// </summary>
+        public static string Settings_ShowCheckNumbers {
+            get {
+                return ResourceManager.GetString("Settings_ShowCheckNumbers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Flags.
+        /// </summary>
+        public static string Settings_ShowFlags {
+            get {
+                return ResourceManager.GetString("Settings_ShowFlags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Theme.
         /// </summary>
         public static string Settings_Theme {

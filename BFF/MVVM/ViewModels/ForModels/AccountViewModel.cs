@@ -79,6 +79,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IRxSchedulerProvider schedulerProvider,
             IBackendCultureManager cultureManager,
             IBffChildWindowManager childWindowManager,
+            IAccountModuleColumnManager accountModuleColumnManager,
             Func<Action<IList<ICsvBankStatementImportItemViewModel>>, IImportCsvBankStatementViewModel> importCsvBankStatementFactory,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             Func<IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
@@ -95,7 +96,8 @@ namespace BFF.MVVM.ViewModels.ForModels
                 cultureManager,
                 dependingTransactionViewModelFactory, 
                 dependingParentTransactionViewModelFactory,
-                dependingTransferViewModelFactory)
+                dependingTransferViewModelFactory,
+                accountModuleColumnManager)
         {
             _account = account;
             _transRepository = transRepository;

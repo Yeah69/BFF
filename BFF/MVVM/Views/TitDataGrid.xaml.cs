@@ -173,6 +173,32 @@ namespace BFF.MVVM.Views
             set => SetValue(ImportCsvBankStatementProperty, value);
         }
 
+        public static readonly DependencyProperty ShowFlagsProperty = DependencyProperty.Register(
+            nameof(ShowFlags),
+            typeof(bool),
+            typeof(TitDataGrid),
+            new PropertyMetadata(defaultValue: true));
+
+        public static readonly DependencyProperty ShowCheckNumbersProperty = DependencyProperty.Register(
+            nameof(ShowCheckNumbers),
+            typeof(bool),
+            typeof(TitDataGrid),
+            new PropertyMetadata(defaultValue: true));
+
+        
+
+        public bool ShowCheckNumbers
+        {
+            get => (bool) GetValue(ShowCheckNumbersProperty);
+            set => SetValue(ShowCheckNumbersProperty, value);
+        }
+
+        public bool ShowFlags
+        {
+            get => (bool) GetValue(ShowFlagsProperty);
+            set => SetValue(ShowFlagsProperty, value);
+        }
+
         #endregion
 
 

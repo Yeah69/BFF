@@ -62,6 +62,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public sealed class ParentTransactionViewModel : TransactionBaseViewModel, IParentTransactionViewModel
     {
+        public IAccountModuleColumnManager AccountModuleColumnManager { get; }
         private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
         private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
 
@@ -80,6 +81,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IParentTransactionFlyoutManager parentTransactionFlyoutManager,
             IFlagViewModelService flagViewModelService,
             IAccountViewModelService accountViewModelService,
+            IAccountModuleColumnManager accountModuleColumnManager,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ILastSetDate lastSetDate,
             IRxSchedulerProvider schedulerProvider,
@@ -98,6 +100,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 flagViewModelService,
                 owner)
         {
+            AccountModuleColumnManager = accountModuleColumnManager;
             _newTransactions = new ObservableCollection<ISubTransactionViewModel>();
             NewSubElements = new ReadOnlyObservableCollection<ISubTransactionViewModel>(_newTransactions);
 

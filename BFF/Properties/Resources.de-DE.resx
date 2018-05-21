@@ -497,6 +497,12 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="Settings_Language" xml:space="preserve">
     <value>Sprache</value>
   </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Zeige Schecknummern</value>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Zeige Markierungen</value>
+  </data>
   <data name="Settings_Theme" xml:space="preserve">
     <value>Thema</value>
   </data>

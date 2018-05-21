@@ -23,6 +23,12 @@
 
             <mvvm:BindingProxy x:Key="AccountColumnVisibility"
                                Data="{Binding AccountViewModel, ElementName=Root, Converter={x:Static mvvm:Converters.OfTypeToCollapsed}, ConverterParameter={x:Type forModels:IAccountViewModel}}" />
+
+            <mvvm:BindingProxy x:Key="FlagColumnVisibility"
+                               Data="{Binding ShowFlags, ElementName=Root, Converter={x:Static mvvm:Converters.FalseToCollapsed}}" />
+
+            <mvvm:BindingProxy x:Key="CheckNumberColumnVisibility"
+                               Data="{Binding ShowCheckNumbers, ElementName=Root, Converter={x:Static mvvm:Converters.FalseToCollapsed}}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot"
@@ -72,12 +78,14 @@
                                         SortMemberPath="Date.Value" />
                 <!--  Flag  -->
                 <DataGridTemplateColumn x:Name="FlagColumn"
+                                        Visibility="{Binding Data, Source={StaticResource FlagColumnVisibility}}"
                                         CellEditingTemplate="{StaticResource FlagEditingColumnTemplate}"
                                         CellTemplate="{StaticResource FlagColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Flag}"
                                         SortMemberPath="Flag.Value" />
                 <!--  CheckNumber  -->
                 <DataGridTemplateColumn x:Name="CheckNumberColumn"
+                                        Visibility="{Binding Data, Source={StaticResource CheckNumberColumnVisibility}}"
                                         CellEditingTemplate="{StaticResource CheckNumberEditingColumnTemplate}"
                                         CellTemplate="{StaticResource CheckNumberColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_CheckNumber}"
@@ -140,10 +148,12 @@
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference DateColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource DateEditingColumnTemplate}" />
                     <!--  Flag  -->
-                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference FlagColumn}, Mode=TwoWay}"
+                    <DataGridTemplateColumn Visibility="{Binding Data, Source={StaticResource FlagColumnVisibility}}"
+                                            Width="{Binding Width, Source={x:Reference FlagColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource FlagEditingColumnTemplate}" />
                     <!--  CheckNumber  -->
-                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CheckNumberColumn}, Mode=TwoWay}"
+                    <DataGridTemplateColumn Visibility="{Binding Data, Source={StaticResource CheckNumberColumnVisibility}}"
+                                            Width="{Binding Width, Source={x:Reference CheckNumberColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource CheckNumberEditingColumnTemplate}" />
                     <!--  Payee  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference PayeeColumn}, Mode=TwoWay}"

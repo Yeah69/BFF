@@ -31,6 +31,8 @@
                            NewTransList="{Binding NewTransList}"
                            NewTransactionCommand="{Binding NewTransactionCommand}"
                            NewTransferCommand="{Binding NewTransferCommand}"
+                           ShowCheckNumbers="{Binding AccountModuleColumnManager.ShowCheckNumbers.Value}"
+                           ShowFlags="{Binding AccountModuleColumnManager.ShowFlags.Value}"
                            TransList="{Binding Tits}" />
         <!--  "Status bar"  -->
         <StackPanel Grid.Row="1"

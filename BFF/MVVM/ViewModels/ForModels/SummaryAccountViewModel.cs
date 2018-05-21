@@ -56,6 +56,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Func<ITransLikeViewModelPlaceholder> placeholderFactory,
             IRxSchedulerProvider schedulerProvider,
             IBackendCultureManager cultureManager,
+            IAccountModuleColumnManager accountModuleColumnManager,
             Func<IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
             Func<IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
             Func<IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionFactory,
@@ -70,7 +71,8 @@ namespace BFF.MVVM.ViewModels.ForModels
                 cultureManager,
                 dependingTransactionViewModelFactory, 
                 dependingParentTransactionViewModelFactory,
-                dependingTransferViewModelFactory)
+                dependingTransferViewModelFactory,
+                accountModuleColumnManager)
         {
             _service = service;
             _transRepository = transRepository;

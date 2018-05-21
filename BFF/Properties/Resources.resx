@@ -497,6 +497,12 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Settings_Language" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Show Check Numbers</value>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Show Flags</value>
+  </data>
   <data name="Settings_Theme" xml:space="preserve">
     <value>Theme</value>
   </data>
