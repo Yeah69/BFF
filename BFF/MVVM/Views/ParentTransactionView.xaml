@@ -146,6 +146,7 @@
                         <DataGrid HeadersVisibility="None"
                                   HorizontalScrollBarVisibility="Hidden"
                                   ItemsSource="{Binding NewSubElements}"
+                                  LoadingRow="NewSubTransactionsDataGrid_OnLoadingRow"
                                   RowStyle="{StaticResource DefaultNewRowStyle}">
                             <DataGrid.Columns>
                                 <!--  Category  -->

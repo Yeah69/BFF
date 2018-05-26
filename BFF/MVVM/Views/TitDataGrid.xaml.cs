@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using BFF.DB;
+using BFF.Helper.Extensions;
+using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using MahApps.Metro.Controls;
 
 namespace BFF.MVVM.Views
 {
@@ -252,6 +256,20 @@ namespace BFF.MVVM.Views
                 ScrollViewer scrollViewer = (ScrollViewer)VisualTreeHelper.GetChild(border, 0);
                 scrollViewer.ScrollToBottom();
             }
+        }
+
+        private void NewEntriesDataGrid_OnLoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            void OnLoaded(object _, RoutedEventArgs __)
+            {
+                var dataGridCell = e.Row.GetCell(e.Row.DataContext is ITransferViewModel ? 2 : 1);
+                dataGridCell.Focus();
+                Keyboard.Focus(dataGridCell);
+                dataGridCell.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                e.Row.Loaded -= OnLoaded;
+            }
+
+            e.Row.Loaded += OnLoaded;
         }
     }
 }

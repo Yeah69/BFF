@@ -135,6 +135,7 @@
                       HeadersVisibility="None"
                       HorizontalScrollBarVisibility="Hidden"
                       ItemsSource="{Binding NewTransList}"
+                      LoadingRow="NewEntriesDataGrid_OnLoadingRow" 
                       RowStyle="{StaticResource DefaultNewRowStyle}">
                 <DataGrid.Columns>
                     <!--  Symbol  -->

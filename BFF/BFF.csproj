@@ -297,6 +297,7 @@
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
     <Compile Include="DB\SQLite\DapperCrudOrm.cs" />
     <Compile Include="EmptyContext.cs" />
+    <Compile Include="Helper\Extensions\DataGridRowExtensions.cs" />
     <Compile Include="Helper\Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Helper\Extensions\DisposableExtensions.cs" />
     <Compile Include="Helper\Extensions\EnumerableExtensions.cs" />
