@@ -18,6 +18,9 @@ namespace BFF.MVVM.Views
     /// </summary>
     public partial class ColorPickerView
     {
+        private static readonly IScheduler
+            DispatcherScheduler = new DispatcherScheduler(Application.Current.Dispatcher);
+
         private static readonly DependencyProperty RedProperty = DependencyProperty.Register(
             nameof(Red),
             typeof(byte),
@@ -459,11 +462,11 @@ namespace BFF.MVVM.Views
         }
 
         private IObservable<EventPattern<MouseEventArgs>> ObserveMouseMoveUntilMouseUp() =>
-            Observable.FromEventPattern<MouseEventArgs>(Application.Current.MainWindow, "MouseMove")
+            Observable.FromEventPattern<MouseEventArgs>(Application.Current.MainWindow, nameof(Window.MouseMove))
                 .SubscribeOn(NewThreadScheduler.Default)
-                .TakeUntil(Observable.FromEventPattern<MouseButtonEventArgs>(Application.Current.MainWindow, "MouseUp"))
+                .TakeUntil(Observable.FromEventPattern<MouseButtonEventArgs>(Application.Current.MainWindow, nameof(Window.MouseUp)))
                 .Sample(TimeSpan.FromMilliseconds(20))
-                .ObserveOn(new DispatcherScheduler(Application.Current.Dispatcher));
+                .ObserveOn(DispatcherScheduler);
 
         private void Preview_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {

@@ -6,7 +6,6 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB.Dapper.ModelRepositories;
@@ -203,7 +202,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                     "Account_Delete_ConfirmationMessage".Localize(),
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
-                .ObserveOn(Dispatcher.CurrentDispatcher)
+                .ObserveOn(_schedulerProvider.UI)
                 .Subscribe(r =>
                 {
                     if (r == BffMessageDialogResult.Affirmative)

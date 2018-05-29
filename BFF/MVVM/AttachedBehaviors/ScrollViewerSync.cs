@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
@@ -15,6 +16,9 @@ namespace BFF.MVVM.AttachedBehaviors
     {
         private static readonly IDictionary<string, IList<ScrollViewer>> GroupNameToScrollViewers = new Dictionary<string, IList<ScrollViewer>>();
         private static readonly IDictionary<string, double> GroupNameToScrollPosition = new Dictionary<string, double>();
+
+        private static readonly IScheduler
+            DispatcherScheduler = new DispatcherScheduler(Application.Current.Dispatcher);
 
         public static readonly DependencyProperty GroupNameProperty = DependencyProperty.Register(
             nameof(GroupName),
@@ -69,8 +73,8 @@ namespace BFF.MVVM.AttachedBehaviors
                     GroupNameToScrollViewers[GroupName].Add(_associatedScrollViewer);
                 _associatedScrollViewer.ScrollToVerticalOffset(GroupNameToScrollPosition[GroupName]);
 
-                Observable.FromEventPattern<ScrollChangedEventArgs>(_associatedScrollViewer, "ScrollChanged")
-                    .ObserveOn(Dispatcher)
+                Observable.FromEventPattern<ScrollChangedEventArgs>(_associatedScrollViewer, nameof(ScrollViewer.ScrollChanged))
+                    .ObserveOn(DispatcherScheduler)
                     .Subscribe(ep =>
                     {
                         if (GroupName != null
