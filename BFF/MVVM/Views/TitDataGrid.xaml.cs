@@ -262,10 +262,13 @@ namespace BFF.MVVM.Views
         {
             void OnLoaded(object _, RoutedEventArgs __)
             {
-                var dataGridCell = e.Row.GetCell(e.Row.DataContext is ITransferViewModel ? 2 : 1);
-                dataGridCell.Focus();
-                Keyboard.Focus(dataGridCell);
-                dataGridCell.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                // First column (symbol) isn't editable for any Trans-Type, second column (account) isn't editable for transfers
+                int offset = e.Row.DataContext is ITransferViewModel ? 2 : 1;
+                DataGridCell cell;
+                while ((cell = e.Row.GetCell(offset++)) is null) { }  // Collapsed columns are null
+                cell.Focus();
+                Keyboard.Focus(cell);
+                cell.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
                 e.Row.Loaded -= OnLoaded;
             }
 

@@ -16,10 +16,12 @@ namespace BFF.MVVM.Views
         {
             void OnLoaded(object _, RoutedEventArgs __)
             {
-                var dataGridCell = e.Row.GetCell(0);
-                dataGridCell.Focus();
-                Keyboard.Focus(dataGridCell);
-                dataGridCell.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                int offset = 0;
+                DataGridCell cell;
+                while ((cell = e.Row.GetCell(offset++)) is null) { } // Collapsed columns are null
+                cell.Focus();
+                Keyboard.Focus(cell);
+                cell.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
                 e.Row.Loaded -= OnLoaded;
             }
 
