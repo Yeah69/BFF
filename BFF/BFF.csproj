@@ -409,7 +409,6 @@
     <Compile Include="MVVM\ViewModels\SessionViewModelBase.cs" />
     <Compile Include="MVVM\AttachedBehaviors\AdditionalTabItemsBehavior.cs" />
     <Compile Include="MVVM\Messages.cs" />
-    <Compile Include="MVVM\Messenger.cs" />
     <Compile Include="MVVM\Views\AccountTabsView.xaml.cs">
       <DependentUpon>AccountTabsView.xaml</DependentUpon>
     </Compile>

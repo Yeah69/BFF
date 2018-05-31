@@ -4,12 +4,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
+using BFF.DB;
 using BFF.DB.Dapper;
 using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper;
 using BFF.MVVM.Managers;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
@@ -30,9 +33,11 @@ namespace BFF.MVVM.ViewModels
         ReactiveCommand IncreaseMonthStartIndex { get; }
 
         ReactiveCommand DecreaseMonthStartIndex { get; }
+
+        Task Refresh();
     }
 
-    public class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IDisposable
+    public class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IOncePerBackend, IDisposable
     {
         private static readonly int LastMonthIndex = MonthToIndex(DateTime.MaxValue);
 
@@ -44,7 +49,7 @@ namespace BFF.MVVM.ViewModels
 
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
 
-        public IBudgetMonthViewModel SelectedBudgetMonth { get; }
+        public IBudgetMonthViewModel SelectedBudgetMonth { get; private set; }
 
         public int SelectedIndex
         {
@@ -68,7 +73,7 @@ namespace BFF.MVVM.ViewModels
         public BudgetOverviewViewModel(
             IBudgetMonthRepository budgetMonthRepository,
             IBudgetEntryViewModelService budgetEntryViewModelService,
-            IBackendCultureManager cultureManager,
+            ICultureManager cultureManager,
             ICategoryViewModelService categoryViewModelService,
             ICategoryRepository categoryRepository)
         {
@@ -115,26 +120,9 @@ namespace BFF.MVVM.ViewModels
                         throw new InvalidEnumArgumentException();
                 }
             }).AddTo(_compositeDisposable);
-
-            Messenger.Default.Register<BudgetOverviewMessage>(this, message =>
-            {
-                switch (message)
-                {
-                    case BudgetOverviewMessage.Refresh:
-                        Task.Factory.StartNew(Refresh);
-                        break;
-                    default:
-                        throw new InvalidEnumArgumentException();
-                }
-            });
-
-            Disposable.Create(() =>
-            {
-                Messenger.Default.Unregister<BudgetOverviewMessage>(this);
-            }).AddTo(_compositeDisposable);
         }
 
-        private async Task Refresh()
+        public async Task Refresh()
         {
             BudgetMonths = await Task.Run(() => CreateBudgetMonths());
             OnPropertyChanged(nameof(BudgetMonths));

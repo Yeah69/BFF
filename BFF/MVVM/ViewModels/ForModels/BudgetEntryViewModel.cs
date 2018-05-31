@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
@@ -31,7 +32,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IReadOnlyReactiveProperty<long> Balance { get; }
 
         public BudgetEntryViewModel(
-            IBudgetEntry budgetEntry, 
+            IBudgetEntry budgetEntry,
+            Lazy<IBudgetOverviewViewModel> budgetOverviewViewModel,
             ICategoryViewModelService categoryViewModelService,
             IRxSchedulerProvider schedulerProvider) : base(budgetEntry, schedulerProvider)
         {
@@ -51,7 +53,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .AddTo(CompositeDisposable);
 
             Budget
-                .Subscribe(l => Messenger.Default.Send(BudgetOverviewMessage.Refresh))
+                .Subscribe(async _ => await Task.Factory.StartNew(budgetOverviewViewModel.Value.Refresh))
                 .AddTo(CompositeDisposable);
 
             Outflow = budgetEntry
