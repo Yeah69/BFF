@@ -37,7 +37,6 @@ namespace BFF.MVVM.ViewModels
         ICultureManager CultureManager { get; }
         bool IsEmpty { get; }
         CultureInfo LanguageCulture { get; set; }
-        bool DateLong { get; set; }
         IReadOnlyReactiveProperty<IParentTransactionViewModel> OpenParentTransaction { get; }
         bool ParentTitFlyoutOpen { get; set; }
         double Width { get; set; }
@@ -51,7 +50,6 @@ namespace BFF.MVVM.ViewModels
     {
         private readonly Func<Owned<Func<string, ISqLiteBackendContext>>> _sqliteBackendContextFactory;
         private readonly Func<Owned<Func<IEmptyContext>>> _emptyContextFactory;
-        private readonly IParentTransactionFlyoutManager _parentTransactionFlyoutManager;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
         protected bool FileFlyoutIsOpen;
@@ -176,19 +174,6 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        //todo: put DateLong into Database, too?
-        public bool DateLong
-        {
-            get => Settings.Default.Culture_DefaultDateLong;
-            set
-            {
-                Settings.Default.Culture_DefaultDateLong = value;
-                //_accountTabsViewModel?.ManageCultures(); TODO RefreshDate in CultureManger
-                Messenger.Default.Send(CultureMessage.RefreshDate);
-                OnPropertyChanged();
-            }
-        }
-
         private const double BorderOffset = 50.0;
 
         private IParentTransactionViewModel _parentTitViewModel;
@@ -238,7 +223,6 @@ namespace BFF.MVVM.ViewModels
             EmptyViewModel = emptyViewModel;
             _sqliteBackendContextFactory = sqliteBackendContextFactory;
             _emptyContextFactory = emptyContextFactory;
-            _parentTransactionFlyoutManager = parentTransactionFlyoutManager;
             Logger.Debug("Initializing …");
             Reset(Settings.Default.DBLocation);
 

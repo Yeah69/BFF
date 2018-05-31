@@ -21,6 +21,8 @@ namespace BFF.MVVM.Managers
         CultureInfo CurrencyCulture { get; set; }
 
         CultureInfo DateCulture { get; set; }
+
+        bool ShowLongDate { get; set; }
     }
 
     public abstract class CultureManagerBase : ObservableObject, ICultureManager, IOncePerBackend, IDisposable
@@ -53,6 +55,19 @@ namespace BFF.MVVM.Managers
             {
                 Settings.Default.Culture_SessionDate = value;
                 ManageCultures();
+                RefreshDate();
+                OnPropertyChanged();
+            }
+        }
+
+        //todo: put DateLong into ShowLongDate, too?
+        public bool ShowLongDate
+        {
+            get => Settings.Default.Culture_DefaultDateLong;
+            set
+            {
+                Settings.Default.Culture_DefaultDateLong = value;
+                Settings.Default.Save();
                 RefreshDate();
                 OnPropertyChanged();
             }

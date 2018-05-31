@@ -21,7 +21,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
 
         ReactiveCommand DismissDate { get; }
 
-        bool IsDateFormatLong { get; }
+        bool ShowLongDate { get; }
 
         IReactiveProperty<string> Payee { get; }
 
@@ -159,7 +159,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
         public ReactiveCommand AdmitSum { get; }
         public ReactiveCommand DismissSum { get; }
 
-        public bool IsDateFormatLong => Settings.Default.Culture_DefaultDateLong;
+        public bool ShowLongDate => Settings.Default.Culture_DefaultDateLong;
 
         public void Dispose()
         {

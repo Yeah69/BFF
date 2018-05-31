@@ -74,7 +74,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         ReactiveCommand ImportCsvBankStatement { get; }
 
-        bool IsDateFormatLong { get; }
+        bool ShowLongDate { get; }
 
         IAccountModuleColumnManager AccountModuleColumnManager { get; }
         /// <summary>
@@ -156,7 +156,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Indicates if the date format should be display in short or long fashion.
         /// </summary>
-        public bool IsDateFormatLong => Settings.Default.Culture_DefaultDateLong;
+        public bool ShowLongDate => Settings.Default.Culture_DefaultDateLong;
 
         public IAccountModuleColumnManager AccountModuleColumnManager { get; }
 
@@ -196,7 +196,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                         RefreshTits();
                         break;
                     case CultureMessage.RefreshDate:
-                        OnPropertyChanged(nameof(IsDateFormatLong));
+                        OnPropertyChanged(nameof(ShowLongDate));
                         RefreshTits();
                         break;
                     default:

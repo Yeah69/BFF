@@ -26,7 +26,7 @@
                            ApplyCommand="{Binding ApplyCommand}"
                            ImportCsvBankStatement="{Binding ImportCsvBankStatement}"
                            ImportCsvBankStatementVisibility="{Binding Converter={x:Static mvvm:Converters.NotOfTypeToCollapsed}, ConverterParameter={x:Type forModels:IImportCsvBankStatement}}"
-                           IsDateLong="{Binding IsDateFormatLong}"
+                           IsDateLong="{Binding ShowLongDate}"
                            NewParentTransactionCommand="{Binding NewParentTransactionCommand}"
                            NewTransList="{Binding NewTransList}"
                            NewTransactionCommand="{Binding NewTransactionCommand}"

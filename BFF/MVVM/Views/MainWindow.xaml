@@ -217,7 +217,7 @@
                               Content="{lex:LocText General_Long,
                                                     Prefix=:}"
                               FlowDirection="RightToLeft"
-                              IsChecked="{Binding DateLong, Mode=TwoWay, Converter={x:Static mvvm:Converters.BooleanToNullableBoolean}}" />
+                              IsChecked="{Binding CultureManager.ShowLongDate, Mode=TwoWay, Converter={x:Static mvvm:Converters.BooleanToNullableBoolean}}" />
                     <Label Content="{lex:LocText Settings_ShowFlags,
                                                  Suffix=:}" />
                     <CheckBox IsChecked="{Binding AccountModuleColumnManager.ShowFlags.Value}" />

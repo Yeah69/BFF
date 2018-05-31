@@ -204,7 +204,7 @@
                                                                     VerticalContentAlignment="Center"
                                                                     DockPanel.Dock="Left"
                                                                     SelectedDate="{Binding Date.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                    SelectedDateFormat="{Binding IsDateFormatLong, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
+                                                                    SelectedDateFormat="{Binding ShowLongDate, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
                                                     </DockPanel>
                                                 </DataTemplate>
                                             </Setter.Value>

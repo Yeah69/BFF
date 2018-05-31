@@ -26,7 +26,7 @@ namespace BFF.MVVM.ViewModels
 
         IReactiveProperty<DateTime> StartingDate { get; }
 
-        bool IsDateFormatLong { get; }
+        bool ShowLongDate { get; }
 
         /// <summary>
         /// Creates a new Account.
@@ -91,7 +91,7 @@ namespace BFF.MVVM.ViewModels
                     case CultureMessage.RefreshCurrency:
                     case CultureMessage.RefreshDate:
                         StartingDate.Value = StartingDate.Value;
-                        OnPropertyChanged(nameof(IsDateFormatLong));
+                        OnPropertyChanged(nameof(ShowLongDate));
                         StartingBalance.Value = StartingBalance.Value;
                         break;
                     default:
@@ -112,7 +112,7 @@ namespace BFF.MVVM.ViewModels
         /// <summary>
         /// Indicates if the date format should be display in short or long fashion.
         /// </summary>
-        public bool IsDateFormatLong => Settings.Default.Culture_DefaultDateLong;
+        public bool ShowLongDate => Settings.Default.Culture_DefaultDateLong;
 
         /// <summary>
         /// Creates a new Payee.

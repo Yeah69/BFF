@@ -34,7 +34,7 @@
                                      Suffix=:}" />
         <DatePicker x:Name="NewAccountDatePicker"
                     SelectedDate="{Binding StartingDate.Value}"
-                    SelectedDateFormat="{Binding IsDateFormatLong, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
+                    SelectedDateFormat="{Binding ShowLongDate, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
         <Button Margin="0,5,0,0"
                 HorizontalAlignment="Right"
                 Command="{Binding AddCommand}"
