@@ -14,6 +14,7 @@ using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
@@ -103,7 +104,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         private readonly Subject<Unit> _refreshBalance = new Subject<Unit>();
         private readonly Subject<Unit> _refreshBalanceUntilNow = new Subject<Unit>();
 
-        protected IDataVirtualizingCollection<ITransLikeViewModel> _tits;
+        private IDataVirtualizingCollection<ITransLikeViewModel> _tits;
 
         /// <summary>
         /// Starting balance of the Account
@@ -113,7 +114,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Lazy loaded collection of TITs belonging to this Account.
         /// </summary>
-        public abstract IDataVirtualizingCollection<ITransLikeViewModel> Tits { get; }
+        public IDataVirtualizingCollection<ITransLikeViewModel> Tits => _tits ?? (_tits = CreateDataVirtualizingCollection());
 
         /// <summary>
         /// Collection of TITs, which are about to be inserted to this Account.
@@ -260,10 +261,26 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             _refreshBalanceUntilNow.OnNext(Unit.Default);
         }
 
-        /// <summary>
-        /// Refreshes the TITs of this Account.
-        /// </summary>
-        public abstract void RefreshTits();
+        public void RefreshTits()
+        {
+            if (IsOpen.Value)
+            {
+                Task.Run(() => CreateDataVirtualizingCollection())
+                    .ContinueWith(async t =>
+                    {
+                        var temp = _tits;
+                        _tits = await t;
+                        _schedulerProvider.UI.MinimalSchedule(() =>
+                        {
+                            OnPreVirtualizedRefresh();
+                            OnPropertyChanged(nameof(Tits));
+                            OnPostVirtualizedRefresh();
+                            Task.Run(() => temp?.Dispose());
+                        });
+
+                    });
+            }
+        }
 
         /// <summary>
         /// Common logic for the Apply-Command.

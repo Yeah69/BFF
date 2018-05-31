@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection.DataAccesses;
-using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
@@ -33,7 +31,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         private readonly Lazy<IAccountViewModelService> _service;
         private readonly ITransRepository _transRepository;
         private readonly Func<ITransLikeViewModelPlaceholder> _placeholderFactory;
-        private readonly IRxSchedulerProvider _schedulerProvider;
 
         /// <summary>
         /// Starting balance of the Account
@@ -75,7 +72,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             _service = service;
             _transRepository = transRepository;
             _placeholderFactory = placeholderFactory;
-            _schedulerProvider = schedulerProvider;
             IsOpen.Value = true;
 
             StartingBalance = new ReactiveProperty<long>().AddTo(CompositeDisposable);
@@ -102,36 +98,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 async (offset, pageSize) => CreatePacket(await _transRepository.GetPageAsync(offset, pageSize, null)),
                 async () => (int) await _transRepository.GetCountAsync(null),
                 () => _placeholderFactory());
-
-        /// <summary>
-        /// Lazy loaded collection of TITs belonging to this Account.
-        /// </summary>
-        public override IDataVirtualizingCollection<ITransLikeViewModel> Tits => _tits ?? (_tits = CreateDataVirtualizingCollection());
         
-        /// <summary>
-        /// Refreshes the TITs of this Account.
-        /// </summary>
-        public override void RefreshTits()
-        {
-            if(IsOpen.Value)
-            {
-                Task.Run(() => CreateDataVirtualizingCollection())
-                    .ContinueWith(async t =>
-                    {
-                        var temp = _tits;
-                        _tits = await t;
-                        _schedulerProvider.UI.MinimalSchedule(() =>
-                        {
-                            OnPreVirtualizedRefresh();
-                            OnPropertyChanged(nameof(Tits));
-                            OnPostVirtualizedRefresh();
-                            Task.Run(() => temp?.Dispose());
-                        });
-
-                    });
-            }
-        }
-
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>

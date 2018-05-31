@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,7 +8,6 @@ using BFF.DB;
 using BFF.Helper.Extensions;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
-using MahApps.Metro.Controls;
 
 namespace BFF.MVVM.Views
 {

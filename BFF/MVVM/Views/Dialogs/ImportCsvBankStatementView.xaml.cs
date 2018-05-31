@@ -1,8 +1,6 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace BFF.MVVM.Views.Dialogs
 {

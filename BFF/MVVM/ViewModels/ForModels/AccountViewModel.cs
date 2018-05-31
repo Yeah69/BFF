@@ -6,7 +6,6 @@ using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection.DataAccesses;
-using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.Helper.Extensions;
@@ -172,35 +171,6 @@ namespace BFF.MVVM.ViewModels.ForModels
                 async (offset, pageSize) => CreatePacket( await _transRepository.GetPageAsync(offset, pageSize, _account)),
                 async () => (int) await _transRepository.GetCountAsync(_account),
                 () => _placeholderFactory());
-
-        /// <summary>
-        /// Lazy loaded collection of TITs belonging to this Account.
-        /// </summary>
-        public override IDataVirtualizingCollection<ITransLikeViewModel> Tits => _tits ?? CreateDataVirtualizingCollection();
-
-        /// <summary>
-        /// Refreshes the TITs of this Account.
-        /// </summary>
-        public override void RefreshTits()
-        {
-            if(IsOpen.Value)
-            {
-                Task.Run(() => CreateDataVirtualizingCollection())
-                    .ContinueWith(async t =>
-                    {
-                        var temp = _tits;
-                        _tits = await t;
-                        _schedulerProvider.UI.MinimalSchedule(() =>
-                        {
-                            OnPreVirtualizedRefresh();
-                            OnPropertyChanged(nameof(Tits));
-                            OnPostVirtualizedRefresh();
-                            Task.Run(() => temp?.Dispose());
-                        });
-                        
-                    });
-            }
-        }
 
         public override Task DeleteAsync()
         {
