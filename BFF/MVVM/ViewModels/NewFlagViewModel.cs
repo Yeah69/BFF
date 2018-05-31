@@ -61,11 +61,11 @@ namespace BFF.MVVM.ViewModels
                     (Text as ReactiveProperty<string>)?.ForceValidate();
                     return !Text.HasErrors;
                 })
-                .Subscribe(_ =>
+                .Subscribe(async _ =>
                 {
                     IFlag newFlag = flagFactory(Brush.Value.Color);
                     newFlag.Name = Text.Value.Trim();
-                    newFlag.InsertAsync();
+                    await newFlag.InsertAsync();
                     if(CurrentOwner != null)
                         CurrentOwner.Flag.Value = _flagViewModelService.GetViewModel(newFlag);
                     CurrentOwner = null;

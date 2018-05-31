@@ -30,6 +30,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             ICategoryBaseViewModelService categoryViewModelService,
             ILastSetDate lastSetDate,
             IRxSchedulerProvider schedulerProvider,
+            ISummaryAccountViewModel summaryAccountViewModel,
             IFlagViewModelService flagViewModelService,
             IAccountBaseViewModel owner)
             : base(
@@ -40,6 +41,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 payeeViewModelService,
                 lastSetDate, 
                 schedulerProvider, 
+                summaryAccountViewModel,
                 flagViewModelService,
                 owner)
         {
@@ -64,7 +66,9 @@ namespace BFF.MVVM.ViewModels.ForModels
                 schedulerProvider.UI,
                 ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
-            Sum.Where(_ => transaction.Id != -1)
+            transaction
+                .ObservePropertyChanges(t => t.Sum)
+                .Where(_ => transaction.Id != -1)
                 .Subscribe(sum => NotifyRelevantAccountsToRefreshBalance())
                 .AddTo(CompositeDisposable);
 

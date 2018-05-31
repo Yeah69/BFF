@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
@@ -25,7 +26,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     public abstract class TransactionBaseViewModel : TransBaseViewModel, ITransactionBaseViewModel
     {
         private readonly IAccountViewModelService _accountViewModelService;
-         
+        private readonly ISummaryAccountViewModel _summaryAccountViewModel;
+
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts => _accountViewModelService.All;
 
         /// <summary>
@@ -48,6 +50,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             IPayeeViewModelService payeeViewModelService,
             ILastSetDate lastSetDate,
             IRxSchedulerProvider schedulerProvider,
+            ISummaryAccountViewModel summaryAccountViewModel,
             IFlagViewModelService flagViewModelService,
             IAccountBaseViewModel owner) 
             : base(
@@ -59,6 +62,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 owner)
         {
             _accountViewModelService = accountViewModelService;
+            _summaryAccountViewModel = summaryAccountViewModel;
 
             void RefreshAnAccountViewModel(IAccountViewModel account)
             {
@@ -80,13 +84,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             if (Account.Value is null && owner is IAccountViewModel specificAccount)
                 Account.Value = specificAccount;
 
-            Account
+            transactionBase
+                .ObservePropertyChanges(tb => tb.Account)
                 .SkipLast(1)
-                .Subscribe(RefreshAnAccountViewModel)
+                .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(a)))
                 .AddTo(CompositeDisposable);
 
-            Account
-                .Subscribe(RefreshAnAccountViewModel)
+            transactionBase
+                .ObservePropertyChanges(tb => tb.Account)
+                .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(a)))
                 .AddTo(CompositeDisposable);
 
             Payee = transactionBase
@@ -105,9 +111,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         public override bool IsInsertable() => base.IsInsertable() && Account.Value.IsNotNull() && Payee.Value.IsNotNull();
 
-        public override void Delete()
+        public override async Task DeleteAsync()
         {
-            base.Delete();
+            await base.DeleteAsync();
             NotifyRelevantAccountsToRefreshTits();
             NotifyRelevantAccountsToRefreshBalance();
         }
@@ -115,13 +121,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         protected override void NotifyRelevantAccountsToRefreshTits()
         {
             Account.Value?.RefreshTits();
-            Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+            _summaryAccountViewModel.RefreshTits();
         }
 
         protected override void NotifyRelevantAccountsToRefreshBalance()
         {
             Account.Value?.RefreshBalance();
-            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+            _summaryAccountViewModel.RefreshBalance();
         }
     }
 }

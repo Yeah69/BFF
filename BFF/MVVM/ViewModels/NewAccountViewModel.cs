@@ -43,6 +43,7 @@ namespace BFF.MVVM.ViewModels
         public NewAccountViewModel(
             Func<IAccount> factory,
             ICultureManager cultureManager,
+            ISummaryAccountViewModel summaryAccountViewModel,
             IAccountViewModelService viewModelService)
         {
             string ValidateName(string text)
@@ -52,7 +53,7 @@ namespace BFF.MVVM.ViewModels
                     ? null 
                     : "ErrorMessageWrongAccountName".Localize();
             }
-
+            
             _viewModelService = viewModelService;
             
             Name = new ReactiveProperty<string>("", ReactivePropertyMode.DistinctUntilChanged)
@@ -71,15 +72,15 @@ namespace BFF.MVVM.ViewModels
                     (Name as ReactiveProperty<string>)?.ForceValidate();
                     return !Name.HasErrors;
                 })
-                .Subscribe(_ =>
+                .Subscribe(async _ =>
                 {
                     IAccount newAccount = factory();
                     newAccount.Name = Name.Value.Trim();
                     newAccount.StartingBalance = StartingBalance.Value;
                     newAccount.StartingDate = StartingDate.Value;
-                    newAccount.InsertAsync();
-                    Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
-                    Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+                    await newAccount.InsertAsync();
+                    summaryAccountViewModel.RefreshStartingBalance();
+                    summaryAccountViewModel.RefreshBalance();
                 }).AddTo(CompositeDisposable);
 
             cultureManager.RefreshSignal.Subscribe(message =>

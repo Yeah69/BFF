@@ -302,6 +302,7 @@
     <Compile Include="Helper\Extensions\DisposableExtensions.cs" />
     <Compile Include="Helper\Extensions\EnumerableExtensions.cs" />
     <Compile Include="Helper\Extensions\GenericExtensions.cs" />
+    <Compile Include="Helper\Extensions\INotifyPropertyChangedExtensions.cs" />
     <Compile Include="Helper\Extensions\LongExtensions.cs" />
     <Compile Include="Helper\Extensions\ObjectExtensions.cs" />
     <Compile Include="Helper\Extensions\PointExtensions.cs" />

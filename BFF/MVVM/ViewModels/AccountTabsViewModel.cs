@@ -40,7 +40,9 @@ namespace BFF.MVVM.ViewModels
         {
             if (isOpen && SummaryAccountViewModel.IsOpen.Value)
             {
-                Messenger.Default.Send(SummaryAccountMessage.Refresh);
+                SummaryAccountViewModel.RefreshTits();
+                SummaryAccountViewModel.RefreshStartingBalance();
+                SummaryAccountViewModel.RefreshBalance();
             }
         }
     }

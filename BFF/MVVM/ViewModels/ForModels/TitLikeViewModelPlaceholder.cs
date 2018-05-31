@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using BFF.Helper;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
@@ -59,14 +60,14 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region Overrides of TransLikeViewModel
 
-        public void Insert()
+        public Task InsertAsync()
         {
             throw new NotImplementedException();
         }
 
         public bool IsInsertable() => false;
 
-        public void Delete()
+        public Task DeleteAsync()
         {
             throw new NotImplementedException();
         }

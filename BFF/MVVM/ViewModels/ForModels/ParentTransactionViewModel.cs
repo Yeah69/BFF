@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using BFF.Helper;
 using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
@@ -85,6 +86,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ILastSetDate lastSetDate,
             IRxSchedulerProvider schedulerProvider,
+            ISummaryAccountViewModel summaryAccountViewModel,
             IPayeeViewModelService payeeViewModelService,
             Func<ISubTransaction> subTransactionFactory,
             Func<ISubTransaction, IAccountBaseViewModel, ISubTransactionViewModel> subTransactionViewModelFactory, 
@@ -97,6 +99,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 payeeViewModelService, 
                 lastSetDate,
                 schedulerProvider,
+                summaryAccountViewModel,
                 flagViewModelService,
                 owner)
         {
@@ -132,11 +135,14 @@ namespace BFF.MVVM.ViewModels.ForModels
                         SumMissingWithoutNewSubs.Value - NewSubElements.Sum(ns => ns.Sum.Value),
                         ReactivePropertyMode.DistinctUntilChanged);
 
-            Sum.Where(_ => parentTransaction.Id != -1L)
+            parentTransaction
+                .SubTransactions
+                .ObserveElementPropertyChanged()
+                .Where(_ => _.EventArgs.PropertyName == nameof(ISubTransaction.Sum) && parentTransaction.Id != -1L)
                 .Subscribe(_ =>
                 {
                     Account.Value?.RefreshBalance();
-                    Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+                    summaryAccountViewModel.RefreshBalance();
                 }).AddTo(CompositeDisposable);
 
             SumEdit = createSumEdit(SumDuringEdit);
@@ -157,7 +163,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 _newTransactions.Add(newSubTransactionViewModel);
             }).AddTo(CompositeDisposable);
 
-            ApplyCommand.Subscribe(_ =>
+            ApplyCommand.Subscribe(async _ =>
             {
                 if (_newTransactions.All(st => st.IsInsertable()))
                 {
@@ -166,11 +172,11 @@ namespace BFF.MVVM.ViewModels.ForModels
                     foreach (ISubTransactionViewModel subTransaction in _newTransactions)
                     {
                         if (parentTransaction.Id > 0L)
-                            subTransaction.Insert();
+                            await subTransaction.InsertAsync();
                     }
                     _newTransactions.Clear();
                     OnPropertyChanged(nameof(Sum));
-                    Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+                    summaryAccountViewModel.RefreshBalance();
                     Account.Value.RefreshBalance();
                 }
                 
@@ -219,13 +225,13 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override ISumEditViewModel SumEdit { get; }
 
-        public override void Delete()
+        public override async Task DeleteAsync()
         {
             var tempList = new List<ISubTransactionViewModel>(SubElements);
             foreach (ISubTransactionViewModel subTransaction in tempList)
-                subTransaction.Delete();
+                await subTransaction.DeleteAsync();
             _newTransactions.Clear();
-            base.Delete();
+            await base.DeleteAsync();
         }
 
 
@@ -251,11 +257,12 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IReadOnlyReactiveProperty<long> SumMissingWithNewSubs { get; }
         public IReadOnlyReactiveProperty<long> TotalSum { get; }
 
-        protected override void OnInsert()
+        public override async Task InsertAsync()
         {
+            await base.InsertAsync();
             foreach (var subTransaction in _newTransactions)
             {
-                subTransaction.Insert();
+                await subTransaction.InsertAsync();
             }
             _newTransactions.Clear();
         }

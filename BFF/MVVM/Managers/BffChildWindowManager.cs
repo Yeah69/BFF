@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BFF.DB;
 using BFF.MVVM.ViewModels.Dialogs;
 using BFF.MVVM.Views;
 using BFF.MVVM.Views.Dialogs;
@@ -12,7 +13,7 @@ namespace BFF.MVVM.Managers
         Task OpenImportCsvBankStatementDialogAsync(IImportCsvBankStatementViewModel dataContext);
     }
 
-    public class BffChildWindowManager : IBffChildWindowManager
+    public class BffChildWindowManager : IBffChildWindowManager, IOncePerApplication
     {
         private readonly Lazy<MainWindow> _lazyMainWindow;
         private readonly Func<IImportCsvBankStatementView> _importCsvBankStatementViewFactory;

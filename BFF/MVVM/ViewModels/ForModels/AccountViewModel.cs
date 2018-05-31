@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
@@ -40,6 +39,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     public class AccountViewModel : AccountBaseViewModel, IAccountViewModel, IImportCsvBankStatement
     {
         private readonly IAccount _account;
+        private readonly ISummaryAccountViewModel _summaryAccountViewModel;
         private readonly ITransRepository _transRepository;
         private readonly Func<ITransLikeViewModelPlaceholder> _placeholderFactory;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
@@ -59,10 +59,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The Orm works in a generic way and determines the right table by the given type.
         /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
         /// </summary>
-        protected override void OnInsert()
+        public override async Task InsertAsync()
         {
-            Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
-            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+            await base.InsertAsync();
+            _summaryAccountViewModel.RefreshStartingBalance();
+            _summaryAccountViewModel.RefreshBalance();
         }
         
         public AccountViewModel(
@@ -99,6 +100,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 accountModuleColumnManager)
         {
             _account = account;
+            _summaryAccountViewModel = summaryAccountViewModel;
             _transRepository = transRepository;
             _placeholderFactory = placeholderFactory;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
@@ -108,8 +110,15 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .ToReactivePropertyAsSynchronized(a => a.StartingBalance, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
             StartingBalanceEdit = createSumEdit(StartingBalance);
-            StartingBalance.Subscribe(_ => summaryAccountViewModel.RefreshStartingBalance())
-                           .AddTo(CompositeDisposable);
+
+            account
+                .ObservePropertyChanges(a => a.StartingBalance)
+                .Subscribe(_ =>
+                {
+                    summaryAccountViewModel.RefreshStartingBalance();
+                    summaryAccountViewModel.RefreshBalance();
+                })
+                .AddTo(CompositeDisposable);
 
             StartingDate = account
                 .ToReactivePropertyAsSynchronized(a => a.StartingDate, ReactivePropertyMode.DistinctUntilChanged)
@@ -125,10 +134,10 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .Select(count => count > 0)
                 .ToReactiveCommand();
 
-            ApplyCommand.Subscribe(_ => ApplyTits()).AddTo(CompositeDisposable);
+            ApplyCommand.Subscribe(async _ => await ApplyTits()).AddTo(CompositeDisposable);
 
-            ImportCsvBankStatement.Subscribe(_ => childWindowManager.OpenImportCsvBankStatementDialogAsync(importCsvBankStatementFactory(
-                items =>
+            ImportCsvBankStatement.Subscribe(async _ => await childWindowManager.OpenImportCsvBankStatementDialogAsync(importCsvBankStatementFactory(
+                async items =>
                 {
                     foreach (var item in items)
                     {
@@ -144,7 +153,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                             {
                                 IPayee newPayee = payeeFactory();
                                 newPayee.Name = item.Payee.Value.Trim();
-                                newPayee.InsertAsync();
+                                await newPayee.InsertAsync();
                                 transactionViewModel.Payee.Value = payeeService.GetViewModel(newPayee);
                             }
                         }
@@ -181,21 +190,21 @@ namespace BFF.MVVM.ViewModels.ForModels
                     {
                         var temp = _tits;
                         _tits = await t;
-                        _schedulerProvider.UI.Schedule(Unit.Default, (sc, st) =>
+                        _schedulerProvider.UI.MinimalSchedule(() =>
                         {
                             OnPreVirtualizedRefresh();
                             OnPropertyChanged(nameof(Tits));
                             OnPostVirtualizedRefresh();
                             Task.Run(() => temp?.Dispose());
-                            return Disposable.Empty;
                         });
                         
                     });
             }
         }
 
-        public override void Delete()
+        public override Task DeleteAsync()
         {
+            TaskCompletionSource<Unit> source = new TaskCompletionSource<Unit>();
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
                     "ConfirmationDialog_Title".Localize(),
@@ -203,18 +212,23 @@ namespace BFF.MVVM.ViewModels.ForModels
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
                 .ObserveOn(_schedulerProvider.UI)
-                .Subscribe(r =>
+                .Subscribe(async r =>
                 {
                     if (r == BffMessageDialogResult.Affirmative)
                     {
-                        base.Delete();
+                        await base.DeleteAsync();
                         foreach (var accountViewModel in AllAccounts)
                         {
                             accountViewModel.RefreshTits();
+                            accountViewModel.RefreshBalance();
                         }
-                        Messenger.Default.Send(SummaryAccountMessage.Refresh);
+                        _summaryAccountViewModel.RefreshStartingBalance();
+                        _summaryAccountViewModel.RefreshBalance();
+                        _summaryAccountViewModel.RefreshTits();
                     }
+                    source.SetResult(Unit.Default);
                 });
+            return source.Task;
         }
         
         public sealed override ReactiveCommand NewTransactionCommand { get; } = new ReactiveCommand();

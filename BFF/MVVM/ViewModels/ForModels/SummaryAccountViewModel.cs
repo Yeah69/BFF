@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reactive;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection.DataAccesses;
@@ -79,31 +77,8 @@ namespace BFF.MVVM.ViewModels.ForModels
             _placeholderFactory = placeholderFactory;
             _schedulerProvider = schedulerProvider;
             IsOpen.Value = true;
-            Messenger.Default.Register<SummaryAccountMessage>(this, message =>
-            {
-                switch (message)
-                {
-                    case SummaryAccountMessage.Refresh:
-                        RefreshTits();
-                        RefreshBalance();
-                        RefreshStartingBalance();
-                        break;
-                    case SummaryAccountMessage.RefreshBalance:
-                        RefreshBalance();
-                        break;
-                    case SummaryAccountMessage.RefreshStartingBalance:
-                        RefreshStartingBalance();
-                        break;
-                    case SummaryAccountMessage.RefreshTits:
-                        RefreshTits();
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
-            });
 
             StartingBalance = new ReactiveProperty<long>().AddTo(CompositeDisposable);
-            //RefreshStartingBalance();
 
             NewTransactionCommand.Subscribe(_ => NewTransList.Add(transactionViewModelFactory(this))).AddTo(CompositeDisposable);
 
@@ -115,11 +90,9 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .Select(count => count > 0)
                 .ToReactiveCommand().AddTo(CompositeDisposable);
 
-            ApplyCommand.Subscribe(_ => ApplyTits()).AddTo(CompositeDisposable);
+            ApplyCommand.Subscribe(async _ => await ApplyTits()).AddTo(CompositeDisposable);
 
             ImportCsvBankStatement = new ReactiveCommand().AddTo(CompositeDisposable);
-
-            Disposable.Create(() => { Messenger.Default.Unregister<SummaryAccountMessage>(this); }).AddTo(CompositeDisposable);
         }
 
         #region ViewModel_Part
@@ -147,13 +120,12 @@ namespace BFF.MVVM.ViewModels.ForModels
                     {
                         var temp = _tits;
                         _tits = await t;
-                        _schedulerProvider.UI.Schedule(Unit.Default, (sc, st) =>
+                        _schedulerProvider.UI.MinimalSchedule(() =>
                         {
                             OnPreVirtualizedRefresh();
                             OnPropertyChanged(nameof(Tits));
                             OnPostVirtualizedRefresh();
                             Task.Run(() => temp?.Dispose());
-                            return Disposable.Empty;
                         });
 
                     });

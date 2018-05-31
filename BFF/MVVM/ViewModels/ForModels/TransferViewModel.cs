@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
@@ -30,6 +31,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     public sealed class TransferViewModel : TransBaseViewModel, ITransferViewModel
     {
         private readonly IAccountViewModelService _accountViewModelService;
+        private readonly ISummaryAccountViewModel _summaryAccountViewModel;
 
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts => _accountViewModelService.All;
 
@@ -55,6 +57,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ILastSetDate lastSetDate,
             IRxSchedulerProvider schedulerProvider,
+            ISummaryAccountViewModel summaryAccountViewModel,
             IFlagViewModelService flagViewModelService,
             IAccountBaseViewModel owner) 
             : base(
@@ -66,6 +69,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 owner)
         {
             _accountViewModelService = accountViewModelService;
+            _summaryAccountViewModel = summaryAccountViewModel;
 
             FromAccount = transfer
                 .ToReactivePropertyAsSynchronized(
@@ -92,26 +96,30 @@ namespace BFF.MVVM.ViewModels.ForModels
             if (FromAccount.Value is null && owner is IAccountViewModel specificAccount)
                 FromAccount.Value = specificAccount;
 
-            FromAccount
+            transfer
+                .ObservePropertyChanges(t => t.FromAccount)
                 .SkipLast(1)
                 .Where(_ => transfer.Id != -1L)
-                .Subscribe(RefreshAnAccountViewModel)
+                .Subscribe(fa => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(fa)))
                 .AddTo(CompositeDisposable);
 
-            FromAccount
+            transfer
+                .ObservePropertyChanges(t => t.FromAccount)
                 .Where(_ => transfer.Id != -1L)
-                .Subscribe(RefreshAnAccountViewModel)
+                .Subscribe(fa => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(fa)))
                 .AddTo(CompositeDisposable);
 
-            ToAccount
+            transfer
+                .ObservePropertyChanges(t => t.ToAccount)
                 .SkipLast(1)
                 .Where(_ => transfer.Id != -1L)
-                .Subscribe(RefreshAnAccountViewModel)
+                .Subscribe(fa => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(fa)))
                 .AddTo(CompositeDisposable);
 
-            ToAccount
+            transfer
+                .ObservePropertyChanges(t => t.ToAccount)
                 .Where(_ => transfer.Id != -1L)
-                .Subscribe(RefreshAnAccountViewModel)
+                .Subscribe(fa => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(fa)))
                 .AddTo(CompositeDisposable);
 
             Sum = transfer.ToReactivePropertyAsSynchronized(
@@ -120,7 +128,9 @@ namespace BFF.MVVM.ViewModels.ForModels
                 s => transfer.Sum = s,
                 schedulerProvider.UI,
                 ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
-            Sum
+
+            transfer
+                .ObservePropertyChanges(t => t.Sum)
                 .Where(_ => transfer.Id != -1L)
                 .Subscribe(sum =>
                 {
@@ -135,27 +145,27 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override bool IsInsertable() => base.IsInsertable() && FromAccount.Value.IsNotNull() && ToAccount.IsNotNull();
 
-        public override void Delete()
+        public override async Task DeleteAsync()
         {
-            base.Delete();
+            await base.DeleteAsync();
             RefreshAnAccountViewModel(FromAccount.Value);
             RefreshAnAccountViewModel(ToAccount.Value);
-            Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
-            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+            _summaryAccountViewModel.RefreshTits();
+            _summaryAccountViewModel.RefreshBalance();
         }
 
         protected override void NotifyRelevantAccountsToRefreshTits()
         {
             FromAccount.Value?.RefreshTits();
             ToAccount.Value?.RefreshTits();
-            Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+            _summaryAccountViewModel.RefreshTits();
         }
 
         protected override void NotifyRelevantAccountsToRefreshBalance()
         {
             FromAccount.Value?.RefreshBalance();
             ToAccount.Value?.RefreshBalance();
-            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+            _summaryAccountViewModel.RefreshBalance();
         }
 
 

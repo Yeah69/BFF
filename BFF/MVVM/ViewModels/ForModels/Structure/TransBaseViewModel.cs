@@ -108,7 +108,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
             Date.Subscribe(dt => lastSetDate.Date = dt).AddTo(CompositeDisposable);
 
-            Date.Where(_ => transBase.Id != -1).Subscribe(_ => NotifyRelevantAccountsToRefreshTits()).AddTo(CompositeDisposable);
+            transBase
+                .ObservePropertyChanges(tb => tb.Date)
+                .Where(_ => transBase.Id != -1)
+                .Subscribe(_ => NotifyRelevantAccountsToRefreshTits())
+                .AddTo(CompositeDisposable);
 
             Cleared = transBase.ToReactivePropertyAsSynchronized(
                 nameof(transBase.Cleared),

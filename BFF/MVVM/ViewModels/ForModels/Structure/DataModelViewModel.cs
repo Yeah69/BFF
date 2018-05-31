@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
@@ -11,11 +12,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
     public interface IDataModelViewModel
     {
-        void Insert();
+        Task InsertAsync();
 
         bool IsInsertable();
         
-        void Delete();
+        Task DeleteAsync();
 
         ReactiveCommand DeleteCommand { get; }
 
@@ -42,24 +43,21 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 .ToReadOnlyReactivePropertySlim(dataModel.Id > 0L, ReactivePropertyMode.DistinctUntilChanged);
 
             DeleteCommand = new ReactiveCommand().AddTo(CompositeDisposable);
-            DeleteCommand.Subscribe(_ => Delete()).AddTo(CompositeDisposable);
+            DeleteCommand.Subscribe(async _ => await DeleteAsync()).AddTo(CompositeDisposable);
         }
         
-        protected virtual void OnInsert() { }
-        
-        public void Insert()
+        public virtual async Task InsertAsync()
         {
-            _dataModel.InsertAsync();
-            OnInsert();
+            await _dataModel.InsertAsync();
         }
 
         public virtual bool IsInsertable() => _dataModel.Id <= 0;
         
         protected virtual void OnUpdate() {}
         
-        public virtual void Delete()
+        public virtual async Task DeleteAsync()
         {
-            _dataModel.DeleteAsync();
+            await _dataModel.DeleteAsync();
         }
 
         public ReactiveCommand DeleteCommand { get; }

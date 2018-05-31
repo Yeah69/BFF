@@ -85,14 +85,14 @@ namespace BFF.MVVM.ViewModels
                     (Name as ReactiveProperty<string>)?.ForceValidate();
                     return !Parent.HasErrors && !Name.HasErrors;
                 })
-                .Subscribe(_ =>
+                .Subscribe(async _ =>
                 {
                     if (IsIncomeRelevant.Value)
                     {
                         IIncomeCategory newCategory = incomeCategoryFactory();
                         newCategory.Name = Name.Value.Trim();
                         newCategory.MonthOffset = MonthOffset.Value;
-                        newCategory.InsertAsync();
+                        await newCategory.InsertAsync();
                         if(CurrentCategoryOwner != null)
                             CurrentCategoryOwner.Category.Value = incomeCategoryViewModelService.GetViewModel(newCategory);
                         CurrentCategoryOwner = null;
@@ -102,7 +102,7 @@ namespace BFF.MVVM.ViewModels
                         ICategory newCategory = categoryFactory(_categoryViewModelService.GetModel(Parent.Value));
                         newCategory.Name = Name.Value.Trim();
                         newCategory.Parent?.AddCategory(newCategory);
-                        newCategory.InsertAsync();
+                        await newCategory.InsertAsync();
                         OnPropertyChanged(nameof(AllPotentialParents));
                         var categoryViewModel = _categoryViewModelService.GetViewModel(newCategory);
                         categoryViewModelInitializer.Initialize(categoryViewModel);

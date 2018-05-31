@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataAccesses;
@@ -89,16 +91,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
         private readonly Lazy<IAccountViewModelService> _accountViewModelService;
-        private readonly IAccountRepository _accountRepository;
         private readonly IRxSchedulerProvider _schedulerProvider;
         private readonly Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> _transactionViewModelFactory;
         private readonly Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> _parentTransactionViewModelFactory;
         private readonly Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> _transferViewModelFactory;
         private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
         private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
-        private readonly IAccount _account;
         private long? _balance = 0;
         private long? _balanceUntilNow = 0;
+
+        private readonly Subject<Unit> _refreshBalance = new Subject<Unit>();
+        private readonly Subject<Unit> _refreshBalanceUntilNow = new Subject<Unit>();
 
         protected IDataVirtualizingCollection<ITransLikeViewModel> _tits;
 
@@ -168,14 +171,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
             IAccountModuleColumnManager accountModuleColumnManager) : base(account, schedulerProvider)
         {
-            _account = account;
             _accountViewModelService = accountViewModelService;
-            _accountRepository = accountRepository;
             _schedulerProvider = schedulerProvider;
             _transactionViewModelFactory = transactionViewModelFactory;
             _parentTransactionViewModelFactory = parentTransactionViewModelFactory;
             _transferViewModelFactory = transferViewModelFactory;
             AccountModuleColumnManager = accountModuleColumnManager;
+
+            _refreshBalance.AddTo(CompositeDisposable);
+            _refreshBalanceUntilNow.AddTo(CompositeDisposable);
 
             cultureManager.RefreshSignal.Subscribe(message =>
             {
@@ -217,7 +221,29 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     .Take(1)
                     .Subscribe(_ => NewTransList.Remove(t))
                     .AddTo(_currentRemoveRequestSubscriptions);
-            });
+            }).AddTo(CompositeDisposable);
+
+            _refreshBalance
+                .ObserveOn(schedulerProvider.Task)
+                .Where(_ => IsOpen.Value)
+                .SelectMany(_ => accountRepository.GetBalanceAsync(account))
+                .ObserveOn(schedulerProvider.UI)
+                .Subscribe(b =>
+                {
+                    _balance = b;
+                    OnPropertyChanged(nameof(Balance));
+                }).AddTo(CompositeDisposable);
+
+            _refreshBalanceUntilNow
+                .ObserveOn(schedulerProvider.Task)
+                .Where(_ => IsOpen.Value)
+                .SelectMany(_ => accountRepository.GetBalanceUntilNowAsync(account))
+                .ObserveOn(schedulerProvider.UI)
+                .Subscribe(bun =>
+                {
+                    _balanceUntilNow = bun;
+                    OnPropertyChanged(nameof(BalanceUntilNow));
+                }).AddTo(CompositeDisposable);
 
             Disposable.Create(() =>
             {
@@ -230,21 +256,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public void RefreshBalance()
         {
-            if (IsOpen.Value)
-            {
-                Task.Run(() => _accountRepository.GetBalanceAsync(_account))
-                    .ContinueWith(async t =>
-                    {
-                        _balance = await t;
-                        OnPropertyChanged(nameof(Balance));
-                    });
-                Task.Run(() => _accountRepository.GetBalanceUntilNowAsync(_account))
-                    .ContinueWith(async t =>
-                    {
-                        _balanceUntilNow = await t;
-                        OnPropertyChanged(nameof(BalanceUntilNow));
-                    });
-            }
+            _refreshBalance.OnNext(Unit.Default);
+            _refreshBalanceUntilNow.OnNext(Unit.Default);
         }
 
         /// <summary>
@@ -255,7 +268,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Common logic for the Apply-Command.
         /// </summary>
-        protected void ApplyTits()
+        protected async Task ApplyTits()
         {
             if (NewTransList.All(t => t.IsInsertable()))
             {
@@ -264,7 +277,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 List<ITransLikeViewModel> insertTits = NewTransList.ToList();
                 foreach (ITransLikeViewModel tit in insertTits)
                 {
-                    tit.Insert();
+                    await tit.InsertAsync();
                     NewTransList.Remove(tit);
                 }
                 
