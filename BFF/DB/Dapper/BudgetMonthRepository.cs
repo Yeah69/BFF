@@ -37,27 +37,18 @@ namespace BFF.DB.Dapper
 
         public async Task<IList<IBudgetMonth>> FindAsync(DateTime fromMonth, DateTime toMonth)
         {
-            DateTime actualFromMonth = new DateTime(
-                fromMonth.Month == 1 ? fromMonth.Year - 1 : fromMonth.Year,
-                fromMonth.Month == 1 ? 12 : fromMonth.Month - 1,
-                1);
-
             var _ = await _budgetOrm.FindAsync(
-                actualFromMonth,
+                fromMonth,
                 toMonth,
                 _categoryRepository.All.Select(c => c.Id).ToArray(),
                 _incomeCategoryRepository.All.Select(ic => (ic.Id, ic.MonthOffset)).ToArray()).ConfigureAwait(false);
 
             long currentNotBudgetedOrOverbudgeted = _.InitialNotBudgetedOrOverbudgeted;
-            long currentOverspentInPreviousMonth = _.BudgetEntriesPerMonth
-                .OrderBy(kvp => kvp.Key)
-                .First()
-                .Value
-                .Where(be => be.Balance < 0).Sum(be => be.Balance);
+            long currentOverspentInPreviousMonth = _.InitialOverspentInPreviousMonth;
 
             var budgetMonths = new List<IBudgetMonth>();
 
-            foreach (var monthWithBudgetEntries in _.BudgetEntriesPerMonth.Skip(1).OrderBy(kvp => kvp.Key))
+            foreach (var monthWithBudgetEntries in _.BudgetEntriesPerMonth.OrderBy(kvp => kvp.Key))
             {
                 var newBudgetMonth =
                     new BudgetMonth(
@@ -81,7 +72,8 @@ namespace BFF.DB.Dapper
                 currentNotBudgetedOrOverbudgeted = newBudgetMonth.AvailableToBudget;
                 currentOverspentInPreviousMonth = monthWithBudgetEntries
                     .Value
-                    .Where(be => be.Balance < 0).Sum(be => be.Balance);
+                    .Where(be => be.Balance < 0)
+                    .Sum(be => be.Balance);
             }
             return budgetMonths;
         }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 using BudgetEntry = BFF.DB.PersistenceModels.BudgetEntry;
@@ -131,13 +132,15 @@ SELECT Total(Sum) FROM
         {
             IDictionary<DateTime, IList<(BudgetEntry Entry, long Outflow, long Balance)>> budgetEntriesPerMonth;
             long initialNotBudgetedOrOverbudgeted;
+            long initialOverspentInPreviousMonth;
             IDictionary<DateTime, long> incomesPerMonth;
             IDictionary<DateTime, long> danglingTransfersPerMonth;
             IDictionary<DateTime, long> unassignedTransactionsPerMonth;
+            DateTime previousMonth = fromMonth.PreviousMonth();
 
             IList<DateTime> monthRange = new List<DateTime>();
 
-            var currentMonth = new DateTime(fromMonth.Year, fromMonth.Month, 01);
+            var currentMonth = new DateTime(fromMonth.Year, fromMonth.Month, 1);
 
             do
             {
@@ -155,6 +158,8 @@ SELECT Total(Sum) FROM
                 connection.Open();
 
                 var budgetEntries = new List<(BudgetEntry Entry, long Outflow, long Balance)>();
+
+                var entryBudgetValuePerCategoryId = new Dictionary<long, long>();
 
                 foreach (var categoryId in categoryIds)
                 {
@@ -184,12 +189,14 @@ SELECT Total(Sum) FROM
 
                     var outflowList = (await outflowTask.ConfigureAwait(false)).ToDictionary(or => new DateTime(or.Month.Year, or.Month.Month, 1), or => or.Sum);
 
-                    var previous = budgetList
+                    var previousMonths = budgetList
                         .Keys
                         .Where(dt => dt < fromMonth)
                         .Concat(outflowList.Keys.Where(dt => dt < fromMonth))
                         .Distinct()
-                        .OrderBy(dt => dt)
+                        .OrderBy(dt => dt).ToList();
+
+                    var previous = previousMonths
                         .Select(dt =>
                         {
                             (long Budget, long Outflow) ret = (0L, 0L);
@@ -200,10 +207,18 @@ SELECT Total(Sum) FROM
                             return ret;
                         });
 
+                    long lastBalanceValue = 0L;
+
                     foreach (var result in previous)
                     {
-                        entryBudgetValue = Math.Max(0L, entryBudgetValue + result.Budget + result.Outflow);
+                        lastBalanceValue = entryBudgetValue + result.Budget + result.Outflow;
+                        entryBudgetValue = Math.Max(0L, lastBalanceValue);
                     }
+
+                    entryBudgetValuePerCategoryId[categoryId] = 
+                        lastBalanceValue < 0 && previousMonths.Last() != previousMonth 
+                            ? 0 
+                            : lastBalanceValue;
 
                     foreach (var month in monthRange)
                     {
@@ -232,6 +247,8 @@ SELECT Total(Sum) FROM
 
                 }
 
+                initialOverspentInPreviousMonth = entryBudgetValuePerCategoryId.Values.Where(s => s < 0).Sum();
+
                 var groupedBudgetEntriesPerMonth = budgetEntries
                     .GroupBy(be => be.Entry.Month).ToDictionary(g => g.Key);
 
@@ -241,17 +258,15 @@ SELECT Total(Sum) FROM
                             ? (IList<(BudgetEntry Entry, long Outflow, long Balance)>)groupedBudgetEntriesPerMonth[m].ToList()
                             : new List<(BudgetEntry Entry, long Outflow, long Balance)>()))
                     .ToDictionary(vt => vt.m, vt => vt.Item2);
-
-                long firstBalance = 0;
-                if (budgetEntriesPerMonth.Any())
-                    firstBalance = budgetEntriesPerMonth[monthRange[0]].Where(be => be.Balance > 0).Sum(be => be.Balance);
+                
+                var firstBalance = entryBudgetValuePerCategoryId.Values.Where(s => s > 0).Sum();
 
                 initialNotBudgetedOrOverbudgeted =
                     await connection.QueryFirstAsync<long?>(NotBudgetedOrOverbudgetedQuery,
                         new
                         {
-                            Year = $"{fromMonth.Year:0000}",
-                            Month = $"{fromMonth.Month:00}"
+                            Year = $"{previousMonth.Year:0000}",
+                            Month = $"{previousMonth.Month:00}"
                         }).ConfigureAwait(false) ?? 0L;
 
                 foreach (var incomeCategory in incomeCategories)
@@ -259,20 +274,19 @@ SELECT Total(Sum) FROM
                     initialNotBudgetedOrOverbudgeted += await connection.QueryFirstAsync<long?>(IncomeForCategoryUntilMonthQuery(incomeCategory.MonthOffset), new
                     {
                         CategoryId = incomeCategory.Id,
-                        Year = $"{fromMonth.Year:0000}",
-                        Month = $"{fromMonth.Month:00}"
+                        Year = $"{previousMonth.Year:0000}",
+                        Month = $"{previousMonth.Month:00}"
                     }).ConfigureAwait(false) ?? 0L;
                 }
 
                 initialNotBudgetedOrOverbudgeted -= firstBalance;
 
-                if (budgetEntriesPerMonth.Any())
-                    initialNotBudgetedOrOverbudgeted -= budgetEntriesPerMonth[monthRange[0]].Where(be => be.Balance < 0).Sum(be => be.Balance);
+                initialNotBudgetedOrOverbudgeted -= initialOverspentInPreviousMonth;
 
                 initialNotBudgetedOrOverbudgeted += await connection.QueryFirstAsync<long?>(DanglingTransferUntilMonthQuery, new
                 {
-                    Year = $"{fromMonth.Year:0000}",
-                    Month = $"{fromMonth.Month:00}"
+                    Year = $"{previousMonth.Year:0000}",
+                    Month = $"{previousMonth.Month:00}"
                 }).ConfigureAwait(false) ?? 0L;
 
                 incomesPerMonth = monthRange
@@ -318,6 +332,7 @@ SELECT Total(Sum) FROM
             {
                 BudgetEntriesPerMonth = budgetEntriesPerMonth,
                 InitialNotBudgetedOrOverbudgeted = initialNotBudgetedOrOverbudgeted,
+                InitialOverspentInPreviousMonth = initialOverspentInPreviousMonth,
                 IncomesPerMonth = incomesPerMonth,
                 DanglingTransfersPerMonth = danglingTransfersPerMonth,
                 UnassignedTransactionsPerMonth = unassignedTransactionsPerMonth
@@ -333,7 +348,14 @@ SELECT Total(Sum) FROM
             set;
         }
 
-        public long InitialNotBudgetedOrOverbudgeted {
+        public long InitialNotBudgetedOrOverbudgeted
+        {
+            get;
+            set;
+        }
+
+        public long InitialOverspentInPreviousMonth
+        {
             get;
             set;
         }
