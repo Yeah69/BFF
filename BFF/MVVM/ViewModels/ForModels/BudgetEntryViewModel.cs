@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
-using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
@@ -15,21 +15,26 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Each SubTransaction can be budgeted to a category.
         /// </summary>
-        IReactiveProperty<ICategoryViewModel> Category { get; }
+        ICategoryViewModel Category { get; }
 
-        IReadOnlyReactiveProperty<DateTime> Month { get; }
-        IReactiveProperty<long> Budget { get; }
-        IReadOnlyReactiveProperty<long> Outflow { get; }
-        IReadOnlyReactiveProperty<long> Balance { get; }
+        DateTime Month { get; }
+        long Budget { get; set; }
+        long Outflow { get; }
+        long Balance { get; }
     }
 
     public class BudgetEntryViewModel : DataModelViewModel, IBudgetEntryViewModel
     {
-        public IReactiveProperty<ICategoryViewModel> Category { get; }
-        public IReadOnlyReactiveProperty<DateTime> Month { get; }
-        public IReactiveProperty<long> Budget { get; }
-        public IReadOnlyReactiveProperty<long> Outflow { get; }
-        public IReadOnlyReactiveProperty<long> Balance { get; }
+        private readonly IBudgetEntry _budgetEntry;
+        public ICategoryViewModel Category { get; private set; }
+        public DateTime Month => _budgetEntry.Month;
+        public long Budget
+        {
+            get => _budgetEntry.Budget;
+            set => _budgetEntry.Budget = value;
+        }
+        public long Outflow => _budgetEntry.Outflow;
+        public long Balance => _budgetEntry.Balance;
 
         public BudgetEntryViewModel(
             IBudgetEntry budgetEntry,
@@ -37,31 +42,41 @@ namespace BFF.MVVM.ViewModels.ForModels
             ICategoryViewModelService categoryViewModelService,
             IRxSchedulerProvider schedulerProvider) : base(budgetEntry, schedulerProvider)
         {
-            Category = budgetEntry
-                .ToReactivePropertyAsSynchronized(
-                    be => be.Category, categoryViewModelService.GetViewModel,
-                    categoryViewModelService.GetModel, 
-                    ReactivePropertyMode.DistinctUntilChanged)
+            _budgetEntry = budgetEntry;
+            Category = categoryViewModelService.GetViewModel(budgetEntry.Category);
+            budgetEntry
+                .ObservePropertyChanges(nameof(IBudgetEntry.Category))
+                .Do(_ => Category = categoryViewModelService.GetViewModel(budgetEntry.Category))
+                .ObserveOn(schedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(Category)))
                 .AddTo(CompositeDisposable);
 
-            Month = budgetEntry
-                .ToReadOnlyReactivePropertyAsSynchronized(be => be.Month, ReactivePropertyMode.DistinctUntilChanged)
+            budgetEntry
+                .ObservePropertyChanges(nameof(IBudgetEntry.Month))
+                .ObserveOn(schedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(Month)))
                 .AddTo(CompositeDisposable);
 
-            Budget = budgetEntry
-                .ToReactivePropertyAsSynchronized(be => be.Budget, ReactivePropertyMode.DistinctUntilChanged)
+            var observeBudgetChanges = budgetEntry.ObservePropertyChanges(nameof(IBudgetEntry.Budget));
+            observeBudgetChanges
+                .ObserveOn(schedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(Budget)))
                 .AddTo(CompositeDisposable);
 
-            Budget
+            observeBudgetChanges
                 .Subscribe(async _ => await Task.Factory.StartNew(budgetOverviewViewModel.Value.Refresh))
                 .AddTo(CompositeDisposable);
 
-            Outflow = budgetEntry
-                .ToReadOnlyReactivePropertyAsSynchronized(be => be.Outflow, ReactivePropertyMode.DistinctUntilChanged)
+            budgetEntry
+                .ObservePropertyChanges(nameof(IBudgetEntry.Outflow))
+                .ObserveOn(schedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(Outflow)))
                 .AddTo(CompositeDisposable);
-
-            Balance = budgetEntry
-                .ToReadOnlyReactivePropertyAsSynchronized(be => be.Balance, ReactivePropertyMode.DistinctUntilChanged)
+            
+            budgetEntry
+                .ObservePropertyChanges(nameof(IBudgetEntry.Balance))
+                .ObserveOn(schedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(Balance)))
                 .AddTo(CompositeDisposable);
         }
     }

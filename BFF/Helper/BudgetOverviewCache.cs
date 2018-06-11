@@ -22,13 +22,14 @@ namespace BFF.Helper
 
     public class BudgetOverviewCache : IBudgetOverviewCache, IOncePerBackend
     {
-        IDictionary<(int Year, int Half), (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted)> _cachedBudgetOverviews = new Dictionary<(int Year, int Half), (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted)>();
+        readonly IDictionary<(int Year, int Half), (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted)> _cachedBudgetOverviews = new Dictionary<(int Year, int Half), (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted)>();
 
         public void TransChangedDate(DateTime date)
         {
             var toRemoves = _cachedBudgetOverviews
                 .Keys
-                .Where(t => t.Year == date.Year && t.Half == 1 ? date.Month <= 6 : date.Month > 6)
+                .Where(t => t.Year == date.Year && (date.Month <= 6 || t.Half == 2)
+                             || t.Year > date.Year)
                 .ToList();
             foreach (var toRemove in toRemoves)
             {

@@ -20,7 +20,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         ReactiveCommand DeleteCommand { get; }
 
-        IReadOnlyReactiveProperty<bool> IsInserted { get; }
+        bool IsInserted { get; }
     }
     
     public abstract class DataModelViewModel : ViewModelBase, IDataModelViewModel, IDisposable
@@ -37,10 +37,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             _dataModel = dataModel;
             _schedulerProvider = schedulerProvider;
 
-            IsInserted = dataModel
-                .ObserveProperty(d => d.Id)
-                .Select(id => id > 0L)
-                .ToReadOnlyReactivePropertySlim(dataModel.Id > 0L, ReactivePropertyMode.DistinctUntilChanged);
+            dataModel
+                .ObservePropertyChanges(nameof(IDataModel.Id))
+                .ObserveOn(schedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(IsInserted)))
+                .AddTo(CompositeDisposable);
 
             DeleteCommand = new ReactiveCommand().AddTo(CompositeDisposable);
             DeleteCommand.Subscribe(async _ => await DeleteAsync()).AddTo(CompositeDisposable);
@@ -61,7 +62,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         }
 
         public ReactiveCommand DeleteCommand { get; }
-        public IReadOnlyReactiveProperty<bool> IsInserted { get; }
+        public bool IsInserted => _dataModel.Id > 0;
 
         public void Dispose() =>
             _schedulerProvider.UI.MinimalSchedule(() => CompositeDisposable.Dispose());

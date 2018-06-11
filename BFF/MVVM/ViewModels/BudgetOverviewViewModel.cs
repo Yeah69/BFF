@@ -11,6 +11,8 @@ using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.DB.Dapper;
 using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Managers;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
@@ -41,13 +43,12 @@ namespace BFF.MVVM.ViewModels
 
         private readonly IBudgetMonthRepository _budgetMonthRepository;
         private readonly IBudgetEntryViewModelService _budgetEntryViewModelService;
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
         private int _selectedIndex;
         public IList<IBudgetMonthViewModel> BudgetMonths { get; private set; }
 
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
-
-        public IBudgetMonthViewModel SelectedBudgetMonth { get; private set; }
 
         public int SelectedIndex
         {
@@ -72,11 +73,13 @@ namespace BFF.MVVM.ViewModels
             IBudgetMonthRepository budgetMonthRepository,
             IBudgetEntryViewModelService budgetEntryViewModelService,
             ICultureManager cultureManager,
+            IRxSchedulerProvider rxSchedulerProvider,
             ICategoryViewModelService categoryViewModelService,
             ICategoryRepository categoryRepository)
         {
             _budgetMonthRepository = budgetMonthRepository;
             _budgetEntryViewModelService = budgetEntryViewModelService;
+            _rxSchedulerProvider = rxSchedulerProvider;
 
             SelectedIndex = -1;
 
@@ -87,7 +90,6 @@ namespace BFF.MVVM.ViewModels
 
             BudgetMonths = CreateBudgetMonths();
             int index = MonthToIndex(DateTime.Now) - 1;
-            SelectedBudgetMonth = BudgetMonths[index];
             CurrentMonthStartIndex = new ReactiveProperty<int>(index);
 
             IncreaseMonthStartIndex = CurrentMonthStartIndex.Select(i => i < LastMonthIndex - 1).ToReactiveCommand()
@@ -123,7 +125,7 @@ namespace BFF.MVVM.ViewModels
         public async Task Refresh()
         {
             BudgetMonths = await Task.Run(() => CreateBudgetMonths());
-            OnPropertyChanged(nameof(BudgetMonths));
+            _rxSchedulerProvider.UI.MinimalSchedule(() => OnPropertyChanged(nameof(BudgetMonths)));
         }
 
         private IDataVirtualizingCollection<IBudgetMonthViewModel> CreateBudgetMonths()
@@ -137,10 +139,10 @@ namespace BFF.MVVM.ViewModels
                             DateTime fromMonth = IndexToMonth(offset);
                             DateTime toMonth = IndexToMonth(offset + pageSize - 1);
 
-                            return (await _budgetMonthRepository.FindAsync(fromMonth, toMonth))
+                            return await Task.Run(async () => (await _budgetMonthRepository.FindAsync(fromMonth, toMonth))
                                 .Select(bm =>
                                     (IBudgetMonthViewModel) new BudgetMonthViewModel(bm, _budgetEntryViewModelService))
-                                .ToArray();
+                                .ToArray()).ConfigureAwait(false);
                         },
                         () =>  Task.FromResult(LastMonthIndex)),
                     pageSize: 6);

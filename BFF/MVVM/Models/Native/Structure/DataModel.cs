@@ -42,7 +42,7 @@ namespace BFF.MVVM.Models.Native.Structure
             await _repository.DeleteAsync(this as T).ConfigureAwait(false);
         }
 
-        protected void UpdateAndNotify([CallerMemberName] string propertyName = "") => 
+        protected Task UpdateAndNotify([CallerMemberName] string propertyName = "") => 
             Task.Run(UpdateAsync).ContinueWith(_ => OnPropertyChanged(propertyName));
     }
 }

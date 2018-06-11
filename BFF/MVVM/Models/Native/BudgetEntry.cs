@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -17,8 +18,10 @@ namespace BFF.MVVM.Models.Native
     public class BudgetEntry : DataModel<IBudgetEntry>, IBudgetEntry
     {
         public BudgetEntry(
-            IWriteOnlyRepository<IBudgetEntry> repository, 
-            long id, DateTime month,
+            IWriteOnlyRepository<IBudgetEntry> repository,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
+            long id, 
+            DateTime month,
             ICategory category = null,
             long budget = 0L,
             long outflow = 0L,
@@ -26,6 +29,7 @@ namespace BFF.MVVM.Models.Native
             : base(repository, id)
         {
             Month = month;
+            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _category = category;
             _budget = budget;
             _outflow = outflow;
@@ -33,7 +37,8 @@ namespace BFF.MVVM.Models.Native
         }
 
         public DateTime Month { get; }
-
+        
+        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private ICategory _category;
 
         public ICategory Category
@@ -61,17 +66,22 @@ namespace BFF.MVVM.Models.Native
                 if (_budget == 0 && Id == -1)
                 {
                     _budget = value;
-                    Task.Run(InsertAsync).ContinueWith(_ => OnPropertyChanged());
+                    Task.Run(InsertAsync)
+                        .ContinueWith(_ => OnPropertyChanged())
+                        .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.TransChangedDate(Month));
                 }
                 else if (_budget != 0 && value == 0 && Id > -1)
                 {
                     _budget = value;
-                    Task.Run(DeleteAsync).ContinueWith(_ => OnPropertyChanged());
+                    Task.Run(DeleteAsync)
+                        .ContinueWith(_ => OnPropertyChanged())
+                        .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.TransChangedDate(Month));
                 }
                 else
                 {
                     _budget = value;
-                    UpdateAndNotify();
+                    UpdateAndNotify()
+                        .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.TransChangedDate(Month));
                 }
             }
         }

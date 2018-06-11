@@ -905,7 +905,7 @@
                             <ContentControl.Style>
                                 <Style TargetType="{x:Type ContentControl}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsInserted.Value}"
+                                        <DataTrigger Binding="{Binding IsInserted}"
                                                      Value="False">
                                             <Setter Property="Content"
                                                     Value="{Binding TotalSum.Value}" />
@@ -1010,7 +1010,7 @@
                             <ContentControl.Style>
                                 <Style TargetType="{x:Type ContentControl}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsInserted.Value}"
+                                        <DataTrigger Binding="{Binding IsInserted}"
                                                      Value="False">
                                             <Setter Property="Content"
                                                     Value="{Binding TotalSum.Value}" />

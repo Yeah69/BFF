@@ -207,28 +207,28 @@
                                                TextAlignment="Right" />
                                     <TextBlock Grid.Row="4"
                                                Grid.Column="0"
+                                               Visibility="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}"
                                                Text="{lex:Loc Budgeting_UnassignedTransactions}"
                                                TextTrimming="CharacterEllipsis"
-                                               ToolTip="{lex:Loc Budgeting_UnassignedTransactionsExplanation}"
-                                               Visibility="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}" />
+                                               ToolTip="{lex:Loc Budgeting_UnassignedTransactionsExplanation}" />
                                     <TextBlock Grid.Row="4"
                                                Grid.Column="1"
+                                               Visibility="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}"
                                                Foreground="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                               TextAlignment="Right"
-                                               Visibility="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}" />
+                                               TextAlignment="Right" />
                                     <TextBlock Grid.Row="5"
                                                Grid.Column="0"
+                                               Visibility="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}"
                                                Text="{lex:Loc Budgeting_OneSidedTransfers}"
                                                TextTrimming="CharacterEllipsis"
-                                               ToolTip="{lex:Loc Budgeting_OneSidedTransfersExplanation}"
-                                               Visibility="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}" />
+                                               ToolTip="{lex:Loc Budgeting_OneSidedTransfersExplanation}" />
                                     <TextBlock Grid.Row="5"
                                                Grid.Column="1"
+                                               Visibility="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}"
                                                Foreground="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
                                                Text="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
-                                               TextAlignment="Right"
-                                               Visibility="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}" />
+                                               TextAlignment="Right" />
                                 </Grid>
                                 <TextBlock Margin="0,5,0,0"
                                            HorizontalAlignment="Center"
@@ -338,7 +338,7 @@
                                 <UniformGrid Columns="3">
                                     <TextBox Height="25"
                                              MinHeight="0"
-                                             Text="{Binding Budget.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                             Text="{Binding Budget, Converter={x:Static mvvm:Converters.SumToString}}"
                                              TextAlignment="Right">
                                         <TextBox.Style>
                                             <Style BasedOn="{StaticResource {x:Type TextBox}}"
@@ -356,7 +356,7 @@
                                                         <Setter Property="IsReadOnly"
                                                                 Value="False" />
                                                     </Trigger>
-                                                    <DataTrigger Binding="{Binding Budget.Value}"
+                                                    <DataTrigger Binding="{Binding Budget}"
                                                                  Value="0">
                                                         <Setter Property="Foreground"
                                                                 Value="{DynamicResource OpaqueZeroBrush}" />
@@ -365,43 +365,43 @@
                                                 <Setter Property="IsReadOnly"
                                                         Value="True" />
                                                 <Setter Property="Foreground"
-                                                        Value="{Binding Budget.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
+                                                        Value="{Binding Budget, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
                                             </Style>
                                         </TextBox.Style>
                                     </TextBox>
                                     <TextBlock VerticalAlignment="Center"
-                                               Text="{Binding Outflow.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               Text="{Binding Outflow, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right">
                                         <TextBlock.Style>
                                             <Style BasedOn="{StaticResource {x:Type TextBlock}}"
                                                    TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Outflow.Value}"
+                                                    <DataTrigger Binding="{Binding Outflow}"
                                                                  Value="0">
                                                         <Setter Property="Foreground"
                                                                 Value="{DynamicResource OpaqueZeroBrush}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                                 <Setter Property="Foreground"
-                                                        Value="{Binding Outflow.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
+                                                        Value="{Binding Outflow, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
                                     <TextBlock VerticalAlignment="Center"
-                                               Text="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               Text="{Binding Balance, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right">
                                         <TextBlock.Style>
                                             <Style BasedOn="{StaticResource {x:Type TextBlock}}"
                                                    TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Balance.Value}"
+                                                    <DataTrigger Binding="{Binding Balance}"
                                                                  Value="0">
                                                         <Setter Property="Foreground"
                                                                 Value="{DynamicResource OpaqueZeroBrush}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                                 <Setter Property="Foreground"
-                                                        Value="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
+                                                        Value="{Binding Balance, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>

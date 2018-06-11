@@ -177,7 +177,7 @@
                                                             Foreground="{DynamicResource BlackColorBrush}"
                                                             Kind="{StaticResource AddIcon}" />
                             </Button>
-                            <Button Visibility="{Binding IsInserted.Value, Converter={x:Static mvvm:Converters.FalseToCollapsed}}"
+                            <Button Visibility="{Binding IsInserted, Converter={x:Static mvvm:Converters.FalseToCollapsed}}"
                                     HorizontalAlignment="Right"
                                     Command="{Binding ApplyCommand}"
                                     ToolTip="Add to the table">

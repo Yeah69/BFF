@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -14,10 +15,16 @@ namespace BFF.DB.Dapper.ModelRepositories
     public sealed class BudgetEntryRepository : WriteOnlyRepositoryBase<Domain.IBudgetEntry, BudgetEntry>, IBudgetEntryRepository
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
 
-        public BudgetEntryRepository(IProvideConnection provideConnection, ICrudOrm crudOrm, ICategoryRepository categoryRepository ) : base(provideConnection, crudOrm)
+        public BudgetEntryRepository(
+            IProvideConnection provideConnection,
+            ICrudOrm crudOrm,
+            ICategoryRepository categoryRepository,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange) : base(provideConnection, crudOrm)
         {
             _categoryRepository = categoryRepository;
+            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
         }
         
         protected override Converter<Domain.IBudgetEntry, BudgetEntry> ConvertToPersistence => domainBudgetEntry => 
@@ -32,7 +39,8 @@ namespace BFF.DB.Dapper.ModelRepositories
         public async Task<Domain.IBudgetEntry> Convert(BudgetEntry budgetEntry, long outflow, long balance)
         {
             return new Domain.BudgetEntry(
-                this, 
+                this,
+                _notifyBudgetOverviewRelevantChange,
                 budgetEntry.Id, 
                 budgetEntry.Month,
                 await _categoryRepository.FindAsync(budgetEntry.CategoryId ?? 0L).ConfigureAwait(false), 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper;
@@ -94,7 +95,19 @@ namespace BFF.DB.SQLite
         private static readonly string BudgetQuery =
             $@"SELECT {nameof(BudgetEntry.Id)}, {nameof(BudgetEntry.CategoryId)}, {nameof(BudgetEntry.Month)}, {nameof(BudgetEntry.Budget)}
   FROM {nameof(BudgetEntry)}s
-  WHERE {nameof(BudgetEntry.CategoryId)} = @CategoryId AND (strftime('%Y', {nameof(BudgetEntry.Month)}) < @Year OR strftime('%Y', {nameof(BudgetEntry.Month)} = @Year AND strftime('%m', {nameof(BudgetEntry.Month)} <= @Month)))
+  WHERE {nameof(BudgetEntry.CategoryId)} = @CategoryId AND (strftime('%Y', {nameof(BudgetEntry.Month)}) < @Year OR strftime('%Y', {nameof(BudgetEntry.Month)}) = @Year AND strftime('%m', {nameof(BudgetEntry.Month)}) <= @Month)
+  ORDER BY {nameof(BudgetEntry.Month)};";
+
+        private static readonly string BudgetFirstHalfQuery =
+            $@"SELECT {nameof(BudgetEntry.Id)}, {nameof(BudgetEntry.CategoryId)}, {nameof(BudgetEntry.Month)}, {nameof(BudgetEntry.Budget)}
+  FROM {nameof(BudgetEntry)}s
+  WHERE {nameof(BudgetEntry.CategoryId)} = @CategoryId AND (strftime('%Y', {nameof(BudgetEntry.Month)}) = @Year AND strftime('%m', {nameof(BudgetEntry.Month)}) <= '06')
+  ORDER BY {nameof(BudgetEntry.Month)};";
+
+        private static readonly string BudgetSecondHalfQuery =
+            $@"SELECT {nameof(BudgetEntry.Id)}, {nameof(BudgetEntry.CategoryId)}, {nameof(BudgetEntry.Month)}, {nameof(BudgetEntry.Budget)}
+  FROM {nameof(BudgetEntry)}s
+  WHERE {nameof(BudgetEntry.CategoryId)} = @CategoryId AND (strftime('%Y', {nameof(BudgetEntry.Month)}) = @Year AND strftime('%m', {nameof(BudgetEntry.Month)}) >= '07')
   ORDER BY {nameof(BudgetEntry.Month)};";
 
         private static readonly string OutflowQuery =
@@ -106,6 +119,32 @@ namespace BFF.DB.SQLite
     (SELECT {nameof(SubTransaction.ParentId)}, {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s WHERE {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} = @CategoryId) subs
       INNER JOIN {nameof(Trans)}s ON subs.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}
   WHERE strftime('%Y', Date) < @Year OR strftime('%Y', Date) = @Year AND strftime('%m', Date) <= @Month
+)
+  GROUP BY Date
+  ORDER BY Date;";
+
+        private static readonly string OutflowFirstHalfQuery =
+            $@"SELECT Date as Month, Total(Sum) as Sum FROM
+(
+  SELECT strftime('%Y', {nameof(Trans.Date)}) || '-' || strftime('%m', {nameof(Trans.Date)}) || '-' || '01' AS Date, {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.CategoryId)} = @CategoryId AND (strftime('%Y', Date) = @Year AND strftime('%m', Date) <= '06')
+  UNION ALL
+  SELECT strftime('%Y', {nameof(Trans.Date)}) || '-' || strftime('%m', {nameof(Trans.Date)}) || '-'  || '01' AS Date, subs.{nameof(SubTransaction.Sum)} FROM
+    (SELECT {nameof(SubTransaction.ParentId)}, {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s WHERE {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} = @CategoryId) subs
+      INNER JOIN {nameof(Trans)}s ON subs.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}
+  WHERE strftime('%Y', Date) = @Year AND strftime('%m', Date) <= '06'
+)
+  GROUP BY Date
+  ORDER BY Date;";
+
+        private static readonly string OutflowSecondHalfQuery =
+            $@"SELECT Date as Month, Total(Sum) as Sum FROM
+(
+  SELECT strftime('%Y', {nameof(Trans.Date)}) || '-' || strftime('%m', {nameof(Trans.Date)}) || '-' || '01' AS Date, {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.CategoryId)} = @CategoryId AND (strftime('%Y', Date) = @Year AND strftime('%m', Date) >= '07')
+  UNION ALL
+  SELECT strftime('%Y', {nameof(Trans.Date)}) || '-' || strftime('%m', {nameof(Trans.Date)}) || '-'  || '01' AS Date, subs.{nameof(SubTransaction.Sum)} FROM
+    (SELECT {nameof(SubTransaction.ParentId)}, {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s WHERE {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} = @CategoryId) subs
+      INNER JOIN {nameof(Trans)}s ON subs.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}
+  WHERE strftime('%Y', Date) = @Year AND strftime('%m', Date) >= '07'
 )
   GROUP BY Date
   ORDER BY Date;";
@@ -122,10 +161,14 @@ SELECT Total(Sum) FROM
 )";
 
         private readonly IProvideConnection _provideConnection;
+        private readonly IBudgetOverviewCachingOperations _budgetOverviewCachingOperations;
 
-        public DapperBudgetOrm(IProvideConnection provideConnection)
+        public DapperBudgetOrm(
+            IProvideConnection provideConnection,
+            IBudgetOverviewCachingOperations budgetOverviewCachingOperations)
         {
             _provideConnection = provideConnection;
+            _budgetOverviewCachingOperations = budgetOverviewCachingOperations;
         }
 
         public async Task<BudgetBlock> FindAsync(DateTime fromMonth, DateTime toMonth, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories)
@@ -145,10 +188,7 @@ SELECT Total(Sum) FROM
             do
             {
                 monthRange.Add(currentMonth);
-                currentMonth = new DateTime(
-                    currentMonth.Month == 12 ? currentMonth.Year + 1 : currentMonth.Year,
-                    currentMonth.Month == 12 ? 1 : currentMonth.Month + 1,
-                    1);
+                currentMonth = currentMonth.NextMonth();
 
             } while (currentMonth.Year < toMonth.Year || currentMonth.Year == toMonth.Year && currentMonth.Month <= toMonth.Month);
 
@@ -159,67 +199,135 @@ SELECT Total(Sum) FROM
 
                 var budgetEntries = new List<(BudgetEntry Entry, long Outflow, long Balance)>();
 
-                var entryBudgetValuePerCategoryId = new Dictionary<long, long>();
+                IDictionary<long, long> entryBudgetValuePerCategoryId = new Dictionary<long, long>();
+
+                if (_budgetOverviewCachingOperations.TryGetValue((fromMonth.Year, fromMonth.Month == 1 ? 1 : 2), out var tuple))
+                {
+                    (entryBudgetValuePerCategoryId, initialNotBudgetedOrOverbudgeted) = tuple;
+                }
+                else
+                {
+                    foreach (var categoryId in categoryIds)
+                    {
+                        var budgetEntriesTask = connection
+                            .QueryAsync<BudgetEntry>(
+                                BudgetQuery,
+                                new
+                                {
+                                    CategoryId = categoryId,
+                                    Year = $"{toMonth.Year:0000}",
+                                    Month = $"{toMonth.Month:00}"
+                                });
+
+                        var outflowTask = connection
+                            .QueryAsync<OutflowResponse>(
+                                OutflowQuery,
+                                new
+                                {
+                                    CategoryId = categoryId,
+                                    Year = $"{toMonth.Year:0000}",
+                                    Month = $"{toMonth.Month:00}"
+                                });
+
+                        long entryBudgetValue = 0L;
+
+                        var budgetList = (await budgetEntriesTask.ConfigureAwait(false)).ToDictionary(be => new DateTime(be.Month.Year, be.Month.Month, 1), be => be);
+
+                        var outflowList = (await outflowTask.ConfigureAwait(false)).ToDictionary(or => new DateTime(or.Month.Year, or.Month.Month, 1), or => or.Sum);
+
+                        var previousMonths = budgetList
+                            .Keys
+                            .Where(dt => dt < fromMonth)
+                            .Concat(outflowList.Keys.Where(dt => dt < fromMonth))
+                            .Distinct()
+                            .OrderBy(dt => dt).ToList();
+
+                        var previous = previousMonths
+                            .Select(dt =>
+                            {
+                                (long Budget, long Outflow) ret = (0L, 0L);
+                                if (budgetList.ContainsKey(dt))
+                                    ret.Budget = budgetList[dt].Budget;
+                                if (outflowList.ContainsKey(dt))
+                                    ret.Outflow = outflowList[dt];
+                                return ret;
+                            });
+
+                        long lastBalanceValue = 0L;
+
+                        foreach (var result in previous)
+                        {
+                            lastBalanceValue = entryBudgetValue + result.Budget + result.Outflow;
+                            entryBudgetValue = Math.Max(0L, lastBalanceValue);
+                        }
+
+                        entryBudgetValuePerCategoryId[categoryId] = 
+                            lastBalanceValue < 0 && previousMonths.Last() != previousMonth 
+                                ? 0 
+                                : lastBalanceValue;
+                    }
+
+                    initialOverspentInPreviousMonth = entryBudgetValuePerCategoryId.Values.Where(s => s < 0).Sum();
+
+                    var firstBalance = entryBudgetValuePerCategoryId.Values.Where(s => s > 0).Sum();
+
+                    initialNotBudgetedOrOverbudgeted =
+                        await connection.QueryFirstAsync<long?>(NotBudgetedOrOverbudgetedQuery,
+                            new
+                            {
+                                Year = $"{previousMonth.Year:0000}",
+                                Month = $"{previousMonth.Month:00}"
+                            }).ConfigureAwait(false) ?? 0L;
+
+                    foreach (var incomeCategory in incomeCategories)
+                    {
+                        initialNotBudgetedOrOverbudgeted += await connection.QueryFirstAsync<long?>(IncomeForCategoryUntilMonthQuery(incomeCategory.MonthOffset), new
+                        {
+                            CategoryId = incomeCategory.Id,
+                            Year = $"{previousMonth.Year:0000}",
+                            Month = $"{previousMonth.Month:00}"
+                        }).ConfigureAwait(false) ?? 0L;
+                    }
+
+                    initialNotBudgetedOrOverbudgeted -= firstBalance;
+
+                    initialNotBudgetedOrOverbudgeted -= initialOverspentInPreviousMonth;
+
+                    initialNotBudgetedOrOverbudgeted += await connection.QueryFirstAsync<long?>(DanglingTransferUntilMonthQuery, new
+                    {
+                        Year = $"{previousMonth.Year:0000}",
+                        Month = $"{previousMonth.Month:00}"
+                    }).ConfigureAwait(false) ?? 0L;
+
+                    _budgetOverviewCachingOperations.Add((fromMonth.Year, fromMonth.Month == 1 ? 1 : 2),
+                        (entryBudgetValuePerCategoryId, initialNotBudgetedOrOverbudgeted));
+                }
 
                 foreach (var categoryId in categoryIds)
                 {
                     var budgetEntriesTask = connection
                         .QueryAsync<BudgetEntry>(
-                        BudgetQuery,
-                        new
-                        {
-                            CategoryId = categoryId,
-                            Year = $"{toMonth.Year:0000}",
-                            Month = $"{toMonth.Month:00}"
-                        });
+                            toMonth.Month <= 6 ? BudgetFirstHalfQuery : BudgetSecondHalfQuery,
+                            new
+                            {
+                                CategoryId = categoryId,
+                                Year = $"{toMonth.Year:0000}"
+                            });
 
                     var outflowTask = connection
                         .QueryAsync<OutflowResponse>(
-                        OutflowQuery,
-                        new
-                        {
-                            CategoryId = categoryId,
-                            Year = $"{toMonth.Year:0000}",
-                            Month = $"{toMonth.Month:00}"
-                        });
+                            toMonth.Month <= 6 ? OutflowFirstHalfQuery : OutflowSecondHalfQuery,
+                            new
+                            {
+                                CategoryId = categoryId,
+                                Year = $"{toMonth.Year:0000}"
+                            });
 
-                    long entryBudgetValue = 0L;
+                    long entryBudgetValue = Math.Max(0L, entryBudgetValuePerCategoryId[categoryId]);
 
                     var budgetList = (await budgetEntriesTask.ConfigureAwait(false)).ToDictionary(be => new DateTime(be.Month.Year, be.Month.Month, 1), be => be);
 
                     var outflowList = (await outflowTask.ConfigureAwait(false)).ToDictionary(or => new DateTime(or.Month.Year, or.Month.Month, 1), or => or.Sum);
-
-                    var previousMonths = budgetList
-                        .Keys
-                        .Where(dt => dt < fromMonth)
-                        .Concat(outflowList.Keys.Where(dt => dt < fromMonth))
-                        .Distinct()
-                        .OrderBy(dt => dt).ToList();
-
-                    var previous = previousMonths
-                        .Select(dt =>
-                        {
-                            (long Budget, long Outflow) ret = (0L, 0L);
-                            if (budgetList.ContainsKey(dt))
-                                ret.Budget = budgetList[dt].Budget;
-                            if (outflowList.ContainsKey(dt))
-                                ret.Outflow = outflowList[dt];
-                            return ret;
-                        });
-
-                    long lastBalanceValue = 0L;
-
-                    foreach (var result in previous)
-                    {
-                        lastBalanceValue = entryBudgetValue + result.Budget + result.Outflow;
-                        entryBudgetValue = Math.Max(0L, lastBalanceValue);
-                    }
-
-                    entryBudgetValuePerCategoryId[categoryId] = 
-                        lastBalanceValue < 0 && previousMonths.Last() != previousMonth 
-                            ? 0 
-                            : lastBalanceValue;
-
                     foreach (var month in monthRange)
                     {
                         long id = -1;
@@ -258,36 +366,6 @@ SELECT Total(Sum) FROM
                             ? (IList<(BudgetEntry Entry, long Outflow, long Balance)>)groupedBudgetEntriesPerMonth[m].ToList()
                             : new List<(BudgetEntry Entry, long Outflow, long Balance)>()))
                     .ToDictionary(vt => vt.m, vt => vt.Item2);
-                
-                var firstBalance = entryBudgetValuePerCategoryId.Values.Where(s => s > 0).Sum();
-
-                initialNotBudgetedOrOverbudgeted =
-                    await connection.QueryFirstAsync<long?>(NotBudgetedOrOverbudgetedQuery,
-                        new
-                        {
-                            Year = $"{previousMonth.Year:0000}",
-                            Month = $"{previousMonth.Month:00}"
-                        }).ConfigureAwait(false) ?? 0L;
-
-                foreach (var incomeCategory in incomeCategories)
-                {
-                    initialNotBudgetedOrOverbudgeted += await connection.QueryFirstAsync<long?>(IncomeForCategoryUntilMonthQuery(incomeCategory.MonthOffset), new
-                    {
-                        CategoryId = incomeCategory.Id,
-                        Year = $"{previousMonth.Year:0000}",
-                        Month = $"{previousMonth.Month:00}"
-                    }).ConfigureAwait(false) ?? 0L;
-                }
-
-                initialNotBudgetedOrOverbudgeted -= firstBalance;
-
-                initialNotBudgetedOrOverbudgeted -= initialOverspentInPreviousMonth;
-
-                initialNotBudgetedOrOverbudgeted += await connection.QueryFirstAsync<long?>(DanglingTransferUntilMonthQuery, new
-                {
-                    Year = $"{previousMonth.Year:0000}",
-                    Month = $"{previousMonth.Month:00}"
-                }).ConfigureAwait(false) ?? 0L;
 
                 incomesPerMonth = monthRange
                     .Select(m =>
