@@ -85,7 +85,6 @@ namespace BFF
                 return () => new Transaction(
                     cc.Resolve<IRepository<ITransaction>>(), 
                     cc.Resolve<IRxSchedulerProvider>(),
-                    cc.Resolve<INotifyBudgetOverviewRelevantChange>(),
                     cc.Resolve<ILastSetDate>().Date);
             }).As<Func<ITransaction>>();
 
@@ -100,7 +99,6 @@ namespace BFF
                 return () => new Transfer(
                     cc.Resolve<IRepository<ITransfer>>(),
                     cc.Resolve<IRxSchedulerProvider>(),
-                    cc.Resolve<INotifyBudgetOverviewRelevantChange>(),
                     cc.Resolve<ILastSetDate>().Date);
             }).As<Func<ITransfer>>();
 
@@ -115,7 +113,6 @@ namespace BFF
                 return () => new ParentTransaction(
                     cc.Resolve<IRepository<IParentTransaction>>(),
                     cc.Resolve<IRxSchedulerProvider>(),
-                    cc.Resolve<INotifyBudgetOverviewRelevantChange>(),
                     Enumerable.Empty<ISubTransaction>(), 
                     cc.Resolve<ILastSetDate>().Date);
             }).As<Func<IParentTransaction>>();
@@ -131,7 +128,6 @@ namespace BFF
                 return () => new Account(
                     cc.Resolve<IRepository<IAccount>>(), 
                     cc.Resolve<IRxSchedulerProvider>(),
-                    cc.Resolve<INotifyBudgetOverviewRelevantChange>(),
                     cc.Resolve<ILastSetDate>().Date);
             }).As<Func<IAccount>>();
 

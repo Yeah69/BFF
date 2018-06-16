@@ -14,20 +14,17 @@ namespace BFF.DB.Dapper.ModelRepositories
     public sealed class TransferRepository : RepositoryBase<Domain.ITransfer, Trans>, ITransferRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private readonly IAccountRepository _accountRepository;
         private readonly IFlagRepository _flagRepository;
 
         public TransferRepository(
             IProvideConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
-            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             ICrudOrm crudOrm,
             IAccountRepository accountRepository,
             IFlagRepository flagRepository) : base(provideConnection, crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
-            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _accountRepository = accountRepository;
             _flagRepository = flagRepository;
         }
@@ -56,7 +53,6 @@ namespace BFF.DB.Dapper.ModelRepositories
                 new Domain.Transfer(
                     this,
                     _rxSchedulerProvider,
-                    _notifyBudgetOverviewRelevantChange,
                     persistenceModel.Date,
                     persistenceModel.Id,
                     persistenceModel.FlagId is null

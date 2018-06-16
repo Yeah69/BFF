@@ -19,7 +19,6 @@ namespace BFF.MVVM.Models.Native
     {
         public BudgetEntry(
             IWriteOnlyRepository<IBudgetEntry> repository,
-            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange, 
             IRxSchedulerProvider rxSchedulerProvider,
             long id, 
             DateTime month,
@@ -30,7 +29,6 @@ namespace BFF.MVVM.Models.Native
             : base(repository, rxSchedulerProvider, id)
         {
             Month = month;
-            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _category = category;
             _budget = budget;
             _outflow = outflow;
@@ -39,7 +37,6 @@ namespace BFF.MVVM.Models.Native
 
         public DateTime Month { get; }
         
-        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private ICategory _category;
 
         public ICategory Category
@@ -67,21 +64,18 @@ namespace BFF.MVVM.Models.Native
                 {
                     _budget = value;
                     Task.Run(InsertAsync)
-                        .ContinueWith(_ => OnPropertyChanged())
-                        .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.Notify(Month));
+                        .ContinueWith(_ => OnPropertyChanged());
                 }
                 else if (_budget != 0 && value == 0 && Id > -1)
                 {
                     _budget = value;
                     Task.Run(DeleteAsync)
-                        .ContinueWith(_ => OnPropertyChanged())
-                        .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.Notify(Month));
+                        .ContinueWith(_ => OnPropertyChanged());
                 }
                 else
                 {
                     _budget = value;
-                    UpdateAndNotify()
-                        .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.Notify(Month));
+                    UpdateAndNotify();
                 }
             }
         }

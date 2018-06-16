@@ -17,20 +17,17 @@ namespace BFF.DB.Dapper.ModelRepositories
     public sealed class SubTransactionRepository : RepositoryBase<Domain.ISubTransaction, SubTransaction>, ISubTransactionRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private readonly IParentalOrm _parentalOrm;
         private readonly ICategoryBaseRepository _categoryBaseRepository;
 
         public SubTransactionRepository(
             IProvideConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
-            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             ICrudOrm crudOrm,
             IParentalOrm parentalOrm,
             ICategoryBaseRepository categoryBaseRepository) : base(provideConnection, crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
-            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _parentalOrm = parentalOrm;
             _categoryBaseRepository = categoryBaseRepository;
         }
@@ -54,7 +51,6 @@ namespace BFF.DB.Dapper.ModelRepositories
             return new Domain.SubTransaction(
                 this,
                 _rxSchedulerProvider,
-                _notifyBudgetOverviewRelevantChange,
                 persistenceModel.Id,
                 persistenceModel.CategoryId is null
                     ? null

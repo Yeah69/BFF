@@ -19,8 +19,7 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         public SummaryAccount(
             IAccountRepository repository,
-            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
-            IRxSchedulerProvider rxSchedulerProvider) : base(repository, rxSchedulerProvider, notifyBudgetOverviewRelevantChange, DateTime.MinValue)
+            IRxSchedulerProvider rxSchedulerProvider) : base(repository, rxSchedulerProvider, DateTime.MinValue)
         {
             Name = "All Accounts"; //todo Localize! Maybe then override the Name property
         }

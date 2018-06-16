@@ -16,18 +16,15 @@ namespace BFF.DB.Dapper.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICategoryRepository _categoryRepository;
-        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
 
         public BudgetEntryRepository(
             IProvideConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm,
-            ICategoryRepository categoryRepository,
-            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange) : base(provideConnection, crudOrm)
+            ICategoryRepository categoryRepository) : base(provideConnection, crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _categoryRepository = categoryRepository;
-            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
         }
         
         protected override Converter<Domain.IBudgetEntry, BudgetEntry> ConvertToPersistence => domainBudgetEntry => 
@@ -43,7 +40,6 @@ namespace BFF.DB.Dapper.ModelRepositories
         {
             return new Domain.BudgetEntry(
                 this,
-                _notifyBudgetOverviewRelevantChange,
                 _rxSchedulerProvider,
                 budgetEntry.Id, 
                 budgetEntry.Month,

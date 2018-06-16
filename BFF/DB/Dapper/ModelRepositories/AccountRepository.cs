@@ -25,18 +25,15 @@ namespace BFF.DB.Dapper.ModelRepositories
     public sealed class AccountRepository : ObservableRepositoryBase<Domain.IAccount, Account>, IAccountRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private readonly IAccountOrm _accountOrm;
 
         public AccountRepository(
             IProvideConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
-            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             ICrudOrm crudOrm, 
             IAccountOrm accountOrm) : base(provideConnection, crudOrm, new AccountComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
-            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _accountOrm = accountOrm;
         }
 
@@ -54,7 +51,6 @@ namespace BFF.DB.Dapper.ModelRepositories
                 new Domain.Account(
                     this,
                     _rxSchedulerProvider,
-                    _notifyBudgetOverviewRelevantChange,
                     persistenceModel.StartingDate,
                     persistenceModel.Id,
                     persistenceModel.Name,

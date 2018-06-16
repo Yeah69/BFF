@@ -41,7 +41,6 @@ namespace BFF.MVVM.Models.Native.Structure
         protected TransactionBase(
             IRepository<T> repository,
             IRxSchedulerProvider rxSchedulerProvider,
-            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             long id,
             IFlag flag,
             string checkNumber,
@@ -50,7 +49,7 @@ namespace BFF.MVVM.Models.Native.Structure
             IPayee payee = null,
             string memo = null,
             bool? cleared = null)
-            : base(repository, rxSchedulerProvider, notifyBudgetOverviewRelevantChange, flag, checkNumber, date, id, memo, cleared)
+            : base(repository, rxSchedulerProvider, flag, checkNumber, date, id, memo, cleared)
         {
             _account = account;
             _payee = payee;

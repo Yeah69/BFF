@@ -27,7 +27,6 @@ namespace BFF.MVVM.Models.Native.Structure
         private DateTime _date;
         private bool _cleared;
         private string _checkNumber;
-        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private IFlag _flag;
 
         public IFlag Flag
@@ -60,12 +59,7 @@ namespace BFF.MVVM.Models.Native.Structure
                 if (_date == value) return;
                 var previousDate = _date;
                 _date = value;
-                UpdateAndNotify()
-                    .ContinueWith(_ =>
-                    {
-                        if(!(this is ITransfer)) // Transfers are neutral to the budget
-                            _notifyBudgetOverviewRelevantChange.Notify(previousDate < Date ? previousDate : Date);
-                    });
+                UpdateAndNotify();
             }
         }
         
@@ -83,7 +77,6 @@ namespace BFF.MVVM.Models.Native.Structure
         protected TransBase(
             IRepository<T> repository, 
             IRxSchedulerProvider rxSchedulerProvider,
-            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             IFlag flag,
             string checkNumber,
             DateTime date,
@@ -91,7 +84,6 @@ namespace BFF.MVVM.Models.Native.Structure
             string memo,
             bool? cleared) : base(repository, rxSchedulerProvider, id, memo)
         {
-            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _flag = flag;
             _checkNumber = checkNumber;
             _date = date;

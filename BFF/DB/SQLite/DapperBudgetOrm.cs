@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
-using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 using Dapper;
@@ -134,20 +133,17 @@ SELECT Total(Sum) FROM
 )";
 
         private readonly IProvideConnection _provideConnection;
-        private readonly IBudgetOverviewCachingOperations _budgetOverviewCachingOperations;
 
         public DapperBudgetOrm(
-            IProvideConnection provideConnection,
-            IBudgetOverviewCachingOperations budgetOverviewCachingOperations)
+            IProvideConnection provideConnection)
         {
             _provideConnection = provideConnection;
-            _budgetOverviewCachingOperations = budgetOverviewCachingOperations;
         }
 
         public async Task<BudgetBlock> FindAsync(int year, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories)
         {
             IDictionary<DateTime, IList<(BudgetEntry Entry, long Outflow, long Balance)>> budgetEntriesPerMonth;
-            long initialNotBudgetedOrOverbudgeted;
+            long initialNotBudgetedOrOverbudgeted = 0;
             long initialOverspentInPreviousMonth;
             IDictionary<DateTime, long> incomesPerMonth;
             IDictionary<DateTime, long> danglingTransfersPerMonth;
@@ -172,72 +168,65 @@ SELECT Total(Sum) FROM
                 var budgetEntries = new List<(BudgetEntry Entry, long Outflow, long Balance)>();
 
                 IDictionary<long, long> entryBudgetValuePerCategoryId = new Dictionary<long, long>();
-
-                if (_budgetOverviewCachingOperations.TryGetValue(year, out var tuple))
+                
+                foreach (var categoryId in categoryIds)
                 {
-                    (entryBudgetValuePerCategoryId, initialNotBudgetedOrOverbudgeted) = tuple;
-                }
-                else
-                {
-                    foreach (var categoryId in categoryIds)
-                    {
-                        var budgetEntriesTask = connection
-                            .QueryAsync<BudgetEntry>(
-                                BudgetQuery,
-                                new
-                                {
-                                    CategoryId = categoryId,
-                                    Year = $"{year:0000}"
-                                });
-
-                        var outflowTask = connection
-                            .QueryAsync<OutflowResponse>(
-                                OutflowQuery,
-                                new
-                                {
-                                    CategoryId = categoryId,
-                                    Year = $"{year:0000}"
-                                });
-
-                        long entryBudgetValue = 0L;
-
-                        var budgetList = (await budgetEntriesTask.ConfigureAwait(false)).ToDictionary(be => new DateTime(be.Month.Year, be.Month.Month, 1), be => be);
-
-                        var outflowList = (await outflowTask.ConfigureAwait(false)).ToDictionary(or => new DateTime(or.Month.Year, or.Month.Month, 1), or => or.Sum);
-
-                        var previousMonths = budgetList
-                            .Keys
-                            .Where(dt => dt.Year < year)
-                            .Concat(outflowList.Keys.Where(dt => dt.Year < year))
-                            .Distinct()
-                            .OrderBy(dt => dt).ToList();
-
-                        var previous = previousMonths
-                            .Select(dt =>
+                    var budgetEntriesTask = connection
+                        .QueryAsync<BudgetEntry>(
+                            BudgetQuery,
+                            new
                             {
-                                (long Budget, long Outflow) ret = (0L, 0L);
-                                if (budgetList.ContainsKey(dt))
-                                    ret.Budget = budgetList[dt].Budget;
-                                if (outflowList.ContainsKey(dt))
-                                    ret.Outflow = outflowList[dt];
-                                return ret;
+                                CategoryId = categoryId,
+                                Year = $"{year:0000}"
                             });
 
-                        long lastBalanceValue = 0L;
+                    var outflowTask = connection
+                        .QueryAsync<OutflowResponse>(
+                            OutflowQuery,
+                            new
+                            {
+                                CategoryId = categoryId,
+                                Year = $"{year:0000}"
+                            });
 
-                        foreach (var result in previous)
+                    long entryBudgetValue = 0L;
+
+                    var budgetList = (await budgetEntriesTask.ConfigureAwait(false)).ToDictionary(be => new DateTime(be.Month.Year, be.Month.Month, 1), be => be);
+
+                    var outflowList = (await outflowTask.ConfigureAwait(false)).ToDictionary(or => new DateTime(or.Month.Year, or.Month.Month, 1), or => or.Sum);
+
+                    var previousMonths = budgetList
+                        .Keys
+                        .Where(dt => dt.Year < year)
+                        .Concat(outflowList.Keys.Where(dt => dt.Year < year))
+                        .Distinct()
+                        .OrderBy(dt => dt).ToList();
+
+                    var previous = previousMonths
+                        .Select(dt =>
                         {
-                            lastBalanceValue = entryBudgetValue + result.Budget + result.Outflow;
-                            entryBudgetValue = Math.Max(0L, lastBalanceValue);
-                        }
-                        
-                        DateTime? youngestPreviousMonth = previousMonths.Any() ? previousMonths.Last() : (DateTime?)null;
+                            (long Budget, long Outflow) ret = (0L, 0L);
+                            if (budgetList.ContainsKey(dt))
+                                ret.Budget = budgetList[dt].Budget;
+                            if (outflowList.ContainsKey(dt))
+                                ret.Outflow = outflowList[dt];
+                            return ret;
+                        });
 
-                        entryBudgetValuePerCategoryId[categoryId] = 
-                            lastBalanceValue < 0 && (youngestPreviousMonth is null || !(youngestPreviousMonth.Value.Year == year - 1 && youngestPreviousMonth.Value.Month == 12)) 
-                                ? 0 
-                                : lastBalanceValue;
+                    long lastBalanceValue = 0L;
+
+                    foreach (var result in previous)
+                    {
+                        lastBalanceValue = entryBudgetValue + result.Budget + result.Outflow;
+                        entryBudgetValue = Math.Max(0L, lastBalanceValue);
                     }
+                        
+                    DateTime? youngestPreviousMonth = previousMonths.Any() ? previousMonths.Last() : (DateTime?)null;
+
+                    entryBudgetValuePerCategoryId[categoryId] = 
+                        lastBalanceValue < 0 && (youngestPreviousMonth is null || !(youngestPreviousMonth.Value.Year == year - 1 && youngestPreviousMonth.Value.Month == 12)) 
+                            ? 0 
+                            : lastBalanceValue;
 
                     initialOverspentInPreviousMonth = entryBudgetValuePerCategoryId.Values.Where(s => s < 0).Sum();
 
@@ -267,9 +256,6 @@ SELECT Total(Sum) FROM
                     {
                         Year = $"{year:0000}"
                     }).ConfigureAwait(false) ?? 0L;
-
-                    _budgetOverviewCachingOperations.Add(year,
-                        (entryBudgetValuePerCategoryId, initialNotBudgetedOrOverbudgeted));
                 }
 
                 foreach (var categoryId in categoryIds)

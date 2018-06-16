@@ -66,7 +66,6 @@ namespace BFF.MVVM.Models.Native
         public Transfer(
             IRepository<ITransfer> repository, 
             IRxSchedulerProvider rxSchedulerProvider,
-            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             DateTime date,
             long id = -1L,
             IFlag flag = null,
@@ -76,7 +75,7 @@ namespace BFF.MVVM.Models.Native
             string memo = "",
             long sum = 0L,
             bool? cleared = false)
-            : base(repository, rxSchedulerProvider, notifyBudgetOverviewRelevantChange, flag, checkNumber, date, id, memo, cleared)
+            : base(repository, rxSchedulerProvider, flag, checkNumber, date, id, memo, cleared)
         {
             _fromAccount = fromAccount;
             _toAccount = toAccount;

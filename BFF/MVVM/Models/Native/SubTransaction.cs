@@ -15,21 +15,18 @@ namespace BFF.MVVM.Models.Native
     public class SubTransaction : TransLike<ISubTransaction>, ISubTransaction
     {
         private IParentTransaction _parent;
-        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private ICategoryBase _category;
         private long _sum;
         
         public SubTransaction(
             IRepository<ISubTransaction> repository, 
             IRxSchedulerProvider rxSchedulerProvider,
-            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             long id = -1L, 
             ICategoryBase category = null,
             string memo = null,
             long sum = 0L) 
             : base(repository, rxSchedulerProvider, id, memo)
         {
-            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _category = category;
             _sum = sum;
         }
@@ -57,8 +54,7 @@ namespace BFF.MVVM.Models.Native
                 }
                 if (_category == value) return;
                 _category = value;
-                UpdateAndNotify()
-                    .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.Notify(Parent.Date));
+                UpdateAndNotify();
             }
         }
         
@@ -69,8 +65,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_sum == value) return;
                 _sum = value;
-                UpdateAndNotify()
-                    .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.Notify(Parent.Date));
+                UpdateAndNotify();
             }
         }
 

@@ -24,7 +24,6 @@ namespace BFF.MVVM.Models.Native
         public ParentTransaction(
             IRepository<IParentTransaction> repository,
             IRxSchedulerProvider rxSchedulerProvider,
-            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             IEnumerable<ISubTransaction> subTransactions,
             DateTime date,
             long id = -1L,
@@ -34,7 +33,7 @@ namespace BFF.MVVM.Models.Native
             IPayee payee = null,
             string memo = "",
             bool? cleared = false)
-            : base(repository, rxSchedulerProvider, notifyBudgetOverviewRelevantChange, id, flag, checkNumber, date, account, payee, memo, cleared)
+            : base(repository, rxSchedulerProvider, id, flag, checkNumber, date, account, payee, memo, cleared)
         {
             _subTransactions = new ObservableCollection<ISubTransaction>(subTransactions);
             SubTransactions = new ReadOnlyObservableCollection<ISubTransaction>(_subTransactions);
