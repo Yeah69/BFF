@@ -1,5 +1,6 @@
 ﻿using System;
 using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -13,6 +14,7 @@ namespace BFF.MVVM.Models.Native
     
     public class Account : CommonProperty<IAccount>, IAccount
     {
+        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private long _startingBalance;
         private DateTime _startingDate;
         
@@ -23,8 +25,8 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_startingBalance == value) return;
                 _startingBalance = value;
-                UpdateAndNotify();
-                OnPropertyChanged();
+                UpdateAndNotify()
+                    .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.Notify(StartingDate));
             }
         }
 
@@ -35,19 +37,23 @@ namespace BFF.MVVM.Models.Native
             {
                 if (_startingDate == value) return;
                 _startingDate = value;
-                UpdateAndNotify();
-                OnPropertyChanged();
+                UpdateAndNotify()
+                    .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.Notify(StartingDate));
             }
         }
         
-        public Account(IRepository<IAccount> repository,
+        public Account(
+            IRepository<IAccount> repository,
+            IRxSchedulerProvider rxSchedulerProvider,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             DateTime startingDate, 
             long id = -1L, 
             string name = "", 
             long startingBalance = 0L) 
-            : base(repository, name: name)
+            : base(repository, rxSchedulerProvider, name: name)
         {
             Id = id;
+            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _startingBalance = startingBalance;
             _startingDate = startingDate;
         }

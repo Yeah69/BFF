@@ -1,6 +1,11 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using BFF.DB;
+using BFF.Helper;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
@@ -18,12 +23,14 @@ namespace BFF.MVVM.Models.Native.Structure
     public abstract class DataModel<T> : ObservableObject, IDataModel where T : class, IDataModel
     {
         private readonly IWriteOnlyRepository<T> _repository;
-        
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
+
         public long Id { get; set; } = -1L;
         
-        protected DataModel(IWriteOnlyRepository<T> repository, long id)
+        protected DataModel(IWriteOnlyRepository<T> repository, IRxSchedulerProvider rxSchedulerProvider, long id)
         {
             _repository = repository;
+            _rxSchedulerProvider = rxSchedulerProvider;
             if (Id == -1L || id > 0L) Id = id;
         }
         
@@ -43,6 +50,10 @@ namespace BFF.MVVM.Models.Native.Structure
         }
 
         protected Task UpdateAndNotify([CallerMemberName] string propertyName = "") => 
-            Task.Run(UpdateAsync).ContinueWith(_ => OnPropertyChanged(propertyName));
+            Task.Run(UpdateAsync)
+                .ToObservable()
+                .ObserveOn(_rxSchedulerProvider.UI)
+                .Do(_ => OnPropertyChanged(propertyName))
+                .ToTask();
     }
 }

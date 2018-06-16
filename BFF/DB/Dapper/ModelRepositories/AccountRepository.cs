@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -23,10 +24,19 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class AccountRepository : ObservableRepositoryBase<Domain.IAccount, Account>, IAccountRepository
     {
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private readonly IAccountOrm _accountOrm;
 
-        public AccountRepository(IProvideConnection provideConnection, ICrudOrm crudOrm, IAccountOrm accountOrm) : base(provideConnection, crudOrm, new AccountComparer())
+        public AccountRepository(
+            IProvideConnection provideConnection,
+            IRxSchedulerProvider rxSchedulerProvider,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
+            ICrudOrm crudOrm, 
+            IAccountOrm accountOrm) : base(provideConnection, crudOrm, new AccountComparer())
         {
+            _rxSchedulerProvider = rxSchedulerProvider;
+            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _accountOrm = accountOrm;
         }
 
@@ -41,11 +51,14 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         protected override Task<Domain.IAccount> ConvertToDomainAsync(Account persistenceModel) =>
             Task.FromResult<Domain.IAccount>(
-                new Domain.Account(this,
-                persistenceModel.StartingDate,
-                persistenceModel.Id,
-                persistenceModel.Name,
-                persistenceModel.StartingBalance));
+                new Domain.Account(
+                    this,
+                    _rxSchedulerProvider,
+                    _notifyBudgetOverviewRelevantChange,
+                    persistenceModel.StartingDate,
+                    persistenceModel.Id,
+                    persistenceModel.Name,
+                    persistenceModel.StartingBalance));
 
         public Task<long?> GetBalanceAsync(Domain.IAccount account)
         {

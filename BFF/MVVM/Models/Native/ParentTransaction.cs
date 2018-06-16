@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 using Reactive.Bindings.Extensions;
 
@@ -22,6 +23,8 @@ namespace BFF.MVVM.Models.Native
         
         public ParentTransaction(
             IRepository<IParentTransaction> repository,
+            IRxSchedulerProvider rxSchedulerProvider,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             IEnumerable<ISubTransaction> subTransactions,
             DateTime date,
             long id = -1L,
@@ -31,7 +34,7 @@ namespace BFF.MVVM.Models.Native
             IPayee payee = null,
             string memo = "",
             bool? cleared = false)
-            : base(repository, id, flag, checkNumber, date, account, payee, memo, cleared)
+            : base(repository, rxSchedulerProvider, notifyBudgetOverviewRelevantChange, id, flag, checkNumber, date, account, payee, memo, cleared)
         {
             _subTransactions = new ObservableCollection<ISubTransaction>(subTransactions);
             SubTransactions = new ReadOnlyObservableCollection<ISubTransaction>(_subTransactions);

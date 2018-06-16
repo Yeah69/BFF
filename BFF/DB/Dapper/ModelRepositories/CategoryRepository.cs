@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -49,11 +50,17 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class CategoryRepository : ObservableRepositoryBase<Domain.ICategory, Category>, ICategoryRepository
     {
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICategoryOrm _categoryOrm;
 
-        public CategoryRepository(IProvideConnection provideConnection, ICrudOrm crudOrm, ICategoryOrm categoryOrm) 
+        public CategoryRepository(
+            IProvideConnection provideConnection,
+            IRxSchedulerProvider rxSchedulerProvider,
+            ICrudOrm crudOrm, 
+            ICategoryOrm categoryOrm) 
             : base(provideConnection, crudOrm, new CategoryComparer())
         {
+            _rxSchedulerProvider = rxSchedulerProvider;
             _categoryOrm = categoryOrm;
             var groupedByParent = All.GroupBy(c => c.Parent).Where(grouping => grouping.Key != null);
             foreach (var parentSubCategoryGrouping in groupedByParent)
@@ -70,6 +77,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         {
             return 
                 new Domain.Category(this,
+                    _rxSchedulerProvider,
                     persistenceModel.Id,
                     persistenceModel.Name,
                     persistenceModel.ParentId != null ? await FindAsync((long)persistenceModel.ParentId).ConfigureAwait(false) : null);

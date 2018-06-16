@@ -1,4 +1,5 @@
 ﻿using BFF.DB;
+using BFF.Helper;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
@@ -8,7 +9,11 @@ namespace BFF.MVVM.Models.Native.Structure
     
     public abstract class CategoryBase<T> : CommonProperty<T>, ICategoryBase where T : class, ICategoryBase
     {
-        protected CategoryBase(IRepository<T> repository, long id, string name) : base(repository, id, name)
+        protected CategoryBase(
+            IRepository<T> repository,
+            IRxSchedulerProvider rxSchedulerProvider,
+            long id, 
+            string name) : base(repository, rxSchedulerProvider, id, name)
         {
         }
     }

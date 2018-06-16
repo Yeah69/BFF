@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -20,7 +21,15 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class PayeeRepository : ObservableRepositoryBase<Domain.IPayee, Payee>, IPayeeRepository
     {
-        public PayeeRepository(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(provideConnection, crudOrm, new PayeeComparer()) {}
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
+
+        public PayeeRepository(
+            IProvideConnection provideConnection, 
+            IRxSchedulerProvider rxSchedulerProvider,
+            ICrudOrm crudOrm) : base(provideConnection, crudOrm, new PayeeComparer())
+        {
+            _rxSchedulerProvider = rxSchedulerProvider;
+        }
         
         protected override Converter<Domain.IPayee, Payee> ConvertToPersistence => domainPayee => 
             new Payee
@@ -31,7 +40,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         protected override Task<Domain.IPayee> ConvertToDomainAsync(Payee persistenceModel)
         {
-            return Task.FromResult<Domain.IPayee>(new Domain.Payee(this, persistenceModel.Id, persistenceModel.Name));
+            return Task.FromResult<Domain.IPayee>(new Domain.Payee(this, _rxSchedulerProvider, persistenceModel.Id, persistenceModel.Name));
         }
     }
 }

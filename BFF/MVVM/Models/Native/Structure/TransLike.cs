@@ -1,4 +1,5 @@
 ﻿using BFF.DB;
+using BFF.Helper;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
@@ -19,11 +20,14 @@ namespace BFF.MVVM.Models.Native.Structure
                 if(_memo == value) return;
                 _memo = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
         
-        protected TransLike(IRepository<T> repository, long id, string memo) : base(repository, id)
+        protected TransLike(
+            IRepository<T> repository, 
+            IRxSchedulerProvider rxSchedulerProvider,
+            long id, 
+            string memo) : base(repository, rxSchedulerProvider, id)
         {
             _memo = memo ?? _memo;
         }

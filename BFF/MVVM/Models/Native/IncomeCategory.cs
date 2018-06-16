@@ -1,4 +1,5 @@
 ﻿using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -20,11 +21,15 @@ namespace BFF.MVVM.Models.Native
                 if (_monthOffset == value) return;
                 _monthOffset = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
         
-        public IncomeCategory(IRepository<IIncomeCategory> repository, long id = -1L, string name = "", int monthOffset = 0) : base(repository, id, name)
+        public IncomeCategory(
+            IRepository<IIncomeCategory> repository, 
+            IRxSchedulerProvider rxSchedulerProvider, 
+            long id = -1L, 
+            string name = "", 
+            int monthOffset = 0) : base(repository, rxSchedulerProvider, id, name)
         {
             _monthOffset = monthOffset;
         }

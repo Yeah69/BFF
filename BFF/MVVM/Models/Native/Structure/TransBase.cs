@@ -1,5 +1,6 @@
 ﻿using System;
 using BFF.DB;
+using BFF.Helper;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
@@ -26,6 +27,7 @@ namespace BFF.MVVM.Models.Native.Structure
         private DateTime _date;
         private bool _cleared;
         private string _checkNumber;
+        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private IFlag _flag;
 
         public IFlag Flag
@@ -36,7 +38,6 @@ namespace BFF.MVVM.Models.Native.Structure
                 if (_flag == value) return;
                 _flag = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
 
@@ -48,7 +49,6 @@ namespace BFF.MVVM.Models.Native.Structure
                 if (_checkNumber == value) return;
                 _checkNumber = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
         
@@ -59,8 +59,12 @@ namespace BFF.MVVM.Models.Native.Structure
             {
                 if (_date == value) return;
                 _date = value;
-                UpdateAndNotify();
-                OnPropertyChanged();
+                UpdateAndNotify()
+                    .ContinueWith(_ =>
+                    {
+                        if(!(this is ITransfer)) // Transfers are neutral to the budget
+                            _notifyBudgetOverviewRelevantChange.Notify(Date);
+                    });
             }
         }
         
@@ -72,19 +76,21 @@ namespace BFF.MVVM.Models.Native.Structure
                 if (_cleared == value) return;
                 _cleared = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
         
         protected TransBase(
-            IRepository<T> repository,
+            IRepository<T> repository, 
+            IRxSchedulerProvider rxSchedulerProvider,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             IFlag flag,
             string checkNumber,
             DateTime date,
             long id,
             string memo,
-            bool? cleared) : base(repository, id, memo)
+            bool? cleared) : base(repository, rxSchedulerProvider, id, memo)
         {
+            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _flag = flag;
             _checkNumber = checkNumber;
             _date = date;

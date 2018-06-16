@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
@@ -21,7 +22,15 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class FlagRepository : ObservableRepositoryBase<Domain.IFlag, Flag>, IFlagRepository
     {
-        public FlagRepository(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(provideConnection, crudOrm, new FlagComparer()) { }
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
+
+        public FlagRepository(
+            IProvideConnection provideConnection, 
+            IRxSchedulerProvider rxSchedulerProvider,
+            ICrudOrm crudOrm) : base(provideConnection, crudOrm, new FlagComparer())
+        {
+            _rxSchedulerProvider = rxSchedulerProvider;
+        }
 
         protected override Converter<Domain.IFlag, Flag> ConvertToPersistence => domainModel =>
         {
@@ -44,7 +53,8 @@ namespace BFF.DB.Dapper.ModelRepositories
         {
             return Task.FromResult<Domain.IFlag>(
                 new Domain.Flag(
-                    this,
+                    this, 
+                    _rxSchedulerProvider,
                     Color.FromArgb(
                         (byte) (persistenceModel.Color >> 24 & 0xff),
                         (byte) (persistenceModel.Color >> 16 & 0xff),

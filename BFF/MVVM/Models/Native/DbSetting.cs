@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -22,7 +23,6 @@ namespace BFF.MVVM.Models.Native
                 if(_currencyCulture.Equals(CultureInfo.GetCultureInfo(value))) return;
                 _currencyCulture = CultureInfo.GetCultureInfo(value);
                 UpdateAndNotify();
-                OnPropertyChanged();
                 OnPropertyChanged(nameof(CurrencyCulture));
             }
         }
@@ -37,7 +37,6 @@ namespace BFF.MVVM.Models.Native
                 if(_currencyCulture.Equals(value)) return;
                 _currencyCulture = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
                 OnPropertyChanged(nameof(CurrencyCultureName));
             }
         }
@@ -50,7 +49,6 @@ namespace BFF.MVVM.Models.Native
                 if (_dateCulture.Equals(CultureInfo.GetCultureInfo(value))) return;
                 _dateCulture = CultureInfo.GetCultureInfo(value);
                 UpdateAndNotify();
-                OnPropertyChanged();
                 OnPropertyChanged(nameof(DateCulture));
             }
         }
@@ -65,12 +63,14 @@ namespace BFF.MVVM.Models.Native
                 if (_dateCulture.Equals(value)) return;
                 _dateCulture = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
                 OnPropertyChanged(nameof(DateCultureName));
             }
         }
 
-        public DbSetting(IRepository<IDbSetting> repository, long id) : base(repository, id)
+        public DbSetting(
+            IRepository<IDbSetting> repository, 
+            IRxSchedulerProvider rxSchedulerProvider, 
+            long id) : base(repository, rxSchedulerProvider, id)
         {
             _currencyCulture = CultureInfo.GetCultureInfo("de-DE");
             _dateCulture = CultureInfo.GetCultureInfo("de-DE");

@@ -19,14 +19,15 @@ namespace BFF.MVVM.Models.Native
     {
         public BudgetEntry(
             IWriteOnlyRepository<IBudgetEntry> repository,
-            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange, 
+            IRxSchedulerProvider rxSchedulerProvider,
             long id, 
             DateTime month,
             ICategory category = null,
             long budget = 0L,
             long outflow = 0L,
             long balance = 0L)
-            : base(repository, id)
+            : base(repository, rxSchedulerProvider, id)
         {
             Month = month;
             _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
@@ -50,7 +51,6 @@ namespace BFF.MVVM.Models.Native
 
                 _category = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
 
@@ -68,20 +68,20 @@ namespace BFF.MVVM.Models.Native
                     _budget = value;
                     Task.Run(InsertAsync)
                         .ContinueWith(_ => OnPropertyChanged())
-                        .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.TransChangedDate(Month));
+                        .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.Notify(Month));
                 }
                 else if (_budget != 0 && value == 0 && Id > -1)
                 {
                     _budget = value;
                     Task.Run(DeleteAsync)
                         .ContinueWith(_ => OnPropertyChanged())
-                        .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.TransChangedDate(Month));
+                        .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.Notify(Month));
                 }
                 else
                 {
                     _budget = value;
                     UpdateAndNotify()
-                        .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.TransChangedDate(Month));
+                        .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.Notify(Month));
                 }
             }
         }
@@ -97,7 +97,6 @@ namespace BFF.MVVM.Models.Native
 
                 _outflow = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
 
@@ -112,7 +111,6 @@ namespace BFF.MVVM.Models.Native
 
                 _balance = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
         public override string ToString()

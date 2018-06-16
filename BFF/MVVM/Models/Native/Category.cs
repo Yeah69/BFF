@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -35,13 +36,17 @@ namespace BFF.MVVM.Models.Native
                 if (_parent == value) return;
                 _parent = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
 
         public ReadOnlyObservableCollection<ICategory> Categories { get; }
 
-        public Category(IRepository<ICategory> repository, long id = -1L, string name = "", ICategory parent = null) : base(repository, id, name)
+        public Category(
+            IRepository<ICategory> repository, 
+            IRxSchedulerProvider rxSchedulerProvider, 
+            long id = -1L,
+            string name = "",
+            ICategory parent = null) : base(repository, rxSchedulerProvider, id, name)
         {
             _parent = parent;
             Categories = new ReadOnlyObservableCollection<ICategory>(_categories);

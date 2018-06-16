@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper;
 
 namespace BFF.MVVM.Models.Native
 {
@@ -16,7 +17,10 @@ namespace BFF.MVVM.Models.Native
         /// <summary>
         /// Initializes the object
         /// </summary>
-        public SummaryAccount(IAccountRepository repository) : base(repository, DateTime.MinValue)
+        public SummaryAccount(
+            IAccountRepository repository,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
+            IRxSchedulerProvider rxSchedulerProvider) : base(repository, rxSchedulerProvider, notifyBudgetOverviewRelevantChange, DateTime.MinValue)
         {
             Name = "All Accounts"; //todo Localize! Maybe then override the Name property
         }

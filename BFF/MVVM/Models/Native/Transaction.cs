@@ -1,5 +1,6 @@
 ﻿using System;
 using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -11,11 +12,14 @@ namespace BFF.MVVM.Models.Native
     
     public class Transaction : TransactionBase<ITransaction>, ITransaction
     {
+        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private ICategoryBase _category;
         private long _sum;
         
         public Transaction(
-            IRepository<ITransaction> repository,
+            IRepository<ITransaction> repository, 
+            IRxSchedulerProvider rxSchedulerProvider,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             DateTime date,
             long id = -1L,
             IFlag flag = null,
@@ -26,8 +30,9 @@ namespace BFF.MVVM.Models.Native
             string memo = "", 
             long sum = 0L, 
             bool? cleared = false)
-            : base(repository, id, flag, checkNumber, date, account, payee, memo, cleared)
+            : base(repository, rxSchedulerProvider, notifyBudgetOverviewRelevantChange, id, flag, checkNumber, date, account, payee, memo, cleared)
         {
+            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _category = category;
             _sum = sum;
         }
@@ -44,8 +49,8 @@ namespace BFF.MVVM.Models.Native
                 }
                 if(_category == value) return;
                 _category = value;
-                UpdateAndNotify();
-                OnPropertyChanged();
+                UpdateAndNotify()
+                    .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.Notify(Date));
             }
         }
         
@@ -56,8 +61,8 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_sum == value) return;
                 _sum = value;
-                UpdateAndNotify();
-                OnPropertyChanged();
+                UpdateAndNotify()
+                    .ContinueWith(_ => _notifyBudgetOverviewRelevantChange.Notify(Date));
             }
         }
     }

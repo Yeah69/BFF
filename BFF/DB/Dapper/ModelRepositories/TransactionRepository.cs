@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -12,6 +13,8 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class TransactionRepository : RepositoryBase<Domain.ITransaction, Trans>, ITransactionRepository
     {
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private readonly IAccountRepository _accountRepository;
         private readonly ICategoryBaseRepository _categoryBaseRepository;
         private readonly IPayeeRepository _payeeRepository;
@@ -19,12 +22,16 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         public TransactionRepository(
             IProvideConnection provideConnection,
+            IRxSchedulerProvider rxSchedulerProvider,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             ICrudOrm crudOrm,
             IAccountRepository accountRepository,
             ICategoryBaseRepository categoryBaseRepository,
             IPayeeRepository payeeRepository,
             IFlagRepository flagRepository) : base(provideConnection, crudOrm)
         {
+            _rxSchedulerProvider = rxSchedulerProvider;
+            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _accountRepository = accountRepository;
             _categoryBaseRepository = categoryBaseRepository;
             _payeeRepository = payeeRepository;
@@ -53,6 +60,8 @@ namespace BFF.DB.Dapper.ModelRepositories
         {
             return new Domain.Transaction(
                 this,
+                _rxSchedulerProvider,
+                _notifyBudgetOverviewRelevantChange,
                 persistenceModel.Date,
                 persistenceModel.Id,
                 persistenceModel.FlagId is null

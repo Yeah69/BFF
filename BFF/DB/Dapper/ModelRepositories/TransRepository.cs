@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
@@ -18,6 +19,8 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class TransRepository : RepositoryBase<ITransBase, Trans>, ITransRepository
     {
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private readonly IRepository<Domain.ITransaction> _transactionRepository;
         private readonly IRepository<Domain.ITransfer> _transferRepository;
         private readonly IRepository<Domain.IParentTransaction> _parentTransactionRepository;
@@ -30,6 +33,8 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         public TransRepository(
             IProvideConnection provideConnection, 
+            IRxSchedulerProvider rxSchedulerProvider,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             IRepository<Domain.ITransaction> transactionRepository, 
             IRepository<Domain.ITransfer> transferRepository, 
             IRepository<Domain.IParentTransaction> parentTransactionRepository,
@@ -42,6 +47,8 @@ namespace BFF.DB.Dapper.ModelRepositories
             IFlagRepository flagRepository)
             : base(provideConnection, crudOrm)
         {
+            _rxSchedulerProvider = rxSchedulerProvider;
+            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _transactionRepository = transactionRepository;
             _transferRepository = transferRepository;
             _parentTransactionRepository = parentTransactionRepository;
@@ -124,6 +131,8 @@ namespace BFF.DB.Dapper.ModelRepositories
                 case TransType.Transaction:
                     ret = new Domain.Transaction(
                         _transactionRepository,
+                        _rxSchedulerProvider,
+                        _notifyBudgetOverviewRelevantChange,
                         persistenceModel.Date,
                         persistenceModel.Id,
                         persistenceModel.FlagId is null
@@ -144,6 +153,8 @@ namespace BFF.DB.Dapper.ModelRepositories
                 case TransType.Transfer:
                     ret = new Domain.Transfer(
                         _transferRepository,
+                        _rxSchedulerProvider,
+                        _notifyBudgetOverviewRelevantChange,
                         persistenceModel.Date,
                         persistenceModel.Id,
                         persistenceModel.FlagId is null
@@ -163,6 +174,8 @@ namespace BFF.DB.Dapper.ModelRepositories
                 case TransType.ParentTransaction:
                     ret = new Domain.ParentTransaction(
                         _parentTransactionRepository,
+                        _rxSchedulerProvider,
+                        _notifyBudgetOverviewRelevantChange,
                         await _subTransactionsRepository.GetChildrenOfAsync(persistenceModel.Id).ConfigureAwait(false),
                         persistenceModel.Date,
                         persistenceModel.Id,
@@ -178,7 +191,11 @@ namespace BFF.DB.Dapper.ModelRepositories
                         persistenceModel.Cleared == 1L);
                     break;
                 default:
-                    ret = new Domain.Transaction(_transactionRepository, DateTime.Today)
+                    ret = new Domain.Transaction(
+                            _transactionRepository, 
+                            _rxSchedulerProvider, 
+                            _notifyBudgetOverviewRelevantChange, 
+                            DateTime.Today)
                     { Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR" };
                     break;
             }

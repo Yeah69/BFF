@@ -7,7 +7,7 @@ namespace BFF.Helper
 {
     public interface INotifyBudgetOverviewRelevantChange
     {
-        void TransChangedDate(DateTime date);
+        void Notify(DateTime date);
     }
     public interface IBudgetOverviewCachingOperations
     {
@@ -24,7 +24,7 @@ namespace BFF.Helper
     {
         readonly IDictionary<(int Year, int Half), (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted)> _cachedBudgetOverviews = new Dictionary<(int Year, int Half), (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted)>();
 
-        public void TransChangedDate(DateTime date)
+        public void Notify(DateTime date)
         {
             var toRemoves = _cachedBudgetOverviews
                 .Keys

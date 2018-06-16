@@ -1,20 +1,21 @@
 ﻿using System;
 using BFF.DB;
+using BFF.Helper;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
     public interface ITransactionBase : ITransBase
     {
         IAccount Account { get; set; }
-        
+
         IPayee Payee { get; set; }
     }
-    
+
     public abstract class TransactionBase<T> : TransBase<T>, ITransactionBase where T : class, ITransactionBase
     {
         private IAccount _account;
         private IPayee _payee;
-        
+
         public IAccount Account
         {
             get => _account;
@@ -23,10 +24,9 @@ namespace BFF.MVVM.Models.Native.Structure
                 if (_account == value) return;
                 _account = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
-        
+
         public IPayee Payee
         {
             get => _payee;
@@ -35,12 +35,13 @@ namespace BFF.MVVM.Models.Native.Structure
                 if (_payee == value) return;
                 _payee = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
-        
+
         protected TransactionBase(
             IRepository<T> repository,
+            IRxSchedulerProvider rxSchedulerProvider,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             long id,
             IFlag flag,
             string checkNumber,
@@ -49,7 +50,7 @@ namespace BFF.MVVM.Models.Native.Structure
             IPayee payee = null,
             string memo = null,
             bool? cleared = null)
-            : base(repository, flag, checkNumber, date, id, memo, cleared)
+            : base(repository, rxSchedulerProvider, notifyBudgetOverviewRelevantChange, flag, checkNumber, date, id, memo, cleared)
         {
             _account = account;
             _payee = payee;

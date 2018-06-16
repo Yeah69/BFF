@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using BFF.Helper;
 using BFF.MVVM.Models.Native;
 using Category = BFF.DB.PersistenceModels.Category;
 
@@ -20,11 +21,17 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class IncomeCategoryRepository : ObservableRepositoryBase<IIncomeCategory, Category>, IIncomeCategoryRepository
     {
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICategoryOrm _categoryOrm;
 
-        public IncomeCategoryRepository(IProvideConnection provideConnection, ICrudOrm crudOrm, ICategoryOrm categoryOrm)
+        public IncomeCategoryRepository(
+            IProvideConnection provideConnection,
+            IRxSchedulerProvider rxSchedulerProvider,
+            ICrudOrm crudOrm,
+            ICategoryOrm categoryOrm)
             : base(provideConnection, crudOrm, new IncomeCategoryComparer())
         {
+            _rxSchedulerProvider = rxSchedulerProvider;
             _categoryOrm = categoryOrm;
         }
 
@@ -33,6 +40,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         {
             return Task.FromResult<IIncomeCategory>(
                 new IncomeCategory(this,
+                    _rxSchedulerProvider,
                     persistenceModel.Id,
                     persistenceModel.Name,
                     persistenceModel.MonthOffset));

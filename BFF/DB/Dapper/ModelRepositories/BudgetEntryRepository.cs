@@ -14,15 +14,18 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class BudgetEntryRepository : WriteOnlyRepositoryBase<Domain.IBudgetEntry, BudgetEntry>, IBudgetEntryRepository
     {
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICategoryRepository _categoryRepository;
         private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
 
         public BudgetEntryRepository(
             IProvideConnection provideConnection,
+            IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm,
             ICategoryRepository categoryRepository,
             INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange) : base(provideConnection, crudOrm)
         {
+            _rxSchedulerProvider = rxSchedulerProvider;
             _categoryRepository = categoryRepository;
             _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
         }
@@ -41,6 +44,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             return new Domain.BudgetEntry(
                 this,
                 _notifyBudgetOverviewRelevantChange,
+                _rxSchedulerProvider,
                 budgetEntry.Id, 
                 budgetEntry.Month,
                 await _categoryRepository.FindAsync(budgetEntry.CategoryId ?? 0L).ConfigureAwait(false), 

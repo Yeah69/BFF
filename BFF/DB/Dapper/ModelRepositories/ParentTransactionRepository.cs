@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -12,6 +13,8 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class ParentTransactionRepository : RepositoryBase<Domain.IParentTransaction, Trans>, IParentTransactionRepository
     {
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly INotifyBudgetOverviewRelevantChange _notifyBudgetOverviewRelevantChange;
         private readonly IAccountRepository _accountRepository;
         private readonly IPayeeRepository _payeeRepository;
         private readonly ISubTransactionRepository _subTransactionRepository;
@@ -19,12 +22,16 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         public ParentTransactionRepository(
             IProvideConnection provideConnection,
+            IRxSchedulerProvider rxSchedulerProvider,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             ICrudOrm crudOrm,
             IAccountRepository accountRepository,
             IPayeeRepository payeeRepository,
             ISubTransactionRepository subTransactionRepository,
             IFlagRepository flagRepository) : base(provideConnection, crudOrm)
         {
+            _rxSchedulerProvider = rxSchedulerProvider;
+            _notifyBudgetOverviewRelevantChange = notifyBudgetOverviewRelevantChange;
             _accountRepository = accountRepository;
             _payeeRepository = payeeRepository;
             _subTransactionRepository = subTransactionRepository;
@@ -53,6 +60,8 @@ namespace BFF.DB.Dapper.ModelRepositories
         {
             var parentTransaction = new Domain.ParentTransaction(
                 this,
+                _rxSchedulerProvider,
+                _notifyBudgetOverviewRelevantChange,
                 await _subTransactionRepository.GetChildrenOfAsync(persistenceModel.Id).ConfigureAwait(false),
                 persistenceModel.Date,
                 persistenceModel.Id,

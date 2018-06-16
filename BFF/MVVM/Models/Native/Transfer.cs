@@ -1,5 +1,6 @@
 ﻿using System;
 using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -32,7 +33,6 @@ namespace BFF.MVVM.Models.Native
                 }
                 _fromAccount = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
         
@@ -49,7 +49,6 @@ namespace BFF.MVVM.Models.Native
                 }
                 _toAccount = value;
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
         
@@ -61,12 +60,13 @@ namespace BFF.MVVM.Models.Native
                 if(_sum == value) return;
                 _sum = Math.Abs(value);
                 UpdateAndNotify();
-                OnPropertyChanged();
             }
         }
 
         public Transfer(
-            IRepository<ITransfer> repository,
+            IRepository<ITransfer> repository, 
+            IRxSchedulerProvider rxSchedulerProvider,
+            INotifyBudgetOverviewRelevantChange notifyBudgetOverviewRelevantChange,
             DateTime date,
             long id = -1L,
             IFlag flag = null,
@@ -76,7 +76,7 @@ namespace BFF.MVVM.Models.Native
             string memo = "",
             long sum = 0L,
             bool? cleared = false)
-            : base(repository, flag, checkNumber, date, id, memo, cleared)
+            : base(repository, rxSchedulerProvider, notifyBudgetOverviewRelevantChange, flag, checkNumber, date, id, memo, cleared)
         {
             _fromAccount = fromAccount;
             _toAccount = toAccount;
