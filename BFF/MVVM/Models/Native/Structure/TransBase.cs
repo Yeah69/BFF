@@ -58,12 +58,13 @@ namespace BFF.MVVM.Models.Native.Structure
             set
             {
                 if (_date == value) return;
+                var previousDate = _date;
                 _date = value;
                 UpdateAndNotify()
                     .ContinueWith(_ =>
                     {
                         if(!(this is ITransfer)) // Transfers are neutral to the budget
-                            _notifyBudgetOverviewRelevantChange.Notify(Date);
+                            _notifyBudgetOverviewRelevantChange.Notify(previousDate < Date ? previousDate : Date);
                     });
             }
         }

@@ -11,9 +11,9 @@ namespace BFF.Helper
     }
     public interface IBudgetOverviewCachingOperations
     {
-        bool TryGetValue((int Year, int Half) halfYearBlock, out (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted) budgetOverviewValues);
+        bool TryGetValue(int year, out (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted) budgetOverviewValues);
 
-        void Add((int Year, int Half) halfYearBlock, (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted) budgetOverviewValues);
+        void Add(int year, (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted) budgetOverviewValues);
     }
 
     public interface IBudgetOverviewCache : INotifyBudgetOverviewRelevantChange, IBudgetOverviewCachingOperations
@@ -22,14 +22,14 @@ namespace BFF.Helper
 
     public class BudgetOverviewCache : IBudgetOverviewCache, IOncePerBackend
     {
-        readonly IDictionary<(int Year, int Half), (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted)> _cachedBudgetOverviews = new Dictionary<(int Year, int Half), (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted)>();
+        readonly IDictionary<long, (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted)> _cachedBudgetOverviews = 
+            new Dictionary<long, (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted)>();
 
         public void Notify(DateTime date)
         {
             var toRemoves = _cachedBudgetOverviews
                 .Keys
-                .Where(t => t.Year == date.Year && (date.Month <= 6 || t.Half == 2)
-                             || t.Year > date.Year)
+                .Where(y => y >= date.Year)
                 .ToList();
             foreach (var toRemove in toRemoves)
             {
@@ -37,14 +37,14 @@ namespace BFF.Helper
             }
         }
 
-        public bool TryGetValue((int Year, int Half) halfYearBlock, out (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted) budgetOverviewValues)
+        public bool TryGetValue(int year, out (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted) budgetOverviewValues)
         {
-            return _cachedBudgetOverviews.TryGetValue(halfYearBlock, out budgetOverviewValues);
+            return _cachedBudgetOverviews.TryGetValue(year, out budgetOverviewValues);
         }
 
-        public void Add((int Year, int Half) halfYearBlock, (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted) budgetOverviewValues)
+        public void Add(int year, (IDictionary<long, long> BalancePerCategoryId, long NotBudgetedOrOverbudgeted) budgetOverviewValues)
         {
-            _cachedBudgetOverviews.Add(halfYearBlock, budgetOverviewValues);
+            _cachedBudgetOverviews.Add(year, budgetOverviewValues);
         }
     }
 }

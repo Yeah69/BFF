@@ -10,7 +10,7 @@ namespace BFF.DB.Dapper
 {
     public interface IBudgetMonthRepository : IDisposable
     {
-        Task<IList<IBudgetMonth>> FindAsync(DateTime fromMonth, DateTime toMonth);
+        Task<IList<IBudgetMonth>> FindAsync(int year);
     }
 
     public class BudgetMonthRepository : IBudgetMonthRepository
@@ -35,11 +35,10 @@ namespace BFF.DB.Dapper
             _budgetOrm = budgetOrm;
         }
 
-        public async Task<IList<IBudgetMonth>> FindAsync(DateTime fromMonth, DateTime toMonth)
+        public async Task<IList<IBudgetMonth>> FindAsync(int year)
         {
             var _ = await _budgetOrm.FindAsync(
-                fromMonth,
-                toMonth,
+                year,
                 _categoryRepository.All.Select(c => c.Id).ToArray(),
                 _incomeCategoryRepository.All.Select(ic => (ic.Id, ic.MonthOffset)).ToArray()).ConfigureAwait(false);
 

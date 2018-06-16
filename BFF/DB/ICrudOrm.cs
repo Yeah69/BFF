@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using BFF.DB.SQLite;
@@ -54,7 +53,7 @@ namespace BFF.DB
 
     public interface IBudgetOrm : IOncePerBackend
     {
-        Task<BudgetBlock> FindAsync(DateTime fromMonth, DateTime toMonth, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories);
+        Task<BudgetBlock> FindAsync(int year, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories);
     }
 
     public interface IImportingOrm

@@ -136,16 +136,13 @@ namespace BFF.MVVM.ViewModels
                     new RelayBasicTaskBasedSyncDataAccess<IBudgetMonthViewModel>(
                         async (offset, pageSize) =>
                         {
-                            DateTime fromMonth = IndexToMonth(offset);
-                            DateTime toMonth = IndexToMonth(offset + pageSize - 1);
-
-                            return await Task.Run(async () => (await _budgetMonthRepository.FindAsync(fromMonth, toMonth))
+                            return await Task.Run(async () => (await _budgetMonthRepository.FindAsync(IndexToMonth(offset).Year))
                                 .Select(bm =>
                                     (IBudgetMonthViewModel) new BudgetMonthViewModel(bm, _budgetEntryViewModelService))
                                 .ToArray()).ConfigureAwait(false);
                         },
                         () =>  Task.FromResult(LastMonthIndex)),
-                    pageSize: 6);
+                    pageSize: 12);
         }
 
         private static DateTime IndexToMonth(int index)
