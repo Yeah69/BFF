@@ -40,8 +40,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Name of the Account Model
         /// </summary>
-        public override IReactiveProperty<string> Name //todo Localization
-            => new ReactiveProperty<string>("All Accounts");
+        public override string Name //todo Localization
+            => "All Accounts";
         
         public SummaryAccountViewModel(
             ISummaryAccount summaryAccount, 
@@ -49,12 +49,12 @@ namespace BFF.MVVM.ViewModels.ForModels
             Lazy<IAccountViewModelService> service,
             ITransRepository transRepository,
             Func<ITransLikeViewModelPlaceholder> placeholderFactory,
-            IRxSchedulerProvider schedulerProvider,
+            IRxSchedulerProvider rxSchedulerProvider,
             IBackendCultureManager cultureManager,
             IAccountModuleColumnManager accountModuleColumnManager,
             Func<IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
             Func<IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
-            Func<IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionFactory,
+            Func<IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory,
             Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> dependingTransactionViewModelFactory,
             Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> dependingParentTransactionViewModelFactory,
             Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> dependingTransferViewModelFactory) 
@@ -62,7 +62,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 summaryAccount,
                 service,
                 accountRepository,
-                schedulerProvider,
+                rxSchedulerProvider,
                 cultureManager,
                 dependingTransactionViewModelFactory, 
                 dependingParentTransactionViewModelFactory,
@@ -72,23 +72,23 @@ namespace BFF.MVVM.ViewModels.ForModels
             _service = service;
             _transRepository = transRepository;
             _placeholderFactory = placeholderFactory;
-            IsOpen.Value = true;
+            IsOpen = true;
 
             StartingBalance = new ReactiveProperty<long>().AddTo(CompositeDisposable);
+            
+            NewTransactionCommand = new RxRelayCommand(() => NewTransList.Add(transactionViewModelFactory(this))).AddTo(CompositeDisposable);
 
-            NewTransactionCommand.Subscribe(_ => NewTransList.Add(transactionViewModelFactory(this))).AddTo(CompositeDisposable);
+            NewTransferCommand = new RxRelayCommand(() => NewTransList.Add(transferViewModelFactory(this))).AddTo(CompositeDisposable);
 
-            NewTransferCommand.Subscribe(_ => NewTransList.Add(transferViewModelFactory(this))).AddTo(CompositeDisposable);
+            NewParentTransactionCommand = new RxRelayCommand(() => NewTransList.Add(parentTransactionViewModelFactory(this))).AddTo(CompositeDisposable);
 
-            NewParentTransactionCommand.Subscribe(_ => NewTransList.Add(parentTransactionFactory(this))).AddTo(CompositeDisposable);
+            ApplyCommand = new AsyncRxRelayCommand(async () => await ApplyTits(),
+                NewTransList
+                    .ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
+                    .Select(count => count > 0),
+                NewTransList.Count > 0);
 
-            ApplyCommand = NewTransList.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
-                .Select(count => count > 0)
-                .ToReactiveCommand().AddTo(CompositeDisposable);
-
-            ApplyCommand.Subscribe(async _ => await ApplyTits()).AddTo(CompositeDisposable);
-
-            ImportCsvBankStatement = new ReactiveCommand().AddTo(CompositeDisposable);
+            ImportCsvBankStatement = new RxRelayCommand(() => {}).AddTo(CompositeDisposable);
         }
 
         #region ViewModel_Part
@@ -102,24 +102,24 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        public sealed override ReactiveCommand NewTransactionCommand { get; } = new ReactiveCommand();
+        public sealed override IRxRelayCommand NewTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        public sealed override ReactiveCommand NewTransferCommand { get; } = new ReactiveCommand();
+        public sealed override IRxRelayCommand NewTransferCommand { get; }
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        public sealed override ReactiveCommand NewParentTransactionCommand { get; } = new ReactiveCommand();
+        public sealed override IRxRelayCommand NewParentTransactionCommand { get; }
 
         /// <summary>
         /// Flushes all valid and not yet inserted TITs to the database.
         /// </summary>
-        public sealed override ReactiveCommand ApplyCommand { get; }
+        public sealed override IRxRelayCommand ApplyCommand { get; }
 
-        public override ReactiveCommand ImportCsvBankStatement { get; }
+        public override IRxRelayCommand ImportCsvBankStatement { get; }
 
         #endregion
 

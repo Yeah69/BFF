@@ -4,7 +4,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
     public interface IHavePayeeViewModel
     {
-        IReactiveProperty<IPayeeViewModel> Payee { get; }
+        IPayeeViewModel Payee { get; set; }
 
         INewPayeeViewModel NewPayeeViewModel { get; }
     }

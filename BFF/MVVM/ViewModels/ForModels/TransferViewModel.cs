@@ -17,12 +17,12 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The account from where the money is transfered.
         /// </summary>
-        IReactiveProperty<IAccountViewModel> FromAccount { get; }
+        IAccountViewModel FromAccount { get; set; }
 
         /// <summary>
         /// The account to where the money is transfered.
         /// </summary>
-        IReactiveProperty<IAccountViewModel> ToAccount { get; }
+        IAccountViewModel ToAccount { get; set; }
     }
 
     /// <summary>
@@ -30,20 +30,31 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public sealed class TransferViewModel : TransBaseViewModel, ITransferViewModel
     {
+        private readonly ITransfer _transfer;
         private readonly IAccountViewModelService _accountViewModelService;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
+        private IAccountViewModel _fromAccount;
+        private IAccountViewModel _toAccount;
 
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts => _accountViewModelService.All;
 
         /// <summary>
         /// The account from where the money is transfered.
         /// </summary>
-        public IReactiveProperty<IAccountViewModel> FromAccount { get; }
+        public IAccountViewModel FromAccount
+        {
+            get => _fromAccount;
+            set => _transfer.FromAccount = _accountViewModelService.GetModel(value);
+        }
 
         /// <summary>
         /// The account to where the money is transferred.
         /// </summary>
-        public IReactiveProperty<IAccountViewModel> ToAccount { get; }
+        public IAccountViewModel ToAccount
+        {
+            get => _toAccount;
+            set => _transfer.ToAccount = _accountViewModelService.GetModel(value);
+        }
 
         /// <summary>
         /// The amount of money, which is transfered.
@@ -56,7 +67,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             INewFlagViewModel newFlagViewModel,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ILastSetDate lastSetDate,
-            IRxSchedulerProvider schedulerProvider,
+            IRxSchedulerProvider rxSchedulerProvider,
             ISummaryAccountViewModel summaryAccountViewModel,
             IFlagViewModelService flagViewModelService,
             IAccountBaseViewModel owner) 
@@ -64,37 +75,38 @@ namespace BFF.MVVM.ViewModels.ForModels
                 transfer, 
                 newFlagViewModel, 
                 lastSetDate, 
-                schedulerProvider, 
+                rxSchedulerProvider, 
                 flagViewModelService, 
                 owner)
         {
+            _transfer = transfer;
             _accountViewModelService = accountViewModelService;
             _summaryAccountViewModel = summaryAccountViewModel;
 
-            FromAccount = transfer
-                .ToReactivePropertyAsSynchronized(
-                    nameof(transfer.FromAccount),
-                    () => transfer.FromAccount,
-                    fa => transfer.FromAccount = fa,
-                    accountViewModelService.GetViewModel, 
-                    accountViewModelService.GetModel,
-                    schedulerProvider.UI,
-                    ReactivePropertyMode.DistinctUntilChanged)
+            _fromAccount = _accountViewModelService.GetViewModel(transfer.FromAccount);
+            transfer
+                .ObservePropertyChanges(nameof(transfer.FromAccount))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    _fromAccount = _accountViewModelService.GetViewModel(transfer.FromAccount);
+                    OnPropertyChanged(nameof(FromAccount));
+                })
                 .AddTo(CompositeDisposable);
 
-            ToAccount = transfer
-                .ToReactivePropertyAsSynchronized(
-                    nameof(transfer.ToAccount),
-                    () => transfer.ToAccount,
-                    ta => transfer.ToAccount = ta,
-                    accountViewModelService.GetViewModel,
-                    accountViewModelService.GetModel,
-                    schedulerProvider.UI,
-                    ReactivePropertyMode.DistinctUntilChanged)
+            _toAccount = _accountViewModelService.GetViewModel(transfer.ToAccount);
+            transfer
+                .ObservePropertyChanges(nameof(transfer.ToAccount))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    _toAccount = _accountViewModelService.GetViewModel(transfer.ToAccount);
+                    OnPropertyChanged(nameof(ToAccount));
+                })
                 .AddTo(CompositeDisposable);
 
-            if (FromAccount.Value is null && owner is IAccountViewModel specificAccount)
-                FromAccount.Value = specificAccount;
+            if (FromAccount is null && owner is IAccountViewModel specificAccount)
+                FromAccount = specificAccount;
 
             transfer
                 .ObservePropertyChanges(t => t.FromAccount)
@@ -126,7 +138,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 nameof(transfer.Sum),
                 () => transfer.Sum,
                 s => transfer.Sum = s,
-                schedulerProvider.UI,
+                rxSchedulerProvider.UI,
                 ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             transfer
@@ -134,8 +146,8 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .Where(_ => transfer.Id != -1L)
                 .Subscribe(sum =>
                 {
-                    FromAccount.Value?.RefreshBalance();
-                    ToAccount.Value?.RefreshBalance();
+                    FromAccount?.RefreshBalance();
+                    ToAccount?.RefreshBalance();
                 }).AddTo(CompositeDisposable);
 
             SumEdit = createSumEdit(Sum);
@@ -143,28 +155,28 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override ISumEditViewModel SumEdit { get; }
 
-        public override bool IsInsertable() => base.IsInsertable() && FromAccount.Value.IsNotNull() && ToAccount.IsNotNull();
+        public override bool IsInsertable() => base.IsInsertable() && FromAccount.IsNotNull() && ToAccount.IsNotNull();
 
         public override async Task DeleteAsync()
         {
             await base.DeleteAsync();
-            RefreshAnAccountViewModel(FromAccount.Value);
-            RefreshAnAccountViewModel(ToAccount.Value);
+            RefreshAnAccountViewModel(FromAccount);
+            RefreshAnAccountViewModel(ToAccount);
             _summaryAccountViewModel.RefreshTits();
             _summaryAccountViewModel.RefreshBalance();
         }
 
         protected override void NotifyRelevantAccountsToRefreshTits()
         {
-            FromAccount.Value?.RefreshTits();
-            ToAccount.Value?.RefreshTits();
+            FromAccount?.RefreshTits();
+            ToAccount?.RefreshTits();
             _summaryAccountViewModel.RefreshTits();
         }
 
         protected override void NotifyRelevantAccountsToRefreshBalance()
         {
-            FromAccount.Value?.RefreshBalance();
-            ToAccount.Value?.RefreshBalance();
+            FromAccount?.RefreshBalance();
+            ToAccount?.RefreshBalance();
             _summaryAccountViewModel.RefreshBalance();
         }
 

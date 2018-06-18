@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
@@ -15,23 +16,33 @@ namespace BFF.MVVM.ViewModels.ForModels
     
     public sealed class SubTransactionViewModel : TransLikeViewModel, ISubTransactionViewModel
     {
+        private readonly ISubTransaction _subTransaction;
+        private readonly ICategoryBaseViewModelService _categoryViewModelService;
+        private ICategoryBaseViewModel _category;
+
         public SubTransactionViewModel(
             ISubTransaction subTransaction,
             INewCategoryViewModel newCategoryViewModel,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
-            IRxSchedulerProvider schedulerProvider,
+            IRxSchedulerProvider rxSchedulerProvider,
             ICategoryBaseViewModelService categoryViewModelService,
             IAccountBaseViewModel owner)
-            : base(subTransaction, schedulerProvider, owner)
+            : base(subTransaction, rxSchedulerProvider, owner)
         {
-            Category = subTransaction.ToReactivePropertyAsSynchronized(
-                nameof(subTransaction.Category),
-                () => subTransaction.Category,
-                c => subTransaction.Category = c,
-                categoryViewModelService.GetViewModel,
-                categoryViewModelService.GetModel,
-                schedulerProvider.UI,
-                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            _subTransaction = subTransaction;
+            _categoryViewModelService = categoryViewModelService;
+
+            _category = _categoryViewModelService.GetViewModel(subTransaction.Category);
+            subTransaction
+                .ObservePropertyChanges(nameof(subTransaction.Category))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    _category = _categoryViewModelService.GetViewModel(subTransaction.Category);
+                    OnPropertyChanged(nameof(Category));
+                })
+                .AddTo(CompositeDisposable);
+
             Sum = subTransaction.ToReactivePropertyAsSynchronized(sti => sti.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             SumEdit = createSumEdit(Sum);
@@ -44,7 +55,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Each SubTransaction can be budgeted to a category.
         /// </summary>
-        public IReactiveProperty<ICategoryBaseViewModel> Category { get; }
+        public ICategoryBaseViewModel Category
+        {
+            get => _category;
+            set => _subTransaction.Category = _categoryViewModelService.GetModel(value);
+        }
 
         /// <summary>
         /// The amount of money of the exchange of the SubTransaction.
@@ -53,6 +68,6 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public override ISumEditViewModel SumEdit { get; }
 
-        public override bool IsInsertable() => base.IsInsertable() && Category.Value.IsNotNull();
+        public override bool IsInsertable() => base.IsInsertable() && Category.IsNotNull();
     }
 }

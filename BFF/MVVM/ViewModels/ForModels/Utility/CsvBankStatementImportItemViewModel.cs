@@ -90,8 +90,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
                 .AddHere(_compositeDisposable);
 
             PayeeExists = Payee
-                .Select(p => payeeService.All.Any(payee => payee.Name.Value == p))
-                .ToReadOnlyReactivePropertySlim(payeeService.All.Any(payee => payee.Name.Value == Payee.Value), ReactivePropertyMode.DistinctUntilChanged)
+                .Select(p => payeeService.All.Any(payee => payee.Name == p))
+                .ToReadOnlyReactivePropertySlim(payeeService.All.Any(payee => payee.Name == Payee.Value), ReactivePropertyMode.DistinctUntilChanged)
                 .AddHere(_compositeDisposable);
 
             CreatePayeeIfNotExisting = new ReactiveProperty<bool>(configuration.CreatePayeeIfNotExisting, ReactivePropertyMode.DistinctUntilChanged);

@@ -151,7 +151,7 @@
                             </Style>
                         </Rectangle.Style>
                     </Rectangle>
-                    <TextBlock Text="{Binding Name.Value}" />
+                    <TextBlock Text="{Binding Name}" />
                 </StackPanel>
             </DataTemplate>
 
@@ -175,7 +175,7 @@
                             </Style>
                         </Rectangle.Style>
                     </Rectangle>
-                    <TextBox Text="{Binding Name.Value}" />
+                    <TextBox Text="{Binding Name}" />
                 </StackPanel>
             </DataTemplate>
 
@@ -200,7 +200,7 @@
                         </Rectangle.Style>
                     </Rectangle>
                     <TextBlock Margin="0,0,5,0"
-                               Text="{Binding Name.Value}" />
+                               Text="{Binding Name}" />
                 </StackPanel>
             </DataTemplate>
 
@@ -245,7 +245,7 @@
             <DataTemplate x:Key="FlagTemplate">
                 <iconPacks:PackIconMaterial x:Name="PopHereUp"
                                             d:DataContext="{d:DesignInstance forModels:IFlagViewModel}"
-                                            Foreground="{Binding Color.Value}"
+                                            Foreground="{Binding Color}"
                                             Kind="{StaticResource FlagIcon}"
                                             Style="{StaticResource CellIconMaterial}" />
             </DataTemplate>
@@ -254,14 +254,14 @@
                 <Grid d:DataContext="{d:DesignInstance forModels:IFlagViewModel}">
                     <Popup x:Name="Popup"
                            StaysOpen="False">
-                        <views:ColorPickerView Brush="{Binding Color.Value, Mode=TwoWay}" />
+                        <views:ColorPickerView Brush="{Binding Color, Mode=TwoWay}" />
                     </Popup>
 
                     <Button Click="Flag_OnClick">
                         <Button.Template>
                             <ControlTemplate>
                                 <iconPacks:PackIconMaterial x:Name="PopHereUp"
-                                                            Foreground="{Binding Color.Value}"
+                                                            Foreground="{Binding Color}"
                                                             Kind="{StaticResource FlagIcon}"
                                                             Style="{StaticResource CellIconMaterial}" />
                             </ControlTemplate>

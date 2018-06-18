@@ -51,29 +51,29 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         
         long? BalanceUntilNow { get; }
 
-        IReactiveProperty<bool> IsOpen { get; }
+        bool IsOpen { get; }
 
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        ReactiveCommand NewTransactionCommand { get; }
+        IRxRelayCommand NewTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        ReactiveCommand NewTransferCommand { get; }
+        IRxRelayCommand NewTransferCommand { get; }
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        ReactiveCommand NewParentTransactionCommand { get; }
+        IRxRelayCommand NewParentTransactionCommand { get; }
 
         /// <summary>
         /// Flushes all valid and not yet inserted TITs to the database.
         /// </summary>
-        ReactiveCommand ApplyCommand { get; }
+        IRxRelayCommand ApplyCommand { get; }
 
-        ReactiveCommand ImportCsvBankStatement { get; }
+        IRxRelayCommand ImportCsvBankStatement { get; }
 
         bool ShowLongDate { get; }
 
@@ -92,7 +92,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
         private readonly Lazy<IAccountViewModelService> _accountViewModelService;
-        private readonly IRxSchedulerProvider _schedulerProvider;
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> _transactionViewModelFactory;
         private readonly Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> _parentTransactionViewModelFactory;
         private readonly Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> _transferViewModelFactory;
@@ -125,7 +125,21 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         
         public long? BalanceUntilNow => _balanceUntilNow;
 
-        public IReactiveProperty<bool> IsOpen { get; }
+        public bool IsOpen
+        {
+            get => _isOpen;
+            set
+            {
+                if (value == _isOpen) return;
+                _isOpen = value;
+                OnPropertyChanged();
+                _rxSchedulerProvider.Task.MinimalSchedule(() =>
+                {
+                    RefreshTits();
+                    RefreshBalance();
+                });
+            }
+        }
 
         /// <summary>
         /// All available Accounts.
@@ -135,24 +149,24 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        public abstract ReactiveCommand NewTransactionCommand { get; }
+        public abstract IRxRelayCommand NewTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        public abstract ReactiveCommand NewTransferCommand { get; }
+        public abstract IRxRelayCommand NewTransferCommand { get; }
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        public abstract ReactiveCommand NewParentTransactionCommand { get; }
+        public abstract IRxRelayCommand NewParentTransactionCommand { get; }
 
         /// <summary>
         /// Flushes all valid and not yet inserted TITs to the database.
         /// </summary>
-        public abstract ReactiveCommand ApplyCommand { get; }
+        public abstract IRxRelayCommand ApplyCommand { get; }
 
-        public abstract ReactiveCommand ImportCsvBankStatement { get; }
+        public abstract IRxRelayCommand ImportCsvBankStatement { get; }
 
         /// <summary>
         /// Indicates if the date format should be display in short or long fashion.
@@ -165,15 +179,15 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             IAccount account,
             Lazy<IAccountViewModelService> accountViewModelService,
             IAccountRepository accountRepository,
-            IRxSchedulerProvider schedulerProvider,
+            IRxSchedulerProvider rxSchedulerProvider,
             IBackendCultureManager cultureManager,
             Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
             Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory,
             Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
-            IAccountModuleColumnManager accountModuleColumnManager) : base(account, schedulerProvider)
+            IAccountModuleColumnManager accountModuleColumnManager) : base(account, rxSchedulerProvider)
         {
             _accountViewModelService = accountViewModelService;
-            _schedulerProvider = schedulerProvider;
+            _rxSchedulerProvider = rxSchedulerProvider;
             _transactionViewModelFactory = transactionViewModelFactory;
             _parentTransactionViewModelFactory = parentTransactionViewModelFactory;
             _transferViewModelFactory = transferViewModelFactory;
@@ -206,13 +220,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 }
             }).AddTo(CompositeDisposable);
 
-            IsOpen = new ReactiveProperty<bool>(false).AddTo(CompositeDisposable);
-
-            IsOpen.Where(isOpen => isOpen).Subscribe(_ =>
-            {
-                RefreshTits();
-                RefreshBalance();
-            }).AddTo(CompositeDisposable);
+            IsOpen = false;
 
             _removeRequestSubscriptions.AddTo(CompositeDisposable);
             _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
@@ -225,10 +233,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             }).AddTo(CompositeDisposable);
 
             _refreshBalance
-                .ObserveOn(schedulerProvider.Task)
-                .Where(_ => IsOpen.Value)
+                .ObserveOn(rxSchedulerProvider.Task)
+                .Where(_ => IsOpen)
                 .SelectMany(_ => accountRepository.GetBalanceAsync(account))
-                .ObserveOn(schedulerProvider.UI)
+                .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(b =>
                 {
                     _balance = b;
@@ -236,10 +244,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 }).AddTo(CompositeDisposable);
 
             _refreshBalanceUntilNow
-                .ObserveOn(schedulerProvider.Task)
-                .Where(_ => IsOpen.Value)
+                .ObserveOn(rxSchedulerProvider.Task)
+                .Where(_ => IsOpen)
                 .SelectMany(_ => accountRepository.GetBalanceUntilNowAsync(account))
-                .ObserveOn(schedulerProvider.UI)
+                .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(bun =>
                 {
                     _balanceUntilNow = bun;
@@ -263,14 +271,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         public void RefreshTits()
         {
-            if (IsOpen.Value)
+            if (IsOpen)
             {
                 Task.Run(() => CreateDataVirtualizingCollection())
                     .ContinueWith(async t =>
                     {
                         var temp = _tits;
                         _tits = await t;
-                        _schedulerProvider.UI.MinimalSchedule(() =>
+                        _rxSchedulerProvider.UI.MinimalSchedule(() =>
                         {
                             OnPreVirtualizedRefresh();
                             OnPropertyChanged(nameof(Tits));
@@ -358,11 +366,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 .CreateBuilder()
                 .BuildAHoardingTaskBasedAsyncCollection(
                     BasicAccess,
-                    _schedulerProvider.Task,
-                    _schedulerProvider.UI,
+                    _rxSchedulerProvider.Task,
+                    _rxSchedulerProvider.UI,
                     PageSize);
 
         protected int PageSize = 100;
+        private bool _isOpen;
 
         protected abstract IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess { get; }
     }

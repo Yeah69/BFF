@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 using BFF.Helper.Extensions;
-using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.AttachedBehaviors
 {

@@ -4,7 +4,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
     public interface IHaveCategoryViewModel
     {
-        IReactiveProperty<ICategoryBaseViewModel> Category { get; }
+        ICategoryBaseViewModel Category { get; set; }
 
         INewCategoryViewModel NewCategoryViewModel { get; }
     }

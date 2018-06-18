@@ -69,59 +69,59 @@
                                         CellEditingTemplate="{StaticResource AccountEditingColumnTemplate}"
                                         CellTemplate="{StaticResource AccountColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Account}"
-                                        SortMemberPath="Account.Name.Value" />
+                                        SortMemberPath="Account.Name" />
                 <!--  Date  -->
                 <DataGridTemplateColumn x:Name="DateColumn"
                                         CellEditingTemplate="{StaticResource DateEditingColumnTemplate}"
                                         CellTemplate="{StaticResource DateColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Date}"
-                                        SortMemberPath="Date.Value" />
+                                        SortMemberPath="Date" />
                 <!--  Flag  -->
                 <DataGridTemplateColumn x:Name="FlagColumn"
                                         Visibility="{Binding Data, Source={StaticResource FlagColumnVisibility}}"
                                         CellEditingTemplate="{StaticResource FlagEditingColumnTemplate}"
                                         CellTemplate="{StaticResource FlagColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Flag}"
-                                        SortMemberPath="Flag.Value" />
+                                        SortMemberPath="Flag.Name" />
                 <!--  CheckNumber  -->
                 <DataGridTemplateColumn x:Name="CheckNumberColumn"
                                         Visibility="{Binding Data, Source={StaticResource CheckNumberColumnVisibility}}"
                                         CellEditingTemplate="{StaticResource CheckNumberEditingColumnTemplate}"
                                         CellTemplate="{StaticResource CheckNumberColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_CheckNumber}"
-                                        SortMemberPath="CheckNumber.Value" />
+                                        SortMemberPath="CheckNumber" />
                 <!--  Payee  -->
                 <DataGridTemplateColumn x:Name="PayeeColumn"
                                         CellEditingTemplate="{StaticResource PayeeEditingColumnTemplate}"
                                         CellTemplate="{StaticResource PayeeColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Payee}"
-                                        SortMemberPath="Payee.Name.Value" />
+                                        SortMemberPath="Payee.Name" />
                 <!--  Category  -->
                 <DataGridTemplateColumn x:Name="CategoryColumn"
                                         CellEditingTemplate="{StaticResource CategoryEditingColumnTemplate}"
                                         CellTemplate="{StaticResource CategoryColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Category}"
-                                        SortMemberPath="Category.Name.Value" />
+                                        SortMemberPath="Category.Name" />
                 <!--  Memo  -->
                 <DataGridTemplateColumn x:Name="MemoColumn"
                                         Width="*"
                                         CellEditingTemplate="{StaticResource MemoEditingColumnTemplate}"
                                         CellTemplate="{StaticResource MemoColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Memo}"
-                                        SortMemberPath="Memo.Value" />
+                                        SortMemberPath="Memo" />
                 <!--  Sum  -->
                 <DataGridTemplateColumn x:Name="SumColumn"
                                         CellEditingTemplate="{StaticResource SumEditingColumnTemplate}"
                                         CellTemplate="{StaticResource SumColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Sum}"
                                         IsReadOnly="False"
-                                        SortMemberPath="Sum.Value" />
+                                        SortMemberPath="Sum" />
                 <!--  Cleared  -->
                 <DataGridTemplateColumn x:Name="ClearedColumn"
                                         CellTemplate="{StaticResource ClearedColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Cleared}"
                                         IsReadOnly="True"
-                                        SortMemberPath="Cleared.Value" />
+                                        SortMemberPath="Cleared" />
             </DataGrid.Columns>
         </DataGrid>
 

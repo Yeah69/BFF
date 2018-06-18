@@ -38,7 +38,7 @@ namespace BFF.MVVM.ViewModels
 
         protected override void OnIsOpenChanged(bool isOpen)
         {
-            if (isOpen && SummaryAccountViewModel.IsOpen.Value)
+            if (isOpen && SummaryAccountViewModel.IsOpen)
             {
                 SummaryAccountViewModel.RefreshTits();
                 SummaryAccountViewModel.RefreshStartingBalance();

@@ -28,13 +28,13 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock d:DataContext="{d:DesignInstance forModels:IFlagViewModel}"
-                                           Text="{Binding Name.Value}" />
+                                           Text="{Binding Name}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <TextBox d:DataContext="{d:DesignInstance forModels:IFlagViewModel}"
-                                         Text="{Binding Name.Value, Mode=TwoWay}" />
+                                         Text="{Binding Name, Mode=TwoWay}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>

@@ -49,7 +49,7 @@ namespace BFF.MVVM.ViewModels
             string ValidateName(string text)
             {
                 return !string.IsNullOrWhiteSpace(text) &&
-                    All.All(a => a.Name.Value != text.Trim()) 
+                    All.All(a => a.Name != text.Trim()) 
                     ? null 
                     : "ErrorMessageWrongAccountName".Localize();
             }

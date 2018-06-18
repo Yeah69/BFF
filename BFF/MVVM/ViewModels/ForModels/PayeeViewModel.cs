@@ -10,7 +10,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     {
         public PayeeViewModel(
             IPayee payee,
-            IRxSchedulerProvider schedulerProvider) : base(payee, schedulerProvider)
+            IRxSchedulerProvider rxSchedulerProvider) : base(payee, rxSchedulerProvider)
         {
         }
     }

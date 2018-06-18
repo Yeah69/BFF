@@ -41,7 +41,7 @@ namespace BFF.MVVM.ViewModels
             string ValidatePayeeName(string text)
             {
                 return !string.IsNullOrWhiteSpace(text) &&
-                    All.All(flag => flag.Name.Value != text.Trim()) 
+                    All.All(flag => flag.Name != text.Trim()) 
                     ? null 
                     : "ErrorMessageWrongFlagName".Localize();
             }
@@ -67,7 +67,7 @@ namespace BFF.MVVM.ViewModels
                     newFlag.Name = Text.Value.Trim();
                     await newFlag.InsertAsync();
                     if(CurrentOwner != null)
-                        CurrentOwner.Flag.Value = _flagViewModelService.GetViewModel(newFlag);
+                        CurrentOwner.Flag = _flagViewModelService.GetViewModel(newFlag);
                     CurrentOwner = null;
                 }).AddTo(_compositeDisposable);
         }

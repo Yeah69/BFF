@@ -1,32 +1,39 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Reactive.Linq;
+using System.Windows.Media;
 using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.ViewModels.ForModels.Structure;
-using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
     public interface IFlagViewModel : ICommonPropertyViewModel
     {
-        IReactiveProperty<SolidColorBrush> Color { get; }
+        SolidColorBrush Color { get; set; }
     }
 
     public class FlagViewModel : CommonPropertyViewModel, IFlagViewModel
     {
+        private readonly IFlag _flag;
 
         public FlagViewModel(
             IFlag flag,
-            IRxSchedulerProvider schedulerProvider) : base(flag, schedulerProvider)
+            IRxSchedulerProvider rxSchedulerProvider) : base(flag, rxSchedulerProvider)
         {
+            _flag = flag;
 
-            Color = flag.ToReactivePropertyAsSynchronized(
-                f => f.Color,
-                color => new SolidColorBrush(color),
-                brush => brush.Color, 
-                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            flag
+                .ObservePropertyChanges(nameof(flag.Color))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(Color)))
+                .AddTo(CompositeDisposable);
         }
 
-        public IReactiveProperty<SolidColorBrush> Color { get; }
+        public SolidColorBrush Color
+        {
+            get => new SolidColorBrush(_flag.Color);
+            set => _flag.Color = value.Color;
+        }
     }
 }

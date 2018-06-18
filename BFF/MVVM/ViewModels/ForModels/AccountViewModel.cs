@@ -22,14 +22,14 @@ namespace BFF.MVVM.ViewModels.ForModels
 {
     public interface IAccountViewModel : IAccountBaseViewModel
     {
-        IReactiveProperty<DateTime> StartingDate { get; }
+        DateTime StartingDate { get; set; }
 
         ISumEditViewModel StartingBalanceEdit { get; }
     }
 
     public interface IImportCsvBankStatement
     {
-        ReactiveCommand ImportCsvBankStatement { get; }
+        IRxRelayCommand ImportCsvBankStatement { get; }
     }
 
     /// <summary>
@@ -42,7 +42,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         private readonly ITransRepository _transRepository;
         private readonly Func<ITransLikeViewModelPlaceholder> _placeholderFactory;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
-        private readonly IRxSchedulerProvider _schedulerProvider;
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
 
         /// <summary>
         /// Starting balance of the Account
@@ -50,7 +50,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         public sealed override IReactiveProperty<long> StartingBalance { get; }
 
 
-        public IReactiveProperty<DateTime> StartingDate { get; }
+        public DateTime StartingDate
+        {
+            get => _account.StartingDate;
+            set => _account.StartingDate = value;
+        }
         public ISumEditViewModel StartingBalanceEdit { get; }
 
         /// <summary>
@@ -75,7 +79,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Func<IPayee> payeeFactory,
             Func<ITransLikeViewModelPlaceholder> placeholderFactory,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
-            IRxSchedulerProvider schedulerProvider,
+            IRxSchedulerProvider rxSchedulerProvider,
             IBackendCultureManager cultureManager,
             IBffChildWindowManager childWindowManager,
             IAccountModuleColumnManager accountModuleColumnManager,
@@ -91,7 +95,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 account,
                 accountViewModelService,
                 accountRepository,
-                schedulerProvider,
+                rxSchedulerProvider,
                 cultureManager,
                 dependingTransactionViewModelFactory, 
                 dependingParentTransactionViewModelFactory,
@@ -103,11 +107,12 @@ namespace BFF.MVVM.ViewModels.ForModels
             _transRepository = transRepository;
             _placeholderFactory = placeholderFactory;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
-            _schedulerProvider = schedulerProvider;
+            _rxSchedulerProvider = rxSchedulerProvider;
 
             StartingBalance = account
                 .ToReactivePropertyAsSynchronized(a => a.StartingBalance, ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
+
             StartingBalanceEdit = createSumEdit(StartingBalance);
 
             account
@@ -119,23 +124,25 @@ namespace BFF.MVVM.ViewModels.ForModels
                 })
                 .AddTo(CompositeDisposable);
 
-            StartingDate = account
-                .ToReactivePropertyAsSynchronized(a => a.StartingDate, ReactivePropertyMode.DistinctUntilChanged)
+            account
+                .ObservePropertyChanges(nameof(account.StartingBalance))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(StartingBalance)))
                 .AddTo(CompositeDisposable);
 
-            NewTransactionCommand.Subscribe(_ => NewTransList.Add(transactionViewModelFactory(this))).AddTo(CompositeDisposable);
+            NewTransactionCommand = new RxRelayCommand(() => NewTransList.Add(transactionViewModelFactory(this))).AddTo(CompositeDisposable);
 
-            NewTransferCommand.Subscribe(_ => NewTransList.Add(transferViewModelFactory(this))).AddTo(CompositeDisposable);
+            NewTransferCommand = new RxRelayCommand(() => NewTransList.Add(transferViewModelFactory(this))).AddTo(CompositeDisposable);
 
-            NewParentTransactionCommand.Subscribe(_ => NewTransList.Add(parentTransactionViewModelFactory(this))).AddTo(CompositeDisposable);
+            NewParentTransactionCommand = new RxRelayCommand(() => NewTransList.Add(parentTransactionViewModelFactory(this))).AddTo(CompositeDisposable);
 
-            ApplyCommand = NewTransList.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
-                .Select(count => count > 0)
-                .ToReactiveCommand();
+            ApplyCommand = new AsyncRxRelayCommand(async () => await ApplyTits(), 
+                NewTransList
+                    .ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
+                    .Select(count => count > 0),
+                NewTransList.Count > 0);
 
-            ApplyCommand.Subscribe(async _ => await ApplyTits()).AddTo(CompositeDisposable);
-
-            ImportCsvBankStatement.Subscribe(async _ => await childWindowManager.OpenImportCsvBankStatementDialogAsync(importCsvBankStatementFactory(
+            ImportCsvBankStatement = new AsyncRxRelayCommand(async () => await childWindowManager.OpenImportCsvBankStatementDialogAsync(importCsvBankStatementFactory(
                 async items =>
                 {
                     foreach (var item in items)
@@ -143,21 +150,21 @@ namespace BFF.MVVM.ViewModels.ForModels
                         var transactionViewModel = transactionViewModelFactory(this);
 
                         if (item.HasDate.Value)
-                            transactionViewModel.Date.Value = item.Date.Value;
+                            transactionViewModel.Date = item.Date.Value;
                         if (item.HasPayee.Value)
                         {
-                            if(payeeService.All.Any(p => p.Name.Value == item.Payee.Value))
-                                transactionViewModel.Payee.Value = payeeService.All.FirstOrDefault(p => p.Name.Value == item.Payee.Value);
-                            else if(item.CreatePayeeIfNotExisting.Value)
+                            if (payeeService.All.Any(p => p.Name == item.Payee.Value))
+                                transactionViewModel.Payee = payeeService.All.FirstOrDefault(p => p.Name == item.Payee.Value);
+                            else if (item.CreatePayeeIfNotExisting.Value)
                             {
                                 IPayee newPayee = payeeFactory();
                                 newPayee.Name = item.Payee.Value.Trim();
                                 await newPayee.InsertAsync();
-                                transactionViewModel.Payee.Value = payeeService.GetViewModel(newPayee);
+                                transactionViewModel.Payee = payeeService.GetViewModel(newPayee);
                             }
                         }
                         if (item.HasMemo.Value)
-                            transactionViewModel.Memo.Value = item.Memo.Value;
+                            transactionViewModel.Memo = item.Memo.Value;
                         if (item.HasSum.Value)
                             transactionViewModel.Sum.Value = item.Sum.Value;
 
@@ -181,7 +188,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                     "Account_Delete_ConfirmationMessage".Localize(),
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
-                .ObserveOn(_schedulerProvider.UI)
+                .ObserveOn(_rxSchedulerProvider.UI)
                 .Subscribe(async r =>
                 {
                     if (r == BffMessageDialogResult.Affirmative)
@@ -201,14 +208,14 @@ namespace BFF.MVVM.ViewModels.ForModels
             return source.Task;
         }
         
-        public sealed override ReactiveCommand NewTransactionCommand { get; } = new ReactiveCommand();
+        public sealed override IRxRelayCommand NewTransactionCommand { get; }
         
-        public sealed override ReactiveCommand NewTransferCommand { get; } = new ReactiveCommand();
+        public sealed override IRxRelayCommand NewTransferCommand { get; }
         
-        public sealed override ReactiveCommand NewParentTransactionCommand { get; } = new ReactiveCommand();
+        public sealed override IRxRelayCommand NewParentTransactionCommand { get; }
         
-        public sealed override ReactiveCommand ApplyCommand { get; }
+        public sealed override IRxRelayCommand ApplyCommand { get; }
 
-        public override ReactiveCommand ImportCsvBankStatement { get; } = new ReactiveCommand();
+        public override IRxRelayCommand ImportCsvBankStatement { get; }
     }
 }

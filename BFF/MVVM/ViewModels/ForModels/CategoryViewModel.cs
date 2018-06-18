@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using Reactive.Bindings;
@@ -19,7 +21,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The Parent
         /// </summary>
-        IReactiveProperty<ICategoryViewModel> Parent { get; }
+        ICategoryViewModel Parent { get; }
     }
 
     public interface ICategoryViewModelInitializer
@@ -35,10 +37,14 @@ namespace BFF.MVVM.ViewModels.ForModels
         public class CategoryViewModelInitializer : ICategoryViewModelInitializer
         {
             private readonly Lazy<ICategoryViewModelService> _service;
+            private readonly IRxSchedulerProvider _rxSchedulerProvider;
 
-            public CategoryViewModelInitializer(Lazy<ICategoryViewModelService> service)
+            public CategoryViewModelInitializer(
+                Lazy<ICategoryViewModelService> service,
+                IRxSchedulerProvider rxSchedulerProvider)
             {
                 _service = service;
+                _rxSchedulerProvider = rxSchedulerProvider;
             }
 
             public void Initialize(IEnumerable<ICategoryViewModel> categoryViewModels)
@@ -55,11 +61,17 @@ namespace BFF.MVVM.ViewModels.ForModels
                 {
                     viewModel.Categories =
                         viewModel._category.Categories.ToReadOnlyReactiveCollection(_service.Value.GetViewModel).AddTo(viewModel.CompositeDisposable);
-                    viewModel.Parent = viewModel._category.ToReactivePropertyAsSynchronized(
-                        c => c.Parent,
-                        _service.Value.GetViewModel,
-                        _service.Value.GetModel,
-                        ReactivePropertyMode.DistinctUntilChanged).AddTo(viewModel.CompositeDisposable);
+
+                    viewModel.Parent = _service.Value.GetViewModel(viewModel._category.Parent);
+                    viewModel._category
+                        .ObservePropertyChanges(nameof(viewModel._category.Parent))
+                        .ObserveOn(_rxSchedulerProvider.UI)
+                        .Subscribe(_ =>
+                        {
+                            viewModel.Parent = _service.Value.GetViewModel(viewModel._category.Parent);
+                            viewModel.OnPropertyChanged(nameof(viewModel.Parent));
+                        })
+                        .AddTo(viewModel.CompositeDisposable);
                 }
             }
         }
@@ -72,9 +84,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The Parent
         /// </summary>
-        public IReactiveProperty<ICategoryViewModel> Parent { get; private set; }
+        public ICategoryViewModel Parent { get; private set; }
 
-        public override string FullName => $"{(Parent.Value != null ? $"{Parent.Value.FullName}." : "")}{Name.Value}";
+        public override string FullName => $"{(Parent != null ? $"{Parent.FullName}." : "")}{Name}";
 
         public override IEnumerable<ICategoryBaseViewModel> FullChainOfCategories
         {
@@ -82,25 +94,25 @@ namespace BFF.MVVM.ViewModels.ForModels
             {
                 ICategoryViewModel current = this;
                 IList<ICategoryBaseViewModel> temp = new List<ICategoryBaseViewModel> { current };
-                while (current.Parent.Value != null)
+                while (current.Parent != null)
                 {
-                    current = current.Parent.Value;
+                    current = current.Parent;
                     temp.Add(current);
                 }
                 return temp.Reverse();
             }
         }
 
-        public override int Depth => Parent.Value?.Depth + 1 ?? 0;
+        public override int Depth => Parent?.Depth + 1 ?? 0;
 
         public override string GetIndent()
         {
-            return $"{Parent.Value?.GetIndent()}. ";
+            return $"{Parent?.GetIndent()}. ";
         }
 
         public CategoryViewModel(
             ICategory category,
-            IRxSchedulerProvider schedulerProvider) : base(category, schedulerProvider)
+            IRxSchedulerProvider rxSchedulerProvider) : base(category, rxSchedulerProvider)
         {
             _category = category;
         }

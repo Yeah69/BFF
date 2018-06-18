@@ -1,19 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reactive.Linq;
 using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
-using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
     public interface IIncomeCategoryViewModel : ICategoryBaseViewModel
     {
-        IReactiveProperty<int> MonthOffset { get; }
+        int MonthOffset { get; set; }
     }
 
     public class IncomeCategoryViewModel : CategoryBaseViewModel, IIncomeCategoryViewModel
     {
-        public override string FullName => Name.Value;
+        private readonly IIncomeCategory _category;
+        public override string FullName => Name;
 
         public override IEnumerable<ICategoryBaseViewModel> FullChainOfCategories
         {
@@ -29,13 +31,17 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public IncomeCategoryViewModel(
             IIncomeCategory category,
-            IRxSchedulerProvider schedulerProvider) : base(category, schedulerProvider)
+            IRxSchedulerProvider rxSchedulerProvider) : base(category, rxSchedulerProvider)
         {
-            MonthOffset = category
-                .ToReactivePropertyAsSynchronized(c => c.MonthOffset, ReactivePropertyMode.DistinctUntilChanged)
+            _category = category;
+
+            category
+                .ObservePropertyChanges(nameof(category.MonthOffset))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(MonthOffset)))
                 .AddTo(CompositeDisposable);
         }
 
-        public IReactiveProperty<int> MonthOffset { get; }
+        public int MonthOffset { get => _category.MonthOffset; set => _category.MonthOffset = value; }
     }
 }

@@ -1,24 +1,37 @@
-﻿using BFF.Helper;
+﻿using System;
+using System.Reactive.Linq;
+using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
-using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
     public interface ICommonPropertyViewModel : IDataModelViewModel
     {
-        IReactiveProperty<string> Name { get; }
+        string Name { get; set; }
     }
 
     public abstract class CommonPropertyViewModel : DataModelViewModel, ICommonPropertyViewModel
     {
+        private readonly ICommonProperty _commonProperty;
+
         protected CommonPropertyViewModel(
             ICommonProperty commonProperty,
-            IRxSchedulerProvider schedulerProvider) : base(commonProperty, schedulerProvider)
+            IRxSchedulerProvider rxSchedulerProvider) : base(commonProperty, rxSchedulerProvider)
         {
-            Name = commonProperty.ToReactivePropertyAsSynchronized(cp => cp.Name, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            _commonProperty = commonProperty;
+            commonProperty
+                .ObservePropertyChanges(nameof(commonProperty.Name))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(Name)))
+                .AddTo(CompositeDisposable);
         }
-        public virtual IReactiveProperty<string> Name { get; }
-        public override string ToString() => Name.Value;
+        public virtual string Name
+        {
+            get => _commonProperty.Name;
+            set => _commonProperty.Name = value;
+
+        }
+        public override string ToString() => Name;
     }
 }

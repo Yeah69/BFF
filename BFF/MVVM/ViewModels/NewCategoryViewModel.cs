@@ -51,9 +51,9 @@ namespace BFF.MVVM.ViewModels
             bool ValidateNewCategoryRelationCondition(string text, ICategoryViewModel parent)
             {
                 if(IsIncomeRelevant?.Value ?? false)
-                    return incomeCategoryViewModelService.All.All(icvm => icvm.Name.Value != text);
-                return parent is null && AllPotentialParents.Where(cvw => cvw.Parent.Value is null).All(cvm => cvm.Name.Value != text) ||
-                       parent != null && parent.Categories.All(cvm => cvm != null && cvm.Name.Value != text);
+                    return incomeCategoryViewModelService.All.All(icvm => icvm.Name != text);
+                return parent is null && AllPotentialParents.Where(cvw => cvw.Parent is null).All(cvm => cvm.Name != text) ||
+                       parent != null && parent.Categories.All(cvm => cvm != null && cvm.Name != text);
             }
             string ValidateNewCategoryRelationName(string text, ICategoryViewModel parent)
             {
@@ -94,7 +94,7 @@ namespace BFF.MVVM.ViewModels
                         newCategory.MonthOffset = MonthOffset.Value;
                         await newCategory.InsertAsync();
                         if(CurrentCategoryOwner != null)
-                            CurrentCategoryOwner.Category.Value = incomeCategoryViewModelService.GetViewModel(newCategory);
+                            CurrentCategoryOwner.Category = incomeCategoryViewModelService.GetViewModel(newCategory);
                         CurrentCategoryOwner = null;
                     }
                     else
@@ -107,7 +107,7 @@ namespace BFF.MVVM.ViewModels
                         var categoryViewModel = _categoryViewModelService.GetViewModel(newCategory);
                         categoryViewModelInitializer.Initialize(categoryViewModel);
                         if (CurrentCategoryOwner != null)
-                            CurrentCategoryOwner.Category.Value = categoryViewModel;
+                            CurrentCategoryOwner.Category = categoryViewModel;
                         CurrentCategoryOwner = null;
                     }
                 })

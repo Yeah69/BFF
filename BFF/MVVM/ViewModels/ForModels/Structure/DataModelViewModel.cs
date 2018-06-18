@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
-using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
@@ -18,7 +17,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         
         Task DeleteAsync();
 
-        ReactiveCommand DeleteCommand { get; }
+        IRxRelayCommand DeleteCommand { get; }
 
         bool IsInserted { get; }
     }
@@ -26,25 +25,24 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     public abstract class DataModelViewModel : ViewModelBase, IDataModelViewModel, IDisposable
     {
         private readonly IDataModel _dataModel;
-        private readonly IRxSchedulerProvider _schedulerProvider;
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
 
         protected CompositeDisposable CompositeDisposable { get; } = new CompositeDisposable();
         
         protected DataModelViewModel(
             IDataModel dataModel,
-            IRxSchedulerProvider schedulerProvider)
+            IRxSchedulerProvider rxSchedulerProvider)
         {
             _dataModel = dataModel;
-            _schedulerProvider = schedulerProvider;
+            _rxSchedulerProvider = rxSchedulerProvider;
 
             dataModel
                 .ObservePropertyChanges(nameof(IDataModel.Id))
-                .ObserveOn(schedulerProvider.UI)
+                .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(IsInserted)))
                 .AddTo(CompositeDisposable);
 
-            DeleteCommand = new ReactiveCommand().AddTo(CompositeDisposable);
-            DeleteCommand.Subscribe(async _ => await DeleteAsync()).AddTo(CompositeDisposable);
+            DeleteCommand = new AsyncRxRelayCommand(async () => await DeleteAsync()).AddTo(CompositeDisposable);
         }
         
         public virtual async Task InsertAsync()
@@ -61,10 +59,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             await _dataModel.DeleteAsync();
         }
 
-        public ReactiveCommand DeleteCommand { get; }
+        public IRxRelayCommand DeleteCommand { get; }
         public bool IsInserted => _dataModel.Id > 0;
 
         public void Dispose() =>
-            _schedulerProvider.UI.MinimalSchedule(() => CompositeDisposable.Dispose());
+            _rxSchedulerProvider.UI.MinimalSchedule(() => CompositeDisposable.Dispose());
     }
 }

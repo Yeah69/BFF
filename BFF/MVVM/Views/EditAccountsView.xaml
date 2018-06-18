@@ -29,13 +29,13 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
-                                           Text="{Binding Name.Value}" />
+                                           Text="{Binding Name}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <TextBox d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
-                                         Text="{Binding Name.Value, Mode=TwoWay}" />
+                                         Text="{Binding Name, Mode=TwoWay}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
@@ -63,14 +63,14 @@
                             <DataTemplate>
                                 <TextBlock d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
                                            Style="{StaticResource CellTextBlock}"
-                                           Text="{Binding StartingDate.Value, Converter={x:Static mvvm:Converters.DateTimeToString}}" />
+                                           Text="{Binding StartingDate, Converter={x:Static mvvm:Converters.DateTimeToString}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <DatePicker VerticalContentAlignment="Center"
                                             d:DataContext="{d:DesignInstance forModels:IAccountViewModel}"
-                                            SelectedDate="{Binding StartingDate.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            SelectedDate="{Binding StartingDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             SelectedDateFormat="{Binding DataContext.IsDateLong, ElementName=LayoutRoot, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>

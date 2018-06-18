@@ -47,7 +47,7 @@ namespace BFF.MVVM.ViewModels
             string ValidatePayeeName(string text)
             {
                 return !string.IsNullOrWhiteSpace(text) &&
-                    AllPayees.All(payee => payee.Name.Value != text.Trim()) 
+                    AllPayees.All(payee => payee.Name != text.Trim()) 
                     ? null 
                     : "ErrorMessageWrongPayeeName".Localize();
             }
@@ -71,7 +71,7 @@ namespace BFF.MVVM.ViewModels
                     newPayee.Name = PayeeText.Value.Trim();
                     await newPayee.InsertAsync();
                     if(CurrentOwner != null)
-                        CurrentOwner.Payee.Value = _payeeViewModelService.GetViewModel(newPayee);
+                        CurrentOwner.Payee = _payeeViewModelService.GetViewModel(newPayee);
                     CurrentOwner = null;
                 }).AddTo(_compositeDisposable);
         }

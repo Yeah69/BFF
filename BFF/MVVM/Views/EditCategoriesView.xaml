@@ -62,14 +62,14 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock d:DataContext="{d:DesignInstance forModels:IIncomeCategoryViewModel}"
-                                           Text="{Binding MonthOffset.Value}"
+                                           Text="{Binding MonthOffset}"
                                            TextAlignment="Right" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <controls:NumericUpDown d:DataContext="{d:DesignInstance forModels:IIncomeCategoryViewModel}"
-                                                        Value="{Binding MonthOffset.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                        Value="{Binding MonthOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>

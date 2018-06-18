@@ -29,10 +29,10 @@
         <DataGrid ItemsSource="{Binding SubElements}">
             <DataGrid.Columns>
                 <!--  Category  -->
-                <DataGridTextColumn Binding="{Binding Category.Value.Name.Value}"
+                <DataGridTextColumn Binding="{Binding Category.Name}"
                                     Header="{lex:Loc AccountView_Header_Category}" />
                 <!--  Category  -->
-                <DataGridTextColumn Binding="{Binding Memo.Value}"
+                <DataGridTextColumn Binding="{Binding Memo}"
                                     Header="{lex:Loc AccountView_Header_Memo}" />
                 <!--  Sum  -->
                 <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Sum}">
@@ -58,7 +58,7 @@
                             <Style BasedOn="{StaticResource CellIconMaterial}"
                                    TargetType="{x:Type iconPacks:PackIconMaterial}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Category.Value, Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                    <DataTrigger Binding="{Binding Category, Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
                                                  Value="True">
                                         <Setter Property="Kind"
                                                 Value="{StaticResource IncomeIcon}" />
@@ -100,7 +100,7 @@
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
                     <TextBlock Style="{StaticResource CellTextBlock}"
-                               Text="{Binding Account.Value.Name.Value}" />
+                               Text="{Binding Account.Name}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                     <TextBlock Foreground="{DynamicResource GrayBrush4}"
@@ -116,15 +116,15 @@
                         Style="{StaticResource CellContent}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
-                    <ComboBox DisplayMemberPath="Name.Value"
+                    <ComboBox DisplayMemberPath="Name"
                               IsEditable="True"
                               IsTextSearchCaseSensitive="False"
                               IsTextSearchEnabled="True"
                               ItemsSource="{Binding AllAccounts}"
-                              TextSearch.TextPath="Name.Value">
+                              TextSearch.TextPath="Name">
                         <ComboBox.SelectedItem>
                             <Binding Mode="TwoWay"
-                                     Path="Account.Value"
+                                     Path="Account"
                                      UpdateSourceTrigger="LostFocus" />
                         </ComboBox.SelectedItem>
                     </ComboBox>
@@ -146,7 +146,7 @@
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
                     <TextBlock Style="{StaticResource CellTextBlock}"
-                               Text="{Binding Date.Value, Converter={x:Static mvvm:Converters.DateTimeToString}}" />
+                               Text="{Binding Date, Converter={x:Static mvvm:Converters.DateTimeToString}}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type utility:CsvBankStatementImportItemViewModel}">
                     <ContentControl Content="{Binding}">
@@ -182,7 +182,7 @@
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
                     <DatePicker VerticalContentAlignment="Center"
-                                SelectedDate="{Binding Date.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 SelectedDateFormat="{Binding DataContext.IsDateLong, ElementName=LayoutRoot, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type utility:CsvBankStatementImportItemViewModel}">
@@ -236,7 +236,7 @@
                         Style="{StaticResource CellContent}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
-                    <ContentControl Content="{Binding Flag.Value}"
+                    <ContentControl Content="{Binding Flag}"
                                     ContentTemplate="{StaticResource FlagTemplate}">
                         <ContentControl.Style>
                             <Style BasedOn="{StaticResource {x:Type ContentControl}}"
@@ -289,7 +289,7 @@
                                 <Style BasedOn="{StaticResource {x:Type Button}}"
                                        TargetType="{x:Type Button}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Flag.Value}"
+                                        <DataTrigger Binding="{Binding Flag}"
                                                      Value="{x:Null}">
                                             <Setter Property="Visibility"
                                                     Value="Collapsed" />
@@ -302,16 +302,16 @@
                                   HorizontalAlignment="Stretch"
                                   DockPanel.Dock="Left"
                                   ItemsSource="{Binding AllFlags}"
-                                  SelectedItem="{Binding Mode=TwoWay, Path=Flag.Value, UpdateSourceTrigger=LostFocus}"
+                                  SelectedItem="{Binding Mode=TwoWay, Path=Flag, UpdateSourceTrigger=LostFocus}"
                                   TabIndex="0">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <iconPacks:PackIconMaterial Foreground="{Binding Color.Value}"
+                                        <iconPacks:PackIconMaterial Foreground="{Binding Color}"
                                                                     Kind="{StaticResource FlagIcon}"
                                                                     Style="{StaticResource CellIconMaterial}" />
                                         <TextBlock Margin="5,0,0,0"
-                                                   Text="{Binding Name.Value}" />
+                                                   Text="{Binding Name}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -330,7 +330,7 @@
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
                     <TextBlock Style="{StaticResource CellTextBlock}"
-                               Text="{Binding CheckNumber.Value}" />
+                               Text="{Binding CheckNumber}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
             </ContentControl.Resources>
@@ -343,7 +343,7 @@
                 <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
                     <TextBox VerticalAlignment="Stretch"
                              VerticalContentAlignment="Center"
-                             Text="{Binding CheckNumber.Value, UpdateSourceTrigger=LostFocus}"
+                             Text="{Binding CheckNumber, UpdateSourceTrigger=LostFocus}"
                              TextWrapping="NoWrap" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
@@ -358,7 +358,7 @@
                         Style="{StaticResource CellContent}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type structure:TransactionBaseViewModel}">
-                    <ContentControl Content="{Binding Payee.Value}">
+                    <ContentControl Content="{Binding Payee}">
                         <ContentControl.Style>
                             <Style BasedOn="{StaticResource CellContent}"
                                    TargetType="ContentControl">
@@ -366,7 +366,7 @@
                                     <Setter.Value>
                                         <DataTemplate>
                                             <TextBlock Style="{StaticResource CellTextBlock}"
-                                                       Text="{Binding Name.Value}" />
+                                                       Text="{Binding Name}" />
                                         </DataTemplate>
                                     </Setter.Value>
                                 </Setter>
@@ -394,7 +394,7 @@
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{StaticResource CellTextBlock}"
-                                   Text="{Binding FromAccount.Value.Name.Value}" />
+                                   Text="{Binding FromAccount.Name}" />
                         <iconPacks:PackIconMaterial Foreground="{DynamicResource GrayBrush4}"
                                                     Kind="{StaticResource TransactionIcon}"
                                                     Style="{StaticResource CellIconMaterial}" />
@@ -461,17 +461,17 @@
                                                 Tag="{Binding ElementName=Popup}" />
                         </Popup>
                         <ComboBox x:Name="EditPayeeComboBox"
-                                  DisplayMemberPath="Name.Value"
+                                  DisplayMemberPath="Name"
                                   IsEditable="True"
                                   IsTextSearchCaseSensitive="True"
                                   IsTextSearchEnabled="True"
                                   ItemsSource="{Binding NewPayeeViewModel.AllPayees}"
                                   ShouldPreserveUserEnteredPrefix="True"
                                   TabIndex="0"
-                                  TextSearch.TextPath="Name.Value">
+                                  TextSearch.TextPath="Name">
                             <ComboBox.SelectedItem>
                                 <Binding Mode="TwoWay"
-                                         Path="Payee.Value"
+                                         Path="Payee"
                                          UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <x:Static Member="mvvm:Rules.EmptyPayee" />
@@ -482,15 +482,15 @@
                     </DockPanel>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                    <ComboBox DisplayMemberPath="Name.Value"
+                    <ComboBox DisplayMemberPath="Name"
                               IsEditable="True"
                               IsTextSearchCaseSensitive="False"
                               IsTextSearchEnabled="True"
                               ItemsSource="{Binding AllAccounts}"
-                              TextSearch.TextPath="Name.Value">
+                              TextSearch.TextPath="Name">
                         <ComboBox.SelectedItem>
                             <Binding Mode="TwoWay"
-                                     Path="FromAccount.Value"
+                                     Path="FromAccount"
                                      UpdateSourceTrigger="LostFocus" />
                         </ComboBox.SelectedItem>
                     </ComboBox>
@@ -555,7 +555,7 @@
                         <ContentControl.Style>
                             <Style TargetType="ContentControl">
                                 <Setter Property="Content"
-                                        Value="{Binding Category.Value}" />
+                                        Value="{Binding Category}" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Content}"
                                                  Value="{x:Null}">
@@ -578,7 +578,7 @@
                         <ContentControl.Resources>
                             <DataTemplate DataType="{x:Type forModels:CategoryViewModel}">
                                 <TextBlock Style="{StaticResource CellTextBlock}"
-                                           Text="{Binding Path=Name.Value}">
+                                           Text="{Binding Path=Name}">
                                     <TextBlock.ToolTip>
                                         <ToolTip>
                                             <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
@@ -596,7 +596,7 @@
                             <DataTemplate DataType="{x:Type forModels:IncomeCategoryViewModel}">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{StaticResource CellTextBlock}"
-                                               Text="{Binding Name.Value}">
+                                               Text="{Binding Name}">
                                         <TextBlock.ToolTip>
                                             <ToolTip>
                                                 <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
@@ -626,7 +626,7 @@
                             Background="Transparent"
                             BorderThickness="0"
                             Command="{Binding OpenParentTransactionView}"
-                            CommandParameter="{Binding Account.Value}">
+                            CommandParameter="{Binding Account}">
                         <Button.ToolTip>
                             <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
                                 <ContentControl Content="{Binding}"
@@ -642,7 +642,7 @@
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{StaticResource CellTextBlock}"
-                                   Text="{Binding ToAccount.Value.Name.Value}" />
+                                   Text="{Binding ToAccount.Name}" />
                         <iconPacks:PackIconMaterial Foreground="{DynamicResource GrayBrush4}"
                                                     IsTabStop="True"
                                                     Kind="{StaticResource IncomeIcon}"
@@ -691,10 +691,10 @@
                                   ItemsSource="{Binding NewCategoryViewModel.All}"
                                   ShouldPreserveUserEnteredPrefix="True"
                                   TabIndex="0"
-                                  TextSearch.TextPath="Name.Value">
+                                  TextSearch.TextPath="Name">
                             <ComboBox.SelectedItem>
                                 <Binding Mode="TwoWay"
-                                         Path="Category.Value"
+                                         Path="Category"
                                          UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <x:Static Member="mvvm:Rules.EmptyCategory" />
@@ -704,7 +704,7 @@
                             <ComboBox.ToolTip>
                                 <ToolTip>
                                     <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
-                                             ItemsSource="{Binding Category.Value.FullChainOfCategories}">
+                                             ItemsSource="{Binding Category.FullChainOfCategories}">
                                         <ListBox.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Orientation="Horizontal" />
@@ -723,7 +723,7 @@
                             Background="Transparent"
                             BorderThickness="0"
                             Command="{Binding OpenParentTransactionView}"
-                            CommandParameter="{Binding Account.Value}">
+                            CommandParameter="{Binding Account}">
                         <Button.ToolTip>
                             <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
                                 <ContentControl Content="{Binding}"
@@ -737,15 +737,15 @@
                     </Button>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                    <ComboBox DisplayMemberPath="Name.Value"
+                    <ComboBox DisplayMemberPath="Name"
                               IsEditable="True"
                               IsTextSearchCaseSensitive="False"
                               IsTextSearchEnabled="True"
                               ItemsSource="{Binding AllAccounts}"
-                              TextSearch.TextPath="Name.Value">
+                              TextSearch.TextPath="Name">
                         <ComboBox.SelectedItem>
                             <Binding Mode="TwoWay"
-                                     Path="ToAccount.Value"
+                                     Path="ToAccount"
                                      UpdateSourceTrigger="LostFocus" />
                         </ComboBox.SelectedItem>
                     </ComboBox>
@@ -769,9 +769,9 @@
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
                     <TextBlock Style="{StaticResource CellTextBlock}"
-                               Text="{Binding Memo.Value, Mode=OneWay}"
+                               Text="{Binding Memo, Mode=OneWay}"
                                TextTrimming="CharacterEllipsis"
-                               ToolTip="{Binding Memo.Value}" />
+                               ToolTip="{Binding Memo}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type utility:CsvBankStatementImportItemViewModel}">
                     <ContentControl Content="{Binding}">
@@ -810,7 +810,7 @@
                     <TextBox VerticalAlignment="Stretch"
                              VerticalContentAlignment="Center"
                              Focusable="True"
-                             Text="{Binding Memo.Value, UpdateSourceTrigger=LostFocus}"
+                             Text="{Binding Memo, UpdateSourceTrigger=LostFocus}"
                              TextWrapping="NoWrap" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type utility:CsvBankStatementImportItemViewModel}">
@@ -872,8 +872,8 @@
                             <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumAsCorrectlySignedString}">
                                 <Binding ElementName="LayoutRoot"
                                          Path="DataContext.AccountViewModel" />
-                                <Binding Path="FromAccount.Value" />
-                                <Binding Path="ToAccount.Value" />
+                                <Binding Path="FromAccount" />
+                                <Binding Path="ToAccount" />
                                 <Binding Path="Sum.Value" />
                             </MultiBinding>
                         </TextBlock.Text>
@@ -881,8 +881,8 @@
                             <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumToSolidColorBrush}">
                                 <Binding ElementName="LayoutRoot"
                                          Path="DataContext.AccountViewModel" />
-                                <Binding Path="FromAccount.Value" />
-                                <Binding Path="ToAccount.Value" />
+                                <Binding Path="FromAccount" />
+                                <Binding Path="ToAccount" />
                             </MultiBinding>
                         </TextBlock.Foreground>
                     </TextBlock>
@@ -894,7 +894,7 @@
                             Background="Transparent"
                             BorderThickness="0"
                             Command="{Binding OpenParentTransactionView}"
-                            CommandParameter="{Binding Account.Value}">
+                            CommandParameter="{Binding Account}">
                         <Button.ToolTip>
                             <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
                                 <ContentControl Content="{Binding}"
@@ -975,8 +975,8 @@
                             <MultiBinding Converter="{x:Static mvvm:Converters.TransferSumToSolidColorBrush}">
                                 <Binding ElementName="LayoutRoot"
                                          Path="DataContext.AccountViewModel" />
-                                <Binding Path="FromAccount.Value" />
-                                <Binding Path="ToAccount.Value" />
+                                <Binding Path="FromAccount" />
+                                <Binding Path="ToAccount" />
                             </MultiBinding>
                         </TextBox.Foreground>
                         <TextBox.Text>
@@ -999,7 +999,7 @@
                             Background="Transparent"
                             BorderThickness="0"
                             Command="{Binding OpenParentTransactionView}"
-                            CommandParameter="{Binding Account.Value}">
+                            CommandParameter="{Binding Account}">
                         <Button.ToolTip>
                             <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
                                 <ContentControl Content="{Binding}"
@@ -1089,7 +1089,7 @@
         <CheckBox MinHeight="30"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  IsChecked="{Binding Cleared.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   Style="{StaticResource BffCheckBox}" />
     </DataTemplate>
 </ResourceDictionary>

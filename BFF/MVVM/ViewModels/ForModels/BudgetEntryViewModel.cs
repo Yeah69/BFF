@@ -6,7 +6,6 @@ using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
-using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
@@ -40,26 +39,26 @@ namespace BFF.MVVM.ViewModels.ForModels
             IBudgetEntry budgetEntry,
             Lazy<IBudgetOverviewViewModel> budgetOverviewViewModel,
             ICategoryViewModelService categoryViewModelService,
-            IRxSchedulerProvider schedulerProvider) : base(budgetEntry, schedulerProvider)
+            IRxSchedulerProvider rxSchedulerProvider) : base(budgetEntry, rxSchedulerProvider)
         {
             _budgetEntry = budgetEntry;
             Category = categoryViewModelService.GetViewModel(budgetEntry.Category);
             budgetEntry
                 .ObservePropertyChanges(nameof(IBudgetEntry.Category))
                 .Do(_ => Category = categoryViewModelService.GetViewModel(budgetEntry.Category))
-                .ObserveOn(schedulerProvider.UI)
+                .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Category)))
                 .AddTo(CompositeDisposable);
 
             budgetEntry
                 .ObservePropertyChanges(nameof(IBudgetEntry.Month))
-                .ObserveOn(schedulerProvider.UI)
+                .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Month)))
                 .AddTo(CompositeDisposable);
 
             var observeBudgetChanges = budgetEntry.ObservePropertyChanges(nameof(IBudgetEntry.Budget));
             observeBudgetChanges
-                .ObserveOn(schedulerProvider.UI)
+                .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Budget)))
                 .AddTo(CompositeDisposable);
 
@@ -69,13 +68,13 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             budgetEntry
                 .ObservePropertyChanges(nameof(IBudgetEntry.Outflow))
-                .ObserveOn(schedulerProvider.UI)
+                .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Outflow)))
                 .AddTo(CompositeDisposable);
             
             budgetEntry
                 .ObservePropertyChanges(nameof(IBudgetEntry.Balance))
-                .ObserveOn(schedulerProvider.UI)
+                .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Balance)))
                 .AddTo(CompositeDisposable);
         }

@@ -6,8 +6,6 @@ using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using MuVaViMo;
-using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -17,7 +15,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The assigned Account, where this Transaction is registered.
         /// </summary>
-        IReactiveProperty<IAccountViewModel> Account { get; }
+        IAccountViewModel Account { get; set; }
     }
 
     /// <summary>
@@ -25,23 +23,35 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class TransactionBaseViewModel : TransBaseViewModel, ITransactionBaseViewModel
     {
+        private readonly ITransactionBase _transactionBase;
         private readonly IAccountViewModelService _accountViewModelService;
+        private readonly IPayeeViewModelService _payeeViewModelService;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
+        private IAccountViewModel _account;
+        private IPayeeViewModel _payee;
 
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts => _accountViewModelService.All;
 
         /// <summary>
         /// The assigned Account, where this Transaction is registered.
         /// </summary>
-        public IReactiveProperty<IAccountViewModel> Account { get; }
+        public IAccountViewModel Account
+        {
+            get => _account;
+            set => _transactionBase.Account = _accountViewModelService.GetModel(value);
+        }
 
         public INewPayeeViewModel NewPayeeViewModel { get; }
 
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction.
         /// </summary>
-        public virtual IReactiveProperty<IPayeeViewModel> Payee { get; }
-        
+        public IPayeeViewModel Payee
+        {
+            get => _payee;
+            set => _transactionBase.Payee = _payeeViewModelService.GetModel(value);
+        }
+
         protected TransactionBaseViewModel(
             ITransactionBase transactionBase,
             INewPayeeViewModel newPayeeViewModel,
@@ -49,7 +59,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
             ILastSetDate lastSetDate,
-            IRxSchedulerProvider schedulerProvider,
+            IRxSchedulerProvider rxSchedulerProvider,
             ISummaryAccountViewModel summaryAccountViewModel,
             IFlagViewModelService flagViewModelService,
             IAccountBaseViewModel owner) 
@@ -57,11 +67,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 transactionBase, 
                 newFlagViewModel, 
                 lastSetDate, 
-                schedulerProvider, 
+                rxSchedulerProvider, 
                 flagViewModelService, 
                 owner)
         {
+            _transactionBase = transactionBase;
             _accountViewModelService = accountViewModelService;
+            _payeeViewModelService = payeeViewModelService;
             _summaryAccountViewModel = summaryAccountViewModel;
 
             void RefreshAnAccountViewModel(IAccountViewModel account)
@@ -70,19 +82,19 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 account?.RefreshBalance();
             }
 
-            Account = transactionBase
-                .ToReactivePropertyAsSynchronized(
-                    nameof(transactionBase.Account),
-                    () => transactionBase.Account,
-                    a => transactionBase.Account = a,
-                    accountViewModelService.GetViewModel, 
-                    accountViewModelService.GetModel,
-                    schedulerProvider.UI,
-                    ReactivePropertyMode.DistinctUntilChanged)
+            _account = _accountViewModelService.GetViewModel(transactionBase.Account);
+            transactionBase
+                .ObservePropertyChanges(nameof(transactionBase.Account))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    _account = _accountViewModelService.GetViewModel(transactionBase.Account);
+                    OnPropertyChanged(nameof(Account));
+                })
                 .AddTo(CompositeDisposable);
 
-            if (Account.Value is null && owner is IAccountViewModel specificAccount)
-                Account.Value = specificAccount;
+            if (Account is null && owner is IAccountViewModel specificAccount)
+                Account = specificAccount;
 
             transactionBase
                 .ObservePropertyChanges(tb => tb.Account)
@@ -95,21 +107,21 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(a)))
                 .AddTo(CompositeDisposable);
 
-            Payee = transactionBase
-                .ToReactivePropertyAsSynchronized(
-                    nameof(transactionBase.Payee),
-                    () => transactionBase.Payee,
-                    p => transactionBase.Payee = p,
-                    payeeViewModelService.GetViewModel,
-                    payeeViewModelService.GetModel,
-                    schedulerProvider.UI,
-                    ReactivePropertyMode.DistinctUntilChanged)
+            _payee = _payeeViewModelService.GetViewModel(transactionBase.Payee);
+            transactionBase
+                .ObservePropertyChanges(nameof(transactionBase.Payee))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    _payee = _payeeViewModelService.GetViewModel(transactionBase.Payee);
+                    OnPropertyChanged(nameof(Payee));
+                })
                 .AddTo(CompositeDisposable);
 
             NewPayeeViewModel = newPayeeViewModel;
         }
 
-        public override bool IsInsertable() => base.IsInsertable() && Account.Value.IsNotNull() && Payee.Value.IsNotNull();
+        public override bool IsInsertable() => base.IsInsertable() && Account.IsNotNull() && Payee.IsNotNull();
 
         public override async Task DeleteAsync()
         {
@@ -120,13 +132,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         protected override void NotifyRelevantAccountsToRefreshTits()
         {
-            Account.Value?.RefreshTits();
+            Account?.RefreshTits();
             _summaryAccountViewModel.RefreshTits();
         }
 
         protected override void NotifyRelevantAccountsToRefreshBalance()
         {
-            Account.Value?.RefreshBalance();
+            Account?.RefreshBalance();
             _summaryAccountViewModel.RefreshBalance();
         }
     }

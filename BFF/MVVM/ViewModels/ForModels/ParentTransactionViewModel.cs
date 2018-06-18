@@ -35,19 +35,19 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Creates a new SubElement for this ParentElement.
         /// </summary>
-        ReactiveCommand NewSubElementCommand { get; }
+        IRxRelayCommand NewSubElementCommand { get; }
 
         /// <summary>
         /// All new SubElement, which are not inserted into the database yet, will be flushed to the database with this command.
         /// </summary>
-        ReactiveCommand ApplyCommand { get; }
+        IRxRelayCommand ApplyCommand { get; }
 
         bool IsDateLong { get; }
 
         /// <summary>
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
-        ReactiveCommand<IAccountViewModel> OpenParentTransactionView { get; }
+        IRxRelayCommand<IAccountViewModel> OpenParentTransactionView { get; }
 
         IReactiveProperty<long> SumDuringEdit { get; }
 
@@ -85,7 +85,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IAccountModuleColumnManager accountModuleColumnManager,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ILastSetDate lastSetDate,
-            IRxSchedulerProvider schedulerProvider,
+            IRxSchedulerProvider rxSchedulerProvider,
             ISummaryAccountViewModel summaryAccountViewModel,
             IPayeeViewModelService payeeViewModelService,
             Func<ISubTransaction> subTransactionFactory,
@@ -98,7 +98,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 accountViewModelService,
                 payeeViewModelService, 
                 lastSetDate,
-                schedulerProvider,
+                rxSchedulerProvider,
                 summaryAccountViewModel,
                 flagViewModelService,
                 owner)
@@ -112,7 +112,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             Sum = new ReactiveProperty<long>(
                     EmitOnSumRelatedChanges(SubElements)
-                    .ObserveOn(schedulerProvider.Task)
+                    .ObserveOn(rxSchedulerProvider.Task)
                     .Select(_ => SubTransactions.Sum(st => st.Sum.Value)), // todo: Write an SQL query for that
                 SubTransactions.Sum(st => st.Sum.Value),  // todo: Write an SQL query for that
                 ReactivePropertyMode.DistinctUntilChanged)
@@ -141,7 +141,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .Where(_ => _.EventArgs.PropertyName == nameof(ISubTransaction.Sum) && parentTransaction.Id != -1L)
                 .Subscribe(_ =>
                 {
-                    Account.Value?.RefreshBalance();
+                    Account?.RefreshBalance();
                     summaryAccountViewModel.RefreshBalance();
                 }).AddTo(CompositeDisposable);
 
@@ -154,7 +154,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                     SubTransactions.Sum(st => st.Sum.Value) + NewSubElements.Sum(st => st.Sum.Value),
                     ReactivePropertyMode.DistinctUntilChanged);
 
-            NewSubElementCommand.Subscribe(_ =>
+            NewSubElementCommand = new RxRelayCommand(() =>
             {
                 var newSubTransaction = subTransactionFactory();
                 newSubTransaction.Parent = parentTransaction;
@@ -163,7 +163,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 _newTransactions.Add(newSubTransactionViewModel);
             }).AddTo(CompositeDisposable);
 
-            ApplyCommand.Subscribe(async _ =>
+            ApplyCommand = new AsyncRxRelayCommand(async () =>
             {
                 if (_newTransactions.All(st => st.IsInsertable()))
                 {
@@ -177,15 +177,12 @@ namespace BFF.MVVM.ViewModels.ForModels
                     _newTransactions.Clear();
                     OnPropertyChanged(nameof(Sum));
                     summaryAccountViewModel.RefreshBalance();
-                    Account.Value.RefreshBalance();
+                    Account.RefreshBalance();
                 }
-                
             }).AddTo(CompositeDisposable);
-            
-            OpenParentTransactionView
-                .Subscribe(avm => parentTransactionFlyoutManager.OpenFor(this))
-                .AddTo(CompositeDisposable);
 
+            OpenParentTransactionView = new RxRelayCommand<IAccountViewModel>(avm => parentTransactionFlyoutManager.OpenFor(this)).AddTo(CompositeDisposable);
+            
             _removeRequestSubscriptions.AddTo(CompositeDisposable);
             _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
             _newTransactions.ObserveAddChanged().Subscribe(t =>
@@ -238,19 +235,19 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Creates a new SubElement for this ParentElement.
         /// </summary>
-        public ReactiveCommand NewSubElementCommand { get; } = new ReactiveCommand();
+        public IRxRelayCommand NewSubElementCommand { get; }
 
         /// <summary>
         /// All new SubElement, which are not inserted into the database yet, will be flushed to the database with this command.
         /// </summary>
-        public ReactiveCommand ApplyCommand { get; } = new ReactiveCommand();
+        public IRxRelayCommand ApplyCommand { get; }
 
         public bool IsDateLong => Settings.Default.Culture_DefaultDateLong;
 
         /// <summary>
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
-        public ReactiveCommand<IAccountViewModel> OpenParentTransactionView { get; } = new ReactiveCommand<IAccountViewModel>();
+        public IRxRelayCommand<IAccountViewModel> OpenParentTransactionView { get; }
 
         public IReactiveProperty<long> SumDuringEdit { get; }
         public IReadOnlyReactiveProperty<long> SumMissingWithoutNewSubs { get; }

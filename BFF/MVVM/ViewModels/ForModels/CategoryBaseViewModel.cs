@@ -25,7 +25,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         protected CategoryBaseViewModel(
             ICategoryBase category,
-            IRxSchedulerProvider schedulerProvider) : base(category, schedulerProvider)
+            IRxSchedulerProvider rxSchedulerProvider) : base(category, rxSchedulerProvider)
         {
         }
     }

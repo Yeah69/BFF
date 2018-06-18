@@ -20,7 +20,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Needed to mimic a TIT.
         /// </summary>
-        public IReactiveProperty<string> Memo { get;}
+        public string Memo { get; set; }
 
         /// <summary>
         /// Needed to mimic a TIT.
@@ -31,17 +31,17 @@ namespace BFF.MVVM.ViewModels.ForModels
         public ISumEditViewModel SumEdit { get; }
         public long SumAbsolute => 0L;
 
-        public ReactiveCommand DeleteCommand { get; }
+        public IRxRelayCommand DeleteCommand { get; }
         public bool IsInserted { get; }
-        public ReactiveCommand ToggleSign { get; } = new ReactiveCommand();
+        public IRxRelayCommand ToggleSign { get; }
         public IObservable<Unit> RemoveRequests => Observable.Never<Unit>();
-        public ReactiveCommand RemoveCommand { get; } = new ReactiveCommand();
+        public IRxRelayCommand RemoveCommand { get; }
         public IAccountBaseViewModel Owner => null;
 
         /// <summary>
         /// Needed to mimic a TIT.
         /// </summary>
-        public IReactiveProperty<bool> Cleared { get; }
+        public bool Cleared { get; set; }
 
         /// <summary>
         /// Initializes the TransBase-parts of the object
@@ -50,11 +50,13 @@ namespace BFF.MVVM.ViewModels.ForModels
             Func<IReactiveProperty<long>, 
             ISumEditViewModel> sumEditFactory)
         {
-            Memo = new ReactiveProperty<string>("Content is loading…", ReactivePropertyMode.DistinctUntilChanged); // ToDo Localize
+            Memo = "Content is loading…"; // ToDo Localize
             Sum = new ReactiveProperty<long>(0L, ReactivePropertyMode.DistinctUntilChanged);
             SumEdit = sumEditFactory(new ReactiveProperty<long>());
-            Cleared = new ReactiveProperty<bool>(false, ReactivePropertyMode.DistinctUntilChanged);
-            DeleteCommand = new ReactiveCommand();
+            Cleared = false;
+            ToggleSign = new RxRelayCommand(() => { });
+            DeleteCommand = new RxRelayCommand(() => { });
+            RemoveCommand = new RxRelayCommand(() => { });
             IsInserted = false;
         }
 

@@ -12,7 +12,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
     public interface ITransLikeViewModel : IDataModelViewModel
     {
-        IReactiveProperty<string> Memo { get; }
+        string Memo { get; set; }
         
         IReactiveProperty<long> Sum { get; }
 
@@ -22,20 +22,25 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         long SumAbsolute { get; }
         
-        ReactiveCommand ToggleSign { get; }
+        IRxRelayCommand ToggleSign { get; }
 
         IObservable<Unit> RemoveRequests { get; }
 
-        ReactiveCommand RemoveCommand { get; }
+        IRxRelayCommand RemoveCommand { get; }
 
         IAccountBaseViewModel Owner { get; }
     }
     
     public abstract class TransLikeViewModel : DataModelViewModel, ITransLikeViewModel, ITransientViewModel
     {
+        private readonly ITransLike _transLike;
         private readonly Subject<Unit> _removeRequestSubject = new Subject<Unit>();
-        
-        public virtual IReactiveProperty<string> Memo { get; }
+
+        public virtual string Memo
+        {
+            get => _transLike.Memo;
+            set => _transLike.Memo = value;
+        }
         
         public abstract IReactiveProperty<long> Sum { get; }
 
@@ -67,29 +72,29 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         
         protected TransLikeViewModel(
             ITransLike transLike,
-            IRxSchedulerProvider schedulerProvider,
+            IRxSchedulerProvider rxSchedulerProvider,
             IAccountBaseViewModel owner) 
-            : base(transLike, schedulerProvider)
+            : base(transLike, rxSchedulerProvider)
         {
+            _transLike = transLike;
             Owner = owner;
             _removeRequestSubject.AddTo(CompositeDisposable);
-            Memo = transLike.ToReactivePropertyAsSynchronized(
-                nameof(transLike.Memo), 
-                () => transLike.Memo, 
-                m => transLike.Memo = m,
-                schedulerProvider.UI,
-                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
-            ToggleSign = new ReactiveCommand();
-            ToggleSign.Subscribe(_ => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus);
+            transLike
+                .ObservePropertyChanges(nameof(transLike.Memo))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(Memo)))
+                .AddTo(CompositeDisposable);
 
-            RemoveCommand = new ReactiveCommand();
-            RemoveCommand.Subscribe(_ => _removeRequestSubject.OnNext(Unit.Default));
+
+            ToggleSign = new RxRelayCommand(() => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus).AddTo(CompositeDisposable);
+
+            RemoveCommand = new RxRelayCommand(() => _removeRequestSubject.OnNext(Unit.Default)).AddTo(CompositeDisposable);
         }
 
-        public ReactiveCommand ToggleSign { get; }
+        public IRxRelayCommand ToggleSign { get; }
         public IObservable<Unit> RemoveRequests => _removeRequestSubject.AsObservable();
-        public ReactiveCommand RemoveCommand { get; }
+        public IRxRelayCommand RemoveCommand { get; }
         public IAccountBaseViewModel Owner { get; }
     }
 }
