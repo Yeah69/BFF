@@ -14,7 +14,7 @@ namespace BFF.MVVM.ViewModels
 
         IReactiveProperty<long> Sum { get; }
 
-        ReactiveCommand ToggleSign { get; }
+        IRxRelayCommand ToggleSign { get; }
     }
 
     public class SumEditViewModel : ObservableObject, ISumEditViewModel
@@ -27,10 +27,7 @@ namespace BFF.MVVM.ViewModels
         public SumEditViewModel(IReactiveProperty<long> sum)
         {
             Sum = sum;
-            ToggleSign = new ReactiveCommand()
-                .AddHere(_compositeDisposable);
-            ToggleSign
-                .Subscribe(_ => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus)
+            ToggleSign = new RxRelayCommand(() => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus)
                 .AddHere(_compositeDisposable);
         }
 
@@ -58,7 +55,7 @@ namespace BFF.MVVM.ViewModels
 
         public IReactiveProperty<long> Sum { get; }
 
-        public ReactiveCommand ToggleSign { get; }
+        public IRxRelayCommand ToggleSign { get; }
 
         public void Dispose()
         {

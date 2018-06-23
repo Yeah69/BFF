@@ -93,7 +93,7 @@
                                   VerticalAlignment="Stretch"
                                   DisplayCount="5"
                                   ItemsSource="{Binding BudgetMonths}"
-                                  StartIndex="{Binding CurrentMonthStartIndex.Value}">
+                                  StartIndex="{Binding CurrentMonthStartIndex}">
             <userControls:UniformList.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -318,7 +318,7 @@
                                   Grid.Column="2"
                                   DisplayCount="5"
                                   ItemsSource="{Binding BudgetMonths}"
-                                  StartIndex="{Binding CurrentMonthStartIndex.Value}">
+                                  StartIndex="{Binding CurrentMonthStartIndex}">
             <userControls:UniformList.ItemTemplate>
                 <DataTemplate>
                     <ListBox Margin="5"

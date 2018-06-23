@@ -25,14 +25,14 @@ namespace BFF.MVVM.ViewModels
     {
         IList<IBudgetMonthViewModel> BudgetMonths { get; }
 
-        IReactiveProperty<int> CurrentMonthStartIndex { get; }
+        int CurrentMonthStartIndex { get; }
 
-        IReactiveProperty<bool> IsOpen { get; }
+        bool IsOpen { get; set; }
         int SelectedIndex { get; set; }
 
-        ReactiveCommand IncreaseMonthStartIndex { get; }
+        IRxRelayCommand IncreaseMonthStartIndex { get; }
 
-        ReactiveCommand DecreaseMonthStartIndex { get; }
+        IRxRelayCommand DecreaseMonthStartIndex { get; }
 
         Task Refresh();
     }
@@ -46,6 +46,8 @@ namespace BFF.MVVM.ViewModels
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
         private int _selectedIndex;
+        private int _currentMonthStartIndex;
+        private bool _isOpen;
         public IList<IBudgetMonthViewModel> BudgetMonths { get; private set; }
 
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
@@ -61,13 +63,31 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public IReactiveProperty<int> CurrentMonthStartIndex { get; }
+        public int CurrentMonthStartIndex
+        {
+            get => _currentMonthStartIndex;
+            set
+            {
+                if (_currentMonthStartIndex == value) return;
+                _currentMonthStartIndex = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public IReactiveProperty<bool> IsOpen { get; }
+        public bool IsOpen
+        {
+            get => _isOpen;
+            set
+            {
+                if (_isOpen == value) return;
+                _isOpen = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public ReactiveCommand IncreaseMonthStartIndex { get; }
+        public IRxRelayCommand IncreaseMonthStartIndex { get; }
 
-        public ReactiveCommand DecreaseMonthStartIndex { get; }
+        public IRxRelayCommand DecreaseMonthStartIndex { get; }
 
         public BudgetOverviewViewModel(
             IBudgetMonthRepository budgetMonthRepository,
@@ -89,22 +109,30 @@ namespace BFF.MVVM.ViewModels
                     .ToReadOnlyReactiveCollection(categoryViewModelService.GetViewModel);
 
             BudgetMonths = CreateBudgetMonths();
-            int index = MonthToIndex(DateTime.Now) - 1;
-            CurrentMonthStartIndex = new ReactiveProperty<int>(index);
+            CurrentMonthStartIndex = MonthToIndex(DateTime.Now) - 1;
 
-            IncreaseMonthStartIndex = CurrentMonthStartIndex.Select(i => i < LastMonthIndex - 1).ToReactiveCommand()
+            var currentMonthStartIndexChanges = this
+                .ObservePropertyChanges(nameof(CurrentMonthStartIndex))
+                .Select(_ => CurrentMonthStartIndex);
+
+            IncreaseMonthStartIndex = currentMonthStartIndexChanges
+                .Select(i => i < LastMonthIndex - 1)
+                .ToRxRelayCommand(() => CurrentMonthStartIndex = CurrentMonthStartIndex + 1)
                 .AddTo(_compositeDisposable);
-            IncreaseMonthStartIndex.Subscribe(_ => CurrentMonthStartIndex.Value = CurrentMonthStartIndex.Value + 1)
+            DecreaseMonthStartIndex = currentMonthStartIndexChanges
+                .Select(i => i < LastMonthIndex - 1)
+                .ToRxRelayCommand(
+                    () => CurrentMonthStartIndex = CurrentMonthStartIndex - 1)
                 .AddTo(_compositeDisposable);
-            DecreaseMonthStartIndex = CurrentMonthStartIndex.Select(i => i > 0).ToReactiveCommand()
+
+            IsOpen = false;
+
+            this
+                .ObservePropertyChanges(nameof(IsOpen))
+                .Where(_ => IsOpen)
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(b => Task.Factory.StartNew(Refresh))
                 .AddTo(_compositeDisposable);
-            DecreaseMonthStartIndex.Subscribe(_ => CurrentMonthStartIndex.Value = CurrentMonthStartIndex.Value - 1)
-                .AddTo(_compositeDisposable);
-            IsOpen =
-                new ReactiveProperty<bool>(false, ReactivePropertyMode.DistinctUntilChanged)
-                    .AddTo(_compositeDisposable);
-            IsOpen.Where(b => b).Subscribe(b =>
-                Task.Factory.StartNew(Refresh)).AddTo(_compositeDisposable);
 
             cultureManager.RefreshSignal.Subscribe(message =>
             {

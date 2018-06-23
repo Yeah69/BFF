@@ -1,6 +1,4 @@
-﻿using Reactive.Bindings;
-
-namespace BFF.MVVM.ViewModels.ForModels.Structure
+﻿namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
     public interface IHavePayeeViewModel
     {

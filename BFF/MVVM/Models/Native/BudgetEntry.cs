@@ -107,6 +107,7 @@ namespace BFF.MVVM.Models.Native
                 UpdateAndNotify();
             }
         }
+
         public override string ToString()
         {
             return $"{nameof(Month)}: {Month}, {nameof(Category)}: {Category}, {nameof(Budget)}: {Budget}, {nameof(Outflow)}: {Outflow}, {nameof(Balance)}: {Balance}";

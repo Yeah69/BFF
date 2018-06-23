@@ -1,7 +1,5 @@
-﻿using System;
-using BFF.Helper.Import;
+﻿using BFF.Helper.Import;
 using Microsoft.Win32;
-using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels
 {
@@ -9,28 +7,28 @@ namespace BFF.MVVM.ViewModels
     {
         IImportable Importable { get; }
 
-        ReactiveCommand BrowseYnabCsvTransactionCommand { get; }
+        IRxRelayCommand BrowseYnabCsvTransactionCommand { get; }
 
-        ReactiveCommand BrowseYnabCsvBudgetCommand { get; }
+        IRxRelayCommand BrowseYnabCsvBudgetCommand { get; }
 
-        ReactiveCommand BrowseSaveCommand { get; }
+        IRxRelayCommand BrowseSaveCommand { get; }
     }
 
     public class ImportDialogViewModel : ViewModelBase, IImportDialogViewModel
     {
         public IImportable Importable { get; }
 
-        public ReactiveCommand BrowseYnabCsvTransactionCommand { get; } = new ReactiveCommand();
+        public IRxRelayCommand BrowseYnabCsvTransactionCommand { get; }
 
-        public ReactiveCommand BrowseYnabCsvBudgetCommand { get; } = new ReactiveCommand();
+        public IRxRelayCommand BrowseYnabCsvBudgetCommand { get; }
 
-        public ReactiveCommand BrowseSaveCommand { get; } = new ReactiveCommand();
+        public IRxRelayCommand BrowseSaveCommand { get; }
 
         public ImportDialogViewModel(IImportable importable)
         {
             Importable = importable;
 
-            BrowseYnabCsvTransactionCommand.Subscribe(_ =>
+            BrowseYnabCsvTransactionCommand = new RxRelayCommand(() =>
             {
                 OpenFileDialog openFileDialog =
                     new OpenFileDialog
@@ -46,7 +44,7 @@ namespace BFF.MVVM.ViewModels
                 }
             });
 
-            BrowseYnabCsvBudgetCommand.Subscribe(_ =>
+            BrowseYnabCsvBudgetCommand = new RxRelayCommand(() =>
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog
                 {
@@ -61,7 +59,7 @@ namespace BFF.MVVM.ViewModels
                 }
             });
 
-            BrowseSaveCommand.Subscribe(_ =>
+            BrowseSaveCommand = new RxRelayCommand(() =>
             {
                 SaveFileDialog saveFileDialog =
                     new SaveFileDialog

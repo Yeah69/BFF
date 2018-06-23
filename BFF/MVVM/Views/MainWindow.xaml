@@ -387,7 +387,7 @@
                                     </hm:HamburgerMenuItem>
                                     <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Budget}"
                                                           HeaderTemplate="{StaticResource HeaderTemplate}"
-                                                          IsSelected="{Binding BudgetOverviewViewModel.IsOpen.Value}">
+                                                          IsSelected="{Binding BudgetOverviewViewModel.IsOpen}">
                                         <views:BudgetOverviewView DataContext="{Binding BudgetOverviewViewModel}" />
                                         <hm:HamburgerMenuItem.Icon>
                                             <Viewbox Margin="10">

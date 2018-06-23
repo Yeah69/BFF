@@ -31,13 +31,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
 
         IReadOnlyReactiveProperty<string[]> Segments { get; }
 
-        ReactiveCommand SaveNewProfile { get; }
+        IRxRelayCommand SaveNewProfile { get; }
 
-        ReactiveCommand ResetProfile { get; }
+        IRxRelayCommand ResetProfile { get; }
 
-        ReactiveCommand SaveToProfile { get; }
+        IRxRelayCommand SaveToProfile { get; }
 
-        ReactiveCommand RemoveProfile { get; }
+        IRxRelayCommand RemoveProfile { get; }
     }
 
     public interface ICsvBankStatementImportProfileViewModel : ICsvBankStatementImportNonProfileViewModel
@@ -91,8 +91,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
             MemoFormat = new ReactivePropertySlim<string>(profile.MemoFormat, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
             SumFormula = new ReactivePropertySlim<string>(profile.SumFormat, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
 
-            SaveToProfile = new ReactiveCommand().AddHere(_compositeDisposable);
-            SaveToProfile.Subscribe(_ =>
+            SaveToProfile = new RxRelayCommand(() =>
             {
                 profile.Header = Header.Value;
                 profile.Delimiter = Delimiter.Value;
@@ -109,31 +108,27 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
             SaveNewProfile = NewProfileName
                 .Merge(profileManager.Profiles.CollectionChangedAsObservable().Select(_ => NewProfileName.Value))
                 .Select(NewProfileCondition)
-                .ToReactiveCommand()
-                .AddHere(_compositeDisposable);
-            SaveNewProfile.Subscribe(_ =>
-            {
-                if (!NewProfileCondition(NewProfileName.Value)) return;
-                profile = createProfile.Create(
-                    Header.Value,
-                    Delimiter.Value,
-                    DateSegment.Value,
-                    DateLocalization.Value.Name,
-                    PayeeFormat.Value,
-                    ShouldCreateNewPayeeIfNotExisting.Value,
-                    MemoFormat.Value,
-                    SumFormula.Value,
-                    SumLocalization.Value.Name,
-                    NewProfileName.Value);
-                NewProfileName.Value = "";
-            }).AddHere(_compositeDisposable);
+                .ToRxRelayCommand(() =>
+                {
+                    if (!NewProfileCondition(NewProfileName.Value)) return;
+                    profile = createProfile.Create(
+                        Header.Value,
+                        Delimiter.Value,
+                        DateSegment.Value,
+                        DateLocalization.Value.Name,
+                        PayeeFormat.Value,
+                        ShouldCreateNewPayeeIfNotExisting.Value,
+                        MemoFormat.Value,
+                        SumFormula.Value,
+                        SumLocalization.Value.Name,
+                        NewProfileName.Value);
+                    NewProfileName.Value = "";
+                }, NewProfileCondition(NewProfileName.Value)).AddHere(_compositeDisposable);
 
-            RemoveProfile = new ReactiveCommand().AddHere(_compositeDisposable);
-            RemoveProfile.Subscribe(_ =>
+            RemoveProfile = new RxRelayCommand(() =>
                 profileManager.Remove(profile.Name)).AddHere(_compositeDisposable);
 
-            ResetProfile = new ReactiveCommand().AddHere(_compositeDisposable);
-            ResetProfile.Subscribe(_ =>
+            ResetProfile = new RxRelayCommand(() =>
             {
                 Header.Value = profile.Header;
                 Delimiter.Value = profile.Delimiter;
@@ -160,10 +155,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
         public IReactiveProperty<string> NewProfileName { get; }
         public IReadOnlyReactiveProperty<string[]> Segments { get; }
         public IReactiveProperty<string> SumFormula { get; }
-        public ReactiveCommand SaveToProfile { get; }
-        public ReactiveCommand RemoveProfile { get; }
-        public ReactiveCommand SaveNewProfile { get; }
-        public ReactiveCommand ResetProfile { get; }
+        public IRxRelayCommand SaveToProfile { get; }
+        public IRxRelayCommand RemoveProfile { get; }
+        public IRxRelayCommand SaveNewProfile { get; }
+        public IRxRelayCommand ResetProfile { get; }
 
         public void Dispose()
         {
@@ -236,27 +231,24 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
             SaveNewProfile = NewProfileName
                 .Merge(profileManager.Profiles.CollectionChangedAsObservable().Select(_ => NewProfileName.Value))
                 .Select(NewProfileCondition)
-                .ToReactiveCommand()
-                .AddHere(_compositeDisposable);
-            SaveNewProfile.Subscribe(_ =>
-            {
-                if (!NewProfileCondition(NewProfileName.Value)) return;
-                createProfile.Create(
-                    Header.Value,
-                    Delimiter.Value,
-                    DateSegment.Value,
-                    DateLocalization.Value.Name,
-                    PayeeFormat.Value,
-                    ShouldCreateNewPayeeIfNotExisting.Value,
-                    MemoFormat.Value,
-                    SumFormula.Value,
-                    SumLocalization.Value.Name,
-                    NewProfileName.Value);
-                NewProfileName.Value = "";
-            }).AddHere(_compositeDisposable);
+                .ToRxRelayCommand(() =>
+                {
+                    if (!NewProfileCondition(NewProfileName.Value)) return;
+                    createProfile.Create(
+                        Header.Value,
+                        Delimiter.Value,
+                        DateSegment.Value,
+                        DateLocalization.Value.Name,
+                        PayeeFormat.Value,
+                        ShouldCreateNewPayeeIfNotExisting.Value,
+                        MemoFormat.Value,
+                        SumFormula.Value,
+                        SumLocalization.Value.Name,
+                        NewProfileName.Value);
+                    NewProfileName.Value = "";
+                }, NewProfileCondition(NewProfileName.Value)).AddHere(_compositeDisposable);
 
-            ResetProfile = new ReactiveCommand().AddHere(_compositeDisposable);
-            ResetProfile.Subscribe(_ =>
+            ResetProfile = new RxRelayCommand(() =>
             {
                 Header.Value = "";
                 Delimiter.Value = ',';
@@ -280,10 +272,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
         public IReactiveProperty<string> NewProfileName { get; }
         public IReadOnlyReactiveProperty<string[]> Segments { get; }
         public IReactiveProperty<string> SumFormula { get; }
-        public ReactiveCommand SaveNewProfile { get; }
-        public ReactiveCommand ResetProfile { get; }
-        public ReactiveCommand SaveToProfile { get; } = null;
-        public ReactiveCommand RemoveProfile { get; } = null;
+        public IRxRelayCommand SaveNewProfile { get; }
+        public IRxRelayCommand ResetProfile { get; }
+        public IRxRelayCommand SaveToProfile { get; } = null;
+        public IRxRelayCommand RemoveProfile { get; } = null;
 
         public void Dispose()
         {

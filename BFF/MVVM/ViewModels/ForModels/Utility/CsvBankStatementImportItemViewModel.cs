@@ -17,9 +17,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
 
         IReactiveProperty<bool> HasDate { get; }
 
-        ReactiveCommand AdmitDate { get; }
+        IRxRelayCommand AdmitDate { get; }
 
-        ReactiveCommand DismissDate { get; }
+        IRxRelayCommand DismissDate { get; }
 
         bool ShowLongDate { get; }
 
@@ -29,9 +29,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
 
         IReadOnlyReactiveProperty<bool> CreatePayeeIfNotExisting { get; }
 
-        ReactiveCommand AdmitPayee { get; }
+        IRxRelayCommand AdmitPayee { get; }
 
-        ReactiveCommand DismissPayee { get; }
+        IRxRelayCommand DismissPayee { get; }
 
         IReadOnlyReactiveProperty<bool> PayeeExists { get; }
 
@@ -41,9 +41,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
 
         IReactiveProperty<bool> HasMemo { get; }
 
-        ReactiveCommand AdmitMemo { get; }
+        IRxRelayCommand AdmitMemo { get; }
 
-        ReactiveCommand DismissMemo { get; }
+        IRxRelayCommand DismissMemo { get; }
 
         IReactiveProperty<long> Sum { get; }
 
@@ -51,9 +51,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
 
         IReactiveProperty<bool> HasSum { get; }
 
-        ReactiveCommand AdmitSum { get; }
+        IRxRelayCommand AdmitSum { get; }
 
-        ReactiveCommand DismissSum { get; }
+        IRxRelayCommand DismissSum { get; }
     }
 
     public class CsvBankStatementImportItemViewModel : ICsvBankStatementImportItemViewModel
@@ -64,7 +64,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
             (DateTime? Date, string Payee, bool CreatePayeeIfNotExisting, string Memo, long? Sum) configuration,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             IPayeeViewModelService payeeService,
-            IRxSchedulerProvider schedulerProvider)
+            IRxSchedulerProvider rxSchedulerProvider)
         {
             Date     = new ReactivePropertySlim<DateTime>(configuration.Date ?? DateTime.Today, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
             Payee    = new ReactivePropertySlim<string>(configuration.Payee, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
@@ -77,16 +77,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
 
             SumEdit = createSumEdit(Sum).AddHere(_compositeDisposable);
 
-            AdmitDate = new ReactiveCommand().AddHere(_compositeDisposable);
-            AdmitDate
-                .ObserveOn(schedulerProvider.UI)
-                .Subscribe(_ => HasDate.Value = true)
+            AdmitDate = new RxRelayCommand(() => HasDate.Value = true)
                 .AddHere(_compositeDisposable);
 
-            AdmitPayee = new ReactiveCommand().AddHere(_compositeDisposable);
-            AdmitPayee
-                .ObserveOn(schedulerProvider.UI)
-                .Subscribe(_ => HasPayee.Value = true)
+            AdmitPayee = new RxRelayCommand(() => HasPayee.Value = true)
                 .AddHere(_compositeDisposable);
 
             PayeeExists = Payee
@@ -98,66 +92,48 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
 
             ExistingPayees = payeeService.All;
 
-            AdmitMemo = new ReactiveCommand().AddHere(_compositeDisposable);
-            AdmitMemo
-                .ObserveOn(schedulerProvider.UI)
-                .Subscribe(_ => HasMemo.Value = true)
+            AdmitMemo = new RxRelayCommand(() => HasMemo.Value = true)
                 .AddHere(_compositeDisposable);
 
-            AdmitSum = new ReactiveCommand().AddHere(_compositeDisposable);
-            AdmitSum
-                .ObserveOn(schedulerProvider.UI)
-                .Subscribe(_ => HasSum.Value = true)
+            AdmitSum = new RxRelayCommand(() => HasSum.Value = true)
                 .AddHere(_compositeDisposable);
 
-            DismissDate = new ReactiveCommand().AddHere(_compositeDisposable);
-            DismissDate
-                .ObserveOn(schedulerProvider.UI)
-                .Subscribe(_ => HasDate.Value = false)
+            DismissDate = new RxRelayCommand(() => HasDate.Value = false)
                 .AddHere(_compositeDisposable);
 
-            DismissPayee = new ReactiveCommand().AddHere(_compositeDisposable);
-            DismissPayee
-                .ObserveOn(schedulerProvider.UI)
-                .Subscribe(_ => HasPayee.Value = false)
+            DismissPayee = new RxRelayCommand(() => HasPayee.Value = false)
                 .AddHere(_compositeDisposable);
 
-            DismissMemo = new ReactiveCommand().AddHere(_compositeDisposable);
-            DismissMemo
-                .ObserveOn(schedulerProvider.UI)
-                .Subscribe(_ => HasMemo.Value = false)
+            DismissMemo = new RxRelayCommand(() => HasMemo.Value = false)
                 .AddHere(_compositeDisposable);
 
-            DismissSum = new ReactiveCommand().AddHere(_compositeDisposable);
-            DismissSum
-                .ObserveOn(schedulerProvider.UI)
-                .Subscribe(_ => HasSum.Value = false)
+            DismissSum = new RxRelayCommand(() => HasSum.Value = false)
                 .AddHere(_compositeDisposable);
         }
 
         public IReactiveProperty<DateTime> Date { get; set; }
         public IReactiveProperty<bool> HasDate { get; }
-        public ReactiveCommand AdmitDate { get; }
-        public ReactiveCommand DismissDate { get; }
+        public IRxRelayCommand AdmitDate { get; }
+        public IRxRelayCommand DismissDate { get; }
 
         public IReactiveProperty<string> Payee { get; set; }
         public IReactiveProperty<bool> HasPayee { get; }
         public IReadOnlyReactiveProperty<bool> CreatePayeeIfNotExisting { get; }
-        public ReactiveCommand AdmitPayee { get; }
-        public ReactiveCommand DismissPayee { get; }
+        public IRxRelayCommand AdmitPayee { get; }
+        public IRxRelayCommand DismissPayee { get; }
         public IReadOnlyReactiveProperty<bool> PayeeExists { get; }
         public IObservableReadOnlyList<IPayeeViewModel> ExistingPayees { get; }
 
         public IReactiveProperty<string> Memo { get; set; }
         public IReactiveProperty<bool> HasMemo { get; }
-        public ReactiveCommand AdmitMemo { get; }
-        public ReactiveCommand DismissMemo { get; }
+        public IRxRelayCommand AdmitMemo { get; }
+        public IRxRelayCommand DismissMemo { get; }
 
         public IReactiveProperty<long> Sum { get; set; }
         public ISumEditViewModel SumEdit { get; }
         public IReactiveProperty<bool> HasSum { get; }
-        public ReactiveCommand AdmitSum { get; }
-        public ReactiveCommand DismissSum { get; }
+        public IRxRelayCommand AdmitSum { get; }
+        public IRxRelayCommand DismissSum { get; }
 
         public bool ShowLongDate => Settings.Default.Culture_DefaultDateLong;
 

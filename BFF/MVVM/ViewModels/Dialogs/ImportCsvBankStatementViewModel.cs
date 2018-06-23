@@ -40,13 +40,13 @@ namespace BFF.MVVM.ViewModels.Dialogs
 
         IReactiveProperty IsOpen { get; }
 
-        ReactiveCommand BrowseCsvBankStatementFileCommand { get; }
+        IRxRelayCommand BrowseCsvBankStatementFileCommand { get; }
 
-        ReactiveCommand DeselectProfileCommand { get; }
+        IRxRelayCommand DeselectProfileCommand { get; }
 
-        ReactiveCommand OkCommand { get; }
+        IRxRelayCommand OkCommand { get; }
 
-        ReactiveCommand CancelCommand { get; }
+        IRxRelayCommand CancelCommand { get; }
     }
 
     public class ImportCsvBankStatementViewModel : ObservableObject, IImportCsvBankStatementViewModel
@@ -155,8 +155,7 @@ namespace BFF.MVVM.ViewModels.Dialogs
                 .AddHere(_compositeDisposable);
 
 
-            BrowseCsvBankStatementFileCommand
-                .Subscribe(_ =>
+            BrowseCsvBankStatementFileCommand = new RxRelayCommand(() =>
                 {
                     OpenFileDialog openFileDialog =
                         new OpenFileDialog
@@ -174,12 +173,10 @@ namespace BFF.MVVM.ViewModels.Dialogs
                 })
                 .AddHere(_compositeDisposable);
 
-            DeselectProfileCommand
-                .Subscribe(_ => SelectedProfile.Value = null)
+            DeselectProfileCommand = new RxRelayCommand(() => SelectedProfile.Value = null)
                 .AddHere(_compositeDisposable);
 
-            OkCommand
-                .Subscribe(_ =>
+            OkCommand = new RxRelayCommand(()  =>
                 {
                     IsOpen.Value = false;
                     onOk(Items);
@@ -187,8 +184,7 @@ namespace BFF.MVVM.ViewModels.Dialogs
                 })
                 .AddHere(_compositeDisposable);
 
-            CancelCommand
-                .Subscribe(_ =>
+            CancelCommand = new RxRelayCommand(() =>
                 {
                     IsOpen.Value = false;
                     _compositeDisposable.Dispose();
@@ -274,10 +270,10 @@ namespace BFF.MVVM.ViewModels.Dialogs
         public IReactiveProperty<bool> ShowItemsError { get; }
         public IReactiveProperty<ICsvBankStatementImportNonProfileViewModel> Configuration { get; }
         public IReactiveProperty IsOpen { get; }
-        public ReactiveCommand BrowseCsvBankStatementFileCommand { get; } = new ReactiveCommand();
-        public ReactiveCommand DeselectProfileCommand { get; } = new ReactiveCommand();
-        public ReactiveCommand OkCommand { get; } = new ReactiveCommand();
-        public ReactiveCommand CancelCommand { get; } = new ReactiveCommand();
+        public IRxRelayCommand BrowseCsvBankStatementFileCommand { get; }
+        public IRxRelayCommand DeselectProfileCommand { get; }
+        public IRxRelayCommand OkCommand { get; }
+        public IRxRelayCommand CancelCommand { get; }
 
         public bool HeaderDoMatch => Configuration.Value != null && Header.Value == Configuration.Value.Header.Value;
     }

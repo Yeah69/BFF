@@ -306,6 +306,7 @@
     <Compile Include="Helper\Extensions\INotifyPropertyChangedExtensions.cs" />
     <Compile Include="Helper\Extensions\LongExtensions.cs" />
     <Compile Include="Helper\Extensions\ObjectExtensions.cs" />
+    <Compile Include="Helper\Extensions\ObservableExtensions.cs" />
     <Compile Include="Helper\Extensions\PointExtensions.cs" />
     <Compile Include="Helper\Extensions\SchedulerExtensions.cs" />
     <Compile Include="Helper\Extensions\StringExtensions.cs" />

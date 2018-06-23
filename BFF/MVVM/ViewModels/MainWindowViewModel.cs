@@ -23,10 +23,10 @@ namespace BFF.MVVM.ViewModels
 {
     public interface IMainWindowViewModel : IViewModel
     {
-        ReactiveCommand NewBudgetPlanCommand { get; }
-        ReactiveCommand OpenBudgetPlanCommand { get; }
-        ReactiveCommand ParentTransactionOnClose { get; }
-        ReactiveCommand<IImportable> ImportBudgetPlanCommand { get; }
+        IRxRelayCommand NewBudgetPlanCommand { get; }
+        IRxRelayCommand OpenBudgetPlanCommand { get; }
+        IRxRelayCommand ParentTransactionOnClose { get; }
+        IRxRelayCommand<IImportable> ImportBudgetPlanCommand { get; }
         IAccountTabsViewModel AccountTabsViewModel { get; set; }
         IBudgetOverviewViewModel BudgetOverviewViewModel { get; set; }
         IEditAccountsViewModel EditAccountsViewModel { get; }
@@ -64,12 +64,12 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public ReactiveCommand NewBudgetPlanCommand { get; } = new ReactiveCommand();
+        public IRxRelayCommand NewBudgetPlanCommand { get; }
 
-        public ReactiveCommand OpenBudgetPlanCommand { get; } = new ReactiveCommand();
-        public ReactiveCommand ParentTransactionOnClose { get; } = new ReactiveCommand();
+        public IRxRelayCommand OpenBudgetPlanCommand { get; }
+        public IRxRelayCommand ParentTransactionOnClose { get; }
 
-        public ReactiveCommand<IImportable> ImportBudgetPlanCommand { get; } = new ReactiveCommand<IImportable>();
+        public IRxRelayCommand<IImportable> ImportBudgetPlanCommand { get; }
 
         private IAccountTabsViewModel _accountTabsViewModel;
         public IAccountTabsViewModel AccountTabsViewModel
@@ -239,7 +239,7 @@ namespace BFF.MVVM.ViewModels
 
             OpenParentTransaction = parentTransactionFlyoutManager.OpenParentTransaction;
 
-            NewBudgetPlanCommand.Subscribe(_ =>
+            NewBudgetPlanCommand = new RxRelayCommand(() =>
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
@@ -266,7 +266,7 @@ namespace BFF.MVVM.ViewModels
                 }
             });
 
-            OpenBudgetPlanCommand.Subscribe(_ =>
+            OpenBudgetPlanCommand = new RxRelayCommand(() =>
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog
                 {
@@ -280,9 +280,9 @@ namespace BFF.MVVM.ViewModels
                 }
             });
 
-            ParentTransactionOnClose.Subscribe(_ => parentTransactionFlyoutManager.Close());
+            ParentTransactionOnClose = new RxRelayCommand(parentTransactionFlyoutManager.Close);
 
-            ImportBudgetPlanCommand.Subscribe(importableObject =>
+            ImportBudgetPlanCommand = new RxRelayCommand<IImportable>(importableObject =>
             {
                 string savePath = importableObject.Import();
                 Reset(savePath);
