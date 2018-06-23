@@ -82,53 +82,68 @@ namespace BFF
 
             builder.Register<Func<ITransaction>>(cc =>
             {
+                var repository = cc.Resolve<IRepository<ITransaction>>();
+                var rxSchedulerProvider = cc.Resolve<IRxSchedulerProvider>();
+                var lastSetDate = cc.Resolve<ILastSetDate>();
                 return () => new Transaction(
-                    cc.Resolve<IRepository<ITransaction>>(), 
-                    cc.Resolve<IRxSchedulerProvider>(),
-                    cc.Resolve<ILastSetDate>().Date);
+                    repository, 
+                    rxSchedulerProvider,
+                    lastSetDate.Date);
             }).As<Func<ITransaction>>();
 
             builder.Register<Func<IAccountBaseViewModel, ITransactionViewModel>>(cc =>
             {
                 var factory = cc.Resolve<Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel>>();
-                return abvm => factory(cc.Resolve<Func<ITransaction>>()(), abvm);
+                var transaction = cc.Resolve<Func<ITransaction>>();
+                return abvm => factory(transaction(), abvm);
             }).As<Func<IAccountBaseViewModel, ITransactionViewModel>>();
 
             builder.Register<Func<ITransfer>>(cc =>
             {
+                var repository = cc.Resolve<IRepository<ITransfer>>();
+                var rxSchedulerProvider = cc.Resolve<IRxSchedulerProvider>();
+                var lastSetDate = cc.Resolve<ILastSetDate>();
                 return () => new Transfer(
-                    cc.Resolve<IRepository<ITransfer>>(),
-                    cc.Resolve<IRxSchedulerProvider>(),
-                    cc.Resolve<ILastSetDate>().Date);
+                    repository,
+                    rxSchedulerProvider,
+                    lastSetDate.Date);
             }).As<Func<ITransfer>>();
 
             builder.Register<Func<IAccountBaseViewModel, ITransferViewModel>>(cc =>
             {
                 var factory = cc.Resolve<Func<ITransfer, IAccountBaseViewModel, ITransferViewModel>>();
-                return abvm => factory(cc.Resolve<Func<ITransfer>>()(), abvm);
+                var transfer = cc.Resolve<Func<ITransfer>>();
+                return abvm => factory(transfer(), abvm);
             }).As<Func<IAccountBaseViewModel, ITransferViewModel>>();
 
             builder.Register<Func<IParentTransaction>>(cc =>
             {
+                var repository = cc.Resolve<IRepository<IParentTransaction>>();
+                var rxSchedulerProvider = cc.Resolve<IRxSchedulerProvider>();
+                var lastSetDate = cc.Resolve<ILastSetDate>();
                 return () => new ParentTransaction(
-                    cc.Resolve<IRepository<IParentTransaction>>(),
-                    cc.Resolve<IRxSchedulerProvider>(),
-                    Enumerable.Empty<ISubTransaction>(), 
-                    cc.Resolve<ILastSetDate>().Date);
+                    repository,
+                    rxSchedulerProvider,
+                    Enumerable.Empty<ISubTransaction>(),
+                    lastSetDate.Date);
             }).As<Func<IParentTransaction>>();
 
             builder.Register<Func<IAccountBaseViewModel, IParentTransactionViewModel>>(cc =>
             {
                 var factory = cc.Resolve<Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel>>();
-                return abvm => factory(cc.Resolve<Func<IParentTransaction>>()(), abvm);
+                var parentTransaction = cc.Resolve<Func<IParentTransaction>>();
+                return abvm => factory(parentTransaction(), abvm);
             }).As<Func<IAccountBaseViewModel, IParentTransactionViewModel>>();
 
             builder.Register<Func<IAccount>>(cc =>
             {
+                var repository = cc.Resolve<IRepository<IAccount>>();
+                var rxSchedulerProvider = cc.Resolve<IRxSchedulerProvider>();
+                var lastSetDate = cc.Resolve<ILastSetDate>();
                 return () => new Account(
-                    cc.Resolve<IRepository<IAccount>>(), 
-                    cc.Resolve<IRxSchedulerProvider>(),
-                    cc.Resolve<ILastSetDate>().Date);
+                    repository, 
+                    rxSchedulerProvider,
+                    lastSetDate.Date);
             }).As<Func<IAccount>>();
 
             builder.Register(cc => DialogCoordinator.Instance).As<IDialogCoordinator>();
