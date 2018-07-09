@@ -509,6 +509,13 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="SuperiorCategory" xml:space="preserve">
     <value>Superior Category</value>
   </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Press the button in this column to delete the element of the corresponding row.</value>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>In order to merge one income category to another, drag the merge icon from this column in the source row and drop it on the target row.
+The target income category will get assigned to all account entries of the source income category and keep its month offset.</value>
+  </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
     <value>A beírt szöveg nem értelmezhető pénznemként</value>
   </data>

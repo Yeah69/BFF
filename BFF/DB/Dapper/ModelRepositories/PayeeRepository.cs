@@ -15,20 +15,23 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
     }
 
-    public interface IPayeeRepository : IObservableRepositoryBase<Domain.IPayee>
+    public interface IPayeeRepository : IObservableRepositoryBase<Domain.IPayee>, IMergingRepository<Domain.IPayee>
     {
     }
 
     public sealed class PayeeRepository : ObservableRepositoryBase<Domain.IPayee, Payee>, IPayeeRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly IMergeOrm _mergeOrm;
 
         public PayeeRepository(
             IProvideConnection provideConnection, 
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm crudOrm) : base(provideConnection, crudOrm, new PayeeComparer())
+            ICrudOrm crudOrm,
+            IMergeOrm mergeOrm) : base(provideConnection, crudOrm, new PayeeComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
+            _mergeOrm = mergeOrm;
         }
         
         protected override Converter<Domain.IPayee, Payee> ConvertToPersistence => domainPayee => 
@@ -41,6 +44,13 @@ namespace BFF.DB.Dapper.ModelRepositories
         protected override Task<Domain.IPayee> ConvertToDomainAsync(Payee persistenceModel)
         {
             return Task.FromResult<Domain.IPayee>(new Domain.Payee(this, _rxSchedulerProvider, persistenceModel.Id, persistenceModel.Name));
+        }
+
+        public async Task MergeAsync(Domain.IPayee from, Domain.IPayee to)
+        {
+            await _mergeOrm.MergePayeeAsync(ConvertToPersistence(from), ConvertToPersistence(to)).ConfigureAwait(false);
+            RemoveFromObservableCollection(from);
+            RemoveFromCache(from);
         }
     }
 }

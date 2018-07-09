@@ -11,6 +11,8 @@ namespace BFF.MVVM.ViewModels.ForModels
     public interface IFlagViewModel : ICommonPropertyViewModel
     {
         SolidColorBrush Color { get; set; }
+
+        IRxRelayCommand<IFlagViewModel> MergeTo { get; }
     }
 
     public class FlagViewModel : CommonPropertyViewModel, IFlagViewModel
@@ -28,6 +30,14 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Color)))
                 .AddTo(CompositeDisposable);
+
+            MergeTo = new RxRelayCommand<IFlagViewModel>(cvm =>
+            {
+                if (cvm is FlagViewModel flagViewModel)
+                {
+                    flag.MergeTo(flagViewModel._flag);
+                }
+            });
         }
 
         public SolidColorBrush Color
@@ -35,5 +45,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             get => new SolidColorBrush(_flag.Color);
             set => _flag.Color = value.Color;
         }
+
+        public IRxRelayCommand<IFlagViewModel> MergeTo { get; }
     }
 }

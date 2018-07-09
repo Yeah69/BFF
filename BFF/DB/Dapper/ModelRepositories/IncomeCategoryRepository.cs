@@ -15,23 +15,26 @@ namespace BFF.DB.Dapper.ModelRepositories
             StringComparer.Create(CultureInfo.InvariantCulture, false).Compare(x?.Name, y?.Name);
     }
 
-    public interface IIncomeCategoryRepository : IObservableRepositoryBase<IIncomeCategory>
+    public interface IIncomeCategoryRepository : IObservableRepositoryBase<IIncomeCategory>, IMergingRepository<IIncomeCategory>
     {
     }
 
     public sealed class IncomeCategoryRepository : ObservableRepositoryBase<IIncomeCategory, Category>, IIncomeCategoryRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly IMergeOrm _mergeOrm;
         private readonly ICategoryOrm _categoryOrm;
 
         public IncomeCategoryRepository(
             IProvideConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm,
+            IMergeOrm mergeOrm,
             ICategoryOrm categoryOrm)
             : base(provideConnection, crudOrm, new IncomeCategoryComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
+            _mergeOrm = mergeOrm;
             _categoryOrm = categoryOrm;
         }
 
@@ -57,5 +60,12 @@ namespace BFF.DB.Dapper.ModelRepositories
                 IsIncomeRelevant = true,
                 MonthOffset = domainCategory.MonthOffset
             };
+
+        public async Task MergeAsync(IIncomeCategory from, IIncomeCategory to)
+        {
+            await _mergeOrm.MergeCategoryAsync(ConvertToPersistence(from), ConvertToPersistence(to)).ConfigureAwait(false);
+            RemoveFromObservableCollection(from);
+            RemoveFromCache(from);
+        }
     }
 }

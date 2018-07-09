@@ -4,6 +4,8 @@ using BFF.DB.PersistenceModels;
 using BFF.DB.SQLite;
 using BFF.Helper.Import;
 using Category = BFF.DB.PersistenceModels.Category;
+using Flag = BFF.DB.PersistenceModels.Flag;
+using Payee = BFF.DB.PersistenceModels.Payee;
 using SubTransaction = BFF.DB.PersistenceModels.SubTransaction;
 
 namespace BFF.DB
@@ -21,6 +23,12 @@ namespace BFF.DB
 
         Task DeleteAsync<T>(T model) where T : class, IPersistenceModel;
         Task DeleteAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModel;
+    }
+    public interface IMergeOrm : IOncePerBackend
+    {
+        Task MergePayeeAsync(Payee from, Payee to);
+        Task MergeFlagAsync(Flag from, Flag to);
+        Task MergeCategoryAsync(Category from, Category to);
     }
 
     public interface IAccountOrm : IOncePerBackend

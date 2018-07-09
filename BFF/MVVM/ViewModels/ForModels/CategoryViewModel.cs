@@ -22,6 +22,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The Parent
         /// </summary>
         ICategoryViewModel Parent { get; }
+
+        IRxRelayCommand<ICategoryViewModel> MergeTo { get; }
     }
 
     public interface ICategoryViewModelInitializer
@@ -86,6 +88,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// </summary>
         public ICategoryViewModel Parent { get; private set; }
 
+        public IRxRelayCommand<ICategoryViewModel> MergeTo { get; }
+
         public override string FullName => $"{(Parent != null ? $"{Parent.FullName}." : "")}{Name}";
 
         public override IEnumerable<ICategoryBaseViewModel> FullChainOfCategories
@@ -115,6 +119,14 @@ namespace BFF.MVVM.ViewModels.ForModels
             IRxSchedulerProvider rxSchedulerProvider) : base(category, rxSchedulerProvider)
         {
             _category = category;
+
+            MergeTo = new RxRelayCommand<ICategoryViewModel>(cvm =>
+            {
+                if (cvm is CategoryViewModel categoryViewModel)
+                {
+                    category.MergeTo(categoryViewModel._category);
+                }
+            });
         }
     }
 }

@@ -1233,6 +1233,25 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Press the button in this column to delete the element of the corresponding row..
+        /// </summary>
+        public static string ToolTip_DeleteRow {
+            get {
+                return ResourceManager.GetString("ToolTip_DeleteRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to merge one income category to another, drag the merge icon from this column in the source row and drop it on the target row.
+        ///The target income category will get assigned to all account entries of the source income category and keep its month offset..
+        /// </summary>
+        public static string ToolTip_MergeToIncomeCategory {
+            get {
+                return ResourceManager.GetString("ToolTip_MergeToIncomeCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This text could not be parsed as a currency!.
         /// </summary>
         public static string ValidationRule_Currency {

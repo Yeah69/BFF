@@ -32,17 +32,14 @@ namespace BFF.DB.Dapper
         public override async Task<TDomain> FindAsync(long id)
         {
             if(!_cache.ContainsKey(id))
-            {
                 _cache.Add(id, await base.FindAsync(id).ConfigureAwait(false));
-            }
             return _cache[id];
         }
 
         public override async Task DeleteAsync(TDomain dataModel)
         {
             await base.DeleteAsync(dataModel).ConfigureAwait(false);
-            if(!_cache.ContainsKey(dataModel.Id))
-                _cache.Remove(dataModel.Id);
+            RemoveFromCache(dataModel);
         }
 
         
@@ -59,6 +56,12 @@ namespace BFF.DB.Dapper
             }
             Logger.Debug("Finished converting all POCOs of type {0}", typeof(TPersistence).Name);
             return ret;
+        }
+
+        protected void RemoveFromCache(TDomain dataModel)
+        {
+            if (_cache.ContainsKey(dataModel.Id))
+                _cache.Remove(dataModel.Id);
         }
 
         protected override void Dispose(bool disposing)

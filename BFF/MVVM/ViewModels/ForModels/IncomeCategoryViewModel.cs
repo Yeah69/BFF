@@ -10,6 +10,10 @@ namespace BFF.MVVM.ViewModels.ForModels
     public interface IIncomeCategoryViewModel : ICategoryBaseViewModel
     {
         int MonthOffset { get; set; }
+
+        void MergeTo(IIncomeCategoryViewModel target);
+
+        bool CanMergeTo(IIncomeCategoryViewModel target);
     }
 
     public class IncomeCategoryViewModel : CategoryBaseViewModel, IIncomeCategoryViewModel
@@ -43,5 +47,20 @@ namespace BFF.MVVM.ViewModels.ForModels
         }
 
         public int MonthOffset { get => _category.MonthOffset; set => _category.MonthOffset = value; }
+
+        void IIncomeCategoryViewModel.MergeTo(IIncomeCategoryViewModel target)
+        {
+            if (target is IncomeCategoryViewModel categoryViewModel)
+            {
+                _category.MergeTo(categoryViewModel._category);
+            }
+        }
+
+        public bool CanMergeTo(IIncomeCategoryViewModel target)
+        {
+            return target is IncomeCategoryViewModel categoryViewModel 
+                   && categoryViewModel._category != _category 
+                   && categoryViewModel._category.Id != _category.Id;
+        }
     }
 }

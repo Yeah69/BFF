@@ -14,6 +14,10 @@ namespace BFF.DB
     {
         Task<T> FindAsync(long id);
     }
+    public interface IMergingRepository<T> : IOncePerBackend where T : class, IDataModel
+    {
+        Task MergeAsync(T from, T to);
+    }
 
     public interface IRepository<T> : 
         IReadOnlyRepository<T>, IWriteOnlyRepository<T>

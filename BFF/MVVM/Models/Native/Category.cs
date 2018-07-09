@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using BFF.DB;
+using System.Threading.Tasks;
+using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 
@@ -18,10 +19,13 @@ namespace BFF.MVVM.Models.Native
         void AddCategory(ICategory category);
 
         void RemoveCategory(ICategory category);
+
+        Task MergeTo(ICategory category);
     }
 
     public class Category : CategoryBase<ICategory>, ICategory
     {
+        private readonly ICategoryRepository _repository;
         private ICategory _parent;
         private readonly ObservableCollection<ICategory> _categories = new ObservableCollection<ICategory>();
 
@@ -42,12 +46,13 @@ namespace BFF.MVVM.Models.Native
         public ReadOnlyObservableCollection<ICategory> Categories { get; }
 
         public Category(
-            IRepository<ICategory> repository, 
+            ICategoryRepository repository, 
             IRxSchedulerProvider rxSchedulerProvider, 
             long id = -1L,
             string name = "",
             ICategory parent = null) : base(repository, rxSchedulerProvider, id, name)
         {
+            _repository = repository;
             _parent = parent;
             Categories = new ReadOnlyObservableCollection<ICategory>(_categories);
         }
@@ -60,6 +65,18 @@ namespace BFF.MVVM.Models.Native
         public void RemoveCategory(ICategory category)
         {
             _categories.Remove(category);
+        }
+
+        public Task MergeTo(ICategory category)
+        {
+            var current = category;
+            while (current != null)
+            {
+                if (current == this) return Task.CompletedTask;
+                current = current.Parent;
+            }
+
+            return _repository.MergeAsync(from: this, to: category);
         }
     }
 }

@@ -334,5 +334,25 @@ namespace BFF.MVVM
         public static readonly IValueConverter NoneToCollapsed =
             ValueConverter.Create<IEnumerable, Visibility>(
                 e => e.Value.GetEnumerator().MoveNext() ? Visibility.Visible : Visibility.Collapsed);
+
+        public static readonly IMultiValueConverter AllEqualToVisibleElseCollapsed =
+            MultiValueConverter.Create<object, Visibility>(
+                e =>
+                {
+                    if (!e.Values.Any()) return Visibility.Visible;
+
+                    var first = e.Values.First();
+                    return e.Values.All(i => first.Equals(i)) ? Visibility.Visible : Visibility.Collapsed;
+                });
+
+        public static readonly IMultiValueConverter NotAllEqualToVisibleElseCollapsed =
+            MultiValueConverter.Create<object, Visibility>(
+                e =>
+                {
+                    if (e.Values.Count <= 1) return Visibility.Visible;
+
+                    var first = e.Values.First();
+                    return e.Values.Any(i => !first.Equals(i)) ? Visibility.Visible : Visibility.Collapsed;
+                });
     }
 }

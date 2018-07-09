@@ -54,19 +54,20 @@ namespace BFF.DB.Dapper
         public override async Task DeleteAsync(TDomain dataModel)
         {
             await base.DeleteAsync(dataModel).ConfigureAwait(false);
-            if(All.Contains(dataModel))
-            {
+            RemoveFromObservableCollection(dataModel);
+        }
+
+        protected void RemoveFromObservableCollection(TDomain dataModel)
+        {
+            if (All.Contains(dataModel))
                 All.Remove(dataModel);
-            }
         }
 
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
             if (disposing)
-            {
                 All.Clear();
-            }
         }
     }
 }

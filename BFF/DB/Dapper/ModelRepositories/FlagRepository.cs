@@ -16,20 +16,23 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
     }
 
-    public interface IFlagRepository : IObservableRepositoryBase<Domain.IFlag>
+    public interface IFlagRepository : IObservableRepositoryBase<Domain.IFlag>, IMergingRepository<Domain.IFlag>
     {
     }
 
     public sealed class FlagRepository : ObservableRepositoryBase<Domain.IFlag, Flag>, IFlagRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly IMergeOrm _mergeOrm;
 
         public FlagRepository(
             IProvideConnection provideConnection, 
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm crudOrm) : base(provideConnection, crudOrm, new FlagComparer())
+            ICrudOrm crudOrm,
+            IMergeOrm mergeOrm) : base(provideConnection, crudOrm, new FlagComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
+            _mergeOrm = mergeOrm;
         }
 
         protected override Converter<Domain.IFlag, Flag> ConvertToPersistence => domainModel =>
@@ -62,6 +65,13 @@ namespace BFF.DB.Dapper.ModelRepositories
                         (byte) (persistenceModel.Color & 0xff)),
                     persistenceModel.Id,
                     persistenceModel.Name));
+        }
+
+        public async Task MergeAsync(Domain.IFlag from, Domain.IFlag to)
+        {
+            await _mergeOrm.MergeFlagAsync(ConvertToPersistence(from), ConvertToPersistence(to)).ConfigureAwait(false);
+            RemoveFromObservableCollection(from);
+            RemoveFromCache(from);
         }
     }
 }
