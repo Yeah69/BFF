@@ -14,13 +14,17 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         ICategory Parent { get; set; }
 
+        void SetParentWithoutUpdateToBackend(ICategory newParent);
+
         ReadOnlyObservableCollection<ICategory> Categories { get; }
+
+        bool IsMyAncestor(ICategory other);
 
         void AddCategory(ICategory category);
 
         void RemoveCategory(ICategory category);
 
-        Task MergeTo(ICategory category);
+        Task MergeToAsync(ICategory category);
     }
 
     public class Category : CategoryBase<ICategory>, ICategory
@@ -43,6 +47,12 @@ namespace BFF.MVVM.Models.Native
             }
         }
 
+        public void SetParentWithoutUpdateToBackend(ICategory newParent)
+        {
+            _parent = newParent;
+            OnPropertyChanged(nameof(Parent));
+        }
+
         public ReadOnlyObservableCollection<ICategory> Categories { get; }
 
         public Category(
@@ -57,6 +67,18 @@ namespace BFF.MVVM.Models.Native
             Categories = new ReadOnlyObservableCollection<ICategory>(_categories);
         }
 
+        public bool IsMyAncestor(ICategory other)
+        {
+            var current = this.Parent;
+            while (current != null)
+            {
+                if (current == other) return true;
+                current = current.Parent;
+            }
+
+            return false;
+        }
+
         public void AddCategory(ICategory category)
         {
             _categories.Add(category);
@@ -67,7 +89,7 @@ namespace BFF.MVVM.Models.Native
             _categories.Remove(category);
         }
 
-        public Task MergeTo(ICategory category)
+        public Task MergeToAsync(ICategory category)
         {
             var current = category;
             while (current != null)

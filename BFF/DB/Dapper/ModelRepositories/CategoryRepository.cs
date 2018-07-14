@@ -61,11 +61,16 @@ namespace BFF.DB.Dapper.ModelRepositories
             ICrudOrm crudOrm, 
             IMergeOrm mergeOrm,
             ICategoryOrm categoryOrm) 
-            : base(provideConnection, crudOrm, new CategoryComparer())
+            : base(provideConnection, rxSchedulerProvider, crudOrm, new CategoryComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _mergeOrm = mergeOrm;
             _categoryOrm = categoryOrm;
+            InitializeAll();
+        }
+
+        private void InitializeAll()
+        {
             var groupedByParent = All.GroupBy(c => c.Parent).Where(grouping => grouping.Key != null);
             foreach (var parentSubCategoryGrouping in groupedByParent)
             {
@@ -73,6 +78,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                 foreach (var subCategory in parentSubCategoryGrouping)
                 {
                     parent.AddCategory(subCategory);
+                    subCategory.Parent = parent;
                 }
             }
         }
@@ -99,50 +105,20 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         public async Task MergeAsync(Domain.ICategory from, Domain.ICategory to)
         {
-            await _mergeOrm.MergeCategoryAsync(ConvertToPersistence(from), ConvertToPersistence(to)).ConfigureAwait(false);
-            ResortChildren();
-            RemoveFromObservableCollection(from);
-            RemoveFromCache(from);
-
-            void ResortChildren()
-            {
-                foreach (var child in from.Categories)
+            from
+                .Categories
+                .Join(to.Categories, c => c.Name, c => c.Name, (f, t) => f)
+                .ForEach(f =>
                 {
-                    var firstOrDefault = to.Categories.Reverse()
-                        .FirstOrDefault(c => Comparer<string>.Default.Compare(child.Name, c.Name) > 1);
-                    int insertIndex = 0;
-                    if (firstOrDefault != null && All.Contains(firstOrDefault))
-                        insertIndex = All.IndexOf(firstOrDefault) + 1;
-                    else if (All.Contains(to))
-                        insertIndex = All.IndexOf(to) + 1;
-
-                    RemoveFromObservableCollection(child);
-                    All.Insert(insertIndex++, child);
-                    
-                    // Resort subcategories of the child
-                    Stack<Domain.ICategory> treeIteration = new Stack<Domain.ICategory>(child.Categories.Reverse());
-                    while (treeIteration.Count > 0)
-                    {
-                        var iterated = treeIteration.Pop();
-                        RemoveFromObservableCollection(iterated);
-                        All.Insert(insertIndex++, iterated);
-                        iterated.Categories.Reverse().ForEach(c => treeIteration.Push(c));
-                    }
-
-                    // Rename if new parent has subcategory with same name
-                    if (to.Categories.Any(c => c.Name == child.Name))
-                    {
-                        int i = 1;
-                        while (to.Categories.Any(c => c.Name == $"{child.Name}{i}"))
-                            i++;
-                        child.Name = $"{child.Name}{i}";
-                    }
-
-                    // Set new relations
-                    child.Parent = to;
-                    to.AddCategory(child);
-                }
-            }
+                    int i = -1;
+                    // ReSharper disable once EmptyEmbeddedStatement => i gets iterated in the condition expression
+                    while (to.Categories.Any(t => t.Name == $"{f.Name}{++i}")) ;
+                    f.Name = $"{f.Name}{i}";
+                });
+            await _mergeOrm.MergeCategoryAsync(ConvertToPersistence(from), ConvertToPersistence(to)).ConfigureAwait(false);
+            ClearCache();
+            await ResetAll();
+            InitializeAll();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace BFF.MVVM.Models.Native
     {
         int MonthOffset { get; set; }
 
-        Task MergeTo(IIncomeCategory incomeCategory);
+        Task MergeToAsync(IIncomeCategory incomeCategory);
     }
 
     public class IncomeCategory : CategoryBase<IIncomeCategory>, IIncomeCategory
@@ -28,7 +28,7 @@ namespace BFF.MVVM.Models.Native
             }
         }
 
-        public Task MergeTo(IIncomeCategory incomeCategory)
+        public Task MergeToAsync(IIncomeCategory incomeCategory)
         {
             return _repository.MergeAsync(from: this, to: incomeCategory);
         }

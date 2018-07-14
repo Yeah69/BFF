@@ -31,7 +31,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             IProvideConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm, 
-            IAccountOrm accountOrm) : base(provideConnection, crudOrm, new AccountComparer())
+            IAccountOrm accountOrm) : base(provideConnection, rxSchedulerProvider, crudOrm, new AccountComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _accountOrm = accountOrm;

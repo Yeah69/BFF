@@ -31,7 +31,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             ICrudOrm crudOrm,
             IMergeOrm mergeOrm,
             ICategoryOrm categoryOrm)
-            : base(provideConnection, crudOrm, new IncomeCategoryComparer())
+            : base(provideConnection, rxSchedulerProvider, crudOrm, new IncomeCategoryComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _mergeOrm = mergeOrm;

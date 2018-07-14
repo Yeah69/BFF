@@ -513,6 +513,78 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the category &quot;{0}&quot; should be deleted?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmCategoryDeletion {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmCategoryDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the category &quot;{0}&quot; should get merged into the category &quot;{1}&quot;?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmCategoryMerge {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmCategoryMerge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the flag &quot;{0}&quot; should be deleted?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmFlagDeletion {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmFlagDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the flag &quot;{0}&quot; should get merged into the flag &quot;{1}&quot;?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmFlagMerge {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmFlagMerge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the income category &quot;{0}&quot; should be deleted?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmIncomeCategoryDeletion {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmIncomeCategoryDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the income category &quot;{0}&quot; should get merged into the income category &quot;{1}&quot;?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmIncomeCategoryMerge {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmIncomeCategoryMerge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the payee &quot;{0}&quot; should be deleted?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmPayeeDeletion {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmPayeeDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the payee &quot;{0}&quot; should get merged into the payee &quot;{1}&quot;?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmPayeeMerge {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmPayeeMerge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure?.
         /// </summary>
         public static string ConfirmationDialog_Title {

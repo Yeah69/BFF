@@ -86,7 +86,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Refreshes the TITs of this Account.
         /// </summary>
-        void RefreshTits();
+        void RefreshTransCollection();
     }
 
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
@@ -135,7 +135,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 OnPropertyChanged();
                 _rxSchedulerProvider.Task.MinimalSchedule(() =>
                 {
-                    RefreshTits();
+                    RefreshTransCollection();
                     RefreshBalance();
                 });
             }
@@ -203,16 +203,16 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     case CultureMessage.Refresh:
                         OnPropertyChanged(nameof(StartingBalance));
                         OnPropertyChanged(nameof(Balance));
-                        RefreshTits();
+                        RefreshTransCollection();
                         break;
                     case CultureMessage.RefreshCurrency:
                         OnPropertyChanged(nameof(StartingBalance));
                         OnPropertyChanged(nameof(Balance));
-                        RefreshTits();
+                        RefreshTransCollection();
                         break;
                     case CultureMessage.RefreshDate:
                         OnPropertyChanged(nameof(ShowLongDate));
-                        RefreshTits();
+                        RefreshTransCollection();
                         break;
                     default:
                         throw new InvalidEnumArgumentException();
@@ -269,7 +269,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             _refreshBalanceUntilNow.OnNext(Unit.Default);
         }
 
-        public void RefreshTits()
+        public void RefreshTransCollection()
         {
             if (IsOpen)
             {
@@ -307,7 +307,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 }
                 
                 RefreshBalance();
-                RefreshTits();
+                RefreshTransCollection();
             }
         }
 

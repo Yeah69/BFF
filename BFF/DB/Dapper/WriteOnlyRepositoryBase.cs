@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
@@ -19,6 +20,8 @@ namespace BFF.DB.Dapper
     {
         private readonly ICrudOrm _crudOrm;
         protected IProvideConnection ProvideConnection { get; }
+
+        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
 
         protected WriteOnlyRepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm)
         {
@@ -48,13 +51,9 @@ namespace BFF.DB.Dapper
             await _crudOrm.DeleteAsync(ConvertToPersistence(dataModel)).ConfigureAwait(false);
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-        }
-
         public void Dispose()
         {
-            Dispose(true);
+            CompositeDisposable.Dispose();
         }
     }
 }

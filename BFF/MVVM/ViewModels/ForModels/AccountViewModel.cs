@@ -75,7 +75,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             ITransRepository transRepository,
             IAccountRepository accountRepository,
             Lazy<IAccountViewModelService> accountViewModelService,
-            IPayeeViewModelService payeeService,
+            Lazy<IPayeeViewModelService> payeeService,
             Func<IPayee> payeeFactory,
             Func<ITransLikeViewModelPlaceholder> placeholderFactory,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
@@ -153,14 +153,14 @@ namespace BFF.MVVM.ViewModels.ForModels
                             transactionViewModel.Date = item.Date.Value;
                         if (item.HasPayee.Value)
                         {
-                            if (payeeService.All.Any(p => p.Name == item.Payee.Value))
-                                transactionViewModel.Payee = payeeService.All.FirstOrDefault(p => p.Name == item.Payee.Value);
+                            if (payeeService.Value.All.Any(p => p.Name == item.Payee.Value))
+                                transactionViewModel.Payee = payeeService.Value.All.FirstOrDefault(p => p.Name == item.Payee.Value);
                             else if (item.CreatePayeeIfNotExisting.Value)
                             {
                                 IPayee newPayee = payeeFactory();
                                 newPayee.Name = item.Payee.Value.Trim();
                                 await newPayee.InsertAsync();
-                                transactionViewModel.Payee = payeeService.GetViewModel(newPayee);
+                                transactionViewModel.Payee = payeeService.Value.GetViewModel(newPayee);
                             }
                         }
                         if (item.HasMemo.Value)
@@ -196,12 +196,12 @@ namespace BFF.MVVM.ViewModels.ForModels
                         await base.DeleteAsync();
                         foreach (var accountViewModel in AllAccounts)
                         {
-                            accountViewModel.RefreshTits();
+                            accountViewModel.RefreshTransCollection();
                             accountViewModel.RefreshBalance();
                         }
                         _summaryAccountViewModel.RefreshStartingBalance();
                         _summaryAccountViewModel.RefreshBalance();
-                        _summaryAccountViewModel.RefreshTits();
+                        _summaryAccountViewModel.RefreshTransCollection();
                     }
                     source.SetResult(Unit.Default);
                 });

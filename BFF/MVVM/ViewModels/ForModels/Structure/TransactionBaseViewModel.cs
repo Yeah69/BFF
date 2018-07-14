@@ -78,7 +78,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
             void RefreshAnAccountViewModel(IAccountViewModel account)
             {
-                account?.RefreshTits();
+                account?.RefreshTransCollection();
                 account?.RefreshBalance();
             }
 
@@ -132,8 +132,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         protected override void NotifyRelevantAccountsToRefreshTits()
         {
-            Account?.RefreshTits();
-            _summaryAccountViewModel.RefreshTits();
+            Account?.RefreshTransCollection();
+            _summaryAccountViewModel.RefreshTransCollection();
         }
 
         protected override void NotifyRelevantAccountsToRefreshBalance()

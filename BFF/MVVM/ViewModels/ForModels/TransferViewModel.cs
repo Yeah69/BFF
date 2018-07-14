@@ -162,15 +162,15 @@ namespace BFF.MVVM.ViewModels.ForModels
             await base.DeleteAsync();
             RefreshAnAccountViewModel(FromAccount);
             RefreshAnAccountViewModel(ToAccount);
-            _summaryAccountViewModel.RefreshTits();
+            _summaryAccountViewModel.RefreshTransCollection();
             _summaryAccountViewModel.RefreshBalance();
         }
 
         protected override void NotifyRelevantAccountsToRefreshTits()
         {
-            FromAccount?.RefreshTits();
-            ToAccount?.RefreshTits();
-            _summaryAccountViewModel.RefreshTits();
+            FromAccount?.RefreshTransCollection();
+            ToAccount?.RefreshTransCollection();
+            _summaryAccountViewModel.RefreshTransCollection();
         }
 
         protected override void NotifyRelevantAccountsToRefreshBalance()
@@ -183,7 +183,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         private void RefreshAnAccountViewModel(IAccountBaseViewModel accountViewModel)
         {
-            accountViewModel?.RefreshTits();
+            accountViewModel?.RefreshTransCollection();
             accountViewModel?.RefreshBalance();
         }
     }

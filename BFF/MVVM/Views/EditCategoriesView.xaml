@@ -9,6 +9,8 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mvvm="clr-namespace:BFF.MVVM"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
              xmlns:views="clr-namespace:BFF.MVVM.Views"
              d:DataContext="{d:DesignInstance viewModels:EditCategoriesViewModel}"
@@ -45,6 +47,8 @@
 
             <DataGrid MinWidth="100"
                       MaxHeight="500"
+                      dd:DragDrop.DropHandler="{x:Static dropHandler:MergingCategoryViewModelsDropHandler.Instance}"
+                      dd:DragDrop.IsDropTarget="True"
                       AutoGenerateColumns="False"
                       IsReadOnly="False"
                       ItemsSource="{Binding AllCategories}">
@@ -52,6 +56,28 @@
                     <DataGridTemplateColumn CellEditingTemplate="{StaticResource IndentedCategoryEditingItemTemplate}"
                                             CellTemplate="{StaticResource IndentedCategoryItemTemplate}"
                                             Header="{lex:Loc General_Name}" />
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                            Height="{StaticResource IconSize}"
+                                                            Foreground="{DynamicResource BlackBrush}"
+                                                            Kind="CallMerge"
+                                                            ToolTip="{lex:Loc ToolTip_MergeToIncomeCategory}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button dd:DragDrop.IsDragSource="True"
+                                        Style="{StaticResource ButtonVisibleOnMouseOverDataGridRow}">
+                                    <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                Height="{StaticResource IconSize}"
+                                                                Foreground="{DynamicResource BlackBrush}"
+                                                                Kind="CallMerge" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
@@ -66,6 +92,7 @@
                             <DataTemplate>
                                 <Button d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}"
                                         Command="{Binding DeleteCommand}"
+                                        IsEnabled="{Binding Categories, Converter={x:Static mvvm:Converters.None}}"
                                         Style="{StaticResource ButtonVisibleOnMouseOverDataGridRow}">
                                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                 Height="{StaticResource IconSize}"

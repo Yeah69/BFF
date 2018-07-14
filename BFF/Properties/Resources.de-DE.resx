@@ -269,6 +269,30 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m�
   <data name="Common_Entries" xml:space="preserve">
     <value>Einträge</value>
   </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Bist Du dir sicher, dass die Kategorie "{0}" gelöscht werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Bist Du dir sicher, dass die Kategorie "{0}" in die Kategorie "{1}" zusammengeführt werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Bist Du dir sicher, dass die Markierung "{0}" gelöscht werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Bist Du dir sicher, dass die Markierung "{0}" in die Markierung "{1}" zusammengeführt werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Bist Du dir sicher, dass die Einkommenskategorie "{0}" gelöscht werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Bist Du dir sicher, dass die Einkommenskategorie "{0}" in die Einkommenskategorie "{1}" zusammengeführt werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Bist Du dir sicher, dass der Zahlungsempfänger "{0}" gelöscht werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Bist Du dir sicher, dass der Zahlungsempfänger "{0}" in den Zahlungsempfänger "{1}" zusammengeführt werden soll?</value>
+  </data>
   <data name="ConfirmationDialog_Title" xml:space="preserve">
     <value>Bist Du dir sicher?</value>
   </data>

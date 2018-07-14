@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using BFF.Helper.Extensions;
@@ -20,7 +21,11 @@ namespace BFF.DB.Dapper
         
         private readonly Dictionary<long, TDomain> _cache = new Dictionary<long, TDomain>();
 
-        protected CachingRepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(provideConnection, crudOrm) { }
+        protected CachingRepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(
+            provideConnection, crudOrm)
+        {
+            Disposable.Create(ClearCache).AddTo(CompositeDisposable);
+        }
 
         public override async Task AddAsync(TDomain dataModel)
         {
@@ -64,13 +69,9 @@ namespace BFF.DB.Dapper
                 _cache.Remove(dataModel.Id);
         }
 
-        protected override void Dispose(bool disposing)
+        protected void ClearCache()
         {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                _cache.Clear();
-            }
+            _cache.Clear();
         }
     }
 }

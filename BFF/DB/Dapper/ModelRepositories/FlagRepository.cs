@@ -29,7 +29,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             IProvideConnection provideConnection, 
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm,
-            IMergeOrm mergeOrm) : base(provideConnection, crudOrm, new FlagComparer())
+            IMergeOrm mergeOrm) : base(provideConnection, rxSchedulerProvider, crudOrm, new FlagComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _mergeOrm = mergeOrm;

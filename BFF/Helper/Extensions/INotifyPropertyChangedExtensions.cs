@@ -11,7 +11,7 @@ namespace BFF.Helper.Extensions
     {
         public static IObservable<TProperty> ObservePropertyChanges<TSource, TProperty>(
             this TSource source,
-            Expression<Func<TSource, TProperty>> selector) 
+            Expression<Func<TSource, TProperty>> selector)
             where TSource : INotifyPropertyChanged
         {
             if (!(selector.Body is MemberExpression member))

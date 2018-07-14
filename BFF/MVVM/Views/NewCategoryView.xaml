@@ -111,7 +111,7 @@
                       ItemsSource="{Binding AllPotentialParents}"
                       SelectedItem="{Binding Parent.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ShouldPreserveUserEnteredPrefix="True"
-                      TextSearch.TextPath="Name.Value">
+                      TextSearch.TextPath="Name">
                 <ComboBox.Style>
                     <Style BasedOn="{StaticResource {x:Type ComboBox}}"
                            TargetType="{x:Type ComboBox}">

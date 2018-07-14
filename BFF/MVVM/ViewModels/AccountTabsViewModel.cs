@@ -40,7 +40,7 @@ namespace BFF.MVVM.ViewModels
         {
             if (isOpen && SummaryAccountViewModel.IsOpen)
             {
-                SummaryAccountViewModel.RefreshTits();
+                SummaryAccountViewModel.RefreshTransCollection();
                 SummaryAccountViewModel.RefreshStartingBalance();
                 SummaryAccountViewModel.RefreshBalance();
             }

@@ -141,6 +141,7 @@
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
     <Compile Include="DB\SQLite\DapperCrudOrm.cs" />
     <Compile Include="EmptyContext.cs" />
+    <Compile Include="Helper\Extensions\BooleanExtensions.cs" />
     <Compile Include="Helper\Extensions\DataGridRowExtensions.cs" />
     <Compile Include="Helper\Extensions\DateTimeExtensions.cs" />
     <Compile Include="Helper\Extensions\DependencyObjectExtensions.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Helper\Extensions\GenericExtensions.cs" />
     <Compile Include="Helper\Extensions\INotifyPropertyChangedExtensions.cs" />
     <Compile Include="Helper\Extensions\LongExtensions.cs" />
+    <Compile Include="Helper\Extensions\NotifyCollectionChangedExtensions.cs" />
     <Compile Include="Helper\Extensions\ObjectExtensions.cs" />
     <Compile Include="Helper\Extensions\ObservableExtensions.cs" />
     <Compile Include="Helper\Extensions\PointExtensions.cs" />
@@ -166,6 +168,7 @@
     <Compile Include="MVVM\BffDialogCoordinator.cs" />
     <Compile Include="MVVM\BindingProxy.cs" />
     <Compile Include="MVVM\Converters.cs" />
+    <Compile Include="MVVM\DropHandler\MergingCategoryViewModelsDropHandler.cs" />
     <Compile Include="MVVM\DropHandler\MergingIncomeCategoryViewModelsDropHandler.cs" />
     <Compile Include="MVVM\Managers\AccountModuleColumnManager.cs" />
     <Compile Include="MVVM\Managers\BffChildWindowManager.cs" />

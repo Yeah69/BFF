@@ -269,6 +269,30 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Common_Entries" xml:space="preserve">
     <value>Entries</value>
   </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Are you sure that the category "{0}" should be deleted?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Are you sure that the category "{0}" should get merged into the category "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Are you sure that the flag "{0}" should be deleted?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Are you sure that the flag "{0}" should get merged into the flag "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Are you sure that the income category "{0}" should be deleted?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Are you sure that the income category "{0}" should get merged into the income category "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Are you sure that the payee "{0}" should be deleted?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Are you sure that the payee "{0}" should get merged into the payee "{1}"?</value>
+  </data>
   <data name="ConfirmationDialog_Title" xml:space="preserve">
     <value>Are you sure?</value>
   </data>

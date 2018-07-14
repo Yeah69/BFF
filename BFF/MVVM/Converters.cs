@@ -354,5 +354,13 @@ namespace BFF.MVVM
                     var first = e.Values.First();
                     return e.Values.Any(i => !first.Equals(i)) ? Visibility.Visible : Visibility.Collapsed;
                 });
+
+        public static readonly IValueConverter Any =
+            ValueConverter.Create<IEnumerable, bool>(
+                e => e.Value.GetEnumerator().MoveNext());
+
+        public static readonly IValueConverter None =
+            ValueConverter.Create<IEnumerable, bool>(
+                e => e.Value.GetEnumerator().MoveNext().Not());
     }
 }
