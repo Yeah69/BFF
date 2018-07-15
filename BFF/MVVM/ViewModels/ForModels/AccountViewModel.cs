@@ -33,7 +33,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     }
 
     /// <summary>
-    /// Tits can be added to an Account
+    /// Trans' can be added to an Account
     /// </summary>
     public class AccountViewModel : AccountBaseViewModel, IAccountViewModel, IImportCsvBankStatement
     {
@@ -136,7 +136,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             NewParentTransactionCommand = new RxRelayCommand(() => NewTransList.Add(parentTransactionViewModelFactory(this))).AddTo(CompositeDisposable);
 
-            ApplyCommand = new AsyncRxRelayCommand(async () => await ApplyTits(), 
+            ApplyCommand = new AsyncRxRelayCommand(async () => await ApplyTrans(), 
                 NewTransList
                     .ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
                     .Select(count => count > 0),

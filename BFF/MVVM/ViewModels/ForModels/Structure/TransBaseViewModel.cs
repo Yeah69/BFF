@@ -20,22 +20,22 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         string CheckNumber { get; set; }
 
         /// <summary>
-        /// This timestamp marks the time point, when the TIT happened.
+        /// This timestamp marks the time point, when the Trans happened.
         /// </summary>
         DateTime Date { get; set; }
 
         /// <summary>
         /// Like the Memo the Cleared flag is an aid for the user.
-        /// It can be used to mark TITs, which the user thinks is processed enough (True) or needs to be changed later (False).
-        /// This maybe needed, if the user does not remember everything clearly and wants to finish the Tit later.
+        /// It can be used to mark Trans', which the user thinks is processed enough (True) or needs to be changed later (False).
+        /// This maybe needed, if the user does not remember everything clearly and wants to finish the Trans later.
         /// </summary>
         bool Cleared { get; set; }
         INewFlagViewModel NewFlagViewModel { get; }
     }
 
     /// <summary>
-    /// Base class for all ViewModels of Models of TITs excluding the SubElements.
-    /// From this point in the documentation of the ViewModel hierarchy TIT is referring to all TIT-like Elements except SubElements.
+    /// Base class for all ViewModels of Models of Trans' excluding the SubElements.
+    /// From this point in the documentation of the ViewModel hierarchy Trans is referring to all Trans-like Elements except SubElements.
     /// </summary>
     public abstract class TransBaseViewModel : TransLikeViewModel, ITransBaseViewModel, IHaveFlagViewModel
     {
@@ -59,7 +59,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         }
 
         /// <summary>
-        /// This timestamp marks the time point, when the TIT happened.
+        /// This timestamp marks the time point, when the Trans happened.
         /// </summary>
         public DateTime Date
         {
@@ -69,8 +69,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         /// <summary>
         /// Like the Memo the Cleared flag is an aid for the user.
-        /// It can be used to mark TITs, which the user thinks is processed enough (True) or needs to be changed later (False).
-        /// This maybe needed, if the user does not remember everything clearly and wants to finish the Tit later.
+        /// It can be used to mark Trans-elements, which the user thinks is processed enough (True) or needs to be changed later (False).
+        /// This maybe needed, if the user does not remember everything clearly and wants to finish the Trans-element later.
         /// </summary>
         public virtual bool Cleared
         {
@@ -80,7 +80,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         public INewFlagViewModel NewFlagViewModel { get; }
 
-        protected abstract void NotifyRelevantAccountsToRefreshTits();
+        protected abstract void NotifyRelevantAccountsToRefreshTrans();
 
         protected abstract void NotifyRelevantAccountsToRefreshBalance();
 
@@ -130,7 +130,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             transBase
                 .ObservePropertyChanges(tb => tb.Date)
                 .Where(_ => transBase.Id != -1)
-                .Subscribe(_ => NotifyRelevantAccountsToRefreshTits())
+                .Subscribe(_ => NotifyRelevantAccountsToRefreshTrans())
                 .AddTo(CompositeDisposable);
             
             transBase

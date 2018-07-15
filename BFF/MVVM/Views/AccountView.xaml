@@ -21,19 +21,19 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <views:TitDataGrid Grid.Row="0"
-                           AccountViewModel="{Binding}"
-                           ApplyCommand="{Binding ApplyCommand}"
-                           ImportCsvBankStatement="{Binding ImportCsvBankStatement}"
-                           ImportCsvBankStatementVisibility="{Binding Converter={x:Static mvvm:Converters.NotOfTypeToCollapsed}, ConverterParameter={x:Type forModels:IImportCsvBankStatement}}"
-                           IsDateLong="{Binding ShowLongDate}"
-                           NewParentTransactionCommand="{Binding NewParentTransactionCommand}"
-                           NewTransList="{Binding NewTransList}"
-                           NewTransactionCommand="{Binding NewTransactionCommand}"
-                           NewTransferCommand="{Binding NewTransferCommand}"
-                           ShowCheckNumbers="{Binding AccountModuleColumnManager.ShowCheckNumbers.Value}"
-                           ShowFlags="{Binding AccountModuleColumnManager.ShowFlags.Value}"
-                           TransList="{Binding Tits}" />
+        <views:TransDataGrid Grid.Row="0"
+                             AccountViewModel="{Binding}"
+                             ApplyCommand="{Binding ApplyCommand}"
+                             ImportCsvBankStatement="{Binding ImportCsvBankStatement}"
+                             ImportCsvBankStatementVisibility="{Binding Converter={x:Static mvvm:Converters.NotOfTypeToCollapsed}, ConverterParameter={x:Type forModels:IImportCsvBankStatement}}"
+                             IsDateLong="{Binding ShowLongDate}"
+                             NewParentTransactionCommand="{Binding NewParentTransactionCommand}"
+                             NewTransList="{Binding NewTransList}"
+                             NewTransactionCommand="{Binding NewTransactionCommand}"
+                             NewTransferCommand="{Binding NewTransferCommand}"
+                             ShowCheckNumbers="{Binding AccountModuleColumnManager.ShowCheckNumbers.Value}"
+                             ShowFlags="{Binding AccountModuleColumnManager.ShowFlags.Value}"
+                             TransList="{Binding Trans}" />
         <!--  "Status bar"  -->
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal">

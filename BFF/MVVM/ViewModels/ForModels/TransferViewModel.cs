@@ -166,7 +166,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             _summaryAccountViewModel.RefreshBalance();
         }
 
-        protected override void NotifyRelevantAccountsToRefreshTits()
+        protected override void NotifyRelevantAccountsToRefreshTrans()
         {
             FromAccount?.RefreshTransCollection();
             ToAccount?.RefreshTransCollection();

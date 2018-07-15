@@ -34,12 +34,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         IReactiveProperty<long> StartingBalance { get; }
 
         /// <summary>
-        /// Lazy loaded collection of TITs belonging to this Account.
+        /// Lazy loaded collection of Trans' belonging to this Account.
         /// </summary>
-        IDataVirtualizingCollection<ITransLikeViewModel> Tits { get; }
+        IDataVirtualizingCollection<ITransLikeViewModel> Trans { get; }
 
         /// <summary>
-        /// Collection of TITs, which are about to be inserted to this Account.
+        /// Collection of Trans', which are about to be inserted to this Account.
         /// </summary>
         ObservableCollection<ITransLikeViewModel> NewTransList { get; }
 
@@ -69,7 +69,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         IRxRelayCommand NewParentTransactionCommand { get; }
 
         /// <summary>
-        /// Flushes all valid and not yet inserted TITs to the database.
+        /// Flushes all valid and not yet inserted Trans' to the database.
         /// </summary>
         IRxRelayCommand ApplyCommand { get; }
 
@@ -84,7 +84,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         void RefreshBalance();
 
         /// <summary>
-        /// Refreshes the TITs of this Account.
+        /// Refreshes the Trans' of this Account.
         /// </summary>
         void RefreshTransCollection();
     }
@@ -104,7 +104,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         private readonly Subject<Unit> _refreshBalance = new Subject<Unit>();
         private readonly Subject<Unit> _refreshBalanceUntilNow = new Subject<Unit>();
 
-        private IDataVirtualizingCollection<ITransLikeViewModel> _tits;
+        private IDataVirtualizingCollection<ITransLikeViewModel> _trans;
 
         /// <summary>
         /// Starting balance of the Account
@@ -112,12 +112,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public abstract IReactiveProperty<long> StartingBalance { get; }
 
         /// <summary>
-        /// Lazy loaded collection of TITs belonging to this Account.
+        /// Lazy loaded collection of Trans' belonging to this Account.
         /// </summary>
-        public IDataVirtualizingCollection<ITransLikeViewModel> Tits => _tits ?? (_tits = CreateDataVirtualizingCollection());
+        public IDataVirtualizingCollection<ITransLikeViewModel> Trans => _trans ?? (_trans = CreateDataVirtualizingCollection());
 
         /// <summary>
-        /// Collection of TITs, which are about to be inserted to this Account.
+        /// Collection of Trans', which are about to be inserted to this Account.
         /// </summary>
         public ObservableCollection<ITransLikeViewModel> NewTransList { get; } = new ObservableCollection<ITransLikeViewModel>();
         
@@ -162,7 +162,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public abstract IRxRelayCommand NewParentTransactionCommand { get; }
 
         /// <summary>
-        /// Flushes all valid and not yet inserted TITs to the database.
+        /// Flushes all valid and not yet inserted Trans' to the database.
         /// </summary>
         public abstract IRxRelayCommand ApplyCommand { get; }
 
@@ -256,7 +256,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
             Disposable.Create(() =>
             {
-                _tits?.Dispose();
+                _trans?.Dispose();
             }).AddTo(CompositeDisposable);
         }
 
@@ -276,12 +276,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 Task.Run(() => CreateDataVirtualizingCollection())
                     .ContinueWith(async t =>
                     {
-                        var temp = _tits;
-                        _tits = await t;
+                        var temp = _trans;
+                        _trans = await t;
                         _rxSchedulerProvider.UI.MinimalSchedule(() =>
                         {
                             OnPreVirtualizedRefresh();
-                            OnPropertyChanged(nameof(Tits));
+                            OnPropertyChanged(nameof(Trans));
                             OnPostVirtualizedRefresh();
                             Task.Run(() => temp?.Dispose());
                         });
@@ -293,17 +293,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Common logic for the Apply-Command.
         /// </summary>
-        protected async Task ApplyTits()
+        protected async Task ApplyTrans()
         {
             if (NewTransList.All(t => t.IsInsertable()))
             {
                 _currentRemoveRequestSubscriptions = new CompositeDisposable();
                 _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
-                List<ITransLikeViewModel> insertTits = NewTransList.ToList();
-                foreach (ITransLikeViewModel tit in insertTits)
+                List<ITransLikeViewModel> insertTrans = NewTransList.ToList();
+                foreach (ITransLikeViewModel trans in insertTrans)
                 {
-                    await tit.InsertAsync();
-                    NewTransList.Remove(tit);
+                    await trans.InsertAsync();
+                    NewTransList.Remove(trans);
                 }
                 
                 RefreshBalance();
@@ -312,12 +312,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         }
 
         /// <summary>
-        /// Invoked right before the TITs are refreshed.
+        /// Invoked right before the Trans' are refreshed.
         /// </summary>
         public virtual event EventHandler PreVirtualizedRefresh;
 
         /// <summary>
-        /// Invoked right before the TITs are refreshed.
+        /// Invoked right before the Trans' are refreshed.
         /// </summary>
         public void OnPreVirtualizedRefresh()
         {
@@ -325,12 +325,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         }
 
         /// <summary>
-        /// Invoked right after the TITs are refreshed.
+        /// Invoked right after the Trans' are refreshed.
         /// </summary>
         public virtual event EventHandler PostVirtualizedRefresh;
 
         /// <summary>
-        /// Invoked right after the TITs are refreshed.
+        /// Invoked right after the Trans' are refreshed.
         /// </summary>
         public void OnPostVirtualizedRefresh()
         {

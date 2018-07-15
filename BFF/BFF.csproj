@@ -314,8 +314,8 @@
     <Compile Include="MVVM\Views\NewPayeeView.xaml.cs">
       <DependentUpon>NewPayeeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\TitDataGrid.xaml.cs">
-      <DependentUpon>TitDataGrid.xaml</DependentUpon>
+    <Compile Include="MVVM\Views\TransDataGrid.xaml.cs">
+      <DependentUpon>TransDataGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="SqLiteBackendContext.cs" />
     <Page Include="MVVM\Resources\TransCellTemplates.xaml">
@@ -418,7 +418,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\TitDataGrid.xaml">
+    <Page Include="MVVM\Views\TransDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

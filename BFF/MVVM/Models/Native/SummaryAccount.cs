@@ -9,7 +9,7 @@ namespace BFF.MVVM.Models.Native
     public interface ISummaryAccount : IAccount, IOncePerBackend {}
 
     /// <summary>
-    /// Tits can be added to an Account
+    /// Trans' can be added to an Account
     /// </summary>
     public class SummaryAccount : Account, ISummaryAccount
     {

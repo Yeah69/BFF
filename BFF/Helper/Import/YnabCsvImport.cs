@@ -520,10 +520,10 @@ namespace BFF.Helper.Import
             _toAccountAssignment.Add(account, new List<Persistence.Trans>());
         }
 
-        private void AssignAccount(string name, Persistence.IHaveAccount titNoTransfer)
+        private void AssignAccount(string name, Persistence.IHaveAccount transNoTransfer)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
-            _accountAssignment[_accountCache[name]].Add(titNoTransfer);
+            _accountAssignment[_accountCache[name]].Add(transNoTransfer);
         }
 
         private void AssignToAccount(string name, Persistence.Trans transfer)
@@ -560,7 +560,7 @@ namespace BFF.Helper.Import
             new Dictionary<Persistence.Payee, IList<Persistence.IHavePayee>>();
 
         private void CreateAndOrAssignPayee(
-            string name, Persistence.IHavePayee titBase)
+            string name, Persistence.IHavePayee transBase)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return;
@@ -568,11 +568,11 @@ namespace BFF.Helper.Import
             {
                 Persistence.Payee payee = new Persistence.Payee { Name = name };
                 _payeeCache.Add(name, payee);
-                _payeeAssignment.Add(payee, new List<Persistence.IHavePayee> { titBase });
+                _payeeAssignment.Add(payee, new List<Persistence.IHavePayee> { transBase });
             }
             else
             {
-                _payeeAssignment[_payeeCache[name]].Add(titBase);
+                _payeeAssignment[_payeeCache[name]].Add(transBase);
             }
         }
 
@@ -596,7 +596,7 @@ namespace BFF.Helper.Import
             new Dictionary<Persistence.Flag, IList<Persistence.IHaveFlag>>();
 
         private void CreateAndOrAssignFlag(
-            string name, Persistence.IHaveFlag titBase)
+            string name, Persistence.IHaveFlag transBase)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return;
@@ -625,11 +625,11 @@ namespace BFF.Helper.Import
                         break;
                 }
                 _flagCache.Add(name, flag);
-                _flagAssignment.Add(flag, new List<Persistence.IHaveFlag> { titBase });
+                _flagAssignment.Add(flag, new List<Persistence.IHaveFlag> { transBase });
             }
             else
             {
-                _flagAssignment[_flagCache[name]].Add(titBase);
+                _flagAssignment[_flagCache[name]].Add(transBase);
             }
         }
 
@@ -675,16 +675,16 @@ namespace BFF.Helper.Import
         };
 
         private void AssignCategory(
-            string namePath, Persistence.IHaveCategory titLike)
+            string namePath, Persistence.IHaveCategory transLike)
         {
             string masterCategoryName = namePath.Split(':').First();
             string subCategoryName = namePath.Split(':').Last();
             if (masterCategoryName == "Income")
             {
                 if(subCategoryName == "Available this month")
-                    _thisMonthCategoryImportWrapper.TitAssignments.Add(titLike);
+                    _thisMonthCategoryImportWrapper.TransAssignments.Add(transLike);
                 else
-                    _nextMonthCategoryImportWrapper.TitAssignments.Add(titLike);
+                    _nextMonthCategoryImportWrapper.TransAssignments.Add(transLike);
             }
             else
             {
@@ -704,7 +704,7 @@ namespace BFF.Helper.Import
                     subCategoryWrapper = new CategoryImportWrapper { Parent = masterCategoryWrapper, Category = category };
                     masterCategoryWrapper.Categories.Add(subCategoryWrapper);
                 }
-                subCategoryWrapper.TitAssignments.Add(titLike);
+                subCategoryWrapper.TransAssignments.Add(transLike);
             }
         }
 

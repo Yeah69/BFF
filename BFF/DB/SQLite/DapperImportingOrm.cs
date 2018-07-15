@@ -33,9 +33,9 @@ namespace BFF.DB.SQLite
                 {
                     CategoryImportWrapper current = categoriesOrder.Dequeue();
                     var id = await connection.InsertAsync(current.Category).ConfigureAwait(false);
-                    foreach (PersistenceModels.IHaveCategory currentTitAssignment in current.TitAssignments)
+                    foreach (PersistenceModels.IHaveCategory currentTransAssignment in current.TransAssignments)
                     {
-                        currentTitAssignment.CategoryId = id;
+                        currentTransAssignment.CategoryId = id;
                     }
                     foreach (CategoryImportWrapper categoryImportWrapper in current.Categories)
                     {

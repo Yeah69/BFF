@@ -12,14 +12,14 @@ using BFF.MVVM.ViewModels.ForModels.Structure;
 namespace BFF.MVVM.Views
 {
     /// <summary>
-    /// Interaction logic for TitDataGrid.xaml
+    /// Interaction logic for TransDataGrid.xaml
     /// </summary>
-    public partial class TitDataGrid
+    public partial class TransDataGrid
     {
         #region Depencency Properties
 
         public static readonly DependencyProperty AccountViewModelProperty = DependencyProperty.Register(
-            nameof(AccountViewModel), typeof(IAccountBaseViewModel), typeof(TitDataGrid), 
+            nameof(AccountViewModel), typeof(IAccountBaseViewModel), typeof(TransDataGrid), 
             new PropertyMetadata(default(IAccountBaseViewModel), OnAccountViewModelChanged));
 
         public IAccountBaseViewModel AccountViewModel
@@ -29,7 +29,7 @@ namespace BFF.MVVM.Views
         }
 
         public static readonly DependencyProperty TransListProperty = DependencyProperty.Register(
-            nameof(TransList), typeof(IEnumerable), typeof(TitDataGrid),
+            nameof(TransList), typeof(IEnumerable), typeof(TransDataGrid),
             new PropertyMetadata(default(IEnumerable)));
 
         public IEnumerable TransList
@@ -39,7 +39,7 @@ namespace BFF.MVVM.Views
         }
 
         public static readonly DependencyProperty NewTransListProperty = DependencyProperty.Register(
-            nameof(NewTransList), typeof(IEnumerable), typeof(TitDataGrid), new PropertyMetadata(default(IEnumerable)));
+            nameof(NewTransList), typeof(IEnumerable), typeof(TransDataGrid), new PropertyMetadata(default(IEnumerable)));
 
         public IEnumerable NewTransList
         {
@@ -48,9 +48,9 @@ namespace BFF.MVVM.Views
         }
 
         public static readonly DependencyProperty NewTransactionCommandProperty = DependencyProperty.Register(
-            nameof(NewTransactionCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
+            nameof(NewTransactionCommand), typeof(ICommand), typeof(TransDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
             {
-                ((TitDataGrid)o).NewTransactionVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+                ((TransDataGrid)o).NewTransactionVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
             }));
 
         public ICommand NewTransactionCommand
@@ -60,9 +60,9 @@ namespace BFF.MVVM.Views
         }
 
         public static readonly DependencyProperty NewTransferCommandProperty = DependencyProperty.Register(
-            nameof(NewTransferCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
+            nameof(NewTransferCommand), typeof(ICommand), typeof(TransDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
             {
-                ((TitDataGrid)o).NewTransferVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+                ((TransDataGrid)o).NewTransferVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
             }));
 
         public ICommand NewTransferCommand
@@ -72,9 +72,9 @@ namespace BFF.MVVM.Views
         }
 
         public static readonly DependencyProperty NewParentTransactionCommandProperty = DependencyProperty.Register(
-            nameof(NewParentTransactionCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
+            nameof(NewParentTransactionCommand), typeof(ICommand), typeof(TransDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
             {
-                ((TitDataGrid)o).NewParentTransactionVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+                ((TransDataGrid)o).NewParentTransactionVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
             }));
 
         public ICommand NewParentTransactionCommand
@@ -84,9 +84,9 @@ namespace BFF.MVVM.Views
         }
 
         public static readonly DependencyProperty ApplyCommandProperty = DependencyProperty.Register(
-            nameof(ApplyCommand), typeof(ICommand), typeof(TitDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
+            nameof(ApplyCommand), typeof(ICommand), typeof(TransDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
             {
-                ((TitDataGrid)o).ApplyVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+                ((TransDataGrid)o).ApplyVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
             }));
 
         public ICommand ApplyCommand
@@ -96,7 +96,7 @@ namespace BFF.MVVM.Views
         }
 
         private static readonly DependencyProperty NewTransactionVisibilityProperty = DependencyProperty.Register(
-            nameof(NewTransactionVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
+            nameof(NewTransactionVisibility), typeof(Visibility), typeof(TransDataGrid), new PropertyMetadata(Visibility.Collapsed));
 
         private Visibility NewTransactionVisibility
         {
@@ -105,7 +105,7 @@ namespace BFF.MVVM.Views
         }
 
         public static readonly DependencyProperty NewTransferVisibilityProperty = DependencyProperty.Register(
-            nameof(NewTransferVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
+            nameof(NewTransferVisibility), typeof(Visibility), typeof(TransDataGrid), new PropertyMetadata(Visibility.Collapsed));
 
         public Visibility NewTransferVisibility
         {
@@ -114,7 +114,7 @@ namespace BFF.MVVM.Views
         }
 
         public static readonly DependencyProperty NewParentTransactionVisibilityProperty = DependencyProperty.Register(
-            nameof(NewParentTransactionVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
+            nameof(NewParentTransactionVisibility), typeof(Visibility), typeof(TransDataGrid), new PropertyMetadata(Visibility.Collapsed));
 
         public Visibility NewParentTransactionVisibility
         {
@@ -123,7 +123,7 @@ namespace BFF.MVVM.Views
         }
 
         public static readonly DependencyProperty ApplyVisibilityProperty = DependencyProperty.Register(
-            nameof(ApplyVisibility), typeof(Visibility), typeof(TitDataGrid), new PropertyMetadata(Visibility.Collapsed));
+            nameof(ApplyVisibility), typeof(Visibility), typeof(TransDataGrid), new PropertyMetadata(Visibility.Collapsed));
 
         public Visibility ApplyVisibility
         {
@@ -132,7 +132,7 @@ namespace BFF.MVVM.Views
         }
 
         public static readonly DependencyProperty ShowRowDetailsModeProperty = DependencyProperty.Register(
-            nameof(ShowRowDetailsMode), typeof(DataGridRowDetailsVisibilityMode), typeof(TitDataGrid), new PropertyMetadata(DataGridRowDetailsVisibilityMode.Collapsed));
+            nameof(ShowRowDetailsMode), typeof(DataGridRowDetailsVisibilityMode), typeof(TransDataGrid), new PropertyMetadata(DataGridRowDetailsVisibilityMode.Collapsed));
 
         public DataGridRowDetailsVisibilityMode ShowRowDetailsMode
         {
@@ -141,7 +141,7 @@ namespace BFF.MVVM.Views
         }
 
         public static readonly DependencyProperty IsDateLongProperty = DependencyProperty.Register(
-            nameof(IsDateLong), typeof(bool), typeof(TitDataGrid), new PropertyMetadata(default(bool)));
+            nameof(IsDateLong), typeof(bool), typeof(TransDataGrid), new PropertyMetadata(default(bool)));
 
         public bool IsDateLong
         {
@@ -152,13 +152,13 @@ namespace BFF.MVVM.Views
         public static readonly DependencyProperty ImportCsvBankStatementProperty = DependencyProperty.Register(
             nameof(ImportCsvBankStatement),
             typeof(ICommand),
-            typeof(TitDataGrid),
+            typeof(TransDataGrid),
             new PropertyMetadata(default(ICommand)));
 
         public static readonly DependencyProperty ImportCsvBankStatementVisibilityProperty = DependencyProperty.Register(
             nameof(ImportCsvBankStatementVisibility),
             typeof(Visibility),
-            typeof(TitDataGrid),
+            typeof(TransDataGrid),
             new PropertyMetadata(Visibility.Collapsed));
 
         
@@ -178,13 +178,13 @@ namespace BFF.MVVM.Views
         public static readonly DependencyProperty ShowFlagsProperty = DependencyProperty.Register(
             nameof(ShowFlags),
             typeof(bool),
-            typeof(TitDataGrid),
+            typeof(TransDataGrid),
             new PropertyMetadata(defaultValue: true));
 
         public static readonly DependencyProperty ShowCheckNumbersProperty = DependencyProperty.Register(
             nameof(ShowCheckNumbers),
             typeof(bool),
-            typeof(TitDataGrid),
+            typeof(TransDataGrid),
             new PropertyMetadata(defaultValue: true));
 
         
@@ -204,7 +204,7 @@ namespace BFF.MVVM.Views
         #endregion
 
 
-        public TitDataGrid()
+        public TransDataGrid()
         {
             InitializeComponent();
         }
@@ -214,14 +214,14 @@ namespace BFF.MVVM.Views
             IVirtualizedRefresh oldAccount = (IVirtualizedRefresh) args.OldValue;
             if (oldAccount != null)
             {
-                oldAccount.PreVirtualizedRefresh -= ((TitDataGrid)sender).PreVirtualizedRefresh;
-                oldAccount.PostVirtualizedRefresh -= ((TitDataGrid)sender).PostVirtualizedRefresh;
+                oldAccount.PreVirtualizedRefresh -= ((TransDataGrid)sender).PreVirtualizedRefresh;
+                oldAccount.PostVirtualizedRefresh -= ((TransDataGrid)sender).PostVirtualizedRefresh;
             }
             IVirtualizedRefresh newAccount = (IVirtualizedRefresh) args.NewValue;
             if (newAccount != null)
             {
-                newAccount.PreVirtualizedRefresh += ((TitDataGrid)sender).PreVirtualizedRefresh;
-                newAccount.PostVirtualizedRefresh += ((TitDataGrid)sender).PostVirtualizedRefresh;
+                newAccount.PreVirtualizedRefresh += ((TransDataGrid)sender).PreVirtualizedRefresh;
+                newAccount.PostVirtualizedRefresh += ((TransDataGrid)sender).PostVirtualizedRefresh;
             }
         }
 

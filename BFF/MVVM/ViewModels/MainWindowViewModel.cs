@@ -38,7 +38,7 @@ namespace BFF.MVVM.ViewModels
         bool IsEmpty { get; }
         CultureInfo LanguageCulture { get; set; }
         IReadOnlyReactiveProperty<IParentTransactionViewModel> OpenParentTransaction { get; }
-        bool ParentTitFlyoutOpen { get; set; }
+        bool ParentTransFlyoutOpen { get; set; }
         double Width { get; set; }
         double Height { get; set; }
         double X { get; set; }
@@ -176,19 +176,19 @@ namespace BFF.MVVM.ViewModels
 
         private const double BorderOffset = 50.0;
 
-        private IParentTransactionViewModel _parentTitViewModel;
+        private IParentTransactionViewModel _parentTransViewModel;
 
         public IParentTransactionViewModel ParentTransactionViewModel
         {
-            get => _parentTitViewModel;
+            get => _parentTransViewModel;
             set
             {
-                _parentTitViewModel = value;
+                _parentTransViewModel = value;
                 OnPropertyChanged();
             }
         }
 
-        private bool _parentTitFlyoutOpen;
+        private bool _parentTransFlyoutOpen;
         private IBudgetOverviewViewModel _budgetOverviewViewModel;
         private readonly SerialDisposable _contextSequence = new SerialDisposable();
         private IEditAccountsViewModel _editAccountsViewModel;
@@ -199,12 +199,12 @@ namespace BFF.MVVM.ViewModels
 
         public IReadOnlyReactiveProperty<IParentTransactionViewModel> OpenParentTransaction { get; }
 
-        public bool ParentTitFlyoutOpen
+        public bool ParentTransFlyoutOpen
         {
-            get => _parentTitFlyoutOpen;
+            get => _parentTransFlyoutOpen;
             set
             {
-                _parentTitFlyoutOpen = value;
+                _parentTransFlyoutOpen = value;
                 OnPropertyChanged();
             }
         }

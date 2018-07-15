@@ -126,11 +126,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public override async Task DeleteAsync()
         {
             await base.DeleteAsync();
-            NotifyRelevantAccountsToRefreshTits();
+            NotifyRelevantAccountsToRefreshTrans();
             NotifyRelevantAccountsToRefreshBalance();
         }
 
-        protected override void NotifyRelevantAccountsToRefreshTits()
+        protected override void NotifyRelevantAccountsToRefreshTrans()
         {
             Account?.RefreshTransCollection();
             _summaryAccountViewModel.RefreshTransCollection();

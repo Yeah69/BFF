@@ -11,6 +11,6 @@ namespace BFF.Helper.Import
 
         public IList<CategoryImportWrapper> Categories { get; set; } = new List<CategoryImportWrapper>();
 
-        public IList<IHaveCategory> TitAssignments { get; set; } = new List<IHaveCategory>();
+        public IList<IHaveCategory> TransAssignments { get; set; } = new List<IHaveCategory>();
     }
 }

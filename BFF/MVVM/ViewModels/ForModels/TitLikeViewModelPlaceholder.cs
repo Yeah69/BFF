@@ -13,18 +13,12 @@ namespace BFF.MVVM.ViewModels.ForModels
     }
 
     /// <summary>
-    /// A TIT ViewModel Placeholder used for async lazy loaded TIT's.
+    /// A Trans ViewModel Placeholder used for async lazy loaded Trans'.
     /// </summary>
     public sealed class TransLikeViewModelPlaceholder : ITransLikeViewModelPlaceholder
     {
-        /// <summary>
-        /// Needed to mimic a TIT.
-        /// </summary>
         public string Memo { get; set; }
-
-        /// <summary>
-        /// Needed to mimic a TIT.
-        /// </summary>
+        
         public IReactiveProperty<long> Sum { get; }
 
         public Sign SumSign => Sign.Plus;
@@ -38,9 +32,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IRxRelayCommand RemoveCommand { get; }
         public IAccountBaseViewModel Owner => null;
 
-        /// <summary>
-        /// Needed to mimic a TIT.
-        /// </summary>
         public bool Cleared { get; set; }
 
         /// <summary>

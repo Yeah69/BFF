@@ -24,7 +24,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     }
 
     /// <summary>
-    /// Tits can be added to an Account
+    /// Trans can be added to an Account
     /// </summary>
     public class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel, IOncePerBackend
     {
@@ -82,7 +82,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             NewParentTransactionCommand = new RxRelayCommand(() => NewTransList.Add(parentTransactionViewModelFactory(this))).AddTo(CompositeDisposable);
 
-            ApplyCommand = new AsyncRxRelayCommand(async () => await ApplyTits(),
+            ApplyCommand = new AsyncRxRelayCommand(async () => await ApplyTrans(),
                 NewTransList
                     .ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
                     .Select(count => count > 0),
@@ -115,7 +115,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public sealed override IRxRelayCommand NewParentTransactionCommand { get; }
 
         /// <summary>
-        /// Flushes all valid and not yet inserted TITs to the database.
+        /// Flushes all valid and not yet inserted Trans' to the database.
         /// </summary>
         public sealed override IRxRelayCommand ApplyCommand { get; }
 
