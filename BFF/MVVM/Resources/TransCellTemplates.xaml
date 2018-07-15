@@ -84,11 +84,7 @@
                                                 Kind="{StaticResource TransferIcon}"
                                                 Style="{StaticResource CellIconMaterial}" />
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}">
-                    <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackBrush}"
-                                                Kind="{StaticResource PlaceholderIcon}"
-                                                Style="{StaticResource CellIconMaterial}" />
-                </DataTemplate>
+                <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
             </ContentControl.Resources>
         </ContentControl>
     </DataTemplate>
@@ -799,6 +795,7 @@
                         </ContentControl.Style>
                     </ContentControl>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
             </ContentControl.Resources>
         </ContentControl>
     </DataTemplate>
@@ -855,6 +852,7 @@
                         </ContentControl.Style>
                     </ContentControl>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
             </ContentControl.Resources>
         </ContentControl>
     </DataTemplate>
@@ -1086,10 +1084,18 @@
     </DataTemplate>
     <!--  Cleared  -->
     <DataTemplate x:Key="ClearedColumnTemplate">
-        <CheckBox MinHeight="30"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  Style="{StaticResource BffCheckBox}" />
+        <ContentControl Content="{Binding}"
+                        Style="{StaticResource CellContent}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
+                    <CheckBox MinHeight="30"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              IsChecked="{Binding Cleared, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Style="{StaticResource BffCheckBox}" />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
+            </ContentControl.Resources>
+        </ContentControl>
     </DataTemplate>
 </ResourceDictionary>
