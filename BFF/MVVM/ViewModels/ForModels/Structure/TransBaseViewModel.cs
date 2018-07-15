@@ -98,6 +98,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
             NewFlagViewModel = newFlagViewModel;
 
+            _flag = _flagViewModelService.GetViewModel(transBase.Flag);
             transBase
                 .ObservePropertyChanges(nameof(transBase.Flag))
                 .ObserveOn(rxSchedulerProvider.UI)

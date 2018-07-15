@@ -536,9 +536,22 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m�
   <data name="ToolTip_DeleteRow" xml:space="preserve">
     <value>Drücke den Knopf in dieser Spalte um das Element der zugehörigen Reihe zu löschen.</value>
   </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>Um eine Kategorie mit einer anderen zusammenzuführen, sollte das Symbol aus dieser Spalte von der Quellreihe gezogen und auf die Zielreihe losgelassen werden.
+Die Ziel-Kategorie übernimmt alle Konteneinträge und Unterkategorien von der Quell-Kategorie.
+Wenn ein Paar der Unterkategorien den selben Namen haben, dann wird die Unterkategorie der Quelle automatisch umbenannt (Zahl angehangen).</value>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>Um eine Markierung mit einer anderen zusammenzuführen, sollte das Symbol aus dieser Spalte von der Quellreihe gezogen und auf die Zielreihe losgelassen werden.
+Die Ziel-Markierung übernimmt alle Konteneinträge von der Quell-Markierung und behält ihre eigene Farbe bei.</value>
+  </data>
   <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
     <value>Um eine Einkommenskategorie mit einer anderen zusammenzuführen, sollte das Symbol aus dieser Spalte von der Quellreihe gezogen und auf die Zielreihe losgelassen werden.
 Die Ziel-Einkommenskategorie übernimmt alle Konteneinträge von der Quell-Einkommenskategorie und behält den Monatsversatz bei.</value>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>Um einen Zahlungsempfänger mit einer anderen zusammenzuführen, sollte das Symbol aus dieser Spalte von der Quellreihe gezogen und auf die Zielreihe losgelassen werden.
+Der Ziel-Zahlungsempfänger übernimmt alle Konteneinträge von dem Quell-Zahlungsempfänger.</value>
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
     <value>Dieser Text konnte nicht als Währung geparst werden!</value>

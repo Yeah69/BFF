@@ -168,6 +168,8 @@
     <Compile Include="MVVM\BffDialogCoordinator.cs" />
     <Compile Include="MVVM\BindingProxy.cs" />
     <Compile Include="MVVM\Converters.cs" />
+    <Compile Include="MVVM\DropHandler\MergingFlagViewModelsDropHandler.cs" />
+    <Compile Include="MVVM\DropHandler\MergingPayeeViewModelsDropHandler.cs" />
     <Compile Include="MVVM\DropHandler\MergingCategoryViewModelsDropHandler.cs" />
     <Compile Include="MVVM\DropHandler\MergingIncomeCategoryViewModelsDropHandler.cs" />
     <Compile Include="MVVM\Managers\AccountModuleColumnManager.cs" />

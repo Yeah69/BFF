@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using BFF.Helper.Extensions;
 
 namespace BFF.DB.SQLite
 {
@@ -24,7 +25,7 @@ namespace BFF.DB.SQLite
             var backupDirectory = directory.GetDirectories().FirstOrDefault(di => di.Name == backupDirectoryPath) ??
                                   directory.CreateSubdirectory(backupDirectoryPath);
 
-            fileInfo.CopyTo($"{backupDirectory.FullName}{Path.DirectorySeparatorChar}{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{reason}_{fileInfo.Name}");
+            fileInfo.CopyTo($"{backupDirectory.FullName}{Path.DirectorySeparatorChar}{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{reason.RemoveIllegalFilePathCharacters()}_{fileInfo.Name}");
         }
 
         private string ConnectionString => $"Data Source={DbPath};Version=3;foreign keys=true;Pooling=True;Max Pool Size=100;";

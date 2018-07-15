@@ -10,7 +10,7 @@ namespace BFF.MVVM.Models.Native
     {
         Color Color { get; set; }
 
-        Task MergeTo(IFlag flag);
+        Task MergeToAsync(IFlag flag);
     }
 
     public class Flag : CommonProperty<IFlag>, IFlag
@@ -42,7 +42,7 @@ namespace BFF.MVVM.Models.Native
             }
         }
 
-        public Task MergeTo(IFlag flag)
+        public Task MergeToAsync(IFlag flag)
         {
             return _repository.MergeAsync(from: this, to: flag);
         }

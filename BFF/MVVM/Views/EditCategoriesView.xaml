@@ -10,7 +10,6 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
              xmlns:views="clr-namespace:BFF.MVVM.Views"
              d:DataContext="{d:DesignInstance viewModels:EditCategoriesViewModel}"
@@ -22,20 +21,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.datagrid.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <Style x:Key="ButtonVisibleOnMouseOverDataGridRow"
-                   BasedOn="{StaticResource {x:Type Button}}"
-                   TargetType="{x:Type Button}">
-                <Setter Property="Visibility"
-                        Value="Hidden" />
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
-                                 Value="True">
-                        <Setter Property="Visibility"
-                                Value="Visible" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <ScrollViewer x:Name="LayoutRoot"
@@ -51,7 +36,9 @@
                       dd:DragDrop.IsDropTarget="True"
                       AutoGenerateColumns="False"
                       IsReadOnly="False"
-                      ItemsSource="{Binding AllCategories}">
+                      ItemsSource="{Binding AllCategories}"
+                      SelectionMode="Single"
+                      SelectionUnit="FullRow">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn CellEditingTemplate="{StaticResource IndentedCategoryEditingItemTemplate}"
                                             CellTemplate="{StaticResource IndentedCategoryItemTemplate}"
@@ -63,7 +50,7 @@
                                                             Height="{StaticResource IconSize}"
                                                             Foreground="{DynamicResource BlackBrush}"
                                                             Kind="CallMerge"
-                                                            ToolTip="{lex:Loc ToolTip_MergeToIncomeCategory}" />
+                                                            ToolTip="{lex:Loc ToolTip_MergeToCategory}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.HeaderTemplate>
                         <DataGridTemplateColumn.CellTemplate>
@@ -115,7 +102,9 @@
                       dd:DragDrop.IsDropTarget="True"
                       AutoGenerateColumns="False"
                       IsReadOnly="False"
-                      ItemsSource="{Binding AllIncomeCategories}">
+                      ItemsSource="{Binding AllIncomeCategories}"
+                      SelectionMode="Single"
+                      SelectionUnit="FullRow">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn CellEditingTemplate="{StaticResource IndentedCategoryEditingItemTemplate}"
                                             CellTemplate="{StaticResource IndentedCategoryItemTemplate}"

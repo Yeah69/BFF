@@ -1314,12 +1314,43 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In order to merge one category to another, drag the merge icon from this column in the source row and drop it on the target row.
+        ///The target category will get assigned to all account entries of the source category and inherit all the subcategories.
+        ///If a pair of the subcategories has the same name, then the subcategory of the  source category is automatically renamed (number is appended)..
+        /// </summary>
+        public static string ToolTip_MergeToCategory {
+            get {
+                return ResourceManager.GetString("ToolTip_MergeToCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to merge one flag to another, drag the merge icon from this column in the source row and drop it on the target row.
+        ///The target flag  will get assigned to all account entries of the source flag and keep its color..
+        /// </summary>
+        public static string ToolTip_MergeToFlag {
+            get {
+                return ResourceManager.GetString("ToolTip_MergeToFlag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In order to merge one income category to another, drag the merge icon from this column in the source row and drop it on the target row.
         ///The target income category will get assigned to all account entries of the source income category and keep its month offset..
         /// </summary>
         public static string ToolTip_MergeToIncomeCategory {
             get {
                 return ResourceManager.GetString("ToolTip_MergeToIncomeCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to merge one payee to another, drag the merge icon from this column in the source row and drop it on the target row.
+        ///The target payee will get assigned to all account entries of the source payee..
+        /// </summary>
+        public static string ToolTip_MergeToPayee {
+            get {
+                return ResourceManager.GetString("ToolTip_MergeToPayee", resourceCulture);
             }
         }
         

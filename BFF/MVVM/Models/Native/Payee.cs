@@ -7,7 +7,7 @@ namespace BFF.MVVM.Models.Native
 {
     public interface IPayee : ICommonProperty
     {
-        Task MergeTo(IPayee payee);
+        Task MergeToAsync(IPayee payee);
     }
     
     public class Payee : CommonProperty<IPayee>, IPayee
@@ -24,7 +24,7 @@ namespace BFF.MVVM.Models.Native
             if (id > 0L) Id = id;
         }
 
-        public Task MergeTo(IPayee payee)
+        public Task MergeToAsync(IPayee payee)
         {
             return _repository.MergeAsync(from: this, to: payee);
         }

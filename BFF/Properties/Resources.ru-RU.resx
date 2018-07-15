@@ -536,9 +536,22 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="ToolTip_DeleteRow" xml:space="preserve">
     <value>Press the button in this column to delete the element of the corresponding row.</value>
   </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>In order to merge one category to another, drag the merge icon from this column in the source row and drop it on the target row.
+The target category will get assigned to all account entries of the source category and inherit all the subcategories.
+If a pair of the subcategories has the same name, then the subcategory of the  source category is automatically renamed (number is appended).</value>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>In order to merge one flag to another, drag the merge icon from this column in the source row and drop it on the target row.
+The target flag  will get assigned to all account entries of the source flag and keep its color.</value>
+  </data>
   <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
     <value>In order to merge one income category to another, drag the merge icon from this column in the source row and drop it on the target row.
 The target income category will get assigned to all account entries of the source income category and keep its month offset.</value>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>In order to merge one payee to another, drag the merge icon from this column in the source row and drop it on the target row.
+The target payee will get assigned to all account entries of the source payee.</value>
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
     <value>Значение не соответствует формату валюты</value>

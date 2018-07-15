@@ -16,8 +16,8 @@ namespace BFF.MVVM.ViewModels.ForModels
     public interface IFlagViewModel : ICommonPropertyViewModel
     {
         SolidColorBrush Color { get; set; }
-
-        IRxRelayCommand<IFlagViewModel> MergeTo { get; }
+        void MergeTo(IFlagViewModel target);
+        bool CanMergeTo(IFlagViewModel target);
     }
 
     public class FlagViewModel : CommonPropertyViewModel, IFlagViewModel
@@ -46,14 +46,6 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Color)))
                 .AddTo(CompositeDisposable);
-
-            MergeTo = new RxRelayCommand<IFlagViewModel>(cvm =>
-            {
-                if (cvm is FlagViewModel flagViewModel)
-                {
-                    flag.MergeTo(flagViewModel._flag);
-                }
-            });
         }
 
         public override Task DeleteAsync()
@@ -85,6 +77,38 @@ namespace BFF.MVVM.ViewModels.ForModels
             set => _flag.Color = value.Color;
         }
 
-        public IRxRelayCommand<IFlagViewModel> MergeTo { get; }
+        public void MergeTo(IFlagViewModel target)
+        {
+            _mainBffDialogCoordinator
+                .ShowMessageAsync(
+                    "ConfirmationDialog_Title".Localize(),
+                    string.Format("ConfirmationDialog_ConfirmFlagMerge".Localize(), Name, target.Name),
+                    BffMessageDialogStyle.AffirmativeAndNegative)
+                .ToObservable()
+                .ObserveOn(_rxSchedulerProvider.UI)
+                .Subscribe(r =>
+                {
+                    if (r != BffMessageDialogResult.Affirmative) return;
+
+                    if (target is FlagViewModel flagViewModel)
+                    {
+                        Observable
+                            .FromAsync(token => _flag.MergeToAsync(flagViewModel._flag), _rxSchedulerProvider.Task)
+                            .ObserveOn(_rxSchedulerProvider.UI)
+                            .Subscribe(_ =>
+                            {
+                                _summaryAccountViewModel.RefreshTransCollection();
+                                _accountViewModelService.All.ForEach(avm => avm.RefreshTransCollection());
+                            });
+                    }
+                });
+        }
+
+        public bool CanMergeTo(IFlagViewModel target)
+        {
+            return target is FlagViewModel flagViewModel
+                   && flagViewModel._flag != _flag
+                   && flagViewModel._flag.Id != _flag.Id;
+        }
     }
 }
