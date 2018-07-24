@@ -20,7 +20,9 @@ namespace BFF.MVVM.Managers
 
         IParentTransactionViewModel InsertedToParentTransactionViewModel(ITransactionViewModel transactionViewModel);
 
-        ITransactionViewModel InsertedToTransactionViewModel(IParentTransactionViewModel parentTransactionViewModel, ICategoryViewModel categoryViewModel);
+        ITransactionViewModel InsertedToTransactionViewModel(
+            IParentTransactionViewModel parentTransactionViewModel, 
+            ICategoryBaseViewModel categoryViewModel);
 
     }
 
@@ -179,7 +181,7 @@ namespace BFF.MVVM.Managers
 
         public ITransactionViewModel InsertedToTransactionViewModel(
             IParentTransactionViewModel parentTransactionViewModel,
-            ICategoryViewModel categoryViewModel)
+            ICategoryBaseViewModel categoryViewModel)
         {
             var transactionViewModel = NotInsertedToTransactionViewModel(parentTransactionViewModel);
 

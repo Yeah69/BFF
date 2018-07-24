@@ -7,6 +7,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -53,7 +54,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         IReadOnlyReactiveProperty<long> TotalSum { get; }
         IRxRelayCommand NonInsertedConvertToTransaction { get; }
         IRxRelayCommand NonInsertedConvertToTransfer { get; }
-        IRxRelayCommand<ICategoryViewModel> InsertedConvertToTransaction { get; }
+        IRxRelayCommand InsertedConvertToTransaction { get; }
     }
 
     /// <summary>
@@ -226,14 +227,17 @@ namespace BFF.MVVM.ViewModels.ForModels
                         transTransformingManager.NotInsertedToTransferViewModel(this)))
                 .AddTo(CompositeDisposable);
 
-            InsertedConvertToTransaction = new AsyncRxRelayCommand<ICategoryViewModel>(
-                    async cvm =>
+            InsertedConvertToTransaction = new AsyncRxRelayCommand(
+                    async () =>
                     {
-                        var transactionViewModel = transTransformingManager.InsertedToTransactionViewModel(this, cvm);
+                        var transactionViewModel = transTransformingManager.InsertedToTransactionViewModel(this, SubTransactions.First().Category);
                         await parentTransaction.DeleteAsync();
                         await transactionViewModel.InsertAsync();
                         NotifyRelevantAccountsToRefreshTrans();
-                    })
+                    },
+                    SubTransactions
+                        .ObservePropertyChanges(nameof(SubTransactions.Count))
+                        .Select(_ => SubTransactions.Count >= 1))
                 .AddTo(CompositeDisposable);
         }
 
@@ -275,7 +279,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IReadOnlyReactiveProperty<long> TotalSum { get; }
         public IRxRelayCommand NonInsertedConvertToTransaction { get; }
         public IRxRelayCommand NonInsertedConvertToTransfer { get; }
-        public IRxRelayCommand<ICategoryViewModel> InsertedConvertToTransaction { get; }
+        public IRxRelayCommand InsertedConvertToTransaction { get; }
 
         public override async Task InsertAsync()
         {
