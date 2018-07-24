@@ -73,29 +73,48 @@
                                PlacementTarget="{Binding ElementName=Icon}"
                                StaysOpen="False">
                             <Border Style="{StaticResource ConvertPopupBorder}">
-                                <StackPanel Background="Transparent"
-                                            Orientation="Horizontal">
-                                    <TextBlock Margin="2.5"
-                                               VerticalAlignment="Center"
-                                               Text="{lex:LocText Key=Label_ConvertTo,
-                                                                  Suffix=:}" />
-                                    <Button Margin="2.5"
+                                <Button Margin="2.5"
                                             Command="{Binding InsertedConvertToParentTransaction}">
-                                        <Button.Content>
-                                            <StackPanel Orientation="Horizontal">
-                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial>
+                                                <iconPacks:PackIconMaterial.Style>
+                                                    <Style BasedOn="{StaticResource CellIconMaterial}"
+                                                               TargetType="{x:Type iconPacks:PackIconMaterial}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Category, Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                                                             Value="True">
+                                                                <Setter Property="Kind"
+                                                                            Value="{StaticResource IncomeIcon}" />
+                                                                <Setter Property="Foreground"
+                                                                            Value="{DynamicResource IncomeBrush}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                        <Setter Property="Kind"
+                                                                    Value="{StaticResource TransactionIcon}" />
+                                                        <Setter Property="Foreground"
+                                                                    Value="{DynamicResource TransactionBrush}" />
+                                                    </Style>
+                                                </iconPacks:PackIconMaterial.Style>
+                                            </iconPacks:PackIconMaterial>
+                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="ChevronDoubleRight" />
+                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
                                                                             Foreground="{DynamicResource BlackColorBrush}"
                                                                             Kind="{StaticResource ParentIcon}" />
-                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
                                                                             Margin="5,0,0,0"
                                                                             Foreground="{DynamicResource TransactionBrush}"
                                                                             Kind="{StaticResource TransactionIcon}" />
-                                            </StackPanel>
-                                        </Button.Content>
-                                    </Button>
-                                </StackPanel>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
                             </Border>
                         </Popup>
                         <iconPacks:PackIconMaterial x:Name="Icon">
@@ -129,24 +148,32 @@
                                PlacementTarget="{Binding ElementName=Icon}"
                                StaysOpen="False">
                             <Border Style="{StaticResource ConvertPopupBorder}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Margin="2.5"
-                                               VerticalAlignment="Center"
-                                               Text="{lex:LocText Key=Label_ConvertTo,
-                                                                  Suffix=:}" />
 
-                                    <Button Margin="2.5"
+                                <Button Margin="2.5"
                                             Command="{Binding InsertedConvertToTransaction}">
-                                        <Button.Content>
-                                            <StackPanel Orientation="Horizontal">
-                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="{StaticResource ParentIcon}" />
+                                            <iconPacks:PackIconMaterial Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource TransactionBrush}"
+                                                                            Kind="{StaticResource TransactionIcon}"
+                                                                            Style="{StaticResource CellIconMaterial}" />
+                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="ChevronDoubleRight" />
+                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
                                                                             Foreground="{DynamicResource TransactionBrush}"
                                                                             Kind="{StaticResource TransactionIcon}" />
-                                            </StackPanel>
-                                        </Button.Content>
-                                    </Button>
-                                </StackPanel>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
                             </Border>
                         </Popup>
                         <iconPacks:PackIconMaterial x:Name="Icon"
@@ -178,16 +205,38 @@
                                StaysOpen="False">
                             <Border Style="{StaticResource ConvertPopupBorder}">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Margin="2.5"
-                                               VerticalAlignment="Center"
-                                               Text="{lex:LocText Key=Label_ConvertTo,
-                                                                  Suffix=:}" />
                                     <Button Margin="2.5"
                                             Command="{Binding NonInsertedConvertToParentTransaction}">
                                         <Button.Content>
                                             <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial>
+                                                    <iconPacks:PackIconMaterial.Style>
+                                                        <Style BasedOn="{StaticResource CellIconMaterial}"
+                                                               TargetType="{x:Type iconPacks:PackIconMaterial}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Category, Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                                                             Value="True">
+                                                                    <Setter Property="Kind"
+                                                                            Value="{StaticResource IncomeIcon}" />
+                                                                    <Setter Property="Foreground"
+                                                                            Value="{DynamicResource IncomeBrush}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                            <Setter Property="Kind"
+                                                                    Value="{StaticResource TransactionIcon}" />
+                                                            <Setter Property="Foreground"
+                                                                    Value="{DynamicResource TransactionBrush}" />
+                                                        </Style>
+                                                    </iconPacks:PackIconMaterial.Style>
+                                                </iconPacks:PackIconMaterial>
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="ChevronDoubleRight" />
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
                                                                             Foreground="{DynamicResource BlackColorBrush}"
                                                                             Kind="{StaticResource ParentIcon}" />
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
@@ -201,10 +250,38 @@
                                     <Button Margin="2.5"
                                             Command="{Binding NonInsertedConvertToTransfer}">
                                         <Button.Content>
-                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                        Height="{StaticResource IconSize}"
-                                                                        Foreground="{DynamicResource TransferBrush}"
-                                                                        Kind="{StaticResource TransferIcon}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial>
+                                                    <iconPacks:PackIconMaterial.Style>
+                                                        <Style BasedOn="{StaticResource CellIconMaterial}"
+                                                               TargetType="{x:Type iconPacks:PackIconMaterial}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Category, Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                                                             Value="True">
+                                                                    <Setter Property="Kind"
+                                                                            Value="{StaticResource IncomeIcon}" />
+                                                                    <Setter Property="Foreground"
+                                                                            Value="{DynamicResource IncomeBrush}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                            <Setter Property="Kind"
+                                                                    Value="{StaticResource TransactionIcon}" />
+                                                            <Setter Property="Foreground"
+                                                                    Value="{DynamicResource TransactionBrush}" />
+                                                        </Style>
+                                                    </iconPacks:PackIconMaterial.Style>
+                                                </iconPacks:PackIconMaterial>
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="ChevronDoubleRight" />
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource TransferBrush}"
+                                                                            Kind="{StaticResource TransferIcon}" />
+                                            </StackPanel>
                                         </Button.Content>
                                     </Button>
                                 </StackPanel>
@@ -242,26 +319,54 @@
                                StaysOpen="False">
                             <Border Style="{StaticResource ConvertPopupBorder}">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Margin="2.5"
-                                               VerticalAlignment="Center"
-                                               Text="{lex:LocText Key=Label_ConvertTo,
-                                                                  Suffix=:}" />
                                     <Button Margin="2.5"
                                             Command="{Binding NonInsertedConvertToTransaction}">
                                         <Button.Content>
-                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                        Height="{StaticResource IconSize}"
-                                                                        Foreground="{DynamicResource TransactionBrush}"
-                                                                        Kind="{StaticResource TransactionIcon}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="{StaticResource ParentIcon}" />
+                                                <iconPacks:PackIconMaterial Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource TransactionBrush}"
+                                                                            Kind="{StaticResource TransactionIcon}"
+                                                                            Style="{StaticResource CellIconMaterial}" />
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="ChevronDoubleRight" />
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource TransactionBrush}"
+                                                                            Kind="{StaticResource TransactionIcon}" />
+                                            </StackPanel>
                                         </Button.Content>
                                     </Button>
                                     <Button Margin="2.5"
                                             Command="{Binding NonInsertedConvertToTransfer}">
                                         <Button.Content>
-                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                        Height="{StaticResource IconSize}"
-                                                                        Foreground="{DynamicResource TransferBrush}"
-                                                                        Kind="{StaticResource TransferIcon}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="{StaticResource ParentIcon}" />
+                                                <iconPacks:PackIconMaterial Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource TransactionBrush}"
+                                                                            Kind="{StaticResource TransactionIcon}"
+                                                                            Style="{StaticResource CellIconMaterial}" />
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="ChevronDoubleRight" />
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource TransferBrush}"
+                                                                            Kind="{StaticResource TransferIcon}" />
+                                            </StackPanel>
                                         </Button.Content>
                                     </Button>
                                 </StackPanel>
@@ -283,25 +388,41 @@
                                StaysOpen="False">
                             <Border Style="{StaticResource ConvertPopupBorder}">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Margin="2.5"
-                                               VerticalAlignment="Center"
-                                               Text="{lex:LocText Key=Label_ConvertTo,
-                                                                  Suffix=:}" />
                                     <Button Margin="2.5"
                                             Command="{Binding NonInsertedConvertToTransaction}">
                                         <Button.Content>
-                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                        Height="{StaticResource IconSize}"
-                                                                        Foreground="{DynamicResource TransactionBrush}"
-                                                                        Kind="{StaticResource TransactionIcon}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Foreground="{DynamicResource TransferBrush}"
+                                                                            Kind="{StaticResource TransferIcon}"
+                                                                            Style="{StaticResource CellIconMaterial}" />
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="ChevronDoubleRight" />
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource TransactionBrush}"
+                                                                            Kind="{StaticResource TransactionIcon}" />
+                                            </StackPanel>
                                         </Button.Content>
                                     </Button>
                                     <Button Margin="2.5"
                                             Command="{Binding NonInsertedConvertToParentTransaction}">
                                         <Button.Content>
                                             <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Foreground="{DynamicResource TransferBrush}"
+                                                                            Kind="{StaticResource TransferIcon}"
+                                                                            Style="{StaticResource CellIconMaterial}" />
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="ChevronDoubleRight" />
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
                                                                             Foreground="{DynamicResource BlackColorBrush}"
                                                                             Kind="{StaticResource ParentIcon}" />
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
