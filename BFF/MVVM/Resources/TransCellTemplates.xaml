@@ -26,6 +26,16 @@
                 Value="False" />
     </Style>
 
+    <Style x:Key="ConvertPopupBorder"
+           TargetType="Border">
+        <Setter Property="Background"
+                Value="{DynamicResource WhiteBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource BlackBrush}" />
+        <Setter Property="BorderThickness"
+                Value="2" />
+    </Style>
+
     <DataTemplate x:Key="ParentTransactionToolTipTemplate"
                   DataType="{x:Type forModels:ParentTransactionViewModel}">
         <DataGrid ItemsSource="{Binding SubTransactions}">
@@ -62,28 +72,31 @@
                         <Popup x:Name="ConvertMenu"
                                PlacementTarget="{Binding ElementName=Icon}"
                                StaysOpen="False">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="2.5"
-                                           VerticalAlignment="Center"
-                                           Text="{lex:LocText Key=Label_ConvertTo,
-                                                              Suffix=:}" />
-                                <Button Margin="2.5"
-                                        Command="{Binding InsertedConvertToParentTransaction}">
-                                    <Button.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                        Height="{StaticResource IconSize}"
-                                                                        Foreground="{DynamicResource BlackColorBrush}"
-                                                                        Kind="{StaticResource ParentIcon}" />
-                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                        Height="{StaticResource IconSize}"
-                                                                        Margin="5,0,0,0"
-                                                                        Foreground="{DynamicResource TransactionBrush}"
-                                                                        Kind="{StaticResource TransactionIcon}" />
-                                        </StackPanel>
-                                    </Button.Content>
-                                </Button>
-                            </StackPanel>
+                            <Border Style="{StaticResource ConvertPopupBorder}">
+                                <StackPanel Background="Transparent"
+                                            Orientation="Horizontal">
+                                    <TextBlock Margin="2.5"
+                                               VerticalAlignment="Center"
+                                               Text="{lex:LocText Key=Label_ConvertTo,
+                                                                  Suffix=:}" />
+                                    <Button Margin="2.5"
+                                            Command="{Binding InsertedConvertToParentTransaction}">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="{StaticResource ParentIcon}" />
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource TransactionBrush}"
+                                                                            Kind="{StaticResource TransactionIcon}" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
                         </Popup>
                         <iconPacks:PackIconMaterial x:Name="Icon">
                             <iconPacks:PackIconMaterial.Style>
@@ -115,28 +128,31 @@
                         <Popup x:Name="ConvertMenu"
                                PlacementTarget="{Binding ElementName=Icon}"
                                StaysOpen="False">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="2.5"
-                                           VerticalAlignment="Center"
-                                           Text="{lex:LocText Key=Label_ConvertTo,
-                                                              Suffix=:}" />
-                                
-                                <Button Margin="2.5"
-                                        Command="{Binding InsertedConvertToTransaction}">
-                                    <Button.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                        Height="{StaticResource IconSize}"
-                                                                        Foreground="{DynamicResource TransactionBrush}"
-                                                                        Kind="{StaticResource TransactionIcon}" />
-                                        </StackPanel>
-                                    </Button.Content>
-                                </Button>
-                            </StackPanel>
+                            <Border Style="{StaticResource ConvertPopupBorder}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="2.5"
+                                               VerticalAlignment="Center"
+                                               Text="{lex:LocText Key=Label_ConvertTo,
+                                                                  Suffix=:}" />
+
+                                    <Button Margin="2.5"
+                                            Command="{Binding InsertedConvertToTransaction}">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Foreground="{DynamicResource TransactionBrush}"
+                                                                            Kind="{StaticResource TransactionIcon}" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
                         </Popup>
-                        <iconPacks:PackIconMaterial x:Name="Icon" Foreground="{DynamicResource TransactionBrush}"
-                                                Kind="{StaticResource TransactionIcon}"
-                                                Style="{StaticResource CellIconMaterial}" />
+                        <iconPacks:PackIconMaterial x:Name="Icon"
+                                                    Foreground="{DynamicResource TransactionBrush}"
+                                                    Kind="{StaticResource TransactionIcon}"
+                                                    Style="{StaticResource CellIconMaterial}" />
                     </Grid>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
@@ -160,37 +176,39 @@
                         <Popup x:Name="ConvertMenu"
                                PlacementTarget="{Binding ElementName=Icon}"
                                StaysOpen="False">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="2.5"
-                                           VerticalAlignment="Center"
-                                           Text="{lex:LocText Key=Label_ConvertTo,
-                                                              Suffix=:}" />
-                                <Button Margin="2.5"
-                                        Command="{Binding NonInsertedConvertToParentTransaction}">
-                                    <Button.Content>
-                                        <StackPanel Orientation="Horizontal">
+                            <Border Style="{StaticResource ConvertPopupBorder}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="2.5"
+                                               VerticalAlignment="Center"
+                                               Text="{lex:LocText Key=Label_ConvertTo,
+                                                                  Suffix=:}" />
+                                    <Button Margin="2.5"
+                                            Command="{Binding NonInsertedConvertToParentTransaction}">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="{StaticResource ParentIcon}" />
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource TransactionBrush}"
+                                                                            Kind="{StaticResource TransactionIcon}" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                    <Button Margin="2.5"
+                                            Command="{Binding NonInsertedConvertToTransfer}">
+                                        <Button.Content>
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                         Height="{StaticResource IconSize}"
-                                                                        Foreground="{DynamicResource BlackColorBrush}"
-                                                                        Kind="{StaticResource ParentIcon}" />
-                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                        Height="{StaticResource IconSize}"
-                                                                        Margin="5,0,0,0"
-                                                                        Foreground="{DynamicResource TransactionBrush}"
-                                                                        Kind="{StaticResource TransactionIcon}" />
-                                        </StackPanel>
-                                    </Button.Content>
-                                </Button>
-                                <Button Margin="2.5"
-                                        Command="{Binding NonInsertedConvertToTransfer}">
-                                    <Button.Content>
-                                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                    Height="{StaticResource IconSize}"
-                                                                    Foreground="{DynamicResource TransferBrush}"
-                                                                    Kind="{StaticResource TransferIcon}" />
-                                    </Button.Content>
-                                </Button>
-                            </StackPanel>
+                                                                        Foreground="{DynamicResource TransferBrush}"
+                                                                        Kind="{StaticResource TransferIcon}" />
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
                         </Popup>
                         <iconPacks:PackIconMaterial x:Name="Icon">
                             <iconPacks:PackIconMaterial.Style>
@@ -222,30 +240,32 @@
                         <Popup x:Name="ConvertMenu"
                                PlacementTarget="{Binding ElementName=Icon}"
                                StaysOpen="False">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="2.5"
-                                           VerticalAlignment="Center"
-                                           Text="{lex:LocText Key=Label_ConvertTo,
-                                                              Suffix=:}" />
-                                <Button Margin="2.5"
-                                        Command="{Binding NonInsertedConvertToTransaction}">
-                                    <Button.Content>
-                                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                    Height="{StaticResource IconSize}"
-                                                                    Foreground="{DynamicResource TransactionBrush}"
-                                                                    Kind="{StaticResource TransactionIcon}" />
-                                    </Button.Content>
-                                </Button>
-                                <Button Margin="2.5"
-                                        Command="{Binding NonInsertedConvertToTransfer}">
-                                    <Button.Content>
-                                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                    Height="{StaticResource IconSize}"
-                                                                    Foreground="{DynamicResource TransferBrush}"
-                                                                    Kind="{StaticResource TransferIcon}" />
-                                    </Button.Content>
-                                </Button>
-                            </StackPanel>
+                            <Border Style="{StaticResource ConvertPopupBorder}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="2.5"
+                                               VerticalAlignment="Center"
+                                               Text="{lex:LocText Key=Label_ConvertTo,
+                                                                  Suffix=:}" />
+                                    <Button Margin="2.5"
+                                            Command="{Binding NonInsertedConvertToTransaction}">
+                                        <Button.Content>
+                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                        Height="{StaticResource IconSize}"
+                                                                        Foreground="{DynamicResource TransactionBrush}"
+                                                                        Kind="{StaticResource TransactionIcon}" />
+                                        </Button.Content>
+                                    </Button>
+                                    <Button Margin="2.5"
+                                            Command="{Binding NonInsertedConvertToTransfer}">
+                                        <Button.Content>
+                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                        Height="{StaticResource IconSize}"
+                                                                        Foreground="{DynamicResource TransferBrush}"
+                                                                        Kind="{StaticResource TransferIcon}" />
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
                         </Popup>
                         <iconPacks:PackIconMaterial x:Name="Icon"
                                                     Foreground="{DynamicResource TransactionBrush}"
@@ -261,37 +281,39 @@
                         <Popup x:Name="ConvertMenu"
                                PlacementTarget="{Binding ElementName=Icon}"
                                StaysOpen="False">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="2.5"
-                                           VerticalAlignment="Center"
-                                           Text="{lex:LocText Key=Label_ConvertTo,
-                                                              Suffix=:}" />
-                                <Button Margin="2.5"
-                                        Command="{Binding NonInsertedConvertToTransaction}">
-                                    <Button.Content>
-                                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                    Height="{StaticResource IconSize}"
-                                                                    Foreground="{DynamicResource TransactionBrush}"
-                                                                    Kind="{StaticResource TransactionIcon}" />
-                                    </Button.Content>
-                                </Button>
-                                <Button Margin="2.5"
-                                        Command="{Binding NonInsertedConvertToParentTransaction}">
-                                    <Button.Content>
-                                        <StackPanel Orientation="Horizontal">
+                            <Border Style="{StaticResource ConvertPopupBorder}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="2.5"
+                                               VerticalAlignment="Center"
+                                               Text="{lex:LocText Key=Label_ConvertTo,
+                                                                  Suffix=:}" />
+                                    <Button Margin="2.5"
+                                            Command="{Binding NonInsertedConvertToTransaction}">
+                                        <Button.Content>
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                         Height="{StaticResource IconSize}"
-                                                                        Foreground="{DynamicResource BlackColorBrush}"
-                                                                        Kind="{StaticResource ParentIcon}" />
-                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                        Height="{StaticResource IconSize}"
-                                                                        Margin="5,0,0,0"
                                                                         Foreground="{DynamicResource TransactionBrush}"
                                                                         Kind="{StaticResource TransactionIcon}" />
-                                        </StackPanel>
-                                    </Button.Content>
-                                </Button>
-                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                    <Button Margin="2.5"
+                                            Command="{Binding NonInsertedConvertToParentTransaction}">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Kind="{StaticResource ParentIcon}" />
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="5,0,0,0"
+                                                                            Foreground="{DynamicResource TransactionBrush}"
+                                                                            Kind="{StaticResource TransactionIcon}" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
                         </Popup>
                         <iconPacks:PackIconMaterial x:Name="Icon"
                                                     Foreground="{DynamicResource TransferBrush}"
