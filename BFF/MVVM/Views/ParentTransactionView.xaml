@@ -117,7 +117,7 @@
                         <DataGrid BorderThickness="0,0,0,2"
                                   HeadersVisibility="None"
                                   HorizontalScrollBarVisibility="Hidden"
-                                  ItemsSource="{Binding SubElements}"
+                                  ItemsSource="{Binding SubTransactions}"
                                   RowStyle="{StaticResource DefaultRowStyle}">
                             <DataGrid.Columns>
                                 <!--  Category  -->
@@ -145,7 +145,7 @@
                         <!--  New SubTransaction Entries  -->
                         <DataGrid HeadersVisibility="None"
                                   HorizontalScrollBarVisibility="Hidden"
-                                  ItemsSource="{Binding NewSubElements}"
+                                  ItemsSource="{Binding NewSubTransactions}"
                                   LoadingRow="NewSubTransactionsDataGrid_OnLoadingRow"
                                   RowStyle="{StaticResource DefaultNewRowStyle}">
                             <DataGrid.Columns>
@@ -170,7 +170,7 @@
                         </DataGrid>
                         <!--  Buttons  -->
                         <DockPanel Background="{DynamicResource WhiteBrush}">
-                            <Button Command="{Binding NewSubElementCommand}"
+                            <Button Command="{Binding NewSubTransactionCommand}"
                                     ToolTip="New Subelement">
                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                             Height="{StaticResource IconSize}"

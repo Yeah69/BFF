@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.Helper;
 using BFF.Helper.Extensions;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -23,6 +24,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// The account to where the money is transfered.
         /// </summary>
         IAccountViewModel ToAccount { get; set; }
+
+        IRxRelayCommand NonInsertedConvertToTransaction { get; }
+        IRxRelayCommand NonInsertedConvertToParentTransaction { get; }
     }
 
     /// <summary>
@@ -56,6 +60,9 @@ namespace BFF.MVVM.ViewModels.ForModels
             set => _transfer.ToAccount = _accountViewModelService.GetModel(value);
         }
 
+        public IRxRelayCommand NonInsertedConvertToTransaction { get; }
+        public IRxRelayCommand NonInsertedConvertToParentTransaction { get; }
+
         /// <summary>
         /// The amount of money, which is transfered.
         /// </summary>
@@ -68,6 +75,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ILastSetDate lastSetDate,
             IRxSchedulerProvider rxSchedulerProvider,
+            ITransTransformingManager transTransformingManager,
             ISummaryAccountViewModel summaryAccountViewModel,
             IFlagViewModelService flagViewModelService,
             IAccountBaseViewModel owner) 
@@ -151,6 +159,18 @@ namespace BFF.MVVM.ViewModels.ForModels
                 }).AddTo(CompositeDisposable);
 
             SumEdit = createSumEdit(Sum);
+
+
+            NonInsertedConvertToTransaction = new RxRelayCommand(
+                    () => Owner.ReplaceNewTrans(
+                        this,
+                        transTransformingManager.NotInsertedToTransactionViewModel(this)))
+                .AddTo(CompositeDisposable);
+            NonInsertedConvertToParentTransaction = new RxRelayCommand(
+                    () => Owner.ReplaceNewTrans(
+                        this,
+                        transTransformingManager.NotInsertedToParentTransactionViewModel(this)))
+                .AddTo(CompositeDisposable);
         }
 
         public override ISumEditViewModel SumEdit { get; }

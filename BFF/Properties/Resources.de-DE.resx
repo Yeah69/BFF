@@ -452,6 +452,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
     <value>Pfad zu der YNAB-Transaktions-CSV:</value>
   </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Konvertiere zu</value>
+  </data>
   <data name="MainWindow_About" xml:space="preserve">
     <value>√úber</value>
   </data>

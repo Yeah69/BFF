@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary x:Class="BFF.MVVM.Resources.TransCellTemplates"
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:attachedBehaviors="clr-namespace:BFF.MVVM.AttachedBehaviors"
                     xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:mvvm="clr-namespace:BFF.MVVM"
@@ -26,7 +28,7 @@
 
     <DataTemplate x:Key="ParentTransactionToolTipTemplate"
                   DataType="{x:Type forModels:ParentTransactionViewModel}">
-        <DataGrid ItemsSource="{Binding SubElements}">
+        <DataGrid ItemsSource="{Binding SubTransactions}">
             <DataGrid.Columns>
                 <!--  Category  -->
                 <DataGridTextColumn Binding="{Binding Category.Name}"
@@ -83,6 +85,161 @@
                     <iconPacks:PackIconMaterial Foreground="{DynamicResource TransferBrush}"
                                                 Kind="{StaticResource TransferIcon}"
                                                 Style="{StaticResource CellIconMaterial}" />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
+            </ContentControl.Resources>
+        </ContentControl>
+    </DataTemplate>
+    <DataTemplate x:Key="SymbolNewColumnTemplate">
+        <ContentControl Content="{Binding}"
+                        Style="{StaticResource CellContent}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type forModels:TransactionViewModel}">
+                    <Grid Background="Transparent">
+                        <i:Interaction.Behaviors>
+                            <attachedBehaviors:FrameworkElementClickBehavior Click="SymbolNewIcon_OnClick" />
+                        </i:Interaction.Behaviors>
+                        <Popup x:Name="ConvertMenu"
+                               PlacementTarget="{Binding ElementName=Icon}"
+                               StaysOpen="False">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="2.5"
+                                           VerticalAlignment="Center"
+                                           Text="{lex:LocText Key=Label_ConvertTo,
+                                                              Suffix=:}" />
+                                <Button Margin="2.5"
+                                        Command="{Binding NonInsertedConvertToParentTransaction}">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                        Height="{StaticResource IconSize}"
+                                                                        Foreground="{DynamicResource BlackColorBrush}"
+                                                                        Kind="{StaticResource ParentIcon}" />
+                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                        Height="{StaticResource IconSize}"
+                                                                        Margin="5,0,0,0"
+                                                                        Foreground="{DynamicResource TransactionBrush}"
+                                                                        Kind="{StaticResource TransactionIcon}" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                                <Button Margin="2.5"
+                                        Command="{Binding NonInsertedConvertToTransfer}">
+                                    <Button.Content>
+                                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                    Height="{StaticResource IconSize}"
+                                                                    Foreground="{DynamicResource TransferBrush}"
+                                                                    Kind="{StaticResource TransferIcon}" />
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </Popup>
+                        <iconPacks:PackIconMaterial x:Name="Icon">
+                            <iconPacks:PackIconMaterial.Style>
+                                <Style BasedOn="{StaticResource CellIconMaterial}"
+                                       TargetType="{x:Type iconPacks:PackIconMaterial}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Category, Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                                     Value="True">
+                                            <Setter Property="Kind"
+                                                    Value="{StaticResource IncomeIcon}" />
+                                            <Setter Property="Foreground"
+                                                    Value="{DynamicResource IncomeBrush}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                    <Setter Property="Kind"
+                                            Value="{StaticResource TransactionIcon}" />
+                                    <Setter Property="Foreground"
+                                            Value="{DynamicResource TransactionBrush}" />
+                                </Style>
+                            </iconPacks:PackIconMaterial.Style>
+                        </iconPacks:PackIconMaterial>
+                    </Grid>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type forModels:ParentTransactionViewModel}">
+                    <Grid Background="Transparent">
+                        <i:Interaction.Behaviors>
+                            <attachedBehaviors:FrameworkElementClickBehavior Click="SymbolNewIcon_OnClick" />
+                        </i:Interaction.Behaviors>
+                        <Popup x:Name="ConvertMenu"
+                               PlacementTarget="{Binding ElementName=Icon}"
+                               StaysOpen="False">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="2.5"
+                                           VerticalAlignment="Center"
+                                           Text="{lex:LocText Key=Label_ConvertTo,
+                                                              Suffix=:}" />
+                                <Button Margin="2.5"
+                                        Command="{Binding NonInsertedConvertToTransaction}">
+                                    <Button.Content>
+                                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                    Height="{StaticResource IconSize}"
+                                                                    Foreground="{DynamicResource TransactionBrush}"
+                                                                    Kind="{StaticResource TransactionIcon}" />
+                                    </Button.Content>
+                                </Button>
+                                <Button Margin="2.5"
+                                        Command="{Binding NonInsertedConvertToTransfer}">
+                                    <Button.Content>
+                                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                    Height="{StaticResource IconSize}"
+                                                                    Foreground="{DynamicResource TransferBrush}"
+                                                                    Kind="{StaticResource TransferIcon}" />
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </Popup>
+                        <iconPacks:PackIconMaterial x:Name="Icon"
+                                                    Foreground="{DynamicResource TransactionBrush}"
+                                                    Kind="{StaticResource TransactionIcon}"
+                                                    Style="{StaticResource CellIconMaterial}" />
+                    </Grid>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
+                    <Grid Background="Transparent">
+                        <i:Interaction.Behaviors>
+                            <attachedBehaviors:FrameworkElementClickBehavior Click="SymbolNewIcon_OnClick" />
+                        </i:Interaction.Behaviors>
+                        <Popup x:Name="ConvertMenu"
+                               PlacementTarget="{Binding ElementName=Icon}"
+                               StaysOpen="False">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="2.5"
+                                           VerticalAlignment="Center"
+                                           Text="{lex:LocText Key=Label_ConvertTo,
+                                                              Suffix=:}" />
+                                <Button Margin="2.5"
+                                        Command="{Binding NonInsertedConvertToTransaction}">
+                                    <Button.Content>
+                                        <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                    Height="{StaticResource IconSize}"
+                                                                    Foreground="{DynamicResource TransactionBrush}"
+                                                                    Kind="{StaticResource TransactionIcon}" />
+                                    </Button.Content>
+                                </Button>
+                                <Button Margin="2.5"
+                                        Command="{Binding NonInsertedConvertToParentTransaction}">
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                        Height="{StaticResource IconSize}"
+                                                                        Foreground="{DynamicResource BlackColorBrush}"
+                                                                        Kind="{StaticResource ParentIcon}" />
+                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                        Height="{StaticResource IconSize}"
+                                                                        Margin="5,0,0,0"
+                                                                        Foreground="{DynamicResource TransactionBrush}"
+                                                                        Kind="{StaticResource TransactionIcon}" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </Popup>
+                        <iconPacks:PackIconMaterial x:Name="Icon"
+                                                    Foreground="{DynamicResource TransferBrush}"
+                                                    Kind="{StaticResource TransferIcon}"
+                                                    Style="{StaticResource CellIconMaterial}" />
+                    </Grid>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
             </ContentControl.Resources>
@@ -624,7 +781,7 @@
                             Command="{Binding OpenParentTransactionView}"
                             CommandParameter="{Binding Account}">
                         <Button.ToolTip>
-                            <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
+                            <ToolTip Visibility="{Binding SubTransactions, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
                                 <ContentControl Content="{Binding}"
                                                 ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
                             </ToolTip>
@@ -721,7 +878,7 @@
                             Command="{Binding OpenParentTransactionView}"
                             CommandParameter="{Binding Account}">
                         <Button.ToolTip>
-                            <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
+                            <ToolTip Visibility="{Binding SubTransactions, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
                                 <ContentControl Content="{Binding}"
                                                 ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
                             </ToolTip>
@@ -894,7 +1051,7 @@
                             Command="{Binding OpenParentTransactionView}"
                             CommandParameter="{Binding Account}">
                         <Button.ToolTip>
-                            <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
+                            <ToolTip Visibility="{Binding SubTransactions, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
                                 <ContentControl Content="{Binding}"
                                                 ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
                             </ToolTip>
@@ -999,7 +1156,7 @@
                             Command="{Binding OpenParentTransactionView}"
                             CommandParameter="{Binding Account}">
                         <Button.ToolTip>
-                            <ToolTip Visibility="{Binding SubElements, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
+                            <ToolTip Visibility="{Binding SubTransactions, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
                                 <ContentControl Content="{Binding}"
                                                 ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
                             </ToolTip>

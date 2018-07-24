@@ -24,5 +24,10 @@ namespace BFF.Helper.Extensions
             collection.Add(element);
             return element;
         }
+
+        public static IEnumerable<T> ToEnumerable<T>(this T element)
+        {
+            return new[] {element};
+        }
     }
 }

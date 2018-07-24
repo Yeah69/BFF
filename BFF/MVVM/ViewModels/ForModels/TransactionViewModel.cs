@@ -2,6 +2,7 @@
 using System.Reactive.Linq;
 using BFF.Helper;
 using BFF.Helper.Extensions;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -12,6 +13,9 @@ namespace BFF.MVVM.ViewModels.ForModels
 {
     public interface ITransactionViewModel : ITransactionBaseViewModel, IHaveCategoryViewModel
     {
+        IRxRelayCommand NonInsertedConvertToParentTransaction { get; }
+        IRxRelayCommand NonInsertedConvertToTransfer { get; }
+        IRxRelayCommand InsertedConvertToParentTransaction { get; }
     }
 
     /// <summary>
@@ -32,6 +36,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IPayeeViewModelService payeeViewModelService,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ICategoryBaseViewModelService categoryViewModelService,
+            ITransTransformingManager transTransformingManager,
             ILastSetDate lastSetDate,
             IRxSchedulerProvider rxSchedulerProvider,
             ISummaryAccountViewModel summaryAccountViewModel,
@@ -84,6 +89,28 @@ namespace BFF.MVVM.ViewModels.ForModels
             SumEdit = createSumEdit(Sum);
 
             NewCategoryViewModel = newCategoryViewModel;
+
+            NonInsertedConvertToParentTransaction = new RxRelayCommand(
+                    () => Owner.ReplaceNewTrans(
+                        this,
+                        transTransformingManager.NotInsertedToParentTransactionViewModel(this)))
+                .AddTo(CompositeDisposable);
+
+            NonInsertedConvertToTransfer = new RxRelayCommand(
+                    () => Owner.ReplaceNewTrans(
+                        this,
+                        transTransformingManager.NotInsertedToTransferViewModel(this)))
+                .AddTo(CompositeDisposable);
+
+            InsertedConvertToParentTransaction = new AsyncRxRelayCommand(
+                    async () =>
+                    {
+                        var parentTransactionViewModel = transTransformingManager.InsertedToParentTransactionViewModel(this);
+                        await transaction.DeleteAsync();
+                        await parentTransactionViewModel.InsertAsync();
+                        NotifyRelevantAccountsToRefreshTrans();
+                    })
+                .AddTo(CompositeDisposable);
         }
         
         public ICategoryBaseViewModel Category
@@ -99,5 +126,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         public INewCategoryViewModel NewCategoryViewModel { get; }
 
         public override bool IsInsertable() => base.IsInsertable() && Category.IsNotNull();
+        public IRxRelayCommand NonInsertedConvertToParentTransaction { get; }
+        public IRxRelayCommand NonInsertedConvertToTransfer { get; }
+        public IRxRelayCommand InsertedConvertToParentTransaction { get; }
     }
 }

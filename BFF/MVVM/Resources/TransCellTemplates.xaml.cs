@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using BFF.MVVM.AttachedBehaviors;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.Resources
@@ -79,9 +80,10 @@ namespace BFF.MVVM.Resources
             OpenPopup_OnClick(sender, e);
         }
 
-        private void PayeeSelectionButton_OnClick(object sender, RoutedEventArgs e)
+        private void SymbolNewIcon_OnClick(object sender, EventArgs e)
         {
-            if (sender is Button button && button.FindName("PayeeSelection") is Popup popup)
+            if (sender is FrameworkElementClickBehavior behavior 
+                && behavior.Parent.FindName("ConvertMenu") is Popup popup)
                 popup.IsOpen = true;
         }
     }

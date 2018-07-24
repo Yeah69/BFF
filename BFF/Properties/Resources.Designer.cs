@@ -1062,6 +1062,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Convert to.
+        /// </summary>
+        public static string Label_ConvertTo {
+            get {
+                return ResourceManager.GetString("Label_ConvertTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string MainWindow_About {

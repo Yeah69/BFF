@@ -164,6 +164,7 @@
     <Compile Include="Helper\IRxSchedulerProvider.cs" />
     <Compile Include="Helper\LastSetDate.cs" />
     <Compile Include="Helper\Sign.cs" />
+    <Compile Include="MVVM\AttachedBehaviors\FrameworkElementClickBehavior.cs" />
     <Compile Include="MVVM\AttachedBehaviors\ScrollViewerSync.cs" />
     <Compile Include="MVVM\BffDialogCoordinator.cs" />
     <Compile Include="MVVM\BindingProxy.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="MVVM\Managers\CsvBankStatementProfileManager.cs" />
     <Compile Include="MVVM\Managers\CultureManager.cs" />
     <Compile Include="MVVM\Managers\ParentTransactionFlyoutManager.cs" />
+    <Compile Include="MVVM\Managers\TransTransformingManager.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />
     <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
     <Compile Include="MVVM\Models\Native\BudgetEntry.cs" />

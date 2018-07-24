@@ -140,7 +140,7 @@
                 <DataGrid.Columns>
                     <!--  Symbol  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SymbolColumn}, Mode=TwoWay}"
-                                            CellTemplate="{StaticResource SymbolColumnTemplate}" />
+                                            CellTemplate="{StaticResource SymbolNewColumnTemplate}" />
                     <!--  Account  -->
                     <DataGridTemplateColumn Visibility="{Binding Data, Source={StaticResource AccountColumnVisibility}}"
                                             Width="{Binding Width, Source={x:Reference AccountColumn}, Mode=TwoWay}"

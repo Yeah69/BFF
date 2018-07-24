@@ -87,6 +87,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Refreshes the Trans' of this Account.
         /// </summary>
         void RefreshTransCollection();
+
+        void ReplaceNewTrans(ITransLikeViewModel replaced, ITransLikeViewModel replacement);
     }
 
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
@@ -98,9 +100,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         private readonly Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> _transferViewModelFactory;
         private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
         private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
-        private long? _balance = 0;
-        private long? _balanceUntilNow = 0;
-
         private readonly Subject<Unit> _refreshBalance = new Subject<Unit>();
         private readonly Subject<Unit> _refreshBalanceUntilNow = new Subject<Unit>();
 
@@ -120,10 +119,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Collection of Trans', which are about to be inserted to this Account.
         /// </summary>
         public ObservableCollection<ITransLikeViewModel> NewTransList { get; } = new ObservableCollection<ITransLikeViewModel>();
-        
-        public long? Balance => _balance;
-        
-        public long? BalanceUntilNow => _balanceUntilNow;
+
+        public long? Balance { get; private set; } = 0;
+
+        public long? BalanceUntilNow { get; private set; } = 0;
 
         public bool IsOpen
         {
@@ -239,7 +238,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(b =>
                 {
-                    _balance = b;
+                    Balance = b;
                     OnPropertyChanged(nameof(Balance));
                 }).AddTo(CompositeDisposable);
 
@@ -250,7 +249,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(bun =>
                 {
-                    _balanceUntilNow = bun;
+                    BalanceUntilNow = bun;
                     OnPropertyChanged(nameof(BalanceUntilNow));
                 }).AddTo(CompositeDisposable);
 
@@ -288,6 +287,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
                     });
             }
+        }
+
+        public void ReplaceNewTrans(ITransLikeViewModel replaced, ITransLikeViewModel replacement)
+        {
+            int index = NewTransList.IndexOf(replaced);
+            NewTransList.Insert(index, replacement);
+            NewTransList.Remove(replaced);
         }
 
         /// <summary>

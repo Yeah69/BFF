@@ -452,6 +452,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
     <value>Path to the YNAB Transaction CSV:</value>
   </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Convert to</value>
+  </data>
   <data name="MainWindow_About" xml:space="preserve">
     <value>About</value>
   </data>

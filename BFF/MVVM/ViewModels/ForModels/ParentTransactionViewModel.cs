@@ -22,20 +22,15 @@ namespace BFF.MVVM.ViewModels.ForModels
         ReadOnlyReactiveCollection<ISubTransactionViewModel> SubTransactions { get; }
 
         /// <summary>
-        /// The SubElements of this ParentElement, which are inserted into the database already.
+        /// The SubTransactions of this ParentElement, which are not inserted into the database yet.
+        /// These SubTransactions are in the process of being created and inserted to the database.
         /// </summary>
-        ReadOnlyReactiveCollection<ISubTransactionViewModel> SubElements { get; }
-
-        /// <summary>
-        /// The SubElements of this ParentElement, which are not inserted into the database yet.
-        /// These SubElements are in the process of being created and inserted to the database.
-        /// </summary>
-        ReadOnlyObservableCollection<ISubTransactionViewModel> NewSubElements { get; }
+        ReadOnlyObservableCollection<ISubTransactionViewModel> NewSubTransactions { get; }
 
         /// <summary>
         /// Creates a new SubElement for this ParentElement.
         /// </summary>
-        IRxRelayCommand NewSubElementCommand { get; }
+        IRxRelayCommand NewSubTransactionCommand { get; }
 
         /// <summary>
         /// All new SubElement, which are not inserted into the database yet, will be flushed to the database with this command.
@@ -56,6 +51,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         IReadOnlyReactiveProperty<long> SumMissingWithNewSubs { get; }
 
         IReadOnlyReactiveProperty<long> TotalSum { get; }
+        IRxRelayCommand NonInsertedConvertToTransaction { get; }
+        IRxRelayCommand NonInsertedConvertToTransfer { get; }
+        IRxRelayCommand<ICategoryViewModel> InsertedConvertToTransaction { get; }
     }
 
     /// <summary>
@@ -71,7 +69,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         /// <summary>
         /// The amount of money of the exchange of the ParentTransaction.
-        /// A ParentElement's Sum is defined by the Sum of all Sum's of its SubElements.
+        /// A ParentElement's Sum is defined by the Sum of all Sum's of its SubTransactions.
         /// </summary>
         public override IReactiveProperty<long> Sum { get; }
         
@@ -85,6 +83,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IAccountModuleColumnManager accountModuleColumnManager,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ILastSetDate lastSetDate,
+            ITransTransformingManager transTransformingManager,
             IRxSchedulerProvider rxSchedulerProvider,
             ISummaryAccountViewModel summaryAccountViewModel,
             IPayeeViewModelService payeeViewModelService,
@@ -105,13 +104,13 @@ namespace BFF.MVVM.ViewModels.ForModels
         {
             AccountModuleColumnManager = accountModuleColumnManager;
             _newTransactions = new ObservableCollection<ISubTransactionViewModel>();
-            NewSubElements = new ReadOnlyObservableCollection<ISubTransactionViewModel>(_newTransactions);
+            NewSubTransactions = new ReadOnlyObservableCollection<ISubTransactionViewModel>(_newTransactions);
 
             SubTransactions =
                 parentTransaction.SubTransactions.ToReadOnlyReactiveCollection(st => subTransactionViewModelFactory(st, owner)).AddTo(CompositeDisposable);
 
             Sum = new ReactiveProperty<long>(
-                    EmitOnSumRelatedChanges(SubElements)
+                    EmitOnSumRelatedChanges(SubTransactions)
                     .ObserveOn(rxSchedulerProvider.Task)
                     .Select(_ => SubTransactions.Sum(st => st.Sum.Value)), // todo: Write an SQL query for that
                 SubTransactions.Sum(st => st.Sum.Value),  // todo: Write an SQL query for that
@@ -128,11 +127,11 @@ namespace BFF.MVVM.ViewModels.ForModels
                     ReactivePropertyMode.DistinctUntilChanged);
 
             SumMissingWithNewSubs =
-                EmitOnSumRelatedChanges(NewSubElements)
+                EmitOnSumRelatedChanges(NewSubTransactions)
                     .Merge(SumMissingWithoutNewSubs.Select(_ => Unit.Default))
-                    .Select(_ => SumMissingWithoutNewSubs.Value - NewSubElements.Sum(ns => ns.Sum.Value))
+                    .Select(_ => SumMissingWithoutNewSubs.Value - NewSubTransactions.Sum(ns => ns.Sum.Value))
                     .ToReadOnlyReactivePropertySlim(
-                        SumMissingWithoutNewSubs.Value - NewSubElements.Sum(ns => ns.Sum.Value),
+                        SumMissingWithoutNewSubs.Value - NewSubTransactions.Sum(ns => ns.Sum.Value),
                         ReactivePropertyMode.DistinctUntilChanged);
 
             parentTransaction
@@ -148,18 +147,18 @@ namespace BFF.MVVM.ViewModels.ForModels
             SumEdit = createSumEdit(SumDuringEdit);
 
             TotalSum = EmitOnSumRelatedChanges(SubTransactions)
-                .Merge(EmitOnSumRelatedChanges(NewSubElements))
-                .Select(_ => SubTransactions.Sum(st => st.Sum.Value) + NewSubElements.Sum(st => st.Sum.Value))
+                .Merge(EmitOnSumRelatedChanges(NewSubTransactions))
+                .Select(_ => SubTransactions.Sum(st => st.Sum.Value) + NewSubTransactions.Sum(st => st.Sum.Value))
                 .ToReadOnlyReactivePropertySlim(
-                    SubTransactions.Sum(st => st.Sum.Value) + NewSubElements.Sum(st => st.Sum.Value),
+                    SubTransactions.Sum(st => st.Sum.Value) + NewSubTransactions.Sum(st => st.Sum.Value),
                     ReactivePropertyMode.DistinctUntilChanged);
 
-            NewSubElementCommand = new RxRelayCommand(() =>
+            NewSubTransactionCommand = new RxRelayCommand(() =>
             {
                 var newSubTransaction = subTransactionFactory();
                 newSubTransaction.Parent = parentTransaction;
                 var newSubTransactionViewModel = subTransactionViewModelFactory(newSubTransaction, owner);
-                newSubTransactionViewModel.Sum.Value = SumDuringEdit.Value - (Sum.Value + NewSubElements.Sum(ns => ns.Sum.Value));
+                newSubTransactionViewModel.Sum.Value = SumDuringEdit.Value - (Sum.Value + NewSubTransactions.Sum(ns => ns.Sum.Value));
                 _newTransactions.Add(newSubTransactionViewModel);
             }).AddTo(CompositeDisposable);
 
@@ -214,17 +213,38 @@ namespace BFF.MVVM.ViewModels.ForModels
                         collection
                             .ObserveElementObservableProperty(st => st.Sum)
                             .Select(_ => Unit.Default));
+
+            NonInsertedConvertToTransaction = new RxRelayCommand(
+                    () => Owner.ReplaceNewTrans(
+                        this,
+                        transTransformingManager.NotInsertedToTransactionViewModel(this)))
+                .AddTo(CompositeDisposable);
+
+            NonInsertedConvertToTransfer = new RxRelayCommand(
+                    () => Owner.ReplaceNewTrans(
+                        this,
+                        transTransformingManager.NotInsertedToTransferViewModel(this)))
+                .AddTo(CompositeDisposable);
+
+            InsertedConvertToTransaction = new AsyncRxRelayCommand<ICategoryViewModel>(
+                    async cvm =>
+                    {
+                        var transactionViewModel = transTransformingManager.InsertedToTransactionViewModel(this, cvm);
+                        await parentTransaction.DeleteAsync();
+                        await transactionViewModel.InsertAsync();
+                        NotifyRelevantAccountsToRefreshTrans();
+                    })
+                .AddTo(CompositeDisposable);
         }
 
         public ReadOnlyReactiveCollection<ISubTransactionViewModel> SubTransactions { get; }
-        public ReadOnlyReactiveCollection<ISubTransactionViewModel> SubElements => SubTransactions;
-        public ReadOnlyObservableCollection<ISubTransactionViewModel> NewSubElements { get; }
+        public ReadOnlyObservableCollection<ISubTransactionViewModel> NewSubTransactions { get; }
 
         public override ISumEditViewModel SumEdit { get; }
 
         public override async Task DeleteAsync()
         {
-            var tempList = new List<ISubTransactionViewModel>(SubElements);
+            var tempList = new List<ISubTransactionViewModel>(SubTransactions);
             foreach (ISubTransactionViewModel subTransaction in tempList)
                 await subTransaction.DeleteAsync();
             _newTransactions.Clear();
@@ -235,7 +255,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Creates a new SubElement for this ParentElement.
         /// </summary>
-        public IRxRelayCommand NewSubElementCommand { get; }
+        public IRxRelayCommand NewSubTransactionCommand { get; }
 
         /// <summary>
         /// All new SubElement, which are not inserted into the database yet, will be flushed to the database with this command.
@@ -253,6 +273,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IReadOnlyReactiveProperty<long> SumMissingWithoutNewSubs { get; }
         public IReadOnlyReactiveProperty<long> SumMissingWithNewSubs { get; }
         public IReadOnlyReactiveProperty<long> TotalSum { get; }
+        public IRxRelayCommand NonInsertedConvertToTransaction { get; }
+        public IRxRelayCommand NonInsertedConvertToTransfer { get; }
+        public IRxRelayCommand<ICategoryViewModel> InsertedConvertToTransaction { get; }
 
         public override async Task InsertAsync()
         {
@@ -264,6 +287,6 @@ namespace BFF.MVVM.ViewModels.ForModels
             _newTransactions.Clear();
         }
 
-        public override bool IsInsertable() => base.IsInsertable() && NewSubElements.Any() && NewSubElements.All(st => st.IsInsertable());
+        public override bool IsInsertable() => base.IsInsertable() && NewSubTransactions.Any() && NewSubTransactions.All(st => st.IsInsertable());
     }
 }
