@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -14,53 +13,89 @@ namespace BFF.MVVM.ViewModels
     public interface IBudgetMonthViewModel
     {
         ReadOnlyReactiveCollection<IBudgetEntryViewModel> BudgetEntries { get; }
-        IReadOnlyReactiveProperty<DateTime> Month { get; }
-        IReadOnlyReactiveProperty<long> NotBudgetedInPreviousMonth { get; }
-        IReadOnlyReactiveProperty<long> OverspentInPreviousMonth { get; }
-        IReadOnlyReactiveProperty<long> IncomeForThisMonth { get; }
-        IReadOnlyReactiveProperty<long> DanglingTransferForThisMonth { get; }
-        IReadOnlyReactiveProperty<long> UnassignedTransactionSumForThisMonth { get; }
-        IReadOnlyReactiveProperty<long> BudgetedThisMonth { get; }
-        IReadOnlyReactiveProperty<long> BudgetedThisMonthPositive { get; }
-        IReadOnlyReactiveProperty<long> AvailableToBudget { get; }
-        IReadOnlyReactiveProperty<long> Outflows { get; }
-        IReadOnlyReactiveProperty<long> Balance { get; }
+        DateTime Month { get; }
+        long NotBudgetedInPreviousMonth { get; }
+        long OverspentInPreviousMonth { get; }
+        long IncomeForThisMonth { get; }
+        long DanglingTransferForThisMonth { get; }
+        long UnassignedTransactionSumForThisMonth { get; }
+        long BudgetedThisMonth { get; }
+        long BudgetedThisMonthPositive { get; }
+        long AvailableToBudget { get; }
+        long Outflows { get; }
+        long Balance { get; }
     }
 
-    public sealed class BudgetMonthViewModel : IBudgetMonthViewModel, IDisposable, ITransientViewModel
+    public sealed class BudgetMonthViewModel : ViewModelBase, IBudgetMonthViewModel, IDisposable, ITransientViewModel
     {
+        private readonly IBudgetMonth _budgetMonth;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
         public BudgetMonthViewModel(IBudgetMonth budgetMonth, IBudgetEntryViewModelService budgetEntryViewModelService)
         {
+            _budgetMonth = budgetMonth;
             BudgetEntries = budgetMonth.BudgetEntries.ToReadOnlyReactiveCollection(budgetEntryViewModelService.GetViewModel).AddTo(_compositeDisposable);
-            Month = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.Month).AddTo(_compositeDisposable);
-            NotBudgetedInPreviousMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.NotBudgetedInPreviousMonth).AddTo(_compositeDisposable);
-            OverspentInPreviousMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.OverspentInPreviousMonth).AddTo(_compositeDisposable);
-            IncomeForThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.IncomeForThisMonth).AddTo(_compositeDisposable);
-            DanglingTransferForThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.DanglingTransferForThisMonth).AddTo(_compositeDisposable);
-            UnassignedTransactionSumForThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.UnassignedTransactionSumForThisMonth).AddTo(_compositeDisposable);
-            BudgetedThisMonth = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.BudgetedThisMonth).AddTo(_compositeDisposable);
-            BudgetedThisMonthPositive = BudgetedThisMonth.Select(l => -1 * l).ToReadOnlyReactiveProperty().AddTo(_compositeDisposable);
-            Outflows = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.Outflows).AddTo(_compositeDisposable);
-            Balance = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.Balance).AddTo(_compositeDisposable);
-            AvailableToBudget = budgetMonth.ToReadOnlyReactivePropertyAsSynchronized(bm => bm.AvailableToBudget).AddTo(_compositeDisposable);
+
+            budgetMonth
+                .ObservePropertyChanges(bm => bm.Month)
+                .Subscribe(fa => OnPropertyChanged(nameof(Month)))
+                .AddTo(_compositeDisposable);
+            budgetMonth
+                .ObservePropertyChanges(bm => bm.NotBudgetedInPreviousMonth)
+                .Subscribe(fa => OnPropertyChanged(nameof(NotBudgetedInPreviousMonth)))
+                .AddTo(_compositeDisposable);
+            budgetMonth
+                .ObservePropertyChanges(bm => bm.OverspentInPreviousMonth)
+                .Subscribe(fa => OnPropertyChanged(nameof(OverspentInPreviousMonth)))
+                .AddTo(_compositeDisposable);
+            budgetMonth
+                .ObservePropertyChanges(bm => bm.IncomeForThisMonth)
+                .Subscribe(fa => OnPropertyChanged(nameof(IncomeForThisMonth)))
+                .AddTo(_compositeDisposable);
+            budgetMonth
+                .ObservePropertyChanges(bm => bm.DanglingTransferForThisMonth)
+                .Subscribe(fa => OnPropertyChanged(nameof(DanglingTransferForThisMonth)))
+                .AddTo(_compositeDisposable);
+            budgetMonth
+                .ObservePropertyChanges(bm => bm.UnassignedTransactionSumForThisMonth)
+                .Subscribe(fa => OnPropertyChanged(nameof(UnassignedTransactionSumForThisMonth)))
+                .AddTo(_compositeDisposable);
+            budgetMonth
+                .ObservePropertyChanges(bm => bm.BudgetedThisMonth)
+                .Subscribe(fa =>
+                {
+                    OnPropertyChanged(nameof(BudgetedThisMonth));
+                    OnPropertyChanged(nameof(BudgetedThisMonthPositive));
+                })
+                .AddTo(_compositeDisposable);
+            budgetMonth
+                .ObservePropertyChanges(bm => bm.Outflows)
+                .Subscribe(fa => OnPropertyChanged(nameof(Outflows)))
+                .AddTo(_compositeDisposable);
+            budgetMonth
+                .ObservePropertyChanges(bm => bm.Balance)
+                .Subscribe(fa => OnPropertyChanged(nameof(Balance)))
+                .AddTo(_compositeDisposable);
+            budgetMonth
+                .ObservePropertyChanges(bm => bm.AvailableToBudget)
+                .Subscribe(fa => OnPropertyChanged(nameof(AvailableToBudget)))
+                .AddTo(_compositeDisposable);
         }
 
         public ReadOnlyReactiveCollection<IBudgetEntryViewModel> BudgetEntries { get; }
-        public IReadOnlyReactiveProperty<DateTime> Month { get; }
-        public IReadOnlyReactiveProperty<long> NotBudgetedInPreviousMonth { get; }
-        public IReadOnlyReactiveProperty<long> OverspentInPreviousMonth { get; }
-        public IReadOnlyReactiveProperty<long> IncomeForThisMonth { get; }
-        public IReadOnlyReactiveProperty<long> DanglingTransferForThisMonth { get; }
-        public IReadOnlyReactiveProperty<long> UnassignedTransactionSumForThisMonth { get; }
-        public IReadOnlyReactiveProperty<long> BudgetedThisMonth { get; }
-        public IReadOnlyReactiveProperty<long> BudgetedThisMonthPositive { get; }
+        public DateTime Month => _budgetMonth.Month;
+        public long NotBudgetedInPreviousMonth => _budgetMonth.NotBudgetedInPreviousMonth;
+        public long OverspentInPreviousMonth => _budgetMonth.OverspentInPreviousMonth;
+        public long IncomeForThisMonth => _budgetMonth.IncomeForThisMonth;
+        public long DanglingTransferForThisMonth => _budgetMonth.DanglingTransferForThisMonth;
+        public long UnassignedTransactionSumForThisMonth => _budgetMonth.UnassignedTransactionSumForThisMonth;
+        public long BudgetedThisMonth => _budgetMonth.BudgetedThisMonth;
+        public long BudgetedThisMonthPositive => BudgetedThisMonth * -1;
 
-        public IReadOnlyReactiveProperty<long> AvailableToBudget { get; }
+        public long AvailableToBudget => _budgetMonth.AvailableToBudget;
 
-        public IReadOnlyReactiveProperty<long> Outflows { get; }
-        public IReadOnlyReactiveProperty<long> Balance { get; }
+        public long Outflows => _budgetMonth.Outflows;
+        public long Balance => _budgetMonth.Balance;
 
         public void Dispose()
         {

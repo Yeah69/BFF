@@ -8,7 +8,7 @@ namespace BFF.MVVM.Models.Native
 {
     public interface IBudgetEntry : IDataModel
     {
-        ICategory Category { get; set; }
+        ICategory Category { get; }
         DateTime Month { get; }
         long Budget { get; set; }
         long Outflow { get; }
@@ -29,27 +29,15 @@ namespace BFF.MVVM.Models.Native
             : base(repository, rxSchedulerProvider, id)
         {
             Month = month;
-            _category = category;
+            Category = category;
             _budget = budget;
             _outflow = outflow;
             _balance = balance;
         }
 
         public DateTime Month { get; }
-        
-        private ICategory _category;
 
-        public ICategory Category
-        {
-            get => _category;
-            set
-            {
-                if(_category == value) return;
-
-                _category = value;
-                UpdateAndNotify();
-            }
-        }
+        public ICategory Category { get; }
 
         private long _budget;
 

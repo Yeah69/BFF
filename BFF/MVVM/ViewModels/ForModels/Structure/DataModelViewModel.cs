@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    public interface IDataModelViewModel
+    public interface IDataModelViewModel : INotifyPropertyChanged
     {
         Task InsertAsync();
 

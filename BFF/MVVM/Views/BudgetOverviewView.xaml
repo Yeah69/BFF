@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:attachedBehaviors="clr-namespace:BFF.MVVM.AttachedBehaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:userControls="clr-namespace:BFF.MVVM.UserControls"
@@ -33,6 +35,26 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+
+            <Style x:Key="NonEditableBudgetEntryCell"
+                   BasedOn="{StaticResource {x:Type TextBlock}}"
+                   TargetType="{x:Type TextBlock}">
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                <Setter Property="Text"
+                        Value="{Binding Converter={x:Static mvvm:Converters.SumToString}}" />
+                <Setter Property="TextAlignment"
+                        Value="Right" />
+                <Setter Property="Foreground"
+                        Value="{Binding Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding}"
+                                 Value="0">
+                        <Setter Property="Foreground"
+                                Value="{DynamicResource OpaqueZeroBrush}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -41,30 +63,41 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="200"
+                              MinWidth="150" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0"
-                    Grid.Column="0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Orientation="Horizontal">
-            <Button Margin="5"
-                    HorizontalAlignment="Right"
-                    Command="{Binding DecreaseMonthStartIndex}">
-                <iconPacks:PackIconModern Width="{StaticResource IconSize}"
-                                          Height="{StaticResource IconSize}"
-                                          Kind="ChevronLeft" />
-            </Button>
-            <Button Margin="5"
-                    HorizontalAlignment="Right"
-                    Command="{Binding IncreaseMonthStartIndex}">
-                <iconPacks:PackIconModern Width="{StaticResource IconSize}"
-                                          Height="{StaticResource IconSize}"
-                                          Kind="ChevronRight" />
-            </Button>
-        </StackPanel>
+        <DockPanel Grid.Row="0"
+                   Grid.Column="0"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch">
+            <StackPanel HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        DockPanel.Dock="Top"
+                        Orientation="Horizontal">
+                <Button Margin="5"
+                        HorizontalAlignment="Right"
+                        Command="{Binding DecreaseMonthStartIndex}">
+                    <iconPacks:PackIconModern Width="{StaticResource IconSize}"
+                                              Height="{StaticResource IconSize}"
+                                              Kind="ChevronLeft" />
+                </Button>
+                <Button Margin="5"
+                        HorizontalAlignment="Right"
+                        Command="{Binding IncreaseMonthStartIndex}">
+                    <iconPacks:PackIconModern Width="{StaticResource IconSize}"
+                                              Height="{StaticResource IconSize}"
+                                              Kind="ChevronRight" />
+                </Button>
+            </StackPanel>
+            <mah:ToggleSwitch x:Name="AggregateSwitch"
+                              VerticalAlignment="Bottom"
+                              DockPanel.Dock="Bottom"
+                              Header="Show Aggregates"
+                              OffLabel="No"
+                              OnLabel="Yes" />
+        </DockPanel>
         <GridSplitter Grid.Row="0"
                       Grid.RowSpan="2"
                       Grid.Column="1"
@@ -108,7 +141,7 @@
                                            BasedOn="{StaticResource {x:Type TextBlock}}"
                                            TargetType="{x:Type TextBlock}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Month.Value, Converter={x:Static mvvm:Converters.IsCurrentMonth}}"
+                                            <DataTrigger Binding="{Binding Month, Converter={x:Static mvvm:Converters.IsCurrentMonth}}"
                                                          Value="True">
                                                 <Setter Property="Foreground"
                                                         Value="{DynamicResource AccentColorBrush}" />
@@ -122,12 +155,12 @@
                                            HorizontalAlignment="Center"
                                            FontSize="25"
                                            Style="{StaticResource CurrentMonthMarking}"
-                                           Text="{Binding Month.Value, Converter={x:Static mvvm:Converters.LocalizedMonthShort}}" />
+                                           Text="{Binding Month, Converter={x:Static mvvm:Converters.LocalizedMonthShort}}" />
                                 <TextBlock Margin="0,0,0,5"
                                            HorizontalAlignment="Center"
                                            FontSize="10"
                                            Style="{StaticResource CurrentMonthMarking}"
-                                           Text="{Binding Month.Value, StringFormat=yyyy}" />
+                                           Text="{Binding Month, StringFormat=yyyy}" />
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -147,7 +180,7 @@
                                         <ContentControl.Style>
                                             <Style TargetType="{x:Type ContentControl}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.LongLesserThanZero}}"
+                                                    <DataTrigger Binding="{Binding NotBudgetedInPreviousMonth, Converter={x:Static mvvm:Converters.LongLesserThanZero}}"
                                                                  Value="True">
                                                         <Setter Property="ContentTemplate">
                                                             <Setter.Value>
@@ -172,8 +205,8 @@
                                     </ContentControl>
                                     <TextBlock Grid.Row="0"
                                                Grid.Column="1"
-                                               Foreground="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                               Text="{Binding NotBudgetedInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               Foreground="{Binding NotBudgetedInPreviousMonth, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Text="{Binding NotBudgetedInPreviousMonth, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="0"
@@ -182,8 +215,8 @@
                                                ToolTip="{lex:Loc Budgeting_OverspendExplanation}" />
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="1"
-                                               Foreground="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                               Text="{Binding OverspentInPreviousMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               Foreground="{Binding OverspentInPreviousMonth, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Text="{Binding OverspentInPreviousMonth, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
                                     <TextBlock Grid.Row="2"
                                                Grid.Column="0"
@@ -192,8 +225,8 @@
                                                ToolTip="{lex:Loc Budgeting_IncomeExplanation}" />
                                     <TextBlock Grid.Row="2"
                                                Grid.Column="1"
-                                               Foreground="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                               Text="{Binding IncomeForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               Foreground="{Binding IncomeForThisMonth, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Text="{Binding IncomeForThisMonth, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
                                     <TextBlock Grid.Row="3"
                                                Grid.Column="0"
@@ -202,46 +235,46 @@
                                                ToolTip="{lex:Loc Budgeting_BudgetedExplanation}" />
                                     <TextBlock Grid.Row="3"
                                                Grid.Column="1"
-                                               Foreground="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                               Text="{Binding BudgetedThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               Foreground="{Binding BudgetedThisMonth, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Text="{Binding BudgetedThisMonth, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
                                     <TextBlock Grid.Row="4"
                                                Grid.Column="0"
-                                               Visibility="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}"
+                                               Visibility="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}"
                                                Text="{lex:Loc Budgeting_UnassignedTransactions}"
                                                TextTrimming="CharacterEllipsis"
                                                ToolTip="{lex:Loc Budgeting_UnassignedTransactionsExplanation}" />
                                     <TextBlock Grid.Row="4"
                                                Grid.Column="1"
-                                               Visibility="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}"
-                                               Foreground="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                               Text="{Binding UnassignedTransactionSumForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               Visibility="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}"
+                                               Foreground="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Text="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
                                     <TextBlock Grid.Row="5"
                                                Grid.Column="0"
-                                               Visibility="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}"
+                                               Visibility="{Binding DanglingTransferForThisMonth, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}"
                                                Text="{lex:Loc Budgeting_OneSidedTransfers}"
                                                TextTrimming="CharacterEllipsis"
                                                ToolTip="{lex:Loc Budgeting_OneSidedTransfersExplanation}" />
                                     <TextBlock Grid.Row="5"
                                                Grid.Column="1"
-                                               Visibility="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}"
-                                               Foreground="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                               Text="{Binding DanglingTransferForThisMonth.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                               Visibility="{Binding DanglingTransferForThisMonth, Converter={x:Static mvvm:Converters.ZeroLongToHidden}}"
+                                               Foreground="{Binding DanglingTransferForThisMonth, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                               Text="{Binding DanglingTransferForThisMonth, Converter={x:Static mvvm:Converters.SumToString}}"
                                                TextAlignment="Right" />
                                 </Grid>
                                 <TextBlock Margin="0,5,0,0"
                                            HorizontalAlignment="Center"
                                            FontSize="25"
-                                           Foreground="{Binding AvailableToBudget.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                           Text="{Binding AvailableToBudget.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
+                                           Foreground="{Binding AvailableToBudget, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                           Text="{Binding AvailableToBudget, Converter={x:Static mvvm:Converters.SumToString}}" />
                                 <ContentControl Margin="0,5,0,0"
                                                 HorizontalAlignment="Center"
                                                 Foreground="{DynamicResource BlackBrush}">
                                     <ContentControl.Style>
                                         <Style TargetType="{x:Type ContentControl}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding AvailableToBudget.Value, Converter={x:Static mvvm:Converters.LongLesserThanZero}}"
+                                                <DataTrigger Binding="{Binding AvailableToBudget, Converter={x:Static mvvm:Converters.LongLesserThanZero}}"
                                                              Value="True">
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
@@ -269,7 +302,7 @@
                             </StackPanel>
                         </Border>
                         <Border Margin="5"
-                                Padding="5"
+                                Padding="10,5,5,5"
                                 d:DataContext="{d:DesignInstance viewModels:BudgetMonthViewModel}"
                                 BorderBrush="{DynamicResource AccentColorBrush}"
                                 BorderThickness="1">
@@ -281,14 +314,14 @@
                                            TextAlignment="Right" />
                                 <TextBlock Text="{lex:Loc Budgeting_Balance}"
                                            TextAlignment="Right" />
-                                <TextBlock Foreground="{Binding BudgetedThisMonthPositive.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                           Text="{Binding BudgetedThisMonthPositive.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                <TextBlock Foreground="{Binding BudgetedThisMonthPositive, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                           Text="{Binding BudgetedThisMonthPositive, Converter={x:Static mvvm:Converters.SumToString}}"
                                            TextAlignment="Right" />
-                                <TextBlock Foreground="{Binding Outflows.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                           Text="{Binding Outflows.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                <TextBlock Foreground="{Binding Outflows, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                           Text="{Binding Outflows, Converter={x:Static mvvm:Converters.SumToString}}"
                                            TextAlignment="Right" />
-                                <TextBlock Foreground="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                           Text="{Binding Balance.Value, Converter={x:Static mvvm:Converters.SumToString}}"
+                                <TextBlock Foreground="{Binding Balance, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                           Text="{Binding Balance, Converter={x:Static mvvm:Converters.SumToString}}"
                                            TextAlignment="Right" />
                             </UniformGrid>
                         </Border>
@@ -330,84 +363,66 @@
                              ItemsSource="{Binding BudgetEntries}"
                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
                              SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference BudgetOverview}}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <UniformGrid d:DataContext="{d:DesignInstance forModels:IBudgetEntryViewModel}"
+                                                             Visibility="{Binding IsChecked, Source={x:Reference AggregateSwitch}, Converter={x:Static mvvm:Converters.TrueToCollapsed}}"
+                                                         Columns="3">
+                                        <TextBox Height="25" Padding="0" Margin="-5,0,-6,0" HorizontalContentAlignment="Right"
+                                                         MinHeight="0"
+                                                         Text="{Binding Budget, Converter={x:Static mvvm:Converters.SumToString}}"
+                                                         TextAlignment="Right">
+                                            <TextBox.Style>
+                                                <Style BasedOn="{StaticResource {x:Type TextBox}}"
+                                                               TargetType="{x:Type TextBox}">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsReadOnly"
+                                                                         Value="True">
+                                                            <Setter Property="BorderBrush"
+                                                                            Value="Transparent" />
+                                                            <Setter Property="Background"
+                                                                            Value="Transparent" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsFocused"
+                                                                         Value="True">
+                                                            <Setter Property="IsReadOnly"
+                                                                            Value="False" />
+                                                        </Trigger>
+                                                        <DataTrigger Binding="{Binding Budget}"
+                                                                             Value="0">
+                                                            <Setter Property="Foreground"
+                                                                            Value="{DynamicResource OpaqueZeroBrush}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                    <Setter Property="IsReadOnly"
+                                                                    Value="True" />
+                                                    <Setter Property="Foreground"
+                                                                    Value="{Binding Budget, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
+                                                </Style>
+                                            </TextBox.Style>
+                                        </TextBox>
+                                        <TextBlock DataContext="{Binding Outflow}"
+                                                           Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                        <TextBlock DataContext="{Binding Balance}"
+                                                           Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                    </UniformGrid>
+                                    <UniformGrid d:DataContext="{d:DesignInstance forModels:IBudgetEntryViewModel}"
+                                                             Visibility="{Binding IsChecked, Source={x:Reference AggregateSwitch}, Converter={x:Static mvvm:Converters.FalseToCollapsed}}"
+                                                             Columns="3">
+                                        <TextBlock DataContext="{Binding AggregatedBudget}"
+                                                               Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                        <TextBlock DataContext="{Binding AggregatedOutflow}"
+                                                               Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                        <TextBlock DataContext="{Binding AggregatedBalance}"
+                                                               Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                    </UniformGrid>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
                         <i:Interaction.Behaviors>
                             <attachedBehaviors:ScrollViewerSync GroupName="BudgetOverview" />
                         </i:Interaction.Behaviors>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <UniformGrid Columns="3">
-                                    <TextBox Height="25"
-                                             MinHeight="0"
-                                             Text="{Binding Budget, Converter={x:Static mvvm:Converters.SumToString}}"
-                                             TextAlignment="Right">
-                                        <TextBox.Style>
-                                            <Style BasedOn="{StaticResource {x:Type TextBox}}"
-                                                   TargetType="{x:Type TextBox}">
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsReadOnly"
-                                                             Value="True">
-                                                        <Setter Property="BorderBrush"
-                                                                Value="Transparent" />
-                                                        <Setter Property="Background"
-                                                                Value="Transparent" />
-                                                    </Trigger>
-                                                    <Trigger Property="IsFocused"
-                                                             Value="True">
-                                                        <Setter Property="IsReadOnly"
-                                                                Value="False" />
-                                                    </Trigger>
-                                                    <DataTrigger Binding="{Binding Budget}"
-                                                                 Value="0">
-                                                        <Setter Property="Foreground"
-                                                                Value="{DynamicResource OpaqueZeroBrush}" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                                <Setter Property="IsReadOnly"
-                                                        Value="True" />
-                                                <Setter Property="Foreground"
-                                                        Value="{Binding Budget, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
-                                            </Style>
-                                        </TextBox.Style>
-                                    </TextBox>
-                                    <TextBlock VerticalAlignment="Center"
-                                               Text="{Binding Outflow, Converter={x:Static mvvm:Converters.SumToString}}"
-                                               TextAlignment="Right">
-                                        <TextBlock.Style>
-                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}"
-                                                   TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Outflow}"
-                                                                 Value="0">
-                                                        <Setter Property="Foreground"
-                                                                Value="{DynamicResource OpaqueZeroBrush}" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                                <Setter Property="Foreground"
-                                                        Value="{Binding Outflow, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                    <TextBlock VerticalAlignment="Center"
-                                               Text="{Binding Balance, Converter={x:Static mvvm:Converters.SumToString}}"
-                                               TextAlignment="Right">
-                                        <TextBlock.Style>
-                                            <Style BasedOn="{StaticResource {x:Type TextBlock}}"
-                                                   TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Balance}"
-                                                                 Value="0">
-                                                        <Setter Property="Foreground"
-                                                                Value="{DynamicResource OpaqueZeroBrush}" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                                <Setter Property="Foreground"
-                                                        Value="{Binding Balance, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </UniformGrid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
                     </ListBox>
                 </DataTemplate>
             </userControls:UniformList.ItemTemplate>

@@ -16,6 +16,7 @@ using BFF.Helper.Extensions;
 using BFF.MVVM.Managers;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
+using MoreLinq;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -164,10 +165,24 @@ namespace BFF.MVVM.ViewModels
                     new RelayBasicTaskBasedSyncDataAccess<IBudgetMonthViewModel>(
                         async (offset, pageSize) =>
                         {
-                            return await Task.Run(async () => (await _budgetMonthRepository.FindAsync(IndexToMonth(offset).Year))
+                            var budgetMonthViewModels = await Task.Run(async () => (await _budgetMonthRepository.FindAsync(IndexToMonth(offset).Year).ConfigureAwait(false))
                                 .Select(bm =>
-                                    (IBudgetMonthViewModel) new BudgetMonthViewModel(bm, _budgetEntryViewModelService))
+                                    (IBudgetMonthViewModel)new BudgetMonthViewModel(bm, _budgetEntryViewModelService))
                                 .ToArray()).ConfigureAwait(false);
+
+                            foreach (var bmvm in budgetMonthViewModels)
+                            {
+                                var categoriesToBudgetEntries = bmvm.BudgetEntries.ToDictionary(bevm => bevm.Category, bevm => bevm);
+                                foreach (var bevm in bmvm.BudgetEntries)
+                                {
+                                    bevm.Children = bevm
+                                        .Category
+                                        .Categories
+                                        .Select(cvm => categoriesToBudgetEntries[cvm]).ToList();
+                                }
+                            }
+
+                            return budgetMonthViewModels;
                         },
                         () =>  Task.FromResult(LastMonthIndex)),
                     pageSize: 12);

@@ -17,7 +17,7 @@ namespace BFF.MVVM.ViewModels
         IRxRelayCommand ToggleSign { get; }
     }
 
-    public class SumEditViewModel : ObservableObject, ISumEditViewModel
+    public class SumEditViewModel : ViewModelBase, ISumEditViewModel
     {
 
         private Sign _sumSign = Sign.Minus;

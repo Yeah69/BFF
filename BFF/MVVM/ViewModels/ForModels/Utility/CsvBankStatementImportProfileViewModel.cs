@@ -45,7 +45,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
         IReadOnlyReactiveProperty<string> Name { get; }
     }
 
-    public class CsvBankStatementImportProfileViewModel : ObservableObject, ICsvBankStatementImportProfileViewModel
+    public class CsvBankStatementImportProfileViewModel : ViewModelBase, ICsvBankStatementImportProfileViewModel
     {
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
@@ -166,7 +166,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
         }
     }
 
-    public class CsvBankStatementImportNonProfileViewModel : ObservableObject, ICsvBankStatementImportNonProfileViewModel
+    public class CsvBankStatementImportNonProfileViewModel : ViewModelBase, ICsvBankStatementImportNonProfileViewModel
     {
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();

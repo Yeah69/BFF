@@ -20,7 +20,7 @@ namespace BFF.MVVM.ViewModels
         INewAccountViewModel NewAccountViewModel { get; }
     }
 
-    public class EditAccountsViewModel : ObservableObject, IEditAccountsViewModel, IDisposable, IOncePerBackend
+    public class EditAccountsViewModel : ViewModelBase, IEditAccountsViewModel, IDisposable, IOncePerBackend
     {
         protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
 

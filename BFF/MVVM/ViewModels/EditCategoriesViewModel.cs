@@ -15,7 +15,7 @@ namespace BFF.MVVM.ViewModels
         INewCategoryViewModel NewCategoryViewModel { get; }
     }
 
-    public class EditCategoriesViewModel : ObservableObject, IEditCategoriesViewModel, IOncePerBackend
+    public class EditCategoriesViewModel : ViewModelBase, IEditCategoriesViewModel, IOncePerBackend
     {
         public INewCategoryViewModel NewCategoryViewModel { get; }
 

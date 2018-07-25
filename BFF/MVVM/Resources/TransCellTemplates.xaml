@@ -74,44 +74,44 @@
                                StaysOpen="False">
                             <Border Style="{StaticResource ConvertPopupBorder}">
                                 <Button Margin="2.5"
-                                            Command="{Binding InsertedConvertToParentTransaction}">
+                                        Command="{Binding InsertedConvertToParentTransaction}">
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal">
                                             <iconPacks:PackIconMaterial>
                                                 <iconPacks:PackIconMaterial.Style>
                                                     <Style BasedOn="{StaticResource CellIconMaterial}"
-                                                               TargetType="{x:Type iconPacks:PackIconMaterial}">
+                                                           TargetType="{x:Type iconPacks:PackIconMaterial}">
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding Category, Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
-                                                                             Value="True">
+                                                                         Value="True">
                                                                 <Setter Property="Kind"
-                                                                            Value="{StaticResource IncomeIcon}" />
+                                                                        Value="{StaticResource IncomeIcon}" />
                                                                 <Setter Property="Foreground"
-                                                                            Value="{DynamicResource IncomeBrush}" />
+                                                                        Value="{DynamicResource IncomeBrush}" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                         <Setter Property="Kind"
-                                                                    Value="{StaticResource TransactionIcon}" />
+                                                                Value="{StaticResource TransactionIcon}" />
                                                         <Setter Property="Foreground"
-                                                                    Value="{DynamicResource TransactionBrush}" />
+                                                                Value="{DynamicResource TransactionBrush}" />
                                                     </Style>
                                                 </iconPacks:PackIconMaterial.Style>
                                             </iconPacks:PackIconMaterial>
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                            Height="{StaticResource IconSize}"
-                                                                            Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
-                                                                            Kind="ChevronDoubleRight" />
+                                                                        Height="{StaticResource IconSize}"
+                                                                        Margin="5,0,0,0"
+                                                                        Foreground="{DynamicResource BlackColorBrush}"
+                                                                        Kind="ChevronDoubleRight" />
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                            Height="{StaticResource IconSize}"
-                                                                            Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
-                                                                            Kind="{StaticResource ParentIcon}" />
+                                                                        Height="{StaticResource IconSize}"
+                                                                        Margin="5,0,0,0"
+                                                                        Foreground="{DynamicResource BlackColorBrush}"
+                                                                        Kind="{StaticResource ParentIcon}" />
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                            Height="{StaticResource IconSize}"
-                                                                            Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource TransactionBrush}"
-                                                                            Kind="{StaticResource TransactionIcon}" />
+                                                                        Height="{StaticResource IconSize}"
+                                                                        Margin="5,0,0,0"
+                                                                        Foreground="{DynamicResource TransactionBrush}"
+                                                                        Kind="{StaticResource TransactionIcon}" />
                                         </StackPanel>
                                     </Button.Content>
                                 </Button>
@@ -150,27 +150,27 @@
                             <Border Style="{StaticResource ConvertPopupBorder}">
 
                                 <Button Margin="2.5"
-                                            Command="{Binding InsertedConvertToTransaction}">
+                                        Command="{Binding InsertedConvertToTransaction}">
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal">
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                            Height="{StaticResource IconSize}"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
-                                                                            Kind="{StaticResource ParentIcon}" />
+                                                                        Height="{StaticResource IconSize}"
+                                                                        Foreground="{DynamicResource BlackColorBrush}"
+                                                                        Kind="{StaticResource ParentIcon}" />
                                             <iconPacks:PackIconMaterial Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource TransactionBrush}"
-                                                                            Kind="{StaticResource TransactionIcon}"
-                                                                            Style="{StaticResource CellIconMaterial}" />
+                                                                        Foreground="{DynamicResource TransactionBrush}"
+                                                                        Kind="{StaticResource TransactionIcon}"
+                                                                        Style="{StaticResource CellIconMaterial}" />
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                            Height="{StaticResource IconSize}"
-                                                                            Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
-                                                                            Kind="ChevronDoubleRight" />
+                                                                        Height="{StaticResource IconSize}"
+                                                                        Margin="5,0,0,0"
+                                                                        Foreground="{DynamicResource BlackColorBrush}"
+                                                                        Kind="ChevronDoubleRight" />
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                            Height="{StaticResource IconSize}"
-                                                                            Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource TransactionBrush}"
-                                                                            Kind="{StaticResource TransactionIcon}" />
+                                                                        Height="{StaticResource IconSize}"
+                                                                        Margin="5,0,0,0"
+                                                                        Foreground="{DynamicResource TransactionBrush}"
+                                                                        Kind="{StaticResource TransactionIcon}" />
                                         </StackPanel>
                                     </Button.Content>
                                 </Button>

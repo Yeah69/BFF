@@ -13,7 +13,7 @@ namespace BFF.MVVM.ViewModels
         INewFlagViewModel NewFlagViewModel { get; }
     }
 
-    public class EditFlagsViewModel : ObservableObject, IEditFlagsViewModel, IOncePerBackend
+    public class EditFlagsViewModel : ViewModelBase, IEditFlagsViewModel, IOncePerBackend
     {
         public INewFlagViewModel NewFlagViewModel { get; }
         public ReadOnlyObservableCollection<IFlagViewModel> All { get; }

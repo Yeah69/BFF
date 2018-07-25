@@ -13,7 +13,7 @@ namespace BFF.MVVM.ViewModels
         INewPayeeViewModel NewPayeeViewModel { get; }
     }
 
-    public class EditPayeesViewModel : ObservableObject, IEditPayeesViewModel, IOncePerBackend
+    public class EditPayeesViewModel : ViewModelBase, IEditPayeesViewModel, IOncePerBackend
     {
         public INewPayeeViewModel NewPayeeViewModel { get; }
         public ReadOnlyObservableCollection<IPayeeViewModel> All { get; }

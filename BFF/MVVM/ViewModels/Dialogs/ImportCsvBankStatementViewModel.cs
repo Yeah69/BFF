@@ -49,7 +49,7 @@ namespace BFF.MVVM.ViewModels.Dialogs
         IRxRelayCommand CancelCommand { get; }
     }
 
-    public class ImportCsvBankStatementViewModel : ObservableObject, IImportCsvBankStatementViewModel
+    public class ImportCsvBankStatementViewModel : ViewModelBase, IImportCsvBankStatementViewModel
     {
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 

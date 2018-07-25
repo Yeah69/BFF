@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.Helper;
@@ -20,11 +24,19 @@ namespace BFF.MVVM.ViewModels.ForModels
         long Budget { get; set; }
         long Outflow { get; }
         long Balance { get; }
+
+        long AggregatedBudget { get; }
+        long AggregatedOutflow { get; }
+        long AggregatedBalance { get; }
+
+        IReadOnlyList<IBudgetEntryViewModel> Children { get; set; }
     }
 
     public class BudgetEntryViewModel : DataModelViewModel, IBudgetEntryViewModel
     {
         private readonly IBudgetEntry _budgetEntry;
+        private IReadOnlyList<IBudgetEntryViewModel> _children;
+
         public ICategoryViewModel Category { get; private set; }
         public DateTime Month => _budgetEntry.Month;
         public long Budget
@@ -34,6 +46,20 @@ namespace BFF.MVVM.ViewModels.ForModels
         }
         public long Outflow => _budgetEntry.Outflow;
         public long Balance => _budgetEntry.Balance;
+        public long AggregatedBudget { get; private set; }
+        public long AggregatedOutflow { get; private set; }
+        public long AggregatedBalance { get; private set; }
+
+        public IReadOnlyList<IBudgetEntryViewModel> Children
+        {
+            get => _children;
+            set
+            {
+                if (Equals(_children, value)) return; 
+                _children = value;
+                OnPropertyChanged();
+            }
+        }
 
         public BudgetEntryViewModel(
             IBudgetEntry budgetEntry,
@@ -71,11 +97,46 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Outflow)))
                 .AddTo(CompositeDisposable);
-            
+
             budgetEntry
                 .ObservePropertyChanges(nameof(IBudgetEntry.Balance))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Balance)))
+                .AddTo(CompositeDisposable);
+
+            Children = new List<IBudgetEntryViewModel>();
+
+            AggregatedBudget = Budget + Children.Sum(bevm => bevm.AggregatedBudget);
+            AggregatedBalance = Balance + Children.Sum(bevm => bevm.AggregatedBalance);
+            AggregatedOutflow = Outflow + Children.Sum(bevm => bevm.AggregatedOutflow);
+
+            var updatesFromChildren = new SerialDisposable().AddHere(CompositeDisposable);
+
+            var updateAggregates = Observer.Create<Unit>(_ =>
+            {
+                AggregatedBudget = Budget + Children.Sum(bevm => bevm.AggregatedBudget);
+                AggregatedBalance = Balance + Children.Sum(bevm => bevm.AggregatedBalance);
+                AggregatedOutflow = Outflow + Children.Sum(bevm => bevm.AggregatedOutflow);
+                OnPropertyChanged(nameof(AggregatedBudget));
+                OnPropertyChanged(nameof(AggregatedBalance));
+                OnPropertyChanged(nameof(AggregatedOutflow));
+            });
+
+            this.ObservePropertyChanges(nameof(Children))
+                .Do(_ =>
+                    {
+                        updatesFromChildren.Disposable = Observable.Merge(Children
+                            .Select(bevm =>
+                                bevm.ObservePropertyChanges(nameof(AggregatedBudget)))
+                            .Concat(Children
+                                .Select(bevm =>
+                                    bevm.ObservePropertyChanges(nameof(AggregatedOutflow))))
+                            .Concat(Children
+                                .Select(bevm =>
+                                    bevm.ObservePropertyChanges(nameof(AggregatedBalance))))).Subscribe(updateAggregates);
+                    })
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(updateAggregates)
                 .AddTo(CompositeDisposable);
         }
     }
