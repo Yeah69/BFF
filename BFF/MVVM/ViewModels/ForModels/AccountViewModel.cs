@@ -42,6 +42,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         private readonly ITransRepository _transRepository;
         private readonly Func<ITransLikeViewModelPlaceholder> _placeholderFactory;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
+        private readonly IConvertFromTransBaseToTransLikeViewModel _convertFromTransBaseToTransLikeViewModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
 
         /// <summary>
@@ -79,34 +80,30 @@ namespace BFF.MVVM.ViewModels.ForModels
             Func<IPayee> payeeFactory,
             Func<ITransLikeViewModelPlaceholder> placeholderFactory,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
+            IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
             IRxSchedulerProvider rxSchedulerProvider,
             IBackendCultureManager cultureManager,
             IBffChildWindowManager childWindowManager,
-            IAccountModuleColumnManager accountModuleColumnManager,
+            ITransDataGridColumnManager transDataGridColumnManager,
             Func<Action<IList<ICsvBankStatementImportItemViewModel>>, IImportCsvBankStatementViewModel> importCsvBankStatementFactory,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             Func<IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
             Func<IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
-            Func<IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory,
-            Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> dependingTransactionViewModelFactory,
-            Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> dependingParentTransactionViewModelFactory,
-            Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> dependingTransferViewModelFactory) 
+            Func<IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory) 
             : base(
                 account,
                 accountViewModelService,
                 accountRepository,
                 rxSchedulerProvider,
                 cultureManager,
-                dependingTransactionViewModelFactory, 
-                dependingParentTransactionViewModelFactory,
-                dependingTransferViewModelFactory,
-                accountModuleColumnManager)
+                transDataGridColumnManager)
         {
             _account = account;
             _summaryAccountViewModel = summaryAccountViewModel;
             _transRepository = transRepository;
             _placeholderFactory = placeholderFactory;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
+            _convertFromTransBaseToTransLikeViewModel = convertFromTransBaseToTransLikeViewModel;
             _rxSchedulerProvider = rxSchedulerProvider;
 
             StartingBalance = account
@@ -175,7 +172,9 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         protected override IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess
             => new RelayBasicTaskBasedAsyncDataAccess<ITransLikeViewModel>(
-                async (offset, pageSize) => CreatePacket( await _transRepository.GetPageAsync(offset, pageSize, _account)),
+                async (offset, pageSize) => _convertFromTransBaseToTransLikeViewModel
+                    .Convert(await _transRepository.GetPageAsync(offset, pageSize, _account), this)
+                    .ToArray(),
                 async () => (int) await _transRepository.GetCountAsync(_account),
                 () => _placeholderFactory());
 

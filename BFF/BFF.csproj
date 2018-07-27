@@ -141,6 +141,7 @@
     <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
     <Compile Include="DB\SQLite\DapperCrudOrm.cs" />
     <Compile Include="EmptyContext.cs" />
+    <Compile Include="Helper\ConvertFromTransBaseToTransLikeViewModel.cs" />
     <Compile Include="Helper\Extensions\BooleanExtensions.cs" />
     <Compile Include="Helper\Extensions\DataGridRowExtensions.cs" />
     <Compile Include="Helper\Extensions\DateTimeExtensions.cs" />
@@ -164,6 +165,8 @@
     <Compile Include="Helper\IRxSchedulerProvider.cs" />
     <Compile Include="Helper\LastSetDate.cs" />
     <Compile Include="Helper\Sign.cs" />
+    <Compile Include="MVVM\AttachedBehaviors\PopupCommands.cs" />
+    <Compile Include="MVVM\AttachedBehaviors\ToolTipCommands.cs" />
     <Compile Include="MVVM\AttachedBehaviors\FrameworkElementClickBehavior.cs" />
     <Compile Include="MVVM\AttachedBehaviors\ScrollViewerSync.cs" />
     <Compile Include="MVVM\BffDialogCoordinator.cs" />

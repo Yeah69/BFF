@@ -26,10 +26,10 @@
                                Data="{Binding DataContext.Owner, ElementName=LayoutRoot, Converter={x:Static mvvm:Converters.OfTypeToCollapsed}, ConverterParameter={x:Type forModels:IAccountViewModel}, FallbackValue={x:Static Visibility.Collapsed}}" />
 
             <mvvm:BindingProxy x:Key="FlagColumnVisibility"
-                               Data="{Binding DataContext.AccountModuleColumnManager.ShowFlags.Value, ElementName=Root, Converter={x:Static mvvm:Converters.FalseToCollapsed}, FallbackValue={x:Static Visibility.Collapsed}}" />
+                               Data="{Binding DataContext.TransDataGridColumnManager.ShowFlags.Value, ElementName=Root, Converter={x:Static mvvm:Converters.FalseToCollapsed}, FallbackValue={x:Static Visibility.Collapsed}}" />
 
             <mvvm:BindingProxy x:Key="CheckNumberColumnVisibility"
-                               Data="{Binding DataContext.AccountModuleColumnManager.ShowCheckNumbers.Value, ElementName=Root, Converter={x:Static mvvm:Converters.FalseToCollapsed}, FallbackValue={x:Static Visibility.Collapsed}}" />
+                               Data="{Binding DataContext.TransDataGridColumnManager.ShowCheckNumbers.Value, ElementName=Root, Converter={x:Static mvvm:Converters.FalseToCollapsed}, FallbackValue={x:Static Visibility.Collapsed}}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">

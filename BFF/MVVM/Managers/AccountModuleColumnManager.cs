@@ -7,17 +7,17 @@ using Reactive.Bindings;
 
 namespace BFF.MVVM.Managers
 {
-    public interface IAccountModuleColumnManager
+    public interface ITransDataGridColumnManager
     {
         IReactiveProperty<bool> ShowFlags { get; }
         IReactiveProperty<bool> ShowCheckNumbers { get; }
     }
 
-    public class AccountModuleColumnManager : IAccountModuleColumnManager, IOncePerApplication, IDisposable
+    public class TransDataGridColumnManager : ITransDataGridColumnManager, IOncePerApplication, IDisposable
     {
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
-        public AccountModuleColumnManager()
+        public TransDataGridColumnManager()
         {
             ShowFlags = new ReactiveProperty<bool>(Settings.Default.ShowFlags, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
 

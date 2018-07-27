@@ -14,6 +14,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         IRepositoryBase<ITransBase>, 
         ISpecifiedPagedAccessAsync<ITransBase, Domain.IAccount>
     {
+        Task<IEnumerable<ITransBase>> GetFromMontAndCategoryAsync(DateTime month, Domain.ICategory category);
     }
 
 
@@ -109,7 +110,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             return await (await (specifyingObject is Domain.IAccount account
                 ? _transOrm.GetPageFromSpecificAccountAsync(offset, pageSize, account.Id)
                 : _transOrm.GetPageFromSummaryAccountAsync(offset, pageSize)).ConfigureAwait(false))
-                .Select(async t => await ConvertToDomainAsync(t)).ToAwaitableEnumerable().ConfigureAwait(false);
+                .Select(async t => await ConvertToDomainAsync(t).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
         }
 
         public async Task<long> GetCountAsync(Domain.IAccount specifyingObject)
@@ -117,6 +118,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             return await (specifyingObject is Domain.IAccount account
                 ? _transOrm.GetCountFromSpecificAccountAsync(account.Id)
                 : _transOrm.GetCountFromSummaryAccountAsync()).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<ITransBase>> GetFromMontAndCategoryAsync(DateTime month, Domain.ICategory category)
+        {
+            return await (await _transOrm.GetFromMonthAndCategoryAsync(month, category.Id).ConfigureAwait(false))
+                .Select(async t => await ConvertToDomainAsync(t).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
         }
 
         protected override async Task<ITransBase> ConvertToDomainAsync(Trans persistenceModel)

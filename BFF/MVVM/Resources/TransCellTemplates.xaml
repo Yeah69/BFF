@@ -26,16 +26,6 @@
                 Value="False" />
     </Style>
 
-    <Style x:Key="ConvertPopupBorder"
-           TargetType="Border">
-        <Setter Property="Background"
-                Value="{DynamicResource WhiteBrush}" />
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource BlackBrush}" />
-        <Setter Property="BorderThickness"
-                Value="2" />
-    </Style>
-
     <DataTemplate x:Key="ParentTransactionToolTipTemplate"
                   DataType="{x:Type forModels:ParentTransactionViewModel}">
         <DataGrid ItemsSource="{Binding SubTransactions}">
@@ -72,7 +62,7 @@
                         <Popup x:Name="ConvertMenu"
                                PlacementTarget="{Binding ElementName=Icon}"
                                StaysOpen="False">
-                            <Border Style="{StaticResource ConvertPopupBorder}">
+                            <Border Style="{StaticResource PopupBorder}">
                                 <Button Margin="2.5"
                                         Command="{Binding InsertedConvertToParentTransaction}">
                                     <Button.Content>
@@ -147,7 +137,7 @@
                         <Popup x:Name="ConvertMenu"
                                PlacementTarget="{Binding ElementName=Icon}"
                                StaysOpen="False">
-                            <Border Style="{StaticResource ConvertPopupBorder}">
+                            <Border Style="{StaticResource PopupBorder}">
 
                                 <Button Margin="2.5"
                                         Command="{Binding InsertedConvertToTransaction}">
@@ -203,7 +193,7 @@
                         <Popup x:Name="ConvertMenu"
                                PlacementTarget="{Binding ElementName=Icon}"
                                StaysOpen="False">
-                            <Border Style="{StaticResource ConvertPopupBorder}">
+                            <Border Style="{StaticResource PopupBorder}">
                                 <StackPanel Orientation="Horizontal">
                                     <Button Margin="2.5"
                                             Command="{Binding NonInsertedConvertToParentTransaction}">
@@ -317,7 +307,7 @@
                         <Popup x:Name="ConvertMenu"
                                PlacementTarget="{Binding ElementName=Icon}"
                                StaysOpen="False">
-                            <Border Style="{StaticResource ConvertPopupBorder}">
+                            <Border Style="{StaticResource PopupBorder}">
                                 <StackPanel Orientation="Horizontal">
                                     <Button Margin="2.5"
                                             Command="{Binding NonInsertedConvertToTransaction}">
@@ -386,7 +376,7 @@
                         <Popup x:Name="ConvertMenu"
                                PlacementTarget="{Binding ElementName=Icon}"
                                StaysOpen="False">
-                            <Border Style="{StaticResource ConvertPopupBorder}">
+                            <Border Style="{StaticResource PopupBorder}">
                                 <StackPanel Orientation="Horizontal">
                                     <Button Margin="2.5"
                                             Command="{Binding NonInsertedConvertToTransaction}">

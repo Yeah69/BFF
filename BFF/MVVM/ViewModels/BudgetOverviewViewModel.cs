@@ -16,7 +16,6 @@ using BFF.Helper.Extensions;
 using BFF.MVVM.Managers;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
-using MoreLinq;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -34,6 +33,8 @@ namespace BFF.MVVM.ViewModels
         IRxRelayCommand IncreaseMonthStartIndex { get; }
 
         IRxRelayCommand DecreaseMonthStartIndex { get; }
+
+        ITransDataGridColumnManager TransDataGridColumnManager { get; }
 
         Task Refresh();
     }
@@ -89,15 +90,18 @@ namespace BFF.MVVM.ViewModels
         public IRxRelayCommand IncreaseMonthStartIndex { get; }
 
         public IRxRelayCommand DecreaseMonthStartIndex { get; }
+        public ITransDataGridColumnManager TransDataGridColumnManager { get; }
 
         public BudgetOverviewViewModel(
             IBudgetMonthRepository budgetMonthRepository,
             IBudgetEntryViewModelService budgetEntryViewModelService,
             ICultureManager cultureManager,
+            ITransDataGridColumnManager transDataGridColumnManager,
             IRxSchedulerProvider rxSchedulerProvider,
             ICategoryViewModelService categoryViewModelService,
             ICategoryRepository categoryRepository)
         {
+            TransDataGridColumnManager = transDataGridColumnManager;
             _budgetMonthRepository = budgetMonthRepository;
             _budgetEntryViewModelService = budgetEntryViewModelService;
             _rxSchedulerProvider = rxSchedulerProvider;

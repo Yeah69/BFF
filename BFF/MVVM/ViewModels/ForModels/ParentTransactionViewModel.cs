@@ -62,7 +62,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// </summary>
     public sealed class ParentTransactionViewModel : TransactionBaseViewModel, IParentTransactionViewModel
     {
-        public IAccountModuleColumnManager AccountModuleColumnManager { get; }
+        public ITransDataGridColumnManager TransDataGridColumnManager { get; }
         private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
         private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
 
@@ -81,7 +81,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             IParentTransactionFlyoutManager parentTransactionFlyoutManager,
             IFlagViewModelService flagViewModelService,
             IAccountViewModelService accountViewModelService,
-            IAccountModuleColumnManager accountModuleColumnManager,
+            ITransDataGridColumnManager transDataGridColumnManager,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ILastSetDate lastSetDate,
             ITransTransformingManager transTransformingManager,
@@ -103,7 +103,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 flagViewModelService,
                 owner)
         {
-            AccountModuleColumnManager = accountModuleColumnManager;
+            TransDataGridColumnManager = transDataGridColumnManager;
             _newTransactions = new ObservableCollection<ISubTransactionViewModel>();
             NewSubTransactions = new ReadOnlyObservableCollection<ISubTransactionViewModel>(_newTransactions);
 

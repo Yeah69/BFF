@@ -1,4 +1,9 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using BFF.MVVM.AttachedBehaviors;
+using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.MVVM.Views
 {
@@ -16,7 +21,7 @@ namespace BFF.MVVM.Views
         {
             void UpdateSlaveCount(int newCount)
             {
-                BudgetEntriesData.DisplayCount = newCount;
+                //BudgetEntriesData.DisplayCount = newCount;
                 BudgetMonthHeaders.DisplayCount = newCount;
                 e.Handled = true;
             }
@@ -52,6 +57,12 @@ namespace BFF.MVVM.Views
                     break;
 
             }
+        }
+
+        private void OutflowCell_OnClick(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetEntryViewModel budgetEntry)
+                budgetEntry.OpenAssociatedTransPopupFlag = true;
         }
     }
 }

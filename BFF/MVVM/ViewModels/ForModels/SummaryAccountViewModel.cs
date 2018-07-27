@@ -31,6 +31,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         private readonly Lazy<IAccountViewModelService> _service;
         private readonly ITransRepository _transRepository;
         private readonly Func<ITransLikeViewModelPlaceholder> _placeholderFactory;
+        private readonly IConvertFromTransBaseToTransLikeViewModel _convertFromTransBaseToTransLikeViewModel;
 
         /// <summary>
         /// Starting balance of the Account
@@ -50,28 +51,24 @@ namespace BFF.MVVM.ViewModels.ForModels
             ITransRepository transRepository,
             Func<ITransLikeViewModelPlaceholder> placeholderFactory,
             IRxSchedulerProvider rxSchedulerProvider,
+            IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
             IBackendCultureManager cultureManager,
-            IAccountModuleColumnManager accountModuleColumnManager,
+            ITransDataGridColumnManager transDataGridColumnManager,
             Func<IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
             Func<IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
-            Func<IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory,
-            Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> dependingTransactionViewModelFactory,
-            Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> dependingParentTransactionViewModelFactory,
-            Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> dependingTransferViewModelFactory) 
+            Func<IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory) 
             : base(
                 summaryAccount,
                 service,
                 accountRepository,
                 rxSchedulerProvider,
                 cultureManager,
-                dependingTransactionViewModelFactory, 
-                dependingParentTransactionViewModelFactory,
-                dependingTransferViewModelFactory,
-                accountModuleColumnManager)
+                transDataGridColumnManager)
         {
             _service = service;
             _transRepository = transRepository;
             _placeholderFactory = placeholderFactory;
+            _convertFromTransBaseToTransLikeViewModel = convertFromTransBaseToTransLikeViewModel;
             IsOpen = true;
 
             StartingBalance = new ReactiveProperty<long>().AddTo(CompositeDisposable);
@@ -95,7 +92,9 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         protected override IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess
             => new RelayBasicTaskBasedAsyncDataAccess<ITransLikeViewModel>(
-                async (offset, pageSize) => CreatePacket(await _transRepository.GetPageAsync(offset, pageSize, null)),
+                async (offset, pageSize) => _convertFromTransBaseToTransLikeViewModel
+                    .Convert(await _transRepository.GetPageAsync(offset, pageSize, null), this)
+                    .ToArray(),
                 async () => (int) await _transRepository.GetCountAsync(null),
                 () => _placeholderFactory());
         

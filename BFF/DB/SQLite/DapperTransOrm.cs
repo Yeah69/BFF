@@ -1,24 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
+using BFF.MVVM.Models.Native.Structure;
 using Dapper;
 
 namespace BFF.DB.SQLite
 {
     class DapperTransOrm : ITransOrm
     {
-        private static string OrderingPageSuffix => $"ORDER BY {nameof(Trans.Date)}";
-
-        private static string SpecifyingPart => $"WHERE {nameof(Trans.AccountId)} = @accountId OR {nameof(Trans.AccountId)} = -69 AND {nameof(Trans.PayeeId)} = @accountId OR {nameof(Trans.AccountId)} = -69 AND {nameof(Trans.CategoryId)} = @accountId";
-
-        private static string PagePart => $"SELECT * FROM {nameof(Trans)}s";
+        private static string RowsPart => $"SELECT * FROM {nameof(Trans)}s";
+        private static string RowsParentTransactionPart => $"SELECT DISTINCT {nameof(Trans)}s.{nameof(Trans.Id)}, {nameof(Trans)}s.{nameof(Trans.FlagId)}, {nameof(Trans)}s.{nameof(Trans.CheckNumber)}, {nameof(Trans)}s.{nameof(Trans.AccountId)}, {nameof(Trans)}s.{nameof(Trans.PayeeId)}, {nameof(Trans)}s.{nameof(Trans.CategoryId)}, {nameof(Trans)}s.{nameof(Trans.Date)}, {nameof(Trans)}s.{nameof(Trans.Memo)}, {nameof(Trans)}s.{nameof(Trans.Sum)}, {nameof(Trans)}s.{nameof(Trans.Cleared)}, {nameof(Trans)}s.{nameof(Trans.Type)} FROM {nameof(Trans)}s";
 
         private static string CountPart => $"SELECT COUNT(*) FROM {nameof(Trans)}s";
 
-        private static string LimitPart => "LIMIT @offset, @pageSize";
+        private static string SpecifyingTransactionMonthCategoryPart => $"WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month AND {nameof(Trans.CategoryId)} = @categoryId";
+
+        private static string JoinParentTransactionsWithSubTransactionsPart => $"INNER JOIN {nameof(SubTransaction)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}";
+
+        private static string SpecifyingParentTransactionMonthCategoryPart => $"WHERE {nameof(Trans)}s.{nameof(Trans.Type)} = '{nameof(TransType.ParentTransaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month AND {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} = @categoryId";
+
+        private static string SpecifyingPagePart => $"WHERE {nameof(Trans.AccountId)} = @accountId OR {nameof(Trans.AccountId)} = -69 AND {nameof(Trans.PayeeId)} = @accountId OR {nameof(Trans.AccountId)} = -69 AND {nameof(Trans.CategoryId)} = @accountId";
+
+        private static string LimitingPagePart => "LIMIT @offset, @pageSize";
+
+        private static string OrderingSuffix => $"ORDER BY {nameof(Trans.Date)}";
 
 
         private readonly IProvideConnection _provideConnection;
@@ -35,7 +44,7 @@ namespace BFF.DB.SQLite
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                ret = connection.Query<Trans>($"{PagePart} {SpecifyingPart} {OrderingPageSuffix} {LimitPart};", new { offset, pageSize, accountId}).ToList();
+                ret = connection.Query<Trans>($"{RowsPart} {SpecifyingPagePart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize, accountId}).ToList();
                 transactionScope.Complete();
             }
             return ret;
@@ -48,7 +57,7 @@ namespace BFF.DB.SQLite
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                ret = connection.Query<Trans>($"{PagePart} {OrderingPageSuffix} {LimitPart};", new { offset, pageSize }).ToList();
+                ret = connection.Query<Trans>($"{RowsPart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize }).ToList();
                 transactionScope.Complete();
             }
             return ret;
@@ -61,7 +70,7 @@ namespace BFF.DB.SQLite
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                ret = connection.Query<long>($"{CountPart} {SpecifyingPart};", new { accountId }).First();
+                ret = connection.Query<long>($"{CountPart} {SpecifyingPagePart};", new { accountId }).First();
                 transactionScope.Complete();
             }
             return ret;
@@ -88,7 +97,7 @@ namespace BFF.DB.SQLite
             {
                 connection.Open();
                 ret = (await connection
-                    .QueryAsync<Trans>($"{PagePart} {SpecifyingPart} {OrderingPageSuffix} {LimitPart};", new { offset, pageSize, accountId })
+                    .QueryAsync<Trans>($"{RowsPart} {SpecifyingPagePart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize, accountId })
                     .ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }
@@ -103,7 +112,30 @@ namespace BFF.DB.SQLite
             {
                 connection.Open();
                 ret = (await connection
-                    .QueryAsync<Trans>($"{PagePart} {OrderingPageSuffix} {LimitPart};", new { offset, pageSize })
+                    .QueryAsync<Trans>($"{RowsPart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize })
+                    .ConfigureAwait(false)).ToList();
+                transactionScope.Complete();
+            }
+            return ret;
+        }
+
+        public async Task<IEnumerable<Trans>> GetFromMonthAndCategoryAsync(DateTime month, long categoryId)
+        {
+            IList<Trans> ret;
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
+            {
+                string query = $@"SELECT * FROM
+({RowsPart} {SpecifyingTransactionMonthCategoryPart}
+UNION ALL
+{RowsParentTransactionPart} {JoinParentTransactionsWithSubTransactionsPart} {
+                        SpecifyingParentTransactionMonthCategoryPart
+                    })
+{OrderingSuffix};";
+
+                connection.Open();
+                ret = (await connection
+                    .QueryAsync<Trans>(query, new{ year = $"{month.Year:0000}", month = $"{month.Month:00}", categoryId })
                     .ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }
@@ -117,7 +149,7 @@ namespace BFF.DB.SQLite
             using (DbConnection connection = _provideConnection.Connection)
             {
                 connection.Open();
-                ret = (await connection.QueryAsync<long>($"{CountPart} {SpecifyingPart};", new { accountId }).ConfigureAwait(false)).First();
+                ret = (await connection.QueryAsync<long>($"{CountPart} {SpecifyingPagePart};", new { accountId }).ConfigureAwait(false)).First();
                 transactionScope.Complete();
             }
             return ret;

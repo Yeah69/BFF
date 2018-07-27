@@ -284,6 +284,16 @@
                 </Grid>
             </DataTemplate>
 
+            <Style x:Key="PopupBorder"
+                   TargetType="Border">
+                <Setter Property="Background"
+                        Value="{DynamicResource WhiteBrush}" />
+                <Setter Property="BorderBrush"
+                        Value="{DynamicResource BlackBrush}" />
+                <Setter Property="BorderThickness"
+                        Value="2" />
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -5,8 +5,10 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.Helper.Extensions;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -30,12 +32,22 @@ namespace BFF.MVVM.ViewModels.ForModels
         long AggregatedBalance { get; }
 
         IReadOnlyList<IBudgetEntryViewModel> Children { get; set; }
+
+        IEnumerable<ITransLikeViewModel> AssociatedTransElements { get; }
+
+        bool OpenAssociatedTransPopupFlag { get; set; }
+
+        IRxRelayCommand OpenAssociatedTransElements { get; }
+
+        IRxRelayCommand CloseAssociatedTransElements { get; }
     }
 
     public class BudgetEntryViewModel : DataModelViewModel, IBudgetEntryViewModel
     {
+        public ITransDataGridColumnManager TransDataGridColumnManager { get; }
         private readonly IBudgetEntry _budgetEntry;
         private IReadOnlyList<IBudgetEntryViewModel> _children;
+        private bool _openAssociatedTransPopupFlag;
 
         public ICategoryViewModel Category { get; private set; }
         public DateTime Month => _budgetEntry.Month;
@@ -61,12 +73,32 @@ namespace BFF.MVVM.ViewModels.ForModels
             }
         }
 
+        public IEnumerable<ITransLikeViewModel> AssociatedTransElements { get; private set; }
+
+        public bool OpenAssociatedTransPopupFlag
+        {
+            get => _openAssociatedTransPopupFlag;
+            set
+            {
+                if (value == _openAssociatedTransPopupFlag) return;
+                _openAssociatedTransPopupFlag = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IRxRelayCommand OpenAssociatedTransElements { get; }
+        public IRxRelayCommand CloseAssociatedTransElements { get; }
+
         public BudgetEntryViewModel(
             IBudgetEntry budgetEntry,
             Lazy<IBudgetOverviewViewModel> budgetOverviewViewModel,
+            ITransRepository transRepository,
+            ITransDataGridColumnManager transDataGridColumnManager,
+            IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
             ICategoryViewModelService categoryViewModelService,
             IRxSchedulerProvider rxSchedulerProvider) : base(budgetEntry, rxSchedulerProvider)
         {
+            TransDataGridColumnManager = transDataGridColumnManager;
             _budgetEntry = budgetEntry;
             Category = categoryViewModelService.GetViewModel(budgetEntry.Category);
             budgetEntry
@@ -138,6 +170,26 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(updateAggregates)
                 .AddTo(CompositeDisposable);
+
+            AssociatedTransElements = Enumerable.Empty<ITransLikeViewModel>();
+
+            OpenAssociatedTransElements = new AsyncRxRelayCommand(async () =>
+                    {
+                        AssociatedTransElements = convertFromTransBaseToTransLikeViewModel.Convert(
+                            await transRepository.GetFromMontAndCategoryAsync(Month,
+                                categoryViewModelService.GetModel(Category)), null);
+                        OnPropertyChanged(nameof(AssociatedTransElements));
+                        if (AssociatedTransElements.Any().Not())
+                            OpenAssociatedTransPopupFlag = false;
+                    })
+                .AddHere(CompositeDisposable);
+
+            CloseAssociatedTransElements = new RxRelayCommand(() =>
+                    {
+                        AssociatedTransElements = Enumerable.Empty<ITransLikeViewModel>();
+                        OnPropertyChanged(nameof(AssociatedTransElements));
+                    })
+                .AddHere(CompositeDisposable);
         }
     }
 }

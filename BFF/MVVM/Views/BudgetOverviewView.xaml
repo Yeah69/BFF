@@ -12,14 +12,22 @@
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:userControls="clr-namespace:BFF.MVVM.UserControls"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
-             x:Name="BudgetOverview"
-             d:DataContext="{d:DesignInstance Type=viewModels:BudgetOverviewViewModel}"
+             x:Name="Root"
+             d:DataContext="{d:DesignInstance Type=viewModels:IBudgetOverviewViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              PreviewKeyDown="OnPreviewKeyDown"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.datagrid.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.checkbox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
+                <ResourceDictionary Source="/MVVM/Resources/TransCellTemplates.xaml" />
+                <ResourceDictionary Source="/MVVM/Resources/TransDataGridResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
             <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
                    TargetType="{x:Type ListBoxItem}">
                 <Style.Triggers>
@@ -362,60 +370,148 @@
                              BorderThickness="1"
                              ItemsSource="{Binding BudgetEntries}"
                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                             SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference BudgetOverview}}">
+                             SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference Root}}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <UniformGrid d:DataContext="{d:DesignInstance forModels:IBudgetEntryViewModel}"
-                                                             Visibility="{Binding IsChecked, Source={x:Reference AggregateSwitch}, Converter={x:Static mvvm:Converters.TrueToCollapsed}}"
-                                                         Columns="3">
-                                        <TextBox Height="25" Padding="0" Margin="-5,0,-6,0" HorizontalContentAlignment="Right"
-                                                         MinHeight="0"
-                                                         Text="{Binding Budget, Converter={x:Static mvvm:Converters.SumToString}}"
-                                                         TextAlignment="Right">
+                                    <UniformGrid Visibility="{Binding IsChecked, Source={x:Reference AggregateSwitch}, Converter={x:Static mvvm:Converters.TrueToCollapsed}}"
+                                                 d:DataContext="{d:DesignInstance forModels:IBudgetEntryViewModel}"
+                                                 Columns="3">
+                                        <TextBox Height="25"
+                                                 MinHeight="0"
+                                                 Margin="-5,0,-6,0"
+                                                 Padding="0"
+                                                 HorizontalContentAlignment="Right"
+                                                 Text="{Binding Budget, Converter={x:Static mvvm:Converters.SumToString}}"
+                                                 TextAlignment="Right">
                                             <TextBox.Style>
                                                 <Style BasedOn="{StaticResource {x:Type TextBox}}"
-                                                               TargetType="{x:Type TextBox}">
+                                                       TargetType="{x:Type TextBox}">
                                                     <Style.Triggers>
                                                         <Trigger Property="IsReadOnly"
-                                                                         Value="True">
+                                                                 Value="True">
                                                             <Setter Property="BorderBrush"
-                                                                            Value="Transparent" />
+                                                                    Value="Transparent" />
                                                             <Setter Property="Background"
-                                                                            Value="Transparent" />
+                                                                    Value="Transparent" />
                                                         </Trigger>
                                                         <Trigger Property="IsFocused"
-                                                                         Value="True">
+                                                                 Value="True">
                                                             <Setter Property="IsReadOnly"
-                                                                            Value="False" />
+                                                                    Value="False" />
                                                         </Trigger>
                                                         <DataTrigger Binding="{Binding Budget}"
-                                                                             Value="0">
+                                                                     Value="0">
                                                             <Setter Property="Foreground"
-                                                                            Value="{DynamicResource OpaqueZeroBrush}" />
+                                                                    Value="{DynamicResource OpaqueZeroBrush}" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                     <Setter Property="IsReadOnly"
-                                                                    Value="True" />
+                                                            Value="True" />
                                                     <Setter Property="Foreground"
-                                                                    Value="{Binding Budget, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
+                                                            Value="{Binding Budget, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
                                                 </Style>
                                             </TextBox.Style>
                                         </TextBox>
-                                        <TextBlock DataContext="{Binding Outflow}"
-                                                           Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                        <Grid Background="Transparent"
+                                              Tag="{Binding}">
+                                            <i:Interaction.Behaviors>
+                                                <attachedBehaviors:FrameworkElementClickBehavior Click="OutflowCell_OnClick" />
+                                            </i:Interaction.Behaviors>
+
+                                            <TextBlock DataContext="{Binding Outflow}"
+                                                       Style="{StaticResource NonEditableBudgetEntryCell}"
+                                                       Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type UniformGrid}}}" />
+
+                                            <Popup Width="1000"
+                                                   MaxHeight="500"
+                                                   d:DataContext="{d:DesignInstance Type=forModels:IBudgetEntryViewModel}"
+                                                   DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}"
+                                                   IsOpen="{Binding OpenAssociatedTransPopupFlag}"
+                                                   PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
+                                                   StaysOpen="False">
+                                                <i:Interaction.Behaviors>
+                                                    <attachedBehaviors:PopupCommands ClosedCommand="{Binding CloseAssociatedTransElements}"
+                                                                                     OpenedCommand="{Binding OpenAssociatedTransElements}" />
+                                                </i:Interaction.Behaviors>
+                                                <Border Style="{StaticResource PopupBorder}">
+                                                    <DataGrid Margin="2.5"
+                                                              HorizontalScrollBarVisibility="Disabled"
+                                                              ItemsSource="{Binding AssociatedTransElements}"
+                                                              RowStyle="{StaticResource DefaultRowStyle}"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              SelectionMode="Single"
+                                                              SelectionUnit="FullRow">
+                                                        <DataGrid.Resources />
+                                                        <DataGrid.Columns>
+                                                            <!--  Symbol  -->
+                                                            <DataGridTemplateColumn CellTemplate="{StaticResource SymbolColumnTemplate}"
+                                                                                    Header="{lex:Loc AccountView_Header_SymbolAbbr}">
+                                                                <DataGridTemplateColumn.HeaderTemplate>
+                                                                    <DataTemplate>
+                                                                        <TextBlock Text="{Binding}"
+                                                                                   ToolTip="{lex:Loc AccountView_Header_SymbolAbbr_Tooltip}" />
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.HeaderTemplate>
+                                                            </DataGridTemplateColumn>
+                                                            <!--  Account  -->
+                                                            <DataGridTemplateColumn CellTemplate="{StaticResource AccountColumnTemplate}"
+                                                                                    Header="{lex:Loc AccountView_Header_Account}"
+                                                                                    SortMemberPath="Account.Name" />
+                                                            <!--  Date  -->
+                                                            <DataGridTemplateColumn CellTemplate="{StaticResource DateColumnTemplate}"
+                                                                                    Header="{lex:Loc AccountView_Header_Date}"
+                                                                                    SortMemberPath="Date" />
+                                                            <!--  Flag  -->
+                                                            <DataGridTemplateColumn Visibility="{Binding DataContext.TransDataGridColumnManager.ShowFlags.Value, Source={x:Reference Root}, Converter={x:Static mvvm:Converters.FalseToCollapsed}}"
+                                                                                    CellTemplate="{StaticResource FlagColumnTemplate}"
+                                                                                    Header="{lex:Loc AccountView_Header_Flag}"
+                                                                                    SortMemberPath="Flag.Name" />
+                                                            <!--  CheckNumber  -->
+                                                            <DataGridTemplateColumn Visibility="{Binding DataContext.TransDataGridColumnManager.ShowCheckNumbers.Value, Source={x:Reference Root}, Converter={x:Static mvvm:Converters.FalseToCollapsed}}"
+                                                                                    CellTemplate="{StaticResource CheckNumberColumnTemplate}"
+                                                                                    Header="{lex:Loc AccountView_Header_CheckNumber}"
+                                                                                    SortMemberPath="CheckNumber" />
+                                                            <!--  Payee  -->
+                                                            <DataGridTemplateColumn CellTemplate="{StaticResource PayeeColumnTemplate}"
+                                                                                    Header="{lex:Loc AccountView_Header_Payee}"
+                                                                                    SortMemberPath="Payee.Name" />
+                                                            <!--  Category  -->
+                                                            <DataGridTemplateColumn CellTemplate="{StaticResource CategoryColumnTemplate}"
+                                                                                    Header="{lex:Loc AccountView_Header_Category}"
+                                                                                    SortMemberPath="Category.Name" />
+                                                            <!--  Memo  -->
+                                                            <DataGridTemplateColumn Width="*"
+                                                                                    CellTemplate="{StaticResource MemoColumnTemplate}"
+                                                                                    Header="{lex:Loc AccountView_Header_Memo}"
+                                                                                    SortMemberPath="Memo" />
+                                                            <!--  Sum  -->
+                                                            <DataGridTemplateColumn CellTemplate="{StaticResource SumColumnTemplate}"
+                                                                                    Header="{lex:Loc AccountView_Header_Sum}"
+                                                                                    IsReadOnly="False"
+                                                                                    SortMemberPath="Sum" />
+                                                            <!--  Cleared  -->
+                                                            <DataGridTemplateColumn CellTemplate="{StaticResource ClearedColumnTemplate}"
+                                                                                    Header="{lex:Loc AccountView_Header_Cleared}"
+                                                                                    IsReadOnly="True"
+                                                                                    SortMemberPath="Cleared" />
+                                                        </DataGrid.Columns>
+                                                    </DataGrid>
+                                                </Border>
+                                            </Popup>
+                                        </Grid>
                                         <TextBlock DataContext="{Binding Balance}"
-                                                           Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                                   Style="{StaticResource NonEditableBudgetEntryCell}" />
                                     </UniformGrid>
-                                    <UniformGrid d:DataContext="{d:DesignInstance forModels:IBudgetEntryViewModel}"
-                                                             Visibility="{Binding IsChecked, Source={x:Reference AggregateSwitch}, Converter={x:Static mvvm:Converters.FalseToCollapsed}}"
-                                                             Columns="3">
+                                    <UniformGrid Visibility="{Binding IsChecked, Source={x:Reference AggregateSwitch}, Converter={x:Static mvvm:Converters.FalseToCollapsed}}"
+                                                 d:DataContext="{d:DesignInstance forModels:IBudgetEntryViewModel}"
+                                                 Columns="3">
                                         <TextBlock DataContext="{Binding AggregatedBudget}"
-                                                               Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                                   Style="{StaticResource NonEditableBudgetEntryCell}" />
                                         <TextBlock DataContext="{Binding AggregatedOutflow}"
-                                                               Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                                   Style="{StaticResource NonEditableBudgetEntryCell}" />
                                         <TextBlock DataContext="{Binding AggregatedBalance}"
-                                                               Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                                   Style="{StaticResource NonEditableBudgetEntryCell}" />
                                     </UniformGrid>
                                 </StackPanel>
                             </DataTemplate>

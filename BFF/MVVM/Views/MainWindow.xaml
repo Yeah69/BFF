@@ -220,10 +220,10 @@
                               IsChecked="{Binding CultureManager.ShowLongDate, Mode=TwoWay, Converter={x:Static mvvm:Converters.BooleanToNullableBoolean}}" />
                     <Label Content="{lex:LocText Settings_ShowFlags,
                                                  Suffix=:}" />
-                    <CheckBox IsChecked="{Binding AccountModuleColumnManager.ShowFlags.Value}" />
+                    <CheckBox IsChecked="{Binding TransDataGridColumnManager.ShowFlags.Value}" />
                     <Label Content="{lex:LocText Settings_ShowCheckNumbers,
                                                  Suffix=:}" />
-                    <CheckBox IsChecked="{Binding AccountModuleColumnManager.ShowCheckNumbers.Value}" />
+                    <CheckBox IsChecked="{Binding TransDataGridColumnManager.ShowCheckNumbers.Value}" />
                 </StackPanel>
             </controls:Flyout>
             <!--  File Flyout  -->

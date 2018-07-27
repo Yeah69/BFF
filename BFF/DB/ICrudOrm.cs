@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using BFF.DB.SQLite;
@@ -54,6 +55,7 @@ namespace BFF.DB
     {
         Task<IEnumerable<Trans>> GetPageFromSpecificAccountAsync(int offset, int pageSize, long accountId);
         Task<IEnumerable<Trans>> GetPageFromSummaryAccountAsync(int offset, int pageSize);
+        Task<IEnumerable<Trans>> GetFromMonthAndCategoryAsync(DateTime month, long categoryId);
 
         Task<long> GetCountFromSpecificAccountAsync(long accountId);
         Task<long> GetCountFromSummaryAccountAsync();

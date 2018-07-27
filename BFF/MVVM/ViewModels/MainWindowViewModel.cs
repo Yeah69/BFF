@@ -150,7 +150,7 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public IAccountModuleColumnManager AccountModuleColumnManager { get; }
+        public ITransDataGridColumnManager TransDataGridColumnManager { get; }
         public IEmptyViewModel EmptyViewModel { get; set; }
         public bool IsEmpty => AccountTabsViewModel is null || BudgetOverviewViewModel is null;
 
@@ -214,12 +214,12 @@ namespace BFF.MVVM.ViewModels
             Func<Owned<Func<IEmptyContext>>> emptyContextFactory,
             Func<Owned<Func<string, IProvideConnection>>> ownedCreateProvideConnectionFactory,
             Func<IProvideConnection, ICreateBackendOrm> createCreateBackendOrm,
-            IAccountModuleColumnManager accountModuleColumnManager,
+            ITransDataGridColumnManager transDataGridColumnManager,
             IParentTransactionFlyoutManager parentTransactionFlyoutManager,
             IRxSchedulerProvider schedulerProvider,
             IEmptyViewModel emptyViewModel)
         {
-            AccountModuleColumnManager = accountModuleColumnManager;
+            TransDataGridColumnManager = transDataGridColumnManager;
             EmptyViewModel = emptyViewModel;
             _sqliteBackendContextFactory = sqliteBackendContextFactory;
             _emptyContextFactory = emptyContextFactory;

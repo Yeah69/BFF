@@ -17,7 +17,6 @@ using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using BFF.Properties;
 using MuVaViMo;
@@ -77,7 +76,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         bool ShowLongDate { get; }
 
-        IAccountModuleColumnManager AccountModuleColumnManager { get; }
+        ITransDataGridColumnManager TransDataGridColumnManager { get; }
         /// <summary>
         /// Refreshes the Balance.
         /// </summary>
@@ -95,9 +94,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     {
         private readonly Lazy<IAccountViewModelService> _accountViewModelService;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> _transactionViewModelFactory;
-        private readonly Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> _parentTransactionViewModelFactory;
-        private readonly Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> _transferViewModelFactory;
         private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
         private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
         private readonly Subject<Unit> _refreshBalance = new Subject<Unit>();
@@ -172,7 +168,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public bool ShowLongDate => Settings.Default.Culture_DefaultDateLong;
 
-        public IAccountModuleColumnManager AccountModuleColumnManager { get; }
+        public ITransDataGridColumnManager TransDataGridColumnManager { get; }
 
         protected AccountBaseViewModel(
             IAccount account,
@@ -180,17 +176,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             IAccountRepository accountRepository,
             IRxSchedulerProvider rxSchedulerProvider,
             IBackendCultureManager cultureManager,
-            Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
-            Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory,
-            Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
-            IAccountModuleColumnManager accountModuleColumnManager) : base(account, rxSchedulerProvider)
+            ITransDataGridColumnManager transDataGridColumnManager) : base(account, rxSchedulerProvider)
         {
             _accountViewModelService = accountViewModelService;
             _rxSchedulerProvider = rxSchedulerProvider;
-            _transactionViewModelFactory = transactionViewModelFactory;
-            _parentTransactionViewModelFactory = parentTransactionViewModelFactory;
-            _transferViewModelFactory = transferViewModelFactory;
-            AccountModuleColumnManager = accountModuleColumnManager;
+            TransDataGridColumnManager = transDataGridColumnManager;
 
             _refreshBalance.AddTo(CompositeDisposable);
             _refreshBalanceUntilNow.AddTo(CompositeDisposable);
@@ -341,29 +331,6 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public void OnPostVirtualizedRefresh()
         {
             PostVirtualizedRefresh?.Invoke(this, new EventArgs());
-        }
-
-        protected ITransLikeViewModel[] CreatePacket(IEnumerable<ITransBase> items)
-        {
-            IList<ITransLikeViewModel> vmItems = new List<ITransLikeViewModel>();
-            foreach (ITransBase item in items)
-            {
-                switch (item)
-                {
-                    case ITransfer transfer:
-                        vmItems.Add(_transferViewModelFactory(transfer, this));
-                        break;
-                    case IParentTransaction parentTransaction:
-                        vmItems.Add(_parentTransactionViewModelFactory(parentTransaction, this));
-                        break;
-                    case ITransaction transaction:
-                        vmItems.Add(_transactionViewModelFactory(transaction, this));
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
-            }
-            return vmItems.ToArray();
         }
 
 
