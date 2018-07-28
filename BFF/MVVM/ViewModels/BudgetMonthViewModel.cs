@@ -34,6 +34,7 @@ namespace BFF.MVVM.ViewModels
         long Balance { get; }
 
         ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
+        ILazyTransLikeViewModels AssociatedIncomeTransElementsViewModel { get; }
     }
 
     public sealed class BudgetMonthViewModel : ViewModelBase, IBudgetMonthViewModel, IDisposable, ITransientViewModel
@@ -46,6 +47,7 @@ namespace BFF.MVVM.ViewModels
             ITransRepository transRepository,
             Func<Func<Task<IEnumerable<ITransLikeViewModel>>>, ILazyTransLikeViewModels> lazyTransLikeViewModelsFactory,
             IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
+            IIncomeCategoryViewModelService incomeCategoryViewModelService,
             IBudgetEntryViewModelService budgetEntryViewModelService)
         {
             _budgetMonth = budgetMonth;
@@ -98,9 +100,25 @@ namespace BFF.MVVM.ViewModels
 
             AssociatedTransElementsViewModel = lazyTransLikeViewModelsFactory(async () =>
                     convertFromTransBaseToTransLikeViewModel.Convert(
-                        (await transRepository.GetFromMontAsync(Month).ConfigureAwait(false))
+                        (await transRepository.GetFromMonthAsync(Month).ConfigureAwait(false))
                         .Where(tb => tb as IHaveCategory is null || tb is IHaveCategory hc && hc.Category as IIncomeCategory is null), 
                         null))
+                .AddHere(_compositeDisposable);
+
+            AssociatedIncomeTransElementsViewModel = lazyTransLikeViewModelsFactory(async () =>
+                {
+                    var tasks = incomeCategoryViewModelService
+                        .All
+                        .GroupBy(icvm => icvm.MonthOffset)
+                        .Select(async g =>
+                            await transRepository.GetFromMonthAndCategoriesAsync(Month.OffsetMonthBy(g.Key * -1),
+                                g.Select(incomeCategoryViewModelService.GetModel)).ConfigureAwait(false));
+                    var arrayOfTransBases = await Task.WhenAll(tasks).ConfigureAwait(false);
+
+                    return convertFromTransBaseToTransLikeViewModel.Convert(
+                        arrayOfTransBases.SelectMany(e => e).OrderBy(tb => tb.Date),
+                        null);
+                })
                 .AddHere(_compositeDisposable);
         }
 
@@ -119,6 +137,7 @@ namespace BFF.MVVM.ViewModels
         public long Outflows => _budgetMonth.Outflows;
         public long Balance => _budgetMonth.Balance;
         public ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
+        public ILazyTransLikeViewModels AssociatedIncomeTransElementsViewModel { get; }
 
         public void Dispose()
         {

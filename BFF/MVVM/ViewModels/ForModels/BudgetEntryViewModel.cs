@@ -157,14 +157,14 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             AssociatedTransElementsViewModel = lazyTransLikeViewModelsFactory(async () =>
                 convertFromTransBaseToTransLikeViewModel.Convert(
-                    await transRepository.GetFromMontAndCategoryAsync(Month,
+                    await transRepository.GetFromMonthAndCategoryAsync(Month,
                         categoryViewModelService.GetModel(Category)), null))
                 .AddHere(CompositeDisposable);
 
             AssociatedAggregatedTransElementsViewModel = lazyTransLikeViewModelsFactory(async () =>
                 convertFromTransBaseToTransLikeViewModel.Convert(
-                    await transRepository.GetFromMontAndCategoryWithDescendantsAsync(Month,
-                        categoryViewModelService.GetModel(Category)), null))
+                    await transRepository.GetFromMonthAndCategoriesAsync(Month,
+                        categoryViewModelService.GetModel(Category).IterateRootBreadthFirst(c => c.Categories)), null))
                 .AddHere(CompositeDisposable);
         }
     }

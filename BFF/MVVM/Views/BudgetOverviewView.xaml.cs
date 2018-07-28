@@ -72,10 +72,16 @@ namespace BFF.MVVM.Views
                 budgetEntry.AssociatedAggregatedTransElementsViewModel.OpenFlag = true;
         }
 
-        private void MontOutflowCell_OnClick(object sender, EventArgs e)
+        private void MonthOutflowCell_OnClick(object sender, EventArgs e)
         {
             if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetMonthViewModel budgetEntry)
                 budgetEntry.AssociatedTransElementsViewModel.OpenFlag = true;
+        }
+
+        private void MonthIncomeCell_OnClick(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetMonthViewModel budgetEntry)
+                budgetEntry.AssociatedIncomeTransElementsViewModel.OpenFlag = true;
         }
     }
 }

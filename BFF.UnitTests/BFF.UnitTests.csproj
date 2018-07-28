@@ -76,8 +76,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="DB\Dapper\ModelRepositories\CategoryRepositoryTests.cs" />
     <Compile Include="Helper\DoesNotRaisePropertyChangedException.cs" />
+    <Compile Include="Helper\Extensions\DateTimeExtensionsTests.cs" />
     <Compile Include="Helper\NativeAssert.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -91,7 +91,9 @@
       <Name>BFF</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DB\Dapper\ModelRepositories\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
