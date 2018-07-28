@@ -14,6 +14,7 @@ using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Managers;
+using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using Reactive.Bindings;
@@ -44,7 +45,7 @@ namespace BFF.MVVM.ViewModels
         private static readonly int LastMonthIndex = MonthToIndex(DateTime.MaxValue);
 
         private readonly IBudgetMonthRepository _budgetMonthRepository;
-        private readonly IBudgetEntryViewModelService _budgetEntryViewModelService;
+        private readonly Func<IBudgetMonth, IBudgetMonthViewModel> _budgetMonthViewModelFactory;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
         private int _selectedIndex;
@@ -94,8 +95,8 @@ namespace BFF.MVVM.ViewModels
 
         public BudgetOverviewViewModel(
             IBudgetMonthRepository budgetMonthRepository,
-            IBudgetEntryViewModelService budgetEntryViewModelService,
             ICultureManager cultureManager,
+            Func<IBudgetMonth, IBudgetMonthViewModel> budgetMonthViewModelFactory,
             ITransDataGridColumnManager transDataGridColumnManager,
             IRxSchedulerProvider rxSchedulerProvider,
             ICategoryViewModelService categoryViewModelService,
@@ -103,7 +104,7 @@ namespace BFF.MVVM.ViewModels
         {
             TransDataGridColumnManager = transDataGridColumnManager;
             _budgetMonthRepository = budgetMonthRepository;
-            _budgetEntryViewModelService = budgetEntryViewModelService;
+            _budgetMonthViewModelFactory = budgetMonthViewModelFactory;
             _rxSchedulerProvider = rxSchedulerProvider;
 
             SelectedIndex = -1;
@@ -170,8 +171,7 @@ namespace BFF.MVVM.ViewModels
                         async (offset, pageSize) =>
                         {
                             var budgetMonthViewModels = await Task.Run(async () => (await _budgetMonthRepository.FindAsync(IndexToMonth(offset).Year).ConfigureAwait(false))
-                                .Select(bm =>
-                                    (IBudgetMonthViewModel)new BudgetMonthViewModel(bm, _budgetEntryViewModelService))
+                                .Select(bm => _budgetMonthViewModelFactory(bm))
                                 .ToArray()).ConfigureAwait(false);
 
                             foreach (var bmvm in budgetMonthViewModels)

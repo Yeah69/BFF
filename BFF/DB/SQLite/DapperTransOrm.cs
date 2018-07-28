@@ -17,11 +17,19 @@ namespace BFF.DB.SQLite
 
         private static string CountPart => $"SELECT COUNT(*) FROM {nameof(Trans)}s";
 
+        private static string SpecifyingTransactionMonthPart => $"WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month";
+
         private static string SpecifyingTransactionMonthCategoryPart => $"WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month AND {nameof(Trans.CategoryId)} = @categoryId";
+
+        private static string SpecifyingTransactionMonthCategoriesPart => $"WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month AND {nameof(Trans.CategoryId)} IN @categoryIds";
 
         private static string JoinParentTransactionsWithSubTransactionsPart => $"INNER JOIN {nameof(SubTransaction)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}";
 
+        private static string SpecifyingParentTransactionMonthPart => $"WHERE {nameof(Trans)}s.{nameof(Trans.Type)} = '{nameof(TransType.ParentTransaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month";
+
         private static string SpecifyingParentTransactionMonthCategoryPart => $"WHERE {nameof(Trans)}s.{nameof(Trans.Type)} = '{nameof(TransType.ParentTransaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month AND {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} = @categoryId";
+
+        private static string SpecifyingParentTransactionMonthCategoriesPart => $"WHERE {nameof(Trans)}s.{nameof(Trans.Type)} = '{nameof(TransType.ParentTransaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month AND {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} IN @categoryIds";
 
         private static string SpecifyingPagePart => $"WHERE {nameof(Trans.AccountId)} = @accountId OR {nameof(Trans.AccountId)} = -69 AND {nameof(Trans.PayeeId)} = @accountId OR {nameof(Trans.AccountId)} = -69 AND {nameof(Trans.CategoryId)} = @accountId";
 
@@ -119,6 +127,29 @@ namespace BFF.DB.SQLite
             return ret;
         }
 
+        public async Task<IEnumerable<Trans>> GetFromMonthAsync(DateTime month)
+        {
+            IList<Trans> ret;
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
+            {
+                string query = $@"SELECT * FROM
+({RowsPart} {SpecifyingTransactionMonthPart}
+UNION ALL
+{RowsParentTransactionPart} {JoinParentTransactionsWithSubTransactionsPart} {
+                        SpecifyingParentTransactionMonthPart
+                    })
+{OrderingSuffix};";
+
+                connection.Open();
+                ret = (await connection
+                    .QueryAsync<Trans>(query, new { year = $"{month.Year:0000}", month = $"{month.Month:00}" })
+                    .ConfigureAwait(false)).ToList();
+                transactionScope.Complete();
+            }
+            return ret;
+        }
+
         public async Task<IEnumerable<Trans>> GetFromMonthAndCategoryAsync(DateTime month, long categoryId)
         {
             IList<Trans> ret;
@@ -136,6 +167,29 @@ UNION ALL
                 connection.Open();
                 ret = (await connection
                     .QueryAsync<Trans>(query, new{ year = $"{month.Year:0000}", month = $"{month.Month:00}", categoryId })
+                    .ConfigureAwait(false)).ToList();
+                transactionScope.Complete();
+            }
+            return ret;
+        }
+
+        public async Task<IEnumerable<Trans>> GetFromMonthAndCategoriesAsync(DateTime month, long[] categoryIds)
+        {
+            IList<Trans> ret;
+            using (TransactionScope transactionScope = new TransactionScope())
+            using (DbConnection connection = _provideConnection.Connection)
+            {
+                string query = $@"SELECT * FROM
+({RowsPart} {SpecifyingTransactionMonthCategoriesPart}
+UNION ALL
+{RowsParentTransactionPart} {JoinParentTransactionsWithSubTransactionsPart} {
+                        SpecifyingParentTransactionMonthCategoriesPart
+                    })
+{OrderingSuffix};";
+
+                connection.Open();
+                ret = (await connection
+                    .QueryAsync<Trans>(query, new { year = $"{month.Year:0000}", month = $"{month.Month:00}", categoryIds })
                     .ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }

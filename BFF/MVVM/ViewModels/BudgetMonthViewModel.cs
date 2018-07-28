@@ -1,9 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Disposables;
+using System.Threading.Tasks;
+using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
+using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
+using BFF.MVVM.ViewModels.ForModels.Structure;
+using BFF.MVVM.ViewModels.ForModels.Utility;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -24,6 +32,8 @@ namespace BFF.MVVM.ViewModels
         long AvailableToBudget { get; }
         long Outflows { get; }
         long Balance { get; }
+
+        ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
     }
 
     public sealed class BudgetMonthViewModel : ViewModelBase, IBudgetMonthViewModel, IDisposable, ITransientViewModel
@@ -31,7 +41,12 @@ namespace BFF.MVVM.ViewModels
         private readonly IBudgetMonth _budgetMonth;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
-        public BudgetMonthViewModel(IBudgetMonth budgetMonth, IBudgetEntryViewModelService budgetEntryViewModelService)
+        public BudgetMonthViewModel(
+            IBudgetMonth budgetMonth,
+            ITransRepository transRepository,
+            Func<Func<Task<IEnumerable<ITransLikeViewModel>>>, ILazyTransLikeViewModels> lazyTransLikeViewModelsFactory,
+            IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
+            IBudgetEntryViewModelService budgetEntryViewModelService)
         {
             _budgetMonth = budgetMonth;
             BudgetEntries = budgetMonth.BudgetEntries.ToReadOnlyReactiveCollection(budgetEntryViewModelService.GetViewModel).AddTo(_compositeDisposable);
@@ -80,6 +95,13 @@ namespace BFF.MVVM.ViewModels
                 .ObservePropertyChanges(bm => bm.AvailableToBudget)
                 .Subscribe(fa => OnPropertyChanged(nameof(AvailableToBudget)))
                 .AddTo(_compositeDisposable);
+
+            AssociatedTransElementsViewModel = lazyTransLikeViewModelsFactory(async () =>
+                    convertFromTransBaseToTransLikeViewModel.Convert(
+                        (await transRepository.GetFromMontAsync(Month).ConfigureAwait(false))
+                        .Where(tb => tb as IHaveCategory is null || tb is IHaveCategory hc && hc.Category as IIncomeCategory is null), 
+                        null))
+                .AddHere(_compositeDisposable);
         }
 
         public ReadOnlyReactiveCollection<IBudgetEntryViewModel> BudgetEntries { get; }
@@ -96,6 +118,7 @@ namespace BFF.MVVM.ViewModels
 
         public long Outflows => _budgetMonth.Outflows;
         public long Balance => _budgetMonth.Balance;
+        public ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
 
         public void Dispose()
         {

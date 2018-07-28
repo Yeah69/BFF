@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using BFF.MVVM.AttachedBehaviors;
+using BFF.MVVM.ViewModels;
 using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.MVVM.Views
@@ -62,7 +63,19 @@ namespace BFF.MVVM.Views
         private void OutflowCell_OnClick(object sender, EventArgs e)
         {
             if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetEntryViewModel budgetEntry)
-                budgetEntry.OpenAssociatedTransPopupFlag = true;
+                budgetEntry.AssociatedTransElementsViewModel.OpenFlag = true;
+        }
+
+        private void AggregatedOutflowCell_OnClick(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetEntryViewModel budgetEntry)
+                budgetEntry.AssociatedAggregatedTransElementsViewModel.OpenFlag = true;
+        }
+
+        private void MontOutflowCell_OnClick(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetMonthViewModel budgetEntry)
+                budgetEntry.AssociatedTransElementsViewModel.OpenFlag = true;
         }
     }
 }

@@ -12,6 +12,7 @@ using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using BFF.MVVM.ViewModels.ForModels.Utility;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
@@ -33,13 +34,9 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         IReadOnlyList<IBudgetEntryViewModel> Children { get; set; }
 
-        IEnumerable<ITransLikeViewModel> AssociatedTransElements { get; }
+        ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
 
-        bool OpenAssociatedTransPopupFlag { get; set; }
-
-        IRxRelayCommand OpenAssociatedTransElements { get; }
-
-        IRxRelayCommand CloseAssociatedTransElements { get; }
+        ILazyTransLikeViewModels AssociatedAggregatedTransElementsViewModel { get; }
     }
 
     public class BudgetEntryViewModel : DataModelViewModel, IBudgetEntryViewModel
@@ -47,7 +44,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         public ITransDataGridColumnManager TransDataGridColumnManager { get; }
         private readonly IBudgetEntry _budgetEntry;
         private IReadOnlyList<IBudgetEntryViewModel> _children;
-        private bool _openAssociatedTransPopupFlag;
 
         public ICategoryViewModel Category { get; private set; }
         public DateTime Month => _budgetEntry.Month;
@@ -73,26 +69,14 @@ namespace BFF.MVVM.ViewModels.ForModels
             }
         }
 
-        public IEnumerable<ITransLikeViewModel> AssociatedTransElements { get; private set; }
-
-        public bool OpenAssociatedTransPopupFlag
-        {
-            get => _openAssociatedTransPopupFlag;
-            set
-            {
-                if (value == _openAssociatedTransPopupFlag) return;
-                _openAssociatedTransPopupFlag = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public IRxRelayCommand OpenAssociatedTransElements { get; }
-        public IRxRelayCommand CloseAssociatedTransElements { get; }
+        public ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
+        public ILazyTransLikeViewModels AssociatedAggregatedTransElementsViewModel { get; }
 
         public BudgetEntryViewModel(
             IBudgetEntry budgetEntry,
             Lazy<IBudgetOverviewViewModel> budgetOverviewViewModel,
             ITransRepository transRepository,
+            Func<Func<Task<IEnumerable<ITransLikeViewModel>>>, ILazyTransLikeViewModels> lazyTransLikeViewModelsFactory, 
             ITransDataGridColumnManager transDataGridColumnManager,
             IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
             ICategoryViewModelService categoryViewModelService,
@@ -157,7 +141,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             this.ObservePropertyChanges(nameof(Children))
                 .Do(_ =>
                     {
-                        updatesFromChildren.Disposable = Observable.Merge(Children
+                        updatesFromChildren.Disposable = Children
                             .Select(bevm =>
                                 bevm.ObservePropertyChanges(nameof(AggregatedBudget)))
                             .Concat(Children
@@ -165,30 +149,22 @@ namespace BFF.MVVM.ViewModels.ForModels
                                     bevm.ObservePropertyChanges(nameof(AggregatedOutflow))))
                             .Concat(Children
                                 .Select(bevm =>
-                                    bevm.ObservePropertyChanges(nameof(AggregatedBalance))))).Subscribe(updateAggregates);
+                                    bevm.ObservePropertyChanges(nameof(AggregatedBalance)))).Merge().Subscribe(updateAggregates);
                     })
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(updateAggregates)
                 .AddTo(CompositeDisposable);
 
-            AssociatedTransElements = Enumerable.Empty<ITransLikeViewModel>();
-
-            OpenAssociatedTransElements = new AsyncRxRelayCommand(async () =>
-                    {
-                        AssociatedTransElements = convertFromTransBaseToTransLikeViewModel.Convert(
-                            await transRepository.GetFromMontAndCategoryAsync(Month,
-                                categoryViewModelService.GetModel(Category)), null);
-                        OnPropertyChanged(nameof(AssociatedTransElements));
-                        if (AssociatedTransElements.Any().Not())
-                            OpenAssociatedTransPopupFlag = false;
-                    })
+            AssociatedTransElementsViewModel = lazyTransLikeViewModelsFactory(async () =>
+                convertFromTransBaseToTransLikeViewModel.Convert(
+                    await transRepository.GetFromMontAndCategoryAsync(Month,
+                        categoryViewModelService.GetModel(Category)), null))
                 .AddHere(CompositeDisposable);
 
-            CloseAssociatedTransElements = new RxRelayCommand(() =>
-                    {
-                        AssociatedTransElements = Enumerable.Empty<ITransLikeViewModel>();
-                        OnPropertyChanged(nameof(AssociatedTransElements));
-                    })
+            AssociatedAggregatedTransElementsViewModel = lazyTransLikeViewModelsFactory(async () =>
+                convertFromTransBaseToTransLikeViewModel.Convert(
+                    await transRepository.GetFromMontAndCategoryWithDescendantsAsync(Month,
+                        categoryViewModelService.GetModel(Category)), null))
                 .AddHere(CompositeDisposable);
         }
     }

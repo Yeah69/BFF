@@ -20,6 +20,8 @@ namespace BFF.MVVM.AttachedBehaviors
         {
             base.OnAttached();
 
+            AssociatedObject.Cursor = Cursors.Hand;
+
             bool isActive = false;
 
             Observable

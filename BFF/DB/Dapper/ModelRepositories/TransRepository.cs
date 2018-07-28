@@ -14,7 +14,9 @@ namespace BFF.DB.Dapper.ModelRepositories
         IRepositoryBase<ITransBase>, 
         ISpecifiedPagedAccessAsync<ITransBase, Domain.IAccount>
     {
+        Task<IEnumerable<ITransBase>> GetFromMontAsync(DateTime month);
         Task<IEnumerable<ITransBase>> GetFromMontAndCategoryAsync(DateTime month, Domain.ICategory category);
+        Task<IEnumerable<ITransBase>> GetFromMontAndCategoryWithDescendantsAsync(DateTime month, Domain.ICategory category);
     }
 
 
@@ -120,9 +122,21 @@ namespace BFF.DB.Dapper.ModelRepositories
                 : _transOrm.GetCountFromSummaryAccountAsync()).ConfigureAwait(false);
         }
 
+        public async Task<IEnumerable<ITransBase>> GetFromMontAsync(DateTime month)
+        {
+            return await(await _transOrm.GetFromMonthAsync(month).ConfigureAwait(false))
+                .Select(async t => await ConvertToDomainAsync(t).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
+        }
+
         public async Task<IEnumerable<ITransBase>> GetFromMontAndCategoryAsync(DateTime month, Domain.ICategory category)
         {
             return await (await _transOrm.GetFromMonthAndCategoryAsync(month, category.Id).ConfigureAwait(false))
+                .Select(async t => await ConvertToDomainAsync(t).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<ITransBase>> GetFromMontAndCategoryWithDescendantsAsync(DateTime month, Domain.ICategory category)
+        {
+            return await (await _transOrm.GetFromMonthAndCategoriesAsync(month, category.IterateRootBreadthFirst(c => c.Categories).Select(c => c.Id).ToArray()).ConfigureAwait(false))
                 .Select(async t => await ConvertToDomainAsync(t).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
         }
 
