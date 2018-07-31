@@ -38,6 +38,10 @@ namespace BFF.MVVM.ViewModels
         ITransDataGridColumnManager TransDataGridColumnManager { get; }
 
         Task Refresh();
+
+        IDisposable DeferRefreshUntilDisposal();
+
+        IBudgetMonthViewModel GetBudgetMonthViewModel(DateTime month);
     }
 
     public class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IOncePerBackend, IDisposable
@@ -51,6 +55,7 @@ namespace BFF.MVVM.ViewModels
         private int _selectedIndex;
         private int _currentMonthStartIndex;
         private bool _isOpen;
+        private bool _canRefresh = true;
         public IList<IBudgetMonthViewModel> BudgetMonths { get; private set; }
 
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
@@ -158,8 +163,25 @@ namespace BFF.MVVM.ViewModels
 
         public async Task Refresh()
         {
+            if (_canRefresh.Not()) return;
             BudgetMonths = await Task.Run(() => CreateBudgetMonths());
             _rxSchedulerProvider.UI.MinimalSchedule(() => OnPropertyChanged(nameof(BudgetMonths)));
+        }
+
+        public IDisposable DeferRefreshUntilDisposal()
+        {
+            _canRefresh = false;
+            return Disposable.Create(async () =>
+            {
+                _canRefresh = true;
+                await Refresh();
+            });
+        }
+
+        public IBudgetMonthViewModel GetBudgetMonthViewModel(DateTime month)
+        {
+            var index = MonthToIndex(month);
+            return index < 0 ? null : BudgetMonths[index];
         }
 
         private IDataVirtualizingCollection<IBudgetMonthViewModel> CreateBudgetMonths()

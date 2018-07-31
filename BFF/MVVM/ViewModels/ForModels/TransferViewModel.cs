@@ -117,29 +117,29 @@ namespace BFF.MVVM.ViewModels.ForModels
                 FromAccount = specificAccount;
 
             transfer
-                .ObservePropertyChanges(t => t.FromAccount)
+                .ObservePropertyChanges(nameof(transfer.FromAccount))
                 .SkipLast(1)
                 .Where(_ => transfer.Id != -1L)
-                .Subscribe(fa => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(fa)))
+                .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.FromAccount)))
                 .AddTo(CompositeDisposable);
 
             transfer
-                .ObservePropertyChanges(t => t.FromAccount)
+                .ObservePropertyChanges(nameof(transfer.FromAccount))
                 .Where(_ => transfer.Id != -1L)
-                .Subscribe(fa => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(fa)))
+                .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.FromAccount)))
                 .AddTo(CompositeDisposable);
 
             transfer
-                .ObservePropertyChanges(t => t.ToAccount)
+                .ObservePropertyChanges(nameof(transfer.ToAccount))
                 .SkipLast(1)
                 .Where(_ => transfer.Id != -1L)
-                .Subscribe(fa => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(fa)))
+                .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.ToAccount)))
                 .AddTo(CompositeDisposable);
 
             transfer
-                .ObservePropertyChanges(t => t.ToAccount)
+                .ObservePropertyChanges(nameof(transfer.ToAccount))
                 .Where(_ => transfer.Id != -1L)
-                .Subscribe(fa => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(fa)))
+                .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.ToAccount)))
                 .AddTo(CompositeDisposable);
 
             Sum = transfer.ToReactivePropertyAsSynchronized(
@@ -150,7 +150,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             transfer
-                .ObservePropertyChanges(t => t.Sum)
+                .ObservePropertyChanges(nameof(transfer.Sum))
                 .Where(_ => transfer.Id != -1L)
                 .Subscribe(sum =>
                 {

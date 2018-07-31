@@ -221,6 +221,30 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Budgeting_IncomeExplanation" xml:space="preserve">
     <value>Amount of earned money which is assigned for the expenses of this month.</value>
   </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Fill all budget cells with:</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCells_Zero" xml:space="preserve">
+    <value>Zero</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Fill all empty budget cells with:</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCells_AvgOutflowLastThreeMonths" xml:space="preserve">
+    <value>Average outflows of the last three months</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCells_AvgOutflowLastYear" xml:space="preserve">
+    <value>Average outflows of the last year</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCells_BalanceToZero" xml:space="preserve">
+    <value>Balance to zero</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCells_BudgetLastMonth" xml:space="preserve">
+    <value>Budget values from last month</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCells_OutflowLastMonth" xml:space="preserve">
+    <value>Outflows of last month</value>
+  </data>
   <data name="Budgeting_NotBudgeted" xml:space="preserve">
     <value>Not Budgeted</value>
   </data>

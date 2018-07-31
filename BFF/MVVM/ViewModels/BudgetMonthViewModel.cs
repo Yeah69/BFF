@@ -35,6 +35,18 @@ namespace BFF.MVVM.ViewModels
 
         ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
         ILazyTransLikeViewModels AssociatedIncomeTransElementsViewModel { get; }
+
+        IRxRelayCommand EmptyCellsBudgetLastMonth { get; }
+
+        IRxRelayCommand EmptyCellsOutflowLastMonth { get; }
+
+        IRxRelayCommand EmptyCellsAvgOutflowLastThreeMonths { get; }
+
+        IRxRelayCommand EmptyCellsAvgOutflowLastYear { get; }
+
+        IRxRelayCommand EmptyCellsBalanceToZero { get; }
+
+        IRxRelayCommand AllCellsZero { get; }
     }
 
     public sealed class BudgetMonthViewModel : ViewModelBase, IBudgetMonthViewModel, IDisposable, ITransientViewModel
@@ -45,6 +57,7 @@ namespace BFF.MVVM.ViewModels
         public BudgetMonthViewModel(
             IBudgetMonth budgetMonth,
             ITransRepository transRepository,
+            IBudgetOverviewViewModel budgetOverviewViewModel,
             Func<Func<Task<IEnumerable<ITransLikeViewModel>>>, ILazyTransLikeViewModels> lazyTransLikeViewModelsFactory,
             IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
             IIncomeCategoryViewModelService incomeCategoryViewModelService,
@@ -54,31 +67,31 @@ namespace BFF.MVVM.ViewModels
             BudgetEntries = budgetMonth.BudgetEntries.ToReadOnlyReactiveCollection(budgetEntryViewModelService.GetViewModel).AddTo(_compositeDisposable);
 
             budgetMonth
-                .ObservePropertyChanges(bm => bm.Month)
+                .ObservePropertyChanges(nameof(budgetMonth.Month))
                 .Subscribe(fa => OnPropertyChanged(nameof(Month)))
                 .AddTo(_compositeDisposable);
             budgetMonth
-                .ObservePropertyChanges(bm => bm.NotBudgetedInPreviousMonth)
+                .ObservePropertyChanges(nameof(budgetMonth.NotBudgetedInPreviousMonth))
                 .Subscribe(fa => OnPropertyChanged(nameof(NotBudgetedInPreviousMonth)))
                 .AddTo(_compositeDisposable);
             budgetMonth
-                .ObservePropertyChanges(bm => bm.OverspentInPreviousMonth)
+                .ObservePropertyChanges(nameof(budgetMonth.OverspentInPreviousMonth))
                 .Subscribe(fa => OnPropertyChanged(nameof(OverspentInPreviousMonth)))
                 .AddTo(_compositeDisposable);
             budgetMonth
-                .ObservePropertyChanges(bm => bm.IncomeForThisMonth)
+                .ObservePropertyChanges(nameof(budgetMonth.IncomeForThisMonth))
                 .Subscribe(fa => OnPropertyChanged(nameof(IncomeForThisMonth)))
                 .AddTo(_compositeDisposable);
             budgetMonth
-                .ObservePropertyChanges(bm => bm.DanglingTransferForThisMonth)
+                .ObservePropertyChanges(nameof(budgetMonth.DanglingTransferForThisMonth))
                 .Subscribe(fa => OnPropertyChanged(nameof(DanglingTransferForThisMonth)))
                 .AddTo(_compositeDisposable);
             budgetMonth
-                .ObservePropertyChanges(bm => bm.UnassignedTransactionSumForThisMonth)
+                .ObservePropertyChanges(nameof(budgetMonth.UnassignedTransactionSumForThisMonth))
                 .Subscribe(fa => OnPropertyChanged(nameof(UnassignedTransactionSumForThisMonth)))
                 .AddTo(_compositeDisposable);
             budgetMonth
-                .ObservePropertyChanges(bm => bm.BudgetedThisMonth)
+                .ObservePropertyChanges(nameof(budgetMonth.BudgetedThisMonth))
                 .Subscribe(fa =>
                 {
                     OnPropertyChanged(nameof(BudgetedThisMonth));
@@ -86,15 +99,15 @@ namespace BFF.MVVM.ViewModels
                 })
                 .AddTo(_compositeDisposable);
             budgetMonth
-                .ObservePropertyChanges(bm => bm.Outflows)
+                .ObservePropertyChanges(nameof(budgetMonth.Outflows))
                 .Subscribe(fa => OnPropertyChanged(nameof(Outflows)))
                 .AddTo(_compositeDisposable);
             budgetMonth
-                .ObservePropertyChanges(bm => bm.Balance)
+                .ObservePropertyChanges(nameof(budgetMonth.Balance))
                 .Subscribe(fa => OnPropertyChanged(nameof(Balance)))
                 .AddTo(_compositeDisposable);
             budgetMonth
-                .ObservePropertyChanges(bm => bm.AvailableToBudget)
+                .ObservePropertyChanges(nameof(budgetMonth.AvailableToBudget))
                 .Subscribe(fa => OnPropertyChanged(nameof(AvailableToBudget)))
                 .AddTo(_compositeDisposable);
 
@@ -120,6 +133,132 @@ namespace BFF.MVVM.ViewModels
                         null);
                 })
                 .AddHere(_compositeDisposable);
+
+            EmptyCellsBudgetLastMonth = new RxRelayCommand(() =>
+            {
+                using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
+                {
+                    var lastMonthCategoriesToBudget = budgetOverviewViewModel
+                        .GetBudgetMonthViewModel(Month.PreviousMonth())
+                        .BudgetEntries
+                        .ToDictionary(bevm => bevm.Category, bevm => bevm);
+                    foreach (var budgetEntryViewModel in BudgetEntries)
+                    {
+                        if (budgetEntryViewModel.Budget == 0
+                            && lastMonthCategoriesToBudget
+                                .ContainsKey(budgetEntryViewModel.Category))
+                            budgetEntryViewModel.Budget =
+                                lastMonthCategoriesToBudget[budgetEntryViewModel.Category].Budget;
+                    }
+                }
+            })
+                .AddHere(_compositeDisposable);
+
+            EmptyCellsOutflowLastMonth = new RxRelayCommand(() =>
+            {
+                using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
+                {
+                    var lastMonthCategoriesToBudget = budgetOverviewViewModel
+                        .GetBudgetMonthViewModel(Month.PreviousMonth())
+                        ?.BudgetEntries
+                        .ToDictionary(bevm => bevm.Category, bevm => bevm) 
+                            ?? new Dictionary<ICategoryViewModel, IBudgetEntryViewModel>();
+                    foreach (var budgetEntryViewModel in BudgetEntries)
+                    {
+                        if (budgetEntryViewModel.Budget == 0
+                            && lastMonthCategoriesToBudget
+                                .ContainsKey(budgetEntryViewModel.Category))
+                            budgetEntryViewModel.Budget =
+                                lastMonthCategoriesToBudget[budgetEntryViewModel.Category].Outflow * -1;
+                    }
+                }
+            })
+                .AddHere(_compositeDisposable);
+
+            EmptyCellsAvgOutflowLastThreeMonths = new RxRelayCommand(() =>
+            {
+                using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
+                {
+                    var budgetMonths = new List<IBudgetMonthViewModel>();
+                    var currentMonth = Month.PreviousMonth();
+                    for (int i = 0; i < 3; i++)
+                    {
+                        var currentBudget = budgetOverviewViewModel.GetBudgetMonthViewModel(currentMonth);
+                        if (currentBudget is null) break;
+                        budgetMonths.Add(currentBudget);
+                        currentMonth = currentMonth.PreviousMonth();
+                    }
+
+                    var categoryToAverage = budgetMonths
+                        .SelectMany(bmvm => bmvm.BudgetEntries)
+                        .GroupBy(bevm => bevm.Category)
+                        .ToDictionary(g => g.Key, g => (long)g.Average(bevm => bevm.Outflow));
+                    foreach (var budgetEntryViewModel in BudgetEntries)
+                    {
+                        if (budgetEntryViewModel.Budget == 0
+                            && categoryToAverage
+                                .ContainsKey(budgetEntryViewModel.Category))
+                            budgetEntryViewModel.Budget =
+                                categoryToAverage[budgetEntryViewModel.Category] * -1;
+                    }
+                }
+            })
+                .AddHere(_compositeDisposable);
+
+            EmptyCellsAvgOutflowLastYear = new RxRelayCommand(() =>
+            {
+                using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
+                {
+                    var budgetMonths = new List<IBudgetMonthViewModel>();
+                    var currentMonth = Month.PreviousMonth();
+                    for (int i = 0; i < 12; i++)
+                    {
+                        var currentBudget = budgetOverviewViewModel.GetBudgetMonthViewModel(currentMonth);
+                        if (currentBudget is null) break;
+                        budgetMonths.Add(currentBudget);
+                        currentMonth = currentMonth.PreviousMonth();
+                    }
+
+                    var categoryToAverage = budgetMonths
+                        .SelectMany(bmvm => bmvm.BudgetEntries)
+                        .GroupBy(bevm => bevm.Category)
+                        .ToDictionary(g => g.Key, g => (long)g.Average(bevm => bevm.Outflow));
+                    foreach (var budgetEntryViewModel in BudgetEntries)
+                    {
+                        if (budgetEntryViewModel.Budget == 0
+                            && categoryToAverage
+                                .ContainsKey(budgetEntryViewModel.Category))
+                            budgetEntryViewModel.Budget =
+                                categoryToAverage[budgetEntryViewModel.Category] * -1;
+                    }
+                }
+            })
+                .AddHere(_compositeDisposable);
+
+            EmptyCellsBalanceToZero = new RxRelayCommand(() =>
+            {
+                using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
+                {
+                    foreach (var budgetEntryViewModel in BudgetEntries)
+                    {
+                        if (budgetEntryViewModel.Budget == 0)
+                            budgetEntryViewModel.Budget -= budgetEntryViewModel.Balance;
+                    }
+                }
+            })
+                .AddHere(_compositeDisposable);
+
+            AllCellsZero = new RxRelayCommand(() =>
+            {
+                using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
+                {
+                    foreach (var budgetEntryViewModel in BudgetEntries)
+                    {
+                        budgetEntryViewModel.Budget = 0;
+                    }
+                }
+            })
+                .AddHere(_compositeDisposable);
         }
 
         public ReadOnlyReactiveCollection<IBudgetEntryViewModel> BudgetEntries { get; }
@@ -138,6 +277,12 @@ namespace BFF.MVVM.ViewModels
         public long Balance => _budgetMonth.Balance;
         public ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
         public ILazyTransLikeViewModels AssociatedIncomeTransElementsViewModel { get; }
+        public IRxRelayCommand EmptyCellsBudgetLastMonth { get; }
+        public IRxRelayCommand EmptyCellsOutflowLastMonth { get; }
+        public IRxRelayCommand EmptyCellsAvgOutflowLastThreeMonths { get; }
+        public IRxRelayCommand EmptyCellsAvgOutflowLastYear { get; }
+        public IRxRelayCommand EmptyCellsBalanceToZero { get; }
+        public IRxRelayCommand AllCellsZero { get; }
 
         public void Dispose()
         {

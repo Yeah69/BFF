@@ -81,7 +81,7 @@ namespace BFF.MVVM.ViewModels.ForModels
                 ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             transaction
-                .ObservePropertyChanges(t => t.Sum)
+                .ObservePropertyChanges(nameof(transaction.Sum))
                 .Where(_ => transaction.Id != -1)
                 .Subscribe(sum => NotifyRelevantAccountsToRefreshBalance())
                 .AddTo(CompositeDisposable);

@@ -83,5 +83,14 @@ namespace BFF.MVVM.Views
             if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetMonthViewModel budgetEntry)
                 budgetEntry.AssociatedIncomeTransElementsViewModel.OpenFlag = true;
         }
+
+        private void MonthDataHeaderMenu_OnClick(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent?.ContextMenu != null)
+            {
+                fecb.Parent.ContextMenu.PlacementTarget = fecb.Parent;
+                fecb.Parent.ContextMenu.IsOpen = true;
+            }
+        }
     }
 }

@@ -113,7 +113,7 @@ namespace BFF.MVVM.ViewModels.ForModels
             StartingBalanceEdit = createSumEdit(StartingBalance);
 
             account
-                .ObservePropertyChanges(a => a.StartingBalance)
+                .ObservePropertyChanges(nameof(account.StartingBalance))
                 .Subscribe(_ =>
                 {
                     summaryAccountViewModel.RefreshStartingBalance();

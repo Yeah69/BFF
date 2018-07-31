@@ -97,14 +97,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 Account = specificAccount;
 
             transactionBase
-                .ObservePropertyChanges(tb => tb.Account)
+                .ObservePropertyChanges(nameof(transactionBase.Account))
                 .SkipLast(1)
-                .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(a)))
+                .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transactionBase.Account)))
                 .AddTo(CompositeDisposable);
 
             transactionBase
-                .ObservePropertyChanges(tb => tb.Account)
-                .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(a)))
+                .ObservePropertyChanges(nameof(transactionBase.Account))
+                .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transactionBase.Account)))
                 .AddTo(CompositeDisposable);
 
             _payee = _payeeViewModelService.GetViewModel(transactionBase.Payee);

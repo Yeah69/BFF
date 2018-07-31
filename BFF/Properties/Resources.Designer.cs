@@ -369,6 +369,78 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Zero.
+        /// </summary>
+        public static string Budgeting_Month_ContextMenu_AllCells_Zero {
+            get {
+                return ResourceManager.GetString("Budgeting_Month_ContextMenu_AllCells_Zero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill all budget cells with:.
+        /// </summary>
+        public static string Budgeting_Month_ContextMenu_AllCellsHeader {
+            get {
+                return ResourceManager.GetString("Budgeting_Month_ContextMenu_AllCellsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Average outflows of the last three months.
+        /// </summary>
+        public static string Budgeting_Month_ContextMenu_EmptyCells_AvgOutflowLastThreeMonths {
+            get {
+                return ResourceManager.GetString("Budgeting_Month_ContextMenu_EmptyCells_AvgOutflowLastThreeMonths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Average outflows of the last year.
+        /// </summary>
+        public static string Budgeting_Month_ContextMenu_EmptyCells_AvgOutflowLastYear {
+            get {
+                return ResourceManager.GetString("Budgeting_Month_ContextMenu_EmptyCells_AvgOutflowLastYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Balance to zero.
+        /// </summary>
+        public static string Budgeting_Month_ContextMenu_EmptyCells_BalanceToZero {
+            get {
+                return ResourceManager.GetString("Budgeting_Month_ContextMenu_EmptyCells_BalanceToZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Budget values from last month.
+        /// </summary>
+        public static string Budgeting_Month_ContextMenu_EmptyCells_BudgetLastMonth {
+            get {
+                return ResourceManager.GetString("Budgeting_Month_ContextMenu_EmptyCells_BudgetLastMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outflows of last month.
+        /// </summary>
+        public static string Budgeting_Month_ContextMenu_EmptyCells_OutflowLastMonth {
+            get {
+                return ResourceManager.GetString("Budgeting_Month_ContextMenu_EmptyCells_OutflowLastMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill all empty budget cells with:.
+        /// </summary>
+        public static string Budgeting_Month_ContextMenu_EmptyCellsHeader {
+            get {
+                return ResourceManager.GetString("Budgeting_Month_ContextMenu_EmptyCellsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not Budgeted.
         /// </summary>
         public static string Budgeting_NotBudgeted {

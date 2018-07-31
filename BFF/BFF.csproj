@@ -188,6 +188,7 @@
     <Compile Include="MVVM\Models\Native\BudgetMonth.cs" />
     <Compile Include="MVVM\Models\Native\Category.cs" />
     <Compile Include="MVVM\RxRelayCommand.cs" />
+    <Compile Include="MVVM\ViewModels\ForModels\Utility\BudgetMonthMenuTitles.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Utility\LazyElementsViewModelBase.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Utility\CsvBankStatementImportItemViewModel.cs" />
     <Compile Include="MVVM\Models\Native\Utility\CsvBankStatementImportProfile.cs" />

@@ -128,7 +128,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 .AddTo(CompositeDisposable);
 
             transBase
-                .ObservePropertyChanges(tb => tb.Date)
+                .ObservePropertyChanges(nameof(transBase.Date))
                 .Where(_ => transBase.Id != -1)
                 .Subscribe(_ => NotifyRelevantAccountsToRefreshTrans())
                 .AddTo(CompositeDisposable);
