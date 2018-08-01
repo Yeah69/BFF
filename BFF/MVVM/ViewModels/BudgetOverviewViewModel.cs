@@ -26,6 +26,8 @@ namespace BFF.MVVM.ViewModels
     {
         IList<IBudgetMonthViewModel> BudgetMonths { get; }
 
+        IBudgetMonthViewModel CurrentBudgetMonth { get; }
+
         int CurrentMonthStartIndex { get; }
 
         bool IsOpen { get; set; }
@@ -60,6 +62,7 @@ namespace BFF.MVVM.ViewModels
         private bool _canRefresh = true;
         private DateTime _selectedMonth;
         public IList<IBudgetMonthViewModel> BudgetMonths { get; private set; }
+        public IBudgetMonthViewModel CurrentBudgetMonth => BudgetMonths[MonthToIndex(DateTime.Now)];
 
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
 

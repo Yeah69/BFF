@@ -363,17 +363,54 @@
                         <Setter.Value>
                             <DataTemplate>
                                 <hm:HamburgerMenu ClosePaneOnItemSelection="True"
+                                                  Grid.IsSharedSizeScope="True"
                                                   IsOverlaying="True">
                                     <hm:HamburgerMenu.Resources>
-                                        <DataTemplate x:Key="HeaderTemplate">
-                                            <TextBlock Margin="0,0,5,0"
-                                                       FontSize="23"
-                                                       FontWeight="Bold"
-                                                       Text="{Binding}" />
+                                        <DataTemplate x:Key="AccountsHeaderTemplate">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition SharedSizeGroup="MainHeaderTitle" />
+                                                    <ColumnDefinition SharedSizeGroup="MainHeaderValue" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0"
+                                                           Margin="0,0,5,0"
+                                                           HorizontalAlignment="Left"
+                                                           FontSize="23"
+                                                           FontWeight="Bold"
+                                                           Text="{lex:Loc HamburgerMenu_Accounts}" />
+                                                <TextBlock Grid.Column="1"
+                                                           Margin="0,0,5,0"
+                                                           HorizontalAlignment="Right"
+                                                           FontSize="23"
+                                                           FontWeight="Bold"
+                                                           Foreground="{Binding Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                                           Text="{Binding Converter={x:Static mvvm:Converters.SumToString}}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                        <DataTemplate x:Key="BudgetHeaderTemplate">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition SharedSizeGroup="MainHeaderTitle" />
+                                                    <ColumnDefinition SharedSizeGroup="MainHeaderValue" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0"
+                                                           Margin="0,0,5,0"
+                                                           HorizontalAlignment="Left"
+                                                           FontSize="23"
+                                                           FontWeight="Bold"
+                                                           Text="{lex:Loc HamburgerMenu_Budget}" />
+                                                <TextBlock Grid.Column="1"
+                                                           Margin="0,0,5,0"
+                                                           HorizontalAlignment="Right"
+                                                           FontSize="23"
+                                                           FontWeight="Bold"
+                                                           Foreground="{Binding Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                                           Text="{Binding Converter={x:Static mvvm:Converters.SumToString}}" />
+                                            </Grid>
                                         </DataTemplate>
                                     </hm:HamburgerMenu.Resources>
-                                    <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Accounts}"
-                                                          HeaderTemplate="{StaticResource HeaderTemplate}"
+                                    <hm:HamburgerMenuItem Header="{Binding AccountTabsViewModel.SummaryAccountViewModel.BalanceUntilNow}"
+                                                          HeaderTemplate="{StaticResource AccountsHeaderTemplate}"
                                                           IsSelected="{Binding AccountTabsViewModel.IsOpen.Value}">
                                         <hm:HamburgerMenuItem.Content>
                                             <views:AccountTabsView HorizontalContentAlignment="Stretch"
@@ -385,8 +422,8 @@
                                             </Viewbox>
                                         </hm:HamburgerMenuItem.Icon>
                                     </hm:HamburgerMenuItem>
-                                    <hm:HamburgerMenuItem Header="{lex:Loc HamburgerMenu_Budget}"
-                                                          HeaderTemplate="{StaticResource HeaderTemplate}"
+                                    <hm:HamburgerMenuItem Header="{Binding BudgetOverviewViewModel.CurrentBudgetMonth.AvailableToBudget}"
+                                                          HeaderTemplate="{StaticResource BudgetHeaderTemplate}"
                                                           IsSelected="{Binding BudgetOverviewViewModel.IsOpen}">
                                         <views:BudgetOverviewView DataContext="{Binding BudgetOverviewViewModel}" />
                                         <hm:HamburgerMenuItem.Icon>
