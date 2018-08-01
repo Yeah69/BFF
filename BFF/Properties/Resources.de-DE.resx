@@ -224,25 +224,25 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m�
   <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
     <value>Fülle alle Budgetzellen mit:</value>
   </data>
-  <data name="Budgeting_Month_ContextMenu_AllCells_Zero" xml:space="preserve">
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
     <value>Null</value>
   </data>
   <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
     <value>Fülle alle leeren Budgetzellen mit:</value>
   </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCells_AvgOutflowLastThreeMonths" xml:space="preserve">
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
     <value>Durchschnittliche Ausgaben der letzten drei Monate</value>
   </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCells_AvgOutflowLastYear" xml:space="preserve">
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
     <value>Durchschnittliche Ausgaben des letzten Jahres</value>
   </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCells_BalanceToZero" xml:space="preserve">
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
     <value>Saldo zu null</value>
   </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCells_BudgetLastMonth" xml:space="preserve">
-    <value>Budgetwerte des letzten Monats</value>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Budgetwert des letzten Monats</value>
   </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCells_OutflowLastMonth" xml:space="preserve">
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
     <value>Ausgaben des letzten Monats</value>
   </data>
   <data name="Budgeting_NotBudgeted" xml:space="preserve">

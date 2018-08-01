@@ -161,19 +161,19 @@
                                         <ContextMenu Placement="Bottom">
                                             <MenuItem Header="{x:Static utility:BudgetMonthMenuTitles.EmptyCellsHeader}">
                                                 <MenuItem Command="{Binding EmptyCellsBudgetLastMonth}"
-                                                          Header="{x:Static utility:BudgetMonthMenuTitles.EmptyCellsBudgetLastMonth}" />
-                                                <MenuItem Command="{Binding EmptyCellsOutflowLastMonth}"
-                                                          Header="{x:Static utility:BudgetMonthMenuTitles.EmptyCellsOutflowLastMonth}" />
-                                                <MenuItem Command="{Binding EmptyCellsAvgOutflowLastThreeMonths}"
-                                                          Header="{x:Static utility:BudgetMonthMenuTitles.EmptyCellsAvgOutflowLastThreeMonths}" />
-                                                <MenuItem Command="{Binding EmptyCellsAvgOutflowLastYear}"
-                                                          Header="{x:Static utility:BudgetMonthMenuTitles.EmptyCellsAvgOutflowLastYear}" />
+                                                          Header="{x:Static utility:BudgetMonthMenuTitles.BudgetLastMonth}" />
+                                                <MenuItem Command="{Binding EmptyCellsOutflowsLastMonth}"
+                                                          Header="{x:Static utility:BudgetMonthMenuTitles.OutflowsLastMonth}" />
+                                                <MenuItem Command="{Binding EmptyCellsAvgOutflowsLastThreeMonths}"
+                                                          Header="{x:Static utility:BudgetMonthMenuTitles.AvgOutflowLastThreeMonths}" />
+                                                <MenuItem Command="{Binding EmptyCellsAvgOutflowsLastYear}"
+                                                          Header="{x:Static utility:BudgetMonthMenuTitles.AvgOutflowsLastYear}" />
                                                 <MenuItem Command="{Binding EmptyCellsBalanceToZero}"
-                                                          Header="{x:Static utility:BudgetMonthMenuTitles.EmptyCellsBalanceToZero}" />
+                                                          Header="{x:Static utility:BudgetMonthMenuTitles.BalanceToZero}" />
                                             </MenuItem>
                                             <MenuItem Header="{x:Static utility:BudgetMonthMenuTitles.AllCellsHeader}">
                                                 <MenuItem Command="{Binding AllCellsZero}"
-                                                          Header="{x:Static utility:BudgetMonthMenuTitles.AllCellsZero}" />
+                                                          Header="{x:Static utility:BudgetMonthMenuTitles.Zero}" />
                                             </MenuItem>
                                         </ContextMenu>
                                     </iconPacks:PackIconMaterial.ContextMenu>
@@ -605,42 +605,89 @@
                                     <UniformGrid Visibility="{Binding IsChecked, Source={x:Reference AggregateSwitch}, Converter={x:Static mvvm:Converters.TrueToCollapsed}}"
                                                  d:DataContext="{d:DesignInstance forModels:IBudgetEntryViewModel}"
                                                  Columns="3">
-                                        <TextBox Height="25"
-                                                 MinHeight="0"
-                                                 Margin="-5,0,-6,0"
-                                                 Padding="0"
-                                                 HorizontalContentAlignment="Right"
-                                                 Text="{Binding Budget, Converter={x:Static mvvm:Converters.SumToString}}"
-                                                 TextAlignment="Right">
-                                            <TextBox.Style>
-                                                <Style BasedOn="{StaticResource {x:Type TextBox}}"
-                                                       TargetType="{x:Type TextBox}">
-                                                    <Style.Triggers>
-                                                        <Trigger Property="IsReadOnly"
-                                                                 Value="True">
-                                                            <Setter Property="BorderBrush"
-                                                                    Value="Transparent" />
-                                                            <Setter Property="Background"
-                                                                    Value="Transparent" />
-                                                        </Trigger>
-                                                        <Trigger Property="IsFocused"
-                                                                 Value="True">
-                                                            <Setter Property="IsReadOnly"
-                                                                    Value="False" />
-                                                        </Trigger>
-                                                        <DataTrigger Binding="{Binding Budget}"
-                                                                     Value="0">
-                                                            <Setter Property="Foreground"
-                                                                    Value="{DynamicResource OpaqueZeroBrush}" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                    <Setter Property="IsReadOnly"
-                                                            Value="True" />
-                                                    <Setter Property="Foreground"
-                                                            Value="{Binding Budget, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
-                                                </Style>
-                                            </TextBox.Style>
-                                        </TextBox>
+                                        <Grid>
+                                            <TextBox Height="25"
+                                                     Margin="-5,0,-6,0"
+                                                     Padding="0"
+                                                     HorizontalContentAlignment="Right"
+                                                     Text="{Binding Budget, Converter={x:Static mvvm:Converters.SumToString}}"
+                                                     TextAlignment="Right">
+                                                <TextBox.Style>
+                                                    <Style BasedOn="{StaticResource {x:Type TextBox}}"
+                                                           TargetType="{x:Type TextBox}">
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsReadOnly"
+                                                                     Value="True">
+                                                                <Setter Property="BorderBrush"
+                                                                        Value="Transparent" />
+                                                                <Setter Property="Background"
+                                                                        Value="Transparent" />
+                                                            </Trigger>
+                                                            <Trigger Property="IsFocused"
+                                                                     Value="True">
+                                                                <Setter Property="IsReadOnly"
+                                                                        Value="False" />
+                                                            </Trigger>
+                                                            <DataTrigger Binding="{Binding Budget}"
+                                                                         Value="0">
+                                                                <Setter Property="Foreground"
+                                                                        Value="{DynamicResource OpaqueZeroBrush}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                        <Setter Property="IsReadOnly"
+                                                                Value="True" />
+                                                        <Setter Property="Foreground"
+                                                                Value="{Binding Budget, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}" />
+                                                    </Style>
+                                                </TextBox.Style>
+                                            </TextBox>
+                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                        Height="{StaticResource IconSize}" Margin="-5,0,0,0"
+                                                                        HorizontalAlignment="Left"
+                                                                        VerticalAlignment="Center"
+                                                                        Background="Transparent"
+                                                                        Foreground="{DynamicResource AccentColorBrush}"
+                                                                        Kind="DotsVertical">
+                                                <i:Interaction.Behaviors>
+                                                    <attachedBehaviors:FrameworkElementClickBehavior Click="BudgetEntryMenu_OnClick" />
+                                                </i:Interaction.Behaviors>
+                                                <iconPacks:PackIconMaterial.ContextMenu>
+                                                    <ContextMenu Placement="Bottom">
+                                                        <MenuItem Command="{Binding BudgetLastMonth}"
+                                                                  Header="{x:Static utility:BudgetMonthMenuTitles.BudgetLastMonth}" />
+                                                        <MenuItem Command="{Binding OutflowsLastMonth}"
+                                                                  Header="{x:Static utility:BudgetMonthMenuTitles.OutflowsLastMonth}" />
+                                                        <MenuItem Command="{Binding AvgOutflowsLastThreeMonths}"
+                                                                  Header="{x:Static utility:BudgetMonthMenuTitles.AvgOutflowLastThreeMonths}" />
+                                                        <MenuItem Command="{Binding AvgOutflowsLastYear}"
+                                                                  Header="{x:Static utility:BudgetMonthMenuTitles.AvgOutflowsLastYear}" />
+                                                        <MenuItem Command="{Binding BalanceToZero}"
+                                                                  Header="{x:Static utility:BudgetMonthMenuTitles.BalanceToZero}" />
+                                                        <MenuItem Command="{Binding Zero}"
+                                                                  Header="{x:Static utility:BudgetMonthMenuTitles.Zero}" />
+                                                    </ContextMenu>
+                                                </iconPacks:PackIconMaterial.ContextMenu>
+                                                <iconPacks:PackIconMaterial.Style>
+                                                    <Style TargetType="{x:Type iconPacks:PackIconMaterial}">
+                                                        <Setter Property="Visibility"
+                                                                Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
+                                                                         Value="True">
+                                                                <Setter Property="Visibility"
+                                                                        Value="Visible" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ContextMenu.IsOpen, RelativeSource={RelativeSource Self}}"
+                                                                         Value="True">
+                                                                <Setter Property="Visibility"
+                                                                        Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </iconPacks:PackIconMaterial.Style>
+                                            </iconPacks:PackIconMaterial>
+                                        </Grid>
+
                                         <Grid Background="Transparent"
                                               Tag="{Binding}">
                                             <i:Interaction.Behaviors>

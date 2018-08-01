@@ -38,11 +38,11 @@ namespace BFF.MVVM.ViewModels
 
         IRxRelayCommand EmptyCellsBudgetLastMonth { get; }
 
-        IRxRelayCommand EmptyCellsOutflowLastMonth { get; }
+        IRxRelayCommand EmptyCellsOutflowsLastMonth { get; }
 
-        IRxRelayCommand EmptyCellsAvgOutflowLastThreeMonths { get; }
+        IRxRelayCommand EmptyCellsAvgOutflowsLastThreeMonths { get; }
 
-        IRxRelayCommand EmptyCellsAvgOutflowLastYear { get; }
+        IRxRelayCommand EmptyCellsAvgOutflowsLastYear { get; }
 
         IRxRelayCommand EmptyCellsBalanceToZero { get; }
 
@@ -154,7 +154,7 @@ namespace BFF.MVVM.ViewModels
             })
                 .AddHere(_compositeDisposable);
 
-            EmptyCellsOutflowLastMonth = new RxRelayCommand(() =>
+            EmptyCellsOutflowsLastMonth = new RxRelayCommand(() =>
             {
                 using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
                 {
@@ -175,7 +175,7 @@ namespace BFF.MVVM.ViewModels
             })
                 .AddHere(_compositeDisposable);
 
-            EmptyCellsAvgOutflowLastThreeMonths = new RxRelayCommand(() =>
+            EmptyCellsAvgOutflowsLastThreeMonths = new RxRelayCommand(() =>
             {
                 using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
                 {
@@ -205,7 +205,7 @@ namespace BFF.MVVM.ViewModels
             })
                 .AddHere(_compositeDisposable);
 
-            EmptyCellsAvgOutflowLastYear = new RxRelayCommand(() =>
+            EmptyCellsAvgOutflowsLastYear = new RxRelayCommand(() =>
             {
                 using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
                 {
@@ -278,9 +278,9 @@ namespace BFF.MVVM.ViewModels
         public ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
         public ILazyTransLikeViewModels AssociatedIncomeTransElementsViewModel { get; }
         public IRxRelayCommand EmptyCellsBudgetLastMonth { get; }
-        public IRxRelayCommand EmptyCellsOutflowLastMonth { get; }
-        public IRxRelayCommand EmptyCellsAvgOutflowLastThreeMonths { get; }
-        public IRxRelayCommand EmptyCellsAvgOutflowLastYear { get; }
+        public IRxRelayCommand EmptyCellsOutflowsLastMonth { get; }
+        public IRxRelayCommand EmptyCellsAvgOutflowsLastThreeMonths { get; }
+        public IRxRelayCommand EmptyCellsAvgOutflowsLastYear { get; }
         public IRxRelayCommand EmptyCellsBalanceToZero { get; }
         public IRxRelayCommand AllCellsZero { get; }
 

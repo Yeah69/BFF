@@ -5,10 +5,10 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.Helper.Extensions;
-using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -37,14 +37,25 @@ namespace BFF.MVVM.ViewModels.ForModels
         ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
 
         ILazyTransLikeViewModels AssociatedAggregatedTransElementsViewModel { get; }
+
+        ICommand BudgetLastMonth { get; }
+
+        ICommand OutflowsLastMonth { get; }
+
+        ICommand AvgOutflowsLastThreeMonths { get; }
+
+        ICommand AvgOutflowsLastYear { get; }
+
+        ICommand BalanceToZero { get; }
+
+        ICommand Zero { get; }
     }
 
     public class BudgetEntryViewModel : DataModelViewModel, IBudgetEntryViewModel
     {
-        public ITransDataGridColumnManager TransDataGridColumnManager { get; }
         private readonly IBudgetEntry _budgetEntry;
         private IReadOnlyList<IBudgetEntryViewModel> _children;
-
+        
         public ICategoryViewModel Category { get; private set; }
         public DateTime Month => _budgetEntry.Month;
         public long Budget
@@ -71,18 +82,22 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
         public ILazyTransLikeViewModels AssociatedAggregatedTransElementsViewModel { get; }
+        public ICommand BudgetLastMonth { get; }
+        public ICommand OutflowsLastMonth { get; }
+        public ICommand AvgOutflowsLastThreeMonths { get; }
+        public ICommand AvgOutflowsLastYear { get; }
+        public ICommand BalanceToZero { get; }
+        public ICommand Zero { get; }
 
         public BudgetEntryViewModel(
             IBudgetEntry budgetEntry,
             Lazy<IBudgetOverviewViewModel> budgetOverviewViewModel,
             ITransRepository transRepository,
             Func<Func<Task<IEnumerable<ITransLikeViewModel>>>, ILazyTransLikeViewModels> lazyTransLikeViewModelsFactory, 
-            ITransDataGridColumnManager transDataGridColumnManager,
             IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
             ICategoryViewModelService categoryViewModelService,
             IRxSchedulerProvider rxSchedulerProvider) : base(budgetEntry, rxSchedulerProvider)
         {
-            TransDataGridColumnManager = transDataGridColumnManager;
             _budgetEntry = budgetEntry;
             Category = categoryViewModelService.GetViewModel(budgetEntry.Category);
             budgetEntry
@@ -166,6 +181,82 @@ namespace BFF.MVVM.ViewModels.ForModels
                     await transRepository.GetFromMonthAndCategoriesAsync(Month,
                         categoryViewModelService.GetModel(Category).IterateRootBreadthFirst(c => c.Categories)), null))
                 .AddHere(CompositeDisposable);
+
+            BudgetLastMonth = new RxRelayCommand(() =>
+                {
+                    var previousBudgetMonth = budgetOverviewViewModel
+                        .Value
+                        .GetBudgetMonthViewModel(Month.PreviousMonth())
+                        .BudgetEntries
+                        .FirstOrDefault(bevm => bevm.Category == Category);
+                    if (previousBudgetMonth != null)
+                        Budget = previousBudgetMonth.Budget;
+                })
+                .AddHere(CompositeDisposable);
+
+            OutflowsLastMonth = new RxRelayCommand(() =>
+                {
+                    var previousBudgetMonth = budgetOverviewViewModel
+                        .Value
+                        .GetBudgetMonthViewModel(Month.PreviousMonth())
+                        .BudgetEntries
+                        .FirstOrDefault(bevm => bevm.Category == Category);
+                    if (previousBudgetMonth != null)
+                        Budget = previousBudgetMonth.Outflow * -1;
+                })
+                .AddHere(CompositeDisposable);
+
+            AvgOutflowsLastThreeMonths = new RxRelayCommand(() =>
+                {
+                    var budgetEntries = new List<IBudgetEntryViewModel>();
+                    var currentMonth = Month.PreviousMonth();
+                    for (int i = 0; i < 3; i++)
+                    {
+                        var currentBudget = budgetOverviewViewModel
+                            .Value
+                            .GetBudgetMonthViewModel(currentMonth);
+                        if (currentBudget is null) break;
+                        var budgetEntryViewModel = currentBudget.BudgetEntries.SingleOrDefault(bevm => bevm.Category == Category);
+                        if(budgetEntryViewModel != null)
+                            budgetEntries.Add(budgetEntryViewModel);
+                        currentMonth = currentMonth.PreviousMonth();
+                    }
+
+                    Budget = budgetEntries.Sum(bevm => bevm.Outflow) / -3L;
+                })
+                .AddHere(CompositeDisposable);
+
+            AvgOutflowsLastYear = new RxRelayCommand(() =>
+            {
+                var budgetEntries = new List<IBudgetEntryViewModel>();
+                var currentMonth = Month.PreviousMonth();
+                for (int i = 0; i < 12; i++)
+                {
+                    var currentBudget = budgetOverviewViewModel
+                        .Value
+                        .GetBudgetMonthViewModel(currentMonth);
+                    if (currentBudget is null) break;
+                    var budgetEntryViewModel = currentBudget.BudgetEntries.SingleOrDefault(bevm => bevm.Category == Category);
+                    if (budgetEntryViewModel != null)
+                        budgetEntries.Add(budgetEntryViewModel);
+                    currentMonth = currentMonth.PreviousMonth();
+                }
+
+                Budget = budgetEntries.Sum(bevm => bevm.Outflow) / -12L;
+            })
+                .AddHere(CompositeDisposable);
+
+            BalanceToZero = new RxRelayCommand(() =>
+            {
+                Budget -= Balance;
+            })
+                .AddHere(CompositeDisposable);
+
+            Zero = new RxRelayCommand(() =>
+            {
+                Budget = 0;
+            })
+            .AddHere(CompositeDisposable);
         }
     }
 }
