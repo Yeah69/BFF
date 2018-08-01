@@ -148,25 +148,25 @@
                    Grid.Column="0"
                    HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch">
-            <StackPanel HorizontalAlignment="Right"
+            <DockPanel HorizontalAlignment="Stretch"
                         VerticalAlignment="Top"
-                        DockPanel.Dock="Top"
-                        Orientation="Horizontal">
+                        DockPanel.Dock="Top" LastChildFill="True">
                 <Button Margin="5"
-                        HorizontalAlignment="Right"
-                        Command="{Binding DecreaseMonthStartIndex}">
-                    <iconPacks:PackIconModern Width="{StaticResource IconSize}"
-                                              Height="{StaticResource IconSize}"
-                                              Kind="ChevronLeft" />
-                </Button>
-                <Button Margin="5"
-                        HorizontalAlignment="Right"
+                        DockPanel.Dock="Right"
                         Command="{Binding IncreaseMonthStartIndex}">
                     <iconPacks:PackIconModern Width="{StaticResource IconSize}"
                                               Height="{StaticResource IconSize}"
                                               Kind="ChevronRight" />
                 </Button>
-            </StackPanel>
+                <Button Margin="5"
+                        DockPanel.Dock="Left"
+                        Command="{Binding DecreaseMonthStartIndex}">
+                    <iconPacks:PackIconModern Width="{StaticResource IconSize}"
+                                              Height="{StaticResource IconSize}"
+                                              Kind="ChevronLeft" />
+                </Button>
+                <mah:DateTimePicker DockPanel.Dock="Top" SelectedDate="{Binding SelectedMonth}" Margin="5" />
+            </DockPanel>
             <mah:ToggleSwitch x:Name="AggregateSwitch"
                               VerticalAlignment="Bottom"
                               DockPanel.Dock="Bottom"

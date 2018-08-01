@@ -31,6 +31,8 @@ namespace BFF.MVVM.ViewModels
         bool IsOpen { get; set; }
         int SelectedIndex { get; set; }
 
+        DateTime SelectedMonth { get; set; }
+
         IRxRelayCommand IncreaseMonthStartIndex { get; }
 
         IRxRelayCommand DecreaseMonthStartIndex { get; }
@@ -56,6 +58,7 @@ namespace BFF.MVVM.ViewModels
         private int _currentMonthStartIndex;
         private bool _isOpen;
         private bool _canRefresh = true;
+        private DateTime _selectedMonth;
         public IList<IBudgetMonthViewModel> BudgetMonths { get; private set; }
 
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
@@ -71,6 +74,18 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
+        public DateTime SelectedMonth
+        {
+            get => _selectedMonth;
+            set
+            {
+                if (_selectedMonth == value) return;
+                _selectedMonth = value;
+                CurrentMonthStartIndex = MonthToIndex(_selectedMonth);
+                OnPropertyChanged();
+            }
+        }
+
         public int CurrentMonthStartIndex
         {
             get => _currentMonthStartIndex;
@@ -78,6 +93,7 @@ namespace BFF.MVVM.ViewModels
             {
                 if (_currentMonthStartIndex == value) return;
                 _currentMonthStartIndex = value;
+                SelectedMonth = IndexToMonth(_currentMonthStartIndex);
                 OnPropertyChanged();
             }
         }
