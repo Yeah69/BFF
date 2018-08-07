@@ -335,20 +335,20 @@
                                         CellEditingTemplate="{StaticResource DateEditingColumnTemplate}"
                                         CellTemplate="{StaticResource DateColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Date}"
-                                        SortMemberPath="Date.Value" />
+                                        SortMemberPath="Date" />
                 <!--  Payee  -->
                 <DataGridTemplateColumn x:Name="PayeeColumn"
                                         CellEditingTemplate="{StaticResource PayeeEditingColumnTemplate}"
                                         CellTemplate="{StaticResource PayeeColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Payee}"
-                                        SortMemberPath="Payee.Name.Value" />
+                                        SortMemberPath="Payee.Name" />
                 <!--  Memo  -->
                 <DataGridTemplateColumn x:Name="MemoColumn"
                                         Width="*"
                                         CellEditingTemplate="{StaticResource MemoEditingColumnTemplate}"
                                         CellTemplate="{StaticResource MemoColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Memo}"
-                                        SortMemberPath="Memo.Value" />
+                                        SortMemberPath="Memo" />
                 <!--  Sum  -->
                 <DataGridTemplateColumn CellEditingTemplate="{StaticResource SumEditingColumnTemplate}"
                                         CellTemplate="{StaticResource SumColumnTemplate}"

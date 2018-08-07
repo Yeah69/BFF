@@ -497,14 +497,14 @@
                         <ContentControl.Style>
                             <Style TargetType="{x:Type ContentControl}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding HasDate.Value}"
+                                    <DataTrigger Binding="{Binding HasDate}"
                                                  Value="True">
                                         <Setter Property="ContentTemplate">
                                             <Setter.Value>
                                                 <DataTemplate>
                                                     <TextBlock Margin="0,2.5"
                                                                Style="{StaticResource CellTextBlock}"
-                                                               Text="{Binding Date.Value, Converter={x:Static mvvm:Converters.DateTimeToString}}" />
+                                                               Text="{Binding Date, Converter={x:Static mvvm:Converters.DateTimeToString}}" />
                                                 </DataTemplate>
                                             </Setter.Value>
                                         </Setter>
@@ -534,7 +534,7 @@
                         <ContentControl.Style>
                             <Style TargetType="{x:Type ContentControl}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding HasDate.Value}"
+                                    <DataTrigger Binding="{Binding HasDate}"
                                                  Value="True">
                                         <Setter Property="ContentTemplate">
                                             <Setter.Value>
@@ -547,7 +547,7 @@
                                                         <DatePicker Margin="0,2.5"
                                                                     VerticalContentAlignment="Center"
                                                                     DockPanel.Dock="Left"
-                                                                    SelectedDate="{Binding Date.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     SelectedDateFormat="{Binding ShowLongDate, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
                                                     </DockPanel>
                                                 </DataTemplate>
@@ -749,19 +749,19 @@
                         <ContentControl.Style>
                             <Style TargetType="{x:Type ContentControl}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding HasPayee.Value}"
+                                    <DataTrigger Binding="{Binding HasPayee}"
                                                  Value="True">
                                         <Setter Property="ContentTemplate">
                                             <Setter.Value>
                                                 <DataTemplate>
                                                     <DockPanel LastChildFill="True">
-                                                        <views:AlertSymbol Visibility="{Binding PayeeExists.Value, Converter={x:Static mvvm:Converters.TrueToCollapsed}}"
+                                                        <views:AlertSymbol Visibility="{Binding PayeeExists, Converter={x:Static mvvm:Converters.TrueToCollapsed}}"
                                                                            VerticalAlignment="Center"
                                                                            DockPanel.Dock="Right" />
                                                         <TextBlock Margin="0,2.5"
                                                                    DockPanel.Dock="Left"
                                                                    Style="{StaticResource CellTextBlock}"
-                                                                   Text="{Binding Payee.Value, Mode=OneWay}" />
+                                                                   Text="{Binding Payee, Mode=OneWay}" />
                                                     </DockPanel>
                                                 </DataTemplate>
                                             </Setter.Value>
@@ -844,7 +844,7 @@
                         <ContentControl.Style>
                             <Style TargetType="{x:Type ContentControl}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding HasPayee.Value}"
+                                    <DataTrigger Binding="{Binding HasPayee}"
                                                  Value="True">
                                         <Setter Property="ContentTemplate">
                                             <Setter.Value>
@@ -854,16 +854,16 @@
                                                                 Command="{Binding DismissPayee}"
                                                                 Content="X"
                                                                 DockPanel.Dock="Right" />
-                                                        <views:AlertSymbol Visibility="{Binding PayeeExists.Value, Converter={x:Static mvvm:Converters.TrueToCollapsed}}"
+                                                        <views:AlertSymbol Visibility="{Binding PayeeExists, Converter={x:Static mvvm:Converters.TrueToCollapsed}}"
                                                                            VerticalAlignment="Center"
                                                                            DockPanel.Dock="Right" />
-                                                        <ComboBox DisplayMemberPath="Name.Value"
+                                                        <ComboBox DisplayMemberPath="Name"
                                                                   DockPanel.Dock="Right"
                                                                   IsEditable="True"
                                                                   IsTextSearchCaseSensitive="True"
                                                                   IsTextSearchEnabled="True"
                                                                   ItemsSource="{Binding ExistingPayees}"
-                                                                  Text="{Binding Payee.Value}" />
+                                                                  Text="{Binding Payee}" />
                                                     </DockPanel>
                                                 </DataTemplate>
                                             </Setter.Value>
@@ -1122,16 +1122,16 @@
                         <ContentControl.Style>
                             <Style TargetType="{x:Type ContentControl}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding HasMemo.Value}"
+                                    <DataTrigger Binding="{Binding HasMemo}"
                                                  Value="True">
                                         <Setter Property="ContentTemplate">
                                             <Setter.Value>
                                                 <DataTemplate>
                                                     <TextBlock Margin="0,2.5"
                                                                Style="{StaticResource CellTextBlock}"
-                                                               Text="{Binding Memo.Value, Mode=OneWay}"
+                                                               Text="{Binding Memo, Mode=OneWay}"
                                                                TextTrimming="CharacterEllipsis"
-                                                               ToolTip="{Binding Memo.Value}" />
+                                                               ToolTip="{Binding Memo}" />
                                                 </DataTemplate>
                                             </Setter.Value>
                                         </Setter>
@@ -1163,7 +1163,7 @@
                         <ContentControl.Style>
                             <Style TargetType="{x:Type ContentControl}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding HasMemo.Value}"
+                                    <DataTrigger Binding="{Binding HasMemo}"
                                                  Value="True">
                                         <Setter Property="ContentTemplate">
                                             <Setter.Value>
@@ -1178,7 +1178,7 @@
                                                                  VerticalContentAlignment="Center"
                                                                  DockPanel.Dock="Left"
                                                                  Focusable="True"
-                                                                 Text="{Binding Memo.Value, UpdateSourceTrigger=LostFocus}"
+                                                                 Text="{Binding Memo, UpdateSourceTrigger=LostFocus}"
                                                                  TextWrapping="NoWrap" />
                                                     </DockPanel>
                                                 </DataTemplate>

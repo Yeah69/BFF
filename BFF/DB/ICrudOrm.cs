@@ -34,10 +34,14 @@ namespace BFF.DB
 
     public interface IAccountOrm : IOncePerBackend
     {
-        Task<long?> GetBalanceAsync(long id);
-        Task<long?> GetBalanceUntilNowAsync(long id);
-        Task<long?> GetOverallBalanceAsync();
-        Task<long?> GetOverallBalanceUntilNowAsync();
+        Task<long?> GetClearedBalanceAsync(long id);
+        Task<long?> GetClearedBalanceUntilNowAsync(long id);
+        Task<long?> GetClearedOverallBalanceAsync();
+        Task<long?> GetClearedOverallBalanceUntilNowAsync();
+        Task<long?> GetUnclearedBalanceAsync(long id);
+        Task<long?> GetUnclearedBalanceUntilNowAsync(long id);
+        Task<long?> GetUnclearedOverallBalanceAsync();
+        Task<long?> GetUnclearedOverallBalanceUntilNowAsync();
     }
 
     public interface ICategoryOrm : IOncePerBackend

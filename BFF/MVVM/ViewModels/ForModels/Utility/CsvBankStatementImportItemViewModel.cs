@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Services;
 using BFF.Properties;
@@ -13,9 +11,9 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
 {
     public interface ICsvBankStatementImportItemViewModel : IDisposable
     {
-        IReactiveProperty<DateTime> Date { get; }
+        DateTime Date { get; }
 
-        IReactiveProperty<bool> HasDate { get; }
+        bool HasDate { get; }
 
         IRxRelayCommand AdmitDate { get; }
 
@@ -23,23 +21,23 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
 
         bool ShowLongDate { get; }
 
-        IReactiveProperty<string> Payee { get; }
+        string Payee { get; }
 
-        IReactiveProperty<bool> HasPayee { get; }
+        bool HasPayee { get; }
 
-        IReadOnlyReactiveProperty<bool> CreatePayeeIfNotExisting { get; }
+        bool CreatePayeeIfNotExisting { get; }
 
         IRxRelayCommand AdmitPayee { get; }
 
         IRxRelayCommand DismissPayee { get; }
 
-        IReadOnlyReactiveProperty<bool> PayeeExists { get; }
+        bool PayeeExists { get; }
 
         IObservableReadOnlyList<IPayeeViewModel> ExistingPayees { get; }
 
-        IReactiveProperty<string> Memo { get; }
+        string Memo { get; }
 
-        IReactiveProperty<bool> HasMemo { get; }
+        bool HasMemo { get; }
 
         IRxRelayCommand AdmitMemo { get; }
 
@@ -56,76 +54,133 @@ namespace BFF.MVVM.ViewModels.ForModels.Utility
         IRxRelayCommand DismissSum { get; }
     }
 
-    public class CsvBankStatementImportItemViewModel : ICsvBankStatementImportItemViewModel
+    public class CsvBankStatementImportItemViewModel : ViewModelBase, ICsvBankStatementImportItemViewModel
     {
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private bool _hasDate;
+        private bool _hasPayee;
+        private bool _hasMemo;
+        private bool _payeeExists;
+        private string _payee;
 
         public CsvBankStatementImportItemViewModel(
             (DateTime? Date, string Payee, bool CreatePayeeIfNotExisting, string Memo, long? Sum) configuration,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
-            IPayeeViewModelService payeeService,
-            IRxSchedulerProvider rxSchedulerProvider)
+            IPayeeViewModelService payeeService)
         {
-            Date     = new ReactivePropertySlim<DateTime>(configuration.Date ?? DateTime.Today, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
-            Payee    = new ReactivePropertySlim<string>(configuration.Payee, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
-            Memo     = new ReactivePropertySlim<string>(configuration.Memo, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+            Date     = configuration.Date ?? DateTime.Today;
+            Payee    = configuration.Payee;
+            Memo     = configuration.Memo;
             Sum      = new ReactivePropertySlim<long>(configuration.Sum ?? 0L, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
-            HasDate  = new ReactivePropertySlim<bool>(configuration.Date.HasValue, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
-            HasPayee = new ReactivePropertySlim<bool>(configuration.Payee != null, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
-            HasMemo  = new ReactivePropertySlim<bool>(configuration.Memo != null, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+            HasDate  = configuration.Date.HasValue;
+            HasPayee = configuration.Payee != null;
+            HasMemo  = configuration.Memo != null;
             HasSum   = new ReactivePropertySlim<bool>(configuration.Sum.HasValue, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
 
             SumEdit = createSumEdit(Sum).AddHere(_compositeDisposable);
 
-            AdmitDate = new RxRelayCommand(() => HasDate.Value = true)
+            AdmitDate = new RxRelayCommand(() => HasDate = true)
                 .AddHere(_compositeDisposable);
 
-            AdmitPayee = new RxRelayCommand(() => HasPayee.Value = true)
+            AdmitPayee = new RxRelayCommand(() => HasPayee = true)
                 .AddHere(_compositeDisposable);
 
-            PayeeExists = Payee
-                .Select(p => payeeService.All.Any(payee => payee.Name == p))
-                .ToReadOnlyReactivePropertySlim(payeeService.All.Any(payee => payee.Name == Payee.Value), ReactivePropertyMode.DistinctUntilChanged)
+            this
+                .ObservePropertyChanges(nameof(Payee))
+                .Subscribe(_ => PayeeExists = payeeService.All.Any(payee => payee.Name == Payee))
                 .AddHere(_compositeDisposable);
 
-            CreatePayeeIfNotExisting = new ReactiveProperty<bool>(configuration.CreatePayeeIfNotExisting, ReactivePropertyMode.DistinctUntilChanged);
+            CreatePayeeIfNotExisting = configuration.CreatePayeeIfNotExisting;
 
             ExistingPayees = payeeService.All;
 
-            AdmitMemo = new RxRelayCommand(() => HasMemo.Value = true)
+            AdmitMemo = new RxRelayCommand(() => HasMemo = true)
                 .AddHere(_compositeDisposable);
 
             AdmitSum = new RxRelayCommand(() => HasSum.Value = true)
                 .AddHere(_compositeDisposable);
 
-            DismissDate = new RxRelayCommand(() => HasDate.Value = false)
+            DismissDate = new RxRelayCommand(() => HasDate = false)
                 .AddHere(_compositeDisposable);
 
-            DismissPayee = new RxRelayCommand(() => HasPayee.Value = false)
+            DismissPayee = new RxRelayCommand(() => HasPayee = false)
                 .AddHere(_compositeDisposable);
 
-            DismissMemo = new RxRelayCommand(() => HasMemo.Value = false)
+            DismissMemo = new RxRelayCommand(() => HasMemo = false)
                 .AddHere(_compositeDisposable);
 
             DismissSum = new RxRelayCommand(() => HasSum.Value = false)
                 .AddHere(_compositeDisposable);
         }
 
-        public IReactiveProperty<DateTime> Date { get; set; }
-        public IReactiveProperty<bool> HasDate { get; }
+        public DateTime Date { get; set; }
+
+        public bool HasDate
+        {
+            get => _hasDate;
+            private set
+            {
+                if (_hasDate == value) return;
+                _hasDate = value;
+                OnPropertyChanged();
+            }
+        }
+
         public IRxRelayCommand AdmitDate { get; }
         public IRxRelayCommand DismissDate { get; }
 
-        public IReactiveProperty<string> Payee { get; set; }
-        public IReactiveProperty<bool> HasPayee { get; }
-        public IReadOnlyReactiveProperty<bool> CreatePayeeIfNotExisting { get; }
+        public string Payee
+        {
+            get => _payee;
+            set
+            {
+                if (_payee == value) return;
+                _payee = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool HasPayee
+        {
+            get => _hasPayee;
+            private set
+            {
+                if (_hasPayee == value) return;
+                _hasPayee = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool CreatePayeeIfNotExisting { get; }
         public IRxRelayCommand AdmitPayee { get; }
         public IRxRelayCommand DismissPayee { get; }
-        public IReadOnlyReactiveProperty<bool> PayeeExists { get; }
+
+        public bool PayeeExists
+        {
+            get => _payeeExists;
+            private set
+            {
+                if (_payeeExists == value) return;
+                _payeeExists = value;
+                OnPropertyChanged();
+            }
+        }
+
         public IObservableReadOnlyList<IPayeeViewModel> ExistingPayees { get; }
 
-        public IReactiveProperty<string> Memo { get; set; }
-        public IReactiveProperty<bool> HasMemo { get; }
+        public string Memo { get; set; }
+
+        public bool HasMemo
+        {
+            get => _hasMemo;
+            private set
+            {
+                if (_hasMemo == value) return;
+                _hasMemo = value;
+                OnPropertyChanged();
+            }
+        }
+
         public IRxRelayCommand AdmitMemo { get; }
         public IRxRelayCommand DismissMemo { get; }
 

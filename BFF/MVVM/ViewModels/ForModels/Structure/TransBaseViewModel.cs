@@ -136,7 +136,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             transBase
                 .ObservePropertyChanges(nameof(transBase.Cleared))
                 .ObserveOn(rxSchedulerProvider.UI)
-                .Subscribe(_ => OnPropertyChanged(nameof(Cleared)))
+                .Subscribe(_ =>
+                {
+                    OnPropertyChanged(nameof(Cleared));
+                    NotifyRelevantAccountsToRefreshBalance();
+                })
                 .AddTo(CompositeDisposable);
         }
     }

@@ -17,9 +17,13 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public interface IAccountRepository : IObservableRepositoryBase<Domain.IAccount>
     {
-        Task<long?> GetBalanceAsync(Domain.IAccount account);
+        Task<long?> GetClearedBalanceAsync(Domain.IAccount account);
 
-        Task<long?> GetBalanceUntilNowAsync(Domain.IAccount account);
+        Task<long?> GetClearedBalanceUntilNowAsync(Domain.IAccount account);
+
+        Task<long?> GetUnclearedBalanceAsync(Domain.IAccount account);
+
+        Task<long?> GetUnclearedBalanceUntilNowAsync(Domain.IAccount account);
     }
 
     public sealed class AccountRepository : ObservableRepositoryBase<Domain.IAccount, Account>, IAccountRepository
@@ -56,16 +60,16 @@ namespace BFF.DB.Dapper.ModelRepositories
                     persistenceModel.Name,
                     persistenceModel.StartingBalance));
 
-        public Task<long?> GetBalanceAsync(Domain.IAccount account)
+        public Task<long?> GetClearedBalanceAsync(Domain.IAccount account)
         {
             try
             {
                 switch (account)
                 {
                     case Domain.ISummaryAccount _:
-                        return _accountOrm.GetOverallBalanceAsync();
+                        return _accountOrm.GetClearedOverallBalanceAsync();
                     case Domain.IAccount specificAccount:
-                        return _accountOrm.GetBalanceAsync(specificAccount.Id);
+                        return _accountOrm.GetClearedBalanceAsync(specificAccount.Id);
                     default:
                         return Task.FromResult<long?>(null);
                 }
@@ -76,16 +80,56 @@ namespace BFF.DB.Dapper.ModelRepositories
             }
         }
 
-        public Task<long?> GetBalanceUntilNowAsync(Domain.IAccount account)
+        public Task<long?> GetClearedBalanceUntilNowAsync(Domain.IAccount account)
         {
             try
             {
                 switch (account)
                 {
                     case Domain.ISummaryAccount _:
-                        return _accountOrm.GetOverallBalanceUntilNowAsync();
+                        return _accountOrm.GetClearedOverallBalanceUntilNowAsync();
                     case Domain.IAccount specificAccount:
-                        return _accountOrm.GetBalanceUntilNowAsync(specificAccount.Id);
+                        return _accountOrm.GetClearedBalanceUntilNowAsync(specificAccount.Id);
+                    default:
+                        return Task.FromResult<long?>(null);
+                }
+            }
+            catch (OverflowException)
+            {
+                return Task.FromResult<long?>(null);
+            }
+        }
+
+        public Task<long?> GetUnclearedBalanceAsync(Domain.IAccount account)
+        {
+            try
+            {
+                switch (account)
+                {
+                    case Domain.ISummaryAccount _:
+                        return _accountOrm.GetUnclearedOverallBalanceAsync();
+                    case Domain.IAccount specificAccount:
+                        return _accountOrm.GetUnclearedBalanceAsync(specificAccount.Id);
+                    default:
+                        return Task.FromResult<long?>(null);
+                }
+            }
+            catch (OverflowException)
+            {
+                return Task.FromResult<long?>(null);
+            }
+        }
+
+        public Task<long?> GetUnclearedBalanceUntilNowAsync(Domain.IAccount account)
+        {
+            try
+            {
+                switch (account)
+                {
+                    case Domain.ISummaryAccount _:
+                        return _accountOrm.GetUnclearedOverallBalanceUntilNowAsync();
+                    case Domain.IAccount specificAccount:
+                        return _accountOrm.GetUnclearedBalanceUntilNowAsync(specificAccount.Id);
                     default:
                         return Task.FromResult<long?>(null);
                 }

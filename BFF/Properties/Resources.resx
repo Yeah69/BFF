@@ -123,6 +123,21 @@
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
     <value>Create</value>
   </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Cleared</value>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Uncleared</value>
+  </data>
   <data name="AccountView_Column_Transfer" xml:space="preserve">
     <value>Transfer</value>
   </data>
@@ -215,21 +230,6 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
     <value>Sum of all amounts of money which are budgeted on a category in this month.</value>
   </data>
-  <data name="Budgeting_Income" xml:space="preserve">
-    <value>Income</value>
-  </data>
-  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
-    <value>Amount of earned money which is assigned for the expenses of this month.</value>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>Fill all budget cells with:</value>
-  </data>
-  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value>Zero</value>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value>Fill all empty budget cells with:</value>
-  </data>
   <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
     <value>Average outflows of the last three months</value>
   </data>
@@ -244,6 +244,21 @@ Are you really sure? (A backup will be created automatically, if you would like 
   </data>
   <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
     <value>Outflows of last month</value>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Zero</value>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Income</value>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Amount of earned money which is assigned for the expenses of this month.</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Fill all budget cells with:</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Fill all empty budget cells with:</value>
   </data>
   <data name="Budgeting_NotBudgeted" xml:space="preserve">
     <value>Not Budgeted</value>

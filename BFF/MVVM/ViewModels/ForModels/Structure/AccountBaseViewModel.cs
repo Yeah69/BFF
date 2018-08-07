@@ -42,13 +42,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         ObservableCollection<ITransLikeViewModel> NewTransList { get; }
 
-        /// <summary>
-        /// The current Balance of this Account.
-        /// </summary>
-        long? Balance { get; }
+        long? ClearedBalance { get; }
 
-        
-        long? BalanceUntilNow { get; }
+        long? ClearedBalanceUntilNow { get; }
+
+        long? UnclearedBalance { get; }
+
+        long? UnclearedBalanceUntilNow { get; }
+
+        long? TotalBalance { get; }
+
+        long? TotalBalanceUntilNow { get; }
 
         bool IsOpen { get; }
 
@@ -116,9 +120,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public ObservableCollection<ITransLikeViewModel> NewTransList { get; } = new ObservableCollection<ITransLikeViewModel>();
 
-        public long? Balance { get; private set; } = 0;
+        public long? ClearedBalance { get; private set; } = 0;
 
-        public long? BalanceUntilNow { get; private set; } = 0;
+        public long? ClearedBalanceUntilNow { get; private set; } = 0;
+        public long? UnclearedBalance { get; private set; } = 0;
+        public long? UnclearedBalanceUntilNow { get; private set; } = 0;
+        public long? TotalBalance => ClearedBalance + UnclearedBalance;
+        public long? TotalBalanceUntilNow => ClearedBalanceUntilNow + UnclearedBalanceUntilNow;
 
         public bool IsOpen
         {
@@ -191,12 +199,22 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 {
                     case CultureMessage.Refresh:
                         OnPropertyChanged(nameof(StartingBalance));
-                        OnPropertyChanged(nameof(Balance));
+                        OnPropertyChanged(nameof(ClearedBalance));
+                        OnPropertyChanged(nameof(UnclearedBalance));
+                        OnPropertyChanged(nameof(TotalBalance));
+                        OnPropertyChanged(nameof(ClearedBalanceUntilNow));
+                        OnPropertyChanged(nameof(UnclearedBalanceUntilNow));
+                        OnPropertyChanged(nameof(TotalBalanceUntilNow));
                         RefreshTransCollection();
                         break;
                     case CultureMessage.RefreshCurrency:
                         OnPropertyChanged(nameof(StartingBalance));
-                        OnPropertyChanged(nameof(Balance));
+                        OnPropertyChanged(nameof(ClearedBalance));
+                        OnPropertyChanged(nameof(UnclearedBalance));
+                        OnPropertyChanged(nameof(TotalBalance));
+                        OnPropertyChanged(nameof(ClearedBalanceUntilNow));
+                        OnPropertyChanged(nameof(UnclearedBalanceUntilNow));
+                        OnPropertyChanged(nameof(TotalBalanceUntilNow));
                         RefreshTransCollection();
                         break;
                     case CultureMessage.RefreshDate:
@@ -224,23 +242,33 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             _refreshBalance
                 .ObserveOn(rxSchedulerProvider.Task)
                 .Where(_ => IsOpen)
-                .SelectMany(_ => accountRepository.GetBalanceAsync(account))
+                .SelectMany(_ => Task.WhenAll(
+                    accountRepository.GetClearedBalanceAsync(account), 
+                    accountRepository.GetUnclearedBalanceAsync(account)))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(b =>
                 {
-                    Balance = b;
-                    OnPropertyChanged(nameof(Balance));
+                    ClearedBalance = b[0];
+                    UnclearedBalance = b[1];
+                    OnPropertyChanged(nameof(ClearedBalance));
+                    OnPropertyChanged(nameof(UnclearedBalance));
+                    OnPropertyChanged(nameof(TotalBalance));
                 }).AddTo(CompositeDisposable);
 
             _refreshBalanceUntilNow
                 .ObserveOn(rxSchedulerProvider.Task)
                 .Where(_ => IsOpen)
-                .SelectMany(_ => accountRepository.GetBalanceUntilNowAsync(account))
+                .SelectMany(_ => Task.WhenAll(
+                    accountRepository.GetClearedBalanceUntilNowAsync(account),
+                    accountRepository.GetUnclearedBalanceUntilNowAsync(account)))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(bun =>
                 {
-                    BalanceUntilNow = bun;
-                    OnPropertyChanged(nameof(BalanceUntilNow));
+                    ClearedBalanceUntilNow = bun[0];
+                    UnclearedBalanceUntilNow = bun[1];
+                    OnPropertyChanged(nameof(ClearedBalanceUntilNow));
+                    OnPropertyChanged(nameof(UnclearedBalanceUntilNow));
+                    OnPropertyChanged(nameof(TotalBalanceUntilNow));
                 }).AddTo(CompositeDisposable);
 
             Disposable.Create(() =>
@@ -334,7 +362,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         }
 
 
-        protected IDataVirtualizingCollection<ITransLikeViewModel> CreateDataVirtualizingCollection()
+        private IDataVirtualizingCollection<ITransLikeViewModel> CreateDataVirtualizingCollection()
             => CollectionBuilder<ITransLikeViewModel>
                 .CreateBuilder()
                 .BuildAHoardingTaskBasedAsyncCollection(
@@ -343,7 +371,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     _rxSchedulerProvider.UI,
                     PageSize);
 
-        protected int PageSize = 100;
+        private readonly int PageSize = 100;
         private bool _isOpen;
 
         protected abstract IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess { get; }

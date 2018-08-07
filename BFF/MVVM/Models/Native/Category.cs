@@ -69,7 +69,7 @@ namespace BFF.MVVM.Models.Native
 
         public bool IsMyAncestor(ICategory other)
         {
-            var current = this.Parent;
+            var current = Parent;
             while (current != null)
             {
                 if (current == other) return true;

@@ -144,6 +144,51 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string AccountView_Balance_All {
+            get {
+                return ResourceManager.GetString("AccountView_Balance_All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cleared.
+        /// </summary>
+        public static string AccountView_Balance_Cleared {
+            get {
+                return ResourceManager.GetString("AccountView_Balance_Cleared", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current.
+        /// </summary>
+        public static string AccountView_Balance_Current {
+            get {
+                return ResourceManager.GetString("AccountView_Balance_Current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string AccountView_Balance_Total {
+            get {
+                return ResourceManager.GetString("AccountView_Balance_Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uncleared.
+        /// </summary>
+        public static string AccountView_Balance_Uncleared {
+            get {
+                return ResourceManager.GetString("AccountView_Balance_Uncleared", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transfer.
         /// </summary>
         public static string AccountView_Column_Transfer {

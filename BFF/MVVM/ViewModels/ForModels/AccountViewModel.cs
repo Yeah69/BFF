@@ -146,22 +146,22 @@ namespace BFF.MVVM.ViewModels.ForModels
                     {
                         var transactionViewModel = transactionViewModelFactory(this);
 
-                        if (item.HasDate.Value)
-                            transactionViewModel.Date = item.Date.Value;
-                        if (item.HasPayee.Value)
+                        if (item.HasDate)
+                            transactionViewModel.Date = item.Date;
+                        if (item.HasPayee)
                         {
-                            if (payeeService.Value.All.Any(p => p.Name == item.Payee.Value))
-                                transactionViewModel.Payee = payeeService.Value.All.FirstOrDefault(p => p.Name == item.Payee.Value);
-                            else if (item.CreatePayeeIfNotExisting.Value)
+                            if (payeeService.Value.All.Any(p => p.Name == item.Payee))
+                                transactionViewModel.Payee = payeeService.Value.All.FirstOrDefault(p => p.Name == item.Payee);
+                            else if (item.CreatePayeeIfNotExisting)
                             {
                                 IPayee newPayee = payeeFactory();
-                                newPayee.Name = item.Payee.Value.Trim();
+                                newPayee.Name = item.Payee.Trim();
                                 await newPayee.InsertAsync();
                                 transactionViewModel.Payee = payeeService.Value.GetViewModel(newPayee);
                             }
                         }
-                        if (item.HasMemo.Value)
-                            transactionViewModel.Memo = item.Memo.Value;
+                        if (item.HasMemo)
+                            transactionViewModel.Memo = item.Memo;
                         if (item.HasSum.Value)
                             transactionViewModel.Sum.Value = item.Sum.Value;
 

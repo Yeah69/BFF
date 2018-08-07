@@ -409,7 +409,7 @@
                                             </Grid>
                                         </DataTemplate>
                                     </hm:HamburgerMenu.Resources>
-                                    <hm:HamburgerMenuItem Header="{Binding AccountTabsViewModel.SummaryAccountViewModel.BalanceUntilNow}"
+                                    <hm:HamburgerMenuItem Header="{Binding AccountTabsViewModel.SummaryAccountViewModel.TotalBalanceUntilNow}"
                                                           HeaderTemplate="{StaticResource AccountsHeaderTemplate}"
                                                           IsSelected="{Binding AccountTabsViewModel.IsOpen.Value}">
                                         <hm:HamburgerMenuItem.Content>

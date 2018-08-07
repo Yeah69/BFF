@@ -141,6 +141,21 @@ namespace BFF.MVVM
                         : IncomeBrush);
 
         /// <summary>
+        /// Negative sums get the same color as the transactions and positive sums (and zero) get the same color as incomes.
+        /// Because it is expected that most of the transactions get negative sums and most of the incomes get positive sums.
+        /// No convert back function.
+        /// </summary>
+        public static readonly IValueConverter NullableSumToSolidColorBrush =
+            ValueConverter.Create<long?, SolidColorBrush>(
+                e => e.Value is null 
+                    ? Brushes.Transparent
+                    : e.Value == 0L
+                        ? NeutralForegroundBrush
+                        : e.Value < 0L
+                            ? TransactionBrush
+                            : IncomeBrush);
+
+        /// <summary>
         /// True if value is current month, otherwise false.
         /// </summary>
         public static readonly IValueConverter IsCurrentMonth =
