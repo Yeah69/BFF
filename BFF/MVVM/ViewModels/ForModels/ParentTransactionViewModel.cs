@@ -47,9 +47,9 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         IReactiveProperty<long> SumDuringEdit { get; }
 
-        IReadOnlyReactiveProperty<long> SumMissingWithoutNewSubs { get; }
+        IReadOnlyReactiveProperty<long> MissingSum { get; }
 
-        IReadOnlyReactiveProperty<long> SumMissingWithNewSubs { get; }
+        IReadOnlyReactiveProperty<long> IntermediateSum { get; }
 
         IReadOnlyReactiveProperty<long> TotalSum { get; }
         IRxRelayCommand NonInsertedConvertToTransaction { get; }
@@ -120,20 +120,22 @@ namespace BFF.MVVM.ViewModels.ForModels
 
             SumDuringEdit = new ReactiveProperty<long>(Sum.Value, ReactivePropertyMode.DistinctUntilChanged);
 
-            SumMissingWithoutNewSubs = Sum
-                .Merge(SumDuringEdit)
-                .Select(_ => SumDuringEdit.Value - Sum.Value)
-                .ToReadOnlyReactivePropertySlim(
-                    SumDuringEdit.Value - Sum.Value,
-                    ReactivePropertyMode.DistinctUntilChanged);
+            SumEdit = createSumEdit(SumDuringEdit);
 
-            SumMissingWithNewSubs =
+            IntermediateSum =
                 EmitOnSumRelatedChanges(NewSubTransactions)
-                    .Merge(SumMissingWithoutNewSubs.Select(_ => Unit.Default))
-                    .Select(_ => SumMissingWithoutNewSubs.Value - NewSubTransactions.Sum(ns => ns.Sum.Value))
+                .Merge(Sum.Select(_ => Unit.Default))
+                    .Select(_ => Sum.Value + NewSubTransactions.Sum(ns => ns.Sum.Value))
                     .ToReadOnlyReactivePropertySlim(
-                        SumMissingWithoutNewSubs.Value - NewSubTransactions.Sum(ns => ns.Sum.Value),
+                        Sum.Value + NewSubTransactions.Sum(ns => ns.Sum.Value),
                         ReactivePropertyMode.DistinctUntilChanged);
+
+            MissingSum = SumEdit.Sum
+                .Merge(IntermediateSum)
+                .Select(_ => SumEdit.Sum.Value - IntermediateSum.Value)
+                .ToReadOnlyReactivePropertySlim(
+                    SumEdit.Sum.Value - IntermediateSum.Value,
+                    ReactivePropertyMode.DistinctUntilChanged);
 
             parentTransaction
                 .SubTransactions
@@ -144,8 +146,6 @@ namespace BFF.MVVM.ViewModels.ForModels
                     Account?.RefreshBalance();
                     summaryAccountViewModel.RefreshBalance();
                 }).AddTo(CompositeDisposable);
-
-            SumEdit = createSumEdit(SumDuringEdit);
 
             TotalSum = EmitOnSumRelatedChanges(SubTransactions)
                 .Merge(EmitOnSumRelatedChanges(NewSubTransactions))
@@ -274,8 +274,8 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IRxRelayCommand<IAccountViewModel> OpenParentTransactionView { get; }
 
         public IReactiveProperty<long> SumDuringEdit { get; }
-        public IReadOnlyReactiveProperty<long> SumMissingWithoutNewSubs { get; }
-        public IReadOnlyReactiveProperty<long> SumMissingWithNewSubs { get; }
+        public IReadOnlyReactiveProperty<long> MissingSum { get; }
+        public IReadOnlyReactiveProperty<long> IntermediateSum { get; }
         public IReadOnlyReactiveProperty<long> TotalSum { get; }
         public IRxRelayCommand NonInsertedConvertToTransaction { get; }
         public IRxRelayCommand NonInsertedConvertToTransfer { get; }

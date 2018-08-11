@@ -205,13 +205,14 @@
                                                           Suffix=:}" />
                             <TextBlock Grid.Row="1"
                                        Grid.Column="0"
+                                       Visibility="{Binding NewSubTransactions.Count, Converter={x:Static mvvm:Converters.IntGreaterThanZeroVisibleElseCollapsed}}"
                                        Margin="2.5"
-                                       Text="{lex:LocText Key=ParentTransEditingView_MissingSumWithoutSubs,
+                                       Text="{lex:LocText Key=ParentTransEditingView_IntermediateSum,
                                                           Suffix=:}" />
                             <TextBlock Grid.Row="2"
                                        Grid.Column="0"
                                        Margin="2.5"
-                                       Text="{lex:LocText Key=ParentTransEditingView_MissingSumWithSubs,
+                                       Text="{lex:LocText Key=AccountView_MissingSum,
                                                           Suffix=:}" />
                             <TextBlock Grid.Row="0"
                                        Grid.Column="1"
@@ -221,16 +222,17 @@
                                        Text="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
                             <TextBlock Grid.Row="1"
                                        Grid.Column="1"
+                                       Visibility="{Binding NewSubTransactions.Count, Converter={x:Static mvvm:Converters.IntGreaterThanZeroVisibleElseCollapsed}}"
                                        Margin="2.5"
                                        HorizontalAlignment="Right"
-                                       Foreground="{Binding SumMissingWithoutNewSubs.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                       Text="{Binding SumMissingWithoutNewSubs.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
+                                       Foreground="{Binding IntermediateSum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                       Text="{Binding IntermediateSum.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
                             <TextBlock Grid.Row="2"
                                        Grid.Column="1"
                                        Margin="2.5"
                                        HorizontalAlignment="Right"
-                                       Foreground="{Binding SumMissingWithNewSubs.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                       Text="{Binding SumMissingWithNewSubs.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
+                                       Foreground="{Binding MissingSum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                       Text="{Binding MissingSum.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
                         </Grid>
                     </StackPanel>
                 </DataTemplate>

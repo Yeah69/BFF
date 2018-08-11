@@ -1368,6 +1368,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Intermediate sum.
+        /// </summary>
+        public static string ParentTransEditingView_IntermediateSum {
+            get {
+                return ResourceManager.GetString("ParentTransEditingView_IntermediateSum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Missing Sum.
         /// </summary>
         public static string ParentTransEditingView_MissingSumWithoutSubs {

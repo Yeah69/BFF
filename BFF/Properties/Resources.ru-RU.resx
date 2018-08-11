@@ -554,6 +554,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
     <value>Current Sum</value>
   </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Intermediate sum</value>
+  </data>
   <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
     <value>Missing Sum exlusively unsubmitted entries</value>
   </data>

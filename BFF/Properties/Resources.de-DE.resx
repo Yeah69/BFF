@@ -554,6 +554,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
     <value>Aktueller Betrag</value>
   </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Zwischensumme</value>
+  </data>
   <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
     <value>Fehlender Betrag exklusive der uneingereichten Eintr√§ge</value>
   </data>
