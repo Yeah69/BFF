@@ -127,11 +127,25 @@ namespace BFF.MVVM.ViewModels.ForModels
                 .Subscribe(_ => OnPropertyChanged(nameof(StartingBalance)))
                 .AddTo(CompositeDisposable);
 
-            NewTransactionCommand = new RxRelayCommand(() => NewTransList.Add(transactionViewModelFactory(this))).AddTo(CompositeDisposable);
+            NewTransactionCommand = new RxRelayCommand(() =>
+            {
+                var transactionViewModel = transactionViewModelFactory(this);
+                if (MissingSum != null) transactionViewModel.Sum.Value = (long)MissingSum;
+                NewTransList.Add(transactionViewModel);
+            }).AddTo(CompositeDisposable);
 
             NewTransferCommand = new RxRelayCommand(() => NewTransList.Add(transferViewModelFactory(this))).AddTo(CompositeDisposable);
 
-            NewParentTransactionCommand = new RxRelayCommand(() => NewTransList.Add(parentTransactionViewModelFactory(this))).AddTo(CompositeDisposable);
+            NewParentTransactionCommand = new RxRelayCommand(() =>
+            {
+                var parentTransactionViewModel = parentTransactionViewModelFactory(this);
+                NewTransList.Add(parentTransactionViewModel);
+                if (MissingSum != null)
+                {
+                    parentTransactionViewModel.NewSubTransactionCommand?.Execute(null);
+                    parentTransactionViewModel.NewSubTransactions.First().Sum.Value = (long)MissingSum;
+                }
+            }).AddTo(CompositeDisposable);
 
             ApplyCommand = new AsyncRxRelayCommand(async () => await ApplyTrans(), 
                 NewTransList
@@ -177,6 +191,28 @@ namespace BFF.MVVM.ViewModels.ForModels
                     .ToArray(),
                 async () => (int) await _transRepository.GetCountAsync(_account),
                 () => _placeholderFactory());
+
+        protected override long? CalculateNewPartOfIntermediateBalance()
+        {
+            long? sum = 0;
+            foreach (var transLikeViewModel in NewTransList)
+            {
+                switch (transLikeViewModel)
+                {
+                    case TransferViewModel transfer:
+                        sum += transfer.ToAccount == this ? transfer.SumAbsolute : -transfer.SumAbsolute;
+                        break;
+                    case ParentTransactionViewModel parent:
+                        sum += parent.TotalSum.Value;
+                        break;
+                    default:
+                        sum += transLikeViewModel.Sum.Value;
+                        break;
+                }
+            }
+
+            return sum;
+        }
 
         public override Task DeleteAsync()
         {

@@ -193,28 +193,6 @@ namespace BFF.MVVM.ViewModels.ForModels
                     .AddTo(_currentRemoveRequestSubscriptions);
             });
 
-            IObservable<Unit> EmitOnSumRelatedChanges(ReadOnlyObservableCollection<ISubTransactionViewModel> collection)
-                => Observable
-                    .Merge(
-                        collection
-                            .ObserveAddChanged()
-                            .Select(_ => Unit.Default),
-                        collection
-                            .ObserveRemoveChanged()
-                            .Select(_ => Unit.Default),
-                        collection
-                            .ObserveReplaceChanged()
-                            .Select(_ => Unit.Default),
-                        collection
-                            .ObserveRemoveChanged()
-                            .Select(_ => Unit.Default),
-                        collection
-                            .ObserveResetChanged()
-                            .Select(_ => Unit.Default),
-                        collection
-                            .ObserveElementObservableProperty(st => st.Sum)
-                            .Select(_ => Unit.Default));
-
             NonInsertedConvertToTransaction = new RxRelayCommand(
                     () => Owner.ReplaceNewTrans(
                         this,
@@ -239,6 +217,28 @@ namespace BFF.MVVM.ViewModels.ForModels
                         .ObservePropertyChanges(nameof(SubTransactions.Count))
                         .Select(_ => SubTransactions.Count >= 1))
                 .AddTo(CompositeDisposable);
+
+            IObservable<Unit> EmitOnSumRelatedChanges(ReadOnlyObservableCollection<ISubTransactionViewModel> collection)
+                => Observable
+                    .Merge(
+                        collection
+                            .ObserveAddChanged()
+                            .Select(_ => Unit.Default),
+                        collection
+                            .ObserveRemoveChanged()
+                            .Select(_ => Unit.Default),
+                        collection
+                            .ObserveReplaceChanged()
+                            .Select(_ => Unit.Default),
+                        collection
+                            .ObserveRemoveChanged()
+                            .Select(_ => Unit.Default),
+                        collection
+                            .ObserveResetChanged()
+                            .Select(_ => Unit.Default),
+                        collection
+                            .ObserveElementObservableProperty(st => st.Sum)
+                            .Select(_ => Unit.Default));
         }
 
         public ReadOnlyReactiveCollection<ISubTransactionViewModel> SubTransactions { get; }

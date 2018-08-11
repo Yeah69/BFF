@@ -303,6 +303,15 @@ namespace BFF.MVVM
         public static readonly IValueConverter NullToCollapsed =
             ValueConverter.Create<object, Visibility>(e => e.Value is null ? Visibility.Collapsed : Visibility.Visible);
 
+        public static readonly IValueConverter InverseNullToCollapsed =
+            ValueConverter.Create<object, Visibility>(e => e.Value != null ? Visibility.Collapsed : Visibility.Visible);
+
+        public static readonly IValueConverter NullableLongToCollapsed =
+            ValueConverter.Create<long?, Visibility>(e => e.Value is null ? Visibility.Collapsed : Visibility.Visible);
+
+        public static readonly IValueConverter InverseNullableLongToCollapsed =
+            ValueConverter.Create<long?, Visibility>(e => e.Value != null ? Visibility.Collapsed : Visibility.Visible);
+
 
         public static readonly IValueConverter ZeroLongToHidden =
             ValueConverter.Create<long, Visibility>(e => e.Value == 0 ? Visibility.Hidden : Visibility.Visible);
@@ -377,5 +386,9 @@ namespace BFF.MVVM
         public static readonly IValueConverter None =
             ValueConverter.Create<IEnumerable, bool>(
                 e => e.Value.GetEnumerator().MoveNext().Not());
+
+        public static readonly IValueConverter IntGreaterThanZeroVisibleElseCollapsed =
+            ValueConverter.Create<int, Visibility>(
+                e => e.Value > 0 ? Visibility.Visible : Visibility.Collapsed);
     }
 }

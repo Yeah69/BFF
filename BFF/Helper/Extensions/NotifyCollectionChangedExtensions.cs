@@ -7,7 +7,7 @@ namespace BFF.Helper.Extensions
 {
     public static class NotifyCollectionChangedExtensions
     {
-        public static IObservable<EventPattern<NotifyCollectionChangedEventArgs>> ObservePropertyChanges(
+        public static IObservable<EventPattern<NotifyCollectionChangedEventArgs>> ObserveCollectionChanges(
             this INotifyCollectionChanged source)
         {
             return Observable.FromEventPattern<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(

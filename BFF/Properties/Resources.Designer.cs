@@ -144,6 +144,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abort targeting balance.
+        /// </summary>
+        public static string AccountView_AbortTargetingBalance {
+            get {
+                return ResourceManager.GetString("AccountView_AbortTargetingBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string AccountView_Balance_All {
@@ -311,6 +320,42 @@ namespace BFF.Properties {
         public static string AccountView_Header_SymbolAbbr_Tooltip {
             get {
                 return ResourceManager.GetString("AccountView_Header_SymbolAbbr_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Intermediate balance.
+        /// </summary>
+        public static string AccountView_IntermediateBalance {
+            get {
+                return ResourceManager.GetString("AccountView_IntermediateBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing sum.
+        /// </summary>
+        public static string AccountView_MissingSum {
+            get {
+                return ResourceManager.GetString("AccountView_MissingSum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set target balance.
+        /// </summary>
+        public static string AccountView_SetTargetBalance {
+            get {
+                return ResourceManager.GetString("AccountView_SetTargetBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target balance.
+        /// </summary>
+        public static string AccountView_TargetBalance {
+            get {
+                return ResourceManager.GetString("AccountView_TargetBalance", resourceCulture);
             }
         }
         

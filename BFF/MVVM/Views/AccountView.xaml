@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
@@ -16,6 +17,85 @@
              lex:ResxLocalizationProvider.DefaultAssembly="BFF"
              lex:ResxLocalizationProvider.DefaultDictionary="Resources"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <DataTemplate x:Key="BalanceToolTip"
+                      DataType="{x:Type structure:IAccountBaseViewModel}">
+            <UniformGrid HorizontalAlignment="Right"
+                         Columns="4">
+                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                        BorderThickness="0,0,1,0" />
+                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                        BorderThickness="0,0,1,0">
+                    <TextBlock Margin="5" TextAlignment="Left"
+                               Text="{lex:Loc AccountView_Balance_Cleared}" />
+                </Border>
+                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                        BorderThickness="0,0,1,0">
+                    <TextBlock Margin="5"
+                               Text="{lex:Loc AccountView_Balance_Uncleared}" />
+                </Border>
+                <TextBlock Margin="5"
+                           Text="{lex:Loc AccountView_Balance_Total}" />
+
+
+
+                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                        BorderThickness="0,1,1,0">
+                    <TextBlock Margin="5"
+                               Text="{lex:Loc AccountView_Balance_Current}" />
+                </Border>
+                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                        BorderThickness="0,1,1,0">
+                    <TextBlock Margin="5"
+                               HorizontalAlignment="Right"
+                               Foreground="{Binding ClearedBalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
+                               Text="{Binding ClearedBalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
+                </Border>
+                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                        BorderThickness="0,1,1,0">
+                    <TextBlock Margin="5"
+                               HorizontalAlignment="Right"
+                               Foreground="{Binding UnclearedBalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
+                               Text="{Binding UnclearedBalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
+                </Border>
+                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                        BorderThickness="0,1,0,0">
+                    <TextBlock Margin="5"
+                               HorizontalAlignment="Right"
+                               Foreground="{Binding TotalBalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
+                               Text="{Binding TotalBalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
+                </Border>
+
+
+                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                        BorderThickness="0,1,1,0">
+                    <TextBlock Margin="5"
+                               Text="{lex:Loc AccountView_Balance_All}" />
+                </Border>
+                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                        BorderThickness="0,1,1,0">
+                    <TextBlock Margin="5"
+                               HorizontalAlignment="Right"
+                               Foreground="{Binding ClearedBalance, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
+                               Text="{Binding ClearedBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
+                </Border>
+                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                        BorderThickness="0,1,1,0">
+                    <TextBlock Margin="5"
+                               HorizontalAlignment="Right"
+                               Foreground="{Binding UnclearedBalance, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
+                               Text="{Binding UnclearedBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
+                </Border>
+                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                        BorderThickness="0,1,0,0">
+                    <TextBlock Margin="5"
+                               HorizontalAlignment="Right"
+                               Foreground="{Binding TotalBalance, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
+                               Text="{Binding TotalBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
+                </Border>
+            </UniformGrid>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -35,93 +115,114 @@
                              ShowFlags="{Binding TransDataGridColumnManager.ShowFlags.Value}"
                              TransList="{Binding Trans}" />
         <!--  "Status bar"  -->
-        <UniformGrid Grid.Row="1"
-                     HorizontalAlignment="Right"
-                     Columns="4">
-            <Border BorderBrush="{StaticResource AccentColorBrush}"
-                    BorderThickness="0,0,1,0" />
-            <Border BorderBrush="{StaticResource AccentColorBrush}"
-                    BorderThickness="0,0,1,0">
-                <TextBlock Margin="5"
-                           Text="{lex:Loc AccountView_Balance_Cleared}" />
-            </Border>
-            <Border BorderBrush="{StaticResource AccentColorBrush}"
-                    BorderThickness="0,0,1,0">
-                <TextBlock Margin="5"
-                           Text="{lex:Loc AccountView_Balance_Uncleared}" />
-            </Border>
-            <TextBlock Margin="5"
-                       Text="{lex:Loc AccountView_Balance_Total}" />
-
-
-
-            <Border BorderBrush="{StaticResource AccentColorBrush}"
-                    BorderThickness="0,1,1,0">
-                <TextBlock Margin="5"
-                           Text="{lex:Loc AccountView_Balance_Current}" />
-            </Border>
-            <Border BorderBrush="{StaticResource AccentColorBrush}"
-                    BorderThickness="0,1,1,0">
-                <TextBlock Margin="5"
-                           HorizontalAlignment="Right"
-                           Foreground="{Binding ClearedBalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
-                           Text="{Binding ClearedBalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
-            </Border>
-            <Border BorderBrush="{StaticResource AccentColorBrush}"
-                    BorderThickness="0,1,1,0">
-                <TextBlock Margin="5"
-                           HorizontalAlignment="Right"
-                           Foreground="{Binding UnclearedBalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
-                           Text="{Binding UnclearedBalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
-            </Border>
-            <Border BorderBrush="{StaticResource AccentColorBrush}"
-                    BorderThickness="0,1,0,0">
-                <TextBlock Margin="5"
-                           HorizontalAlignment="Right"
-                           Foreground="{Binding TotalBalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
-                           Text="{Binding TotalBalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
-            </Border>
-
-
-            <Border BorderBrush="{StaticResource AccentColorBrush}"
-                    BorderThickness="0,1,1,0">
-                <TextBlock Margin="5"
-                           Text="{lex:Loc AccountView_Balance_All}" />
-            </Border>
-            <Border BorderBrush="{StaticResource AccentColorBrush}"
-                    BorderThickness="0,1,1,0">
-                <TextBlock Margin="5"
-                           HorizontalAlignment="Right"
-                           Foreground="{Binding ClearedBalance, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
-                           Text="{Binding ClearedBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
-            </Border>
-            <Border BorderBrush="{StaticResource AccentColorBrush}"
-                    BorderThickness="0,1,1,0">
-                <TextBlock Margin="5"
-                           HorizontalAlignment="Right"
-                           Foreground="{Binding UnclearedBalance, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
-                           Text="{Binding UnclearedBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
-            </Border>
-            <Border BorderBrush="{StaticResource AccentColorBrush}"
-                    BorderThickness="0,1,0,0">
-                <TextBlock Margin="5"
-                           HorizontalAlignment="Right"
+        <DockPanel Grid.Row="1">
+            <Grid HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  DockPanel.Dock="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Margin="2.5"
+                           Text="{lex:LocText Account_StartingBalance,
+                                              Suffix=:}" />
+                <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           Margin="2.5"
+                           Foreground="{Binding StartingBalance.Value, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
+                           Text="{Binding StartingBalance.Value, Converter={x:Static mvvm:Converters.NullableSumToString}}"
+                           TextAlignment="Right" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Margin="2.5"
+                           Text="{lex:LocText Account_Balance,
+                                              Suffix=:}" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           Margin="2.5"
                            Foreground="{Binding TotalBalance, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
-                           Text="{Binding TotalBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
-            </Border>
-            <!--<GroupBox Margin="0,5,5,5"
-                      HorizontalAlignment="Left"
-                      Header="{lex:LocText Account_StartingBalance,
-                                           Suffix=:}">
-                <TextBlock Text="{Binding StartingBalance.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
-            </GroupBox>-->
-            <!--<GroupBox Margin="5"
-                      HorizontalAlignment="Left"
-                      Header="{lex:LocText Account_Balance,
-                                           Suffix=:}">
-                <TextBlock Text="{Binding TotalBalanceUntilNow, Converter={x:Static mvvm:Converters.NullableSumToString}}"
-                           ToolTip="{Binding TotalBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}" />
-            </GroupBox>-->
-        </UniformGrid>
+                           Text="{Binding TotalBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}"
+                           TextAlignment="Right">
+                    <TextBlock.ToolTip>
+                        <ToolTip Content="{Binding}" ContentTemplate="{StaticResource BalanceToolTip}" />
+                    </TextBlock.ToolTip>
+                </TextBlock>
+
+                <Grid Grid.Row="1"
+                      Grid.Column="2"
+                      Background="Transparent">
+                    <Grid.ToolTip>
+                        <ToolTip Content="{Binding}" ContentTemplate="{StaticResource BalanceToolTip}" />
+                    </Grid.ToolTip>
+                    <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                Height="{StaticResource IconSize}"
+                                                Margin="2.5"
+                                                Foreground="{DynamicResource BlackColorBrush}"
+                                                Kind="InformationOutline" />
+                </Grid>
+            </Grid>
+
+            <Grid HorizontalAlignment="Right"
+                  VerticalAlignment="Top"
+                  DockPanel.Dock="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Visibility="{Binding NewTransList.Count, Converter={x:Static mvvm:Converters.IntGreaterThanZeroVisibleElseCollapsed}}"
+                           Margin="2.5"
+                           Text="{lex:LocText AccountView_IntermediateBalance,
+                                              Suffix=:}" />
+                <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           Visibility="{Binding NewTransList.Count, Converter={x:Static mvvm:Converters.IntGreaterThanZeroVisibleElseCollapsed}}"
+                           Margin="2.5"
+                           Foreground="{Binding IntermediateBalance, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
+                           Text="{Binding IntermediateBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}"
+                           TextAlignment="Right" />
+
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Visibility="{Binding TargetBalance, Converter={x:Static mvvm:Converters.NullableLongToCollapsed}}"
+                           Margin="2.5"
+                           Text="{lex:LocText AccountView_MissingSum,
+                                              Suffix=:}" />
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           Visibility="{Binding TargetBalance, Converter={x:Static mvvm:Converters.NullableLongToCollapsed}}"
+                           Margin="2.5"
+                           Foreground="{Binding MissingSum, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
+                           Text="{Binding MissingSum, Converter={x:Static mvvm:Converters.NullableSumToString}}"
+                           TextAlignment="Right" />
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0"
+                           Visibility="{Binding TargetBalance, Converter={x:Static mvvm:Converters.NullableLongToCollapsed}}"
+                           Margin="2.5"
+                           VerticalAlignment="Center"
+                           Text="{lex:LocText AccountView_TargetBalance,
+                                              Suffix=:}" />
+                <TextBox Grid.Row="2"
+                         Grid.Column="1"
+                         Visibility="{Binding TargetBalance, Converter={x:Static mvvm:Converters.NullableLongToCollapsed}}"
+                         Margin="2.5"
+                         Foreground="{Binding TargetBalance, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
+                         Text="{Binding TargetBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}"
+                         TextAlignment="Right" />
+            </Grid>
+        </DockPanel>
     </Grid>
 </UserControl>

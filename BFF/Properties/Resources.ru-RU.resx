@@ -123,6 +123,9 @@
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
     <value>Создать</value>
   </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Abort targeting balance</value>
+  </data>
   <data name="AccountView_Balance_All" xml:space="preserve">
     <value>All</value>
   </data>
@@ -179,6 +182,18 @@
   </data>
   <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
     <value>Тип операции</value>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Intermediate balance</value>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Missing sum</value>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Set target balance</value>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Target balance</value>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
     <value>Ввести в таблицу</value>

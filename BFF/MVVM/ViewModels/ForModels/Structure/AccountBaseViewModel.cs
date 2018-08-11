@@ -54,6 +54,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         long? TotalBalanceUntilNow { get; }
 
+        long? IntermediateBalance { get; }
+
+        long? MissingSum { get; }
+
+        long? TargetBalance { get; set; }
+
         bool IsOpen { get; }
 
         /// <summary>
@@ -77,6 +83,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         IRxRelayCommand ApplyCommand { get; }
 
         IRxRelayCommand ImportCsvBankStatement { get; }
+
+        IRxRelayCommand StartTargetingBalance { get; }
+
+        IRxRelayCommand AbortTargetingBalance { get; }
 
         bool ShowLongDate { get; }
 
@@ -127,6 +137,19 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public long? UnclearedBalanceUntilNow { get; private set; } = 0;
         public long? TotalBalance => ClearedBalance + UnclearedBalance;
         public long? TotalBalanceUntilNow => ClearedBalanceUntilNow + UnclearedBalanceUntilNow;
+        public long? IntermediateBalance { get; private set; }
+        public long? MissingSum { get; private set; }
+
+        public long? TargetBalance
+        {
+            get => _targetBalance;
+            set
+            {
+                if (_targetBalance == value) return;
+                _targetBalance = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsOpen
         {
@@ -170,6 +193,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public abstract IRxRelayCommand ApplyCommand { get; }
 
         public abstract IRxRelayCommand ImportCsvBankStatement { get; }
+        public IRxRelayCommand StartTargetingBalance { get; }
+        public IRxRelayCommand AbortTargetingBalance { get; }
 
         /// <summary>
         /// Indicates if the date format should be display in short or long fashion.
@@ -253,6 +278,12 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     OnPropertyChanged(nameof(ClearedBalance));
                     OnPropertyChanged(nameof(UnclearedBalance));
                     OnPropertyChanged(nameof(TotalBalance));
+                    if (TargetBalance == TotalBalance && NewTransList.Count == 0)
+                    {
+                        MissingSum = null;
+                        TargetBalance = null;
+                        OnPropertyChanged(nameof(MissingSum));
+                    }
                 }).AddTo(CompositeDisposable);
 
             _refreshBalanceUntilNow
@@ -270,11 +301,67 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     OnPropertyChanged(nameof(UnclearedBalanceUntilNow));
                     OnPropertyChanged(nameof(TotalBalanceUntilNow));
                 }).AddTo(CompositeDisposable);
+            
+            EmitOnSumRelatedChanges(NewTransList)
+                .Merge(this.ObservePropertyChanges(nameof(TargetBalance)))
+                .Merge(this.ObservePropertyChanges(nameof(TotalBalance)))
+                .Select(_ => CalculateNewPartOfIntermediateBalance())
+                .Subscribe(DoTargetBalanceSystem)
+                .AddTo(CompositeDisposable);
+
+            var serialDisposable = new SerialDisposable().AddHere(CompositeDisposable);
+
+            NewTransList
+                .ObserveCollectionChanges()
+                .Select(_ => Unit.Default)
+                .Subscribe(_ => serialDisposable.Disposable =
+                    NewTransList
+                        .OfType<ParentTransactionViewModel>()
+                        .Select(ptvm => ptvm.TotalSum.ObservePropertyChanges(nameof(IReactiveProperty<long>.Value)))
+                        .Merge()
+                        .Select(__ => CalculateNewPartOfIntermediateBalance())
+                        .Subscribe(DoTargetBalanceSystem))
+                .AddTo(CompositeDisposable);
+
+            StartTargetingBalance = new RxRelayCommand(() =>
+            {
+                TargetBalance = TotalBalance;
+            });
+
+            AbortTargetingBalance = new RxRelayCommand(() =>
+            {
+                TargetBalance = null;
+            });
 
             Disposable.Create(() =>
             {
                 _trans?.Dispose();
             }).AddTo(CompositeDisposable);
+
+            IObservable<Unit> EmitOnSumRelatedChanges(ObservableCollection<ITransLikeViewModel> collection)
+            {
+                return collection
+                    .ObserveCollectionChanges().Select(_ => Unit.Default)
+                    .Merge(collection
+                    .ObserveElementObservableProperty(st => st.Sum)
+                    .Select(_ => Unit.Default));
+            }
+
+            void DoTargetBalanceSystem(long? ib)
+            {
+                IntermediateBalance = ib + TotalBalance;
+                if (TargetBalance != null)
+                {
+                    MissingSum = TargetBalance - IntermediateBalance;
+                }
+                else
+                {
+                    MissingSum = null;
+                }
+                OnPropertyChanged(nameof(IntermediateBalance));
+                OnPropertyChanged(nameof(MissingSum));
+            }
+
         }
 
         /// <summary>
@@ -373,7 +460,10 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         private readonly int PageSize = 100;
         private bool _isOpen;
+        private long? _targetBalance;
 
         protected abstract IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess { get; }
+
+        protected abstract long? CalculateNewPartOfIntermediateBalance();
     }
 }

@@ -55,7 +55,7 @@ namespace BFF.MVVM.Services
                     new WrappingObservableReadOnlyList<TDomain>(repository.All),
                     AddToDictionaries);
                 All
-                    .ObservePropertyChanges()
+                    .ObserveCollectionChanges()
                     .Where(e => e.EventArgs.Action == NotifyCollectionChangedAction.Reset)
                     .Subscribe(_ =>
                     {

@@ -175,7 +175,7 @@
                                             IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
-            <DockPanel Margin="0,5,0,0">
+            <DockPanel Margin="0,5,0,0" LastChildFill="False">
                 <Button Visibility="{Binding NewTransactionVisibility}"
                         Command="{Binding NewTransactionCommand}"
                         ToolTip="{lex:Loc AccountView_ToolTip_NewTransaction}">
@@ -234,14 +234,24 @@
                         Content="Import from CSV" />
                 <Button Visibility="{Binding ApplyVisibility}"
                         Margin="5,0,0,0"
-                        HorizontalAlignment="Right"
                         Command="{Binding ApplyCommand}"
+                        DockPanel.Dock="Right"
                         ToolTip="{lex:Loc AccountView_ToolTip_AddToTable}">
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
                                                 Foreground="{DynamicResource BlackColorBrush}"
                                                 Kind="{StaticResource AddToTableIcon}" />
                 </Button>
+
+                <Button Visibility="{Binding AccountViewModel.TargetBalance, Converter={x:Static mvvm:Converters.InverseNullableLongToCollapsed}}"
+                        Command="{Binding AccountViewModel.StartTargetingBalance}"
+                        Content="{lex:Loc AccountView_SetTargetBalance}"
+                        DockPanel.Dock="Right" />
+
+                <Button Visibility="{Binding AccountViewModel.TargetBalance, Converter={x:Static mvvm:Converters.NullableLongToCollapsed}}"
+                        Command="{Binding AccountViewModel.AbortTargetingBalance}"
+                        Content="{lex:Loc AccountView_AbortTargetingBalance}"
+                        DockPanel.Dock="Right" />
             </DockPanel>
         </StackPanel>
     </Grid>
