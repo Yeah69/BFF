@@ -60,7 +60,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
         long? TargetBalance { get; set; }
 
-        bool IsOpen { get; }
+        bool IsOpen { get; set; }
 
         /// <summary>
         /// Creates a new Transaction.

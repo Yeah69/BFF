@@ -79,6 +79,7 @@ namespace BFF.MVVM.ViewModels
                     newAccount.StartingBalance = StartingBalance.Value;
                     newAccount.StartingDate = StartingDate.Value;
                     await newAccount.InsertAsync();
+                    viewModelService.GetViewModel(newAccount).IsOpen = true;
                     summaryAccountViewModel.RefreshStartingBalance();
                     summaryAccountViewModel.RefreshBalance();
                 }).AddTo(CompositeDisposable);
