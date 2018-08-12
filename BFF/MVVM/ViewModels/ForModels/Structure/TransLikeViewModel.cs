@@ -49,7 +49,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public Sign SumSign
         {
             get => Sum.Value == 0 ? _sumSign : Sum.Value > 0 ? Sign.Plus : Sign.Minus;
-            set
+            protected set
             {
                 if (value == Sign.Plus && Sum.Value < 0 || value == Sign.Minus && Sum.Value > 0)
                     Sum.Value *= -1;
