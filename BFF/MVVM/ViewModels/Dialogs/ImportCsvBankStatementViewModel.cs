@@ -228,7 +228,7 @@ namespace BFF.MVVM.ViewModels.Dialogs
                                 if (sumString.Contains($"{{{segment}}}"))
                                 {
                                     var sumPartParsingSuccess = double.TryParse(segmentValues[segment], NumberStyles.Any, Configuration.Value.SumLocalization.Value, out var sumPartResult);
-                                    long sum = (long)((sumPartParsingSuccess ? sumPartResult : 0.0) *
+                                    long sum = (long) Math.Round((sumPartParsingSuccess ? sumPartResult : 0.0) *
                                                       Math.Pow(10, Configuration.Value.SumLocalization.Value.NumberFormat.CurrencyDecimalDigits));
                                     sumString = sumString.Replace($"{{{segment}}}", sum.ToString());
                                 }
