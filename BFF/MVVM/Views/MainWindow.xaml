@@ -224,6 +224,9 @@
                     <Label Content="{lex:LocText Settings_ShowCheckNumbers,
                                                  Suffix=:}" />
                     <CheckBox IsChecked="{Binding TransDataGridColumnManager.ShowCheckNumbers.Value}" />
+                    <Label Content="{lex:LocText Settings_AlwaysHideEditHeaders,
+                                                 Suffix=:}" />
+                    <CheckBox IsChecked="{Binding TransDataGridColumnManager.NeverShowEditHeaders}" />
                 </StackPanel>
             </controls:Flyout>
             <!--  File Flyout  -->

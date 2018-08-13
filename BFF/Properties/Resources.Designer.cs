@@ -1442,6 +1442,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Always hide column headers of the editing table.
+        /// </summary>
+        public static string Settings_AlwaysHideEditHeaders {
+            get {
+                return ResourceManager.GetString("Settings_AlwaysHideEditHeaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Currency format.
         /// </summary>
         public static string Settings_Currency {

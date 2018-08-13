@@ -8,6 +8,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
@@ -91,6 +92,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         bool ShowLongDate { get; }
 
         ITransDataGridColumnManager TransDataGridColumnManager { get; }
+
+        DataGridHeadersVisibility ShowEditHeaders { get; }
         /// <summary>
         /// Refreshes the Balance.
         /// </summary>
@@ -202,6 +205,17 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public bool ShowLongDate => Settings.Default.Culture_DefaultDateLong;
 
         public ITransDataGridColumnManager TransDataGridColumnManager { get; }
+
+        public DataGridHeadersVisibility ShowEditHeaders
+        {
+            get => _showEditHeaders;
+            private set
+            {
+                if (_showEditHeaders == value) return;
+                _showEditHeaders = value;
+                OnPropertyChanged();
+            }
+        }
 
         protected AccountBaseViewModel(
             IAccount account,
@@ -321,6 +335,14 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                         .Merge()
                         .Select(__ => CalculateNewPartOfIntermediateBalance())
                         .Subscribe(DoTargetBalanceSystem))
+                .AddTo(CompositeDisposable);
+
+            NewTransList
+                .ObservePropertyChanges(nameof(NewTransList.Count))
+                .Merge(TransDataGridColumnManager.ObservePropertyChanges(nameof(TransDataGridColumnManager.NeverShowEditHeaders)))
+                .Subscribe(_ => ShowEditHeaders = NewTransList.Count > 0 && !TransDataGridColumnManager.NeverShowEditHeaders
+                    ? DataGridHeadersVisibility.Column
+                    : DataGridHeadersVisibility.None)
                 .AddTo(CompositeDisposable);
 
             StartTargetingBalance = new RxRelayCommand(() =>
@@ -461,6 +483,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         private readonly int PageSize = 100;
         private bool _isOpen;
         private long? _targetBalance;
+        private DataGridHeadersVisibility _showEditHeaders;
 
         protected abstract IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess { get; }
 

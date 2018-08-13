@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reactive.Disposables;
 using BFF.DB;
 using BFF.Helper.Extensions;
@@ -7,15 +8,18 @@ using Reactive.Bindings;
 
 namespace BFF.MVVM.Managers
 {
-    public interface ITransDataGridColumnManager
+    public interface ITransDataGridColumnManager : INotifyPropertyChanged
     {
         IReactiveProperty<bool> ShowFlags { get; }
         IReactiveProperty<bool> ShowCheckNumbers { get; }
+
+        bool NeverShowEditHeaders { get; set; }
     }
 
-    public class TransDataGridColumnManager : ITransDataGridColumnManager, IOncePerApplication, IDisposable
+    public class TransDataGridColumnManager : ObservableObject, ITransDataGridColumnManager, IOncePerApplication, IDisposable
     {
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private bool _neverShowEditHeaders;
 
         public TransDataGridColumnManager()
         {
@@ -38,6 +42,17 @@ namespace BFF.MVVM.Managers
 
         public IReactiveProperty<bool> ShowFlags { get; }
         public IReactiveProperty<bool> ShowCheckNumbers { get; }
+
+        public bool NeverShowEditHeaders
+        {
+            get => _neverShowEditHeaders;
+            set
+            {
+                if (_neverShowEditHeaders == value) return;
+                _neverShowEditHeaders = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void Dispose()
         {

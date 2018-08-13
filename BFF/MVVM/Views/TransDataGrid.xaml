@@ -132,51 +132,62 @@
             <DataGrid Width="{Binding ActualWidth, ElementName=TransGrid}"
                       MaxHeight="200"
                       BorderThickness="0,2,0,0"
-                      HeadersVisibility="None"
+                      EnableRowVirtualization="False"
+                      HeadersVisibility="{Binding AccountViewModel.ShowEditHeaders}"
                       HorizontalScrollBarVisibility="Hidden"
                       ItemsSource="{Binding NewTransList}"
-                      EnableRowVirtualization="False"
                       LoadingRow="NewEntriesDataGrid_OnLoadingRow"
                       RowStyle="{StaticResource DefaultNewRowStyle}">
                 <DataGrid.Columns>
                     <!--  Symbol  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SymbolColumn}, Mode=TwoWay}"
-                                            CellTemplate="{StaticResource SymbolNewColumnTemplate}" />
+                                            CellTemplate="{StaticResource SymbolNewColumnTemplate}"
+                                            Header="{lex:Loc AccountView_Header_SymbolAbbr}" />
                     <!--  Account  -->
                     <DataGridTemplateColumn Visibility="{Binding Data, Source={StaticResource AccountColumnVisibility}}"
                                             Width="{Binding Width, Source={x:Reference AccountColumn}, Mode=TwoWay}"
-                                            CellTemplate="{StaticResource AccountEditingColumnTemplate}" />
+                                            CellTemplate="{StaticResource AccountEditingColumnTemplate}"
+                                            Header="{lex:Loc AccountView_Header_Account}" />
                     <!--  Date  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference DateColumn}, Mode=TwoWay}"
-                                            CellTemplate="{StaticResource DateEditingColumnTemplate}" />
+                                            CellTemplate="{StaticResource DateEditingColumnTemplate}"
+                                            Header="{lex:Loc AccountView_Header_Date}" />
                     <!--  Flag  -->
                     <DataGridTemplateColumn Visibility="{Binding Data, Source={StaticResource FlagColumnVisibility}}"
                                             Width="{Binding Width, Source={x:Reference FlagColumn}, Mode=TwoWay}"
-                                            CellTemplate="{StaticResource FlagEditingColumnTemplate}" />
+                                            CellTemplate="{StaticResource FlagEditingColumnTemplate}"
+                                            Header="{lex:Loc AccountView_Header_Flag}" />
                     <!--  CheckNumber  -->
                     <DataGridTemplateColumn Visibility="{Binding Data, Source={StaticResource CheckNumberColumnVisibility}}"
                                             Width="{Binding Width, Source={x:Reference CheckNumberColumn}, Mode=TwoWay}"
-                                            CellTemplate="{StaticResource CheckNumberEditingColumnTemplate}" />
+                                            CellTemplate="{StaticResource CheckNumberEditingColumnTemplate}"
+                                            Header="{lex:Loc AccountView_Header_CheckNumber}" />
                     <!--  Payee  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference PayeeColumn}, Mode=TwoWay}"
-                                            CellTemplate="{StaticResource PayeeEditingColumnTemplate}" />
+                                            CellTemplate="{StaticResource PayeeEditingColumnTemplate}"
+                                            Header="{lex:Loc AccountView_Header_Payee}" />
                     <!--  Category  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}"
-                                            CellTemplate="{StaticResource CategoryEditingColumnTemplate}" />
+                                            CellTemplate="{StaticResource CategoryEditingColumnTemplate}"
+                                            Header="{lex:Loc AccountView_Header_Category}" />
                     <!--  Memo  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}"
-                                            CellTemplate="{StaticResource MemoEditingColumnTemplate}" />
+                                            CellTemplate="{StaticResource MemoEditingColumnTemplate}"
+                                            Header="{lex:Loc AccountView_Header_Memo}" />
                     <!--  Sum  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource SumEditingColumnTemplate}"
+                                            Header="{lex:Loc AccountView_Header_Sum}"
                                             IsReadOnly="False" />
                     <!--  Cleared  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource ClearedColumnTemplate}"
+                                            Header="{lex:Loc AccountView_Header_Cleared}"
                                             IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
-            <DockPanel Margin="0,5,0,0" LastChildFill="False">
+            <DockPanel Margin="0,5,0,0"
+                       LastChildFill="False">
                 <Button Visibility="{Binding NewTransactionVisibility}"
                         Command="{Binding NewTransactionCommand}"
                         ToolTip="{lex:Loc AccountView_ToolTip_NewTransaction}">

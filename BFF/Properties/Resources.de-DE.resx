@@ -580,6 +580,9 @@ Um ein Projekt zu erstellen, öffnen oder importieren
   <data name="Settings_Accents" xml:space="preserve">
     <value>Akzente</value>
   </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Immer Spaltentitel in der Editiertabelle ausblenden</value>
+  </data>
   <data name="Settings_Currency" xml:space="preserve">
     <value>Währungsformat</value>
   </data>

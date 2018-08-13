@@ -580,6 +580,9 @@ open the File-menu in the upper left corner.</value>
   <data name="Settings_Accents" xml:space="preserve">
     <value>Szín</value>
   </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Always hide column headers of the editing table</value>
+  </data>
   <data name="Settings_Currency" xml:space="preserve">
     <value>Pénznem</value>
   </data>
