@@ -25,6 +25,7 @@ namespace BFF.MVVM.ViewModels
     {
         IRxRelayCommand NewBudgetPlanCommand { get; }
         IRxRelayCommand OpenBudgetPlanCommand { get; }
+        IRxRelayCommand CloseBudgetPlanCommand { get; }
         IRxRelayCommand ParentTransactionOnClose { get; }
         IRxRelayCommand<IImportable> ImportBudgetPlanCommand { get; }
         IAccountTabsViewModel AccountTabsViewModel { get; set; }
@@ -44,6 +45,8 @@ namespace BFF.MVVM.ViewModels
         double X { get; set; }
         double Y { get; set; }
         WindowState WindowState { get; set; }
+        string Title { get; }
+        ITransDataGridColumnManager TransDataGridColumnManager { get; }
     }
 
     public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel, IOncePerApplication //todo IDisposable
@@ -67,6 +70,9 @@ namespace BFF.MVVM.ViewModels
         public IRxRelayCommand NewBudgetPlanCommand { get; }
 
         public IRxRelayCommand OpenBudgetPlanCommand { get; }
+
+        public IRxRelayCommand CloseBudgetPlanCommand { get; }
+
         public IRxRelayCommand ParentTransactionOnClose { get; }
 
         public IRxRelayCommand<IImportable> ImportBudgetPlanCommand { get; }
@@ -280,6 +286,8 @@ namespace BFF.MVVM.ViewModels
                 }
             });
 
+            CloseBudgetPlanCommand = new RxRelayCommand(() => Reset(null));
+
             ParentTransactionOnClose = new RxRelayCommand(parentTransactionFlyoutManager.Close);
 
             ImportBudgetPlanCommand = new RxRelayCommand<IImportable>(importableObject =>
@@ -291,10 +299,10 @@ namespace BFF.MVVM.ViewModels
             Logger.Trace("Initializing done.");
         }
 
-        protected void Reset(string dbPath)
+        private void Reset(string dbPath)
         {
             IBackendContext context;
-            if (File.Exists(dbPath))
+            if (dbPath != null && File.Exists(dbPath))
             {
                 var contextOwner = _sqliteBackendContextFactory();
                 context = contextOwner.Value(dbPath);

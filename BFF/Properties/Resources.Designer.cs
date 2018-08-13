@@ -1251,6 +1251,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string MainWindow_File_Close {
+            get {
+                return ResourceManager.GetString("MainWindow_File_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string MainWindow_File_Import {

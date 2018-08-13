@@ -515,6 +515,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="MainWindow_File" xml:space="preserve">
     <value>Datei</value>
   </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Schlie√üen</value>
+  </data>
   <data name="MainWindow_File_Import" xml:space="preserve">
     <value>Import</value>
   </data>

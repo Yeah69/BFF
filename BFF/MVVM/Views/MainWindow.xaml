@@ -18,7 +18,7 @@
                       Height="{Binding Height, Mode=TwoWay}"
                       MinWidth="1000"
                       MinHeight="500"
-                      d:DataContext="{d:DesignInstance viewModel:MainWindowViewModel}"
+                      d:DataContext="{d:DesignInstance viewModel:IMainWindowViewModel}"
                       dialogs:DialogParticipation.Register="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"
                       lex:LocalizeDictionary.DesignCulture="en-US"
                       lex:ResxLocalizationProvider.DefaultAssembly="BFF"
@@ -243,6 +243,10 @@
                     <Button Margin="10,5,10,5"
                             Click="Open_ImportDialog"
                             Content="{lex:Loc MainWindow_File_Import}" />
+                    <Button Margin="10,5,10,5"
+                            Click="Close_FileFlyout"
+                            Command="{Binding CloseBudgetPlanCommand}"
+                            Content="{lex:Loc MainWindow_File_Close}" />
                 </StackPanel>
             </controls:Flyout>
             <!--  ParentTransaction Flyout  -->

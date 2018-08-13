@@ -515,6 +515,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="MainWindow_File" xml:space="preserve">
     <value>Файл</value>
   </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="MainWindow_File_Import" xml:space="preserve">
     <value>Импорт</value>
   </data>
