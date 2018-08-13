@@ -1242,6 +1242,17 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No budget project loaded yet.
+        ///In order to create, open or import a project
+        ///open the File-menu in the upper left corner..
+        /// </summary>
+        public static string MainWindow_Empty {
+            get {
+                return ResourceManager.GetString("MainWindow_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File.
         /// </summary>
         public static string MainWindow_File {

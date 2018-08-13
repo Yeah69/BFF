@@ -512,6 +512,11 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="MainWindow_About" xml:space="preserve">
     <value>BFF</value>
   </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>No budget project loaded yet.
+In order to create, open or import a project
+open the File-menu in the upper left corner.</value>
+  </data>
   <data name="MainWindow_File" xml:space="preserve">
     <value>Fájl</value>
   </data>

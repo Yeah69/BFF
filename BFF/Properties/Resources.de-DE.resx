@@ -512,6 +512,11 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m�
   <data name="MainWindow_About" xml:space="preserve">
     <value>Über</value>
   </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>Noch kein Buchhaltungsprojekt geladen.
+Um ein Projekt zu erstellen, öffnen oder importieren
+öffne das Datei-Menü in der Ecke oben links.</value>
+  </data>
   <data name="MainWindow_File" xml:space="preserve">
     <value>Datei</value>
   </data>

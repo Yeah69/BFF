@@ -340,7 +340,8 @@
                                             Height="{StaticResource IconSize}"
                                             Kind="{StaticResource SettingsIcon}" />
             </Button>
-            <Button Content="{lex:Loc MainWindow_About}" />
+            <Button Visibility="Collapsed"
+                    Content="{lex:Loc MainWindow_About}" />
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 
@@ -358,7 +359,9 @@
                                      Value="True">
                             <Setter Property="ContentTemplate">
                                 <Setter.Value>
-                                    <DataTemplate />
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="{lex:Loc MainWindow_Empty}" />
+                                    </DataTemplate>
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
