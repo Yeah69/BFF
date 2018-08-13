@@ -68,6 +68,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             _categoryOrm = categoryOrm;
             InitializeAll();
         }
+        
+        public override async Task DeleteAsync(Domain.ICategory dataModel)
+        {
+            await base.DeleteAsync(dataModel).ConfigureAwait(false);
+            dataModel.Parent?.RemoveCategory(dataModel);
+        }
 
         private void InitializeAll()
         {

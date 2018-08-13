@@ -89,10 +89,10 @@ namespace BFF.MVVM.Services
         public virtual TViewModel GetViewModel(TDomain model)
         {
             if(model is null) return null;
-            if(_modelToViewModel.ContainsKey(model))
-                return _modelToViewModel[model];
+            if(!_modelToViewModel.ContainsKey(model))
+                AddToDictionaries(model);
 
-            return null;
+            return _modelToViewModel[model];
         }
 
         public TViewModel GetViewModel(long id)

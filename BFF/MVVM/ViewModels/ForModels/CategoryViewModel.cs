@@ -44,6 +44,7 @@ namespace BFF.MVVM.ViewModels.ForModels
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
         private readonly IAccountViewModelService _accountViewModelService;
+        private readonly Lazy<IBudgetOverviewViewModel> _budgetOverviewViewModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
 
         public class CategoryViewModelInitializer : ICategoryViewModelInitializer
@@ -116,6 +117,9 @@ namespace BFF.MVVM.ViewModels.ForModels
                         _accountViewModelService.All.ForEach(avm => avm.RefreshTransCollection());
                         _summaryAccountViewModel.RefreshTransCollection();
                     }
+
+                    await _budgetOverviewViewModel.Value.Refresh();
+
                     source.SetResult(Unit.Default);
                 });
             return source.Task;
@@ -185,12 +189,14 @@ namespace BFF.MVVM.ViewModels.ForModels
             ISummaryAccountViewModel summaryAccountViewModel,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
             IAccountViewModelService accountViewModelService,
+            Lazy<IBudgetOverviewViewModel> budgetOverviewViewModel,
             IRxSchedulerProvider rxSchedulerProvider) : base(category, rxSchedulerProvider)
         {
             _category = category;
             _summaryAccountViewModel = summaryAccountViewModel;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _accountViewModelService = accountViewModelService;
+            _budgetOverviewViewModel = budgetOverviewViewModel;
             _rxSchedulerProvider = rxSchedulerProvider;
         }
     }

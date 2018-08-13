@@ -46,6 +46,7 @@ namespace BFF.MVVM.ViewModels
             ICategoryViewModelInitializer categoryViewModelInitializer,
             ICategoryViewModelService categoryViewModelService,
             IIncomeCategoryViewModelService incomeCategoryViewModelService,
+            IBudgetOverviewViewModel budgetOverviewViewModel,
             ICategoryBaseViewModelService categoryBaseViewModelService)
         {
             bool ValidateNewCategoryRelationCondition(string text, ICategoryViewModel parent)
@@ -110,6 +111,8 @@ namespace BFF.MVVM.ViewModels
                             CurrentCategoryOwner.Category = categoryViewModel;
                         CurrentCategoryOwner = null;
                     }
+
+                    await budgetOverviewViewModel.Refresh();
                 })
                 .AddTo(_compositeDisposable);
             Name = new ReactiveProperty<string>(mode: ReactivePropertyMode.DistinctUntilChanged)
