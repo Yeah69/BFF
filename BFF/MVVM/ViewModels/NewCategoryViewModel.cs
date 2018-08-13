@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
+using System.Windows.Input;
 using BFF.DB;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
@@ -24,7 +24,9 @@ namespace BFF.MVVM.ViewModels
 
         IReactiveProperty<int> MonthOffset { get; }
 
-        ReactiveCommand AddCommand { get; }
+        ICommand AddCommand { get; }
+
+        ICommand DeselectParentCommand { get; }
 
         IObservableReadOnlyList<ICategoryViewModel> AllPotentialParents { get; }
 
@@ -78,23 +80,19 @@ namespace BFF.MVVM.ViewModels
             _categoryViewModelService = categoryViewModelService;
             _categoryBaseViewModelService = categoryBaseViewModelService;
 
-            AddCommand = new ReactiveCommand();
-
-            AddCommand.Where(_ =>
+            AddCommand = new AsyncRxRelayCommand(async () =>
                 {
                     (Parent as ReactiveProperty<ICategoryViewModel>)?.ForceValidate();
                     (Name as ReactiveProperty<string>)?.ForceValidate();
-                    return !Parent.HasErrors && !Name.HasErrors;
-                })
-                .Subscribe(async _ =>
-                {
+                    if(Parent.HasErrors && Name.HasErrors) return;
+
                     if (IsIncomeRelevant.Value)
                     {
                         IIncomeCategory newCategory = incomeCategoryFactory();
                         newCategory.Name = Name.Value.Trim();
                         newCategory.MonthOffset = MonthOffset.Value;
                         await newCategory.InsertAsync();
-                        if(CurrentCategoryOwner != null)
+                        if (CurrentCategoryOwner != null)
                             CurrentCategoryOwner.Category = incomeCategoryViewModelService.GetViewModel(newCategory);
                         CurrentCategoryOwner = null;
                     }
@@ -115,6 +113,9 @@ namespace BFF.MVVM.ViewModels
                     await budgetOverviewViewModel.Refresh();
                 })
                 .AddTo(_compositeDisposable);
+
+            DeselectParentCommand = new RxRelayCommand(() => Parent.Value = null);
+
             Name = new ReactiveProperty<string>(mode: ReactivePropertyMode.DistinctUntilChanged)
                 .SetValidateNotifyError(text =>
                 {
@@ -161,7 +162,9 @@ namespace BFF.MVVM.ViewModels
         /// <summary>
         /// Creates a new Category.
         /// </summary>
-        public ReactiveCommand AddCommand { get; }
+        public ICommand AddCommand { get; }
+
+        public ICommand DeselectParentCommand { get; }
 
         /// <summary>
         /// All currently available Categories.

@@ -6,6 +6,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
              d:DataContext="{d:DesignInstance viewModels:NewCategoryViewModel}"
              d:DesignHeight="300"
@@ -101,20 +102,11 @@
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
-            <ComboBox x:Name="ParentCategoryComboBox"
-                      Grid.Row="2"
-                      Grid.Column="1"
-                      IsEditable="True"
-                      IsTextSearchCaseSensitive="True"
-                      IsTextSearchEnabled="True"
-                      ItemTemplate="{StaticResource IndentedCategoryItemTemplate}"
-                      ItemsSource="{Binding AllPotentialParents}"
-                      SelectedItem="{Binding Parent.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ShouldPreserveUserEnteredPrefix="True"
-                      TextSearch.TextPath="Name">
-                <ComboBox.Style>
-                    <Style BasedOn="{StaticResource {x:Type ComboBox}}"
-                           TargetType="{x:Type ComboBox}">
+            <DockPanel Grid.Row="2"
+                       Grid.Column="1"
+                       LastChildFill="True">
+                <DockPanel.Style>
+                    <Style TargetType="{x:Type DockPanel}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsIncomeRelevant.Value, UpdateSourceTrigger=PropertyChanged}"
                                          Value="True">
@@ -123,20 +115,35 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </ComboBox.Style>
-                <ComboBox.ToolTip>
-                    <ToolTip>
-                        <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
-                                 ItemsSource="{Binding Parent.Value.FullChainOfCategories}">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                        </ListBox>
-                    </ToolTip>
-                </ComboBox.ToolTip>
-            </ComboBox>
+                </DockPanel.Style>
+                <Button Visibility="{Binding Parent.Value, Converter={x:Static mvvm:Converters.NullToCollapsed}}"
+                        Command="{Binding DeselectParentCommand}"
+                        Content="X"
+                        DockPanel.Dock="Right" />
+
+                <ComboBox DockPanel.Dock="Left"
+                          IsEditable="True"
+                          IsTextSearchCaseSensitive="True"
+                          IsTextSearchEnabled="True"
+                          ItemTemplate="{StaticResource IndentedCategoryItemTemplate}"
+                          ItemsSource="{Binding AllPotentialParents}"
+                          SelectedItem="{Binding Parent.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          ShouldPreserveUserEnteredPrefix="True"
+                          TextSearch.TextPath="Name">
+                    <ComboBox.ToolTip>
+                        <ToolTip>
+                            <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
+                                     ItemsSource="{Binding Parent.Value.FullChainOfCategories}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </ToolTip>
+                    </ComboBox.ToolTip>
+                </ComboBox>
+            </DockPanel>
             <Button Grid.Row="3"
                     Grid.Column="1"
                     HorizontalAlignment="Right"
@@ -150,6 +157,14 @@
         </Grid>
     </StackPanel>
 </UserControl>
+
+
+
+
+
+
+
+
 
 
 
