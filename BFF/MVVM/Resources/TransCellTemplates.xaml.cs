@@ -86,5 +86,13 @@ namespace BFF.MVVM.Resources
                 && behavior.Parent.FindName("ConvertMenu") is Popup popup)
                 popup.IsOpen = true;
         }
+
+        private void FrameworkElementClickBehavior_OnClick(object sender, EventArgs e)
+        {
+            if (!(sender is FrameworkElementClickBehavior fecb)) return;
+
+            var parentContextMenu = fecb.Parent?.ContextMenu;
+            if(parentContextMenu != null) parentContextMenu.IsOpen = true;
+        }
     }
 }

@@ -1446,4 +1446,30 @@
             </ContentControl.Resources>
         </ContentControl>
     </DataTemplate>
+    <!--  Context Menu  -->
+    <DataTemplate x:Key="ContextMenuColumnTemplate">
+        <ContentControl Content="{Binding}"
+                        Style="{StaticResource CellContent}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type structure:TransBaseViewModel}">
+                    <iconPacks:PackIconMaterial Visibility="{Binding IsMouseOver, Converter={x:Static mvvm:Converters.FalseToCollapsed}, RelativeSource={RelativeSource AncestorType=DataGridRow}}"
+                                                Width="{StaticResource IconSize}"
+                                                Height="{StaticResource IconSize}"
+                                                Margin="0"
+                                                Padding="0"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                Background="Transparent"
+                                                ContextMenu="{Binding ContextMenu, RelativeSource={RelativeSource AncestorType=DataGridRow}}"
+                                                Foreground="{DynamicResource AccentColorBrush}"
+                                                Kind="DotsHorizontal">
+                        <i:Interaction.Behaviors>
+                            <attachedBehaviors:FrameworkElementClickBehavior Click="FrameworkElementClickBehavior_OnClick" />
+                        </i:Interaction.Behaviors>
+                    </iconPacks:PackIconMaterial>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
+            </ContentControl.Resources>
+        </ContentControl>
+    </DataTemplate>
 </ResourceDictionary>

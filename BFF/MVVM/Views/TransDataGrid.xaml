@@ -122,6 +122,10 @@
                                         Header="{lex:Loc AccountView_Header_Cleared}"
                                         IsReadOnly="True"
                                         SortMemberPath="Cleared" />
+                <!--  Context Menu  -->
+                <DataGridTemplateColumn x:Name="ContextMenuColumn"
+                                        CellTemplate="{StaticResource ContextMenuColumnTemplate}"
+                                        IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
 
@@ -183,6 +187,10 @@
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource ClearedColumnTemplate}"
                                             Header="{lex:Loc AccountView_Header_Cleared}"
+                                            IsReadOnly="True" />
+                    <!--  Context Menu  -->
+                    <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference ContextMenuColumn}, Mode=TwoWay}"
+                                            CellTemplate="{StaticResource ContextMenuColumnTemplate}"
                                             IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
