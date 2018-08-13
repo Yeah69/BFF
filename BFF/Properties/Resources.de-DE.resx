@@ -524,7 +524,7 @@ Um ein Projekt zu erstellen, öffnen oder importieren
     <value>Schließen</value>
   </data>
   <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>Import</value>
+    <value>YNAB4-Import</value>
   </data>
   <data name="MainWindow_File_New" xml:space="preserve">
     <value>Neu</value>

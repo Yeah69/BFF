@@ -524,7 +524,7 @@ open the File-menu in the upper left corner.</value>
     <value>Close</value>
   </data>
   <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>Импорт</value>
+    <value>YNAB4-Импорт</value>
   </data>
   <data name="MainWindow_File_New" xml:space="preserve">
     <value>Создать</value>

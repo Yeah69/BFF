@@ -1271,7 +1271,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import.
+        ///   Looks up a localized string similar to YNAB4-Import.
         /// </summary>
         public static string MainWindow_File_Import {
             get {
