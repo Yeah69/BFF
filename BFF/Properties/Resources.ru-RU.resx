@@ -320,6 +320,10 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Category_CreateNew" xml:space="preserve">
     <value>Create new Category</value>
   </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>If checked, then an income category is created.
+Only transactions assigned to such a category are interpreted as income.</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Color</value>
   </data>

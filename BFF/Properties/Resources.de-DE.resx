@@ -320,6 +320,10 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="Category_CreateNew" xml:space="preserve">
     <value>Neue Kategorie erstellen</value>
   </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Wenn angehakt, dann erstellt dies eine Einkommenskategorie.
+Nur Transaktionen, die zu so einer Kategorie angeh√§ngt sind, werden als Einkommen interpretiert.</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Farbe</value>
   </data>

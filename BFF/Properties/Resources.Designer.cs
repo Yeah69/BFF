@@ -1370,6 +1370,16 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If checked, then an income category is created.
+        ///Only transactions assigned to such a category are interpreted as income..
+        /// </summary>
+        public static string NewCategory_IncomeRelevantExplanation {
+            get {
+                return ResourceManager.GetString("NewCategory_IncomeRelevantExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Income Relevant?.
         /// </summary>
         public static string NewCategory_IsIncomeRelevant {
