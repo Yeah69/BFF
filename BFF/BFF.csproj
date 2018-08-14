@@ -165,6 +165,7 @@
     <Compile Include="Helper\IRxSchedulerProvider.cs" />
     <Compile Include="Helper\LastSetDate.cs" />
     <Compile Include="Helper\Sign.cs" />
+    <Compile Include="MVVM\AttachedBehaviors\InputBindingsManager.cs" />
     <Compile Include="MVVM\AttachedBehaviors\PopupCommands.cs" />
     <Compile Include="MVVM\AttachedBehaviors\ToolTipCommands.cs" />
     <Compile Include="MVVM\AttachedBehaviors\FrameworkElementClickBehavior.cs" />

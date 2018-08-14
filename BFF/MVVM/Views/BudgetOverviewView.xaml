@@ -65,68 +65,69 @@
                 </Style.Triggers>
             </Style>
 
-            <DataTemplate x:Key="AssociatedElementsDataGrid" DataType="{x:Type utility:ILazyTransLikeViewModels}">
+            <DataTemplate x:Key="AssociatedElementsDataGrid"
+                          DataType="{x:Type utility:ILazyTransLikeViewModels}">
                 <Border Style="{StaticResource PopupBorder}">
                     <DataGrid Margin="2.5"
-                                                      HorizontalScrollBarVisibility="Disabled"
-                                                      ItemsSource="{Binding LazyElements}"
-                                                      RowStyle="{StaticResource DefaultRowStyle}"
-                                                      ScrollViewer.IsDeferredScrollingEnabled="True"
-                                                      SelectionMode="Single"
-                                                      SelectionUnit="FullRow">
+                              HorizontalScrollBarVisibility="Disabled"
+                              ItemsSource="{Binding LazyElements}"
+                              RowStyle="{StaticResource DefaultRowStyle}"
+                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                              SelectionMode="Single"
+                              SelectionUnit="FullRow">
                         <DataGrid.Resources />
                         <DataGrid.Columns>
                             <!--  Symbol  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource SymbolColumnTemplate}"
-                                                                            Header="{lex:Loc AccountView_Header_SymbolAbbr}">
+                                                    Header="{lex:Loc AccountView_Header_SymbolAbbr}">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding}"
-                                                                           ToolTip="{lex:Loc AccountView_Header_SymbolAbbr_Tooltip}" />
+                                                   ToolTip="{lex:Loc AccountView_Header_SymbolAbbr_Tooltip}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
                             </DataGridTemplateColumn>
                             <!--  Account  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource AccountColumnTemplate}"
-                                                                            Header="{lex:Loc AccountView_Header_Account}"
-                                                                            SortMemberPath="Account.Name" />
+                                                    Header="{lex:Loc AccountView_Header_Account}"
+                                                    SortMemberPath="Account.Name" />
                             <!--  Date  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource DateColumnTemplate}"
-                                                                            Header="{lex:Loc AccountView_Header_Date}"
-                                                                            SortMemberPath="Date" />
+                                                    Header="{lex:Loc AccountView_Header_Date}"
+                                                    SortMemberPath="Date" />
                             <!--  Flag  -->
                             <DataGridTemplateColumn Visibility="{Binding DataContext.TransDataGridColumnManager.ShowFlags.Value, Source={x:Reference Root}, Converter={x:Static mvvm:Converters.FalseToCollapsed}}"
-                                                                            CellTemplate="{StaticResource FlagColumnTemplate}"
-                                                                            Header="{lex:Loc AccountView_Header_Flag}"
-                                                                            SortMemberPath="Flag.Name" />
+                                                    CellTemplate="{StaticResource FlagColumnTemplate}"
+                                                    Header="{lex:Loc AccountView_Header_Flag}"
+                                                    SortMemberPath="Flag.Name" />
                             <!--  CheckNumber  -->
                             <DataGridTemplateColumn Visibility="{Binding DataContext.TransDataGridColumnManager.ShowCheckNumbers.Value, Source={x:Reference Root}, Converter={x:Static mvvm:Converters.FalseToCollapsed}}"
-                                                                            CellTemplate="{StaticResource CheckNumberColumnTemplate}"
-                                                                            Header="{lex:Loc AccountView_Header_CheckNumber}"
-                                                                            SortMemberPath="CheckNumber" />
+                                                    CellTemplate="{StaticResource CheckNumberColumnTemplate}"
+                                                    Header="{lex:Loc AccountView_Header_CheckNumber}"
+                                                    SortMemberPath="CheckNumber" />
                             <!--  Payee  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource PayeeColumnTemplate}"
-                                                                            Header="{lex:Loc AccountView_Header_Payee}"
-                                                                            SortMemberPath="Payee.Name" />
+                                                    Header="{lex:Loc AccountView_Header_Payee}"
+                                                    SortMemberPath="Payee.Name" />
                             <!--  Category  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource CategoryColumnTemplate}"
-                                                                            Header="{lex:Loc AccountView_Header_Category}"
-                                                                            SortMemberPath="Category.Name" />
+                                                    Header="{lex:Loc AccountView_Header_Category}"
+                                                    SortMemberPath="Category.Name" />
                             <!--  Memo  -->
                             <DataGridTemplateColumn Width="*"
-                                                                            CellTemplate="{StaticResource MemoColumnTemplate}"
-                                                                            Header="{lex:Loc AccountView_Header_Memo}"
-                                                                            SortMemberPath="Memo" />
+                                                    CellTemplate="{StaticResource MemoColumnTemplate}"
+                                                    Header="{lex:Loc AccountView_Header_Memo}"
+                                                    SortMemberPath="Memo" />
                             <!--  Sum  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource SumColumnTemplate}"
-                                                                            Header="{lex:Loc AccountView_Header_Sum}"
-                                                                            IsReadOnly="False"
-                                                                            SortMemberPath="Sum" />
+                                                    Header="{lex:Loc AccountView_Header_Sum}"
+                                                    IsReadOnly="False"
+                                                    SortMemberPath="Sum" />
                             <!--  Cleared  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource ClearedColumnTemplate}"
-                                                                            Header="{lex:Loc AccountView_Header_Cleared}"
-                                                                            IsReadOnly="True"
-                                                                            SortMemberPath="Cleared" />
+                                                    Header="{lex:Loc AccountView_Header_Cleared}"
+                                                    IsReadOnly="True"
+                                                    SortMemberPath="Cleared" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
@@ -149,23 +150,26 @@
                    HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch">
             <DockPanel HorizontalAlignment="Stretch"
-                        VerticalAlignment="Top"
-                        DockPanel.Dock="Top" LastChildFill="True">
+                       VerticalAlignment="Top"
+                       DockPanel.Dock="Top"
+                       LastChildFill="True">
                 <Button Margin="5"
-                        DockPanel.Dock="Right"
-                        Command="{Binding IncreaseMonthStartIndex}">
+                        Command="{Binding IncreaseMonthStartIndex}"
+                        DockPanel.Dock="Right">
                     <iconPacks:PackIconModern Width="{StaticResource IconSize}"
                                               Height="{StaticResource IconSize}"
                                               Kind="ChevronRight" />
                 </Button>
                 <Button Margin="5"
-                        DockPanel.Dock="Left"
-                        Command="{Binding DecreaseMonthStartIndex}">
+                        Command="{Binding DecreaseMonthStartIndex}"
+                        DockPanel.Dock="Left">
                     <iconPacks:PackIconModern Width="{StaticResource IconSize}"
                                               Height="{StaticResource IconSize}"
                                               Kind="ChevronLeft" />
                 </Button>
-                <mah:DateTimePicker DockPanel.Dock="Top" SelectedDate="{Binding SelectedMonth}" Margin="5" />
+                <mah:DateTimePicker Margin="5"
+                                    DockPanel.Dock="Top"
+                                    SelectedDate="{Binding SelectedMonth}" />
             </DockPanel>
             <mah:ToggleSwitch x:Name="AggregateSwitch"
                               VerticalAlignment="Bottom"
@@ -386,10 +390,12 @@
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
                                                                              Value="True">
-                                                                    <Setter Property="ContentTemplate" Value="{StaticResource AssociatedElementsDataGrid}" />
+                                                                    <Setter Property="ContentTemplate"
+                                                                            Value="{StaticResource AssociatedElementsDataGrid}" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
-                                                            <Setter Property="ContentTemplate" Value="{StaticResource EmptyDataTemplate}" />
+                                                            <Setter Property="ContentTemplate"
+                                                                    Value="{StaticResource EmptyDataTemplate}" />
                                                         </Style>
                                                     </ContentControl.Style>
                                                 </ContentControl>
@@ -512,10 +518,12 @@
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
                                                                      Value="True">
-                                                            <Setter Property="ContentTemplate" Value="{StaticResource AssociatedElementsDataGrid}" />
+                                                            <Setter Property="ContentTemplate"
+                                                                    Value="{StaticResource AssociatedElementsDataGrid}" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
-                                                    <Setter Property="ContentTemplate" Value="{StaticResource EmptyDataTemplate}" />
+                                                    <Setter Property="ContentTemplate"
+                                                            Value="{StaticResource EmptyDataTemplate}" />
                                                 </Style>
                                             </ContentControl.Style>
                                         </ContentControl>
@@ -576,6 +584,7 @@
                                                      Margin="-5,0,-6,0"
                                                      Padding="0"
                                                      HorizontalContentAlignment="Right"
+                                                     attachedBehaviors:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"
                                                      Text="{Binding Budget, Converter={x:Static mvvm:Converters.SumToString}}"
                                                      TextAlignment="Right">
                                                 <TextBox.Style>
@@ -609,8 +618,8 @@
                                             </TextBox>
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                         Height="{StaticResource IconSize}"
-                                                                        Padding="0"
                                                                         Margin="0"
+                                                                        Padding="0"
                                                                         HorizontalAlignment="Left"
                                                                         VerticalAlignment="Center"
                                                                         Background="Transparent"
@@ -682,10 +691,12 @@
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
                                                                              Value="True">
-                                                                    <Setter Property="ContentTemplate" Value="{StaticResource AssociatedElementsDataGrid}" />
+                                                                    <Setter Property="ContentTemplate"
+                                                                            Value="{StaticResource AssociatedElementsDataGrid}" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
-                                                            <Setter Property="ContentTemplate" Value="{StaticResource EmptyDataTemplate}" />
+                                                            <Setter Property="ContentTemplate"
+                                                                    Value="{StaticResource EmptyDataTemplate}" />
                                                         </Style>
                                                     </ContentControl.Style>
                                                 </ContentControl>
@@ -725,10 +736,12 @@
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
                                                                              Value="True">
-                                                                    <Setter Property="ContentTemplate" Value="{StaticResource AssociatedElementsDataGrid}" />
+                                                                    <Setter Property="ContentTemplate"
+                                                                            Value="{StaticResource AssociatedElementsDataGrid}" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
-                                                            <Setter Property="ContentTemplate" Value="{StaticResource EmptyDataTemplate}" />
+                                                            <Setter Property="ContentTemplate"
+                                                                    Value="{StaticResource EmptyDataTemplate}" />
                                                         </Style>
                                                     </ContentControl.Style>
                                                 </ContentControl>

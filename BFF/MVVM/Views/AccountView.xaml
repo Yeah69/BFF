@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="BFF.MVVM.Views.AccountView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:attachedBehaviors="clr-namespace:BFF.MVVM.AttachedBehaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -26,8 +27,9 @@
                         BorderThickness="0,0,1,0" />
                 <Border BorderBrush="{StaticResource AccentColorBrush}"
                         BorderThickness="0,0,1,0">
-                    <TextBlock Margin="5" TextAlignment="Left"
-                               Text="{lex:Loc AccountView_Balance_Cleared}" />
+                    <TextBlock Margin="5"
+                               Text="{lex:Loc AccountView_Balance_Cleared}"
+                               TextAlignment="Left" />
                 </Border>
                 <Border BorderBrush="{StaticResource AccentColorBrush}"
                         BorderThickness="0,0,1,0">
@@ -151,7 +153,8 @@
                            Text="{Binding TotalBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}"
                            TextAlignment="Right">
                     <TextBlock.ToolTip>
-                        <ToolTip Content="{Binding}" ContentTemplate="{StaticResource BalanceToolTip}" />
+                        <ToolTip Content="{Binding}"
+                                 ContentTemplate="{StaticResource BalanceToolTip}" />
                     </TextBlock.ToolTip>
                 </TextBlock>
 
@@ -159,7 +162,8 @@
                       Grid.Column="2"
                       Background="Transparent">
                     <Grid.ToolTip>
-                        <ToolTip Content="{Binding}" ContentTemplate="{StaticResource BalanceToolTip}" />
+                        <ToolTip Content="{Binding}"
+                                 ContentTemplate="{StaticResource BalanceToolTip}" />
                     </Grid.ToolTip>
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
@@ -219,6 +223,7 @@
                          Grid.Column="1"
                          Visibility="{Binding TargetBalance, Converter={x:Static mvvm:Converters.NullableLongToCollapsed}}"
                          Margin="2.5"
+                         attachedBehaviors:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"
                          Foreground="{Binding TargetBalance, Converter={x:Static mvvm:Converters.NullableSumToSolidColorBrush}}"
                          Text="{Binding TargetBalance, Converter={x:Static mvvm:Converters.NullableSumToString}}"
                          TextAlignment="Right" />
