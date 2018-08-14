@@ -51,6 +51,9 @@ namespace BFF.MVVM.Managers
                 if (_neverShowEditHeaders == value) return;
                 _neverShowEditHeaders = value;
                 OnPropertyChanged();
+
+                Settings.Default.NeverShowEditHeaders = value;
+                Settings.Default.Save();
             }
         }
 

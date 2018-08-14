@@ -324,6 +324,11 @@ namespace BFF.MVVM
                 e => e.Value ? Visibility.Collapsed : Visibility.Visible,
                 e => e.Value == Visibility.Collapsed);
 
+        public static readonly IValueConverter TrueToHidden =
+            ValueConverter.Create<bool, Visibility>(
+                e => e.Value ? Visibility.Hidden : Visibility.Visible,
+                e => e.Value == Visibility.Hidden);
+
         public static readonly IValueConverter FalseToCollapsed =
             ValueConverter.Create<bool, Visibility>(
                 e => e.Value ? Visibility.Visible : Visibility.Collapsed,

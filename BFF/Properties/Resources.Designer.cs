@@ -135,15 +135,6 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string AccountTabsView_CreateAccount {
-            get {
-                return ResourceManager.GetString("AccountTabsView_CreateAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
         public static string AccountTabsView_NewAccount_Create {
@@ -230,6 +221,15 @@ namespace BFF.Properties {
         public static string AccountView_ConMenu_Remove {
             get {
                 return ResourceManager.GetString("AccountView_ConMenu_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create first account entry.
+        /// </summary>
+        public static string AccountView_FirstEntry {
+            get {
+                return ResourceManager.GetString("AccountView_FirstEntry", resourceCulture);
             }
         }
         
@@ -369,7 +369,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add to the table.
+        ///   Looks up a localized string similar to Persists currently edited elements to the account.
         /// </summary>
         public static string AccountView_ToolTip_AddToTable {
             get {
@@ -378,7 +378,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New splitted Transaction.
+        ///   Looks up a localized string similar to Creates a new split Transaction.
         /// </summary>
         public static string AccountView_ToolTip_NewParentTransaction {
             get {
@@ -387,7 +387,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Transaction.
+        ///   Looks up a localized string similar to Creates a new Transaction.
         /// </summary>
         public static string AccountView_ToolTip_NewTransaction {
             get {
@@ -396,7 +396,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Transfer.
+        ///   Looks up a localized string similar to Creates a new transfer.
         /// </summary>
         public static string AccountView_ToolTip_NewTransfer {
             get {

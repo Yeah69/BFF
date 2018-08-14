@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -37,6 +38,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Lazy loaded collection of Trans' belonging to this Account.
         /// </summary>
         IDataVirtualizingCollection<ITransLikeViewModel> Trans { get; }
+
+        bool TransIsEmpty { get; }
 
         /// <summary>
         /// Collection of Trans', which are about to be inserted to this Account.
@@ -127,6 +130,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// Lazy loaded collection of Trans' belonging to this Account.
         /// </summary>
         public IDataVirtualizingCollection<ITransLikeViewModel> Trans => _trans ?? (_trans = CreateDataVirtualizingCollection());
+
+        public bool TransIsEmpty => (Trans as ICollection).Count == 0;
 
         /// <summary>
         /// Collection of Trans', which are about to be inserted to this Account.
@@ -408,6 +413,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                         {
                             OnPreVirtualizedRefresh();
                             OnPropertyChanged(nameof(Trans));
+                            OnPropertyChanged(nameof(TransIsEmpty));
                             OnPostVirtualizedRefresh();
                             Task.Run(() => temp?.Dispose());
                         });

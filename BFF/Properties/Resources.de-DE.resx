@@ -150,6 +150,9 @@
   <data name="AccountView_ConMenu_Remove" xml:space="preserve">
     <value>Entferne</value>
   </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Erstelle den ersten Konteneintrag</value>
+  </data>
   <data name="AccountView_Header_Account" xml:space="preserve">
     <value>Konto</value>
   </data>
@@ -196,16 +199,16 @@
     <value>Ziel-Kontostand</value>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>In die Tabelle aufnehmen</value>
+    <value>Speichert die gerade bearbeiteten Elemente zum Konto</value>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>Neue aufgeteilte Ausgabe</value>
+    <value>Erstellt eine neue aufgeteilte Ausgabe</value>
   </data>
   <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>Neue Ausgabe</value>
+    <value>Erstellt eine neue Ausgabe</value>
   </data>
   <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>Neuer Umbuchung</value>
+    <value>Erstellt eine neue Umbuchung</value>
   </data>
   <data name="Account_Balance" xml:space="preserve">
     <value>Kontostand</value>

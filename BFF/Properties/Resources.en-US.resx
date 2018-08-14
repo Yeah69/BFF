@@ -150,6 +150,9 @@
   <data name="AccountView_ConMenu_Remove" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Create first account entry</value>
+  </data>
   <data name="AccountView_Header_Account" xml:space="preserve">
     <value>Account</value>
   </data>
@@ -196,16 +199,16 @@
     <value>Target balance</value>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>Add to the table</value>
+    <value>Persists currently edited elements to the account</value>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>New splitted Transaction</value>
+    <value>Creates a new split Transaction</value>
   </data>
   <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>New Transaction</value>
+    <value>Creates a new Transaction</value>
   </data>
   <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>New Transfer</value>
+    <value>Creates a new transfer</value>
   </data>
   <data name="Account_Balance" xml:space="preserve">
     <value>Balance</value>
