@@ -390,5 +390,13 @@ namespace BFF.MVVM
         public static readonly IValueConverter IntGreaterThanZeroVisibleElseCollapsed =
             ValueConverter.Create<int, Visibility>(
                 e => e.Value > 0 ? Visibility.Visible : Visibility.Collapsed);
+
+        public static readonly IValueConverter IntEqualToZeroVisibleElseCollapsed =
+            ValueConverter.Create<int, Visibility>(
+                e => e.Value == 0 ? Visibility.Visible : Visibility.Collapsed);
+
+        public static readonly IValueConverter IntGreaterThanZero =
+            ValueConverter.Create<int, bool>(
+                e => e.Value > 0);
     }
 }

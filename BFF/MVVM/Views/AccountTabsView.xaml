@@ -8,6 +8,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
              xmlns:views="clr-namespace:BFF.MVVM.Views"
              x:Name="AccountTabsUserControl"
@@ -25,6 +26,7 @@
     </UserControl.Resources>
     <Grid>
         <TabControl Name="AccountsTabControl"
+                    Visibility="{Binding AllAccounts.Count, Converter={x:Static mvvm:Converters.IntGreaterThanZeroVisibleElseCollapsed}}"
                     Margin="10"
                     controls:TabControlHelper.Underlined="TabItems">
             <TabControl.Resources>
@@ -89,6 +91,16 @@
                                       DataContext="{Binding NewAccountViewModel}" />
             </TabItem>
         </TabControl>
+
+        <StackPanel Visibility="{Binding AllAccounts.Count, Converter={x:Static mvvm:Converters.IntEqualToZeroVisibleElseCollapsed}}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock FontSize="{StaticResource BigTitleFontSize}"
+                       Text="{lex:Loc Account_CreateNew}" />
+
+            <views:NewAccountView Width="500"
+                                  DataContext="{Binding NewAccountViewModel}" />
+        </StackPanel>
     </Grid>
 </UserControl>
 

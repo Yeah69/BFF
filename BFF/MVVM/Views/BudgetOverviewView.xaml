@@ -174,9 +174,9 @@
             <mah:ToggleSwitch x:Name="AggregateSwitch"
                               VerticalAlignment="Bottom"
                               DockPanel.Dock="Bottom"
-                              Header="Show Aggregates"
-                              OffLabel="No"
-                              OnLabel="Yes" />
+                              Header="{lex:Loc Budgeting_ShowAggregates}"
+                              OffLabel="{lex:Loc General_No}"
+                              OnLabel="{lex:Loc General_Yes}" />
         </DockPanel>
         <GridSplitter Grid.Row="0"
                       Grid.RowSpan="2"

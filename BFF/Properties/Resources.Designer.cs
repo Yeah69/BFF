@@ -135,6 +135,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string AccountTabsView_CreateAccount {
+            get {
+                return ResourceManager.GetString("AccountTabsView_CreateAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
         public static string AccountTabsView_NewAccount_Create {
@@ -621,6 +630,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Aggregates.
+        /// </summary>
+        public static string Budgeting_ShowAggregates {
+            get {
+                return ResourceManager.GetString("Budgeting_ShowAggregates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unassigned.
         /// </summary>
         public static string Budgeting_UnassignedTransactions {
@@ -1044,6 +1062,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string General_No {
+            get {
+                return ResourceManager.GetString("General_No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Okay.
         /// </summary>
         public static string General_Okay {
@@ -1139,6 +1166,15 @@ namespace BFF.Properties {
         public static string General_Unassigned {
             get {
                 return ResourceManager.GetString("General_Unassigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string General_Yes {
+            get {
+                return ResourceManager.GetString("General_Yes", resourceCulture);
             }
         }
         

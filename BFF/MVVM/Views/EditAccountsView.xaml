@@ -16,7 +16,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel>
             <TextBlock Margin="0,10"
-                       FontSize="30"
+                       FontSize="{StaticResource BigTitleFontSize}"
                        Text="{lex:Loc Account_Edit}" />
 
             <DataGrid MinWidth="100"
@@ -92,7 +92,7 @@
             </DataGrid>
 
             <TextBlock Margin="0,10"
-                       FontSize="30"
+                       FontSize="{StaticResource BigTitleFontSize}"
                        Text="{lex:Loc Account_CreateNew}" />
 
             <views:NewAccountView HorizontalAlignment="Stretch"

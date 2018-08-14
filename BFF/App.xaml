@@ -51,6 +51,9 @@
             <system:Double x:Key="WindowCommandIconSize">
                 15.0
             </system:Double>
+            <system:Double x:Key="BigTitleFontSize">
+                30.0
+            </system:Double>
             <!--  Following Brushes are configured in code-behind  -->
             <SolidColorBrush x:Key="AlternatingRowBrush" />
             <SolidColorBrush x:Key="OpaqueZeroBrush" />

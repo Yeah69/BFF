@@ -305,6 +305,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="Budgeting_OverspendExplanation" xml:space="preserve">
     <value>Summe der Budget√ºberschreitungen aufsummiert √ºber alle Kategorien letzten Monats.</value>
   </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Gesamtsummen anzeigen</value>
+  </data>
   <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
     <value>Nicht-zugewiesen</value>
   </data>
@@ -446,6 +449,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
     <value>Erstelle einen neuen Zahlungsempf√§nger wenn er nicht existiert?</value>
   </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
   <data name="General_Okay" xml:space="preserve">
     <value>Okay</value>
   </data>
@@ -478,6 +484,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m√
   </data>
   <data name="General_Unassigned" xml:space="preserve">
     <value>Nicht zugewiesen</value>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
   </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
     <value>Konten</value>

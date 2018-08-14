@@ -120,6 +120,9 @@
   <data name="AccountTabsView_AllAccounts" xml:space="preserve">
     <value>All Accounts</value>
   </data>
+  <data name="AccountTabsView_CreateAccount" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
     <value>Create</value>
   </data>
@@ -305,6 +308,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Budgeting_OverspendExplanation" xml:space="preserve">
     <value>Sum of overspend amounts of money accumulated from all categories in last month.</value>
   </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Show Aggregates</value>
+  </data>
   <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
     <value>Unassigned</value>
   </data>
@@ -446,6 +452,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
     <value>Create new payee if not existing?</value>
   </data>
+  <data name="General_No" xml:space="preserve">
+    <value>No</value>
+  </data>
   <data name="General_Okay" xml:space="preserve">
     <value>Okay</value>
   </data>
@@ -478,6 +487,9 @@ Are you really sure? (A backup will be created automatically, if you would like 
   </data>
   <data name="General_Unassigned" xml:space="preserve">
     <value>Unassigned</value>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
     <value>Accounts</value>
