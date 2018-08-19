@@ -46,6 +46,8 @@ namespace BFF.MVVM.ViewModels
         IDisposable DeferRefreshUntilDisposal();
 
         IBudgetMonthViewModel GetBudgetMonthViewModel(DateTime month);
+
+        ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
     }
 
     public class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IOncePerBackend, IDisposable
@@ -61,7 +63,11 @@ namespace BFF.MVVM.ViewModels
         private bool _isOpen;
         private bool _canRefresh = true;
         private DateTime _selectedMonth;
-        public IList<IBudgetMonthViewModel> BudgetMonths { get; private set; }
+        private IDataVirtualizingCollection<IBudgetMonthViewModel> _budgetMonths;
+
+        public IList<IBudgetMonthViewModel> BudgetMonths =>
+            _budgetMonths ?? (_budgetMonths = CreateBudgetMonths());
+
         public IBudgetMonthViewModel CurrentBudgetMonth => BudgetMonths[MonthToIndex(DateTime.Now)];
 
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
@@ -138,7 +144,7 @@ namespace BFF.MVVM.ViewModels
                     .All
                     .ToReadOnlyReactiveCollection(categoryViewModelService.GetViewModel);
 
-            BudgetMonths = CreateBudgetMonths();
+            //BudgetMonths = CreateBudgetMonths();
             CurrentMonthStartIndex = MonthToIndex(DateTime.Now) - 1;
 
             var currentMonthStartIndexChanges = this
@@ -178,13 +184,19 @@ namespace BFF.MVVM.ViewModels
                         throw new InvalidEnumArgumentException();
                 }
             }).AddTo(_compositeDisposable);
+
+            Disposable
+                .Create(() => _budgetMonths?.Dispose())
+                .AddTo(_compositeDisposable);
         }
 
         public async Task Refresh()
         {
             if (_canRefresh.Not()) return;
-            BudgetMonths = await Task.Run(() => CreateBudgetMonths());
+            var temp = _budgetMonths;
+            _budgetMonths = await Task.Run(() => CreateBudgetMonths());
             _rxSchedulerProvider.UI.MinimalSchedule(() => OnPropertyChanged(nameof(BudgetMonths)));
+            await Task.Run(() => temp.Dispose());
         }
 
         public IDisposable DeferRefreshUntilDisposal()

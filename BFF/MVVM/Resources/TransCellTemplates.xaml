@@ -28,25 +28,30 @@
 
     <DataTemplate x:Key="ParentTransactionToolTipTemplate"
                   DataType="{x:Type forModels:ParentTransactionViewModel}">
-        <DataGrid ItemsSource="{Binding SubTransactions}">
-            <DataGrid.Columns>
-                <!--  Category  -->
-                <DataGridTextColumn Binding="{Binding Category.Name}"
-                                    Header="{lex:Loc AccountView_Header_Category}" />
-                <!--  Category  -->
-                <DataGridTextColumn Binding="{Binding Memo}"
-                                    Header="{lex:Loc AccountView_Header_Memo}" />
-                <!--  Sum  -->
-                <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Sum}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
-                                       Text="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+        <StackPanel>
+            <TextBlock Margin="2.5"
+                       Text="{lex:Loc ToolTip_Symbol_SplitTransaction}" />
+            <DataGrid Margin="2.5"
+                      ItemsSource="{Binding SubTransactions}">
+                <DataGrid.Columns>
+                    <!--  Category  -->
+                    <DataGridTextColumn Binding="{Binding Category.Name}"
+                                        Header="{lex:Loc AccountView_Header_Category}" />
+                    <!--  Memo  -->
+                    <DataGridTextColumn Binding="{Binding Memo}"
+                                        Header="{lex:Loc AccountView_Header_Memo}" />
+                    <!--  Sum  -->
+                    <DataGridTemplateColumn Header="{lex:Loc AccountView_Header_Sum}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                                           Text="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToString}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
     </DataTemplate>
 
     <!--  Symbol  -->
@@ -107,7 +112,8 @@
                                 </Button>
                             </Border>
                         </Popup>
-                        <iconPacks:PackIconMaterial x:Name="Icon">
+                        <iconPacks:PackIconMaterial x:Name="Icon"
+                                                    Background="Transparent">
                             <iconPacks:PackIconMaterial.Style>
                                 <Style BasedOn="{StaticResource CellIconMaterial}"
                                        TargetType="{x:Type iconPacks:PackIconMaterial}">
@@ -116,12 +122,16 @@
                                                      Value="True">
                                             <Setter Property="Kind"
                                                     Value="{StaticResource IncomeIcon}" />
+                                            <Setter Property="ToolTip"
+                                                    Value="{lex:Loc ToolTip_Symbol_IncomeTransaction}" />
                                             <Setter Property="Foreground"
                                                     Value="{DynamicResource IncomeBrush}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                     <Setter Property="Kind"
                                             Value="{StaticResource TransactionIcon}" />
+                                    <Setter Property="ToolTip"
+                                            Value="{lex:Loc ToolTip_Symbol_Transaction}" />
                                     <Setter Property="Foreground"
                                             Value="{DynamicResource TransactionBrush}" />
                                 </Style>
@@ -167,15 +177,19 @@
                             </Border>
                         </Popup>
                         <iconPacks:PackIconMaterial x:Name="Icon"
+                                                    Background="Transparent"
                                                     Foreground="{DynamicResource TransactionBrush}"
                                                     Kind="{StaticResource TransactionIcon}"
-                                                    Style="{StaticResource CellIconMaterial}" />
+                                                    Style="{StaticResource CellIconMaterial}"
+                                                    ToolTip="{lex:Loc ToolTip_Symbol_Transaction}" />
                     </Grid>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                    <iconPacks:PackIconMaterial Foreground="{DynamicResource TransferBrush}"
+                    <iconPacks:PackIconMaterial Background="Transparent"
+                                                Foreground="{DynamicResource TransferBrush}"
                                                 Kind="{StaticResource TransferIcon}"
-                                                Style="{StaticResource CellIconMaterial}" />
+                                                Style="{StaticResource CellIconMaterial}"
+                                                ToolTip="{lex:Loc ToolTip_Symbol_Transfer}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
             </ContentControl.Resources>
@@ -277,7 +291,8 @@
                                 </StackPanel>
                             </Border>
                         </Popup>
-                        <iconPacks:PackIconMaterial x:Name="Icon">
+                        <iconPacks:PackIconMaterial x:Name="Icon"
+                                                    Background="Transparent">
                             <iconPacks:PackIconMaterial.Style>
                                 <Style BasedOn="{StaticResource CellIconMaterial}"
                                        TargetType="{x:Type iconPacks:PackIconMaterial}">
@@ -286,12 +301,16 @@
                                                      Value="True">
                                             <Setter Property="Kind"
                                                     Value="{StaticResource IncomeIcon}" />
+                                            <Setter Property="ToolTip"
+                                                    Value="{lex:Loc ToolTip_Symbol_IncomeTransaction}" />
                                             <Setter Property="Foreground"
                                                     Value="{DynamicResource IncomeBrush}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                     <Setter Property="Kind"
                                             Value="{StaticResource TransactionIcon}" />
+                                    <Setter Property="ToolTip"
+                                            Value="{lex:Loc ToolTip_Symbol_Transaction}" />
                                     <Setter Property="Foreground"
                                             Value="{DynamicResource TransactionBrush}" />
                                 </Style>
@@ -363,9 +382,11 @@
                             </Border>
                         </Popup>
                         <iconPacks:PackIconMaterial x:Name="Icon"
+                                                    Background="Transparent"
                                                     Foreground="{DynamicResource TransactionBrush}"
                                                     Kind="{StaticResource TransactionIcon}"
-                                                    Style="{StaticResource CellIconMaterial}" />
+                                                    Style="{StaticResource CellIconMaterial}"
+                                                    ToolTip="{lex:Loc ToolTip_Symbol_Transaction}" />
                     </Grid>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
@@ -427,9 +448,11 @@
                             </Border>
                         </Popup>
                         <iconPacks:PackIconMaterial x:Name="Icon"
+                                                    Background="Transparent"
                                                     Foreground="{DynamicResource TransferBrush}"
                                                     Kind="{StaticResource TransferIcon}"
-                                                    Style="{StaticResource CellIconMaterial}" />
+                                                    Style="{StaticResource CellIconMaterial}"
+                                                    ToolTip="{lex:Loc ToolTip_Symbol_Transfer}" />
                     </Grid>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
@@ -739,9 +762,11 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{StaticResource CellTextBlock}"
                                    Text="{Binding FromAccount.Name}" />
-                        <iconPacks:PackIconMaterial Foreground="{DynamicResource GrayBrush4}"
+                        <iconPacks:PackIconMaterial Background="Transparent"
+                                                    Foreground="{DynamicResource GrayBrush4}"
                                                     Kind="{StaticResource TransactionIcon}"
-                                                    Style="{StaticResource CellIconMaterial}" />
+                                                    Style="{StaticResource CellIconMaterial}"
+                                                    ToolTip="{lex:Loc ToolTip_Symbol_FromAccount}" />
                     </StackPanel>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type utility:CsvBankStatementImportItemViewModel}">
@@ -957,6 +982,8 @@
                                     <iconPacks:PackIconMaterial Foreground="{StaticResource IncomeBrush}"
                                                                 Kind="{StaticResource IncomeIcon}"
                                                                 Opacity="0.75"
+                                                                ToolTip="{lex:Loc ToolTip_Symbol_IncomeCategory}"
+                                                                Background="Transparent"
                                                                 Style="{StaticResource CellIconMaterial}" />
                                 </StackPanel>
                             </DataTemplate>
@@ -972,10 +999,9 @@
                             Command="{Binding OpenParentTransactionView}"
                             CommandParameter="{Binding Account}">
                         <Button.ToolTip>
-                            <ToolTip Visibility="{Binding SubTransactions, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
-                            </ToolTip>
+                            <ToolTip Visibility="{Binding SubTransactions, Converter={x:Static mvvm:Converters.NoneToCollapsed}}"
+                                     Content="{Binding}"
+                                     ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
                         </Button.ToolTip>
                         <iconPacks:PackIconMaterial Margin="5,0,0,0"
                                                     Foreground="{DynamicResource GrayBrush4}"
@@ -987,10 +1013,12 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{StaticResource CellTextBlock}"
                                    Text="{Binding ToAccount.Name}" />
-                        <iconPacks:PackIconMaterial Foreground="{DynamicResource GrayBrush4}"
+                        <iconPacks:PackIconMaterial Background="Transparent"
+                                                    Foreground="{DynamicResource GrayBrush4}"
                                                     IsTabStop="True"
                                                     Kind="{StaticResource IncomeIcon}"
-                                                    Style="{StaticResource CellIconMaterial}" />
+                                                    Style="{StaticResource CellIconMaterial}"
+                                                    ToolTip="{lex:Loc ToolTip_Symbol_ToAccount}" />
                     </StackPanel>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
@@ -1069,10 +1097,9 @@
                             Command="{Binding OpenParentTransactionView}"
                             CommandParameter="{Binding Account}">
                         <Button.ToolTip>
-                            <ToolTip Visibility="{Binding SubTransactions, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
-                            </ToolTip>
+                            <ToolTip Visibility="{Binding SubTransactions, Converter={x:Static mvvm:Converters.NoneToCollapsed}}"
+                                     Content="{Binding}"
+                                     ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
                         </Button.ToolTip>
                         <iconPacks:PackIconMaterial Margin="5,0,0,0"
                                                     Foreground="{DynamicResource GrayBrush4}"
@@ -1242,10 +1269,9 @@
                             Command="{Binding OpenParentTransactionView}"
                             CommandParameter="{Binding Account}">
                         <Button.ToolTip>
-                            <ToolTip Visibility="{Binding SubTransactions, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
-                            </ToolTip>
+                            <ToolTip Visibility="{Binding SubTransactions, Converter={x:Static mvvm:Converters.NoneToCollapsed}}"
+                                     Content="{Binding}"
+                                     ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
                         </Button.ToolTip>
                         <ContentControl>
                             <ContentControl.Style>
@@ -1347,10 +1373,9 @@
                             Command="{Binding OpenParentTransactionView}"
                             CommandParameter="{Binding Account}">
                         <Button.ToolTip>
-                            <ToolTip Visibility="{Binding SubTransactions, Converter={x:Static mvvm:Converters.NoneToCollapsed}}">
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
-                            </ToolTip>
+                            <ToolTip Visibility="{Binding SubTransactions, Converter={x:Static mvvm:Converters.NoneToCollapsed}}"
+                                     Content="{Binding}"
+                                     ContentTemplate="{StaticResource ParentTransactionToolTipTemplate}" />
                         </Button.ToolTip>
                         <ContentControl>
                             <ContentControl.Style>

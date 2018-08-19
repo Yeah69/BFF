@@ -57,12 +57,48 @@
                 <DataGridTemplateColumn x:Name="SymbolColumn"
                                         CellTemplate="{StaticResource SymbolColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_SymbolAbbr}">
-                    <DataGridTemplateColumn.HeaderTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"
-                                       ToolTip="{lex:Loc AccountView_Header_SymbolAbbr_Tooltip}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                               TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock Margin="2.5"
+                                                       Text="{lex:Loc ToolTip_TransGrid_Header_S}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="2.5"
+                                                                            Foreground="{DynamicResource TransactionBrush}"
+                                                                            Kind="{StaticResource TransactionIcon}" />
+                                                <TextBlock Margin="2.5"
+                                                           Text="{lex:Loc ToolTip_TransGrid_Header_S_Transaction}" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="2.5"
+                                                                            Foreground="{DynamicResource TransferBrush}"
+                                                                            Kind="{StaticResource TransferIcon}" />
+                                                <TextBlock Margin="2.5"
+                                                           Text="{lex:Loc ToolTip_TransGrid_Header_S_Transfer}" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                            Height="{StaticResource IconSize}"
+                                                                            Margin="2.5"
+                                                                            Foreground="{DynamicResource IncomeBrush}"
+                                                                            Kind="{StaticResource IncomeIcon}" />
+                                                <TextBlock Margin="2.5"
+                                                           Text="{lex:Loc ToolTip_TransGrid_Header_S_Income}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
                 <!--  Account  -->
                 <DataGridTemplateColumn x:Name="AccountColumn"
@@ -70,59 +106,131 @@
                                         CellEditingTemplate="{StaticResource AccountEditingColumnTemplate}"
                                         CellTemplate="{StaticResource AccountColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Account}"
-                                        SortMemberPath="Account.Name" />
+                                        SortMemberPath="Account.Name">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                               TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="ToolTip"
+                                    Value="{lex:Loc ToolTip_TransGrid_Header_Account}" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                </DataGridTemplateColumn>
                 <!--  Date  -->
                 <DataGridTemplateColumn x:Name="DateColumn"
                                         CellEditingTemplate="{StaticResource DateEditingColumnTemplate}"
                                         CellTemplate="{StaticResource DateColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Date}"
-                                        SortMemberPath="Date" />
+                                        SortMemberPath="Date">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                               TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="ToolTip"
+                                    Value="{lex:Loc ToolTip_TransGrid_Header_Date}" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                </DataGridTemplateColumn>
                 <!--  Flag  -->
                 <DataGridTemplateColumn x:Name="FlagColumn"
                                         Visibility="{Binding Data, Source={StaticResource FlagColumnVisibility}}"
                                         CellEditingTemplate="{StaticResource FlagEditingColumnTemplate}"
                                         CellTemplate="{StaticResource FlagColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Flag}"
-                                        SortMemberPath="Flag.Name" />
+                                        SortMemberPath="Flag.Name">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                               TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="ToolTip"
+                                    Value="{lex:Loc ToolTip_TransGrid_Header_Flag}" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                </DataGridTemplateColumn>
                 <!--  CheckNumber  -->
                 <DataGridTemplateColumn x:Name="CheckNumberColumn"
                                         Visibility="{Binding Data, Source={StaticResource CheckNumberColumnVisibility}}"
                                         CellEditingTemplate="{StaticResource CheckNumberEditingColumnTemplate}"
                                         CellTemplate="{StaticResource CheckNumberColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_CheckNumber}"
-                                        SortMemberPath="CheckNumber" />
+                                        SortMemberPath="CheckNumber">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                               TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="ToolTip"
+                                    Value="{lex:Loc ToolTip_TransGrid_Header_CheckNumber}" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                </DataGridTemplateColumn>
                 <!--  Payee  -->
                 <DataGridTemplateColumn x:Name="PayeeColumn"
                                         CellEditingTemplate="{StaticResource PayeeEditingColumnTemplate}"
                                         CellTemplate="{StaticResource PayeeColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Payee}"
-                                        SortMemberPath="Payee.Name" />
+                                        SortMemberPath="Payee.Name">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                               TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="ToolTip"
+                                    Value="{lex:Loc ToolTip_TransGrid_Header_Payee}" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                </DataGridTemplateColumn>
                 <!--  Category  -->
                 <DataGridTemplateColumn x:Name="CategoryColumn"
                                         CellEditingTemplate="{StaticResource CategoryEditingColumnTemplate}"
                                         CellTemplate="{StaticResource CategoryColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Category}"
-                                        SortMemberPath="Category.Name" />
+                                        SortMemberPath="Category.Name">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                               TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="ToolTip"
+                                    Value="{lex:Loc ToolTip_TransGrid_Header_Category}" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                </DataGridTemplateColumn>
                 <!--  Memo  -->
                 <DataGridTemplateColumn x:Name="MemoColumn"
                                         Width="*"
                                         CellEditingTemplate="{StaticResource MemoEditingColumnTemplate}"
                                         CellTemplate="{StaticResource MemoColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Memo}"
-                                        SortMemberPath="Memo" />
+                                        SortMemberPath="Memo">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                               TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="ToolTip"
+                                    Value="{lex:Loc ToolTip_TransGrid_Header_Memo}" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                </DataGridTemplateColumn>
                 <!--  Sum  -->
                 <DataGridTemplateColumn x:Name="SumColumn"
                                         CellEditingTemplate="{StaticResource SumEditingColumnTemplate}"
                                         CellTemplate="{StaticResource SumColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Sum}"
                                         IsReadOnly="False"
-                                        SortMemberPath="Sum" />
+                                        SortMemberPath="Sum">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                               TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="ToolTip"
+                                    Value="{lex:Loc ToolTip_TransGrid_Header_Sum}" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                </DataGridTemplateColumn>
                 <!--  Cleared  -->
                 <DataGridTemplateColumn x:Name="ClearedColumn"
                                         CellTemplate="{StaticResource ClearedColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Cleared}"
                                         IsReadOnly="True"
-                                        SortMemberPath="Cleared" />
+                                        SortMemberPath="Cleared">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                               TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="ToolTip"
+                                    Value="{lex:Loc ToolTip_TransGrid_Header_Cleared}" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                </DataGridTemplateColumn>
                 <!--  Context Menu  -->
                 <DataGridTemplateColumn x:Name="ContextMenuColumn"
                                         CellTemplate="{StaticResource ContextMenuColumnTemplate}"
@@ -148,26 +256,36 @@
 
             <TextBlock Grid.Row="0"
                        Grid.Column="0"
-                       Grid.ColumnSpan="2" FontSize="{StaticResource BigTitleFontSize}"
+                       Grid.ColumnSpan="2"
+                       FontSize="{StaticResource BigTitleFontSize}"
                        Text="{lex:Loc AccountView_FirstEntry}" />
 
 
-            <TextBlock Grid.Row="1" Margin="5,15,0,0"
-                       Grid.Column="1" VerticalAlignment="Center"
+            <TextBlock Grid.Row="1"
+                       Grid.Column="1"
+                       Margin="5,15,0,0"
+                       VerticalAlignment="Center"
                        Text="{lex:Loc AccountView_ToolTip_NewTransaction}" />
-            <TextBlock Grid.Row="2" Margin="5,5,0,0"
-                       Grid.Column="1" VerticalAlignment="Center"
+            <TextBlock Grid.Row="2"
+                       Grid.Column="1"
+                       Margin="5,5,0,0"
+                       VerticalAlignment="Center"
                        Text="{lex:Loc AccountView_ToolTip_NewTransfer}" />
-            <TextBlock Grid.Row="3" Margin="5,5,0,0"
-                       Grid.Column="1" VerticalAlignment="Center"
+            <TextBlock Grid.Row="3"
+                       Grid.Column="1"
+                       Margin="5,5,0,0"
+                       VerticalAlignment="Center"
                        Text="{lex:Loc AccountView_ToolTip_NewParentTransaction}" />
-            <TextBlock Grid.Row="4" Margin="5,15,0,0"
-                       Grid.Column="1" VerticalAlignment="Center"
+            <TextBlock Grid.Row="4"
+                       Grid.Column="1"
+                       Margin="5,15,0,0"
+                       VerticalAlignment="Center"
                        Text="{lex:Loc AccountView_ToolTip_AddToTable}" />
 
-            <Button Grid.Row="1" Margin="0,15,0,0"
+            <Button Grid.Row="1"
                     Grid.Column="0"
                     Visibility="{Binding NewTransactionVisibility}"
+                    Margin="0,15,0,0"
                     Command="{Binding NewTransactionCommand}"
                     ToolTip="{lex:Loc AccountView_ToolTip_NewTransaction}">
                 <StackPanel Orientation="Horizontal">
@@ -182,9 +300,10 @@
                                                 Kind="{StaticResource TransactionIcon}" />
                 </StackPanel>
             </Button>
-            <Button Grid.Row="2" Margin="0,5,0,0"
+            <Button Grid.Row="2"
                     Grid.Column="0"
                     Visibility="{Binding NewTransferVisibility}"
+                    Margin="0,5,0,0"
                     Command="{Binding NewTransferCommand}"
                     ToolTip="{lex:Loc AccountView_ToolTip_NewTransfer}">
                 <StackPanel Orientation="Horizontal">
@@ -199,9 +318,10 @@
                                                 Kind="{StaticResource TransferIcon}" />
                 </StackPanel>
             </Button>
-            <Button Grid.Row="3" Margin="0,5,0,0"
+            <Button Grid.Row="3"
                     Grid.Column="0"
                     Visibility="{Binding NewParentTransactionVisibility}"
+                    Margin="0,5,0,0"
                     Command="{Binding NewParentTransactionCommand}"
                     ToolTip="{lex:Loc AccountView_ToolTip_NewParentTransaction}">
                 <StackPanel Orientation="Horizontal">
@@ -222,8 +342,9 @@
                 </StackPanel>
             </Button>
             <Button Grid.Row="4"
-                    Grid.Column="0" Margin="0,15,0,0"
+                    Grid.Column="0"
                     Visibility="{Binding ApplyVisibility}"
+                    Margin="0,15,0,0"
                     Command="{Binding ApplyCommand}"
                     DockPanel.Dock="Right"
                     ToolTip="{lex:Loc AccountView_ToolTip_AddToTable}">
@@ -362,6 +483,7 @@
                         Margin="5,0,0,0"
                         Command="{Binding ApplyCommand}"
                         DockPanel.Dock="Right"
+                        ToolTipService.ShowOnDisabled="True"
                         ToolTip="{lex:Loc AccountView_ToolTip_AddToTable}">
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
@@ -372,11 +494,13 @@
                 <Button Visibility="{Binding AccountViewModel.TargetBalance, Converter={x:Static mvvm:Converters.InverseNullableLongToCollapsed}}"
                         Command="{Binding AccountViewModel.StartTargetingBalance}"
                         Content="{lex:Loc AccountView_SetTargetBalance}"
+                        ToolTip="{lex:Loc ToolTip_Account_SetTargetBalance}"
                         DockPanel.Dock="Right" />
 
                 <Button Visibility="{Binding AccountViewModel.TargetBalance, Converter={x:Static mvvm:Converters.NullableLongToCollapsed}}"
                         Command="{Binding AccountViewModel.AbortTargetingBalance}"
                         Content="{lex:Loc AccountView_AbortTargetingBalance}"
+                        ToolTip="{lex:Loc ToolTip_Account_SetTargetBalance}"
                         DockPanel.Dock="Right" />
             </DockPanel>
         </StackPanel>
