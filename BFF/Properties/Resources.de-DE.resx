@@ -636,6 +636,25 @@ Schaue in den Tooltip für eine bessere Unterscheidung.</value>
   <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
     <value>Der Kontostand des Kontos am eingestellten Startdatum.</value>
   </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Wenn die Gesamtsummen aktiviert sind, dann werden die Werte der Unterkategorien zu dem eigenen Wert draufaddiert.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Nutze diesen Datumselektor um zu einem beliebigen Monat zu springen (der Tag ist nicht von Belang).</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Verschiebe um einen Monat zurück</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Verschiebe um einen Monat vor</value>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Der Monatsversatz verschiebt monatsweise den Zeitpunkt zu wann das Einkommen aktiv wird.
+Zum Beispiel ein Monatsversatz von eins verschiebt das Einkommen zum nächsten Monat und Minus eins zum vorigen Monat.</value>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Wenn eine übergeordnete Kategorie gewählt wird, dann wird die neue Kategorie ihr als Unterkategorie angehangen.</value>
+  </data>
   <data name="ToolTip_DeleteRow" xml:space="preserve">
     <value>Drücke den Knopf in dieser Spalte um das Element der zugehörigen Reihe zu löschen.</value>
   </data>

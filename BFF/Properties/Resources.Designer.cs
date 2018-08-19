@@ -1606,6 +1606,61 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If the aggregation is switched on, then the categories will add the values of their subcategories on top of their own..
+        /// </summary>
+        public static string ToolTip_BudgetOverview_Aggregates {
+            get {
+                return ResourceManager.GetString("ToolTip_BudgetOverview_Aggregates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this date picker to jump to an arbitrary month (day is irrelevant)..
+        /// </summary>
+        public static string ToolTip_BudgetOverview_JumpToMonth {
+            get {
+                return ResourceManager.GetString("ToolTip_BudgetOverview_JumpToMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift one month backward.
+        /// </summary>
+        public static string ToolTip_BudgetOverview_ShiftMonthBackward {
+            get {
+                return ResourceManager.GetString("ToolTip_BudgetOverview_ShiftMonthBackward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift one month forward.
+        /// </summary>
+        public static string ToolTip_BudgetOverview_ShiftMonthForward {
+            get {
+                return ResourceManager.GetString("ToolTip_BudgetOverview_ShiftMonthForward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The month offset  shifts on which month the income is active.
+        ///For example a month offset one will shift the income to the next month, minus one to the previous..
+        /// </summary>
+        public static string ToolTip_Category_MonthOffset {
+            get {
+                return ResourceManager.GetString("ToolTip_Category_MonthOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If a superior category is selected, then the new category will be appended as a subcategory..
+        /// </summary>
+        public static string ToolTip_Category_SuperiorCategory {
+            get {
+                return ResourceManager.GetString("ToolTip_Category_SuperiorCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Press the button in this column to delete the element of the corresponding row..
         /// </summary>
         public static string ToolTip_DeleteRow {

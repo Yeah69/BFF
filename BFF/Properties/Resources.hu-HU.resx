@@ -636,6 +636,25 @@ See tooltip for better distinction.</value>
   <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
     <value>The balance of the account on the setup starting date.</value>
   </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>If the aggregation is switched on, then the categories will add the values of their subcategories on top of their own.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Use this date picker to jump to an arbitrary month (day is irrelevant).</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Shift one month backward</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Shift one month forward</value>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>The month offset  shifts on which month the income is active.
+For example a month offset one will shift the income to the next month, minus one to the previous.</value>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>If a superior category is selected, then the new category will be appended as a subcategory.</value>
+  </data>
   <data name="ToolTip_DeleteRow" xml:space="preserve">
     <value>Press the button in this column to delete the element of the corresponding row.</value>
   </data>
