@@ -111,7 +111,7 @@
                         <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip"
-                                    Value="{lex:Loc ToolTip_TransGrid_Header_Account}" />
+                                    Value="{lex:BLoc ToolTip_TransGrid_Header_Account}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -125,7 +125,7 @@
                         <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip"
-                                    Value="{lex:Loc ToolTip_TransGrid_Header_Date}" />
+                                    Value="{lex:BLoc ToolTip_TransGrid_Header_Date}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -140,7 +140,7 @@
                         <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip"
-                                    Value="{lex:Loc ToolTip_TransGrid_Header_Flag}" />
+                                    Value="{lex:BLoc ToolTip_TransGrid_Header_Flag}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -155,7 +155,7 @@
                         <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip"
-                                    Value="{lex:Loc ToolTip_TransGrid_Header_CheckNumber}" />
+                                    Value="{lex:BLoc ToolTip_TransGrid_Header_CheckNumber}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -169,7 +169,7 @@
                         <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip"
-                                    Value="{lex:Loc ToolTip_TransGrid_Header_Payee}" />
+                                    Value="{lex:BLoc ToolTip_TransGrid_Header_Payee}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -183,7 +183,7 @@
                         <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip"
-                                    Value="{lex:Loc ToolTip_TransGrid_Header_Category}" />
+                                    Value="{lex:BLoc ToolTip_TransGrid_Header_Category}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -198,7 +198,7 @@
                         <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip"
-                                    Value="{lex:Loc ToolTip_TransGrid_Header_Memo}" />
+                                    Value="{lex:BLoc ToolTip_TransGrid_Header_Memo}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -213,7 +213,7 @@
                         <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip"
-                                    Value="{lex:Loc ToolTip_TransGrid_Header_Sum}" />
+                                    Value="{lex:BLoc ToolTip_TransGrid_Header_Sum}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -227,7 +227,7 @@
                         <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip"
-                                    Value="{lex:Loc ToolTip_TransGrid_Header_Cleared}" />
+                                    Value="{lex:BLoc ToolTip_TransGrid_Header_Cleared}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>

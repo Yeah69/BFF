@@ -550,7 +550,9 @@
                  ItemsSource="{Binding Categories}"
                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
-                 SelectedIndex="{Binding SelectedIndex}">
+                 SelectedIndex="{Binding SelectedIndex}"
+                 VirtualizingStackPanel.IsVirtualizing="True"
+                 VirtualizingStackPanel.VirtualizationMode="Recycling">
             <i:Interaction.Behaviors>
                 <attachedBehaviors:ScrollViewerSync GroupName="BudgetOverview" />
             </i:Interaction.Behaviors>
@@ -570,7 +572,9 @@
                              BorderThickness="1"
                              ItemsSource="{Binding BudgetEntries}"
                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                             SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference Root}}">
+                             SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference Root}}"
+                             VirtualizingStackPanel.IsVirtualizing="True"
+                             VirtualizingStackPanel.VirtualizationMode="Recycling">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
