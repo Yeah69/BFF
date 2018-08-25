@@ -40,6 +40,11 @@ namespace BFF.MVVM.ViewModels.ForModels
                 {
                     _category = _categoryViewModelService.GetViewModel(subTransaction.Category);
                     OnPropertyChanged(nameof(Category));
+                    if (_category != null)
+                    {
+                        ClearErrors(nameof(Category));
+                        OnErrorChanged(nameof(Category));
+                    }
                 })
                 .AddTo(CompositeDisposable);
 
@@ -69,5 +74,13 @@ namespace BFF.MVVM.ViewModels.ForModels
         public override ISumEditViewModel SumEdit { get; }
 
         public override bool IsInsertable() => base.IsInsertable() && Category.IsNotNull();
+
+        public override void NotifyErrorsIfAny()
+        {
+            if (!(Category is null)) return;
+
+            SetErrors("ErrorMessageEmptyCategory".Localize().ToEnumerable(), nameof(Category));
+            OnErrorChanged(nameof(Category));
+        }
     }
 }

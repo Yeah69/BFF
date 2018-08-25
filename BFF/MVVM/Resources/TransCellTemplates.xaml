@@ -979,12 +979,12 @@
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                                     </TextBlock>
-                                    <iconPacks:PackIconMaterial Foreground="{StaticResource IncomeBrush}"
+                                    <iconPacks:PackIconMaterial Background="Transparent"
+                                                                Foreground="{StaticResource IncomeBrush}"
                                                                 Kind="{StaticResource IncomeIcon}"
                                                                 Opacity="0.75"
-                                                                ToolTip="{lex:Loc ToolTip_Symbol_IncomeCategory}"
-                                                                Background="Transparent"
-                                                                Style="{StaticResource CellIconMaterial}" />
+                                                                Style="{StaticResource CellIconMaterial}"
+                                                                ToolTip="{lex:Loc ToolTip_Symbol_IncomeCategory}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ContentControl.Resources>

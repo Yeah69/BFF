@@ -389,11 +389,20 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
     <value>The name of the new category is not allowed to be empty!</value>
   </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>An account has to be chosen.</value>
+  </data>
   <data name="ErrorMessageEmptyCategory" xml:space="preserve">
     <value>A category has to be chosen.</value>
   </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>A source-account has to be chosen.</value>
+  </data>
   <data name="ErrorMessageEmptyPayee" xml:space="preserve">
     <value>A payee has to be chosen.</value>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>A target-account has to be chosen.</value>
   </data>
   <data name="ErrorMessageWrongAccountName" xml:space="preserve">
     <value>A new account's name isn't allowed to be empty or match a name of the existing accounts!</value>

@@ -882,6 +882,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An account has to be chosen..
+        /// </summary>
+        public static string ErrorMessageEmptyAccount {
+            get {
+                return ResourceManager.GetString("ErrorMessageEmptyAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A category has to be chosen..
         /// </summary>
         public static string ErrorMessageEmptyCategory {
@@ -891,11 +900,29 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A source-account has to be chosen..
+        /// </summary>
+        public static string ErrorMessageEmptyFromAccount {
+            get {
+                return ResourceManager.GetString("ErrorMessageEmptyFromAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A payee has to be chosen..
         /// </summary>
         public static string ErrorMessageEmptyPayee {
             get {
                 return ResourceManager.GetString("ErrorMessageEmptyPayee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A target-account has to be chosen..
+        /// </summary>
+        public static string ErrorMessageEmptyToAccount {
+            get {
+                return ResourceManager.GetString("ErrorMessageEmptyToAccount", resourceCulture);
             }
         }
         

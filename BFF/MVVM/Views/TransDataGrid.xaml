@@ -483,8 +483,8 @@
                         Margin="5,0,0,0"
                         Command="{Binding ApplyCommand}"
                         DockPanel.Dock="Right"
-                        ToolTipService.ShowOnDisabled="True"
-                        ToolTip="{lex:Loc AccountView_ToolTip_AddToTable}">
+                        ToolTip="{lex:Loc AccountView_ToolTip_AddToTable}"
+                        ToolTipService.ShowOnDisabled="True">
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
                                                 Foreground="{DynamicResource BlackColorBrush}"
@@ -494,14 +494,14 @@
                 <Button Visibility="{Binding AccountViewModel.TargetBalance, Converter={x:Static mvvm:Converters.InverseNullableLongToCollapsed}}"
                         Command="{Binding AccountViewModel.StartTargetingBalance}"
                         Content="{lex:Loc AccountView_SetTargetBalance}"
-                        ToolTip="{lex:Loc ToolTip_Account_SetTargetBalance}"
-                        DockPanel.Dock="Right" />
+                        DockPanel.Dock="Right"
+                        ToolTip="{lex:Loc ToolTip_Account_SetTargetBalance}" />
 
                 <Button Visibility="{Binding AccountViewModel.TargetBalance, Converter={x:Static mvvm:Converters.NullableLongToCollapsed}}"
                         Command="{Binding AccountViewModel.AbortTargetingBalance}"
                         Content="{lex:Loc AccountView_AbortTargetingBalance}"
-                        ToolTip="{lex:Loc ToolTip_Account_SetTargetBalance}"
-                        DockPanel.Dock="Right" />
+                        DockPanel.Dock="Right"
+                        ToolTip="{lex:Loc ToolTip_Account_SetTargetBalance}" />
             </DockPanel>
         </StackPanel>
     </Grid>

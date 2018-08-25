@@ -389,11 +389,20 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m�
   <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
     <value>Der Name einer neuen Kategorie darf nicht leer sein!</value>
   </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Ein Konto muss ausgew채hlt werden.</value>
+  </data>
   <data name="ErrorMessageEmptyCategory" xml:space="preserve">
     <value>Eine Kategorie muss ausgew채hlt werden.</value>
   </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Ein Quellkonto muss ausgew채hlt werden.</value>
+  </data>
   <data name="ErrorMessageEmptyPayee" xml:space="preserve">
     <value>Ein Bezahlter muss ausgew채hlt werden.</value>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Ein Zielkonto muss ausgew채hlt werden</value>
   </data>
   <data name="ErrorMessageWrongAccountName" xml:space="preserve">
     <value>Dem Kontennamen ist es nicht erlaubt leer zu sein oder den Namen eines bestehendem Kontos zu gleichen.</value>

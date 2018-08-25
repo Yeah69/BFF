@@ -65,6 +65,11 @@ namespace BFF.MVVM.ViewModels.ForModels
                 {
                     _category = _categoryViewModelService.GetViewModel(transaction.Category);
                     OnPropertyChanged(nameof(Category));
+                    if (_category != null)
+                    {
+                        ClearErrors(nameof(Category));
+                        OnErrorChanged(nameof(Category));
+                    }
                 })
                 .AddTo(CompositeDisposable);
 
@@ -129,5 +134,15 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IRxRelayCommand NonInsertedConvertToParentTransaction { get; }
         public IRxRelayCommand NonInsertedConvertToTransfer { get; }
         public IRxRelayCommand InsertedConvertToParentTransaction { get; }
+
+        public override void NotifyErrorsIfAny()
+        {
+            base.NotifyErrorsIfAny();
+
+            if (!(Category is null)) return;
+
+            SetErrors("ErrorMessageEmptyCategory".Localize().ToEnumerable(), nameof(Category));
+            OnErrorChanged(nameof(Category));
+        }
     }
 }

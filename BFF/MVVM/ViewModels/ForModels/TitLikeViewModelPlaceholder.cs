@@ -15,7 +15,7 @@ namespace BFF.MVVM.ViewModels.ForModels
     /// <summary>
     /// A Trans ViewModel Placeholder used for async lazy loaded Trans'.
     /// </summary>
-    public sealed class TransLikeViewModelPlaceholder : ViewModelBase, ITransLikeViewModelPlaceholder
+    public sealed class TransLikeViewModelPlaceholder : NotifyingErrorViewModelBase, ITransLikeViewModelPlaceholder
     {
         public string Memo { get; set; }
         
@@ -31,6 +31,9 @@ namespace BFF.MVVM.ViewModels.ForModels
         public IObservable<Unit> RemoveRequests => Observable.Never<Unit>();
         public IRxRelayCommand RemoveCommand { get; }
         public IAccountBaseViewModel Owner => null;
+        public void NotifyErrorsIfAny()
+        {
+        }
 
         public bool Cleared { get; set; }
 

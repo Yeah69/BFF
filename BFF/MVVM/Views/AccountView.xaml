@@ -221,9 +221,9 @@
                            Visibility="{Binding TargetBalance, Converter={x:Static mvvm:Converters.NullableLongToCollapsed}}"
                            Margin="2.5"
                            VerticalAlignment="Center"
-                           ToolTip="{lex:Loc ToolTip_Account_SetTargetBalance}"
                            Text="{lex:LocText AccountView_TargetBalance,
-                                              Suffix=:}" />
+                                              Suffix=:}"
+                           ToolTip="{lex:Loc ToolTip_Account_SetTargetBalance}" />
                 <TextBox Grid.Row="2"
                          Grid.Column="1"
                          Visibility="{Binding TargetBalance, Converter={x:Static mvvm:Converters.NullableLongToCollapsed}}"
