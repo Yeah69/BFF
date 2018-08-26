@@ -1,5 +1,7 @@
-﻿using BFF.MVVM.Services;
+﻿using System;
+using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
+using BFF.Properties;
 using MuVaViMo;
 using Reactive.Bindings;
 
@@ -33,7 +35,7 @@ namespace BFF.MVVM.ViewModels
             SummaryAccountViewModel = summaryAccountViewModel;
             NewAccountViewModel = newAccountViewModel;
 
-            IsOpen.Value = true;
+            IsOpen.Value = Settings.Default.OpenMainTab == "Accounts";
         }
 
         protected override void OnIsOpenChanged(bool isOpen)
@@ -43,6 +45,11 @@ namespace BFF.MVVM.ViewModels
                 SummaryAccountViewModel.RefreshTransCollection();
                 SummaryAccountViewModel.RefreshStartingBalance();
                 SummaryAccountViewModel.RefreshBalance();
+            }
+            if(IsOpen.Value)
+            {
+                Settings.Default.OpenMainTab = "Accounts";
+                Settings.Default.Save();
             }
         }
     }

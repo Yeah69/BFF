@@ -173,6 +173,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     RefreshTransCollection();
                     RefreshBalance();
                 });
+                if (_isOpen)
+                {
+                    Settings.Default.OpenAccountTab = this is ISummaryAccountViewModel 
+                        ? null 
+                        : Name;
+                    Settings.Default.Save();
+                }
             }
         }
 

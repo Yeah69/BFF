@@ -17,6 +17,7 @@ using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
+using BFF.Properties;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -115,6 +116,11 @@ namespace BFF.MVVM.ViewModels
                 if (_isOpen == value) return;
                 _isOpen = value;
                 OnPropertyChanged();
+                if (_isOpen)
+                {
+                    Settings.Default.OpenMainTab = "BudgetOverview";
+                    Settings.Default.Save();
+                }
             }
         }
 
@@ -143,8 +149,7 @@ namespace BFF.MVVM.ViewModels
                 categoryRepository
                     .All
                     .ToReadOnlyReactiveCollection(categoryViewModelService.GetViewModel);
-
-            //BudgetMonths = CreateBudgetMonths();
+            
             CurrentMonthStartIndex = MonthToIndex(DateTime.Now) - 1;
 
             var currentMonthStartIndexChanges = this
@@ -161,7 +166,7 @@ namespace BFF.MVVM.ViewModels
                     () => CurrentMonthStartIndex = CurrentMonthStartIndex - 1)
                 .AddTo(_compositeDisposable);
 
-            IsOpen = false;
+            IsOpen = Settings.Default.OpenMainTab == "BudgetOverview";
 
             this
                 .ObservePropertyChanges(nameof(IsOpen))

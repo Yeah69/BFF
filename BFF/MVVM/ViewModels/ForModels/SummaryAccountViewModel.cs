@@ -10,6 +10,7 @@ using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using BFF.Properties;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -69,7 +70,9 @@ namespace BFF.MVVM.ViewModels.ForModels
             _transRepository = transRepository;
             _placeholderFactory = placeholderFactory;
             _convertFromTransBaseToTransLikeViewModel = convertFromTransBaseToTransLikeViewModel;
-            IsOpen = true;
+
+            if(string.IsNullOrWhiteSpace(Settings.Default.OpenAccountTab))
+                IsOpen = true;
 
             StartingBalance = new ReactiveProperty<long>().AddTo(CompositeDisposable);
             

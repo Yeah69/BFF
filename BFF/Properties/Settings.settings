@@ -65,5 +65,14 @@
     <Setting Name="NeverShowEditHeaders" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="OpenAccountTab" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="OpenMainTab" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Accounts</Value>
+    </Setting>
+    <Setting Name="SelectedCsvProfile" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
