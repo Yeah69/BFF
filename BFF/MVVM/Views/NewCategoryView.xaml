@@ -8,7 +8,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
-             d:DataContext="{d:DesignInstance viewModels:NewCategoryViewModel}"
+             d:DataContext="{d:DesignInstance viewModels:INewCategoryViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              Loaded="OnLoaded"
@@ -35,7 +35,7 @@
                      Grid.Row="0"
                      Grid.Column="1"
                      Focusable="True"
-                     Text="{Binding Name.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock Grid.Row="1"
                        Grid.Column="0"

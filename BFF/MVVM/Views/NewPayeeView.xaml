@@ -6,7 +6,7 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
-             d:DataContext="{d:DesignInstance viewModels:NewPayeeViewModel}"
+             d:DataContext="{d:DesignInstance viewModels:INewPayeeViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              Loaded="OnLoaded"
@@ -23,7 +23,7 @@
                      BorderBrush="{StaticResource AccentColorBrush}"
                      DockPanel.Dock="Right"
                      Focusable="True"
-                     Text="{Binding PayeeText.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding PayeeText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </DockPanel>
         <Button HorizontalAlignment="Right"
                 Click="AddButton_OnClick"

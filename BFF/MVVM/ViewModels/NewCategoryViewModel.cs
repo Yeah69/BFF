@@ -16,7 +16,7 @@ namespace BFF.MVVM.ViewModels
 {
     public interface INewCategoryViewModel
     {
-        IReactiveProperty<string> Name { get; }
+        string Name { get; set; }
 
         IReactiveProperty<ICategoryViewModel> Parent { get; }
 
@@ -35,12 +35,14 @@ namespace BFF.MVVM.ViewModels
         IHaveCategoryViewModel CurrentCategoryOwner { get; set; }
     }
 
-    public sealed class NewCategoryViewModel : ViewModelBase, INewCategoryViewModel, IOncePerBackend, IDisposable
+    public sealed class NewCategoryViewModel : NotifyingErrorViewModelBase, INewCategoryViewModel, IOncePerBackend, IDisposable
     {
         private readonly ICategoryViewModelService _categoryViewModelService;
+        private readonly IIncomeCategoryViewModelService _incomeCategoryViewModelService;
         private readonly ICategoryBaseViewModelService _categoryBaseViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private string _name;
 
         public NewCategoryViewModel(
             Func<ICategory, ICategory> categoryFactory,
@@ -58,38 +60,26 @@ namespace BFF.MVVM.ViewModels
                 return parent is null && AllPotentialParents.Where(cvw => cvw.Parent is null).All(cvm => cvm.Name != text) ||
                        parent != null && parent.Categories.All(cvm => cvm != null && cvm.Name != text);
             }
-            string ValidateNewCategoryRelationName(string text, ICategoryViewModel parent)
-            {
-                return ValidateNewCategoryRelationCondition(text, parent)
-                        ? null
-                        : "ErrorMessageWrongCategoryName".Localize();
-            }
             string ValidateNewCategoryRelationParent(string text, ICategoryViewModel parent)
             {
                 return ValidateNewCategoryRelationCondition(text, parent)
                     ? null
                     : "ErrorMessageWrongCategoryParent".Localize();
             }
-            string ValidateNewCategoryName(string text)
-            {
-                return !string.IsNullOrWhiteSpace(text) 
-                    ? null
-                    : "ErrorMessageCategoryNameEmpty".Localize();
-            }
 
             _categoryViewModelService = categoryViewModelService;
+            _incomeCategoryViewModelService = incomeCategoryViewModelService;
             _categoryBaseViewModelService = categoryBaseViewModelService;
 
             AddCommand = new AsyncRxRelayCommand(async () =>
                 {
                     (Parent as ReactiveProperty<ICategoryViewModel>)?.ForceValidate();
-                    (Name as ReactiveProperty<string>)?.ForceValidate();
-                    if(Parent.HasErrors && Name.HasErrors) return;
+                    if(Parent.HasErrors || !ValidateName()) return;
 
                     if (IsIncomeRelevant.Value)
                     {
                         IIncomeCategory newCategory = incomeCategoryFactory();
-                        newCategory.Name = Name.Value.Trim();
+                        newCategory.Name = Name.Trim();
                         newCategory.MonthOffset = MonthOffset.Value;
                         await newCategory.InsertAsync();
                         if (CurrentCategoryOwner != null)
@@ -99,7 +89,7 @@ namespace BFF.MVVM.ViewModels
                     else
                     {
                         ICategory newCategory = categoryFactory(_categoryViewModelService.GetModel(Parent.Value));
-                        newCategory.Name = Name.Value.Trim();
+                        newCategory.Name = Name.Trim();
                         newCategory.Parent?.AddCategory(newCategory);
                         await newCategory.InsertAsync();
                         OnPropertyChanged(nameof(AllPotentialParents));
@@ -109,22 +99,19 @@ namespace BFF.MVVM.ViewModels
                             CurrentCategoryOwner.Category = categoryViewModel;
                         CurrentCategoryOwner = null;
                     }
+                    _name = "";
+                    OnPropertyChanged(nameof(Name));
+                    ClearErrors(nameof(Name));
+                    OnErrorChanged(nameof(Name));
 
                     await budgetOverviewViewModel.Refresh();
                 })
                 .AddTo(_compositeDisposable);
 
             DeselectParentCommand = new RxRelayCommand(() => Parent.Value = null);
-
-            Name = new ReactiveProperty<string>(mode: ReactivePropertyMode.DistinctUntilChanged)
-                .SetValidateNotifyError(text =>
-                {
-                    string ret = ValidateNewCategoryName(text);
-                    return ret ?? ValidateNewCategoryRelationName(text, Parent?.Value);
-                })
-                .AddTo(_compositeDisposable);
+            
             Parent = new ReactiveProperty<ICategoryViewModel>(mode: ReactivePropertyMode.DistinctUntilChanged)
-                .SetValidateNotifyError(parent => ValidateNewCategoryRelationParent(Name.Value, parent))
+                .SetValidateNotifyError(parent => ValidateNewCategoryRelationParent(Name, parent))
                 .AddTo(_compositeDisposable);
 
             IsIncomeRelevant = new ReactiveProperty<bool>(mode: ReactivePropertyMode.DistinctUntilChanged)
@@ -133,24 +120,35 @@ namespace BFF.MVVM.ViewModels
             IsIncomeRelevant.Subscribe(_ =>
             {
                 (Parent as ReactiveProperty<ICategoryViewModel>)?.ForceValidate();
-                (Name as ReactiveProperty<string>)?.ForceValidate();
+                ValidateName();
             }).AddTo(_compositeDisposable);
        
             MonthOffset = new ReactiveProperty<int>(mode: ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(_compositeDisposable);
 
-            Name
+            this.ObservePropertyChanges(nameof(Name))
                 .Subscribe(_ => (Parent as ReactiveProperty<ICategoryViewModel>)?.ForceValidate())
                 .AddTo(_compositeDisposable);
             Parent
-                .Subscribe(_ => (Name as ReactiveProperty<string>)?.ForceValidate())
+                .Subscribe(_ => ValidateName())
                 .AddTo(_compositeDisposable);
         }
 
         /// <summary>
         /// User input of the to be searched or to be created Category.
         /// </summary>
-        public IReactiveProperty<string> Name { get; }
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (_name == value) return;
+                _name = value;
+                OnPropertyChanged();
+                ValidateName();
+            }
+        }
+
         /// <summary>
         /// The ParentCategory to which the new Category should be added.
         /// </summary>
@@ -178,6 +176,36 @@ namespace BFF.MVVM.ViewModels
         public void Dispose()
         {
             _compositeDisposable?.Dispose();
+        }
+
+        private bool ValidateName()
+        {
+            bool ret;
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                SetErrors("ErrorMessageCategoryNameEmpty".Localize().ToEnumerable(), nameof(Name));
+                ret = false;
+            }
+            else if (!ValidateNewCategoryRelationCondition())
+            {
+                SetErrors("ErrorMessageWrongCategoryName".Localize().ToEnumerable(), nameof(Name));
+                ret = false;
+            }
+            else
+            {
+                ClearErrors(nameof(Name));
+                ret = true;
+            }
+            OnErrorChanged(nameof(Name));
+            return ret;
+
+            bool ValidateNewCategoryRelationCondition()
+            {
+                if (IsIncomeRelevant?.Value ?? false)
+                    return _incomeCategoryViewModelService.All.All(icvm => icvm.Name != Name);
+                return Parent.Value is null && AllPotentialParents.Where(cvw => cvw.Parent is null).All(cvm => cvm.Name != Name) ||
+                       Parent.Value != null && Parent.Value.Categories.All(cvm => cvm != null && cvm.Name != Name);
+            }
         }
     }
 }
