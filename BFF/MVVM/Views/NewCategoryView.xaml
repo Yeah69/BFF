@@ -8,7 +8,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
-             d:DataContext="{d:DesignInstance viewModels:NewCategoryViewModel}"
+             d:DataContext="{d:DesignInstance viewModels:INewCategoryViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              Loaded="OnLoaded"
@@ -35,7 +35,7 @@
                      Grid.Row="0"
                      Grid.Column="1"
                      Focusable="True"
-                     Text="{Binding Name.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock Grid.Row="1"
                        Grid.Column="0"
@@ -54,7 +54,8 @@
                        Margin="5,0,5,0"
                        VerticalAlignment="Center"
                        Text="{lex:LocText NewCategory_MonthOffset,
-                                          Suffix=:}">
+                                          Suffix=:}"
+                       ToolTip="{lex:Loc ToolTip_Category_MonthOffset}">
                 <TextBlock.Style>
                     <Style BasedOn="{StaticResource {x:Type TextBlock}}"
                            TargetType="{x:Type TextBlock}">
@@ -89,7 +90,8 @@
                        Margin="5,0,5,0"
                        VerticalAlignment="Center"
                        Text="{lex:LocText SuperiorCategory,
-                                          Suffix=:}">
+                                          Suffix=:}"
+                       ToolTip="{lex:Loc ToolTip_Category_SuperiorCategory}">
                 <TextBlock.Style>
                     <Style BasedOn="{StaticResource {x:Type TextBlock}}"
                            TargetType="{x:Type TextBlock}">

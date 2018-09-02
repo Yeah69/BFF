@@ -10,7 +10,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    public interface IDataModelViewModel : INotifyPropertyChanged
+    public interface IDataModelViewModel : INotifyingErrorViewModel, INotifyPropertyChanged
     {
         Task InsertAsync();
 
@@ -23,7 +23,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         bool IsInserted { get; }
     }
     
-    public abstract class DataModelViewModel : ViewModelBase, IDataModelViewModel, IDisposable
+    public abstract class DataModelViewModel : NotifyingErrorViewModelBase, IDataModelViewModel, IDisposable
     {
         private readonly IDataModel _dataModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;

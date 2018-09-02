@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
+using System.Windows.Input;
 using System.Windows.Media;
 using BFF.DB;
 using BFF.Helper.Extensions;
@@ -17,72 +17,70 @@ namespace BFF.MVVM.ViewModels
 {
     public interface INewFlagViewModel
     {
-        IReactiveProperty<string> Text { get; }
+        string Text { get; set; }
 
         IReactiveProperty<SolidColorBrush> Brush { get; }
         
-        ReactiveCommand AddCommand { get; }
+        ICommand AddCommand { get; }
         
         IObservableReadOnlyList<IFlagViewModel> All { get; }
 
         IHaveFlagViewModel CurrentOwner { get; set; }
     }
 
-    public class NewFlagViewModel : INewFlagViewModel, IOncePerBackend, IDisposable
+    public class NewFlagViewModel : NotifyingErrorViewModelBase, INewFlagViewModel, IOncePerBackend, IDisposable
     {
         private readonly IFlagViewModelService _flagViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private string _text;
 
         public NewFlagViewModel(
             Func<Color, IFlag> flagFactory,
             IFlagViewModelService flagViewModelService)
         {
-            string ValidatePayeeName(string text)
-            {
-                return !string.IsNullOrWhiteSpace(text) &&
-                    All.All(flag => flag.Name != text.Trim()) 
-                    ? null 
-                    : "ErrorMessageWrongFlagName".Localize();
-            }
 
             _flagViewModelService = flagViewModelService;
 
-            Text = new ReactiveProperty<string>().SetValidateNotifyError(
-                text => ValidatePayeeName(text)).AddTo(_compositeDisposable);
-
             Brush = new ReactiveProperty<SolidColorBrush>(new SolidColorBrush(Colors.BlueViolet));
 
-            AddCommand = new ReactiveCommand().AddTo(_compositeDisposable);
-
-            AddCommand.Where(
-                _ =>
-                {
-                    (Text as ReactiveProperty<string>)?.ForceValidate();
-                    return !Text.HasErrors;
-                })
-                .Subscribe(async _ =>
-                {
-                    IFlag newFlag = flagFactory(Brush.Value.Color);
-                    newFlag.Name = Text.Value.Trim();
-                    await newFlag.InsertAsync();
-                    if(CurrentOwner != null)
-                        CurrentOwner.Flag = _flagViewModelService.GetViewModel(newFlag);
-                    CurrentOwner = null;
-                }).AddTo(_compositeDisposable);
+            AddCommand = new AsyncRxRelayCommand(async () =>
+            {
+                if (!ValidateName()) return;
+                IFlag newFlag = flagFactory(Brush.Value.Color);
+                newFlag.Name = Text.Trim();
+                await newFlag.InsertAsync();
+                if (CurrentOwner != null)
+                    CurrentOwner.Flag = _flagViewModelService.GetViewModel(newFlag);
+                CurrentOwner = null;
+                _text = "";
+                OnPropertyChanged(nameof(Text));
+                ClearErrors(nameof(Text));
+                OnErrorChanged(nameof(Text));
+            }).AddTo(_compositeDisposable);
         }
 
         /// <summary>
         /// User input of the to be searched or to be created Payee.
         /// </summary>
-        public IReactiveProperty<string> Text { get; }
+        public string Text
+        {
+            get => _text;
+            set
+            {
+                if (_text == value) return;
+                _text = value;
+                OnPropertyChanged();
+                ValidateName();
+            }
+        }
 
         public IReactiveProperty<SolidColorBrush> Brush { get; }
 
         /// <summary>
         /// Creates a new Payee.
         /// </summary>
-        public ReactiveCommand AddCommand { get; }
+        public ICommand AddCommand { get; }
 
         /// <summary>
         /// All currently available Payees.
@@ -94,6 +92,24 @@ namespace BFF.MVVM.ViewModels
         public void Dispose()
         {
             _compositeDisposable?.Dispose();
+        }
+
+        private bool ValidateName()
+        {
+            bool ret;
+            if (!string.IsNullOrWhiteSpace(Text) &&
+                All.All(f => f.Name != Text.Trim()))
+            {
+                ClearErrors(nameof(Text));
+                ret = true;
+            }
+            else
+            {
+                SetErrors("ErrorMessageWrongFlagName".Localize().ToEnumerable(), nameof(Text));
+                ret = false;
+            }
+            OnErrorChanged(nameof(Text));
+            return ret;
         }
     }
 }

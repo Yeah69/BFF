@@ -202,10 +202,10 @@
     <value>Persists currently edited elements to the account</value>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>Creates a new split Transaction</value>
+    <value>Creates a new split transaction</value>
   </data>
   <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>Creates a new Transaction</value>
+    <value>Creates a new transaction</value>
   </data>
   <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
     <value>Creates a new transfer</value>
@@ -320,10 +320,6 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="Category_CreateNew" xml:space="preserve">
     <value>Create new Category</value>
   </data>
-  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value>If checked, then an income category is created.
-Only transactions assigned to such a category are interpreted as income.</value>
-  </data>
   <data name="Color" xml:space="preserve">
     <value>Color</value>
   </data>
@@ -393,11 +389,20 @@ Only transactions assigned to such a category are interpreted as income.</value>
   <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
     <value>The name of the new category is not allowed to be empty!</value>
   </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>An account has to be chosen.</value>
+  </data>
   <data name="ErrorMessageEmptyCategory" xml:space="preserve">
     <value>A category has to be chosen.</value>
   </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>A source-account has to be chosen.</value>
+  </data>
   <data name="ErrorMessageEmptyPayee" xml:space="preserve">
     <value>A payee has to be chosen.</value>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>A target-account has to be chosen.</value>
   </data>
   <data name="ErrorMessageWrongAccountName" xml:space="preserve">
     <value>A new account's name isn't allowed to be empty or match a name of the existing accounts!</value>
@@ -560,6 +565,10 @@ open the File-menu in the upper left corner.</value>
   <data name="NameOfNewPayee" xml:space="preserve">
     <value>Name of new payee</value>
   </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>If checked, then an income category is created.
+Only transactions assigned to such a category are interpreted as income.</value>
+  </data>
   <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
     <value>Income Relevant?</value>
   </data>
@@ -620,6 +629,41 @@ open the File-menu in the upper left corner.</value>
   <data name="SuperiorCategory" xml:space="preserve">
     <value>Superior Category</value>
   </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>The overall balance including entries with a date in future.
+See tooltip for better distinction.</value>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>The intermediate balance includes the entries which have to be saved yet.</value>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>The difference of the target balance and the intermediate balance.</value>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Setting the target balance enables the automatic calculation of the missing sum.</value>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>The balance of the account on the setup starting date.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>If the aggregation is switched on, then the categories will add the values of their subcategories on top of their own.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Use this date picker to jump to an arbitrary month (day is irrelevant).</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Shift one month backward</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Shift one month forward</value>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>The month offset  shifts on which month the income is active.
+For example a month offset one will shift the income to the next month, minus one to the previous.</value>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>If a superior category is selected, then the new category will be appended as a subcategory.</value>
+  </data>
   <data name="ToolTip_DeleteRow" xml:space="preserve">
     <value>Press the button in this column to delete the element of the corresponding row.</value>
   </data>
@@ -639,6 +683,72 @@ The target income category will get assigned to all account entries of the sourc
   <data name="ToolTip_MergeToPayee" xml:space="preserve">
     <value>In order to merge one payee to another, drag the merge icon from this column in the source row and drop it on the target row.
 The target payee will get assigned to all account entries of the source payee.</value>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Source-Account</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Income-Category</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Income-Transaction</value>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Click in order to see and edit the subtransactions.</value>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Target-Account</value>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Transaction</value>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>The account which owns the entry.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
+    <value>The category determines your personal purpose of this entry.
+Because they maybe hierarchical the whole hierarchy path is shown in the tooltip.
+
+In case the entry is a transfer, the target-account is filled in here.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>If necessary the check number can be filled in here.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>This checkmark can be used in order to separate finished entries and entries which still require editing.
+The overall sums can be observed in separate manner in the tooltip of the balance.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>The date on which the entry is active.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>A flag marks an entry visually by color and is completely optional.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>The memo is intended as an arbitrary description of the entry.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>The paid or the paying person of this entry is filled in here.
+
+In case the entry is a transfer, the source-account is filled in here.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>The symbols indicate the type of the account entry.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>An income entry marks a transaction which is considered as income.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>A transaction lets money flow out of or into the account.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>A transfer passes money from one account to another.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>The sum of the entry.</value>
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
     <value>Значение не соответствует формату валюты</value>

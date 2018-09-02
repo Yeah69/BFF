@@ -378,7 +378,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creates a new split Transaction.
+        ///   Looks up a localized string similar to Creates a new split transaction.
         /// </summary>
         public static string AccountView_ToolTip_NewParentTransaction {
             get {
@@ -387,7 +387,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creates a new Transaction.
+        ///   Looks up a localized string similar to Creates a new transaction.
         /// </summary>
         public static string AccountView_ToolTip_NewTransaction {
             get {
@@ -882,6 +882,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An account has to be chosen..
+        /// </summary>
+        public static string ErrorMessageEmptyAccount {
+            get {
+                return ResourceManager.GetString("ErrorMessageEmptyAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A category has to be chosen..
         /// </summary>
         public static string ErrorMessageEmptyCategory {
@@ -891,11 +900,29 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A source-account has to be chosen..
+        /// </summary>
+        public static string ErrorMessageEmptyFromAccount {
+            get {
+                return ResourceManager.GetString("ErrorMessageEmptyFromAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A payee has to be chosen..
         /// </summary>
         public static string ErrorMessageEmptyPayee {
             get {
                 return ResourceManager.GetString("ErrorMessageEmptyPayee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A target-account has to be chosen..
+        /// </summary>
+        public static string ErrorMessageEmptyToAccount {
+            get {
+                return ResourceManager.GetString("ErrorMessageEmptyToAccount", resourceCulture);
             }
         }
         
@@ -1560,6 +1587,107 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The overall balance including entries with a date in future.
+        ///See tooltip for better distinction..
+        /// </summary>
+        public static string ToolTip_Account_Balance {
+            get {
+                return ResourceManager.GetString("ToolTip_Account_Balance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The intermediate balance includes the entries which have to be saved yet..
+        /// </summary>
+        public static string ToolTip_Account_IntermediateBalance {
+            get {
+                return ResourceManager.GetString("ToolTip_Account_IntermediateBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The difference of the target balance and the intermediate balance..
+        /// </summary>
+        public static string ToolTip_Account_MissingSum {
+            get {
+                return ResourceManager.GetString("ToolTip_Account_MissingSum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting the target balance enables the automatic calculation of the missing sum..
+        /// </summary>
+        public static string ToolTip_Account_SetTargetBalance {
+            get {
+                return ResourceManager.GetString("ToolTip_Account_SetTargetBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The balance of the account on the setup starting date..
+        /// </summary>
+        public static string ToolTip_Account_StartingBalance {
+            get {
+                return ResourceManager.GetString("ToolTip_Account_StartingBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the aggregation is switched on, then the categories will add the values of their subcategories on top of their own..
+        /// </summary>
+        public static string ToolTip_BudgetOverview_Aggregates {
+            get {
+                return ResourceManager.GetString("ToolTip_BudgetOverview_Aggregates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this date picker to jump to an arbitrary month (day is irrelevant)..
+        /// </summary>
+        public static string ToolTip_BudgetOverview_JumpToMonth {
+            get {
+                return ResourceManager.GetString("ToolTip_BudgetOverview_JumpToMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift one month backward.
+        /// </summary>
+        public static string ToolTip_BudgetOverview_ShiftMonthBackward {
+            get {
+                return ResourceManager.GetString("ToolTip_BudgetOverview_ShiftMonthBackward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift one month forward.
+        /// </summary>
+        public static string ToolTip_BudgetOverview_ShiftMonthForward {
+            get {
+                return ResourceManager.GetString("ToolTip_BudgetOverview_ShiftMonthForward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The month offset  shifts on which month the income is active.
+        ///For example a month offset one will shift the income to the next month, minus one to the previous..
+        /// </summary>
+        public static string ToolTip_Category_MonthOffset {
+            get {
+                return ResourceManager.GetString("ToolTip_Category_MonthOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If a superior category is selected, then the new category will be appended as a subcategory..
+        /// </summary>
+        public static string ToolTip_Category_SuperiorCategory {
+            get {
+                return ResourceManager.GetString("ToolTip_Category_SuperiorCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Press the button in this column to delete the element of the corresponding row..
         /// </summary>
         public static string ToolTip_DeleteRow {
@@ -1606,6 +1734,192 @@ namespace BFF.Properties {
         public static string ToolTip_MergeToPayee {
             get {
                 return ResourceManager.GetString("ToolTip_MergeToPayee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source-Account.
+        /// </summary>
+        public static string ToolTip_Symbol_FromAccount {
+            get {
+                return ResourceManager.GetString("ToolTip_Symbol_FromAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Income-Category.
+        /// </summary>
+        public static string ToolTip_Symbol_IncomeCategory {
+            get {
+                return ResourceManager.GetString("ToolTip_Symbol_IncomeCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Income-Transaction.
+        /// </summary>
+        public static string ToolTip_Symbol_IncomeTransaction {
+            get {
+                return ResourceManager.GetString("ToolTip_Symbol_IncomeTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click in order to see and edit the subtransactions..
+        /// </summary>
+        public static string ToolTip_Symbol_SplitTransaction {
+            get {
+                return ResourceManager.GetString("ToolTip_Symbol_SplitTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target-Account.
+        /// </summary>
+        public static string ToolTip_Symbol_ToAccount {
+            get {
+                return ResourceManager.GetString("ToolTip_Symbol_ToAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaction.
+        /// </summary>
+        public static string ToolTip_Symbol_Transaction {
+            get {
+                return ResourceManager.GetString("ToolTip_Symbol_Transaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transfer.
+        /// </summary>
+        public static string ToolTip_Symbol_Transfer {
+            get {
+                return ResourceManager.GetString("ToolTip_Symbol_Transfer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The account which owns the entry..
+        /// </summary>
+        public static string ToolTip_TransGrid_Header_Account {
+            get {
+                return ResourceManager.GetString("ToolTip_TransGrid_Header_Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The category determines your personal purpose of this entry.
+        ///Because they maybe hierarchical the whole hierarchy path is shown in the tooltip.
+        ///
+        ///In case the entry is a transfer, the target-account is filled in here..
+        /// </summary>
+        public static string ToolTip_TransGrid_Header_Category {
+            get {
+                return ResourceManager.GetString("ToolTip_TransGrid_Header_Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If necessary the check number can be filled in here..
+        /// </summary>
+        public static string ToolTip_TransGrid_Header_CheckNumber {
+            get {
+                return ResourceManager.GetString("ToolTip_TransGrid_Header_CheckNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This checkmark can be used in order to separate finished entries and entries which still require editing.
+        ///The overall sums can be observed in separate manner in the tooltip of the balance..
+        /// </summary>
+        public static string ToolTip_TransGrid_Header_Cleared {
+            get {
+                return ResourceManager.GetString("ToolTip_TransGrid_Header_Cleared", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The date on which the entry is active..
+        /// </summary>
+        public static string ToolTip_TransGrid_Header_Date {
+            get {
+                return ResourceManager.GetString("ToolTip_TransGrid_Header_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A flag marks an entry visually by color and is completely optional..
+        /// </summary>
+        public static string ToolTip_TransGrid_Header_Flag {
+            get {
+                return ResourceManager.GetString("ToolTip_TransGrid_Header_Flag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The memo is intended as an arbitrary description of the entry..
+        /// </summary>
+        public static string ToolTip_TransGrid_Header_Memo {
+            get {
+                return ResourceManager.GetString("ToolTip_TransGrid_Header_Memo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The paid or the paying person of this entry is filled in here.
+        ///
+        ///In case the entry is a transfer, the source-account is filled in here..
+        /// </summary>
+        public static string ToolTip_TransGrid_Header_Payee {
+            get {
+                return ResourceManager.GetString("ToolTip_TransGrid_Header_Payee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The symbols indicate the type of the account entry..
+        /// </summary>
+        public static string ToolTip_TransGrid_Header_S {
+            get {
+                return ResourceManager.GetString("ToolTip_TransGrid_Header_S", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An income entry marks a transaction which is considered as income..
+        /// </summary>
+        public static string ToolTip_TransGrid_Header_S_Income {
+            get {
+                return ResourceManager.GetString("ToolTip_TransGrid_Header_S_Income", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A transaction lets money flow out of or into the account..
+        /// </summary>
+        public static string ToolTip_TransGrid_Header_S_Transaction {
+            get {
+                return ResourceManager.GetString("ToolTip_TransGrid_Header_S_Transaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A transfer passes money from one account to another..
+        /// </summary>
+        public static string ToolTip_TransGrid_Header_S_Transfer {
+            get {
+                return ResourceManager.GetString("ToolTip_TransGrid_Header_S_Transfer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The sum of the entry..
+        /// </summary>
+        public static string ToolTip_TransGrid_Header_Sum {
+            get {
+                return ResourceManager.GetString("ToolTip_TransGrid_Header_Sum", resourceCulture);
             }
         }
         

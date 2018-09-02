@@ -29,6 +29,8 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         IRxRelayCommand RemoveCommand { get; }
 
         IAccountBaseViewModel Owner { get; }
+
+        void NotifyErrorsIfAny();
     }
     
     public abstract class TransLikeViewModel : DataModelViewModel, ITransLikeViewModel, ITransientViewModel
@@ -96,5 +98,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public IObservable<Unit> RemoveRequests => _removeRequestSubject.AsObservable();
         public IRxRelayCommand RemoveCommand { get; }
         public IAccountBaseViewModel Owner { get; }
+
+        public abstract void NotifyErrorsIfAny();
     }
 }

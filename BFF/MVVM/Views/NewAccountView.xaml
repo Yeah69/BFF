@@ -6,14 +6,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
-             d:DataContext="{d:DesignInstance viewModels:NewAccountViewModel}"
+             d:DataContext="{d:DesignInstance viewModels:INewAccountViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
     <StackPanel>
         <Label Content="{lex:LocText Account_Name,
                                      Suffix=:}" />
-        <TextBox Text="{Binding Mode=TwoWay, Path=Name.Value, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox Text="{Binding Mode=TwoWay, Path=Name, UpdateSourceTrigger=PropertyChanged}" />
         <Label Content="{lex:LocText Account_StartingBalance,
                                      Suffix=:}" />
         <TextBox Name="NewAccountStartingBalance"

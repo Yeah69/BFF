@@ -291,6 +291,15 @@ namespace BFF.MVVM.ViewModels.ForModels
             _newTransactions.Clear();
         }
 
+        public override void NotifyErrorsIfAny()
+        {
+            base.NotifyErrorsIfAny();
+            foreach (var subTransactionViewModel in NewSubTransactions)
+            {
+                subTransactionViewModel.NotifyErrorsIfAny();
+            }
+        }
+
         public override bool IsInsertable() => base.IsInsertable() && NewSubTransactions.Any() && NewSubTransactions.All(st => st.IsInsertable());
     }
 }

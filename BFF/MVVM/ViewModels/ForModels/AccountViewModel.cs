@@ -15,6 +15,7 @@ using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.Dialogs;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using BFF.MVVM.ViewModels.ForModels.Utility;
+using BFF.Properties;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -182,6 +183,9 @@ namespace BFF.MVVM.ViewModels.ForModels
                         NewTransList.Add(transactionViewModel);
                     }
                 })));
+
+            if (Settings.Default.OpenAccountTab == Name)
+                IsOpen = true;
         }
 
         protected override IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess

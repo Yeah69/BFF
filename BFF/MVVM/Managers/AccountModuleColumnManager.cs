@@ -38,6 +38,8 @@ namespace BFF.MVVM.Managers
                 Settings.Default.ShowCheckNumbers = v;
                 Settings.Default.Save();
             }).AddHere(_compositeDisposable);
+
+            _neverShowEditHeaders = Settings.Default.NeverShowEditHeaders;
         }
 
         public IReactiveProperty<bool> ShowFlags { get; }

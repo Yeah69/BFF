@@ -146,6 +146,15 @@ namespace BFF
                     lastSetDate.Date);
             }).As<Func<IAccount>>();
 
+            builder.Register<Func<ISubTransaction>>(cc =>
+            {
+                var repository = cc.Resolve<IRepository<ISubTransaction>>();
+                var rxSchedulerProvider = cc.Resolve<IRxSchedulerProvider>();
+                return () => new SubTransaction(
+                    repository,
+                    rxSchedulerProvider);
+            }).As<Func<ISubTransaction>>();
+
             builder.Register(cc => DialogCoordinator.Instance).As<IDialogCoordinator>();
 
             builder.RegisterType<WpfRxSchedulerProvider>().As<IRxSchedulerProvider>().SingleInstance();

@@ -28,7 +28,7 @@ namespace BFF.Helper.Extensions
 
         public static IEnumerable<T> ToEnumerable<T>(this T element)
         {
-            return new[] {element};
+            yield return element;
         }
 
         public static IEnumerable<T> IterateRootBreadthFirst<T>(this T root, Func<T, IEnumerable<T>> childrenSelector)

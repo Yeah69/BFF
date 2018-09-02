@@ -363,7 +363,10 @@
                             <Setter Property="ContentTemplate">
                                 <Setter.Value>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="{lex:Loc MainWindow_Empty}" />
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Text="{lex:Loc MainWindow_Empty}"
+                                                   TextAlignment="Center" />
                                     </DataTemplate>
                                 </Setter.Value>
                             </Setter>

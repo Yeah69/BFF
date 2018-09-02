@@ -5,6 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using BFF.MVVM.AttachedBehaviors;
 using BFF.MVVM.ViewModels.ForModels.Structure;
+using MahApps.Metro.Controls;
 
 namespace BFF.MVVM.Resources
 {
@@ -91,8 +92,14 @@ namespace BFF.MVVM.Resources
         {
             if (!(sender is FrameworkElementClickBehavior fecb)) return;
 
-            var parentContextMenu = fecb.Parent?.ContextMenu;
-            if(parentContextMenu != null) parentContextMenu.IsOpen = true;
+            var tryFindParent = fecb.Parent?.TryFindParent<DataGridRow>();
+            var parentContextMenu = tryFindParent?.ContextMenu;
+            
+            if(parentContextMenu != null)
+            {
+                parentContextMenu.DataContext = tryFindParent.DataContext;
+                parentContextMenu.IsOpen = true;
+            }
         }
     }
 }

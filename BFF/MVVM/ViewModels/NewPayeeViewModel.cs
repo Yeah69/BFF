@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
+using System.Windows.Input;
 using BFF.DB;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
@@ -9,7 +9,6 @@ using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using MuVaViMo;
-using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels
@@ -19,12 +18,12 @@ namespace BFF.MVVM.ViewModels
         /// <summary>
         /// User input of the to be searched or to be created Payee.
         /// </summary>
-        IReactiveProperty<string> PayeeText { get; }
+        string PayeeText { get; set; }
 
         /// <summary>
         /// Creates a new Payee.
         /// </summary>
-        ReactiveCommand AddPayeeCommand { get; }
+        ICommand AddPayeeCommand { get; }
 
         /// <summary>
         /// All currently available Payees.
@@ -34,57 +33,55 @@ namespace BFF.MVVM.ViewModels
         IHavePayeeViewModel CurrentOwner { get; set; }
     }
 
-    public class NewPayeeViewModel : INewPayeeViewModel, IOncePerBackend, IDisposable
+    public class NewPayeeViewModel : NotifyingErrorViewModelBase, INewPayeeViewModel, IOncePerBackend, IDisposable
     {
         private readonly IPayeeViewModelService _payeeViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private string _payeeText;
 
         public NewPayeeViewModel(
             Func<IPayee> payeeFactory,
             IPayeeViewModelService payeeViewModelService)
         {
-            string ValidatePayeeName(string text)
-            {
-                return !string.IsNullOrWhiteSpace(text) &&
-                    AllPayees.All(payee => payee.Name != text.Trim()) 
-                    ? null 
-                    : "ErrorMessageWrongPayeeName".Localize();
-            }
-
             _payeeViewModelService = payeeViewModelService;
 
-            PayeeText = new ReactiveProperty<string>().SetValidateNotifyError(
-                text => ValidatePayeeName(text)).AddTo(_compositeDisposable);
-
-            AddPayeeCommand = new ReactiveCommand().AddTo(_compositeDisposable);
-
-            AddPayeeCommand.Where(
-                _ =>
-                {
-                    (PayeeText as ReactiveProperty<string>)?.ForceValidate();
-                    return !PayeeText.HasErrors;
-                })
-                .Subscribe(async _ =>
-                {
-                    IPayee newPayee = payeeFactory();
-                    newPayee.Name = PayeeText.Value.Trim();
-                    await newPayee.InsertAsync();
-                    if(CurrentOwner != null)
-                        CurrentOwner.Payee = _payeeViewModelService.GetViewModel(newPayee);
-                    CurrentOwner = null;
-                }).AddTo(_compositeDisposable);
+            AddPayeeCommand = new AsyncRxRelayCommand(async () =>
+            {
+                if (!ValidatePayeeName())
+                    return;
+                IPayee newPayee = payeeFactory();
+                newPayee.Name = PayeeText.Trim();
+                await newPayee.InsertAsync();
+                if (CurrentOwner != null)
+                    CurrentOwner.Payee = _payeeViewModelService.GetViewModel(newPayee);
+                CurrentOwner = null;
+                _payeeText = "";
+                OnPropertyChanged(nameof(PayeeText));
+                ClearErrors(nameof(PayeeText));
+                OnErrorChanged(nameof(PayeeText));
+            }).AddTo(_compositeDisposable);
         }
 
         /// <summary>
         /// User input of the to be searched or to be created Payee.
         /// </summary>
-        public IReactiveProperty<string> PayeeText { get; }
+        public string PayeeText
+        {
+            get => _payeeText;
+            set
+            {
+                if (_payeeText == value) return;
+                _payeeText = value;
+                OnPropertyChanged();
+                ValidatePayeeName();
+            }
+        }
 
         /// <summary>
         /// Creates a new Payee.
         /// </summary>
-        public ReactiveCommand AddPayeeCommand { get; }
+        public ICommand AddPayeeCommand { get; }
 
         /// <summary>
         /// All currently available Payees.
@@ -96,6 +93,24 @@ namespace BFF.MVVM.ViewModels
         public void Dispose()
         {
             _compositeDisposable?.Dispose();
+        }
+
+        private bool ValidatePayeeName()
+        {
+            bool ret;
+            if (!string.IsNullOrWhiteSpace(PayeeText) &&
+                AllPayees.All(payee => payee.Name != PayeeText.Trim()))
+            {
+                ClearErrors(nameof(PayeeText));
+                ret = true;
+            }
+            else
+            {
+                SetErrors("ErrorMessageWrongPayeeName".Localize().ToEnumerable(), nameof(PayeeText));
+                ret = false;
+            }
+            OnErrorChanged(nameof(PayeeText));
+            return ret;
         }
     }
 }

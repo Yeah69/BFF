@@ -99,6 +99,11 @@ namespace BFF.MVVM.ViewModels.ForModels
                 {
                     _fromAccount = _accountViewModelService.GetViewModel(transfer.FromAccount);
                     OnPropertyChanged(nameof(FromAccount));
+                    if (_fromAccount != null)
+                    {
+                        ClearErrors(nameof(FromAccount));
+                        OnErrorChanged(nameof(FromAccount));
+                    }
                 })
                 .AddTo(CompositeDisposable);
 
@@ -110,6 +115,11 @@ namespace BFF.MVVM.ViewModels.ForModels
                 {
                     _toAccount = _accountViewModelService.GetViewModel(transfer.ToAccount);
                     OnPropertyChanged(nameof(ToAccount));
+                    if (_toAccount != null)
+                    {
+                        ClearErrors(nameof(ToAccount));
+                        OnErrorChanged(nameof(ToAccount));
+                    }
                 })
                 .AddTo(CompositeDisposable);
 
@@ -184,6 +194,20 @@ namespace BFF.MVVM.ViewModels.ForModels
             RefreshAnAccountViewModel(ToAccount);
             _summaryAccountViewModel.RefreshTransCollection();
             _summaryAccountViewModel.RefreshBalance();
+        }
+
+        public override void NotifyErrorsIfAny()
+        {
+            if (FromAccount is null)
+            {
+                SetErrors("ErrorMessageEmptyFromAccount".Localize().ToEnumerable(), nameof(FromAccount));
+                OnErrorChanged(nameof(FromAccount));
+            }
+
+            if (!(ToAccount is null)) return;
+
+            SetErrors("ErrorMessageEmptyToAccount".Localize().ToEnumerable(), nameof(ToAccount));
+            OnErrorChanged(nameof(ToAccount));
         }
 
         protected override void NotifyRelevantAccountsToRefreshTrans()

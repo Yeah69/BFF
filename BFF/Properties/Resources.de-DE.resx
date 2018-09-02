@@ -320,10 +320,6 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m�
   <data name="Category_CreateNew" xml:space="preserve">
     <value>Neue Kategorie erstellen</value>
   </data>
-  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value>Wenn angehakt, dann erstellt dies eine Einkommenskategorie.
-Nur Transaktionen, die zu so einer Kategorie angehängt sind, werden als Einkommen interpretiert.</value>
-  </data>
   <data name="Color" xml:space="preserve">
     <value>Farbe</value>
   </data>
@@ -393,11 +389,20 @@ Nur Transaktionen, die zu so einer Kategorie angehängt sind, werden als Einkomm
   <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
     <value>Der Name einer neuen Kategorie darf nicht leer sein!</value>
   </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Ein Konto muss ausgewählt werden.</value>
+  </data>
   <data name="ErrorMessageEmptyCategory" xml:space="preserve">
     <value>Eine Kategorie muss ausgewählt werden.</value>
   </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Ein Quellkonto muss ausgewählt werden.</value>
+  </data>
   <data name="ErrorMessageEmptyPayee" xml:space="preserve">
     <value>Ein Bezahlter muss ausgewählt werden.</value>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Ein Zielkonto muss ausgewählt werden</value>
   </data>
   <data name="ErrorMessageWrongAccountName" xml:space="preserve">
     <value>Dem Kontennamen ist es nicht erlaubt leer zu sein oder den Namen eines bestehendem Kontos zu gleichen.</value>
@@ -560,6 +565,10 @@ Um ein Projekt zu erstellen, öffnen oder importieren
   <data name="NameOfNewPayee" xml:space="preserve">
     <value>Name des neuen Bezahlten</value>
   </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Wenn angehakt, dann erstellt dies eine Einkommenskategorie.
+Nur Transaktionen, die zu so einer Kategorie angehängt sind, werden als Einkommen interpretiert.</value>
+  </data>
   <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
     <value>Einkommensrelevant?</value>
   </data>
@@ -620,6 +629,41 @@ Um ein Projekt zu erstellen, öffnen oder importieren
   <data name="SuperiorCategory" xml:space="preserve">
     <value>Übergestellte Kategorie</value>
   </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Der Gesamtkontostand unter Berücksichtigung der Einträge mit einem zukünftigen Datum.
+Schaue in den Tooltip für eine bessere Unterscheidung.</value>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>Die Zwischensumme bezieht die Einträge, die noch gespeichert werden müssen, mit ein.</value>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Die Differenz von dem Zielkontostands und der Zwischensumme.</value>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Das setzen des Zielkontostands erlaubt die automatische Berechnung der fehlenden Summe.</value>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Der Kontostand des Kontos am eingestellten Startdatum.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Wenn die Gesamtsummen aktiviert sind, dann werden die Werte der Unterkategorien zu dem eigenen Wert draufaddiert.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Nutze diesen Datumselektor um zu einem beliebigen Monat zu springen (der Tag ist nicht von Belang).</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Verschiebe um einen Monat zurück</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Verschiebe um einen Monat vor</value>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Der Monatsversatz verschiebt monatsweise den Zeitpunkt zu wann das Einkommen aktiv wird.
+Zum Beispiel ein Monatsversatz von eins verschiebt das Einkommen zum nächsten Monat und Minus eins zum vorigen Monat.</value>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Wenn eine übergeordnete Kategorie gewählt wird, dann wird die neue Kategorie ihr als Unterkategorie angehangen.</value>
+  </data>
   <data name="ToolTip_DeleteRow" xml:space="preserve">
     <value>Drücke den Knopf in dieser Spalte um das Element der zugehörigen Reihe zu löschen.</value>
   </data>
@@ -639,6 +683,72 @@ Die Ziel-Einkommenskategorie übernimmt alle Konteneinträge von der Quell-Einko
   <data name="ToolTip_MergeToPayee" xml:space="preserve">
     <value>Um einen Zahlungsempfänger mit einer anderen zusammenzuführen, sollte das Symbol aus dieser Spalte von der Quellreihe gezogen und auf die Zielreihe losgelassen werden.
 Der Ziel-Zahlungsempfänger übernimmt alle Konteneinträge von dem Quell-Zahlungsempfänger.</value>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Quellkonto</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Einkommenskategory</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Einkommenstransaktion</value>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Klicke um die Teiltransaktionen zu sehen und zu bearbeiten.</value>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Zielkonto</value>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Transaktion</value>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Das Konto dem der Eintrag gehört.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
+    <value>Die Kategorie bestimmt deinen persönlichen Zweck von diesem Eintrag.
+Weil die Kategorien hierarchisch aufgebaut werden können, wird der ganze hierarchische Pfad im Tooltip angezeigt.
+
+Wenn der Eintrag ein Transfer ist, dann wird hier das Zielkonto eingetragen.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Wenn nötig kann hier die Checknummer eingetragen werden.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Dieser Haken kann genutzt werden um erledigte Einträgen von welchen die noch Überarbeitung benötigen zu unterscheiden.
+Die Gesamtsummen können im Tooltip vom Kontostand betrachtet werden.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Das Datum an dem der Eintrag wirksam ist.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Die Markierung hebt den Eintrag visuell durch die Farbe hervor und ist komplett optional.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>Die Notiz ist dazu bestimmt dem Eintrag eine beliebige Beschreibung zu geben.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Die bezahlte oder die bezahlende Person wird hier eingetragen.
+
+Wenn der Eintrag ein Transfer ist, dann wird hier das Quellkonto eingetragen.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Die Symbole zeigen von welchem Typ der Konteneintrag ist.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>Ein Einkommenseintrag markiert eine Transaktion, die als Einkommen betrachtet wird.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Eine Transaktion lässt Geld aus oder in ein Konto fließen.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>Ein Transfer überträgt Geld von einem Konto in das andere.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Die Summe des Eintrags.</value>
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
     <value>Dieser Text konnte nicht als Währung geparst werden!</value>

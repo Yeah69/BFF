@@ -17,6 +17,7 @@ using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
+using BFF.Properties;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -46,6 +47,8 @@ namespace BFF.MVVM.ViewModels
         IDisposable DeferRefreshUntilDisposal();
 
         IBudgetMonthViewModel GetBudgetMonthViewModel(DateTime month);
+
+        ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
     }
 
     public class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IOncePerBackend, IDisposable
@@ -61,7 +64,11 @@ namespace BFF.MVVM.ViewModels
         private bool _isOpen;
         private bool _canRefresh = true;
         private DateTime _selectedMonth;
-        public IList<IBudgetMonthViewModel> BudgetMonths { get; private set; }
+        private IDataVirtualizingCollection<IBudgetMonthViewModel> _budgetMonths;
+
+        public IList<IBudgetMonthViewModel> BudgetMonths =>
+            _budgetMonths ?? (_budgetMonths = CreateBudgetMonths());
+
         public IBudgetMonthViewModel CurrentBudgetMonth => BudgetMonths[MonthToIndex(DateTime.Now)];
 
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
@@ -109,6 +116,11 @@ namespace BFF.MVVM.ViewModels
                 if (_isOpen == value) return;
                 _isOpen = value;
                 OnPropertyChanged();
+                if (_isOpen)
+                {
+                    Settings.Default.OpenMainTab = "BudgetOverview";
+                    Settings.Default.Save();
+                }
             }
         }
 
@@ -137,8 +149,7 @@ namespace BFF.MVVM.ViewModels
                 categoryRepository
                     .All
                     .ToReadOnlyReactiveCollection(categoryViewModelService.GetViewModel);
-
-            BudgetMonths = CreateBudgetMonths();
+            
             CurrentMonthStartIndex = MonthToIndex(DateTime.Now) - 1;
 
             var currentMonthStartIndexChanges = this
@@ -155,7 +166,7 @@ namespace BFF.MVVM.ViewModels
                     () => CurrentMonthStartIndex = CurrentMonthStartIndex - 1)
                 .AddTo(_compositeDisposable);
 
-            IsOpen = false;
+            IsOpen = Settings.Default.OpenMainTab == "BudgetOverview";
 
             this
                 .ObservePropertyChanges(nameof(IsOpen))
@@ -178,13 +189,19 @@ namespace BFF.MVVM.ViewModels
                         throw new InvalidEnumArgumentException();
                 }
             }).AddTo(_compositeDisposable);
+
+            Disposable
+                .Create(() => _budgetMonths?.Dispose())
+                .AddTo(_compositeDisposable);
         }
 
         public async Task Refresh()
         {
             if (_canRefresh.Not()) return;
-            BudgetMonths = await Task.Run(() => CreateBudgetMonths());
+            var temp = _budgetMonths;
+            _budgetMonths = await Task.Run(() => CreateBudgetMonths());
             _rxSchedulerProvider.UI.MinimalSchedule(() => OnPropertyChanged(nameof(BudgetMonths)));
+            await Task.Run(() => temp.Dispose());
         }
 
         public IDisposable DeferRefreshUntilDisposal()

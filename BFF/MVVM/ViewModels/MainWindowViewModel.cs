@@ -166,6 +166,7 @@ namespace BFF.MVVM.ViewModels
             set
             {
                 Settings.Default.Culture_DefaultLanguage = value;
+                Settings.Default.Save();
 
                 CultureInfo customCulture = CultureInfo.CreateSpecificCulture(Settings.Default.Culture_DefaultLanguage.Name);
                 customCulture.NumberFormat = CultureManager.CurrencyCulture.NumberFormat;
@@ -175,7 +176,6 @@ namespace BFF.MVVM.ViewModels
                 Thread.CurrentThread.CurrentCulture = customCulture;
                 Thread.CurrentThread.CurrentUICulture = customCulture;
 
-                Settings.Default.Save();
                 OnPropertyChanged();
             }
         }

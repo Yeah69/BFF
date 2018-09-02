@@ -13,6 +13,7 @@ using BFF.Helper.Extensions;
 using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native.Utility;
 using BFF.MVVM.ViewModels.ForModels.Utility;
+using BFF.Properties;
 using Microsoft.Win32;
 using MuVaViMo;
 using NCalc;
@@ -73,9 +74,16 @@ namespace BFF.MVVM.ViewModels.Dialogs
             var nonProfileViewModel = nonProfileViewModelFactory(FilePath).AddHere(_compositeDisposable);
             Configuration = new ReactivePropertySlim<ICsvBankStatementImportNonProfileViewModel>(nonProfileViewModel, ReactivePropertyMode.DistinctUntilChanged);
 
-            SelectedProfile = new ReactivePropertySlim<ICsvBankStatementImportProfileViewModel>(null, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+            SelectedProfile = new ReactivePropertySlim<ICsvBankStatementImportProfileViewModel>(Profiles.FirstOrDefault(cbsipvm => cbsipvm.Name.Value == Settings.Default.SelectedCsvProfile), ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
             SelectedProfile
-                .Subscribe(sp => Configuration.Value = sp ?? nonProfileViewModel)
+                .Subscribe(sp =>
+                {
+                    Configuration.Value = sp ?? nonProfileViewModel;
+                    Settings.Default.SelectedCsvProfile = !(sp is ICsvBankStatementImportProfileViewModel cbsipvm)
+                        ? null
+                        : cbsipvm.Name.Value;
+                    Settings.Default.Save();
+                })
                 .AddHere(_compositeDisposable);
 
             

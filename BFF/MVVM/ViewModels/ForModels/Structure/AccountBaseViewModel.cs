@@ -21,6 +21,7 @@ using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.Properties;
+using MoreLinq;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -172,6 +173,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                     RefreshTransCollection();
                     RefreshBalance();
                 });
+                if (_isOpen)
+                {
+                    Settings.Default.OpenAccountTab = this is ISummaryAccountViewModel 
+                        ? null 
+                        : Name;
+                    Settings.Default.Save();
+                }
             }
         }
 
@@ -434,7 +442,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         protected async Task ApplyTrans()
         {
-            if (NewTransList.All(t => t.IsInsertable()))
+            if (NewTransList.Any(t => !t.IsInsertable()))
+            {
+                NewTransList.ForEach(t => t.NotifyErrorsIfAny());
+            }
+            else
             {
                 _currentRemoveRequestSubscriptions = new CompositeDisposable();
                 _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;

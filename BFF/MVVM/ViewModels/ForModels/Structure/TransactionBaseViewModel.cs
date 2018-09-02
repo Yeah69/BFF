@@ -90,6 +90,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 {
                     _account = _accountViewModelService.GetViewModel(transactionBase.Account);
                     OnPropertyChanged(nameof(Account));
+                    if (_account != null)
+                    {
+                        ClearErrors(nameof(Account));
+                        OnErrorChanged(nameof(Account));
+                    }
                 })
                 .AddTo(CompositeDisposable);
 
@@ -115,6 +120,11 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
                 {
                     _payee = _payeeViewModelService.GetViewModel(transactionBase.Payee);
                     OnPropertyChanged(nameof(Payee));
+                    if (_payee != null)
+                    {
+                        ClearErrors(nameof(Payee));
+                        OnErrorChanged(nameof(Payee));
+                    }
                 })
                 .AddTo(CompositeDisposable);
 
@@ -128,6 +138,20 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             await base.DeleteAsync();
             NotifyRelevantAccountsToRefreshTrans();
             NotifyRelevantAccountsToRefreshBalance();
+        }
+
+        public override void NotifyErrorsIfAny()
+        {
+            if (Account is null)
+            {
+                SetErrors("ErrorMessageEmptyAccount".Localize().ToEnumerable(), nameof(Account));
+                OnErrorChanged(nameof(Account));
+            }
+
+            if (!(Payee is null)) return;
+
+            SetErrors("ErrorMessageEmptyPayee".Localize().ToEnumerable(), nameof(Payee));
+            OnErrorChanged(nameof(Payee));
         }
 
         protected override void NotifyRelevantAccountsToRefreshTrans()

@@ -7,7 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
              xmlns:views="clr-namespace:BFF.MVVM.Views"
-             d:DataContext="{d:DesignInstance viewModels:NewFlagViewModel}"
+             d:DataContext="{d:DesignInstance viewModels:INewFlagViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              Loaded="OnLoaded"
@@ -37,7 +37,7 @@
                      BorderBrush="{StaticResource AccentColorBrush}"
                      DockPanel.Dock="Right"
                      Focusable="True"
-                     Text="{Binding Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock Grid.Row="1"
                        Grid.Column="0"
                        Margin="5,0,5,0"
