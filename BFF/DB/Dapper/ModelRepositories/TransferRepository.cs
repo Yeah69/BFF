@@ -1,6 +1,7 @@
 using System;
-using System.Data.Common;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -12,14 +13,18 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class TransferRepository : RepositoryBase<Domain.ITransfer, Trans>, ITransferRepository
     {
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IAccountRepository _accountRepository;
         private readonly IFlagRepository _flagRepository;
 
         public TransferRepository(
             IProvideConnection provideConnection,
+            IRxSchedulerProvider rxSchedulerProvider,
+            ICrudOrm crudOrm,
             IAccountRepository accountRepository,
-            IFlagRepository flagRepository) : base(provideConnection)
+            IFlagRepository flagRepository) : base(provideConnection, crudOrm)
         {
+            _rxSchedulerProvider = rxSchedulerProvider;
             _accountRepository = accountRepository;
             _flagRepository = flagRepository;
         }
@@ -29,10 +34,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             {
                 Id = domainTransfer.Id,
                 AccountId = -69,
-                FlagId = domainTransfer.Flag == null || domainTransfer.Flag == Domain.Flag.Default ? (long?)null : domainTransfer.Flag.Id,
+                FlagId = domainTransfer.Flag is null || domainTransfer.Flag == Domain.Flag.Default 
+                    ? (long?)null 
+                    : domainTransfer.Flag.Id,
                 CheckNumber = domainTransfer.CheckNumber,
-                PayeeId = domainTransfer.FromAccount.Id,
-                CategoryId = domainTransfer.ToAccount.Id,
+                PayeeId = domainTransfer.FromAccount?.Id,
+                CategoryId = domainTransfer.ToAccount?.Id,
                 Date = domainTransfer.Date,
                 Memo = domainTransfer.Memo,
                 Sum = domainTransfer.Sum,
@@ -40,20 +47,27 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Type = nameof(TransType.Transfer)
             };
 
-        protected override Converter<(Trans, DbConnection), Domain.ITransfer> ConvertToDomain => tuple =>
+        protected override async Task<Domain.ITransfer> ConvertToDomainAsync(Trans persistenceModel)
         {
-            (Trans persistenceTransfer, DbConnection connection) = tuple;
-            return new Domain.Transfer(
-                this,
-                persistenceTransfer.Date,
-                persistenceTransfer.Id,
-                persistenceTransfer.FlagId == null ? null : _flagRepository.Find((long)persistenceTransfer.FlagId, connection),
-                persistenceTransfer.CheckNumber,
-                _accountRepository.Find(persistenceTransfer.PayeeId, connection),
-                _accountRepository.Find(persistenceTransfer.CategoryId ?? -1, connection),  // This CategoryId should never be a null, because it comes from a transfer
-                persistenceTransfer.Memo,
-                persistenceTransfer.Sum,
-                persistenceTransfer.Cleared == 1L);
-        };
+            return 
+                new Domain.Transfer(
+                    this,
+                    _rxSchedulerProvider,
+                    persistenceModel.Date,
+                    persistenceModel.Id,
+                    persistenceModel.FlagId is null
+                        ? null
+                        : await _flagRepository.FindAsync((long) persistenceModel.FlagId).ConfigureAwait(false),
+                    persistenceModel.CheckNumber,
+                    persistenceModel.PayeeId is null
+                        ? null
+                        : await _accountRepository.FindAsync((long) persistenceModel.PayeeId).ConfigureAwait(false),
+                    persistenceModel.CategoryId is null
+                        ? null
+                        : await _accountRepository.FindAsync((long) persistenceModel.CategoryId).ConfigureAwait(false),
+                    persistenceModel.Memo,
+                    persistenceModel.Sum,
+                    persistenceModel.Cleared == 1L);
+        }
     }
 }

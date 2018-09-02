@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using BFF.DB;
 using BFF.DB.Dapper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using MuVaViMo;
@@ -25,16 +29,18 @@ namespace BFF.MVVM.Services
         TDomain GetModel(TViewModel viewModel);
     }
 
-    public abstract class CommonPropertyViewModelServiceBase<TDomain, TViewModel> : ICommonPropertyViewModelServiceBase<TDomain, TViewModel>
+    public abstract class CommonPropertyViewModelServiceBase<TDomain, TViewModel> : ICommonPropertyViewModelServiceBase<TDomain, TViewModel>, IDisposable
         where TDomain : class, IDataModel 
         where TViewModel : class, IDataModelViewModel
     {
         private readonly Func<TDomain, TViewModel> _factory;
 
-        private readonly IDictionary<TDomain, TViewModel> _modelToViewModel 
+        protected readonly IDictionary<TDomain, TViewModel> _modelToViewModel 
             = new Dictionary<TDomain, TViewModel>();
-        private readonly IDictionary<TViewModel, TDomain> _viewModelToModel 
+        protected readonly IDictionary<TViewModel, TDomain> _viewModelToModel 
             = new Dictionary<TViewModel, TDomain>();
+
+        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
 
         public IObservableReadOnlyList<TViewModel> All { get; protected set; }
 
@@ -44,9 +50,25 @@ namespace BFF.MVVM.Services
         {
             _factory = factory;
             if(!deferAll)
+            {
                 All = new TransformingObservableReadOnlyList<TDomain, TViewModel>(
                     new WrappingObservableReadOnlyList<TDomain>(repository.All),
                     AddToDictionaries);
+                All
+                    .ObserveCollectionChanges()
+                    .Where(e => e.EventArgs.Action == NotifyCollectionChangedAction.Reset)
+                    .Subscribe(_ =>
+                    {
+                        _modelToViewModel.Clear();
+                        _viewModelToModel.Clear();
+                    });
+            }
+
+            Disposable.Create(() =>
+            {
+                _modelToViewModel.Clear();
+                _viewModelToModel.Clear();
+            }).AddTo(CompositeDisposable);
         }
 
         protected TViewModel AddToDictionaries(TDomain model)
@@ -66,11 +88,11 @@ namespace BFF.MVVM.Services
 
         public virtual TViewModel GetViewModel(TDomain model)
         {
-            if(model == null) return null;
-            if(_modelToViewModel.ContainsKey(model))
-                return _modelToViewModel[model];
+            if(model is null) return null;
+            if(!_modelToViewModel.ContainsKey(model))
+                AddToDictionaries(model);
 
-            return null;
+            return _modelToViewModel[model];
         }
 
         public TViewModel GetViewModel(long id)
@@ -83,11 +105,16 @@ namespace BFF.MVVM.Services
 
         public TDomain GetModel(TViewModel viewModel)
         {
-            if(viewModel == null) return null;
+            if(viewModel is null) return null;
             if(_viewModelToModel.ContainsKey(viewModel))
                 return _viewModelToModel[viewModel];
 
             return null;
+        }
+
+        public void Dispose()
+        {
+            CompositeDisposable.Dispose();
         }
     }
 }

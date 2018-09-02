@@ -1,6 +1,7 @@
 using System;
-using System.Data.Common;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -12,6 +13,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class TransactionRepository : RepositoryBase<Domain.ITransaction, Trans>, ITransactionRepository
     {
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IAccountRepository _accountRepository;
         private readonly ICategoryBaseRepository _categoryBaseRepository;
         private readonly IPayeeRepository _payeeRepository;
@@ -19,11 +21,14 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         public TransactionRepository(
             IProvideConnection provideConnection,
+            IRxSchedulerProvider rxSchedulerProvider,
+            ICrudOrm crudOrm,
             IAccountRepository accountRepository,
             ICategoryBaseRepository categoryBaseRepository,
             IPayeeRepository payeeRepository,
-            IFlagRepository flagRepository) : base(provideConnection)
+            IFlagRepository flagRepository) : base(provideConnection, crudOrm)
         {
+            _rxSchedulerProvider = rxSchedulerProvider;
             _accountRepository = accountRepository;
             _categoryBaseRepository = categoryBaseRepository;
             _payeeRepository = payeeRepository;
@@ -35,10 +40,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             {
                 Id = domainTransaction.Id,
                 AccountId = domainTransaction.Account.Id,
-                FlagId = domainTransaction.Flag == null || domainTransaction.Flag == Domain.Flag.Default ? (long?)null : domainTransaction.Flag.Id,
+                FlagId = domainTransaction.Flag is null || domainTransaction.Flag == Domain.Flag.Default 
+                    ? (long?) null 
+                    : domainTransaction.Flag.Id,
                 CheckNumber = domainTransaction.CheckNumber,
                 CategoryId = domainTransaction.Category?.Id,
-                PayeeId = domainTransaction.Payee.Id,
+                PayeeId = domainTransaction.Payee?.Id,
                 Date = domainTransaction.Date,
                 Memo = domainTransaction.Memo,
                 Sum = domainTransaction.Sum,
@@ -46,21 +53,27 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Type = nameof(TransType.Transaction)
             };
 
-        protected override Converter<(Trans, DbConnection), Domain.ITransaction> ConvertToDomain => tuple =>
+        protected override async Task<Domain.ITransaction> ConvertToDomainAsync(Trans persistenceModel)
         {
-            (Trans persistenceTransaction, DbConnection connection) = tuple;
             return new Domain.Transaction(
                 this,
-                persistenceTransaction.Date,
-                persistenceTransaction.Id,
-                persistenceTransaction.FlagId == null ? null :_flagRepository.Find((long)persistenceTransaction.FlagId, connection),
-                persistenceTransaction.CheckNumber,
-                _accountRepository.Find(persistenceTransaction.AccountId, connection),
-                _payeeRepository.Find(persistenceTransaction.PayeeId, connection),
-                persistenceTransaction.CategoryId == null ? null : _categoryBaseRepository.Find((long)persistenceTransaction.CategoryId, connection),
-                persistenceTransaction.Memo,
-                persistenceTransaction.Sum,
-                persistenceTransaction.Cleared == 1L);
-        };
+                _rxSchedulerProvider,
+                persistenceModel.Date,
+                persistenceModel.Id,
+                persistenceModel.FlagId is null
+                    ? null
+                    : await _flagRepository.FindAsync((long) persistenceModel.FlagId).ConfigureAwait(false),
+                persistenceModel.CheckNumber,
+                await _accountRepository.FindAsync(persistenceModel.AccountId).ConfigureAwait(false),
+                persistenceModel.PayeeId is null
+                    ? null
+                    : await _payeeRepository.FindAsync((long) persistenceModel.PayeeId).ConfigureAwait(false),
+                persistenceModel.CategoryId is null
+                    ? null
+                    : await _categoryBaseRepository.FindAsync((long) persistenceModel.CategoryId).ConfigureAwait(false),
+                persistenceModel.Memo,
+                persistenceModel.Sum,
+                persistenceModel.Cleared == 1L);
+        }
     }
 }

@@ -1,112 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
-using Dapper;
-using Persistence = BFF.DB.PersistenceModels;
 
 namespace BFF.DB.Dapper
 {
     public interface IBudgetMonthRepository : IDisposable
     {
-        IList<IBudgetMonth> Find(DateTime fromMonth, DateTime toMonth, DbConnection connection);
+        Task<IList<IBudgetMonth>> FindAsync(int year);
     }
 
     public class BudgetMonthRepository : IBudgetMonthRepository
     {
-        private static readonly string NotBudgetedOrOverbudgetedQuery =
-            $@"SELECT Sum(Sum) as Sum FROM
-    (
-        SELECT Sum({nameof(Persistence.Account.StartingBalance)}) AS Sum FROM {nameof(Persistence.Account)}s
-        WHERE strftime('%Y', {nameof(Persistence.Account.StartingDate)}) < @Year OR strftime('%Y', {nameof(Persistence.Account.StartingDate)}) == @Year AND strftime('%m', {nameof(Persistence.Account.StartingDate)}) <= @Month
-        UNION ALL
-        SELECT {nameof(Persistence.Trans.Sum)}
-        FROM {nameof(Persistence.Trans)}s
-        INNER JOIN {nameof(Persistence.Category)}s ON {nameof(Persistence.Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Persistence.Trans.CategoryId)} == {nameof(Persistence.Category)}s.{nameof(Persistence.Category.Id)} AND {nameof(Persistence.Category)}s.{nameof(Persistence.Category.IsIncomeRelevant)} == 0
-        WHERE strftime('%Y', {nameof(Persistence.Trans.Date)}) < @Year
-            OR strftime('%m', {nameof(Persistence.Trans.Date)}) <= @Month
-            AND strftime('%Y', {nameof(Persistence.Trans.Date)}) = @Year
-        UNION ALL
-        SELECT {nameof(Persistence.SubTransaction)}s.{nameof(Persistence.SubTransaction.Sum)}
-        FROM {nameof(Persistence.SubTransaction)}s
-        INNER JOIN {nameof(Persistence.Category)}s ON {nameof(Persistence.SubTransaction)}s.{nameof(Persistence.SubTransaction.CategoryId)} == {nameof(Persistence.Category)}s.{nameof(Persistence.Category.Id)} AND {nameof(Persistence.Category)}s.{nameof(Persistence.Category.IsIncomeRelevant)} == 0
-        INNER JOIN {nameof(Persistence.Trans)}s ON {nameof(Persistence.SubTransaction)}s.{nameof(Persistence.SubTransaction.ParentId)} = {nameof(Persistence.Trans)}s.{nameof(Persistence.Trans.Id)}
-        WHERE strftime('%Y', {nameof(Persistence.Trans.Date)}) < @Year
-            OR strftime('%m', {nameof(Persistence.Trans.Date)}) <= @Month
-            AND strftime('%Y', {nameof(Persistence.Trans.Date)}) = @Year
-    );";
-
         private readonly IBudgetEntryRepository _budgetEntryRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IIncomeCategoryRepository _incomeCategoryRepository;
         private readonly IAccountRepository _accountRepository;
-        private readonly IProvideConnection _provideConnection;
+        private readonly IBudgetOrm _budgetOrm;
 
         public BudgetMonthRepository(
             IBudgetEntryRepository budgetEntryRepository, 
             ICategoryRepository categoryRepository,
             IIncomeCategoryRepository incomeCategoryRepository,
             IAccountRepository accountRepository,
-            IProvideConnection provideConnection)
+            IBudgetOrm budgetOrm)
         {
             _budgetEntryRepository = budgetEntryRepository;
             _categoryRepository = categoryRepository;
             _incomeCategoryRepository = incomeCategoryRepository;
             _accountRepository = accountRepository;
-            _provideConnection = provideConnection;
+            _budgetOrm = budgetOrm;
         }
 
-        public IList<IBudgetMonth> Find(DateTime fromMonth, DateTime toMonth, DbConnection connection)
+        public async Task<IList<IBudgetMonth>> FindAsync(int year)
         {
-            DateTime actualFromMonth = new DateTime(
-                fromMonth.Month == 1 ? fromMonth.Year - 1 : fromMonth.Year,
-                fromMonth.Month == 1 ? 12 : fromMonth.Month - 1,
-                1);
-            return ConnectionHelper.QueryOnExistingOrNewConnection(c =>
+            var _ = await _budgetOrm.FindAsync(
+                year,
+                _categoryRepository.All.Select(c => c.Id).ToArray(),
+                _incomeCategoryRepository.All.Select(ic => (ic.Id, ic.MonthOffset)).ToArray()).ConfigureAwait(false);
+
+            long currentNotBudgetedOrOverbudgeted = _.InitialNotBudgetedOrOverbudgeted;
+            long currentOverspentInPreviousMonth = _.InitialOverspentInPreviousMonth;
+
+            var budgetMonths = new List<IBudgetMonth>();
+
+            foreach (var monthWithBudgetEntries in _.BudgetEntriesPerMonth.OrderBy(kvp => kvp.Key))
             {
-                var groupings = _categoryRepository
-                    .All
-                    .Select(category => _budgetEntryRepository.GetBudgetEntries(actualFromMonth, toMonth, category, c))
-                    .SelectMany(l => l)
-                    .GroupBy(be => be.Month)
-                    .OrderBy(grouping => grouping.Key).ToArray();
-
-                var budgetMonths = new List<IBudgetMonth>();
-
-                long firstBalance = groupings[0].Where(be => be.Balance > 0).Sum(be => be.Balance);
-                long currentNotBudgetedOrOverbudgeted =
-                    c.QuerySingleOrDefault<long?>(
-                        NotBudgetedOrOverbudgetedQuery,
-                        new
-                        {
-                            Year = $"{actualFromMonth.Year:0000}",
-                            Month = $"{actualFromMonth.Month:00}"
-                        }) ?? 0L;
-                currentNotBudgetedOrOverbudgeted += _incomeCategoryRepository.GetIncomeUntilMonth(actualFromMonth, c);
-
-                currentNotBudgetedOrOverbudgeted -= firstBalance;
-
-                currentNotBudgetedOrOverbudgeted -= groupings[0].Where(be => be.Balance < 0).Sum(be => be.Balance);
-
-                for (int i = 1; i < groupings.Length; i++)
-                {
-                    var newBudgetMonth =
-                        new BudgetMonth(
-                            month: groupings[i].Key,
-                            budgetEntries: groupings[i],
-                            overspentInPreviousMonth: groupings[i - 1].Where(be => be.Balance < 0).Sum(be => be.Balance),
-                            notBudgetedInPreviousMonth: currentNotBudgetedOrOverbudgeted,
-                            incomeForThisMonth: _incomeCategoryRepository.GetMonthsIncome(groupings[i].Key, c) 
-                                                + _accountRepository.All.Where(a => a.StartingDate.Year == groupings[i].Key.Year && a.StartingDate.Month == groupings[i].Key.Month).Select(a => a.StartingBalance).Sum());
-                    budgetMonths.Add(newBudgetMonth);
-                    currentNotBudgetedOrOverbudgeted = newBudgetMonth.AvailableToBudget;
-                }
-
-                return budgetMonths;
-            }, _provideConnection, connection).ToList();
+                var newBudgetMonth =
+                    new BudgetMonth(
+                        month: monthWithBudgetEntries.Key,
+                        budgetEntries: 
+                            await monthWithBudgetEntries
+                                .Value
+                                .Select(async g => await _budgetEntryRepository.Convert(g.Entry, g.Outflow, g.Balance).ConfigureAwait(false))
+                                .ToAwaitableEnumerable()
+                                .ConfigureAwait(false),
+                        overspentInPreviousMonth: currentOverspentInPreviousMonth,
+                        notBudgetedInPreviousMonth: currentNotBudgetedOrOverbudgeted,
+                        incomeForThisMonth: _.IncomesPerMonth[monthWithBudgetEntries.Key]
+                                            + _accountRepository
+                                                .All
+                                                .Where(a => a.StartingDate.Year == monthWithBudgetEntries.Key.Year && a.StartingDate.Month == monthWithBudgetEntries.Key.Month)
+                                                .Select(a => a.StartingBalance).Sum(),
+                        danglingTransferForThisMonth: _.DanglingTransfersPerMonth[monthWithBudgetEntries.Key],
+                        unassignedTransactionSumForThisMonth: _.UnassignedTransactionsPerMonth[monthWithBudgetEntries.Key]);
+                budgetMonths.Add(newBudgetMonth);
+                currentNotBudgetedOrOverbudgeted = newBudgetMonth.AvailableToBudget;
+                currentOverspentInPreviousMonth = monthWithBudgetEntries
+                    .Value
+                    .Where(be => be.Balance < 0)
+                    .Sum(be => be.Balance);
+            }
+            return budgetMonths;
         }
 
         public void Dispose()

@@ -77,45 +77,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Helper\DoesNotRaisePropertyChangedException.cs" />
+    <Compile Include="Helper\Extensions\DateTimeExtensionsTests.cs" />
     <Compile Include="Helper\NativeAssert.cs" />
-    <Compile Include="Mocks\DB\CommonPropertyProviderMoq.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\AccountTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\CategoryTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\DbSettingTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\IncomeTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\ParentIncomeTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\ParentTransactionTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\PayeeTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\Structure\CommonPropertyTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\Structure\DataModelTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\Structure\ParentTransIncTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\Structure\SubTransIncTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\Structure\TitBaseTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\Structure\TitLikeTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\Structure\TransIncTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\Structure\TransIncBaseTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\SubIncomeTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\SubTransactionTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\SummaryAccountTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\TransactionTests.cs" />
-    <Compile Include="Tests\MVVM\Models\Native\TransferTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\ParentIncomeViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\CommonPropertyViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\DataModelViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\ParentTransIncViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\SubTransIncViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TransIncViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TransIncBaseViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TitBaseViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\Structure\TitLikeViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\IncomeViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\ParentTransactionViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\SubIncomeViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\SubTransactionViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\PayeeViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\TransferViewModelTests.cs" />
-    <Compile Include="Tests\MVVM\ViewModels\ForModels\TransactionViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -127,7 +91,9 @@
       <Name>BFF</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DB\Dapper\ModelRepositories\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

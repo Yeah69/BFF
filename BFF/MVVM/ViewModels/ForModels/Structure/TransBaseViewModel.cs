@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Reactive.Linq;
-using BFF.DB;
+using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using MuVaViMo;
-using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
@@ -13,80 +13,135 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     {
         IObservableReadOnlyList<IFlagViewModel> AllFlags { get; }
 
-        IReactiveProperty<IFlagViewModel> Flag { get; }
+        IFlagViewModel Flag { get; set; }
 
-        ReactiveCommand RemoveFlag { get; }
+        IRxRelayCommand RemoveFlag { get; }
 
-        IReactiveProperty<string> CheckNumber { get; }
+        string CheckNumber { get; set; }
 
         /// <summary>
-        /// This timestamp marks the time point, when the TIT happened.
+        /// This timestamp marks the time point, when the Trans happened.
         /// </summary>
-        IReactiveProperty<DateTime> Date { get; }
+        DateTime Date { get; set; }
 
         /// <summary>
         /// Like the Memo the Cleared flag is an aid for the user.
-        /// It can be used to mark TITs, which the user thinks is processed enough (True) or needs to be changed later (False).
-        /// This maybe needed, if the user does not remember everything clearly and wants to finish the Tit later.
+        /// It can be used to mark Trans', which the user thinks is processed enough (True) or needs to be changed later (False).
+        /// This maybe needed, if the user does not remember everything clearly and wants to finish the Trans later.
         /// </summary>
-        IReactiveProperty<bool> Cleared { get; }
+        bool Cleared { get; set; }
+        INewFlagViewModel NewFlagViewModel { get; }
     }
 
     /// <summary>
-    /// Base class for all ViewModels of Models of TITs excluding the SubElements.
-    /// From this point in the documentation of the ViewModel hierarchy TIT is referring to all TIT-like Elements except SubElements.
+    /// Base class for all ViewModels of Models of Trans' excluding the SubTransactions.
+    /// From this point in the documentation of the ViewModel hierarchy Trans is referring to all Trans-like Elements except SubTransactions.
     /// </summary>
-    public abstract class TransBaseViewModel : TransLikeViewModel, ITransBaseViewModel
+    public abstract class TransBaseViewModel : TransLikeViewModel, ITransBaseViewModel, IHaveFlagViewModel
     {
+        private readonly ITransBase _transBase;
         private readonly IFlagViewModelService _flagViewModelService;
+        private IFlagViewModel _flag;
         public IObservableReadOnlyList<IFlagViewModel> AllFlags => _flagViewModelService.All;
 
-        public IReactiveProperty<IFlagViewModel> Flag { get; }
-        public ReactiveCommand RemoveFlag { get; }
+        public IFlagViewModel Flag
+        {
+            get => _flag;
+            set => _transBase.Flag = _flagViewModelService.GetModel(value);
+        }
 
-        public IReactiveProperty<string> CheckNumber { get; }
+        public IRxRelayCommand RemoveFlag { get; }
+
+        public string CheckNumber
+        {
+            get => _transBase.CheckNumber;
+            set => _transBase.CheckNumber = value;
+        }
 
         /// <summary>
-        /// This timestamp marks the time point, when the TIT happened.
+        /// This timestamp marks the time point, when the Trans happened.
         /// </summary>
-        public IReactiveProperty<DateTime> Date { get; }
+        public DateTime Date
+        {
+            get => _transBase.Date;
+            set => _transBase.Date = value;
+        }
 
         /// <summary>
         /// Like the Memo the Cleared flag is an aid for the user.
-        /// It can be used to mark TITs, which the user thinks is processed enough (True) or needs to be changed later (False).
-        /// This maybe needed, if the user does not remember everything clearly and wants to finish the Tit later.
+        /// It can be used to mark Trans-elements, which the user thinks is processed enough (True) or needs to be changed later (False).
+        /// This maybe needed, if the user does not remember everything clearly and wants to finish the Trans-element later.
         /// </summary>
-        public virtual IReactiveProperty<bool> Cleared { get; }
+        public virtual bool Cleared
+        {
+            get => _transBase.Cleared;
+            set => _transBase.Cleared = value;
+        }
 
-        protected abstract void NotifyRelevantAccountsToRefreshTits();
+        public INewFlagViewModel NewFlagViewModel { get; }
+
+        protected abstract void NotifyRelevantAccountsToRefreshTrans();
 
         protected abstract void NotifyRelevantAccountsToRefreshBalance();
 
-        /// <summary>
-        /// Initializes a TransBaseViewModel.
-        /// </summary>
-        /// <param name="orm">Used for the database accesses.</param>
-        /// <param name="transBase">The model.</param>
-        protected TransBaseViewModel(ITransBase transBase, IFlagViewModelService flagViewModelService) : base(transBase)
+        protected TransBaseViewModel(
+            ITransBase transBase,
+            INewFlagViewModel newFlagViewModel,
+            ILastSetDate lastSetDate,
+            IRxSchedulerProvider rxSchedulerProvider,
+            IFlagViewModelService flagViewModelService,
+            IAccountBaseViewModel owner)
+            : base(transBase, rxSchedulerProvider, owner)
         {
+            _transBase = transBase;
             _flagViewModelService = flagViewModelService;
-            Flag = transBase.ToReactivePropertyAsSynchronized(
-                tb => tb.Flag, 
-                flagViewModelService.GetViewModel,
-                flagViewModelService.GetModel,
-                ReactivePropertyMode.DistinctUntilChanged);
 
-            RemoveFlag = new ReactiveCommand().AddTo(CompositeDisposable);
+            NewFlagViewModel = newFlagViewModel;
 
-            RemoveFlag.Subscribe(() => Flag.Value = null);
+            _flag = _flagViewModelService.GetViewModel(transBase.Flag);
+            transBase
+                .ObservePropertyChanges(nameof(transBase.Flag))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    _flag = _flagViewModelService.GetViewModel(transBase.Flag);
+                    OnPropertyChanged(nameof(Flag));
+                })
+                .AddTo(CompositeDisposable);
 
-            CheckNumber = transBase.ToReactivePropertyAsSynchronized(tb => tb.CheckNumber, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            RemoveFlag = new RxRelayCommand(() => Flag = null).AddTo(CompositeDisposable);
 
-            Date = transBase.ToReactivePropertyAsSynchronized(tb => tb.Date, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            transBase
+                .ObservePropertyChanges(nameof(transBase.CheckNumber))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(CheckNumber)))
+                .AddTo(CompositeDisposable);
 
-            Date.Subscribe(_ => NotifyRelevantAccountsToRefreshTits()).AddTo(CompositeDisposable);
+            transBase
+                .ObservePropertyChanges(nameof(transBase.Date))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    lastSetDate.Date = transBase.Date;
+                    OnPropertyChanged(nameof(Date));
+                })
+                .AddTo(CompositeDisposable);
 
-            Cleared = transBase.ToReactivePropertyAsSynchronized(tb => tb.Cleared, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            transBase
+                .ObservePropertyChanges(nameof(transBase.Date))
+                .Where(_ => transBase.Id != -1)
+                .Subscribe(_ => NotifyRelevantAccountsToRefreshTrans())
+                .AddTo(CompositeDisposable);
+            
+            transBase
+                .ObservePropertyChanges(nameof(transBase.Cleared))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    OnPropertyChanged(nameof(Cleared));
+                    NotifyRelevantAccountsToRefreshBalance();
+                })
+                .AddTo(CompositeDisposable);
         }
     }
 }

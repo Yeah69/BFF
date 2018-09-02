@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Threading.Tasks;
 using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
     public interface IBudgetEntry : IDataModel
     {
-        ICategory Category { get; set; }
+        ICategory Category { get; }
         DateTime Month { get; }
         long Budget { get; set; }
         long Outflow { get; }
@@ -15,23 +17,19 @@ namespace BFF.MVVM.Models.Native
     
     public class BudgetEntry : DataModel<IBudgetEntry>, IBudgetEntry
     {
-        /// <summary>
-        /// Initializes the object
-        /// </summary>
-        /// <param name="month">The month of the budget entry</param>
-        /// <param name="category">Categorizes this</param>
-        /// <param name="budget">The amount of money, which was budgeted in the set month</param>
         public BudgetEntry(
-            IWriteOnlyRepository<IBudgetEntry> repository, 
-            long id, DateTime month,
+            IWriteOnlyRepository<IBudgetEntry> repository,
+            IRxSchedulerProvider rxSchedulerProvider,
+            long id, 
+            DateTime month,
             ICategory category = null,
             long budget = 0L,
             long outflow = 0L,
             long balance = 0L)
-            : base(repository, id)
+            : base(repository, rxSchedulerProvider, id)
         {
             Month = month;
-            _category = category;
+            Category = category;
             _budget = budget;
             _outflow = outflow;
             _balance = balance;
@@ -39,20 +37,7 @@ namespace BFF.MVVM.Models.Native
 
         public DateTime Month { get; }
 
-        private ICategory _category;
-
-        public ICategory Category
-        {
-            get => _category;
-            set
-            {
-                if(_category == value) return;
-
-                _category = value;
-                Update();
-                OnPropertyChanged();
-            }
-        }
+        public ICategory Category { get; }
 
         private long _budget;
 
@@ -66,19 +51,20 @@ namespace BFF.MVVM.Models.Native
                 if (_budget == 0 && Id == -1)
                 {
                     _budget = value;
-                    Insert();
+                    Task.Run(InsertAsync)
+                        .ContinueWith(_ => OnPropertyChanged());
                 }
                 else if (_budget != 0 && value == 0 && Id > -1)
                 {
                     _budget = value;
-                    Delete();
+                    Task.Run(DeleteAsync)
+                        .ContinueWith(_ => OnPropertyChanged());
                 }
                 else
                 {
                     _budget = value;
-                    Update();
+                    UpdateAndNotify();
                 }
-                OnPropertyChanged();
             }
         }
 
@@ -92,8 +78,7 @@ namespace BFF.MVVM.Models.Native
                 if (_outflow == value) return;
 
                 _outflow = value;
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
             }
         }
 
@@ -107,10 +92,10 @@ namespace BFF.MVVM.Models.Native
                 if (_balance == value) return;
 
                 _balance = value;
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
             }
         }
+
         public override string ToString()
         {
             return $"{nameof(Month)}: {Month}, {nameof(Category)}: {Category}, {nameof(Budget)}: {Budget}, {nameof(Outflow)}: {Outflow}, {nameof(Balance)}: {Balance}";

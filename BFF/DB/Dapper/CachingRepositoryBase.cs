@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Reactive.Disposables;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
-using Dapper.Contrib.Extensions;
+using BFF.Helper.Extensions;
 using NLog;
 using Domain = BFF.MVVM.Models.Native.Structure;
 
@@ -20,56 +21,57 @@ namespace BFF.DB.Dapper
         
         private readonly Dictionary<long, TDomain> _cache = new Dictionary<long, TDomain>();
 
-        protected CachingRepositoryBase(IProvideConnection provideConnection) : base(provideConnection) { }
-
-        public override void Add(TDomain dataModel, DbConnection connection = null)
+        protected CachingRepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(
+            provideConnection, crudOrm)
         {
-            base.Add(dataModel, connection);
+            Disposable.Create(ClearCache).AddTo(CompositeDisposable);
+        }
+
+        public override async Task AddAsync(TDomain dataModel)
+        {
+            await base.AddAsync(dataModel).ConfigureAwait(false);
             if(!_cache.ContainsKey(dataModel.Id))
                 _cache.Add(dataModel.Id, dataModel);
         }
 
-        public override TDomain Find(long id, DbConnection connection = null)
+        public override async Task<TDomain> FindAsync(long id)
         {
             if(!_cache.ContainsKey(id))
-            {
-                _cache.Add(id, base.Find(id, connection));
-            }
+                _cache.Add(id, await base.FindAsync(id).ConfigureAwait(false));
             return _cache[id];
         }
 
-        public override void Delete(TDomain dataModel, DbConnection connection = null)
+        public override async Task DeleteAsync(TDomain dataModel)
         {
-            base.Delete(dataModel, connection);
-            if(!_cache.ContainsKey(dataModel.Id))
-                _cache.Remove(dataModel.Id);
+            await base.DeleteAsync(dataModel).ConfigureAwait(false);
+            RemoveFromCache(dataModel);
         }
 
         
 
-        public override IEnumerable<TDomain> FindAll(DbConnection connection = null)
+        public override async Task<IEnumerable<TDomain>> FindAllAsync()
         {
-            IEnumerable<TPersistence> elements = ConnectionHelper.QueryOnExistingOrNewConnection(
-                FindAllInner, 
-                ProvideConnection, 
-                connection);
             Logger.Debug("Starting to convert all POCOs of type {0}", typeof(TPersistence).Name);
-            foreach(TPersistence element in elements)
+            ICollection<TDomain> ret = new List<TDomain>();
+            foreach(TPersistence element in await FindAllInnerAsync().ConfigureAwait(false))
             {
                 if(!_cache.ContainsKey(element.Id))
-                    _cache.Add(element.Id, ConvertToDomain( (element, connection) ));
-                yield return _cache[element.Id];
+                    _cache.Add(element.Id, await ConvertToDomainAsync(element).ConfigureAwait(false));
+                _cache[element.Id].AddTo(ret);
             }
             Logger.Debug("Finished converting all POCOs of type {0}", typeof(TPersistence).Name);
+            return ret;
         }
 
-        protected override void Dispose(bool disposing)
+        protected void RemoveFromCache(TDomain dataModel)
         {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                _cache.Clear();
-            }
+            if (_cache.ContainsKey(dataModel.Id))
+                _cache.Remove(dataModel.Id);
+        }
+
+        protected void ClearCache()
+        {
+            _cache.Clear();
         }
     }
 }

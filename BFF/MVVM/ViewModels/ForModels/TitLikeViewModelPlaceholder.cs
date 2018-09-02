@@ -1,51 +1,68 @@
-﻿using BFF.MVVM.ViewModels.ForModels.Structure;
+﻿using System;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
+using BFF.Helper;
+using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;
 
 namespace BFF.MVVM.ViewModels.ForModels
 {
-    /// <summary>
-    /// A TIT ViewModel Placeholder used for async lazy loaded TIT's.
-    /// </summary>
-    sealed class TransLikeViewModelPlaceholder : ITransLikeViewModel
+    public interface ITransLikeViewModelPlaceholder : ITransLikeViewModel
     {
-        /// <summary>
-        /// Needed to mimic a TIT.
-        /// </summary>
-        public IReactiveProperty<string> Memo { get;}
+    }
 
-        /// <summary>
-        /// Needed to mimic a TIT.
-        /// </summary>
+    /// <summary>
+    /// A Trans ViewModel Placeholder used for async lazy loaded Trans'.
+    /// </summary>
+    public sealed class TransLikeViewModelPlaceholder : ViewModelBase, ITransLikeViewModelPlaceholder
+    {
+        public string Memo { get; set; }
+        
         public IReactiveProperty<long> Sum { get; }
 
-        public ReactiveCommand DeleteCommand { get; }
+        public Sign SumSign => Sign.Plus;
+        public ISumEditViewModel SumEdit { get; }
+        public long SumAbsolute => 0L;
 
-        /// <summary>
-        /// Needed to mimic a TIT.
-        /// </summary>
-        public IReactiveProperty<bool> Cleared { get; }
+        public IRxRelayCommand DeleteCommand { get; }
+        public bool IsInserted { get; }
+        public IRxRelayCommand ToggleSign { get; }
+        public IObservable<Unit> RemoveRequests => Observable.Never<Unit>();
+        public IRxRelayCommand RemoveCommand { get; }
+        public IAccountBaseViewModel Owner => null;
+
+        public bool Cleared { get; set; }
 
         /// <summary>
         /// Initializes the TransBase-parts of the object
         /// </summary>
-        public TransLikeViewModelPlaceholder()
+        public TransLikeViewModelPlaceholder(
+            Func<IReactiveProperty<long>, 
+            ISumEditViewModel> sumEditFactory)
         {
-            Memo = new ReactiveProperty<string>("Content is loading…");
-            Sum = new ReactiveProperty<long>(0L);
-            Cleared = new ReactiveProperty<bool>(false);
-            DeleteCommand = new ReactiveCommand();
+            Memo = "Content is loading…"; // ToDo Localize
+            Sum = new ReactiveProperty<long>(0L, ReactivePropertyMode.DistinctUntilChanged);
+            SumEdit = sumEditFactory(new ReactiveProperty<long>());
+            Cleared = false;
+            ToggleSign = new RxRelayCommand(() => { });
+            DeleteCommand = new RxRelayCommand(() => { });
+            RemoveCommand = new RxRelayCommand(() => { });
+            IsInserted = false;
         }
 
         #region Overrides of TransLikeViewModel
 
-        public void Insert()
+        public Task InsertAsync()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public void Delete()
+        public bool IsInsertable() => false;
+
+        public Task DeleteAsync()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         #endregion

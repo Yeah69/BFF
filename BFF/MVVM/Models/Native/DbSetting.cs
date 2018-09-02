@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
-using Dapper.Contrib.Extensions;
 
 namespace BFF.MVVM.Models.Native
 {
@@ -22,15 +22,13 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_currencyCulture.Equals(CultureInfo.GetCultureInfo(value))) return;
                 _currencyCulture = CultureInfo.GetCultureInfo(value);
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
                 OnPropertyChanged(nameof(CurrencyCulture));
             }
         }
 
         private CultureInfo _currencyCulture;
-
-        [Write(false)]
+        
         public CultureInfo CurrencyCulture
         {
             get => _currencyCulture;
@@ -38,8 +36,7 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_currencyCulture.Equals(value)) return;
                 _currencyCulture = value;
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
                 OnPropertyChanged(nameof(CurrencyCultureName));
             }
         }
@@ -51,15 +48,13 @@ namespace BFF.MVVM.Models.Native
             {
                 if (_dateCulture.Equals(CultureInfo.GetCultureInfo(value))) return;
                 _dateCulture = CultureInfo.GetCultureInfo(value);
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
                 OnPropertyChanged(nameof(DateCulture));
             }
         }
 
         private CultureInfo _dateCulture;
-
-        [Write(false)]
+        
         public CultureInfo DateCulture
         {
             get => _dateCulture;
@@ -67,13 +62,15 @@ namespace BFF.MVVM.Models.Native
             {
                 if (_dateCulture.Equals(value)) return;
                 _dateCulture = value;
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
                 OnPropertyChanged(nameof(DateCultureName));
             }
         }
 
-        public DbSetting(IRepository<IDbSetting> repository, long id) : base(repository, id)
+        public DbSetting(
+            IRepository<IDbSetting> repository, 
+            IRxSchedulerProvider rxSchedulerProvider, 
+            long id) : base(repository, rxSchedulerProvider, id)
         {
             _currencyCulture = CultureInfo.GetCultureInfo("de-DE");
             _dateCulture = CultureInfo.GetCultureInfo("de-DE");

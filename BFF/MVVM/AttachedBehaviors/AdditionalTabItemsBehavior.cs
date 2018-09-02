@@ -65,7 +65,8 @@ namespace BFF.MVVM.AttachedBehaviors
                                 {
                                     if(objectToTabItem.ContainsKey(obj))
                                     {
-                                        if(tabControl.Items.Contains(obj)) tabControl.Items.Remove(obj);
+                                        var tabItem = objectToTabItem[obj];
+                                        if (tabControl.Items.Contains(tabItem)) tabControl.Items.Remove(tabItem);
                                         objectToTabItem.Remove(obj);
                                     }
                                 }
@@ -189,16 +190,6 @@ namespace BFF.MVVM.AttachedBehaviors
         {
             get => (string) GetValue(IsSelectedMemberPathProperty);
             set => SetValue(IsSelectedMemberPathProperty, value);
-        }
-
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-        }
-
-        protected override void OnDetaching()
-        {
-            base.OnDetaching();
         }
     }
 }

@@ -1,76 +1,57 @@
-﻿using BFF.DB;
-using Dapper.Contrib.Extensions;
+﻿using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using BFF.DB;
+using BFF.Helper;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
     public interface IDataModel : IObservableObject
     {
-        /// <summary>
-        /// Identification number for the database
-        /// </summary>
         long Id { get; set; }
-
-        /// <summary>
-        /// The model inserts itself to a database provided by given ORM.
-        /// </summary>
-        void Insert();
-
-        /// <summary>
-        /// The model updates itself in a database provided by given ORM.
-        /// </summary>
-        void Update();
-
-        /// <summary>
-        /// The model removes itself from a database provided by given ORM.
-        /// </summary>
-        void Delete();
+        
+        Task InsertAsync();
+        
+        Task UpdateAsync();
+        
+        Task DeleteAsync();
     }
 
-    /// <summary>
-    /// Base class for all model classes, which get OR-mapped
-    /// </summary>
     public abstract class DataModel<T> : ObservableObject, IDataModel where T : class, IDataModel
     {
         private readonly IWriteOnlyRepository<T> _repository;
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
 
-        /// <summary>
-        /// Identification number for the database
-        /// </summary>
-        [Key]
         public long Id { get; set; } = -1L;
-
-        /// <summary>
-        /// Initializes the object
-        /// </summary>
-        /// <param name="id">Identification number for the database</param>
-        protected DataModel(IWriteOnlyRepository<T> repository, long id)
+        
+        protected DataModel(IWriteOnlyRepository<T> repository, IRxSchedulerProvider rxSchedulerProvider, long id)
         {
             _repository = repository;
+            _rxSchedulerProvider = rxSchedulerProvider;
             if (Id == -1L || id > 0L) Id = id;
         }
-
-        /// <summary>
-        /// The model inserts itself to a database provided by given ORM.
-        /// </summary>
-        public virtual void Insert()
+        
+        public virtual async Task InsertAsync()
         {
-            _repository.Add(this as T);
+            await _repository.AddAsync(this as T).ConfigureAwait(false);
+        }
+        
+        public virtual async Task UpdateAsync()
+        {
+            await _repository.UpdateAsync(this as T).ConfigureAwait(false);
+        }
+        
+        public virtual async Task DeleteAsync()
+        {
+            await _repository.DeleteAsync(this as T).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// The model updates itself in a database provided by given ORM.
-        /// </summary>
-        public virtual void Update()
-        {
-            _repository.Update(this as T);
-        }
-
-        /// <summary>
-        /// The model removes itself from a database provided by given ORM.
-        /// </summary>
-        public virtual void Delete()
-        {
-            _repository.Delete(this as T);
-        }
+        protected Task UpdateAndNotify([CallerMemberName] string propertyName = "") => 
+            Task.Run(UpdateAsync)
+                .ToObservable()
+                .ObserveOn(_rxSchedulerProvider.UI)
+                .Do(_ => OnPropertyChanged(propertyName))
+                .ToTask();
     }
 }

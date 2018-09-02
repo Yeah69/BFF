@@ -1,6 +1,7 @@
 using System;
-using System.Data.Common;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 using Domain = BFF.MVVM.Models.Native;
 
@@ -12,6 +13,7 @@ namespace BFF.DB.Dapper.ModelRepositories
 
     public sealed class ParentTransactionRepository : RepositoryBase<Domain.IParentTransaction, Trans>, IParentTransactionRepository
     {
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IAccountRepository _accountRepository;
         private readonly IPayeeRepository _payeeRepository;
         private readonly ISubTransactionRepository _subTransactionRepository;
@@ -19,11 +21,14 @@ namespace BFF.DB.Dapper.ModelRepositories
 
         public ParentTransactionRepository(
             IProvideConnection provideConnection,
+            IRxSchedulerProvider rxSchedulerProvider,
+            ICrudOrm crudOrm,
             IAccountRepository accountRepository,
             IPayeeRepository payeeRepository,
             ISubTransactionRepository subTransactionRepository,
-            IFlagRepository flagRepository) : base(provideConnection)
+            IFlagRepository flagRepository) : base(provideConnection, crudOrm)
         {
+            _rxSchedulerProvider = rxSchedulerProvider;
             _accountRepository = accountRepository;
             _payeeRepository = payeeRepository;
             _subTransactionRepository = subTransactionRepository;
@@ -36,9 +41,11 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Id = domainParentTransaction.Id,
                 AccountId = domainParentTransaction.Account.Id,
                 CategoryId = -69,
-                FlagId = domainParentTransaction.Flag == null || domainParentTransaction.Flag == Domain.Flag.Default ? (long?) null : domainParentTransaction.Flag.Id,
+                FlagId = domainParentTransaction.Flag is null || domainParentTransaction.Flag == Domain.Flag.Default 
+                    ? (long?) null 
+                    : domainParentTransaction.Flag.Id,
                 CheckNumber = domainParentTransaction.CheckNumber,
-                PayeeId = domainParentTransaction.Payee.Id,
+                PayeeId = domainParentTransaction.Payee?.Id,
                 Date = domainParentTransaction.Date,
                 Memo = domainParentTransaction.Memo,
                 Cleared = domainParentTransaction.Cleared ? 1L : 0L,
@@ -46,21 +53,24 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Type = nameof(TransType.ParentTransaction)
             };
 
-        protected override Converter<(Trans, DbConnection), Domain.IParentTransaction> ConvertToDomain => tuple =>
+        protected override async Task<Domain.IParentTransaction> ConvertToDomainAsync(Trans persistenceModel)
         {
-            (Trans persistenceParentTransaction, DbConnection connection) = tuple;
-
             var parentTransaction = new Domain.ParentTransaction(
                 this,
-                _subTransactionRepository.GetChildrenOf(persistenceParentTransaction.Id, connection),
-                persistenceParentTransaction.Date,
-                persistenceParentTransaction.Id,
-                persistenceParentTransaction.FlagId == null ? null : _flagRepository.Find((long)persistenceParentTransaction.FlagId, connection),
-                persistenceParentTransaction.CheckNumber,
-                _accountRepository.Find(persistenceParentTransaction.AccountId, connection),
-                _payeeRepository.Find(persistenceParentTransaction.PayeeId, connection),
-                persistenceParentTransaction.Memo,
-                persistenceParentTransaction.Cleared == 1L);
+                _rxSchedulerProvider,
+                await _subTransactionRepository.GetChildrenOfAsync(persistenceModel.Id).ConfigureAwait(false),
+                persistenceModel.Date,
+                persistenceModel.Id,
+                persistenceModel.FlagId is null
+                    ? null
+                    : await _flagRepository.FindAsync((long)persistenceModel.FlagId).ConfigureAwait(false),
+                persistenceModel.CheckNumber,
+                await _accountRepository.FindAsync(persistenceModel.AccountId).ConfigureAwait(false),
+                persistenceModel.PayeeId is null
+                    ? null
+                    : await _payeeRepository.FindAsync((long)persistenceModel.PayeeId).ConfigureAwait(false),
+                persistenceModel.Memo,
+                persistenceModel.Cleared == 1L);
 
             foreach (var subTransaction in parentTransaction.SubTransactions)
             {
@@ -68,6 +78,6 @@ namespace BFF.DB.Dapper.ModelRepositories
             }
 
             return parentTransaction;
-        };
+        }
     }
 }

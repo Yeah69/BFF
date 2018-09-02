@@ -1,37 +1,38 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreatePayeeTable : CreateTableBase
-    {
-        public CreatePayeeTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Payee)}s](
-            {nameof(Payee.Id)} INTEGER PRIMARY KEY,
-            {nameof(Payee.Name)} VARCHAR(100));";
-        
-    }
-    
     public class PayeeComparer : Comparer<Domain.IPayee>
     {
         public override int Compare(Domain.IPayee x, Domain.IPayee y)
         {
-            return Comparer<string>.Default.Compare(x.Name, y.Name);
+            return Comparer<string>.Default.Compare(x?.Name, y?.Name);
         }
     }
 
-    public interface IPayeeRepository : IObservableRepositoryBase<Domain.IPayee>
+    public interface IPayeeRepository : IObservableRepositoryBase<Domain.IPayee>, IMergingRepository<Domain.IPayee>
     {
     }
 
     public sealed class PayeeRepository : ObservableRepositoryBase<Domain.IPayee, Payee>, IPayeeRepository
     {
-        public PayeeRepository(IProvideConnection provideConnection) : base(provideConnection, new PayeeComparer()) {}
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly IMergeOrm _mergeOrm;
+
+        public PayeeRepository(
+            IProvideConnection provideConnection, 
+            IRxSchedulerProvider rxSchedulerProvider,
+            ICrudOrm crudOrm,
+            IMergeOrm mergeOrm) : base(provideConnection, rxSchedulerProvider, crudOrm, new PayeeComparer())
+        {
+            _rxSchedulerProvider = rxSchedulerProvider;
+            _mergeOrm = mergeOrm;
+        }
         
         protected override Converter<Domain.IPayee, Payee> ConvertToPersistence => domainPayee => 
             new Payee
@@ -40,10 +41,16 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Name = domainPayee.Name
             };
 
-        protected override Converter<(Payee, DbConnection), Domain.IPayee> ConvertToDomain => tuple =>
+        protected override Task<Domain.IPayee> ConvertToDomainAsync(Payee persistenceModel)
         {
-            (Payee persistencePayee, _) = tuple;
-            return new Domain.Payee(this, persistencePayee.Id, persistencePayee.Name);
-        };
+            return Task.FromResult<Domain.IPayee>(new Domain.Payee(this, _rxSchedulerProvider, persistenceModel.Id, persistenceModel.Name));
+        }
+
+        public async Task MergeAsync(Domain.IPayee from, Domain.IPayee to)
+        {
+            await _mergeOrm.MergePayeeAsync(ConvertToPersistence(from), ConvertToPersistence(to)).ConfigureAwait(false);
+            RemoveFromObservableCollection(from);
+            RemoveFromCache(from);
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
@@ -19,10 +21,17 @@ namespace BFF
             Logger.Trace("Initializing App");
             InitializeComponent();
 
-            MainWindow mainWindow = new MainWindow();
+            MVVM.Views.MainWindow mainWindow = AutoFacBootstrapper.Resolve<MVVM.Views.MainWindow>();
             mainWindow.Show();
-            
-            
+        }
+
+        public static Visibility IsDebug
+        {
+#if DEBUG
+            get { return Visibility.Visible; }
+#else
+            get { return Visibility.Collapsed; }
+#endif
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -69,6 +78,14 @@ namespace BFF
             var mySettings = new MetroDialogSettings { AffirmativeButtonText = "Okay" };
             (MainWindow as MetroWindow).ShowMessageAsync("An unhandled error occurred!", $"Error message:\r\n{e.Exception.Message}", MessageDialogStyle.Affirmative, mySettings);
             e.Handled = true;
+        }
+
+        private void Flag_OnClick(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElement element && element.FindName("Popup") is Popup popup)
+            {
+                popup.IsOpen = true;
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using BFF.DB;
+using System.Threading.Tasks;
+using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
@@ -12,15 +14,22 @@ namespace BFF.MVVM.Models.Native
         /// </summary>
         ICategory Parent { get; set; }
 
+        void SetParentWithoutUpdateToBackend(ICategory newParent);
+
         ReadOnlyObservableCollection<ICategory> Categories { get; }
+
+        bool IsMyAncestor(ICategory other);
 
         void AddCategory(ICategory category);
 
         void RemoveCategory(ICategory category);
+
+        Task MergeToAsync(ICategory category);
     }
 
     public class Category : CategoryBase<ICategory>, ICategory
     {
+        private readonly ICategoryRepository _repository;
         private ICategory _parent;
         private readonly ObservableCollection<ICategory> _categories = new ObservableCollection<ICategory>();
 
@@ -34,17 +43,40 @@ namespace BFF.MVVM.Models.Native
             {
                 if (_parent == value) return;
                 _parent = value;
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
             }
+        }
+
+        public void SetParentWithoutUpdateToBackend(ICategory newParent)
+        {
+            _parent = newParent;
+            OnPropertyChanged(nameof(Parent));
         }
 
         public ReadOnlyObservableCollection<ICategory> Categories { get; }
 
-        public Category(IRepository<ICategory> repository, long id = -1L, string name = "", ICategory parent = null) : base(repository, id, name)
+        public Category(
+            ICategoryRepository repository, 
+            IRxSchedulerProvider rxSchedulerProvider, 
+            long id = -1L,
+            string name = "",
+            ICategory parent = null) : base(repository, rxSchedulerProvider, id, name)
         {
+            _repository = repository;
             _parent = parent;
             Categories = new ReadOnlyObservableCollection<ICategory>(_categories);
+        }
+
+        public bool IsMyAncestor(ICategory other)
+        {
+            var current = Parent;
+            while (current != null)
+            {
+                if (current == other) return true;
+                current = current.Parent;
+            }
+
+            return false;
         }
 
         public void AddCategory(ICategory category)
@@ -55,6 +87,18 @@ namespace BFF.MVVM.Models.Native
         public void RemoveCategory(ICategory category)
         {
             _categories.Remove(category);
+        }
+
+        public Task MergeToAsync(ICategory category)
+        {
+            var current = category;
+            while (current != null)
+            {
+                if (current == this) return Task.CompletedTask;
+                current = current.Parent;
+            }
+
+            return _repository.MergeAsync(from: this, to: category);
         }
     }
 }

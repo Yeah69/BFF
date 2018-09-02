@@ -7,7 +7,7 @@ namespace BFF.Helper.Extensions
     {
         public static T GetDescendantByType<T>(this Visual element) where T : class
         {
-            if (element == null)
+            if (element is null)
             {
                 return default;
             }

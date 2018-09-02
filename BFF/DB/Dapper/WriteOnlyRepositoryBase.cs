@@ -1,8 +1,8 @@
 using System;
-using System.Data.Common;
+using System.Reactive.Disposables;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
-using Dapper.Contrib.Extensions;
 
 namespace BFF.DB.Dapper
 {
@@ -18,62 +18,42 @@ namespace BFF.DB.Dapper
         where TDomain : class, IDataModel
         where TPersistence : class, IPersistenceModel
     {
+        private readonly ICrudOrm _crudOrm;
         protected IProvideConnection ProvideConnection { get; }
 
-        protected WriteOnlyRepositoryBase(IProvideConnection provideConnection)
+        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
+
+        protected WriteOnlyRepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm)
         {
+            _crudOrm = crudOrm;
             ProvideConnection = provideConnection;
         }
 
         protected abstract Converter<TDomain, TPersistence> ConvertToPersistence { get; }
 
-        public virtual void Add(TDomain dataModel, DbConnection connection = null)
+        public virtual async Task AddAsync(TDomain dataModel)
         {
             if (dataModel.Id > 0) return;
-            ConnectionHelper.ExecuteOnExistingOrNewConnection(
-                c =>
-                {
-                    TPersistence persistenceModel = ConvertToPersistence(dataModel);
-                    c.Insert(persistenceModel);
-                    dataModel.Id = persistenceModel.Id;
-                },
-                ProvideConnection,
-                connection);
+            var persistenceModel = ConvertToPersistence(dataModel);
+            await _crudOrm.CreateAsync(persistenceModel).ConfigureAwait(false);
+            dataModel.Id = persistenceModel.Id;
         }
 
-        public virtual void Update(TDomain dataModel, DbConnection connection = null)
+        public virtual async Task UpdateAsync(TDomain dataModel)
         {
             if (dataModel.Id < 0) return;
-            ConnectionHelper.ExecuteOnExistingOrNewConnection(
-                c => c.Update(ConvertToPersistence(dataModel)),
-                ProvideConnection,
-                connection);
+            await _crudOrm.UpdateAsync(ConvertToPersistence(dataModel)).ConfigureAwait(false);
         }
 
-        public virtual void Delete(TDomain dataModel, DbConnection connection = null)
+        public virtual async Task DeleteAsync(TDomain dataModel)
         {
             if (dataModel.Id < 0) return;
-            ConnectionHelper.ExecuteOnExistingOrNewConnection(
-                c =>
-                {
-                    c.Delete(ConvertToPersistence(dataModel));
-                    dataModel.Id = -1;
-                },
-                ProvideConnection,
-                connection);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-            }
+            await _crudOrm.DeleteAsync(ConvertToPersistence(dataModel)).ConfigureAwait(false);
         }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            CompositeDisposable.Dispose();
         }
     }
 }

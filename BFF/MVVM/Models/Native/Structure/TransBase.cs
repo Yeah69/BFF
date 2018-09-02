@@ -1,11 +1,9 @@
 ﻿using System;
 using BFF.DB;
+using BFF.Helper;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
-    /// <summary>
-    /// Enumerates all Types of Tits
-    /// </summary>
     public enum TransType
     {
         Transaction = 1,
@@ -18,21 +16,12 @@ namespace BFF.MVVM.Models.Native.Structure
         IFlag Flag { get; set; }
 
         string CheckNumber { get; set; }
-
-        /// <summary>
-        /// Marks when the Tit happened
-        /// </summary>
+        
         DateTime Date { get; set; }
-
-        /// <summary>
-        /// Gives the possibility to mark a Tit as processed or not
-        /// </summary>
+        
         bool Cleared { get; set; }
     }
-
-    /// <summary>
-    /// Base class for all Tit classes, which are not SubElements (TIT := Transaction Income Transfer)
-    /// </summary>
+    
     public abstract class TransBase<T> : TransLike<T>, ITransBase where T : class, ITransBase
     {
         private DateTime _date;
@@ -47,8 +36,7 @@ namespace BFF.MVVM.Models.Native.Structure
             {
                 if (_flag == value) return;
                 _flag = value;
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
             }
         }
 
@@ -59,29 +47,22 @@ namespace BFF.MVVM.Models.Native.Structure
             {
                 if (_checkNumber == value) return;
                 _checkNumber = value;
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
             }
         }
-
-        /// <summary>
-        /// Marks when the Tit happened
-        /// </summary>
+        
         public DateTime Date
         {
             get => _date;
             set
             {
                 if (_date == value) return;
+                var previousDate = _date;
                 _date = value;
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
             }
         }
-
-        /// <summary>
-        /// Gives the possibility to mark a Tit as processed or not
-        /// </summary>
+        
         public bool Cleared
         {
             get => _cleared;
@@ -89,26 +70,19 @@ namespace BFF.MVVM.Models.Native.Structure
             {
                 if (_cleared == value) return;
                 _cleared = value;
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
             }
         }
-
-        /// <summary>
-        /// Initializes the TransBase-parts of the object
-        /// </summary>
-        /// <param name="date">Marks when the Tit happened</param>
-        /// <param name="id">Identification number for the database</param>
-        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
-        /// <param name="cleared">Gives the possibility to mark a Tit as processed or not</param>
+        
         protected TransBase(
-            IRepository<T> repository,
+            IRepository<T> repository, 
+            IRxSchedulerProvider rxSchedulerProvider,
             IFlag flag,
             string checkNumber,
             DateTime date,
             long id,
             string memo,
-            bool? cleared) : base(repository, id, memo)
+            bool? cleared) : base(repository, rxSchedulerProvider, id, memo)
         {
             _flag = flag;
             _checkNumber = checkNumber;

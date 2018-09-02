@@ -28,7 +28,7 @@ namespace BFF.MVVM.Services
 
         public TViewModel GetViewModel(TDomain model)
         {
-            if (model == null) return null;
+            if (model is null) return null;
             
             return _modelToViewModel.GetOrAdd(model, new Lazy<TViewModel>(() => Create(model))).Value;
         }

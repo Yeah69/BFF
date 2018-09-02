@@ -53,5 +53,17 @@
     <Setting Name="Culture_DefaultDateLong" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="CsvBankStatementImportProfiles" Type="System.String" Scope="User">
+      <Value Profile="(Default)">[]</Value>
+    </Setting>
+    <Setting Name="ShowFlags" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ShowCheckNumbers" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="NeverShowEditHeaders" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

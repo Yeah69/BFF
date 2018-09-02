@@ -61,6 +61,71 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Balance.
+        /// </summary>
+        public static string Account_Balance {
+            get {
+                return ResourceManager.GetString("Account_Balance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new Account.
+        /// </summary>
+        public static string Account_CreateNew {
+            get {
+                return ResourceManager.GetString("Account_CreateNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will delete the account and all of its transactions, two-sided transfers will become one-sided, and the account-specific outflows in budgeting will disappear.
+        ///
+        ///Are you really sure? (A backup will be created automatically, if you would like to rewind the data afterwards).
+        /// </summary>
+        public static string Account_Delete_ConfirmationMessage {
+            get {
+                return ResourceManager.GetString("Account_Delete_ConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Accounts.
+        /// </summary>
+        public static string Account_Edit {
+            get {
+                return ResourceManager.GetString("Account_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account Name.
+        /// </summary>
+        public static string Account_Name {
+            get {
+                return ResourceManager.GetString("Account_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting Balance.
+        /// </summary>
+        public static string Account_StartingBalance {
+            get {
+                return ResourceManager.GetString("Account_StartingBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting Date.
+        /// </summary>
+        public static string Account_StartingDate {
+            get {
+                return ResourceManager.GetString("Account_StartingDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Accounts.
         /// </summary>
         public static string AccountTabsView_AllAccounts {
@@ -79,38 +144,56 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account Name:.
+        ///   Looks up a localized string similar to Abort targeting balance.
         /// </summary>
-        public static string AccountTabsView_NewAccount_Name {
+        public static string AccountView_AbortTargetingBalance {
             get {
-                return ResourceManager.GetString("AccountTabsView_NewAccount_Name", resourceCulture);
+                return ResourceManager.GetString("AccountView_AbortTargetingBalance", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starting Balance:.
+        ///   Looks up a localized string similar to All.
         /// </summary>
-        public static string AccountTabsView_NewAccount_StartingBalance {
+        public static string AccountView_Balance_All {
             get {
-                return ResourceManager.GetString("AccountTabsView_NewAccount_StartingBalance", resourceCulture);
+                return ResourceManager.GetString("AccountView_Balance_All", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starting Date:.
+        ///   Looks up a localized string similar to Cleared.
         /// </summary>
-        public static string AccountTabsView_NewAccount_StartingDate {
+        public static string AccountView_Balance_Cleared {
             get {
-                return ResourceManager.GetString("AccountTabsView_NewAccount_StartingDate", resourceCulture);
+                return ResourceManager.GetString("AccountView_Balance_Cleared", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Balance:.
+        ///   Looks up a localized string similar to Current.
         /// </summary>
-        public static string AccountView_Balance {
+        public static string AccountView_Balance_Current {
             get {
-                return ResourceManager.GetString("AccountView_Balance", resourceCulture);
+                return ResourceManager.GetString("AccountView_Balance_Current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string AccountView_Balance_Total {
+            get {
+                return ResourceManager.GetString("AccountView_Balance_Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uncleared.
+        /// </summary>
+        public static string AccountView_Balance_Uncleared {
+            get {
+                return ResourceManager.GetString("AccountView_Balance_Uncleared", resourceCulture);
             }
         }
         
@@ -129,6 +212,24 @@ namespace BFF.Properties {
         public static string AccountView_ConMenu_Delete {
             get {
                 return ResourceManager.GetString("AccountView_ConMenu_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string AccountView_ConMenu_Remove {
+            get {
+                return ResourceManager.GetString("AccountView_ConMenu_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create first account entry.
+        /// </summary>
+        public static string AccountView_FirstEntry {
+            get {
+                return ResourceManager.GetString("AccountView_FirstEntry", resourceCulture);
             }
         }
         
@@ -232,16 +333,43 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starting Balance:.
+        ///   Looks up a localized string similar to Intermediate balance.
         /// </summary>
-        public static string AccountView_StartingBalance {
+        public static string AccountView_IntermediateBalance {
             get {
-                return ResourceManager.GetString("AccountView_StartingBalance", resourceCulture);
+                return ResourceManager.GetString("AccountView_IntermediateBalance", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add to the table.
+        ///   Looks up a localized string similar to Missing sum.
+        /// </summary>
+        public static string AccountView_MissingSum {
+            get {
+                return ResourceManager.GetString("AccountView_MissingSum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set target balance.
+        /// </summary>
+        public static string AccountView_SetTargetBalance {
+            get {
+                return ResourceManager.GetString("AccountView_SetTargetBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target balance.
+        /// </summary>
+        public static string AccountView_TargetBalance {
+            get {
+                return ResourceManager.GetString("AccountView_TargetBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Persists currently edited elements to the account.
         /// </summary>
         public static string AccountView_ToolTip_AddToTable {
             get {
@@ -250,7 +378,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New splitted Transaction.
+        ///   Looks up a localized string similar to Creates a new split Transaction.
         /// </summary>
         public static string AccountView_ToolTip_NewParentTransaction {
             get {
@@ -259,7 +387,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Transaction.
+        ///   Looks up a localized string similar to Creates a new Transaction.
         /// </summary>
         public static string AccountView_ToolTip_NewTransaction {
             get {
@@ -268,7 +396,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Transfer.
+        ///   Looks up a localized string similar to Creates a new transfer.
         /// </summary>
         public static string AccountView_ToolTip_NewTransfer {
             get {
@@ -322,6 +450,60 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Average outflows of the last three months.
+        /// </summary>
+        public static string Budgeting_ContextMenu_AvgOutflowsLastThreeMonths {
+            get {
+                return ResourceManager.GetString("Budgeting_ContextMenu_AvgOutflowsLastThreeMonths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Average outflows of the last year.
+        /// </summary>
+        public static string Budgeting_ContextMenu_AvgOutflowsLastYear {
+            get {
+                return ResourceManager.GetString("Budgeting_ContextMenu_AvgOutflowsLastYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Balance to zero.
+        /// </summary>
+        public static string Budgeting_ContextMenu_BalanceToZero {
+            get {
+                return ResourceManager.GetString("Budgeting_ContextMenu_BalanceToZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Budget values from last month.
+        /// </summary>
+        public static string Budgeting_ContextMenu_BudgetLastMonth {
+            get {
+                return ResourceManager.GetString("Budgeting_ContextMenu_BudgetLastMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outflows of last month.
+        /// </summary>
+        public static string Budgeting_ContextMenu_OutflowsLastMonth {
+            get {
+                return ResourceManager.GetString("Budgeting_ContextMenu_OutflowsLastMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zero.
+        /// </summary>
+        public static string Budgeting_ContextMenu_Zero {
+            get {
+                return ResourceManager.GetString("Budgeting_ContextMenu_Zero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Income.
         /// </summary>
         public static string Budgeting_Income {
@@ -340,6 +522,24 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fill all budget cells with:.
+        /// </summary>
+        public static string Budgeting_Month_ContextMenu_AllCellsHeader {
+            get {
+                return ResourceManager.GetString("Budgeting_Month_ContextMenu_AllCellsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill all empty budget cells with:.
+        /// </summary>
+        public static string Budgeting_Month_ContextMenu_EmptyCellsHeader {
+            get {
+                return ResourceManager.GetString("Budgeting_Month_ContextMenu_EmptyCellsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not Budgeted.
         /// </summary>
         public static string Budgeting_NotBudgeted {
@@ -354,6 +554,24 @@ namespace BFF.Properties {
         public static string Budgeting_NotBudgetedExplanation {
             get {
                 return ResourceManager.GetString("Budgeting_NotBudgetedExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One-Sided Transfers.
+        /// </summary>
+        public static string Budgeting_OneSidedTransfers {
+            get {
+                return ResourceManager.GetString("Budgeting_OneSidedTransfers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One-Sided Transfers may occur after a deletion of an account. They have to be considered, because they are not neutral to the budget..
+        /// </summary>
+        public static string Budgeting_OneSidedTransfersExplanation {
+            get {
+                return ResourceManager.GetString("Budgeting_OneSidedTransfersExplanation", resourceCulture);
             }
         }
         
@@ -412,6 +630,150 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Aggregates.
+        /// </summary>
+        public static string Budgeting_ShowAggregates {
+            get {
+                return ResourceManager.GetString("Budgeting_ShowAggregates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unassigned.
+        /// </summary>
+        public static string Budgeting_UnassignedTransactions {
+            get {
+                return ResourceManager.GetString("Budgeting_UnassignedTransactions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The sum of all transactions, which have no category assigned..
+        /// </summary>
+        public static string Budgeting_UnassignedTransactionsExplanation {
+            get {
+                return ResourceManager.GetString("Budgeting_UnassignedTransactionsExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new Category.
+        /// </summary>
+        public static string Category_CreateNew {
+            get {
+                return ResourceManager.GetString("Category_CreateNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color.
+        /// </summary>
+        public static string Color {
+            get {
+                return ResourceManager.GetString("Color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        public static string Common_Configuration {
+            get {
+                return ResourceManager.GetString("Common_Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entries.
+        /// </summary>
+        public static string Common_Entries {
+            get {
+                return ResourceManager.GetString("Common_Entries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the category &quot;{0}&quot; should be deleted?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmCategoryDeletion {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmCategoryDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the category &quot;{0}&quot; should get merged into the category &quot;{1}&quot;?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmCategoryMerge {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmCategoryMerge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the flag &quot;{0}&quot; should be deleted?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmFlagDeletion {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmFlagDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the flag &quot;{0}&quot; should get merged into the flag &quot;{1}&quot;?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmFlagMerge {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmFlagMerge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the income category &quot;{0}&quot; should be deleted?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmIncomeCategoryDeletion {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmIncomeCategoryDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the income category &quot;{0}&quot; should get merged into the income category &quot;{1}&quot;?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmIncomeCategoryMerge {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmIncomeCategoryMerge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the payee &quot;{0}&quot; should be deleted?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmPayeeDeletion {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmPayeeDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that the payee &quot;{0}&quot; should get merged into the payee &quot;{1}&quot;?.
+        /// </summary>
+        public static string ConfirmationDialog_ConfirmPayeeMerge {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_ConfirmPayeeMerge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure?.
+        /// </summary>
+        public static string ConfirmationDialog_Title {
+            get {
+                return ResourceManager.GetString("ConfirmationDialog_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create new category.
         /// </summary>
         public static string CreateNewCategory {
@@ -421,11 +783,92 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create new flag.
+        /// </summary>
+        public static string CreateNewFlag {
+            get {
+                return ResourceManager.GetString("CreateNewFlag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create new payee.
         /// </summary>
         public static string CreateNewPayee {
             get {
                 return ResourceManager.GetString("CreateNewPayee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred while creating the entries. Check the configuration..
+        /// </summary>
+        public static string CsvBankStatementImport_ErrorDuringItemsCreation {
+            get {
+                return ResourceManager.GetString("CsvBankStatementImport_ErrorDuringItemsCreation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank Statement.
+        /// </summary>
+        public static string Domain_BankStatement {
+            get {
+                return ResourceManager.GetString("Domain_BankStatement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categories.
+        /// </summary>
+        public static string Domain_Categories {
+            get {
+                return ResourceManager.GetString("Domain_Categories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flags.
+        /// </summary>
+        public static string Domain_Flags {
+            get {
+                return ResourceManager.GetString("Domain_Flags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Income Categories.
+        /// </summary>
+        public static string Domain_IncomeCategories {
+            get {
+                return ResourceManager.GetString("Domain_IncomeCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Bank Statement.
+        /// </summary>
+        public static string Domain_OpenBankStatement {
+            get {
+                return ResourceManager.GetString("Domain_OpenBankStatement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payees.
+        /// </summary>
+        public static string Domain_Payees {
+            get {
+                return ResourceManager.GetString("Domain_Payees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An account has to be chosen before the entry is inserted..
+        /// </summary>
+        public static string ErrorMessage_AccountHasToBeChosen {
+            get {
+                return ResourceManager.GetString("ErrorMessage_AccountHasToBeChosen", resourceCulture);
             }
         }
         
@@ -484,6 +927,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The name of a new flag isn&apos;t allowed to be empty or an already existing one..
+        /// </summary>
+        public static string ErrorMessageWrongFlagName {
+            get {
+                return ResourceManager.GetString("ErrorMessageWrongFlagName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The name of a new payee isn&apos;t allowed to be empty or an already existing one..
         /// </summary>
         public static string ErrorMessageWrongPayeeName {
@@ -498,6 +950,231 @@ namespace BFF.Properties {
         public static string Exception_FileNotFound {
             get {
                 return ResourceManager.GetString("Exception_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new Flag.
+        /// </summary>
+        public static string Flag_CreateNew {
+            get {
+                return ResourceManager.GetString("Flag_CreateNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Flags.
+        /// </summary>
+        public static string Flag_Edit {
+            get {
+                return ResourceManager.GetString("Flag_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string General_Cancel {
+            get {
+                return ResourceManager.GetString("General_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date Format.
+        /// </summary>
+        public static string General_DateFormat {
+            get {
+                return ResourceManager.GetString("General_DateFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delimiter.
+        /// </summary>
+        public static string General_Delimiter {
+            get {
+                return ResourceManager.GetString("General_Delimiter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Path.
+        /// </summary>
+        public static string General_FilePath {
+            get {
+                return ResourceManager.GetString("General_FilePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Header.
+        /// </summary>
+        public static string General_Header {
+            get {
+                return ResourceManager.GetString("General_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long.
+        /// </summary>
+        public static string General_Long {
+            get {
+                return ResourceManager.GetString("General_Long", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Memo Format.
+        /// </summary>
+        public static string General_MemoFormat {
+            get {
+                return ResourceManager.GetString("General_MemoFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string General_Name {
+            get {
+                return ResourceManager.GetString("General_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Negative.
+        /// </summary>
+        public static string General_Negative {
+            get {
+                return ResourceManager.GetString("General_Negative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new payee if not existing?.
+        /// </summary>
+        public static string General_NewPayeeIfNotExisting {
+            get {
+                return ResourceManager.GetString("General_NewPayeeIfNotExisting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string General_No {
+            get {
+                return ResourceManager.GetString("General_No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Okay.
+        /// </summary>
+        public static string General_Okay {
+            get {
+                return ResourceManager.GetString("General_Okay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payee Format.
+        /// </summary>
+        public static string General_PayeeFormat {
+            get {
+                return ResourceManager.GetString("General_PayeeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Positive.
+        /// </summary>
+        public static string General_Positive {
+            get {
+                return ResourceManager.GetString("General_Positive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        public static string General_Profile {
+            get {
+                return ResourceManager.GetString("General_Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Profile.
+        /// </summary>
+        public static string General_RemoveProfile {
+            get {
+                return ResourceManager.GetString("General_RemoveProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset Profile.
+        /// </summary>
+        public static string General_ResetProfile {
+            get {
+                return ResourceManager.GetString("General_ResetProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save new Profile.
+        /// </summary>
+        public static string General_SaveNewProfile {
+            get {
+                return ResourceManager.GetString("General_SaveNewProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Profile.
+        /// </summary>
+        public static string General_SaveProfile {
+            get {
+                return ResourceManager.GetString("General_SaveProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short.
+        /// </summary>
+        public static string General_Short {
+            get {
+                return ResourceManager.GetString("General_Short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sum Format.
+        /// </summary>
+        public static string General_SumFormat {
+            get {
+                return ResourceManager.GetString("General_SumFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unassigned.
+        /// </summary>
+        public static string General_Unassigned {
+            get {
+                return ResourceManager.GetString("General_Unassigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string General_Yes {
+            get {
+                return ResourceManager.GetString("General_Yes", resourceCulture);
             }
         }
         
@@ -583,11 +1260,31 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Convert to.
+        /// </summary>
+        public static string Label_ConvertTo {
+            get {
+                return ResourceManager.GetString("Label_ConvertTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string MainWindow_About {
             get {
                 return ResourceManager.GetString("MainWindow_About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No budget project loaded yet.
+        ///In order to create, open or import a project
+        ///open the File-menu in the upper left corner..
+        /// </summary>
+        public static string MainWindow_Empty {
+            get {
+                return ResourceManager.GetString("MainWindow_Empty", resourceCulture);
             }
         }
         
@@ -601,7 +1298,16 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import.
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string MainWindow_File_Close {
+            get {
+                return ResourceManager.GetString("MainWindow_File_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YNAB4-Import.
         /// </summary>
         public static string MainWindow_File_Import {
             get {
@@ -637,96 +1343,6 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accents:.
-        /// </summary>
-        public static string MainWindow_Settings_Accents {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Accents", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Currency format:.
-        /// </summary>
-        public static string MainWindow_Settings_Currency {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Currency", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Negative:.
-        /// </summary>
-        public static string MainWindow_Settings_Currency_Negative {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Currency_Negative", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Positive:.
-        /// </summary>
-        public static string MainWindow_Settings_Currency_Positive {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Currency_Positive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date format:.
-        /// </summary>
-        public static string MainWindow_Settings_Date {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Long:.
-        /// </summary>
-        public static string MainWindow_Settings_Date_Long {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Date_Long", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to :Long.
-        /// </summary>
-        public static string MainWindow_Settings_Date_Long_Inverted {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Date_Long_Inverted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Short:.
-        /// </summary>
-        public static string MainWindow_Settings_Date_Short {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Date_Short", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Language:.
-        /// </summary>
-        public static string MainWindow_Settings_Language {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Language", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Theme:.
-        /// </summary>
-        public static string MainWindow_Settings_Theme {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings_Theme", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Name of new category.
         /// </summary>
         public static string NameOfNewCategory {
@@ -736,11 +1352,30 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name of new flag.
+        /// </summary>
+        public static string NameOfNewFlag {
+            get {
+                return ResourceManager.GetString("NameOfNewFlag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name of new payee.
         /// </summary>
         public static string NameOfNewPayee {
             get {
                 return ResourceManager.GetString("NameOfNewPayee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If checked, then an income category is created.
+        ///Only transactions assigned to such a category are interpreted as income..
+        /// </summary>
+        public static string NewCategory_IncomeRelevantExplanation {
+            get {
+                return ResourceManager.GetString("NewCategory_IncomeRelevantExplanation", resourceCulture);
             }
         }
         
@@ -790,11 +1425,187 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current Sum.
+        /// </summary>
+        public static string ParentTransEditingView_CurrentSum {
+            get {
+                return ResourceManager.GetString("ParentTransEditingView_CurrentSum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Intermediate sum.
+        /// </summary>
+        public static string ParentTransEditingView_IntermediateSum {
+            get {
+                return ResourceManager.GetString("ParentTransEditingView_IntermediateSum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing Sum.
+        /// </summary>
+        public static string ParentTransEditingView_MissingSumWithoutSubs {
+            get {
+                return ResourceManager.GetString("ParentTransEditingView_MissingSumWithoutSubs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing Sum exlusively unsubmitted entries.
+        /// </summary>
+        public static string ParentTransEditingView_MissingSumWithSubs {
+            get {
+                return ResourceManager.GetString("ParentTransEditingView_MissingSumWithSubs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new Payee.
+        /// </summary>
+        public static string Payee_CreateNew {
+            get {
+                return ResourceManager.GetString("Payee_CreateNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Payees.
+        /// </summary>
+        public static string Payee_Edit {
+            get {
+                return ResourceManager.GetString("Payee_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accents.
+        /// </summary>
+        public static string Settings_Accents {
+            get {
+                return ResourceManager.GetString("Settings_Accents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Always hide column headers of the editing table.
+        /// </summary>
+        public static string Settings_AlwaysHideEditHeaders {
+            get {
+                return ResourceManager.GetString("Settings_AlwaysHideEditHeaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currency format.
+        /// </summary>
+        public static string Settings_Currency {
+            get {
+                return ResourceManager.GetString("Settings_Currency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date format.
+        /// </summary>
+        public static string Settings_Date {
+            get {
+                return ResourceManager.GetString("Settings_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Settings_Language {
+            get {
+                return ResourceManager.GetString("Settings_Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Check Numbers.
+        /// </summary>
+        public static string Settings_ShowCheckNumbers {
+            get {
+                return ResourceManager.GetString("Settings_ShowCheckNumbers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Flags.
+        /// </summary>
+        public static string Settings_ShowFlags {
+            get {
+                return ResourceManager.GetString("Settings_ShowFlags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        public static string Settings_Theme {
+            get {
+                return ResourceManager.GetString("Settings_Theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Superior Category.
         /// </summary>
         public static string SuperiorCategory {
             get {
                 return ResourceManager.GetString("SuperiorCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press the button in this column to delete the element of the corresponding row..
+        /// </summary>
+        public static string ToolTip_DeleteRow {
+            get {
+                return ResourceManager.GetString("ToolTip_DeleteRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to merge one category to another, drag the merge icon from this column in the source row and drop it on the target row.
+        ///The target category will get assigned to all account entries of the source category and inherit all the subcategories.
+        ///If a pair of the subcategories has the same name, then the subcategory of the  source category is automatically renamed (number is appended)..
+        /// </summary>
+        public static string ToolTip_MergeToCategory {
+            get {
+                return ResourceManager.GetString("ToolTip_MergeToCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to merge one flag to another, drag the merge icon from this column in the source row and drop it on the target row.
+        ///The target flag  will get assigned to all account entries of the source flag and keep its color..
+        /// </summary>
+        public static string ToolTip_MergeToFlag {
+            get {
+                return ResourceManager.GetString("ToolTip_MergeToFlag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to merge one income category to another, drag the merge icon from this column in the source row and drop it on the target row.
+        ///The target income category will get assigned to all account entries of the source income category and keep its month offset..
+        /// </summary>
+        public static string ToolTip_MergeToIncomeCategory {
+            get {
+                return ResourceManager.GetString("ToolTip_MergeToIncomeCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to merge one payee to another, drag the merge icon from this column in the source row and drop it on the target row.
+        ///The target payee will get assigned to all account entries of the source payee..
+        /// </summary>
+        public static string ToolTip_MergeToPayee {
+            get {
+                return ResourceManager.GetString("ToolTip_MergeToPayee", resourceCulture);
             }
         }
         

@@ -1,4 +1,5 @@
 ﻿using BFF.DB;
+using BFF.Helper;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
@@ -27,8 +28,7 @@ namespace BFF.MVVM.Models.Native.Structure
             {
                 if (_name == value) return;
                 _name = value;
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
             }
         }
 
@@ -41,7 +41,11 @@ namespace BFF.MVVM.Models.Native.Structure
             return Name;
         }
 
-        protected CommonProperty(IRepository<T> repository, long id = -1L, string name = null) : base(repository, id)
+        protected CommonProperty(
+            IRepository<T> repository, 
+            IRxSchedulerProvider rxSchedulerProvider,
+            long id = -1L, 
+            string name = null) : base(repository, rxSchedulerProvider, id)
         {
             _name = name;
         }

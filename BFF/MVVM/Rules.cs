@@ -14,20 +14,20 @@ namespace BFF.MVVM
             LambdaConverters.Validator.Create<IPayeeViewModel>(
                 e => e.Value != null
                     ? ValidationResult.ValidResult
-                    : new ValidationResult(false, "ErrorMessageEmptyPayee".Localize<string>()));
+                    : new ValidationResult(false, "ErrorMessageEmptyPayee".Localize()));
 
         public static ValidationRule EmptyCategory =
             LambdaConverters.Validator.Create<ICategoryBaseViewModel>(
                 e => e.Value != null
                     ? ValidationResult.ValidResult
-                    : new ValidationResult(false, "ErrorMessageEmptyCategory".Localize<string>()));
+                    : new ValidationResult(false, "ErrorMessageEmptyCategory".Localize()));
 
         public static ValidationRule Currency =
             LambdaConverters.Validator.Create<string>(
                 e => decimal.TryParse(e.Value, NumberStyles.Currency,
                     Settings.Default.Culture_SessionCurrency.NumberFormat, out decimal _)
                     ? ValidationResult.ValidResult 
-                    : new ValidationResult(false, "ValidationRule_Currency".Localize<string>()));
+                    : new ValidationResult(false, "ValidationRule_Currency".Localize()));
 
         public static ValidationRule CurrencyLongRange =
             LambdaConverters.Validator.Create<string>(
@@ -35,7 +35,7 @@ namespace BFF.MVVM
                 {
                     CultureInfo currencyCulture = Settings.Default.Culture_SessionCurrency;
                     decimal factor = (decimal) Math.Pow(10, currencyCulture.NumberFormat.CurrencyDecimalDigits);
-                    string message = "ValidationRule_CurrencyLongRange".Localize<string>();
+                    string message = "ValidationRule_CurrencyLongRange".Localize();
                     message = string.Format(message,
                         (long.MinValue / factor).ToString("C", currencyCulture.NumberFormat),
                         (long.MaxValue / factor).ToString("C", currencyCulture.NumberFormat));
@@ -57,18 +57,18 @@ namespace BFF.MVVM
             LambdaConverters.Validator.Create<string>(
                 e => e.Value != null && !string.IsNullOrEmpty(new FileInfo(e.Value).Name)
                     ? ValidationResult.ValidResult
-                    : new ValidationResult(false, "ValidationRule_NotExistingSavePath_EmptyName".Localize<string>()));
+                    : new ValidationResult(false, "ValidationRule_NotExistingSavePath_EmptyName".Localize()));
 
         public static ValidationRule NotExistingFilePath =
             LambdaConverters.Validator.Create<string>(
                 e => File.Exists(e.Value)
                     ? ValidationResult.ValidResult
-                    : new ValidationResult(false, "ValidationRule_NotExistingFilePath".Localize<string>()));
+                    : new ValidationResult(false, "ValidationRule_NotExistingFilePath".Localize()));
 
         public static ValidationRule NotExistingSavePath =
             LambdaConverters.Validator.Create<string>(
                 e => e.Value != null && Directory.Exists(new FileInfo(e.Value).DirectoryName)
                     ? ValidationResult.ValidResult
-                    : new ValidationResult(false, "ValidationRule_NotExistingSavePath".Localize<string>()));
+                    : new ValidationResult(false, "ValidationRule_NotExistingSavePath".Localize()));
     }
 }

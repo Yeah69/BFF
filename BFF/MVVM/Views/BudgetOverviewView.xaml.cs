@@ -1,4 +1,10 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using BFF.MVVM.AttachedBehaviors;
+using BFF.MVVM.ViewModels;
+using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.MVVM.Views
 {
@@ -16,7 +22,7 @@ namespace BFF.MVVM.Views
         {
             void UpdateSlaveCount(int newCount)
             {
-                BudgetEntriesData.DisplayCount = newCount;
+                //BudgetEntriesData.DisplayCount = newCount;
                 BudgetMonthHeaders.DisplayCount = newCount;
                 e.Handled = true;
             }
@@ -51,6 +57,48 @@ namespace BFF.MVVM.Views
                     UpdateSlaveCount(9);
                     break;
 
+            }
+        }
+
+        private void OutflowCell_OnClick(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetEntryViewModel budgetEntry)
+                budgetEntry.AssociatedTransElementsViewModel.OpenFlag = true;
+        }
+
+        private void AggregatedOutflowCell_OnClick(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetEntryViewModel budgetEntry)
+                budgetEntry.AssociatedAggregatedTransElementsViewModel.OpenFlag = true;
+        }
+
+        private void MonthOutflowCell_OnClick(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetMonthViewModel budgetEntry)
+                budgetEntry.AssociatedTransElementsViewModel.OpenFlag = true;
+        }
+
+        private void MonthIncomeCell_OnClick(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetMonthViewModel budgetEntry)
+                budgetEntry.AssociatedIncomeTransElementsViewModel.OpenFlag = true;
+        }
+
+        private void MonthDataHeaderMenu_OnClick(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent?.ContextMenu != null)
+            {
+                fecb.Parent.ContextMenu.PlacementTarget = fecb.Parent;
+                fecb.Parent.ContextMenu.IsOpen = true;
+            }
+        }
+
+        private void BudgetEntryMenu_OnClick(object sender, EventArgs e)
+        {
+            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent?.ContextMenu != null)
+            {
+                fecb.Parent.ContextMenu.PlacementTarget = fecb.Parent;
+                fecb.Parent.ContextMenu.IsOpen = true;
             }
         }
     }

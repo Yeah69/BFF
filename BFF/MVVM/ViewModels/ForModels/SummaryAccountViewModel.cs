@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection.DataAccesses;
-using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.Helper.Extensions;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -27,14 +24,14 @@ namespace BFF.MVVM.ViewModels.ForModels
     }
 
     /// <summary>
-    /// Tits can be added to an Account
+    /// Trans can be added to an Account
     /// </summary>
     public class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel, IOncePerBackend
     {
-        private readonly ISummaryAccount _summaryAccount;
-        private readonly IAccountRepository _accountRepository;
         private readonly Lazy<IAccountViewModelService> _service;
         private readonly ITransRepository _transRepository;
+        private readonly Func<ITransLikeViewModelPlaceholder> _placeholderFactory;
+        private readonly IConvertFromTransBaseToTransLikeViewModel _convertFromTransBaseToTransLikeViewModel;
 
         /// <summary>
         /// Starting balance of the Account
@@ -44,150 +41,119 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// Name of the Account Model
         /// </summary>
-        public override IReactiveProperty<string> Name //todo Localization
-            => new ReactiveProperty<string>("All Accounts");
-
-        /// <summary>
-        /// Initializes an SummaryAccountViewModel.
-        /// </summary>
-        /// <param name="orm">Used for the database accesses.</param>
-        /// <param name="summaryAccount">The model.</param>
+        public override string Name //todo Localization
+            => "All Accounts";
+        
         public SummaryAccountViewModel(
             ISummaryAccount summaryAccount, 
             IAccountRepository accountRepository, 
             Lazy<IAccountViewModelService> service,
             ITransRepository transRepository,
-            IParentTransactionViewModelService parentTransactionViewModelService,
-            Func<ITransactionViewModel> transactionViewModelFactory,
-            Func<ITransferViewModel> transferViewModelFactory,
-            Func<IParentTransactionViewModel> parentTransactionFactory,
-            Func<ITransaction, ITransactionViewModel> dependingTransactionViewModelFactory,
-            Func<ITransfer, ITransferViewModel> dependingTransferViewModelFactory) 
+            Func<ITransLikeViewModelPlaceholder> placeholderFactory,
+            IRxSchedulerProvider rxSchedulerProvider,
+            IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
+            IBackendCultureManager cultureManager,
+            ITransDataGridColumnManager transDataGridColumnManager,
+            Func<IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
+            Func<IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
+            Func<IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory) 
             : base(
                 summaryAccount,
-                service, 
-                parentTransactionViewModelService,
-                dependingTransactionViewModelFactory,
-                dependingTransferViewModelFactory)
+                service,
+                accountRepository,
+                rxSchedulerProvider,
+                cultureManager,
+                transDataGridColumnManager)
         {
-            _summaryAccount = summaryAccount;
-            _accountRepository = accountRepository;
             _service = service;
             _transRepository = transRepository;
-            IsOpen.Value = true;
-            Messenger.Default.Register<SummaryAccountMessage>(this, message =>
-            {
-                switch (message)
-                {
-                    case SummaryAccountMessage.Refresh:
-                        RefreshTits();
-                        RefreshBalance();
-                        RefreshStartingBalance();
-                        break;
-                    case SummaryAccountMessage.RefreshBalance:
-                        RefreshBalance();
-                        break;
-                    case SummaryAccountMessage.RefreshStartingBalance:
-                        RefreshStartingBalance();
-                        break;
-                    case SummaryAccountMessage.RefreshTits:
-                        RefreshTits();
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
-            });
+            _placeholderFactory = placeholderFactory;
+            _convertFromTransBaseToTransLikeViewModel = convertFromTransBaseToTransLikeViewModel;
+            IsOpen = true;
 
             StartingBalance = new ReactiveProperty<long>().AddTo(CompositeDisposable);
-            //RefreshStartingBalance();
-
-            NewTransactionCommand.Subscribe(_ => NewTits.Add(transactionViewModelFactory())).AddTo(CompositeDisposable);
-
-            NewTransferCommand.Subscribe(_ => NewTits.Add(transferViewModelFactory())).AddTo(CompositeDisposable);
-
-            NewParentTransactionCommand.Subscribe(_ => NewTits.Add(parentTransactionFactory())).AddTo(CompositeDisposable);
-
-            ApplyCommand = NewTits.ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
-                .Select(count => count > 0)
-                .ToReactiveCommand().AddTo(CompositeDisposable);
-
-            ApplyCommand.Subscribe(_ => ApplyTits()).AddTo(CompositeDisposable);
-
-            Disposable.Create(() => { Messenger.Default.Unregister<SummaryAccountMessage>(this); }).AddTo(CompositeDisposable);
-        }
-
-        /// <summary>
-        /// Refreshes the Balance.
-        /// </summary>
-        public override void RefreshBalance()
-        {
-            if (IsOpen.Value)
+            
+            NewTransactionCommand = new RxRelayCommand(() =>
             {
-                OnPropertyChanged(nameof(Balance));
-                OnPropertyChanged(nameof(BalanceUntilNow));
-            }
+                var transactionViewModel = transactionViewModelFactory(this);
+                if (MissingSum != null) transactionViewModel.Sum.Value = (long)MissingSum;
+                NewTransList.Add(transactionViewModel);
+            }).AddTo(CompositeDisposable);
+
+            NewTransferCommand = new RxRelayCommand(() => NewTransList.Add(transferViewModelFactory(this))).AddTo(CompositeDisposable);
+
+            NewParentTransactionCommand = new RxRelayCommand(() =>
+            {
+                var parentTransactionViewModel = parentTransactionViewModelFactory(this);
+                NewTransList.Add(parentTransactionViewModel);
+                if (MissingSum != null)
+                {
+                    parentTransactionViewModel.NewSubTransactionCommand?.Execute(null);
+                    parentTransactionViewModel.NewSubTransactions.First().Sum.Value = (long)MissingSum;
+                }
+            }).AddTo(CompositeDisposable);
+
+            ApplyCommand = new AsyncRxRelayCommand(async () => await ApplyTrans(),
+                NewTransList
+                    .ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
+                    .Select(count => count > 0),
+                NewTransList.Count > 0);
+
+            ImportCsvBankStatement = new RxRelayCommand(() => {}).AddTo(CompositeDisposable);
         }
 
         #region ViewModel_Part
 
-        protected override IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess
-            => new RelayBasicAsyncDataAccess<ITransLikeViewModel>(
-                (offset, pageSize) => CreatePacket(_transRepository.GetPage(offset, pageSize, null)),
-                () => _transRepository.GetCount(null),
-                () => new TransLikeViewModelPlaceholder());
+        protected override IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess
+            => new RelayBasicTaskBasedAsyncDataAccess<ITransLikeViewModel>(
+                async (offset, pageSize) => _convertFromTransBaseToTransLikeViewModel
+                    .Convert(await _transRepository.GetPageAsync(offset, pageSize, null), this)
+                    .ToArray(),
+                async () => (int) await _transRepository.GetCountAsync(null),
+                () => _placeholderFactory());
 
-        /// <summary>
-        /// Lazy loaded collection of TITs belonging to this Account.
-        /// </summary>
-        public override IDataVirtualizingCollection<ITransLikeViewModel> Tits => _tits ?? (_tits = CreateDataVirtualizingCollection());
-        
-        /// <summary>
-        /// Collection of TITs, which are about to be inserted to this Account.
-        /// </summary>
-        public sealed override ObservableCollection<ITransLikeViewModel> NewTits { get; } = new ObservableCollection<ITransLikeViewModel>();
-        
-        /// <summary>
-        /// Refreshes the TITs of this Account.
-        /// </summary>
-        public override void RefreshTits()
+        protected override long? CalculateNewPartOfIntermediateBalance()
         {
-            if(IsOpen.Value)
+            long? sum = 0;
+            foreach (var transLikeViewModel in NewTransList)
             {
-                OnPreVirtualizedRefresh();
-                var temp = _tits;
-                _tits = CreateDataVirtualizingCollection();
-                OnPropertyChanged(nameof(Tits));
-                OnPostVirtualizedRefresh();
-                Task.Run(() => temp?.Dispose());
+                switch (transLikeViewModel)
+                {
+                    case TransferViewModel _:
+                        break;
+                    case ParentTransactionViewModel parent:
+                        sum += parent.TotalSum.Value;
+                        break;
+                    default:
+                        sum += transLikeViewModel.Sum.Value;
+                        break;
+                }
             }
+
+            return sum;
         }
-
-        /// <summary>
-        /// The sum of all accounts balances.
-        /// </summary>
-        public override long? Balance => _accountRepository.GetBalance(_summaryAccount);
-
-        public override long? BalanceUntilNow => _accountRepository.GetBalanceUntilNow(_summaryAccount);
 
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        public sealed override ReactiveCommand NewTransactionCommand { get; } = new ReactiveCommand();
+        public sealed override IRxRelayCommand NewTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        public sealed override ReactiveCommand NewTransferCommand { get; } = new ReactiveCommand();
+        public sealed override IRxRelayCommand NewTransferCommand { get; }
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        public sealed override ReactiveCommand NewParentTransactionCommand { get; } = new ReactiveCommand();
+        public sealed override IRxRelayCommand NewParentTransactionCommand { get; }
 
         /// <summary>
-        /// Flushes all valid and not yet inserted TITs to the database.
+        /// Flushes all valid and not yet inserted Trans' to the database.
         /// </summary>
-        public sealed override ReactiveCommand ApplyCommand { get; }
+        public sealed override IRxRelayCommand ApplyCommand { get; }
+
+        public override IRxRelayCommand ImportCsvBankStatement { get; }
 
         #endregion
 

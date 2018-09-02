@@ -1,81 +1,69 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reactive.Disposables;
-using BFF.DB;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
+using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
+using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
-    public interface IDataModelViewModel
+    public interface IDataModelViewModel : INotifyPropertyChanged
     {
-        /// <summary>
-        /// Inserts the model object to the database.
-        /// </summary>
-        void Insert();
+        Task InsertAsync();
 
-        /// <summary>
-        /// Deletes the model object from the database.
-        /// </summary>
-        void Delete();
+        bool IsInsertable();
+        
+        Task DeleteAsync();
+
+        IRxRelayCommand DeleteCommand { get; }
+
+        bool IsInserted { get; }
     }
-
-    /// <summary>
-    /// Base class to all ViewModels for Models, which are read from the database.
-    /// Offers CRUD functionality (except for Read, because the Models are not read from within itself).
-    /// </summary>
+    
     public abstract class DataModelViewModel : ViewModelBase, IDataModelViewModel, IDisposable
     {
         private readonly IDataModel _dataModel;
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
 
         protected CompositeDisposable CompositeDisposable { get; } = new CompositeDisposable();
-
-        /// <summary>
-        /// Initializes a DataModelViewModel.
-        /// </summary>
-        /// <param name="orm">Used for the database accesses.</param>
-        /// <param name="dataModel">The model.</param>
-        protected DataModelViewModel(IDataModel dataModel)
+        
+        protected DataModelViewModel(
+            IDataModel dataModel,
+            IRxSchedulerProvider rxSchedulerProvider)
         {
             _dataModel = dataModel;
+            _rxSchedulerProvider = rxSchedulerProvider;
+
+            dataModel
+                .ObservePropertyChanges(nameof(IDataModel.Id))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(IsInserted)))
+                .AddTo(CompositeDisposable);
+
+            DeleteCommand = new AsyncRxRelayCommand(async () => await DeleteAsync()).AddTo(CompositeDisposable);
         }
-
-        /// <summary>
-        /// Uses the OR mapper to insert the object into the database. Inner function for the Insert method.
-        /// The Orm works in a generic way and determines the right table by the given type.
-        /// In order to avoid the need to update a huge if-else construct to select the right type, each concrete class calls the ORM itself.
-        /// </summary>
-        protected virtual void OnInsert() { }
-
-
-        /// <summary>
-        /// Inserts the model object to the database.
-        /// </summary>
-        public void Insert()
+        
+        public virtual async Task InsertAsync()
         {
-            _dataModel.Insert();
-            OnInsert();
+            await _dataModel.InsertAsync();
         }
 
-        /// <summary>
-        /// Updates the model object in the database.
-        /// </summary>
+        public virtual bool IsInsertable() => _dataModel.Id <= 0;
+        
         protected virtual void OnUpdate() {}
-
-
-        /// <summary>
-        /// Deletes the model object from the database.
-        /// </summary>
-        public void Delete() => _dataModel.Delete();
-
-        protected virtual void Dispose(bool disposing)
+        
+        public virtual async Task DeleteAsync()
         {
-            if(disposing) { }
-            CompositeDisposable.Dispose();
+            await _dataModel.DeleteAsync();
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        public IRxRelayCommand DeleteCommand { get; }
+        public bool IsInserted => _dataModel.Id > 0;
+
+        public void Dispose() =>
+            _rxSchedulerProvider.UI.MinimalSchedule(() => CompositeDisposable.Dispose());
     }
 }

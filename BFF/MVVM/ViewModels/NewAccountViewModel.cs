@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper.Extensions;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
@@ -26,7 +26,7 @@ namespace BFF.MVVM.ViewModels
 
         IReactiveProperty<DateTime> StartingDate { get; }
 
-        bool IsDateFormatLong { get; }
+        bool ShowLongDate { get; }
 
         /// <summary>
         /// Creates a new Account.
@@ -38,31 +38,33 @@ namespace BFF.MVVM.ViewModels
     {
         private readonly IAccountViewModelService _viewModelService;
 
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
 
         public NewAccountViewModel(
-            IAccountRepository repository,
             Func<IAccount> factory,
+            ICultureManager cultureManager,
+            ISummaryAccountViewModel summaryAccountViewModel,
             IAccountViewModelService viewModelService)
         {
             string ValidateName(string text)
             {
                 return !string.IsNullOrWhiteSpace(text) &&
-                    All.All(a => a.Name.Value != text.Trim()) 
+                    All.All(a => a.Name != text.Trim()) 
                     ? null 
-                    : "ErrorMessageWrongAccountName".Localize<string>();
+                    : "ErrorMessageWrongAccountName".Localize();
             }
-
+            
             _viewModelService = viewModelService;
+            
+            Name = new ReactiveProperty<string>("", ReactivePropertyMode.DistinctUntilChanged)
+                .SetValidateNotifyError(text => ValidateName(text))
+                .AddTo(CompositeDisposable);
 
-            Name = new ReactiveProperty<string>().SetValidateNotifyError(
-                text => ValidateName(text)).AddTo(_compositeDisposable);
+            StartingBalance = new ReactiveProperty<long>(0, ReactivePropertyMode.None).AddTo(CompositeDisposable);
 
-            StartingBalance = new ReactiveProperty<long>(0, ReactivePropertyMode.None).AddTo(_compositeDisposable);
+            StartingDate = new ReactiveProperty<DateTime>(DateTime.Today, ReactivePropertyMode.None).AddTo(CompositeDisposable);
 
-            StartingDate = new ReactiveProperty<DateTime>(DateTime.Today, ReactivePropertyMode.None).AddTo(_compositeDisposable);
-
-            AddCommand = new ReactiveCommand().AddTo(_compositeDisposable);
+            AddCommand = new ReactiveCommand().AddTo(CompositeDisposable);
 
             AddCommand.Where(
                 _ =>
@@ -70,19 +72,19 @@ namespace BFF.MVVM.ViewModels
                     (Name as ReactiveProperty<string>)?.ForceValidate();
                     return !Name.HasErrors;
                 })
-                .Subscribe(_ =>
+                .Subscribe(async _ =>
                 {
                     IAccount newAccount = factory();
                     newAccount.Name = Name.Value.Trim();
                     newAccount.StartingBalance = StartingBalance.Value;
                     newAccount.StartingDate = StartingDate.Value;
-                    newAccount.Insert();
-                    Messenger.Default.Send(SummaryAccountMessage.RefreshStartingBalance);
-                    Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
-                }).AddTo(_compositeDisposable);
+                    await newAccount.InsertAsync();
+                    viewModelService.GetViewModel(newAccount).IsOpen = true;
+                    summaryAccountViewModel.RefreshStartingBalance();
+                    summaryAccountViewModel.RefreshBalance();
+                }).AddTo(CompositeDisposable);
 
-
-            Messenger.Default.Register<CultureMessage>(this, message =>
+            cultureManager.RefreshSignal.Subscribe(message =>
             {
                 switch (message)
                 {
@@ -90,15 +92,13 @@ namespace BFF.MVVM.ViewModels
                     case CultureMessage.RefreshCurrency:
                     case CultureMessage.RefreshDate:
                         StartingDate.Value = StartingDate.Value;
-                        OnPropertyChanged(nameof(IsDateFormatLong));
+                        OnPropertyChanged(nameof(ShowLongDate));
                         StartingBalance.Value = StartingBalance.Value;
                         break;
                     default:
                         throw new InvalidEnumArgumentException();
                 }
-            });
-
-            Disposable.Create(() => Messenger.Default.Unregister<CultureMessage>(this)).AddTo(_compositeDisposable);
+            }).AddTo(CompositeDisposable);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace BFF.MVVM.ViewModels
         /// <summary>
         /// Indicates if the date format should be display in short or long fashion.
         /// </summary>
-        public bool IsDateFormatLong => Settings.Default.Culture_DefaultDateLong;
+        public bool ShowLongDate => Settings.Default.Culture_DefaultDateLong;
 
         /// <summary>
         /// Creates a new Payee.
@@ -127,7 +127,7 @@ namespace BFF.MVVM.ViewModels
 
         public void Dispose()
         {
-            _compositeDisposable?.Dispose();
+            CompositeDisposable?.Dispose();
         }
     }
 }

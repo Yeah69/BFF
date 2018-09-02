@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using Autofac.Features.OwnedInstances;
-using BFF.DB.Dapper;
+using BFF.DB;
+using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.Helper.Import;
+using BFF.MVVM.Managers;
+using BFF.MVVM.ViewModels.ForModels;
 using BFF.Properties;
 using NLog;
 using Reactive.Bindings;
@@ -17,29 +23,36 @@ namespace BFF.MVVM.ViewModels
 {
     public interface IMainWindowViewModel : IViewModel
     {
-        ReactiveCommand NewBudgetPlanCommand { get; }
-        ReactiveCommand OpenBudgetPlanCommand { get; }
-        ReactiveCommand<IImportable> ImportBudgetPlanCommand { get; }
+        IRxRelayCommand NewBudgetPlanCommand { get; }
+        IRxRelayCommand OpenBudgetPlanCommand { get; }
+        IRxRelayCommand CloseBudgetPlanCommand { get; }
+        IRxRelayCommand ParentTransactionOnClose { get; }
+        IRxRelayCommand<IImportable> ImportBudgetPlanCommand { get; }
         IAccountTabsViewModel AccountTabsViewModel { get; set; }
         IBudgetOverviewViewModel BudgetOverviewViewModel { get; set; }
+        IEditAccountsViewModel EditAccountsViewModel { get; }
+        IEditCategoriesViewModel EditCategoriesViewModel { get; }
+        IEditPayeesViewModel EditPayeesViewModel { get; }
+        IEditFlagsViewModel EditFlagsViewModel { get; }
         IEmptyViewModel EmptyViewModel { get; }
+        ICultureManager CultureManager { get; }
         bool IsEmpty { get; }
         CultureInfo LanguageCulture { get; set; }
-        CultureInfo CurrencyCulture { get; set; }
-        CultureInfo DateCulture { get; set; }
-        bool DateLong { get; set; }
-        ParentTitViewModel ParentTitViewModel { get; set; }
-        bool ParentTitFlyoutOpen { get; set; }
+        IReadOnlyReactiveProperty<IParentTransactionViewModel> OpenParentTransaction { get; }
+        bool ParentTransFlyoutOpen { get; set; }
         double Width { get; set; }
         double Height { get; set; }
         double X { get; set; }
         double Y { get; set; }
         WindowState WindowState { get; set; }
+        string Title { get; }
+        ITransDataGridColumnManager TransDataGridColumnManager { get; }
     }
 
-    public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
+    public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel, IOncePerApplication //todo IDisposable
     {
         private readonly Func<Owned<Func<string, ISqLiteBackendContext>>> _sqliteBackendContextFactory;
+        private readonly Func<Owned<Func<IEmptyContext>>> _emptyContextFactory;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
         protected bool FileFlyoutIsOpen;
@@ -54,11 +67,15 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public ReactiveCommand NewBudgetPlanCommand { get; } = new ReactiveCommand();
+        public IRxRelayCommand NewBudgetPlanCommand { get; }
 
-        public ReactiveCommand OpenBudgetPlanCommand { get; } = new ReactiveCommand();
+        public IRxRelayCommand OpenBudgetPlanCommand { get; }
 
-        public ReactiveCommand<IImportable> ImportBudgetPlanCommand { get; } = new ReactiveCommand<IImportable>();
+        public IRxRelayCommand CloseBudgetPlanCommand { get; }
+
+        public IRxRelayCommand ParentTransactionOnClose { get; }
+
+        public IRxRelayCommand<IImportable> ImportBudgetPlanCommand { get; }
 
         private IAccountTabsViewModel _accountTabsViewModel;
         public IAccountTabsViewModel AccountTabsViewModel
@@ -84,8 +101,64 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
+        public IEditAccountsViewModel EditAccountsViewModel
+        {
+            get => _editAccountsViewModel;
+            private set
+            {
+                if (value == _editAccountsViewModel) return;
+                _editAccountsViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IEditCategoriesViewModel EditCategoriesViewModel
+        {
+            get => _editCategoriesViewModel;
+            private set
+            {
+                if (value == _editCategoriesViewModel) return;
+                _editCategoriesViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IEditPayeesViewModel EditPayeesViewModel
+        {
+            get => _editPayeesViewModel;
+            private set
+            {
+                if (value == _editPayeesViewModel) return;
+                _editPayeesViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IEditFlagsViewModel EditFlagsViewModel
+        {
+            get => _editFlagsViewModel;
+            private set
+            {
+                if (value == _editFlagsViewModel) return;
+                _editFlagsViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICultureManager CultureManager
+        {
+            get => _cultureManager;
+            private set
+            {
+                if (value == _cultureManager) return;
+                _cultureManager = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ITransDataGridColumnManager TransDataGridColumnManager { get; }
         public IEmptyViewModel EmptyViewModel { get; set; }
-        public bool IsEmpty => AccountTabsViewModel == null || BudgetOverviewViewModel == null;
+        public bool IsEmpty => AccountTabsViewModel is null || BudgetOverviewViewModel is null;
 
         public CultureInfo LanguageCulture
         {
@@ -93,82 +166,69 @@ namespace BFF.MVVM.ViewModels
             set
             {
                 Settings.Default.Culture_DefaultLanguage = value;
-                _accountTabsViewModel?.ManageCultures();
-                OnPropertyChanged();
-            }
-        }
 
-        public CultureInfo CurrencyCulture
-        {
-            get => Settings.Default.Culture_SessionCurrency;
-            set
-            {
-                Settings.Default.Culture_SessionCurrency = value;
-                _accountTabsViewModel?.ManageCultures();
-                Messenger.Default.Send(CultureMessage.RefreshCurrency);
-                OnPropertyChanged();
-            }
-        }
+                CultureInfo customCulture = CultureInfo.CreateSpecificCulture(Settings.Default.Culture_DefaultLanguage.Name);
+                customCulture.NumberFormat = CultureManager.CurrencyCulture.NumberFormat;
+                customCulture.DateTimeFormat = CultureManager.DateCulture.DateTimeFormat;
 
-        public CultureInfo DateCulture
-        {
-            get => Settings.Default.Culture_SessionDate;
-            set
-            {
-                Settings.Default.Culture_SessionDate = value;
-                _accountTabsViewModel?.ManageCultures();
-                Messenger.Default.Send(CultureMessage.RefreshDate);
-                OnPropertyChanged();
-            }
-        }
+                WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = customCulture;
+                Thread.CurrentThread.CurrentCulture = customCulture;
+                Thread.CurrentThread.CurrentUICulture = customCulture;
 
-        //todo: put DateLong into Database, too?
-        public bool DateLong
-        {
-            get => Settings.Default.Culture_DefaultDateLong;
-            set
-            {
-                Settings.Default.Culture_DefaultDateLong = value;
-                _accountTabsViewModel?.ManageCultures();
-                Messenger.Default.Send(CultureMessage.RefreshDate);
+                Settings.Default.Save();
                 OnPropertyChanged();
             }
         }
 
         private const double BorderOffset = 50.0;
 
-        private ParentTitViewModel _parentTitViewModel;
+        private IParentTransactionViewModel _parentTransViewModel;
 
-        public ParentTitViewModel ParentTitViewModel
+        public IParentTransactionViewModel ParentTransactionViewModel
         {
-            get => _parentTitViewModel;
+            get => _parentTransViewModel;
             set
             {
-                _parentTitViewModel = value;
+                _parentTransViewModel = value;
                 OnPropertyChanged();
             }
         }
 
-        private bool _parentTitFlyoutOpen;
+        private bool _parentTransFlyoutOpen;
         private IBudgetOverviewViewModel _budgetOverviewViewModel;
-        private Owned<Func<string, ISqLiteBackendContext>> _contextOwner;
+        private readonly SerialDisposable _contextSequence = new SerialDisposable();
+        private IEditAccountsViewModel _editAccountsViewModel;
+        private IEditCategoriesViewModel _editCategoriesViewModel;
+        private IEditPayeesViewModel _editPayeesViewModel;
+        private IEditFlagsViewModel _editFlagsViewModel;
+        private ICultureManager _cultureManager;
 
-        public bool ParentTitFlyoutOpen
+        public IReadOnlyReactiveProperty<IParentTransactionViewModel> OpenParentTransaction { get; }
+
+        public bool ParentTransFlyoutOpen
         {
-            get => _parentTitFlyoutOpen;
+            get => _parentTransFlyoutOpen;
             set
             {
-                _parentTitFlyoutOpen = value;
+                _parentTransFlyoutOpen = value;
                 OnPropertyChanged();
             }
         }
 
         public MainWindowViewModel(
             Func<Owned<Func<string, ISqLiteBackendContext>>> sqliteBackendContextFactory,
+            Func<Owned<Func<IEmptyContext>>> emptyContextFactory,
+            Func<Owned<Func<string, IProvideConnection>>> ownedCreateProvideConnectionFactory,
+            Func<IProvideConnection, ICreateBackendOrm> createCreateBackendOrm,
+            ITransDataGridColumnManager transDataGridColumnManager,
+            IParentTransactionFlyoutManager parentTransactionFlyoutManager,
+            IRxSchedulerProvider schedulerProvider,
             IEmptyViewModel emptyViewModel)
         {
+            TransDataGridColumnManager = transDataGridColumnManager;
             EmptyViewModel = emptyViewModel;
             _sqliteBackendContextFactory = sqliteBackendContextFactory;
+            _emptyContextFactory = emptyContextFactory;
             Logger.Debug("Initializing …");
             Reset(Settings.Default.DBLocation);
 
@@ -183,33 +243,41 @@ namespace BFF.MVVM.ViewModels
                 Y = 50.0;
             }
 
-            Messenger.Default.Register<ParentTitViewModel>(this, parentTitViewModel =>
-            {
-                ParentTitViewModel = parentTitViewModel;
-                ParentTitFlyoutOpen = true;
-            });
+            OpenParentTransaction = parentTransactionFlyoutManager.OpenParentTransaction;
 
-            NewBudgetPlanCommand.Subscribe(_ =>
+            NewBudgetPlanCommand = new RxRelayCommand(() =>
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
-                    Title = "OpenSaveDialog_TitleNew".Localize<string>(),
-                    Filter = "OpenSaveDialog_Filter".Localize<string>(),
+                    Title = "OpenSaveDialog_TitleNew".Localize(),
+                    Filter = "OpenSaveDialog_Filter".Localize(),
                     DefaultExt = "*.sqlite"
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    new CreateSqLiteDatabase(saveFileDialog.FileName).Create();
-                    Reset(saveFileDialog.FileName);
+                    var ownedCreateProvideConnection = ownedCreateProvideConnectionFactory();
+                    createCreateBackendOrm(ownedCreateProvideConnection.Value(saveFileDialog.FileName))
+                        .CreateAsync()
+                        .ContinueWith(
+                            t =>
+                            {
+                                schedulerProvider.UI.Schedule(Unit.Default, (sc, st) =>
+                                {
+                                    ownedCreateProvideConnection.Dispose();
+                                    Reset(saveFileDialog.FileName);
+                                    return Disposable.Empty;
+                                });
+                                
+                            });
                 }
             });
 
-            OpenBudgetPlanCommand.Subscribe(_ =>
+            OpenBudgetPlanCommand = new RxRelayCommand(() =>
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog
                 {
-                    Title = "OpenSaveDialog_TitleOpen".Localize<string>(),
-                    Filter = "OpenSaveDialog_Filter".Localize<string>(),
+                    Title = "OpenSaveDialog_TitleOpen".Localize(),
+                    Filter = "OpenSaveDialog_Filter".Localize(),
                     DefaultExt = "*.sqlite"
                 };
                 if (openFileDialog.ShowDialog() == true)
@@ -218,7 +286,11 @@ namespace BFF.MVVM.ViewModels
                 }
             });
 
-            ImportBudgetPlanCommand.Subscribe(importableObject =>
+            CloseBudgetPlanCommand = new RxRelayCommand(() => Reset(null));
+
+            ParentTransactionOnClose = new RxRelayCommand(parentTransactionFlyoutManager.Close);
+
+            ImportBudgetPlanCommand = new RxRelayCommand<IImportable>(importableObject =>
             {
                 string savePath = importableObject.Import();
                 Reset(savePath);
@@ -227,32 +299,36 @@ namespace BFF.MVVM.ViewModels
             Logger.Trace("Initializing done.");
         }
 
-        protected void Reset(string dbPath)
+        private void Reset(string dbPath)
         {
-            _contextOwner?.Dispose();
-            if (File.Exists(dbPath))
+            IBackendContext context;
+            if (dbPath != null && File.Exists(dbPath))
             {
-                _contextOwner = null;
-                _contextOwner = _sqliteBackendContextFactory();
-                var context = _contextOwner.Value(dbPath);
-                
-                AccountTabsViewModel = context.AccountTabsViewModel;
-                BudgetOverviewViewModel = context.BudgetOverviewViewModel;
-                Title = $"{new FileInfo(dbPath).Name} - BFF";
+                var contextOwner = _sqliteBackendContextFactory();
+                context = contextOwner.Value(dbPath);
+                _contextSequence.Disposable = contextOwner;
+                Title = $"{new FileInfo(dbPath).FullName} - BFF";
                 Settings.Default.DBLocation = dbPath;
-                Settings.Default.Save();
             }
             else
             {
-                AccountTabsViewModel = null;
-                BudgetOverviewViewModel = null;
+                var contextOwner = _emptyContextFactory();
+                context = contextOwner.Value();
+                _contextSequence.Disposable = contextOwner;
                 Title = "BFF";
                 Settings.Default.DBLocation = "";
-                Settings.Default.Save();
             }
+            Settings.Default.Save();
+
+            AccountTabsViewModel = context.AccountTabsViewModel;
+            BudgetOverviewViewModel = context.BudgetOverviewViewModel;
+            EditAccountsViewModel = context.EditAccountsViewModel;
+            EditCategoriesViewModel = context.EditCategoriesViewModel;
+            EditPayeesViewModel = context.EditPayeesViewModel;
+            EditFlagsViewModel = context.EditFlagsViewModel;
+            CultureManager = context.CultureManager;
+
             OnPropertyChanged(nameof(IsEmpty));
-            OnPropertyChanged(nameof(CurrencyCulture));
-            OnPropertyChanged(nameof(DateCulture));
         }
 
         #region SizeLocationWindowState

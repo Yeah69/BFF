@@ -7,14 +7,6 @@
         RefreshDate
     }
 
-    public enum SummaryAccountMessage
-    {
-        Refresh,
-        RefreshTits,
-        RefreshBalance,
-        RefreshStartingBalance
-    }
-
     public enum BudgetOverviewMessage
     {
         Refresh

@@ -1,42 +1,35 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
-using Dapper;
+using BFF.Helper;
+using BFF.Helper.Extensions;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateSubTransactionTable : CreateTableBase
-    {
-        public CreateSubTransactionTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(SubTransaction)}s](
-            {nameof(SubTransaction.Id)} INTEGER PRIMARY KEY,
-            {nameof(SubTransaction.ParentId)} INTEGER,
-            {nameof(SubTransaction.CategoryId)} INTEGER,
-            {nameof(SubTransaction.Memo)} TEXT,
-            {nameof(SubTransaction.Sum)} INTEGER,
-            FOREIGN KEY({nameof(SubTransaction.ParentId)}) REFERENCES {nameof(Trans)}s({nameof(Trans.Id)}) ON DELETE CASCADE);";
-
-    }
-
     public interface ISubTransactionRepository : IRepositoryBase<Domain.ISubTransaction>
     {
-        IEnumerable<Domain.ISubTransaction> GetChildrenOf(long parentId, DbConnection connection = null);
+        Task<IEnumerable<Domain.ISubTransaction>> GetChildrenOfAsync(long parentId);
     }
 
     public sealed class SubTransactionRepository : RepositoryBase<Domain.ISubTransaction, SubTransaction>, ISubTransactionRepository
     {
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly IParentalOrm _parentalOrm;
+        private readonly ICategoryBaseRepository _categoryBaseRepository;
 
         public SubTransactionRepository(
             IProvideConnection provideConnection,
-            ICategoryRepository categoryRepository) : base(provideConnection)
+            IRxSchedulerProvider rxSchedulerProvider,
+            ICrudOrm crudOrm,
+            IParentalOrm parentalOrm,
+            ICategoryBaseRepository categoryBaseRepository) : base(provideConnection, crudOrm)
         {
-            _categoryRepository = categoryRepository;
+            _rxSchedulerProvider = rxSchedulerProvider;
+            _parentalOrm = parentalOrm;
+            _categoryBaseRepository = categoryBaseRepository;
         }
         
         protected override Converter<Domain.ISubTransaction, SubTransaction> ConvertToPersistence => domainSubTransaction => 
@@ -49,24 +42,21 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Sum = domainSubTransaction.Sum
             };
 
-        protected override Converter<(SubTransaction, DbConnection), Domain.ISubTransaction> ConvertToDomain => tuple =>
+        public async Task<IEnumerable<Domain.ISubTransaction>> GetChildrenOfAsync(long parentId) =>
+            await (await _parentalOrm.ReadSubTransactionsOfAsync(parentId).ConfigureAwait(false))
+                .Select(async sti => await ConvertToDomainAsync(sti)).ToAwaitableEnumerable().ConfigureAwait(false);
+
+        protected override async Task<Domain.ISubTransaction> ConvertToDomainAsync(SubTransaction persistenceModel)
         {
-            (SubTransaction persistenceSubTransaction, DbConnection connection) = tuple;
             return new Domain.SubTransaction(
                 this,
-                persistenceSubTransaction.Id,
-                persistenceSubTransaction.CategoryId == null ? null : _categoryRepository.Find((long)persistenceSubTransaction.CategoryId, connection),
-                persistenceSubTransaction.Memo,
-                persistenceSubTransaction.Sum);
-        };
-
-        private string ParentalQuery => 
-            $"SELECT * FROM [{typeof(SubTransaction).Name}s] WHERE {nameof(SubTransaction.ParentId)} = @ParentId;";
-
-        public IEnumerable<Domain.ISubTransaction> GetChildrenOf(long parentId, DbConnection connection = null) => 
-            ConnectionHelper.QueryOnExistingOrNewConnection(
-                c => c.Query<SubTransaction>(ParentalQuery, new {ParentId = parentId}).Select(sti => ConvertToDomain( (sti, c) )),
-                ProvideConnection,
-                connection);
+                _rxSchedulerProvider,
+                persistenceModel.Id,
+                persistenceModel.CategoryId is null
+                    ? null
+                    : await _categoryBaseRepository.FindAsync((long)persistenceModel.CategoryId).ConfigureAwait(false),
+                persistenceModel.Memo,
+                persistenceModel.Sum);
+        }
     }
 }

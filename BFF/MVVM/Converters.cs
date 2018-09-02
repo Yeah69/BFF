@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Globalization;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -21,13 +25,17 @@ namespace BFF.MVVM
 
         private static readonly DateTime DateComboSampleValue = new DateTime(2013, 9, 6);
 
-        private static SolidColorBrush TransactionBrush => (SolidColorBrush)Application.Current.TryFindResource("TransactionBrush") ?? Brushes.DarkOrange;
+        private static SolidColorBrush TransactionBrush =>
+            (SolidColorBrush) Application.Current.TryFindResource("TransactionBrush") ?? Brushes.DarkOrange;
 
-        private static SolidColorBrush IncomeBrush => (SolidColorBrush)Application.Current.TryFindResource("IncomeBrush") ?? Brushes.LimeGreen;
+        private static SolidColorBrush IncomeBrush =>
+            (SolidColorBrush) Application.Current.TryFindResource("IncomeBrush") ?? Brushes.LimeGreen;
 
-        private static SolidColorBrush TransferBrush => (SolidColorBrush)Application.Current.TryFindResource("TransferBrush") ?? Brushes.RoyalBlue;
+        private static SolidColorBrush TransferBrush =>
+            (SolidColorBrush) Application.Current.TryFindResource("TransferBrush") ?? Brushes.RoyalBlue;
 
-        private static SolidColorBrush NeutralForegroundBrush => (SolidColorBrush)Application.Current.TryFindResource("BlackBrush") ?? Brushes.Black;
+        private static SolidColorBrush NeutralForegroundBrush =>
+            (SolidColorBrush) Application.Current.TryFindResource("BlackBrush") ?? Brushes.Black;
 
         //Single Value Converters
 
@@ -44,7 +52,7 @@ namespace BFF.MVVM
         /// </summary>
         public static readonly IValueConverter BooleanToNullableBoolean =
             ValueConverter.Create<bool, bool?>(
-                e => e.Value, 
+                e => e.Value,
                 e => e.Value ?? false);
 
         /// <summary>
@@ -53,12 +61,12 @@ namespace BFF.MVVM
         /// </summary>
         public static readonly IValueConverter CurrencyChoiceBoxExampleConversion =
             ValueConverter.Create<string, string, string>(
-                e => 
+                e =>
                 {
                     var itemCulture = CultureInfo.GetCultureInfo(e.Value);
-                    return e.Parameter == "negative" 
-                    ? (-CurrencyComboSampleValue).AsCurrency(itemCulture) 
-                    : CurrencyComboSampleValue.AsCurrency(itemCulture);
+                    return e.Parameter == "negative"
+                        ? (-CurrencyComboSampleValue).AsCurrency(itemCulture)
+                        : CurrencyComboSampleValue.AsCurrency(itemCulture);
                 });
 
         /// <summary>
@@ -67,12 +75,14 @@ namespace BFF.MVVM
         /// </summary>
         public static readonly IValueConverter DateChoiceBoxExampleConversion =
             ValueConverter.Create<string, string, string>(
-                e => 
+                e =>
                 {
                     var itemCulture = CultureInfo.GetCultureInfo(e.Value);
-                    return e.Parameter == "long" 
-                    ? DateComboSampleValue.ToString(itemCulture.DateTimeFormat.LongDatePattern, itemCulture.DateTimeFormat)
-                    : DateComboSampleValue.ToString(itemCulture.DateTimeFormat.ShortDatePattern, itemCulture.DateTimeFormat);
+                    return e.Parameter == "long"
+                        ? DateComboSampleValue.ToString(itemCulture.DateTimeFormat.LongDatePattern,
+                            itemCulture.DateTimeFormat)
+                        : DateComboSampleValue.ToString(itemCulture.DateTimeFormat.ShortDatePattern,
+                            itemCulture.DateTimeFormat);
                 });
 
         /// <summary>
@@ -82,8 +92,8 @@ namespace BFF.MVVM
             ValueConverter.Create<DateTime, string>(
                 e => e.Value.ToString(
                     Settings.Default.Culture_DefaultDateLong
-                    ? Settings.Default.Culture_SessionDate.DateTimeFormat.LongDatePattern
-                    : Settings.Default.Culture_SessionDate.DateTimeFormat.ShortDatePattern
+                        ? Settings.Default.Culture_SessionDate.DateTimeFormat.LongDatePattern
+                        : Settings.Default.Culture_SessionDate.DateTimeFormat.ShortDatePattern
                     , Settings.Default.Culture_SessionDate.DateTimeFormat),
                 e => DateTime.Parse(e.Value, Settings.Default.Culture_SessionDate.DateTimeFormat));
 
@@ -94,9 +104,9 @@ namespace BFF.MVVM
         /// </summary>
         public static readonly IValueConverter NullableSumToString =
             ValueConverter.Create<long?, string>(
-                e => e.Value == null
-                         ? ""
-                         : ((long) e.Value).AsCurrency(Settings.Default.Culture_SessionCurrency),
+                e => e.Value is null
+                    ? ""
+                    : ((long) e.Value).AsCurrency(Settings.Default.Culture_SessionCurrency),
                 e => e.Value.CurrencyAsLong(Settings.Default.Culture_SessionCurrency));
 
         /// <summary>
@@ -116,7 +126,7 @@ namespace BFF.MVVM
         public static readonly IValueConverter CategoryDepthToMargin =
             ValueConverter.Create<int, Thickness>(
                 e => new Thickness(e.Value * 10.0, 0, 5, 0));
-        
+
         /// <summary>
         /// Negative sums get the same color as the transactions and positive sums (and zero) get the same color as incomes.
         /// Because it is expected that most of the transactions get negative sums and most of the incomes get positive sums.
@@ -124,11 +134,26 @@ namespace BFF.MVVM
         /// </summary>
         public static readonly IValueConverter SumToSolidColorBrush =
             ValueConverter.Create<long, SolidColorBrush>(
-                e => e.Value == 0L 
-                    ? NeutralForegroundBrush 
-                    : e.Value < 0L 
-                        ? TransactionBrush 
+                e => e.Value == 0L
+                    ? NeutralForegroundBrush
+                    : e.Value < 0L
+                        ? TransactionBrush
                         : IncomeBrush);
+
+        /// <summary>
+        /// Negative sums get the same color as the transactions and positive sums (and zero) get the same color as incomes.
+        /// Because it is expected that most of the transactions get negative sums and most of the incomes get positive sums.
+        /// No convert back function.
+        /// </summary>
+        public static readonly IValueConverter NullableSumToSolidColorBrush =
+            ValueConverter.Create<long?, SolidColorBrush>(
+                e => e.Value is null 
+                    ? Brushes.Transparent
+                    : e.Value == 0L
+                        ? NeutralForegroundBrush
+                        : e.Value < 0L
+                            ? TransactionBrush
+                            : IncomeBrush);
 
         /// <summary>
         /// True if value is current month, otherwise false.
@@ -167,7 +192,19 @@ namespace BFF.MVVM
         /// </summary>
         public static readonly IValueConverter OfType =
             ValueConverter.Create<object, bool, Type>(
-                e => e.Value?.GetType() == e.Parameter);
+                e => e.Value?.IsInstanceOfType(e.Parameter) ?? false);
+
+        /// <summary>
+        /// True if value is lesser than zero, otherwise false.
+        /// </summary>
+        public static readonly IValueConverter SignToString =
+            ValueConverter.Create<Sign, string>(
+                e => typeof(Sign)
+                    .GetMember(e.Value.ToString())[0]
+                    .GetCustomAttributes(false)
+                    .OfType<EnumMemberAttribute>()
+                    .FirstOrDefault()
+                    ?.Value);
 
 
         //Multi Value Converters
@@ -182,11 +219,17 @@ namespace BFF.MVVM
                     double sum = 0.0;
                     foreach (object value in e.Values)
                     {
-                        if (value is DataGridLength)
-                            sum += ((DataGridLength)value).DisplayValue;
-                        else if (value is double)
-                            sum += (double)value;
+                        switch (value)
+                        {
+                            case DataGridLength _:
+                                sum += ((DataGridLength) value).DisplayValue;
+                                break;
+                            case double _:
+                                sum += (double) value;
+                                break;
+                        }
                     }
+
                     return sum;
                 });
 
@@ -200,11 +243,17 @@ namespace BFF.MVVM
                     double sum = 0.0;
                     foreach (object value in e.Values)
                     {
-                        if (value is DataGridLength)
-                            sum += ((DataGridLength)value).DisplayValue;
-                        else if (value is double)
-                            sum += (double)value;
+                        switch (value)
+                        {
+                            case DataGridLength _:
+                                sum += ((DataGridLength) value).DisplayValue;
+                                break;
+                            case double _:
+                                sum += (double) value;
+                                break;
+                        }
                     }
+
                     return new Thickness(sum, 0.0, 0.0, 0.0);
                 });
 
@@ -218,9 +267,9 @@ namespace BFF.MVVM
         /// </summary>
         public static readonly IMultiValueConverter TransferSumAsCorrectlySignedString =
             MultiValueConverter.Create<object, string>(
-                e => e.Values[0] == e.Values[1]
-                ? (-1 * (long)e.Values[2]).AsCurrency(Settings.Default.Culture_SessionCurrency) 
-                : ((long)e.Values[2]).AsCurrency(Settings.Default.Culture_SessionCurrency));
+                e => e.Values[0] == e.Values[1] || e.Values[2] == null
+                    ? (-1 * (long) e.Values[3]).AsCurrency(Settings.Default.Culture_SessionCurrency)
+                    : ((long) e.Values[3]).AsCurrency(Settings.Default.Culture_SessionCurrency));
 
         /// <summary>
         /// The transfer color depends on the currently currently shown Account. Therefore this converter is applied on three specific bindings:
@@ -237,16 +286,122 @@ namespace BFF.MVVM
                 e =>
                 {
                     //Transfer in "All Accounts"-Tab
-                    if (e.Values[0] is ISummaryAccountViewModel)
+                    if (e.Values[0] is ISummaryAccountViewModel && e.Values[1] != null && e.Values[2] != null)
                         return TransferBrush;
-                    IAccountViewModel account = (IAccountViewModel)e.Values[0];
+                    var account = e.Values[0];
                     //Transfer in FromAccount-Tab
-                    if (account == (IAccountViewModel)e.Values[1])
+                    if (e.Values[0] is ISummaryAccountViewModel && e.Values[2] == null ||
+                        account == e.Values[1])
                         return TransactionBrush;
                     //Transfer in ToAccount-Tab
-                    if (account == (IAccountViewModel)e.Values[2])
+                    if (e.Values[0] is ISummaryAccountViewModel && e.Values[1] == null ||
+                        account == e.Values[2])
                         return IncomeBrush;
                     return Brushes.Transparent; //Error case
                 });
+
+        public static readonly IValueConverter NullToCollapsed =
+            ValueConverter.Create<object, Visibility>(e => e.Value is null ? Visibility.Collapsed : Visibility.Visible);
+
+        public static readonly IValueConverter InverseNullToCollapsed =
+            ValueConverter.Create<object, Visibility>(e => e.Value != null ? Visibility.Collapsed : Visibility.Visible);
+
+        public static readonly IValueConverter NullableLongToCollapsed =
+            ValueConverter.Create<long?, Visibility>(e => e.Value is null ? Visibility.Collapsed : Visibility.Visible);
+
+        public static readonly IValueConverter InverseNullableLongToCollapsed =
+            ValueConverter.Create<long?, Visibility>(e => e.Value != null ? Visibility.Collapsed : Visibility.Visible);
+
+
+        public static readonly IValueConverter ZeroLongToHidden =
+            ValueConverter.Create<long, Visibility>(e => e.Value == 0 ? Visibility.Hidden : Visibility.Visible);
+
+        public static readonly IValueConverter ColorToSolidColorBrush =
+            ValueConverter.Create<Color, SolidColorBrush>(e => new SolidColorBrush(e.Value));
+
+        public static readonly IValueConverter TrueToCollapsed =
+            ValueConverter.Create<bool, Visibility>(
+                e => e.Value ? Visibility.Collapsed : Visibility.Visible,
+                e => e.Value == Visibility.Collapsed);
+
+        public static readonly IValueConverter TrueToHidden =
+            ValueConverter.Create<bool, Visibility>(
+                e => e.Value ? Visibility.Hidden : Visibility.Visible,
+                e => e.Value == Visibility.Hidden);
+
+        public static readonly IValueConverter FalseToCollapsed =
+            ValueConverter.Create<bool, Visibility>(
+                e => e.Value ? Visibility.Visible : Visibility.Collapsed,
+                e => e.Value == Visibility.Visible);
+
+        /// <summary>
+        /// Visible if value is of given Type, otherwise Collapsed.
+        /// </summary>
+        public static readonly IValueConverter NotOfTypeToCollapsed =
+            ValueConverter.Create<object, Visibility, Type>(
+                e => e.Value?.IsInstanceOfType(e.Parameter) ?? false ? Visibility.Visible : Visibility.Collapsed);
+
+        /// <summary>
+        /// Visible if value is of given Type, otherwise Collapsed.
+        /// </summary>
+        public static readonly IValueConverter OfTypeToCollapsed =
+            ValueConverter.Create<object, Visibility, Type>(
+                e => e.Value?.IsInstanceOfType(e.Parameter) ?? false ? Visibility.Collapsed : Visibility.Visible);
+        
+        public static readonly IValueConverter AsEnumerable =
+            ValueConverter.Create<object, IEnumerable>(
+                e => new[] { e.Value });
+
+        public static readonly IValueConverter IsNull =
+            ValueConverter.Create<object, bool>(
+                e => e.Value != null);
+
+        public static readonly IValueConverter IsNotNull =
+            ValueConverter.Create<object, bool>(
+                e => e.Value != null);
+
+        public static readonly IValueConverter NoneToCollapsed =
+            ValueConverter.Create<IEnumerable, Visibility>(
+                e => e.Value.GetEnumerator().MoveNext() ? Visibility.Visible : Visibility.Collapsed);
+
+        public static readonly IMultiValueConverter AllEqualToVisibleElseCollapsed =
+            MultiValueConverter.Create<object, Visibility>(
+                e =>
+                {
+                    if (!e.Values.Any()) return Visibility.Visible;
+
+                    var first = e.Values.First();
+                    return e.Values.All(i => first.Equals(i)) ? Visibility.Visible : Visibility.Collapsed;
+                });
+
+        public static readonly IMultiValueConverter NotAllEqualToVisibleElseCollapsed =
+            MultiValueConverter.Create<object, Visibility>(
+                e =>
+                {
+                    if (e.Values.Count <= 1) return Visibility.Visible;
+
+                    var first = e.Values.First();
+                    return e.Values.Any(i => !first.Equals(i)) ? Visibility.Visible : Visibility.Collapsed;
+                });
+
+        public static readonly IValueConverter Any =
+            ValueConverter.Create<IEnumerable, bool>(
+                e => e.Value.GetEnumerator().MoveNext());
+
+        public static readonly IValueConverter None =
+            ValueConverter.Create<IEnumerable, bool>(
+                e => e.Value.GetEnumerator().MoveNext().Not());
+
+        public static readonly IValueConverter IntGreaterThanZeroVisibleElseCollapsed =
+            ValueConverter.Create<int, Visibility>(
+                e => e.Value > 0 ? Visibility.Visible : Visibility.Collapsed);
+
+        public static readonly IValueConverter IntEqualToZeroVisibleElseCollapsed =
+            ValueConverter.Create<int, Visibility>(
+                e => e.Value == 0 ? Visibility.Visible : Visibility.Collapsed);
+
+        public static readonly IValueConverter IntGreaterThanZero =
+            ValueConverter.Create<int, bool>(
+                e => e.Value > 0);
     }
 }

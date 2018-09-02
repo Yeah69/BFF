@@ -26,13 +26,14 @@
     </UserControl.Resources>
     <Grid>
         <TabControl Name="AccountsTabControl"
+                    Visibility="{Binding AllAccounts.Count, Converter={x:Static mvvm:Converters.IntGreaterThanZeroVisibleElseCollapsed}}"
                     Margin="10"
                     controls:TabControlHelper.Underlined="TabItems">
             <TabControl.Resources>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
             </TabControl.Resources>
             <i:Interaction.Behaviors>
-                <attachedBehaviors:AdditionalTabItemsBehavior IsSelectedMemberPath="IsOpen.Value"
+                <attachedBehaviors:AdditionalTabItemsBehavior IsSelectedMemberPath="IsOpen"
                                                               ItemsSource="{Binding AllAccounts}"
                                                               StartingIndex="1">
                     <attachedBehaviors:AdditionalTabItemsBehavior.HeaderTemplate>
@@ -42,7 +43,7 @@
                                                             Height="{StaticResource TabHeaderIconSize}"
                                                             VerticalAlignment="Center"
                                                             Kind="CreditCard" />
-                                <TextBlock Text="{Binding DataContext.Name.Value, RelativeSource={RelativeSource AncestorType=TabItem}}" />
+                                <TextBlock Text="{Binding DataContext.Name, RelativeSource={RelativeSource AncestorType=TabItem}}" />
                             </StackPanel>
                         </DataTemplate>
                     </attachedBehaviors:AdditionalTabItemsBehavior.HeaderTemplate>
@@ -54,7 +55,7 @@
                 </attachedBehaviors:AdditionalTabItemsBehavior>
             </i:Interaction.Behaviors>
             <TabItem x:Name="SummaryAccountTab"
-                     IsSelected="{Binding SummaryAccountViewModel.IsOpen.Value}">
+                     IsSelected="{Binding SummaryAccountViewModel.IsOpen}">
                 <TabItem.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -86,36 +87,20 @@
                         </StackPanel>
                     </DataTemplate>
                 </TabItem.HeaderTemplate>
-                <StackPanel Width="500"
-                            DataContext="{Binding NewAccountViewModel}">
-                    <Label Content="{lex:Loc AccountTabsView_NewAccount_Name}" />
-                    <TextBox Text="{Binding Mode=TwoWay, Path=Name.Value, UpdateSourceTrigger=PropertyChanged}" />
-                    <Label Content="{lex:Loc AccountTabsView_NewAccount_StartingBalance}" />
-                    <TextBox Name="NewAccountStartingBalance"
-                             MaxLength="30">
-                        <TextBox.Text>
-                            <Binding Converter="{x:Static mvvm:Converters.SumToString}"
-                                     Mode="TwoWay"
-                                     Path="StartingBalance.Value"
-                                     UpdateSourceTrigger="LostFocus">
-                                <Binding.ValidationRules>
-                                    <x:Static Member="mvvm:Rules.Currency" />
-                                    <x:Static Member="mvvm:Rules.CurrencyLongRange" />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                    <Label Content="{lex:Loc AccountTabsView_NewAccount_StartingDate}" />
-                    <DatePicker x:Name="NewAccountDatePicker"
-                                SelectedDate="{Binding StartingDate.Value}"
-                                SelectedDateFormat="{Binding IsDateFormatLong, Converter={x:Static mvvm:Converters.BooleanToDatePickerFormat}}" />
-                    <Button Margin="0,5,0,0"
-                            HorizontalAlignment="Right"
-                            Command="{Binding AddCommand}"
-                            Content="{lex:Loc AccountTabsView_NewAccount_Create}" />
-                </StackPanel>
+                <views:NewAccountView Width="500"
+                                      DataContext="{Binding NewAccountViewModel}" />
             </TabItem>
         </TabControl>
+
+        <StackPanel Visibility="{Binding AllAccounts.Count, Converter={x:Static mvvm:Converters.IntEqualToZeroVisibleElseCollapsed}}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock FontSize="{StaticResource BigTitleFontSize}"
+                       Text="{lex:Loc Account_CreateNew}" />
+
+            <views:NewAccountView Width="500"
+                                  DataContext="{Binding NewAccountViewModel}" />
+        </StackPanel>
     </Grid>
 </UserControl>
 

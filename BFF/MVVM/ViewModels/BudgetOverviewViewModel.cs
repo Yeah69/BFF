@@ -4,11 +4,17 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
+using BFF.DB;
 using BFF.DB.Dapper;
 using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper;
+using BFF.Helper.Extensions;
+using BFF.MVVM.Managers;
+using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using Reactive.Bindings;
@@ -20,29 +26,45 @@ namespace BFF.MVVM.ViewModels
     {
         IList<IBudgetMonthViewModel> BudgetMonths { get; }
 
-        IReactiveProperty<int> CurrentMonthStartIndex { get; }
+        IBudgetMonthViewModel CurrentBudgetMonth { get; }
 
-        IReactiveProperty<bool> IsOpen { get; }
+        int CurrentMonthStartIndex { get; }
+
+        bool IsOpen { get; set; }
         int SelectedIndex { get; set; }
 
-        ReactiveCommand IncreaseMonthStartIndex { get; }
+        DateTime SelectedMonth { get; set; }
 
-        ReactiveCommand DecreaseMonthStartIndex { get; }
+        IRxRelayCommand IncreaseMonthStartIndex { get; }
+
+        IRxRelayCommand DecreaseMonthStartIndex { get; }
+
+        ITransDataGridColumnManager TransDataGridColumnManager { get; }
+
+        Task Refresh();
+
+        IDisposable DeferRefreshUntilDisposal();
+
+        IBudgetMonthViewModel GetBudgetMonthViewModel(DateTime month);
     }
 
-    public class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IDisposable
+    public class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IOncePerBackend, IDisposable
     {
         private static readonly int LastMonthIndex = MonthToIndex(DateTime.MaxValue);
 
         private readonly IBudgetMonthRepository _budgetMonthRepository;
-        private readonly IBudgetEntryViewModelService _budgetEntryViewModelService;
+        private readonly Func<IBudgetMonth, IBudgetMonthViewModel> _budgetMonthViewModelFactory;
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
         private int _selectedIndex;
+        private int _currentMonthStartIndex;
+        private bool _isOpen;
+        private bool _canRefresh = true;
+        private DateTime _selectedMonth;
         public IList<IBudgetMonthViewModel> BudgetMonths { get; private set; }
+        public IBudgetMonthViewModel CurrentBudgetMonth => BudgetMonths[MonthToIndex(DateTime.Now)];
 
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
-
-        public IBudgetMonthViewModel SelectedBudgetMonth { get; }
 
         public int SelectedIndex
         {
@@ -55,22 +77,59 @@ namespace BFF.MVVM.ViewModels
             }
         }
 
-        public IReactiveProperty<int> CurrentMonthStartIndex { get; }
+        public DateTime SelectedMonth
+        {
+            get => _selectedMonth;
+            set
+            {
+                if (_selectedMonth == value) return;
+                _selectedMonth = value;
+                CurrentMonthStartIndex = MonthToIndex(_selectedMonth);
+                OnPropertyChanged();
+            }
+        }
 
-        public IReactiveProperty<bool> IsOpen { get; }
+        public int CurrentMonthStartIndex
+        {
+            get => _currentMonthStartIndex;
+            set
+            {
+                if (_currentMonthStartIndex == value) return;
+                _currentMonthStartIndex = value;
+                SelectedMonth = IndexToMonth(_currentMonthStartIndex);
+                OnPropertyChanged();
+            }
+        }
 
-        public ReactiveCommand IncreaseMonthStartIndex { get; }
+        public bool IsOpen
+        {
+            get => _isOpen;
+            set
+            {
+                if (_isOpen == value) return;
+                _isOpen = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public ReactiveCommand DecreaseMonthStartIndex { get; }
+        public IRxRelayCommand IncreaseMonthStartIndex { get; }
+
+        public IRxRelayCommand DecreaseMonthStartIndex { get; }
+        public ITransDataGridColumnManager TransDataGridColumnManager { get; }
 
         public BudgetOverviewViewModel(
             IBudgetMonthRepository budgetMonthRepository,
-            IBudgetEntryViewModelService budgetEntryViewModelService,
+            ICultureManager cultureManager,
+            Func<IBudgetMonth, IBudgetMonthViewModel> budgetMonthViewModelFactory,
+            ITransDataGridColumnManager transDataGridColumnManager,
+            IRxSchedulerProvider rxSchedulerProvider,
             ICategoryViewModelService categoryViewModelService,
             ICategoryRepository categoryRepository)
         {
+            TransDataGridColumnManager = transDataGridColumnManager;
             _budgetMonthRepository = budgetMonthRepository;
-            _budgetEntryViewModelService = budgetEntryViewModelService;
+            _budgetMonthViewModelFactory = budgetMonthViewModelFactory;
+            _rxSchedulerProvider = rxSchedulerProvider;
 
             SelectedIndex = -1;
 
@@ -80,24 +139,32 @@ namespace BFF.MVVM.ViewModels
                     .ToReadOnlyReactiveCollection(categoryViewModelService.GetViewModel);
 
             BudgetMonths = CreateBudgetMonths();
-            int index = MonthToIndex(DateTime.Now) - 1;
-            SelectedBudgetMonth = BudgetMonths[index];
-            CurrentMonthStartIndex = new ReactiveProperty<int>(index);
+            CurrentMonthStartIndex = MonthToIndex(DateTime.Now) - 1;
 
-            IncreaseMonthStartIndex = CurrentMonthStartIndex.Select(i => i < LastMonthIndex - 1).ToReactiveCommand()
-                .AddTo(_compositeDisposable);
-            IncreaseMonthStartIndex.Subscribe(_ => CurrentMonthStartIndex.Value = CurrentMonthStartIndex.Value + 1)
-                .AddTo(_compositeDisposable);
-            DecreaseMonthStartIndex = CurrentMonthStartIndex.Select(i => i > 0).ToReactiveCommand()
-                .AddTo(_compositeDisposable);
-            DecreaseMonthStartIndex.Subscribe(_ => CurrentMonthStartIndex.Value = CurrentMonthStartIndex.Value - 1)
-                .AddTo(_compositeDisposable);
-            IsOpen =
-                new ReactiveProperty<bool>(false, ReactivePropertyMode.DistinctUntilChanged)
-                    .AddTo(_compositeDisposable);
-            IsOpen.Where(b => b).Subscribe(b => Refresh()).AddTo(_compositeDisposable);
+            var currentMonthStartIndexChanges = this
+                .ObservePropertyChanges(nameof(CurrentMonthStartIndex))
+                .Select(_ => CurrentMonthStartIndex);
 
-            Messenger.Default.Register<CultureMessage>(this, message =>
+            IncreaseMonthStartIndex = currentMonthStartIndexChanges
+                .Select(i => i < LastMonthIndex - 1)
+                .ToRxRelayCommand(() => CurrentMonthStartIndex = CurrentMonthStartIndex + 1)
+                .AddTo(_compositeDisposable);
+            DecreaseMonthStartIndex = currentMonthStartIndexChanges
+                .Select(i => i < LastMonthIndex - 1)
+                .ToRxRelayCommand(
+                    () => CurrentMonthStartIndex = CurrentMonthStartIndex - 1)
+                .AddTo(_compositeDisposable);
+
+            IsOpen = false;
+
+            this
+                .ObservePropertyChanges(nameof(IsOpen))
+                .Where(_ => IsOpen)
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(b => Task.Factory.StartNew(Refresh))
+                .AddTo(_compositeDisposable);
+
+            cultureManager.RefreshSignal.Subscribe(message =>
             {
                 switch (message)
                 {
@@ -105,56 +172,65 @@ namespace BFF.MVVM.ViewModels
                         break;
                     case CultureMessage.RefreshCurrency:
                     case CultureMessage.RefreshDate:
-                        Refresh();
+                        Task.Factory.StartNew(Refresh);
                         break;
                     default:
                         throw new InvalidEnumArgumentException();
                 }
-            });
-
-            Messenger.Default.Register<BudgetOverviewMessage>(this, message =>
-            {
-                switch (message)
-                {
-                    case BudgetOverviewMessage.Refresh:
-                        Refresh();
-                        break;
-                    default:
-                        throw new InvalidEnumArgumentException();
-                }
-            });
-
-            Disposable.Create(() =>
-            {
-                Messenger.Default.Unregister<CultureMessage>(this);
-                Messenger.Default.Unregister<BudgetOverviewMessage>(this);
             }).AddTo(_compositeDisposable);
         }
 
-        private void Refresh()
+        public async Task Refresh()
         {
-            BudgetMonths = CreateBudgetMonths();
-            OnPropertyChanged(nameof(BudgetMonths));
+            if (_canRefresh.Not()) return;
+            BudgetMonths = await Task.Run(() => CreateBudgetMonths());
+            _rxSchedulerProvider.UI.MinimalSchedule(() => OnPropertyChanged(nameof(BudgetMonths)));
+        }
+
+        public IDisposable DeferRefreshUntilDisposal()
+        {
+            _canRefresh = false;
+            return Disposable.Create(async () =>
+            {
+                _canRefresh = true;
+                await Refresh();
+            });
+        }
+
+        public IBudgetMonthViewModel GetBudgetMonthViewModel(DateTime month)
+        {
+            var index = MonthToIndex(month);
+            return index < 0 ? null : BudgetMonths[index];
         }
 
         private IDataVirtualizingCollection<IBudgetMonthViewModel> CreateBudgetMonths()
         {
             return CollectionBuilder<IBudgetMonthViewModel>
                 .CreateBuilder()
-                .BuildAHoardingPreloadingSyncCollection(
-                    new RelayBasicSyncDataAccess<IBudgetMonthViewModel>(
-                        (offset, pageSize) =>
+                .BuildAHoardingPreloadingTaskBasedSyncCollection(
+                    new RelayBasicTaskBasedSyncDataAccess<IBudgetMonthViewModel>(
+                        async (offset, pageSize) =>
                         {
-                            DateTime fromMonth = IndexToMonth(offset);
-                            DateTime toMonth = IndexToMonth(offset + pageSize - 1);
+                            var budgetMonthViewModels = await Task.Run(async () => (await _budgetMonthRepository.FindAsync(IndexToMonth(offset).Year).ConfigureAwait(false))
+                                .Select(bm => _budgetMonthViewModelFactory(bm))
+                                .ToArray()).ConfigureAwait(false);
 
-                            return _budgetMonthRepository.Find(fromMonth, toMonth, null)
-                                .Select(bm =>
-                                    (IBudgetMonthViewModel) new BudgetMonthViewModel(bm, _budgetEntryViewModelService))
-                                .ToArray();
+                            foreach (var bmvm in budgetMonthViewModels)
+                            {
+                                var categoriesToBudgetEntries = bmvm.BudgetEntries.ToDictionary(bevm => bevm.Category, bevm => bevm);
+                                foreach (var bevm in bmvm.BudgetEntries)
+                                {
+                                    bevm.Children = bevm
+                                        .Category
+                                        .Categories
+                                        .Select(cvm => categoriesToBudgetEntries[cvm]).ToList();
+                                }
+                            }
+
+                            return budgetMonthViewModels;
                         },
-                        () => LastMonthIndex),
-                    6);
+                        () =>  Task.FromResult(LastMonthIndex)),
+                    pageSize: 12);
         }
 
         private static DateTime IndexToMonth(int index)

@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
+using BFF.Helper;
+using BFF.Helper.Extensions;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -14,122 +18,192 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The account from where the money is transfered.
         /// </summary>
-        IReactiveProperty<IAccountViewModel> FromAccount { get; }
+        IAccountViewModel FromAccount { get; set; }
 
         /// <summary>
         /// The account to where the money is transfered.
         /// </summary>
-        IReactiveProperty<IAccountViewModel> ToAccount { get; }
+        IAccountViewModel ToAccount { get; set; }
+
+        IRxRelayCommand NonInsertedConvertToTransaction { get; }
+        IRxRelayCommand NonInsertedConvertToParentTransaction { get; }
     }
 
     /// <summary>
     /// The ViewModel of the Model Transfer.
     /// </summary>
-    public class TransferViewModel : TransBaseViewModel, ITransferViewModel
+    public sealed class TransferViewModel : TransBaseViewModel, ITransferViewModel
     {
+        private readonly ITransfer _transfer;
         private readonly IAccountViewModelService _accountViewModelService;
+        private readonly ISummaryAccountViewModel _summaryAccountViewModel;
+        private IAccountViewModel _fromAccount;
+        private IAccountViewModel _toAccount;
 
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts => _accountViewModelService.All;
 
         /// <summary>
         /// The account from where the money is transfered.
         /// </summary>
-        public IReactiveProperty<IAccountViewModel> FromAccount { get; }
+        public IAccountViewModel FromAccount
+        {
+            get => _fromAccount;
+            set => _transfer.FromAccount = _accountViewModelService.GetModel(value);
+        }
 
         /// <summary>
         /// The account to where the money is transferred.
         /// </summary>
-        public IReactiveProperty<IAccountViewModel> ToAccount { get; }
+        public IAccountViewModel ToAccount
+        {
+            get => _toAccount;
+            set => _transfer.ToAccount = _accountViewModelService.GetModel(value);
+        }
+
+        public IRxRelayCommand NonInsertedConvertToTransaction { get; }
+        public IRxRelayCommand NonInsertedConvertToParentTransaction { get; }
 
         /// <summary>
         /// The amount of money, which is transfered.
         /// </summary>
-        public sealed override IReactiveProperty<long> Sum { get; }
+        public override IReactiveProperty<long> Sum { get; }
 
-        /// <summary>
-        /// Initializes a TransferViewModel.
-        /// </summary>
-        /// <param name="transfer">A Transfer Model.</param>
-        /// <param name="accountViewModelService"></param>
         public TransferViewModel(
             ITransfer transfer, 
             IAccountViewModelService accountViewModelService,
-            IFlagViewModelService flagViewModelService) : base(transfer, flagViewModelService)
+            INewFlagViewModel newFlagViewModel,
+            Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
+            ILastSetDate lastSetDate,
+            IRxSchedulerProvider rxSchedulerProvider,
+            ITransTransformingManager transTransformingManager,
+            ISummaryAccountViewModel summaryAccountViewModel,
+            IFlagViewModelService flagViewModelService,
+            IAccountBaseViewModel owner) 
+            : base(
+                transfer, 
+                newFlagViewModel, 
+                lastSetDate, 
+                rxSchedulerProvider, 
+                flagViewModelService, 
+                owner)
         {
+            _transfer = transfer;
             _accountViewModelService = accountViewModelService;
+            _summaryAccountViewModel = summaryAccountViewModel;
 
-            FromAccount = transfer
-                .ToReactivePropertyAsSynchronized(
-                    t => t.FromAccount,
-                    accountViewModelService.GetViewModel, 
-                    accountViewModelService.GetModel, 
-                    ReactivePropertyMode.DistinctUntilChanged)
+            _fromAccount = _accountViewModelService.GetViewModel(transfer.FromAccount);
+            transfer
+                .ObservePropertyChanges(nameof(transfer.FromAccount))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    _fromAccount = _accountViewModelService.GetViewModel(transfer.FromAccount);
+                    OnPropertyChanged(nameof(FromAccount));
+                })
                 .AddTo(CompositeDisposable);
 
-            FromAccount
+            _toAccount = _accountViewModelService.GetViewModel(transfer.ToAccount);
+            transfer
+                .ObservePropertyChanges(nameof(transfer.ToAccount))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    _toAccount = _accountViewModelService.GetViewModel(transfer.ToAccount);
+                    OnPropertyChanged(nameof(ToAccount));
+                })
+                .AddTo(CompositeDisposable);
+
+            if (FromAccount is null && owner is IAccountViewModel specificAccount)
+                FromAccount = specificAccount;
+
+            transfer
+                .ObservePropertyChanges(nameof(transfer.FromAccount))
                 .SkipLast(1)
-                .Subscribe(RefreshAnAccountViewModel)
+                .Where(_ => transfer.Id != -1L)
+                .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.FromAccount)))
                 .AddTo(CompositeDisposable);
 
-            FromAccount
-                .Subscribe(RefreshAnAccountViewModel)
+            transfer
+                .ObservePropertyChanges(nameof(transfer.FromAccount))
+                .Where(_ => transfer.Id != -1L)
+                .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.FromAccount)))
                 .AddTo(CompositeDisposable);
 
-            ToAccount = transfer
-                .ToReactivePropertyAsSynchronized(
-                    t => t.ToAccount, 
-                    accountViewModelService.GetViewModel,
-                    accountViewModelService.GetModel,
-                    ReactivePropertyMode.DistinctUntilChanged)
-                .AddTo(CompositeDisposable);
-
-            ToAccount
+            transfer
+                .ObservePropertyChanges(nameof(transfer.ToAccount))
                 .SkipLast(1)
-                .Subscribe(RefreshAnAccountViewModel)
+                .Where(_ => transfer.Id != -1L)
+                .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.ToAccount)))
                 .AddTo(CompositeDisposable);
 
-            ToAccount
-                .Subscribe(RefreshAnAccountViewModel)
+            transfer
+                .ObservePropertyChanges(nameof(transfer.ToAccount))
+                .Where(_ => transfer.Id != -1L)
+                .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.ToAccount)))
                 .AddTo(CompositeDisposable);
 
-            Sum = transfer.ToReactivePropertyAsSynchronized(t => t.Sum, ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
-            Sum.Subscribe(sum =>
-            {
-                FromAccount.Value?.RefreshBalance();
-                ToAccount.Value?.RefreshBalance();
-            }).AddTo(CompositeDisposable);
+            Sum = transfer.ToReactivePropertyAsSynchronized(
+                nameof(transfer.Sum),
+                () => transfer.Sum,
+                s => transfer.Sum = s,
+                rxSchedulerProvider.UI,
+                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+
+            transfer
+                .ObservePropertyChanges(nameof(transfer.Sum))
+                .Where(_ => transfer.Id != -1L)
+                .Subscribe(sum =>
+                {
+                    FromAccount?.RefreshBalance();
+                    ToAccount?.RefreshBalance();
+                }).AddTo(CompositeDisposable);
+
+            SumEdit = createSumEdit(Sum);
+
+
+            NonInsertedConvertToTransaction = new RxRelayCommand(
+                    () => Owner.ReplaceNewTrans(
+                        this,
+                        transTransformingManager.NotInsertedToTransactionViewModel(this)))
+                .AddTo(CompositeDisposable);
+            NonInsertedConvertToParentTransaction = new RxRelayCommand(
+                    () => Owner.ReplaceNewTrans(
+                        this,
+                        transTransformingManager.NotInsertedToParentTransactionViewModel(this)))
+                .AddTo(CompositeDisposable);
         }
 
-        protected override void InitializeDeleteCommand()
+        public override ISumEditViewModel SumEdit { get; }
+
+        public override bool IsInsertable() => base.IsInsertable() && FromAccount.IsNotNull() && ToAccount.IsNotNull();
+
+        public override async Task DeleteAsync()
         {
-            DeleteCommand.Subscribe(_ =>
-            {
-                Delete();
-                RefreshAnAccountViewModel(FromAccount.Value);
-                RefreshAnAccountViewModel(ToAccount.Value);
-                Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
-                Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
-            });
+            await base.DeleteAsync();
+            RefreshAnAccountViewModel(FromAccount);
+            RefreshAnAccountViewModel(ToAccount);
+            _summaryAccountViewModel.RefreshTransCollection();
+            _summaryAccountViewModel.RefreshBalance();
         }
 
-        protected override void NotifyRelevantAccountsToRefreshTits()
+        protected override void NotifyRelevantAccountsToRefreshTrans()
         {
-            FromAccount.Value?.RefreshTits();
-            ToAccount.Value?.RefreshTits();
-            Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+            FromAccount?.RefreshTransCollection();
+            ToAccount?.RefreshTransCollection();
+            _summaryAccountViewModel.RefreshTransCollection();
         }
 
         protected override void NotifyRelevantAccountsToRefreshBalance()
         {
-            FromAccount.Value?.RefreshBalance();
-            ToAccount.Value?.RefreshBalance();
-            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+            FromAccount?.RefreshBalance();
+            ToAccount?.RefreshBalance();
+            _summaryAccountViewModel.RefreshBalance();
         }
 
 
         private void RefreshAnAccountViewModel(IAccountBaseViewModel accountViewModel)
         {
-            accountViewModel?.RefreshTits();
+            accountViewModel?.RefreshTransCollection();
             accountViewModel?.RefreshBalance();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
@@ -20,15 +21,11 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         public abstract int Depth { get; }
 
-        /// <summary>
-        /// Representing string
-        /// </summary>
-        /// <returns>Name with preceding dots (foreach Ancestor one)</returns>
-        public override string ToString() => Name.Value;
-
         public abstract string GetIndent();
 
-        protected CategoryBaseViewModel(ICategoryBase category) : base(category)
+        protected CategoryBaseViewModel(
+            ICategoryBase category,
+            IRxSchedulerProvider rxSchedulerProvider) : base(category, rxSchedulerProvider)
         {
         }
     }

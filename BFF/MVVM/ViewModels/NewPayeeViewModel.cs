@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using BFF.DB.Dapper.ModelRepositories;
+using BFF.DB;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
@@ -30,26 +30,26 @@ namespace BFF.MVVM.ViewModels
         /// All currently available Payees.
         /// </summary>
         IObservableReadOnlyList<IPayeeViewModel> AllPayees { get; }
+
+        IHavePayeeViewModel CurrentOwner { get; set; }
     }
 
-    public class NewPayeeViewModel : INewPayeeViewModel, IDisposable
+    public class NewPayeeViewModel : INewPayeeViewModel, IOncePerBackend, IDisposable
     {
         private readonly IPayeeViewModelService _payeeViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
         public NewPayeeViewModel(
-            IHavePayeeViewModel payeeOwner,
-            IPayeeRepository payeeRepository,
             Func<IPayee> payeeFactory,
             IPayeeViewModelService payeeViewModelService)
         {
             string ValidatePayeeName(string text)
             {
                 return !string.IsNullOrWhiteSpace(text) &&
-                    AllPayees.All(payee => payee.Name.Value != text.Trim()) 
+                    AllPayees.All(payee => payee.Name != text.Trim()) 
                     ? null 
-                    : "ErrorMessageWrongPayeeName".Localize<string>();
+                    : "ErrorMessageWrongPayeeName".Localize();
             }
 
             _payeeViewModelService = payeeViewModelService;
@@ -65,12 +65,14 @@ namespace BFF.MVVM.ViewModels
                     (PayeeText as ReactiveProperty<string>)?.ForceValidate();
                     return !PayeeText.HasErrors;
                 })
-                .Subscribe(_ =>
+                .Subscribe(async _ =>
                 {
                     IPayee newPayee = payeeFactory();
                     newPayee.Name = PayeeText.Value.Trim();
-                    newPayee.Insert();
-                    payeeOwner.Payee.Value = _payeeViewModelService.GetViewModel(newPayee);
+                    await newPayee.InsertAsync();
+                    if(CurrentOwner != null)
+                        CurrentOwner.Payee = _payeeViewModelService.GetViewModel(newPayee);
+                    CurrentOwner = null;
                 }).AddTo(_compositeDisposable);
         }
 
@@ -88,6 +90,8 @@ namespace BFF.MVVM.ViewModels
         /// All currently available Payees.
         /// </summary>
         public IObservableReadOnlyList<IPayeeViewModel> AllPayees => _payeeViewModelService.All;
+
+        public IHavePayeeViewModel CurrentOwner { get; set; }
 
         public void Dispose()
         {

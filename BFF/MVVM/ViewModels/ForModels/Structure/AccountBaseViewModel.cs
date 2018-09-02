@@ -1,17 +1,24 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Reactive.Concurrency;
+using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Windows;
+using System.Reactive.Subjects;
+using System.Threading.Tasks;
+using System.Windows.Controls;
 using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
+using BFF.DB.Dapper.ModelRepositories;
+using BFF.Helper;
+using BFF.Helper.Extensions;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using BFF.Properties;
 using MuVaViMo;
@@ -28,62 +35,91 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         IReactiveProperty<long> StartingBalance { get; }
 
         /// <summary>
-        /// Lazy loaded collection of TITs belonging to this Account.
+        /// Lazy loaded collection of Trans' belonging to this Account.
         /// </summary>
-        IDataVirtualizingCollection<ITransLikeViewModel> Tits { get; }
+        IDataVirtualizingCollection<ITransLikeViewModel> Trans { get; }
+
+        bool TransIsEmpty { get; }
 
         /// <summary>
-        /// Collection of TITs, which are about to be inserted to this Account.
+        /// Collection of Trans', which are about to be inserted to this Account.
         /// </summary>
-        ObservableCollection<ITransLikeViewModel> NewTits { get; }
+        ObservableCollection<ITransLikeViewModel> NewTransList { get; }
 
-        /// <summary>
-        /// The current Balance of this Account.
-        /// </summary>
-        long? Balance { get; }
+        long? ClearedBalance { get; }
 
-        IReactiveProperty<bool> IsOpen { get; }
+        long? ClearedBalanceUntilNow { get; }
+
+        long? UnclearedBalance { get; }
+
+        long? UnclearedBalanceUntilNow { get; }
+
+        long? TotalBalance { get; }
+
+        long? TotalBalanceUntilNow { get; }
+
+        long? IntermediateBalance { get; }
+
+        long? MissingSum { get; }
+
+        long? TargetBalance { get; set; }
+
+        bool IsOpen { get; set; }
 
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        ReactiveCommand NewTransactionCommand { get; }
+        IRxRelayCommand NewTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        ReactiveCommand NewTransferCommand { get; }
+        IRxRelayCommand NewTransferCommand { get; }
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        ReactiveCommand NewParentTransactionCommand { get; }
+        IRxRelayCommand NewParentTransactionCommand { get; }
 
         /// <summary>
-        /// Flushes all valid and not yet inserted TITs to the database.
+        /// Flushes all valid and not yet inserted Trans' to the database.
         /// </summary>
-        ReactiveCommand ApplyCommand { get; }
+        IRxRelayCommand ApplyCommand { get; }
 
-        bool IsDateFormatLong { get; }
+        IRxRelayCommand ImportCsvBankStatement { get; }
 
+        IRxRelayCommand StartTargetingBalance { get; }
+
+        IRxRelayCommand AbortTargetingBalance { get; }
+
+        bool ShowLongDate { get; }
+
+        ITransDataGridColumnManager TransDataGridColumnManager { get; }
+
+        DataGridHeadersVisibility ShowEditHeaders { get; }
         /// <summary>
         /// Refreshes the Balance.
         /// </summary>
         void RefreshBalance();
 
         /// <summary>
-        /// Refreshes the TITs of this Account.
+        /// Refreshes the Trans' of this Account.
         /// </summary>
-        void RefreshTits();
+        void RefreshTransCollection();
+
+        void ReplaceNewTrans(ITransLikeViewModel replaced, ITransLikeViewModel replacement);
     }
 
     public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
         private readonly Lazy<IAccountViewModelService> _accountViewModelService;
-        private readonly IParentTransactionViewModelService _parentTransactionViewModelService;
-        private readonly Func<ITransaction, ITransactionViewModel> _transactionViewModelFactory;
-        private readonly Func<ITransfer, ITransferViewModel> _transferViewModelFactory;
-        protected IDataVirtualizingCollection<ITransLikeViewModel> _tits;
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
+        private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
+        private readonly Subject<Unit> _refreshBalance = new Subject<Unit>();
+        private readonly Subject<Unit> _refreshBalanceUntilNow = new Subject<Unit>();
+
+        private IDataVirtualizingCollection<ITransLikeViewModel> _trans;
 
         /// <summary>
         /// Starting balance of the Account
@@ -91,26 +127,53 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         public abstract IReactiveProperty<long> StartingBalance { get; }
 
         /// <summary>
-        /// Lazy loaded collection of TITs belonging to this Account.
+        /// Lazy loaded collection of Trans' belonging to this Account.
         /// </summary>
-        public abstract IDataVirtualizingCollection<ITransLikeViewModel> Tits { get; }
+        public IDataVirtualizingCollection<ITransLikeViewModel> Trans => _trans ?? (_trans = CreateDataVirtualizingCollection());
+
+        public bool TransIsEmpty => (Trans as ICollection).Count == 0;
 
         /// <summary>
-        /// Collection of TITs, which are about to be inserted to this Account.
+        /// Collection of Trans', which are about to be inserted to this Account.
         /// </summary>
-        public abstract ObservableCollection<ITransLikeViewModel> NewTits { get; }
+        public ObservableCollection<ITransLikeViewModel> NewTransList { get; } = new ObservableCollection<ITransLikeViewModel>();
 
-        /// <summary>
-        /// The current Balance of this Account.
-        /// </summary>
-        public abstract long? Balance { get; }
+        public long? ClearedBalance { get; private set; } = 0;
 
-        /// <summary>
-        /// The Balance of this Account considering future out- and inflows.
-        /// </summary>
-        public abstract long? BalanceUntilNow { get; }
+        public long? ClearedBalanceUntilNow { get; private set; } = 0;
+        public long? UnclearedBalance { get; private set; } = 0;
+        public long? UnclearedBalanceUntilNow { get; private set; } = 0;
+        public long? TotalBalance => ClearedBalance + UnclearedBalance;
+        public long? TotalBalanceUntilNow => ClearedBalanceUntilNow + UnclearedBalanceUntilNow;
+        public long? IntermediateBalance { get; private set; }
+        public long? MissingSum { get; private set; }
 
-        public IReactiveProperty<bool> IsOpen { get; }
+        public long? TargetBalance
+        {
+            get => _targetBalance;
+            set
+            {
+                if (_targetBalance == value) return;
+                _targetBalance = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsOpen
+        {
+            get => _isOpen;
+            set
+            {
+                if (value == _isOpen) return;
+                _isOpen = value;
+                OnPropertyChanged();
+                _rxSchedulerProvider.Task.MinimalSchedule(() =>
+                {
+                    RefreshTransCollection();
+                    RefreshBalance();
+                });
+            }
+        }
 
         /// <summary>
         /// All available Accounts.
@@ -120,118 +183,280 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        public abstract ReactiveCommand NewTransactionCommand { get; }
+        public abstract IRxRelayCommand NewTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        public abstract ReactiveCommand NewTransferCommand { get; }
+        public abstract IRxRelayCommand NewTransferCommand { get; }
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        public abstract ReactiveCommand NewParentTransactionCommand { get; }
+        public abstract IRxRelayCommand NewParentTransactionCommand { get; }
 
         /// <summary>
-        /// Flushes all valid and not yet inserted TITs to the database.
+        /// Flushes all valid and not yet inserted Trans' to the database.
         /// </summary>
-        public abstract ReactiveCommand ApplyCommand { get; }
+        public abstract IRxRelayCommand ApplyCommand { get; }
+
+        public abstract IRxRelayCommand ImportCsvBankStatement { get; }
+        public IRxRelayCommand StartTargetingBalance { get; }
+        public IRxRelayCommand AbortTargetingBalance { get; }
 
         /// <summary>
         /// Indicates if the date format should be display in short or long fashion.
         /// </summary>
-        public bool IsDateFormatLong => Settings.Default.Culture_DefaultDateLong;
+        public bool ShowLongDate => Settings.Default.Culture_DefaultDateLong;
 
-        /// <summary>
-        /// Initializes a AccountBaseViewModel.
-        /// </summary>
-        /// <param name="orm">Used for the database accesses.</param>
-        /// <param name="account">The model.</param>
+        public ITransDataGridColumnManager TransDataGridColumnManager { get; }
+
+        public DataGridHeadersVisibility ShowEditHeaders
+        {
+            get => _showEditHeaders;
+            private set
+            {
+                if (_showEditHeaders == value) return;
+                _showEditHeaders = value;
+                OnPropertyChanged();
+            }
+        }
+
         protected AccountBaseViewModel(
             IAccount account,
             Lazy<IAccountViewModelService> accountViewModelService,
-            IParentTransactionViewModelService parentTransactionViewModelService,
-            Func<ITransaction, ITransactionViewModel> transactionViewModelFactory,
-            Func<ITransfer, ITransferViewModel> transferViewModelFactory) : base(account)
+            IAccountRepository accountRepository,
+            IRxSchedulerProvider rxSchedulerProvider,
+            IBackendCultureManager cultureManager,
+            ITransDataGridColumnManager transDataGridColumnManager) : base(account, rxSchedulerProvider)
         {
             _accountViewModelService = accountViewModelService;
-            _parentTransactionViewModelService = parentTransactionViewModelService;
-            _transactionViewModelFactory = transactionViewModelFactory;
-            _transferViewModelFactory = transferViewModelFactory;
-            Messenger.Default.Register<CultureMessage>(this, message =>
+            _rxSchedulerProvider = rxSchedulerProvider;
+            TransDataGridColumnManager = transDataGridColumnManager;
+
+            _refreshBalance.AddTo(CompositeDisposable);
+            _refreshBalanceUntilNow.AddTo(CompositeDisposable);
+
+            cultureManager.RefreshSignal.Subscribe(message =>
             {
                 switch (message)
                 {
                     case CultureMessage.Refresh:
                         OnPropertyChanged(nameof(StartingBalance));
-                        OnPropertyChanged(nameof(Balance));
-                        RefreshTits();
+                        OnPropertyChanged(nameof(ClearedBalance));
+                        OnPropertyChanged(nameof(UnclearedBalance));
+                        OnPropertyChanged(nameof(TotalBalance));
+                        OnPropertyChanged(nameof(ClearedBalanceUntilNow));
+                        OnPropertyChanged(nameof(UnclearedBalanceUntilNow));
+                        OnPropertyChanged(nameof(TotalBalanceUntilNow));
+                        RefreshTransCollection();
                         break;
                     case CultureMessage.RefreshCurrency:
                         OnPropertyChanged(nameof(StartingBalance));
-                        OnPropertyChanged(nameof(Balance));
-                        RefreshTits();
+                        OnPropertyChanged(nameof(ClearedBalance));
+                        OnPropertyChanged(nameof(UnclearedBalance));
+                        OnPropertyChanged(nameof(TotalBalance));
+                        OnPropertyChanged(nameof(ClearedBalanceUntilNow));
+                        OnPropertyChanged(nameof(UnclearedBalanceUntilNow));
+                        OnPropertyChanged(nameof(TotalBalanceUntilNow));
+                        RefreshTransCollection();
                         break;
                     case CultureMessage.RefreshDate:
-                        OnPropertyChanged(nameof(IsDateFormatLong));
+                        OnPropertyChanged(nameof(ShowLongDate));
+                        RefreshTransCollection();
                         break;
                     default:
                         throw new InvalidEnumArgumentException();
 
                 }
+            }).AddTo(CompositeDisposable);
+
+            IsOpen = false;
+
+            _removeRequestSubscriptions.AddTo(CompositeDisposable);
+            _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
+            NewTransList.ObserveAddChanged().Subscribe(t =>
+            {
+                t.RemoveRequests
+                    .Take(1)
+                    .Subscribe(_ => NewTransList.Remove(t))
+                    .AddTo(_currentRemoveRequestSubscriptions);
+            }).AddTo(CompositeDisposable);
+
+            _refreshBalance
+                .ObserveOn(rxSchedulerProvider.Task)
+                .Where(_ => IsOpen)
+                .SelectMany(_ => Task.WhenAll(
+                    accountRepository.GetClearedBalanceAsync(account), 
+                    accountRepository.GetUnclearedBalanceAsync(account)))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(b =>
+                {
+                    ClearedBalance = b[0];
+                    UnclearedBalance = b[1];
+                    OnPropertyChanged(nameof(ClearedBalance));
+                    OnPropertyChanged(nameof(UnclearedBalance));
+                    OnPropertyChanged(nameof(TotalBalance));
+                    if (TargetBalance == TotalBalance && NewTransList.Count == 0)
+                    {
+                        MissingSum = null;
+                        TargetBalance = null;
+                        OnPropertyChanged(nameof(MissingSum));
+                    }
+                }).AddTo(CompositeDisposable);
+
+            _refreshBalanceUntilNow
+                .ObserveOn(rxSchedulerProvider.Task)
+                .Where(_ => IsOpen)
+                .SelectMany(_ => Task.WhenAll(
+                    accountRepository.GetClearedBalanceUntilNowAsync(account),
+                    accountRepository.GetUnclearedBalanceUntilNowAsync(account)))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(bun =>
+                {
+                    ClearedBalanceUntilNow = bun[0];
+                    UnclearedBalanceUntilNow = bun[1];
+                    OnPropertyChanged(nameof(ClearedBalanceUntilNow));
+                    OnPropertyChanged(nameof(UnclearedBalanceUntilNow));
+                    OnPropertyChanged(nameof(TotalBalanceUntilNow));
+                }).AddTo(CompositeDisposable);
+            
+            EmitOnSumRelatedChanges(NewTransList)
+                .Merge(this.ObservePropertyChanges(nameof(TargetBalance)))
+                .Merge(this.ObservePropertyChanges(nameof(TotalBalance)))
+                .Select(_ => CalculateNewPartOfIntermediateBalance())
+                .Subscribe(DoTargetBalanceSystem)
+                .AddTo(CompositeDisposable);
+
+            var serialDisposable = new SerialDisposable().AddHere(CompositeDisposable);
+
+            NewTransList
+                .ObserveCollectionChanges()
+                .Select(_ => Unit.Default)
+                .Subscribe(_ => serialDisposable.Disposable =
+                    NewTransList
+                        .OfType<ParentTransactionViewModel>()
+                        .Select(ptvm => ptvm.TotalSum.ObservePropertyChanges(nameof(IReactiveProperty<long>.Value)))
+                        .Merge()
+                        .Select(__ => CalculateNewPartOfIntermediateBalance())
+                        .Subscribe(DoTargetBalanceSystem))
+                .AddTo(CompositeDisposable);
+
+            NewTransList
+                .ObservePropertyChanges(nameof(NewTransList.Count))
+                .Merge(TransDataGridColumnManager.ObservePropertyChanges(nameof(TransDataGridColumnManager.NeverShowEditHeaders)))
+                .Subscribe(_ => ShowEditHeaders = NewTransList.Count > 0 && !TransDataGridColumnManager.NeverShowEditHeaders
+                    ? DataGridHeadersVisibility.Column
+                    : DataGridHeadersVisibility.None)
+                .AddTo(CompositeDisposable);
+
+            StartTargetingBalance = new RxRelayCommand(() =>
+            {
+                TargetBalance = TotalBalance;
             });
 
-            IsOpen = new ReactiveProperty<bool>(false).AddTo(CompositeDisposable);
-
-            IsOpen.Where(isOpen => isOpen).Subscribe(_ =>
+            AbortTargetingBalance = new RxRelayCommand(() =>
             {
-                RefreshTits();
-                RefreshBalance();
-            }).AddTo(CompositeDisposable);
-        }
+                TargetBalance = null;
+            });
 
-        /// <summary>
-        /// Representing String.
-        /// </summary>
-        /// <returns>Just the Name-property.</returns>
-        public override string ToString()
-        {
-            return Name.Value;
+            Disposable.Create(() =>
+            {
+                _trans?.Dispose();
+            }).AddTo(CompositeDisposable);
+
+            IObservable<Unit> EmitOnSumRelatedChanges(ObservableCollection<ITransLikeViewModel> collection)
+            {
+                return collection
+                    .ObserveCollectionChanges().Select(_ => Unit.Default)
+                    .Merge(collection
+                    .ObserveElementObservableProperty(st => st.Sum)
+                    .Select(_ => Unit.Default));
+            }
+
+            void DoTargetBalanceSystem(long? ib)
+            {
+                IntermediateBalance = ib + TotalBalance;
+                if (TargetBalance != null)
+                {
+                    MissingSum = TargetBalance - IntermediateBalance;
+                }
+                else
+                {
+                    MissingSum = null;
+                }
+                OnPropertyChanged(nameof(IntermediateBalance));
+                OnPropertyChanged(nameof(MissingSum));
+            }
+
         }
 
         /// <summary>
         /// Refreshes the Balance.
         /// </summary>
-        public abstract void RefreshBalance();
+        public void RefreshBalance()
+        {
+            _refreshBalance.OnNext(Unit.Default);
+            _refreshBalanceUntilNow.OnNext(Unit.Default);
+        }
 
-        /// <summary>
-        /// Refreshes the TITs of this Account.
-        /// </summary>
-        public abstract void RefreshTits();
+        public void RefreshTransCollection()
+        {
+            if (IsOpen)
+            {
+                Task.Run(() => CreateDataVirtualizingCollection())
+                    .ContinueWith(async t =>
+                    {
+                        var temp = _trans;
+                        _trans = await t;
+                        _rxSchedulerProvider.UI.MinimalSchedule(() =>
+                        {
+                            OnPreVirtualizedRefresh();
+                            OnPropertyChanged(nameof(Trans));
+                            OnPropertyChanged(nameof(TransIsEmpty));
+                            OnPostVirtualizedRefresh();
+                            Task.Run(() => temp?.Dispose());
+                        });
+
+                    });
+            }
+        }
+
+        public void ReplaceNewTrans(ITransLikeViewModel replaced, ITransLikeViewModel replacement)
+        {
+            int index = NewTransList.IndexOf(replaced);
+            NewTransList.Insert(index, replacement);
+            NewTransList.Remove(replaced);
+        }
 
         /// <summary>
         /// Common logic for the Apply-Command.
         /// </summary>
-        protected void ApplyTits()
+        protected async Task ApplyTrans()
         {
-            List<ITransLikeViewModel> insertTits = NewTits.ToList();//.Where(tit => tit.ValidToInsert()).ToList();
-            foreach (ITransLikeViewModel tit in insertTits)
+            if (NewTransList.All(t => t.IsInsertable()))
             {
-                tit.Insert();
-                NewTits.Remove(tit);
+                _currentRemoveRequestSubscriptions = new CompositeDisposable();
+                _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
+                List<ITransLikeViewModel> insertTrans = NewTransList.ToList();
+                foreach (ITransLikeViewModel trans in insertTrans)
+                {
+                    await trans.InsertAsync();
+                    NewTransList.Remove(trans);
+                }
+                
+                RefreshBalance();
+                RefreshTransCollection();
             }
-
-            RefreshBalance();
-            RefreshTits();
         }
 
         /// <summary>
-        /// Invoked right before the TITs are refreshed.
+        /// Invoked right before the Trans' are refreshed.
         /// </summary>
         public virtual event EventHandler PreVirtualizedRefresh;
 
         /// <summary>
-        /// Invoked right before the TITs are refreshed.
+        /// Invoked right before the Trans' are refreshed.
         /// </summary>
         public void OnPreVirtualizedRefresh()
         {
@@ -239,65 +464,35 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         }
 
         /// <summary>
-        /// Invoked right after the TITs are refreshed.
+        /// Invoked right after the Trans' are refreshed.
         /// </summary>
         public virtual event EventHandler PostVirtualizedRefresh;
 
         /// <summary>
-        /// Invoked right after the TITs are refreshed.
+        /// Invoked right after the Trans' are refreshed.
         /// </summary>
         public void OnPostVirtualizedRefresh()
         {
             PostVirtualizedRefresh?.Invoke(this, new EventArgs());
         }
 
-        protected ITransLikeViewModel[] CreatePacket(IEnumerable<ITransBase> items)
-        {
-            IList<ITransLikeViewModel> vmItems = new List<ITransLikeViewModel>();
-            foreach (ITransBase item in items)
-            {
-                switch (item)
-                {
-                    case ITransfer transfer:
-                        vmItems.Add(_transferViewModelFactory(transfer));
-                        break;
-                    case IParentTransaction parentTransaction:
-                        vmItems.Add(_parentTransactionViewModelService.GetViewModel(parentTransaction));
-                        break;
-                    case ITransaction transaction:
-                        vmItems.Add(_transactionViewModelFactory(transaction));
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
-            }
-            return vmItems.ToArray();
-        }
 
-
-        protected IDataVirtualizingCollection<ITransLikeViewModel> CreateDataVirtualizingCollection()
+        private IDataVirtualizingCollection<ITransLikeViewModel> CreateDataVirtualizingCollection()
             => CollectionBuilder<ITransLikeViewModel>
                 .CreateBuilder()
-                .BuildAHoardingPreloadingSyncCollection(
-                    BasicAccess, 
+                .BuildAHoardingTaskBasedAsyncCollection(
+                    BasicAccess,
+                    _rxSchedulerProvider.Task,
+                    _rxSchedulerProvider.UI,
                     PageSize);
 
-        protected IScheduler SubscriptionScheduler = ThreadPoolScheduler.Instance;
+        private readonly int PageSize = 100;
+        private bool _isOpen;
+        private long? _targetBalance;
+        private DataGridHeadersVisibility _showEditHeaders;
 
-        protected IScheduler ObserveScheduler = new DispatcherScheduler(Application.Current.Dispatcher);
+        protected abstract IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess { get; }
 
-        protected int PageSize = 100;
-
-        protected abstract IBasicAsyncDataAccess<ITransLikeViewModel> BasicAccess { get; }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _tits?.Dispose();
-            }
-            Messenger.Default.Unregister<CultureMessage>(this);
-            base.Dispose(disposing);
-        }
+        protected abstract long? CalculateNewPartOfIntermediateBalance();
     }
 }

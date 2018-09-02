@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using BFF.DB.Dapper;
-using BFF.DB.SQLite;
+using Autofac.Features.OwnedInstances;
+using BFF.DB;
 using BFF.Helper.Extensions;
 using BFF.MVVM;
 using BFF.MVVM.Models.Native.Structure;
-using Dapper.Contrib.Extensions;
 using Persistence = BFF.DB.PersistenceModels;
 using NLog;
 using BudgetEntry = BFF.MVVM.Models.Conversion.YNAB.BudgetEntry;
@@ -23,8 +22,8 @@ namespace BFF.Helper.Import
 
     class YnabCsvImport : ObservableObject, IYnabCsvImport
     {
-        private readonly Func<string, ICreateSqLiteDatabase> _createSqLiteDatabaseFactory;
-        private readonly Func<string, IProvideSqLiteConnection> _connectionFactory;
+        private readonly IImportingOrm _importingOrm;
+        private readonly ICreateBackendOrm _createBackendOrm;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public string TransactionPath
@@ -59,11 +58,15 @@ namespace BFF.Helper.Import
 
         public YnabCsvImport(
             (string TransactionPath, string BudgetPath, string SavePath) paths,
-            Func<string, ICreateSqLiteDatabase> createSqLiteDatabaseFactory,
-            Func<string, IProvideSqLiteConnection> connectionFactory)
+            Owned<Func<string, IProvideConnection>> ownedCreateProvideConnection,
+            Func<IProvideConnection, IImportingOrm> createImportingOrm,
+            Func<IProvideConnection, ICreateBackendOrm> createCreateBackendOrm)
         {
-            _createSqLiteDatabaseFactory = createSqLiteDatabaseFactory;
-            _connectionFactory = connectionFactory;
+            var provideConnection = ownedCreateProvideConnection.Value(paths.SavePath);
+            ownedCreateProvideConnection.Dispose();
+            _importingOrm = createImportingOrm(provideConnection);
+            _createBackendOrm = createCreateBackendOrm(provideConnection);
+            
             _transactionPath = paths.TransactionPath;
             _budgetPath = paths.BudgetPath;
             _savePath = paths.SavePath;
@@ -72,7 +75,7 @@ namespace BFF.Helper.Import
         public string Import()
         {
 
-            string exceptionTemplate = "Exception_FileNotFound".Localize<string>();
+            string exceptionTemplate = "Exception_FileNotFound".Localize();
             if (!File.Exists(TransactionPath))
                 throw new FileNotFoundException(string.Format(exceptionTemplate, TransactionPath));
             if(!File.Exists(BudgetPath))
@@ -140,84 +143,7 @@ namespace BFF.Helper.Import
             };
 
             //Third step: Create new database for imported data
-            _createSqLiteDatabaseFactory(savePath).Create();
-            PopulateDatabase(lists, assignments, _connectionFactory(savePath).Connection);
-        }
-        
-        private void PopulateDatabase(ImportLists importLists, ImportAssignments importAssignments, DbConnection connection)
-        {
-            /*  
-            Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
-            because the structure of the imported csv-Entry of Categories allows to get the master category first and
-            then the sub category. Thus, the parents id is known beforehand.
-            */
-            Queue<CategoryImportWrapper> categoriesOrder = new Queue<CategoryImportWrapper>(importLists.Categories);
-            while (categoriesOrder.Count > 0)
-            {
-                CategoryImportWrapper current = categoriesOrder.Dequeue();
-                var id = connection.Insert(current.Category);
-                foreach (Persistence.IHaveCategory currentTitAssignment in current.TitAssignments)
-                {
-                    currentTitAssignment.CategoryId = id;
-                }
-                foreach (CategoryImportWrapper categoryImportWrapper in current.Categories)
-                {
-                    categoryImportWrapper.Category.ParentId = id;
-                    categoriesOrder.Enqueue(categoryImportWrapper);
-                }
-            }
-            foreach (Persistence.Payee payee in importLists.Payees)
-            {
-                var id = connection.Insert(payee);
-                foreach (Persistence.IHavePayee transIncBase in importAssignments.PayeeToTransactionBase[payee])
-                {
-                    transIncBase.PayeeId = id;
-                }
-            }
-            foreach (Persistence.Flag flag in importLists.Flags)
-            {
-                var id = connection.Insert(flag);
-                foreach (Persistence.IHaveFlag transBase in importAssignments.FlagToTransBase[flag])
-                {
-                    transBase.FlagId = id;
-                }
-            }
-            foreach (Persistence.Account account in importLists.Accounts)
-            {
-                var id = connection.Insert(account);
-                foreach (Persistence.IHaveAccount transIncBase in importAssignments.AccountToTransactionBase[account])
-                {
-                    transIncBase.AccountId = id;
-                }
-                foreach (Persistence.Trans transfer in importAssignments.FromAccountToTransfer[account])
-                {
-                    transfer.PayeeId = id;
-                }
-                foreach (Persistence.Trans transfer in importAssignments.ToAccountToTransfer[account])
-                {
-                    transfer.CategoryId = id;
-                }
-            }
-            foreach (Persistence.Trans transaction in importLists.Transactions)
-            {
-                connection.Insert(transaction);
-            }
-            foreach (Persistence.Trans parentTransaction in importLists.ParentTransactions)
-            {
-                var id = connection.Insert(parentTransaction);
-                foreach (Persistence.SubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
-                {
-                    subTransaction.ParentId = id;
-                }
-            }
-            foreach (Persistence.SubTransaction subTransaction in importLists.SubTransactions)
-                connection.Insert(subTransaction);
-            foreach (Persistence.Trans transfer in importLists.Transfers)
-            {
-                connection.Insert(transfer);
-            }
-            foreach (Persistence.BudgetEntry budgetEntry in importLists.BudgetEntries)
-                connection.Insert(budgetEntry);
+            _createBackendOrm.CreateAsync().ContinueWith(t => _importingOrm.PopulateDatabaseAsync(lists, assignments));
         }
 
         private static List<Transaction> ParseTransactionCsv(string filePath)
@@ -420,7 +346,7 @@ namespace BFF.Helper.Import
                 {
                     if(ynabBudgetEntry.Budgeted != 0L)
                     {
-                        var month = DateTime.ParseExact(ynabBudgetEntry.Month, "MMMM yyyy", null);
+                        var month = DateTime.ParseExact(ynabBudgetEntry.Month, "MMMM yyyy", CultureInfo.GetCultureInfo("de-DE")); // TODO make this customizable + exception handling
                         Persistence.BudgetEntry budgetEntry = new Persistence.BudgetEntry
                         {
                             Month = month,
@@ -433,7 +359,7 @@ namespace BFF.Helper.Import
                 }
             }
             
-            if(ynabBudgetEntries == null) throw new ArgumentNullException(nameof(ynabBudgetEntries));
+            if(ynabBudgetEntries is null) throw new ArgumentNullException(nameof(ynabBudgetEntries));
 
             return ConvertBudgetEntryToNativeInner();
         }
@@ -594,10 +520,10 @@ namespace BFF.Helper.Import
             _toAccountAssignment.Add(account, new List<Persistence.Trans>());
         }
 
-        private void AssignAccount(string name, Persistence.IHaveAccount titNoTransfer)
+        private void AssignAccount(string name, Persistence.IHaveAccount transNoTransfer)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
-            _accountAssignment[_accountCache[name]].Add(titNoTransfer);
+            _accountAssignment[_accountCache[name]].Add(transNoTransfer);
         }
 
         private void AssignToAccount(string name, Persistence.Trans transfer)
@@ -634,7 +560,7 @@ namespace BFF.Helper.Import
             new Dictionary<Persistence.Payee, IList<Persistence.IHavePayee>>();
 
         private void CreateAndOrAssignPayee(
-            string name, Persistence.IHavePayee titBase)
+            string name, Persistence.IHavePayee transBase)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return;
@@ -642,11 +568,11 @@ namespace BFF.Helper.Import
             {
                 Persistence.Payee payee = new Persistence.Payee { Name = name };
                 _payeeCache.Add(name, payee);
-                _payeeAssignment.Add(payee, new List<Persistence.IHavePayee> { titBase });
+                _payeeAssignment.Add(payee, new List<Persistence.IHavePayee> { transBase });
             }
             else
             {
-                _payeeAssignment[_payeeCache[name]].Add(titBase);
+                _payeeAssignment[_payeeCache[name]].Add(transBase);
             }
         }
 
@@ -670,7 +596,7 @@ namespace BFF.Helper.Import
             new Dictionary<Persistence.Flag, IList<Persistence.IHaveFlag>>();
 
         private void CreateAndOrAssignFlag(
-            string name, Persistence.IHaveFlag titBase)
+            string name, Persistence.IHaveFlag transBase)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return;
@@ -699,11 +625,11 @@ namespace BFF.Helper.Import
                         break;
                 }
                 _flagCache.Add(name, flag);
-                _flagAssignment.Add(flag, new List<Persistence.IHaveFlag> { titBase });
+                _flagAssignment.Add(flag, new List<Persistence.IHaveFlag> { transBase });
             }
             else
             {
-                _flagAssignment[_flagCache[name]].Add(titBase);
+                _flagAssignment[_flagCache[name]].Add(transBase);
             }
         }
 
@@ -749,22 +675,22 @@ namespace BFF.Helper.Import
         };
 
         private void AssignCategory(
-            string namePath, Persistence.IHaveCategory titLike)
+            string namePath, Persistence.IHaveCategory transLike)
         {
             string masterCategoryName = namePath.Split(':').First();
             string subCategoryName = namePath.Split(':').Last();
             if (masterCategoryName == "Income")
             {
                 if(subCategoryName == "Available this month")
-                    _thisMonthCategoryImportWrapper.TitAssignments.Add(titLike);
+                    _thisMonthCategoryImportWrapper.TransAssignments.Add(transLike);
                 else
-                    _nextMonthCategoryImportWrapper.TitAssignments.Add(titLike);
+                    _nextMonthCategoryImportWrapper.TransAssignments.Add(transLike);
             }
             else
             {
                 CategoryImportWrapper masterCategoryWrapper =
                     _categoryImportWrappers.SingleOrDefault(ciw => ciw.Category.Name == masterCategoryName);
-                if (masterCategoryWrapper == null)
+                if (masterCategoryWrapper is null)
                 {
                     Persistence.Category category = new Persistence.Category { Name = masterCategoryName };
                     masterCategoryWrapper = new CategoryImportWrapper { Parent = null, Category = category };
@@ -772,13 +698,13 @@ namespace BFF.Helper.Import
                 }
                 CategoryImportWrapper subCategoryWrapper =
                     masterCategoryWrapper.Categories.SingleOrDefault(c => c.Category.Name == subCategoryName);
-                if (subCategoryWrapper == null)
+                if (subCategoryWrapper is null)
                 {
                     Persistence.Category category = new Persistence.Category { Name = subCategoryName };
                     subCategoryWrapper = new CategoryImportWrapper { Parent = masterCategoryWrapper, Category = category };
                     masterCategoryWrapper.Categories.Add(subCategoryWrapper);
                 }
-                subCategoryWrapper.TitAssignments.Add(titLike);
+                subCategoryWrapper.TransAssignments.Add(transLike);
             }
         }
 

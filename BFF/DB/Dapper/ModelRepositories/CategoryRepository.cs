@@ -1,27 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
-using Dapper;
+using BFF.Helper;
+using MoreLinq;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateCategoryTable : CreateTableBase
-    {
-        public CreateCategoryTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(Category)}s](
-            {nameof(Category.Id)} INTEGER PRIMARY KEY,
-            {nameof(Category.ParentId)} INTEGER,
-            {nameof(Category.Name)} VARCHAR(100),
-            {nameof(Category.IsIncomeRelevant)} INTEGER,
-            {nameof(Category.MonthOffset)} INTEGER,
-            FOREIGN KEY({nameof(Category.ParentId)}) REFERENCES {nameof(Category)}s({nameof(Category.Id)}) ON DELETE SET NULL);";
-    }
-
     public class CategoryComparer : Comparer<Domain.ICategory>
     {
         public override int Compare(Domain.ICategory x, Domain.ICategory y)
@@ -58,16 +45,37 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
     }
 
-    public interface ICategoryRepository : IObservableRepositoryBase<Domain.ICategory>
+    public interface ICategoryRepository : IObservableRepositoryBase<Domain.ICategory>, IMergingRepository<Domain.ICategory>
     {
     }
 
     public sealed class CategoryRepository : ObservableRepositoryBase<Domain.ICategory, Category>, ICategoryRepository
     {
-        private static readonly string GetAllQuery = $"SELECT * FROM {nameof(Category)}s WHERE {nameof(Category.IsIncomeRelevant)} == 0;";
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly IMergeOrm _mergeOrm;
+        private readonly ICategoryOrm _categoryOrm;
 
-        public CategoryRepository(IProvideConnection provideConnection) 
-            : base(provideConnection, new CategoryComparer())
+        public CategoryRepository(
+            IProvideConnection provideConnection,
+            IRxSchedulerProvider rxSchedulerProvider,
+            ICrudOrm crudOrm, 
+            IMergeOrm mergeOrm,
+            ICategoryOrm categoryOrm) 
+            : base(provideConnection, rxSchedulerProvider, crudOrm, new CategoryComparer())
+        {
+            _rxSchedulerProvider = rxSchedulerProvider;
+            _mergeOrm = mergeOrm;
+            _categoryOrm = categoryOrm;
+            InitializeAll();
+        }
+        
+        public override async Task DeleteAsync(Domain.ICategory dataModel)
+        {
+            await base.DeleteAsync(dataModel).ConfigureAwait(false);
+            dataModel.Parent?.RemoveCategory(dataModel);
+        }
+
+        private void InitializeAll()
         {
             var groupedByParent = All.GroupBy(c => c.Parent).Where(grouping => grouping.Key != null);
             foreach (var parentSubCategoryGrouping in groupedByParent)
@@ -76,14 +84,22 @@ namespace BFF.DB.Dapper.ModelRepositories
                 foreach (var subCategory in parentSubCategoryGrouping)
                 {
                     parent.AddCategory(subCategory);
+                    subCategory.Parent = parent;
                 }
             }
         }
 
-        protected override IEnumerable<Category> FindAllInner(DbConnection connection)
+        protected override async Task<Domain.ICategory> ConvertToDomainAsync(Category persistenceModel)
         {
-            return connection.Query<Category>(GetAllQuery);
+            return 
+                new Domain.Category(this,
+                    _rxSchedulerProvider,
+                    persistenceModel.Id,
+                    persistenceModel.Name,
+                    persistenceModel.ParentId != null ? await FindAsync((long)persistenceModel.ParentId).ConfigureAwait(false) : null);
         }
+
+        protected override Task<IEnumerable<Category>> FindAllInnerAsync() => _categoryOrm.ReadCategoriesAsync();
 
         protected override Converter<Domain.ICategory, Category> ConvertToPersistence => domainCategory => 
             new Category
@@ -92,14 +108,23 @@ namespace BFF.DB.Dapper.ModelRepositories
                 ParentId = domainCategory.Parent?.Id,
                 Name = domainCategory.Name
             };
-        
-        protected override Converter<(Category, DbConnection), Domain.ICategory> ConvertToDomain => tuple =>
+
+        public async Task MergeAsync(Domain.ICategory from, Domain.ICategory to)
         {
-            (Category persistenceCategory, DbConnection connection) = tuple;
-            return new Domain.Category(this,
-                persistenceCategory.Id,
-                persistenceCategory.Name,
-                persistenceCategory.ParentId != null ? Find((long)persistenceCategory.ParentId, connection) : null);
-        };
+            from
+                .Categories
+                .Join(to.Categories, c => c.Name, c => c.Name, (f, t) => f)
+                .ForEach(f =>
+                {
+                    int i = -1;
+                    // ReSharper disable once EmptyEmbeddedStatement => i gets iterated in the condition expression
+                    while (to.Categories.Any(t => t.Name == $"{f.Name}{++i}")) ;
+                    f.Name = $"{f.Name}{i}";
+                });
+            await _mergeOrm.MergeCategoryAsync(ConvertToPersistence(from), ConvertToPersistence(to)).ConfigureAwait(false);
+            ClearCache();
+            await ResetAll();
+            InitializeAll();
+        }
     }
 }

@@ -1,28 +1,26 @@
 using System;
-using System.Data.Common;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateDbSettingTable : CreateTableBase
-    {
-        public CreateDbSettingTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE [{nameof(DbSetting)}s](
-            {nameof(DbSetting.Id)} INTEGER PRIMARY KEY, 
-            {nameof(DbSetting.CurrencyCultureName)} VARCHAR(10),
-            {nameof(DbSetting.DateCultureName)} VARCHAR(10));";
-    }
-
     public interface IDbSettingRepository : IRepositoryBase<Domain.IDbSetting>
     {
     }
 
     public sealed class DbSettingRepository : RepositoryBase<Domain.IDbSetting, DbSetting>, IDbSettingRepository
     {
-        public DbSettingRepository(IProvideConnection provideConnection) : base(provideConnection) { }
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
+
+        public DbSettingRepository(
+            IProvideConnection provideConnection,
+            IRxSchedulerProvider rxSchedulerProvider,
+            ICrudOrm crudOrm) : base(provideConnection, crudOrm)
+        {
+            _rxSchedulerProvider = rxSchedulerProvider;
+        }
         
         protected override Converter<Domain.IDbSetting, DbSetting> ConvertToPersistence => domainDbSetting => 
             new DbSetting
@@ -32,14 +30,14 @@ namespace BFF.DB.Dapper.ModelRepositories
                 DateCultureName = domainDbSetting.DateCultureName
             };
 
-        protected override Converter<(DbSetting, DbConnection), Domain.IDbSetting> ConvertToDomain => tuple =>
+        protected override Task<Domain.IDbSetting> ConvertToDomainAsync(DbSetting persistenceModel)
         {
-            (DbSetting persistenceDbSetting, _) = tuple;
-            return new Domain.DbSetting(this, persistenceDbSetting.Id)
-            {
-                CurrencyCultureName = persistenceDbSetting.CurrencyCultureName,
-                DateCultureName = persistenceDbSetting.DateCultureName
-            };
-        };
+            return Task.FromResult<Domain.IDbSetting>(
+                new Domain.DbSetting(this, _rxSchedulerProvider, persistenceModel.Id)
+                {
+                    CurrencyCultureName = persistenceModel.CurrencyCultureName,
+                    DateCultureName = persistenceModel.DateCultureName
+                });
+        }
     }
 }

@@ -1,15 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Common;
 using System.Linq;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
+using MoreLinq;
 
 namespace BFF.DB.Dapper
 {
     public interface IObservableRepositoryBase<TDomain> : ICachingRepositoryBase<TDomain> where TDomain : class, IDataModel
     {
         ObservableCollection<TDomain> All { get; }
+
+        IObservable<IEnumerable<TDomain>> ObserveResetAll { get; }
     }
 
     public abstract class ObservableRepositoryBase<TDomain, TPersistence> 
@@ -17,23 +27,43 @@ namespace BFF.DB.Dapper
         where TDomain : class, IDataModel
         where TPersistence : class, IPersistenceModel
     {
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly Comparer<TDomain> _comparer;
-        public ObservableCollection<TDomain> All { get; } // TODO use externally the IReadOnlyObservableCollection interface
+        private readonly Task<ObservableCollection<TDomain>> _fetchAll;
+        private readonly ISubject<IEnumerable<TDomain>> _observeResetAll;
 
-        protected ObservableRepositoryBase(IProvideConnection provideConnection, Comparer<TDomain> comparer) : base(provideConnection)
+        public ObservableCollection<TDomain> All =>
+            _fetchAll.Result;
+
+        public IObservable<IEnumerable<TDomain>> ObserveResetAll => _observeResetAll.AsObservable();
+
+        protected ObservableRepositoryBase(
+            IProvideConnection provideConnection, 
+            IRxSchedulerProvider rxSchedulerProvider,
+            ICrudOrm crudOrm, 
+            Comparer<TDomain> comparer) : base(provideConnection, crudOrm)
         {
+            Disposable.Create(() => All.Clear()).AddTo(CompositeDisposable);
+            _observeResetAll = new Subject<IEnumerable<TDomain>>().AddHere(CompositeDisposable);
+            _rxSchedulerProvider = rxSchedulerProvider;
             _comparer = comparer;
-            All = new ObservableCollection<TDomain>(FindAll().OrderBy(o => o, _comparer));
+            _fetchAll = Task.Run(FetchAll);
+
         }
 
-        public sealed override IEnumerable<TDomain> FindAll(DbConnection connection = null)
+        private async Task<ObservableCollection<TDomain>> FetchAll()
         {
-            return base.FindAll(connection);
+            return new ObservableCollection<TDomain>((await FindAllAsync().ConfigureAwait(false)).OrderBy(o => o, _comparer));
         }
 
-        public override void Add(TDomain dataModel, DbConnection connection = null)
+        public sealed override Task<IEnumerable<TDomain>> FindAllAsync()
         {
-            base.Add(dataModel, connection);
+            return base.FindAllAsync();
+        }
+
+        public override async Task AddAsync(TDomain dataModel)
+        {
+            await base.AddAsync(dataModel).ConfigureAwait(false);
             if(!All.Contains(dataModel))
             {
                 int i = 0;
@@ -43,22 +73,30 @@ namespace BFF.DB.Dapper
             }
         }
 
-        public override void Delete(TDomain dataModel, DbConnection connection = null)
+        public override async Task DeleteAsync(TDomain dataModel)
         {
-            base.Delete(dataModel, connection);
-            if(All.Contains(dataModel))
-            {
-                All.Remove(dataModel);
-            }
+            await base.DeleteAsync(dataModel).ConfigureAwait(false);
+            RemoveFromObservableCollection(dataModel);
         }
 
-        protected override void Dispose(bool disposing)
+        protected void RemoveFromObservableCollection(TDomain dataModel)
         {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                All.Clear();
-            }
+            if (All.Contains(dataModel))
+                All.Remove(dataModel);
+        }
+
+        protected async Task ResetAll()
+        {
+            await Observable
+                .StartAsync(async () => (await FindAllAsync().ConfigureAwait(false)).OrderBy(o => o, _comparer))
+                .ObserveOn(_rxSchedulerProvider.UI)
+                .Do(all =>
+                {
+                    All.Clear();
+                    all.ForEach(i => All.Add(i));
+                })
+                .ToTask();
+            _observeResetAll.OnNext(All);
         }
     }
 }

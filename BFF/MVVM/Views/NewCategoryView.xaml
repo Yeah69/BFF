@@ -1,0 +1,175 @@
+﻿<UserControl x:Class="BFF.MVVM.Views.NewCategoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mvvm="clr-namespace:BFF.MVVM"
+             xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
+             d:DataContext="{d:DesignInstance viewModels:NewCategoryViewModel}"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             Loaded="OnLoaded"
+             mc:Ignorable="d">
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Margin="5,0,5,0"
+                       VerticalAlignment="Center"
+                       Text="{lex:LocText NameOfNewCategory,
+                                          Suffix=:}" />
+            <TextBox x:Name="FocusMe"
+                     Grid.Row="0"
+                     Grid.Column="1"
+                     Focusable="True"
+                     Text="{Binding Name.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Margin="5,0,5,0"
+                       VerticalAlignment="Center"
+                       Text="{lex:Loc NewCategory_IsIncomeRelevant}"
+                       ToolTip="{lex:Loc NewCategory_IncomeRelevantExplanation}" />
+            <CheckBox x:Name="IsIncomeRelevant"
+                      Grid.Row="1"
+                      Grid.Column="1"
+                      Focusable="True"
+                      IsChecked="{Binding IsIncomeRelevant.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Grid.Row="2"
+                       Grid.Column="0"
+                       Margin="5,0,5,0"
+                       VerticalAlignment="Center"
+                       Text="{lex:LocText NewCategory_MonthOffset,
+                                          Suffix=:}">
+                <TextBlock.Style>
+                    <Style BasedOn="{StaticResource {x:Type TextBlock}}"
+                           TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsIncomeRelevant.Value, UpdateSourceTrigger=PropertyChanged}"
+                                         Value="False">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <controls:NumericUpDown Grid.Row="2"
+                                    Grid.Column="1"
+                                    Value="{Binding MonthOffset.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <controls:NumericUpDown.Style>
+                    <Style TargetType="{x:Type controls:NumericUpDown}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsIncomeRelevant.Value, UpdateSourceTrigger=PropertyChanged}"
+                                         Value="False">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:NumericUpDown.Style>
+            </controls:NumericUpDown>
+
+            <TextBlock Grid.Row="2"
+                       Grid.Column="0"
+                       Margin="5,0,5,0"
+                       VerticalAlignment="Center"
+                       Text="{lex:LocText SuperiorCategory,
+                                          Suffix=:}">
+                <TextBlock.Style>
+                    <Style BasedOn="{StaticResource {x:Type TextBlock}}"
+                           TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsIncomeRelevant.Value, UpdateSourceTrigger=PropertyChanged}"
+                                         Value="True">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <DockPanel Grid.Row="2"
+                       Grid.Column="1"
+                       LastChildFill="True">
+                <DockPanel.Style>
+                    <Style TargetType="{x:Type DockPanel}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsIncomeRelevant.Value, UpdateSourceTrigger=PropertyChanged}"
+                                         Value="True">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DockPanel.Style>
+                <Button Visibility="{Binding Parent.Value, Converter={x:Static mvvm:Converters.NullToCollapsed}}"
+                        Command="{Binding DeselectParentCommand}"
+                        Content="X"
+                        DockPanel.Dock="Right" />
+
+                <ComboBox DockPanel.Dock="Left"
+                          IsEditable="True"
+                          IsTextSearchCaseSensitive="True"
+                          IsTextSearchEnabled="True"
+                          ItemTemplate="{StaticResource IndentedCategoryItemTemplate}"
+                          ItemsSource="{Binding AllPotentialParents}"
+                          SelectedItem="{Binding Parent.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          ShouldPreserveUserEnteredPrefix="True"
+                          TextSearch.TextPath="Name">
+                    <ComboBox.ToolTip>
+                        <ToolTip>
+                            <ListBox ItemTemplate="{StaticResource CategoryItemTemplate}"
+                                     ItemsSource="{Binding Parent.Value.FullChainOfCategories}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </ToolTip>
+                    </ComboBox.ToolTip>
+                </ComboBox>
+            </DockPanel>
+            <Button Grid.Row="3"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Click="AddButton_OnClick"
+                    Command="{Binding AddCommand}"
+                    ToolTip="{lex:Loc CreateNewCategory}">
+                <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
+                                            Kind="{StaticResource AddIcon}"
+                                            Style="{StaticResource CellIconMaterial}" />
+            </Button>
+        </Grid>
+    </StackPanel>
+</UserControl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

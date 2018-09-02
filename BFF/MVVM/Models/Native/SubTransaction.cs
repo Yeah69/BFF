@@ -1,43 +1,31 @@
-﻿using BFF.DB;
+﻿using System.Threading.Tasks;
+using BFF.DB;
+using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native
 {
     public interface ISubTransaction : ITransLike, IHaveCategory
     {
-        /// <summary>
-        /// The parent transaction.
-        /// </summary>
         IParentTransaction Parent { get; set; }
-
-        /// <summary>
-        /// The amount of money, which was payed or received
-        /// </summary>
+        
         long Sum { get; set; }
     }
-
-    /// <summary>
-    /// A SubElement of a Transaction
-    /// </summary>
+    
     public class SubTransaction : TransLike<ISubTransaction>, ISubTransaction
     {
         private IParentTransaction _parent;
         private ICategoryBase _category;
         private long _sum;
-
-        /// <summary>
-        /// Initializes the object
-        /// </summary>
-        /// <param name="category">Category of the SubElement</param>
-        /// <param name="sum">The Sum of the SubElement</param>
-        /// <param name="memo">A note to hint on the reasons of creating this Tit</param>
+        
         public SubTransaction(
-            IRepository<ISubTransaction> repository,
+            IRepository<ISubTransaction> repository, 
+            IRxSchedulerProvider rxSchedulerProvider,
             long id = -1L, 
             ICategoryBase category = null,
             string memo = null,
             long sum = 0L) 
-            : base(repository, id, memo)
+            : base(repository, rxSchedulerProvider, id, memo)
         {
             _category = category;
             _sum = sum;
@@ -50,34 +38,26 @@ namespace BFF.MVVM.Models.Native
             {
                 if (_parent == value) return;
                 _parent = value;
-                Update();
                 OnPropertyChanged();
             }
         }
-
-        /// <summary>
-        /// Id of the Category
-        /// </summary>
+        
         public ICategoryBase Category
         {
             get => _category;
             set
             {
-                if (value == null)
+                if (value is null)
                 {
                     OnPropertyChanged();
                     return;
                 }
                 if (_category == value) return;
                 _category = value;
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
             }
         }
-
-        /// <summary>
-        /// The amount of money, which was payed or received
-        /// </summary>
+        
         public long Sum
         {
             get => _sum;
@@ -85,20 +65,19 @@ namespace BFF.MVVM.Models.Native
             {
                 if(_sum == value) return;
                 _sum = value;
-                Update();
-                OnPropertyChanged();
+                UpdateAndNotify();
             }
         }
 
-        public override void Insert()
+        public override async Task InsertAsync()
         {
-            base.Insert();
+            await base.InsertAsync().ConfigureAwait(false);
             Parent.AddSubElement(this);
         }
 
-        public override void Delete()
+        public override async Task DeleteAsync()
         {
-            base.Delete();
+            await base.DeleteAsync().ConfigureAwait(false);
             Parent.RemoveSubElement(this);
         }
     }

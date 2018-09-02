@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Reactive.Linq;
-using BFF.DB;
+using System.Threading.Tasks;
+using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.Services;
 using MuVaViMo;
-using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure
 {
@@ -15,8 +15,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// <summary>
         /// The assigned Account, where this Transaction is registered.
         /// </summary>
-        IReactiveProperty<IAccountViewModel> Account { get; }
-        INewPayeeViewModel NewPayeeViewModel { get; }
+        IAccountViewModel Account { get; set; }
     }
 
     /// <summary>
@@ -24,88 +23,123 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     /// </summary>
     public abstract class TransactionBaseViewModel : TransBaseViewModel, ITransactionBaseViewModel
     {
+        private readonly ITransactionBase _transactionBase;
         private readonly IAccountViewModelService _accountViewModelService;
-         
+        private readonly IPayeeViewModelService _payeeViewModelService;
+        private readonly ISummaryAccountViewModel _summaryAccountViewModel;
+        private IAccountViewModel _account;
+        private IPayeeViewModel _payee;
+
         public IObservableReadOnlyList<IAccountViewModel> AllAccounts => _accountViewModelService.All;
 
         /// <summary>
         /// The assigned Account, where this Transaction is registered.
         /// </summary>
-        public virtual IReactiveProperty<IAccountViewModel> Account { get; }
+        public IAccountViewModel Account
+        {
+            get => _account;
+            set => _transactionBase.Account = _accountViewModelService.GetModel(value);
+        }
 
         public INewPayeeViewModel NewPayeeViewModel { get; }
 
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction.
         /// </summary>
-        public virtual IReactiveProperty<IPayeeViewModel> Payee { get; }
+        public IPayeeViewModel Payee
+        {
+            get => _payee;
+            set => _transactionBase.Payee = _payeeViewModelService.GetModel(value);
+        }
 
-        /// <summary>
-        /// Initializes a TransIncBaseViewModel.
-        /// </summary>
-        /// <param name="orm">Used for the database accesses.</param>
-        /// <param name="parentTransactionBase">The model.</param>
-        /// <param name="accountViewModelService">Service of accounts.</param>
-        /// <param name="payeeViewModelService">Service of payees.</param>
         protected TransactionBaseViewModel(
-            ITransactionBase parentTransactionBase,
-            Func<IHavePayeeViewModel, INewPayeeViewModel> newPayeeViewModelFactory,
+            ITransactionBase transactionBase,
+            INewPayeeViewModel newPayeeViewModel,
+            INewFlagViewModel newFlagViewModel,
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
-            IFlagViewModelService flagViewModelService) : base(parentTransactionBase, flagViewModelService)
+            ILastSetDate lastSetDate,
+            IRxSchedulerProvider rxSchedulerProvider,
+            ISummaryAccountViewModel summaryAccountViewModel,
+            IFlagViewModelService flagViewModelService,
+            IAccountBaseViewModel owner) 
+            : base(
+                transactionBase, 
+                newFlagViewModel, 
+                lastSetDate, 
+                rxSchedulerProvider, 
+                flagViewModelService, 
+                owner)
         {
+            _transactionBase = transactionBase;
             _accountViewModelService = accountViewModelService;
+            _payeeViewModelService = payeeViewModelService;
+            _summaryAccountViewModel = summaryAccountViewModel;
 
             void RefreshAnAccountViewModel(IAccountViewModel account)
             {
-                account?.RefreshTits();
+                account?.RefreshTransCollection();
                 account?.RefreshBalance();
             }
 
-            Account = parentTransactionBase.ToReactivePropertyAsSynchronized(
-                tib => tib.Account,
-                accountViewModelService.GetViewModel, 
-                accountViewModelService.GetModel, 
-                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            _account = _accountViewModelService.GetViewModel(transactionBase.Account);
+            transactionBase
+                .ObservePropertyChanges(nameof(transactionBase.Account))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    _account = _accountViewModelService.GetViewModel(transactionBase.Account);
+                    OnPropertyChanged(nameof(Account));
+                })
+                .AddTo(CompositeDisposable);
 
-            Account
+            if (Account is null && owner is IAccountViewModel specificAccount)
+                Account = specificAccount;
+
+            transactionBase
+                .ObservePropertyChanges(nameof(transactionBase.Account))
                 .SkipLast(1)
-                .Subscribe(RefreshAnAccountViewModel)
+                .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transactionBase.Account)))
                 .AddTo(CompositeDisposable);
 
-            Account
-                .Subscribe(RefreshAnAccountViewModel)
+            transactionBase
+                .ObservePropertyChanges(nameof(transactionBase.Account))
+                .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transactionBase.Account)))
                 .AddTo(CompositeDisposable);
 
-            Payee = parentTransactionBase.ToReactivePropertyAsSynchronized(
-                tib => tib.Payee,
-                payeeViewModelService.GetViewModel,
-                payeeViewModelService.GetModel, 
-                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+            _payee = _payeeViewModelService.GetViewModel(transactionBase.Payee);
+            transactionBase
+                .ObservePropertyChanges(nameof(transactionBase.Payee))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    _payee = _payeeViewModelService.GetViewModel(transactionBase.Payee);
+                    OnPropertyChanged(nameof(Payee));
+                })
+                .AddTo(CompositeDisposable);
 
-            NewPayeeViewModel = newPayeeViewModelFactory(this);
+            NewPayeeViewModel = newPayeeViewModel;
         }
 
-        protected override void InitializeDeleteCommand()
+        public override bool IsInsertable() => base.IsInsertable() && Account.IsNotNull() && Payee.IsNotNull();
+
+        public override async Task DeleteAsync()
         {
-            DeleteCommand.Subscribe(_ =>
-            {
-                Delete();
-                NotifyRelevantAccountsToRefreshTits();
-                NotifyRelevantAccountsToRefreshBalance();
-            });
+            await base.DeleteAsync();
+            NotifyRelevantAccountsToRefreshTrans();
+            NotifyRelevantAccountsToRefreshBalance();
         }
 
-        protected override void NotifyRelevantAccountsToRefreshTits()
+        protected override void NotifyRelevantAccountsToRefreshTrans()
         {
-            Account.Value?.RefreshTits();
-            Messenger.Default.Send(SummaryAccountMessage.RefreshTits);
+            Account?.RefreshTransCollection();
+            _summaryAccountViewModel.RefreshTransCollection();
         }
 
         protected override void NotifyRelevantAccountsToRefreshBalance()
         {
-            Account.Value?.RefreshBalance();
-            Messenger.Default.Send(SummaryAccountMessage.RefreshBalance);
+            Account?.RefreshBalance();
+            _summaryAccountViewModel.RefreshBalance();
         }
     }
 }

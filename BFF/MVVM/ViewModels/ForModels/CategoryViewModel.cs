@@ -1,8 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
+using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
+using MoreLinq;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -18,7 +25,11 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The Parent
         /// </summary>
-        IReactiveProperty<ICategoryViewModel> Parent { get; }
+        ICategoryViewModel Parent { get; }
+
+        void MergeTo(ICategoryViewModel target);
+
+        bool CanMergeTo(ICategoryViewModel target);
     }
 
     public interface ICategoryViewModelInitializer
@@ -30,14 +41,23 @@ namespace BFF.MVVM.ViewModels.ForModels
     public class CategoryViewModel : CategoryBaseViewModel, ICategoryViewModel
     {
         private readonly ICategory _category;
+        private readonly ISummaryAccountViewModel _summaryAccountViewModel;
+        private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
+        private readonly IAccountViewModelService _accountViewModelService;
+        private readonly Lazy<IBudgetOverviewViewModel> _budgetOverviewViewModel;
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
 
         public class CategoryViewModelInitializer : ICategoryViewModelInitializer
         {
             private readonly Lazy<ICategoryViewModelService> _service;
+            private readonly IRxSchedulerProvider _rxSchedulerProvider;
 
-            public CategoryViewModelInitializer(Lazy<ICategoryViewModelService> service)
+            public CategoryViewModelInitializer(
+                Lazy<ICategoryViewModelService> service,
+                IRxSchedulerProvider rxSchedulerProvider)
             {
                 _service = service;
+                _rxSchedulerProvider = rxSchedulerProvider;
             }
 
             public void Initialize(IEnumerable<ICategoryViewModel> categoryViewModels)
@@ -54,11 +74,17 @@ namespace BFF.MVVM.ViewModels.ForModels
                 {
                     viewModel.Categories =
                         viewModel._category.Categories.ToReadOnlyReactiveCollection(_service.Value.GetViewModel).AddTo(viewModel.CompositeDisposable);
-                    viewModel.Parent = viewModel._category.ToReactivePropertyAsSynchronized(
-                        c => c.Parent,
-                        _service.Value.GetViewModel,
-                        _service.Value.GetModel,
-                        ReactivePropertyMode.DistinctUntilChanged).AddTo(viewModel.CompositeDisposable);
+
+                    viewModel.Parent = _service.Value.GetViewModel(viewModel._category.Parent);
+                    viewModel._category
+                        .ObservePropertyChanges(nameof(viewModel._category.Parent))
+                        .ObserveOn(_rxSchedulerProvider.UI)
+                        .Subscribe(_ =>
+                        {
+                            viewModel.Parent = _service.Value.GetViewModel(viewModel._category.Parent);
+                            viewModel.OnPropertyChanged(nameof(viewModel.Parent));
+                        })
+                        .AddTo(viewModel.CompositeDisposable);
                 }
             }
         }
@@ -71,9 +97,70 @@ namespace BFF.MVVM.ViewModels.ForModels
         /// <summary>
         /// The Parent
         /// </summary>
-        public IReactiveProperty<ICategoryViewModel> Parent { get; private set; }
+        public ICategoryViewModel Parent { get; private set; }
 
-        public override string FullName => $"{(Parent.Value != null ? $"{Parent.Value.FullName}." : "")}{Name.Value}";
+        public override Task DeleteAsync()
+        {
+            TaskCompletionSource<Unit> source = new TaskCompletionSource<Unit>();
+            _mainBffDialogCoordinator
+                .ShowMessageAsync(
+                    "ConfirmationDialog_Title".Localize(),
+                    string.Format("ConfirmationDialog_ConfirmCategoryDeletion".Localize(), Name),
+                    BffMessageDialogStyle.AffirmativeAndNegative)
+                .ToObservable()
+                .ObserveOn(_rxSchedulerProvider.UI)
+                .Subscribe(async r =>
+                {
+                    if (r == BffMessageDialogResult.Affirmative)
+                    {
+                        await base.DeleteAsync();
+                        _accountViewModelService.All.ForEach(avm => avm.RefreshTransCollection());
+                        _summaryAccountViewModel.RefreshTransCollection();
+                    }
+
+                    await _budgetOverviewViewModel.Value.Refresh();
+
+                    source.SetResult(Unit.Default);
+                });
+            return source.Task;
+        }
+
+        public void MergeTo(ICategoryViewModel target)
+        {
+            _mainBffDialogCoordinator
+                .ShowMessageAsync(
+                    "ConfirmationDialog_Title".Localize(),
+                    string.Format("ConfirmationDialog_ConfirmCategoryMerge".Localize(), Name, target.Name),
+                    BffMessageDialogStyle.AffirmativeAndNegative)
+                .ToObservable()
+                .ObserveOn(_rxSchedulerProvider.UI)
+                .Subscribe(r =>
+                {
+                    if (r != BffMessageDialogResult.Affirmative) return;
+
+                    if (target is CategoryViewModel categoryViewModel)
+                    {
+                        Observable
+                            .FromAsync(token => _category.MergeToAsync(categoryViewModel._category), _rxSchedulerProvider.Task)
+                            .ObserveOn(_rxSchedulerProvider.UI)
+                            .Subscribe(_ =>
+                            {
+                                _summaryAccountViewModel.RefreshTransCollection();
+                                _accountViewModelService.All.ForEach(avm => avm.RefreshTransCollection());
+                            });
+                    }
+                });
+        }
+
+        public bool CanMergeTo(ICategoryViewModel target)
+        {
+            return target is CategoryViewModel categoryViewModel
+                   && categoryViewModel._category != _category
+                   && categoryViewModel._category.Id != _category.Id
+                   && !categoryViewModel._category.IsMyAncestor(_category);
+        }
+
+        public override string FullName => $"{(Parent != null ? $"{Parent.FullName}." : "")}{Name}";
 
         public override IEnumerable<ICategoryBaseViewModel> FullChainOfCategories
         {
@@ -81,34 +168,36 @@ namespace BFF.MVVM.ViewModels.ForModels
             {
                 ICategoryViewModel current = this;
                 IList<ICategoryBaseViewModel> temp = new List<ICategoryBaseViewModel> { current };
-                while (current.Parent.Value != null)
+                while (current.Parent != null)
                 {
-                    current = current.Parent.Value;
+                    current = current.Parent;
                     temp.Add(current);
                 }
                 return temp.Reverse();
             }
         }
 
-        public override int Depth => Parent.Value?.Depth + 1 ?? 0;
-
-        /// <summary>
-        /// Representing string
-        /// </summary>
-        /// <returns>Name with preceding dots (foreach Ancestor one)</returns>
-        public override string ToString()
-        {
-            return Name.Value;
-        }
+        public override int Depth => Parent?.Depth + 1 ?? 0;
 
         public override string GetIndent()
         {
-            return $"{Parent.Value?.GetIndent()}. ";
+            return $"{Parent?.GetIndent()}. ";
         }
 
-        public CategoryViewModel(ICategory category) : base(category)
+        public CategoryViewModel(
+            ICategory category,
+            ISummaryAccountViewModel summaryAccountViewModel,
+            IMainBffDialogCoordinator mainBffDialogCoordinator,
+            IAccountViewModelService accountViewModelService,
+            Lazy<IBudgetOverviewViewModel> budgetOverviewViewModel,
+            IRxSchedulerProvider rxSchedulerProvider) : base(category, rxSchedulerProvider)
         {
             _category = category;
+            _summaryAccountViewModel = summaryAccountViewModel;
+            _mainBffDialogCoordinator = mainBffDialogCoordinator;
+            _accountViewModelService = accountViewModelService;
+            _budgetOverviewViewModel = budgetOverviewViewModel;
+            _rxSchedulerProvider = rxSchedulerProvider;
         }
     }
 }

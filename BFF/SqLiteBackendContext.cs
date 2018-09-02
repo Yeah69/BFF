@@ -1,6 +1,7 @@
 ﻿using System;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.DB.SQLite;
+using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels;
@@ -32,7 +33,12 @@ namespace BFF
             Func<ISummaryAccount> summaryAccount,
             Func<ISummaryAccountViewModel> summaryAccountViewModel,
             Lazy<IBudgetOverviewViewModel> lazyBudgetOverviewViewModel,
-            Lazy<IAccountTabsViewModel> lazyAccountTabsViewModel)
+            Lazy<IAccountTabsViewModel> lazyAccountTabsViewModel,
+            Lazy<IEditAccountsViewModel> lazyEditAccountsViewModel,
+            Lazy<IEditCategoriesViewModel> lazyEditCategoriesViewModel,
+            Lazy<IEditPayeesViewModel> lazyEditPayeesViewModel,
+            Lazy<IEditFlagsViewModel> lazyEditFlagsViewModel,
+            Lazy<IBackendCultureManager> lazyCultureManger)
         {
             provideSqLiteConnectionFactory(dbPath);
             accountRepository();
@@ -50,9 +56,19 @@ namespace BFF
             summaryAccountViewModel();
             BudgetOverviewViewModel = lazyBudgetOverviewViewModel.Value;
             AccountTabsViewModel = lazyAccountTabsViewModel.Value;
+            EditAccountsViewModel = lazyEditAccountsViewModel.Value;
+            EditCategoriesViewModel = lazyEditCategoriesViewModel.Value;
+            EditPayeesViewModel = lazyEditPayeesViewModel.Value;
+            EditFlagsViewModel = lazyEditFlagsViewModel.Value;
+            CultureManager = lazyCultureManger.Value;
         }
 
         public override IBudgetOverviewViewModel BudgetOverviewViewModel { get; } 
         public override IAccountTabsViewModel AccountTabsViewModel { get; }
+        public override IEditAccountsViewModel EditAccountsViewModel { get; }
+        public override IEditCategoriesViewModel EditCategoriesViewModel { get; }
+        public override IEditPayeesViewModel EditPayeesViewModel { get; }
+        public override IEditFlagsViewModel EditFlagsViewModel { get; }
+        public override ICultureManager CultureManager { get; }
     }
 }

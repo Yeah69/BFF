@@ -1,49 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
+using BFF.Helper;
+using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
-using Dapper;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CreateTransTable : CreateTableBase
-    {
-        public CreateTransTable(IProvideConnection provideConnection) : base(provideConnection) { }
-        
-        protected override string CreateTableStatement =>
-            $@"CREATE TABLE {nameof(Trans)}s(
-            {nameof(Trans.Id)} INTEGER PRIMARY KEY,
-            {nameof(Trans.FlagId)} INTEGER,
-            {nameof(Trans.CheckNumber)} TEXT,
-            {nameof(Trans.AccountId)} INTEGER,
-            {nameof(Trans.PayeeId)} INTEGER,
-            {nameof(Trans.CategoryId)} INTEGER,
-            {nameof(Trans.Date)} DATE,
-            {nameof(Trans.Memo)} TEXT,
-            {nameof(Trans.Sum)} INTEGER,
-            {nameof(Trans.Cleared)} INTEGER,
-            {nameof(Trans.Type)} VARCHAR(17),
-            FOREIGN KEY({nameof(Trans.FlagId)}) REFERENCES {nameof(Flag)}s({nameof(Flag.Id)}) ON DELETE SET NULL);
-            CREATE INDEX {nameof(Trans)}s_{nameof(Trans.AccountId)}_{nameof(Trans.PayeeId)}_index ON Transs ({nameof(Trans.AccountId)}, {nameof(Trans.PayeeId)});
-            CREATE INDEX {nameof(Trans)}s_{nameof(Trans.AccountId)}_{nameof(Trans.CategoryId)}_index ON {nameof(Trans)}s ({nameof(Trans.AccountId)}, {nameof(Trans.CategoryId)});
-            CREATE INDEX {nameof(Trans)}s_{nameof(Trans.Date)}_index ON {nameof(Trans)}s ({nameof(Trans.Date)});";      
-    }
-
     public interface ITransRepository : 
-        IRepositoryBase<Domain.Structure.ITransBase>, 
-        ISpecifiedPagedAccess<Domain.Structure.ITransBase, Domain.IAccount>,
-        ISpecifiedPagedAccessAsync<Domain.Structure.ITransBase, Domain.IAccount>
+        IRepositoryBase<ITransBase>, 
+        ISpecifiedPagedAccessAsync<ITransBase, Domain.IAccount>
     {
+        Task<IEnumerable<ITransBase>> GetFromMonthAsync(DateTime month);
+        Task<IEnumerable<ITransBase>> GetFromMonthAndCategoryAsync(DateTime month, ICategoryBase category);
+        Task<IEnumerable<ITransBase>> GetFromMonthAndCategoriesAsync(DateTime month, IEnumerable<ICategoryBase> categories);
     }
 
 
-    public sealed class TransRepository : RepositoryBase<Domain.Structure.ITransBase, Trans>, ITransRepository
+    public sealed class TransRepository : RepositoryBase<ITransBase, Trans>, ITransRepository
     {
-        private readonly IProvideConnection _provideConnection;
+        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IRepository<Domain.ITransaction> _transactionRepository;
         private readonly IRepository<Domain.ITransfer> _transferRepository;
         private readonly IRepository<Domain.IParentTransaction> _parentTransactionRepository;
@@ -51,10 +30,12 @@ namespace BFF.DB.Dapper.ModelRepositories
         private readonly ICategoryBaseRepository _categoryBaseRepository;
         private readonly IPayeeRepository _payeeRepository;
         private readonly ISubTransactionRepository _subTransactionsRepository;
+        private readonly ITransOrm _transOrm;
         private readonly IFlagRepository _flagRepository;
 
         public TransRepository(
             IProvideConnection provideConnection, 
+            IRxSchedulerProvider rxSchedulerProvider,
             IRepository<Domain.ITransaction> transactionRepository, 
             IRepository<Domain.ITransfer> transferRepository, 
             IRepository<Domain.IParentTransaction> parentTransactionRepository,
@@ -62,10 +43,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             ICategoryBaseRepository categoryBaseRepository,
             IPayeeRepository payeeRepository,
             ISubTransactionRepository subTransactionsRepository, 
+            ICrudOrm crudOrm,
+            ITransOrm transOrm,
             IFlagRepository flagRepository)
-            : base(provideConnection)
+            : base(provideConnection, crudOrm)
         {
-            _provideConnection = provideConnection;
+            _rxSchedulerProvider = rxSchedulerProvider;
             _transactionRepository = transactionRepository;
             _transferRepository = transferRepository;
             _parentTransactionRepository = parentTransactionRepository;
@@ -73,66 +56,11 @@ namespace BFF.DB.Dapper.ModelRepositories
             _categoryBaseRepository = categoryBaseRepository;
             _payeeRepository = payeeRepository;
             _subTransactionsRepository = subTransactionsRepository;
+            _transOrm = transOrm;
             _flagRepository = flagRepository;
         }
 
-        protected override Converter<(Trans, DbConnection), Domain.Structure.ITransBase> ConvertToDomain => tuple =>
-        {
-            (Trans trans, DbConnection connection) = tuple;
-            Enum.TryParse(trans.Type, true, out Domain.Structure.TransType type);
-            Domain.Structure.ITransBase ret;
-            switch(type)
-            {
-                case Domain.Structure.TransType.Transaction:
-                    ret = new Domain.Transaction(
-                        _transactionRepository, 
-                        trans.Date,
-                        trans.Id,
-                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId, connection),
-                        trans.CheckNumber,
-                        _accountRepository.Find(trans.AccountId, connection),
-                        _payeeRepository.Find(trans.PayeeId, connection),
-                        trans.CategoryId == null ? null : _categoryBaseRepository.Find((long)trans.CategoryId, connection), 
-                        trans.Memo, 
-                        trans.Sum,
-                        trans.Cleared == 1L);
-                    break;
-                case Domain.Structure.TransType.Transfer:
-                    ret = new Domain.Transfer(
-                        _transferRepository,
-                        trans.Date,
-                        trans.Id,
-                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId, connection),
-                        trans.CheckNumber,
-                        _accountRepository.Find(trans.PayeeId, connection),
-                        _accountRepository.Find(trans.CategoryId ?? -1, connection), // This CategoryId should never be a null, because it comes from a transfer
-                        trans.Memo,
-                        trans.Sum, 
-                        trans.Cleared == 1L);
-                    break;
-                case Domain.Structure.TransType.ParentTransaction:
-                    ret = new Domain.ParentTransaction(
-                        _parentTransactionRepository,
-                        _subTransactionsRepository.GetChildrenOf(trans.Id, connection), 
-                        trans.Date,
-                        trans.Id,
-                        trans.FlagId == null ? null : _flagRepository.Find((long)trans.FlagId, connection),
-                        trans.CheckNumber,
-                        _accountRepository.Find(trans.AccountId, connection),
-                        _payeeRepository.Find(trans.PayeeId, connection),
-                        trans.Memo, 
-                        trans.Cleared == 1L);
-                    break;
-                default:
-                    ret = new Domain.Transaction(_transactionRepository, DateTime.Today)
-                        {Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR"};
-                    break;
-            }
-
-            return ret;
-        };
-
-        protected override Converter<Domain.Structure.ITransBase, Trans> ConvertToPersistence => domainTransBase =>
+        protected override Converter<ITransBase, Trans> ConvertToPersistence => domainTransBase =>
         {
             long accountId = -69;
             long? categoryId = -69;
@@ -165,7 +93,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             {
                 Id = domainTransBase.Id,
                 AccountId = accountId,
-                FlagId = domainTransBase.Flag == null || domainTransBase.Flag == Domain.Flag.Default
+                FlagId = domainTransBase.Flag is null || domainTransBase.Flag == Domain.Flag.Default
                     ? (long?) null
                     : domainTransBase.Flag.Id,
                 CheckNumber = domainTransBase.CheckNumber,
@@ -179,58 +107,114 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         };
 
-        private string GetOrderingPageSuffix() => $"ORDER BY {nameof(Trans.Date)}";
-
-        private string CommonSuffix(Domain.IAccount specifyingObject)
+        public async Task<IEnumerable<ITransBase>> GetPageAsync(int offset, int pageSize, Domain.IAccount specifyingObject)
         {
-            if (specifyingObject != null && !(specifyingObject is Domain.ISummaryAccount))
-                return $"WHERE {nameof(Trans.AccountId)} = {specifyingObject.Id} OR {nameof(Trans.AccountId)} = -69 AND {nameof(Trans.PayeeId)} = {specifyingObject.Id} OR {nameof(Trans.AccountId)} = -69 AND {nameof(Trans.CategoryId)} = {specifyingObject.Id}"; // TODO Replace specifyingObject.Id with @specifyingId
-
-            return "";
+            return await (await (specifyingObject is Domain.IAccount account
+                ? _transOrm.GetPageFromSpecificAccountAsync(offset, pageSize, account.Id)
+                : _transOrm.GetPageFromSummaryAccountAsync(offset, pageSize)).ConfigureAwait(false))
+                .Select(async t => await ConvertToDomainAsync(t).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
         }
 
-        private string GetSpecifyingPageSuffix(Domain.IAccount specifyingObject) => CommonSuffix(specifyingObject);
-
-        private string GetSpecifyingCountSuffix(Domain.IAccount specifyingObject) => CommonSuffix(specifyingObject);
-
-        public IEnumerable<ITransBase> GetPage(int offset, int pageSize, Domain.IAccount specifyingObject, DbConnection connection = null)
+        public async Task<long> GetCountAsync(Domain.IAccount specifyingObject)
         {
-            string query = $"SELECT * FROM {nameof(Trans)}s {GetSpecifyingPageSuffix(specifyingObject)} {GetOrderingPageSuffix()} LIMIT @{nameof(offset)}, @{nameof(pageSize)};";
-
-            return ConnectionHelper.QueryOnExistingOrNewConnection(
-                c => c.Query<Trans>(query, new {offset, pageSize}).Select(tt => ConvertToDomain((tt, c))),
-                _provideConnection,
-                connection);
+            return await (specifyingObject is Domain.IAccount account
+                ? _transOrm.GetCountFromSpecificAccountAsync(account.Id)
+                : _transOrm.GetCountFromSummaryAccountAsync()).ConfigureAwait(false);
         }
 
-        public int GetCount(Domain.IAccount specifyingObject, DbConnection connection = null)
+        public async Task<IEnumerable<ITransBase>> GetFromMonthAsync(DateTime month)
         {
-            string query = $"SELECT COUNT(*) FROM {nameof(Trans)}s {GetSpecifyingCountSuffix(specifyingObject)};";
-
-            return ConnectionHelper.QueryOnExistingOrNewConnection(
-                c => c.Query<int>(query),
-                _provideConnection,
-                connection).First();
+            return await(await _transOrm.GetFromMonthAsync(month).ConfigureAwait(false))
+                .Select(async t => await ConvertToDomainAsync(t).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<ITransBase>> GetPageAsync(int offset, int pageSize, Domain.IAccount specifyingObject, DbConnection connection = null)
+        public async Task<IEnumerable<ITransBase>> GetFromMonthAndCategoryAsync(DateTime month, ICategoryBase category)
         {
-            string query = $"SELECT * FROM {nameof(Trans)}s {GetSpecifyingPageSuffix(specifyingObject)} {GetOrderingPageSuffix()} LIMIT @{nameof(offset)}, @{nameof(pageSize)};";
-
-            return await ConnectionHelper.QueryOnExistingOrNewConnectionAsync(
-                async c => (await c.QueryAsync<Trans>(query, new {offset, pageSize })).Select(tt => ConvertToDomain((tt, c))),
-                _provideConnection,
-                connection);
+            return await (await _transOrm.GetFromMonthAndCategoryAsync(month, category.Id).ConfigureAwait(false))
+                .Select(async t => await ConvertToDomainAsync(t).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
         }
 
-        public async Task<int> GetCountAsync(Domain.IAccount specifyingObject, DbConnection connection = null)
+        public async Task<IEnumerable<ITransBase>> GetFromMonthAndCategoriesAsync(DateTime month, IEnumerable<ICategoryBase> categories)
         {
-            string query = $"SELECT COUNT(*) FROM {nameof(Trans)}s {GetSpecifyingCountSuffix(specifyingObject)};";
+            return await (await _transOrm.GetFromMonthAndCategoriesAsync(month, categories.Select(c => c.Id).ToArray()).ConfigureAwait(false))
+                .Select(async t => await ConvertToDomainAsync(t).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
+        }
 
-            return (await ConnectionHelper.QueryOnExistingOrNewConnectionAsync(
-                async c => await c.QueryAsync<int>(query),
-                _provideConnection,
-                connection)).First();
+        protected override async Task<ITransBase> ConvertToDomainAsync(Trans persistenceModel)
+        {
+            Enum.TryParse(persistenceModel.Type, true, out TransType type);
+            ITransBase ret;
+            switch (type)
+            {
+                case TransType.Transaction:
+                    ret = new Domain.Transaction(
+                        _transactionRepository,
+                        _rxSchedulerProvider,
+                        persistenceModel.Date,
+                        persistenceModel.Id,
+                        persistenceModel.FlagId is null
+                            ? null
+                            : await _flagRepository.FindAsync((long)persistenceModel.FlagId).ConfigureAwait(false),
+                        persistenceModel.CheckNumber,
+                        await _accountRepository.FindAsync(persistenceModel.AccountId).ConfigureAwait(false),
+                        persistenceModel.PayeeId is null
+                            ? null
+                            : await _payeeRepository.FindAsync((long)persistenceModel.PayeeId).ConfigureAwait(false),
+                        persistenceModel.CategoryId is null
+                            ? null
+                            : await _categoryBaseRepository.FindAsync((long)persistenceModel.CategoryId).ConfigureAwait(false),
+                        persistenceModel.Memo,
+                        persistenceModel.Sum,
+                        persistenceModel.Cleared == 1L);
+                    break;
+                case TransType.Transfer:
+                    ret = new Domain.Transfer(
+                        _transferRepository,
+                        _rxSchedulerProvider,
+                        persistenceModel.Date,
+                        persistenceModel.Id,
+                        persistenceModel.FlagId is null
+                            ? null
+                            : await _flagRepository.FindAsync((long)persistenceModel.FlagId).ConfigureAwait(false),
+                        persistenceModel.CheckNumber,
+                        persistenceModel.PayeeId is null
+                            ? null
+                            : await _accountRepository.FindAsync((long)persistenceModel.PayeeId).ConfigureAwait(false),
+                        persistenceModel.CategoryId is null
+                            ? null
+                            : await _accountRepository.FindAsync((long)persistenceModel.CategoryId).ConfigureAwait(false),
+                        persistenceModel.Memo,
+                        persistenceModel.Sum,
+                        persistenceModel.Cleared == 1L);
+                    break;
+                case TransType.ParentTransaction:
+                    ret = new Domain.ParentTransaction(
+                        _parentTransactionRepository,
+                        _rxSchedulerProvider,
+                        await _subTransactionsRepository.GetChildrenOfAsync(persistenceModel.Id).ConfigureAwait(false),
+                        persistenceModel.Date,
+                        persistenceModel.Id,
+                        persistenceModel.FlagId is null
+                            ? null
+                            : await _flagRepository.FindAsync((long)persistenceModel.FlagId).ConfigureAwait(false),
+                        persistenceModel.CheckNumber,
+                        await _accountRepository.FindAsync(persistenceModel.AccountId).ConfigureAwait(false),
+                        persistenceModel.PayeeId is null
+                            ? null
+                            : await _payeeRepository.FindAsync((long)persistenceModel.PayeeId).ConfigureAwait(false),
+                        persistenceModel.Memo,
+                        persistenceModel.Cleared == 1L);
+                    break;
+                default:
+                    ret = new Domain.Transaction(
+                            _transactionRepository, 
+                            _rxSchedulerProvider, 
+                            DateTime.Today)
+                    { Memo = "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR" };
+                    break;
+            }
+
+            return ret;
         }
     }
 }
