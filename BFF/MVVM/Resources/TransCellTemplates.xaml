@@ -1485,7 +1485,6 @@
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
                                                 Background="Transparent"
-                                                ContextMenu="{Binding ContextMenu, RelativeSource={RelativeSource AncestorType=DataGridRow}}"
                                                 Foreground="{DynamicResource AccentColorBrush}"
                                                 Kind="DotsHorizontal">
                         <i:Interaction.Behaviors>
