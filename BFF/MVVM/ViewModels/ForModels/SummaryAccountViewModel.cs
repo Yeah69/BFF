@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
@@ -31,7 +32,6 @@ namespace BFF.MVVM.ViewModels.ForModels
     {
         private readonly Lazy<IAccountViewModelService> _service;
         private readonly ITransRepository _transRepository;
-        private readonly Func<ITransLikeViewModelPlaceholder> _placeholderFactory;
         private readonly IConvertFromTransBaseToTransLikeViewModel _convertFromTransBaseToTransLikeViewModel;
 
         /// <summary>
@@ -63,12 +63,12 @@ namespace BFF.MVVM.ViewModels.ForModels
                 service,
                 accountRepository,
                 rxSchedulerProvider,
+                placeholderFactory,
                 cultureManager,
                 transDataGridColumnManager)
         {
             _service = service;
             _transRepository = transRepository;
-            _placeholderFactory = placeholderFactory;
             _convertFromTransBaseToTransLikeViewModel = convertFromTransBaseToTransLikeViewModel;
 
             if(string.IsNullOrWhiteSpace(Settings.Default.OpenAccountTab))
@@ -107,13 +107,13 @@ namespace BFF.MVVM.ViewModels.ForModels
 
         #region ViewModel_Part
 
-        protected override IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess
-            => new RelayBasicTaskBasedAsyncDataAccess<ITransLikeViewModel>(
-                async (offset, pageSize) => _convertFromTransBaseToTransLikeViewModel
-                    .Convert(await _transRepository.GetPageAsync(offset, pageSize, null), this)
-                    .ToArray(),
-                async () => (int) await _transRepository.GetCountAsync(null),
-                () => _placeholderFactory());
+        protected override Func<int, int, Task<ITransLikeViewModel[]>> PageFetcher =>
+            async (offset, pageSize) => _convertFromTransBaseToTransLikeViewModel
+                .Convert(await _transRepository.GetPageAsync(offset, pageSize, null), this)
+                .ToArray();
+
+        protected override Func<Task<int>> CountFetcher =>
+            async () => (int) await _transRepository.GetCountAsync(null);
 
         protected override long? CalculateNewPartOfIntermediateBalance()
         {

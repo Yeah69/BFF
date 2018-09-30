@@ -41,7 +41,6 @@ namespace BFF.MVVM.ViewModels.ForModels
         private readonly IAccount _account;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
         private readonly ITransRepository _transRepository;
-        private readonly Func<ITransLikeViewModelPlaceholder> _placeholderFactory;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
         private readonly IConvertFromTransBaseToTransLikeViewModel _convertFromTransBaseToTransLikeViewModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
@@ -96,13 +95,13 @@ namespace BFF.MVVM.ViewModels.ForModels
                 accountViewModelService,
                 accountRepository,
                 rxSchedulerProvider,
+                placeholderFactory,
                 cultureManager,
                 transDataGridColumnManager)
         {
             _account = account;
             _summaryAccountViewModel = summaryAccountViewModel;
             _transRepository = transRepository;
-            _placeholderFactory = placeholderFactory;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _convertFromTransBaseToTransLikeViewModel = convertFromTransBaseToTransLikeViewModel;
             _rxSchedulerProvider = rxSchedulerProvider;
@@ -188,13 +187,13 @@ namespace BFF.MVVM.ViewModels.ForModels
                 IsOpen = true;
         }
 
-        protected override IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess
-            => new RelayBasicTaskBasedAsyncDataAccess<ITransLikeViewModel>(
-                async (offset, pageSize) => _convertFromTransBaseToTransLikeViewModel
-                    .Convert(await _transRepository.GetPageAsync(offset, pageSize, _account), this)
-                    .ToArray(),
-                async () => (int) await _transRepository.GetCountAsync(_account),
-                () => _placeholderFactory());
+        protected override Func<int, int, Task<ITransLikeViewModel[]>> PageFetcher =>
+            async (offset, pageSize) => _convertFromTransBaseToTransLikeViewModel
+                .Convert(await _transRepository.GetPageAsync(offset, pageSize, _account), this)
+                .ToArray();
+
+        protected override Func<Task<int>> CountFetcher =>
+            async () => (int) await _transRepository.GetCountAsync(_account);
 
         protected override long? CalculateNewPartOfIntermediateBalance()
         {

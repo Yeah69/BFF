@@ -115,6 +115,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
     {
         private readonly Lazy<IAccountViewModelService> _accountViewModelService;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly Func<ITransLikeViewModelPlaceholder> _placeholderFactory;
         private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
         private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
         private readonly Subject<Unit> _refreshBalance = new Subject<Unit>();
@@ -132,7 +133,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         /// </summary>
         public IDataVirtualizingCollection<ITransLikeViewModel> Trans => _trans ?? (_trans = CreateDataVirtualizingCollection());
 
-        public bool TransIsEmpty => (Trans as ICollection).Count == 0;
+        public bool TransIsEmpty => ((ICollection)Trans).Count == 0;
 
         /// <summary>
         /// Collection of Trans', which are about to be inserted to this Account.
@@ -235,11 +236,13 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
             Lazy<IAccountViewModelService> accountViewModelService,
             IAccountRepository accountRepository,
             IRxSchedulerProvider rxSchedulerProvider,
+            Func<ITransLikeViewModelPlaceholder> placeholderFactory,
             IBackendCultureManager cultureManager,
             ITransDataGridColumnManager transDataGridColumnManager) : base(account, rxSchedulerProvider)
         {
             _accountViewModelService = accountViewModelService;
             _rxSchedulerProvider = rxSchedulerProvider;
+            _placeholderFactory = placeholderFactory;
             TransDataGridColumnManager = transDataGridColumnManager;
 
             _refreshBalance.AddTo(CompositeDisposable);
@@ -490,20 +493,21 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
 
 
         private IDataVirtualizingCollection<ITransLikeViewModel> CreateDataVirtualizingCollection()
-            => CollectionBuilder<ITransLikeViewModel>
-                .CreateBuilder()
-                .BuildAHoardingTaskBasedAsyncCollection(
-                    BasicAccess,
-                    _rxSchedulerProvider.Task,
-                    _rxSchedulerProvider.UI,
-                    PageSize);
+            => DataVirtualizingCollectionBuilder<ITransLikeViewModel>
+                .Build(pageSize: PageSize)
+                .Hoarding()
+                .NonPreloading()
+                .TaskBasedFetchers(PageFetcher, CountFetcher)
+                .AsyncIndexAccess(_placeholderFactory, _rxSchedulerProvider.Task, _rxSchedulerProvider.UI);
 
         private readonly int PageSize = 100;
         private bool _isOpen;
         private long? _targetBalance;
         private DataGridHeadersVisibility _showEditHeaders;
 
-        protected abstract IBasicTaskBasedAsyncDataAccess<ITransLikeViewModel> BasicAccess { get; }
+        protected abstract Func<int, int, Task<ITransLikeViewModel[]>> PageFetcher { get; }
+
+        protected abstract Func<Task<int>> CountFetcher { get; }
 
         protected abstract long? CalculateNewPartOfIntermediateBalance();
     }

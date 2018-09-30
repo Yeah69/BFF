@@ -6,7 +6,6 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.DataVirtualizingCollection;
-using BFF.DataVirtualizingCollection.DataAccesses;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.DB;
 using BFF.DB.Dapper;
@@ -222,32 +221,33 @@ namespace BFF.MVVM.ViewModels
 
         private IDataVirtualizingCollection<IBudgetMonthViewModel> CreateBudgetMonths()
         {
-            return CollectionBuilder<IBudgetMonthViewModel>
-                .CreateBuilder()
-                .BuildAHoardingPreloadingTaskBasedSyncCollection(
-                    new RelayBasicTaskBasedSyncDataAccess<IBudgetMonthViewModel>(
-                        async (offset, pageSize) =>
+            return DataVirtualizingCollectionBuilder<IBudgetMonthViewModel>
+                .Build(pageSize: 12)
+                .Hoarding()
+                .Preloading()
+                .TaskBasedFetchers(
+                    async (offset, pageSize) =>
+                    {
+                        var budgetMonthViewModels = await Task.Run(async () => (await _budgetMonthRepository.FindAsync(IndexToMonth(offset).Year).ConfigureAwait(false))
+                            .Select(bm => _budgetMonthViewModelFactory(bm))
+                            .ToArray()).ConfigureAwait(false);
+
+                        foreach (var bmvm in budgetMonthViewModels)
                         {
-                            var budgetMonthViewModels = await Task.Run(async () => (await _budgetMonthRepository.FindAsync(IndexToMonth(offset).Year).ConfigureAwait(false))
-                                .Select(bm => _budgetMonthViewModelFactory(bm))
-                                .ToArray()).ConfigureAwait(false);
-
-                            foreach (var bmvm in budgetMonthViewModels)
+                            var categoriesToBudgetEntries = bmvm.BudgetEntries.ToDictionary(bevm => bevm.Category, bevm => bevm);
+                            foreach (var bevm in bmvm.BudgetEntries)
                             {
-                                var categoriesToBudgetEntries = bmvm.BudgetEntries.ToDictionary(bevm => bevm.Category, bevm => bevm);
-                                foreach (var bevm in bmvm.BudgetEntries)
-                                {
-                                    bevm.Children = bevm
-                                        .Category
-                                        .Categories
-                                        .Select(cvm => categoriesToBudgetEntries[cvm]).ToList();
-                                }
+                                bevm.Children = bevm
+                                    .Category
+                                    .Categories
+                                    .Select(cvm => categoriesToBudgetEntries[cvm]).ToList();
                             }
+                        }
 
-                            return budgetMonthViewModels;
-                        },
-                        () =>  Task.FromResult(LastMonthIndex)),
-                    pageSize: 12);
+                        return budgetMonthViewModels;
+                    },
+                    async () => await Task.FromResult(LastMonthIndex))
+                .SyncIndexAccess();
         }
 
         private static DateTime IndexToMonth(int index)
