@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Autofac.Features.OwnedInstances;
 using BFF.DB;
 using BFF.Helper.Extensions;
@@ -72,7 +73,7 @@ namespace BFF.Helper.Import
             _savePath = paths.SavePath;
         }
 
-        public string Import()
+        public async Task<string> Import()
         {
 
             string exceptionTemplate = "Exception_FileNotFound".Localize();
@@ -82,7 +83,7 @@ namespace BFF.Helper.Import
                 throw new FileNotFoundException(string.Format(exceptionTemplate, BudgetPath));
             if (File.Exists(SavePath))
                 File.Delete(SavePath); //todo: Exception handling
-            ImportYnabTransactionsCsvToDb(TransactionPath, BudgetPath, SavePath);
+            await ImportYnabTransactionsCsvToDb(TransactionPath, BudgetPath, SavePath).ConfigureAwait(false);
             return SavePath;
          }
 
@@ -97,7 +98,7 @@ namespace BFF.Helper.Import
             return number == "" ? 0L : long.Parse(number);
         }
 
-        public void ImportYnabTransactionsCsvToDb(string filePathTransaction, string filePathBudget, string savePath)
+        public async Task ImportYnabTransactionsCsvToDb(string filePathTransaction, string filePathBudget, string savePath)
         {
             //Initialization
             _processedAccountsList.Clear();
@@ -143,7 +144,8 @@ namespace BFF.Helper.Import
             };
 
             //Third step: Create new database for imported data
-            _createBackendOrm.CreateAsync().ContinueWith(t => _importingOrm.PopulateDatabaseAsync(lists, assignments));
+            await _createBackendOrm.CreateAsync().ConfigureAwait(false);
+            await _importingOrm.PopulateDatabaseAsync(lists, assignments).ConfigureAwait(false);
         }
 
         private static List<Transaction> ParseTransactionCsv(string filePath)

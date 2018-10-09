@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 using System.Transactions;
 using BFF.Helper.Import;
@@ -18,11 +19,9 @@ namespace BFF.DB.SQLite
 
         public async Task PopulateDatabaseAsync(ImportLists importLists, ImportAssignments importAssignments)
         {
-            using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (TransactionScope transactionScope = new TransactionScope(new TransactionScopeOption(), TimeSpan.FromMinutes(10)))
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
-
                 /*  
                 Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
                 because the structure of the imported csv-Entry of Categories allows to get the master category first and

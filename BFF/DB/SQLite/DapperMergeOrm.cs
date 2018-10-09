@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿using System.Data;
 using System.Threading.Tasks;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
@@ -42,10 +42,8 @@ WHERE {nameof(Category.ParentId)} = @fromCategoryId;";
         public async Task MergePayeeAsync(Payee from, Payee to)
         {
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
-                
                 _provideConnection.Backup($"BeforeMergeOfPayee{from.Name}ToPayee{to.Name}");
                 await connection.ExecuteAsync(OnPayeeMerge, new { fromPayeeId = from.Id, toPayeeId = to.Id }).ConfigureAwait(false);
 
@@ -57,10 +55,8 @@ WHERE {nameof(Category.ParentId)} = @fromCategoryId;";
         public async Task MergeFlagAsync(Flag from, Flag to)
         {
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
-
                 _provideConnection.Backup($"BeforeMergeOfFlag{from.Name}ToFlag{to.Name}");
                 await connection.ExecuteAsync(OnFlagMerge, new { fromFlagId = from.Id, toFlagId = to.Id }).ConfigureAwait(false);
 
@@ -72,10 +68,8 @@ WHERE {nameof(Category.ParentId)} = @fromCategoryId;";
         public async Task MergeCategoryAsync(Category from, Category to)
         {
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
-
                 _provideConnection.Backup($"BeforeMergeOfCategory{from.Name}ToCategory{to.Name}");
                 await connection.ExecuteAsync(OnCategoryMerge, new { fromCategoryId = from.Id, toCategoryId = to.Id }).ConfigureAwait(false);
 

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Data.Common;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -25,9 +25,8 @@ namespace BFF.DB.SQLite
         {
             IList<SubTransaction> ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = connection.Query<SubTransaction>(ParentalQuery, new { ParentId = parentTransactionId }).ToList();
                 transactionScope.Complete();
             }
@@ -38,9 +37,8 @@ namespace BFF.DB.SQLite
         {
             IList<SubTransaction> ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = (await connection.QueryAsync<SubTransaction>(ParentalQuery, new { ParentId = parentTransactionId }).ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }

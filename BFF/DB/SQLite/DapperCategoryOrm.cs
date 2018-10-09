@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Data.Common;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -24,9 +24,8 @@ namespace BFF.DB.SQLite
         {
             IList<Category> ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = (await connection.QueryAsync<Category>(GetAllCategoriesQuery).ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }
@@ -37,9 +36,8 @@ namespace BFF.DB.SQLite
         {
             IList<Category> ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = (await connection.QueryAsync<Category>(GetAllIncomeCategoriesQuery).ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }

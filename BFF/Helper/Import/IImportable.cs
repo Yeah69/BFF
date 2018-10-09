@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using BFF.DB.PersistenceModels;
 
 namespace BFF.Helper.Import
@@ -7,7 +8,7 @@ namespace BFF.Helper.Import
     {
         string SavePath { get; set; }
 
-        string Import();
+        Task<string> Import();
     }
 
     public struct ImportLists

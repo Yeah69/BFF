@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.Common;
+using System.Data;
 using System.Threading.Tasks;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
@@ -82,9 +82,8 @@ namespace BFF.DB.SQLite
             long? ret;
 
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = await connection.QueryFirstOrDefaultAsync<long?>(AccountSpecificClearedBalanceStatement, new { accountId = id }).ConfigureAwait(false);
                 transactionScope.Complete();
             }
@@ -97,9 +96,8 @@ namespace BFF.DB.SQLite
             long? ret;
 
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = await connection.QueryFirstOrDefaultAsync<long?>(AccountSpecificClearedBalanceUntilNowStatement, new { accountId = id, DateTimeNow = DateTime.Now }).ConfigureAwait(false);
                 transactionScope.Complete();
             }
@@ -112,9 +110,8 @@ namespace BFF.DB.SQLite
             long? ret;
 
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = await connection.QueryFirstOrDefaultAsync<long?>(AllAccountsClearedBalanceStatement).ConfigureAwait(false);
                 transactionScope.Complete();
             }
@@ -127,9 +124,8 @@ namespace BFF.DB.SQLite
             long? ret;
 
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = await connection.QueryFirstOrDefaultAsync<long?>(AllAccountsClearedBalanceUntilNowStatement, new { DateTimeNow = DateTime.Now }).ConfigureAwait(false);
                 transactionScope.Complete();
             }
@@ -142,9 +138,8 @@ namespace BFF.DB.SQLite
             long? ret;
 
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = await connection.QueryFirstOrDefaultAsync<long?>(AccountSpecificUnclearedBalanceStatement, new { accountId = id }).ConfigureAwait(false);
                 transactionScope.Complete();
             }
@@ -157,9 +152,8 @@ namespace BFF.DB.SQLite
             long? ret;
 
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = await connection.QueryFirstOrDefaultAsync<long?>(AccountSpecificUnclearedBalanceUntilNowStatement, new { accountId = id, DateTimeNow = DateTime.Now }).ConfigureAwait(false);
                 transactionScope.Complete();
             }
@@ -172,9 +166,8 @@ namespace BFF.DB.SQLite
             long? ret;
 
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = await connection.QueryFirstOrDefaultAsync<long?>(AllAccountsUnclearedBalanceStatement).ConfigureAwait(false);
                 transactionScope.Complete();
             }
@@ -187,9 +180,8 @@ namespace BFF.DB.SQLite
             long? ret;
 
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = await connection.QueryFirstOrDefaultAsync<long?>(AllAccountsUnclearedBalanceUntilNowStatement, new { DateTimeNow = DateTime.Now }).ConfigureAwait(false);
                 transactionScope.Complete();
             }

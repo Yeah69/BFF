@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿using System.Data;
 using System.Threading.Tasks;
 using System.Transactions;
 using BFF.DB.PersistenceModels;
@@ -94,23 +94,28 @@ namespace BFF.DB.SQLite
         public async Task CreateAsync()
         {
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
-
                 await Task.WhenAll(
-                    connection.ExecuteAsync(CreateAccountTableStatement),
-                    connection.ExecuteAsync(CreateFlagTableStatement),
-                    connection.ExecuteAsync(CreatePayeeTableStatement),
-                    connection.ExecuteAsync(CreateCategoryTableStatement),
-                    connection.ExecuteAsync(CreateTransTableStatement),
-                    connection.ExecuteAsync(CreateSubTransactionTableStatement),
-                    connection.ExecuteAsync(CreateDbSettingTableStatement),
-                    connection.ExecuteAsync(CreateBudgetEntryTableStatement),
-                    connection.ExecuteAsync(SetDatabaseSchemaVersion)).ConfigureAwait(false);
-                await connection.InsertAsync(new DbSetting()).ConfigureAwait(false);
+                        connection.ExecuteAsync(CreateAccountTableStatement),
+                        connection.ExecuteAsync(CreateFlagTableStatement),
+                        connection.ExecuteAsync(CreatePayeeTableStatement),
+                        connection.ExecuteAsync(CreateCategoryTableStatement),
+                        connection.ExecuteAsync(CreateTransTableStatement),
+                        connection.ExecuteAsync(CreateSubTransactionTableStatement),
+                        CreateDbSettingsTableAndInsertDefaultSettings(connection),
+                        connection.ExecuteAsync(CreateBudgetEntryTableStatement),
+                        connection.ExecuteAsync(SetDatabaseSchemaVersion))
+                    .ConfigureAwait(false);
+                
 
                 transactionScope.Complete();
+            }
+
+            async Task CreateDbSettingsTableAndInsertDefaultSettings(IDbConnection conn)
+            {
+                await conn.ExecuteAsync(CreateDbSettingTableStatement).ConfigureAwait(false);
+                await conn.InsertAsync(new DbSetting()).ConfigureAwait(false);
             }
         }
     }

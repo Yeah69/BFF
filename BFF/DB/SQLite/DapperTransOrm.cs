@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -49,9 +49,8 @@ namespace BFF.DB.SQLite
         {
             IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = connection.Query<Trans>($"{RowsPart} {SpecifyingPagePart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize, accountId}).ToList();
                 transactionScope.Complete();
             }
@@ -62,9 +61,8 @@ namespace BFF.DB.SQLite
         {
             IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = connection.Query<Trans>($"{RowsPart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize }).ToList();
                 transactionScope.Complete();
             }
@@ -75,9 +73,8 @@ namespace BFF.DB.SQLite
         {
             long ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = connection.Query<long>($"{CountPart} {SpecifyingPagePart};", new { accountId }).First();
                 transactionScope.Complete();
             }
@@ -88,9 +85,8 @@ namespace BFF.DB.SQLite
         {
             long ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = connection.Query<long>($"{CountPart};").First();
                 transactionScope.Complete();
             }
@@ -101,9 +97,8 @@ namespace BFF.DB.SQLite
         {
             IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = (await connection
                     .QueryAsync<Trans>($"{RowsPart} {SpecifyingPagePart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize, accountId })
                     .ConfigureAwait(false)).ToList();
@@ -116,9 +111,8 @@ namespace BFF.DB.SQLite
         {
             IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = (await connection
                     .QueryAsync<Trans>($"{RowsPart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize })
                     .ConfigureAwait(false)).ToList();
@@ -131,7 +125,7 @@ namespace BFF.DB.SQLite
         {
             IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
                 string query = $@"SELECT * FROM
 ({RowsPart} {SpecifyingTransactionMonthPart}
@@ -140,8 +134,6 @@ UNION ALL
                         SpecifyingParentTransactionMonthPart
                     })
 {OrderingSuffix};";
-
-                connection.Open();
                 ret = (await connection
                     .QueryAsync<Trans>(query, new { year = $"{month.Year:0000}", month = $"{month.Month:00}" })
                     .ConfigureAwait(false)).ToList();
@@ -154,7 +146,7 @@ UNION ALL
         {
             IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
                 string query = $@"SELECT * FROM
 ({RowsPart} {SpecifyingTransactionMonthCategoryPart}
@@ -163,8 +155,6 @@ UNION ALL
                         SpecifyingParentTransactionMonthCategoryPart
                     })
 {OrderingSuffix};";
-
-                connection.Open();
                 ret = (await connection
                     .QueryAsync<Trans>(query, new{ year = $"{month.Year:0000}", month = $"{month.Month:00}", categoryId })
                     .ConfigureAwait(false)).ToList();
@@ -177,7 +167,7 @@ UNION ALL
         {
             IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
                 string query = $@"SELECT * FROM
 ({RowsPart} {SpecifyingTransactionMonthCategoriesPart}
@@ -186,8 +176,6 @@ UNION ALL
                         SpecifyingParentTransactionMonthCategoriesPart
                     })
 {OrderingSuffix};";
-
-                connection.Open();
                 ret = (await connection
                     .QueryAsync<Trans>(query, new { year = $"{month.Year:0000}", month = $"{month.Month:00}", categoryIds })
                     .ConfigureAwait(false)).ToList();
@@ -200,9 +188,8 @@ UNION ALL
         {
             long ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = (await connection.QueryAsync<long>($"{CountPart} {SpecifyingPagePart};", new { accountId }).ConfigureAwait(false)).First();
                 transactionScope.Complete();
             }
@@ -213,9 +200,8 @@ UNION ALL
         {
             long ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = (await connection.QueryAsync<long>($"{CountPart};").ConfigureAwait(false)).First();
                 transactionScope.Complete();
             }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Data.Common;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -36,9 +36,8 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
         public async Task CreateAsync<T>(T model) where T : class, IPersistenceModel
         {
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 long id = await connection.InsertAsync(model).ConfigureAwait(false);
                 model.Id = id;
                 transactionScope.Complete();
@@ -48,9 +47,8 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
         public async Task CreateAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModel
         {
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 foreach (var model in models)
                 {
                     long id = await connection.InsertAsync(model).ConfigureAwait(false);
@@ -64,9 +62,8 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
         {
             T ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = await connection.GetAsync<T>(id).ConfigureAwait(false);
                 transactionScope.Complete();
             }
@@ -77,9 +74,8 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
         {
             IList<T> ret;
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 ret = (await connection.GetAllAsync<T>().ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }
@@ -89,9 +85,8 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
         public async Task UpdateAsync<T>(T model) where T : class, IPersistenceModel
         {
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 await connection.UpdateAsync(model).ConfigureAwait(false);
                 transactionScope.Complete();
             }
@@ -100,9 +95,8 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
         public async Task UpdateAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModel
         {
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
                 foreach (var model in models)
                 {
                     await connection.UpdateAsync(model).ConfigureAwait(false);
@@ -114,10 +108,8 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
         public async Task DeleteAsync<T>(T model) where T : class, IPersistenceModel
         {
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
-
                 switch (model)
                 {
                     case Account account:

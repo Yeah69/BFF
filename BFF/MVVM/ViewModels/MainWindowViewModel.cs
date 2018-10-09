@@ -290,9 +290,9 @@ namespace BFF.MVVM.ViewModels
 
             ParentTransactionOnClose = new RxRelayCommand(parentTransactionFlyoutManager.Close);
 
-            ImportBudgetPlanCommand = new RxRelayCommand<IImportable>(importableObject =>
+            ImportBudgetPlanCommand = new RxRelayCommand<IImportable>(async importableObject =>
             {
-                string savePath = importableObject.Import();
+                string savePath = await importableObject.Import();
                 Reset(savePath);
             });
 

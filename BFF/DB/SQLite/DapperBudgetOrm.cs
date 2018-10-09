@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -161,10 +161,8 @@ SELECT Total(Sum) FROM
             } while (currentMonth.Year == year);
 
             using (TransactionScope transactionScope = new TransactionScope())
-            using (DbConnection connection = _provideConnection.Connection)
+            using (IDbConnection connection = _provideConnection.Connection)
             {
-                connection.Open();
-
                 var budgetEntries = new List<(BudgetEntry Entry, long Outflow, long Balance)>();
 
                 IDictionary<long, long> entryBudgetValuePerCategoryId = new Dictionary<long, long>();
