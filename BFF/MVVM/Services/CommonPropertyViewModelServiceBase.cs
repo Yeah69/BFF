@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using BFF.Core.IoCMarkerInterfaces;
 using BFF.DB;
 using BFF.DB.Dapper;
 using BFF.Helper.Extensions;

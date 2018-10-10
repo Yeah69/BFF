@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
+using BFF.Core;
 using BFF.DB;
-using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.MVVM.Models.Native

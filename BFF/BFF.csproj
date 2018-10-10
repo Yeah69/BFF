@@ -112,39 +112,12 @@
     <Compile Include="DB\Dapper\ObservableRepositoryBase.cs" />
     <Compile Include="DB\Dapper\RepositoryBase.cs" />
     <Compile Include="DB\Dapper\WriteOnlyRepositoryBase.cs" />
-    <Compile Include="DB\IOncePerBackend.cs" />
-    <Compile Include="DB\ICrudOrm.cs" />
-    <Compile Include="DB\IProvideConnection.cs" />
     <Compile Include="DB\IRepository.cs" />
     <Compile Include="DB\IVirtualizedRefresh.cs" />
-    <Compile Include="DB\PersistenceModels\Account.cs" />
-    <Compile Include="DB\PersistenceModels\BudgetEntry.cs" />
-    <Compile Include="DB\PersistenceModels\Category.cs" />
-    <Compile Include="DB\PersistenceModels\DbSetting.cs" />
-    <Compile Include="DB\PersistenceModels\Flag.cs" />
-    <Compile Include="DB\PersistenceModels\IHaveAccount.cs" />
-    <Compile Include="DB\PersistenceModels\IHaveCategory.cs" />
-    <Compile Include="DB\PersistenceModels\IHaveFlag.cs" />
-    <Compile Include="DB\PersistenceModels\IHavePayee.cs" />
-    <Compile Include="DB\PersistenceModels\IPersistenceModel.cs" />
-    <Compile Include="DB\PersistenceModels\Payee.cs" />
-    <Compile Include="DB\PersistenceModels\SubTransaction.cs" />
-    <Compile Include="DB\PersistenceModels\Trans.cs" />
-    <Compile Include="DB\SQLite\DapperAccountOrm.cs" />
-    <Compile Include="DB\SQLite\DapperBudgetOrm.cs" />
-    <Compile Include="DB\SQLite\DapperCategoryOrm.cs" />
-    <Compile Include="DB\SQLite\DapperCreateBackendOrm.cs" />
-    <Compile Include="DB\SQLite\DapperImportingOrm.cs" />
-    <Compile Include="DB\SQLite\DapperMergeOrm.cs" />
-    <Compile Include="DB\SQLite\DapperParentalOrm.cs" />
-    <Compile Include="DB\SQLite\DapperTransOrm.cs" />
-    <Compile Include="DB\SQLite\ProvideSqLiteConnection.cs" />
-    <Compile Include="DB\SQLite\DapperCrudOrm.cs" />
     <Compile Include="EmptyContext.cs" />
     <Compile Include="Helper\ConvertFromTransBaseToTransLikeViewModel.cs" />
     <Compile Include="Helper\Extensions\BooleanExtensions.cs" />
     <Compile Include="Helper\Extensions\DataGridRowExtensions.cs" />
-    <Compile Include="Helper\Extensions\DateTimeExtensions.cs" />
     <Compile Include="Helper\Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Helper\Extensions\DisposableExtensions.cs" />
     <Compile Include="Helper\Extensions\EnumerableExtensions.cs" />
@@ -158,11 +131,10 @@
     <Compile Include="Helper\Extensions\SchedulerExtensions.cs" />
     <Compile Include="Helper\Extensions\StringExtensions.cs" />
     <Compile Include="Helper\Extensions\VisualExtensions.cs" />
-    <Compile Include="Helper\Import\CategoryImportWrapper.cs" />
     <Compile Include="Helper\Import\IImportable.cs" />
     <Compile Include="Helper\Import\YnabCsvImport.cs" />
     <Compile Include="Helper\Extensions\ReactivePropertyExtensions.cs" />
-    <Compile Include="Helper\IRxSchedulerProvider.cs" />
+    <Compile Include="Helper\WpfRxSchedulerProvider.cs" />
     <Compile Include="Helper\LastSetDate.cs" />
     <Compile Include="Helper\Sign.cs" />
     <Compile Include="MVVM\AttachedBehaviors\InputBindingsManager.cs" />
@@ -540,6 +512,12 @@
     <PackageReference Include="Microsoft.Data.Sqlite">
       <Version>2.1.0</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.DotNet.InternalAbstractions">
+      <Version>1.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyModel">
+      <Version>2.1.0</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.Platforms">
       <Version>2.0.2</Version>
     </PackageReference>
@@ -714,6 +692,16 @@
     <PackageReference Include="WPFLocalizeExtension">
       <Version>3.1.2</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BFF.Core\BFF.Core.csproj">
+      <Project>{8077914f-0322-42dc-a08d-745c40c90059}</Project>
+      <Name>BFF.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BFF.Persistence\BFF.Persistence.csproj">
+      <Project>{d184da4a-4a83-4cfd-8210-6b206f93d3b7}</Project>
+      <Name>BFF.Persistence</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

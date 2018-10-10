@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BFF.Core;
+using BFF.Core.IoCMarkerInterfaces;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
-using BFF.Helper;
 
 namespace BFF.MVVM.Models.Native
 {

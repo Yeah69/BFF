@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using BFF.Core.IoCMarkerInterfaces;
 using BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB

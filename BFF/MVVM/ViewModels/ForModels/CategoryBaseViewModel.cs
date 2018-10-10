@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using BFF.Helper;
+using BFF.Core;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 

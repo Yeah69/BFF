@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
-using BFF.Helper;
+using BFF.Core;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 

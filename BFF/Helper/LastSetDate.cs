@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.Core.IoCMarkerInterfaces;
 using BFF.DB;
 
 namespace BFF.Helper

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using BFF.Core.IoCMarkerInterfaces;
 using BFF.DB;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;

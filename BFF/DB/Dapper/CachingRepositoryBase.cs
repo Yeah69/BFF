@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using BFF.DB.PersistenceModels;
 using BFF.Helper.Extensions;
+using BFF.Persistence;
+using BFF.Persistence.Models;
+using BFF.Persistence.ORM.Interfaces;
 using NLog;
 using Domain = BFF.MVVM.Models.Native.Structure;
 

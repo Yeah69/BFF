@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using BFF.Core.Extensions;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.Helper.Extensions;

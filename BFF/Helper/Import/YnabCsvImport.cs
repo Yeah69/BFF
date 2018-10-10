@@ -7,13 +7,17 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Autofac.Features.OwnedInstances;
+using BFF.Core;
 using BFF.DB;
 using BFF.Helper.Extensions;
 using BFF.MVVM;
-using BFF.MVVM.Models.Native.Structure;
-using Persistence = BFF.DB.PersistenceModels;
+using BFF.Persistence;
+using BFF.Persistence.Import;
+using BFF.Persistence.Models;
+using BFF.Persistence.ORM.Interfaces;
 using NLog;
 using BudgetEntry = BFF.MVVM.Models.Conversion.YNAB.BudgetEntry;
+using IHaveCategory = BFF.Persistence.Models.IHaveCategory;
 using Transaction = BFF.MVVM.Models.Conversion.YNAB.Transaction;
 
 namespace BFF.Helper.Import
@@ -113,14 +117,14 @@ namespace BFF.Helper.Import
 
             ImportLists lists = new ImportLists
             {
-                Accounts = new List<Persistence.Account>(),
+                Accounts = new List<Account>(),
                 Categories = new List<CategoryImportWrapper>(),
-                Payees = new List<Persistence.Payee>(),
-                Flags = new List<Persistence.Flag>(),
-                ParentTransactions = new List<Persistence.Trans>(),
-                SubTransactions = new List<Persistence.SubTransaction>(),
-                Transactions = new List<Persistence.Trans>(),
-                Transfers = new List<Persistence.Trans>()
+                Payees = new List<Payee>(),
+                Flags = new List<Flag>(),
+                ParentTransactions = new List<Trans>(),
+                SubTransactions = new List<SubTransaction>(),
+                Transactions = new List<Trans>(),
+                Transfers = new List<Trans>()
             };
 
             //Second step: Convert conversion objects into native models
@@ -317,7 +321,7 @@ namespace BFF.Helper.Import
 
             string parentMemo = CleanMemosFromParentMessage(splitTransactions);
 
-            Persistence.Trans parent = TransformToParentTransaction(ynabTransaction, parentMemo);
+            Trans parent = TransformToParentTransaction(ynabTransaction, parentMemo);
 
             bool createdSubTransactions = false;
             foreach (var splitTransaction in splitTransactions)
@@ -327,7 +331,7 @@ namespace BFF.Helper.Import
                     AddTransfer(lists.Transfers, splitTransaction);
                 else
                 {
-                    Persistence.SubTransaction subTransaction = TransformToSubTransaction(
+                    SubTransaction subTransaction = TransformToSubTransaction(
                         splitTransaction, parent);
                     lists.SubTransactions.Add(subTransaction);
                     createdSubTransactions = true;
@@ -340,16 +344,16 @@ namespace BFF.Helper.Import
             }
         }
 
-        private IEnumerable<Persistence.BudgetEntry> ConvertBudgetEntryToNative(IEnumerable<BudgetEntry> ynabBudgetEntries)
+        private IEnumerable<Persistence.Models.BudgetEntry> ConvertBudgetEntryToNative(IEnumerable<BudgetEntry> ynabBudgetEntries)
         {
-            IEnumerable<Persistence.BudgetEntry> ConvertBudgetEntryToNativeInner()
+            IEnumerable<Persistence.Models.BudgetEntry> ConvertBudgetEntryToNativeInner()
             {
                 foreach(var ynabBudgetEntry in ynabBudgetEntries)
                 {
                     if(ynabBudgetEntry.Budgeted != 0L)
                     {
                         var month = DateTime.ParseExact(ynabBudgetEntry.Month, "MMMM yyyy", CultureInfo.GetCultureInfo("de-DE")); // TODO make this customizable + exception handling
-                        Persistence.BudgetEntry budgetEntry = new Persistence.BudgetEntry
+                        Persistence.Models.BudgetEntry budgetEntry = new Persistence.Models.BudgetEntry
                         {
                             Month = month,
                             Budget = ynabBudgetEntry.Budgeted
@@ -375,7 +379,7 @@ namespace BFF.Helper.Import
            That way if one of the Accounts of the Transfer points to an already processed Account,
            then it means that this Transfer is already created and can be skipped. */
         private readonly List<string> _processedAccountsList = new List<string>();
-        private void AddTransfer(IList<Persistence.Trans> transfers, 
+        private void AddTransfer(IList<Trans> transfers, 
                                  Transaction ynabTransfer)
         {
             if (_processedAccountsList.Count == 0)
@@ -400,9 +404,9 @@ namespace BFF.Helper.Import
         /// Creates a Transaction-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private Persistence.Trans TransformToTransaction(Transaction ynabTransaction)
+        private Trans TransformToTransaction(Transaction ynabTransaction)
         {
-            Persistence.Trans ret = new Persistence.Trans
+            Trans ret = new Trans
             {
                 CheckNumber = ynabTransaction.CheckNumber,
                 Date = ynabTransaction.Date,
@@ -422,10 +426,10 @@ namespace BFF.Helper.Import
         /// Creates a Transfer-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
-        private Persistence.Trans TransformToTransfer(Transaction ynabTransaction)
+        private Trans TransformToTransfer(Transaction ynabTransaction)
         {
             long tempSum = ynabTransaction.Inflow - ynabTransaction.Outflow;
-            Persistence.Trans ret = new Persistence.Trans
+            Trans ret = new Trans
             {
                 AccountId = -69,
                 CheckNumber = ynabTransaction.CheckNumber,
@@ -449,17 +453,17 @@ namespace BFF.Helper.Import
             return ret;
         }
 
-        private readonly IDictionary<Persistence.Trans, IList<Persistence.SubTransaction>> 
-            _parentTransactionAssignment = new Dictionary<Persistence.Trans, IList<Persistence.SubTransaction>>();
+        private readonly IDictionary<Trans, IList<SubTransaction>> 
+            _parentTransactionAssignment = new Dictionary<Trans, IList<SubTransaction>>();
 
         /// <summary>
         /// Creates a Transaction-object depending on a YNAB-Transaction
         /// </summary>
         /// <param name="ynabTransaction">The YNAB-model</param>
         /// <param name="parentMemo">Parent memo which is extracted from the split transactions</param>
-        private Persistence.Trans TransformToParentTransaction(Transaction ynabTransaction, string parentMemo)
+        private Trans TransformToParentTransaction(Transaction ynabTransaction, string parentMemo)
         {
-            Persistence.Trans ret = new Persistence.Trans
+            Trans ret = new Trans
             {
                 CategoryId = -69,
                 CheckNumber = ynabTransaction.CheckNumber,
@@ -475,18 +479,18 @@ namespace BFF.Helper.Import
             return ret;
         }
 
-        private Persistence.SubTransaction TransformToSubTransaction(
-            Transaction ynabTransaction, Persistence.Trans parent)
+        private SubTransaction TransformToSubTransaction(
+            Transaction ynabTransaction, Trans parent)
         {
-            Persistence.SubTransaction ret =
-                new Persistence.SubTransaction
+            SubTransaction ret =
+                new SubTransaction
                 {
                     Memo = ynabTransaction.Memo,
                     Sum = ynabTransaction.Inflow - ynabTransaction.Outflow
                 };
             AssignCategory(ynabTransaction.Category, ret);
             if(!_parentTransactionAssignment.ContainsKey(parent))
-                _parentTransactionAssignment.Add(parent, new List<Persistence.SubTransaction> {ret});
+                _parentTransactionAssignment.Add(parent, new List<SubTransaction> {ret});
             else _parentTransactionAssignment[parent].Add(ret);
             return ret;
         }
@@ -495,52 +499,52 @@ namespace BFF.Helper.Import
         
         #region Accounts
 
-        private readonly IDictionary<string, Persistence.Account> _accountCache = new Dictionary<string, Persistence.Account>();
+        private readonly IDictionary<string, Account> _accountCache = new Dictionary<string, Account>();
 
-        private readonly IDictionary<Persistence.Account, IList<Persistence.IHaveAccount>> _accountAssignment =
-            new Dictionary<Persistence.Account, IList<Persistence.IHaveAccount>>();
+        private readonly IDictionary<Account, IList<IHaveAccount>> _accountAssignment =
+            new Dictionary<Account, IList<IHaveAccount>>();
 
-        private readonly IDictionary<Persistence.Account, IList<Persistence.Trans>> _fromAccountAssignment =
-            new Dictionary<Persistence.Account, IList<Persistence.Trans>>();
+        private readonly IDictionary<Account, IList<Trans>> _fromAccountAssignment =
+            new Dictionary<Account, IList<Trans>>();
 
-        private readonly IDictionary<Persistence.Account, IList<Persistence.Trans>> _toAccountAssignment =
-            new Dictionary<Persistence.Account, IList<Persistence.Trans>>();
+        private readonly IDictionary<Account, IList<Trans>> _toAccountAssignment =
+            new Dictionary<Account, IList<Trans>>();
 
         private void CreateAccount(string name, long startingBalance, DateTime startingDateTime)
         {
             if(string.IsNullOrWhiteSpace(name)) return;
 
-            Persistence.Account account = new Persistence.Account
+            Account account = new Account
             {
                 Name = name,
                 StartingBalance = startingBalance,
                 StartingDate = startingDateTime
             };
             _accountCache.Add(name, account);
-            _accountAssignment.Add(account, new List<Persistence.IHaveAccount>());
-            _fromAccountAssignment.Add(account, new List<Persistence.Trans>());
-            _toAccountAssignment.Add(account, new List<Persistence.Trans>());
+            _accountAssignment.Add(account, new List<IHaveAccount>());
+            _fromAccountAssignment.Add(account, new List<Trans>());
+            _toAccountAssignment.Add(account, new List<Trans>());
         }
 
-        private void AssignAccount(string name, Persistence.IHaveAccount transNoTransfer)
+        private void AssignAccount(string name, IHaveAccount transNoTransfer)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
             _accountAssignment[_accountCache[name]].Add(transNoTransfer);
         }
 
-        private void AssignToAccount(string name, Persistence.Trans transfer)
+        private void AssignToAccount(string name, Trans transfer)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
             _toAccountAssignment[_accountCache[name]].Add(transfer);
         }
 
-        private void AssignFormAccount(string name, Persistence.Trans transfer)
+        private void AssignFormAccount(string name, Trans transfer)
         {
             if (string.IsNullOrWhiteSpace(name)) return;
             _fromAccountAssignment[_accountCache[name]].Add(transfer);
         }
 
-        private List<Persistence.Account> GetAllAccountCache()
+        private List<Account> GetAllAccountCache()
         {
             return _accountCache.Values.ToList();
         }
@@ -557,20 +561,20 @@ namespace BFF.Helper.Import
 
         #region Payees
 
-        private readonly IDictionary<string, Persistence.Payee> _payeeCache = new Dictionary<string, Persistence.Payee>();
-        private readonly IDictionary<Persistence.Payee, IList<Persistence.IHavePayee>> _payeeAssignment =
-            new Dictionary<Persistence.Payee, IList<Persistence.IHavePayee>>();
+        private readonly IDictionary<string, Payee> _payeeCache = new Dictionary<string, Payee>();
+        private readonly IDictionary<Payee, IList<IHavePayee>> _payeeAssignment =
+            new Dictionary<Payee, IList<IHavePayee>>();
 
         private void CreateAndOrAssignPayee(
-            string name, Persistence.IHavePayee transBase)
+            string name, IHavePayee transBase)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return;
             if (!_payeeCache.ContainsKey(name))
             {
-                Persistence.Payee payee = new Persistence.Payee { Name = name };
+                Payee payee = new Payee { Name = name };
                 _payeeCache.Add(name, payee);
-                _payeeAssignment.Add(payee, new List<Persistence.IHavePayee> { transBase });
+                _payeeAssignment.Add(payee, new List<IHavePayee> { transBase });
             }
             else
             {
@@ -578,7 +582,7 @@ namespace BFF.Helper.Import
             }
         }
 
-        private List<Persistence.Payee> GetAllPayeeCache()
+        private List<Payee> GetAllPayeeCache()
         {
             return _payeeCache.Values.ToList();
         }
@@ -593,18 +597,18 @@ namespace BFF.Helper.Import
 
         #region Flags
 
-        private readonly IDictionary<string, Persistence.Flag> _flagCache = new Dictionary<string, Persistence.Flag>();
-        private readonly IDictionary<Persistence.Flag, IList<Persistence.IHaveFlag>> _flagAssignment =
-            new Dictionary<Persistence.Flag, IList<Persistence.IHaveFlag>>();
+        private readonly IDictionary<string, Flag> _flagCache = new Dictionary<string, Flag>();
+        private readonly IDictionary<Flag, IList<IHaveFlag>> _flagAssignment =
+            new Dictionary<Flag, IList<IHaveFlag>>();
 
         private void CreateAndOrAssignFlag(
-            string name, Persistence.IHaveFlag transBase)
+            string name, IHaveFlag transBase)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return;
             if (!_flagCache.ContainsKey(name))
             {
-                Persistence.Flag flag = new Persistence.Flag { Name = name };
+                Flag flag = new Flag { Name = name };
                 switch (name)
                 {
                     case "Red":
@@ -627,7 +631,7 @@ namespace BFF.Helper.Import
                         break;
                 }
                 _flagCache.Add(name, flag);
-                _flagAssignment.Add(flag, new List<Persistence.IHaveFlag> { transBase });
+                _flagAssignment.Add(flag, new List<IHaveFlag> { transBase });
             }
             else
             {
@@ -635,7 +639,7 @@ namespace BFF.Helper.Import
             }
         }
 
-        private List<Persistence.Flag> GetAllFlagCache()
+        private List<Flag> GetAllFlagCache()
         {
             return _flagCache.Values.ToList();
         }
@@ -654,7 +658,7 @@ namespace BFF.Helper.Import
 
         private readonly CategoryImportWrapper _thisMonthCategoryImportWrapper = new CategoryImportWrapper
         {
-            Category = new Persistence.Category
+            Category = new Category
             {
                 Name = "This Month",
                 IsIncomeRelevant = true,
@@ -666,7 +670,7 @@ namespace BFF.Helper.Import
 
         private readonly CategoryImportWrapper _nextMonthCategoryImportWrapper = new CategoryImportWrapper
         {
-            Category = new Persistence.Category
+            Category = new Category
             {
                 Name = "Next Month",
                 IsIncomeRelevant = true,
@@ -677,7 +681,7 @@ namespace BFF.Helper.Import
         };
 
         private void AssignCategory(
-            string namePath, Persistence.IHaveCategory transLike)
+            string namePath, IHaveCategory transLike)
         {
             string masterCategoryName = namePath.Split(':').First();
             string subCategoryName = namePath.Split(':').Last();
@@ -694,7 +698,7 @@ namespace BFF.Helper.Import
                     _categoryImportWrappers.SingleOrDefault(ciw => ciw.Category.Name == masterCategoryName);
                 if (masterCategoryWrapper is null)
                 {
-                    Persistence.Category category = new Persistence.Category { Name = masterCategoryName };
+                    Category category = new Category { Name = masterCategoryName };
                     masterCategoryWrapper = new CategoryImportWrapper { Parent = null, Category = category };
                     _categoryImportWrappers.Add(masterCategoryWrapper);
                 }
@@ -702,7 +706,7 @@ namespace BFF.Helper.Import
                     masterCategoryWrapper.Categories.SingleOrDefault(c => c.Category.Name == subCategoryName);
                 if (subCategoryWrapper is null)
                 {
-                    Persistence.Category category = new Persistence.Category { Name = subCategoryName };
+                    Category category = new Category { Name = subCategoryName };
                     subCategoryWrapper = new CategoryImportWrapper { Parent = masterCategoryWrapper, Category = category };
                     masterCategoryWrapper.Categories.Add(subCategoryWrapper);
                 }

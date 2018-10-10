@@ -1,16 +1,9 @@
 ﻿using System;
+using BFF.Core;
 using BFF.DB;
-using BFF.Helper;
 
 namespace BFF.MVVM.Models.Native.Structure
 {
-    public enum TransType
-    {
-        Transaction = 1,
-        Transfer = 2,
-        ParentTransaction = 3
-    }
-
     public interface ITransBase : ITransLike
     {
         IFlag Flag { get; set; }

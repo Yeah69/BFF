@@ -2,7 +2,8 @@
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using BFF.DataVirtualizingCollection.DataAccesses;
+using BFF.Core;
+using BFF.Core.IoCMarkerInterfaces;
 using BFF.DB;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;

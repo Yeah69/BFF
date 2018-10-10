@@ -1,5 +1,5 @@
-﻿using BFF.DB;
-using BFF.Helper;
+﻿using BFF.Core;
+using BFF.DB;
 
 namespace BFF.MVVM.Models.Native.Structure
 {

@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using System.Windows.Input;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Managers;

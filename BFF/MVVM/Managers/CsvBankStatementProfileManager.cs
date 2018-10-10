@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using BFF.Core.IoCMarkerInterfaces;
 using BFF.DB;
 using BFF.MVVM.Models.Native.Utility;
 using BFF.Properties;

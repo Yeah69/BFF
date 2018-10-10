@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using BFF.DB;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Models.Native.Structure;
 using BFF.MVVM.ViewModels.ForModels;

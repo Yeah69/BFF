@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using BFF.Helper;
+using BFF.Core;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
 using Reactive.Bindings.Extensions;

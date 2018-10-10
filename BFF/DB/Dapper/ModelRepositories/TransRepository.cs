@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.DB.PersistenceModels;
-using BFF.Helper;
+using BFF.Core;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.Persistence;
+using BFF.Persistence.Models;
+using BFF.Persistence.ORM.Interfaces;
 using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories

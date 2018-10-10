@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Reactive.Disposables;
+using BFF.Core.IoCMarkerInterfaces;
 using BFF.DB;
 using BFF.Helper.Extensions;
 using BFF.Properties;

@@ -1,8 +1,10 @@
 using System;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using BFF.DB.PersistenceModels;
 using BFF.MVVM.Models.Native.Structure;
+using BFF.Persistence;
+using BFF.Persistence.Models;
+using BFF.Persistence.ORM.Interfaces;
 
 namespace BFF.DB.Dapper
 {

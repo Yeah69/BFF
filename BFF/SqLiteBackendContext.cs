@@ -1,11 +1,11 @@
 ﻿using System;
 using BFF.DB.Dapper.ModelRepositories;
-using BFF.DB.SQLite;
 using BFF.MVVM.Managers;
 using BFF.MVVM.Models.Native;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels;
 using BFF.MVVM.ViewModels.ForModels;
+using BFF.Persistence.ORM.Sqlite;
 
 namespace BFF
 {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;
+using BFF.Persistence.ORM.Interfaces;
 
 namespace BFF.DB.Dapper
 {

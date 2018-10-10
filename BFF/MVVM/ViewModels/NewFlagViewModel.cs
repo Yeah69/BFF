@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Windows.Input;
 using System.Windows.Media;
+using BFF.Core.IoCMarkerInterfaces;
 using BFF.DB;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Models.Native;

@@ -2,8 +2,8 @@
 using System.Reactive.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using BFF.Core;
 using BFF.DB;
-using BFF.Helper;
 
 namespace BFF.MVVM.Models.Native.Structure
 {

@@ -6,6 +6,8 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BFF.Core;
+using BFF.Core.Extensions;
 using BFF.DB.Dapper.ModelRepositories;
 using BFF.Helper;
 using BFF.Helper.Extensions;

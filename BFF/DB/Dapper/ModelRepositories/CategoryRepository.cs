@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.DB.PersistenceModels;
-using BFF.Helper;
+using BFF.Core;
+using BFF.Persistence;
+using BFF.Persistence.Models;
+using BFF.Persistence.ORM.Interfaces;
 using MoreLinq;
 using Domain = BFF.MVVM.Models.Native;
 

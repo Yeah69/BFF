@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Autofac;
+using BFF.Core;
+using BFF.Core.IoCMarkerInterfaces;
 using BFF.DB;
 using BFF.Helper;
 using BFF.MVVM.Models.Native;
@@ -10,6 +12,7 @@ using BFF.MVVM.ViewModels;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using BFF.MVVM.Views;
+using BFF.Persistence;
 using MahApps.Metro.Controls.Dialogs;
 using Transaction = BFF.MVVM.Models.Native.Transaction;
 
@@ -21,6 +24,8 @@ namespace BFF
 
         static AutoFacBootstrapper()
         {
+            // ReSharper disable once ObjectCreationAsStatement A hack in order to load the BFF.Backend-assembly into the runtime
+            new HACK();
             Start();
         }
 
@@ -32,7 +37,7 @@ namespace BFF
             }
 
             var builder = new ContainerBuilder();
-            var assemblies = new[] { Assembly.GetExecutingAssembly() };
+            var assemblies = new[] { Assembly.GetExecutingAssembly(), AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name.StartsWith($"{nameof(BFF)}.{nameof(Persistence)}")) };
 
             builder.RegisterAssemblyTypes(assemblies)
                 .AsImplementedInterfaces();

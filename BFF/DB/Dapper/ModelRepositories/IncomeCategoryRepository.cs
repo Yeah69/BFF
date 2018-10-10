@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using BFF.Helper;
+using BFF.Core;
 using BFF.MVVM.Models.Native;
-using Category = BFF.DB.PersistenceModels.Category;
+using BFF.Persistence;
+using BFF.Persistence.ORM.Interfaces;
+using Category = BFF.Persistence.Models.Category;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {

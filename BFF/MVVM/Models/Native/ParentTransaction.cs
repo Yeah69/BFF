@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using BFF.Core;
 using BFF.DB;
-using BFF.Helper;
 using BFF.MVVM.Models.Native.Structure;
 using Reactive.Bindings.Extensions;
 

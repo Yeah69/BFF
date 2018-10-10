@@ -6,6 +6,7 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using BFF.Core;
 using BFF.Helper;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Managers;
