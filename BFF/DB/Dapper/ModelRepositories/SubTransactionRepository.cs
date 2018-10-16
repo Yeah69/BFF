@@ -4,19 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core;
 using BFF.Helper.Extensions;
+using BFF.MVVM.Models.Native;
 using BFF.Persistence;
 using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
-using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public interface ISubTransactionRepository : IRepositoryBase<Domain.ISubTransaction>
+    public interface ISubTransactionRepository : IRepositoryBase<ISubTransaction>
     {
-        Task<IEnumerable<Domain.ISubTransaction>> GetChildrenOfAsync(long parentId);
+        Task<IEnumerable<ISubTransaction>> GetChildrenOfAsync(long parentId);
     }
 
-    public sealed class SubTransactionRepository : RepositoryBase<Domain.ISubTransaction, SubTransaction>, ISubTransactionRepository
+    public sealed class SubTransactionRepository : RepositoryBase<ISubTransaction, SubTransactionDto>, ISubTransactionRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IParentalOrm _parentalOrm;
@@ -34,8 +34,8 @@ namespace BFF.DB.Dapper.ModelRepositories
             _categoryBaseRepository = categoryBaseRepository;
         }
         
-        protected override Converter<Domain.ISubTransaction, SubTransaction> ConvertToPersistence => domainSubTransaction => 
-            new SubTransaction
+        protected override Converter<ISubTransaction, SubTransactionDto> ConvertToPersistence => domainSubTransaction => 
+            new SubTransactionDto
             {
                 Id = domainSubTransaction.Id,
                 ParentId = domainSubTransaction.Parent.Id,
@@ -44,13 +44,13 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Sum = domainSubTransaction.Sum
             };
 
-        public async Task<IEnumerable<Domain.ISubTransaction>> GetChildrenOfAsync(long parentId) =>
+        public async Task<IEnumerable<ISubTransaction>> GetChildrenOfAsync(long parentId) =>
             await (await _parentalOrm.ReadSubTransactionsOfAsync(parentId).ConfigureAwait(false))
-                .Select(async sti => await ConvertToDomainAsync(sti)).ToAwaitableEnumerable().ConfigureAwait(false);
+                .Select(async sti => await ConvertToDomainAsync(sti).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
 
-        protected override async Task<Domain.ISubTransaction> ConvertToDomainAsync(SubTransaction persistenceModel)
+        protected override async Task<ISubTransaction> ConvertToDomainAsync(SubTransactionDto persistenceModel)
         {
-            return new Domain.SubTransaction(
+            return new SubTransaction(
                 this,
                 _rxSchedulerProvider,
                 persistenceModel.Id,

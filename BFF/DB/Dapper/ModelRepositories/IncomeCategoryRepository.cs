@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using BFF.Core;
 using BFF.MVVM.Models.Native;
 using BFF.Persistence;
+using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
-using Category = BFF.Persistence.Models.Category;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
@@ -21,7 +21,7 @@ namespace BFF.DB.Dapper.ModelRepositories
     {
     }
 
-    public sealed class IncomeCategoryRepository : ObservableRepositoryBase<IIncomeCategory, Category>, IIncomeCategoryRepository
+    public sealed class IncomeCategoryRepository : ObservableRepositoryBase<IIncomeCategory, CategoryDto>, IIncomeCategoryRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IMergeOrm _mergeOrm;
@@ -41,7 +41,7 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
 
 
-        protected override Task<IIncomeCategory> ConvertToDomainAsync(Category persistenceModel)
+        protected override Task<IIncomeCategory> ConvertToDomainAsync(CategoryDto persistenceModel)
         {
             return Task.FromResult<IIncomeCategory>(
                 new IncomeCategory(this,
@@ -51,10 +51,10 @@ namespace BFF.DB.Dapper.ModelRepositories
                     persistenceModel.MonthOffset));
         }
 
-        protected override Task<IEnumerable<Category>> FindAllInnerAsync() => _categoryOrm.ReadIncomeCategoriesAsync();
+        protected override Task<IEnumerable<CategoryDto>> FindAllInnerAsync() => _categoryOrm.ReadIncomeCategoriesAsync();
 
-        protected override Converter<IIncomeCategory, Category> ConvertToPersistence => domainCategory =>
-            new Category
+        protected override Converter<IIncomeCategory, CategoryDto> ConvertToPersistence => domainCategory =>
+            new CategoryDto
             {
                 Id = domainCategory.Id,
                 Name = domainCategory.Name,

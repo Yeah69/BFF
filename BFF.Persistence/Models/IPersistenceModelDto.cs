@@ -2,7 +2,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Persistence.Models
 {
-    public interface IPersistenceModel
+    public interface IPersistenceModelDto
     {
         [Key]
         long Id { get; set;  }

@@ -8,11 +8,11 @@ namespace BFF.Persistence.ORM.Interfaces
 {
     public interface ITransOrm : IOncePerBackend
     {
-        Task<IEnumerable<Trans>> GetPageFromSpecificAccountAsync(int offset, int pageSize, long accountId);
-        Task<IEnumerable<Trans>> GetPageFromSummaryAccountAsync(int offset, int pageSize);
-        Task<IEnumerable<Trans>> GetFromMonthAsync(DateTime month);
-        Task<IEnumerable<Trans>> GetFromMonthAndCategoryAsync(DateTime month, long categoryId);
-        Task<IEnumerable<Trans>> GetFromMonthAndCategoriesAsync(DateTime month, long[] categoryIds);
+        Task<IEnumerable<TransDto>> GetPageFromSpecificAccountAsync(int offset, int pageSize, long accountId);
+        Task<IEnumerable<TransDto>> GetPageFromSummaryAccountAsync(int offset, int pageSize);
+        Task<IEnumerable<TransDto>> GetFromMonthAsync(DateTime month);
+        Task<IEnumerable<TransDto>> GetFromMonthAndCategoryAsync(DateTime month, long categoryId);
+        Task<IEnumerable<TransDto>> GetFromMonthAndCategoriesAsync(DateTime month, long[] categoryIds);
 
         Task<long> GetCountFromSpecificAccountAsync(long accountId);
         Task<long> GetCountFromSummaryAccountAsync();

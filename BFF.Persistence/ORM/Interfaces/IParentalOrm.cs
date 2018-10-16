@@ -7,6 +7,6 @@ namespace BFF.Persistence.ORM.Interfaces
 {
     public interface IParentalOrm : IOncePerBackend
     {
-        Task<IEnumerable<SubTransaction>> ReadSubTransactionsOfAsync(long parentTransactionId);
+        Task<IEnumerable<SubTransactionDto>> ReadSubTransactionsOfAsync(long parentTransactionId);
     }
 }

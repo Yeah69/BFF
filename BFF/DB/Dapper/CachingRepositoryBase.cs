@@ -2,22 +2,22 @@ using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using BFF.Helper.Extensions;
+using BFF.MVVM.Models.Native.Structure;
 using BFF.Persistence;
 using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
 using NLog;
-using Domain = BFF.MVVM.Models.Native.Structure;
 
 namespace BFF.DB.Dapper
 {
-    public interface ICachingRepositoryBase<TDomain> : IRepositoryBase<TDomain> where TDomain : class, Domain.IDataModel
+    public interface ICachingRepositoryBase<TDomain> : IRepositoryBase<TDomain> where TDomain : class, IDataModel
     {
     }
 
     public abstract class CachingRepositoryBase<TDomain, TPersistence> 
         : RepositoryBase<TDomain, TPersistence>, ICachingRepositoryBase<TDomain>
-        where TDomain : class, Domain.IDataModel 
-        where TPersistence : class, IPersistenceModel
+        where TDomain : class, IDataModel 
+        where TPersistence : class, IPersistenceModelDto
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         

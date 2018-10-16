@@ -7,7 +7,7 @@ namespace BFF.Persistence.ORM.Interfaces
 {
     public interface ICategoryOrm : IOncePerBackend
     {
-        Task<IEnumerable<Category>> ReadCategoriesAsync();
-        Task<IEnumerable<Category>> ReadIncomeCategoriesAsync();
+        Task<IEnumerable<CategoryDto>> ReadCategoriesAsync();
+        Task<IEnumerable<CategoryDto>> ReadIncomeCategoriesAsync();
     }
 }

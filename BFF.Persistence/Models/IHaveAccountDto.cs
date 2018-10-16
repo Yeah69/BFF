@@ -1,6 +1,6 @@
 ﻿namespace BFF.Persistence.Models
 {
-    public interface IHaveAccount
+    public interface IHaveAccountDto
     {
         long AccountId { get; set; }
     }

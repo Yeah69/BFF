@@ -2,7 +2,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Persistence.Models
 {
-    public class SubTransaction : IPersistenceModel, IHaveCategory
+    public class SubTransactionDto : IPersistenceModelDto, IHaveCategoryDto
     {
         [Key]
         public long Id { get; set; }

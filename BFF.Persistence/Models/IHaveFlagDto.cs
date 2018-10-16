@@ -1,6 +1,6 @@
 ﻿namespace BFF.Persistence.Models
 {
-    public interface IHaveFlag
+    public interface IHaveFlagDto
     {
         long? FlagId { get; set; }
     }

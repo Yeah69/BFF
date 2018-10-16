@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core;
+using BFF.MVVM.Models.Native;
 using BFF.Persistence;
 using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
 using MoreLinq;
-using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class CategoryComparer : Comparer<Domain.ICategory>
+    public class CategoryComparer : Comparer<ICategory>
     {
-        public override int Compare(Domain.ICategory x, Domain.ICategory y)
+        public override int Compare(ICategory x, ICategory y)
         {
-            IList<Domain.ICategory> GetParentalPathList(Domain.ICategory category)
+            IList<ICategory> GetParentalPathList(ICategory category)
             {
-                IList<Domain.ICategory> list = new List<Domain.ICategory> {category};
-                Domain.ICategory current = category;
+                IList<ICategory> list = new List<ICategory> {category};
+                ICategory current = category;
                 while(current.Parent != null)
                 {
                     current = current.Parent;
@@ -28,8 +28,8 @@ namespace BFF.DB.Dapper.ModelRepositories
                 return list.Reverse().ToList();
             }
             
-            IList<Domain.ICategory> xList = GetParentalPathList(x);
-            IList<Domain.ICategory> yList = GetParentalPathList(y);
+            IList<ICategory> xList = GetParentalPathList(x);
+            IList<ICategory> yList = GetParentalPathList(y);
 
             int i = 0;
             int value = 0;
@@ -47,11 +47,11 @@ namespace BFF.DB.Dapper.ModelRepositories
         }
     }
 
-    public interface ICategoryRepository : IObservableRepositoryBase<Domain.ICategory>, IMergingRepository<Domain.ICategory>
+    public interface ICategoryRepository : IObservableRepositoryBase<ICategory>, IMergingRepository<ICategory>
     {
     }
 
-    public sealed class CategoryRepository : ObservableRepositoryBase<Domain.ICategory, Category>, ICategoryRepository
+    public sealed class CategoryRepository : ObservableRepositoryBase<ICategory, CategoryDto>, ICategoryRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IMergeOrm _mergeOrm;
@@ -71,7 +71,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             InitializeAll();
         }
         
-        public override async Task DeleteAsync(Domain.ICategory dataModel)
+        public override async Task DeleteAsync(ICategory dataModel)
         {
             await base.DeleteAsync(dataModel).ConfigureAwait(false);
             dataModel.Parent?.RemoveCategory(dataModel);
@@ -91,27 +91,27 @@ namespace BFF.DB.Dapper.ModelRepositories
             }
         }
 
-        protected override async Task<Domain.ICategory> ConvertToDomainAsync(Category persistenceModel)
+        protected override async Task<ICategory> ConvertToDomainAsync(CategoryDto persistenceModel)
         {
             return 
-                new Domain.Category(this,
+                new Category(this,
                     _rxSchedulerProvider,
                     persistenceModel.Id,
                     persistenceModel.Name,
                     persistenceModel.ParentId != null ? await FindAsync((long)persistenceModel.ParentId).ConfigureAwait(false) : null);
         }
 
-        protected override Task<IEnumerable<Category>> FindAllInnerAsync() => _categoryOrm.ReadCategoriesAsync();
+        protected override Task<IEnumerable<CategoryDto>> FindAllInnerAsync() => _categoryOrm.ReadCategoriesAsync();
 
-        protected override Converter<Domain.ICategory, Category> ConvertToPersistence => domainCategory => 
-            new Category
+        protected override Converter<ICategory, CategoryDto> ConvertToPersistence => domainCategory => 
+            new CategoryDto
             {
                 Id = domainCategory.Id,
                 ParentId = domainCategory.Parent?.Id,
                 Name = domainCategory.Name
             };
 
-        public async Task MergeAsync(Domain.ICategory from, Domain.ICategory to)
+        public async Task MergeAsync(ICategory from, ICategory to)
         {
             from
                 .Categories

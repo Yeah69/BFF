@@ -3,7 +3,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Persistence.Models
 {
-    public class BudgetEntry : IPersistenceModel, IHaveCategory
+    public class BudgetEntryDto : IPersistenceModelDto, IHaveCategoryDto
     {
         [Key]
         public long Id { get; set; }

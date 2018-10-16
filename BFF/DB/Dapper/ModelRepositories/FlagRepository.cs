@@ -3,26 +3,26 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using BFF.Core;
+using BFF.MVVM.Models.Native;
 using BFF.Persistence;
 using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
-using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class FlagComparer : Comparer<Domain.IFlag>
+    public class FlagComparer : Comparer<IFlag>
     {
-        public override int Compare(Domain.IFlag x, Domain.IFlag y)
+        public override int Compare(IFlag x, IFlag y)
         {
             return Comparer<string>.Default.Compare(x?.Name, y?.Name);
         }
     }
 
-    public interface IFlagRepository : IObservableRepositoryBase<Domain.IFlag>, IMergingRepository<Domain.IFlag>
+    public interface IFlagRepository : IObservableRepositoryBase<IFlag>, IMergingRepository<IFlag>
     {
     }
 
-    public sealed class FlagRepository : ObservableRepositoryBase<Domain.IFlag, Flag>, IFlagRepository
+    public sealed class FlagRepository : ObservableRepositoryBase<IFlag, FlagDto>, IFlagRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IMergeOrm _mergeOrm;
@@ -37,7 +37,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             _mergeOrm = mergeOrm;
         }
 
-        protected override Converter<Domain.IFlag, Flag> ConvertToPersistence => domainModel =>
+        protected override Converter<IFlag, FlagDto> ConvertToPersistence => domainModel =>
         {
             long color = domainModel.Color.A;
             color = color << 8;
@@ -46,7 +46,7 @@ namespace BFF.DB.Dapper.ModelRepositories
             color = color + domainModel.Color.G;
             color = color << 8;
             color = color + domainModel.Color.B;
-            return new Flag
+            return new FlagDto
             {
                 Id = domainModel.Id,
                 Name = domainModel.Name,
@@ -54,10 +54,10 @@ namespace BFF.DB.Dapper.ModelRepositories
             };
         };
 
-        protected override Task<Domain.IFlag> ConvertToDomainAsync(Flag persistenceModel)
+        protected override Task<IFlag> ConvertToDomainAsync(FlagDto persistenceModel)
         {
-            return Task.FromResult<Domain.IFlag>(
-                new Domain.Flag(
+            return Task.FromResult<IFlag>(
+                new Flag(
                     this, 
                     _rxSchedulerProvider,
                     Color.FromArgb(
@@ -69,7 +69,7 @@ namespace BFF.DB.Dapper.ModelRepositories
                     persistenceModel.Name));
         }
 
-        public async Task MergeAsync(Domain.IFlag from, Domain.IFlag to)
+        public async Task MergeAsync(IFlag from, IFlag to)
         {
             await _mergeOrm.MergeFlagAsync(ConvertToPersistence(from), ConvertToPersistence(to)).ConfigureAwait(false);
             RemoveFromObservableCollection(from);

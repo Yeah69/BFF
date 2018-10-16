@@ -2,33 +2,33 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BFF.Core;
+using BFF.MVVM.Models.Native;
 using BFF.Persistence;
 using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
-using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public class AccountComparer : Comparer<Domain.IAccount>
+    public class AccountComparer : Comparer<IAccount>
     {
-        public override int Compare(Domain.IAccount x, Domain.IAccount y)
+        public override int Compare(IAccount x, IAccount y)
         {
             return Comparer<string>.Default.Compare(x?.Name, y?.Name);
         }
     }
 
-    public interface IAccountRepository : IObservableRepositoryBase<Domain.IAccount>
+    public interface IAccountRepository : IObservableRepositoryBase<IAccount>
     {
-        Task<long?> GetClearedBalanceAsync(Domain.IAccount account);
+        Task<long?> GetClearedBalanceAsync(IAccount account);
 
-        Task<long?> GetClearedBalanceUntilNowAsync(Domain.IAccount account);
+        Task<long?> GetClearedBalanceUntilNowAsync(IAccount account);
 
-        Task<long?> GetUnclearedBalanceAsync(Domain.IAccount account);
+        Task<long?> GetUnclearedBalanceAsync(IAccount account);
 
-        Task<long?> GetUnclearedBalanceUntilNowAsync(Domain.IAccount account);
+        Task<long?> GetUnclearedBalanceUntilNowAsync(IAccount account);
     }
 
-    public sealed class AccountRepository : ObservableRepositoryBase<Domain.IAccount, Account>, IAccountRepository
+    public sealed class AccountRepository : ObservableRepositoryBase<IAccount, AccountDto>, IAccountRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IAccountOrm _accountOrm;
@@ -43,8 +43,8 @@ namespace BFF.DB.Dapper.ModelRepositories
             _accountOrm = accountOrm;
         }
 
-        protected override Converter<Domain.IAccount, Account> ConvertToPersistence => domainAccount => 
-            new Account
+        protected override Converter<IAccount, AccountDto> ConvertToPersistence => domainAccount => 
+            new AccountDto
             {
                 Id = domainAccount.Id,
                 Name = domainAccount.Name,
@@ -52,9 +52,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 StartingDate = domainAccount.StartingDate
             };
 
-        protected override Task<Domain.IAccount> ConvertToDomainAsync(Account persistenceModel) =>
-            Task.FromResult<Domain.IAccount>(
-                new Domain.Account(
+        protected override Task<IAccount> ConvertToDomainAsync(AccountDto persistenceModel) =>
+            Task.FromResult<IAccount>(
+                new Account(
                     this,
                     _rxSchedulerProvider,
                     persistenceModel.StartingDate,
@@ -62,15 +62,15 @@ namespace BFF.DB.Dapper.ModelRepositories
                     persistenceModel.Name,
                     persistenceModel.StartingBalance));
 
-        public Task<long?> GetClearedBalanceAsync(Domain.IAccount account)
+        public Task<long?> GetClearedBalanceAsync(IAccount account)
         {
             try
             {
                 switch (account)
                 {
-                    case Domain.ISummaryAccount _:
+                    case ISummaryAccount _:
                         return _accountOrm.GetClearedOverallBalanceAsync();
-                    case Domain.IAccount specificAccount:
+                    case IAccount specificAccount:
                         return _accountOrm.GetClearedBalanceAsync(specificAccount.Id);
                     default:
                         return Task.FromResult<long?>(null);
@@ -82,15 +82,15 @@ namespace BFF.DB.Dapper.ModelRepositories
             }
         }
 
-        public Task<long?> GetClearedBalanceUntilNowAsync(Domain.IAccount account)
+        public Task<long?> GetClearedBalanceUntilNowAsync(IAccount account)
         {
             try
             {
                 switch (account)
                 {
-                    case Domain.ISummaryAccount _:
+                    case ISummaryAccount _:
                         return _accountOrm.GetClearedOverallBalanceUntilNowAsync();
-                    case Domain.IAccount specificAccount:
+                    case IAccount specificAccount:
                         return _accountOrm.GetClearedBalanceUntilNowAsync(specificAccount.Id);
                     default:
                         return Task.FromResult<long?>(null);
@@ -102,15 +102,15 @@ namespace BFF.DB.Dapper.ModelRepositories
             }
         }
 
-        public Task<long?> GetUnclearedBalanceAsync(Domain.IAccount account)
+        public Task<long?> GetUnclearedBalanceAsync(IAccount account)
         {
             try
             {
                 switch (account)
                 {
-                    case Domain.ISummaryAccount _:
+                    case ISummaryAccount _:
                         return _accountOrm.GetUnclearedOverallBalanceAsync();
-                    case Domain.IAccount specificAccount:
+                    case IAccount specificAccount:
                         return _accountOrm.GetUnclearedBalanceAsync(specificAccount.Id);
                     default:
                         return Task.FromResult<long?>(null);
@@ -122,15 +122,15 @@ namespace BFF.DB.Dapper.ModelRepositories
             }
         }
 
-        public Task<long?> GetUnclearedBalanceUntilNowAsync(Domain.IAccount account)
+        public Task<long?> GetUnclearedBalanceUntilNowAsync(IAccount account)
         {
             try
             {
                 switch (account)
                 {
-                    case Domain.ISummaryAccount _:
+                    case ISummaryAccount _:
                         return _accountOrm.GetUnclearedOverallBalanceUntilNowAsync();
-                    case Domain.IAccount specificAccount:
+                    case IAccount specificAccount:
                         return _accountOrm.GetUnclearedBalanceUntilNowAsync(specificAccount.Id);
                     default:
                         return Task.FromResult<long?>(null);

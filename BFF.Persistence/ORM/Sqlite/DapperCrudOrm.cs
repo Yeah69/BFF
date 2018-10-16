@@ -14,18 +14,18 @@ namespace BFF.Persistence.ORM.Sqlite
     internal class DapperCrudOrm : ICrudOrm
     {
         private static readonly string OnAccountDeletion = $@"
-DELETE FROM {nameof(Trans)}s WHERE {nameof(Trans.AccountId)} = @accountId AND ({nameof(Trans.Type)} = '{TransType.Transaction}' OR {nameof(Trans.Type)} = '{TransType.ParentTransaction}');
-DELETE FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND ({nameof(Trans.PayeeId)} IS NULL AND {nameof(Trans.CategoryId)} = @accountId OR {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.CategoryId)} IS NULL);
-UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.CategoryId)} IS NOT NULL;
-UPDATE {nameof(Trans)}s SET {nameof(Trans.CategoryId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.CategoryId)} = @accountId AND {nameof(Trans.PayeeId)} IS NOT NULL;";
+DELETE FROM {nameof(TransDto)}s WHERE {nameof(TransDto.AccountId)} = @accountId AND ({nameof(TransDto.Type)} = '{TransType.Transaction}' OR {nameof(TransDto.Type)} = '{TransType.ParentTransaction}');
+DELETE FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} = '{TransType.Transfer}' AND ({nameof(TransDto.PayeeId)} IS NULL AND {nameof(TransDto.CategoryId)} = @accountId OR {nameof(TransDto.PayeeId)} = @accountId AND {nameof(TransDto.CategoryId)} IS NULL);
+UPDATE {nameof(TransDto)}s SET {nameof(TransDto.PayeeId)} = NULL WHERE {nameof(TransDto.Type)} = '{TransType.Transfer}' AND {nameof(TransDto.PayeeId)} = @accountId AND {nameof(TransDto.CategoryId)} IS NOT NULL;
+UPDATE {nameof(TransDto)}s SET {nameof(TransDto.CategoryId)} = NULL WHERE {nameof(TransDto.Type)} = '{TransType.Transfer}' AND {nameof(TransDto.CategoryId)} = @accountId AND {nameof(TransDto.PayeeId)} IS NOT NULL;";
         
         private static readonly string OnCategoryDeletion = $@"
-UPDATE {nameof(Trans)}s SET {nameof(Trans.CategoryId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.Transaction}' AND {nameof(Trans.CategoryId)} = @categoryId;
-UPDATE {nameof(SubTransaction)}s SET {nameof(SubTransaction.CategoryId)} = NULL WHERE {nameof(SubTransaction.CategoryId)} = @categoryId;";
+UPDATE {nameof(TransDto)}s SET {nameof(TransDto.CategoryId)} = NULL WHERE {nameof(TransDto.Type)} = '{TransType.Transaction}' AND {nameof(TransDto.CategoryId)} = @categoryId;
+UPDATE {nameof(SubTransactionDto)}s SET {nameof(SubTransactionDto.CategoryId)} = NULL WHERE {nameof(SubTransactionDto.CategoryId)} = @categoryId;";
 
         private static readonly string OnPayeeDeletion = $@"
-UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.Transaction}' AND {nameof(Trans.PayeeId)} = @payeeId;
-UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.Type)} = '{TransType.ParentTransaction}' AND {nameof(Trans.PayeeId)} = @payeeId;";
+UPDATE {nameof(TransDto)}s SET {nameof(TransDto.PayeeId)} = NULL WHERE {nameof(TransDto.Type)} = '{TransType.Transaction}' AND {nameof(TransDto.PayeeId)} = @payeeId;
+UPDATE {nameof(TransDto)}s SET {nameof(TransDto.PayeeId)} = NULL WHERE {nameof(TransDto.Type)} = '{TransType.ParentTransaction}' AND {nameof(TransDto.PayeeId)} = @payeeId;";
 
         private readonly IProvideConnection _provideConnection;
 
@@ -34,7 +34,7 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
             _provideConnection = provideConnection;
         }
 
-        public async Task CreateAsync<T>(T model) where T : class, IPersistenceModel
+        public async Task CreateAsync<T>(T model) where T : class, IPersistenceModelDto
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
@@ -45,7 +45,7 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
             }
         }
 
-        public async Task CreateAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModel
+        public async Task CreateAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModelDto
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
@@ -59,7 +59,7 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
             }
         }
 
-        public async Task<T> ReadAsync<T>(long id) where T : class, IPersistenceModel
+        public async Task<T> ReadAsync<T>(long id) where T : class, IPersistenceModelDto
         {
             T ret;
             using (TransactionScope transactionScope = new TransactionScope())
@@ -71,7 +71,7 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
             return ret;
         }
 
-        public async Task<IEnumerable<T>> ReadAllAsync<T>() where T : class, IPersistenceModel
+        public async Task<IEnumerable<T>> ReadAllAsync<T>() where T : class, IPersistenceModelDto
         {
             IList<T> ret;
             using (TransactionScope transactionScope = new TransactionScope())
@@ -83,7 +83,7 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
             return ret;
         }
 
-        public async Task UpdateAsync<T>(T model) where T : class, IPersistenceModel
+        public async Task UpdateAsync<T>(T model) where T : class, IPersistenceModelDto
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
@@ -93,7 +93,7 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
             }
         }
 
-        public async Task UpdateAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModel
+        public async Task UpdateAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModelDto
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
@@ -106,26 +106,26 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
             }
         }
 
-        public async Task DeleteAsync<T>(T model) where T : class, IPersistenceModel
+        public async Task DeleteAsync<T>(T model) where T : class, IPersistenceModelDto
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
                 switch (model)
                 {
-                    case Account account:
+                    case AccountDto account:
                         _provideConnection.Backup($"BeforeDeletionOfAccount{account.Name}");
                         connection.Execute(OnAccountDeletion, new { accountId = account.Id });
                         break;
-                    case Category category:
+                    case CategoryDto category:
                         _provideConnection.Backup($"BeforeDeletionOfCategory{category.Name}");
                         connection.Execute(OnCategoryDeletion, new { categoryId = category.Id });
                         break;
-                    case Payee payee:
+                    case PayeeDto payee:
                         _provideConnection.Backup($"BeforeDeletionOfPayee{payee.Name}");
                         connection.Execute(OnPayeeDeletion, new { payeeId = payee.Id });
                         break;
-                    case Flag flag:
+                    case FlagDto flag:
                         _provideConnection.Backup($"BeforeDeletionOfFlag{flag.Name}");
                         break;
                 }
@@ -135,7 +135,7 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
             }
         }
 
-        public async Task DeleteAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModel
+        public async Task DeleteAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModelDto
         {
             foreach (var model in models)
             {

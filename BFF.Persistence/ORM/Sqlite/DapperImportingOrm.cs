@@ -34,7 +34,7 @@ namespace BFF.Persistence.ORM.Sqlite
                 {
                     CategoryImportWrapper current = categoriesOrder.Dequeue();
                     var id = await connection.InsertAsync(current.Category).ConfigureAwait(false);
-                    foreach (IHaveCategory currentTransAssignment in current.TransAssignments)
+                    foreach (IHaveCategoryDto currentTransAssignment in current.TransAssignments)
                     {
                         currentTransAssignment.CategoryId = id;
                     }
@@ -44,42 +44,42 @@ namespace BFF.Persistence.ORM.Sqlite
                         categoriesOrder.Enqueue(categoryImportWrapper);
                     }
                 }
-                foreach (Payee payee in importLists.Payees)
+                foreach (PayeeDto payee in importLists.Payees)
                 {
                     var id = await connection.InsertAsync(payee).ConfigureAwait(false);
-                    foreach (IHavePayee transIncBase in importAssignments.PayeeToTransactionBase[payee])
+                    foreach (IHavePayeeDto transIncBase in importAssignments.PayeeToTransactionBase[payee])
                     {
                         transIncBase.PayeeId = id;
                     }
                 }
-                foreach (Flag flag in importLists.Flags)
+                foreach (FlagDto flag in importLists.Flags)
                 {
                     var id = await connection.InsertAsync(flag).ConfigureAwait(false);
-                    foreach (IHaveFlag transBase in importAssignments.FlagToTransBase[flag])
+                    foreach (IHaveFlagDto transBase in importAssignments.FlagToTransBase[flag])
                     {
                         transBase.FlagId = id;
                     }
                 }
-                foreach (Account account in importLists.Accounts)
+                foreach (AccountDto account in importLists.Accounts)
                 {
                     var id = await connection.InsertAsync(account).ConfigureAwait(false);
-                    foreach (IHaveAccount transIncBase in importAssignments.AccountToTransactionBase[account])
+                    foreach (IHaveAccountDto transIncBase in importAssignments.AccountToTransactionBase[account])
                     {
                         transIncBase.AccountId = id;
                     }
-                    foreach (Trans transfer in importAssignments.FromAccountToTransfer[account])
+                    foreach (TransDto transfer in importAssignments.FromAccountToTransfer[account])
                     {
                         transfer.PayeeId = id;
                     }
-                    foreach (Trans transfer in importAssignments.ToAccountToTransfer[account])
+                    foreach (TransDto transfer in importAssignments.ToAccountToTransfer[account])
                     {
                         transfer.CategoryId = id;
                     }
                 }
-                foreach (Trans parentTransaction in importLists.ParentTransactions)
+                foreach (TransDto parentTransaction in importLists.ParentTransactions)
                 {
                     var id = await connection.InsertAsync(parentTransaction).ConfigureAwait(false);
-                    foreach (SubTransaction subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
+                    foreach (SubTransactionDto subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
                     {
                         subTransaction.ParentId = id;
                     }

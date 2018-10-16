@@ -1,18 +1,18 @@
 using System;
 using System.Threading.Tasks;
 using BFF.Core;
+using BFF.MVVM.Models.Native;
 using BFF.Persistence;
 using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
-using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public interface IParentTransactionRepository : IRepositoryBase<Domain.IParentTransaction>
+    public interface IParentTransactionRepository : IRepositoryBase<IParentTransaction>
     {
     }
 
-    public sealed class ParentTransactionRepository : RepositoryBase<Domain.IParentTransaction, Trans>, IParentTransactionRepository
+    public sealed class ParentTransactionRepository : RepositoryBase<IParentTransaction, TransDto>, IParentTransactionRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IAccountRepository _accountRepository;
@@ -36,13 +36,13 @@ namespace BFF.DB.Dapper.ModelRepositories
             _flagRepository = flagRepository;
         }
         
-        protected override Converter<Domain.IParentTransaction, Trans> ConvertToPersistence => domainParentTransaction => 
-            new Trans
+        protected override Converter<IParentTransaction, TransDto> ConvertToPersistence => domainParentTransaction => 
+            new TransDto
             {
                 Id = domainParentTransaction.Id,
                 AccountId = domainParentTransaction.Account.Id,
                 CategoryId = -69,
-                FlagId = domainParentTransaction.Flag is null || domainParentTransaction.Flag == Domain.Flag.Default 
+                FlagId = domainParentTransaction.Flag is null || domainParentTransaction.Flag == Flag.Default 
                     ? (long?) null 
                     : domainParentTransaction.Flag.Id,
                 CheckNumber = domainParentTransaction.CheckNumber,
@@ -54,9 +54,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Type = nameof(TransType.ParentTransaction)
             };
 
-        protected override async Task<Domain.IParentTransaction> ConvertToDomainAsync(Trans persistenceModel)
+        protected override async Task<IParentTransaction> ConvertToDomainAsync(TransDto persistenceModel)
         {
-            var parentTransaction = new Domain.ParentTransaction(
+            var parentTransaction = new ParentTransaction(
                 this,
                 _rxSchedulerProvider,
                 await _subTransactionRepository.GetChildrenOfAsync(persistenceModel.Id).ConfigureAwait(false),

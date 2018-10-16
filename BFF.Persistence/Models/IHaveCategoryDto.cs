@@ -1,6 +1,6 @@
 ﻿namespace BFF.Persistence.Models
 {
-    public interface IHaveCategory
+    public interface IHaveCategoryDto
     {
         long? CategoryId { get; set; }
     }

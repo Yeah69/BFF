@@ -3,7 +3,7 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Persistence.Models
 {
-    public class Trans : IPersistenceModel, IHaveAccount, IHaveCategory, IHavePayee, IHaveFlag
+    public class TransDto : IPersistenceModelDto, IHaveAccountDto, IHaveCategoryDto, IHavePayeeDto, IHaveFlagDto
     {
         [Key]
         public long Id { get; set; }

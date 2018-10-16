@@ -1,6 +1,6 @@
 ﻿namespace BFF.Persistence.Models
 {
-    public interface IHaveSortIndex
+    public interface IHaveSortIndexDto
     {
         long SortIndex { get; }
     }

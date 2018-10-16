@@ -15,7 +15,7 @@ namespace BFF.DB.Dapper
 
     public abstract class RepositoryBase<TDomain, TPersistence> : WriteOnlyRepositoryBase<TDomain, TPersistence>, IRepositoryBase<TDomain>
         where TDomain : class, IDataModel
-        where TPersistence : class, IPersistenceModel
+        where TPersistence : class, IPersistenceModelDto
     {
         private readonly ICrudOrm _crudOrm;
 

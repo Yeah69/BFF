@@ -1,18 +1,18 @@
 using System;
 using System.Threading.Tasks;
 using BFF.Core;
+using BFF.MVVM.Models.Native;
 using BFF.Persistence;
 using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
-using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public interface ITransferRepository : IRepositoryBase<Domain.ITransfer>
+    public interface ITransferRepository : IRepositoryBase<ITransfer>
     {
     }
 
-    public sealed class TransferRepository : RepositoryBase<Domain.ITransfer, Trans>, ITransferRepository
+    public sealed class TransferRepository : RepositoryBase<ITransfer, TransDto>, ITransferRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IAccountRepository _accountRepository;
@@ -30,12 +30,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             _flagRepository = flagRepository;
         }
         
-        protected override Converter<Domain.ITransfer, Trans> ConvertToPersistence => domainTransfer => 
-            new Trans
+        protected override Converter<ITransfer, TransDto> ConvertToPersistence => domainTransfer => 
+            new TransDto
             {
                 Id = domainTransfer.Id,
                 AccountId = -69,
-                FlagId = domainTransfer.Flag is null || domainTransfer.Flag == Domain.Flag.Default 
+                FlagId = domainTransfer.Flag is null || domainTransfer.Flag == Flag.Default 
                     ? (long?)null 
                     : domainTransfer.Flag.Id,
                 CheckNumber = domainTransfer.CheckNumber,
@@ -48,10 +48,10 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Type = nameof(TransType.Transfer)
             };
 
-        protected override async Task<Domain.ITransfer> ConvertToDomainAsync(Trans persistenceModel)
+        protected override async Task<ITransfer> ConvertToDomainAsync(TransDto persistenceModel)
         {
             return 
-                new Domain.Transfer(
+                new Transfer(
                     this,
                     _rxSchedulerProvider,
                     persistenceModel.Date,

@@ -1,6 +1,6 @@
 ﻿namespace BFF.Persistence.Models
 {
-    public interface IHavePayee
+    public interface IHavePayeeDto
     {
         long? PayeeId { get; set; }
     }

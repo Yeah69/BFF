@@ -1,20 +1,20 @@
 using System;
 using System.Threading.Tasks;
 using BFF.Core;
+using BFF.MVVM.Models.Native;
 using BFF.Persistence;
 using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
-using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public interface IBudgetEntryRepository : IWriteOnlyRepositoryBase<Domain.IBudgetEntry>
+    public interface IBudgetEntryRepository : IWriteOnlyRepositoryBase<IBudgetEntry>
     {
-        Task<Domain.IBudgetEntry> Convert(BudgetEntry budgetEntry, long outflow, long balance);
+        Task<IBudgetEntry> Convert(BudgetEntryDto budgetEntry, long outflow, long balance);
     }
 
 
-    public sealed class BudgetEntryRepository : WriteOnlyRepositoryBase<Domain.IBudgetEntry, BudgetEntry>, IBudgetEntryRepository
+    public sealed class BudgetEntryRepository : WriteOnlyRepositoryBase<IBudgetEntry, BudgetEntryDto>, IBudgetEntryRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICategoryRepository _categoryRepository;
@@ -29,8 +29,8 @@ namespace BFF.DB.Dapper.ModelRepositories
             _categoryRepository = categoryRepository;
         }
         
-        protected override Converter<Domain.IBudgetEntry, BudgetEntry> ConvertToPersistence => domainBudgetEntry => 
-            new BudgetEntry
+        protected override Converter<IBudgetEntry, BudgetEntryDto> ConvertToPersistence => domainBudgetEntry => 
+            new BudgetEntryDto
             {
                 Id = domainBudgetEntry.Id,
                 CategoryId = domainBudgetEntry.Category?.Id,
@@ -38,9 +38,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Budget = domainBudgetEntry.Budget
             };
 
-        public async Task<Domain.IBudgetEntry> Convert(BudgetEntry budgetEntry, long outflow, long balance)
+        public async Task<IBudgetEntry> Convert(BudgetEntryDto budgetEntry, long outflow, long balance)
         {
-            return new Domain.BudgetEntry(
+            return new BudgetEntry(
                 this,
                 _rxSchedulerProvider,
                 budgetEntry.Id, 

@@ -2,7 +2,7 @@
 
 namespace BFF.Persistence.Models
 {
-    public class Flag : IPersistenceModel
+    public class FlagDto : IPersistenceModelDto
     {
         [Key]
         public long Id { get; set; }

@@ -27,7 +27,7 @@ namespace BFF.DB.Dapper
     public abstract class ObservableRepositoryBase<TDomain, TPersistence> 
         : CachingRepositoryBase<TDomain, TPersistence>, IObservableRepositoryBase<TDomain>
         where TDomain : class, IDataModel
-        where TPersistence : class, IPersistenceModel
+        where TPersistence : class, IPersistenceModelDto
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly Comparer<TDomain> _comparer;

@@ -12,7 +12,7 @@ namespace BFF.Persistence.ORM.Sqlite
     internal class DapperParentalOrm : IParentalOrm
     {
         private string ParentalQuery =>
-            $"SELECT * FROM [{typeof(SubTransaction).Name}s] WHERE {nameof(SubTransaction.ParentId)} = @ParentId;";
+            $"SELECT * FROM [{typeof(SubTransactionDto).Name}s] WHERE {nameof(SubTransactionDto.ParentId)} = @ParentId;";
 
         private readonly IProvideConnection _provideConnection;
 
@@ -22,25 +22,25 @@ namespace BFF.Persistence.ORM.Sqlite
         }
 
 
-        public IEnumerable<SubTransaction> ReadSubTransactionsOf(long parentTransactionId)
+        public IEnumerable<SubTransactionDto> ReadSubTransactionsOf(long parentTransactionId)
         {
-            IList<SubTransaction> ret;
+            IList<SubTransactionDto> ret;
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
-                ret = connection.Query<SubTransaction>(ParentalQuery, new { ParentId = parentTransactionId }).ToList();
+                ret = connection.Query<SubTransactionDto>(ParentalQuery, new { ParentId = parentTransactionId }).ToList();
                 transactionScope.Complete();
             }
             return ret;
         }
 
-        public async Task<IEnumerable<SubTransaction>> ReadSubTransactionsOfAsync(long parentTransactionId)
+        public async Task<IEnumerable<SubTransactionDto>> ReadSubTransactionsOfAsync(long parentTransactionId)
         {
-            IList<SubTransaction> ret;
+            IList<SubTransactionDto> ret;
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
-                ret = (await connection.QueryAsync<SubTransaction>(ParentalQuery, new { ParentId = parentTransactionId }).ConfigureAwait(false)).ToList();
+                ret = (await connection.QueryAsync<SubTransactionDto>(ParentalQuery, new { ParentId = parentTransactionId }).ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }
             return ret;

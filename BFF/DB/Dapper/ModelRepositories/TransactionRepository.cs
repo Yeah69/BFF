@@ -1,18 +1,18 @@
 using System;
 using System.Threading.Tasks;
 using BFF.Core;
+using BFF.MVVM.Models.Native;
 using BFF.Persistence;
 using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
-using Domain = BFF.MVVM.Models.Native;
 
 namespace BFF.DB.Dapper.ModelRepositories
 {
-    public interface ITransactionRepository : IRepositoryBase<Domain.ITransaction>
+    public interface ITransactionRepository : IRepositoryBase<ITransaction>
     {
     }
 
-    public sealed class TransactionRepository : RepositoryBase<Domain.ITransaction, Trans>, ITransactionRepository
+    public sealed class TransactionRepository : RepositoryBase<ITransaction, TransDto>, ITransactionRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IAccountRepository _accountRepository;
@@ -36,12 +36,12 @@ namespace BFF.DB.Dapper.ModelRepositories
             _flagRepository = flagRepository;
         }
         
-        protected override Converter<Domain.ITransaction, Trans> ConvertToPersistence => domainTransaction => 
-            new Trans
+        protected override Converter<ITransaction, TransDto> ConvertToPersistence => domainTransaction => 
+            new TransDto
             {
                 Id = domainTransaction.Id,
                 AccountId = domainTransaction.Account.Id,
-                FlagId = domainTransaction.Flag is null || domainTransaction.Flag == Domain.Flag.Default 
+                FlagId = domainTransaction.Flag is null || domainTransaction.Flag == Flag.Default 
                     ? (long?) null 
                     : domainTransaction.Flag.Id,
                 CheckNumber = domainTransaction.CheckNumber,
@@ -54,9 +54,9 @@ namespace BFF.DB.Dapper.ModelRepositories
                 Type = nameof(TransType.Transaction)
             };
 
-        protected override async Task<Domain.ITransaction> ConvertToDomainAsync(Trans persistenceModel)
+        protected override async Task<ITransaction> ConvertToDomainAsync(TransDto persistenceModel)
         {
-            return new Domain.Transaction(
+            return new Transaction(
                 this,
                 _rxSchedulerProvider,
                 persistenceModel.Date,
