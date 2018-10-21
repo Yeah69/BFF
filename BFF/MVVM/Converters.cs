@@ -403,5 +403,19 @@ namespace BFF.MVVM
         public static readonly IValueConverter IntGreaterThanZero =
             ValueConverter.Create<int, bool>(
                 e => e.Value > 0);
+
+        public static readonly IValueConverter ColorToBrush =
+            ValueConverter.Create<System.Drawing.Color, SolidColorBrush>(
+                e => new SolidColorBrush(
+                    Color.FromArgb(
+                        e.Value.A, 
+                        e.Value.R, 
+                        e.Value.G, 
+                        e.Value.B)),
+                e => System.Drawing.Color.FromArgb(
+                    e.Value.Color.A,
+                    e.Value.Color.R,
+                    e.Value.Color.G, 
+                    e.Value.Color.B));
     }
 }

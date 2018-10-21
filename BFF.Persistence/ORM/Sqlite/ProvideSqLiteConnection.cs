@@ -3,12 +3,13 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using BFF.Core.Extensions;
+using BFF.Core.Persistence;
 using Dapper;
 using Microsoft.Data.Sqlite;
 
 namespace BFF.Persistence.ORM.Sqlite
 {
-    public class NullableLongTypeHandler : SqlMapper.TypeHandler<long?>
+    internal class NullableLongTypeHandler : SqlMapper.TypeHandler<long?>
     {
         public override void SetValue(IDbDataParameter parameter, long? value)
         {
@@ -37,7 +38,7 @@ namespace BFF.Persistence.ORM.Sqlite
     public interface IProvideSqLiteConnection : IProvideConnection
     { }
 
-    public class ProvideSqLiteConnection : IProvideSqLiteConnection
+    internal class ProvideSqLiteConnection : IProvideSqLiteConnection
     {
         static ProvideSqLiteConnection()
         {

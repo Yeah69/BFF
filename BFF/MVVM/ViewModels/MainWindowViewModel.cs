@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using Autofac.Features.OwnedInstances;
-using BFF.Core;
-using BFF.Core.IoCMarkerInterfaces;
-using BFF.DB;
+using BFF.Contexts;
+using BFF.Core.IoC;
+using BFF.Core.Persistence;
 using BFF.Helper.Extensions;
-using BFF.Helper.Import;
+using BFF.Model;
+using BFF.Model.Contexts;
 using BFF.MVVM.Managers;
 using BFF.MVVM.ViewModels.ForModels;
-using BFF.Persistence;
-using BFF.Persistence.ORM.Interfaces;
 using BFF.Properties;
 using NLog;
 using Reactive.Bindings;
@@ -30,7 +28,6 @@ namespace BFF.MVVM.ViewModels
         IRxRelayCommand OpenBudgetPlanCommand { get; }
         IRxRelayCommand CloseBudgetPlanCommand { get; }
         IRxRelayCommand ParentTransactionOnClose { get; }
-        IRxRelayCommand<IImportable> ImportBudgetPlanCommand { get; }
         IAccountTabsViewModel AccountTabsViewModel { get; set; }
         IBudgetOverviewViewModel BudgetOverviewViewModel { get; set; }
         IEditAccountsViewModel EditAccountsViewModel { get; }
@@ -54,8 +51,9 @@ namespace BFF.MVVM.ViewModels
 
     public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel, IOncePerApplication //todo IDisposable
     {
-        private readonly Func<Owned<Func<string, ISqLiteBackendContext>>> _sqliteBackendContextFactory;
-        private readonly Func<Owned<Func<IEmptyContext>>> _emptyContextFactory;
+        private readonly Func<Owned<Func<IPersistenceConfiguration, ILoadedProjectContext>>> _loadedProjectContextFactory;
+        private readonly Func<Owned<Func<IEmptyProjectContext>>> _emptyContextFactory;
+        private readonly Func<string, ISqlitePersistenceConfiguration> _sqlitePersistenceConfigurationFactory;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
         protected bool FileFlyoutIsOpen;
@@ -77,8 +75,6 @@ namespace BFF.MVVM.ViewModels
         public IRxRelayCommand CloseBudgetPlanCommand { get; }
 
         public IRxRelayCommand ParentTransactionOnClose { get; }
-
-        public IRxRelayCommand<IImportable> ImportBudgetPlanCommand { get; }
 
         private IAccountTabsViewModel _accountTabsViewModel;
         public IAccountTabsViewModel AccountTabsViewModel
@@ -219,19 +215,19 @@ namespace BFF.MVVM.ViewModels
         }
 
         public MainWindowViewModel(
-            Func<Owned<Func<string, ISqLiteBackendContext>>> sqliteBackendContextFactory,
-            Func<Owned<Func<IEmptyContext>>> emptyContextFactory,
-            Func<Owned<Func<string, IProvideConnection>>> ownedCreateProvideConnectionFactory,
-            Func<IProvideConnection, ICreateBackendOrm> createCreateBackendOrm,
+            Func<Owned<Func<IPersistenceConfiguration, ILoadedProjectContext>>> loadedProjectContextFactory,
+            Func<Owned<Func<IEmptyProjectContext>>> emptyContextFactory,
+            Func<Owned<Func<IPersistenceConfiguration, INewBackendContext>>> newBackendContextFactory,
+            Func<string, ISqlitePersistenceConfiguration> sqlitePersistenceConfigurationFactory,
             ITransDataGridColumnManager transDataGridColumnManager,
             IParentTransactionFlyoutManager parentTransactionFlyoutManager,
-            IRxSchedulerProvider schedulerProvider,
             IEmptyViewModel emptyViewModel)
         {
             TransDataGridColumnManager = transDataGridColumnManager;
             EmptyViewModel = emptyViewModel;
-            _sqliteBackendContextFactory = sqliteBackendContextFactory;
+            _loadedProjectContextFactory = loadedProjectContextFactory;
             _emptyContextFactory = emptyContextFactory;
+            _sqlitePersistenceConfigurationFactory = sqlitePersistenceConfigurationFactory;
             Logger.Debug("Initializing …");
             Reset(Settings.Default.DBLocation);
 
@@ -258,20 +254,13 @@ namespace BFF.MVVM.ViewModels
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    var ownedCreateProvideConnection = ownedCreateProvideConnectionFactory();
-                    createCreateBackendOrm(ownedCreateProvideConnection.Value(saveFileDialog.FileName))
-                        .CreateAsync()
-                        .ContinueWith(
-                            t =>
-                            {
-                                schedulerProvider.UI.Schedule(Unit.Default, (sc, st) =>
-                                {
-                                    ownedCreateProvideConnection.Dispose();
-                                    Reset(saveFileDialog.FileName);
-                                    return Disposable.Empty;
-                                });
-                                
-                            });
+                    using (var backendContextFactory = newBackendContextFactory())
+                    {
+                        backendContextFactory
+                            .Value(sqlitePersistenceConfigurationFactory(saveFileDialog.FileName))
+                            .CreateNewBackend();
+                    }
+                    Reset(saveFileDialog.FileName);
                 }
             });
 
@@ -293,22 +282,17 @@ namespace BFF.MVVM.ViewModels
 
             ParentTransactionOnClose = new RxRelayCommand(parentTransactionFlyoutManager.Close);
 
-            ImportBudgetPlanCommand = new RxRelayCommand<IImportable>(async importableObject =>
-            {
-                string savePath = await importableObject.Import();
-                Reset(savePath);
-            });
-
             Logger.Trace("Initializing done.");
         }
 
         private void Reset(string dbPath)
         {
-            IBackendContext context;
+            IProjectContext context;
             if (dbPath != null && File.Exists(dbPath))
             {
-                var contextOwner = _sqliteBackendContextFactory();
-                context = contextOwner.Value(dbPath);
+                var contextOwner = _loadedProjectContextFactory();
+                var sqlitePersistenceConfiguration = _sqlitePersistenceConfigurationFactory(dbPath);
+                context = contextOwner.Value(sqlitePersistenceConfiguration);
                 _contextSequence.Disposable = contextOwner;
                 Title = $"{new FileInfo(dbPath).FullName} - BFF";
                 Settings.Default.DBLocation = dbPath;

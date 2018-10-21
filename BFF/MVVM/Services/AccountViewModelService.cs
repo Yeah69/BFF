@@ -1,6 +1,6 @@
 ﻿using System;
-using BFF.DB.Dapper.ModelRepositories;
-using BFF.MVVM.Models.Native;
+using BFF.Model.Models;
+using BFF.Model.Repositories.ModelRepositories;
 using BFF.MVVM.ViewModels.ForModels;
 using MuVaViMo;
 

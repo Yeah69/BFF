@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
-using BFF.Core.IoCMarkerInterfaces;
-using BFF.DB;
+using BFF.Core.Extensions;
+using BFF.Core.IoC;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Managers;
 using BFF.MVVM.Services;

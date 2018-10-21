@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using BFF.Core.Extensions;
 using BFF.Helper.Extensions;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 

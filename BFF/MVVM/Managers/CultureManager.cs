@@ -6,11 +6,12 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
 using BFF.Core;
-using BFF.Core.IoCMarkerInterfaces;
-using BFF.DB;
-using BFF.DB.Dapper.ModelRepositories;
+using BFF.Core.Extensions;
+using BFF.Core.Helper;
+using BFF.Core.IoC;
 using BFF.Helper.Extensions;
-using BFF.MVVM.Models.Native;
+using BFF.Model.Models;
+using BFF.Model.Repositories.ModelRepositories;
 using BFF.Properties;
 
 namespace BFF.MVVM.Managers

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using BFF.Core.Extensions;
-using BFF.DB.Dapper.ModelRepositories;
+using BFF.Core.IoC;
 using BFF.Helper;
 using BFF.Helper.Extensions;
-using BFF.MVVM.Models.Native;
-using BFF.MVVM.Models.Native.Structure;
+using BFF.Model.Models;
+using BFF.Model.Models.Structure;
+using BFF.Model.Repositories.ModelRepositories;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
@@ -50,7 +51,7 @@ namespace BFF.MVVM.ViewModels
         IRxRelayCommand AllCellsZero { get; }
     }
 
-    public sealed class BudgetMonthViewModel : ViewModelBase, IBudgetMonthViewModel, IDisposable, ITransientViewModel
+    public sealed class BudgetMonthViewModel : ViewModelBase, IBudgetMonthViewModel, IDisposable, ITransient
     {
         private readonly IBudgetMonth _budgetMonth;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();

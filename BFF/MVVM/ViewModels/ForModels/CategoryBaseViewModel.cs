@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BFF.Core;
-using BFF.MVVM.Models.Native.Structure;
+using BFF.Core.Helper;
+using BFF.Model.Models.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.ViewModels.ForModels

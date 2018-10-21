@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BFF.Core.IoCMarkerInterfaces;
-using BFF.DB;
+using BFF.Core.IoC;
 using BFF.MVVM.ViewModels.Dialogs;
 using BFF.MVVM.Views;
 using BFF.MVVM.Views.Dialogs;

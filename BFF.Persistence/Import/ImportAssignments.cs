@@ -5,14 +5,14 @@ namespace BFF.Persistence.Import
 {
     public struct ImportAssignments
     {
-        public IDictionary<AccountDto, IList<IHaveAccountDto>> AccountToTransactionBase;
-        public IDictionary<AccountDto, IList<TransDto>> FromAccountToTransfer;
-        public IDictionary<AccountDto, IList<TransDto>> ToAccountToTransfer;
+        public IDictionary<IAccountDto, IList<IHaveAccountDto>> AccountToTransactionBase;
+        public IDictionary<IAccountDto, IList<ITransDto>> FromAccountToTransfer;
+        public IDictionary<IAccountDto, IList<ITransDto>> ToAccountToTransfer;
 
-        public IDictionary<PayeeDto, IList<IHavePayeeDto>> PayeeToTransactionBase;
+        public IDictionary<IPayeeDto, IList<IHavePayeeDto>> PayeeToTransactionBase;
 
-        public IDictionary<TransDto, IList<SubTransactionDto>> ParentTransactionToSubTransaction;
+        public IDictionary<ITransDto, IList<ISubTransactionDto>> ParentTransactionToSubTransaction;
 
-        public IDictionary<FlagDto, IList<IHaveFlagDto>> FlagToTransBase;
+        public IDictionary<IFlagDto, IList<IHaveFlagDto>> FlagToTransBase;
     }
 }

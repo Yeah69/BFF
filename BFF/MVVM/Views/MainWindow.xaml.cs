@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using BFF.Helper.Import;
 using BFF.MVVM.ViewModels;
 using BFF.Properties;
 using MahApps.Metro;
@@ -19,37 +18,21 @@ namespace BFF.MVVM.Views
     /// </summary>
     public partial class MainWindow
     {
-        public static readonly DependencyProperty ImportCommandProperty =
-            DependencyProperty.Register(nameof(ImportCommand), typeof(ICommand), typeof(MainWindow),
-                new PropertyMetadata((depObj, args) =>
-                {
-                    MainWindow mw = (MainWindow)depObj;
-                    mw.ImportCommand = (ICommand)args.NewValue;
-                }));
-
-        private readonly Func<(string, string, string), IYnabCsvImport> _ynabCsvImportFactory;
-        private readonly Func<IYnabCsvImport, IImportDialogViewModel> _importDialogViewModelFactory;
-
-        public ICommand ImportCommand
-        {
-            get => (ICommand)GetValue(ImportCommandProperty);
-            set => SetValue(ImportCommandProperty, value);
-        }
+        
+        private readonly Func<IImportDialogViewModel> _importDialogViewModelFactory;
+        
 
         public MainWindow(
             IMainWindowViewModel dataContext,
-            Func<(string, string, string), IYnabCsvImport> ynabCsvImportFactory,
-            Func<IImportable, IImportDialogViewModel> importDialogViewModelFactory)
+            Func<IImportDialogViewModel> importDialogViewModelFactory)
         {
             InitializeComponent();
             
             InitializeCultureComboBoxes();
             InitializeAppThemeAndAccentComboBoxes();
-            SetBinding(ImportCommandProperty, nameof(MainWindowViewModel.ImportBudgetPlanCommand));
 
             DataContext = dataContext;
-
-            _ynabCsvImportFactory = ynabCsvImportFactory;
+            
             _importDialogViewModelFactory = importDialogViewModelFactory;
 
             void InitializeCultureComboBoxes()
@@ -130,23 +113,13 @@ namespace BFF.MVVM.Views
 
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
 
-            IImportDialogViewModel importDialogViewModel = _importDialogViewModelFactory(
-                _ynabCsvImportFactory((
-                    Settings.Default.Import_YnabCsvTransaction,
-                    Settings.Default.Import_YnabCsvBudget, 
-                    Settings.Default.Import_SavePath)
-                ));
+            IImportDialogViewModel importDialogViewModel = _importDialogViewModelFactory();
             ImportDialog importDialog = new ImportDialog{ DataContext = importDialogViewModel };
             importDialog.ButtCancel.Click += (o, args) => this.HideMetroDialogAsync(importDialog);
             importDialog.ButtImport.Click += (o, args) =>
             {
-                Settings.Default.Import_YnabCsvTransaction = ((YnabCsvImport)importDialogViewModel.Importable).TransactionPath;
-                Settings.Default.Import_YnabCsvBudget = ((YnabCsvImport)importDialogViewModel.Importable).BudgetPath;
-                Settings.Default.Import_SavePath = importDialogViewModel.Importable.SavePath;
-                Settings.Default.Save();
                 this.HideMetroDialogAsync(importDialog);
-                if(ImportCommand.CanExecute(importDialogViewModel.Importable))
-                    Dispatcher.Invoke(() => ImportCommand.Execute(importDialogViewModel.Importable), DispatcherPriority.Background);
+                Dispatcher.Invoke(() => importDialogViewModel.Import(), DispatcherPriority.Background);
             };
             this.ShowMetroDialogAsync(importDialog);
         }

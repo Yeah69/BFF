@@ -1,0 +1,32 @@
+﻿using System.Threading.Tasks;
+using BFF.Core.Helper;
+using BFF.Model.Models.Structure;
+using BFF.Model.Repositories.ModelRepositories;
+
+namespace BFF.Model.Models
+{
+    public interface IPayee : ICommonProperty
+    {
+        Task MergeToAsync(IPayee payee);
+    }
+
+    internal class Payee : CommonProperty<IPayee>, IPayee
+    {
+        private readonly IPayeeRepository _repository;
+
+        public Payee(
+            IPayeeRepository repository, 
+            IRxSchedulerProvider rxSchedulerProvider, 
+            long id = -1L, 
+            string name = "") : base(repository, rxSchedulerProvider, name: name)
+        {
+            _repository = repository;
+            if (id > 0L) Id = id;
+        }
+
+        public Task MergeToAsync(IPayee payee)
+        {
+            return _repository.MergeAsync(@from: this, to: payee);
+        }
+    }
+}

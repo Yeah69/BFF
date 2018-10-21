@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using BFF.MVVM.Models.Native.Structure;
+using BFF.Model.Models.Structure;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 
 namespace BFF.MVVM.Services

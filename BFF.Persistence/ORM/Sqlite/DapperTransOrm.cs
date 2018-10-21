@@ -4,7 +4,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
-using BFF.Core;
+using BFF.Core.Helper;
+using BFF.Core.Persistence;
 using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
 using Dapper;
@@ -13,30 +14,30 @@ namespace BFF.Persistence.ORM.Sqlite
 {
     internal class DapperTransOrm : ITransOrm
     {
-        private static string RowsPart => $"SELECT * FROM {nameof(TransDto)}s";
-        private static string RowsParentTransactionPart => $"SELECT DISTINCT {nameof(TransDto)}s.{nameof(TransDto.Id)}, {nameof(TransDto)}s.{nameof(TransDto.FlagId)}, {nameof(TransDto)}s.{nameof(TransDto.CheckNumber)}, {nameof(TransDto)}s.{nameof(TransDto.AccountId)}, {nameof(TransDto)}s.{nameof(TransDto.PayeeId)}, {nameof(TransDto)}s.{nameof(TransDto.CategoryId)}, {nameof(TransDto)}s.{nameof(TransDto.Date)}, {nameof(TransDto)}s.{nameof(TransDto.Memo)}, {nameof(TransDto)}s.{nameof(TransDto.Sum)}, {nameof(TransDto)}s.{nameof(TransDto.Cleared)}, {nameof(TransDto)}s.{nameof(TransDto.Type)} FROM {nameof(TransDto)}s";
+        private static string RowsPart => $"SELECT * FROM {nameof(Trans)}s";
+        private static string RowsParentTransactionPart => $"SELECT DISTINCT {nameof(Trans)}s.{nameof(Trans.Id)}, {nameof(Trans)}s.{nameof(Trans.FlagId)}, {nameof(Trans)}s.{nameof(Trans.CheckNumber)}, {nameof(Trans)}s.{nameof(Trans.AccountId)}, {nameof(Trans)}s.{nameof(Trans.PayeeId)}, {nameof(Trans)}s.{nameof(Trans.CategoryId)}, {nameof(Trans)}s.{nameof(Trans.Date)}, {nameof(Trans)}s.{nameof(Trans.Memo)}, {nameof(Trans)}s.{nameof(Trans.Sum)}, {nameof(Trans)}s.{nameof(Trans.Cleared)}, {nameof(Trans)}s.{nameof(Trans.Type)} FROM {nameof(Trans)}s";
 
-        private static string CountPart => $"SELECT COUNT(*) FROM {nameof(TransDto)}s";
+        private static string CountPart => $"SELECT COUNT(*) FROM {nameof(Trans)}s";
 
-        private static string SpecifyingTransactionMonthPart => $"WHERE {nameof(TransDto.Type)} = '{nameof(TransType.Transaction)}' AND strftime('%Y', {nameof(TransDto.Date)}) = @year AND strftime('%m', {nameof(TransDto.Date)}) = @month";
+        private static string SpecifyingTransactionMonthPart => $"WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month";
 
-        private static string SpecifyingTransactionMonthCategoryPart => $"WHERE {nameof(TransDto.Type)} = '{nameof(TransType.Transaction)}' AND strftime('%Y', {nameof(TransDto.Date)}) = @year AND strftime('%m', {nameof(TransDto.Date)}) = @month AND {nameof(TransDto.CategoryId)} = @categoryId";
+        private static string SpecifyingTransactionMonthCategoryPart => $"WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month AND {nameof(Trans.CategoryId)} = @categoryId";
 
-        private static string SpecifyingTransactionMonthCategoriesPart => $"WHERE {nameof(TransDto.Type)} = '{nameof(TransType.Transaction)}' AND strftime('%Y', {nameof(TransDto.Date)}) = @year AND strftime('%m', {nameof(TransDto.Date)}) = @month AND {nameof(TransDto.CategoryId)} IN @categoryIds";
+        private static string SpecifyingTransactionMonthCategoriesPart => $"WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month AND {nameof(Trans.CategoryId)} IN @categoryIds";
 
-        private static string JoinParentTransactionsWithSubTransactionsPart => $"INNER JOIN {nameof(SubTransactionDto)}s ON {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)}";
+        private static string JoinParentTransactionsWithSubTransactionsPart => $"INNER JOIN {nameof(SubTransaction)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}";
 
-        private static string SpecifyingParentTransactionMonthPart => $"WHERE {nameof(TransDto)}s.{nameof(TransDto.Type)} = '{nameof(TransType.ParentTransaction)}' AND strftime('%Y', {nameof(TransDto.Date)}) = @year AND strftime('%m', {nameof(TransDto.Date)}) = @month";
+        private static string SpecifyingParentTransactionMonthPart => $"WHERE {nameof(Trans)}s.{nameof(Trans.Type)} = '{nameof(TransType.ParentTransaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month";
 
-        private static string SpecifyingParentTransactionMonthCategoryPart => $"WHERE {nameof(TransDto)}s.{nameof(TransDto.Type)} = '{nameof(TransType.ParentTransaction)}' AND strftime('%Y', {nameof(TransDto.Date)}) = @year AND strftime('%m', {nameof(TransDto.Date)}) = @month AND {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.CategoryId)} = @categoryId";
+        private static string SpecifyingParentTransactionMonthCategoryPart => $"WHERE {nameof(Trans)}s.{nameof(Trans.Type)} = '{nameof(TransType.ParentTransaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month AND {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} = @categoryId";
 
-        private static string SpecifyingParentTransactionMonthCategoriesPart => $"WHERE {nameof(TransDto)}s.{nameof(TransDto.Type)} = '{nameof(TransType.ParentTransaction)}' AND strftime('%Y', {nameof(TransDto.Date)}) = @year AND strftime('%m', {nameof(TransDto.Date)}) = @month AND {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.CategoryId)} IN @categoryIds";
+        private static string SpecifyingParentTransactionMonthCategoriesPart => $"WHERE {nameof(Trans)}s.{nameof(Trans.Type)} = '{nameof(TransType.ParentTransaction)}' AND strftime('%Y', {nameof(Trans.Date)}) = @year AND strftime('%m', {nameof(Trans.Date)}) = @month AND {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} IN @categoryIds";
 
-        private static string SpecifyingPagePart => $"WHERE {nameof(TransDto.AccountId)} = @accountId OR {nameof(TransDto.AccountId)} = -69 AND {nameof(TransDto.PayeeId)} = @accountId OR {nameof(TransDto.AccountId)} = -69 AND {nameof(TransDto.CategoryId)} = @accountId";
+        private static string SpecifyingPagePart => $"WHERE {nameof(Trans.AccountId)} = @accountId OR {nameof(Trans.AccountId)} = -69 AND {nameof(Trans.PayeeId)} = @accountId OR {nameof(Trans.AccountId)} = -69 AND {nameof(Trans.CategoryId)} = @accountId";
 
         private static string LimitingPagePart => "LIMIT @offset, @pageSize";
 
-        private static string OrderingSuffix => $"ORDER BY {nameof(TransDto.Date)}";
+        private static string OrderingSuffix => $"ORDER BY {nameof(Trans.Date)}";
 
 
         private readonly IProvideConnection _provideConnection;
@@ -46,25 +47,25 @@ namespace BFF.Persistence.ORM.Sqlite
             _provideConnection = provideConnection;
         }
 
-        public IEnumerable<TransDto> GetPageFromSpecificAccount(int offset, int pageSize, long accountId)
+        public IEnumerable<Trans> GetPageFromSpecificAccount(int offset, int pageSize, long accountId)
         {
-            IList<TransDto> ret;
+            IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
-                ret = connection.Query<TransDto>($"{RowsPart} {SpecifyingPagePart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize, accountId}).ToList();
+                ret = connection.Query<Trans>($"{RowsPart} {SpecifyingPagePart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize, accountId}).ToList();
                 transactionScope.Complete();
             }
             return ret;
         }
 
-        public IEnumerable<TransDto> GetPageFromSummaryAccount(int offset, int pageSize)
+        public IEnumerable<Trans> GetPageFromSummaryAccount(int offset, int pageSize)
         {
-            IList<TransDto> ret;
+            IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
-                ret = connection.Query<TransDto>($"{RowsPart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize }).ToList();
+                ret = connection.Query<Trans>($"{RowsPart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize }).ToList();
                 transactionScope.Complete();
             }
             return ret;
@@ -94,37 +95,37 @@ namespace BFF.Persistence.ORM.Sqlite
             return ret;
         }
 
-        public async Task<IEnumerable<TransDto>> GetPageFromSpecificAccountAsync(int offset, int pageSize, long accountId)
+        public async Task<IEnumerable<ITransDto>> GetPageFromSpecificAccountAsync(int offset, int pageSize, long accountId)
         {
-            IList<TransDto> ret;
+            IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
                 ret = (await connection
-                    .QueryAsync<TransDto>($"{RowsPart} {SpecifyingPagePart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize, accountId })
+                    .QueryAsync<Trans>($"{RowsPart} {SpecifyingPagePart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize, accountId })
                     .ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }
             return ret;
         }
 
-        public async Task<IEnumerable<TransDto>> GetPageFromSummaryAccountAsync(int offset, int pageSize)
+        public async Task<IEnumerable<ITransDto>> GetPageFromSummaryAccountAsync(int offset, int pageSize)
         {
-            IList<TransDto> ret;
+            IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
                 ret = (await connection
-                    .QueryAsync<TransDto>($"{RowsPart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize })
+                    .QueryAsync<Trans>($"{RowsPart} {OrderingSuffix} {LimitingPagePart};", new { offset, pageSize })
                     .ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }
             return ret;
         }
 
-        public async Task<IEnumerable<TransDto>> GetFromMonthAsync(DateTime month)
+        public async Task<IEnumerable<ITransDto>> GetFromMonthAsync(DateTime month)
         {
-            IList<TransDto> ret;
+            IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
@@ -136,16 +137,16 @@ UNION ALL
                     })
 {OrderingSuffix};";
                 ret = (await connection
-                    .QueryAsync<TransDto>(query, new { year = $"{month.Year:0000}", month = $"{month.Month:00}" })
+                    .QueryAsync<Trans>(query, new { year = $"{month.Year:0000}", month = $"{month.Month:00}" })
                     .ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }
             return ret;
         }
 
-        public async Task<IEnumerable<TransDto>> GetFromMonthAndCategoryAsync(DateTime month, long categoryId)
+        public async Task<IEnumerable<ITransDto>> GetFromMonthAndCategoryAsync(DateTime month, long categoryId)
         {
-            IList<TransDto> ret;
+            IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
@@ -157,16 +158,16 @@ UNION ALL
                     })
 {OrderingSuffix};";
                 ret = (await connection
-                    .QueryAsync<TransDto>(query, new{ year = $"{month.Year:0000}", month = $"{month.Month:00}", categoryId })
+                    .QueryAsync<Trans>(query, new{ year = $"{month.Year:0000}", month = $"{month.Month:00}", categoryId })
                     .ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }
             return ret;
         }
 
-        public async Task<IEnumerable<TransDto>> GetFromMonthAndCategoriesAsync(DateTime month, long[] categoryIds)
+        public async Task<IEnumerable<ITransDto>> GetFromMonthAndCategoriesAsync(DateTime month, long[] categoryIds)
         {
-            IList<TransDto> ret;
+            IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
@@ -178,7 +179,7 @@ UNION ALL
                     })
 {OrderingSuffix};";
                 ret = (await connection
-                    .QueryAsync<TransDto>(query, new { year = $"{month.Year:0000}", month = $"{month.Month:00}", categoryIds })
+                    .QueryAsync<Trans>(query, new { year = $"{month.Year:0000}", month = $"{month.Month:00}", categoryIds })
                     .ConfigureAwait(false)).ToList();
                 transactionScope.Complete();
             }

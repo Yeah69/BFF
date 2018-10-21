@@ -1,7 +1,8 @@
 ﻿using System.Data;
 using System.Threading.Tasks;
 using System.Transactions;
-using BFF.Core;
+using BFF.Core.Helper;
+using BFF.Core.Persistence;
 using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
 using Dapper;
@@ -9,25 +10,25 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Persistence.ORM.Sqlite
 {
-    public class DapperMergeOrm : IMergeOrm
+    internal class DapperMergeOrm : IMergeOrm
     {
         private static readonly string OnPayeeMerge = $@"
-UPDATE {nameof(TransDto)}s SET {nameof(TransDto.PayeeId)} = @toPayeeId 
-WHERE {nameof(TransDto.Type)} = '{TransType.Transaction}' AND {nameof(TransDto.PayeeId)} = @fromPayeeId;
-UPDATE {nameof(TransDto)}s SET {nameof(TransDto.PayeeId)} = @toPayeeId 
-WHERE {nameof(TransDto.Type)} = '{TransType.ParentTransaction}' AND {nameof(TransDto.PayeeId)} = @fromPayeeId;";
+UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = @toPayeeId 
+WHERE {nameof(Trans.Type)} = '{TransType.Transaction}' AND {nameof(Trans.PayeeId)} = @fromPayeeId;
+UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = @toPayeeId 
+WHERE {nameof(Trans.Type)} = '{TransType.ParentTransaction}' AND {nameof(Trans.PayeeId)} = @fromPayeeId;";
 
         private static readonly string OnFlagMerge = $@"
-UPDATE {nameof(TransDto)}s SET {nameof(TransDto.FlagId)} = @toFlagId 
-WHERE {nameof(TransDto.FlagId)} = @fromFlagId;";
+UPDATE {nameof(Trans)}s SET {nameof(Trans.FlagId)} = @toFlagId 
+WHERE {nameof(Trans.FlagId)} = @fromFlagId;";
 
         private static readonly string OnCategoryMerge = $@"
-UPDATE {nameof(TransDto)}s SET {nameof(TransDto.CategoryId)} = @toCategoryId 
-WHERE {nameof(TransDto.Type)} = '{TransType.Transaction}' AND {nameof(TransDto.CategoryId)} = @fromCategoryId;
-UPDATE {nameof(SubTransactionDto)}s SET {nameof(SubTransactionDto.CategoryId)} = @toCategoryId 
-WHERE {nameof(SubTransactionDto.CategoryId)} = @fromCategoryId;
-UPDATE {nameof(CategoryDto)}s SET {nameof(CategoryDto.ParentId)} = @toCategoryId 
-WHERE {nameof(CategoryDto.ParentId)} = @fromCategoryId;";
+UPDATE {nameof(Trans)}s SET {nameof(Trans.CategoryId)} = @toCategoryId 
+WHERE {nameof(Trans.Type)} = '{TransType.Transaction}' AND {nameof(Trans.CategoryId)} = @fromCategoryId;
+UPDATE {nameof(SubTransaction)}s SET {nameof(SubTransaction.CategoryId)} = @toCategoryId 
+WHERE {nameof(SubTransaction.CategoryId)} = @fromCategoryId;
+UPDATE {nameof(Category)}s SET {nameof(Category.ParentId)} = @toCategoryId 
+WHERE {nameof(Category.ParentId)} = @fromCategoryId;";
 
         private readonly IProvideConnection _provideConnection;
 
@@ -36,7 +37,7 @@ WHERE {nameof(CategoryDto.ParentId)} = @fromCategoryId;";
             _provideConnection = provideConnection;
         }
 
-        public async Task MergePayeeAsync(PayeeDto from, PayeeDto to)
+        public async Task MergePayeeAsync(IPayeeDto from, IPayeeDto to)
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
@@ -49,7 +50,7 @@ WHERE {nameof(CategoryDto.ParentId)} = @fromCategoryId;";
             }
         }
 
-        public async Task MergeFlagAsync(FlagDto from, FlagDto to)
+        public async Task MergeFlagAsync(IFlagDto from, IFlagDto to)
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
@@ -62,7 +63,7 @@ WHERE {nameof(CategoryDto.ParentId)} = @fromCategoryId;";
             }
         }
 
-        public async Task MergeCategoryAsync(CategoryDto from, CategoryDto to)
+        public async Task MergeCategoryAsync(ICategoryDto from, ICategoryDto to)
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)

@@ -6,7 +6,9 @@
                           xmlns:lex="http://wpflocalizeextension.codeplex.com"
                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                           xmlns:mvvm="clr-namespace:BFF.MVVM"
+                          xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
                           Title="{lex:Loc ImportView_YNAB4}"
+                          d:DataContext="{d:DesignInstance viewModels:IImportDialogViewModel}"
                           lex:LocalizeDictionary.DesignCulture="en-US"
                           lex:ResxLocalizationProvider.DefaultAssembly="BFF"
                           lex:ResxLocalizationProvider.DefaultDictionary="Resources"
@@ -36,7 +38,7 @@
                  Margin="5">
             <TextBox.Text>
                 <Binding Mode="TwoWay"
-                         Path="Importable.TransactionPath">
+                         Path="TransactionPath">
                     <Binding.ValidationRules>
                         <x:Static Member="mvvm:Rules.NotExistingFilePath" />
                     </Binding.ValidationRules>
@@ -58,7 +60,7 @@
                  Margin="5">
             <TextBox.Text>
                 <Binding Mode="TwoWay"
-                         Path="Importable.BudgetPath">
+                         Path="BudgetPath">
                     <Binding.ValidationRules>
                         <x:Static Member="mvvm:Rules.NotExistingFilePath" />
                     </Binding.ValidationRules>
@@ -81,7 +83,7 @@
                  IsReadOnly="False">
             <TextBox.Text>
                 <Binding Mode="TwoWay"
-                         Path="Importable.SavePath">
+                         Path="SavePath">
                     <Binding.ValidationRules>
                         <x:Static Member="mvvm:Rules.NotExistingSavePath" />
                         <x:Static Member="mvvm:Rules.NoEmptyFileName" />

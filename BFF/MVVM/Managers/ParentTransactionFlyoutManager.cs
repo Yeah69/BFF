@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reactive.Disposables;
-using BFF.Core.IoCMarkerInterfaces;
-using BFF.DB;
+using BFF.Core.Extensions;
+using BFF.Core.IoC;
 using BFF.Helper.Extensions;
 using BFF.MVVM.ViewModels.ForModels;
 using Reactive.Bindings;

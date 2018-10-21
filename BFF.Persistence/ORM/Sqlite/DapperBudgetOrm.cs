@@ -4,8 +4,9 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
-using BFF.Core;
 using BFF.Core.Extensions;
+using BFF.Core.Helper;
+using BFF.Core.Persistence;
 using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
 using Dapper;
@@ -17,64 +18,64 @@ namespace BFF.Persistence.ORM.Sqlite
         private static readonly string NotBudgetedOrOverbudgetedQuery =
             $@"SELECT Total(Sum) as Sum FROM
     (
-        SELECT Total({nameof(AccountDto.StartingBalance)}) AS Sum FROM {nameof(AccountDto)}s
-        WHERE strftime('%Y', {nameof(AccountDto.StartingDate)}) < @Year
+        SELECT Total({nameof(Account.StartingBalance)}) AS Sum FROM {nameof(Account)}s
+        WHERE strftime('%Y', {nameof(Account.StartingDate)}) < @Year
         UNION ALL
-        SELECT Total({nameof(TransDto.Sum)}) AS Sum FROM {nameof(TransDto)}s
-        WHERE {nameof(TransDto.Type)} = '{nameof(TransType.Transfer)}' AND {nameof(TransDto.CategoryId)} IS NOT NULL AND strftime('%Y', {nameof(TransDto.Date)}) < @Year
+        SELECT Total({nameof(Trans.Sum)}) AS Sum FROM {nameof(Trans)}s
+        WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} IS NOT NULL AND strftime('%Y', {nameof(Trans.Date)}) < @Year
         UNION ALL
-        SELECT - Total({nameof(TransDto.Sum)}) AS Sum FROM {nameof(TransDto)}s
-        WHERE {nameof(TransDto.Type)} = '{nameof(TransType.Transfer)}' AND {nameof(TransDto.PayeeId)} IS NOT NULL AND strftime('%Y', {nameof(TransDto.Date)}) < @Year
+        SELECT - Total({nameof(Trans.Sum)}) AS Sum FROM {nameof(Trans)}s
+        WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} IS NOT NULL AND strftime('%Y', {nameof(Trans.Date)}) < @Year
         UNION ALL
-        SELECT Total({nameof(TransDto.Sum)})
-        FROM {nameof(TransDto)}s
-        INNER JOIN {nameof(CategoryDto)}s ON {nameof(TransDto.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(TransDto.CategoryId)} == {nameof(CategoryDto)}s.{nameof(CategoryDto.Id)} AND {nameof(CategoryDto)}s.{nameof(CategoryDto.IsIncomeRelevant)} == 0
-        WHERE strftime('%Y', {nameof(TransDto.Date)}) < @Year
+        SELECT Total({nameof(Trans.Sum)})
+        FROM {nameof(Trans)}s
+        INNER JOIN {nameof(Category)}s ON {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.CategoryId)} == {nameof(Category)}s.{nameof(Category.Id)} AND {nameof(Category)}s.{nameof(Category.IsIncomeRelevant)} == 0
+        WHERE strftime('%Y', {nameof(Trans.Date)}) < @Year
         UNION ALL
-        SELECT Total({nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.Sum)})
-        FROM {nameof(SubTransactionDto)}s
-        INNER JOIN {nameof(CategoryDto)}s ON {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.CategoryId)} == {nameof(CategoryDto)}s.{nameof(CategoryDto.Id)} AND {nameof(CategoryDto)}s.{nameof(CategoryDto.IsIncomeRelevant)} == 0
-        INNER JOIN {nameof(TransDto)}s ON {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)}
-        WHERE strftime('%Y', {nameof(TransDto.Date)}) < @Year
+        SELECT Total({nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)})
+        FROM {nameof(SubTransaction)}s
+        INNER JOIN {nameof(Category)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} == {nameof(Category)}s.{nameof(Category.Id)} AND {nameof(Category)}s.{nameof(Category.IsIncomeRelevant)} == 0
+        INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}
+        WHERE strftime('%Y', {nameof(Trans.Date)}) < @Year
         UNION ALL
-        SELECT Total({nameof(TransDto.Sum)}) AS Sum FROM {nameof(TransDto)}s 
-        WHERE {nameof(TransDto.Type)} = '{nameof(TransType.Transaction)}' AND {nameof(TransDto.CategoryId)} IS NULL AND strftime('%Y', {nameof(TransDto.Date)}) < @Year
+        SELECT Total({nameof(Trans.Sum)}) AS Sum FROM {nameof(Trans)}s 
+        WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transaction)}' AND {nameof(Trans.CategoryId)} IS NULL AND strftime('%Y', {nameof(Trans.Date)}) < @Year
         UNION ALL
-        SELECT Total({nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.Sum)}) AS Sum
-        FROM {nameof(SubTransactionDto)}s
-        INNER JOIN {nameof(TransDto)}s ON {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)}
-        WHERE {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.CategoryId)} IS NULL AND strftime('%Y', {nameof(TransDto.Date)}) < @Year
+        SELECT Total({nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)}) AS Sum
+        FROM {nameof(SubTransaction)}s
+        INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}
+        WHERE {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} IS NULL AND strftime('%Y', {nameof(Trans.Date)}) < @Year
     );";
 
         private static string IncomeForCategoryQuery(int offset) =>
             $@"
-    SELECT Total({nameof(TransDto.Sum)})
-    FROM {nameof(TransDto)}s
-    WHERE {nameof(TransDto.CategoryId)} == @CategoryId AND strftime('%Y', {nameof(TransDto.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) == @Year AND strftime('%m', {nameof(TransDto.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) == @Month;";
+    SELECT Total({nameof(Trans.Sum)})
+    FROM {nameof(Trans)}s
+    WHERE {nameof(Trans.CategoryId)} == @CategoryId AND strftime('%Y', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) == @Year AND strftime('%m', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) == @Month;";
 
         private static string IncomeForCategoryUntilMonthQuery(int offset) =>
             $@"
-    SELECT Total({nameof(TransDto.Sum)})
-    FROM {nameof(TransDto)}s
-    WHERE {nameof(TransDto.CategoryId)} == @CategoryId AND strftime('%Y', {nameof(TransDto.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) < @Year;";
+    SELECT Total({nameof(Trans.Sum)})
+    FROM {nameof(Trans)}s
+    WHERE {nameof(Trans.CategoryId)} == @CategoryId AND strftime('%Y', {nameof(Trans.Date)}{(offset == 0 ? "" : $", 'start of month', '+15 days', '{offset:+0;-0;0} months'")}) < @Year;";
 
         private static string DanglingTransferQuery =>
             $@"
-    SELECT (SELECT Total({nameof(TransDto.Sum)}) 
-        FROM {nameof(TransDto)}s 
-        WHERE {nameof(TransDto.Type)} = '{TransType.Transfer}' AND {nameof(TransDto.PayeeId)} IS NULL AND strftime('%Y', {nameof(TransDto.Date)}) == @Year AND strftime('%m', {nameof(TransDto.Date)}) == @Month)
-    - (SELECT Total({nameof(TransDto.Sum)})
-        FROM {nameof(TransDto)}s 
-        WHERE {nameof(TransDto.Type)} = '{TransType.Transfer}' AND {nameof(TransDto.CategoryId)} IS NULL AND strftime('%Y', {nameof(TransDto.Date)}) == @Year AND strftime('%m', {nameof(TransDto.Date)}) == @Month)";
+    SELECT (SELECT Total({nameof(Trans.Sum)}) 
+        FROM {nameof(Trans)}s 
+        WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.PayeeId)} IS NULL AND strftime('%Y', {nameof(Trans.Date)}) == @Year AND strftime('%m', {nameof(Trans.Date)}) == @Month)
+    - (SELECT Total({nameof(Trans.Sum)})
+        FROM {nameof(Trans)}s 
+        WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.CategoryId)} IS NULL AND strftime('%Y', {nameof(Trans.Date)}) == @Year AND strftime('%m', {nameof(Trans.Date)}) == @Month)";
 
         private static string DanglingTransferUntilMonthQuery =>
             $@"
-    SELECT (SELECT Total({nameof(TransDto.Sum)}) 
-        FROM {nameof(TransDto)}s 
-        WHERE {nameof(TransDto.Type)} = '{TransType.Transfer}' AND {nameof(TransDto.PayeeId)} IS NULL AND strftime('%Y', {nameof(TransDto.Date)}) < @Year)
-    - (SELECT Total({nameof(TransDto.Sum)}) 
-        FROM {nameof(TransDto)}s 
-        WHERE {nameof(TransDto.Type)} = '{TransType.Transfer}' AND {nameof(TransDto.CategoryId)} IS NULL AND strftime('%Y', {nameof(TransDto.Date)}) < @Year)";
+    SELECT (SELECT Total({nameof(Trans.Sum)}) 
+        FROM {nameof(Trans)}s 
+        WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.PayeeId)} IS NULL AND strftime('%Y', {nameof(Trans.Date)}) < @Year)
+    - (SELECT Total({nameof(Trans.Sum)}) 
+        FROM {nameof(Trans)}s 
+        WHERE {nameof(Trans.Type)} = '{TransType.Transfer}' AND {nameof(Trans.CategoryId)} IS NULL AND strftime('%Y', {nameof(Trans.Date)}) < @Year)";
 
         private class OutflowResponse
         {
@@ -83,25 +84,25 @@ namespace BFF.Persistence.ORM.Sqlite
         }
 
         private static readonly string BudgetQuery =
-            $@"SELECT {nameof(BudgetEntryDto.Id)}, {nameof(BudgetEntryDto.CategoryId)}, {nameof(BudgetEntryDto.Month)}, {nameof(BudgetEntryDto.Budget)}
-  FROM {nameof(BudgetEntryDto)}s
-  WHERE {nameof(BudgetEntryDto.CategoryId)} = @CategoryId AND strftime('%Y', {nameof(BudgetEntryDto.Month)}) <= @Year
-  ORDER BY {nameof(BudgetEntryDto.Month)};";
+            $@"SELECT {nameof(BudgetEntry.Id)}, {nameof(BudgetEntry.CategoryId)}, {nameof(BudgetEntry.Month)}, {nameof(BudgetEntry.Budget)}
+  FROM {nameof(BudgetEntry)}s
+  WHERE {nameof(BudgetEntry.CategoryId)} = @CategoryId AND strftime('%Y', {nameof(BudgetEntry.Month)}) <= @Year
+  ORDER BY {nameof(BudgetEntry.Month)};";
 
         private static readonly string BudgetThisYearQuery =
-            $@"SELECT {nameof(BudgetEntryDto.Id)}, {nameof(BudgetEntryDto.CategoryId)}, {nameof(BudgetEntryDto.Month)}, {nameof(BudgetEntryDto.Budget)}
-  FROM {nameof(BudgetEntryDto)}s
-  WHERE {nameof(BudgetEntryDto.CategoryId)} = @CategoryId AND strftime('%Y', {nameof(BudgetEntryDto.Month)}) = @Year
-  ORDER BY {nameof(BudgetEntryDto.Month)};";
+            $@"SELECT {nameof(BudgetEntry.Id)}, {nameof(BudgetEntry.CategoryId)}, {nameof(BudgetEntry.Month)}, {nameof(BudgetEntry.Budget)}
+  FROM {nameof(BudgetEntry)}s
+  WHERE {nameof(BudgetEntry.CategoryId)} = @CategoryId AND strftime('%Y', {nameof(BudgetEntry.Month)}) = @Year
+  ORDER BY {nameof(BudgetEntry.Month)};";
 
         private static readonly string OutflowQuery =
             $@"SELECT Date as Month, Total(Sum) as Sum FROM
 (
-  SELECT strftime('%Y', {nameof(TransDto.Date)}) || '-' || strftime('%m', {nameof(TransDto.Date)}) || '-' || '01' AS Date, {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(TransDto.CategoryId)} = @CategoryId AND strftime('%Y', Date) <= @Year
+  SELECT strftime('%Y', {nameof(Trans.Date)}) || '-' || strftime('%m', {nameof(Trans.Date)}) || '-' || '01' AS Date, {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.CategoryId)} = @CategoryId AND strftime('%Y', Date) <= @Year
   UNION ALL
-  SELECT strftime('%Y', {nameof(TransDto.Date)}) || '-' || strftime('%m', {nameof(TransDto.Date)}) || '-'  || '01' AS Date, subs.{nameof(SubTransactionDto.Sum)} FROM
-    (SELECT {nameof(SubTransactionDto.ParentId)}, {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.Sum)} FROM {nameof(SubTransactionDto)}s WHERE {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.CategoryId)} = @CategoryId) subs
-      INNER JOIN {nameof(TransDto)}s ON subs.{nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)}
+  SELECT strftime('%Y', {nameof(Trans.Date)}) || '-' || strftime('%m', {nameof(Trans.Date)}) || '-'  || '01' AS Date, subs.{nameof(SubTransaction.Sum)} FROM
+    (SELECT {nameof(SubTransaction.ParentId)}, {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s WHERE {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} = @CategoryId) subs
+      INNER JOIN {nameof(Trans)}s ON subs.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}
   WHERE strftime('%Y', Date) <= @Year
 )
   GROUP BY Date
@@ -110,11 +111,11 @@ namespace BFF.Persistence.ORM.Sqlite
         private static readonly string OutflowThisYearQuery =
             $@"SELECT Date as Month, Total(Sum) as Sum FROM
 (
-  SELECT strftime('%Y', {nameof(TransDto.Date)}) || '-' || strftime('%m', {nameof(TransDto.Date)}) || '-' || '01' AS Date, {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(TransDto.CategoryId)} = @CategoryId AND strftime('%Y', Date) = @Year
+  SELECT strftime('%Y', {nameof(Trans.Date)}) || '-' || strftime('%m', {nameof(Trans.Date)}) || '-' || '01' AS Date, {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.CategoryId)} = @CategoryId AND strftime('%Y', Date) = @Year
   UNION ALL
-  SELECT strftime('%Y', {nameof(TransDto.Date)}) || '-' || strftime('%m', {nameof(TransDto.Date)}) || '-'  || '01' AS Date, subs.{nameof(SubTransactionDto.Sum)} FROM
-    (SELECT {nameof(SubTransactionDto.ParentId)}, {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.Sum)} FROM {nameof(SubTransactionDto)}s WHERE {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.CategoryId)} = @CategoryId) subs
-      INNER JOIN {nameof(TransDto)}s ON subs.{nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)}
+  SELECT strftime('%Y', {nameof(Trans.Date)}) || '-' || strftime('%m', {nameof(Trans.Date)}) || '-'  || '01' AS Date, subs.{nameof(SubTransaction.Sum)} FROM
+    (SELECT {nameof(SubTransaction.ParentId)}, {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s WHERE {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} = @CategoryId) subs
+      INNER JOIN {nameof(Trans)}s ON subs.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}
   WHERE strftime('%Y', Date) = @Year
 )
   GROUP BY Date
@@ -123,12 +124,12 @@ namespace BFF.Persistence.ORM.Sqlite
         private static readonly string UnassignedTransactionsQuery = $@"
 SELECT Total(Sum) FROM
 (
-    SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} = '{nameof(TransType.Transaction)}' AND {nameof(TransDto.CategoryId)} IS NULL AND strftime('%Y', {nameof(TransDto.Date)}) = @Year AND strftime('%m', {nameof(TransDto.Date)}) = @Month
+    SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} = '{nameof(TransType.Transaction)}' AND {nameof(Trans.CategoryId)} IS NULL AND strftime('%Y', {nameof(Trans.Date)}) = @Year AND strftime('%m', {nameof(Trans.Date)}) = @Month
     UNION ALL
-    SELECT {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.Sum)}
-    FROM {nameof(SubTransactionDto)}s
-    INNER JOIN {nameof(TransDto)}s ON {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)}
-    WHERE {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.CategoryId)} IS NULL AND strftime('%Y', {nameof(TransDto.Date)}) = @Year AND strftime('%m', {nameof(TransDto.Date)}) = @Month
+    SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)}
+    FROM {nameof(SubTransaction)}s
+    INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction)}s.{nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)}
+    WHERE {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} IS NULL AND strftime('%Y', {nameof(Trans.Date)}) = @Year AND strftime('%m', {nameof(Trans.Date)}) = @Month
 )";
 
         private readonly IProvideConnection _provideConnection;
@@ -141,7 +142,7 @@ SELECT Total(Sum) FROM
 
         public async Task<BudgetBlock> FindAsync(int year, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories)
         {
-            IDictionary<DateTime, IList<(BudgetEntryDto Entry, long Outflow, long Balance)>> budgetEntriesPerMonth;
+            IDictionary<DateTime, IList<(IBudgetEntryDto Entry, long Outflow, long Balance)>> budgetEntriesPerMonth;
             long initialNotBudgetedOrOverbudgeted = 0;
             long initialOverspentInPreviousMonth;
             IDictionary<DateTime, long> incomesPerMonth;
@@ -162,14 +163,14 @@ SELECT Total(Sum) FROM
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
-                var budgetEntries = new List<(BudgetEntryDto Entry, long Outflow, long Balance)>();
+                var budgetEntries = new List<(IBudgetEntryDto Entry, long Outflow, long Balance)>();
 
                 IDictionary<long, long> entryBudgetValuePerCategoryId = new Dictionary<long, long>();
                 
                 foreach (var categoryId in categoryIds)
                 {
                     var budgetEntriesTask = connection
-                        .QueryAsync<BudgetEntryDto>(
+                        .QueryAsync<BudgetEntry>(
                             BudgetQuery,
                             new
                             {
@@ -258,7 +259,7 @@ SELECT Total(Sum) FROM
                 foreach (var categoryId in categoryIds)
                 {
                     var budgetEntriesTask = connection
-                        .QueryAsync<BudgetEntryDto>(
+                        .QueryAsync<BudgetEntry>(
                             BudgetThisYearQuery,
                             new
                             {
@@ -294,7 +295,7 @@ SELECT Total(Sum) FROM
                         if (outflowList.ContainsKey(month))
                             outflow = outflowList[month];
                         long currentValue = entryBudgetValue + budgeted + outflow;
-                        budgetEntries.Add((new BudgetEntryDto
+                        budgetEntries.Add((new BudgetEntry
                         {
                             Id = id,
                             CategoryId = categoryId,
@@ -315,8 +316,8 @@ SELECT Total(Sum) FROM
                 budgetEntriesPerMonth = monthRange
                     .Select(m =>
                         (m: m, groupedBudgetEntriesPerMonth.ContainsKey(m)
-                            ? (IList<(BudgetEntryDto Entry, long Outflow, long Balance)>)groupedBudgetEntriesPerMonth[m].ToList()
-                            : new List<(BudgetEntryDto Entry, long Outflow, long Balance)>()))
+                            ? (IList<(IBudgetEntryDto Entry, long Outflow, long Balance)>)groupedBudgetEntriesPerMonth[m].ToList()
+                            : new List<(IBudgetEntryDto Entry, long Outflow, long Balance)>()))
                     .ToDictionary(vt => vt.m, vt => vt.Item2);
 
                 incomesPerMonth = monthRange
@@ -372,7 +373,7 @@ SELECT Total(Sum) FROM
 
     public class BudgetBlock
     {
-        public IDictionary<DateTime, IList<(BudgetEntryDto Entry, long Outflow, long Balance)>> BudgetEntriesPerMonth
+        public IDictionary<DateTime, IList<(IBudgetEntryDto Entry, long Outflow, long Balance)>> BudgetEntriesPerMonth
         {
             get;
             set;

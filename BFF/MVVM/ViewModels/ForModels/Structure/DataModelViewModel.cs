@@ -4,8 +4,9 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.Core;
+using BFF.Core.Helper;
 using BFF.Helper.Extensions;
-using BFF.MVVM.Models.Native.Structure;
+using BFF.Model.Models.Structure;
 using Reactive.Bindings.Extensions;
 
 namespace BFF.MVVM.ViewModels.ForModels.Structure

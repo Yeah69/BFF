@@ -3,9 +3,11 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using BFF.Core;
+using BFF.Core.Helper;
+using BFF.Core.IoC;
 using BFF.Helper;
 using BFF.Helper.Extensions;
-using BFF.MVVM.Models.Native.Structure;
+using BFF.Model.Models.Structure;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -34,7 +36,7 @@ namespace BFF.MVVM.ViewModels.ForModels.Structure
         void NotifyErrorsIfAny();
     }
     
-    public abstract class TransLikeViewModel : DataModelViewModel, ITransLikeViewModel, ITransientViewModel
+    public abstract class TransLikeViewModel : DataModelViewModel, ITransLikeViewModel, ITransient
     {
         private readonly ITransLike _transLike;
         private readonly Subject<Unit> _removeRequestSubject = new Subject<Unit>();

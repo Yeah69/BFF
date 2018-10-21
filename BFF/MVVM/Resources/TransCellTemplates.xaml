@@ -674,7 +674,7 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <iconPacks:PackIconMaterial Foreground="{Binding Color}"
+                                        <iconPacks:PackIconMaterial Foreground="{Binding Color, Converter={x:Static mvvm:Converters.ColorToBrush}}"
                                                                     Kind="{StaticResource FlagIcon}"
                                                                     Style="{StaticResource CellIconMaterial}" />
                                         <TextBlock Margin="5,0,0,0"

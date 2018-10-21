@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Reactive.Linq;
 using BFF.Core;
+using BFF.Core.Extensions;
+using BFF.Core.Helper;
 using BFF.Helper.Extensions;
-using BFF.MVVM.Models.Native;
+using BFF.Model.Models;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using Reactive.Bindings;

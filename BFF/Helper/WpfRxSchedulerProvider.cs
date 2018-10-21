@@ -1,6 +1,7 @@
 ﻿using System.Reactive.Concurrency;
 using System.Windows;
 using BFF.Core;
+using BFF.Core.Helper;
 
 namespace BFF.Helper
 {

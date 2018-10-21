@@ -9,9 +9,10 @@ using System.Reactive.Linq;
 using System.Text;
 using BFF.Core;
 using BFF.Core.Extensions;
+using BFF.Core.Helper;
 using BFF.Helper.Extensions;
+using BFF.Model.Models.Utility;
 using BFF.MVVM.Managers;
-using BFF.MVVM.Models.Native.Utility;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 

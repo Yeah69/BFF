@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Specialized;
 using System.Reactive.Linq;
-using BFF.DB.Dapper.ModelRepositories;
+using BFF.Core.Extensions;
 using BFF.Helper.Extensions;
-using BFF.MVVM.Models.Native;
+using BFF.Model.Models;
+using BFF.Model.Repositories.ModelRepositories;
 using BFF.MVVM.ViewModels.ForModels;
 using MuVaViMo;
 

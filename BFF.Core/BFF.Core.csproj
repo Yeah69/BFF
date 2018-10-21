@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="System.Reactive.Interfaces" Version="4.0.0" />
   </ItemGroup>
 

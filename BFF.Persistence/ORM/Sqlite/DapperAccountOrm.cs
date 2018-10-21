@@ -2,7 +2,8 @@
 using System.Data;
 using System.Threading.Tasks;
 using System.Transactions;
-using BFF.Core;
+using BFF.Core.Helper;
+using BFF.Core.Persistence;
 using BFF.Persistence.Models;
 using BFF.Persistence.ORM.Interfaces;
 using Dapper;
@@ -14,64 +15,64 @@ namespace BFF.Persistence.ORM.Sqlite
         private readonly IProvideConnection _provideConnection;
 
         private string AllAccountsClearedBalanceStatement =>
-            $@"SELECT Total({nameof(TransDto.Sum)}) FROM (
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(TransDto.Cleared)} == 1 UNION ALL 
-            SELECT {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.Sum)} FROM {nameof(SubTransactionDto)}s INNER JOIN {nameof(TransDto)}s ON {nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)} WHERE {nameof(TransDto.Cleared)} == 1 UNION ALL 
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.PayeeId)} IS NULL AND {nameof(TransDto.Cleared)} == 1 UNION ALL
-            SELECT - {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.CategoryId)} IS NULL AND {nameof(TransDto.Cleared)} == 1 UNION ALL
-            SELECT {nameof(AccountDto.StartingBalance)} FROM {nameof(AccountDto)}s);";
+            $@"SELECT Total({nameof(Trans.Sum)}) FROM (
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.Cleared)} == 1 UNION ALL 
+            SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)} WHERE {nameof(Trans.Cleared)} == 1 UNION ALL 
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} IS NULL AND {nameof(Trans.Cleared)} == 1 UNION ALL
+            SELECT - {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} IS NULL AND {nameof(Trans.Cleared)} == 1 UNION ALL
+            SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s);";
 
         private string AllAccountsClearedBalanceUntilNowStatement =>
-            $@"SELECT Total({nameof(TransDto.Sum)}) FROM (
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 1 UNION ALL 
-            SELECT {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.Sum)} FROM {nameof(SubTransactionDto)}s INNER JOIN {nameof(TransDto)}s ON {nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)} WHERE {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 1 UNION ALL 
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.PayeeId)} IS NULL AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 1 UNION ALL
-            SELECT - {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.CategoryId)} IS NULL AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 1 UNION ALL
-            SELECT {nameof(AccountDto.StartingBalance)} FROM {nameof(AccountDto)}s WHERE {nameof(AccountDto.StartingBalance)} <= @DateTimeNow);";
+            $@"SELECT Total({nameof(Trans.Sum)}) FROM (
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1 UNION ALL 
+            SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)} WHERE {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1 UNION ALL 
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} IS NULL AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1 UNION ALL
+            SELECT - {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} IS NULL AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1 UNION ALL
+            SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.StartingBalance)} <= @DateTimeNow);";
 
         private string AccountSpecificClearedBalanceStatement =>
-            $@"SELECT (SELECT Total({nameof(TransDto.Sum)}) FROM (
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(TransDto.AccountId)} = @accountId AND {nameof(TransDto.Cleared)} == 1 UNION ALL 
-            SELECT {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.Sum)} FROM {nameof(SubTransactionDto)}s INNER JOIN {nameof(TransDto)}s ON {nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)} WHERE {nameof(TransDto.AccountId)} = @accountId AND {nameof(TransDto.Cleared)} == 1 UNION ALL
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.CategoryId)} = @accountId AND {nameof(TransDto.Cleared)} == 1 UNION ALL
-            SELECT {nameof(AccountDto.StartingBalance)} FROM {nameof(AccountDto)}s WHERE {nameof(AccountDto.Id)} = @accountId)) 
-            - (SELECT Total({nameof(TransDto.Sum)}) FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.PayeeId)} = @accountId AND {nameof(TransDto.Cleared)} == 1);";
+            $@"SELECT (SELECT Total({nameof(Trans.Sum)}) FROM (
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.AccountId)} = @accountId AND {nameof(Trans.Cleared)} == 1 UNION ALL 
+            SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)} WHERE {nameof(Trans.AccountId)} = @accountId AND {nameof(Trans.Cleared)} == 1 UNION ALL
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} = @accountId AND {nameof(Trans.Cleared)} == 1 UNION ALL
+            SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.Id)} = @accountId)) 
+            - (SELECT Total({nameof(Trans.Sum)}) FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.Cleared)} == 1);";
 
         private string AccountSpecificClearedBalanceUntilNowStatement =>
-            $@"SELECT (SELECT Total({nameof(TransDto.Sum)}) FROM (
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(TransDto.AccountId)} = @accountId AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 1 UNION ALL 
-            SELECT {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.Sum)} FROM {nameof(SubTransactionDto)}s INNER JOIN {nameof(TransDto)}s ON {nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)} WHERE {nameof(TransDto.AccountId)} = @accountId AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 1 UNION ALL
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.CategoryId)} = @accountId AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 1 UNION ALL
-            SELECT {nameof(AccountDto.StartingBalance)} FROM {nameof(AccountDto)}s WHERE {nameof(AccountDto.Id)} = @accountId AND {nameof(AccountDto.StartingBalance)} <= @DateTimeNow)) 
-            - (SELECT Total({nameof(TransDto.Sum)}) FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.PayeeId)} = @accountId AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 1);";
+            $@"SELECT (SELECT Total({nameof(Trans.Sum)}) FROM (
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.AccountId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1 UNION ALL 
+            SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)} WHERE {nameof(Trans.AccountId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1 UNION ALL
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1 UNION ALL
+            SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.Id)} = @accountId AND {nameof(Account.StartingBalance)} <= @DateTimeNow)) 
+            - (SELECT Total({nameof(Trans.Sum)}) FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1);";
 
         private string AllAccountsUnclearedBalanceStatement =>
-            $@"SELECT Total({nameof(TransDto.Sum)}) FROM (
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(TransDto.Cleared)} == 0 UNION ALL 
-            SELECT {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.Sum)} FROM {nameof(SubTransactionDto)}s INNER JOIN {nameof(TransDto)}s ON {nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)} WHERE {nameof(TransDto.Cleared)} == 0 UNION ALL 
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.PayeeId)} IS NULL AND {nameof(TransDto.Cleared)} == 0 UNION ALL
-            SELECT - {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.CategoryId)} IS NULL AND {nameof(TransDto.Cleared)} == 0);";
+            $@"SELECT Total({nameof(Trans.Sum)}) FROM (
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.Cleared)} == 0 UNION ALL 
+            SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)} WHERE {nameof(Trans.Cleared)} == 0 UNION ALL 
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} IS NULL AND {nameof(Trans.Cleared)} == 0 UNION ALL
+            SELECT - {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} IS NULL AND {nameof(Trans.Cleared)} == 0);";
 
         private string AllAccountsUnclearedBalanceUntilNowStatement =>
-            $@"SELECT Total({nameof(TransDto.Sum)}) FROM (
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 0 UNION ALL 
-            SELECT {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.Sum)} FROM {nameof(SubTransactionDto)}s INNER JOIN {nameof(TransDto)}s ON {nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)} WHERE {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 0 UNION ALL 
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.PayeeId)} IS NULL AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 0 UNION ALL
-            SELECT - {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.CategoryId)} IS NULL AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 0);";
+            $@"SELECT Total({nameof(Trans.Sum)}) FROM (
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 0 UNION ALL 
+            SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)} WHERE {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 0 UNION ALL 
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} IS NULL AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 0 UNION ALL
+            SELECT - {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} IS NULL AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 0);";
 
         private string AccountSpecificUnclearedBalanceStatement =>
-            $@"SELECT (SELECT Total({nameof(TransDto.Sum)}) FROM (
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(TransDto.AccountId)} = @accountId AND {nameof(TransDto.Cleared)} == 0 UNION ALL 
-            SELECT {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.Sum)} FROM {nameof(SubTransactionDto)}s INNER JOIN {nameof(TransDto)}s ON {nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)} WHERE {nameof(TransDto.AccountId)} = @accountId AND {nameof(TransDto.Cleared)} == 0 UNION ALL
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.CategoryId)} = @accountId AND {nameof(TransDto.Cleared)} == 0)) 
-            - (SELECT Total({nameof(TransDto.Sum)}) FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.PayeeId)} = @accountId AND {nameof(TransDto.Cleared)} == 0);";
+            $@"SELECT (SELECT Total({nameof(Trans.Sum)}) FROM (
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.AccountId)} = @accountId AND {nameof(Trans.Cleared)} == 0 UNION ALL 
+            SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)} WHERE {nameof(Trans.AccountId)} = @accountId AND {nameof(Trans.Cleared)} == 0 UNION ALL
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} = @accountId AND {nameof(Trans.Cleared)} == 0)) 
+            - (SELECT Total({nameof(Trans.Sum)}) FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.Cleared)} == 0);";
 
         private string AccountSpecificUnclearedBalanceUntilNowStatement =>
-            $@"SELECT (SELECT Total({nameof(TransDto.Sum)}) FROM (
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(TransDto.AccountId)} = @accountId AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 0 UNION ALL 
-            SELECT {nameof(SubTransactionDto)}s.{nameof(SubTransactionDto.Sum)} FROM {nameof(SubTransactionDto)}s INNER JOIN {nameof(TransDto)}s ON {nameof(SubTransactionDto.ParentId)} = {nameof(TransDto)}s.{nameof(TransDto.Id)} WHERE {nameof(TransDto.AccountId)} = @accountId AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 0 UNION ALL
-            SELECT {nameof(TransDto.Sum)} FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.CategoryId)} = @accountId AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 0)) 
-            - (SELECT Total({nameof(TransDto.Sum)}) FROM {nameof(TransDto)}s WHERE {nameof(TransDto.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(TransDto.PayeeId)} = @accountId AND {nameof(TransDto.Date)} <= @DateTimeNow AND {nameof(TransDto.Cleared)} == 0);";
+            $@"SELECT (SELECT Total({nameof(Trans.Sum)}) FROM (
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.AccountId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 0 UNION ALL 
+            SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)} WHERE {nameof(Trans.AccountId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 0 UNION ALL
+            SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 0)) 
+            - (SELECT Total({nameof(Trans.Sum)}) FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 0);";
 
         public DapperAccountOrm(IProvideConnection provideConnection)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Disposables;
+using BFF.Core.Extensions;
 using BFF.Helper.Extensions;
 using BFF.MVVM.Services;
 using BFF.Properties;

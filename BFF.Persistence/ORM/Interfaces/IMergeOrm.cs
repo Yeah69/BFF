@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using BFF.Core.IoCMarkerInterfaces;
+using BFF.Core.IoC;
 using BFF.Persistence.Models;
 
 namespace BFF.Persistence.ORM.Interfaces
 {
     public interface IMergeOrm : IOncePerBackend
     {
-        Task MergePayeeAsync(PayeeDto from, PayeeDto to);
-        Task MergeFlagAsync(FlagDto from, FlagDto to);
-        Task MergeCategoryAsync(CategoryDto from, CategoryDto to);
+        Task MergePayeeAsync(IPayeeDto from, IPayeeDto to);
+        Task MergeFlagAsync(IFlagDto from, IFlagDto to);
+        Task MergeCategoryAsync(ICategoryDto from, ICategoryDto to);
     }
 }

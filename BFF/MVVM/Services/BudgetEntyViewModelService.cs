@@ -1,5 +1,5 @@
 ﻿using System;
-using BFF.MVVM.Models.Native;
+using BFF.Model.Models;
 using BFF.MVVM.ViewModels.ForModels;
 
 namespace BFF.MVVM.Services

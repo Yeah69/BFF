@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Reactive.Linq;
 using BFF.Core;
+using BFF.Core.Helper;
 using BFF.Helper;
 using BFF.Helper.Extensions;
-using BFF.MVVM.Models.Native.Structure;
+using BFF.Model.Models.Structure;
 using BFF.MVVM.Services;
 using MuVaViMo;
 using Reactive.Bindings.Extensions;

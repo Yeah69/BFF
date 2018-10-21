@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Drawing;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
-using System.Windows.Media;
 using BFF.Core;
+using BFF.Core.Extensions;
+using BFF.Core.Helper;
 using BFF.Helper.Extensions;
-using BFF.MVVM.Models.Native;
+using BFF.Model.Models;
 using BFF.MVVM.Services;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using MoreLinq;
@@ -15,7 +17,7 @@ namespace BFF.MVVM.ViewModels.ForModels
 {
     public interface IFlagViewModel : ICommonPropertyViewModel
     {
-        SolidColorBrush Color { get; set; }
+        Color Color { get; set; }
         void MergeTo(IFlagViewModel target);
         bool CanMergeTo(IFlagViewModel target);
     }
@@ -71,10 +73,10 @@ namespace BFF.MVVM.ViewModels.ForModels
             return source.Task;
         }
 
-        public SolidColorBrush Color
+        public Color Color
         {
-            get => new SolidColorBrush(_flag.Color);
-            set => _flag.Color = value.Color;
+            get => _flag.Color;
+            set => _flag.Color = value;
         }
 
         public void MergeTo(IFlagViewModel target)

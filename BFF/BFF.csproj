@@ -93,35 +93,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AutoFacBootstrapper.cs" />
-    <Compile Include="BackendContext.cs" />
-    <Compile Include="DB\Dapper\BudgetMonthRepository.cs" />
-    <Compile Include="DB\Dapper\CachingRepositoryBase.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\AccountRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\BudgetEntryRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\CategoryBaseRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\CategoryRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\FlagRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\IncomeCategoryRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\ParentTransactionRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\SubTransactionRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\DbSettingRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\PayeeRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\TransRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\TransactionRepository.cs" />
-    <Compile Include="DB\Dapper\ModelRepositories\TransferRepository.cs" />
-    <Compile Include="DB\Dapper\ObservableRepositoryBase.cs" />
-    <Compile Include="DB\Dapper\RepositoryBase.cs" />
-    <Compile Include="DB\Dapper\WriteOnlyRepositoryBase.cs" />
-    <Compile Include="DB\IRepository.cs" />
-    <Compile Include="DB\IVirtualizedRefresh.cs" />
-    <Compile Include="EmptyContext.cs" />
+    <Compile Include="Contexts\BackendContext.cs" />
+    <Compile Include="Helper\BffSettings.cs" />
+    <Compile Include="MVVM\IVirtualizedRefresh.cs" />
+    <Compile Include="Contexts\EmptyContext.cs" />
     <Compile Include="Helper\ConvertFromTransBaseToTransLikeViewModel.cs" />
     <Compile Include="Helper\Extensions\BooleanExtensions.cs" />
     <Compile Include="Helper\Extensions\DataGridRowExtensions.cs" />
     <Compile Include="Helper\Extensions\DependencyObjectExtensions.cs" />
-    <Compile Include="Helper\Extensions\DisposableExtensions.cs" />
-    <Compile Include="Helper\Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Helper\Extensions\GenericExtensions.cs" />
     <Compile Include="Helper\Extensions\INotifyPropertyChangedExtensions.cs" />
     <Compile Include="Helper\Extensions\LongExtensions.cs" />
     <Compile Include="Helper\Extensions\NotifyCollectionChangedExtensions.cs" />
@@ -131,11 +110,8 @@
     <Compile Include="Helper\Extensions\SchedulerExtensions.cs" />
     <Compile Include="Helper\Extensions\StringExtensions.cs" />
     <Compile Include="Helper\Extensions\VisualExtensions.cs" />
-    <Compile Include="Helper\Import\IImportable.cs" />
-    <Compile Include="Helper\Import\YnabCsvImport.cs" />
     <Compile Include="Helper\Extensions\ReactivePropertyExtensions.cs" />
     <Compile Include="Helper\WpfRxSchedulerProvider.cs" />
-    <Compile Include="Helper\LastSetDate.cs" />
     <Compile Include="Helper\Sign.cs" />
     <Compile Include="MVVM\AttachedBehaviors\InputBindingsManager.cs" />
     <Compile Include="MVVM\AttachedBehaviors\PopupCommands.cs" />
@@ -151,35 +127,14 @@
     <Compile Include="MVVM\DropHandler\MergingIncomeCategoryViewModelsDropHandler.cs" />
     <Compile Include="MVVM\Managers\AccountModuleColumnManager.cs" />
     <Compile Include="MVVM\Managers\BffChildWindowManager.cs" />
-    <Compile Include="MVVM\Managers\CsvBankStatementProfileManager.cs" />
     <Compile Include="MVVM\Managers\CultureManager.cs" />
+    <Compile Include="MVVM\Managers\Localizer.cs" />
     <Compile Include="MVVM\Managers\ParentTransactionFlyoutManager.cs" />
     <Compile Include="MVVM\Managers\TransTransformingManager.cs" />
-    <Compile Include="MVVM\Models\Conversion\YNAB\BudgetEntry.cs" />
-    <Compile Include="MVVM\Models\Conversion\YNAB\Transaction.cs" />
-    <Compile Include="MVVM\Models\Native\BudgetEntry.cs" />
-    <Compile Include="MVVM\Models\Native\BudgetMonth.cs" />
-    <Compile Include="MVVM\Models\Native\Category.cs" />
     <Compile Include="MVVM\RxRelayCommand.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Utility\BudgetMonthMenuTitles.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Utility\LazyElementsViewModelBase.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Utility\CsvBankStatementImportItemViewModel.cs" />
-    <Compile Include="MVVM\Models\Native\Utility\CsvBankStatementImportProfile.cs" />
-    <Compile Include="MVVM\Models\Native\Flag.cs" />
-    <Compile Include="MVVM\Models\Native\IncomeCategory.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\IHaveBaseCategory.cs" />
-    <Compile Include="MVVM\Models\Native\SummaryAccount.cs" />
-    <Compile Include="MVVM\Models\Native\Account.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\CategoryBase.cs" />
-    <Compile Include="MVVM\Models\Native\DbSetting.cs" />
-    <Compile Include="MVVM\Models\Native\Payee.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\CommonProperty.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\DataModel.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\TransLike.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\TransBase.cs" />
-    <Compile Include="MVVM\Models\Native\Structure\TransactionBase.cs" />
-    <Compile Include="MVVM\Models\Native\SubTransaction.cs" />
-    <Compile Include="MVVM\Models\Native\ParentTransaction.cs" />
     <Compile Include="MVVM\Resources\TransCellTemplates.xaml.cs">
       <DependentUpon>TransCellTemplates.xaml</DependentUpon>
     </Compile>
@@ -218,8 +173,6 @@
     <Compile Include="MVVM\ViewModels\ForModels\Structure\TransactionBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\SubTransactionViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TitLikeViewModelPlaceholder.cs" />
-    <Compile Include="MVVM\Models\Native\Transfer.cs" />
-    <Compile Include="MVVM\Models\Native\Transaction.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Structure\AccountBaseViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\SummaryAccountViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\AccountViewModel.cs" />
@@ -228,10 +181,9 @@
     <Compile Include="MVVM\ViewModels\ForModels\TransactionViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\TransferViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ForModels\Utility\CsvBankStatementImportProfileViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ImportDialogViewModel.cs" />
+    <Compile Include="MVVM\ViewModels\Ynab4ImportDialogViewModel.cs" />
     <Compile Include="MVVM\ViewModels\EmptyContentViewModel.cs" />
     <Compile Include="MVVM\ViewModels\AccountTabsViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ITransientViewModel.cs" />
     <Compile Include="MVVM\ViewModels\NewFlagViewModel.cs" />
     <Compile Include="MVVM\ViewModels\SumEditViewModel.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelBase.cs" />
@@ -281,7 +233,6 @@
     <Compile Include="MVVM\Views\AccountView.xaml.cs">
       <DependentUpon>AccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\ObservableObject.cs" />
     <Compile Include="MVVM\Views\NewAccountView.xaml.cs">
       <DependentUpon>NewAccountView.xaml</DependentUpon>
     </Compile>
@@ -297,7 +248,7 @@
     <Compile Include="MVVM\Views\TransDataGrid.xaml.cs">
       <DependentUpon>TransDataGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SqLiteBackendContext.cs" />
+    <Compile Include="Contexts\LoadedProjectContext.cs" />
     <Page Include="MVVM\Resources\TransCellTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -543,7 +494,7 @@
       <Version>4.5.5</Version>
     </PackageReference>
     <PackageReference Include="ReactiveProperty">
-      <Version>4.2.2</Version>
+      <Version>5.3.0</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_sqlcipher">
       <Version>1.1.11</Version>
@@ -698,9 +649,9 @@
       <Project>{8077914f-0322-42dc-a08d-745c40c90059}</Project>
       <Name>BFF.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BFF.Persistence\BFF.Persistence.csproj">
-      <Project>{d184da4a-4a83-4cfd-8210-6b206f93d3b7}</Project>
-      <Name>BFF.Persistence</Name>
+    <ProjectReference Include="..\BFF.Model\BFF.Model.csproj">
+      <Project>{1d45aacf-3966-407a-a5a2-79c37046d502}</Project>
+      <Name>BFF.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

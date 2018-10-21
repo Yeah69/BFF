@@ -21,7 +21,7 @@ namespace BFF
             Logger.Trace("Initializing App");
             InitializeComponent();
 
-            MVVM.Views.MainWindow mainWindow = AutoFacBootstrapper.Resolve<MVVM.Views.MainWindow>();
+            MVVM.Views.MainWindow mainWindow = AutofacBootstrapper.Resolve<MVVM.Views.MainWindow>();
             mainWindow.Show();
         }
 

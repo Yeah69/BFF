@@ -5,18 +5,18 @@ namespace BFF.Persistence.Import
 {
     public struct ImportLists
     {
-        public IList<AccountDto> Accounts;
-        public IList<PayeeDto> Payees;
+        public IList<IAccountDto> Accounts;
+        public IList<IPayeeDto> Payees;
         public IList<CategoryImportWrapper> Categories;
-        public IList<FlagDto> Flags;
+        public IList<IFlagDto> Flags;
 
-        public IList<TransDto> Transactions;
-        public IList<TransDto> Transfers;
+        public IList<ITransDto> Transactions;
+        public IList<ITransDto> Transfers;
 
-        public IList<TransDto> ParentTransactions;
+        public IList<ITransDto> ParentTransactions;
 
-        public IList<SubTransactionDto> SubTransactions;
+        public IList<ISubTransactionDto> SubTransactions;
 
-        public IList<BudgetEntryDto> BudgetEntries;
+        public IList<IBudgetEntryDto> BudgetEntries;
     }
 }

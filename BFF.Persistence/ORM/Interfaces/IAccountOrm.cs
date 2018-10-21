@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using BFF.Core.IoCMarkerInterfaces;
+using BFF.Core.IoC;
 
 namespace BFF.Persistence.ORM.Interfaces
 {

@@ -1,31 +1,25 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using Autofac;
-using BFF.Core;
-using BFF.Core.IoCMarkerInterfaces;
-using BFF.DB;
+using BFF.Core.Helper;
+using BFF.Core.IoC;
 using BFF.Helper;
-using BFF.MVVM.Models.Native;
+using BFF.Model.Models;
 using BFF.MVVM.ViewModels;
 using BFF.MVVM.ViewModels.ForModels;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using BFF.MVVM.Views;
-using BFF.Persistence;
 using MahApps.Metro.Controls.Dialogs;
-using Transaction = BFF.MVVM.Models.Native.Transaction;
 
 namespace BFF
 {
-    public static class AutoFacBootstrapper
+    public static class AutofacBootstrapper
     {
         private static ILifetimeScope _rootScope;
 
-        static AutoFacBootstrapper()
+        static AutofacBootstrapper()
         {
-            // ReSharper disable once ObjectCreationAsStatement A hack in order to load the BFF.Backend-assembly into the runtime
-            new HACK();
             Start();
         }
 
@@ -37,7 +31,10 @@ namespace BFF
             }
 
             var builder = new ContainerBuilder();
-            var assemblies = new[] { Assembly.GetExecutingAssembly(), AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name.StartsWith($"{nameof(BFF)}.{nameof(Persistence)}")) };
+            var assemblies = new[]
+            {
+                Assembly.GetExecutingAssembly()
+            };
 
             builder.RegisterAssemblyTypes(assemblies)
                 .AsImplementedInterfaces();
@@ -72,7 +69,7 @@ namespace BFF
             builder.RegisterAssemblyTypes(assemblies)
                 .Where(t =>
                 {
-                    var isAssignable = typeof(ITransientViewModel).IsAssignableFrom(t);
+                    var isAssignable = typeof(ITransient).IsAssignableFrom(t);
                     if (isAssignable)
                     {
                         Debug.WriteLine("Transient view model - " + t.Name);
@@ -85,34 +82,12 @@ namespace BFF
 
             builder.RegisterType<MainWindowViewModel>().As<IMainWindowViewModel>().SingleInstance();
 
-            builder.Register<Func<ITransaction>>(cc =>
-            {
-                var repository = cc.Resolve<IRepository<ITransaction>>();
-                var rxSchedulerProvider = cc.Resolve<IRxSchedulerProvider>();
-                var lastSetDate = cc.Resolve<ILastSetDate>();
-                return () => new Transaction(
-                    repository, 
-                    rxSchedulerProvider,
-                    lastSetDate.Date);
-            }).As<Func<ITransaction>>();
-
             builder.Register<Func<IAccountBaseViewModel, ITransactionViewModel>>(cc =>
             {
                 var factory = cc.Resolve<Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel>>();
                 var transaction = cc.Resolve<Func<ITransaction>>();
                 return abvm => factory(transaction(), abvm);
             }).As<Func<IAccountBaseViewModel, ITransactionViewModel>>();
-
-            builder.Register<Func<ITransfer>>(cc =>
-            {
-                var repository = cc.Resolve<IRepository<ITransfer>>();
-                var rxSchedulerProvider = cc.Resolve<IRxSchedulerProvider>();
-                var lastSetDate = cc.Resolve<ILastSetDate>();
-                return () => new Transfer(
-                    repository,
-                    rxSchedulerProvider,
-                    lastSetDate.Date);
-            }).As<Func<ITransfer>>();
 
             builder.Register<Func<IAccountBaseViewModel, ITransferViewModel>>(cc =>
             {
@@ -121,18 +96,6 @@ namespace BFF
                 return abvm => factory(transfer(), abvm);
             }).As<Func<IAccountBaseViewModel, ITransferViewModel>>();
 
-            builder.Register<Func<IParentTransaction>>(cc =>
-            {
-                var repository = cc.Resolve<IRepository<IParentTransaction>>();
-                var rxSchedulerProvider = cc.Resolve<IRxSchedulerProvider>();
-                var lastSetDate = cc.Resolve<ILastSetDate>();
-                return () => new ParentTransaction(
-                    repository,
-                    rxSchedulerProvider,
-                    Enumerable.Empty<ISubTransaction>(),
-                    lastSetDate.Date);
-            }).As<Func<IParentTransaction>>();
-
             builder.Register<Func<IAccountBaseViewModel, IParentTransactionViewModel>>(cc =>
             {
                 var factory = cc.Resolve<Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel>>();
@@ -140,31 +103,15 @@ namespace BFF
                 return abvm => factory(parentTransaction(), abvm);
             }).As<Func<IAccountBaseViewModel, IParentTransactionViewModel>>();
 
-            builder.Register<Func<IAccount>>(cc =>
-            {
-                var repository = cc.Resolve<IRepository<IAccount>>();
-                var rxSchedulerProvider = cc.Resolve<IRxSchedulerProvider>();
-                var lastSetDate = cc.Resolve<ILastSetDate>();
-                return () => new Account(
-                    repository, 
-                    rxSchedulerProvider,
-                    lastSetDate.Date);
-            }).As<Func<IAccount>>();
-
-            builder.Register<Func<ISubTransaction>>(cc =>
-            {
-                var repository = cc.Resolve<IRepository<ISubTransaction>>();
-                var rxSchedulerProvider = cc.Resolve<IRxSchedulerProvider>();
-                return () => new SubTransaction(
-                    repository,
-                    rxSchedulerProvider);
-            }).As<Func<ISubTransaction>>();
-
             builder.Register(cc => DialogCoordinator.Instance).As<IDialogCoordinator>();
 
             builder.RegisterType<WpfRxSchedulerProvider>().As<IRxSchedulerProvider>().SingleInstance();
 
             builder.RegisterType<MainWindow>().AsSelf().SingleInstance();
+
+            builder.RegisterModule(new Core.AutofacModule());
+
+            builder.RegisterModule(new Model.AutofacModule());
 
             _rootScope = builder.Build();
         }

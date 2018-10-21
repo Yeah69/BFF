@@ -4,11 +4,11 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using BFF.Core.IoCMarkerInterfaces;
-using BFF.DB;
-using BFF.DB.Dapper;
+using BFF.Core.Extensions;
+using BFF.Core.IoC;
 using BFF.Helper.Extensions;
-using BFF.MVVM.Models.Native.Structure;
+using BFF.Model.Models.Structure;
+using BFF.Model.Repositories;
 using BFF.MVVM.ViewModels.ForModels.Structure;
 using MuVaViMo;
 
