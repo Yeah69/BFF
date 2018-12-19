@@ -93,203 +93,134 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AutoFacBootstrapper.cs" />
-    <Compile Include="Contexts\BackendContext.cs" />
+    <Compile Include="Helper\BffSaveFileDialog.cs" />
+    <Compile Include="Helper\BffOpenFileDialog.cs" />
     <Compile Include="Helper\BffSettings.cs" />
-    <Compile Include="MVVM\IVirtualizedRefresh.cs" />
-    <Compile Include="Contexts\EmptyContext.cs" />
-    <Compile Include="Helper\ConvertFromTransBaseToTransLikeViewModel.cs" />
-    <Compile Include="Helper\Extensions\BooleanExtensions.cs" />
-    <Compile Include="Helper\Extensions\DataGridRowExtensions.cs" />
-    <Compile Include="Helper\Extensions\DependencyObjectExtensions.cs" />
-    <Compile Include="Helper\Extensions\INotifyPropertyChangedExtensions.cs" />
-    <Compile Include="Helper\Extensions\LongExtensions.cs" />
-    <Compile Include="Helper\Extensions\NotifyCollectionChangedExtensions.cs" />
-    <Compile Include="Helper\Extensions\ObjectExtensions.cs" />
-    <Compile Include="Helper\Extensions\ObservableExtensions.cs" />
-    <Compile Include="Helper\Extensions\PointExtensions.cs" />
-    <Compile Include="Helper\Extensions\SchedulerExtensions.cs" />
-    <Compile Include="Helper\Extensions\StringExtensions.cs" />
-    <Compile Include="Helper\Extensions\VisualExtensions.cs" />
-    <Compile Include="Helper\Extensions\ReactivePropertyExtensions.cs" />
+    <Compile Include="Helper\BffSystemInformation.cs" />
+    <Compile Include="Helper\SetupLocalizationFramework.cs" />
+    <Compile Include="Extensions\DataGridRowExtensions.cs" />
+    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Extensions\PointExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\VisualExtensions.cs" />
     <Compile Include="Helper\WpfRxSchedulerProvider.cs" />
-    <Compile Include="Helper\Sign.cs" />
-    <Compile Include="MVVM\AttachedBehaviors\InputBindingsManager.cs" />
-    <Compile Include="MVVM\AttachedBehaviors\PopupCommands.cs" />
-    <Compile Include="MVVM\AttachedBehaviors\ToolTipCommands.cs" />
-    <Compile Include="MVVM\AttachedBehaviors\FrameworkElementClickBehavior.cs" />
-    <Compile Include="MVVM\AttachedBehaviors\ScrollViewerSync.cs" />
-    <Compile Include="MVVM\BffDialogCoordinator.cs" />
-    <Compile Include="MVVM\BindingProxy.cs" />
-    <Compile Include="MVVM\Converters.cs" />
-    <Compile Include="MVVM\DropHandler\MergingFlagViewModelsDropHandler.cs" />
-    <Compile Include="MVVM\DropHandler\MergingPayeeViewModelsDropHandler.cs" />
-    <Compile Include="MVVM\DropHandler\MergingCategoryViewModelsDropHandler.cs" />
-    <Compile Include="MVVM\DropHandler\MergingIncomeCategoryViewModelsDropHandler.cs" />
-    <Compile Include="MVVM\Managers\AccountModuleColumnManager.cs" />
-    <Compile Include="MVVM\Managers\BffChildWindowManager.cs" />
-    <Compile Include="MVVM\Managers\CultureManager.cs" />
-    <Compile Include="MVVM\Managers\Localizer.cs" />
-    <Compile Include="MVVM\Managers\ParentTransactionFlyoutManager.cs" />
-    <Compile Include="MVVM\Managers\TransTransformingManager.cs" />
-    <Compile Include="MVVM\RxRelayCommand.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Utility\BudgetMonthMenuTitles.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Utility\LazyElementsViewModelBase.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Utility\CsvBankStatementImportItemViewModel.cs" />
-    <Compile Include="MVVM\Resources\TransCellTemplates.xaml.cs">
+    <Compile Include="AttachedBehaviors\InputBindingsManager.cs" />
+    <Compile Include="AttachedBehaviors\PopupCommands.cs" />
+    <Compile Include="AttachedBehaviors\ToolTipCommands.cs" />
+    <Compile Include="AttachedBehaviors\FrameworkElementClickBehavior.cs" />
+    <Compile Include="AttachedBehaviors\ScrollViewerSync.cs" />
+    <Compile Include="Helper\BffDialogCoordinator.cs" />
+    <Compile Include="Helper\BindingProxy.cs" />
+    <Compile Include="Helper\Converters.cs" />
+    <Compile Include="DropHandler\MergingFlagViewModelsDropHandler.cs" />
+    <Compile Include="DropHandler\MergingPayeeViewModelsDropHandler.cs" />
+    <Compile Include="DropHandler\MergingCategoryViewModelsDropHandler.cs" />
+    <Compile Include="DropHandler\MergingIncomeCategoryViewModelsDropHandler.cs" />
+    <Compile Include="Managers\BffChildWindowManager.cs" />
+    <Compile Include="Managers\Localizer.cs" />
+    <Compile Include="Resources\TransCellTemplates.xaml.cs">
       <DependentUpon>TransCellTemplates.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Rules.cs" />
-    <Compile Include="MVVM\Services\AccountViewModelService.cs" />
-    <Compile Include="MVVM\Services\BudgetEntyViewModelService.cs" />
-    <Compile Include="MVVM\Services\CategoryBaseViewModelService.cs" />
-    <Compile Include="MVVM\Services\CategoryViewModelService.cs" />
-    <Compile Include="MVVM\Services\IncomeCategoryViewModelService.cs" />
-    <Compile Include="MVVM\Services\ModelToViewModelServiceBase.cs" />
-    <Compile Include="MVVM\Services\FlagViewModelService.cs" />
-    <Compile Include="MVVM\Services\PayeeViewModelService.cs" />
-    <Compile Include="MVVM\Services\CommonPropertyViewModelServiceBase.cs" />
-    <Compile Include="MVVM\UserControls\UniformList.xaml.cs">
+    <Compile Include="Helper\Rules.cs" />
+    <Compile Include="UserControls\UniformList.xaml.cs">
       <DependentUpon>UniformList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\ViewModels\BudgetMonthViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\BudgetOverviewViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\Dialogs\ImportCsvBankStatementViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\EditFlagsViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\EditPayeesViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\EditCategoriesViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\EditAccountsViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\CategoryBaseViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\BudgetEntryViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\CategoryViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\FlagViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\IncomeCategoryViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\CommonPropertyViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\PayeeViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\DataModelViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\IHaveFlagViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\IHavePayeeViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\IHaveCategoryViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\TransBaseViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\TransactionBaseViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\SubTransactionViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\TitLikeViewModelPlaceholder.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\AccountBaseViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\SummaryAccountViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\AccountViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\ParentTransactionViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Structure\TransLikeViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\TransactionViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\TransferViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ForModels\Utility\CsvBankStatementImportProfileViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\Ynab4ImportDialogViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\EmptyContentViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\AccountTabsViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\NewFlagViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\SumEditViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\ViewModelBase.cs" />
-    <Compile Include="MVVM\ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\NewCategoryViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\NewAccountViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\NewPayeeViewModel.cs" />
-    <Compile Include="MVVM\ViewModels\SessionViewModelBase.cs" />
-    <Compile Include="MVVM\AttachedBehaviors\AdditionalTabItemsBehavior.cs" />
-    <Compile Include="MVVM\Messages.cs" />
-    <Compile Include="MVVM\Views\AccountTabsView.xaml.cs">
+    <Compile Include="AttachedBehaviors\AdditionalTabItemsBehavior.cs" />
+    <Compile Include="Views\AccountTabsView.xaml.cs">
       <DependentUpon>AccountTabsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\AlertSymbol.xaml.cs">
+    <Compile Include="Views\AlertSymbol.xaml.cs">
       <DependentUpon>AlertSymbol.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\ParentTransactionView.xaml.cs">
+    <Compile Include="Views\ParentTransactionView.xaml.cs">
       <DependentUpon>ParentTransactionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\StatusCheckMark.xaml.cs">
+    <Compile Include="Views\StatusCheckMark.xaml.cs">
       <DependentUpon>StatusCheckMark.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\BudgetOverviewView.xaml.cs">
+    <Compile Include="Views\BudgetOverviewView.xaml.cs">
       <DependentUpon>BudgetOverviewView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\ColorPickerView.xaml.cs">
+    <Compile Include="Views\ColorPickerView.xaml.cs">
       <DependentUpon>ColorPickerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\Dialogs\ImportCsvBankStatementView.xaml.cs">
+    <Compile Include="Views\Dialogs\ImportCsvBankStatementView.xaml.cs">
       <DependentUpon>ImportCsvBankStatementView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\EditAccountsView.xaml.cs">
+    <Compile Include="Views\EditAccountsView.xaml.cs">
       <DependentUpon>EditAccountsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\EditCategoriesView.xaml.cs">
+    <Compile Include="Views\EditCategoriesView.xaml.cs">
       <DependentUpon>EditCategoriesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\EditFlagsView.xaml.cs">
+    <Compile Include="Views\EditFlagsView.xaml.cs">
       <DependentUpon>EditFlagsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\EditPayeesView.xaml.cs">
+    <Compile Include="Views\EditPayeesView.xaml.cs">
       <DependentUpon>EditPayeesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\ImportDialog.xaml.cs">
+    <Compile Include="Views\ImportDialog.xaml.cs">
       <DependentUpon>ImportDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\AccountView.xaml.cs">
+    <Compile Include="Views\AccountView.xaml.cs">
       <DependentUpon>AccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\NewAccountView.xaml.cs">
+    <Compile Include="Views\NewAccountView.xaml.cs">
       <DependentUpon>NewAccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\NewCategoryView.xaml.cs">
+    <Compile Include="Views\NewCategoryView.xaml.cs">
       <DependentUpon>NewCategoryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\NewFlagView.xaml.cs">
+    <Compile Include="Views\NewFlagView.xaml.cs">
       <DependentUpon>NewFlagView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\NewPayeeView.xaml.cs">
+    <Compile Include="Views\NewPayeeView.xaml.cs">
       <DependentUpon>NewPayeeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\TransDataGrid.xaml.cs">
+    <Compile Include="Views\TransDataGrid.xaml.cs">
       <DependentUpon>TransDataGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Contexts\LoadedProjectContext.cs" />
-    <Page Include="MVVM\Resources\TransCellTemplates.xaml">
+    <Page Include="Resources\TransCellTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Resources\TransDataGridResources.xaml">
+    <Page Include="Resources\TransDataGridResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\AlertSymbol.xaml">
+    <Page Include="Views\AlertSymbol.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\ParentTransactionView.xaml">
+    <Page Include="Views\ParentTransactionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\StatusCheckMark.xaml">
+    <Page Include="Views\StatusCheckMark.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\ColorPickerView.xaml">
+    <Page Include="Views\ColorPickerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\Dialogs\ImportCsvBankStatementView.xaml">
+    <Page Include="Views\Dialogs\ImportCsvBankStatementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\EditCategoriesView.xaml">
+    <Page Include="Views\EditCategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\EditFlagsView.xaml">
+    <Page Include="Views\EditFlagsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\EditPayeesView.xaml">
+    <Page Include="Views\EditPayeesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -297,59 +228,59 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MVVM\Views\MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MVVM\Resources\BFF_ModifiedMAMCheckBox.xaml">
+    <Page Include="Resources\BFF_ModifiedMAMCheckBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MVVM\Resources\HamburgerMenu.xaml">
+    <Page Include="Resources\HamburgerMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\UserControls\UniformList.xaml">
+    <Page Include="UserControls\UniformList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\AccountTabsView.xaml">
+    <Page Include="Views\AccountTabsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\BudgetOverviewView.xaml">
+    <Page Include="Views\BudgetOverviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\EditAccountsView.xaml">
+    <Page Include="Views\EditAccountsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\ImportDialog.xaml">
+    <Page Include="Views\ImportDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\AccountView.xaml">
+    <Page Include="Views\AccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\NewAccountView.xaml">
+    <Page Include="Views\NewAccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\NewCategoryView.xaml">
+    <Page Include="Views\NewCategoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\NewFlagView.xaml">
+    <Page Include="Views\NewFlagView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MVVM\Views\NewPayeeView.xaml">
+    <Page Include="Views\NewPayeeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\TransDataGrid.xaml">
+    <Page Include="Views\TransDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -480,9 +411,6 @@
     </PackageReference>
     <PackageReference Include="MuVaViMo">
       <Version>0.3.1</Version>
-    </PackageReference>
-    <PackageReference Include="ncalc">
-      <Version>1.3.8</Version>
     </PackageReference>
     <PackageReference Include="NETStandard.Library">
       <Version>2.0.3</Version>
@@ -649,9 +577,9 @@
       <Project>{8077914f-0322-42dc-a08d-745c40c90059}</Project>
       <Name>BFF.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BFF.Model\BFF.Model.csproj">
-      <Project>{1d45aacf-3966-407a-a5a2-79c37046d502}</Project>
-      <Name>BFF.Model</Name>
+    <ProjectReference Include="..\BFF.ViewModel\BFF.ViewModel.csproj">
+      <Project>{3D2A82AB-5E04-4B30-9992-A5C4612AD2AF}</Project>
+      <Name>BFF.ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

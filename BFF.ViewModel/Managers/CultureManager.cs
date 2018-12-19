@@ -1,0 +1,206 @@
+﻿using System;
+using System.Globalization;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.Threading;
+using BFF.Core.Extensions;
+using BFF.Core.Helper;
+using BFF.Core.IoC;
+using BFF.Model.Models;
+using BFF.Model.Repositories.ModelRepositories;
+using BFF.ViewModel.Extensions;
+using BFF.ViewModel.Helper;
+
+namespace BFF.ViewModel.Managers
+{
+    public interface ICultureManager
+    {
+        IObservable<CultureMessage> RefreshSignal { get; }
+
+        CultureInfo CurrencyCulture { get; set; }
+
+        CultureInfo DateCulture { get; set; }
+
+        bool ShowLongDate { get; set; }
+    }
+
+    internal abstract class CultureManagerBase : ObservableObject, ICultureManager, IOncePerBackend, IDisposable
+    {
+        private readonly IBffSettings _bffSettings;
+        private readonly ISetupLocalizationFramework _setupLocalizationFramework;
+        private readonly Subject<CultureMessage> _refreshSignal = new Subject<CultureMessage>();
+
+        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
+
+        protected CultureManagerBase(
+            IBffSettings bffSettings,
+            ISetupLocalizationFramework setupLocalizationFramework)
+        {
+            _bffSettings = bffSettings;
+            _setupLocalizationFramework = setupLocalizationFramework;
+            _refreshSignal.AddHere(CompositeDisposable);
+        }
+
+        public CultureInfo CurrencyCulture
+        {
+            get => _bffSettings.Culture_SessionCurrency;
+            set
+            {
+                _bffSettings.Culture_SessionCurrency = value;
+                ManageCultures();
+                RefreshCurrency();
+                OnPropertyChanged();
+            }
+        }
+
+        public CultureInfo DateCulture
+        {
+            get => _bffSettings.Culture_SessionDate;
+            set
+            {
+                _bffSettings.Culture_SessionDate = value;
+                ManageCultures();
+                RefreshDate();
+                OnPropertyChanged();
+            }
+        }
+
+        //todo: put DateLong into ShowLongDate, too?
+        public bool ShowLongDate
+        {
+            get => _bffSettings.Culture_DefaultDateLong;
+            set
+            {
+                _bffSettings.Culture_DefaultDateLong = value;
+                _bffSettings.Save();
+                RefreshDate();
+                OnPropertyChanged();
+            }
+        }
+
+        public IObservable<CultureMessage> RefreshSignal => _refreshSignal.AsObservable();
+
+        protected void Refresh()
+        {
+            _refreshSignal.OnNext(CultureMessage.Refresh);
+        }
+
+        protected void RefreshCurrency()
+        {
+            _refreshSignal.OnNext(CultureMessage.RefreshCurrency);
+        }
+
+        protected void RefreshDate()
+        {
+            _refreshSignal.OnNext(CultureMessage.RefreshDate);
+        }
+
+        public void Dispose()
+        {
+            CompositeDisposable.Dispose();
+        }
+
+        protected void ManageCultures()
+        {
+            CultureInfo customCulture = CreateCustomCulture();
+            _setupLocalizationFramework.With(customCulture);
+            Thread.CurrentThread.CurrentCulture = customCulture;
+            Thread.CurrentThread.CurrentUICulture = customCulture;
+            SaveCultures();
+        }
+
+        protected abstract void SaveCultures();
+
+        protected abstract CultureInfo CreateCustomCulture();
+    }
+
+    public interface IBackendCultureManager : ICultureManager
+    {
+    }
+
+    internal class BackendCultureManager : CultureManagerBase, IBackendCultureManager
+    {
+        private readonly IBffSettings _bffSettings;
+        private readonly Subject<Unit> _saveDbSettingsSubject = new Subject<Unit>();
+
+        public BackendCultureManager(
+            IDbSettingRepository dbSettingRepository,
+            IBffSettings bffSettings,
+            ISetupLocalizationFramework setupLocalizationFramework,
+            IRxSchedulerProvider schedulerProvider)
+            : base(bffSettings, setupLocalizationFramework)
+        {
+            _bffSettings = bffSettings;
+            _saveDbSettingsSubject.AddHere(CompositeDisposable);
+
+            schedulerProvider.Task.MinimalScheduleAsync(async () =>
+            {
+                IDbSetting dbSetting = await dbSettingRepository.FindAsync(1);
+                _bffSettings.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultureName);
+                _bffSettings.Culture_SessionDate = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
+                ManageCultures();
+            }).AddHere(CompositeDisposable);
+
+            _saveDbSettingsSubject
+                .ObserveOn(schedulerProvider.Task)
+                .SelectMany(async _ => await dbSettingRepository.FindAsync(1))
+                .Subscribe(dbSetting =>
+                {
+                    dbSetting.CurrencyCulture = _bffSettings.Culture_SessionCurrency;
+                    dbSetting.DateCulture = _bffSettings.Culture_SessionDate;
+                }).AddHere(CompositeDisposable);
+        }
+
+        protected override void SaveCultures()
+        {
+            _bffSettings.Save();
+
+            _saveDbSettingsSubject.OnNext(Unit.Default);
+        }
+
+        protected override CultureInfo CreateCustomCulture()
+        {
+            CultureInfo customCulture = CultureInfo.CreateSpecificCulture(_bffSettings.Culture_DefaultLanguage.Name);
+            customCulture.NumberFormat = _bffSettings.Culture_SessionCurrency.NumberFormat;
+            customCulture.DateTimeFormat = _bffSettings.Culture_SessionDate.DateTimeFormat;
+            return customCulture;
+        }
+    }
+
+    public interface IEmptyCultureManager : ICultureManager
+    {
+    }
+
+    internal class EmptyCultureManager : CultureManagerBase, IEmptyCultureManager
+    {
+        private readonly IBffSettings _bffSettings;
+
+        public EmptyCultureManager(
+            IBffSettings bffSettings,
+            ISetupLocalizationFramework setupLocalizationFramework)
+            : base(bffSettings, setupLocalizationFramework)
+        {
+            _bffSettings = bffSettings;
+            _bffSettings.Culture_SessionCurrency = _bffSettings.Culture_DefaultCurrency;
+            _bffSettings.Culture_SessionDate = _bffSettings.Culture_DefaultDate;
+            ManageCultures();
+        }
+
+        protected override void SaveCultures()
+        {
+            _bffSettings.Culture_DefaultCurrency = CurrencyCulture;
+            _bffSettings.Culture_DefaultDate = DateCulture;
+            _bffSettings.Save();
+        }
+
+        protected override CultureInfo CreateCustomCulture()
+        {
+            CultureInfo customCulture = CultureInfo.CreateSpecificCulture(_bffSettings.Culture_DefaultLanguage.Name);
+            customCulture.NumberFormat = _bffSettings.Culture_DefaultCurrency.NumberFormat;
+            customCulture.DateTimeFormat = _bffSettings.Culture_DefaultDate.DateTimeFormat;
+            return customCulture;
+        }
+    }
+}

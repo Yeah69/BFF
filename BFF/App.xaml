@@ -3,14 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:forModels="clr-namespace:BFF.MVVM.ViewModels.ForModels"
+             xmlns:forModels="clr-namespace:BFF.ViewModel.ViewModels.ForModels;assembly=BFF.ViewModel"
              xmlns:helper="clr-namespace:BFF.Helper"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:mvvm="clr-namespace:BFF.MVVM"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:viewModels="clr-namespace:BFF.MVVM.ViewModels"
-             xmlns:views="clr-namespace:BFF.MVVM.Views"
+             xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
+             xmlns:viewModleHelper="clr-namespace:BFF.ViewModel.Helper;assembly=BFF.ViewModel"
+             xmlns:views="clr-namespace:BFF.Views"
              Startup="Application_Startup"
              mc:Ignorable="d">
     <!--  DispatcherUnhandledException="Application_DispatcherUnhandledException">  -->
@@ -24,7 +24,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
-                <ResourceDictionary Source="MVVM/Resources/HamburgerMenu.xaml" />
+                <ResourceDictionary Source="Resources/HamburgerMenu.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate x:Key="EmptyDataTemplate" />
@@ -101,7 +101,7 @@
                                    TargetType="{x:Type ToggleButton}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding SumSign}"
-                                                 Value="{x:Static helper:Sign.Plus}">
+                                                 Value="{x:Static viewModleHelper:Sign.Plus}">
                                         <Setter Property="Background"
                                                 Value="{StaticResource IncomeBrush}" />
                                     </DataTrigger>
@@ -112,21 +112,21 @@
                         </ToggleButton.Style>
                         <TextBlock Background="Transparent"
                                    FontWeight="Bold"
-                                   Text="{Binding SumSign, Converter={x:Static mvvm:Converters.SignToString}}" />
+                                   Text="{Binding SumSign, Converter={x:Static helper:Converters.SignToString}}" />
                     </ToggleButton>
                     <TextBox HorizontalAlignment="Stretch"
                              VerticalContentAlignment="Center"
                              DockPanel.Dock="Right"
-                             Foreground="{Binding Sum.Value, Converter={x:Static mvvm:Converters.SumToSolidColorBrush}}"
+                             Foreground="{Binding Sum.Value, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
                              TextAlignment="Right">
                         <TextBox.Text>
-                            <Binding Converter="{x:Static mvvm:Converters.SumToString}"
+                            <Binding Converter="{x:Static helper:Converters.SumToString}"
                                      Mode="TwoWay"
                                      Path="SumAbsolute"
                                      UpdateSourceTrigger="LostFocus">
                                 <Binding.ValidationRules>
-                                    <x:Static Member="mvvm:Rules.Currency" />
-                                    <x:Static Member="mvvm:Rules.CurrencyLongRange" />
+                                    <x:Static Member="helper:Rules.Currency" />
+                                    <x:Static Member="helper:Rules.CurrencyLongRange" />
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -139,11 +139,11 @@
                             Orientation="Horizontal">
                     <Rectangle Width="4"
                                Height="16"
-                               Margin="{Binding Depth, Converter={x:Static mvvm:Converters.CategoryDepthToMargin}}">
+                               Margin="{Binding Depth, Converter={x:Static helper:Converters.CategoryDepthToMargin}}">
                         <Rectangle.Style>
                             <Style TargetType="{x:Type Rectangle}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}"
                                                  Value="True">
                                         <Setter Property="Fill"
                                                 Value="{StaticResource IncomeBrush}" />
@@ -163,11 +163,11 @@
                             Orientation="Horizontal">
                     <Rectangle Width="4"
                                Height="16"
-                               Margin="{Binding Depth, Converter={x:Static mvvm:Converters.CategoryDepthToMargin}}">
+                               Margin="{Binding Depth, Converter={x:Static helper:Converters.CategoryDepthToMargin}}">
                         <Rectangle.Style>
                             <Style TargetType="{x:Type Rectangle}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}"
                                                  Value="True">
                                         <Setter Property="Fill"
                                                 Value="{StaticResource IncomeBrush}" />
@@ -191,7 +191,7 @@
                         <Rectangle.Style>
                             <Style TargetType="{x:Type Rectangle}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Converter={x:Static mvvm:Converters.OfType}, ConverterParameter={x:Type forModels:IncomeCategoryViewModel}}"
+                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}"
                                                  Value="True">
                                         <Setter Property="Fill"
                                                 Value="{StaticResource IncomeBrush}" />
@@ -262,7 +262,7 @@
             <DataTemplate x:Key="FlagTemplate">
                 <iconPacks:PackIconMaterial x:Name="PopHereUp"
                                             d:DataContext="{d:DesignInstance forModels:IFlagViewModel}"
-                                            Foreground="{Binding Color, Converter={x:Static mvvm:Converters.ColorToBrush}}"
+                                            Foreground="{Binding Color, Converter={x:Static helper:Converters.ColorToBrush}}"
                                             Kind="{StaticResource FlagIcon}"
                                             Style="{StaticResource CellIconMaterial}" />
             </DataTemplate>
@@ -271,14 +271,14 @@
                 <Grid d:DataContext="{d:DesignInstance forModels:IFlagViewModel}">
                     <Popup x:Name="Popup"
                            StaysOpen="False">
-                        <views:ColorPickerView Brush="{Binding Color, Mode=TwoWay, Converter={x:Static mvvm:Converters.ColorToBrush}}" />
+                        <views:ColorPickerView Brush="{Binding Color, Mode=TwoWay, Converter={x:Static helper:Converters.ColorToBrush}}" />
                     </Popup>
 
                     <Button Click="Flag_OnClick">
                         <Button.Template>
                             <ControlTemplate>
                                 <iconPacks:PackIconMaterial x:Name="PopHereUp"
-                                                            Foreground="{Binding Color, Converter={x:Static mvvm:Converters.ColorToBrush}}"
+                                                            Foreground="{Binding Color, Converter={x:Static helper:Converters.ColorToBrush}}"
                                                             Kind="{StaticResource FlagIcon}"
                                                             Style="{StaticResource CellIconMaterial}" />
                             </ControlTemplate>

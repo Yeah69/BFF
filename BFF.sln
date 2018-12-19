@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.Core", "BFF.Core\BFF.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.Persistence", "BFF.Persistence\BFF.Persistence.csproj", "{D184DA4A-4A83-4CFD-8210-6B206F93D3B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BFF.Model", "BFF.Model\BFF.Model.csproj", "{1D45AACF-3966-407A-A5A2-79C37046D502}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.Model", "BFF.Model\BFF.Model.csproj", "{1D45AACF-3966-407A-A5A2-79C37046D502}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.ViewModel", "BFF.ViewModel\BFF.ViewModel.csproj", "{3D2A82AB-5E04-4B30-9992-A5C4612AD2AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{1D45AACF-3966-407A-A5A2-79C37046D502}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D45AACF-3966-407A-A5A2-79C37046D502}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D45AACF-3966-407A-A5A2-79C37046D502}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D2A82AB-5E04-4B30-9992-A5C4612AD2AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D2A82AB-5E04-4B30-9992-A5C4612AD2AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D2A82AB-5E04-4B30-9992-A5C4612AD2AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D2A82AB-5E04-4B30-9992-A5C4612AD2AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

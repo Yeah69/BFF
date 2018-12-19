@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
+using BFF.Views;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -21,7 +22,7 @@ namespace BFF
             Logger.Trace("Initializing App");
             InitializeComponent();
 
-            MVVM.Views.MainWindow mainWindow = AutofacBootstrapper.Resolve<MVVM.Views.MainWindow>();
+            MainWindow mainWindow = AutofacBootstrapper.Resolve<MainWindow>();
             mainWindow.Show();
         }
 

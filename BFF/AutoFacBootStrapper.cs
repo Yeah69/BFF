@@ -5,12 +5,8 @@ using Autofac;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Helper;
-using BFF.Model.Models;
-using BFF.MVVM.ViewModels;
-using BFF.MVVM.ViewModels.ForModels;
-using BFF.MVVM.ViewModels.ForModels.Structure;
-using BFF.MVVM.Views;
 using MahApps.Metro.Controls.Dialogs;
+using MainWindow = BFF.Views.MainWindow;
 
 namespace BFF
 {
@@ -80,29 +76,6 @@ namespace BFF
                 .AsImplementedInterfaces()
                 .ExternallyOwned();
 
-            builder.RegisterType<MainWindowViewModel>().As<IMainWindowViewModel>().SingleInstance();
-
-            builder.Register<Func<IAccountBaseViewModel, ITransactionViewModel>>(cc =>
-            {
-                var factory = cc.Resolve<Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel>>();
-                var transaction = cc.Resolve<Func<ITransaction>>();
-                return abvm => factory(transaction(), abvm);
-            }).As<Func<IAccountBaseViewModel, ITransactionViewModel>>();
-
-            builder.Register<Func<IAccountBaseViewModel, ITransferViewModel>>(cc =>
-            {
-                var factory = cc.Resolve<Func<ITransfer, IAccountBaseViewModel, ITransferViewModel>>();
-                var transfer = cc.Resolve<Func<ITransfer>>();
-                return abvm => factory(transfer(), abvm);
-            }).As<Func<IAccountBaseViewModel, ITransferViewModel>>();
-
-            builder.Register<Func<IAccountBaseViewModel, IParentTransactionViewModel>>(cc =>
-            {
-                var factory = cc.Resolve<Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel>>();
-                var parentTransaction = cc.Resolve<Func<IParentTransaction>>();
-                return abvm => factory(parentTransaction(), abvm);
-            }).As<Func<IAccountBaseViewModel, IParentTransactionViewModel>>();
-
             builder.Register(cc => DialogCoordinator.Instance).As<IDialogCoordinator>();
 
             builder.RegisterType<WpfRxSchedulerProvider>().As<IRxSchedulerProvider>().SingleInstance();
@@ -111,7 +84,7 @@ namespace BFF
 
             builder.RegisterModule(new Core.AutofacModule());
 
-            builder.RegisterModule(new Model.AutofacModule());
+            builder.RegisterModule(new ViewModel.AutofacModule());
 
             _rootScope = builder.Build();
         }
