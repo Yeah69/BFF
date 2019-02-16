@@ -1,11 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
 using BFF.Model.Models;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
 {
@@ -13,20 +12,20 @@ namespace BFF.Model.Repositories.ModelRepositories
     {
     }
 
-    internal sealed class TransferRepository : RepositoryBase<ITransfer, ITransDto>, ITransferRepository
+    internal sealed class TransferRepository : RepositoryBase<ITransfer, ITransSql>, ITransferRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly IAccountRepository _accountRepository;
-        private readonly IFlagRepository _flagRepository;
-        private readonly Func<ITransDto> _transDtoFactory;
+        private readonly IAccountRepositoryInternal _accountRepository;
+        private readonly IFlagRepositoryInternal _flagRepository;
+        private readonly Func<ITransSql> _transDtoFactory;
 
         public TransferRepository(
-            IProvideConnection provideConnection,
+            IProvideSqliteConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm,
-            IAccountRepository accountRepository,
-            IFlagRepository flagRepository,
-            Func<ITransDto> transDtoFactory) : base(provideConnection, crudOrm)
+            IAccountRepositoryInternal accountRepository,
+            IFlagRepositoryInternal flagRepository,
+            Func<ITransSql> transDtoFactory) : base(provideConnection, crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _accountRepository = accountRepository;
@@ -34,7 +33,7 @@ namespace BFF.Model.Repositories.ModelRepositories
             _transDtoFactory = transDtoFactory;
         }
         
-        protected override Converter<ITransfer, ITransDto> ConvertToPersistence => domainTransfer =>
+        protected override Converter<ITransfer, ITransSql> ConvertToPersistence => domainTransfer =>
         {
             var transDto = _transDtoFactory();
 
@@ -55,7 +54,7 @@ namespace BFF.Model.Repositories.ModelRepositories
             return transDto;
         };
 
-        protected override async Task<ITransfer> ConvertToDomainAsync(ITransDto persistenceModel)
+        protected override async Task<ITransfer> ConvertToDomainAsync(ITransSql persistenceModel)
         {
             return 
                 new Transfer(

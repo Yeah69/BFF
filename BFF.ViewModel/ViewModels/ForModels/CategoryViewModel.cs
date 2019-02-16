@@ -158,7 +158,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             return target is CategoryViewModel categoryViewModel
                    && categoryViewModel._category != _category
-                   && categoryViewModel._category.Id != _category.Id
+                   && categoryViewModel._category.Name != _category.Name
                    && !categoryViewModel._category.IsMyAncestor(_category);
         }
 

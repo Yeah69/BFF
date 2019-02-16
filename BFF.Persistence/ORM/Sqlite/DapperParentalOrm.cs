@@ -3,9 +3,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
-using BFF.Core.Persistence;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 using Dapper;
 
 namespace BFF.Persistence.ORM.Sqlite
@@ -15,9 +14,9 @@ namespace BFF.Persistence.ORM.Sqlite
         private string ParentalQuery =>
             $"SELECT * FROM [{typeof(SubTransaction).Name}s] WHERE {nameof(SubTransaction.ParentId)} = @ParentId;";
 
-        private readonly IProvideConnection _provideConnection;
+        private readonly IProvideSqliteConnection _provideConnection;
 
-        public DapperParentalOrm(IProvideConnection provideConnection)
+        public DapperParentalOrm(IProvideSqliteConnection provideConnection)
         {
             _provideConnection = provideConnection;
         }
@@ -35,7 +34,7 @@ namespace BFF.Persistence.ORM.Sqlite
             return ret;
         }
 
-        public async Task<IEnumerable<ISubTransactionDto>> ReadSubTransactionsOfAsync(long parentTransactionId)
+        public async Task<IEnumerable<ISubTransactionSql>> ReadSubTransactionsOfAsync(long parentTransactionId)
         {
             IList<SubTransaction> ret;
             using (TransactionScope transactionScope = new TransactionScope())

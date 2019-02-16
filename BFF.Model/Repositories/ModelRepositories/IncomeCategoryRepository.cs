@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
 using BFF.Model.Models;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
 {
@@ -22,20 +21,20 @@ namespace BFF.Model.Repositories.ModelRepositories
     {
     }
 
-    internal sealed class IncomeCategoryRepository : ObservableRepositoryBase<IIncomeCategory, ICategoryDto>, IIncomeCategoryRepository
+    internal sealed class IncomeCategoryRepository : ObservableRepositoryBase<IIncomeCategory, ICategorySql>, IIncomeCategoryRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IMergeOrm _mergeOrm;
         private readonly ICategoryOrm _categoryOrm;
-        private readonly Func<ICategoryDto> _categoryDtoFactory;
+        private readonly Func<ICategorySql> _categoryDtoFactory;
 
         public IncomeCategoryRepository(
-            IProvideConnection provideConnection,
+            IProvideSqliteConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm,
             IMergeOrm mergeOrm,
             ICategoryOrm categoryOrm,
-            Func<ICategoryDto> categoryDtoFactory)
+            Func<ICategorySql> categoryDtoFactory)
             : base(provideConnection, rxSchedulerProvider, crudOrm, new IncomeCategoryComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
@@ -45,7 +44,7 @@ namespace BFF.Model.Repositories.ModelRepositories
         }
 
 
-        protected override Task<IIncomeCategory> ConvertToDomainAsync(ICategoryDto persistenceModel)
+        protected override Task<IIncomeCategory> ConvertToDomainAsync(ICategorySql persistenceModel)
         {
             return Task.FromResult<IIncomeCategory>(
                 new IncomeCategory(this,
@@ -55,9 +54,9 @@ namespace BFF.Model.Repositories.ModelRepositories
                     persistenceModel.MonthOffset));
         }
 
-        protected override Task<IEnumerable<ICategoryDto>> FindAllInnerAsync() => _categoryOrm.ReadIncomeCategoriesAsync();
+        protected override Task<IEnumerable<ICategorySql>> FindAllInnerAsync() => _categoryOrm.ReadIncomeCategoriesAsync();
 
-        protected override Converter<IIncomeCategory, ICategoryDto> ConvertToPersistence => domainCategory =>
+        protected override Converter<IIncomeCategory, ICategorySql> ConvertToPersistence => domainCategory =>
         {
             var categoryDto = _categoryDtoFactory();
 

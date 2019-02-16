@@ -3,9 +3,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
-using BFF.Core.Persistence;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 using Dapper;
 
 namespace BFF.Persistence.ORM.Sqlite
@@ -15,14 +14,14 @@ namespace BFF.Persistence.ORM.Sqlite
         private static readonly string GetAllCategoriesQuery = $"SELECT * FROM {nameof(Category)}s WHERE {nameof(Category.IsIncomeRelevant)} == 0;";
         private static readonly string GetAllIncomeCategoriesQuery = $"SELECT * FROM {nameof(Category)}s WHERE {nameof(Category.IsIncomeRelevant)} == 1;";
 
-        private readonly IProvideConnection _provideConnection;
+        private readonly IProvideSqliteConnection _provideConnection;
 
-        public DapperCategoryOrm(IProvideConnection provideConnection)
+        public DapperCategoryOrm(IProvideSqliteConnection provideConnection)
         {
             _provideConnection = provideConnection;
         }
 
-        public async Task<IEnumerable<ICategoryDto>> ReadCategoriesAsync()
+        public async Task<IEnumerable<ICategorySql>> ReadCategoriesAsync()
         {
             IList<Category> ret;
             using (TransactionScope transactionScope = new TransactionScope())
@@ -34,7 +33,7 @@ namespace BFF.Persistence.ORM.Sqlite
             return ret;
         }
 
-        public async Task<IEnumerable<ICategoryDto>> ReadIncomeCategoriesAsync()
+        public async Task<IEnumerable<ICategorySql>> ReadIncomeCategoriesAsync()
         {
             IList<Category> ret;
             using (TransactionScope transactionScope = new TransactionScope())

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.Model.Repositories;
@@ -48,13 +49,13 @@ namespace BFF.Model.Models
             {
                 if(_budget == value) return;
 
-                if (_budget == 0 && Id == -1)
+                if (_budget == 0 && IsInserted.Not())
                 {
                     _budget = value;
                     Task.Run(InsertAsync)
                         .ContinueWith(_ => OnPropertyChanged());
                 }
-                else if (_budget != 0 && value == 0 && Id > -1)
+                else if (_budget != 0 && value == 0 && IsInserted)
                 {
                     _budget = value;
                     Task.Run(DeleteAsync)

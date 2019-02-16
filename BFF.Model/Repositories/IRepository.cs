@@ -11,7 +11,7 @@ namespace BFF.Model.Repositories
         Task UpdateAsync(T dataModel);
         Task DeleteAsync(T dataModel);
     }
-    public interface IReadOnlyRepository<T> : IOncePerBackend where T : class, IDataModel
+    internal interface IReadOnlyRepository<T> : IOncePerBackend where T : class, IDataModel
     {
         Task<T> FindAsync(long id);
     }
@@ -20,8 +20,7 @@ namespace BFF.Model.Repositories
         Task MergeAsync(T from, T to);
     }
 
-    public interface IRepository<T> : 
-        IReadOnlyRepository<T>, IWriteOnlyRepository<T>
+    public interface IRepository<T> : IWriteOnlyRepository<T>
         where T : class, IDataModel
     {
     }

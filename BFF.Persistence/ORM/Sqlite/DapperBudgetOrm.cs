@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 using System.Transactions;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 using Dapper;
 
 namespace BFF.Persistence.ORM.Sqlite
@@ -132,17 +131,17 @@ SELECT Total(Sum) FROM
     WHERE {nameof(SubTransaction)}s.{nameof(SubTransaction.CategoryId)} IS NULL AND strftime('%Y', {nameof(Trans.Date)}) = @Year AND strftime('%m', {nameof(Trans.Date)}) = @Month
 )";
 
-        private readonly IProvideConnection _provideConnection;
+        private readonly IProvideSqliteConnection _provideConnection;
 
         public DapperBudgetOrm(
-            IProvideConnection provideConnection)
+            IProvideSqliteConnection provideConnection)
         {
             _provideConnection = provideConnection;
         }
 
         public async Task<BudgetBlock> FindAsync(int year, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories)
         {
-            IDictionary<DateTime, IList<(IBudgetEntryDto Entry, long Outflow, long Balance)>> budgetEntriesPerMonth;
+            IDictionary<DateTime, IList<(IBudgetEntrySql Entry, long Outflow, long Balance)>> budgetEntriesPerMonth;
             long initialNotBudgetedOrOverbudgeted = 0;
             long initialOverspentInPreviousMonth;
             IDictionary<DateTime, long> incomesPerMonth;
@@ -163,7 +162,7 @@ SELECT Total(Sum) FROM
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
-                var budgetEntries = new List<(IBudgetEntryDto Entry, long Outflow, long Balance)>();
+                var budgetEntries = new List<(IBudgetEntrySql Entry, long Outflow, long Balance)>();
 
                 IDictionary<long, long> entryBudgetValuePerCategoryId = new Dictionary<long, long>();
                 
@@ -316,8 +315,8 @@ SELECT Total(Sum) FROM
                 budgetEntriesPerMonth = monthRange
                     .Select(m =>
                         (m: m, groupedBudgetEntriesPerMonth.ContainsKey(m)
-                            ? (IList<(IBudgetEntryDto Entry, long Outflow, long Balance)>)groupedBudgetEntriesPerMonth[m].ToList()
-                            : new List<(IBudgetEntryDto Entry, long Outflow, long Balance)>()))
+                            ? (IList<(IBudgetEntrySql Entry, long Outflow, long Balance)>)groupedBudgetEntriesPerMonth[m].ToList()
+                            : new List<(IBudgetEntrySql Entry, long Outflow, long Balance)>()))
                     .ToDictionary(vt => vt.m, vt => vt.Item2);
 
                 incomesPerMonth = monthRange
@@ -373,7 +372,7 @@ SELECT Total(Sum) FROM
 
     public class BudgetBlock
     {
-        public IDictionary<DateTime, IList<(IBudgetEntryDto Entry, long Outflow, long Balance)>> BudgetEntriesPerMonth
+        public IDictionary<DateTime, IList<(IBudgetEntrySql Entry, long Outflow, long Balance)>> BudgetEntriesPerMonth
         {
             get;
             set;

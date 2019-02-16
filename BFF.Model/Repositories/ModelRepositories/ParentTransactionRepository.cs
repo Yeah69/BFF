@@ -1,11 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
 using BFF.Model.Models;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
 {
@@ -13,24 +12,24 @@ namespace BFF.Model.Repositories.ModelRepositories
     {
     }
 
-    internal sealed class ParentTransactionRepository : RepositoryBase<IParentTransaction, ITransDto>, IParentTransactionRepository
+    internal sealed class ParentTransactionRepository : RepositoryBase<IParentTransaction, ITransSql>, IParentTransactionRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly IAccountRepository _accountRepository;
-        private readonly IPayeeRepository _payeeRepository;
+        private readonly IAccountRepositoryInternal _accountRepository;
+        private readonly IPayeeRepositoryInternal _payeeRepository;
         private readonly ISubTransactionRepository _subTransactionRepository;
-        private readonly IFlagRepository _flagRepository;
-        private readonly Func<ITransDto> _transDtoFactory;
+        private readonly IFlagRepositoryInternal _flagRepository;
+        private readonly Func<ITransSql> _transDtoFactory;
 
         public ParentTransactionRepository(
-            IProvideConnection provideConnection,
+            IProvideSqliteConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm,
-            IAccountRepository accountRepository,
-            IPayeeRepository payeeRepository,
+            IAccountRepositoryInternal accountRepository,
+            IPayeeRepositoryInternal payeeRepository,
             ISubTransactionRepository subTransactionRepository,
-            IFlagRepository flagRepository,
-            Func<ITransDto> transDtoFactory) : base(provideConnection, crudOrm)
+            IFlagRepositoryInternal flagRepository,
+            Func<ITransSql> transDtoFactory) : base(provideConnection, crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _accountRepository = accountRepository;
@@ -40,7 +39,7 @@ namespace BFF.Model.Repositories.ModelRepositories
             _transDtoFactory = transDtoFactory;
         }
         
-        protected override Converter<IParentTransaction, ITransDto> ConvertToPersistence => domainParentTransaction =>
+        protected override Converter<IParentTransaction, ITransSql> ConvertToPersistence => domainParentTransaction =>
         {
             var transDto = _transDtoFactory();
 
@@ -61,7 +60,7 @@ namespace BFF.Model.Repositories.ModelRepositories
             return transDto;
         };
 
-        protected override async Task<IParentTransaction> ConvertToDomainAsync(ITransDto persistenceModel)
+        protected override async Task<IParentTransaction> ConvertToDomainAsync(ITransSql persistenceModel)
         {
             var parentTransaction = new ParentTransaction(
                 this,

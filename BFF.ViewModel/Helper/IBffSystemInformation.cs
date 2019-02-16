@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BFF.ViewModel.Helper
+﻿namespace BFF.ViewModel.Helper
 {
     public interface IBffSystemInformation
     {

@@ -130,7 +130,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
 
             transBase
                 .ObservePropertyChanges(nameof(transBase.Date))
-                .Where(_ => transBase.Id != -1)
+                .Where(_ => transBase.IsInserted)
                 .Subscribe(_ => NotifyRelevantAccountsToRefreshTrans())
                 .AddTo(CompositeDisposable);
             

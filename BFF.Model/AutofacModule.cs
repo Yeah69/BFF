@@ -3,16 +3,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Autofac;
-using Autofac.Core;
-using BFF.Core;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Core.Persistence;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
-using BFF.Persistence;
 using BFF.Persistence.Contexts;
-using BFF.Persistence.Import;
 using Module = Autofac.Module;
 
 namespace BFF.Model

@@ -137,7 +137,7 @@ namespace BFF.ViewModel.Managers
 
             schedulerProvider.Task.MinimalScheduleAsync(async () =>
             {
-                IDbSetting dbSetting = await dbSettingRepository.FindAsync(1);
+                IDbSetting dbSetting = await dbSettingRepository.GetSetting().ConfigureAwait(false);
                 _bffSettings.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultureName);
                 _bffSettings.Culture_SessionDate = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
                 ManageCultures();
@@ -145,7 +145,7 @@ namespace BFF.ViewModel.Managers
 
             _saveDbSettingsSubject
                 .ObserveOn(schedulerProvider.Task)
-                .SelectMany(async _ => await dbSettingRepository.FindAsync(1))
+                .SelectMany(async _ => await dbSettingRepository.GetSetting().ConfigureAwait(false))
                 .Subscribe(dbSetting =>
                 {
                     dbSetting.CurrencyCulture = _bffSettings.Culture_SessionCurrency;

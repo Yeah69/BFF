@@ -4,11 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
 using BFF.Model.Models;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
 {
@@ -17,20 +16,20 @@ namespace BFF.Model.Repositories.ModelRepositories
         Task<IEnumerable<ISubTransaction>> GetChildrenOfAsync(long parentId);
     }
 
-    internal sealed class SubTransactionRepository : RepositoryBase<ISubTransaction, ISubTransactionDto>, ISubTransactionRepository
+    internal sealed class SubTransactionRepository : RepositoryBase<ISubTransaction, ISubTransactionSql>, ISubTransactionRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IParentalOrm _parentalOrm;
-        private readonly ICategoryBaseRepository _categoryBaseRepository;
-        private readonly Func<ISubTransactionDto> _subTransactionDtoFactory;
+        private readonly ICategoryBaseRepositoryInternal _categoryBaseRepository;
+        private readonly Func<ISubTransactionSql> _subTransactionDtoFactory;
 
         public SubTransactionRepository(
-            IProvideConnection provideConnection,
+            IProvideSqliteConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm,
             IParentalOrm parentalOrm,
-            ICategoryBaseRepository categoryBaseRepository,
-            Func<ISubTransactionDto> subTransactionDtoFactory)
+            ICategoryBaseRepositoryInternal categoryBaseRepository,
+            Func<ISubTransactionSql> subTransactionDtoFactory)
             : base(provideConnection, crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
@@ -39,7 +38,7 @@ namespace BFF.Model.Repositories.ModelRepositories
             _subTransactionDtoFactory = subTransactionDtoFactory;
         }
         
-        protected override Converter<ISubTransaction, ISubTransactionDto> ConvertToPersistence => domainSubTransaction =>
+        protected override Converter<ISubTransaction, ISubTransactionSql> ConvertToPersistence => domainSubTransaction =>
         {
             var subTransactionDto = _subTransactionDtoFactory();
             subTransactionDto.Id = domainSubTransaction.Id;
@@ -54,7 +53,7 @@ namespace BFF.Model.Repositories.ModelRepositories
             await (await _parentalOrm.ReadSubTransactionsOfAsync(parentId).ConfigureAwait(false))
                 .Select(async sti => await ConvertToDomainAsync(sti).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
 
-        protected override async Task<ISubTransaction> ConvertToDomainAsync(ISubTransactionDto persistenceModel)
+        protected override async Task<ISubTransaction> ConvertToDomainAsync(ISubTransactionSql persistenceModel)
         {
             return new SubTransaction(
                 this,

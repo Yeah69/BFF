@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
 using BFF.Model.Models;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 using MoreLinq;
 
 namespace BFF.Model.Repositories.ModelRepositories
@@ -52,20 +51,24 @@ namespace BFF.Model.Repositories.ModelRepositories
     {
     }
 
-    internal sealed class CategoryRepository : ObservableRepositoryBase<ICategory, ICategoryDto>, ICategoryRepository
+    internal interface ICategoryRepositoryInternal : ICategoryRepository, IReadOnlyRepository<ICategory>
+    {
+    }
+
+    internal sealed class CategoryRepository : ObservableRepositoryBase<ICategory, ICategorySql>, ICategoryRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IMergeOrm _mergeOrm;
         private readonly ICategoryOrm _categoryOrm;
-        private readonly Func<ICategoryDto> _categoryDtoFactory;
+        private readonly Func<ICategorySql> _categoryDtoFactory;
 
         public CategoryRepository(
-            IProvideConnection provideConnection,
+            IProvideSqliteConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm, 
             IMergeOrm mergeOrm,
             ICategoryOrm categoryOrm,
-            Func<ICategoryDto> categoryDtoFactory) 
+            Func<ICategorySql> categoryDtoFactory) 
             : base(provideConnection, rxSchedulerProvider, crudOrm, new CategoryComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
@@ -95,7 +98,7 @@ namespace BFF.Model.Repositories.ModelRepositories
             }
         }
 
-        protected override async Task<ICategory> ConvertToDomainAsync(ICategoryDto persistenceModel)
+        protected override async Task<ICategory> ConvertToDomainAsync(ICategorySql persistenceModel)
         {
             return 
                 new Category(this,
@@ -105,9 +108,9 @@ namespace BFF.Model.Repositories.ModelRepositories
                     persistenceModel.ParentId != null ? await FindAsync((long)persistenceModel.ParentId).ConfigureAwait(false) : null);
         }
 
-        protected override Task<IEnumerable<ICategoryDto>> FindAllInnerAsync() => _categoryOrm.ReadCategoriesAsync();
+        protected override Task<IEnumerable<ICategorySql>> FindAllInnerAsync() => _categoryOrm.ReadCategoriesAsync();
 
-        protected override Converter<ICategory, ICategoryDto> ConvertToPersistence => domainCategory =>
+        protected override Converter<ICategory, ICategorySql> ConvertToPersistence => domainCategory =>
         {
             var categoryDto = _categoryDtoFactory();
 

@@ -3,16 +3,15 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Transactions;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 using Dapper;
 
 namespace BFF.Persistence.ORM.Sqlite
 {
     internal class DapperAccountOrm : IAccountOrm
     {
-        private readonly IProvideConnection _provideConnection;
+        private readonly IProvideSqliteConnection _provideConnection;
 
         private string AllAccountsClearedBalanceStatement =>
             $@"SELECT Total({nameof(Trans.Sum)}) FROM (
@@ -74,7 +73,7 @@ namespace BFF.Persistence.ORM.Sqlite
             SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 0)) 
             - (SELECT Total({nameof(Trans.Sum)}) FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 0);";
 
-        public DapperAccountOrm(IProvideConnection provideConnection)
+        public DapperAccountOrm(IProvideSqliteConnection provideConnection)
         {
             _provideConnection = provideConnection;
         }

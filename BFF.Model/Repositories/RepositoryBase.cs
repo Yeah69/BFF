@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Extensions;
-using BFF.Core.Persistence;
 using BFF.Model.Models.Structure;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories
 {
@@ -16,11 +15,11 @@ namespace BFF.Model.Repositories
 
     internal abstract class RepositoryBase<TDomain, TPersistence> : WriteOnlyRepositoryBase<TDomain, TPersistence>, IRepositoryBase<TDomain>
         where TDomain : class, IDataModel
-        where TPersistence : class, IPersistenceModelDto
+        where TPersistence : class, IPersistenceModelSql
     {
         private readonly ICrudOrm _crudOrm;
 
-        protected RepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(provideConnection, crudOrm)
+        protected RepositoryBase(IProvideSqliteConnection provideConnection, ICrudOrm crudOrm) : base(provideConnection, crudOrm)
         {
             _crudOrm = crudOrm;
         }

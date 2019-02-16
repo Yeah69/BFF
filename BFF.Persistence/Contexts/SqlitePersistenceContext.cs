@@ -12,7 +12,7 @@ namespace BFF.Persistence.Contexts
     internal class SqlitePersistenceContext : ISqlitePersistenceContext
     {
         public SqlitePersistenceContext(ISqlitePersistenceConfiguration configuration,
-            Func<string, IProvideSqLiteConnection> connectionProviderFactory)
+            Func<string, IProvideSqliteConnection> connectionProviderFactory)
         {
             connectionProviderFactory(configuration.Path);
         }

@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
 using BFF.Model.Models;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
 {
@@ -29,25 +28,29 @@ namespace BFF.Model.Repositories.ModelRepositories
         Task<long?> GetUnclearedBalanceUntilNowAsync(IAccount account);
     }
 
-    internal sealed class AccountRepository : ObservableRepositoryBase<IAccount, IAccountDto>, IAccountRepository
+    internal interface IAccountRepositoryInternal : IAccountRepository, IReadOnlyRepository<IAccount>
+    {
+    }
+
+    internal sealed class AccountRepository : ObservableRepositoryBase<IAccount, IAccountSql>, IAccountRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IAccountOrm _accountOrm;
-        private readonly Func<IAccountDto> _accountDtoFactory;
+        private readonly Func<IAccountSql> _accountDtoFactory;
 
         public AccountRepository(
-            IProvideConnection provideConnection,
+            IProvideSqliteConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm, 
             IAccountOrm accountOrm,
-            Func<IAccountDto> accountDtoFactory) : base(provideConnection, rxSchedulerProvider, crudOrm, new AccountComparer())
+            Func<IAccountSql> accountDtoFactory) : base(provideConnection, rxSchedulerProvider, crudOrm, new AccountComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _accountOrm = accountOrm;
             _accountDtoFactory = accountDtoFactory;
         }
 
-        protected override Converter<IAccount, IAccountDto> ConvertToPersistence => domainAccount =>
+        protected override Converter<IAccount, IAccountSql> ConvertToPersistence => domainAccount =>
         {
             var accountDto = _accountDtoFactory();
 
@@ -59,7 +62,7 @@ namespace BFF.Model.Repositories.ModelRepositories
             return accountDto;
         };
 
-        protected override Task<IAccount> ConvertToDomainAsync(IAccountDto persistenceModel) =>
+        protected override Task<IAccount> ConvertToDomainAsync(IAccountSql persistenceModel) =>
             Task.FromResult<IAccount>(
                 new Account(
                     this,

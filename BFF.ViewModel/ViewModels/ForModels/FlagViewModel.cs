@@ -110,9 +110,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
         public bool CanMergeTo(IFlagViewModel target)
         {
-            return target is FlagViewModel flagViewModel
-                   && flagViewModel._flag != _flag
-                   && flagViewModel._flag.Id != _flag.Id;
+            return target.Name != Name;
         }
     }
 }

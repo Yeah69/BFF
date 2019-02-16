@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Model.Models;
 using BFF.Model.Repositories.ModelRepositories;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories
 {

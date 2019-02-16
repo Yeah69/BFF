@@ -1,9 +1,8 @@
 ﻿using System.Data;
 using System.Threading.Tasks;
 using System.Transactions;
-using BFF.Core.Persistence;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 using Dapper;
 using Dapper.Contrib.Extensions;
 
@@ -86,9 +85,9 @@ namespace BFF.Persistence.ORM.Sqlite
 
         private static readonly string SetDatabaseSchemaVersion = $@"PRAGMA user_version = {DatabaseSchemaVersion};";
 
-        private readonly IProvideConnection _provideConnection;
+        private readonly IProvideSqliteConnection _provideConnection;
 
-        public DapperCreateBackendOrm(IProvideConnection provideConnection)
+        public DapperCreateBackendOrm(IProvideSqliteConnection provideConnection)
         {
             _provideConnection = provideConnection;
         }

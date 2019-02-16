@@ -5,11 +5,15 @@ using BFF.Model.Models.Structure;
 
 namespace BFF.Model.Repositories.ModelRepositories
 {
-    public interface ICategoryBaseRepository : IReadOnlyRepository<ICategoryBase>, IMergingRepository<ICategoryBase>
+    public interface ICategoryBaseRepository : IMergingRepository<ICategoryBase>
     {
     }
 
-    internal class CategoryBaseRepository : ICategoryBaseRepository
+    internal interface ICategoryBaseRepositoryInternal : ICategoryBaseRepository, IReadOnlyRepository<ICategoryBase>
+    {
+    }
+
+    internal class CategoryBaseRepository : ICategoryBaseRepositoryInternal
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IIncomeCategoryRepository _incomeCategoryRepository;

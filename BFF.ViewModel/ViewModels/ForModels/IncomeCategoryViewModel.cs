@@ -120,9 +120,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
         public bool CanMergeTo(IIncomeCategoryViewModel target)
         {
-            return target is IncomeCategoryViewModel incomeCategoryViewModel
-                   && incomeCategoryViewModel._incomeCategory != _incomeCategory 
-                   && incomeCategoryViewModel._incomeCategory.Id != _incomeCategory.Id;
+            return target.Name != Name;
         }
     }
 }

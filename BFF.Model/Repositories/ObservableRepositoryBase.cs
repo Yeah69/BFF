@@ -9,11 +9,10 @@ using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
 using BFF.Model.Models.Structure;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 using MoreLinq;
 
 namespace BFF.Model.Repositories
@@ -28,7 +27,7 @@ namespace BFF.Model.Repositories
     internal abstract class ObservableRepositoryBase<TDomain, TPersistence> 
         : CachingRepositoryBase<TDomain, TPersistence>, IObservableRepositoryBase<TDomain>
         where TDomain : class, IDataModel
-        where TPersistence : class, IPersistenceModelDto
+        where TPersistence : class, IPersistenceModelSql
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly Comparer<TDomain> _comparer;
@@ -41,7 +40,7 @@ namespace BFF.Model.Repositories
         public IObservable<IEnumerable<TDomain>> ObserveResetAll => _observeResetAll.AsObservable();
 
         protected ObservableRepositoryBase(
-            IProvideConnection provideConnection, 
+            IProvideSqliteConnection provideConnection, 
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm, 
             Comparer<TDomain> comparer) : base(provideConnection, crudOrm)

@@ -97,9 +97,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
         public bool CanMergeTo(IPayeeViewModel target)
         {
-            return target is PayeeViewModel payeeViewModel
-                   && payeeViewModel._payee != _payee
-                   && payeeViewModel._payee.Id != _payee.Id;
+            return target.Name != Name;
         }
     }
 }

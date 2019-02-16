@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BFF.Core.Persistence
+﻿namespace BFF.Core.Persistence
 {
     public interface ISqlitePersistenceConfiguration : IPersistenceConfiguration
     {

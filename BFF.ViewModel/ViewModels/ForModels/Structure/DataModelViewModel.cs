@@ -40,7 +40,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             _rxSchedulerProvider = rxSchedulerProvider;
 
             dataModel
-                .ObservePropertyChanges(nameof(IDataModel.Id))
+                .ObservePropertyChanges(nameof(IDataModel.IsInserted))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(IsInserted)))
                 .AddTo(CompositeDisposable);
@@ -53,7 +53,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             return _dataModel.InsertAsync();
         }
 
-        public virtual bool IsInsertable() => _dataModel.Id <= 0;
+        public virtual bool IsInsertable() => _dataModel.IsInserted.Not();
         
         protected virtual void OnUpdate() {}
         
@@ -63,7 +63,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         }
 
         public IRxRelayCommand DeleteCommand { get; }
-        public bool IsInserted => _dataModel.Id > 0;
+        public bool IsInserted => _dataModel.IsInserted;
 
         public void Dispose() =>
             _rxSchedulerProvider.UI.MinimalSchedule(() => CompositeDisposable.Dispose());

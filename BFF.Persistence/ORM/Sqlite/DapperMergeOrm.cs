@@ -2,9 +2,8 @@
 using System.Threading.Tasks;
 using System.Transactions;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 using Dapper;
 using Dapper.Contrib.Extensions;
 
@@ -30,14 +29,14 @@ WHERE {nameof(SubTransaction.CategoryId)} = @fromCategoryId;
 UPDATE {nameof(Category)}s SET {nameof(Category.ParentId)} = @toCategoryId 
 WHERE {nameof(Category.ParentId)} = @fromCategoryId;";
 
-        private readonly IProvideConnection _provideConnection;
+        private readonly IProvideSqliteConnection _provideConnection;
 
-        public DapperMergeOrm(IProvideConnection provideConnection)
+        public DapperMergeOrm(IProvideSqliteConnection provideConnection)
         {
             _provideConnection = provideConnection;
         }
 
-        public async Task MergePayeeAsync(IPayeeDto from, IPayeeDto to)
+        public async Task MergePayeeAsync(IPayeeSql from, IPayeeSql to)
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
@@ -50,7 +49,7 @@ WHERE {nameof(Category.ParentId)} = @fromCategoryId;";
             }
         }
 
-        public async Task MergeFlagAsync(IFlagDto from, IFlagDto to)
+        public async Task MergeFlagAsync(IFlagSql from, IFlagSql to)
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
@@ -63,7 +62,7 @@ WHERE {nameof(Category.ParentId)} = @fromCategoryId;";
             }
         }
 
-        public async Task MergeCategoryAsync(ICategoryDto from, ICategoryDto to)
+        public async Task MergeCategoryAsync(ICategorySql from, ICategorySql to)
         {
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)

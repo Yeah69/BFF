@@ -35,9 +35,9 @@ namespace BFF.ViewModel.Services
     {
         private readonly Func<TDomain, TViewModel> _factory;
 
-        protected readonly IDictionary<TDomain, TViewModel> _modelToViewModel 
+        protected readonly IDictionary<TDomain, TViewModel> ModelToViewModel 
             = new Dictionary<TDomain, TViewModel>();
-        protected readonly IDictionary<TViewModel, TDomain> _viewModelToModel 
+        protected readonly IDictionary<TViewModel, TDomain> ViewModelToModel 
             = new Dictionary<TViewModel, TDomain>();
 
         protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
@@ -59,55 +59,47 @@ namespace BFF.ViewModel.Services
                     .Where(e => e.EventArgs.Action == NotifyCollectionChangedAction.Reset)
                     .Subscribe(_ =>
                     {
-                        _modelToViewModel.Clear();
-                        _viewModelToModel.Clear();
+                        ModelToViewModel.Clear();
+                        ViewModelToModel.Clear();
                     });
             }
 
             Disposable.Create(() =>
             {
-                _modelToViewModel.Clear();
-                _viewModelToModel.Clear();
+                ModelToViewModel.Clear();
+                ViewModelToModel.Clear();
             }).AddTo(CompositeDisposable);
         }
 
         protected TViewModel AddToDictionaries(TDomain model)
         {
             TViewModel viewModel;
-            if(!_modelToViewModel.ContainsKey(model))
+            if(!ModelToViewModel.ContainsKey(model))
             {
                 viewModel = _factory(model);
-                _modelToViewModel.Add(model, viewModel);
+                ModelToViewModel.Add(model, viewModel);
             }
             else
-                viewModel = _modelToViewModel[model];
-            if(!_viewModelToModel.ContainsKey(viewModel))
-                _viewModelToModel.Add(viewModel, model);
+                viewModel = ModelToViewModel[model];
+            if(!ViewModelToModel.ContainsKey(viewModel))
+                ViewModelToModel.Add(viewModel, model);
             return viewModel;
         }
 
         public virtual TViewModel GetViewModel(TDomain model)
         {
             if(model is null) return null;
-            if(!_modelToViewModel.ContainsKey(model))
+            if(!ModelToViewModel.ContainsKey(model))
                 AddToDictionaries(model);
 
-            return _modelToViewModel[model];
-        }
-
-        public TViewModel GetViewModel(long id)
-        {
-            if(id < 1) return null;
-            TDomain model = _viewModelToModel.Values.SingleOrDefault(c => c.Id == id);
-
-            return GetViewModel(model);
+            return ModelToViewModel[model];
         }
 
         public TDomain GetModel(TViewModel viewModel)
         {
             if(viewModel is null) return null;
-            if(_viewModelToModel.ContainsKey(viewModel))
-                return _viewModelToModel[viewModel];
+            if(ViewModelToModel.ContainsKey(viewModel))
+                return ViewModelToModel[viewModel];
 
             return null;
         }

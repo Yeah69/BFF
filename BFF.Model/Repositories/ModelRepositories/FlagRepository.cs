@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
 using BFF.Model.Models;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
 {
@@ -23,25 +22,29 @@ namespace BFF.Model.Repositories.ModelRepositories
     {
     }
 
-    internal sealed class FlagRepository : ObservableRepositoryBase<IFlag, IFlagDto>, IFlagRepository
+    internal interface IFlagRepositoryInternal : IFlagRepository, IReadOnlyRepository<IFlag>
+    {
+    }
+
+    internal sealed class FlagRepository : ObservableRepositoryBase<IFlag, IFlagSql>, IFlagRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IMergeOrm _mergeOrm;
-        private readonly Func<IFlagDto> _flagDtoFactory;
+        private readonly Func<IFlagSql> _flagDtoFactory;
 
         public FlagRepository(
-            IProvideConnection provideConnection, 
+            IProvideSqliteConnection provideConnection, 
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm,
             IMergeOrm mergeOrm,
-            Func<IFlagDto> flagDtoFactory) : base(provideConnection, rxSchedulerProvider, crudOrm, new FlagComparer())
+            Func<IFlagSql> flagDtoFactory) : base(provideConnection, rxSchedulerProvider, crudOrm, new FlagComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _mergeOrm = mergeOrm;
             _flagDtoFactory = flagDtoFactory;
         }
 
-        protected override Converter<IFlag, IFlagDto> ConvertToPersistence => domainModel =>
+        protected override Converter<IFlag, IFlagSql> ConvertToPersistence => domainModel =>
         {
             long color = domainModel.Color.A;
             color = color << 8;
@@ -60,7 +63,7 @@ namespace BFF.Model.Repositories.ModelRepositories
             return flagDto;
         };
 
-        protected override Task<IFlag> ConvertToDomainAsync(IFlagDto persistenceModel)
+        protected override Task<IFlag> ConvertToDomainAsync(IFlagSql persistenceModel)
         {
             return Task.FromResult<IFlag>(
                 new Flag(

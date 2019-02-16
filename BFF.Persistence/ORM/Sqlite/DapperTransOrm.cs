@@ -5,9 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 using Dapper;
 
 namespace BFF.Persistence.ORM.Sqlite
@@ -40,9 +39,9 @@ namespace BFF.Persistence.ORM.Sqlite
         private static string OrderingSuffix => $"ORDER BY {nameof(Trans.Date)}";
 
 
-        private readonly IProvideConnection _provideConnection;
+        private readonly IProvideSqliteConnection _provideConnection;
 
-        public DapperTransOrm(IProvideConnection provideConnection)
+        public DapperTransOrm(IProvideSqliteConnection provideConnection)
         {
             _provideConnection = provideConnection;
         }
@@ -95,7 +94,7 @@ namespace BFF.Persistence.ORM.Sqlite
             return ret;
         }
 
-        public async Task<IEnumerable<ITransDto>> GetPageFromSpecificAccountAsync(int offset, int pageSize, long accountId)
+        public async Task<IEnumerable<ITransSql>> GetPageFromSpecificAccountAsync(int offset, int pageSize, long accountId)
         {
             IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
@@ -109,7 +108,7 @@ namespace BFF.Persistence.ORM.Sqlite
             return ret;
         }
 
-        public async Task<IEnumerable<ITransDto>> GetPageFromSummaryAccountAsync(int offset, int pageSize)
+        public async Task<IEnumerable<ITransSql>> GetPageFromSummaryAccountAsync(int offset, int pageSize)
         {
             IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
@@ -123,7 +122,7 @@ namespace BFF.Persistence.ORM.Sqlite
             return ret;
         }
 
-        public async Task<IEnumerable<ITransDto>> GetFromMonthAsync(DateTime month)
+        public async Task<IEnumerable<ITransSql>> GetFromMonthAsync(DateTime month)
         {
             IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
@@ -144,7 +143,7 @@ UNION ALL
             return ret;
         }
 
-        public async Task<IEnumerable<ITransDto>> GetFromMonthAndCategoryAsync(DateTime month, long categoryId)
+        public async Task<IEnumerable<ITransSql>> GetFromMonthAndCategoryAsync(DateTime month, long categoryId)
         {
             IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())
@@ -165,7 +164,7 @@ UNION ALL
             return ret;
         }
 
-        public async Task<IEnumerable<ITransDto>> GetFromMonthAndCategoriesAsync(DateTime month, long[] categoryIds)
+        public async Task<IEnumerable<ITransSql>> GetFromMonthAndCategoriesAsync(DateTime month, long[] categoryIds)
         {
             IList<Trans> ret;
             using (TransactionScope transactionScope = new TransactionScope())

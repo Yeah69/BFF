@@ -93,7 +93,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             transaction
                 .ObservePropertyChanges(nameof(transaction.Sum))
-                .Where(_ => transaction.Id != -1)
+                .Where(_ => transaction.IsInserted)
                 .Subscribe(sum => NotifyRelevantAccountsToRefreshBalance())
                 .AddTo(CompositeDisposable);
 

@@ -145,7 +145,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             parentTransaction
                 .SubTransactions
                 .ObserveElementPropertyChanged()
-                .Where(_ => _.EventArgs.PropertyName == nameof(ISubTransaction.Sum) && parentTransaction.Id != -1L)
+                .Where(_ => _.EventArgs.PropertyName == nameof(ISubTransaction.Sum) && parentTransaction.IsInserted)
                 .Subscribe(_ =>
                 {
                     Account?.RefreshBalance();
@@ -176,7 +176,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                     _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
                     foreach (ISubTransactionViewModel subTransaction in _newTransactions)
                     {
-                        if (parentTransaction.Id > 0L)
+                        if (parentTransaction.IsInserted)
                             await subTransaction.InsertAsync();
                     }
                     _newTransactions.Clear();

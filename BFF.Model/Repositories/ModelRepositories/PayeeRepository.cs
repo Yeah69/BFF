@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
 using BFF.Model.Models;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
 {
@@ -22,25 +21,29 @@ namespace BFF.Model.Repositories.ModelRepositories
     {
     }
 
-    internal sealed class PayeeRepository : ObservableRepositoryBase<IPayee, IPayeeDto>, IPayeeRepository
+    internal interface IPayeeRepositoryInternal : IPayeeRepository, IReadOnlyRepository<IPayee>
+    {
+    }
+
+    internal sealed class PayeeRepository : ObservableRepositoryBase<IPayee, IPayeeSql>, IPayeeRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IMergeOrm _mergeOrm;
-        private readonly Func<IPayeeDto> _payeeDtoFactory;
+        private readonly Func<IPayeeSql> _payeeDtoFactory;
 
         public PayeeRepository(
-            IProvideConnection provideConnection, 
+            IProvideSqliteConnection provideConnection, 
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm,
             IMergeOrm mergeOrm,
-            Func<IPayeeDto> payeeDtoFactory) : base(provideConnection, rxSchedulerProvider, crudOrm, new PayeeComparer())
+            Func<IPayeeSql> payeeDtoFactory) : base(provideConnection, rxSchedulerProvider, crudOrm, new PayeeComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _mergeOrm = mergeOrm;
             _payeeDtoFactory = payeeDtoFactory;
         }
         
-        protected override Converter<IPayee, IPayeeDto> ConvertToPersistence => domainPayee =>
+        protected override Converter<IPayee, IPayeeSql> ConvertToPersistence => domainPayee =>
         {
             var payeeDto = _payeeDtoFactory();
 
@@ -50,7 +53,7 @@ namespace BFF.Model.Repositories.ModelRepositories
             return payeeDto;
         };
 
-        protected override Task<IPayee> ConvertToDomainAsync(IPayeeDto persistenceModel)
+        protected override Task<IPayee> ConvertToDomainAsync(IPayeeSql persistenceModel)
         {
             return Task.FromResult<IPayee>(new Payee(this, _rxSchedulerProvider, persistenceModel.Id, persistenceModel.Name));
         }

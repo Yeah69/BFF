@@ -1,7 +1,7 @@
 ﻿using System;
 using BFF.Core.Persistence;
 using BFF.Persistence.Contexts;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Contexts
 {

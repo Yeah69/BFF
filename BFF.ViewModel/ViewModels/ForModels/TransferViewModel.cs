@@ -136,26 +136,26 @@ namespace BFF.ViewModel.ViewModels.ForModels
             transfer
                 .ObservePropertyChanges(nameof(transfer.FromAccount))
                 .SkipLast(1)
-                .Where(_ => transfer.Id != -1L)
+                .Where(_ => transfer.IsInserted)
                 .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.FromAccount)))
                 .AddTo(CompositeDisposable);
 
             transfer
                 .ObservePropertyChanges(nameof(transfer.FromAccount))
-                .Where(_ => transfer.Id != -1L)
+                .Where(_ => transfer.IsInserted)
                 .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.FromAccount)))
                 .AddTo(CompositeDisposable);
 
             transfer
                 .ObservePropertyChanges(nameof(transfer.ToAccount))
                 .SkipLast(1)
-                .Where(_ => transfer.Id != -1L)
+                .Where(_ => transfer.IsInserted)
                 .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.ToAccount)))
                 .AddTo(CompositeDisposable);
 
             transfer
                 .ObservePropertyChanges(nameof(transfer.ToAccount))
-                .Where(_ => transfer.Id != -1L)
+                .Where(_ => transfer.IsInserted)
                 .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.ToAccount)))
                 .AddTo(CompositeDisposable);
 
@@ -168,7 +168,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             transfer
                 .ObservePropertyChanges(nameof(transfer.Sum))
-                .Where(_ => transfer.Id != -1L)
+                .Where(_ => transfer.IsInserted)
                 .Subscribe(sum =>
                 {
                     FromAccount?.RefreshBalance();

@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using BFF.Core.Extensions;
-using BFF.Core.Persistence;
 using BFF.Model.Models.Structure;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 using NLog;
 
 namespace BFF.Model.Repositories
@@ -18,13 +17,13 @@ namespace BFF.Model.Repositories
     internal abstract class CachingRepositoryBase<TDomain, TPersistence> 
         : RepositoryBase<TDomain, TPersistence>, ICachingRepositoryBase<TDomain>
         where TDomain : class, IDataModel 
-        where TPersistence : class, IPersistenceModelDto
+        where TPersistence : class, IPersistenceModelSql
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
         private readonly Dictionary<long, TDomain> _cache = new Dictionary<long, TDomain>();
 
-        protected CachingRepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm) : base(
+        protected CachingRepositoryBase(IProvideSqliteConnection provideConnection, ICrudOrm crudOrm) : base(
             provideConnection, crudOrm)
         {
             Disposable.Create(ClearCache).AddTo(CompositeDisposable);

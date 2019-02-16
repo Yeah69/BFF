@@ -4,12 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
 {
@@ -23,34 +22,34 @@ namespace BFF.Model.Repositories.ModelRepositories
     }
 
 
-    internal sealed class TransRepository : RepositoryBase<ITransBase, ITransDto>, ITransRepository
+    internal sealed class TransRepository : RepositoryBase<ITransBase, ITransSql>, ITransRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IRepository<ITransaction> _transactionRepository;
         private readonly IRepository<ITransfer> _transferRepository;
         private readonly IRepository<IParentTransaction> _parentTransactionRepository;
-        private readonly IAccountRepository _accountRepository;
-        private readonly ICategoryBaseRepository _categoryBaseRepository;
-        private readonly IPayeeRepository _payeeRepository;
+        private readonly IAccountRepositoryInternal _accountRepository;
+        private readonly ICategoryBaseRepositoryInternal _categoryBaseRepository;
+        private readonly IPayeeRepositoryInternal _payeeRepository;
         private readonly ISubTransactionRepository _subTransactionsRepository;
         private readonly ITransOrm _transOrm;
-        private readonly IFlagRepository _flagRepository;
-        private readonly Func<ITransDto> _transDtoFactory;
+        private readonly IFlagRepositoryInternal _flagRepository;
+        private readonly Func<ITransSql> _transDtoFactory;
 
         public TransRepository(
-            IProvideConnection provideConnection, 
+            IProvideSqliteConnection provideConnection, 
             IRxSchedulerProvider rxSchedulerProvider,
             IRepository<ITransaction> transactionRepository, 
             IRepository<ITransfer> transferRepository, 
             IRepository<IParentTransaction> parentTransactionRepository,
-            IAccountRepository accountRepository,
-            ICategoryBaseRepository categoryBaseRepository,
-            IPayeeRepository payeeRepository,
+            IAccountRepositoryInternal accountRepository,
+            ICategoryBaseRepositoryInternal categoryBaseRepository,
+            IPayeeRepositoryInternal payeeRepository,
             ISubTransactionRepository subTransactionsRepository, 
             ICrudOrm crudOrm,
             ITransOrm transOrm,
-            IFlagRepository flagRepository,
-            Func<ITransDto> transDtoFactory)
+            IFlagRepositoryInternal flagRepository,
+            Func<ITransSql> transDtoFactory)
             : base(provideConnection, crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
@@ -66,7 +65,7 @@ namespace BFF.Model.Repositories.ModelRepositories
             _transDtoFactory = transDtoFactory;
         }
 
-        protected override Converter<ITransBase, ITransDto> ConvertToPersistence => domainTransBase =>
+        protected override Converter<ITransBase, ITransSql> ConvertToPersistence => domainTransBase =>
         {
             long accountId = -69;
             long? categoryId = -69;
@@ -147,7 +146,7 @@ namespace BFF.Model.Repositories.ModelRepositories
                 .Select(async t => await ConvertToDomainAsync(t).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
         }
 
-        protected override async Task<ITransBase> ConvertToDomainAsync(ITransDto persistenceModel)
+        protected override async Task<ITransBase> ConvertToDomainAsync(ITransSql persistenceModel)
         {
             Enum.TryParse(persistenceModel.Type, true, out TransType type);
             ITransBase ret;

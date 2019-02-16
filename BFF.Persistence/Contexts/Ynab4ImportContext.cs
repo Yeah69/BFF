@@ -11,7 +11,7 @@ namespace BFF.Persistence.Contexts
             IYnab4ImportConfiguration ynab4ImportConfiguration,
             IPersistenceConfiguration persistenceConfiguration,
             Func<IPersistenceConfiguration, IPersistenceContext> persistenceContextFactory,
-            Func<IYnab4ImportConfiguration, IYnab4Import> ynab4ImportFactory)
+            Func<IYnab4ImportConfiguration, IYnab4CsvImport> ynab4ImportFactory)
         {
             persistenceContextFactory(persistenceConfiguration);
             Importable = ynab4ImportFactory(ynab4ImportConfiguration);

@@ -1,11 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
-using BFF.Core.Persistence;
 using BFF.Model.Models;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
 {
@@ -13,24 +12,24 @@ namespace BFF.Model.Repositories.ModelRepositories
     {
     }
 
-    internal sealed class TransactionRepository : RepositoryBase<ITransaction, ITransDto>, ITransactionRepository
+    internal sealed class TransactionRepository : RepositoryBase<ITransaction, ITransSql>, ITransactionRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly IAccountRepository _accountRepository;
-        private readonly ICategoryBaseRepository _categoryBaseRepository;
-        private readonly IPayeeRepository _payeeRepository;
-        private readonly IFlagRepository _flagRepository;
-        private readonly Func<ITransDto> _transDtoFactory;
+        private readonly IAccountRepositoryInternal _accountRepository;
+        private readonly ICategoryBaseRepositoryInternal _categoryBaseRepository;
+        private readonly IPayeeRepositoryInternal _payeeRepository;
+        private readonly IFlagRepositoryInternal _flagRepository;
+        private readonly Func<ITransSql> _transDtoFactory;
 
         public TransactionRepository(
-            IProvideConnection provideConnection,
+            IProvideSqliteConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm crudOrm,
-            IAccountRepository accountRepository,
-            ICategoryBaseRepository categoryBaseRepository,
-            IPayeeRepository payeeRepository,
-            IFlagRepository flagRepository,
-            Func<ITransDto> transDtoFactory) : base(provideConnection, crudOrm)
+            IAccountRepositoryInternal accountRepository,
+            ICategoryBaseRepositoryInternal categoryBaseRepository,
+            IPayeeRepositoryInternal payeeRepository,
+            IFlagRepositoryInternal flagRepository,
+            Func<ITransSql> transDtoFactory) : base(provideConnection, crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _accountRepository = accountRepository;
@@ -40,7 +39,7 @@ namespace BFF.Model.Repositories.ModelRepositories
             _transDtoFactory = transDtoFactory;
         }
         
-        protected override Converter<ITransaction, ITransDto> ConvertToPersistence => domainTransaction =>
+        protected override Converter<ITransaction, ITransSql> ConvertToPersistence => domainTransaction =>
         {
             var transDto = _transDtoFactory();
 
@@ -61,7 +60,7 @@ namespace BFF.Model.Repositories.ModelRepositories
             return transDto;
         };
 
-        protected override async Task<ITransaction> ConvertToDomainAsync(ITransDto persistenceModel)
+        protected override async Task<ITransaction> ConvertToDomainAsync(ITransSql persistenceModel)
         {
             return new Transaction(
                 this,

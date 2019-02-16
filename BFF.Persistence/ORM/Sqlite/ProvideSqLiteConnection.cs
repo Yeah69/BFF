@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Data;
-using System.IO;
-using System.Linq;
-using BFF.Core.Extensions;
 using BFF.Core.Persistence;
+using BFF.Persistence.ORM.Realm;
 using Dapper;
 using Microsoft.Data.Sqlite;
 
@@ -35,17 +33,17 @@ namespace BFF.Persistence.ORM.Sqlite
         }
     }
 
-    public interface IProvideSqLiteConnection : IProvideConnection
+    public interface IProvideSqliteConnection : IProvideConnection<IDbConnection>
     { }
 
-    internal class ProvideSqLiteConnection : IProvideSqLiteConnection
+    internal class ProvideSqliteConnection : ProvideConnectionBase<IDbConnection>, IProvideSqliteConnection
     {
-        static ProvideSqLiteConnection()
+        static ProvideSqliteConnection()
         {
             SqlMapper.AddTypeHandler(new NullableLongTypeHandler());
         }
 
-        public IDbConnection Connection
+        public override IDbConnection Connection
         {
             get
             {
@@ -58,29 +56,10 @@ namespace BFF.Persistence.ORM.Sqlite
             }
         }
 
-        public void Backup(string reason)
+        protected override string ConnectionString => $"Data Source={DbPath};";
+
+        public ProvideSqliteConnection(string dbPath) : base(dbPath)
         {
-            var fileInfo = new FileInfo(DbPath);
-            var directory = fileInfo.Directory;
-
-            if(directory == null) throw new DirectoryNotFoundException();
-
-            var backupDirectoryPath = BackupDirectoryPath(fileInfo.Name);
-            var backupDirectory = directory.GetDirectories().FirstOrDefault(di => di.Name == backupDirectoryPath) ??
-                                  directory.CreateSubdirectory(backupDirectoryPath);
-
-            fileInfo.CopyTo($"{backupDirectory.FullName}{Path.DirectorySeparatorChar}{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{reason.RemoveIllegalFilePathCharacters()}_{fileInfo.Name}");
         }
-
-        private string ConnectionString => $"Data Source={DbPath};";
-
-        private string DbPath { get; }
-
-        public ProvideSqLiteConnection(string dbPath)
-        {
-            DbPath = dbPath;
-        }
-
-        private string BackupDirectoryPath(string fileName) => $"BFF_{fileName}_Backups";
     }
 }

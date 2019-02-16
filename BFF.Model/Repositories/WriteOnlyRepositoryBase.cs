@@ -1,11 +1,11 @@
 using System;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using BFF.Core.Persistence;
+using BFF.Core.Extensions;
 using BFF.Model.Models.Structure;
-using BFF.Persistence.Models;
-using BFF.Persistence.ORM;
-using BFF.Persistence.ORM.Interfaces;
+using BFF.Persistence.Models.Sql;
+using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories
 {
@@ -19,14 +19,14 @@ namespace BFF.Model.Repositories
     internal abstract class WriteOnlyRepositoryBase<TDomain, TPersistence>
         : IWriteOnlyRepositoryBase<TDomain>
         where TDomain : class, IDataModel
-        where TPersistence : class, IPersistenceModelDto
+        where TPersistence : class, IPersistenceModelSql
     {
         private readonly ICrudOrm _crudOrm;
-        protected IProvideConnection ProvideConnection { get; }
+        protected IProvideSqliteConnection ProvideConnection { get; }
 
         protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
 
-        protected WriteOnlyRepositoryBase(IProvideConnection provideConnection, ICrudOrm crudOrm)
+        protected WriteOnlyRepositoryBase(IProvideSqliteConnection provideConnection, ICrudOrm crudOrm)
         {
             _crudOrm = crudOrm;
             ProvideConnection = provideConnection;
@@ -36,7 +36,7 @@ namespace BFF.Model.Repositories
 
         public virtual async Task AddAsync(TDomain dataModel)
         {
-            if (dataModel.Id > 0) return;
+            if (dataModel.IsInserted) return;
             var persistenceModel = ConvertToPersistence(dataModel);
             await _crudOrm.CreateAsync(persistenceModel).ConfigureAwait(false);
             dataModel.Id = persistenceModel.Id;
@@ -44,13 +44,13 @@ namespace BFF.Model.Repositories
 
         public virtual async Task UpdateAsync(TDomain dataModel)
         {
-            if (dataModel.Id < 0) return;
+            if (dataModel.IsInserted.Not()) return;
             await _crudOrm.UpdateAsync(ConvertToPersistence(dataModel)).ConfigureAwait(false);
         }
 
         public virtual async Task DeleteAsync(TDomain dataModel)
         {
-            if (dataModel.Id < 0) return;
+            if (dataModel.IsInserted.Not()) return;
             await _crudOrm.DeleteAsync(ConvertToPersistence(dataModel)).ConfigureAwait(false);
         }
 

@@ -28,8 +28,8 @@ namespace BFF.ViewModel.Services
                 .Where(e => e.EventArgs.Action == NotifyCollectionChangedAction.Reset)
                 .Subscribe(_ =>
                 {
-                    _modelToViewModel.Clear();
-                    _viewModelToModel.Clear();
+                    ModelToViewModel.Clear();
+                    ViewModelToModel.Clear();
                 });
 
             repository

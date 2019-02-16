@@ -28,7 +28,7 @@ namespace BFF.Model.Models
 
         public override Task InsertAsync() => Task.CompletedTask;
 
-        public override Task UpdateAsync() => Task.CompletedTask;
+        protected override Task UpdateAsync() => Task.CompletedTask;
 
         public override Task DeleteAsync() => Task.CompletedTask;
 
