@@ -2,23 +2,24 @@
 using System.Threading.Tasks;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
+using BFF.Persistence.Models.Sql;
 
 namespace BFF.Model.Repositories.ModelRepositories
 {
-    public interface ICategoryBaseRepository : IMergingRepository<ICategoryBase>
+    public interface ICategoryBaseRepository
     {
     }
 
-    internal interface ICategoryBaseRepositoryInternal : ICategoryBaseRepository, IReadOnlyRepository<ICategoryBase>
+    internal interface ICategoryBaseRepositoryInternal : IMergingRepository<ICategoryBase>, ICategoryBaseRepository, IReadOnlyRepository<ICategoryBase>
     {
     }
 
     internal class CategoryBaseRepository : ICategoryBaseRepositoryInternal
     {
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IIncomeCategoryRepository _incomeCategoryRepository;
+        private readonly ICategoryRepositoryInternal _categoryRepository;
+        private readonly IIncomeCategoryRepositoryInternal _incomeCategoryRepository;
 
-        public CategoryBaseRepository(ICategoryRepository categoryRepository, IIncomeCategoryRepository incomeCategoryRepository)
+        public CategoryBaseRepository(ICategoryRepositoryInternal categoryRepository, IIncomeCategoryRepositoryInternal incomeCategoryRepository)
         {
             _categoryRepository = categoryRepository;
             _incomeCategoryRepository = incomeCategoryRepository;
@@ -26,9 +27,9 @@ namespace BFF.Model.Repositories.ModelRepositories
 
         public Task<ICategoryBase> FindAsync(long id)
         {
-            ICategoryBase ret = _incomeCategoryRepository.All.FirstOrDefault(ic => ic.Id == id); 
+            ICategoryBase ret = _incomeCategoryRepository.All.OfType<IDataModelInternal<ICategorySql>>().FirstOrDefault(ic => ic.BackingPersistenceModel.Id == id) as ICategoryBase; 
             if (ret != null) return Task.FromResult(ret);
-            return Task.FromResult<ICategoryBase>(_categoryRepository.All.FirstOrDefault(c => c.Id == id));
+            return Task.FromResult(_categoryRepository.All.OfType<IDataModelInternal<ICategorySql>>().FirstOrDefault(c => c.BackingPersistenceModel.Id == id) as ICategoryBase);
         }
 
         public Task MergeAsync(ICategoryBase from, ICategoryBase to)

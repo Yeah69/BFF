@@ -1,0 +1,18 @@
+﻿using System.Threading.Tasks;
+using BFF.Core.IoC;
+using BFF.Persistence.Models.Realm;
+
+namespace BFF.Persistence.ORM.Realm.Interfaces
+{
+    public interface IAccountOrm : IOncePerBackend
+    {
+        Task<long?> GetClearedBalanceAsync(IAccountRealm account);
+        Task<long?> GetClearedBalanceUntilNowAsync(IAccountRealm account);
+        Task<long?> GetClearedOverallBalanceAsync();
+        Task<long?> GetClearedOverallBalanceUntilNowAsync();
+        Task<long?> GetUnclearedBalanceAsync(IAccountRealm account);
+        Task<long?> GetUnclearedBalanceUntilNowAsync(IAccountRealm account);
+        Task<long?> GetUnclearedOverallBalanceAsync();
+        Task<long?> GetUnclearedOverallBalanceUntilNowAsync();
+    }
+}

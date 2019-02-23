@@ -1,11 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
+using BFF.Model.Models.Structure;
 using BFF.Persistence.Models.Sql;
-using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM;
 using BFF.Persistence.ORM.Sqlite.Interfaces;
 using MoreLinq;
 
@@ -47,11 +47,11 @@ namespace BFF.Model.Repositories.ModelRepositories
         }
     }
 
-    public interface ICategoryRepository : IObservableRepositoryBase<ICategory>, IMergingRepository<ICategory>
+    public interface ICategoryRepository : IObservableRepositoryBase<ICategory>
     {
     }
 
-    internal interface ICategoryRepositoryInternal : ICategoryRepository, IReadOnlyRepository<ICategory>
+    internal interface ICategoryRepositoryInternal : ICategoryRepository, IMergingRepository<ICategory>, IReadOnlyRepository<ICategory>
     {
     }
 
@@ -60,21 +60,17 @@ namespace BFF.Model.Repositories.ModelRepositories
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IMergeOrm _mergeOrm;
         private readonly ICategoryOrm _categoryOrm;
-        private readonly Func<ICategorySql> _categoryDtoFactory;
 
         public CategoryRepository(
-            IProvideSqliteConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm crudOrm, 
+            ICrudOrm<ICategorySql> crudOrm, 
             IMergeOrm mergeOrm,
-            ICategoryOrm categoryOrm,
-            Func<ICategorySql> categoryDtoFactory) 
-            : base(provideConnection, rxSchedulerProvider, crudOrm, new CategoryComparer())
+            ICategoryOrm categoryOrm) 
+            : base(rxSchedulerProvider, crudOrm, new CategoryComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _mergeOrm = mergeOrm;
             _categoryOrm = categoryOrm;
-            _categoryDtoFactory = categoryDtoFactory;
             InitializeAll();
         }
         
@@ -101,28 +97,23 @@ namespace BFF.Model.Repositories.ModelRepositories
         protected override async Task<ICategory> ConvertToDomainAsync(ICategorySql persistenceModel)
         {
             return 
-                new Category(this,
+                new Category<ICategorySql>(
+                    persistenceModel,
+                    this,
+                    this,
                     _rxSchedulerProvider,
-                    persistenceModel.Id,
+                    persistenceModel.Id > 0,
                     persistenceModel.Name,
                     persistenceModel.ParentId != null ? await FindAsync((long)persistenceModel.ParentId).ConfigureAwait(false) : null);
         }
 
         protected override Task<IEnumerable<ICategorySql>> FindAllInnerAsync() => _categoryOrm.ReadCategoriesAsync();
-
-        protected override Converter<ICategory, ICategorySql> ConvertToPersistence => domainCategory =>
-        {
-            var categoryDto = _categoryDtoFactory();
-
-            categoryDto.Id = domainCategory.Id;
-            categoryDto.ParentId = domainCategory.Parent?.Id;
-            categoryDto.Name = domainCategory.Name;
-
-            return categoryDto;
-        };
-
+        
         public async Task MergeAsync(ICategory from, ICategory to)
         {
+            var fromPersistenceModel = (@from as IDataModelInternal<ICategorySql>)?.BackingPersistenceModel;
+            var toPersistenceModel = (to as IDataModelInternal<ICategorySql>)?.BackingPersistenceModel;
+            if (fromPersistenceModel is null || toPersistenceModel is null) return;
             from
                 .Categories
                 .Join(to.Categories, c => c.Name, c => c.Name, (f, t) => f)
@@ -133,7 +124,10 @@ namespace BFF.Model.Repositories.ModelRepositories
                     while (to.Categories.Any(t => t.Name == $"{f.Name}{++i}")) ;
                     f.Name = $"{f.Name}{i}";
                 });
-            await _mergeOrm.MergeCategoryAsync(ConvertToPersistence(from), ConvertToPersistence(to)).ConfigureAwait(false);
+            await _mergeOrm.MergeCategoryAsync(
+                fromPersistenceModel,
+                toPersistenceModel)
+                .ConfigureAwait(false);
             ClearCache();
             await ResetAll();
             InitializeAll();

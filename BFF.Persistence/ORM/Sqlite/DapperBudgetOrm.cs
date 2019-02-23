@@ -132,11 +132,14 @@ SELECT Total(Sum) FROM
 )";
 
         private readonly IProvideSqliteConnection _provideConnection;
+        private readonly Func<BudgetEntry> _budgetEntryFactory;
 
         public DapperBudgetOrm(
-            IProvideSqliteConnection provideConnection)
+            IProvideSqliteConnection provideConnection,
+            Func<BudgetEntry> budgetEntryFactory)
         {
             _provideConnection = provideConnection;
+            _budgetEntryFactory = budgetEntryFactory;
         }
 
         public async Task<BudgetBlock> FindAsync(int year, long[] categoryIds, (long Id, int MonthOffset)[] incomeCategories)
@@ -294,13 +297,14 @@ SELECT Total(Sum) FROM
                         if (outflowList.ContainsKey(month))
                             outflow = outflowList[month];
                         long currentValue = entryBudgetValue + budgeted + outflow;
-                        budgetEntries.Add((new BudgetEntry
-                        {
-                            Id = id,
-                            CategoryId = categoryId,
-                            Budget = budgeted,
-                            Month = month
-                        }, outflow, currentValue));
+
+                        var newBudgetEntry = _budgetEntryFactory();
+
+                        newBudgetEntry.Id = id;
+                        newBudgetEntry.CategoryId = categoryId;
+                        newBudgetEntry.Budget = budgeted;
+                        newBudgetEntry.Month = month;
+                        budgetEntries.Add((newBudgetEntry, outflow, currentValue));
 
                         entryBudgetValue = Math.Max(0L, currentValue);
                     }

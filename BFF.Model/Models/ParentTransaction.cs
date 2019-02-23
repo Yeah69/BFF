@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 using Reactive.Bindings.Extensions;
 
 namespace BFF.Model.Models
@@ -17,23 +18,25 @@ namespace BFF.Model.Models
         void RemoveSubElement(ISubTransaction subTransaction);
     }
 
-    internal class ParentTransaction : TransactionBase<IParentTransaction>, IParentTransaction
+    internal class ParentTransaction<TPersistence> : TransactionBase<IParentTransaction, TPersistence>, IParentTransaction
+        where TPersistence : class, IPersistenceModel
     {
         private readonly ObservableCollection<ISubTransaction> _subTransactions;
         
         public ParentTransaction(
-            IRepository<IParentTransaction> repository,
+            TPersistence backingPersistenceModel,
+            IRepository<IParentTransaction, TPersistence> repository,
             IRxSchedulerProvider rxSchedulerProvider,
             IEnumerable<ISubTransaction> subTransactions,
             DateTime date,
-            long id = -1L,
+            bool isInserted = false,
             IFlag flag = null,
             string checkNumber = "",
             IAccount account = null,
             IPayee payee = null,
             string memo = "",
             bool? cleared = false)
-            : base(repository, rxSchedulerProvider, id, flag, checkNumber, date, account, payee, memo, cleared)
+            : base(backingPersistenceModel, repository, rxSchedulerProvider, isInserted, flag, checkNumber, date, account, payee, memo, cleared)
         {
             _subTransactions = new ObservableCollection<ISubTransaction>(subTransactions);
             SubTransactions = new ReadOnlyObservableCollection<ISubTransaction>(_subTransactions);

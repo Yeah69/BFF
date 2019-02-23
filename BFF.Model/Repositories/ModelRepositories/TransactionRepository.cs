@@ -1,14 +1,13 @@
-using System;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Models.Sql;
-using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM;
 using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
 {
-    public interface ITransactionRepository : IRepositoryBase<ITransaction>
+    public interface ITransactionRepository
     {
     }
 
@@ -19,54 +18,30 @@ namespace BFF.Model.Repositories.ModelRepositories
         private readonly ICategoryBaseRepositoryInternal _categoryBaseRepository;
         private readonly IPayeeRepositoryInternal _payeeRepository;
         private readonly IFlagRepositoryInternal _flagRepository;
-        private readonly Func<ITransSql> _transDtoFactory;
 
         public TransactionRepository(
-            IProvideSqliteConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm crudOrm,
+            ICrudOrm<ITransSql> crudOrm,
             IAccountRepositoryInternal accountRepository,
             ICategoryBaseRepositoryInternal categoryBaseRepository,
             IPayeeRepositoryInternal payeeRepository,
-            IFlagRepositoryInternal flagRepository,
-            Func<ITransSql> transDtoFactory) : base(provideConnection, crudOrm)
+            IFlagRepositoryInternal flagRepository) : base(crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _accountRepository = accountRepository;
             _categoryBaseRepository = categoryBaseRepository;
             _payeeRepository = payeeRepository;
             _flagRepository = flagRepository;
-            _transDtoFactory = transDtoFactory;
         }
-        
-        protected override Converter<ITransaction, ITransSql> ConvertToPersistence => domainTransaction =>
-        {
-            var transDto = _transDtoFactory();
-
-            transDto.Id = domainTransaction.Id;
-            transDto.AccountId = domainTransaction.Account.Id;
-            transDto.FlagId = domainTransaction.Flag is null || domainTransaction.Flag == Flag.Default
-                ? (long?)null
-                : domainTransaction.Flag.Id;
-            transDto.CheckNumber = domainTransaction.CheckNumber;
-            transDto.CategoryId = domainTransaction.Category?.Id;
-            transDto.PayeeId = domainTransaction.Payee?.Id;
-            transDto.Date = domainTransaction.Date;
-            transDto.Memo = domainTransaction.Memo;
-            transDto.Sum = domainTransaction.Sum;
-            transDto.Cleared = domainTransaction.Cleared ? 1L : 0L;
-            transDto.Type = nameof(TransType.Transaction);
-
-            return transDto;
-        };
 
         protected override async Task<ITransaction> ConvertToDomainAsync(ITransSql persistenceModel)
         {
-            return new Transaction(
+            return new Transaction<ITransSql>(
+                persistenceModel,
                 this,
                 _rxSchedulerProvider,
                 persistenceModel.Date,
-                persistenceModel.Id,
+                persistenceModel.Id > 0,
                 persistenceModel.FlagId is null
                     ? null
                     : await _flagRepository.FindAsync((long) persistenceModel.FlagId).ConfigureAwait(false),

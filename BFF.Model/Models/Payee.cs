@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
-using BFF.Model.Repositories.ModelRepositories;
+using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -10,23 +11,25 @@ namespace BFF.Model.Models
         Task MergeToAsync(IPayee payee);
     }
 
-    internal class Payee : CommonProperty<IPayee>, IPayee
+    internal class Payee<TPersistence> : CommonProperty<IPayee, TPersistence>, IPayee
+        where TPersistence : class, IPersistenceModel
     {
-        private readonly IPayeeRepository _repository;
+        private readonly IMergingRepository<IPayee> _mergingRepository;
 
         public Payee(
-            IPayeeRepository repository, 
+            TPersistence backingPersistenceModel,
+            IMergingRepository<IPayee> mergingRepository,
+            IRepository<IPayee, TPersistence> repository, 
             IRxSchedulerProvider rxSchedulerProvider, 
-            long id = -1L, 
-            string name = "") : base(repository, rxSchedulerProvider, name: name)
+            bool isInserted, 
+            string name = "") : base(backingPersistenceModel, repository, rxSchedulerProvider, isInserted, name: name)
         {
-            _repository = repository;
-            if (id > 0L) Id = id;
+            _mergingRepository = mergingRepository;
         }
 
         public Task MergeToAsync(IPayee payee)
         {
-            return _repository.MergeAsync(@from: this, to: payee);
+            return _mergingRepository.MergeAsync(@from: this, to: payee);
         }
     }
 }

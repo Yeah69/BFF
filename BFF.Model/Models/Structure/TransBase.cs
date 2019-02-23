@@ -1,6 +1,7 @@
 ﻿using System;
 using BFF.Core.Helper;
 using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 
 namespace BFF.Model.Models.Structure
 {
@@ -15,7 +16,9 @@ namespace BFF.Model.Models.Structure
         bool Cleared { get; set; }
     }
 
-    internal abstract class TransBase<T> : TransLike<T>, ITransBase where T : class, ITransBase
+    internal abstract class TransBase<TDomain, TPersistence> : TransLike<TDomain, TPersistence>, ITransBase 
+        where TDomain : class, ITransBase
+        where TPersistence : class, IPersistenceModel
     {
         private DateTime _date;
         private bool _cleared;
@@ -68,14 +71,15 @@ namespace BFF.Model.Models.Structure
         }
         
         protected TransBase(
-            IRepository<T> repository, 
+            TPersistence backingPersistenceModel,
+            IRepository<TDomain, TPersistence> repository, 
             IRxSchedulerProvider rxSchedulerProvider,
             IFlag flag,
             string checkNumber,
             DateTime date,
-            long id,
+            bool isInserted,
             string memo,
-            bool? cleared) : base(repository, rxSchedulerProvider, id, memo)
+            bool? cleared) : base(backingPersistenceModel, repository, rxSchedulerProvider, isInserted, memo)
         {
             _flag = flag;
             _checkNumber = checkNumber;

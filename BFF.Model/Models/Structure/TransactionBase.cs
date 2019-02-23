@@ -1,6 +1,7 @@
 ﻿using System;
 using BFF.Core.Helper;
 using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 
 namespace BFF.Model.Models.Structure
 {
@@ -11,7 +12,9 @@ namespace BFF.Model.Models.Structure
         IPayee Payee { get; set; }
     }
 
-    internal abstract class TransactionBase<T> : TransBase<T>, ITransactionBase where T : class, ITransactionBase
+    internal abstract class TransactionBase<T, TPersistence> : TransBase<T, TPersistence>, ITransactionBase 
+        where T : class, ITransactionBase
+        where TPersistence : class, IPersistenceModel
     {
         private IAccount _account;
         private IPayee _payee;
@@ -39,9 +42,10 @@ namespace BFF.Model.Models.Structure
         }
 
         protected TransactionBase(
-            IRepository<T> repository,
+            TPersistence backingPersistenceModel,
+            IRepository<T, TPersistence> repository,
             IRxSchedulerProvider rxSchedulerProvider,
-            long id,
+            bool isInserted,
             IFlag flag,
             string checkNumber,
             DateTime date,
@@ -49,7 +53,7 @@ namespace BFF.Model.Models.Structure
             IPayee payee = null,
             string memo = null,
             bool? cleared = null)
-            : base(repository, rxSchedulerProvider, flag, checkNumber, date, id, memo, cleared)
+            : base(backingPersistenceModel, repository, rxSchedulerProvider, flag, checkNumber, date, isInserted, memo, cleared)
         {
             _account = account;
             _payee = payee;

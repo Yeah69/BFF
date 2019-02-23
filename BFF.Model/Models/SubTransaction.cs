@@ -2,6 +2,7 @@
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -12,20 +13,22 @@ namespace BFF.Model.Models
         long Sum { get; set; }
     }
 
-    internal class SubTransaction : TransLike<ISubTransaction>, ISubTransaction
+    internal class SubTransaction<TPersistence> : TransLike<ISubTransaction, TPersistence>, ISubTransaction
+        where TPersistence : class, IPersistenceModel
     {
         private IParentTransaction _parent;
         private ICategoryBase _category;
         private long _sum;
         
         public SubTransaction(
-            IRepository<ISubTransaction> repository, 
+            TPersistence backingPersistenceModel,
+            IRepository<ISubTransaction, TPersistence> repository, 
             IRxSchedulerProvider rxSchedulerProvider,
-            long id = -1L, 
+            bool isInserted = false, 
             ICategoryBase category = null,
             string memo = null,
             long sum = 0L) 
-            : base(repository, rxSchedulerProvider, id, memo)
+            : base(backingPersistenceModel, repository, rxSchedulerProvider, isInserted, memo)
         {
             _category = category;
             _sum = sum;

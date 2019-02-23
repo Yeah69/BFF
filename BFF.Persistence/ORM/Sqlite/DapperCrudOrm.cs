@@ -12,7 +12,8 @@ using Dapper.Contrib.Extensions;
 
 namespace BFF.Persistence.ORM.Sqlite
 {
-    internal class DapperCrudOrm : ICrudOrm
+    internal class DapperCrudOrm<T> : ICrudOrm<T> 
+        where T : class, IPersistenceModelSql
     {
         private static readonly string OnAccountDeletion = $@"
 DELETE FROM {nameof(Trans)}s WHERE {nameof(Trans.AccountId)} = @accountId AND ({nameof(Trans.Type)} = '{TransType.Transaction}' OR {nameof(Trans.Type)} = '{TransType.ParentTransaction}');
@@ -35,8 +36,9 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
             _provideConnection = provideConnection;
         }
 
-        public async Task CreateAsync<T>(T model) where T : class, IPersistenceModelSql
+        public async Task<bool> CreateAsync(T model)
         {
+            if (model.Id > 0) return true;
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
@@ -74,53 +76,11 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
                 model.Id = id;
                 transactionScope.Complete();
             }
+
+            return true;
         }
 
-        public async Task CreateAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModelSql
-        {
-            using (TransactionScope transactionScope = new TransactionScope())
-            using (IDbConnection connection = _provideConnection.Connection)
-            {
-                foreach (var model in models)
-                {
-                    long id;
-
-                    switch (model)
-                    {
-                        case IAccountSql account:
-                            id = await connection.InsertAsync(account as Account).ConfigureAwait(false);
-                            break;
-                        case IBudgetEntrySql budgetEntry:
-                            id = await connection.InsertAsync(budgetEntry as BudgetEntry).ConfigureAwait(false);
-                            break;
-                        case ICategorySql category:
-                            id = await connection.InsertAsync(category as Category).ConfigureAwait(false);
-                            break;
-                        case IDbSettingSql dbSetting:
-                            id = await connection.InsertAsync(dbSetting as DbSetting).ConfigureAwait(false);
-                            break;
-                        case IFlagSql flag:
-                            id = await connection.InsertAsync(flag as Flag).ConfigureAwait(false);
-                            break;
-                        case IPayeeSql payee:
-                            id = await connection.InsertAsync(payee as Payee).ConfigureAwait(false);
-                            break;
-                        case ISubTransactionSql subTransaction:
-                            id = await connection.InsertAsync(subTransaction as SubTransaction).ConfigureAwait(false);
-                            break;
-                        case ITransSql trans:
-                            id = await connection.InsertAsync(trans as Trans).ConfigureAwait(false);
-                            break;
-                        default: throw new InvalidOperationException("Unknown persistence type.");
-                    }
-
-                    model.Id = id;
-                }
-                transactionScope.Complete();
-            }
-        }
-
-        public async Task<T> ReadAsync<T>(long id) where T : class, IPersistenceModelSql
+        public async Task<T> ReadAsync(long id)
         {
             T ret;
             using (TransactionScope transactionScope = new TransactionScope())
@@ -160,7 +120,7 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
             return ret;
         }
 
-        public async Task<IEnumerable<T>> ReadAllAsync<T>() where T : class, IPersistenceModelSql
+        public async Task<IEnumerable<T>> ReadAllAsync()
         {
             IList<T> ret;
             using (TransactionScope transactionScope = new TransactionScope())
@@ -201,8 +161,9 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
             return ret;
         }
 
-        public async Task UpdateAsync<T>(T model) where T : class, IPersistenceModelSql
+        public async Task UpdateAsync(T model)
         {
+            if (model.Id <= 0) return;
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
@@ -239,21 +200,9 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
             }
         }
 
-        public async Task UpdateAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModelSql
+        public async Task DeleteAsync(T model)
         {
-            using (TransactionScope transactionScope = new TransactionScope())
-            using (IDbConnection connection = _provideConnection.Connection)
-            {
-                foreach (var model in models)
-                {
-                    await connection.UpdateAsync(model).ConfigureAwait(false);
-                }
-                transactionScope.Complete();
-            }
-        }
-
-        public async Task DeleteAsync<T>(T model) where T : class, IPersistenceModelSql
-        {
+            if (model.Id <= 0) return;
             using (TransactionScope transactionScope = new TransactionScope())
             using (IDbConnection connection = _provideConnection.Connection)
             {
@@ -306,14 +255,6 @@ UPDATE {nameof(Trans)}s SET {nameof(Trans.PayeeId)} = NULL WHERE {nameof(Trans.T
                 }
                 
                 transactionScope.Complete();
-            }
-        }
-
-        public async Task DeleteAsync<T>(IEnumerable<T> models) where T : class, IPersistenceModelSql
-        {
-            foreach (var model in models)
-            {
-                await DeleteAsync(model).ConfigureAwait(false);
             }
         }
     }

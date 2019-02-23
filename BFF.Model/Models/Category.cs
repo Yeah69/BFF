@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
-using BFF.Model.Repositories.ModelRepositories;
+using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -27,9 +28,10 @@ namespace BFF.Model.Models
         Task MergeToAsync(ICategory category);
     }
 
-    internal class Category : CategoryBase<ICategory>, ICategory
+    internal class Category<TPersistence> : CategoryBase<ICategory, TPersistence>, ICategory
+        where TPersistence : class, IPersistenceModel
     {
-        private readonly ICategoryRepository _repository;
+        private readonly IMergingRepository<ICategory> _mergingRepository;
         private ICategory _parent;
         private readonly ObservableCollection<ICategory> _categories = new ObservableCollection<ICategory>();
 
@@ -56,13 +58,15 @@ namespace BFF.Model.Models
         public ReadOnlyObservableCollection<ICategory> Categories { get; }
 
         public Category(
-            ICategoryRepository repository, 
+            TPersistence backingPersistenceModel,
+            IMergingRepository<ICategory> mergingRepository,
+            IRepository<ICategory, TPersistence> repository,
             IRxSchedulerProvider rxSchedulerProvider, 
-            long id = -1L,
+            bool isInserted,
             string name = "",
-            ICategory parent = null) : base(repository, rxSchedulerProvider, id, name)
+            ICategory parent = null) : base(backingPersistenceModel, repository, rxSchedulerProvider, isInserted, name)
         {
-            _repository = repository;
+            _mergingRepository = mergingRepository;
             _parent = parent;
             Categories = new ReadOnlyObservableCollection<ICategory>(_categories);
         }
@@ -98,7 +102,7 @@ namespace BFF.Model.Models
                 current = current.Parent;
             }
 
-            return _repository.MergeAsync(@from: this, to: category);
+            return _mergingRepository.MergeAsync(@from: this, to: category);
         }
     }
 }

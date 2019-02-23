@@ -2,6 +2,7 @@
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -12,7 +13,8 @@ namespace BFF.Model.Models
         DateTime StartingDate { get; set; }
     }
 
-    internal class Account : CommonProperty<IAccount>, IAccount
+    internal class Account<TPersistence> : CommonProperty<IAccount, TPersistence>, IAccount
+        where TPersistence : class, IPersistenceModel
     {
         private long _startingBalance;
         private DateTime _startingDate;
@@ -40,15 +42,15 @@ namespace BFF.Model.Models
         }
         
         public Account(
-            IRepository<IAccount> repository,
+            TPersistence backingPersistenceModel,
+            IRepository<IAccount, TPersistence> repository,
             IRxSchedulerProvider rxSchedulerProvider,
             DateTime startingDate, 
-            long id = -1L, 
+            bool isInserted = false, 
             string name = "", 
             long startingBalance = 0L) 
-            : base(repository, rxSchedulerProvider, name: name)
+            : base(backingPersistenceModel, repository, rxSchedulerProvider, name: name, isInserted: isInserted)
         {
-            Id = id;
             _startingBalance = startingBalance;
             _startingDate = startingDate;
         }

@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
+using BFF.Model.Models.Structure;
 using BFF.Persistence.Models.Sql;
-using BFF.Persistence.ORM.Sqlite;
 using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
@@ -17,11 +16,11 @@ namespace BFF.Model.Repositories.ModelRepositories
         }
     }
 
-    public interface IPayeeRepository : IObservableRepositoryBase<IPayee>, IMergingRepository<IPayee>
+    public interface IPayeeRepository : IObservableRepositoryBase<IPayee>
     {
     }
 
-    internal interface IPayeeRepositoryInternal : IPayeeRepository, IReadOnlyRepository<IPayee>
+    internal interface IPayeeRepositoryInternal : IPayeeRepository, IMergingRepository<IPayee>, IReadOnlyRepository<IPayee>
     {
     }
 
@@ -29,38 +28,33 @@ namespace BFF.Model.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IMergeOrm _mergeOrm;
-        private readonly Func<IPayeeSql> _payeeDtoFactory;
 
         public PayeeRepository(
-            IProvideSqliteConnection provideConnection, 
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm crudOrm,
-            IMergeOrm mergeOrm,
-            Func<IPayeeSql> payeeDtoFactory) : base(provideConnection, rxSchedulerProvider, crudOrm, new PayeeComparer())
+            ICrudOrm<IPayeeSql> crudOrm,
+            IMergeOrm mergeOrm) : base(rxSchedulerProvider, crudOrm, new PayeeComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _mergeOrm = mergeOrm;
-            _payeeDtoFactory = payeeDtoFactory;
         }
-        
-        protected override Converter<IPayee, IPayeeSql> ConvertToPersistence => domainPayee =>
-        {
-            var payeeDto = _payeeDtoFactory();
-
-            payeeDto.Id = domainPayee.Id;
-            payeeDto.Name = domainPayee.Name;
-
-            return payeeDto;
-        };
 
         protected override Task<IPayee> ConvertToDomainAsync(IPayeeSql persistenceModel)
         {
-            return Task.FromResult<IPayee>(new Payee(this, _rxSchedulerProvider, persistenceModel.Id, persistenceModel.Name));
+            return Task.FromResult<IPayee>(new Payee<IPayeeSql>(
+                persistenceModel, 
+                this,
+                this,
+                _rxSchedulerProvider,
+                persistenceModel.Id > 0, 
+                persistenceModel.Name));
         }
 
         public async Task MergeAsync(IPayee from, IPayee to)
         {
-            await _mergeOrm.MergePayeeAsync(ConvertToPersistence(from), ConvertToPersistence(to)).ConfigureAwait(false);
+            var fromPersistenceModel = (@from as IDataModelInternal<IPayeeSql>)?.BackingPersistenceModel;
+            var toPersistenceModel = (to as IDataModelInternal<IPayeeSql>)?.BackingPersistenceModel;
+            if (fromPersistenceModel is null || toPersistenceModel is null) return;
+            await _mergeOrm.MergePayeeAsync(fromPersistenceModel, toPersistenceModel).ConfigureAwait(false);
             RemoveFromObservableCollection(from);
             RemoveFromCache(from);
         }

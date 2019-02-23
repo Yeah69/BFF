@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Model.Models;
+using BFF.Model.Models.Structure;
 using BFF.Model.Repositories.ModelRepositories;
+using BFF.Persistence.Models.Sql;
 using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories
@@ -40,8 +42,8 @@ namespace BFF.Model.Repositories
         {
             var _ = await _budgetOrm.FindAsync(
                 year,
-                _categoryRepository.All.Select(c => c.Id).ToArray(),
-                _incomeCategoryRepository.All.Select(ic => (ic.Id, ic.MonthOffset)).ToArray()).ConfigureAwait(false);
+                _categoryRepository.All.OfType<IDataModelInternal<ICategorySql>>().Select(c => c.BackingPersistenceModel.Id).ToArray(),
+                _incomeCategoryRepository.All.OfType<IDataModelInternal<ICategorySql>>().Select(ic => (ic.BackingPersistenceModel.Id, (ic as IIncomeCategory).MonthOffset)).ToArray()).ConfigureAwait(false);
 
             long currentNotBudgetedOrOverbudgeted = _.InitialNotBudgetedOrOverbudgeted;
             long currentOverspentInPreviousMonth = _.InitialOverspentInPreviousMonth;

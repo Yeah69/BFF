@@ -4,6 +4,7 @@ using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -16,18 +17,20 @@ namespace BFF.Model.Models
         long Balance { get; }
     }
 
-    internal class BudgetEntry : DataModel<IBudgetEntry>, IBudgetEntry
+    internal class BudgetEntry<TPersistence> : DataModel<IBudgetEntry, TPersistence>, IBudgetEntry
+        where TPersistence : class, IPersistenceModel
     {
         public BudgetEntry(
+            TPersistence backingPersistenceModel,
             IWriteOnlyRepository<IBudgetEntry> repository,
             IRxSchedulerProvider rxSchedulerProvider,
-            long id, 
+            bool isInserted, 
             DateTime month,
             ICategory category = null,
             long budget = 0L,
             long outflow = 0L,
             long balance = 0L)
-            : base(repository, rxSchedulerProvider, id)
+            : base(backingPersistenceModel, isInserted, repository, rxSchedulerProvider)
         {
             Month = month;
             Category = category;

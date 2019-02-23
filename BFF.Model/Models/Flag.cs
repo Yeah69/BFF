@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
-using BFF.Model.Repositories.ModelRepositories;
+using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -13,21 +14,22 @@ namespace BFF.Model.Models
         Task MergeToAsync(IFlag flag);
     }
 
-    internal class Flag : CommonProperty<IFlag>, IFlag
+    internal class Flag<TPersistence> : CommonProperty<IFlag, TPersistence>, IFlag
+        where TPersistence : class, IPersistenceModel
     {
-        public static IFlag Default = new Flag(null, null, Color.BlueViolet, -2, "Default");
-
-        private readonly IFlagRepository _repository;
+        private readonly IMergingRepository<IFlag> _mergingRepository;
         private Color _color;
 
         public Flag(
-            IFlagRepository repository, 
+            TPersistence backingPersistenceModel,
+            IMergingRepository<IFlag> mergingRepository,
+            IRepository<IFlag, TPersistence> repository, 
             IRxSchedulerProvider rxSchedulerProvider, 
             Color color, 
-            long id = -1, 
-            string name = "") : base(repository, rxSchedulerProvider, id, name)
+            bool isInserted = false, 
+            string name = "") : base(backingPersistenceModel, repository, rxSchedulerProvider, isInserted, name)
         {
-            _repository = repository;
+            _mergingRepository = mergingRepository;
             _color = color;
         }
 
@@ -44,7 +46,7 @@ namespace BFF.Model.Models
 
         public Task MergeToAsync(IFlag flag)
         {
-            return _repository.MergeAsync(@from: this, to: flag);
+            return _mergingRepository.MergeAsync(@from: this, to: flag);
         }
     }
 }

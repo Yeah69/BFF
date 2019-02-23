@@ -1,5 +1,6 @@
 ﻿using BFF.Core.Helper;
 using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 
 namespace BFF.Model.Models.Structure
 {
@@ -14,7 +15,11 @@ namespace BFF.Model.Models.Structure
     /// <summary>
     /// CommonProperties are classes, whose instances are shared among other model classes
     /// </summary>
-    internal abstract class CommonProperty<T> : DataModel<T>, ICommonProperty where T : class, ICommonProperty
+    internal abstract class CommonProperty<TDomain, TPersistence> 
+        : DataModel<TDomain, TPersistence>, 
+            ICommonProperty
+        where TDomain : class, ICommonProperty
+        where TPersistence : class, IPersistenceModel
     {
         private string _name;
 
@@ -42,10 +47,11 @@ namespace BFF.Model.Models.Structure
         }
 
         protected CommonProperty(
-            IRepository<T> repository, 
+            TPersistence backingPersistenceModel,
+            IRepository<TDomain, TPersistence> repository, 
             IRxSchedulerProvider rxSchedulerProvider,
-            long id = -1L, 
-            string name = null) : base(repository, rxSchedulerProvider, id)
+            bool isInserted = false, 
+            string name = null) : base(backingPersistenceModel, isInserted, repository, rxSchedulerProvider)
         {
             _name = name;
         }

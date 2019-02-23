@@ -3,19 +3,21 @@ using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Model.Models.Structure;
+using BFF.Persistence.Models;
 using BFF.Persistence.Models.Sql;
-using BFF.Persistence.ORM.Sqlite;
 using BFF.Persistence.ORM.Sqlite.Interfaces;
 using NLog;
 
 namespace BFF.Model.Repositories
 {
-    public interface ICachingRepositoryBase<TDomain> : IRepositoryBase<TDomain> where TDomain : class, IDataModel
+    internal interface ICachingRepositoryBase<TDomain, TPersistence> : IRepositoryBase<TDomain, TPersistence>
+        where TDomain : class, IDataModel
+        where TPersistence : class, IPersistenceModel
     {
     }
 
     internal abstract class CachingRepositoryBase<TDomain, TPersistence> 
-        : RepositoryBase<TDomain, TPersistence>, ICachingRepositoryBase<TDomain>
+        : RepositoryBase<TDomain, TPersistence>, ICachingRepositoryBase<TDomain, TPersistence>
         where TDomain : class, IDataModel 
         where TPersistence : class, IPersistenceModelSql
     {
@@ -23,17 +25,18 @@ namespace BFF.Model.Repositories
         
         private readonly Dictionary<long, TDomain> _cache = new Dictionary<long, TDomain>();
 
-        protected CachingRepositoryBase(IProvideSqliteConnection provideConnection, ICrudOrm crudOrm) : base(
-            provideConnection, crudOrm)
+        protected CachingRepositoryBase(ICrudOrm<TPersistence> crudOrm) : base(crudOrm)
         {
             Disposable.Create(ClearCache).AddTo(CompositeDisposable);
         }
 
-        public override async Task AddAsync(TDomain dataModel)
+        public override async Task<bool> AddAsync(TDomain dataModel)
         {
-            await base.AddAsync(dataModel).ConfigureAwait(false);
-            if(!_cache.ContainsKey(dataModel.Id))
-                _cache.Add(dataModel.Id, dataModel);
+            var persistenceModel = (dataModel as IDataModelInternal<TPersistence>).BackingPersistenceModel;
+            var result = await base.AddAsync(dataModel).ConfigureAwait(false);
+            if(!_cache.ContainsKey(persistenceModel.Id))
+                _cache.Add(persistenceModel.Id, dataModel);
+            return result;
         }
 
         public override async Task<TDomain> FindAsync(long id)
@@ -41,12 +44,6 @@ namespace BFF.Model.Repositories
             if(!_cache.ContainsKey(id))
                 _cache.Add(id, await base.FindAsync(id).ConfigureAwait(false));
             return _cache[id];
-        }
-
-        public override async Task DeleteAsync(TDomain dataModel)
-        {
-            await base.DeleteAsync(dataModel).ConfigureAwait(false);
-            RemoveFromCache(dataModel);
         }
 
         
@@ -67,8 +64,9 @@ namespace BFF.Model.Repositories
 
         protected void RemoveFromCache(TDomain dataModel)
         {
-            if (_cache.ContainsKey(dataModel.Id))
-                _cache.Remove(dataModel.Id);
+            var persistenceModel = (dataModel as IDataModelInternal<TPersistence>).BackingPersistenceModel;
+            if (_cache.ContainsKey(persistenceModel.Id))
+                _cache.Remove(persistenceModel.Id);
         }
 
         protected void ClearCache()

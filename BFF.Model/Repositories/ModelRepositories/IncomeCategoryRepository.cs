@@ -4,8 +4,9 @@ using System.Globalization;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
+using BFF.Model.Models.Structure;
 using BFF.Persistence.Models.Sql;
-using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM;
 using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
@@ -17,61 +18,56 @@ namespace BFF.Model.Repositories.ModelRepositories
             StringComparer.Create(CultureInfo.InvariantCulture, false).Compare(x?.Name, y?.Name);
     }
 
-    public interface IIncomeCategoryRepository : IObservableRepositoryBase<IIncomeCategory>, IMergingRepository<IIncomeCategory>
+    public interface IIncomeCategoryRepository : IObservableRepositoryBase<IIncomeCategory>
     {
     }
 
-    internal sealed class IncomeCategoryRepository : ObservableRepositoryBase<IIncomeCategory, ICategorySql>, IIncomeCategoryRepository
+    internal interface IIncomeCategoryRepositoryInternal : IIncomeCategoryRepository, IMergingRepository<IIncomeCategory>, IReadOnlyRepository<IIncomeCategory>
+    {
+    }
+
+    internal sealed class IncomeCategoryRepository : ObservableRepositoryBase<IIncomeCategory, ICategorySql>, IIncomeCategoryRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IMergeOrm _mergeOrm;
         private readonly ICategoryOrm _categoryOrm;
-        private readonly Func<ICategorySql> _categoryDtoFactory;
 
         public IncomeCategoryRepository(
-            IProvideSqliteConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm crudOrm,
+            ICrudOrm<ICategorySql> crudOrm,
             IMergeOrm mergeOrm,
-            ICategoryOrm categoryOrm,
-            Func<ICategorySql> categoryDtoFactory)
-            : base(provideConnection, rxSchedulerProvider, crudOrm, new IncomeCategoryComparer())
+            ICategoryOrm categoryOrm)
+            : base( rxSchedulerProvider, crudOrm, new IncomeCategoryComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _mergeOrm = mergeOrm;
             _categoryOrm = categoryOrm;
-            _categoryDtoFactory = categoryDtoFactory;
         }
 
 
         protected override Task<IIncomeCategory> ConvertToDomainAsync(ICategorySql persistenceModel)
         {
             return Task.FromResult<IIncomeCategory>(
-                new IncomeCategory(this,
+                new IncomeCategory<ICategorySql>(
+                    persistenceModel,
+                    this,
+                    this,
                     _rxSchedulerProvider,
-                    persistenceModel.Id,
+                    persistenceModel.Id > 0,
                     persistenceModel.Name,
                     persistenceModel.MonthOffset));
         }
 
         protected override Task<IEnumerable<ICategorySql>> FindAllInnerAsync() => _categoryOrm.ReadIncomeCategoriesAsync();
-
-        protected override Converter<IIncomeCategory, ICategorySql> ConvertToPersistence => domainCategory =>
-        {
-            var categoryDto = _categoryDtoFactory();
-
-            categoryDto.Id = domainCategory.Id;
-            categoryDto.Name = domainCategory.Name;
-            categoryDto.ParentId = null;
-            categoryDto.IsIncomeRelevant = true;
-            categoryDto.MonthOffset = domainCategory.MonthOffset;
-
-            return categoryDto;
-        };
-
+        
         public async Task MergeAsync(IIncomeCategory from, IIncomeCategory to)
         {
-            await _mergeOrm.MergeCategoryAsync(ConvertToPersistence(from), ConvertToPersistence(to)).ConfigureAwait(false);
+            var fromPersistenceModel = (@from as IDataModelInternal<ICategorySql>)?.BackingPersistenceModel;
+            var toPersistenceModel = (to as IDataModelInternal<ICategorySql>)?.BackingPersistenceModel;
+            if (fromPersistenceModel is null || toPersistenceModel is null) return;
+            await _mergeOrm.MergeCategoryAsync(
+                fromPersistenceModel,
+                toPersistenceModel).ConfigureAwait(false);
             RemoveFromObservableCollection(from);
             RemoveFromCache(from);
         }

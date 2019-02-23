@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Threading.Tasks;
 using System.Transactions;
 using BFF.Persistence.Models.Sql;
@@ -86,10 +87,12 @@ namespace BFF.Persistence.ORM.Sqlite
         private static readonly string SetDatabaseSchemaVersion = $@"PRAGMA user_version = {DatabaseSchemaVersion};";
 
         private readonly IProvideSqliteConnection _provideConnection;
+        private readonly Func<DbSetting> _dbSettingFactory;
 
-        public DapperCreateBackendOrm(IProvideSqliteConnection provideConnection)
+        public DapperCreateBackendOrm(IProvideSqliteConnection provideConnection, Func<DbSetting> dbSettingFactory)
         {
             _provideConnection = provideConnection;
+            _dbSettingFactory = dbSettingFactory;
         }
 
         public async Task CreateAsync()
@@ -116,7 +119,7 @@ namespace BFF.Persistence.ORM.Sqlite
             async Task CreateDbSettingsTableAndInsertDefaultSettings(IDbConnection conn)
             {
                 await conn.ExecuteAsync(CreateDbSettingTableStatement).ConfigureAwait(false);
-                await conn.InsertAsync(new DbSetting()).ConfigureAwait(false);
+                await conn.InsertAsync(_dbSettingFactory()).ConfigureAwait(false);
             }
         }
     }

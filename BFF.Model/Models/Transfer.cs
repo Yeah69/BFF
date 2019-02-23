@@ -2,6 +2,7 @@
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -14,7 +15,8 @@ namespace BFF.Model.Models
         long Sum { get; set; }
     }
 
-    internal class Transfer : TransBase<ITransfer>, ITransfer
+    internal class Transfer<TPersistence> : TransBase<ITransfer, TPersistence>, ITransfer
+        where TPersistence : class, IPersistenceModel
     {
         private IAccount _fromAccount;
         private IAccount _toAccount;
@@ -64,10 +66,11 @@ namespace BFF.Model.Models
         }
 
         public Transfer(
-            IRepository<ITransfer> repository, 
+            TPersistence backingPersistenceModel,
+            IRepository<ITransfer, TPersistence> repository, 
             IRxSchedulerProvider rxSchedulerProvider,
             DateTime date,
-            long id = -1L,
+            bool isInserted = false,
             IFlag flag = null,
             string checkNumber = "",
             IAccount fromAccount = null,
@@ -75,7 +78,7 @@ namespace BFF.Model.Models
             string memo = "",
             long sum = 0L,
             bool? cleared = false)
-            : base(repository, rxSchedulerProvider, flag, checkNumber, date, id, memo, cleared)
+            : base(backingPersistenceModel, repository, rxSchedulerProvider, flag, checkNumber, date, isInserted, memo, cleared)
         {
             _fromAccount = fromAccount;
             _toAccount = toAccount;

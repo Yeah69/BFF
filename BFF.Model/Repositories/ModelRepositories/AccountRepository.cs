@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
+using BFF.Model.Models.Structure;
 using BFF.Persistence.Models.Sql;
-using BFF.Persistence.ORM.Sqlite;
 using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
@@ -36,39 +36,24 @@ namespace BFF.Model.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IAccountOrm _accountOrm;
-        private readonly Func<IAccountSql> _accountDtoFactory;
 
         public AccountRepository(
-            IProvideSqliteConnection provideConnection,
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm crudOrm, 
-            IAccountOrm accountOrm,
-            Func<IAccountSql> accountDtoFactory) : base(provideConnection, rxSchedulerProvider, crudOrm, new AccountComparer())
+            ICrudOrm<IAccountSql> crudOrm, 
+            IAccountOrm accountOrm) : base(rxSchedulerProvider, crudOrm, new AccountComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _accountOrm = accountOrm;
-            _accountDtoFactory = accountDtoFactory;
         }
-
-        protected override Converter<IAccount, IAccountSql> ConvertToPersistence => domainAccount =>
-        {
-            var accountDto = _accountDtoFactory();
-
-            accountDto.Id = domainAccount.Id;
-            accountDto.Name = domainAccount.Name;
-            accountDto.StartingBalance = domainAccount.StartingBalance;
-            accountDto.StartingDate = domainAccount.StartingDate;
-
-            return accountDto;
-        };
 
         protected override Task<IAccount> ConvertToDomainAsync(IAccountSql persistenceModel) =>
             Task.FromResult<IAccount>(
-                new Account(
+                new Account<IAccountSql>(
+                    persistenceModel,
                     this,
                     _rxSchedulerProvider,
                     persistenceModel.StartingDate,
-                    persistenceModel.Id,
+                    persistenceModel.Id > 0,
                     persistenceModel.Name,
                     persistenceModel.StartingBalance));
 
@@ -81,7 +66,9 @@ namespace BFF.Model.Repositories.ModelRepositories
                     case ISummaryAccount _:
                         return _accountOrm.GetClearedOverallBalanceAsync();
                     case IAccount specificAccount:
-                        return _accountOrm.GetClearedBalanceAsync(specificAccount.Id);
+                        var dataModelInternal = specificAccount as IDataModelInternal<IAccountSql>;
+                        if (dataModelInternal is null) return null;
+                        return _accountOrm.GetClearedBalanceAsync(dataModelInternal.BackingPersistenceModel.Id);
                     default:
                         return Task.FromResult<long?>(null);
                 }
@@ -101,7 +88,9 @@ namespace BFF.Model.Repositories.ModelRepositories
                     case ISummaryAccount _:
                         return _accountOrm.GetClearedOverallBalanceUntilNowAsync();
                     case IAccount specificAccount:
-                        return _accountOrm.GetClearedBalanceUntilNowAsync(specificAccount.Id);
+                        var dataModelInternal = specificAccount as IDataModelInternal<IAccountSql>;
+                        if (dataModelInternal is null) return null;
+                        return _accountOrm.GetClearedBalanceUntilNowAsync(dataModelInternal.BackingPersistenceModel.Id);
                     default:
                         return Task.FromResult<long?>(null);
                 }
@@ -121,7 +110,9 @@ namespace BFF.Model.Repositories.ModelRepositories
                     case ISummaryAccount _:
                         return _accountOrm.GetUnclearedOverallBalanceAsync();
                     case IAccount specificAccount:
-                        return _accountOrm.GetUnclearedBalanceAsync(specificAccount.Id);
+                        var dataModelInternal = specificAccount as IDataModelInternal<IAccountSql>;
+                        if (dataModelInternal is null) return null;
+                        return _accountOrm.GetUnclearedBalanceAsync(dataModelInternal.BackingPersistenceModel.Id);
                     default:
                         return Task.FromResult<long?>(null);
                 }
@@ -141,7 +132,9 @@ namespace BFF.Model.Repositories.ModelRepositories
                     case ISummaryAccount _:
                         return _accountOrm.GetUnclearedOverallBalanceUntilNowAsync();
                     case IAccount specificAccount:
-                        return _accountOrm.GetUnclearedBalanceUntilNowAsync(specificAccount.Id);
+                        var dataModelInternal = specificAccount as IDataModelInternal<IAccountSql>;
+                        if (dataModelInternal is null) return null;
+                        return _accountOrm.GetUnclearedBalanceUntilNowAsync(dataModelInternal.BackingPersistenceModel.Id);
                     default:
                         return Task.FromResult<long?>(null);
                 }

@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
-using BFF.Model.Repositories.ModelRepositories;
+using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -11,15 +12,16 @@ namespace BFF.Model.Models
     /// <summary>
     /// Trans' can be added to an Account
     /// </summary>
-    internal class SummaryAccount : Account, ISummaryAccount
+    internal class SummaryAccount<TPersistence> : Account<TPersistence>, ISummaryAccount
+        where TPersistence : class, IPersistenceModel
     {
         
         /// <summary>
         /// Initializes the object
         /// </summary>
         public SummaryAccount(
-            IAccountRepository repository,
-            IRxSchedulerProvider rxSchedulerProvider) : base(repository, rxSchedulerProvider, DateTime.MinValue)
+            IRepository<IAccount, TPersistence> repository,
+            IRxSchedulerProvider rxSchedulerProvider) : base(null, repository, rxSchedulerProvider, DateTime.MinValue)
         {
             Name = "All Accounts"; //todo Localize! Maybe then override the Name property
         }

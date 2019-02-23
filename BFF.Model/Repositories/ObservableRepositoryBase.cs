@@ -10,22 +10,29 @@ using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
+using BFF.Persistence.Models;
 using BFF.Persistence.Models.Sql;
-using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM;
 using BFF.Persistence.ORM.Sqlite.Interfaces;
 using MoreLinq;
 
 namespace BFF.Model.Repositories
 {
-    public interface IObservableRepositoryBase<TDomain> : ICachingRepositoryBase<TDomain> where TDomain : class, IDataModel
+    public interface IObservableRepositoryBase<TDomain> where TDomain : class, IDataModel
     {
         ObservableCollection<TDomain> All { get; }
-
         IObservable<IEnumerable<TDomain>> ObserveResetAll { get; }
     }
 
+    internal interface
+        IObservableRepositoryBaseInternal<TDomain, TPersistence> : IObservableRepositoryBase<TDomain>, ICachingRepositoryBase<TDomain, TPersistence>
+        where TDomain : class, IDataModel
+        where TPersistence : class, IPersistenceModel
+    {
+    }
+
     internal abstract class ObservableRepositoryBase<TDomain, TPersistence> 
-        : CachingRepositoryBase<TDomain, TPersistence>, IObservableRepositoryBase<TDomain>
+        : CachingRepositoryBase<TDomain, TPersistence>, IObservableRepositoryBaseInternal<TDomain, TPersistence>
         where TDomain : class, IDataModel
         where TPersistence : class, IPersistenceModelSql
     {
@@ -40,10 +47,9 @@ namespace BFF.Model.Repositories
         public IObservable<IEnumerable<TDomain>> ObserveResetAll => _observeResetAll.AsObservable();
 
         protected ObservableRepositoryBase(
-            IProvideSqliteConnection provideConnection, 
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm crudOrm, 
-            Comparer<TDomain> comparer) : base(provideConnection, crudOrm)
+            ICrudOrm<TPersistence> crudOrm, 
+            Comparer<TDomain> comparer) : base(crudOrm)
         {
             Disposable.Create(() => All.Clear()).AddTo(CompositeDisposable);
             _observeResetAll = new Subject<IEnumerable<TDomain>>().AddHere(CompositeDisposable);
@@ -63,9 +69,9 @@ namespace BFF.Model.Repositories
             return base.FindAllAsync();
         }
 
-        public override async Task AddAsync(TDomain dataModel)
+        public override async Task<bool> AddAsync(TDomain dataModel)
         {
-            await base.AddAsync(dataModel).ConfigureAwait(false);
+            var result = await base.AddAsync(dataModel).ConfigureAwait(false);
             if(!All.Contains(dataModel))
             {
                 int i = 0;
@@ -73,12 +79,8 @@ namespace BFF.Model.Repositories
                     i++;
                 All.Insert(i, dataModel);
             }
-        }
 
-        public override async Task DeleteAsync(TDomain dataModel)
-        {
-            await base.DeleteAsync(dataModel).ConfigureAwait(false);
-            RemoveFromObservableCollection(dataModel);
+            return result;
         }
 
         protected void RemoveFromObservableCollection(TDomain dataModel)
@@ -97,7 +99,8 @@ namespace BFF.Model.Repositories
                     All.Clear();
                     all.ForEach(i => All.Add(i));
                 })
-                .ToTask();
+                .ToTask()
+                .ConfigureAwait(false);
             _observeResetAll.OnNext(All);
         }
     }

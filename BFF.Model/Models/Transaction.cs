@@ -2,6 +2,7 @@
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -10,16 +11,18 @@ namespace BFF.Model.Models
         long Sum { get; set; }
     }
 
-    internal class Transaction : TransactionBase<ITransaction>, ITransaction
+    internal class Transaction<TPersistence> : TransactionBase<ITransaction, TPersistence>, ITransaction
+        where TPersistence : class, IPersistenceModel
     {
         private ICategoryBase _category;
         private long _sum;
         
         public Transaction(
-            IRepository<ITransaction> repository, 
+            TPersistence backingPersistenceModel,
+            IRepository<ITransaction, TPersistence> repository, 
             IRxSchedulerProvider rxSchedulerProvider,
             DateTime date,
-            long id = -1L,
+            bool isInserted = false,
             IFlag flag = null,
             string checkNumber = "",
             IAccount account = null, 
@@ -28,7 +31,7 @@ namespace BFF.Model.Models
             string memo = "", 
             long sum = 0L, 
             bool? cleared = false)
-            : base(repository, rxSchedulerProvider, id, flag, checkNumber, date, account, payee, memo, cleared)
+            : base(backingPersistenceModel, repository, rxSchedulerProvider, isInserted, flag, checkNumber, date, account, payee, memo, cleared)
         {
             _category = category;
             _sum = sum;

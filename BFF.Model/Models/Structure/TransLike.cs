@@ -1,5 +1,6 @@
 ﻿using BFF.Core.Helper;
 using BFF.Model.Repositories;
+using BFF.Persistence.Models;
 
 namespace BFF.Model.Models.Structure
 {
@@ -8,7 +9,9 @@ namespace BFF.Model.Models.Structure
         string Memo { get; set; }
     }
 
-    internal abstract class TransLike<T> : DataModel<T>, ITransLike where T : class, ITransLike
+    internal abstract class TransLike<TDomain, TPersistence> : DataModel<TDomain, TPersistence>, ITransLike
+        where TDomain : class, ITransLike
+        where TPersistence : class, IPersistenceModel
     {
         private string _memo;
         
@@ -24,10 +27,11 @@ namespace BFF.Model.Models.Structure
         }
         
         protected TransLike(
-            IRepository<T> repository, 
+            TPersistence backingPersistenceModel,
+            IRepository<TDomain, TPersistence> repository, 
             IRxSchedulerProvider rxSchedulerProvider,
-            long id, 
-            string memo) : base(repository, rxSchedulerProvider, id)
+            bool isInserted, 
+            string memo) : base(backingPersistenceModel, isInserted, repository, rxSchedulerProvider)
         {
             _memo = memo ?? _memo;
         }

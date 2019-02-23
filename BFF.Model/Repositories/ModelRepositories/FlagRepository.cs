@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
+using BFF.Model.Models.Structure;
 using BFF.Persistence.Models.Sql;
-using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.ORM;
 using BFF.Persistence.ORM.Sqlite.Interfaces;
 
 namespace BFF.Model.Repositories.ModelRepositories
@@ -18,11 +18,11 @@ namespace BFF.Model.Repositories.ModelRepositories
         }
     }
 
-    public interface IFlagRepository : IObservableRepositoryBase<IFlag>, IMergingRepository<IFlag>
+    public interface IFlagRepository : IObservableRepositoryBase<IFlag>
     {
     }
 
-    internal interface IFlagRepositoryInternal : IFlagRepository, IReadOnlyRepository<IFlag>
+    internal interface IFlagRepositoryInternal : IFlagRepository, IMergingRepository<IFlag>, IReadOnlyRepository<IFlag>
     {
     }
 
@@ -30,57 +30,41 @@ namespace BFF.Model.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IMergeOrm _mergeOrm;
-        private readonly Func<IFlagSql> _flagDtoFactory;
 
         public FlagRepository(
-            IProvideSqliteConnection provideConnection, 
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm crudOrm,
-            IMergeOrm mergeOrm,
-            Func<IFlagSql> flagDtoFactory) : base(provideConnection, rxSchedulerProvider, crudOrm, new FlagComparer())
+            ICrudOrm<IFlagSql> crudOrm,
+            IMergeOrm mergeOrm) : base(rxSchedulerProvider, crudOrm, new FlagComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _mergeOrm = mergeOrm;
-            _flagDtoFactory = flagDtoFactory;
         }
-
-        protected override Converter<IFlag, IFlagSql> ConvertToPersistence => domainModel =>
-        {
-            long color = domainModel.Color.A;
-            color = color << 8;
-            color = color + domainModel.Color.R;
-            color = color << 8;
-            color = color + domainModel.Color.G;
-            color = color << 8;
-            color = color + domainModel.Color.B;
-
-            var flagDto = _flagDtoFactory();
-
-            flagDto.Id = domainModel.Id;
-            flagDto.Name = domainModel.Name;
-            flagDto.Color = color;
-
-            return flagDto;
-        };
 
         protected override Task<IFlag> ConvertToDomainAsync(IFlagSql persistenceModel)
         {
             return Task.FromResult<IFlag>(
-                new Flag(
-                    this, 
+                new Flag<IFlagSql>(
+                    persistenceModel,
+                    this,
+                    this,
                     _rxSchedulerProvider,
                     Color.FromArgb(
                         (byte) (persistenceModel.Color >> 24 & 0xff),
                         (byte) (persistenceModel.Color >> 16 & 0xff),
                         (byte) (persistenceModel.Color >> 8 & 0xff),
                         (byte) (persistenceModel.Color & 0xff)),
-                    persistenceModel.Id,
+                    persistenceModel.Id > 0,
                     persistenceModel.Name));
         }
 
         public async Task MergeAsync(IFlag from, IFlag to)
         {
-            await _mergeOrm.MergeFlagAsync(ConvertToPersistence(from), ConvertToPersistence(to)).ConfigureAwait(false);
+            var fromPersistenceModel = (@from as IDataModelInternal<IFlagSql>)?.BackingPersistenceModel;
+            var toPersistenceModel = (to as IDataModelInternal<IFlagSql>)?.BackingPersistenceModel;
+            if (fromPersistenceModel is null || toPersistenceModel is null) return;
+            await _mergeOrm.MergeFlagAsync(
+                fromPersistenceModel,
+                toPersistenceModel).ConfigureAwait(false);
             RemoveFromObservableCollection(from);
             RemoveFromCache(from);
         }
