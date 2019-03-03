@@ -12,13 +12,13 @@ using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
-using BFF.Model.Repositories.ModelRepositories;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
+using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -157,8 +157,9 @@ namespace BFF.ViewModel.ViewModels
             Categories =
                 categoryRepository
                     .All
+                    .ToReadOnlyObservableCollection()
                     .ToReadOnlyReactiveCollection(categoryViewModelService.GetViewModel);
-            
+
             CurrentMonthStartIndex = MonthToIndex(DateTime.Now) - 1;
 
             var currentMonthStartIndexChanges = this
@@ -247,6 +248,7 @@ namespace BFF.ViewModel.ViewModels
                             var categoriesToBudgetEntries = bmvm.BudgetEntries.ToDictionary(bevm => bevm.Category, bevm => bevm);
                             foreach (var bevm in bmvm.BudgetEntries)
                             {
+                                await bevm.Category.CategoriesInitialized.ConfigureAwait(false);
                                 bevm.Children = bevm
                                     .Category
                                     .Categories

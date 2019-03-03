@@ -9,7 +9,6 @@ using System.Windows.Input;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
-using BFF.Model.Repositories.ModelRepositories;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
@@ -93,7 +92,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
         public BudgetEntryViewModel(
             IBudgetEntry budgetEntry,
             Lazy<IBudgetOverviewViewModel> budgetOverviewViewModel,
-            ITransRepository transRepository,
             Func<Func<Task<IEnumerable<ITransLikeViewModel>>>, ILazyTransLikeViewModels> lazyTransLikeViewModelsFactory, 
             IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
             ICategoryViewModelService categoryViewModelService,
@@ -173,14 +171,12 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             AssociatedTransElementsViewModel = lazyTransLikeViewModelsFactory(async () =>
                 convertFromTransBaseToTransLikeViewModel.Convert(
-                    await transRepository.GetFromMonthAndCategoryAsync(Month,
-                        categoryViewModelService.GetModel(Category)), null))
+                    await budgetEntry.GetAssociatedTransAsync(), null))
                 .AddHere(CompositeDisposable);
 
             AssociatedAggregatedTransElementsViewModel = lazyTransLikeViewModelsFactory(async () =>
                 convertFromTransBaseToTransLikeViewModel.Convert(
-                    await transRepository.GetFromMonthAndCategoriesAsync(Month,
-                        categoryViewModelService.GetModel(Category).IterateRootBreadthFirst(c => c.Categories)), null))
+                    await budgetEntry.GetAssociatedTransIncludingSubCategoriesAsync(), null))
                 .AddHere(CompositeDisposable);
 
             BudgetLastMonth = new RxRelayCommand(() =>

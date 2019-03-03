@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using BFF.Core.Helper;
-using BFF.Model.Repositories.ModelRepositories;
+using BFF.Model.Models.Structure;
 
 namespace BFF.Model.Models
 {
@@ -22,9 +23,11 @@ namespace BFF.Model.Models
         long AvailableToBudget { get; }
         long Outflows { get; }
         long Balance { get; }
+        Task<IEnumerable<ITransBase>> GetAssociatedTransAsync();
+        Task<IEnumerable<ITransBase>> GetAssociatedTransForIncomeCategoriesAsync();
     }
 
-    internal class BudgetMonth : ObservableObject, IBudgetMonth
+    public abstract class BudgetMonth : ObservableObject, IBudgetMonth
     {
         public BudgetMonth(
             DateTime month,
@@ -66,6 +69,9 @@ namespace BFF.Model.Models
         public long AvailableToBudget { get; }
         public long Outflows { get; }
         public long Balance { get; }
+
+        public abstract Task<IEnumerable<ITransBase>> GetAssociatedTransAsync();
+        public abstract Task<IEnumerable<ITransBase>> GetAssociatedTransForIncomeCategoriesAsync();
 
         public override string ToString()
         {

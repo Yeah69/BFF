@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
-using BFF.Model.Repositories;
-using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -13,10 +11,8 @@ namespace BFF.Model.Models
         Task MergeToAsync(IIncomeCategory incomeCategory);
     }
 
-    internal class IncomeCategory<TPersistence> : CategoryBase<IIncomeCategory, TPersistence>, IIncomeCategory
-        where TPersistence : class, IPersistenceModel
+    public abstract class IncomeCategory : CategoryBase, IIncomeCategory
     {
-        private readonly IMergingRepository<IIncomeCategory> _mergingRepository;
         private int _monthOffset;
 
         public int MonthOffset
@@ -30,21 +26,13 @@ namespace BFF.Model.Models
             }
         }
 
-        public Task MergeToAsync(IIncomeCategory incomeCategory)
-        {
-            return _mergingRepository.MergeAsync(@from: this, to: incomeCategory);
-        }
+        public abstract Task MergeToAsync(IIncomeCategory incomeCategory);
 
-        public IncomeCategory(
-            TPersistence backingPersistenceModel,
-            IMergingRepository<IIncomeCategory> mergingRepository,
-            IRepository<IIncomeCategory, TPersistence> repository, 
+        public IncomeCategory( 
             IRxSchedulerProvider rxSchedulerProvider, 
-            bool isInserted, 
-            string name = "", 
-            int monthOffset = 0) : base(backingPersistenceModel, repository, rxSchedulerProvider, isInserted, name)
+            string name, 
+            int monthOffset) : base(rxSchedulerProvider, name)
         {
-            _mergingRepository = mergingRepository;
             _monthOffset = monthOffset;
         }
     }

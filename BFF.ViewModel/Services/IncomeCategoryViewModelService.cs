@@ -1,6 +1,6 @@
 ﻿using System;
 using BFF.Model.Models;
-using BFF.Model.Repositories.ModelRepositories;
+using BFF.Model.Repositories;
 using BFF.ViewModel.ViewModels.ForModels;
 using MuVaViMo;
 
@@ -16,8 +16,9 @@ namespace BFF.ViewModel.Services
             : base(repository, factory, true)
         {
             All = new TransformingObservableReadOnlyList<IIncomeCategory, IIncomeCategoryViewModel>(
-                new WrappingObservableReadOnlyList<IIncomeCategory>(repository.All),
+                repository.All,
                 AddToDictionaries);
+            AllCollectionInitialized = repository.AllAsync;
         }
     }
 }

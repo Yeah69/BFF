@@ -4,9 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Extensions;
-using BFF.Persistence.Models.Import.YNAB;
-using BFF.Persistence.Models.Realm;
-using BFF.Persistence.ORM.Realm.Interfaces;
+using BFF.Persistence.Import.Models.YNAB;
+using BFF.Persistence.Realm.ORM.Interfaces;
+using BFF.Persistence.Realm.Persistence.Models;
 using MoreLinq;
 
 namespace BFF.Persistence.Import

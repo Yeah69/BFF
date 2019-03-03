@@ -6,10 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="Autofac" Version="4.9.2" />
     <PackageReference Include="Dapper.Contrib" Version="1.50.5" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.1.0" />
-    <PackageReference Include="morelinq" Version="2.10.0" />
+    <PackageReference Include="morelinq" Version="3.1.0" />
+    <PackageReference Include="MuVaViMo" Version="0.3.6" />
     <PackageReference Include="NLog" Version="4.5.5" />
     <PackageReference Include="Realm" Version="3.4.0" />
     <PackageReference Include="System.IO.Packaging" Version="4.5.0" />
@@ -19,6 +20,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BFF.Core\BFF.Core.csproj" />
+    <ProjectReference Include="..\BFF.Model\BFF.Model.csproj" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(TargetDir)*&quot; &quot;$(SolutionDir)LibPersistence\&quot;" />
+  </Target>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="RD /S /Q &quot;$(SolutionDir)LibPersistence\&quot;" />
+  </Target>
 
 </Project>

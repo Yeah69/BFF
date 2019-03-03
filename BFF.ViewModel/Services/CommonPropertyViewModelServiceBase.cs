@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Core.IoC;
 using BFF.Model.Models.Structure;
@@ -18,6 +20,7 @@ namespace BFF.ViewModel.Services
     {
 
         IObservableReadOnlyList<TViewModel> All { get; }
+        Task AllCollectionInitialized { get; }
     }
 
     public interface IConvertingViewModelServiceBase<TDomain, TViewModel>
@@ -34,14 +37,15 @@ namespace BFF.ViewModel.Services
     {
         private readonly Func<TDomain, TViewModel> _factory;
 
-        protected readonly IDictionary<TDomain, TViewModel> ModelToViewModel 
-            = new Dictionary<TDomain, TViewModel>();
-        protected readonly IDictionary<TViewModel, TDomain> ViewModelToModel 
-            = new Dictionary<TViewModel, TDomain>();
+        protected readonly ConcurrentDictionary<TDomain, TViewModel> ModelToViewModel 
+            = new ConcurrentDictionary<TDomain, TViewModel>();
+        protected readonly ConcurrentDictionary<TViewModel, TDomain> ViewModelToModel 
+            = new ConcurrentDictionary<TViewModel, TDomain>();
 
         protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
 
         public IObservableReadOnlyList<TViewModel> All { get; protected set; }
+        public Task AllCollectionInitialized { get; protected set; }
 
         protected CommonPropertyViewModelServiceBase(
             IObservableRepositoryBase<TDomain> repository, 
@@ -51,8 +55,9 @@ namespace BFF.ViewModel.Services
             if(!deferAll)
             {
                 All = new TransformingObservableReadOnlyList<TDomain, TViewModel>(
-                    new WrappingObservableReadOnlyList<TDomain>(repository.All),
+                    repository.All,
                     AddToDictionaries);
+                AllCollectionInitialized = repository.AllAsync;
                 All
                     .ObserveCollectionChanges()
                     .Where(e => e.EventArgs.Action == NotifyCollectionChangedAction.Reset)
@@ -72,16 +77,8 @@ namespace BFF.ViewModel.Services
 
         protected TViewModel AddToDictionaries(TDomain model)
         {
-            TViewModel viewModel;
-            if(!ModelToViewModel.ContainsKey(model))
-            {
-                viewModel = _factory(model);
-                ModelToViewModel.Add(model, viewModel);
-            }
-            else
-                viewModel = ModelToViewModel[model];
-            if(!ViewModelToModel.ContainsKey(viewModel))
-                ViewModelToModel.Add(viewModel, model);
+            TViewModel viewModel = ModelToViewModel.GetOrAdd(model, _factory(model));
+            ViewModelToModel.GetOrAdd(viewModel, model);
             return viewModel;
         }
 

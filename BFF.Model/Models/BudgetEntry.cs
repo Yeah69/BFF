@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
-using BFF.Model.Repositories;
-using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -15,22 +14,20 @@ namespace BFF.Model.Models
         long Budget { get; set; }
         long Outflow { get; }
         long Balance { get; }
+        Task<IEnumerable<ITransBase>> GetAssociatedTransAsync();
+        Task<IEnumerable<ITransBase>> GetAssociatedTransIncludingSubCategoriesAsync();
     }
 
-    internal class BudgetEntry<TPersistence> : DataModel<IBudgetEntry, TPersistence>, IBudgetEntry
-        where TPersistence : class, IPersistenceModel
+    public abstract class BudgetEntry : DataModel, IBudgetEntry
     {
         public BudgetEntry(
-            TPersistence backingPersistenceModel,
-            IWriteOnlyRepository<IBudgetEntry> repository,
             IRxSchedulerProvider rxSchedulerProvider,
-            bool isInserted, 
             DateTime month,
-            ICategory category = null,
-            long budget = 0L,
-            long outflow = 0L,
-            long balance = 0L)
-            : base(backingPersistenceModel, isInserted, repository, rxSchedulerProvider)
+            ICategory category,
+            long budget,
+            long outflow,
+            long balance)
+            : base(rxSchedulerProvider)
         {
             Month = month;
             Category = category;
@@ -99,6 +96,10 @@ namespace BFF.Model.Models
                 UpdateAndNotify();
             }
         }
+
+        public abstract Task<IEnumerable<ITransBase>> GetAssociatedTransAsync();
+
+        public abstract Task<IEnumerable<ITransBase>> GetAssociatedTransIncludingSubCategoriesAsync();
 
         public override string ToString()
         {

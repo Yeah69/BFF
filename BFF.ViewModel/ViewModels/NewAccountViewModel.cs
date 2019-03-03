@@ -6,6 +6,7 @@ using System.Windows.Input;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
+using BFF.Model.Repositories;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
@@ -46,7 +47,7 @@ namespace BFF.ViewModel.ViewModels
         private string _name;
 
         public NewAccountViewModel(
-            Func<IAccount> factory,
+            ICreateNewModels createNewModels,
             ILocalizer localizer,
             IBffSettings bffSettings,
             ICultureManager cultureManager,
@@ -64,7 +65,7 @@ namespace BFF.ViewModel.ViewModels
             AddCommand = new AsyncRxRelayCommand(async () =>
             {
                 if (!ValidateName()) return;
-                IAccount newAccount = factory();
+                IAccount newAccount = createNewModels.CreateAccount();
                 newAccount.Name = Name.Trim();
                 newAccount.StartingBalance = StartingBalance.Value;
                 newAccount.StartingDate = StartingDate.Value;

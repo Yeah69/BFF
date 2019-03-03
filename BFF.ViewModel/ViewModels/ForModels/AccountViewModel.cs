@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
-using BFF.Model.Repositories.ModelRepositories;
+using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
@@ -40,7 +40,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
     {
         private readonly IAccount _account;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
-        private readonly ITransRepository _transRepository;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
         private readonly IConvertFromTransBaseToTransLikeViewModel _convertFromTransBaseToTransLikeViewModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
@@ -74,7 +73,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
         public AccountViewModel(
             IAccount account, 
             ISummaryAccountViewModel summaryAccountViewModel,
-            ITransRepository transRepository,
             IAccountRepository accountRepository,
             Lazy<IAccountViewModelService> accountViewModelService,
             Lazy<IPayeeViewModelService> payeeService,
@@ -105,7 +103,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             _account = account;
             _summaryAccountViewModel = summaryAccountViewModel;
-            _transRepository = transRepository;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _convertFromTransBaseToTransLikeViewModel = convertFromTransBaseToTransLikeViewModel;
             _rxSchedulerProvider = rxSchedulerProvider;
@@ -194,11 +191,11 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
         protected override Func<int, int, Task<ITransLikeViewModel[]>> PageFetcher =>
             async (offset, pageSize) => _convertFromTransBaseToTransLikeViewModel
-                .Convert(await _transRepository.GetPageAsync(offset, pageSize, _account), this)
+                .Convert(await _account.GetTransPageAsync(offset, pageSize), this)
                 .ToArray();
 
         protected override Func<Task<int>> CountFetcher =>
-            async () => (int) await _transRepository.GetCountAsync(_account);
+            async () => (int) await _account.GetTransCountAsync();
 
         protected override long? CalculateNewPartOfIntermediateBalance()
         {

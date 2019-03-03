@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
-using BFF.Model.Repositories;
-using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -13,22 +11,18 @@ namespace BFF.Model.Models
         long Sum { get; set; }
     }
 
-    internal class SubTransaction<TPersistence> : TransLike<ISubTransaction, TPersistence>, ISubTransaction
-        where TPersistence : class, IPersistenceModel
+    public abstract class SubTransaction : TransLike, ISubTransaction
     {
         private IParentTransaction _parent;
         private ICategoryBase _category;
         private long _sum;
         
         public SubTransaction(
-            TPersistence backingPersistenceModel,
-            IRepository<ISubTransaction, TPersistence> repository, 
             IRxSchedulerProvider rxSchedulerProvider,
-            bool isInserted = false, 
-            ICategoryBase category = null,
-            string memo = null,
-            long sum = 0L) 
-            : base(backingPersistenceModel, repository, rxSchedulerProvider, isInserted, memo)
+            ICategoryBase category,
+            string memo,
+            long sum) 
+            : base(rxSchedulerProvider, memo)
         {
             _category = category;
             _sum = sum;
@@ -72,16 +66,16 @@ namespace BFF.Model.Models
             }
         }
 
-        public override async Task InsertAsync()
+        public override Task InsertAsync()
         {
-            await base.InsertAsync().ConfigureAwait(false);
             Parent.AddSubElement(this);
+            return Task.CompletedTask;
         }
 
-        public override async Task DeleteAsync()
+        public override Task DeleteAsync()
         {
-            await base.DeleteAsync().ConfigureAwait(false);
             Parent.RemoveSubElement(this);
+            return Task.CompletedTask;
         }
     }
 }

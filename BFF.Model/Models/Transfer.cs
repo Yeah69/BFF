@@ -1,8 +1,6 @@
 ﻿using System;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
-using BFF.Model.Repositories;
-using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -15,8 +13,7 @@ namespace BFF.Model.Models
         long Sum { get; set; }
     }
 
-    internal class Transfer<TPersistence> : TransBase<ITransfer, TPersistence>, ITransfer
-        where TPersistence : class, IPersistenceModel
+    public  abstract class Transfer : TransBase, ITransfer
     {
         private IAccount _fromAccount;
         private IAccount _toAccount;
@@ -66,19 +63,16 @@ namespace BFF.Model.Models
         }
 
         public Transfer(
-            TPersistence backingPersistenceModel,
-            IRepository<ITransfer, TPersistence> repository, 
             IRxSchedulerProvider rxSchedulerProvider,
             DateTime date,
-            bool isInserted = false,
-            IFlag flag = null,
-            string checkNumber = "",
-            IAccount fromAccount = null,
-            IAccount toAccount = null,
-            string memo = "",
-            long sum = 0L,
-            bool? cleared = false)
-            : base(backingPersistenceModel, repository, rxSchedulerProvider, flag, checkNumber, date, isInserted, memo, cleared)
+            IFlag flag,
+            string checkNumber,
+            IAccount fromAccount,
+            IAccount toAccount,
+            string memo,
+            long sum,
+            bool cleared)
+            : base(rxSchedulerProvider, flag, checkNumber, date, memo, cleared)
         {
             _fromAccount = fromAccount;
             _toAccount = toAccount;

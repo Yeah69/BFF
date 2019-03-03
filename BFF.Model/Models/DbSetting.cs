@@ -1,8 +1,6 @@
 ﻿using System.Globalization;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
-using BFF.Model.Repositories;
-using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -14,8 +12,7 @@ namespace BFF.Model.Models
         CultureInfo DateCulture { get; set; }
     }
 
-    internal class DbSetting<TPersistence> : DataModel<IDbSetting, TPersistence>, IDbSetting
-        where TPersistence : class, IPersistenceModel
+    public abstract class DbSetting : DataModel, IDbSetting
     {
         public string CurrencyCultureName
         {
@@ -70,10 +67,7 @@ namespace BFF.Model.Models
         }
 
         public DbSetting(
-            TPersistence backingPersistenceModel,
-            IRepository<IDbSetting, TPersistence> repository, 
-            IRxSchedulerProvider rxSchedulerProvider, 
-            bool isInserted) : base(backingPersistenceModel, isInserted, repository, rxSchedulerProvider)
+            IRxSchedulerProvider rxSchedulerProvider) : base(rxSchedulerProvider)
         {
             _currencyCulture = CultureInfo.GetCultureInfo("de-DE");
             _dateCulture = CultureInfo.GetCultureInfo("de-DE");

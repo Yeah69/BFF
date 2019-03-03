@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
-using BFF.Model.Repositories;
-using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
@@ -11,10 +11,20 @@ namespace BFF.Model.Models
         long StartingBalance { get; set; }
 
         DateTime StartingDate { get; set; }
+        Task<long?> GetClearedBalanceAsync();
+
+        Task<long?> GetClearedBalanceUntilNowAsync();
+
+        Task<long?> GetUnclearedBalanceAsync();
+
+        Task<long?> GetUnclearedBalanceUntilNowAsync();
+
+        Task<IEnumerable<ITransBase>> GetTransPageAsync(int offset, int pageSize);
+
+        Task<long> GetTransCountAsync();
     }
 
-    internal class Account<TPersistence> : CommonProperty<IAccount, TPersistence>, IAccount
-        where TPersistence : class, IPersistenceModel
+    public abstract class Account : CommonProperty, IAccount
     {
         private long _startingBalance;
         private DateTime _startingDate;
@@ -40,16 +50,20 @@ namespace BFF.Model.Models
                 UpdateAndNotify();
             }
         }
-        
+
+        public abstract Task<long?> GetClearedBalanceAsync();
+        public abstract Task<long?> GetClearedBalanceUntilNowAsync();
+        public abstract Task<long?> GetUnclearedBalanceAsync();
+        public abstract Task<long?> GetUnclearedBalanceUntilNowAsync();
+        public abstract Task<IEnumerable<ITransBase>> GetTransPageAsync(int offset, int pageSize);
+        public abstract Task<long> GetTransCountAsync();
+
         public Account(
-            TPersistence backingPersistenceModel,
-            IRepository<IAccount, TPersistence> repository,
             IRxSchedulerProvider rxSchedulerProvider,
             DateTime startingDate, 
-            bool isInserted = false, 
-            string name = "", 
-            long startingBalance = 0L) 
-            : base(backingPersistenceModel, repository, rxSchedulerProvider, name: name, isInserted: isInserted)
+            string name, 
+            long startingBalance) 
+            : base(rxSchedulerProvider, name)
         {
             _startingBalance = startingBalance;
             _startingDate = startingDate;

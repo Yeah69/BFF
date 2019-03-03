@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using BFF.Persistence.Models.Sql;
+using BFF.Persistence.Sql.Models.Persistence;
 
 namespace BFF.Persistence.Import
 {

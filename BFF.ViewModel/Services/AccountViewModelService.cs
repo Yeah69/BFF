@@ -1,6 +1,6 @@
 ﻿using System;
 using BFF.Model.Models;
-using BFF.Model.Repositories.ModelRepositories;
+using BFF.Model.Repositories;
 using BFF.ViewModel.ViewModels.ForModels;
 using MuVaViMo;
 
@@ -17,8 +17,9 @@ namespace BFF.ViewModel.Services
             Func<IAccount, IAccountViewModel> factory) : base(repository, factory, true)
         {
             All = new TransformingObservableReadOnlyList<IAccount, IAccountViewModel>(
-                new WrappingObservableReadOnlyList<IAccount>(repository.All),
+                repository.All,
                 AddToDictionaries);
+            AllCollectionInitialized = repository.AllAsync;
         }
     }
 }

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
-using BFF.Persistence.Models.Import.YNAB;
-using BFF.Persistence.Models.Sql;
-using BFF.Persistence.ORM.Sqlite.Interfaces;
+using BFF.Persistence.Import.Models.YNAB;
+using BFF.Persistence.Sql.Models.Persistence;
+using BFF.Persistence.Sql.ORM.Interfaces;
 using MoreLinq;
 
 namespace BFF.Persistence.Import

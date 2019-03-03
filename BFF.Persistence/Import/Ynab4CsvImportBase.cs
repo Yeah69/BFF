@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Core.Persistence;
-using BFF.Persistence.Models.Import.YNAB;
+using BFF.Persistence.Import.Models.YNAB;
 using MoreLinq;
 using NLog;
 

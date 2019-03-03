@@ -1,6 +1,6 @@
 ﻿using System;
 using BFF.Model.Models;
-using BFF.Model.Repositories.ModelRepositories;
+using BFF.Model.Repositories;
 using BFF.ViewModel.ViewModels.ForModels;
 using MuVaViMo;
 
@@ -16,8 +16,9 @@ namespace BFF.ViewModel.Services
         public PayeeViewModelService(IPayeeRepository repository, Func<IPayee, IPayeeViewModel> factory) : base(repository, factory, true)
         {
             All = new TransformingObservableReadOnlyList<IPayee, IPayeeViewModel>(
-                new WrappingObservableReadOnlyList<IPayee>(repository.All),
+                repository.All,
                 AddToDictionaries);
+            AllCollectionInitialized = repository.AllAsync;
         }
     }
 }

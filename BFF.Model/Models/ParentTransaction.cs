@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
-using BFF.Model.Repositories;
-using BFF.Persistence.Models;
-using Reactive.Bindings.Extensions;
 
 namespace BFF.Model.Models
 {
@@ -18,47 +14,25 @@ namespace BFF.Model.Models
         void RemoveSubElement(ISubTransaction subTransaction);
     }
 
-    internal class ParentTransaction<TPersistence> : TransactionBase<IParentTransaction, TPersistence>, IParentTransaction
-        where TPersistence : class, IPersistenceModel
+    public abstract class ParentTransaction : TransactionBase, IParentTransaction
     {
-        private readonly ObservableCollection<ISubTransaction> _subTransactions;
-        
         public ParentTransaction(
-            TPersistence backingPersistenceModel,
-            IRepository<IParentTransaction, TPersistence> repository,
             IRxSchedulerProvider rxSchedulerProvider,
-            IEnumerable<ISubTransaction> subTransactions,
             DateTime date,
-            bool isInserted = false,
-            IFlag flag = null,
-            string checkNumber = "",
-            IAccount account = null,
-            IPayee payee = null,
-            string memo = "",
-            bool? cleared = false)
-            : base(backingPersistenceModel, repository, rxSchedulerProvider, isInserted, flag, checkNumber, date, account, payee, memo, cleared)
+            IFlag flag,
+            string checkNumber,
+            IAccount account,
+            IPayee payee,
+            string memo,
+            bool cleared)
+            : base(rxSchedulerProvider, flag, checkNumber, date, account, payee, memo, cleared)
         {
-            _subTransactions = new ObservableCollection<ISubTransaction>(subTransactions);
-            SubTransactions = new ReadOnlyObservableCollection<ISubTransaction>(_subTransactions);
-            SubTransactions.ObserveAddChanged().Subscribe(st => st.Parent = this);
-            
-            foreach (var subTransaction in SubTransactions)
-            {
-                subTransaction.Parent = this;
-            }
         }
 
-        public ReadOnlyObservableCollection<ISubTransaction> SubTransactions { get; }
+        public abstract ReadOnlyObservableCollection<ISubTransaction> SubTransactions { get; protected set; }
 
-        public void AddSubElement(ISubTransaction subTransaction)
-        {
-            subTransaction.Parent = this;
-            _subTransactions.Add(subTransaction);
-        }
+        public abstract void AddSubElement(ISubTransaction subTransaction);
 
-        public void RemoveSubElement(ISubTransaction subTransaction)
-        {
-            _subTransactions.Remove(subTransaction);
-        }
+        public abstract void RemoveSubElement(ISubTransaction subTransaction);
     }
 }

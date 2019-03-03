@@ -14,7 +14,7 @@ using BFF.Core.Helper;
 using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.Model.Models;
-using BFF.Model.Repositories.ModelRepositories;
+using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
@@ -299,8 +299,8 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 .ObserveOn(rxSchedulerProvider.Task)
                 .Where(_ => IsOpen)
                 .SelectMany(_ => Task.WhenAll(
-                    accountRepository.GetClearedBalanceAsync(account), 
-                    accountRepository.GetUnclearedBalanceAsync(account)))
+                    account.GetClearedBalanceAsync(), 
+                    account.GetUnclearedBalanceAsync()))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(b =>
                 {
@@ -321,8 +321,8 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 .ObserveOn(rxSchedulerProvider.Task)
                 .Where(_ => IsOpen)
                 .SelectMany(_ => Task.WhenAll(
-                    accountRepository.GetClearedBalanceUntilNowAsync(account),
-                    accountRepository.GetUnclearedBalanceUntilNowAsync(account)))
+                    account.GetClearedBalanceUntilNowAsync(),
+                    account.GetUnclearedBalanceUntilNowAsync()))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(bun =>
                 {

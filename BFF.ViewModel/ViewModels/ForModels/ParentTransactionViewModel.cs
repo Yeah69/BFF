@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
+using BFF.Model.Repositories;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
@@ -91,7 +92,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IRxSchedulerProvider rxSchedulerProvider,
             ISummaryAccountViewModel summaryAccountViewModel,
             IPayeeViewModelService payeeViewModelService,
-            Func<ISubTransaction> subTransactionFactory,
+            ICreateNewModels createNewModels,
             Func<ISubTransaction, IAccountBaseViewModel, ISubTransactionViewModel> subTransactionViewModelFactory, 
             IAccountBaseViewModel owner) 
             : base(
@@ -161,7 +162,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             NewSubTransactionCommand = new RxRelayCommand(() =>
             {
-                var newSubTransaction = subTransactionFactory();
+                var newSubTransaction = createNewModels.CreateSubTransaction();
                 newSubTransaction.Parent = parentTransaction;
                 var newSubTransactionViewModel = subTransactionViewModelFactory(newSubTransaction, owner);
                 newSubTransactionViewModel.Sum.Value = SumDuringEdit.Value - (Sum.Value + NewSubTransactions.Sum(ns => ns.Sum.Value));

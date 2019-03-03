@@ -23,6 +23,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// </summary>
         ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
 
+        Task CategoriesInitialized { get; }
+
         /// <summary>
         /// The Parent
         /// </summary>
@@ -48,6 +50,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         private readonly IAccountViewModelService _accountViewModelService;
         private readonly Lazy<IBudgetOverviewViewModel> _budgetOverviewViewModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly TaskCompletionSource<Unit> _categoriesInitialization;
 
         internal class CategoryViewModelInitializer : ICategoryViewModelInitializer
         {
@@ -74,8 +77,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
             {
                 if (categoryViewModel is CategoryViewModel viewModel)
                 {
-                    viewModel.Categories =
-                        viewModel._category.Categories.ToReadOnlyReactiveCollection(_service.Value.GetViewModel).AddTo(viewModel.CompositeDisposable);
+                    //viewModel.Categories =
+                    //    viewModel._category.Categories.ToReadOnlyReactiveCollection(_service.Value.GetViewModel).AddTo(viewModel.CompositeDisposable);
 
                     viewModel.Parent = _service.Value.GetViewModel(viewModel._category.Parent);
                     viewModel._category
@@ -95,6 +98,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// The Child-Categories
         /// </summary>
         public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; private set; }
+
+        public Task CategoriesInitialized { get; }
 
         /// <summary>
         /// The Parent
@@ -188,6 +193,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
         public CategoryViewModel(
             ICategory category,
+            Lazy<ICategoryViewModelService> service,
             ISummaryAccountViewModel summaryAccountViewModel,
             ILocalizer localizer,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
@@ -196,12 +202,17 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IRxSchedulerProvider rxSchedulerProvider) : base(category, rxSchedulerProvider)
         {
             _category = category;
+            Categories =
+                _category.Categories.ToReadOnlyReactiveCollection(service.Value.GetViewModel).AddTo(CompositeDisposable);
             _summaryAccountViewModel = summaryAccountViewModel;
             _localizer = localizer;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _accountViewModelService = accountViewModelService;
             _budgetOverviewViewModel = budgetOverviewViewModel;
             _rxSchedulerProvider = rxSchedulerProvider;
+            _categoriesInitialization = new TaskCompletionSource<Unit>();
+            CategoriesInitialized = _categoriesInitialization.Task;
+            _categoriesInitialization.SetResult(Unit.Default);
         }
     }
 }

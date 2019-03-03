@@ -9,7 +9,7 @@ using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models;
-using BFF.Model.Repositories.ModelRepositories;
+using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 
@@ -145,7 +145,7 @@ namespace BFF.ViewModel.Managers
 
             _saveDbSettingsSubject
                 .ObserveOn(schedulerProvider.Task)
-                .SelectMany(async _ => await dbSettingRepository.GetSetting().ConfigureAwait(false))
+                .SelectMany(_ => dbSettingRepository.GetSetting())
                 .Subscribe(dbSetting =>
                 {
                     dbSetting.CurrencyCulture = _bffSettings.Culture_SessionCurrency;

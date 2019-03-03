@@ -1,6 +1,6 @@
 ﻿using System;
 using BFF.Core.Persistence;
-using BFF.Persistence.ORM.Sqlite;
+using BFF.Persistence.Sql.ORM;
 
 namespace BFF.Persistence.Contexts
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BFF.Persistence.Models.Import.YNAB;
+using BFF.Persistence.Import.Models.YNAB;
 
 namespace BFF.Persistence.Import
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using BFF.Model.Models;
-using BFF.Model.Repositories.ModelRepositories;
+using BFF.Model.Repositories;
 using BFF.ViewModel.ViewModels.ForModels;
 using MuVaViMo;
 
@@ -15,8 +15,9 @@ namespace BFF.ViewModel.Services
         public FlagViewModelService(IFlagRepository repository, Func<IFlag, IFlagViewModel> factory) : base(repository, factory, true)
         {
             All = new TransformingObservableReadOnlyList<IFlag, IFlagViewModel>(
-                new WrappingObservableReadOnlyList<IFlag>(repository.All),
+                repository.All,
                 AddToDictionaries);
+            AllCollectionInitialized = repository.AllAsync;
         }
     }
 }

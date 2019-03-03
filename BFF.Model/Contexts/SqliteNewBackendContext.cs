@@ -1,7 +1,4 @@
-﻿using System;
-using BFF.Core.Persistence;
-using BFF.Persistence.Contexts;
-using BFF.Persistence.ORM.Sqlite.Interfaces;
+﻿using BFF.Core.Persistence;
 
 namespace BFF.Model.Contexts
 {
@@ -12,20 +9,18 @@ namespace BFF.Model.Contexts
 
     internal class SqliteNewBackendContext : ISqliteNewBackendContext
     {
-        private readonly Func<ICreateBackendOrm> _createBackendOrmFactory;
+        private readonly ICreateBackend _createBackend;
 
         public SqliteNewBackendContext(
             IPersistenceConfiguration persistenceConfiguration,
-            Func<IPersistenceConfiguration, IPersistenceContext> persistenceContextFactory,
-            Func<ICreateBackendOrm> createBackendOrmFactory)
+            ICreateBackend createBackend)
         {
-            _createBackendOrmFactory = createBackendOrmFactory;
-            persistenceContextFactory(persistenceConfiguration);
+            _createBackend = createBackend;
         }
 
         public void CreateNewBackend()
         {
-            _createBackendOrmFactory().CreateAsync();
+            _createBackend.CreateBackendBasedOnCurrentConfiguration();
         }
     }
 }

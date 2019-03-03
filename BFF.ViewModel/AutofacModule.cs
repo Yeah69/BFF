@@ -4,6 +4,7 @@ using System.Reflection;
 using Autofac;
 using BFF.Core.IoC;
 using BFF.Model.Models;
+using BFF.Model.Repositories;
 using BFF.ViewModel.ViewModels;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
@@ -71,22 +72,22 @@ namespace BFF.ViewModel
             builder.Register<Func<IAccountBaseViewModel, ITransactionViewModel>>(cc =>
             {
                 var factory = cc.Resolve<Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel>>();
-                var transaction = cc.Resolve<Func<ITransaction>>();
-                return abvm => factory(transaction(), abvm);
+                var createNewModels = cc.Resolve<ICreateNewModels>();
+                return abvm => factory(createNewModels.CreateTransaction(), abvm);
             }).As<Func<IAccountBaseViewModel, ITransactionViewModel>>();
 
             builder.Register<Func<IAccountBaseViewModel, ITransferViewModel>>(cc =>
             {
                 var factory = cc.Resolve<Func<ITransfer, IAccountBaseViewModel, ITransferViewModel>>();
-                var transfer = cc.Resolve<Func<ITransfer>>();
-                return abvm => factory(transfer(), abvm);
+                var createNewModels = cc.Resolve<ICreateNewModels>();
+                return abvm => factory(createNewModels.CreateTransfer(), abvm);
             }).As<Func<IAccountBaseViewModel, ITransferViewModel>>();
 
             builder.Register<Func<IAccountBaseViewModel, IParentTransactionViewModel>>(cc =>
             {
                 var factory = cc.Resolve<Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel>>();
-                var parentTransaction = cc.Resolve<Func<IParentTransaction>>();
-                return abvm => factory(parentTransaction(), abvm);
+                var createNewModels = cc.Resolve<ICreateNewModels>();
+                return abvm => factory(createNewModels.CreateParentTransfer(), abvm);
             }).As<Func<IAccountBaseViewModel, IParentTransactionViewModel>>();
 
             builder.RegisterModule(new Model.AutofacModule());

@@ -2,7 +2,7 @@
 using BFF.Core.Persistence;
 using BFF.Model.Contexts;
 using BFF.Model.Models;
-using BFF.Model.Repositories.ModelRepositories;
+using BFF.Model.Repositories;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels;
@@ -49,7 +49,7 @@ namespace BFF.ViewModel.Contexts
             flagRepository();
             accountViewModelService();
             var viewModelService = categoryViewModelService();
-            categoryViewModelInitializer().Initialize(viewModelService.All);
+            viewModelService.AllCollectionInitialized.ContinueWith(_ => categoryViewModelInitializer().Initialize(viewModelService.All));
             incomeCategoryViewModelService();
             payeeViewModelService();
             flagViewModelService();

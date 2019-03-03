@@ -1,12 +1,47 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
-using BFF.Model.Repositories;
-using BFF.Persistence.Models;
 
 namespace BFF.Model.Models
 {
+    public class CategoryComparer : Comparer<ICategory>
+    {
+        public override int Compare(ICategory x, ICategory y)
+        {
+            IList<ICategory> GetParentalPathList(ICategory category)
+            {
+                IList<ICategory> list = new List<ICategory> { category };
+                ICategory current = category;
+                while (current.Parent != null)
+                {
+                    current = current.Parent;
+                    list.Add(current);
+                }
+
+                return list.Reverse().ToList();
+            }
+
+            IList<ICategory> xList = GetParentalPathList(x);
+            IList<ICategory> yList = GetParentalPathList(y);
+
+            int i = 0;
+            int value = 0;
+            while (value == 0)
+            {
+                if (i >= xList.Count && i >= yList.Count) return 0;
+                if (i >= xList.Count) return -1;
+                if (i >= yList.Count) return 1;
+
+                value = Comparer<string>.Default.Compare(xList[i].Name, yList[i].Name);
+                i++;
+            }
+
+            return value;
+        }
+    }
 
     public interface ICategory : ICategoryBase
     {
@@ -28,10 +63,8 @@ namespace BFF.Model.Models
         Task MergeToAsync(ICategory category);
     }
 
-    internal class Category<TPersistence> : CategoryBase<ICategory, TPersistence>, ICategory
-        where TPersistence : class, IPersistenceModel
+    public abstract class Category : CategoryBase, ICategory
     {
-        private readonly IMergingRepository<ICategory> _mergingRepository;
         private ICategory _parent;
         private readonly ObservableCollection<ICategory> _categories = new ObservableCollection<ICategory>();
 
@@ -58,15 +91,10 @@ namespace BFF.Model.Models
         public ReadOnlyObservableCollection<ICategory> Categories { get; }
 
         public Category(
-            TPersistence backingPersistenceModel,
-            IMergingRepository<ICategory> mergingRepository,
-            IRepository<ICategory, TPersistence> repository,
             IRxSchedulerProvider rxSchedulerProvider, 
-            bool isInserted,
-            string name = "",
-            ICategory parent = null) : base(backingPersistenceModel, repository, rxSchedulerProvider, isInserted, name)
+            string name,
+            ICategory parent) : base(rxSchedulerProvider, name)
         {
-            _mergingRepository = mergingRepository;
             _parent = parent;
             Categories = new ReadOnlyObservableCollection<ICategory>(_categories);
         }
@@ -93,16 +121,12 @@ namespace BFF.Model.Models
             _categories.Remove(category);
         }
 
-        public Task MergeToAsync(ICategory category)
-        {
-            var current = category;
-            while (current != null)
-            {
-                if (current == this) return Task.CompletedTask;
-                current = current.Parent;
-            }
+        public abstract Task MergeToAsync(ICategory category);
 
-            return _mergingRepository.MergeAsync(@from: this, to: category);
+        public override Task DeleteAsync()
+        {
+            Parent.RemoveCategory(this);
+            return Task.CompletedTask;
         }
     }
 }
