@@ -11,15 +11,15 @@ using NLog;
 
 namespace BFF.Persistence.Sql.Repositories
 {
-    internal interface ICachingRepositoryBase<TDomain> : IRepositoryBase<TDomain>
+    internal interface ISqliteCachingRepositoryBase<TDomain> : ISqliteRepositoryBase<TDomain>
         where TDomain : class, IDataModel
     {
         void RemoveFromCache(TDomain dataModel);
         void ClearCache();
     }
 
-    internal abstract class CachingRepositoryBase<TDomain, TPersistence> 
-        : RepositoryBase<TDomain, TPersistence>, ICachingRepositoryBase<TDomain>
+    internal abstract class SqliteCachingRepositoryBase<TDomain, TPersistence> 
+        : SqliteRepositoryBase<TDomain, TPersistence>, ISqliteCachingRepositoryBase<TDomain>
         where TDomain : class, IDataModel 
         where TPersistence : class, IPersistenceModelSql
     {
@@ -27,7 +27,7 @@ namespace BFF.Persistence.Sql.Repositories
         
         private readonly Dictionary<long, TDomain> _cache = new Dictionary<long, TDomain>();
 
-        protected CachingRepositoryBase(ICrudOrm<TPersistence> crudOrm) : base(crudOrm)
+        protected SqliteCachingRepositoryBase(ICrudOrm<TPersistence> crudOrm) : base(crudOrm)
         {
             Disposable.Create(ClearCache).AddTo(CompositeDisposable);
         }

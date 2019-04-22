@@ -7,26 +7,22 @@ using BFF.Persistence.Sql.ORM.Interfaces;
 
 namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
-    public interface IParentTransactionRepository
-    {
-    }
-
-    internal sealed class ParentTransactionRepository : RepositoryBase<IParentTransaction, ITransSql>, IParentTransactionRepository
+    internal sealed class SqliteParentTransactionRepository : SqliteRepositoryBase<IParentTransaction, ITransSql>
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ITransSql> _crudOrm;
-        private readonly Lazy<IAccountRepositoryInternal> _accountRepository;
-        private readonly Lazy<IPayeeRepositoryInternal> _payeeRepository;
-        private readonly Lazy<ISubTransactionRepository> _subTransactionRepository;
-        private readonly Lazy<IFlagRepositoryInternal> _flagRepository;
+        private readonly Lazy<ISqliteAccountRepositoryInternal> _accountRepository;
+        private readonly Lazy<ISqlitePayeeRepositoryInternal> _payeeRepository;
+        private readonly Lazy<ISqliteSubTransactionRepository> _subTransactionRepository;
+        private readonly Lazy<ISqliteFlagRepositoryInternal> _flagRepository;
 
-        public ParentTransactionRepository(
+        public SqliteParentTransactionRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ITransSql> crudOrm,
-            Lazy<IAccountRepositoryInternal> accountRepository,
-            Lazy<IPayeeRepositoryInternal> payeeRepository,
-            Lazy<ISubTransactionRepository> subTransactionRepository,
-            Lazy<IFlagRepositoryInternal> flagRepository) : base(crudOrm)
+            Lazy<ISqliteAccountRepositoryInternal> accountRepository,
+            Lazy<ISqlitePayeeRepositoryInternal> payeeRepository,
+            Lazy<ISqliteSubTransactionRepository> subTransactionRepository,
+            Lazy<ISqliteFlagRepositoryInternal> flagRepository) : base(crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;

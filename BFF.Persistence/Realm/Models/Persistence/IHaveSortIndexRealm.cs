@@ -1,4 +1,4 @@
-﻿namespace BFF.Persistence.Realm.Persistence.Models
+﻿namespace BFF.Persistence.Realm.Models.Persistence
 {
     public interface IHaveSortIndexRealm
     {

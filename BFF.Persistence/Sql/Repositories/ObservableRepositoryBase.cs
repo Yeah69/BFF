@@ -20,15 +20,15 @@ namespace BFF.Persistence.Sql.Repositories
 {
 
     internal interface
-        IObservableRepositoryBaseInternal<TDomain> : IObservableRepositoryBase<TDomain>, ICachingRepositoryBase<TDomain>
+        ISqliteObservableRepositoryBaseInternal<TDomain> : IObservableRepositoryBase<TDomain>, ISqliteCachingRepositoryBase<TDomain>
         where TDomain : class, IDataModel
     {
         void RemoveFromObservableCollection(TDomain dataModel);
         Task ResetAll();
     }
 
-    internal abstract class ObservableRepositoryBase<TDomain, TPersistence> 
-        : CachingRepositoryBase<TDomain, TPersistence>, IObservableRepositoryBaseInternal<TDomain>
+    internal abstract class SqliteObservableRepositoryBase<TDomain, TPersistence> 
+        : SqliteCachingRepositoryBase<TDomain, TPersistence>, ISqliteObservableRepositoryBaseInternal<TDomain>
         where TDomain : class, IDataModel
         where TPersistence : class, IPersistenceModelSql
     {
@@ -43,7 +43,7 @@ namespace BFF.Persistence.Sql.Repositories
 
         public IObservable<IEnumerable<TDomain>> ObserveResetAll => _observeResetAll.AsObservable();
 
-        protected ObservableRepositoryBase(
+        protected SqliteObservableRepositoryBase(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<TPersistence> crudOrm, 
             Comparer<TDomain> comparer) : base(crudOrm)

@@ -10,23 +10,23 @@ using BFF.Persistence.Sql.ORM.Interfaces;
 
 namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
-    public interface ISubTransactionRepository
+    public interface ISqliteSubTransactionRepository
     {
         Task<IEnumerable<ISubTransaction>> GetChildrenOfAsync(long parentId);
     }
 
-    internal sealed class SubTransactionRepository : RepositoryBase<ISubTransaction, ISubTransactionSql>, ISubTransactionRepository
+    internal sealed class SqliteSubTransactionRepository : SqliteRepositoryBase<ISubTransaction, ISubTransactionSql>, ISqliteSubTransactionRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ISubTransactionSql> _crudOrm;
         private readonly Lazy<IParentalOrm> _parentalOrm;
-        private readonly Lazy<ICategoryBaseRepositoryInternal> _categoryBaseRepository;
+        private readonly Lazy<ISqliteCategoryBaseRepositoryInternal> _categoryBaseRepository;
 
-        public SubTransactionRepository(
+        public SqliteSubTransactionRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ISubTransactionSql> crudOrm,
             Lazy<IParentalOrm> parentalOrm,
-            Lazy<ICategoryBaseRepositoryInternal> categoryBaseRepository)
+            Lazy<ISqliteCategoryBaseRepositoryInternal> categoryBaseRepository)
             : base(crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;

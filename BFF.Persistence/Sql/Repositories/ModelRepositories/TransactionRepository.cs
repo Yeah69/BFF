@@ -7,26 +7,22 @@ using BFF.Persistence.Sql.ORM.Interfaces;
 
 namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
-    public interface ITransactionRepository
-    {
-    }
-
-    internal sealed class TransactionRepository : RepositoryBase<ITransaction, ITransSql>, ITransactionRepository
+    internal sealed class SqliteTransactionRepository : SqliteRepositoryBase<ITransaction, ITransSql>
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ITransSql> _crudOrm;
-        private readonly Lazy<IAccountRepositoryInternal> _accountRepository;
-        private readonly Lazy<ICategoryBaseRepositoryInternal> _categoryBaseRepository;
-        private readonly Lazy<IPayeeRepositoryInternal> _payeeRepository;
-        private readonly Lazy<IFlagRepositoryInternal> _flagRepository;
+        private readonly Lazy<ISqliteAccountRepositoryInternal> _accountRepository;
+        private readonly Lazy<ISqliteCategoryBaseRepositoryInternal> _categoryBaseRepository;
+        private readonly Lazy<ISqlitePayeeRepositoryInternal> _payeeRepository;
+        private readonly Lazy<ISqliteFlagRepositoryInternal> _flagRepository;
 
-        public TransactionRepository(
+        public SqliteTransactionRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ITransSql> crudOrm,
-            Lazy<IAccountRepositoryInternal> accountRepository,
-            Lazy<ICategoryBaseRepositoryInternal> categoryBaseRepository,
-            Lazy<IPayeeRepositoryInternal> payeeRepository,
-            Lazy<IFlagRepositoryInternal> flagRepository) : base(crudOrm)
+            Lazy<ISqliteAccountRepositoryInternal> accountRepository,
+            Lazy<ISqliteCategoryBaseRepositoryInternal> categoryBaseRepository,
+            Lazy<ISqlitePayeeRepositoryInternal> payeeRepository,
+            Lazy<ISqliteFlagRepositoryInternal> flagRepository) : base(crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;

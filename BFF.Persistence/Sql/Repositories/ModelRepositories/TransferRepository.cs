@@ -7,22 +7,18 @@ using BFF.Persistence.Sql.ORM.Interfaces;
 
 namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
-    public interface ITransferRepository
-    {
-    }
-
-    internal sealed class TransferRepository : RepositoryBase<ITransfer, ITransSql>, ITransferRepository
+    internal sealed class SqliteTransferRepository : SqliteRepositoryBase<ITransfer, ITransSql>
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ITransSql> _crudOrm;
-        private readonly Lazy<IAccountRepositoryInternal> _accountRepository;
-        private readonly Lazy<IFlagRepositoryInternal> _flagRepository;
+        private readonly Lazy<ISqliteAccountRepositoryInternal> _accountRepository;
+        private readonly Lazy<ISqliteFlagRepositoryInternal> _flagRepository;
 
-        public TransferRepository(
+        public SqliteTransferRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ITransSql> crudOrm,
-            Lazy<IAccountRepositoryInternal> accountRepository,
-            Lazy<IFlagRepositoryInternal> flagRepository) : base(crudOrm)
+            Lazy<ISqliteAccountRepositoryInternal> accountRepository,
+            Lazy<ISqliteFlagRepositoryInternal> flagRepository) : base(crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;

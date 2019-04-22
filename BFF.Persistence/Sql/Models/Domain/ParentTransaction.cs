@@ -19,7 +19,7 @@ namespace BFF.Persistence.Sql.Models.Domain
 
         public ParentTransaction(
             ICrudOrm<ITransSql> crudOrm,
-            ISubTransactionRepository subTransactionRepository,
+            ISqliteSubTransactionRepository subTransactionRepository,
             IRxSchedulerProvider rxSchedulerProvider, 
             long id,
             DateTime date, 

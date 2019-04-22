@@ -18,17 +18,17 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
         }
     }
 
-    internal interface IFlagRepositoryInternal : IFlagRepository, IObservableRepositoryBaseInternal<IFlag>
+    internal interface ISqliteFlagRepositoryInternal : IFlagRepository, ISqliteObservableRepositoryBaseInternal<IFlag>
     {
     }
 
-    internal sealed class FlagRepository : ObservableRepositoryBase<IFlag, IFlagSql>, IFlagRepositoryInternal
+    internal sealed class SqliteFlagRepository : SqliteObservableRepositoryBase<IFlag, IFlagSql>, ISqliteFlagRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<IFlagSql> _crudOrm;
         private readonly Lazy<IMergeOrm> _mergeOrm;
 
-        public FlagRepository(
+        public SqliteFlagRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<IFlagSql> crudOrm,
             Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, new FlagComparer())

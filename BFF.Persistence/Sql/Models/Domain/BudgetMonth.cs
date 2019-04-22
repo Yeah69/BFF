@@ -12,11 +12,11 @@ namespace BFF.Persistence.Sql.Models.Domain
 {
     internal class BudgetMonth : Model.Models.BudgetMonth
     {
-        private readonly ITransRepository _transRepository;
+        private readonly ISqliteTransRepository _transRepository;
         private readonly IIncomeCategoryRepository _incomeCategoryRepository;
 
         public BudgetMonth(
-            ITransRepository transRepository,
+            ISqliteTransRepository transRepository,
             IIncomeCategoryRepository incomeCategoryRepository,
             DateTime month, 
             IEnumerable<IBudgetEntry> budgetEntries, 

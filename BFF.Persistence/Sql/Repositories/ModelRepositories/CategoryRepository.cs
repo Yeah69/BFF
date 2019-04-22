@@ -10,19 +10,19 @@ using BFF.Persistence.Sql.ORM.Interfaces;
 
 namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
-    internal interface ICategoryRepositoryInternal : ICategoryRepository, IObservableRepositoryBaseInternal<ICategory>
+    internal interface ISqliteCategoryRepositoryInternal : ICategoryRepository, ISqliteObservableRepositoryBaseInternal<ICategory>
     {
         void InitializeAll();
     }
 
-    internal sealed class CategoryRepository : ObservableRepositoryBase<ICategory, ICategorySql>, ICategoryRepositoryInternal
+    internal sealed class SqliteCategoryRepository : SqliteObservableRepositoryBase<ICategory, ICategorySql>, ISqliteCategoryRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ICategorySql> _crudOrm;
         private readonly Lazy<IMergeOrm> _mergeOrm;
         private readonly Lazy<ICategoryOrm> _categoryOrm;
 
-        public CategoryRepository(
+        public SqliteCategoryRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ICategorySql> crudOrm,
             Lazy<IMergeOrm> mergeOrm,

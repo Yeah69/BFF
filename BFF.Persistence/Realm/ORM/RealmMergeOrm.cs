@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
-using BFF.Persistence.Realm.Persistence.Models;
 using MoreLinq;
 using Realms;
 

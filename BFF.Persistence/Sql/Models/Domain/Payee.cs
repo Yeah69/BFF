@@ -12,12 +12,12 @@ namespace BFF.Persistence.Sql.Models.Domain
     {
         private readonly ICrudOrm<IPayeeSql> _crudOrm;
         private readonly IMergeOrm _mergeOrm;
-        private readonly IPayeeRepositoryInternal _repository;
+        private readonly ISqlitePayeeRepositoryInternal _repository;
 
         public Payee(
             ICrudOrm<IPayeeSql> crudOrm,
             IMergeOrm mergeOrm,
-            IPayeeRepositoryInternal repository,
+            ISqlitePayeeRepositoryInternal repository,
             IRxSchedulerProvider rxSchedulerProvider,
             long id,
             string name) : base(rxSchedulerProvider, name)

@@ -14,11 +14,11 @@ namespace BFF.Persistence.Sql.Models.Domain
     internal class BudgetEntry : Model.Models.BudgetEntry, ISqlModel
     {
         private readonly ICrudOrm<IBudgetEntrySql> _crudOrm;
-        private readonly ITransRepository _transRepository;
+        private readonly ISqliteTransRepository _transRepository;
 
         public BudgetEntry(
             ICrudOrm<IBudgetEntrySql> crudOrm, 
-            ITransRepository transRepository,
+            ISqliteTransRepository transRepository,
             IRxSchedulerProvider rxSchedulerProvider,
             long id,
             DateTime month,

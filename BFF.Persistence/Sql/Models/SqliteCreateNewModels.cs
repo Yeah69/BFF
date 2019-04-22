@@ -13,9 +13,9 @@ namespace BFF.Persistence.Sql.Models
         private readonly Lazy<DapperCrudOrm<ITransSql>> _transSqlCrudOrm;
         private readonly Lazy<DapperCrudOrm<ISubTransactionSql>> _subTransactionSqlCrudOrm;
         private readonly Lazy<DapperCrudOrm<IAccountSql>> _accountSqlCrudOrm;
-        private readonly Lazy<SubTransactionRepository> _subTransactionRepository;
+        private readonly Lazy<SqliteSubTransactionRepository> _subTransactionRepository;
         private readonly Lazy<DapperAccountOrm> _accountOrm;
-        private readonly Lazy<TransRepository> _transRepository;
+        private readonly Lazy<SqliteTransRepository> _transRepository;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ILastSetDate _lastSetDate;
 
@@ -23,9 +23,9 @@ namespace BFF.Persistence.Sql.Models
             Lazy<DapperCrudOrm<ITransSql>> transSqlCrudOrm,
             Lazy<DapperCrudOrm<ISubTransactionSql>> subTransactionSqlCrudOrm,
             Lazy<DapperCrudOrm<IAccountSql>> accountSqlCrudOrm,
-            Lazy<SubTransactionRepository> subTransactionRepository,
+            Lazy<SqliteSubTransactionRepository> subTransactionRepository,
             Lazy<DapperAccountOrm> accountOrm,
-            Lazy<TransRepository> transRepository,
+            Lazy<SqliteTransRepository> transRepository,
             IRxSchedulerProvider rxSchedulerProvider,
             ILastSetDate lastSetDate)
         {

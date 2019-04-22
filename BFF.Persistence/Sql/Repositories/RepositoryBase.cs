@@ -8,18 +8,18 @@ using BFF.Persistence.Sql.ORM.Interfaces;
 
 namespace BFF.Persistence.Sql.Repositories
 {
-    internal interface IRepositoryBase<TDomain> : IWriteOnlyRepositoryBase<TDomain>, IDbTableRepository<TDomain> 
+    internal interface ISqliteRepositoryBase<TDomain> : ISqliteWriteOnlyRepositoryBase<TDomain>, ISqliteDbTableRepository<TDomain> 
         where TDomain : class, IDataModel
     {
     }
 
-    internal abstract class RepositoryBase<TDomain, TPersistence> : WriteOnlyRepositoryBase<TDomain>, IRepositoryBase<TDomain>
+    internal abstract class SqliteRepositoryBase<TDomain, TPersistence> : SqliteWriteOnlyRepositoryBase<TDomain>, ISqliteRepositoryBase<TDomain>
         where TDomain : class, IDataModel
         where TPersistence : class, IPersistenceModelSql
     {
         private readonly ICrudOrm<TPersistence> _crudOrm;
 
-        protected RepositoryBase(ICrudOrm<TPersistence> crudOrm)
+        protected SqliteRepositoryBase(ICrudOrm<TPersistence> crudOrm)
         {
             _crudOrm = crudOrm;
         }

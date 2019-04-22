@@ -7,12 +7,12 @@ using BFF.Persistence.Sql.ORM.Interfaces;
 
 namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
-    internal sealed class DbSettingRepository : RepositoryBase<IDbSetting, IDbSettingSql>, IDbSettingRepository
+    internal sealed class SqliteDbSettingRepository : SqliteRepositoryBase<IDbSetting, IDbSettingSql>, IDbSettingRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<IDbSettingSql> _crudOrm;
 
-        public DbSettingRepository(
+        public SqliteDbSettingRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<IDbSettingSql> crudOrm) : base(crudOrm)
         {

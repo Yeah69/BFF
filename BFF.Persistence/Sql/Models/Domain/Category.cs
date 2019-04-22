@@ -14,12 +14,12 @@ namespace BFF.Persistence.Sql.Models.Domain
     {
         private readonly ICrudOrm<ICategorySql> _crudOrm;
         private readonly IMergeOrm _mergeOrm;
-        private readonly ICategoryRepositoryInternal _repository;
+        private readonly ISqliteCategoryRepositoryInternal _repository;
 
         public Category(
             ICrudOrm<ICategorySql> crudOrm,
             IMergeOrm mergeOrm,
-            ICategoryRepositoryInternal repository,
+            ISqliteCategoryRepositoryInternal repository,
             IRxSchedulerProvider rxSchedulerProvider,
             long id,
             string name, 

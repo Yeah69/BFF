@@ -17,22 +17,22 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
         }
     }
 
-    internal interface IAccountRepositoryInternal : IAccountRepository, IReadOnlyRepository<IAccount>
+    internal interface ISqliteAccountRepositoryInternal : IAccountRepository, ISqliteReadOnlyRepository<IAccount>
     {
     }
 
-    internal sealed class AccountRepository : ObservableRepositoryBase<IAccount, IAccountSql>, IAccountRepositoryInternal
+    internal sealed class SqliteAccountRepository : SqliteObservableRepositoryBase<IAccount, IAccountSql>, ISqliteAccountRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<IAccountSql> _crudOrm;
         private readonly Lazy<IAccountOrm> _accountOrm;
-        private readonly Lazy<ITransRepository> _transRepository;
+        private readonly Lazy<ISqliteTransRepository> _transRepository;
 
-        public AccountRepository(
+        public SqliteAccountRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<IAccountSql> crudOrm,
             Lazy<IAccountOrm> accountOrm,
-            Lazy<ITransRepository> transRepository) : base(rxSchedulerProvider, crudOrm, new AccountComparer())
+            Lazy<ISqliteTransRepository> transRepository) : base(rxSchedulerProvider, crudOrm, new AccountComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;

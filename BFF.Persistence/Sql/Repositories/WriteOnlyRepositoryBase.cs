@@ -5,15 +5,15 @@ using BFF.Model.Models.Structure;
 
 namespace BFF.Persistence.Sql.Repositories
 {
-    internal interface IWriteOnlyRepositoryBase<TDomain> 
-        : IWriteOnlyRepository<TDomain>, IDisposable
+    internal interface ISqliteWriteOnlyRepositoryBase<TDomain> 
+        : ISqliteWriteOnlyRepository<TDomain>, IDisposable
         where TDomain : class, IDataModel
     {
 
     }
 
-    internal abstract class WriteOnlyRepositoryBase<TDomain>
-        : IWriteOnlyRepositoryBase<TDomain>
+    internal abstract class SqliteWriteOnlyRepositoryBase<TDomain>
+        : ISqliteWriteOnlyRepositoryBase<TDomain>
         where TDomain : class, IDataModel
     {
 

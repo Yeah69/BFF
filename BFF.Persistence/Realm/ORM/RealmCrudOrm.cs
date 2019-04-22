@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
+using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
-using BFF.Persistence.Realm.Persistence.Models;
 using Realms;
 
 namespace BFF.Persistence.Realm.ORM
@@ -21,12 +20,10 @@ namespace BFF.Persistence.Realm.ORM
 
         public async Task<bool> CreateAsync(T model)
         {
-            if (model.IsInserted) return true;
             await _provideConnection.Connection.WriteAsync(
                 r =>
                 {
                     r.Add(model as RealmObject);
-                    model.IsInserted = true;
                 }).ConfigureAwait(false);
             return true;
         }
@@ -123,14 +120,12 @@ namespace BFF.Persistence.Realm.ORM
 
         public async Task UpdateAsync(T model)
         {
-            if (model.IsInserted.Not()) return;
             await _provideConnection.Connection.WriteAsync(
                 r => r.Add(model as RealmObject, update: true)).ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(T model)
         {
-            if (model.IsInserted.Not()) return;
             var realm = _provideConnection.Connection;
             switch (model)
             {

@@ -10,11 +10,11 @@ namespace BFF.Persistence.Sql.Models.Domain
     internal class SummaryAccount : Model.Models.SummaryAccount
     {
         private readonly IAccountOrm _accountOrm;
-        private readonly ITransRepository _transRepository;
+        private readonly ISqliteTransRepository _transRepository;
 
         public SummaryAccount(
             IAccountOrm accountOrm,
-            ITransRepository transRepository,
+            ISqliteTransRepository transRepository,
             IRxSchedulerProvider rxSchedulerProvider) : base(rxSchedulerProvider)
         {
             _accountOrm = accountOrm;

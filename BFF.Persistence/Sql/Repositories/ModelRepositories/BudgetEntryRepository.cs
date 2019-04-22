@@ -7,23 +7,23 @@ using BFF.Persistence.Sql.ORM.Interfaces;
 
 namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
-    public interface IBudgetEntryRepository
+    public interface ISqliteBudgetEntryRepository
     {
         Task<IBudgetEntry> Convert(IBudgetEntrySql budgetEntry, long outflow, long balance);
     }
 
-    internal sealed class BudgetEntryRepository : WriteOnlyRepositoryBase<IBudgetEntry>, IBudgetEntryRepository
+    internal sealed class SqliteBudgetEntryRepository : SqliteWriteOnlyRepositoryBase<IBudgetEntry>, ISqliteBudgetEntryRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<IBudgetEntrySql> _crudOrm;
-        private readonly Lazy<ICategoryRepositoryInternal> _categoryRepository;
-        private readonly Lazy<ITransRepository> _transRepository;
+        private readonly Lazy<ISqliteCategoryRepositoryInternal> _categoryRepository;
+        private readonly Lazy<ISqliteTransRepository> _transRepository;
 
-        public BudgetEntryRepository(
+        public SqliteBudgetEntryRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<IBudgetEntrySql> crudOrm,
-            Lazy<ICategoryRepositoryInternal> categoryRepository,
-            Lazy<ITransRepository> transRepository)
+            Lazy<ISqliteCategoryRepositoryInternal> categoryRepository,
+            Lazy<ISqliteTransRepository> transRepository)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;

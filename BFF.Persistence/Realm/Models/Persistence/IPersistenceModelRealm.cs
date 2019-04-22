@@ -1,11 +1,9 @@
 using Realms;
 
-namespace BFF.Persistence.Realm.Persistence.Models
+namespace BFF.Persistence.Realm.Models.Persistence
 {
     public interface IPersistenceModelRealm
     {
-        [Ignored]
-        bool IsInserted { get; set; }
     }
 
     public interface IUniquelyNamedPersistenceModelRealm : IPersistenceModelRealm

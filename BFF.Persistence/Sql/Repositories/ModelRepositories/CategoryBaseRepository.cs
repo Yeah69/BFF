@@ -5,20 +5,17 @@ using BFF.Persistence.Sql.Models.Domain;
 
 namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
-    public interface ICategoryBaseRepository
+
+    internal interface ISqliteCategoryBaseRepositoryInternal : ISqliteReadOnlyRepository<ICategoryBase>
     {
     }
 
-    internal interface ICategoryBaseRepositoryInternal : ICategoryBaseRepository, IReadOnlyRepository<ICategoryBase>
+    internal class SqliteCategoryBaseRepository : ISqliteCategoryBaseRepositoryInternal
     {
-    }
+        private readonly ISqliteCategoryRepositoryInternal _categoryRepository;
+        private readonly ISqliteIncomeCategoryRepositoryInternal _incomeCategoryRepository;
 
-    internal class CategoryBaseRepository : ICategoryBaseRepositoryInternal
-    {
-        private readonly ICategoryRepositoryInternal _categoryRepository;
-        private readonly IIncomeCategoryRepositoryInternal _incomeCategoryRepository;
-
-        public CategoryBaseRepository(ICategoryRepositoryInternal categoryRepository, IIncomeCategoryRepositoryInternal incomeCategoryRepository)
+        public SqliteCategoryBaseRepository(ISqliteCategoryRepositoryInternal categoryRepository, ISqliteIncomeCategoryRepositoryInternal incomeCategoryRepository)
         {
             _categoryRepository = categoryRepository;
             _incomeCategoryRepository = incomeCategoryRepository;

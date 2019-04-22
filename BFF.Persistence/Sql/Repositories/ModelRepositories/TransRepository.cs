@@ -12,7 +12,7 @@ using BFF.Persistence.Sql.ORM.Interfaces;
 
 namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
-    public interface ITransRepository
+    public interface ISqliteTransRepository
     {
         Task<IEnumerable<ITransBase>> GetFromMonthAsync(DateTime month);
         Task<IEnumerable<ITransBase>> GetFromMonthAndCategoryAsync(DateTime month, ICategoryBase category);
@@ -21,24 +21,24 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
         Task<long> GetCountAsync(IAccount specifyingObject);
     }
 
-    internal sealed class TransRepository : RepositoryBase<ITransBase, ITransSql>, ITransRepository
+    internal sealed class SqliteTransRepository : SqliteRepositoryBase<ITransBase, ITransSql>, ISqliteTransRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly Lazy<IAccountRepositoryInternal> _accountRepository;
-        private readonly Lazy<ICategoryBaseRepositoryInternal> _categoryBaseRepository;
-        private readonly Lazy<IPayeeRepositoryInternal> _payeeRepository;
-        private readonly Lazy<IFlagRepositoryInternal> _flagRepository;
-        private readonly Lazy<ISubTransactionRepository> _subTransactionsRepository;
+        private readonly Lazy<ISqliteAccountRepositoryInternal> _accountRepository;
+        private readonly Lazy<ISqliteCategoryBaseRepositoryInternal> _categoryBaseRepository;
+        private readonly Lazy<ISqlitePayeeRepositoryInternal> _payeeRepository;
+        private readonly Lazy<ISqliteFlagRepositoryInternal> _flagRepository;
+        private readonly Lazy<ISqliteSubTransactionRepository> _subTransactionsRepository;
         private readonly ICrudOrm<ITransSql> _crudOrm;
         private readonly Lazy<ITransOrm> _transOrm;
 
-        public TransRepository(
+        public SqliteTransRepository(
             IRxSchedulerProvider rxSchedulerProvider,
-            Lazy<IAccountRepositoryInternal> accountRepository,
-            Lazy<ICategoryBaseRepositoryInternal> categoryBaseRepository,
-            Lazy<IPayeeRepositoryInternal> payeeRepository,
-            Lazy<IFlagRepositoryInternal> flagRepository,
-            Lazy<ISubTransactionRepository> subTransactionsRepository, 
+            Lazy<ISqliteAccountRepositoryInternal> accountRepository,
+            Lazy<ISqliteCategoryBaseRepositoryInternal> categoryBaseRepository,
+            Lazy<ISqlitePayeeRepositoryInternal> payeeRepository,
+            Lazy<ISqliteFlagRepositoryInternal> flagRepository,
+            Lazy<ISqliteSubTransactionRepository> subTransactionsRepository, 
             ICrudOrm<ITransSql> crudOrm,
             Lazy<ITransOrm> transOrm)
             : base(crudOrm)

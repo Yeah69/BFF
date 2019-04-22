@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
-using BFF.Persistence.Realm.Persistence.Models;
 
 namespace BFF.Persistence.Realm.ORM
 {

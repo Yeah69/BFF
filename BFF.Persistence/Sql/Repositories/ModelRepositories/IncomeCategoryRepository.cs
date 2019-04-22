@@ -18,11 +18,11 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
             StringComparer.Create(CultureInfo.InvariantCulture, false).Compare(x?.Name, y?.Name);
     }
 
-    internal interface IIncomeCategoryRepositoryInternal : IIncomeCategoryRepository, IObservableRepositoryBaseInternal<IIncomeCategory>
+    internal interface ISqliteIncomeCategoryRepositoryInternal : IIncomeCategoryRepository, ISqliteObservableRepositoryBaseInternal<IIncomeCategory>
     {
     }
 
-    internal sealed class IncomeCategoryRepository : ObservableRepositoryBase<IIncomeCategory, ICategorySql>, IIncomeCategoryRepositoryInternal
+    internal sealed class SqliteIncomeCategoryRepository : SqliteObservableRepositoryBase<IIncomeCategory, ICategorySql>, ISqliteIncomeCategoryRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ICategorySql> _crudOrm;
@@ -31,7 +31,7 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 
         private readonly TaskCompletionSource<Unit> _onConstructorCompleted = new TaskCompletionSource<Unit>();
 
-        public IncomeCategoryRepository(
+        public SqliteIncomeCategoryRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ICategorySql> crudOrm,
             Lazy<IMergeOrm> mergeOrm,

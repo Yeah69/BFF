@@ -13,12 +13,12 @@ namespace BFF.Persistence.Sql.Models.Domain
     {
         private readonly ICrudOrm<IFlagSql> _crudOrm;
         private readonly IMergeOrm _mergeOrm;
-        private readonly IFlagRepositoryInternal _repository;
+        private readonly ISqliteFlagRepositoryInternal _repository;
 
         public Flag(
             ICrudOrm<IFlagSql> crudOrm,
             IMergeOrm mergeOrm,
-            IFlagRepositoryInternal repository,
+            ISqliteFlagRepositoryInternal repository,
             IRxSchedulerProvider rxSchedulerProvider,
             long id,
             Color color, 

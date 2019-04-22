@@ -13,19 +13,19 @@ namespace BFF.Persistence.Sql.Repositories
 {
     internal class BudgetMonthRepository : IBudgetMonthRepository
     {
-        private readonly Lazy<IBudgetEntryRepository> _budgetEntryRepository;
+        private readonly Lazy<ISqliteBudgetEntryRepository> _budgetEntryRepository;
         private readonly Lazy<ICategoryRepository> _categoryRepository;
         private readonly Lazy<IIncomeCategoryRepository> _incomeCategoryRepository;
         private readonly Lazy<IAccountRepository> _accountRepository;
-        private readonly Lazy<ITransRepository> _transRepository;
+        private readonly Lazy<ISqliteTransRepository> _transRepository;
         private readonly Lazy<IBudgetOrm> _budgetOrm;
 
         public BudgetMonthRepository(
-            Lazy<IBudgetEntryRepository> budgetEntryRepository,
+            Lazy<ISqliteBudgetEntryRepository> budgetEntryRepository,
             Lazy<ICategoryRepository> categoryRepository,
             Lazy<IIncomeCategoryRepository> incomeCategoryRepository,
             Lazy<IAccountRepository> accountRepository,
-            Lazy<ITransRepository> transRepository,
+            Lazy<ISqliteTransRepository> transRepository,
             Lazy<IBudgetOrm> budgetOrm)
         {
             _budgetEntryRepository = budgetEntryRepository;

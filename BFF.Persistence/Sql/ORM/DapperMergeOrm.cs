@@ -31,11 +31,11 @@ UPDATE {nameof(Category)}s SET {nameof(Category.ParentId)} = @toCategoryId
 WHERE {nameof(Category.ParentId)} = @fromCategoryId;";
 
         private readonly IProvideSqliteConnection _provideConnection;
-        private readonly IPayeeRepositoryInternal _payeeRepository;
+        private readonly ISqlitePayeeRepositoryInternal _payeeRepository;
 
         public DapperMergeOrm(
             IProvideSqliteConnection provideConnection,
-            IPayeeRepositoryInternal payeeRepository)
+            ISqlitePayeeRepositoryInternal payeeRepository)
         {
             _provideConnection = provideConnection;
             _payeeRepository = payeeRepository;

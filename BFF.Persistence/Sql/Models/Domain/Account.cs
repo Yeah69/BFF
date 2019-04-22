@@ -13,12 +13,12 @@ namespace BFF.Persistence.Sql.Models.Domain
     {
         private readonly ICrudOrm<IAccountSql> _crudOrm;
         private readonly IAccountOrm _accountOrm;
-        private readonly ITransRepository _transRepository;
+        private readonly ISqliteTransRepository _transRepository;
 
         public Account(
             ICrudOrm<IAccountSql> crudOrm,
             IAccountOrm accountOrm,
-            ITransRepository transRepository,
+            ISqliteTransRepository transRepository,
             IRxSchedulerProvider rxSchedulerProvider,
             long id,
             DateTime startingDate, 

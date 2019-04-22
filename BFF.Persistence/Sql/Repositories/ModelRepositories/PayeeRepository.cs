@@ -17,17 +17,17 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
         }
     }
 
-    internal interface IPayeeRepositoryInternal : IPayeeRepository, IObservableRepositoryBaseInternal<IPayee>
+    internal interface ISqlitePayeeRepositoryInternal : IPayeeRepository, ISqliteObservableRepositoryBaseInternal<IPayee>
     {
     }
 
-    internal sealed class PayeeRepository : ObservableRepositoryBase<IPayee, IPayeeSql>, IPayeeRepositoryInternal
+    internal sealed class SqlitePayeeRepository : SqliteObservableRepositoryBase<IPayee, IPayeeSql>, ISqlitePayeeRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<IPayeeSql> _crudOrm;
         private readonly Lazy<IMergeOrm> _mergeOrm;
 
-        public PayeeRepository(
+        public SqlitePayeeRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<IPayeeSql> crudOrm,
             Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, new PayeeComparer())
