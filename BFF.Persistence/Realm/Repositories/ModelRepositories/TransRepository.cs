@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
-using BFF.Persistence.Realm.Models.Domain;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
-using Remotion.Linq.Parsing;
 using Account = BFF.Persistence.Realm.Models.Domain.Account;
 using Category = BFF.Persistence.Realm.Models.Domain.Category;
 using IncomeCategory = BFF.Persistence.Realm.Models.Domain.IncomeCategory;

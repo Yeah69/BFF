@@ -5,7 +5,6 @@ using Autofac;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Helper;
-using BFF.ViewModel.ViewModels;
 using MahApps.Metro.Controls.Dialogs;
 using MainWindow = BFF.Views.MainWindow;
 
@@ -86,6 +85,8 @@ namespace BFF
             builder.RegisterModule(new Core.AutofacModule());
 
             builder.RegisterModule(new ViewModel.AutofacModule());
+
+            builder.RegisterModule(new Persistence.Proxy.AutofacModule());
 
             _rootScope = builder.Build();
         }

@@ -64,14 +64,6 @@ namespace BFF.Model
                 })
                 .AsImplementedInterfaces()
                 .ExternallyOwned();
-
-            //builder.RegisterModule(new Persistence.AutofacModule());
-            string codeBase = Assembly.GetExecutingAssembly().Location;
-            var persistenceAssembly = Assembly.LoadFile($"{Path.GetDirectoryName(codeBase)}\\BFF.Persistence.dll");
-            var persistenceModuleType = persistenceAssembly.GetTypes().Single(t => t.IsAssignableTo<Module>());
-            var persistenceModule = Activator.CreateInstance(persistenceModuleType);
-            var test = (Module) persistenceModule;
-            builder.RegisterModule(test);
         }
     }
 }
