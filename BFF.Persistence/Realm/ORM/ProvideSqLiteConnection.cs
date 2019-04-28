@@ -1,5 +1,6 @@
 ﻿using BFF.Core.Persistence;
 using BFF.Persistence.Common;
+using BFF.Persistence.Contexts;
 using Realms;
 
 namespace BFF.Persistence.Realm.ORM
@@ -25,7 +26,7 @@ namespace BFF.Persistence.Realm.ORM
 
         protected override string ConnectionString => DbPath;
 
-        public ProvideConnection(string dbPath) : base(dbPath)
+        public ProvideConnection(ILoadProjectFromFileConfiguration config) : base(config)
         {
         }
     }

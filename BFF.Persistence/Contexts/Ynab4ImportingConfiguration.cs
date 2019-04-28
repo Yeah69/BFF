@@ -1,4 +1,6 @@
-﻿namespace BFF.Core.Persistence
+﻿using BFF.Core.Persistence;
+
+namespace BFF.Persistence.Contexts
 {
     public interface IYnab4ImportConfiguration : IImportingConfiguration
     {

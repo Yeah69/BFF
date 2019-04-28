@@ -2,6 +2,7 @@
 using System.Data;
 using BFF.Core.Persistence;
 using BFF.Persistence.Common;
+using BFF.Persistence.Contexts;
 using Dapper;
 using Microsoft.Data.Sqlite;
 
@@ -58,7 +59,7 @@ namespace BFF.Persistence.Sql.ORM
 
         protected override string ConnectionString => $"Data Source={DbPath};";
 
-        public ProvideSqliteConnection(string dbPath) : base(dbPath)
+        public ProvideSqliteConnection(ILoadProjectFromFileConfiguration config) : base(config)
         {
         }
     }

@@ -46,9 +46,8 @@ namespace BFF.ViewModel.ViewModels
 
     public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel, IOncePerApplication //todo IDisposable
     {
-        private readonly Func<Owned<Func<IPersistenceConfiguration, ILoadedProjectContext>>> _loadedProjectContextFactory;
+        private readonly Func<string, ILoadedProjectContext> _loadedProjectContextFactory;
         private readonly Func<Owned<Func<IEmptyProjectContext>>> _emptyContextFactory;
-        private readonly Func<string, ISqlitePersistenceConfiguration> _sqlitePersistenceConfigurationFactory;
         private readonly IBffSettings _bffSettings;
         private readonly ISetupLocalizationFramework _setupLocalizationFramework;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -212,10 +211,9 @@ namespace BFF.ViewModel.ViewModels
         }
 
         public MainWindowViewModel(
-            Func<Owned<Func<IPersistenceConfiguration, ILoadedProjectContext>>> loadedProjectContextFactory,
+            Func<string, ILoadedProjectContext> loadedProjectContextFactory,
             Func<Owned<Func<IEmptyProjectContext>>> emptyContextFactory,
-            Func<Owned<Func<IPersistenceConfiguration, INewBackendContext>>> newBackendContextFactory,
-            Func<string, ISqlitePersistenceConfiguration> sqlitePersistenceConfigurationFactory,
+            Func<Owned<Func<ILoadProjectFromFileConfiguration, INewBackendContext>>> newBackendContextFactory,
             Func<IBffOpenFileDialog> bffOpenFileDialogFactory,
             Func<IBffSaveFileDialog> bffSaveFileDialogFactory,
             ITransDataGridColumnManager transDataGridColumnManager,
@@ -230,7 +228,6 @@ namespace BFF.ViewModel.ViewModels
             EmptyViewModel = emptyViewModel;
             _loadedProjectContextFactory = loadedProjectContextFactory;
             _emptyContextFactory = emptyContextFactory;
-            _sqlitePersistenceConfigurationFactory = sqlitePersistenceConfigurationFactory;
             _bffSettings = bffSettings;
             _setupLocalizationFramework = setupLocalizationFramework;
             Logger.Debug("Initializing …");
@@ -259,9 +256,9 @@ namespace BFF.ViewModel.ViewModels
                 {
                     using (var backendContextFactory = newBackendContextFactory())
                     {
-                        backendContextFactory
-                            .Value(sqlitePersistenceConfigurationFactory(bffSaveFileDialog.FileName))
-                            .CreateNewBackend();
+                        //backendContextFactory
+                        //    .Value(sqlitePersistenceConfigurationFactory(bffSaveFileDialog.FileName))
+                        //    .CreateNewBackend();
                     }
                     Reset(bffSaveFileDialog.FileName);
                 }
@@ -291,12 +288,11 @@ namespace BFF.ViewModel.ViewModels
             IProjectContext context;
             if (dbPath != null && File.Exists(dbPath))
             {
-                var contextOwner = _loadedProjectContextFactory();
-                var sqlitePersistenceConfiguration = _sqlitePersistenceConfigurationFactory(dbPath);
-                context = contextOwner.Value(sqlitePersistenceConfiguration);
-                _contextSequence.Disposable = contextOwner;
+                var loadedProjectContext = _loadedProjectContextFactory(dbPath);
+                _contextSequence.Disposable = loadedProjectContext;
                 Title = $"{new FileInfo(dbPath).FullName} - BFF";
                 _bffSettings.DBLocation = dbPath;
+                context = (IProjectContext) loadedProjectContext;
             }
             else
             {

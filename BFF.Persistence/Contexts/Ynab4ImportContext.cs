@@ -1,5 +1,4 @@
 ﻿using System;
-using BFF.Core.Persistence;
 using BFF.Persistence.Import;
 
 namespace BFF.Persistence.Contexts
@@ -9,11 +8,8 @@ namespace BFF.Persistence.Contexts
     {
         public Ynab4ImportContext(
             IYnab4ImportConfiguration ynab4ImportConfiguration,
-            IPersistenceConfiguration persistenceConfiguration,
-            Func<IPersistenceConfiguration, IPersistenceContext> persistenceContextFactory,
             Func<IYnab4ImportConfiguration, IYnab4CsvImport> ynab4ImportFactory)
         {
-            persistenceContextFactory(persistenceConfiguration);
             Importable = ynab4ImportFactory(ynab4ImportConfiguration);
         }
 

@@ -1,12 +1,20 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using Autofac;
 using BFF.Core.IoC;
 using BFF.Core.Persistence;
 using BFF.Persistence.Contexts;
+using BFF.Persistence.Realm.Models;
+using BFF.Persistence.Realm.ORM;
+using BFF.Persistence.Realm.Repositories;
+using BFF.Persistence.Realm.Repositories.ModelRepositories;
+using BFF.Persistence.Sql.Models;
 using BFF.Persistence.Sql.ORM;
-using BFF.Persistence.Sql.ORM.Interfaces;
+using BFF.Persistence.Sql.Repositories;
+using BFF.Persistence.Sql.Repositories.ModelRepositories;
+using BackendChoice = BFF.Core.IoC.BackendChoice;
 using Module = Autofac.Module;
 
 namespace BFF.Persistence
@@ -67,40 +75,140 @@ namespace BFF.Persistence
                 .AsImplementedInterfaces()
                 .ExternallyOwned();
 
-            builder.Register<Func<IPersistenceConfiguration, IPersistenceContext>>(cc =>
+            builder.Register<Func<string, ILoadProjectFromFileConfiguration>>(cc =>
             {
-                return pc =>
+                return path =>
                 {
-                    switch (pc)
+                    if (path.EndsWith(".sqlite") || path.EndsWith(".bffs"))
                     {
-                        case ISqlitePersistenceConfiguration sqlite:
-                            return cc.Resolve<ISqlitePersistenceContext>(TypedParameter.From(sqlite));
-                        default:
-                            throw new InvalidOperationException("Unknown persistence configuration");
+                        return new LoadProjectFromFileConfiguration(path);
                     }
+                    throw new InvalidOperationException("Unknown extension");
                 };
             });
 
-            builder.Register<Func<IImportingConfiguration, IPersistenceConfiguration, IImportContext>>(cc =>
+            builder.Register<Func<string, ILoadedProjectContext>>(cc =>
             {
-                return (ic, pc) =>
+                var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
+                return path =>
+                {
+                    var config = currentLifetimeScope.Resolve<ILoadProjectFromFileConfiguration>(TypedParameter.From(path));
+
+                    var newLifetimeScope = currentLifetimeScope
+                        .BeginLifetimeScope(
+                            ScopeLevels.LoadedProject,
+                            cb =>
+                            {
+                                switch (config.BackendChoice)
+                                {
+                                    case BackendChoice.Sqlite:
+                                        LoadSqliteRegistrations(cb, config);
+                                        break;
+                                    case BackendChoice.Realm:
+                                        LoadRealmRegistrations(cb, config);
+                                        break;
+                                    default: throw new InvalidEnumArgumentException(nameof(config), (int) config.BackendChoice, typeof(BackendChoice));
+                                }
+                            });
+
+                    return newLifetimeScope.Resolve<ILoadedProjectContext>(TypedParameter.From((IDisposable) newLifetimeScope));
+                };
+            });
+
+            builder.Register<Func<IImportingConfiguration, IImportContext>>(cc =>
+            {
+                return ic =>
                 {
                     switch (ic)
                     {
                         case IYnab4ImportConfiguration ynab4:
                             return cc.Resolve<IYnab4ImportContext>(
-                                TypedParameter.From(ynab4),
-                                TypedParameter.From(pc));
+                                TypedParameter.From(ynab4));
                         default:
                             throw new InvalidOperationException("Unknown import configuration");
                     }
                 };
             });
+        }
+
+        private void LoadBackendRegistrationsCommon(ContainerBuilder builder, ILoadProjectFromFileConfiguration config)
+        {
+            builder.Register(cc => config)
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .InstancePerMatchingLifetimeScope(
+                    ScopeLevels.CreateProject,
+                    ScopeLevels.LoadedProject);
+        }
+
+        private void LoadSqliteRegistrations(ContainerBuilder builder, ILoadProjectFromFileConfiguration config)
+        {
+            LoadBackendRegistrationsCommon(builder, config);
+
+            builder.RegisterTypes(
+                    typeof(Sql.Models.Domain.SummaryAccount),
+                    typeof(SqliteCreateNewModels),
+                    typeof(SqliteAccountRepository),
+                    typeof(SqliteBudgetEntryRepository),
+                    typeof(SqliteCategoryBaseRepository),
+                    typeof(SqliteCategoryRepository),
+                    typeof(SqliteDbSettingRepository),
+                    typeof(SqliteFlagRepository),
+                    typeof(SqliteIncomeCategoryRepository),
+                    typeof(SqliteParentTransactionRepository),
+                    typeof(SqlitePayeeRepository),
+                    typeof(SqliteSubTransactionRepository),
+                    typeof(SqliteTransactionRepository),
+                    typeof(SqliteTransferRepository),
+                    typeof(SqliteTransRepository),
+                    typeof(SqliteBudgetMonthRepository))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .InstancePerMatchingLifetimeScope(
+                    ScopeLevels.CreateProject,
+                    ScopeLevels.LoadedProject);
 
             builder.RegisterGeneric(typeof(DapperCrudOrm<>))
                 .AsSelf()
-                .As(typeof(ICrudOrm<>))
-                .InstancePerLifetimeScope();
+                .As(typeof(Sql.ORM.Interfaces.ICrudOrm<>))
+                .InstancePerMatchingLifetimeScope(
+                    ScopeLevels.CreateProject,
+                    ScopeLevels.LoadedProject);
+        }
+
+        private void LoadRealmRegistrations(ContainerBuilder builder, ILoadProjectFromFileConfiguration config)
+        {
+            LoadBackendRegistrationsCommon(builder, config);
+
+            builder.RegisterTypes(
+                typeof(Realm.Models.Domain.SummaryAccount),
+                typeof(RealmCreateNewModels),
+                typeof(RealmAccountRepository),
+                typeof(RealmBudgetEntryRepository),
+                typeof(RealmCategoryBaseRepository),
+                typeof(RealmCategoryRepository),
+                typeof(RealmDbSettingRepository),
+                typeof(RealmFlagRepository),
+                typeof(RealmIncomeCategoryRepository),
+                typeof(RealmParentTransactionRepository),
+                typeof(RealmPayeeRepository),
+                typeof(RealmSubTransactionRepository),
+                typeof(RealmTransactionRepository),
+                typeof(RealmTransferRepository),
+                typeof(RealmTransRepository),
+                typeof(RealmBudgetMonthRepository))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .InstancePerMatchingLifetimeScope(
+                    ScopeLevels.CreateProject,
+                    ScopeLevels.LoadedProject);
+
+            builder.RegisterGeneric(typeof(RealmCrudOrm<>))
+                .AsSelf()
+                .As(typeof(Realm.ORM.Interfaces.ICrudOrm<>))
+                .InstancePerMatchingLifetimeScope(
+                    ScopeLevels.CreateProject,
+                    ScopeLevels.LoadedProject);
         }
     }
 }

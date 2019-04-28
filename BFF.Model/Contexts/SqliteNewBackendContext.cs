@@ -1,6 +1,4 @@
-﻿using BFF.Core.Persistence;
-
-namespace BFF.Model.Contexts
+﻿namespace BFF.Model.Contexts
 {
 
     public interface ISqliteNewBackendContext : INewBackendContext
@@ -12,7 +10,6 @@ namespace BFF.Model.Contexts
         private readonly ICreateBackend _createBackend;
 
         public SqliteNewBackendContext(
-            IPersistenceConfiguration persistenceConfiguration,
             ICreateBackend createBackend)
         {
             _createBackend = createBackend;

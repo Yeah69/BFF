@@ -1,8 +1,6 @@
 ﻿using System;
-using BFF.Core.Persistence;
-using BFF.Model.Contexts;
+using BFF.Core.IoC;
 using BFF.Model.Models;
-using BFF.Model.Repositories;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels;
@@ -10,21 +8,15 @@ using BFF.ViewModel.ViewModels.ForModels;
 
 namespace BFF.ViewModel.Contexts
 {
-    public interface ILoadedProjectContext : IProjectContext
-    {
-
-    }
-
     internal class LoadedProjectContext : ProjectContext, ILoadedProjectContext
     {
+        private readonly IDisposable _disposeContext;
+
         public LoadedProjectContext(
-            IPersistenceConfiguration persistenceConfiguration,
-            Func<IPersistenceConfiguration, IModelContext> modelContextFactory, 
-            Func<IAccountRepository> accountRepository,
-            Func<ICategoryRepository> categoryRepository,
-            Func<IIncomeCategoryRepository> incomeCategoryRepository,
-            Func<IPayeeRepository> payeeRepository,
-            Func<IFlagRepository> flagRepository,
+            // parameters
+            IDisposable disposeContext,
+
+            // dependencies
             Func<IAccountViewModelService> accountViewModelService,
             Func<ICategoryViewModelService> categoryViewModelService,
             Func<ICategoryViewModelInitializer> categoryViewModelInitializer,
@@ -41,12 +33,7 @@ namespace BFF.ViewModel.Contexts
             Lazy<IEditFlagsViewModel> lazyEditFlagsViewModel,
             Lazy<IBackendCultureManager> lazyCultureManger)
         {
-            modelContextFactory(persistenceConfiguration);
-            accountRepository();
-            categoryRepository();
-            incomeCategoryRepository();
-            payeeRepository();
-            flagRepository();
+            _disposeContext = disposeContext;
             accountViewModelService();
             var viewModelService = categoryViewModelService();
             viewModelService.AllCollectionInitialized.ContinueWith(_ => categoryViewModelInitializer().Initialize(viewModelService.All));
@@ -71,5 +58,10 @@ namespace BFF.ViewModel.Contexts
         public override IEditPayeesViewModel EditPayeesViewModel { get; }
         public override IEditFlagsViewModel EditFlagsViewModel { get; }
         public override ICultureManager CultureManager { get; }
+
+        public void Dispose()
+        {
+            _disposeContext?.Dispose();
+        }
     }
 }

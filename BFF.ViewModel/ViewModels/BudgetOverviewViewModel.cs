@@ -71,7 +71,7 @@ namespace BFF.ViewModel.ViewModels
         private IDataVirtualizingCollection<IBudgetMonthViewModel> _budgetMonths;
 
         public IList<IBudgetMonthViewModel> BudgetMonths =>
-            _budgetMonths ?? (_budgetMonths = CreateBudgetMonths());
+            _budgetMonths ??= CreateBudgetMonths();
 
         public IBudgetMonthViewModel CurrentBudgetMonth => BudgetMonths[MonthToIndex(DateTime.Now)];
 

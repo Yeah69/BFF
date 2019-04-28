@@ -12,7 +12,7 @@ using IncomeCategory = BFF.Persistence.Realm.Models.Domain.IncomeCategory;
 
 namespace BFF.Persistence.Realm.Repositories
 {
-    internal class BudgetMonthRepository : IBudgetMonthRepository
+    internal class RealmBudgetMonthRepository : IBudgetMonthRepository
     {
         private readonly Lazy<IRealmBudgetEntryRepository> _budgetEntryRepository;
         private readonly Lazy<ICategoryRepository> _categoryRepository;
@@ -21,7 +21,7 @@ namespace BFF.Persistence.Realm.Repositories
         private readonly Lazy<IRealmTransRepository> _transRepository;
         private readonly Lazy<IBudgetOrm> _budgetOrm;
 
-        public BudgetMonthRepository(
+        public RealmBudgetMonthRepository(
             Lazy<IRealmBudgetEntryRepository> budgetEntryRepository,
             Lazy<ICategoryRepository> categoryRepository,
             Lazy<IIncomeCategoryRepository> incomeCategoryRepository,

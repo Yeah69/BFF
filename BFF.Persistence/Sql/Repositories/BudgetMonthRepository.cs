@@ -11,7 +11,7 @@ using BFF.Persistence.Sql.Repositories.ModelRepositories;
 
 namespace BFF.Persistence.Sql.Repositories
 {
-    internal class BudgetMonthRepository : IBudgetMonthRepository
+    internal class SqliteBudgetMonthRepository : IBudgetMonthRepository
     {
         private readonly Lazy<ISqliteBudgetEntryRepository> _budgetEntryRepository;
         private readonly Lazy<ICategoryRepository> _categoryRepository;
@@ -20,7 +20,7 @@ namespace BFF.Persistence.Sql.Repositories
         private readonly Lazy<ISqliteTransRepository> _transRepository;
         private readonly Lazy<IBudgetOrm> _budgetOrm;
 
-        public BudgetMonthRepository(
+        public SqliteBudgetMonthRepository(
             Lazy<ISqliteBudgetEntryRepository> budgetEntryRepository,
             Lazy<ICategoryRepository> categoryRepository,
             Lazy<IIncomeCategoryRepository> incomeCategoryRepository,

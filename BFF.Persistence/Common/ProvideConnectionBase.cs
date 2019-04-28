@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using BFF.Core.Extensions;
 using BFF.Core.Persistence;
+using BFF.Persistence.Contexts;
 
 namespace BFF.Persistence.Common
 {
@@ -28,9 +29,9 @@ namespace BFF.Persistence.Common
         protected string DbPath { get; }
         private static string BackupDirectoryPath(string fileName) => $"BFF_{fileName}_Backups";
 
-        protected ProvideConnectionBase(string dbPath)
+        protected ProvideConnectionBase(ILoadProjectFromFileConfiguration config)
         {
-            DbPath = dbPath;
+            DbPath = config.Path;
         }
     }
 }

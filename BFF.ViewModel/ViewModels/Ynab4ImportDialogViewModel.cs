@@ -26,9 +26,9 @@ namespace BFF.ViewModel.ViewModels
 
     public class Ynab4ImportDialogViewModel : ViewModelBase, IImportDialogViewModel
     {
-        private readonly Func<Owned<Func<IImportingConfiguration, IPersistenceConfiguration, IImportProxyContext>>> _ownedImportContextFactory;
-        private readonly Func<(string TransactionPath, string BudgetPath, string SavePath), IYnab4ImportConfiguration> _importingConfigurationFactory;
-        private readonly Func<string, ISqlitePersistenceConfiguration> _persistenceConfigurationFactory;
+        private readonly Func<Owned<Func<IImportingConfiguration, ILoadProjectFromFileConfiguration, IImportProxyContext>>> _ownedImportContextFactory;
+        private readonly Func<(string TransactionPath, string BudgetPath, string SavePath), IImportingConfiguration> _importingConfigurationFactory;
+        private readonly Func<string, ILoadProjectFromFileConfiguration> _persistenceConfigurationFactory;
 
         private string _transactionPath;
         private string _budgetPath;
@@ -86,11 +86,11 @@ namespace BFF.ViewModel.ViewModels
         }
 
         public Ynab4ImportDialogViewModel(
-            Func<Owned<Func<IImportingConfiguration, IPersistenceConfiguration, IImportProxyContext>>> ownedImportContextFactory,
+            Func<Owned<Func<IImportingConfiguration, ILoadProjectFromFileConfiguration, IImportProxyContext>>> ownedImportContextFactory,
             Func<IBffOpenFileDialog> openFileDialogFactory,
             Func<IBffSaveFileDialog> saveFileDialogFactory,
-            Func<(string TransactionPath, string BudgetPath, string SavePath), IYnab4ImportConfiguration> importingConfigurationFactory,
-            Func<string, ISqlitePersistenceConfiguration> persistenceConfigurationFactory,
+            Func<(string TransactionPath, string BudgetPath, string SavePath), IImportingConfiguration> importingConfigurationFactory,
+            Func<string, ILoadProjectFromFileConfiguration> persistenceConfigurationFactory,
             IBffSettings bffSettings)
         {
             TransactionPath = bffSettings.Import_YnabCsvTransaction;

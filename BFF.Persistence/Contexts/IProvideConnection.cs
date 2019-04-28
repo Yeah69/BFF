@@ -1,6 +1,6 @@
 using BFF.Core.IoC;
 
-namespace BFF.Core.Persistence
+namespace BFF.Persistence.Contexts
 {
     public interface IProvideConnection<out T> : IOncePerBackend
     {

@@ -10,11 +10,11 @@ namespace BFF.Persistence.Contexts
     {
         public ImportProxyContext(
             IImportingConfiguration importingConfiguration,
-            IPersistenceConfiguration persistenceConfiguration,
-            Func<IImportingConfiguration, IPersistenceConfiguration, IImportContext> importContextFactory,
+            ILoadProjectFromFileConfiguration loadProjectFromFileConfiguration,
+            Func<IImportingConfiguration, ILoadProjectFromFileConfiguration, IImportContext> importContextFactory,
             Func<IImportable, IImportProxy> importContextProxyFactory)
         {
-            var importable = importContextFactory(importingConfiguration, persistenceConfiguration)
+            var importable = importContextFactory(importingConfiguration, loadProjectFromFileConfiguration)
                 .Importable;
             ImportProxy =
                 importContextProxyFactory(importable);
