@@ -3,11 +3,8 @@ using System.Globalization;
 using System.IO;
 using System.Reactive.Disposables;
 using System.Threading;
-using Autofac.Features.OwnedInstances;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
-using BFF.Core.Persistence;
-using BFF.Model.Contexts;
 using BFF.ViewModel.Contexts;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
@@ -46,8 +43,8 @@ namespace BFF.ViewModel.ViewModels
 
     public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel, IOncePerApplication //todo IDisposable
     {
-        private readonly Func<string, ILoadedProjectContext> _loadedProjectContextFactory;
-        private readonly Func<Owned<Func<IEmptyProjectContext>>> _emptyContextFactory;
+        private readonly Func<string, ILoadProjectContext> _loadedProjectContextFactory;
+        private readonly Func<IEmptyProjectContext> _emptyContextFactory;
         private readonly IBffSettings _bffSettings;
         private readonly ISetupLocalizationFramework _setupLocalizationFramework;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -161,7 +158,6 @@ namespace BFF.ViewModel.ViewModels
             set
             {
                 _bffSettings.Culture_DefaultLanguage = value;
-                _bffSettings.Save();
 
                 CultureInfo customCulture = CultureInfo.CreateSpecificCulture(_bffSettings.Culture_DefaultLanguage.Name);
                 customCulture.NumberFormat = CultureManager.CurrencyCulture.NumberFormat;
@@ -211,9 +207,9 @@ namespace BFF.ViewModel.ViewModels
         }
 
         public MainWindowViewModel(
-            Func<string, ILoadedProjectContext> loadedProjectContextFactory,
-            Func<Owned<Func<IEmptyProjectContext>>> emptyContextFactory,
-            Func<Owned<Func<ILoadProjectFromFileConfiguration, INewBackendContext>>> newBackendContextFactory,
+            Func<string, ILoadProjectContext> loadedProjectContextFactory,
+            Func<IEmptyProjectContext> emptyContextFactory,
+            Func<string, ICreateProjectContext> newBackendContextFactory,
             Func<IBffOpenFileDialog> bffOpenFileDialogFactory,
             Func<IBffSaveFileDialog> bffSaveFileDialogFactory,
             ITransDataGridColumnManager transDataGridColumnManager,
@@ -254,11 +250,10 @@ namespace BFF.ViewModel.ViewModels
                 bffSaveFileDialog.DefaultExt = "*.sqlite";
                 if (bffSaveFileDialog.ShowDialog() == true)
                 {
-                    using (var backendContextFactory = newBackendContextFactory())
+                    using (var backendContextFactory = newBackendContextFactory(bffSaveFileDialog.FileName))
                     {
-                        //backendContextFactory
-                        //    .Value(sqlitePersistenceConfigurationFactory(bffSaveFileDialog.FileName))
-                        //    .CreateNewBackend();
+                        backendContextFactory
+                            .CreateProjectAsync();
                     }
                     Reset(bffSaveFileDialog.FileName);
                 }
@@ -296,13 +291,12 @@ namespace BFF.ViewModel.ViewModels
             }
             else
             {
-                var contextOwner = _emptyContextFactory();
-                context = contextOwner.Value();
-                _contextSequence.Disposable = contextOwner;
+                var emptyProject = _emptyContextFactory();
+                _contextSequence.Disposable = emptyProject;
                 Title = "BFF";
                 _bffSettings.DBLocation = "";
+                context = (IProjectContext) emptyProject;
             }
-            _bffSettings.Save();
 
             AccountTabsViewModel = context.AccountTabsViewModel;
             BudgetOverviewViewModel = context.BudgetOverviewViewModel;
@@ -323,7 +317,6 @@ namespace BFF.ViewModel.ViewModels
             set
             {
                 _bffSettings.MainWindow_Width = value;
-                _bffSettings.Save();
                 OnPropertyChanged();
             }
         }
@@ -334,7 +327,6 @@ namespace BFF.ViewModel.ViewModels
             set
             {
                 _bffSettings.MainWindow_Height = value;
-                _bffSettings.Save();
                 OnPropertyChanged();
             }
         }
@@ -345,7 +337,6 @@ namespace BFF.ViewModel.ViewModels
             set
             {
                 _bffSettings.MainWindow_X = value;
-                _bffSettings.Save();
                 OnPropertyChanged();
             }
         }
@@ -356,7 +347,6 @@ namespace BFF.ViewModel.ViewModels
             set
             {
                 _bffSettings.MainWindow_Y = value;
-                _bffSettings.Save();
                 OnPropertyChanged();
             }
         }
@@ -367,7 +357,6 @@ namespace BFF.ViewModel.ViewModels
             set
             {
                 _bffSettings.MainWindow_WindowState = value;
-                _bffSettings.Save();
                 OnPropertyChanged();
             }
         }

@@ -178,7 +178,6 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                     BffSettings.OpenAccountTab = this is ISummaryAccountViewModel 
                         ? null 
                         : Name;
-                    BffSettings.Save();
                 }
             }
         }

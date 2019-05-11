@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace BFF.Persistence.Realm.ORM.Interfaces
+namespace BFF.Persistence.Common
 {
     public interface ICreateBackendOrm
     {

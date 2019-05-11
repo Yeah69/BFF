@@ -51,7 +51,6 @@ namespace BFF.ViewModel.ViewModels
             if(IsOpen.Value)
             {
                 _bffSettings.OpenMainTab = "Accounts";
-                _bffSettings.Save();
             }
         }
     }

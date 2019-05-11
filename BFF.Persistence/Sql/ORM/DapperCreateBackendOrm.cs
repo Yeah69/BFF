@@ -2,8 +2,8 @@
 using System.Data;
 using System.Threading.Tasks;
 using System.Transactions;
+using BFF.Persistence.Common;
 using BFF.Persistence.Sql.Models.Persistence;
-using BFF.Persistence.Sql.ORM.Interfaces;
 using Dapper;
 using Dapper.Contrib.Extensions;
 

@@ -3,7 +3,7 @@ using BFF.Core.IoC;
 
 namespace BFF.Core.Helper
 {
-    public interface IBffSettings : IOncePerApplication
+    public interface IBffSettings
     {
         string CsvBankStatementImportProfiles { get; set; }
 
@@ -48,7 +48,5 @@ namespace BFF.Core.Helper
         double MainWindow_Y { get; set; }
 
         BffWindowState MainWindow_WindowState { get; set; }
-
-        void Save();
     }
 }

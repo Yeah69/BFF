@@ -8,11 +8,11 @@ using BFF.ViewModel.ViewModels.ForModels;
 
 namespace BFF.ViewModel.Contexts
 {
-    internal class LoadedProjectContext : ProjectContext, ILoadedProjectContext
+    internal class LoadProjectContext : ProjectContext, ILoadProjectContext
     {
         private readonly IDisposable _disposeContext;
 
-        public LoadedProjectContext(
+        public LoadProjectContext(
             // parameters
             IDisposable disposeContext,
 

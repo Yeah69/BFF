@@ -30,7 +30,6 @@ namespace BFF.ViewModel.Managers
             ShowFlags.Subscribe(v =>
             {
                 _bffSettings.ShowFlags = v;
-                _bffSettings.Save();
             }).AddHere(_compositeDisposable);
 
             ShowCheckNumbers = new ReactiveProperty<bool>(_bffSettings.ShowCheckNumbers, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
@@ -38,7 +37,6 @@ namespace BFF.ViewModel.Managers
             ShowCheckNumbers.Subscribe(v =>
             {
                 _bffSettings.ShowCheckNumbers = v;
-                _bffSettings.Save();
             }).AddHere(_compositeDisposable);
 
             _neverShowEditHeaders = _bffSettings.NeverShowEditHeaders;
@@ -57,7 +55,6 @@ namespace BFF.ViewModel.Managers
                 OnPropertyChanged();
 
                 _bffSettings.NeverShowEditHeaders = value;
-                _bffSettings.Save();
             }
         }
 

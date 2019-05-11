@@ -15,6 +15,7 @@ using BFF.Persistence.Sql.ORM;
 using BFF.Persistence.Sql.Repositories;
 using BFF.Persistence.Sql.Repositories.ModelRepositories;
 using BackendChoice = BFF.Core.IoC.BackendChoice;
+using IImportContext = BFF.Core.IoC.IImportContext;
 using Module = Autofac.Module;
 
 namespace BFF.Persistence
@@ -87,7 +88,7 @@ namespace BFF.Persistence
                 };
             });
 
-            builder.Register<Func<string, ILoadedProjectContext>>(cc =>
+            builder.Register<Func<string, ILoadProjectContext>>(cc =>
             {
                 var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
                 return path =>
@@ -107,12 +108,76 @@ namespace BFF.Persistence
                                     case BackendChoice.Realm:
                                         LoadRealmRegistrations(cb, config);
                                         break;
-                                    default: throw new InvalidEnumArgumentException(nameof(config), (int) config.BackendChoice, typeof(BackendChoice));
+                                    default: throw new InvalidEnumArgumentException(nameof(config), (int)config.BackendChoice, typeof(BackendChoice));
                                 }
                             });
 
-                    return newLifetimeScope.Resolve<ILoadedProjectContext>(TypedParameter.From((IDisposable) newLifetimeScope));
+                    return newLifetimeScope.Resolve<ILoadProjectContext>(TypedParameter.From((IDisposable)newLifetimeScope));
                 };
+            });
+
+            builder.Register<Func<string, ICreateProjectContext>>(cc =>
+            {
+                var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
+                return path =>
+                {
+                    var config = currentLifetimeScope.Resolve<ILoadProjectFromFileConfiguration>(TypedParameter.From(path));
+
+                    var newLifetimeScope = currentLifetimeScope
+                        .BeginLifetimeScope(
+                            ScopeLevels.CreateProject,
+                            cb =>
+                            {
+                                switch (config.BackendChoice)
+                                {
+                                    case BackendChoice.Sqlite:
+                                        LoadSqliteRegistrations(cb, config);
+                                        break;
+                                    case BackendChoice.Realm:
+                                        LoadRealmRegistrations(cb, config);
+                                        break;
+                                    default: throw new InvalidEnumArgumentException(nameof(config), (int)config.BackendChoice, typeof(BackendChoice));
+                                }
+                            });
+
+                    return newLifetimeScope.Resolve<CreateProjectContext>(TypedParameter.From((IDisposable)newLifetimeScope));
+                };
+            });
+
+            builder.Register<Func<(string, string, string, ImportFormatChoice), IImportContext>>(cc =>
+            {
+                var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
+                return t =>
+                {
+                    switch (t.Item4)
+                    {
+                        case ImportFormatChoice.Ynab4Csv:
+                            var config = currentLifetimeScope.Resolve<IYnab4ImportConfiguration>(TypedParameter.From((t.Item1, t.Item2, t.Item3)));
+
+                            var newLifetimeScope = currentLifetimeScope
+                                .BeginLifetimeScope(
+                                    ScopeLevels.Import);
+
+                            return newLifetimeScope.Resolve<Ynab4ImportContext>(
+                                TypedParameter.From((IDisposable) newLifetimeScope));
+                        default: throw new InvalidEnumArgumentException(nameof(t), (int)t.Item4, typeof(ImportFormatChoice));
+                    }
+                };
+            });
+
+            builder.Register<Func<IEmptyProjectContext>>(cc =>
+            {
+                var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
+
+                return () => 
+                {
+                    var newLifetimeScope = currentLifetimeScope
+                        .BeginLifetimeScope(
+                            ScopeLevels.Empty);
+
+                    return newLifetimeScope.Resolve<IEmptyProjectContext>(TypedParameter.From((IDisposable)newLifetimeScope));
+                };
+
             });
 
             builder.Register<Func<IImportingConfiguration, IImportContext>>(cc =>
@@ -161,7 +226,8 @@ namespace BFF.Persistence
                     typeof(SqliteTransactionRepository),
                     typeof(SqliteTransferRepository),
                     typeof(SqliteTransRepository),
-                    typeof(SqliteBudgetMonthRepository))
+                    typeof(SqliteBudgetMonthRepository),
+                    typeof(DapperCreateBackendOrm))
                 .AsSelf()
                 .AsImplementedInterfaces()
                 .InstancePerMatchingLifetimeScope(
@@ -196,7 +262,8 @@ namespace BFF.Persistence
                 typeof(RealmTransactionRepository),
                 typeof(RealmTransferRepository),
                 typeof(RealmTransRepository),
-                typeof(RealmBudgetMonthRepository))
+                typeof(RealmBudgetMonthRepository),
+                typeof(RealmCreateBackendOrm))
                 .AsSelf()
                 .AsImplementedInterfaces()
                 .InstancePerMatchingLifetimeScope(

@@ -110,7 +110,6 @@ namespace BFF.ViewModel.ViewModels
                 {
                     TransactionPath = bffOpenFileDialog.FileName;
                     bffSettings.Import_YnabCsvTransaction = _transactionPath;
-                    bffSettings.Save();
                 }
             });
 
@@ -125,7 +124,6 @@ namespace BFF.ViewModel.ViewModels
                 {
                     BudgetPath = bffOpenFileDialog.FileName;
                     bffSettings.Import_YnabCsvBudget = _budgetPath;
-                    bffSettings.Save();
                 }
             });
 
@@ -139,7 +137,6 @@ namespace BFF.ViewModel.ViewModels
                 {
                     SavePath = bffSaveFileDialog.FileName;
                     bffSettings.Import_SavePath = _savePath;
-                    bffSettings.Save();
                 }
             });
         }

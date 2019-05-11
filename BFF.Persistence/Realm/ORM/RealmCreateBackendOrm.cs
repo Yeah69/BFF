@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using BFF.Persistence.Common;
 using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.ORM

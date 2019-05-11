@@ -83,7 +83,6 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                     bffSettings.SelectedCsvProfile = !(sp is ICsvBankStatementImportProfileViewModel cbsipvm)
                         ? null
                         : cbsipvm.Name.Value;
-                    bffSettings.Save();
                 })
                 .AddHere(_compositeDisposable);
 

@@ -124,7 +124,6 @@ namespace BFF.ViewModel.ViewModels
                 if (_isOpen)
                 {
                     _bffSettings.OpenMainTab = "BudgetOverview";
-                    _bffSettings.Save();
                 }
             }
         }

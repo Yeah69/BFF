@@ -2,8 +2,8 @@
 
 namespace BFF.Core.IoC
 {
-
-    public interface ILoadProjectContext : IDisposable
+    public interface IEmptyProjectContext : IDisposable
     {
+
     }
 }

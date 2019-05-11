@@ -52,7 +52,6 @@ namespace BFF.Model.Models.Utility
         public void Save()
         {
             _bffSettings.CsvBankStatementImportProfiles = JsonConvert.SerializeObject(_profiles.ToList());
-            _bffSettings.Save();
         }
 
         public void Remove(string name)

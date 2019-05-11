@@ -2,6 +2,7 @@
 {
     public enum ScopeLevels
     {
+        Empty,
         LoadedProject,
         CreateProject,
         Import

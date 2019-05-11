@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using BFF.Core.IoC;
 using BFF.Persistence.Import;
 
 namespace BFF.Persistence.Contexts
@@ -14,5 +16,9 @@ namespace BFF.Persistence.Contexts
         }
 
         public IImportable Importable { get; }
+        public Task ImportAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

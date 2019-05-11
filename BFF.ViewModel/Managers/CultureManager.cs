@@ -74,7 +74,6 @@ namespace BFF.ViewModel.Managers
             set
             {
                 _bffSettings.Culture_DefaultDateLong = value;
-                _bffSettings.Save();
                 RefreshDate();
                 OnPropertyChanged();
             }
@@ -155,8 +154,6 @@ namespace BFF.ViewModel.Managers
 
         protected override void SaveCultures()
         {
-            _bffSettings.Save();
-
             _saveDbSettingsSubject.OnNext(Unit.Default);
         }
 
@@ -192,7 +189,6 @@ namespace BFF.ViewModel.Managers
         {
             _bffSettings.Culture_DefaultCurrency = CurrencyCulture;
             _bffSettings.Culture_DefaultDate = DateCulture;
-            _bffSettings.Save();
         }
 
         protected override CultureInfo CreateCustomCulture()
