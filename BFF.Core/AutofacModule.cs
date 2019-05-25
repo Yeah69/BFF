@@ -18,7 +18,8 @@ namespace BFF.Core
             };
 
             builder.RegisterAssemblyTypes(assemblies)
-                .AsImplementedInterfaces();
+                .AsImplementedInterfaces()
+                .AsSelf();
 
             builder.RegisterAssemblyTypes(assemblies)
                 .Where(t =>

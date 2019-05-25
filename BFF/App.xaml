@@ -1,18 +1,19 @@
-﻿<Application x:Class="BFF.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:forModels="clr-namespace:BFF.ViewModel.ViewModels.ForModels;assembly=BFF.ViewModel"
-             xmlns:helper="clr-namespace:BFF.Helper"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
-             xmlns:viewModleHelper="clr-namespace:BFF.ViewModel.Helper;assembly=BFF.ViewModel"
-             xmlns:views="clr-namespace:BFF.Views"
-             Startup="Application_Startup"
-             mc:Ignorable="d">
+﻿<Application
+    x:Class="BFF.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:forModels="clr-namespace:BFF.ViewModel.ViewModels.ForModels;assembly=BFF.ViewModel"
+    xmlns:helper="clr-namespace:BFF.Helper"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
+    xmlns:viewModleHelper="clr-namespace:BFF.ViewModel.Helper;assembly=BFF.ViewModel"
+    xmlns:views="clr-namespace:BFF.Views"
+    Startup="Application_Startup"
+    mc:Ignorable="d">
     <!--  DispatcherUnhandledException="Application_DispatcherUnhandledException">  -->
     <Application.Resources>
         <ResourceDictionary>
@@ -33,14 +34,10 @@
                 <TextBlock Text="{Binding}" />
             </DataTemplate>
 
-            <SolidColorBrush x:Key="TransactionBrush"
-                             Color="DarkOrange" />
-            <SolidColorBrush x:Key="IncomeBrush"
-                             Color="LimeGreen" />
-            <SolidColorBrush x:Key="TransferBrush"
-                             Color="RoyalBlue" />
-            <SolidColorBrush x:Key="NeutralBrush"
-                             Color="DimGray" />
+            <SolidColorBrush x:Key="TransactionBrush" Color="DarkOrange" />
+            <SolidColorBrush x:Key="IncomeBrush" Color="LimeGreen" />
+            <SolidColorBrush x:Key="TransferBrush" Color="RoyalBlue" />
+            <SolidColorBrush x:Key="NeutralBrush" Color="DimGray" />
 
             <system:Double x:Key="IconSize">
                 16.0
@@ -71,59 +68,53 @@
                 Settings
             </iconPacks:PackIconMaterialKind>
 
-            <Style x:Key="BffGeneralButtonStyle"
-                   BasedOn="{StaticResource SquareButtonStyle}"
-                   TargetType="{x:Type Button}">
-                <Setter Property="controls:ControlsHelper.ContentCharacterCasing"
-                        Value="Normal" />
+            <Style
+                x:Key="BffGeneralButtonStyle"
+                BasedOn="{StaticResource SquareButtonStyle}"
+                TargetType="{x:Type Button}">
+                <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
             </Style>
-            <Style BasedOn="{StaticResource BffGeneralButtonStyle}"
-                   TargetType="{x:Type Button}" />
+            <Style BasedOn="{StaticResource BffGeneralButtonStyle}" TargetType="{x:Type Button}" />
 
-            <Style x:Key="CellTextBlock"
-                   TargetType="TextBlock">
-                <Setter Property="Padding"
-                        Value="5,0,0,0" />
-                <Setter Property="VerticalAlignment"
-                        Value="Center" />
+            <Style x:Key="CellTextBlock" TargetType="TextBlock">
+                <Setter Property="Padding" Value="5,0,0,0" />
+                <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
 
-            <DataTemplate x:Key="SumEditTemplate"
-                          DataType="{x:Type viewModels:ISumEditViewModel}">
-                <DockPanel HorizontalAlignment="Stretch"
-                           LastChildFill="True">
-                    <ToggleButton MinWidth="20"
-                                  Padding="5,0"
-                                  Command="{Binding ToggleSign}"
-                                  DockPanel.Dock="Left">
+            <DataTemplate x:Key="SumEditTemplate" DataType="{x:Type viewModels:ISumEditViewModel}">
+                <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
+                    <ToggleButton
+                        MinWidth="20"
+                        Padding="5,0"
+                        Command="{Binding ToggleSign}"
+                        DockPanel.Dock="Left">
                         <ToggleButton.Style>
-                            <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
-                                   TargetType="{x:Type ToggleButton}">
+                            <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SumSign}"
-                                                 Value="{x:Static viewModleHelper:Sign.Plus}">
-                                        <Setter Property="Background"
-                                                Value="{StaticResource IncomeBrush}" />
+                                    <DataTrigger Binding="{Binding SumSign}" Value="{x:Static viewModleHelper:Sign.Plus}">
+                                        <Setter Property="Background" Value="{StaticResource IncomeBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
-                                <Setter Property="Background"
-                                        Value="{StaticResource TransactionBrush}" />
+                                <Setter Property="Background" Value="{StaticResource TransactionBrush}" />
                             </Style>
                         </ToggleButton.Style>
-                        <TextBlock Background="Transparent"
-                                   FontWeight="Bold"
-                                   Text="{Binding SumSign, Converter={x:Static helper:Converters.SignToString}}" />
+                        <TextBlock
+                            Background="Transparent"
+                            FontWeight="Bold"
+                            Text="{Binding SumSign, Converter={x:Static helper:Converters.SignToString}}" />
                     </ToggleButton>
-                    <TextBox HorizontalAlignment="Stretch"
-                             VerticalContentAlignment="Center"
-                             DockPanel.Dock="Right"
-                             Foreground="{Binding Sum.Value, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
-                             TextAlignment="Right">
+                    <TextBox
+                        HorizontalAlignment="Stretch"
+                        VerticalContentAlignment="Center"
+                        DockPanel.Dock="Right"
+                        Foreground="{Binding Sum.Value, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
+                        TextAlignment="Right">
                         <TextBox.Text>
-                            <Binding Converter="{x:Static helper:Converters.SumToString}"
-                                     Mode="TwoWay"
-                                     Path="SumAbsolute"
-                                     UpdateSourceTrigger="LostFocus">
+                            <Binding
+                                Converter="{x:Static helper:Converters.SumToString}"
+                                Mode="TwoWay"
+                                Path="SumAbsolute"
+                                UpdateSourceTrigger="LostFocus">
                                 <Binding.ValidationRules>
                                     <x:Static Member="helper:Rules.Currency" />
                                     <x:Static Member="helper:Rules.CurrencyLongRange" />
@@ -135,22 +126,19 @@
             </DataTemplate>
 
             <DataTemplate x:Key="IndentedCategoryItemTemplate">
-                <StackPanel d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}"
-                            Orientation="Horizontal">
-                    <Rectangle Width="4"
-                               Height="16"
-                               Margin="{Binding Depth, Converter={x:Static helper:Converters.CategoryDepthToMargin}}">
+                <StackPanel d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}" Orientation="Horizontal">
+                    <Rectangle
+                        Width="4"
+                        Height="16"
+                        Margin="{Binding Depth, Converter={x:Static helper:Converters.CategoryDepthToMargin}}">
                         <Rectangle.Style>
                             <Style TargetType="{x:Type Rectangle}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}"
-                                                 Value="True">
-                                        <Setter Property="Fill"
-                                                Value="{StaticResource IncomeBrush}" />
+                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}" Value="True">
+                                        <Setter Property="Fill" Value="{StaticResource IncomeBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
-                                <Setter Property="Fill"
-                                        Value="{DynamicResource AccentColorBrush}" />
+                                <Setter Property="Fill" Value="{DynamicResource AccentColorBrush}" />
                             </Style>
                         </Rectangle.Style>
                     </Rectangle>
@@ -159,22 +147,19 @@
             </DataTemplate>
 
             <DataTemplate x:Key="IndentedCategoryEditingItemTemplate">
-                <StackPanel d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}"
-                            Orientation="Horizontal">
-                    <Rectangle Width="4"
-                               Height="16"
-                               Margin="{Binding Depth, Converter={x:Static helper:Converters.CategoryDepthToMargin}}">
+                <StackPanel d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}" Orientation="Horizontal">
+                    <Rectangle
+                        Width="4"
+                        Height="16"
+                        Margin="{Binding Depth, Converter={x:Static helper:Converters.CategoryDepthToMargin}}">
                         <Rectangle.Style>
                             <Style TargetType="{x:Type Rectangle}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}"
-                                                 Value="True">
-                                        <Setter Property="Fill"
-                                                Value="{StaticResource IncomeBrush}" />
+                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}" Value="True">
+                                        <Setter Property="Fill" Value="{StaticResource IncomeBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
-                                <Setter Property="Fill"
-                                        Value="{DynamicResource AccentColorBrush}" />
+                                <Setter Property="Fill" Value="{DynamicResource AccentColorBrush}" />
                             </Style>
                         </Rectangle.Style>
                     </Rectangle>
@@ -183,50 +168,40 @@
             </DataTemplate>
 
             <DataTemplate x:Key="CategoryItemTemplate">
-                <StackPanel d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}"
-                            Orientation="Horizontal">
-                    <Rectangle Width="4"
-                               Height="16"
-                               Margin="0,0,5,0">
+                <StackPanel d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}" Orientation="Horizontal">
+                    <Rectangle
+                        Width="4"
+                        Height="16"
+                        Margin="0,0,5,0">
                         <Rectangle.Style>
                             <Style TargetType="{x:Type Rectangle}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}"
-                                                 Value="True">
-                                        <Setter Property="Fill"
-                                                Value="{StaticResource IncomeBrush}" />
+                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}" Value="True">
+                                        <Setter Property="Fill" Value="{StaticResource IncomeBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
-                                <Setter Property="Fill"
-                                        Value="{DynamicResource AccentColorBrush}" />
+                                <Setter Property="Fill" Value="{DynamicResource AccentColorBrush}" />
                             </Style>
                         </Rectangle.Style>
                     </Rectangle>
-                    <TextBlock Margin="0,0,5,0"
-                               Text="{Binding Name}" />
+                    <TextBlock Margin="0,0,5,0" Text="{Binding Name}" />
                 </StackPanel>
             </DataTemplate>
 
-            <Style x:Key="CellIconMaterial"
-                   TargetType="iconPacks:PackIconMaterial">
-                <Setter Property="VerticalAlignment"
-                        Value="Center" />
-                <Setter Property="Height"
-                        Value="{StaticResource IconSize}" />
-                <Setter Property="Width"
-                        Value="{StaticResource IconSize}" />
+            <Style x:Key="CellIconMaterial" TargetType="iconPacks:PackIconMaterial">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Height" Value="{StaticResource IconSize}" />
+                <Setter Property="Width" Value="{StaticResource IconSize}" />
             </Style>
 
-            <Style x:Key="ButtonVisibleOnMouseOverDataGridRow"
-                   BasedOn="{StaticResource {x:Type Button}}"
-                   TargetType="{x:Type Button}">
-                <Setter Property="Visibility"
-                        Value="Hidden" />
+            <Style
+                x:Key="ButtonVisibleOnMouseOverDataGridRow"
+                BasedOn="{StaticResource {x:Type Button}}"
+                TargetType="{x:Type Button}">
+                <Setter Property="Visibility" Value="Hidden" />
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
-                                 Value="True">
-                        <Setter Property="Visibility"
-                                Value="Visible" />
+                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Value="True">
+                        <Setter Property="Visibility" Value="Visible" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -260,41 +235,38 @@
             </iconPacks:PackIconMaterialKind>
 
             <DataTemplate x:Key="FlagTemplate">
-                <iconPacks:PackIconMaterial x:Name="PopHereUp"
-                                            d:DataContext="{d:DesignInstance forModels:IFlagViewModel}"
-                                            Foreground="{Binding Color, Converter={x:Static helper:Converters.ColorToBrush}}"
-                                            Kind="{StaticResource FlagIcon}"
-                                            Style="{StaticResource CellIconMaterial}" />
+                <iconPacks:PackIconMaterial
+                    x:Name="PopHereUp"
+                    d:DataContext="{d:DesignInstance forModels:IFlagViewModel}"
+                    Foreground="{Binding Color, Converter={x:Static helper:Converters.ColorToBrush}}"
+                    Kind="{StaticResource FlagIcon}"
+                    Style="{StaticResource CellIconMaterial}" />
             </DataTemplate>
 
             <DataTemplate x:Key="FlagEditTemplate">
                 <Grid d:DataContext="{d:DesignInstance forModels:IFlagViewModel}">
-                    <Popup x:Name="Popup"
-                           StaysOpen="False">
+                    <Popup x:Name="Popup" StaysOpen="False">
                         <views:ColorPickerView Brush="{Binding Color, Mode=TwoWay, Converter={x:Static helper:Converters.ColorToBrush}}" />
                     </Popup>
 
                     <Button Click="Flag_OnClick">
                         <Button.Template>
                             <ControlTemplate>
-                                <iconPacks:PackIconMaterial x:Name="PopHereUp"
-                                                            Foreground="{Binding Color, Converter={x:Static helper:Converters.ColorToBrush}}"
-                                                            Kind="{StaticResource FlagIcon}"
-                                                            Style="{StaticResource CellIconMaterial}" />
+                                <iconPacks:PackIconMaterial
+                                    x:Name="PopHereUp"
+                                    Foreground="{Binding Color, Converter={x:Static helper:Converters.ColorToBrush}}"
+                                    Kind="{StaticResource FlagIcon}"
+                                    Style="{StaticResource CellIconMaterial}" />
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
                 </Grid>
             </DataTemplate>
 
-            <Style x:Key="PopupBorder"
-                   TargetType="Border">
-                <Setter Property="Background"
-                        Value="{DynamicResource WhiteBrush}" />
-                <Setter Property="BorderBrush"
-                        Value="{DynamicResource BlackBrush}" />
-                <Setter Property="BorderThickness"
-                        Value="2" />
+            <Style x:Key="PopupBorder" TargetType="Border">
+                <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}" />
+                <Setter Property="BorderThickness" Value="2" />
             </Style>
 
         </ResourceDictionary>

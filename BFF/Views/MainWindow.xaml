@@ -281,36 +281,36 @@
             <controls:Flyout x:Name="EditAccountsFlyout"
                              IsModal="True"
                              Position="Right">
-                <ContentControl Visibility="{Binding EditAccountsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
+                <ContentControl Visibility="{Binding TopLevelViewModelComposition.EditAccountsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
                                 Margin="10">
-                    <views:EditAccountsView DataContext="{Binding EditAccountsViewModel}" />
+                    <views:EditAccountsView DataContext="{Binding TopLevelViewModelComposition.EditAccountsViewModel}" />
                 </ContentControl>
             </controls:Flyout>
             <!--  Categories Flyout  -->
             <controls:Flyout x:Name="EditCategoriesFlyout"
                              IsModal="True"
                              Position="Right">
-                <ContentControl Visibility="{Binding EditCategoriesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
+                <ContentControl Visibility="{Binding TopLevelViewModelComposition.EditCategoriesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
                                 Margin="10">
-                    <views:EditCategoriesView DataContext="{Binding EditCategoriesViewModel}" />
+                    <views:EditCategoriesView DataContext="{Binding TopLevelViewModelComposition.EditCategoriesViewModel}" />
                 </ContentControl>
             </controls:Flyout>
             <!--  Payee Flyout  -->
             <controls:Flyout x:Name="EditPayeesFlyout"
                              IsModal="True"
                              Position="Right">
-                <ContentControl Visibility="{Binding EditPayeesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
+                <ContentControl Visibility="{Binding TopLevelViewModelComposition.EditPayeesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
                                 Margin="10">
-                    <views:EditPayeesView DataContext="{Binding EditPayeesViewModel}" />
+                    <views:EditPayeesView DataContext="{Binding TopLevelViewModelComposition.EditPayeesViewModel}" />
                 </ContentControl>
             </controls:Flyout>
             <!--  Flags Flyout  -->
             <controls:Flyout x:Name="EditFlagsFlyout"
                              IsModal="True"
                              Position="Right">
-                <ContentControl Visibility="{Binding EditFlagsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
+                <ContentControl Visibility="{Binding TopLevelViewModelComposition.EditFlagsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
                                 Margin="10">
-                    <views:EditFlagsView DataContext="{Binding EditFlagsViewModel}" />
+                    <views:EditFlagsView DataContext="{Binding TopLevelViewModelComposition.EditFlagsViewModel}" />
                 </ContentControl>
             </controls:Flyout>
         </controls:FlyoutsControl>
@@ -318,24 +318,23 @@
 
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands>
-            <Button x:Name="FileButt"
-                    Click="FileButt_Click"
+            <Button Click="FileButt_Click"
                     Content="{lex:Loc MainWindow_File}" />
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
 
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Visibility="{Binding EditAccountsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
+            <Button Visibility="{Binding TopLevelViewModelComposition.EditAccountsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
                     Click="EditAccounts_OnClick"
                     Content="{lex:Loc HamburgerMenu_Accounts}" />
-            <Button Visibility="{Binding EditCategoriesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
+            <Button Visibility="{Binding TopLevelViewModelComposition.EditCategoriesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
                     Click="EditCategories_OnClick"
                     Content="{lex:Loc Domain_Categories}" />
-            <Button Visibility="{Binding EditPayeesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
+            <Button Visibility="{Binding TopLevelViewModelComposition.EditPayeesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
                     Click="EditPayees_OnClick"
                     Content="{lex:Loc Domain_Payees}" />
-            <Button Visibility="{Binding EditFlagsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
+            <Button Visibility="{Binding TopLevelViewModelComposition.EditFlagsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}"
                     Click="EditFlags_OnClick"
                     Content="{lex:Loc Domain_Flags}" />
             <Button Click="SettingsButt_Click">
@@ -422,12 +421,12 @@
                                             </Grid>
                                         </DataTemplate>
                                     </hm:HamburgerMenu.Resources>
-                                    <hm:HamburgerMenuItem Header="{Binding AccountTabsViewModel.SummaryAccountViewModel.TotalBalanceUntilNow}"
+                                    <hm:HamburgerMenuItem Header="{Binding TopLevelViewModelComposition.AccountTabsViewModel.SummaryAccountViewModel.TotalBalanceUntilNow}"
                                                           HeaderTemplate="{StaticResource AccountsHeaderTemplate}"
-                                                          IsSelected="{Binding AccountTabsViewModel.IsOpen.Value}">
+                                                          IsSelected="{Binding TopLevelViewModelComposition.AccountTabsViewModel.IsOpen.Value}">
                                         <hm:HamburgerMenuItem.Content>
                                             <views:AccountTabsView HorizontalContentAlignment="Stretch"
-                                                                   DataContext="{Binding AccountTabsViewModel}" />
+                                                                   DataContext="{Binding TopLevelViewModelComposition.AccountTabsViewModel}" />
                                         </hm:HamburgerMenuItem.Content>
                                         <hm:HamburgerMenuItem.Icon>
                                             <Viewbox Margin="10">
@@ -435,10 +434,10 @@
                                             </Viewbox>
                                         </hm:HamburgerMenuItem.Icon>
                                     </hm:HamburgerMenuItem>
-                                    <hm:HamburgerMenuItem Header="{Binding BudgetOverviewViewModel.CurrentBudgetMonth.AvailableToBudget}"
+                                    <hm:HamburgerMenuItem Header="{Binding TopLevelViewModelComposition.BudgetOverviewViewModel.CurrentBudgetMonth.AvailableToBudget}"
                                                           HeaderTemplate="{StaticResource BudgetHeaderTemplate}"
-                                                          IsSelected="{Binding BudgetOverviewViewModel.IsOpen}">
-                                        <views:BudgetOverviewView DataContext="{Binding BudgetOverviewViewModel}" />
+                                                          IsSelected="{Binding TopLevelViewModelComposition.BudgetOverviewViewModel.IsOpen}">
+                                        <views:BudgetOverviewView DataContext="{Binding TopLevelViewModelComposition.BudgetOverviewViewModel}" />
                                         <hm:HamburgerMenuItem.Icon>
                                             <Viewbox Margin="10">
                                                 <iconPacks:PackIconFontAwesome Kind="MoneyBillAltRegular" />

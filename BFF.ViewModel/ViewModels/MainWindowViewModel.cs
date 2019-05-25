@@ -20,12 +20,7 @@ namespace BFF.ViewModel.ViewModels
         IRxRelayCommand OpenBudgetPlanCommand { get; }
         IRxRelayCommand CloseBudgetPlanCommand { get; }
         IRxRelayCommand ParentTransactionOnClose { get; }
-        IAccountTabsViewModel AccountTabsViewModel { get; set; }
-        IBudgetOverviewViewModel BudgetOverviewViewModel { get; set; }
-        IEditAccountsViewModel EditAccountsViewModel { get; }
-        IEditCategoriesViewModel EditCategoriesViewModel { get; }
-        IEditPayeesViewModel EditPayeesViewModel { get; }
-        IEditFlagsViewModel EditFlagsViewModel { get; }
+        TopLevelViewModelCompositionBase TopLevelViewModelComposition { get; set; }
         IEmptyViewModel EmptyViewModel { get; }
         ICultureManager CultureManager { get; }
         bool IsEmpty { get; }
@@ -68,71 +63,13 @@ namespace BFF.ViewModel.ViewModels
         public IRxRelayCommand CloseBudgetPlanCommand { get; }
 
         public IRxRelayCommand ParentTransactionOnClose { get; }
-
-        private IAccountTabsViewModel _accountTabsViewModel;
-        public IAccountTabsViewModel AccountTabsViewModel
+        public TopLevelViewModelCompositionBase TopLevelViewModelComposition
         {
-            get => _accountTabsViewModel;
+            get => _topLevelViewModelComposition;
             set
             {
-                if (_accountTabsViewModel == value) return;
-                _accountTabsViewModel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public IBudgetOverviewViewModel BudgetOverviewViewModel
-        {
-            get => _budgetOverviewViewModel;
-            set
-            {
-                if (value == _budgetOverviewViewModel)
-                    return;
-                _budgetOverviewViewModel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public IEditAccountsViewModel EditAccountsViewModel
-        {
-            get => _editAccountsViewModel;
-            private set
-            {
-                if (value == _editAccountsViewModel) return;
-                _editAccountsViewModel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public IEditCategoriesViewModel EditCategoriesViewModel
-        {
-            get => _editCategoriesViewModel;
-            private set
-            {
-                if (value == _editCategoriesViewModel) return;
-                _editCategoriesViewModel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public IEditPayeesViewModel EditPayeesViewModel
-        {
-            get => _editPayeesViewModel;
-            private set
-            {
-                if (value == _editPayeesViewModel) return;
-                _editPayeesViewModel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public IEditFlagsViewModel EditFlagsViewModel
-        {
-            get => _editFlagsViewModel;
-            private set
-            {
-                if (value == _editFlagsViewModel) return;
-                _editFlagsViewModel = value;
+                if (_topLevelViewModelComposition == value) return;
+                _topLevelViewModelComposition = value;
                 OnPropertyChanged();
             }
         }
@@ -150,7 +87,8 @@ namespace BFF.ViewModel.ViewModels
 
         public ITransDataGridColumnManager TransDataGridColumnManager { get; }
         public IEmptyViewModel EmptyViewModel { get; set; }
-        public bool IsEmpty => AccountTabsViewModel is null || BudgetOverviewViewModel is null;
+        public bool IsEmpty => TopLevelViewModelComposition.AccountTabsViewModel is null 
+                               || TopLevelViewModelComposition.BudgetOverviewViewModel is null;
 
         public CultureInfo LanguageCulture
         {
@@ -186,13 +124,9 @@ namespace BFF.ViewModel.ViewModels
         }
 
         private bool _parentTransFlyoutOpen;
-        private IBudgetOverviewViewModel _budgetOverviewViewModel;
         private readonly SerialDisposable _contextSequence = new SerialDisposable();
-        private IEditAccountsViewModel _editAccountsViewModel;
-        private IEditCategoriesViewModel _editCategoriesViewModel;
-        private IEditPayeesViewModel _editPayeesViewModel;
-        private IEditFlagsViewModel _editFlagsViewModel;
         private ICultureManager _cultureManager;
+        private TopLevelViewModelCompositionBase _topLevelViewModelComposition;
 
         public IReadOnlyReactiveProperty<IParentTransactionViewModel> OpenParentTransaction { get; }
 
@@ -287,7 +221,7 @@ namespace BFF.ViewModel.ViewModels
                 _contextSequence.Disposable = loadedProjectContext;
                 Title = $"{new FileInfo(dbPath).FullName} - BFF";
                 _bffSettings.DBLocation = dbPath;
-                context = (IProjectContext) loadedProjectContext;
+                context = loadedProjectContext;
             }
             else
             {
@@ -295,15 +229,10 @@ namespace BFF.ViewModel.ViewModels
                 _contextSequence.Disposable = emptyProject;
                 Title = "BFF";
                 _bffSettings.DBLocation = "";
-                context = (IProjectContext) emptyProject;
+                context = emptyProject;
             }
 
-            AccountTabsViewModel = context.AccountTabsViewModel;
-            BudgetOverviewViewModel = context.BudgetOverviewViewModel;
-            EditAccountsViewModel = context.EditAccountsViewModel;
-            EditCategoriesViewModel = context.EditCategoriesViewModel;
-            EditPayeesViewModel = context.EditPayeesViewModel;
-            EditFlagsViewModel = context.EditFlagsViewModel;
+            TopLevelViewModelComposition = context.LoadProject();
             CultureManager = context.CultureManager;
 
             OnPropertyChanged(nameof(IsEmpty));

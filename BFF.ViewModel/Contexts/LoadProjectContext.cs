@@ -1,5 +1,4 @@
 ﻿using System;
-using BFF.Core.IoC;
 using BFF.Model.Models;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
@@ -11,6 +10,7 @@ namespace BFF.ViewModel.Contexts
     internal class LoadProjectContext : ProjectContext, ILoadProjectContext
     {
         private readonly IDisposable _disposeContext;
+        private readonly Lazy<LoadedProjectTopLevelViewModelComposition> _lazyLoadedProjectTopLevelViewModelComposition;
 
         public LoadProjectContext(
             // parameters
@@ -25,15 +25,12 @@ namespace BFF.ViewModel.Contexts
             Func<IFlagViewModelService> flagViewModelService,
             Func<ISummaryAccount> summaryAccount,
             Func<ISummaryAccountViewModel> summaryAccountViewModel,
-            Lazy<IBudgetOverviewViewModel> lazyBudgetOverviewViewModel,
-            Lazy<IAccountTabsViewModel> lazyAccountTabsViewModel,
-            Lazy<IEditAccountsViewModel> lazyEditAccountsViewModel,
-            Lazy<IEditCategoriesViewModel> lazyEditCategoriesViewModel,
-            Lazy<IEditPayeesViewModel> lazyEditPayeesViewModel,
-            Lazy<IEditFlagsViewModel> lazyEditFlagsViewModel,
-            Lazy<IBackendCultureManager> lazyCultureManger)
+            IBackendCultureManager cultureManager,
+            Lazy<LoadedProjectTopLevelViewModelComposition> lazyLoadedProjectTopLevelViewModelComposition)
         {
+            CultureManager = cultureManager;
             _disposeContext = disposeContext;
+            _lazyLoadedProjectTopLevelViewModelComposition = lazyLoadedProjectTopLevelViewModelComposition;
             accountViewModelService();
             var viewModelService = categoryViewModelService();
             viewModelService.AllCollectionInitialized.ContinueWith(_ => categoryViewModelInitializer().Initialize(viewModelService.All));
@@ -42,26 +39,18 @@ namespace BFF.ViewModel.Contexts
             flagViewModelService();
             summaryAccount();
             summaryAccountViewModel();
-            BudgetOverviewViewModel = lazyBudgetOverviewViewModel.Value;
-            AccountTabsViewModel = lazyAccountTabsViewModel.Value;
-            EditAccountsViewModel = lazyEditAccountsViewModel.Value;
-            EditCategoriesViewModel = lazyEditCategoriesViewModel.Value;
-            EditPayeesViewModel = lazyEditPayeesViewModel.Value;
-            EditFlagsViewModel = lazyEditFlagsViewModel.Value;
-            CultureManager = lazyCultureManger.Value;
         }
 
-        public override IBudgetOverviewViewModel BudgetOverviewViewModel { get; } 
-        public override IAccountTabsViewModel AccountTabsViewModel { get; }
-        public override IEditAccountsViewModel EditAccountsViewModel { get; }
-        public override IEditCategoriesViewModel EditCategoriesViewModel { get; }
-        public override IEditPayeesViewModel EditPayeesViewModel { get; }
-        public override IEditFlagsViewModel EditFlagsViewModel { get; }
-        public override ICultureManager CultureManager { get; }
+        public override TopLevelViewModelCompositionBase LoadProject()
+        {
+            return _lazyLoadedProjectTopLevelViewModelComposition.Value;
+        }
 
         public void Dispose()
         {
             _disposeContext?.Dispose();
         }
+
+        public override ICultureManager CultureManager { get; }
     }
 }

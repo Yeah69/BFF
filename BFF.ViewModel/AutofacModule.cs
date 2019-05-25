@@ -26,7 +26,8 @@ namespace BFF.ViewModel
             };
 
             builder.RegisterAssemblyTypes(assemblies)
-                .AsImplementedInterfaces();
+                .AsImplementedInterfaces()
+                .AsSelf();
 
             builder.RegisterAssemblyTypes(assemblies)
                 .Where(t =>
@@ -91,6 +92,29 @@ namespace BFF.ViewModel
                 var createNewModels = cc.Resolve<ICreateNewModels>();
                 return abvm => factory(createNewModels.CreateParentTransfer(), abvm);
             }).As<Func<IAccountBaseViewModel, IParentTransactionViewModel>>();
+
+            builder.Register<Func<string, ILoadProjectContext>>(cc =>
+            {
+                var lifetimeScope = cc.Resolve<ILifetimeScope>();
+                return path =>
+                {
+                    var config = lifetimeScope.Resolve<ILoadProjectFromFileConfiguration>(TypedParameter.From(path));
+                    var scope = lifetimeScope
+                        .Resolve<Func<ILoadProjectFromFileConfiguration, ScopeLevels, ILifetimeScope>>()(
+                            config, ScopeLevels.LoadedProject);
+                    return scope.Resolve<ILoadProjectContext>(TypedParameter.From((IDisposable)scope));
+                };
+            });
+
+            builder.Register<Func<IEmptyProjectContext>>(cc =>
+            {
+                var lifetimeScope = cc.Resolve<ILifetimeScope>();
+                return () =>
+                {
+                    var scope = lifetimeScope.BeginLifetimeScope(ScopeLevels.Empty);
+                    return scope.Resolve<IEmptyProjectContext>(TypedParameter.From((IDisposable)scope));
+                };
+            });
 
             builder.RegisterModule(new Model.AutofacModule());
         }

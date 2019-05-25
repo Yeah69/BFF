@@ -88,16 +88,14 @@ namespace BFF.Persistence
                 };
             });
 
-            builder.Register<Func<string, ILoadProjectContext>>(cc =>
+            builder.Register<Func<ILoadProjectFromFileConfiguration, ScopeLevels, ILifetimeScope>>(cc =>
             {
                 var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
-                return path =>
+                return (config, scopeLevel) =>
                 {
-                    var config = currentLifetimeScope.Resolve<ILoadProjectFromFileConfiguration>(TypedParameter.From(path));
-
                     var newLifetimeScope = currentLifetimeScope
                         .BeginLifetimeScope(
-                            ScopeLevels.LoadedProject,
+                            scopeLevel,
                             cb =>
                             {
                                 switch (config.BackendChoice)
@@ -112,7 +110,7 @@ namespace BFF.Persistence
                                 }
                             });
 
-                    return newLifetimeScope.Resolve<ILoadProjectContext>(TypedParameter.From((IDisposable)newLifetimeScope));
+                    return newLifetimeScope;
                 };
             });
 
@@ -121,24 +119,10 @@ namespace BFF.Persistence
                 var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
                 return path =>
                 {
-                    var config = currentLifetimeScope.Resolve<ILoadProjectFromFileConfiguration>(TypedParameter.From(path));
+                    var config =
+                        currentLifetimeScope.Resolve<ILoadProjectFromFileConfiguration>(TypedParameter.From(path));
 
-                    var newLifetimeScope = currentLifetimeScope
-                        .BeginLifetimeScope(
-                            ScopeLevels.CreateProject,
-                            cb =>
-                            {
-                                switch (config.BackendChoice)
-                                {
-                                    case BackendChoice.Sqlite:
-                                        LoadSqliteRegistrations(cb, config);
-                                        break;
-                                    case BackendChoice.Realm:
-                                        LoadRealmRegistrations(cb, config);
-                                        break;
-                                    default: throw new InvalidEnumArgumentException(nameof(config), (int)config.BackendChoice, typeof(BackendChoice));
-                                }
-                            });
+                    var newLifetimeScope = currentLifetimeScope.Resolve<Func<ILoadProjectFromFileConfiguration, ScopeLevels, ILifetimeScope>>()(config, ScopeLevels.CreateProject);
 
                     return newLifetimeScope.Resolve<CreateProjectContext>(TypedParameter.From((IDisposable)newLifetimeScope));
                 };
@@ -163,21 +147,6 @@ namespace BFF.Persistence
                         default: throw new InvalidEnumArgumentException(nameof(t), (int)t.Item4, typeof(ImportFormatChoice));
                     }
                 };
-            });
-
-            builder.Register<Func<IEmptyProjectContext>>(cc =>
-            {
-                var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
-
-                return () => 
-                {
-                    var newLifetimeScope = currentLifetimeScope
-                        .BeginLifetimeScope(
-                            ScopeLevels.Empty);
-
-                    return newLifetimeScope.Resolve<IEmptyProjectContext>(TypedParameter.From((IDisposable)newLifetimeScope));
-                };
-
             });
 
             builder.Register<Func<IImportingConfiguration, IImportContext>>(cc =>
