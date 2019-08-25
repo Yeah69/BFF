@@ -5,6 +5,7 @@ using BFF.Core.Extensions;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.ViewModel.ViewModels.ForModels;
+using MrMeeseeks.Extensions;
 using MuVaViMo;
 
 namespace BFF.ViewModel.Services
@@ -36,7 +37,7 @@ namespace BFF.ViewModel.Services
             repository
                 .ObserveResetAll
                 .Subscribe(cs => categoryViewModelInitializer.Initialize(All))
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
         }
     }
 }

@@ -12,8 +12,8 @@ namespace BFF.Model.Models.Structure
         public int Compare(T x, T y)
         {
             if (x == y) return 0;
-            if (x == null) return 1;
-            if (y == null) return -1;
+            if (x is null) return 1;
+            if (y is null) return -1;
             if (x.SortIndex < y.SortIndex) return -1;
             if (x.SortIndex == y.SortIndex) return 0;
             return 1;

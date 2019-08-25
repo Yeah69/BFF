@@ -16,7 +16,7 @@ namespace BFF.Persistence.Common
             var fileInfo = new FileInfo(DbPath);
             var directory = fileInfo.Directory;
 
-            if(directory == null) throw new DirectoryNotFoundException();
+            if(directory is null) throw new DirectoryNotFoundException();
 
             var backupDirectoryPath = BackupDirectoryPath(fileInfo.Name);
             var backupDirectory = directory.GetDirectories().FirstOrDefault(di => di.Name == backupDirectoryPath) ??

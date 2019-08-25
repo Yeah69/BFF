@@ -9,6 +9,8 @@ using BFF.Core.Helper;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
 using Dapper;
+using MrMeeseeks.Extensions;
+using MrMeeseeks.Utility;
 
 namespace BFF.Persistence.Sql.ORM
 {
@@ -191,7 +193,7 @@ SELECT Total(Sum) FROM
 
                     long entryBudgetValue = 0L;
 
-                    var budgetList = (await budgetEntriesTask.ConfigureAwait(false)).ToDictionary(be => new DateTime(be.Month.Year, be.Month.Month, 1), be => be);
+                    var budgetList = (await budgetEntriesTask.ConfigureAwait(false)).ToDictionary(be => new DateTime(be.Month.Year, be.Month.Month, 1), Basic.Identity);
 
                     var outflowList = (await outflowTask.ConfigureAwait(false)).ToDictionary(or => new DateTime(or.Month.Year, or.Month.Month, 1), or => or.Sum);
 
@@ -200,7 +202,7 @@ SELECT Total(Sum) FROM
                         .Where(dt => dt.Year < year)
                         .Concat(outflowList.Keys.Where(dt => dt.Year < year))
                         .Distinct()
-                        .OrderBy(dt => dt).ToList();
+                        .OrderBy(Basic.Identity).ToList();
 
                     var previous = previousMonths
                         .Select(dt =>
@@ -280,7 +282,7 @@ SELECT Total(Sum) FROM
 
                     long entryBudgetValue = Math.Max(0L, entryBudgetValuePerCategoryId[categoryId]);
 
-                    var budgetList = (await budgetEntriesTask.ConfigureAwait(false)).ToDictionary(be => new DateTime(be.Month.Year, be.Month.Month, 1), be => be);
+                    var budgetList = (await budgetEntriesTask.ConfigureAwait(false)).ToDictionary(be => new DateTime(be.Month.Year, be.Month.Month, 1), Basic.Identity);
 
                     var outflowList = (await outflowTask.ConfigureAwait(false)).ToDictionary(or => new DateTime(or.Month.Year, or.Month.Month, 1), or => or.Sum);
                     foreach (var month in monthRange)

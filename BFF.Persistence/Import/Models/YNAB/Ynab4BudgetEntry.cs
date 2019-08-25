@@ -27,9 +27,9 @@
                 Category = entries[1].Trim('"'),
                 MasterCategory = entries[2].Trim('"'),
                 SubCategory = entries[3].Trim('"'),
-                Budgeted = Ynab4CsvImportBase.ExtractLong(entries[4]),
-                Outflow = Ynab4CsvImportBase.ExtractLong(entries[5]),
-                CategoryBalance = Ynab4CsvImportBase.ExtractLong(entries[6])
+                Budgeted = Helper.ExtractLong(entries[4]),
+                Outflow = Helper.ExtractLong(entries[5]),
+                CategoryBalance = Helper.ExtractLong(entries[6])
             };
             return ret;
         }

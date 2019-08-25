@@ -10,6 +10,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.Extensions;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -37,7 +38,7 @@ namespace BFF.ViewModel.ViewModels
         IHaveCategoryViewModel CurrentCategoryOwner { get; set; }
     }
 
-    public sealed class NewCategoryViewModel : NotifyingErrorViewModelBase, INewCategoryViewModel, IOncePerBackend, IDisposable
+    internal sealed class NewCategoryViewModel : NotifyingErrorViewModelBase, INewCategoryViewModel, IOncePerBackend, IDisposable
     {
         private readonly ILocalizer _localizer;
         private readonly ICategoryViewModelService _categoryViewModelService;

@@ -1,29 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
+using JetBrains.Annotations;
 
 namespace BFF.Persistence.Realm.ORM
 {
     internal class RealmParentalOrm : IParentalOrm
     {
-        private readonly IProvideRealmConnection _provideConnection;
+        private readonly IRealmOperations _realmOperations;
 
-        public RealmParentalOrm(IProvideRealmConnection provideConnection)
+        public RealmParentalOrm(
+            IRealmOperations realmOperations)
         {
-            _provideConnection = provideConnection;
+            _realmOperations = realmOperations;
         }
 
-
-        public IEnumerable<SubTransaction> ReadSubTransactionsOf(ITransRealm parentTransaction)
+        public Task<IEnumerable<ISubTransactionRealm>> ReadSubTransactionsOfAsync([NotNull]ITransRealm parentTransaction)
         {
-            return _provideConnection.Connection.All<SubTransaction>().Where(st => st.Parent.Id == parentTransaction.Id);
-        }
+            parentTransaction = parentTransaction ?? throw new ArgumentNullException(nameof(parentTransaction));
+            return _realmOperations.RunFuncAsync(Inner);
 
-        public async Task<IEnumerable<ISubTransactionRealm>> ReadSubTransactionsOfAsync(ITransRealm parentTransaction)
-        {
-            return _provideConnection.Connection.All<SubTransaction>().Where(st => st.Parent.Id == parentTransaction.Id);
+            IEnumerable<ISubTransactionRealm> Inner(Realms.Realm realm)
+            {
+                return realm.All<SubTransaction>()
+                    .Where(st => st.ParentRef == parentTransaction);
+            }
         }
     }
 }

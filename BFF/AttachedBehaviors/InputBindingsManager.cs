@@ -59,7 +59,7 @@ namespace BFF.AttachedBehaviors
             DependencyProperty property =
                 GetUpdatePropertySourceWhenEnterPressed(source as DependencyObject);
 
-            if (property == null)
+            if (property is null)
             {
                 return;
             }

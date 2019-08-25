@@ -20,6 +20,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using MoreLinq;
+using MrMeeseeks.Extensions;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -109,7 +110,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         void ReplaceNewTrans(ITransLikeViewModel replaced, ITransLikeViewModel replacement);
     }
 
-    public abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
+    internal abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
     {
         private readonly Lazy<IAccountViewModelService> _accountViewModelService;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
@@ -339,7 +340,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 .Subscribe(DoTargetBalanceSystem)
                 .AddTo(CompositeDisposable);
 
-            var serialDisposable = new SerialDisposable().AddHere(CompositeDisposable);
+            var serialDisposable = new SerialDisposable().AddForDisposalTo(CompositeDisposable);
 
             NewTransList
                 .ObserveCollectionChanges()

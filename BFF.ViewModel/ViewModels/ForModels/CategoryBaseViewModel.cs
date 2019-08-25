@@ -13,7 +13,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         string GetIndent();
     }
 
-    public abstract class CategoryBaseViewModel : CommonPropertyViewModel, ICategoryBaseViewModel
+    internal abstract class CategoryBaseViewModel : CommonPropertyViewModel, ICategoryBaseViewModel
     {
         public abstract string FullName { get; }
 

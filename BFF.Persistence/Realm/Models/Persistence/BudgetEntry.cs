@@ -20,5 +20,16 @@ namespace BFF.Persistence.Realm.Models.Persistence
         public DateTime Month { get => MonthOffset.UtcDateTime; set => MonthOffset = value; }
         public DateTimeOffset MonthOffset { get; set; }
         public long Budget { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is null || !(obj is IBudgetEntryRealm other)) return false;
+            return Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id;
+        }
     }
 }

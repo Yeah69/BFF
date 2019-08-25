@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Realm.Models.Domain;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Models.Persistence;
+using MrMeeseeks.Extensions;
 using NLog;
 
 namespace BFF.Persistence.Realm.Repositories
@@ -30,7 +30,7 @@ namespace BFF.Persistence.Realm.Repositories
 
         protected RealmCachingRepositoryBase(ICrudOrm<TPersistence> crudOrm) : base(crudOrm)
         {
-            Disposable.Create(ClearCache).AddTo(CompositeDisposable);
+            Disposable.Create(ClearCache).AddForDisposalTo(CompositeDisposable);
         }
 
         public override async Task<bool> AddAsync(TDomain dataModel)

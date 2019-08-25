@@ -8,6 +8,7 @@ using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
+using MrMeeseeks.Extensions;
 using Reactive.Bindings.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Structure
@@ -25,7 +26,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         bool IsInserted { get; }
     }
 
-    public abstract class DataModelViewModel : NotifyingErrorViewModelBase, IDataModelViewModel, IDisposable
+    internal abstract class DataModelViewModel : NotifyingErrorViewModelBase, IDataModelViewModel, IDisposable
     {
         private readonly IDataModel _dataModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;

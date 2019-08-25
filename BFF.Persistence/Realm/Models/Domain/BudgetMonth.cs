@@ -7,6 +7,8 @@ using BFF.Model.Models;
 using BFF.Model.Models.Structure;
 using BFF.Model.Repositories;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
+using MrMeeseeks.Extensions;
+using MrMeeseeks.Utility;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
@@ -45,7 +47,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                         Month.OffsetMonthBy(g.Key * -1),
                         g).ConfigureAwait(false));
             return (await Task.WhenAll(tasks).ConfigureAwait(false))
-                .SelectMany(e => e)
+                .SelectMany(Basic.Identity)
                 .OrderBy(tb => tb.Date)
                 .ToList();
         }

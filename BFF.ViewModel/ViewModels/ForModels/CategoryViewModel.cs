@@ -41,7 +41,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         void Initialize(ICategoryViewModel categoryViewModel);
     }
 
-    public class CategoryViewModel : CategoryBaseViewModel, ICategoryViewModel
+    internal class CategoryViewModel : CategoryBaseViewModel, ICategoryViewModel
     {
         private readonly ICategory _category;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;

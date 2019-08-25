@@ -52,5 +52,16 @@ namespace BFF.Persistence.Realm.Models.Persistence
         public int TypeIndex { get; set; }
         [Ignored]
         public TransType Type { get => (TransType)TypeIndex; set => TypeIndex = (int)value; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is null || !(obj is ITransRealm other)) return false;
+            return Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id;
+        }
     }
 }

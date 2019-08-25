@@ -27,7 +27,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     /// <summary>
     /// Trans can be added to an Account
     /// </summary>
-    public class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel, IOncePerBackend
+    internal class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel, IOncePerBackend
     {
         private readonly ISummaryAccount _summaryAccount;
         private readonly Lazy<IAccountViewModelService> _service;

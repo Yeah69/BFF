@@ -5,6 +5,7 @@ using BFF.Core.Extensions;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Models.Persistence;
+using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Realm.Repositories
 {

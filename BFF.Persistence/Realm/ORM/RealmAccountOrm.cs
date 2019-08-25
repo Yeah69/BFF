@@ -9,159 +9,289 @@ namespace BFF.Persistence.Realm.ORM
 {
     internal class RealmAccountOrm : IAccountOrm
     {
-        private readonly IProvideRealmConnection _provideConnection;
+        private readonly IRealmOperations _realmOperations;
 
-        public RealmAccountOrm(IProvideRealmConnection provideConnection)
+        public RealmAccountOrm(
+            IRealmOperations realmOperations)
         {
-            _provideConnection = provideConnection;
+            _realmOperations = realmOperations;
         }
 
-        public async Task<long?> GetClearedBalanceAsync(IAccountRealm account)
+        public Task<long?> GetClearedBalanceAsync(IAccountRealm account)
         {
-            var realm = _provideConnection.Connection;
-            var transactionsAndToTransfersSum = realm
-                .All<Trans>()
-                .Where(t => t.Cleared 
-                            && (t.Type == TransType.Transaction && t.Account.Name == account.Name
-                            || t.Type == TransType.Transfer && t.ToAccount != null && t.ToAccount.Name == account.Name))
-                .Sum(t => t.Sum);
-            var fromTransfersSum = realm
-                .All<Trans>()
-                .Where(t => t.Cleared 
-                            && t.Type == TransType.Transfer && t.FromAccount != null && t.FromAccount.Name == account.Name)
-                .Sum(t => t.Sum);
-            var subTransactionsSum = realm
-                .All<SubTransaction>()
-                .Where(st => st.Parent.Cleared 
-                             && st.Parent.Account.Name == account.Name)
-                .Sum(st => st.Sum);
-            return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum;
+            return _realmOperations.RunFuncAsync(Inner);
+
+            long? Inner(Realms.Realm realm)
+            {
+                var transactionsAndToTransfersSum = realm
+                    .All<Trans>()
+                    .Where(t => t.Cleared
+                                && (t.TypeIndex == (int) TransType.Transaction && t.AccountRef == account
+                                    || t.TypeIndex == (int) TransType.Transfer && t.ToAccountRef == account))
+                    .ToList()
+                    .Sum(t => t.Sum);
+                var fromTransfersSum = realm
+                    .All<Trans>()
+                    .Where(t => t.Cleared
+                                && t.TypeIndex == (int)TransType.Transfer 
+                                && t.FromAccountRef == account)
+                    .ToList()
+                    .Sum(t => t.Sum);
+
+                long subTransactionsSum = 0L;
+                foreach (var parentTransaction in realm
+                    .All<Trans>()
+                    .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
+                                && t.AccountRef == account
+                                && t.Cleared))
+                {
+                    subTransactionsSum += realm
+                        .All<SubTransaction>()
+                        .Where(st => st.ParentRef == parentTransaction)
+                        .ToList()
+                        .Sum(st => st.Sum);
+                }
+                return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum;
+            }
         }
 
-        public async Task<long?> GetClearedBalanceUntilNowAsync(IAccountRealm account)
+        public Task<long?> GetClearedBalanceUntilNowAsync(IAccountRealm account)
         {
-            var realm = _provideConnection.Connection;
-            var now = DateTime.UtcNow;
-            var transactionsAndToTransfersSum = realm
-                .All<Trans>()
-                .Where(t => t.Cleared && t.Date <= now 
-                            && (t.Type == TransType.Transaction && t.Account.Name == account.Name
-                            || t.Type == TransType.Transfer && t.ToAccount != null && t.ToAccount.Name == account.Name))
-                .Sum(t => t.Sum);
-            var fromTransfersSum = realm
-                .All<Trans>()
-                .Where(t => t.Cleared && t.Date <= now
-                            && t.Type == TransType.Transfer && t.FromAccount != null && t.FromAccount.Name == account.Name)
-                .Sum(t => t.Sum);
-            var subTransactionsSum = realm
-                .All<SubTransaction>()
-                .Where(st => st.Parent.Cleared && st.Parent.Date <= now
-                             && st.Parent.Account.Name == account.Name)
-                .Sum(st => st.Sum);
-            return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum;
+            return _realmOperations.RunFuncAsync(Inner);
+
+            long? Inner(Realms.Realm realm)
+            {
+                var now = DateTimeOffset.UtcNow;
+                var transactionsAndToTransfersSum = realm
+                    .All<Trans>()
+                    .Where(t => t.Cleared 
+                                && t.DateOffset <= now
+                                && (t.TypeIndex == (int)TransType.Transaction && t.AccountRef == account
+                                  || t.TypeIndex == (int)TransType.Transfer && t.ToAccountRef == account))
+                    .ToList()
+                    .Sum(t => t.Sum);
+                var fromTransfersSum = realm
+                    .All<Trans>()
+                    .Where(t => t.Cleared 
+                                && t.DateOffset <= now
+                                && t.TypeIndex == (int)TransType.Transfer && t.FromAccountRef == account)
+                    .ToList()
+                    .Sum(t => t.Sum);
+
+                long subTransactionsSum = 0L;
+                foreach (var parentTransaction in realm
+                    .All<Trans>()
+                    .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
+                                && t.AccountRef == account
+                                && t.DateOffset <= now
+                                && t.Cleared))
+                {
+                    subTransactionsSum += realm
+                        .All<SubTransaction>()
+                        .Where(st => st.ParentRef == parentTransaction)
+                        .ToList()
+                        .Sum(st => st.Sum);
+                }
+                return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum;
+            }
         }
 
-        public async Task<long?> GetClearedOverallBalanceAsync()
+        public Task<long?> GetClearedOverallBalanceAsync()
         {
-            var realm = _provideConnection.Connection;
-            var transactionsAndToTransfersSum = realm
-                .All<Trans>()
-                .Where(t => t.Cleared && t.Type == TransType.Transaction)
-                .Sum(t => t.Sum);
-            var subTransactionsSum = realm
-                .All<SubTransaction>()
-                .Where(st => st.Parent.Cleared)
-                .Sum(st => st.Sum);
-            return transactionsAndToTransfersSum + subTransactionsSum;
+            return _realmOperations.RunFuncAsync(Inner);
+
+            static long? Inner(Realms.Realm realm)
+            {
+                var transactionsAndToTransfersSum = realm
+                    .All<Trans>()
+                    .Where(t => t.Cleared && t.TypeIndex == (int)TransType.Transaction)
+                    .ToList()
+                    .Sum(st => st.Sum);
+
+                long subTransactionsSum = 0L;
+                foreach (var parentTransaction in realm
+                    .All<Trans>()
+                    .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
+                                && t.Cleared))
+                {
+                    subTransactionsSum += realm
+                        .All<SubTransaction>()
+                        .Where(st => st.ParentRef == parentTransaction)
+                        .ToList()
+                        .Sum(st => st.Sum);
+                }
+                return transactionsAndToTransfersSum + subTransactionsSum;
+            }
         }
 
-        public async Task<long?> GetClearedOverallBalanceUntilNowAsync()
+        public Task<long?> GetClearedOverallBalanceUntilNowAsync()
         {
-            var realm = _provideConnection.Connection;
-            var now = DateTime.UtcNow;
-            var transactionsAndToTransfersSum = realm
-                .All<Trans>()
-                .Where(t => t.Cleared && t.Date <= now && t.Type == TransType.Transaction)
-                .Sum(t => t.Sum);
-            var subTransactionsSum = realm
-                .All<SubTransaction>()
-                .Where(st => st.Parent.Cleared && st.Parent.Date <= now)
-                .Sum(st => st.Sum);
-            return transactionsAndToTransfersSum + subTransactionsSum;
+            return _realmOperations.RunFuncAsync(Inner);
+
+            static long? Inner(Realms.Realm realm)
+            {
+                var now = DateTimeOffset.UtcNow;
+                var transactionsAndToTransfersSum = realm
+                    .All<Trans>()
+                    .Where(t => t.Cleared 
+                                && t.DateOffset <= now 
+                                && t.TypeIndex == (int)TransType.Transaction)
+                    .ToList()
+                    .Sum(st => st.Sum);
+
+                long subTransactionsSum = 0L;
+                foreach (var parentTransaction in realm
+                    .All<Trans>()
+                    .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
+                                && t.DateOffset <= now
+                                && t.Cleared))
+                {
+                    subTransactionsSum += realm
+                        .All<SubTransaction>()
+                        .Where(st => st.ParentRef == parentTransaction)
+                        .ToList()
+                        .Sum(st => st.Sum);
+                }
+                return transactionsAndToTransfersSum + subTransactionsSum;
+            }
         }
 
-        public async Task<long?> GetUnclearedBalanceAsync(IAccountRealm account)
+        public Task<long?> GetUnclearedBalanceAsync(IAccountRealm account)
         {
-            var realm = _provideConnection.Connection;
-            var transactionsAndToTransfersSum = realm
-                .All<Trans>()
-                .Where(t => !t.Cleared
-                            && (t.Type == TransType.Transaction && t.Account.Name == account.Name
-                                || t.Type == TransType.Transfer && t.ToAccount != null && t.ToAccount.Name == account.Name))
-                .Sum(t => t.Sum);
-            var fromTransfersSum = realm
-                .All<Trans>()
-                .Where(t => !t.Cleared
-                            && t.Type == TransType.Transfer && t.FromAccount != null && t.FromAccount.Name == account.Name)
-                .Sum(t => t.Sum);
-            var subTransactionsSum = realm
-                .All<SubTransaction>()
-                .Where(st => !st.Parent.Cleared
-                             && st.Parent.Account.Name == account.Name)
-                .Sum(st => st.Sum);
-            return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum;
+            return _realmOperations.RunFuncAsync(Inner);
+
+            long? Inner(Realms.Realm realm)
+            {
+                var transactionsAndToTransfersSum = realm
+                    .All<Trans>()
+                    .Where(t => !t.Cleared
+                                && (t.TypeIndex == (int)TransType.Transaction && t.AccountRef == account
+                                    || t.TypeIndex == (int)TransType.Transfer && t.ToAccountRef == account))
+                    .ToList()
+                    .Sum(t => t.Sum);
+                var fromTransfersSum = realm
+                    .All<Trans>()
+                    .Where(t => !t.Cleared
+                                && t.TypeIndex == (int)TransType.Transfer 
+                                && t.FromAccountRef == account)
+                    .ToList()
+                    .Sum(t => t.Sum);
+
+                long subTransactionsSum = 0L;
+                foreach (var parentTransaction in realm
+                    .All<Trans>()
+                    .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
+                                && t.AccountRef == account
+                                && !t.Cleared))
+                {
+                    subTransactionsSum += realm
+                        .All<SubTransaction>()
+                        .Where(st => st.ParentRef == parentTransaction)
+                        .ToList()
+                        .Sum(st => st.Sum);
+                }
+                return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum;
+            }
         }
 
-        public async Task<long?> GetUnclearedBalanceUntilNowAsync(IAccountRealm account)
+        public Task<long?> GetUnclearedBalanceUntilNowAsync(IAccountRealm account)
         {
-            var realm = _provideConnection.Connection;
-            var now = DateTime.UtcNow;
-            var transactionsAndToTransfersSum = realm
-                .All<Trans>()
-                .Where(t => !t.Cleared && t.Date <= now
-                                      && (t.Type == TransType.Transaction && t.Account.Name == account.Name
-                                          || t.Type == TransType.Transfer && t.ToAccount != null && t.ToAccount.Name == account.Name))
-                .Sum(t => t.Sum);
-            var fromTransfersSum = realm
-                .All<Trans>()
-                .Where(t => !t.Cleared && t.Date <= now
-                                      && t.Type == TransType.Transfer && t.FromAccount != null && t.FromAccount.Name == account.Name)
-                .Sum(t => t.Sum);
-            var subTransactionsSum = realm
-                .All<SubTransaction>()
-                .Where(st => !st.Parent.Cleared && st.Parent.Date <= now
-                                               && st.Parent.Account.Name == account.Name)
-                .Sum(st => st.Sum);
-            return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum;
+            return _realmOperations.RunFuncAsync(Inner);
+
+            long? Inner(Realms.Realm realm)
+            {
+                var now = DateTimeOffset.UtcNow;
+                var transactionsAndToTransfersSum = realm
+                    .All<Trans>()
+                    .Where(t => !t.Cleared 
+                                && t.DateOffset <= now
+                                && (t.TypeIndex == (int)TransType.Transaction && t.AccountRef == account
+                                   || t.TypeIndex == (int)TransType.Transfer && t.ToAccountRef == account))
+                    .ToList()
+                    .Sum(t => t.Sum);
+                var fromTransfersSum = realm
+                    .All<Trans>()
+                    .Where(t => !t.Cleared 
+                                && t.DateOffset <= now
+                                && t.TypeIndex == (int)TransType.Transfer 
+                                && t.FromAccountRef == account)
+                    .ToList()
+                    .Sum(t => t.Sum);
+
+                long subTransactionsSum = 0L;
+                foreach (var parentTransaction in realm
+                    .All<Trans>()
+                    .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
+                                && t.AccountRef == account
+                                && t.DateOffset <= now
+                                && !t.Cleared))
+                {
+                    subTransactionsSum += realm
+                        .All<SubTransaction>()
+                        .Where(st => st.ParentRef == parentTransaction)
+                        .ToList()
+                        .Sum(st => st.Sum);
+                }
+                return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum;
+            }
         }
 
-        public async Task<long?> GetUnclearedOverallBalanceAsync()
+        public Task<long?> GetUnclearedOverallBalanceAsync()
         {
-            var realm = _provideConnection.Connection;
-            var transactionsAndToTransfersSum = realm
-                .All<Trans>()
-                .Where(t => !t.Cleared && t.Type == TransType.Transaction)
-                .Sum(t => t.Sum);
-            var subTransactionsSum = realm
-                .All<SubTransaction>()
-                .Where(st => !st.Parent.Cleared)
-                .Sum(st => st.Sum);
-            return transactionsAndToTransfersSum + subTransactionsSum;
+            return _realmOperations.RunFuncAsync(Inner);
+
+            static long? Inner(Realms.Realm realm)
+            {
+                var transactionsAndToTransfersSum = realm
+                    .All<Trans>()
+                    .Where(t => !t.Cleared && t.TypeIndex == (int)TransType.Transaction)
+                    .ToList()
+                    .Sum(t => t.Sum);
+
+                long subTransactionsSum = 0L;
+                foreach (var parentTransaction in realm
+                    .All<Trans>()
+                    .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
+                                && !t.Cleared))
+                {
+                    subTransactionsSum += realm
+                        .All<SubTransaction>()
+                        .Where(st => st.ParentRef == parentTransaction)
+                        .ToList()
+                        .Sum(st => st.Sum);
+                }
+                return transactionsAndToTransfersSum + subTransactionsSum;
+            }
         }
 
-        public async Task<long?> GetUnclearedOverallBalanceUntilNowAsync()
+        public Task<long?> GetUnclearedOverallBalanceUntilNowAsync()
         {
-            var realm = _provideConnection.Connection;
-            var now = DateTime.UtcNow;
-            var transactionsAndToTransfersSum = realm
-                .All<Trans>()
-                .Where(t => !t.Cleared && t.Date <= now && t.Type == TransType.Transaction)
-                .Sum(t => t.Sum);
-            var subTransactionsSum = realm
-                .All<SubTransaction>()
-                .Where(st => !st.Parent.Cleared && st.Parent.Date <= now)
-                .Sum(st => st.Sum);
-            return transactionsAndToTransfersSum + subTransactionsSum;
+            return _realmOperations.RunFuncAsync(Inner);
+
+            static long? Inner(Realms.Realm realm)
+            {
+                var now = DateTimeOffset.UtcNow;
+                var transactionsAndToTransfersSum = realm
+                    .All<Trans>()
+                    .Where(t => !t.Cleared && t.DateOffset <= now && t.TypeIndex == (int)TransType.Transaction)
+                    .ToList()
+                    .Sum(t => t.Sum);
+
+                long subTransactionsSum = 0L;
+                foreach (var parentTransaction in realm
+                    .All<Trans>()
+                    .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
+                                && t.DateOffset <= now
+                                && !t.Cleared))
+                {
+                    subTransactionsSum += realm
+                        .All<SubTransaction>()
+                        .Where(st => st.ParentRef == parentTransaction)
+                        .ToList()
+                        .Sum(st => st.Sum);
+                }
+                return transactionsAndToTransfersSum + subTransactionsSum;
+            }
         }
     }
 }

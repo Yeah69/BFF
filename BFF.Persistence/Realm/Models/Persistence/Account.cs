@@ -17,5 +17,16 @@ namespace BFF.Persistence.Realm.Models.Persistence
         [Ignored]
         public DateTime StartingDate { get => StartingDateOffset.UtcDateTime; set => StartingDateOffset = value; }
         public DateTimeOffset StartingDateOffset { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is null || !(obj is IAccountRealm other)) return false;
+            return Name == other.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
     }
 }

@@ -576,7 +576,7 @@ Nur Transaktionen, die zu so einer Kategorie angehängt sind, werden als Einkomm
     <value>Monatsversatz</value>
   </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value>BFF Finanzplan (*.sqlite)|*.sqlite</value>
+    <value>BFF Finanzplan (*.realm)|*.realm|BFF Finanzplan (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
   </data>
   <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
     <value>Erstelle einen neuen Finanzplan</value>

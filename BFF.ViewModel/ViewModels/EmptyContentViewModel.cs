@@ -4,7 +4,7 @@
     {
     }
 
-    public class EmptyContentViewModel : SessionViewModelBase, IEmptyViewModel
+    internal class EmptyContentViewModel : SessionViewModelBase, IEmptyViewModel
     {
         protected override void OnIsOpenChanged(bool isOpen)
         {

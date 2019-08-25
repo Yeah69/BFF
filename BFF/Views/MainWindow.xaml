@@ -434,7 +434,7 @@
                                             </Viewbox>
                                         </hm:HamburgerMenuItem.Icon>
                                     </hm:HamburgerMenuItem>
-                                    <hm:HamburgerMenuItem Header="{Binding TopLevelViewModelComposition.BudgetOverviewViewModel.CurrentBudgetMonth.AvailableToBudget}"
+                                    <!--<hm:HamburgerMenuItem Header="{Binding TopLevelViewModelComposition.BudgetOverviewViewModel.CurrentBudgetMonth.AvailableToBudget}"
                                                           HeaderTemplate="{StaticResource BudgetHeaderTemplate}"
                                                           IsSelected="{Binding TopLevelViewModelComposition.BudgetOverviewViewModel.IsOpen}">
                                         <views:BudgetOverviewView DataContext="{Binding TopLevelViewModelComposition.BudgetOverviewViewModel}" />
@@ -443,7 +443,7 @@
                                                 <iconPacks:PackIconFontAwesome Kind="MoneyBillAltRegular" />
                                             </Viewbox>
                                         </hm:HamburgerMenuItem.Icon>
-                                    </hm:HamburgerMenuItem>
+                                    </hm:HamburgerMenuItem>-->
                                 </hm:HamburgerMenu>
                             </DataTemplate>
                         </Setter.Value>

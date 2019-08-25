@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Reactive.Disposables;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
+using MrMeeseeks.Extensions;
 using Reactive.Bindings;
 
 namespace BFF.ViewModel.Managers
@@ -25,19 +25,19 @@ namespace BFF.ViewModel.Managers
         public TransDataGridColumnManager(IBffSettings bffSettings)
         {
             _bffSettings = bffSettings;
-            ShowFlags = new ReactiveProperty<bool>(_bffSettings.ShowFlags, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+            ShowFlags = new ReactiveProperty<bool>(_bffSettings.ShowFlags, ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
 
             ShowFlags.Subscribe(v =>
             {
                 _bffSettings.ShowFlags = v;
-            }).AddHere(_compositeDisposable);
+            }).AddForDisposalTo(_compositeDisposable);
 
-            ShowCheckNumbers = new ReactiveProperty<bool>(_bffSettings.ShowCheckNumbers, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+            ShowCheckNumbers = new ReactiveProperty<bool>(_bffSettings.ShowCheckNumbers, ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
 
             ShowCheckNumbers.Subscribe(v =>
             {
                 _bffSettings.ShowCheckNumbers = v;
-            }).AddHere(_compositeDisposable);
+            }).AddForDisposalTo(_compositeDisposable);
 
             _neverShowEditHeaders = _bffSettings.NeverShowEditHeaders;
         }

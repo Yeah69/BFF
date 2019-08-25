@@ -8,6 +8,7 @@ using BFF.Model.Models.Structure;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
+using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
@@ -62,7 +63,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override Task<IEnumerable<ITransBase>> GetAssociatedTransIncludingSubCategoriesAsync()
         {
-            return _transRepository.GetFromMonthAndCategoriesAsync(Month, Category.IterateRootBreadthFirst(c => c.Categories));
+            return _transRepository.GetFromMonthAndCategoriesAsync(Month, Category.IterateTreeBreadthFirst(c => c.Categories));
         }
     }
 }

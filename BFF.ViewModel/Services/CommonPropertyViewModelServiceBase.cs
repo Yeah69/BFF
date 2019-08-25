@@ -10,6 +10,7 @@ using BFF.Core.IoC;
 using BFF.Model.Models.Structure;
 using BFF.Model.Repositories;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.Extensions;
 using MuVaViMo;
 
 namespace BFF.ViewModel.Services
@@ -72,7 +73,7 @@ namespace BFF.ViewModel.Services
             {
                 ModelToViewModel.Clear();
                 ViewModelToModel.Clear();
-            }).AddTo(CompositeDisposable);
+            }).AddForDisposalTo(CompositeDisposable);
         }
 
         protected TViewModel AddToDictionaries(TDomain model)

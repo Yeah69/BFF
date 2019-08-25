@@ -10,6 +10,7 @@ using BFF.Model.Models;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using MoreLinq;
+using MrMeeseeks.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -22,7 +23,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         bool CanMergeTo(IIncomeCategoryViewModel target);
     }
 
-    public class IncomeCategoryViewModel : CategoryBaseViewModel, IIncomeCategoryViewModel
+    internal class IncomeCategoryViewModel : CategoryBaseViewModel, IIncomeCategoryViewModel
     {
         private readonly IIncomeCategory _incomeCategory;
         private readonly ILocalizer _localizer;
@@ -63,7 +64,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .ObservePropertyChanges(nameof(category.MonthOffset))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(MonthOffset)))
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
         }
 
         public int MonthOffset { get => _incomeCategory.MonthOffset; set => _incomeCategory.MonthOffset = value; }

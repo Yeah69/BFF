@@ -38,7 +38,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
     /// Base class for all ViewModels of Models of Trans' excluding the SubTransactions.
     /// From this point in the documentation of the ViewModel hierarchy Trans is referring to all Trans-like Elements except SubTransactions.
     /// </summary>
-    public abstract class TransBaseViewModel : TransLikeViewModel, ITransBaseViewModel, IHaveFlagViewModel
+    internal abstract class TransBaseViewModel : TransLikeViewModel, ITransBaseViewModel, IHaveFlagViewModel
     {
         private readonly ITransBase _transBase;
         private readonly IFlagViewModelService _flagViewModelService;

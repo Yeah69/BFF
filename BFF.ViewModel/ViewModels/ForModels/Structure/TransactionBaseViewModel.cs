@@ -5,6 +5,7 @@ using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.ViewModel.Services;
+using MrMeeseeks.Extensions;
 using MuVaViMo;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Structure
@@ -21,7 +22,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
     /// <summary>
     /// Base class for ViewModels of the models Transaction, Income, ParentTransaction and ParentIncome.
     /// </summary>
-    public abstract class TransactionBaseViewModel : TransBaseViewModel, ITransactionBaseViewModel
+    internal abstract class TransactionBaseViewModel : TransBaseViewModel, ITransactionBaseViewModel
     {
         private readonly ITransactionBase _transactionBase;
         private readonly IAccountViewModelService _accountViewModelService;
@@ -99,7 +100,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                         OnErrorChanged(nameof(Account));
                     }
                 })
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             if (Account is null && owner is IAccountViewModel specificAccount)
                 Account = specificAccount;
@@ -108,12 +109,12 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 .ObservePropertyChanges(nameof(transactionBase.Account))
                 .SkipLast(1)
                 .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transactionBase.Account)))
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             transactionBase
                 .ObservePropertyChanges(nameof(transactionBase.Account))
                 .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transactionBase.Account)))
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             _payee = _payeeViewModelService.GetViewModel(transactionBase.Payee);
             transactionBase
@@ -129,7 +130,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                         OnErrorChanged(nameof(Payee));
                     }
                 })
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             NewPayeeViewModel = newPayeeViewModel;
         }

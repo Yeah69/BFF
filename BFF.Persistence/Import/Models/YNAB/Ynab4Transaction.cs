@@ -30,13 +30,13 @@ namespace BFF.Persistence.Import.Models.YNAB
 
         public bool Cleared { get; set; }
 
-        public double RunningBalance { get; set; }
+        private double RunningBalance { get; set; }
 
         public static readonly string CsvHeader = "\"Account\"	\"Flag\"	\"Check Number\"	\"Date\"	\"Payee\"	\"Category\"	\"Master Category\"	\"Sub Category\"	\"Memo\"	\"Outflow\"	\"Inflow\"	\"Cleared\"	\"Running Balance\"";
 
-        internal static readonly Regex PayeePartsRegex = new Regex(@"^(?<payeeStr>.+)?(( / )?Transfer : (?<accountName>.+))?$", RegexOptions.RightToLeft);
+        private static readonly Regex PayeePartsRegex = new Regex(@"^(?<payeeStr>.+)?(( / )?Transfer : (?<accountName>.+))?$", RegexOptions.RightToLeft);
 
-        public string ParseAccountFromPayee()
+        private string ParseAccountFromPayee()
         {
             return PayeePartsRegex.Match(Payee).Groups["accountName"].Value;
         }
@@ -71,10 +71,10 @@ namespace BFF.Persistence.Import.Models.YNAB
                 MasterCategory = entries[6].Trim('"'),
                 SubCategory = entries[7].Trim('"'),
                 Memo = entries[8].Trim('"'),
-                Outflow = Ynab4CsvImportBase.ExtractLong(entries[9]),
-                Inflow = Ynab4CsvImportBase.ExtractLong(entries[10]),
+                Outflow = Helper.ExtractLong(entries[9]),
+                Inflow = Helper.ExtractLong(entries[10]),
                 Cleared = entries[11] == "C",
-                RunningBalance = Ynab4CsvImportBase.ExtractLong(entries[12]),
+                RunningBalance = Helper.ExtractLong(entries[12]),
             };
             return ret;
         }

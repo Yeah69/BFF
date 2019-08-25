@@ -4,6 +4,7 @@ using BFF.Core.Extensions;
 using BFF.Core.IoC;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.Extensions;
 
 namespace BFF.ViewModel.Managers
 {

@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Interactivity;
 using BFF.Core.Extensions;
 using BFF.Extensions;
+using MrMeeseeks.Extensions;
 
 namespace BFF.AttachedBehaviors
 {

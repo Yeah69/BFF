@@ -6,8 +6,6 @@ using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
-using BFF.Persistence.Realm.Repositories;
-using BFF.Persistence.Realm.Repositories.ModelRepositories;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {

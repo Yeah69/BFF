@@ -10,6 +10,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.Extensions;
 using MuVaViMo;
 using Reactive.Bindings.Extensions;
 
@@ -35,7 +36,7 @@ namespace BFF.ViewModel.ViewModels
         IHavePayeeViewModel CurrentOwner { get; set; }
     }
 
-    public class NewPayeeViewModel : NotifyingErrorViewModelBase, INewPayeeViewModel, IOncePerBackend, IDisposable
+    internal class NewPayeeViewModel : NotifyingErrorViewModelBase, INewPayeeViewModel, IOncePerBackend, IDisposable
     {
         private readonly ILocalizer _localizer;
         private readonly IPayeeViewModelService _payeeViewModelService;

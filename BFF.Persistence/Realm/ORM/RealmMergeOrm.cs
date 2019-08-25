@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
+using JetBrains.Annotations;
 using MoreLinq;
 using Realms;
 
@@ -10,55 +12,86 @@ namespace BFF.Persistence.Realm.ORM
     internal class RealmMergeOrm : IMergeOrm
     {
         private readonly IProvideRealmConnection _provideConnection;
+        private readonly IRealmOperations _realmOperations;
 
-        public RealmMergeOrm(IProvideRealmConnection provideConnection)
+        public RealmMergeOrm(
+            IProvideRealmConnection provideConnection,
+            IRealmOperations realmOperations)
         {
             _provideConnection = provideConnection;
+            _realmOperations = realmOperations;
         }
 
-        public async Task MergePayeeAsync(IPayeeRealm from, IPayeeRealm to)
+        public Task MergePayeeAsync([NotNull]IPayeeRealm from, [NotNull]IPayeeRealm to)
         {
-            _provideConnection.Backup($"BeforeMergeOfPayee{from.Name}ToPayee{to.Name}");
-            var realm = _provideConnection.Connection;
-            await realm.WriteAsync(r =>
+            from = from ?? throw new ArgumentNullException(nameof(from));
+            to = to ?? throw new ArgumentNullException(nameof(to));
+            return _realmOperations.RunActionAsync(Inner);
+
+            void Inner(Realms.Realm realm)
             {
-                r.All<Trans>().Where(t => t.Payee != null && t.Payee.Name == from.Name).ForEach(t =>
+                _provideConnection.Backup($"BeforeMergeOfPayee{from.Name}ToPayee{to.Name}");
+                realm.Write(() =>
                 {
-                    t.Payee = to;
-                    r.Add(t, update: true);
+                    realm
+                        .All<Trans>()
+                        .Where(t => t.PayeeRef == from)
+                        .ForEach(t =>
+                        {
+                            t.Payee = to;
+                            realm.Add(t, update: true);
+                        });
+                    realm.Remove(from as RealmObject);
                 });
-                r.Remove(from as RealmObject);
-            }).ConfigureAwait(false);
+            }
         }
 
-        public async Task MergeFlagAsync(IFlagRealm from, IFlagRealm to)
+        public Task MergeFlagAsync([NotNull]IFlagRealm from, [NotNull]IFlagRealm to)
         {
-            _provideConnection.Backup($"BeforeMergeOfFlag{from.Name}ToFlag{to.Name}");
-            var realm = _provideConnection.Connection;
-            await realm.WriteAsync(r =>
+            from = from ?? throw new ArgumentNullException(nameof(from));
+            to = to ?? throw new ArgumentNullException(nameof(to));
+            return _realmOperations.RunActionAsync(Inner);
+
+            void Inner(Realms.Realm realm)
             {
-                r.All<Trans>().Where(t => t.Flag != null && t.Flag.Name == from.Name).ForEach(t =>
+                _provideConnection.Backup($"BeforeMergeOfFlag{from.Name}ToFlag{to.Name}");
+                realm.Write(() =>
                 {
-                    t.Flag = to;
-                    r.Add(t, update: true);
+                    realm
+                        .All<Trans>()
+                        .Where(t => t.FlagRef == from)
+                        .ForEach(t =>
+                        {
+                            t.Flag = to;
+                            realm.Add(t, update: true);
+                        });
+                    realm.Remove(from as RealmObject);
                 });
-                r.Remove(from as RealmObject);
-            }).ConfigureAwait(false);
+            }
         }
 
-        public async Task MergeCategoryAsync(ICategoryRealm from, ICategoryRealm to)
+        public Task MergeCategoryAsync([NotNull]ICategoryRealm from, [NotNull]ICategoryRealm to)
         {
-            _provideConnection.Backup($"BeforeMergeOfCategory{from.Name}ToCategory{to.Name}");
-            var realm = _provideConnection.Connection;
-            await realm.WriteAsync(r =>
+            from = from ?? throw new ArgumentNullException(nameof(from));
+            to = to ?? throw new ArgumentNullException(nameof(to));
+            return _realmOperations.RunActionAsync(Inner);
+
+            void Inner(Realms.Realm realm)
             {
-                r.All<Trans>().Where(t => t.Category != null && t.Category.Id == from.Id).ForEach(t =>
+                _provideConnection.Backup($"BeforeMergeOfCategory{from.Name}ToCategory{to.Name}");
+                realm.Write(() =>
                 {
-                    t.Category = to;
-                    r.Add(t, update: true);
+                    realm
+                        .All<Trans>()
+                        .Where(t => t.CategoryRef == from)
+                        .ForEach(t =>
+                        {
+                            t.Category = to;
+                            realm.Add(t, update: true);
+                        });
+                    realm.Remove(from as RealmObject);
                 });
-                r.Remove(from as RealmObject);
-            }).ConfigureAwait(false);
+            }
         }
     }
 }

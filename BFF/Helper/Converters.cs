@@ -15,6 +15,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using LambdaConverters;
+using MrMeeseeks.Extensions;
 
 namespace BFF.Helper
 {
@@ -268,7 +269,7 @@ namespace BFF.Helper
         /// </summary>
         public static readonly IMultiValueConverter TransferSumAsCorrectlySignedString =
             MultiValueConverter.Create<object, string>(
-                e => e.Values[0] == e.Values[1] || e.Values[2] == null
+                e => e.Values[0] == e.Values[1] || e.Values[2] is null
                     ? (-1 * (long) e.Values[3]).AsCurrency(Settings.Default.Culture_SessionCurrency)
                     : ((long) e.Values[3]).AsCurrency(Settings.Default.Culture_SessionCurrency));
 
@@ -291,11 +292,11 @@ namespace BFF.Helper
                         return TransferBrush;
                     var account = e.Values[0];
                     //Transfer in FromAccount-Tab
-                    if (e.Values[0] is ISummaryAccountViewModel && e.Values[2] == null ||
+                    if (e.Values[0] is ISummaryAccountViewModel && e.Values[2] is null ||
                         account == e.Values[1])
                         return TransactionBrush;
                     //Transfer in ToAccount-Tab
-                    if (e.Values[0] is ISummaryAccountViewModel && e.Values[1] == null ||
+                    if (e.Values[0] is ISummaryAccountViewModel && e.Values[1] is null ||
                         account == e.Values[2])
                         return IncomeBrush;
                     return Brushes.Transparent; //Error case

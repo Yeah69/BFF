@@ -12,6 +12,7 @@ using BFF.Core.Helper;
 using BFF.Model.Models.Utility;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
+using MrMeeseeks.Extensions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -46,7 +47,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
         IReadOnlyReactiveProperty<string> Name { get; }
     }
 
-    public class CsvBankStatementImportProfileViewModel : ViewModelBase, ICsvBankStatementImportProfileViewModel
+    internal class CsvBankStatementImportProfileViewModel : ViewModelBase, ICsvBankStatementImportProfileViewModel
     {
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
@@ -62,9 +63,9 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
             Name = profile.ToReadOnlyReactivePropertyAsSynchronized(p => p.Name,
                 ReactivePropertyMode.DistinctUntilChanged)
-                .AddHere(_compositeDisposable);
-            Header = new ReactivePropertySlim<string>(profile.Header, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
-            Delimiter = new ReactivePropertySlim<char>(profile.Delimiter, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
+            Header = new ReactivePropertySlim<string>(profile.Header, ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
+            Delimiter = new ReactivePropertySlim<char>(profile.Delimiter, ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
 
             Segments = Header.Select(_ => Unit.Default)
                 .Merge(Delimiter.Select(_ => Unit.Default))
@@ -76,21 +77,21 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
                 .ObserveProperty(p => p.DateLocalization)
                 .Select(CultureInfo.GetCultureInfo)
                 .ToReactiveProperty(mode: ReactivePropertyMode.DistinctUntilChanged)
-                .AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
             SumLocalization = profile
                 .ObserveProperty(p => p.SumLocalization)
                 .Select(CultureInfo.GetCultureInfo)
                 .ToReactiveProperty(mode: ReactivePropertyMode.DistinctUntilChanged)
-                .AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
 
-            PayeeFormat = new ReactivePropertySlim<string>(profile.PayeeFormat, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+            PayeeFormat = new ReactivePropertySlim<string>(profile.PayeeFormat, ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
             ShouldCreateNewPayeeIfNotExisting = new ReactivePropertySlim<bool>(
                 profile.ShouldCreateNewPayeeIfNotExisting,
                 ReactivePropertyMode.DistinctUntilChanged)
-                .AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
             NewProfileName = new ReactiveProperty<string>("", ReactivePropertyMode.DistinctUntilChanged);
-            MemoFormat = new ReactivePropertySlim<string>(profile.MemoFormat, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
-            SumFormula = new ReactivePropertySlim<string>(profile.SumFormat, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+            MemoFormat = new ReactivePropertySlim<string>(profile.MemoFormat, ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
+            SumFormula = new ReactivePropertySlim<string>(profile.SumFormat, ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
 
             SaveToProfile = new RxRelayCommand(() =>
             {
@@ -104,7 +105,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
                 profile.SumFormat = SumFormula.Value;
                 profile.SumLocalization = SumLocalization.Value.Name;
                 profileManager.Save();
-            }).AddHere(_compositeDisposable);
+            }).AddForDisposalTo(_compositeDisposable);
             
             SaveNewProfile = NewProfileName
                 .Merge(profileManager.Profiles.CollectionChangedAsObservable().Select(_ => NewProfileName.Value))
@@ -124,10 +125,10 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
                         SumLocalization.Value.Name,
                         NewProfileName.Value);
                     NewProfileName.Value = "";
-                }, NewProfileCondition(NewProfileName.Value)).AddHere(_compositeDisposable);
+                }, NewProfileCondition(NewProfileName.Value)).AddForDisposalTo(_compositeDisposable);
 
             RemoveProfile = new RxRelayCommand(() =>
-                profileManager.Remove(profile.Name)).AddHere(_compositeDisposable);
+                profileManager.Remove(profile.Name)).AddForDisposalTo(_compositeDisposable);
 
             ResetProfile = new RxRelayCommand(() =>
             {
@@ -140,7 +141,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
                 MemoFormat.Value = profile.MemoFormat;
                 SumFormula.Value = profile.SumFormat;
                 SumLocalization.Value = CultureInfo.GetCultureInfo(profile.SumLocalization);
-            }).AddHere(_compositeDisposable);
+            }).AddForDisposalTo(_compositeDisposable);
         }
 
         public IReadOnlyReactiveProperty<string> Name { get; }
@@ -201,7 +202,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
             }
 
             Header = new ReactiveProperty<string>(filePath.Select(path => path != null && File.Exists(path) ? File.ReadLines(path, Encoding.Default).FirstOrDefault() : ""),
-                mode: ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+                mode: ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
             Delimiter = new ReactiveProperty<char>(
                 Header
                     .Where(header => !string.IsNullOrWhiteSpace(header))
@@ -218,16 +219,16 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
                 .ToReadOnlyReactiveProperty();
             DateSegment = Segments.Select(s => s?.FirstOrDefault()).ToReactiveProperty();
 
-            DateLocalization = new ReactivePropertySlim<CultureInfo>(CultureInfo.InvariantCulture, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
-            SumLocalization = new ReactivePropertySlim<CultureInfo>(CultureInfo.InvariantCulture, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
-            PayeeFormat = new ReactivePropertySlim<string>("", ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+            DateLocalization = new ReactivePropertySlim<CultureInfo>(CultureInfo.InvariantCulture, ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
+            SumLocalization = new ReactivePropertySlim<CultureInfo>(CultureInfo.InvariantCulture, ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
+            PayeeFormat = new ReactivePropertySlim<string>("", ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
             ShouldCreateNewPayeeIfNotExisting = new ReactivePropertySlim<bool>(
                     true,
                     ReactivePropertyMode.DistinctUntilChanged)
-                .AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
             NewProfileName = new ReactivePropertySlim<string>("", ReactivePropertyMode.DistinctUntilChanged);
-            MemoFormat = new ReactivePropertySlim<string>("", ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
-            SumFormula = new ReactivePropertySlim<string>("", ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+            MemoFormat = new ReactivePropertySlim<string>("", ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
+            SumFormula = new ReactivePropertySlim<string>("", ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
 
             SaveNewProfile = NewProfileName
                 .Merge(profileManager.Profiles.CollectionChangedAsObservable().Select(_ => NewProfileName.Value))
@@ -247,7 +248,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
                         SumLocalization.Value.Name,
                         NewProfileName.Value);
                     NewProfileName.Value = "";
-                }, NewProfileCondition(NewProfileName.Value)).AddHere(_compositeDisposable);
+                }, NewProfileCondition(NewProfileName.Value)).AddForDisposalTo(_compositeDisposable);
 
             ResetProfile = new RxRelayCommand(() =>
             {
@@ -260,7 +261,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
                 MemoFormat.Value = "";
                 SumFormula.Value = "";
                 SumLocalization.Value = CultureInfo.InvariantCulture;
-            }).AddHere(_compositeDisposable);
+            }).AddForDisposalTo(_compositeDisposable);
         }
         public IReactiveProperty<string> Header { get; }
         public IReactiveProperty<char> Delimiter { get; }

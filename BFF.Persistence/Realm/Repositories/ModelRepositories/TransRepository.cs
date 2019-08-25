@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
+using MrMeeseeks.Extensions;
 using Account = BFF.Persistence.Realm.Models.Domain.Account;
 using Category = BFF.Persistence.Realm.Models.Domain.Category;
 using IncomeCategory = BFF.Persistence.Realm.Models.Domain.IncomeCategory;
@@ -175,10 +175,10 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                             ? null
                             : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false),
                         persistenceModel.CheckNumber,
-                        persistenceModel.Payee is null
+                        persistenceModel.FromAccount is null
                             ? null
                             : await _accountRepository.Value.FindAsync(persistenceModel.FromAccount).ConfigureAwait(false),
-                        persistenceModel.Category is null
+                        persistenceModel.ToAccount is null
                             ? null
                             : await _accountRepository.Value.FindAsync(persistenceModel.ToAccount).ConfigureAwait(false),
                         persistenceModel.Memo,

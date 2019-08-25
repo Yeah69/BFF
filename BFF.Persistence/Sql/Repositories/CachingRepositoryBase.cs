@@ -7,6 +7,7 @@ using BFF.Model.Models.Structure;
 using BFF.Persistence.Sql.Models.Domain;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
+using MrMeeseeks.Extensions;
 using NLog;
 
 namespace BFF.Persistence.Sql.Repositories

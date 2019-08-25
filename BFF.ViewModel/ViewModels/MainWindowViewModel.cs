@@ -36,7 +36,7 @@ namespace BFF.ViewModel.ViewModels
         ITransDataGridColumnManager TransDataGridColumnManager { get; }
     }
 
-    public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel, IOncePerApplication //todo IDisposable
+    internal class MainWindowViewModel : ViewModelBase, IMainWindowViewModel, IOncePerApplication //todo IDisposable
     {
         private readonly Func<string, ILoadProjectContext> _loadedProjectContextFactory;
         private readonly Func<IEmptyProjectContext> _emptyContextFactory;
@@ -181,7 +181,7 @@ namespace BFF.ViewModel.ViewModels
                 var bffSaveFileDialog = bffSaveFileDialogFactory();
                 bffSaveFileDialog.Title = localizer.Localize("OpenSaveDialog_TitleNew");
                 bffSaveFileDialog.Filter = localizer.Localize("OpenSaveDialog_Filter");
-                bffSaveFileDialog.DefaultExt = "*.sqlite";
+                bffSaveFileDialog.DefaultExt = "*.realm";
                 if (bffSaveFileDialog.ShowDialog() == true)
                 {
                     using (var backendContextFactory = newBackendContextFactory(bffSaveFileDialog.FileName))
@@ -198,7 +198,7 @@ namespace BFF.ViewModel.ViewModels
                 var bffOpenFileDialog = bffOpenFileDialogFactory();
                 bffOpenFileDialog.Title = localizer.Localize("OpenSaveDialog_TitleOpen");
                 bffOpenFileDialog.Filter = localizer.Localize("OpenSaveDialog_Filter");
-                bffOpenFileDialog.DefaultExt = "*.sqlite";
+                bffOpenFileDialog.DefaultExt = "*.realm";
                 if (bffOpenFileDialog.ShowDialog() == true)
                 {
                     Reset(bffOpenFileDialog.FileName);

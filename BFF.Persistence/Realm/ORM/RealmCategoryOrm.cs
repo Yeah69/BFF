@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 
@@ -9,21 +8,32 @@ namespace BFF.Persistence.Realm.ORM
 {
     internal class RealmCategoryOrm : ICategoryOrm
     {
-        private readonly IProvideRealmConnection _provideConnection;
+        private readonly IRealmOperations _realmOperations;
 
-        public RealmCategoryOrm(IProvideRealmConnection provideConnection)
+        public RealmCategoryOrm(
+            IRealmOperations realmOperations)
         {
-            _provideConnection = provideConnection;
+            _realmOperations = realmOperations;
         }
 
-        public async Task<IEnumerable<ICategoryRealm>> ReadCategoriesAsync()
+        public Task<IEnumerable<ICategoryRealm>> ReadCategoriesAsync()
         {
-            return _provideConnection.Connection.All<Category>().Where(c => c.IsIncomeRelevant.Not());
+            return _realmOperations.RunFuncAsync(Inner);
+
+            static IEnumerable<ICategoryRealm> Inner(Realms.Realm realm)
+            {
+                return realm.All<Category>().Where(c => !c.IsIncomeRelevant);
+            }
         }
 
-        public async Task<IEnumerable<ICategoryRealm>> ReadIncomeCategoriesAsync()
+        public Task<IEnumerable<ICategoryRealm>> ReadIncomeCategoriesAsync()
         {
-            return _provideConnection.Connection.All<Category>().Where(c => c.IsIncomeRelevant);
+            return _realmOperations.RunFuncAsync(Inner);
+
+            static IEnumerable<ICategoryRealm> Inner(Realms.Realm realm)
+            {
+                return realm.All<Category>().Where(c => c.IsIncomeRelevant);
+            }
         }
     }
 }

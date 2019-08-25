@@ -9,6 +9,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.Extensions;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -36,7 +37,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model Transfer.
     /// </summary>
-    public sealed class TransferViewModel : TransBaseViewModel, ITransferViewModel
+    internal sealed class TransferViewModel : TransBaseViewModel, ITransferViewModel
     {
         private readonly ITransfer _transfer;
         private readonly IAccountViewModelService _accountViewModelService;

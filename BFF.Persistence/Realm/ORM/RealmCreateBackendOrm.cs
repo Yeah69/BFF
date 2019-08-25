@@ -1,21 +1,26 @@
 ﻿using System.Threading.Tasks;
 using BFF.Persistence.Common;
-using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.ORM
 {
     internal class RealmCreateBackendOrm : ICreateBackendOrm
     {
-        private readonly IProvideRealmConnection _provideConnection;
+        private readonly IRealmOperations _realmOperations;
 
-        public RealmCreateBackendOrm(IProvideRealmConnection provideConnection)
+        public RealmCreateBackendOrm(
+            IRealmOperations realmOperations)
         {
-            _provideConnection = provideConnection;
+            _realmOperations = realmOperations;
         }
 
-        public async Task CreateAsync()
+        public Task CreateAsync()
         {
-            var realm = _provideConnection.Connection;
+            return _realmOperations.RunActionAsync(Inner);
+
+            static void Inner(Realms.Realm realm)
+            {
+                // Getting the realm instance created is sufficient to create a Realm DB
+            }
         }
     }
 }

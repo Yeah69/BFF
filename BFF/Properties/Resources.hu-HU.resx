@@ -576,7 +576,7 @@ Only transactions assigned to such a category are interpreted as income.</value>
     <value>Month Offset</value>
   </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value>BFF pénzügyi terv </value>
+    <value>BFF pénzügyi terv (*.realm)|*.realm|BFF pénzügyi terv  (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
   </data>
   <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
     <value>Új pénzügyi terv létrehozása</value>

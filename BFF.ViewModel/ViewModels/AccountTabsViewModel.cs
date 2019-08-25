@@ -14,7 +14,7 @@ namespace BFF.ViewModel.ViewModels
         IReactiveProperty<bool> IsOpen { get; }
     }
 
-    public class AccountTabsViewModel : SessionViewModelBase, IAccountTabsViewModel
+    internal class AccountTabsViewModel : SessionViewModelBase, IAccountTabsViewModel
     {
         private readonly IAccountViewModelService _accountViewModelService;
         private readonly IBffSettings _bffSettings;

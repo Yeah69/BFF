@@ -5,6 +5,7 @@ using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
+using MrMeeseeks.Extensions;
 using MuVaViMo;
 using Reactive.Bindings;
 
@@ -55,7 +56,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
         IRxRelayCommand DismissSum { get; }
     }
 
-    public class CsvBankStatementImportItemViewModel : ViewModelBase, ICsvBankStatementImportItemViewModel
+    internal class CsvBankStatementImportItemViewModel : ViewModelBase, ICsvBankStatementImportItemViewModel
     {
         private readonly IBffSettings _bffSettings;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
@@ -75,46 +76,46 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
             Date     = configuration.Date ?? DateTime.Today;
             Payee    = configuration.Payee;
             Memo     = configuration.Memo;
-            Sum      = new ReactivePropertySlim<long>(configuration.Sum ?? 0L, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+            Sum      = new ReactivePropertySlim<long>(configuration.Sum ?? 0L, ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
             HasDate  = configuration.Date.HasValue;
             HasPayee = configuration.Payee != null;
             HasMemo  = configuration.Memo != null;
-            HasSum   = new ReactivePropertySlim<bool>(configuration.Sum.HasValue, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+            HasSum   = new ReactivePropertySlim<bool>(configuration.Sum.HasValue, ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
 
-            SumEdit = createSumEdit(Sum).AddHere(_compositeDisposable);
+            SumEdit = createSumEdit(Sum).AddForDisposalTo(_compositeDisposable);
 
             AdmitDate = new RxRelayCommand(() => HasDate = true)
-                .AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
 
             AdmitPayee = new RxRelayCommand(() => HasPayee = true)
-                .AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
 
             this
                 .ObservePropertyChanges(nameof(Payee))
                 .Subscribe(_ => PayeeExists = payeeService.All.Any(payee => payee.Name == Payee))
-                .AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
 
             CreatePayeeIfNotExisting = configuration.CreatePayeeIfNotExisting;
 
             ExistingPayees = payeeService.All;
 
             AdmitMemo = new RxRelayCommand(() => HasMemo = true)
-                .AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
 
             AdmitSum = new RxRelayCommand(() => HasSum.Value = true)
-                .AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
 
             DismissDate = new RxRelayCommand(() => HasDate = false)
-                .AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
 
             DismissPayee = new RxRelayCommand(() => HasPayee = false)
-                .AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
 
             DismissMemo = new RxRelayCommand(() => HasMemo = false)
-                .AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
 
             DismissSum = new RxRelayCommand(() => HasSum.Value = false)
-                .AddHere(_compositeDisposable);
+                .AddForDisposalTo(_compositeDisposable);
         }
 
         public DateTime Date { get; set; }

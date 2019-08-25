@@ -7,13 +7,14 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.Model.Repositories;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Models.Persistence;
 using MoreLinq;
+using MrMeeseeks.Extensions;
+using MrMeeseeks.Utility;
 using MuVaViMo;
 
 namespace BFF.Persistence.Realm.Repositories
@@ -50,7 +51,7 @@ namespace BFF.Persistence.Realm.Repositories
             Comparer<TDomain> comparer) : base(crudOrm)
         {
             Disposable.Create(() => _backingObservableCollection.Clear()).AddTo(CompositeDisposable);
-            _observeResetAll = new Subject<IEnumerable<TDomain>>().AddHere(CompositeDisposable);
+            _observeResetAll = new Subject<IEnumerable<TDomain>>().AddForDisposalTo(CompositeDisposable);
             _rxSchedulerProvider = rxSchedulerProvider;
             _comparer = comparer;
             var collection = Task.Run(FetchAll).ToObservableReadOnlyList();
@@ -61,7 +62,7 @@ namespace BFF.Persistence.Realm.Repositories
         private async Task<ObservableCollection<TDomain>> FetchAll()
         {
             _backingObservableCollection = new ObservableCollection<TDomain>(
-                (await FindAllAsync().ConfigureAwait(false)).OrderBy(o => o, _comparer));
+                (await FindAllAsync().ConfigureAwait(false)).OrderBy(Basic.Identity, _comparer));
             return _backingObservableCollection;
         }
 
@@ -97,7 +98,7 @@ namespace BFF.Persistence.Realm.Repositories
         public async Task ResetAll()
         {
             await Observable
-                .StartAsync(async () => (await FindAllAsync().ConfigureAwait(false)).OrderBy(o => o, _comparer))
+                .StartAsync(async () => (await FindAllAsync().ConfigureAwait(false)).OrderBy(Basic.Identity, _comparer))
                 .ObserveOn(_rxSchedulerProvider.UI)
                 .Do(all =>
                 {

@@ -12,138 +12,97 @@ namespace BFF.Persistence.Realm.ORM
         where T : class, IPersistenceModelRealm
     {
         private readonly IProvideRealmConnection _provideConnection;
+        private readonly IRealmOperations _realmOperations;
 
-        public RealmCrudOrm(IProvideRealmConnection provideConnection)
+        public RealmCrudOrm(
+            IProvideRealmConnection provideConnection,
+            IRealmOperations realmOperations)
         {
             _provideConnection = provideConnection;
+            _realmOperations = realmOperations;
         }
 
         public async Task<bool> CreateAsync(T model)
         {
-            await _provideConnection.Connection.WriteAsync(
-                r =>
-                {
-                    r.Add(model as RealmObject);
-                }).ConfigureAwait(false);
+            await _realmOperations.RunActionAsync(Inner);
             return true;
-        }
 
-        public async Task<T> ReadAsync(T model)
-        {
-            switch (true)
+            void Inner(Realms.Realm realm)
             {
-                case true when typeof(T) == typeof(IAccountRealm):
-                    return _provideConnection
-                        .Connection
-                        .All<Account>()
-                        .Where(a => a.Name == (model as IAccountRealm).Name)
-                        .OfType<T>()
-                        .First();
-                case true when typeof(T) == typeof(IPayeeRealm):
-                    return _provideConnection
-                        .Connection
-                        .All<Payee>()
-                        .Where(p => p.Name == (model as IPayeeRealm).Name)
-                        .OfType<T>()
-                        .First();
-                case true when typeof(T) == typeof(ICategoryRealm):
-                    return _provideConnection
-                        .Connection
-                        .All<Category>()
-                        .Where(c => c.Id == (model as ICategoryRealm).Id)
-                        .OfType<T>()
-                        .First();
-                case true when typeof(T) == typeof(IFlagRealm):
-                    return _provideConnection
-                        .Connection
-                        .All<Flag>()
-                        .Where(f => f.Name == (model as IFlagRealm).Name)
-                        .OfType<T>()
-                        .First();
-                case true when typeof(T) == typeof(ITransRealm):
-                    return _provideConnection
-                        .Connection
-                        .All<Trans>()
-                        .Where(t => t.Id == (model as ITransRealm).Id)
-                        .OfType<T>()
-                        .First();
-                case true when typeof(T) == typeof(ISubTransactionRealm):
-                    return _provideConnection
-                        .Connection
-                        .All<SubTransaction>()
-                        .Where(st => st.Id == (model as ISubTransactionRealm).Id)
-                        .OfType<T>()
-                        .First();
-                case true when typeof(T) == typeof(IBudgetEntryRealm):
-                    return _provideConnection
-                        .Connection
-                        .All<BudgetEntry>()
-                        .Where(be => be.Id == (model as IBudgetEntryRealm).Id)
-                        .OfType<T>()
-                        .First();
-                case true when typeof(T) == typeof(IDbSettingRealm):
-                    return _provideConnection
-                        .Connection
-                        .All<DbSetting>()
-                        .Where(ds => ds.Id == (model as IDbSettingRealm).Id)
-                        .OfType<T>()
-                        .First();
-                default:
-                    throw new ArgumentException("Unexpected generic type!", nameof(T));
+                realm.Write(
+                    () =>
+                    {
+                        realm.Add(model as RealmObject);
+                    });
             }
         }
 
-        public async Task<IEnumerable<T>> ReadAllAsync()
+        public Task<IEnumerable<T>> ReadAllAsync()
         {
-            switch (true)
+            return _realmOperations.RunFuncAsync(Inner);
+
+            IEnumerable<T> Inner(Realms.Realm realm)
             {
-                case true when typeof(T) == typeof(IAccountRealm):
-                    return _provideConnection.Connection.All<Account>().OfType<T>();
-                case true when typeof(T) == typeof(IPayeeRealm):
-                    return _provideConnection.Connection.All<Payee>().OfType<T>();
-                case true when typeof(T) == typeof(ICategoryRealm):
-                    return _provideConnection.Connection.All<Category>().OfType<T>();
-                case true when typeof(T) == typeof(IFlagRealm):
-                    return _provideConnection.Connection.All<Flag>().OfType<T>();
-                case true when typeof(T) == typeof(ITransRealm):
-                    return _provideConnection.Connection.All<Trans>().OfType<T>();
-                case true when typeof(T) == typeof(ISubTransactionRealm):
-                    return _provideConnection.Connection.All<SubTransaction>().OfType<T>();
-                case true when typeof(T) == typeof(IBudgetEntryRealm):
-                    return _provideConnection.Connection.All<BudgetEntry>().OfType<T>();
-                case true when typeof(T) == typeof(IDbSettingRealm):
-                    return _provideConnection.Connection.All<DbSetting>().OfType<T>();
-                default:
-                    throw new ArgumentException("Unexpected generic type!", nameof(T));
+                switch (true)
+                {
+                    case true when typeof(T) == typeof(IAccountRealm):
+                        return realm.All<Account>().ToList().OfType<T>();
+                    case true when typeof(T) == typeof(IPayeeRealm):
+                        return realm.All<Payee>().ToList().OfType<T>();
+                    case true when typeof(T) == typeof(ICategoryRealm):
+                        return realm.All<Category>().ToList().OfType<T>();
+                    case true when typeof(T) == typeof(IFlagRealm):
+                        return realm.All<Flag>().ToList().OfType<T>();
+                    case true when typeof(T) == typeof(ITransRealm):
+                        return realm.All<Trans>().ToList().OfType<T>();
+                    case true when typeof(T) == typeof(ISubTransactionRealm):
+                        return realm.All<SubTransaction>().ToList().OfType<T>();
+                    case true when typeof(T) == typeof(IBudgetEntryRealm):
+                        return realm.All<BudgetEntry>().ToList().OfType<T>();
+                    case true when typeof(T) == typeof(IDbSettingRealm):
+                        return realm.All<DbSetting>().ToList().OfType<T>();
+                    default:
+                        throw new ArgumentException("Unexpected generic type!", nameof(T));
+                }
             }
         }
 
-        public async Task UpdateAsync(T model)
+        public Task UpdateAsync(T model)
         {
-            await _provideConnection.Connection.WriteAsync(
-                r => r.Add(model as RealmObject, update: true)).ConfigureAwait(false);
+            return _realmOperations.RunActionAsync(Inner);
+
+            void Inner(Realms.Realm realm)
+            {
+                realm.Write(
+                    () => realm.Add(model as RealmObject, update: true));
+            }
         }
 
-        public async Task DeleteAsync(T model)
+        public Task DeleteAsync(T model)
         {
-            var realm = _provideConnection.Connection;
-            switch (model)
+            return _realmOperations.RunActionAsync(Inner);
+
+            void Inner(Realms.Realm realm)
             {
-                case IAccountRealm account:
-                    _provideConnection.Backup($"BeforeDeletionOfAccount{account.Name}");
-                    break;
-                case ICategoryRealm category:
-                    _provideConnection.Backup($"BeforeDeletionOfCategory{category.Name}");
-                    break;
-                case IPayeeRealm payee:
-                    _provideConnection.Backup($"BeforeDeletionOfPayee{payee.Name}");
-                    break;
-                case IFlagRealm flag:
-                    _provideConnection.Backup($"BeforeDeletionOfFlag{flag.Name}");
-                    break;
+                switch (model)
+                {
+                    case IAccountRealm account:
+                        _provideConnection.Backup($"BeforeDeletionOfAccount{account.Name}");
+                        break;
+                    case ICategoryRealm category:
+                        _provideConnection.Backup($"BeforeDeletionOfCategory{category.Name}");
+                        break;
+                    case IPayeeRealm payee:
+                        _provideConnection.Backup($"BeforeDeletionOfPayee{payee.Name}");
+                        break;
+                    case IFlagRealm flag:
+                        _provideConnection.Backup($"BeforeDeletionOfFlag{flag.Name}");
+                        break;
+                }
+
+                realm.Write(
+                    () => realm.Remove(model as RealmObject));
             }
-            await realm.WriteAsync(
-                r => r.Remove(model as RealmObject)).ConfigureAwait(false);
         }
     }
 }

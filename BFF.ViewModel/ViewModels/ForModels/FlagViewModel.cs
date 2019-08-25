@@ -11,6 +11,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MoreLinq;
+using MrMeeseeks.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -21,7 +22,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         bool CanMergeTo(IFlagViewModel target);
     }
 
-    public class FlagViewModel : CommonPropertyViewModel, IFlagViewModel
+    internal class FlagViewModel : CommonPropertyViewModel, IFlagViewModel
     {
         private readonly IFlag _flag;
         private readonly ILocalizer _localizer;
@@ -49,7 +50,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .ObservePropertyChanges(nameof(flag.Color))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Color)))
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
         }
 
         public override Task DeleteAsync()

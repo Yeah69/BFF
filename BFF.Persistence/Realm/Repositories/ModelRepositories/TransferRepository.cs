@@ -39,10 +39,10 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                         ? null
                         : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false),
                     persistenceModel.CheckNumber,
-                    persistenceModel.Payee is null
+                    persistenceModel.FromAccount is null
                         ? null
                         : await _accountRepository.Value.FindAsync(persistenceModel.FromAccount).ConfigureAwait(false),
-                    persistenceModel.Category is null
+                    persistenceModel.ToAccount is null
                         ? null
                         : await _accountRepository.Value.FindAsync(persistenceModel.ToAccount).ConfigureAwait(false),
                     persistenceModel.Memo,

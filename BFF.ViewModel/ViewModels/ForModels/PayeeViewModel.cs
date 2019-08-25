@@ -18,7 +18,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         bool CanMergeTo(IPayeeViewModel target);
     }
 
-    public class PayeeViewModel : CommonPropertyViewModel, IPayeeViewModel
+    internal class PayeeViewModel : CommonPropertyViewModel, IPayeeViewModel
     {
         public IAccountViewModelService AccountViewModelService { get; }
         private readonly IPayee _payee;

@@ -6,6 +6,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using BFF.Core.Extensions;
+using MrMeeseeks.Extensions;
 
 namespace BFF.AttachedBehaviors
 {

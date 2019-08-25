@@ -11,6 +11,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.Extensions;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -30,7 +31,7 @@ namespace BFF.ViewModel.ViewModels
         IHaveFlagViewModel CurrentOwner { get; set; }
     }
 
-    public class NewFlagViewModel : NotifyingErrorViewModelBase, INewFlagViewModel, IOncePerBackend, IDisposable
+    internal class NewFlagViewModel : NotifyingErrorViewModelBase, INewFlagViewModel, IOncePerBackend, IDisposable
     {
         private readonly ILocalizer _localizer;
         private readonly IFlagViewModelService _flagViewModelService;

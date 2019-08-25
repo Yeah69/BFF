@@ -18,6 +18,7 @@ using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
+using MrMeeseeks.Extensions;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -54,7 +55,7 @@ namespace BFF.ViewModel.ViewModels
         IBudgetMonthMenuTitles BudgetMonthMenuTitles { get; }
     }
 
-    public class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IOncePerBackend, IDisposable
+    internal class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IOncePerBackend, IDisposable
     {
         private static readonly int LastMonthIndex = MonthToIndex(DateTime.MaxValue);
 

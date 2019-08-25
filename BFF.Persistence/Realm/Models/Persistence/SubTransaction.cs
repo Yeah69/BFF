@@ -21,5 +21,16 @@ namespace BFF.Persistence.Realm.Models.Persistence
         public ICategoryRealm Category { get => CategoryRef; set => CategoryRef = value as Category; }
         public string Memo { get; set; }
         public long Sum { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is null || !(obj is ISubTransactionRealm other)) return false;
+            return Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id;
+        }
     }
 }

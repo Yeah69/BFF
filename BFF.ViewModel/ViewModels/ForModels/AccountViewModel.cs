@@ -36,7 +36,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     /// <summary>
     /// Trans' can be added to an Account
     /// </summary>
-    public class AccountViewModel : AccountBaseViewModel, IAccountViewModel, IImportCsvBankStatement
+    internal class AccountViewModel : AccountBaseViewModel, IAccountViewModel, IImportCsvBankStatement
     {
         private readonly IAccount _account;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;

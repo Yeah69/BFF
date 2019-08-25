@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
+using MrMeeseeks.Extensions;
 using MuVaViMo;
 
 namespace BFF.ViewModel.ViewModels
@@ -21,7 +21,7 @@ namespace BFF.ViewModel.ViewModels
         INewAccountViewModel NewAccountViewModel { get; }
     }
 
-    public class EditAccountsViewModel : ViewModelBase, IEditAccountsViewModel, IDisposable, IOncePerBackend
+    internal class EditAccountsViewModel : ViewModelBase, IEditAccountsViewModel, IDisposable, IOncePerBackend
     {
         private readonly IBffSettings _bffSettings;
         protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
@@ -48,7 +48,7 @@ namespace BFF.ViewModel.ViewModels
                         OnPropertyChanged(nameof(IsDateLong));
                         break;
                 }
-            }).AddHere(CompositeDisposable);
+            }).AddForDisposalTo(CompositeDisposable);
         }
 
         public void Dispose()

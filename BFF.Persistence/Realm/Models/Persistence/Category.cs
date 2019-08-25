@@ -20,5 +20,16 @@ namespace BFF.Persistence.Realm.Models.Persistence
         public string Name { get; set; }
         public bool IsIncomeRelevant { get; set; }
         public int MonthOffset { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is null || !(obj is ICategoryRealm other)) return false;
+            return Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id;
+        }
     }
 }

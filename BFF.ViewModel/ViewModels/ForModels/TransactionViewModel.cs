@@ -8,6 +8,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.Extensions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -23,7 +24,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model Transaction.
     /// </summary>
-    public sealed class TransactionViewModel : TransactionBaseViewModel, ITransactionViewModel
+    internal sealed class TransactionViewModel : TransactionBaseViewModel, ITransactionViewModel
     {
         private readonly ITransaction _transaction;
         private readonly ILocalizer _localizer;

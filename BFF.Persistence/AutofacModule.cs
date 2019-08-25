@@ -6,6 +6,8 @@ using Autofac;
 using BFF.Core.IoC;
 using BFF.Core.Persistence;
 using BFF.Persistence.Contexts;
+using BFF.Persistence.Import;
+using BFF.Persistence.Realm;
 using BFF.Persistence.Realm.Models;
 using BFF.Persistence.Realm.ORM;
 using BFF.Persistence.Realm.Repositories;
@@ -15,13 +17,20 @@ using BFF.Persistence.Sql.ORM;
 using BFF.Persistence.Sql.Repositories;
 using BFF.Persistence.Sql.Repositories.ModelRepositories;
 using BackendChoice = BFF.Core.IoC.BackendChoice;
-using IImportContext = BFF.Core.IoC.IImportContext;
 using Module = Autofac.Module;
 
 namespace BFF.Persistence
 {
     public class AutofacModule : Module
     {
+        private static readonly object[] LifetimeScopeTagsForOrmRegistrations = 
+        {
+            ScopeLevels.CreateProject,
+            ScopeLevels.LoadedProject,
+            ScopeLevels.Import,
+            ScopeLevels.Export
+        };
+
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
@@ -128,38 +137,37 @@ namespace BFF.Persistence
                 };
             });
 
-            builder.Register<Func<(string, string, string, ImportFormatChoice), IImportContext>>(cc =>
+            builder.Register<Func<IImportingConfiguration, IImporter>>(cc =>
             {
-                var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
-                return t =>
-                {
-                    switch (t.Item4)
-                    {
-                        case ImportFormatChoice.Ynab4Csv:
-                            var config = currentLifetimeScope.Resolve<IYnab4ImportConfiguration>(TypedParameter.From((t.Item1, t.Item2, t.Item3)));
-
-                            var newLifetimeScope = currentLifetimeScope
-                                .BeginLifetimeScope(
-                                    ScopeLevels.Import);
-
-                            return newLifetimeScope.Resolve<Ynab4ImportContext>(
-                                TypedParameter.From((IDisposable) newLifetimeScope));
-                        default: throw new InvalidEnumArgumentException(nameof(t), (int)t.Item4, typeof(ImportFormatChoice));
-                    }
-                };
-            });
-
-            builder.Register<Func<IImportingConfiguration, IImportContext>>(cc =>
-            {
+                var ynab4CsvImporterFactory = cc.Resolve<Func<IYnab4CsvImportConfiguration, Ynab4CsvImporter>>();
                 return ic =>
                 {
                     switch (ic)
                     {
-                        case IYnab4ImportConfiguration ynab4:
-                            return cc.Resolve<IYnab4ImportContext>(
-                                TypedParameter.From(ynab4));
+                        case IYnab4CsvImportConfiguration ynab4:
+                            return ynab4CsvImporterFactory(ynab4);
                         default:
                             throw new InvalidOperationException("Unknown import configuration");
+                    }
+                };
+            });
+
+            builder.Register<Func<IExportingConfiguration, IExporter>>(cc =>
+            {
+                var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
+                return ec =>
+                {
+                    switch (ec)
+                    {
+                        case IRealmExportConfiguration realmExportConfiguration:
+                            var loadProjectFromFileConfiguration = new LoadProjectFromFileConfiguration(realmExportConfiguration.Path);
+                            var newLifetimeScope = currentLifetimeScope
+                                .BeginLifetimeScope(
+                                    ScopeLevels.Export,
+                                    cb => LoadRealmRegistrations(cb, loadProjectFromFileConfiguration));
+
+                            return newLifetimeScope.Resolve<RealmExporter>(TypedParameter.From<IDisposable>(newLifetimeScope));
+                        default: throw new ArgumentException(nameof(ec));
                     }
                 };
             });
@@ -170,9 +178,7 @@ namespace BFF.Persistence
             builder.Register(cc => config)
                 .AsSelf()
                 .AsImplementedInterfaces()
-                .InstancePerMatchingLifetimeScope(
-                    ScopeLevels.CreateProject,
-                    ScopeLevels.LoadedProject);
+                .InstancePerMatchingLifetimeScope(LifetimeScopeTagsForOrmRegistrations);
         }
 
         private void LoadSqliteRegistrations(ContainerBuilder builder, ILoadProjectFromFileConfiguration config)
@@ -199,16 +205,12 @@ namespace BFF.Persistence
                     typeof(DapperCreateBackendOrm))
                 .AsSelf()
                 .AsImplementedInterfaces()
-                .InstancePerMatchingLifetimeScope(
-                    ScopeLevels.CreateProject,
-                    ScopeLevels.LoadedProject);
+                .InstancePerMatchingLifetimeScope(LifetimeScopeTagsForOrmRegistrations);
 
             builder.RegisterGeneric(typeof(DapperCrudOrm<>))
                 .AsSelf()
                 .As(typeof(Sql.ORM.Interfaces.ICrudOrm<>))
-                .InstancePerMatchingLifetimeScope(
-                    ScopeLevels.CreateProject,
-                    ScopeLevels.LoadedProject);
+                .InstancePerMatchingLifetimeScope(LifetimeScopeTagsForOrmRegistrations);
         }
 
         private void LoadRealmRegistrations(ContainerBuilder builder, ILoadProjectFromFileConfiguration config)
@@ -232,19 +234,16 @@ namespace BFF.Persistence
                 typeof(RealmTransferRepository),
                 typeof(RealmTransRepository),
                 typeof(RealmBudgetMonthRepository),
-                typeof(RealmCreateBackendOrm))
+                typeof(RealmCreateBackendOrm),
+                typeof(RealmOperations))
                 .AsSelf()
                 .AsImplementedInterfaces()
-                .InstancePerMatchingLifetimeScope(
-                    ScopeLevels.CreateProject,
-                    ScopeLevels.LoadedProject);
+                .InstancePerMatchingLifetimeScope(LifetimeScopeTagsForOrmRegistrations);
 
             builder.RegisterGeneric(typeof(RealmCrudOrm<>))
                 .AsSelf()
                 .As(typeof(Realm.ORM.Interfaces.ICrudOrm<>))
-                .InstancePerMatchingLifetimeScope(
-                    ScopeLevels.CreateProject,
-                    ScopeLevels.LoadedProject);
+                .InstancePerMatchingLifetimeScope(LifetimeScopeTagsForOrmRegistrations);
         }
     }
 }

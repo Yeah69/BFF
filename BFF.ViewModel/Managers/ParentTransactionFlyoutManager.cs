@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reactive.Disposables;
-using BFF.Core.Extensions;
 using BFF.Core.IoC;
 using BFF.ViewModel.ViewModels.ForModels;
+using MrMeeseeks.Extensions;
 using Reactive.Bindings;
 
 namespace BFF.ViewModel.Managers
@@ -23,7 +23,7 @@ namespace BFF.ViewModel.Managers
         
         public ParentTransactionFlyoutManager()
         {
-            _openParentTransactionViewModel = new ReactiveProperty<IParentTransactionViewModel>(null, ReactivePropertyMode.DistinctUntilChanged).AddHere(_compositeDisposable);
+            _openParentTransactionViewModel = new ReactiveProperty<IParentTransactionViewModel>(null, ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
             
         }
 

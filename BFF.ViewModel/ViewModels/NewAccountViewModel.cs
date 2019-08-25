@@ -11,6 +11,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
+using MrMeeseeks.Extensions;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -36,7 +37,7 @@ namespace BFF.ViewModel.ViewModels
         ICommand AddCommand { get; }
     }
 
-    public class NewAccountViewModel : NotifyingErrorViewModelBase, INewAccountViewModel, IDisposable
+    internal class NewAccountViewModel : NotifyingErrorViewModelBase, INewAccountViewModel, IDisposable
     {
         private readonly ILocalizer _localizer;
         private readonly IBffSettings _bffSettings;

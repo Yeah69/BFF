@@ -7,6 +7,7 @@ using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
+using MrMeeseeks.Extensions;
 using Category = BFF.Persistence.Realm.Models.Domain.Category;
 using IncomeCategory = BFF.Persistence.Realm.Models.Domain.IncomeCategory;
 

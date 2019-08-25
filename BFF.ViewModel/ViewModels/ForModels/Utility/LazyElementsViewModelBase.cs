@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Utility
 {
@@ -21,7 +22,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
         IRxRelayCommand ClearLazyElements { get; }
     }
 
-    public class LazyElementsViewModelBase<T> : ViewModelBase, ILazyElementsViewModelBase<T>
+    internal class LazyElementsViewModelBase<T> : ViewModelBase, ILazyElementsViewModelBase<T>
     {
         protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
         private bool _openFlag;
@@ -37,14 +38,14 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
                     if (LazyElements.Any().Not())
                         OpenFlag = false;
                 })
-                .AddHere(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             ClearLazyElements = new RxRelayCommand(() =>
                 {
                     LazyElements = Enumerable.Empty<T>();
                     OnPropertyChanged(nameof(LazyElements));
                 })
-                .AddHere(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
         }
 
         public IEnumerable<T> LazyElements { get; private set; }
@@ -73,7 +74,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
     {
     }
 
-    public class LazyTransLikeViewModels : LazyElementsViewModelBase<ITransLikeViewModel>, ILazyTransLikeViewModels
+    internal class LazyTransLikeViewModels : LazyElementsViewModelBase<ITransLikeViewModel>, ILazyTransLikeViewModels
     {
         public LazyTransLikeViewModels(Func<Task<IEnumerable<ITransLikeViewModel>>> elementsFactoryAsync) : base(elementsFactoryAsync)
         {

@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
+using MrMeeseeks.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Structure
 {
@@ -11,7 +12,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         string Name { get; set; }
     }
 
-    public abstract class CommonPropertyViewModel : DataModelViewModel, ICommonPropertyViewModel
+    internal abstract class CommonPropertyViewModel : DataModelViewModel, ICommonPropertyViewModel
     {
         private readonly ICommonProperty _commonProperty;
 
@@ -24,7 +25,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 .ObservePropertyChanges(nameof(commonProperty.Name))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Name)))
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
         }
         public virtual string Name
         {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
+using JetBrains.Annotations;
 using MoreLinq;
 using Realms;
 
@@ -12,156 +13,141 @@ namespace BFF.Persistence.Realm.ORM
 {
     internal class RealmTransOrm : ITransOrm
     {
-        private readonly IProvideRealmConnection _provideConnection;
+        private readonly IRealmOperations _realmOperations;
 
-        public RealmTransOrm(IProvideRealmConnection provideConnection)
+        public RealmTransOrm(
+            IRealmOperations realmOperations)
         {
-            _provideConnection = provideConnection;
+            _realmOperations = realmOperations;
         }
 
-        public IEnumerable<ITransRealm> GetPageFromSpecificAccount(int offset, int pageSize, IAccountRealm account)
-        {
-            var query = _provideConnection
-                .Connection
-                .All<Trans>()
-                .Where(t =>
-                    (t.Type == TransType.Transaction || t.Type == TransType.ParentTransaction) && t.Account.Name == account.Name
-                    || t.Type == TransType.Transfer && (t.ToAccount != null && t.ToAccount.Name == account.Name || t.FromAccount != null && t.FromAccount.Name == account.Name))
-                .OrderBy(t => t.Date)
-                .ThenByDescending(t => t.Sum);
-
-            var collection = query as IRealmCollection<Trans>;
-            for (var i = offset; i < offset + pageSize && i < collection.Count; i++)
-            {
-                yield return collection[i];
-            }
-        }
-
-        public IEnumerable<ITransRealm> GetPageFromSummaryAccount(int offset, int pageSize)
-        {
-            var query = _provideConnection
-                .Connection
-                .All<Trans>()
-                .OrderBy(t => t.Date)
-                .ThenByDescending(t => t.Sum);
-
-            var collection = query as IRealmCollection<Trans>;
-            for (var i = offset; i < offset + pageSize && i < collection.Count; i++)
-            {
-                yield return collection[i];
-            }
-        }
-
-        public long GetCountFromSpecificAccount(IAccountRealm account)
-        {
-            return _provideConnection
-                .Connection
-                .All<Trans>()
-                .Count(t =>
-                    (t.Type == TransType.Transaction || t.Type == TransType.ParentTransaction) && t.Account.Name == account.Name
-                    || t.Type == TransType.Transfer && (t.ToAccount != null && t.ToAccount.Name == account.Name || t.FromAccount != null && t.FromAccount.Name == account.Name));
-        }
-
-        public long GetCountFromSummaryAccount()
-        {
-            return _provideConnection.Connection.All<Trans>().Count();
-        }
-
-        public async Task<IEnumerable<ITransRealm>> GetPageFromSpecificAccountAsync(int offset, int pageSize,
+        public Task<IEnumerable<ITransRealm>> GetPageFromSpecificAccountAsync(
+            int offset, 
+            int pageSize,
             IAccountRealm account)
         {
-            var query = _provideConnection
-                .Connection
-                .All<Trans>()
-                .Where(t =>
-                    (t.Type == TransType.Transaction || t.Type == TransType.ParentTransaction) &&
-                    t.Account.Name == account.Name
-                    || t.Type == TransType.Transfer && (t.ToAccount != null && t.ToAccount.Name == account.Name ||
-                                                        t.FromAccount != null && t.FromAccount.Name == account.Name))
-                .OrderBy(t => t.Date)
-                .ThenByDescending(t => t.Sum);
+            return _realmOperations.RunFuncAsync(Inner);
 
-            var collection = query as IRealmCollection<Trans>;
-            var ret = new List<ITransRealm>();
-            for (var i = offset; i < offset + pageSize && i < collection.Count; i++)
+            IEnumerable<ITransRealm> Inner(Realms.Realm realm)
             {
-                ret.Add(collection[i]);
-            }
+                var query = realm
+                    .All<Trans>()
+                    .Where(t =>
+                        (t.TypeIndex == (int)TransType.Transaction || t.TypeIndex == (int)TransType.ParentTransaction) && t.AccountRef == account
+                        || t.TypeIndex == (int)TransType.Transfer && (t.ToAccountRef == account || t.FromAccountRef == account))
+                    .OrderBy(t => t.DateOffset)
+                    .ThenByDescending(t => t.Sum);
 
-            return ret;
+                var collection = query as IRealmCollection<Trans>;
+                var ret = new List<ITransRealm>();
+                for (var i = offset; i < offset + pageSize && i < collection.Count; i++)
+                {
+                    ret.Add(collection[i]);
+                }
+
+                return ret;
+            }
         }
 
-        public async Task<IEnumerable<ITransRealm>> GetPageFromSummaryAccountAsync(int offset, int pageSize)
+        public Task<IEnumerable<ITransRealm>> GetPageFromSummaryAccountAsync(int offset, int pageSize)
         {
-            var query = _provideConnection
-                .Connection
-                .All<Trans>()
-                .OrderBy(t => t.Date)
-                .ThenByDescending(t => t.Sum);
+            return _realmOperations.RunFuncAsync(Inner);
 
-            var collection = query as IRealmCollection<Trans>;
-            var ret = new List<ITransRealm>();
-            for (var i = offset; i < offset + pageSize && i < collection.Count; i++)
+            IEnumerable<ITransRealm> Inner(Realms.Realm realm)
             {
-                ret.Add(collection[i]);
+                var query = realm
+                    .All<Trans>()
+                    .OrderBy(t => t.DateOffset)
+                    .ThenByDescending(t => t.Sum);
+
+                var collection = query as IRealmCollection<Trans>;
+                var ret = new List<ITransRealm>();
+                for (var i = offset; i < offset + pageSize && i < collection.Count; i++)
+                {
+                    ret.Add(collection[i]);
+                }
+
+                return ret;
             }
-
-            return ret;
         }
 
-        public async Task<IEnumerable<ITransRealm>> GetFromMonthAsync(DateTime month)
+        public Task<IEnumerable<ITransRealm>> GetFromMonthAsync(DateTime month)
         {
-            var utcMonth = DateTime.SpecifyKind(month, DateTimeKind.Utc);
-            var query = _provideConnection
-                .Connection
-                .All<Trans>()
-                .Where(t => t.Date == utcMonth)
-                .OrderBy(t => t.Date)
-                .ThenByDescending(t => t.Sum);
+            return _realmOperations.RunFuncAsync(Inner);
 
-            return query;
+            IEnumerable<ITransRealm> Inner(Realms.Realm realm)
+            {
+                var utcMonth = DateTime.SpecifyKind(month, DateTimeKind.Utc);
+                var query = realm
+                    .All<Trans>()
+                    .Where(t => t.DateOffset == utcMonth)
+                    .OrderBy(t => t.DateOffset)
+                    .ThenByDescending(t => t.Sum);
+
+                return query;
+            }
         }
 
-        public async Task<IEnumerable<ITransRealm>> GetFromMonthAndCategoryAsync(DateTime month, ICategoryRealm category)
+        public Task<IEnumerable<ITransRealm>> GetFromMonthAndCategoryAsync(
+            DateTime month,
+            [NotNull]ICategoryRealm category)
         {
-            var utcMonth = DateTime.SpecifyKind(month, DateTimeKind.Utc);
-            var query = _provideConnection
-                .Connection
-                .All<Trans>()
-                .Where(t => t.Date == utcMonth && t.Category != null && t.Category.Id == category.Id)
-                .OrderBy(t => t.Date)
-                .ThenByDescending(t => t.Sum);
+            category = category ?? throw new ArgumentNullException(nameof(category));
+            return _realmOperations.RunFuncAsync(Inner);
 
-            return query;
+            IEnumerable<ITransRealm> Inner(Realms.Realm realm)
+            {
+                var utcMonth = DateTime.SpecifyKind(month, DateTimeKind.Utc);
+                var query = realm
+                    .All<Trans>()
+                    .Where(t => t.DateOffset == utcMonth && t.CategoryRef == category)
+                    .OrderBy(t => t.DateOffset)
+                    .ThenByDescending(t => t.Sum);
+
+                return query;
+            }
         }
 
-        public async Task<IEnumerable<ITransRealm>> GetFromMonthAndCategoriesAsync(DateTime month, ICategoryRealm[] categories)
+        public Task<IEnumerable<ITransRealm>> GetFromMonthAndCategoriesAsync(DateTime month, ICategoryRealm[] categories)
         {
-            var categoriesIdSet = categories.Select(c => c.Id).ToHashSet();
-            var utcMonth = DateTime.SpecifyKind(month, DateTimeKind.Utc);
-            var query = _provideConnection
-                .Connection
-                .All<Trans>()
-                .Where(t => t.Date == utcMonth && t.Category != null && categoriesIdSet.Contains(t.Category.Id))
-                .OrderBy(t => t.Date)
-                .ThenByDescending(t => t.Sum);
+            return _realmOperations.RunFuncAsync(Inner);
 
-            return query;
+            IEnumerable<ITransRealm> Inner(Realms.Realm realm)
+            {
+                var categoriesIdSet = categories.ToHashSet();
+                var utcMonth = DateTime.SpecifyKind(month, DateTimeKind.Utc);
+                var query = realm
+                    .All<Trans>()
+                    .Where(t => t.DateOffset == utcMonth && categoriesIdSet.Contains(t.CategoryRef))
+                    .OrderBy(t => t.DateOffset)
+                    .ThenByDescending(t => t.Sum);
+
+                return query;
+            }
         }
 
-        public async Task<long> GetCountFromSpecificAccountAsync(IAccountRealm account)
+        public Task<long> GetCountFromSpecificAccountAsync(IAccountRealm account)
         {
-            return _provideConnection
-                .Connection
-                .All<Trans>()
-                .Count(t => 
-                    (t.Type == TransType.Transaction || t.Type == TransType.ParentTransaction) && t.Account.Name == account.Name
-                    || t.Type == TransType.Transfer && (t.ToAccount != null && t.ToAccount.Name == account.Name || t.FromAccount != null && t.FromAccount.Name == account.Name));
+            return _realmOperations.RunFuncAsync(Inner);
+
+            long Inner(Realms.Realm realm)
+            {
+                return realm
+                    .All<Trans>()
+                    .Count(t =>
+                        (t.TypeIndex == (int)TransType.Transaction || t.TypeIndex == (int)TransType.ParentTransaction) && t.AccountRef == account
+                        || t.TypeIndex == (int)TransType.Transfer && (t.ToAccountRef == account || t.FromAccountRef == account));
+            }
         }
 
-        public async Task<long> GetCountFromSummaryAccountAsync()
+        public Task<long> GetCountFromSummaryAccountAsync()
         {
-            return _provideConnection.Connection.All<Trans>().Count();
+            return _realmOperations.RunFuncAsync(Inner);
+
+            long Inner(Realms.Realm realm)
+            {
+                return realm.All<Trans>().Count();
+            }
         }
     }
 }

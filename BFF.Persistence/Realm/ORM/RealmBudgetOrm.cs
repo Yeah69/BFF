@@ -8,18 +8,18 @@ namespace BFF.Persistence.Realm.ORM
 {
     internal class RealmBudgetOrm : IBudgetOrm
     {
+        private readonly IRealmOperations _realmOperations;
+
         private class OutflowResponse
         {
             public DateTime Month { get; set; }
             public long Sum { get; set; }
         }
 
-        private readonly IProvideRealmConnection _provideConnection;
-
         public RealmBudgetOrm(
-            IProvideRealmConnection provideConnection)
+            IRealmOperations realmOperations)
         {
-            _provideConnection = provideConnection;
+            _realmOperations = realmOperations;
         }
 
         public async Task<BudgetBlock> FindAsync(int year, ICategoryRealm[] categories,

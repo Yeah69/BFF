@@ -12,6 +12,7 @@ using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
+using MrMeeseeks.Extensions;
 
 namespace BFF.ViewModel.Managers
 {
@@ -40,7 +41,7 @@ namespace BFF.ViewModel.Managers
         {
             _bffSettings = bffSettings;
             _setupLocalizationFramework = setupLocalizationFramework;
-            _refreshSignal.AddHere(CompositeDisposable);
+            _refreshSignal.AddForDisposalTo(CompositeDisposable);
         }
 
         public CultureInfo CurrencyCulture
@@ -132,7 +133,7 @@ namespace BFF.ViewModel.Managers
             : base(bffSettings, setupLocalizationFramework)
         {
             _bffSettings = bffSettings;
-            _saveDbSettingsSubject.AddHere(CompositeDisposable);
+            _saveDbSettingsSubject.AddForDisposalTo(CompositeDisposable);
 
             schedulerProvider.Task.MinimalScheduleAsync(async () =>
             {
@@ -140,7 +141,7 @@ namespace BFF.ViewModel.Managers
                 _bffSettings.Culture_SessionCurrency = CultureInfo.GetCultureInfo(dbSetting.CurrencyCultureName);
                 _bffSettings.Culture_SessionDate = CultureInfo.GetCultureInfo(dbSetting.DateCultureName);
                 ManageCultures();
-            }).AddHere(CompositeDisposable);
+            }).AddForDisposalTo(CompositeDisposable);
 
             _saveDbSettingsSubject
                 .ObserveOn(schedulerProvider.Task)
@@ -149,7 +150,7 @@ namespace BFF.ViewModel.Managers
                 {
                     dbSetting.CurrencyCulture = _bffSettings.Culture_SessionCurrency;
                     dbSetting.DateCulture = _bffSettings.Culture_SessionDate;
-                }).AddHere(CompositeDisposable);
+                }).AddForDisposalTo(CompositeDisposable);
         }
 
         protected override void SaveCultures()

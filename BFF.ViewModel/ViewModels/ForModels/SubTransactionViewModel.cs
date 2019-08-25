@@ -5,6 +5,7 @@ using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.Extensions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -14,7 +15,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     {
     }
 
-    public sealed class SubTransactionViewModel : TransLikeViewModel, ISubTransactionViewModel
+    internal sealed class SubTransactionViewModel : TransLikeViewModel, ISubTransactionViewModel
     {
         private readonly ISubTransaction _subTransaction;
         private readonly ILocalizer _localizer;

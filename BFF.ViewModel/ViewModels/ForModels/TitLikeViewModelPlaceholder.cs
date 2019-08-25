@@ -15,7 +15,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     /// <summary>
     /// A Trans ViewModel Placeholder used for async lazy loaded Trans'.
     /// </summary>
-    public sealed class TransLikeViewModelPlaceholder : NotifyingErrorViewModelBase, ITransLikeViewModelPlaceholder
+    internal sealed class TransLikeViewModelPlaceholder : NotifyingErrorViewModelBase, ITransLikeViewModelPlaceholder
     {
         public string Memo { get; set; }
         

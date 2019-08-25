@@ -7,6 +7,7 @@ using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
+using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {

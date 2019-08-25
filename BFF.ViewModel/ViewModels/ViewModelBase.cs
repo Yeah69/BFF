@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using BFF.Core.Helper;
+using MrMeeseeks.Utility;
 
 namespace BFF.ViewModel.ViewModels
 {
@@ -12,7 +13,7 @@ namespace BFF.ViewModel.ViewModels
     {
     }
 
-    public abstract class ViewModelBase : ObservableObject, IViewModel
+    internal abstract class ViewModelBase : ObservableObject, IViewModel
     {
     }
 
@@ -20,7 +21,7 @@ namespace BFF.ViewModel.ViewModels
     {
     }
 
-    public abstract class NotifyingErrorViewModelBase : ViewModelBase, INotifyingErrorViewModel
+    internal abstract class NotifyingErrorViewModelBase : ViewModelBase, INotifyingErrorViewModel
     {
         private readonly IDictionary<string, IEnumerable<string>> _errors = new Dictionary<string, IEnumerable<string>>();
 
@@ -54,7 +55,7 @@ namespace BFF.ViewModel.ViewModels
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
 
-        public bool HasErrors => _errors.Values.SelectMany(e => e).Any();
+        public bool HasErrors => _errors.Values.SelectMany(Basic.Identity).Any();
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
     }

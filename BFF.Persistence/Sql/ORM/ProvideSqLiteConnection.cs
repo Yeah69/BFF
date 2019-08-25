@@ -17,7 +17,7 @@ namespace BFF.Persistence.Sql.ORM
 
         public override long? Parse(object value)
         {
-            if (value == DBNull.Value || value == null)
+            if (value == DBNull.Value || value is null)
                 return null;
 
             switch (value)

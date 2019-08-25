@@ -13,6 +13,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
+using MrMeeseeks.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -51,7 +52,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         ICommand Zero { get; }
     }
 
-    public class BudgetEntryViewModel : DataModelViewModel, IBudgetEntryViewModel
+    internal class BudgetEntryViewModel : DataModelViewModel, IBudgetEntryViewModel
     {
         private readonly IBudgetEntry _budgetEntry;
         private IReadOnlyList<IBudgetEntryViewModel> _children;
@@ -104,35 +105,35 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .Do(_ => Category = categoryViewModelService.GetViewModel(budgetEntry.Category))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Category)))
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             budgetEntry
                 .ObservePropertyChanges(nameof(IBudgetEntry.Month))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Month)))
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             var observeBudgetChanges = budgetEntry.ObservePropertyChanges(nameof(IBudgetEntry.Budget));
             observeBudgetChanges
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Budget)))
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             observeBudgetChanges
                 .Subscribe(async _ => await Task.Factory.StartNew(budgetOverviewViewModel.Value.Refresh))
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             budgetEntry
                 .ObservePropertyChanges(nameof(IBudgetEntry.Outflow))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Outflow)))
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             budgetEntry
                 .ObservePropertyChanges(nameof(IBudgetEntry.Balance))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Balance)))
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             Children = new List<IBudgetEntryViewModel>();
 
@@ -140,7 +141,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             AggregatedBalance = Balance + Children.Sum(bevm => bevm.AggregatedBalance);
             AggregatedOutflow = Outflow + Children.Sum(bevm => bevm.AggregatedOutflow);
 
-            var updatesFromChildren = new SerialDisposable().AddHere(CompositeDisposable);
+            var updatesFromChildren = new SerialDisposable().AddForDisposalTo(CompositeDisposable);
 
             var updateAggregates = Observer.Create<Unit>(_ =>
             {
@@ -172,12 +173,12 @@ namespace BFF.ViewModel.ViewModels.ForModels
             AssociatedTransElementsViewModel = lazyTransLikeViewModelsFactory(async () =>
                 convertFromTransBaseToTransLikeViewModel.Convert(
                     await budgetEntry.GetAssociatedTransAsync(), null))
-                .AddHere(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             AssociatedAggregatedTransElementsViewModel = lazyTransLikeViewModelsFactory(async () =>
                 convertFromTransBaseToTransLikeViewModel.Convert(
                     await budgetEntry.GetAssociatedTransIncludingSubCategoriesAsync(), null))
-                .AddHere(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             BudgetLastMonth = new RxRelayCommand(() =>
                 {
@@ -189,7 +190,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                     if (previousBudgetMonth != null)
                         Budget = previousBudgetMonth.Budget;
                 })
-                .AddHere(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             OutflowsLastMonth = new RxRelayCommand(() =>
                 {
@@ -201,7 +202,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                     if (previousBudgetMonth != null)
                         Budget = previousBudgetMonth.Outflow * -1;
                 })
-                .AddHere(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             AvgOutflowsLastThreeMonths = new RxRelayCommand(() =>
                 {
@@ -221,7 +222,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
                     Budget = budgetEntries.Sum(bevm => bevm.Outflow) / -3L;
                 })
-                .AddHere(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             AvgOutflowsLastYear = new RxRelayCommand(() =>
             {
@@ -241,19 +242,19 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
                 Budget = budgetEntries.Sum(bevm => bevm.Outflow) / -12L;
             })
-                .AddHere(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             BalanceToZero = new RxRelayCommand(() =>
             {
                 Budget -= Balance;
             })
-                .AddHere(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             Zero = new RxRelayCommand(() =>
             {
                 Budget = 0;
             })
-            .AddHere(CompositeDisposable);
+            .AddForDisposalTo(CompositeDisposable);
         }
     }
 }

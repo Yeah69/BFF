@@ -15,7 +15,7 @@ namespace BFF.Persistence.Realm.Models.Domain
         private readonly ICrudOrm<ITransRealm> _crudOrm;
         private bool _isInserted;
 
-        private ObservableCollection<ISubTransaction> _subTransactions;
+        private readonly ObservableCollection<ISubTransaction> _subTransactions;
 
         public ParentTransaction(
             ICrudOrm<ITransRealm> crudOrm,
@@ -35,21 +35,23 @@ namespace BFF.Persistence.Realm.Models.Domain
             _crudOrm = crudOrm;
             _isInserted = isInserted;
 
-            SubTransactions = new ReadOnlyObservableCollection<ISubTransaction>(new ObservableCollection<ISubTransaction>());
+            _subTransactions = new ObservableCollection<ISubTransaction>();
+            SubTransactions = new ReadOnlyObservableCollection<ISubTransaction>(_subTransactions);
 
             subTransactionRepository
                 .GetChildrenOfAsync(RealmObject)
                 .ContinueWith(async t =>
                 {
-                    _subTransactions = new ObservableCollection<ISubTransaction>(await t.ConfigureAwait(false));
-                    SubTransactions = new ReadOnlyObservableCollection<ISubTransaction>(_subTransactions);
+                    foreach (var subTransaction in await t.ConfigureAwait(false))
+                    {
+                        _subTransactions.Add(subTransaction);
+                    }
                     SubTransactions.ObserveAddChanged().Subscribe(st => st.Parent = this);
 
                     foreach (var subTransaction in SubTransactions)
                     {
                         subTransaction.Parent = this;
                     }
-                    OnPropertyChanged(nameof(SubTransactions));
                 });
         }
 

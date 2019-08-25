@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using BFF.Properties;
 using BFF.ViewModel.ViewModels;
+using BFF.ViewModel.ViewModels.Import;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 

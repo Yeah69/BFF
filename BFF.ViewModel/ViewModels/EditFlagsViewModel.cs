@@ -13,7 +13,7 @@ namespace BFF.ViewModel.ViewModels
         INewFlagViewModel NewFlagViewModel { get; }
     }
 
-    public class EditFlagsViewModel : ViewModelBase, IEditFlagsViewModel, IOncePerBackend
+    internal class EditFlagsViewModel : ViewModelBase, IEditFlagsViewModel, IOncePerBackend
     {
         public INewFlagViewModel NewFlagViewModel { get; }
         public ReadOnlyObservableCollection<IFlagViewModel> All { get; }
