@@ -14,7 +14,6 @@ using BFF.Core.Helper;
 using BFF.DataVirtualizingCollection;
 using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
 using BFF.Model.Models;
-using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
@@ -131,7 +130,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         /// <summary>
         /// Lazy loaded collection of Trans' belonging to this Account.
         /// </summary>
-        public IDataVirtualizingCollection<ITransLikeViewModel> Trans => _trans ?? (_trans = CreateDataVirtualizingCollection());
+        public IDataVirtualizingCollection<ITransLikeViewModel> Trans => _trans ??= CreateDataVirtualizingCollection();
 
         public bool TransIsEmpty => ((ICollection)Trans).Count == 0;
 
@@ -174,11 +173,15 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                     RefreshTransCollection();
                     RefreshBalance();
                 });
-                if (_isOpen)
+                if (_isOpen && this is ISummaryAccountViewModel summaryAccountViewModel)
                 {
-                    BffSettings.OpenAccountTab = this is ISummaryAccountViewModel 
-                        ? null 
-                        : Name;
+                    BffSettings.OpenAccountTab =  null;
+                    summaryAccountViewModel.RefreshStartingBalance();
+                }
+                else
+                {
+
+                    BffSettings.OpenAccountTab = Name;
                 }
             }
         }
@@ -233,7 +236,6 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         protected AccountBaseViewModel(
             IAccount account,
             Lazy<IAccountViewModelService> accountViewModelService,
-            IAccountRepository accountRepository,
             IRxSchedulerProvider rxSchedulerProvider,
             Func<ITransLikeViewModelPlaceholder> placeholderFactory,
             IBffSettings bffSettings,

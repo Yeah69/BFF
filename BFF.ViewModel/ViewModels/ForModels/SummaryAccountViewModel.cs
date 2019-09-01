@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models;
-using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
@@ -46,7 +45,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
         
         public SummaryAccountViewModel(
             ISummaryAccount summaryAccount, 
-            IAccountRepository accountRepository, 
             Lazy<IAccountViewModelService> service,
             IBffSettings bffSettings,
             Func<ITransLikeViewModelPlaceholder> placeholderFactory,
@@ -60,7 +58,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
             : base(
                 summaryAccount,
                 service,
-                accountRepository,
                 rxSchedulerProvider,
                 placeholderFactory,
                 bffSettings,
@@ -73,6 +70,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             if(string.IsNullOrWhiteSpace(bffSettings.OpenAccountTab))
                 IsOpen = true;
+
+
 
             StartingBalance = new ReactiveProperty<long>().AddTo(CompositeDisposable);
             
@@ -103,6 +102,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 NewTransList.Count > 0);
 
             ImportCsvBankStatement = new RxRelayCommand(() => {}).AddTo(CompositeDisposable);
+
+            RefreshStartingBalance();
         }
 
         #region ViewModel_Part
@@ -166,7 +167,10 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// </summary>
         public void RefreshStartingBalance()
         {
-            StartingBalance.Value = _service.Value.All.Sum(account => account.StartingBalance.Value);
+            _service
+                .Value
+                .AllCollectionInitialized.ContinueWith(
+                    _ => StartingBalance.Value = _service.Value.All.Sum(account => account.StartingBalance.Value));
         }
     }
 }

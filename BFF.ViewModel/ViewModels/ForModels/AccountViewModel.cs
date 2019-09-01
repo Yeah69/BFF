@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
-using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
@@ -73,7 +72,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
         public AccountViewModel(
             IAccount account, 
             ISummaryAccountViewModel summaryAccountViewModel,
-            IAccountRepository accountRepository,
             Lazy<IAccountViewModelService> accountViewModelService,
             Lazy<IPayeeViewModelService> payeeService,
             Func<IPayee> payeeFactory,
@@ -94,7 +92,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
             : base(
                 account,
                 accountViewModelService,
-                accountRepository,
                 rxSchedulerProvider,
                 placeholderFactory,
                 bffSettings,
