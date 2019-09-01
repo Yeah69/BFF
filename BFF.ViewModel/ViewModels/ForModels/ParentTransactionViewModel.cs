@@ -124,7 +124,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
-            SumDuringEdit = new ReactiveProperty<long>(Sum.Value, ReactivePropertyMode.DistinctUntilChanged);
+            SumDuringEdit = Sum.ToReactiveProperty(Sum.Value, ReactivePropertyMode.DistinctUntilChanged);
 
             SumEdit = createSumEdit(SumDuringEdit);
 

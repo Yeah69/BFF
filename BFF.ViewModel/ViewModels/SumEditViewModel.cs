@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Disposables;
-using BFF.Core.Extensions;
+using System.Reactive.Linq;
+using BFF.Core.Helper;
 using BFF.ViewModel.Helper;
 using MrMeeseeks.Extensions;
 using Reactive.Bindings;
@@ -20,14 +21,23 @@ namespace BFF.ViewModel.ViewModels
 
     internal class SumEditViewModel : ViewModelBase, ISumEditViewModel
     {
-
         private Sign _sumSign = Sign.Minus;
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
-        public SumEditViewModel(IReactiveProperty<long> sum)
+        public SumEditViewModel(
+            IReactiveProperty<long> sum,
+            IRxSchedulerProvider rxSchedulerProvider)
         {
             Sum = sum;
+            Sum
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ =>
+                {
+                    OnPropertyChanged(nameof(SumAbsolute));
+                    OnPropertyChanged(nameof(SumSign));
+                })
+                .AddTo(_compositeDisposable);
             ToggleSign = new RxRelayCommand(() => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus)
                 .AddForDisposalTo(_compositeDisposable);
         }
