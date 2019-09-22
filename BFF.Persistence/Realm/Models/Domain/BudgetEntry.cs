@@ -32,7 +32,9 @@ namespace BFF.Persistence.Realm.Models.Domain
                 realmObject,
                 realm =>
                 {
-                    var id = realm.All<Persistence.BudgetEntry>().Count();
+                    var dbSetting = realm.All<Persistence.DbSetting>().First();
+                    var id = dbSetting.NextBudgetEntryId++;
+                    realm.Add(dbSetting, true);
                     var ro = new Persistence.BudgetEntry{ Id = id };
                     UpdateRealmObject(ro);
                     return ro;

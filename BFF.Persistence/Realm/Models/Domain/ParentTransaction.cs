@@ -33,7 +33,9 @@ namespace BFF.Persistence.Realm.Models.Domain
                 realmObject,
                 realm =>
                 {
-                    var id = realm.All<Trans>().Count();
+                    var dbSetting = realm.All<Persistence.DbSetting>().First();
+                    var id = dbSetting.NextTransId++;
+                    realm.Add(dbSetting, true);
                     var ro = new Trans{ Id = id };
                     UpdateRealmObject(ro);
                     return ro;
