@@ -21,7 +21,7 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.ViewModel.ViewModels.Dialogs
 {
-    public interface IImportCsvBankStatementViewModel
+    public interface IImportCsvBankStatementViewModel : IOkCancelDialogViewModel
     {
         IObservableReadOnlyList<ICsvBankStatementImportProfileViewModel> Profiles { get; }
 
@@ -38,26 +38,17 @@ namespace BFF.ViewModel.ViewModels.Dialogs
 
         IReactiveProperty<ICsvBankStatementImportNonProfileViewModel> Configuration { get; }
 
-        IReactiveProperty IsOpen { get; }
-
         IRxRelayCommand BrowseCsvBankStatementFileCommand { get; }
 
         IRxRelayCommand DeselectProfileCommand { get; }
-
-        IRxRelayCommand OkCommand { get; }
-
-        IRxRelayCommand CancelCommand { get; }
     }
 
-    internal class ImportCsvBankStatementViewModel : ViewModelBase, IImportCsvBankStatementViewModel
+    internal class ImportCsvBankStatementViewModel : OkCancelDialogViewModel, IImportCsvBankStatementViewModel
     {
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
-
         public ImportCsvBankStatementViewModel(
             Func<IReactiveProperty<string>,
             ICsvBankStatementImportNonProfileViewModel> nonProfileViewModelFactory,
             Func<IBffOpenFileDialog> openFileDialogFactory,
-            Action<IList<ICsvBankStatementImportItemViewModel>> onOk,
             IRxSchedulerProvider schedulerProvider,
             IBffSettings bffSettings,
             ILocalizer localizer,
@@ -65,18 +56,16 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             ICsvBankStatementProfileManager csvBankStatementProfileManger,
             Func<ICsvBankStatementImportProfile, ICsvBankStatementImportProfileViewModel> profileViewModelFactory)
         {
-            IsOpen = new ReactiveProperty<bool>(false, ReactivePropertyMode.DistinctUntilChanged);
-
             Profiles = csvBankStatementProfileManger.Profiles.Transform(profileViewModelFactory);
             
             FilePath = new ReactivePropertySlim<string>(
                 "",
-                ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
+                ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(CompositeDisposable);
 
-            var nonProfileViewModel = nonProfileViewModelFactory(FilePath).AddForDisposalTo(_compositeDisposable);
+            var nonProfileViewModel = nonProfileViewModelFactory(FilePath).AddForDisposalTo(CompositeDisposable);
             Configuration = new ReactivePropertySlim<ICsvBankStatementImportNonProfileViewModel>(nonProfileViewModel, ReactivePropertyMode.DistinctUntilChanged);
 
-            SelectedProfile = new ReactivePropertySlim<ICsvBankStatementImportProfileViewModel>(Profiles.FirstOrDefault(cbsipvm => cbsipvm.Name.Value == bffSettings.SelectedCsvProfile), ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
+            SelectedProfile = new ReactivePropertySlim<ICsvBankStatementImportProfileViewModel>(Profiles.FirstOrDefault(cbsipvm => cbsipvm.Name.Value == bffSettings.SelectedCsvProfile), ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(CompositeDisposable);
             SelectedProfile
                 .Subscribe(sp =>
                 {
@@ -85,7 +74,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                         ? null
                         : cbsipvm.Name.Value;
                 })
-                .AddForDisposalTo(_compositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             
 
@@ -94,15 +83,15 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                 .Where(cc => cc.Action == NotifyCollectionChangedAction.Add)
                 .Select(cc => cc.Value)
                 .Subscribe(pvm => SelectedProfile.Value = pvm)
-                .AddForDisposalTo(_compositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             FileExists = new ReadOnlyReactivePropertySlim<bool>(
                 FilePath.Select(File.Exists), 
-                mode: ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
+                mode: ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(CompositeDisposable);
 
             Header = new ReadOnlyReactivePropertySlim<string>(
                 FilePath.Select(path => File.Exists(path) ? File.ReadLines(path, Encoding.Default).FirstOrDefault() : ""), 
-                mode: ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(_compositeDisposable);
+                mode: ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(CompositeDisposable);
 
             Configuration.Select(_ => Unit.Default)
                 .Merge(FilePath.Select(_ => Unit.Default))
@@ -114,20 +103,20 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                     Items = items;
                     OnPropertyChanged(nameof(Items));
                 })
-                .AddForDisposalTo(_compositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             Configuration
                 .ObserveOn(schedulerProvider.UI)
                 .Subscribe(items => OnPropertyChanged(nameof(HeaderDoMatch)))
-                .AddForDisposalTo(_compositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             Header
                 .ObserveOn(schedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(HeaderDoMatch)))
-                .AddForDisposalTo(_compositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
-            SerialDisposable configurationPropertyChanges = new SerialDisposable().AddForDisposalTo(_compositeDisposable);
-            SerialDisposable configurationHeaderChanges = new SerialDisposable().AddForDisposalTo(_compositeDisposable);
+            SerialDisposable configurationPropertyChanges = new SerialDisposable().AddForDisposalTo(CompositeDisposable);
+            SerialDisposable configurationHeaderChanges = new SerialDisposable().AddForDisposalTo(CompositeDisposable);
 
             Configuration
                 .Where(configuration => configuration != null)
@@ -161,7 +150,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                         })
                         .AssignTo(configurationHeaderChanges);
                 })
-                .AddForDisposalTo(_compositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
 
             BrowseCsvBankStatementFileCommand = new RxRelayCommand(() =>
@@ -177,25 +166,10 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                         FilePath.Value = bffOpenFileDialog.FileName;
                     }
                 })
-                .AddForDisposalTo(_compositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             DeselectProfileCommand = new RxRelayCommand(() => SelectedProfile.Value = null)
-                .AddForDisposalTo(_compositeDisposable);
-
-            OkCommand = new RxRelayCommand(()  =>
-                {
-                    IsOpen.Value = false;
-                    onOk(Items);
-                    _compositeDisposable.Dispose();
-                })
-                .AddForDisposalTo(_compositeDisposable);
-
-            CancelCommand = new RxRelayCommand(() =>
-                {
-                    IsOpen.Value = false;
-                    _compositeDisposable.Dispose();
-                })
-                .AddForDisposalTo(_compositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             ShowItemsError = new ReactivePropertySlim<bool>(false, ReactivePropertyMode.DistinctUntilChanged);
 
@@ -275,11 +249,8 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         public IReadOnlyReactiveProperty<string> Header { get; }
         public IReactiveProperty<bool> ShowItemsError { get; }
         public IReactiveProperty<ICsvBankStatementImportNonProfileViewModel> Configuration { get; }
-        public IReactiveProperty IsOpen { get; }
         public IRxRelayCommand BrowseCsvBankStatementFileCommand { get; }
         public IRxRelayCommand DeselectProfileCommand { get; }
-        public IRxRelayCommand OkCommand { get; }
-        public IRxRelayCommand CancelCommand { get; }
 
         public bool HeaderDoMatch => Configuration.Value != null && Header.Value == Configuration.Value.Header.Value;
     }

@@ -10,10 +10,9 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class Payee : Model.Models.Payee, IRealmModel<IPayeeRealm>
     {
-        private readonly ICrudOrm<IPayeeRealm> _crudOrm;
         private readonly IMergeOrm _mergeOrm;
         private readonly IRealmPayeeRepositoryInternal _repository;
-        private bool _isInserted;
+        private readonly RealmObjectWrap<IPayeeRealm> _realmObjectWrap;
 
         public Payee(
             ICrudOrm<IPayeeRealm> crudOrm,
@@ -21,34 +20,48 @@ namespace BFF.Persistence.Realm.Models.Domain
             IRealmPayeeRepositoryInternal repository,
             IRxSchedulerProvider rxSchedulerProvider,
             IPayeeRealm realmObject,
-            bool isInserted,
             string name) : base(rxSchedulerProvider, name)
         {
-            RealmObject = realmObject;
-            _crudOrm = crudOrm;
+            _realmObjectWrap = new RealmObjectWrap<IPayeeRealm>(
+                realmObject,
+                realm =>
+                {
+                    var ro = new Persistence.Payee();
+                    UpdateRealmObject(ro);
+                    return ro;
+                },
+                UpdateRealmObject,
+                crudOrm);
+            
             _mergeOrm = mergeOrm;
             _repository = repository;
-            _isInserted = isInserted;
+            
+            void UpdateRealmObject(IPayeeRealm ro)
+            {
+                ro.Name = Name;
+            }
         }
 
-        public IPayeeRealm RealmObject { get; }
+        public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public override bool IsInserted => _isInserted;
+        public IPayeeRealm RealmObject => _realmObjectWrap.RealmObject;
 
         public override async Task InsertAsync()
         {
-            _isInserted = await _crudOrm.CreateAsync(RealmObject).ConfigureAwait(false);
+            await _realmObjectWrap.InsertAsync().ConfigureAwait(false);
+            await _repository.AddAsync(this).ConfigureAwait(false);
         }
 
         public override async Task DeleteAsync()
         {
-            await _crudOrm.DeleteAsync(RealmObject).ConfigureAwait(false);
-            _isInserted = false;
+            await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
+            _repository.RemoveFromObservableCollection(this);
+            _repository.RemoveFromCache(this);
         }
 
-        protected override async Task UpdateAsync()
+        protected override Task UpdateAsync()
         {
-            await _crudOrm.UpdateAsync(RealmObject).ConfigureAwait(false);
+            return _realmObjectWrap.UpdateAsync();
         }
 
         public override async Task MergeToAsync(IPayee payee)

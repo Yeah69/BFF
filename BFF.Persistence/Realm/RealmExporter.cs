@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
+using BFF.Persistence.Extensions;
 using BFF.Persistence.Import;
 using BFF.Persistence.Import.Models;
 using BFF.Persistence.Realm.Models.Persistence;
@@ -83,7 +84,7 @@ namespace BFF.Persistence.Realm
                     f => (IFlagRealm) new Flag
                     {
                         Name = f.Name,
-                        Color = f.Color.A << 24 | f.Color.R << 16 | f.Color.G << 8 | f.Color.B << 0
+                        Color = f.Color.ToLong()
                     })
                 .ToReadOnlyDictionary();
 

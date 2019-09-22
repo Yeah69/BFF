@@ -30,6 +30,7 @@ namespace BFF.Persistence.Realm
             _eventLoopScheduler.Schedule(
                 () =>
                 {
+                    var exceptionless = true;
                     try
                     {
                         var realm = _provideConnection.Connection;
@@ -38,8 +39,10 @@ namespace BFF.Persistence.Realm
                     catch (Exception e)
                     {
                         tcs.SetException(e);
+                        exceptionless = false;
                     }
-                    tcs.SetResult(Unit.Default);
+                    if (exceptionless)
+                        tcs.SetResult(Unit.Default);
                 });
             return tcs.Task;
         }
@@ -50,6 +53,7 @@ namespace BFF.Persistence.Realm
             _eventLoopScheduler.Schedule(
                 () =>
                 {
+                    var exceptionless = true;
                     T result = default;
                     try
                     {
@@ -59,8 +63,10 @@ namespace BFF.Persistence.Realm
                     catch (Exception e)
                     {
                         tcs.SetException(e);
+                        exceptionless = false;
                     }
-                    tcs.SetResult(result);
+                    if (exceptionless)
+                        tcs.SetResult(result);
                 });
             return tcs.Task;
         }

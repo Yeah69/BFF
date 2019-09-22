@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
@@ -14,46 +14,62 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class BudgetEntry : Model.Models.BudgetEntry, IRealmModel<IBudgetEntryRealm>
     {
-        private readonly ICrudOrm<IBudgetEntryRealm> _crudOrm;
         private readonly IRealmTransRepository _transRepository;
-        private bool _isInserted;
+        private readonly RealmObjectWrap<IBudgetEntryRealm> _realmObjectWrap;
 
         public BudgetEntry(
             ICrudOrm<IBudgetEntryRealm> crudOrm,
             IRealmTransRepository transRepository,
             IRxSchedulerProvider rxSchedulerProvider,
             IBudgetEntryRealm realmObject,
-            bool isInserted,
             DateTime month,
             ICategory category, 
             long budget, 
             long outflow, 
             long balance) : base(rxSchedulerProvider, month, category, budget, outflow, balance)
         {
-            _crudOrm = crudOrm;
+            _realmObjectWrap = new RealmObjectWrap<IBudgetEntryRealm>(
+                realmObject,
+                realm =>
+                {
+                    var id = realm.All<Persistence.BudgetEntry>().Count();
+                    var ro = new Persistence.BudgetEntry{ Id = id };
+                    UpdateRealmObject(ro);
+                    return ro;
+                },
+                UpdateRealmObject,
+                crudOrm);
             _transRepository = transRepository;
-            RealmObject = realmObject;
-            _isInserted = isInserted;
+            
+            void UpdateRealmObject(IBudgetEntryRealm ro)
+            {
+                ro.Category = 
+                    Category is null 
+                        ? null 
+                        : (Category as Category)?.RealmObject 
+                          ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
+                ro.Month = Month;
+                ro.Budget = Budget;
+            }
         }
 
-        public IBudgetEntryRealm RealmObject { get; }
+        public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public override bool IsInserted => _isInserted;
+        public IBudgetEntryRealm RealmObject => _realmObjectWrap.RealmObject;
 
-        public override async Task InsertAsync()
+        public override Task InsertAsync()
         {
-            _isInserted = await _crudOrm.CreateAsync(RealmObject).ConfigureAwait(false);
+            return _realmObjectWrap.InsertAsync();
         }
 
-        public override async Task DeleteAsync()
+        public override Task DeleteAsync()
         {
-            await _crudOrm.DeleteAsync(RealmObject).ConfigureAwait(false);
-            _isInserted = false;
+            return _realmObjectWrap.DeleteAsync();
         }
 
-        protected override async Task UpdateAsync()
+        protected override Task UpdateAsync()
         {
-            await _crudOrm.UpdateAsync(RealmObject).ConfigureAwait(false);
+            return _realmObjectWrap.UpdateAsync();
         }
 
         public override Task<IEnumerable<ITransBase>> GetAssociatedTransAsync()

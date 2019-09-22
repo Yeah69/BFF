@@ -3,10 +3,10 @@ using System.Drawing;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Windows.Input;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models;
+using BFF.Model.Repositories;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
@@ -40,7 +40,7 @@ namespace BFF.ViewModel.ViewModels
         private string _text;
 
         public NewFlagViewModel(
-            Func<Color, IFlag> flagFactory,
+            ICreateNewModels createNewModels,
             ILocalizer localizer,
             IFlagViewModelService flagViewModelService)
         {
@@ -52,7 +52,8 @@ namespace BFF.ViewModel.ViewModels
             AddCommand = new AsyncRxRelayCommand(async () =>
             {
                 if (!ValidateName()) return;
-                IFlag newFlag = flagFactory(Brush.Value);
+                IFlag newFlag = createNewModels.CreateFlag();
+                newFlag.Color = Brush.Value;
                 newFlag.Name = Text.Trim();
                 await newFlag.InsertAsync();
                 if (CurrentOwner != null)

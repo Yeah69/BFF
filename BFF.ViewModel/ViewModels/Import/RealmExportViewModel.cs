@@ -2,13 +2,13 @@
 using BFF.Core.Helper;
 using BFF.Core.Persistence;
 using BFF.ViewModel.Helper;
+using BFF.ViewModel.ViewModels.Dialogs;
 
 namespace BFF.ViewModel.ViewModels.Import
 {
     internal class RealmFileExportViewModel : ViewModelBase, IExportViewModel
     {
         private readonly Func<(string Path, string Password), IRealmExportConfiguration> _exportingConfigurationFactory;
-        private string _password;
         private string _path;
 
         public string Path
@@ -22,23 +22,16 @@ namespace BFF.ViewModel.ViewModels.Import
             }
         }
 
-        public string Password
-        {
-            get => _password;
-            set
-            {
-                if (value == _password) return;
-                _password = value;
-                OnPropertyChanged();
-            }
-        }
+        public PasswordProtectedFileAccessViewModel PasswordConfiguration { get; }
 
         public RealmFileExportViewModel(
+            PasswordProtectedFileAccessViewModel passwordProtectedFileAccessViewModel,
             Func<IBffSaveFileDialog> saveFileDialogFactory,
-            Func<(string Path, string Password), IRealmExportConfiguration> _exportingConfigurationFactory,
+            Func<(string Path, string Password), IRealmExportConfiguration> exportingConfigurationFactory,
             IBffSettings bffSettings)
         {
-            this._exportingConfigurationFactory = _exportingConfigurationFactory;
+            PasswordConfiguration = passwordProtectedFileAccessViewModel;
+            _exportingConfigurationFactory = exportingConfigurationFactory;
 
             Path = bffSettings.Import_SavePath;
 
@@ -59,6 +52,10 @@ namespace BFF.ViewModel.ViewModels.Import
         public RxRelayCommand BrowseCommand { get; set; }
 
         public IExportingConfiguration GenerateConfiguration() =>
-            _exportingConfigurationFactory((Path, Password));
+            _exportingConfigurationFactory((
+                Path, 
+                PasswordConfiguration.IsEncryptionActive 
+                    ? PasswordConfiguration.Password 
+                    : null));
     }
 }

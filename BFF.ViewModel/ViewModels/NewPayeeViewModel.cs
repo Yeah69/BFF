@@ -6,6 +6,7 @@ using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models;
+using BFF.Model.Repositories;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
@@ -45,7 +46,7 @@ namespace BFF.ViewModel.ViewModels
         private string _payeeText;
 
         public NewPayeeViewModel(
-            Func<IPayee> payeeFactory,
+            ICreateNewModels createNewModels,
             ILocalizer localizer,
             IPayeeViewModelService payeeViewModelService)
         {
@@ -56,7 +57,7 @@ namespace BFF.ViewModel.ViewModels
             {
                 if (!ValidatePayeeName())
                     return;
-                IPayee newPayee = payeeFactory();
+                var newPayee = createNewModels.CreatePayee();
                 newPayee.Name = PayeeText.Trim();
                 await newPayee.InsertAsync();
                 if (CurrentOwner != null)

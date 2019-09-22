@@ -17,7 +17,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         }
     }
 
-    internal interface IRealmAccountRepositoryInternal : IAccountRepository, IRealmReadOnlyRepository<IAccount, IAccountRealm>
+    internal interface IRealmAccountRepositoryInternal : IAccountRepository, IRealmObservableRepositoryBaseInternal<IAccount, IAccountRealm>
     {
     }
 
@@ -45,10 +45,10 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                 new Models.Domain.Account(
                     _crudOrm,
                     _accountOrm.Value,
+                    this,
                     _transRepository.Value,
                     _rxSchedulerProvider,
                     persistenceModel,
-                    true,
                     persistenceModel.StartingDate,
                     persistenceModel.Name,
                     persistenceModel.StartingBalance));

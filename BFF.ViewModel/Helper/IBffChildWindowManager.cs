@@ -6,6 +6,6 @@ namespace BFF.ViewModel.Helper
 
     public interface IBffChildWindowManager
     {
-        Task OpenImportCsvBankStatementDialogAsync(IImportCsvBankStatementViewModel dataContext);
+        Task<bool> OpenOkCancelDialog(IOkCancelDialogViewModel dataContext);
     }
 }

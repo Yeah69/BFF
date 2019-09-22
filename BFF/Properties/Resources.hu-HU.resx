@@ -512,14 +512,23 @@ Are you really sure? (A backup will be created automatically, if you would like 
   <data name="ImportView_Cancel" xml:space="preserve">
     <value>Mégse</value>
   </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Export Target</value>
+  </data>
   <data name="ImportView_Import" xml:space="preserve">
     <value>Importál</value>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Import Source</value>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Password</value>
   </data>
   <data name="ImportView_SaveFile" xml:space="preserve">
     <value>Importálás és mentés a következő elérési útvonalon</value>
   </data>
-  <data name="ImportView_YNAB4" xml:space="preserve">
-    <value>Importálás a YNAB4 CDV fájlokból</value>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Import Configuration</value>
   </data>
   <data name="ImportView_YNAB4_Budget" xml:space="preserve">
     <value>Elérési út a YNAB-költségvetés-CSV-hez</value>
@@ -545,7 +554,7 @@ open the File-menu in the upper left corner.</value>
     <value>Close</value>
   </data>
   <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>YNAB4-Importálás</value>
+    <value>Importálás</value>
   </data>
   <data name="MainWindow_File_New" xml:space="preserve">
     <value>Új</value>
@@ -601,6 +610,9 @@ Only transactions assigned to such a category are interpreted as income.</value>
   </data>
   <data name="Payee_Edit" xml:space="preserve">
     <value>Edit Payees</value>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Save new budget plan to:</value>
   </data>
   <data name="Settings_Accents" xml:space="preserve">
     <value>Szín</value>

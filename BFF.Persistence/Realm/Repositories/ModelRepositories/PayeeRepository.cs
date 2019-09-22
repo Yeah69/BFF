@@ -45,7 +45,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                 this,
                 _rxSchedulerProvider,
                 persistenceModel,
-                true,
                 persistenceModel.Name));
         }
     }

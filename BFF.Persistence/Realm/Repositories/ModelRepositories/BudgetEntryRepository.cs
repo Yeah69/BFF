@@ -38,7 +38,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                 _transRepository.Value,
                 _rxSchedulerProvider,
                 persistenceModel,
-                true,
                 persistenceModel.Month,
                 await _categoryRepository.Value.FindAsync(persistenceModel.Category).ConfigureAwait(false),
                 persistenceModel.Budget,

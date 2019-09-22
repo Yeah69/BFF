@@ -7,33 +7,48 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class DbSetting : Model.Models.DbSetting, IRealmModel<IDbSettingRealm>
     {
-        private readonly ICrudOrm<IDbSettingRealm> _crudOrm;
+        private readonly RealmObjectWrap<IDbSettingRealm> _realmObjectWrap;
 
         public DbSetting(
             ICrudOrm<IDbSettingRealm> crudOrm,
             IRxSchedulerProvider rxSchedulerProvider,
             IDbSettingRealm realmObject) : base(rxSchedulerProvider)
         {
-            RealmObject = realmObject;
-            _crudOrm = crudOrm;
+            _realmObjectWrap = new RealmObjectWrap<IDbSettingRealm>(
+                realmObject,
+                realm =>
+                {
+                    var ro = new Persistence.DbSetting { Id = 0 };
+                    UpdateRealmObject(ro);
+                    return ro;
+                },
+                UpdateRealmObject,
+                crudOrm);
+            
+            void UpdateRealmObject(IDbSettingRealm ro)
+            {
+                ro.CurrencyCultureName = CurrencyCultureName;
+                ro.DateCultureName = DateCultureName;
+            }
         }
 
-        public IDbSettingRealm RealmObject { get; }
+        public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public override bool IsInserted => true;
-        public override async Task InsertAsync()
+        public IDbSettingRealm RealmObject => _realmObjectWrap.RealmObject;
+
+        public override Task InsertAsync()
         {
-            await _crudOrm.CreateAsync(RealmObject).ConfigureAwait(false);
+            return _realmObjectWrap.InsertAsync();
         }
 
-        public override async Task DeleteAsync()
+        public override Task DeleteAsync()
         {
-            await _crudOrm.DeleteAsync(RealmObject).ConfigureAwait(false);
+            return _realmObjectWrap.DeleteAsync();
         }
 
-        protected override async Task UpdateAsync()
+        protected override Task UpdateAsync()
         {
-            await _crudOrm.UpdateAsync(RealmObject).ConfigureAwait(false);
+            return _realmObjectWrap.UpdateAsync();
         }
     }
 }

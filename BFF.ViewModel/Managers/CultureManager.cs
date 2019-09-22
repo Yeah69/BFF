@@ -5,7 +5,6 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models;

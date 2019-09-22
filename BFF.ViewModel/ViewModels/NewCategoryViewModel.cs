@@ -6,6 +6,7 @@ using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models;
+using BFF.Model.Repositories;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
@@ -49,8 +50,7 @@ namespace BFF.ViewModel.ViewModels
         private string _name;
 
         public NewCategoryViewModel(
-            Func<ICategory, ICategory> categoryFactory,
-            Func<IIncomeCategory> incomeCategoryFactory,
+            ICreateNewModels createNewModels,
             ILocalizer localizer,
             ICategoryViewModelInitializer categoryViewModelInitializer,
             ICategoryViewModelService categoryViewModelService,
@@ -84,7 +84,7 @@ namespace BFF.ViewModel.ViewModels
 
                     if (IsIncomeRelevant.Value)
                     {
-                        IIncomeCategory newCategory = incomeCategoryFactory();
+                        IIncomeCategory newCategory = createNewModels.CreateIncomeCategory();
                         newCategory.Name = Name.Trim();
                         newCategory.MonthOffset = MonthOffset.Value;
                         await newCategory.InsertAsync();
@@ -94,7 +94,8 @@ namespace BFF.ViewModel.ViewModels
                     }
                     else
                     {
-                        ICategory newCategory = categoryFactory(_categoryViewModelService.GetModel(Parent.Value));
+                        ICategory newCategory = createNewModels.CreateCategory();
+                        newCategory.Parent = _categoryViewModelService.GetModel(Parent.Value);
                         newCategory.Name = Name.Trim();
                         newCategory.Parent?.AddCategory(newCategory);
                         await newCategory.InsertAsync();

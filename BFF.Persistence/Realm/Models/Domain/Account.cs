@@ -11,50 +11,69 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class Account : Model.Models.Account, IRealmModel<IAccountRealm>
     {
-        private readonly ICrudOrm<IAccountRealm> _crudOrm;
         private readonly IAccountOrm _accountOrm;
+        private readonly IRealmAccountRepositoryInternal _accountRepository;
         private readonly IRealmTransRepository _transRepository;
-
-        private bool _isInserted;
+        private readonly RealmObjectWrap<IAccountRealm> _realmObjectWrap;
 
         public Account(
             ICrudOrm<IAccountRealm> crudOrm,
             IAccountOrm accountOrm,
+            IRealmAccountRepositoryInternal accountRepository,
             IRealmTransRepository transRepository,
             IRxSchedulerProvider rxSchedulerProvider,
             IAccountRealm realmObject,
-            bool isInserted,
             DateTime startingDate, 
             string name, 
-            long startingBalance) : base(rxSchedulerProvider, startingDate, name, startingBalance)
+            long startingBalance) 
+            : base(
+                rxSchedulerProvider, 
+                startingDate,
+                name, 
+                startingBalance)
         {
-            RealmObject = realmObject;
-            _crudOrm = crudOrm;
+            _realmObjectWrap = new RealmObjectWrap<IAccountRealm>(
+                realmObject,
+                realm =>
+                {
+                    var ro = new Persistence.Account();
+                    UpdateRealmObject(ro);
+                    return ro;
+                },
+                UpdateRealmObject,
+                crudOrm);
             _accountOrm = accountOrm;
-            _isInserted = isInserted;
+            _accountRepository = accountRepository;
             _transRepository = transRepository;
+            
+            void UpdateRealmObject(IAccountRealm ro)
+            {
+                ro.Name = Name;
+                ro.StartingBalance = StartingBalance;
+                ro.StartingDate = StartingDate;
+            }
         }
 
-        public long Id { get; private set; }
+        public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public override bool IsInserted => _isInserted;
-
-        public IAccountRealm RealmObject { get; }
+        public IAccountRealm RealmObject => _realmObjectWrap.RealmObject;
 
         public override async Task InsertAsync()
         {
-            _isInserted = await _crudOrm.CreateAsync(RealmObject).ConfigureAwait(false);
+            await _realmObjectWrap.InsertAsync().ConfigureAwait(false);
+            await _accountRepository.AddAsync(this).ConfigureAwait(false);
         }
 
         public override async Task DeleteAsync()
         {
-            await _crudOrm.DeleteAsync(RealmObject).ConfigureAwait(false);
-            _isInserted = false;
+            await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
+            _accountRepository.RemoveFromObservableCollection(this);
+            _accountRepository.RemoveFromCache(this);
         }
 
-        protected override async Task UpdateAsync()
+        protected override Task UpdateAsync()
         {
-            await _crudOrm.UpdateAsync(RealmObject).ConfigureAwait(false);
+            return _realmObjectWrap.UpdateAsync();
         }
 
         public override Task<long?> GetClearedBalanceAsync()

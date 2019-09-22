@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
@@ -10,10 +11,9 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class IncomeCategory : Model.Models.IncomeCategory, IRealmModel<ICategoryRealm>
     {
-        private readonly ICrudOrm<ICategoryRealm> _crudOrm;
         private readonly IMergeOrm _mergeOrm;
         private readonly IRealmIncomeCategoryRepositoryInternal _repository;
-        private bool _isInserted;
+        private readonly RealmObjectWrap<ICategoryRealm> _realmObjectWrap;
 
         public IncomeCategory(
             ICrudOrm<ICategoryRealm> crudOrm,
@@ -21,35 +21,52 @@ namespace BFF.Persistence.Realm.Models.Domain
             IRealmIncomeCategoryRepositoryInternal repository,
             IRxSchedulerProvider rxSchedulerProvider,
             ICategoryRealm realmObject,
-            bool isInserted,
             string name, 
             int monthOffset) : base(rxSchedulerProvider, name, monthOffset)
         {
-            RealmObject = realmObject;
-            _crudOrm = crudOrm;
+            _realmObjectWrap = new RealmObjectWrap<ICategoryRealm>(
+                realmObject,
+                realm =>
+                {
+                    var id = realm.All<Persistence.Category>().Count();
+                    var ro = new Persistence.Category{ Id = id };
+                    UpdateRealmObject(ro);
+                    return ro;
+                },
+                UpdateRealmObject,
+                crudOrm);
             _mergeOrm = mergeOrm;
             _repository = repository;
-            _isInserted = isInserted;
+            
+            void UpdateRealmObject(ICategoryRealm ro)
+            {
+                RealmObject.Parent = null;
+                RealmObject.IsIncomeRelevant = true;
+                RealmObject.MonthOffset = MonthOffset;
+                RealmObject.Name = Name;
+            }
         }
 
-        public ICategoryRealm RealmObject { get; }
+        public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public override bool IsInserted => _isInserted;
+        public ICategoryRealm RealmObject => _realmObjectWrap.RealmObject;
 
         public override async Task InsertAsync()
         {
-            _isInserted = await _crudOrm.CreateAsync(RealmObject).ConfigureAwait(false);
+            await _realmObjectWrap.InsertAsync().ConfigureAwait(false);
+            await _repository.AddAsync(this).ConfigureAwait(false);
         }
 
         public override async Task DeleteAsync()
         {
-            await _crudOrm.DeleteAsync(RealmObject).ConfigureAwait(false);
-            _isInserted = false;
+            await _realmObjectWrap.DeleteAsync();
+            _repository.RemoveFromObservableCollection(this);
+            _repository.RemoveFromCache(this);
         }
 
-        protected override async Task UpdateAsync()
+        protected override Task UpdateAsync()
         {
-            await _crudOrm.UpdateAsync(RealmObject).ConfigureAwait(false);
+            return _realmObjectWrap.UpdateAsync();
         }
 
         public override async Task MergeToAsync(IIncomeCategory category)

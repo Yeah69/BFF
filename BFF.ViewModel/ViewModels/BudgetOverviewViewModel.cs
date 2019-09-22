@@ -234,8 +234,8 @@ namespace BFF.ViewModel.ViewModels
         {
             return DataVirtualizingCollectionBuilder<IBudgetMonthViewModel>
                 .Build(pageSize: 12)
-                .Hoarding()
                 .Preloading()
+                .Hoarding()
                 .TaskBasedFetchers(
                     async (offset, pageSize) =>
                     {

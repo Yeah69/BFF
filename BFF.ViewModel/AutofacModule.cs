@@ -93,14 +93,13 @@ namespace BFF.ViewModel
                 return abvm => factory(createNewModels.CreateParentTransfer(), abvm);
             }).As<Func<IAccountBaseViewModel, IParentTransactionViewModel>>();
 
-            builder.Register<Func<string, ILoadProjectContext>>(cc =>
+            builder.Register<Func<IFileAccessConfiguration, ILoadProjectContext>>(cc =>
             {
                 var lifetimeScope = cc.Resolve<ILifetimeScope>();
-                return path =>
+                return config =>
                 {
-                    var config = lifetimeScope.Resolve<ILoadProjectFromFileConfiguration>(TypedParameter.From(path));
                     var scope = lifetimeScope
-                        .Resolve<Func<ILoadProjectFromFileConfiguration, ScopeLevels, ILifetimeScope>>()(
+                        .Resolve<Func<IFileAccessConfiguration, ScopeLevels, ILifetimeScope>>()(
                             config, ScopeLevels.LoadedProject);
                     return scope.Resolve<ILoadProjectContext>(TypedParameter.From((IDisposable)scope));
                 };

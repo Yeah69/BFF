@@ -45,7 +45,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                 _crudOrm,
                 _rxSchedulerProvider,
                 persistenceModel,
-                true,
                 persistenceModel.Category is null
                     ? null
                     : await _categoryBaseRepository.Value.FindAsync(persistenceModel.Category).ConfigureAwait(false),

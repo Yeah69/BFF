@@ -27,7 +27,7 @@ namespace BFF.Persistence.Sql.ORM
             SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)} WHERE {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1 UNION ALL 
             SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} IS NULL AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1 UNION ALL
             SELECT - {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} IS NULL AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1 UNION ALL
-            SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.StartingBalance)} <= @DateTimeNow);";
+            SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.StartingDate)} <= @DateTimeNow);";
 
         private string AccountSpecificClearedBalanceStatement =>
             $@"SELECT (SELECT Total({nameof(Trans.Sum)}) FROM (
@@ -42,7 +42,7 @@ namespace BFF.Persistence.Sql.ORM
             SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transaction)}' AND {nameof(Trans.AccountId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1 UNION ALL 
             SELECT {nameof(SubTransaction)}s.{nameof(SubTransaction.Sum)} FROM {nameof(SubTransaction)}s INNER JOIN {nameof(Trans)}s ON {nameof(SubTransaction.ParentId)} = {nameof(Trans)}s.{nameof(Trans.Id)} WHERE {nameof(Trans.AccountId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1 UNION ALL
             SELECT {nameof(Trans.Sum)} FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.CategoryId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1 UNION ALL
-            SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.Id)} = @accountId AND {nameof(Account.StartingBalance)} <= @DateTimeNow)) 
+            SELECT {nameof(Account.StartingBalance)} FROM {nameof(Account)}s WHERE {nameof(Account.Id)} = @accountId AND {nameof(Account.StartingDate)} <= @DateTimeNow)) 
             - (SELECT Total({nameof(Trans.Sum)}) FROM {nameof(Trans)}s WHERE {nameof(Trans.Type)} == '{nameof(TransType.Transfer)}' AND {nameof(Trans.PayeeId)} = @accountId AND {nameof(Trans.Date)} <= @DateTimeNow AND {nameof(Trans.Cleared)} == 1);";
 
         private string AllAccountsUnclearedBalanceStatement =>

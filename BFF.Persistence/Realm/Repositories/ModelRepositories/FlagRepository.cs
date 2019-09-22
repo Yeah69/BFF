@@ -47,7 +47,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                     this,
                     _rxSchedulerProvider,
                     persistenceModel,
-                    true,
                     Color.FromArgb(
                         (byte) (persistenceModel.Color >> 24 & 0xff),
                         (byte) (persistenceModel.Color >> 16 & 0xff),

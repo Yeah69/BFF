@@ -11,14 +11,11 @@ namespace BFF.Persistence.Realm.ORM
     internal class RealmExportingOrm : IExportingOrm
     {
         private readonly IRealmOperations _realmOperations;
-        private readonly Func<DbSetting> _dbSettingFactory;
 
         public RealmExportingOrm(
-            IRealmOperations realmOperations, 
-            Func<DbSetting> dbSettingFactory)
+            IRealmOperations realmOperations)
         {
             _realmOperations = realmOperations;
-            _dbSettingFactory = dbSettingFactory;
         }
 
         public Task PopulateDatabaseAsync(IRealmExportContainerData sqliteExportContainer)
@@ -38,7 +35,7 @@ namespace BFF.Persistence.Realm.ORM
                     sqliteExportContainer.Trans.ForEach(t => realm.Add(t as RealmObject, update: false));
                     sqliteExportContainer.SubTransactions.ForEach(st => realm.Add(st as RealmObject, update: false));
                     sqliteExportContainer.BudgetEntries.ForEach(be => realm.Add(be as RealmObject, update: false));
-                    realm.Add(_dbSettingFactory());
+                    realm.Add(new DbSetting());
                 });
             }
         }

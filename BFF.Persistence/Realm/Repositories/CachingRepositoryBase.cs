@@ -39,7 +39,7 @@ namespace BFF.Persistence.Realm.Repositories
 
             var realmObject = ((IRealmModel<TPersistence>)dataModel).RealmObject;
             var result = await base.AddAsync(dataModel).ConfigureAwait(false);
-            if (!_cache.ContainsKey(realmObject))
+            if (!_cache.ContainsValue(dataModel))
                 _cache.Add(realmObject, dataModel);
             return result;
         }
@@ -72,7 +72,7 @@ namespace BFF.Persistence.Realm.Repositories
             if (!(dataModel is IRealmModel<TPersistence>)) throw new ArgumentException("Model instance has not the correct type", nameof(dataModel));
 
             var realmObject = ((IRealmModel<TPersistence>)dataModel).RealmObject;
-            if (_cache.ContainsKey(realmObject))
+            if (_cache.ContainsValue(dataModel))
                 _cache.Remove(realmObject);
         }
 

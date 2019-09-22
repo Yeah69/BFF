@@ -3,11 +3,14 @@ using System.Globalization;
 using System.IO;
 using System.Reactive.Disposables;
 using System.Threading;
+using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
+using BFF.Core.Persistence;
 using BFF.ViewModel.Contexts;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
+using BFF.ViewModel.ViewModels.Dialogs;
 using BFF.ViewModel.ViewModels.ForModels;
 using NLog;
 using Reactive.Bindings;
@@ -38,13 +41,12 @@ namespace BFF.ViewModel.ViewModels
 
     internal class MainWindowViewModel : ViewModelBase, IMainWindowViewModel, IOncePerApplication //todo IDisposable
     {
-        private readonly Func<string, ILoadProjectContext> _loadedProjectContextFactory;
+        private readonly Func<IFileAccessConfiguration, ILoadProjectContext> _loadedProjectContextFactory;
         private readonly Func<IEmptyProjectContext> _emptyContextFactory;
         private readonly IBffSettings _bffSettings;
         private readonly ISetupLocalizationFramework _setupLocalizationFramework;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
-        protected bool FileFlyoutIsOpen;
+
         private string _title;
         public string Title
         {
@@ -141,11 +143,12 @@ namespace BFF.ViewModel.ViewModels
         }
 
         public MainWindowViewModel(
-            Func<string, ILoadProjectContext> loadedProjectContextFactory,
+            Func<IFileAccessConfiguration, ILoadProjectContext> loadedProjectContextFactory,
+            Func<IFileAccessConfiguration, ICreateProjectContext> newBackendContextFactory,
             Func<IEmptyProjectContext> emptyContextFactory,
-            Func<string, ICreateProjectContext> newBackendContextFactory,
-            Func<IBffOpenFileDialog> bffOpenFileDialogFactory,
-            Func<IBffSaveFileDialog> bffSaveFileDialogFactory,
+            Func<INewFileAccessViewModel> newFileAccessViewModelFactory,
+            Func<IOpenFileAccessViewModel> openFileAccessDialogFactory,
+            IBffChildWindowManager bffChildWindowManager,
             ITransDataGridColumnManager transDataGridColumnManager,
             IBffSettings bffSettings,
             IBffSystemInformation bffSystemInformation,
@@ -161,7 +164,7 @@ namespace BFF.ViewModel.ViewModels
             _bffSettings = bffSettings;
             _setupLocalizationFramework = setupLocalizationFramework;
             Logger.Debug("Initializing …");
-            Reset(_bffSettings.DBLocation);
+            Reset(null); // todo
 
             //If the application is not visible on screen, than reset the default position
             //This might occur when one of multiple monitors is switched off or the screen resolution is changed while BFF is off
@@ -178,30 +181,40 @@ namespace BFF.ViewModel.ViewModels
 
             NewBudgetPlanCommand = new RxRelayCommand(() =>
             {
-                var bffSaveFileDialog = bffSaveFileDialogFactory();
-                bffSaveFileDialog.Title = localizer.Localize("OpenSaveDialog_TitleNew");
-                bffSaveFileDialog.Filter = localizer.Localize("OpenSaveDialog_Filter");
-                bffSaveFileDialog.DefaultExt = "*.realm";
-                if (bffSaveFileDialog.ShowDialog() == true)
+#pragma warning disable 4014
+                InnerAsync();
+#pragma warning restore 4014
+
+                async Task InnerAsync()
                 {
-                    using (var backendContextFactory = newBackendContextFactory(bffSaveFileDialog.FileName))
+                    var newFileAccessViewModel = newFileAccessViewModelFactory();
+                    if (await bffChildWindowManager.OpenOkCancelDialog(newFileAccessViewModel))
                     {
-                        backendContextFactory
-                            .CreateProjectAsync();
+                        var configuration = newFileAccessViewModel.GenerateConfiguration();
+                        using (var createBackendContext = newBackendContextFactory(configuration))
+                        {
+                            await createBackendContext
+                                .CreateProjectAsync();
+                        }
+                        Reset(configuration);
                     }
-                    Reset(bffSaveFileDialog.FileName);
                 }
             });
 
             OpenBudgetPlanCommand = new RxRelayCommand(() =>
             {
-                var bffOpenFileDialog = bffOpenFileDialogFactory();
-                bffOpenFileDialog.Title = localizer.Localize("OpenSaveDialog_TitleOpen");
-                bffOpenFileDialog.Filter = localizer.Localize("OpenSaveDialog_Filter");
-                bffOpenFileDialog.DefaultExt = "*.realm";
-                if (bffOpenFileDialog.ShowDialog() == true)
+#pragma warning disable 4014
+                InnerAsync();
+#pragma warning restore 4014
+
+                async Task InnerAsync()
                 {
-                    Reset(bffOpenFileDialog.FileName);
+                    var openFileAccessViewModel = openFileAccessDialogFactory();
+                    if (await bffChildWindowManager.OpenOkCancelDialog(openFileAccessViewModel))
+                    {
+                        var configuration = openFileAccessViewModel.GenerateConfiguration();
+                        Reset(configuration);
+                    }
                 }
             });
 
@@ -212,15 +225,15 @@ namespace BFF.ViewModel.ViewModels
             Logger.Trace("Initializing done.");
         }
 
-        private void Reset(string dbPath)
+        private void Reset(IFileAccessConfiguration config)
         {
             IProjectContext context;
-            if (dbPath != null && File.Exists(dbPath))
+            if (config != null && File.Exists(config.Path))
             {
-                var loadedProjectContext = _loadedProjectContextFactory(dbPath);
+                var loadedProjectContext = _loadedProjectContextFactory(config);
                 _contextSequence.Disposable = loadedProjectContext;
-                Title = $"{new FileInfo(dbPath).FullName} - BFF";
-                _bffSettings.DBLocation = dbPath;
+                Title = $"{new FileInfo(config.Path).FullName} - BFF";
+                _bffSettings.DBLocation = config.Path;
                 context = loadedProjectContext;
             }
             else

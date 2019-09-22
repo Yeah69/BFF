@@ -10,16 +10,5 @@ namespace BFF.Persistence.Realm.Models.Persistence
     {
         [PrimaryKey]
         public string Name { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is null || !(obj is IPayeeRealm other)) return false;
-            return Name == other.Name;
-        }
-
-        public override int GetHashCode()
-        {
-            return Name.GetHashCode();
-        }
     }
 }

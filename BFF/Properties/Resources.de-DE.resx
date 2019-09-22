@@ -512,14 +512,23 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m�
   <data name="ImportView_Cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Exportziel</value>
+  </data>
   <data name="ImportView_Import" xml:space="preserve">
     <value>Importieren</value>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Importquelle</value>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Passwort</value>
   </data>
   <data name="ImportView_SaveFile" xml:space="preserve">
     <value>Importiere und speichere unter folgendem Pfad:</value>
   </data>
-  <data name="ImportView_YNAB4" xml:space="preserve">
-    <value>Import von YNAB4 CSV-Dateien</value>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Importkonfiguration</value>
   </data>
   <data name="ImportView_YNAB4_Budget" xml:space="preserve">
     <value>Pfad zu der YNAB-Budget-CSV:</value>
@@ -545,7 +554,7 @@ Um ein Projekt zu erstellen, öffnen oder importieren
     <value>Schließen</value>
   </data>
   <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>YNAB4-Import</value>
+    <value>Import</value>
   </data>
   <data name="MainWindow_File_New" xml:space="preserve">
     <value>Neu</value>
@@ -601,6 +610,9 @@ Nur Transaktionen, die zu so einer Kategorie angehängt sind, werden als Einkomm
   </data>
   <data name="Payee_Edit" xml:space="preserve">
     <value>Zahlungsempfänger bearbeiten</value>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Speichere neuen Budget-Plan zu:</value>
   </data>
   <data name="Settings_Accents" xml:space="preserve">
     <value>Akzente</value>

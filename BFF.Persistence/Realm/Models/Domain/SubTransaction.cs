@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
@@ -9,41 +10,62 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class SubTransaction : Model.Models.SubTransaction, IRealmModel<ISubTransactionRealm>
     {
-        private readonly ICrudOrm<ISubTransactionRealm> _crudOrm;
-        private bool _isInserted;
+        private readonly RealmObjectWrap<ISubTransactionRealm> _realmObjectWrap;
 
         public SubTransaction(
             ICrudOrm<ISubTransactionRealm> crudOrm,
             IRxSchedulerProvider rxSchedulerProvider,
             ISubTransactionRealm realmObject,
-            bool isInserted,
             ICategoryBase category,
             string memo, 
             long sum) : base(rxSchedulerProvider, category, memo, sum)
         {
-            RealmObject = realmObject;
-            _crudOrm = crudOrm;
-            _isInserted = isInserted;
+            _realmObjectWrap = new RealmObjectWrap<ISubTransactionRealm>(
+                realmObject,
+                realm =>
+                {
+                    var id = realm.All<Persistence.SubTransaction>().Count();
+                    var ro = new Persistence.SubTransaction{ Id = id };
+                    UpdateRealmObject(ro);
+                    return ro;
+                },
+                UpdateRealmObject,
+                crudOrm);
+            
+            void UpdateRealmObject(ISubTransactionRealm ro)
+            {
+                ro.Parent = 
+                    Parent is null
+                        ? null
+                        : (Parent as ParentTransaction)?.RealmObject
+                          ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
+                ro.Category =
+                    Category is null
+                        ? null
+                        : (Category as Category)?.RealmObject
+                          ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
+                ro.Memo = Memo;
+                ro.Sum = Sum;
+            }
         }
 
-        public ISubTransactionRealm RealmObject { get; }
+        public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public override bool IsInserted => _isInserted;
+        public ISubTransactionRealm RealmObject => _realmObjectWrap.RealmObject;
 
-        public override async Task InsertAsync()
+        public override Task InsertAsync()
         {
-            _isInserted = await _crudOrm.CreateAsync(RealmObject).ConfigureAwait(false);
+            return _realmObjectWrap.InsertAsync();
         }
 
-        public override async Task DeleteAsync()
+        public override Task DeleteAsync()
         {
-            await _crudOrm.DeleteAsync(RealmObject).ConfigureAwait(false);
-            _isInserted = false;
+            return _realmObjectWrap.DeleteAsync();
         }
 
-        protected override async Task UpdateAsync()
+        protected override Task UpdateAsync()
         {
-            await _crudOrm.UpdateAsync(RealmObject).ConfigureAwait(false);
+            return _realmObjectWrap.UpdateAsync();
         }
     }
 }

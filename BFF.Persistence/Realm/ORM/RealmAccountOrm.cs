@@ -51,7 +51,7 @@ namespace BFF.Persistence.Realm.ORM
                         .ToList()
                         .Sum(st => st.Sum);
                 }
-                return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum;
+                return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum + account.StartingBalance;
             }
         }
 
@@ -92,7 +92,7 @@ namespace BFF.Persistence.Realm.ORM
                         .ToList()
                         .Sum(st => st.Sum);
                 }
-                return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum;
+                return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum + (account.StartingDate < now ? account.StartingBalance : 0L);
             }
         }
 
@@ -108,7 +108,7 @@ namespace BFF.Persistence.Realm.ORM
                     .ToList()
                     .Sum(st => st.Sum);
 
-                long subTransactionsSum = 0L;
+                var subTransactionsSum = 0L;
                 foreach (var parentTransaction in realm
                     .All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
@@ -120,7 +120,15 @@ namespace BFF.Persistence.Realm.ORM
                         .ToList()
                         .Sum(st => st.Sum);
                 }
-                return transactionsAndToTransfersSum + subTransactionsSum;
+
+                var accountStartingBalanceSum = 0L;
+                foreach (var account in realm
+                    .All<Account>())
+                {
+                    accountStartingBalanceSum += account.StartingBalance;
+                }
+
+                return transactionsAndToTransfersSum + subTransactionsSum + accountStartingBalanceSum;
             }
         }
 
@@ -152,7 +160,15 @@ namespace BFF.Persistence.Realm.ORM
                         .ToList()
                         .Sum(st => st.Sum);
                 }
-                return transactionsAndToTransfersSum + subTransactionsSum;
+
+                var accountStartingBalanceSum = 0L;
+                foreach (var account in realm
+                    .All<Account>()
+                    .Where(a => a.StartingDate < now))
+                {
+                    accountStartingBalanceSum += account.StartingBalance;
+                }
+                return transactionsAndToTransfersSum + subTransactionsSum + accountStartingBalanceSum;
             }
         }
 

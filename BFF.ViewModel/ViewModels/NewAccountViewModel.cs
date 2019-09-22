@@ -66,7 +66,7 @@ namespace BFF.ViewModel.ViewModels
             AddCommand = new AsyncRxRelayCommand(async () =>
             {
                 if (!ValidateName()) return;
-                IAccount newAccount = createNewModels.CreateAccount();
+                var newAccount = createNewModels.CreateAccount();
                 newAccount.Name = Name.Trim();
                 newAccount.StartingBalance = StartingBalance.Value;
                 newAccount.StartingDate = StartingDate.Value;

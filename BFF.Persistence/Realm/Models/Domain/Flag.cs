@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
+using BFF.Persistence.Extensions;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
@@ -11,10 +12,9 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class Flag : Model.Models.Flag, IRealmModel<IFlagRealm>
     {
-        private readonly ICrudOrm<IFlagRealm> _crudOrm;
         private readonly IMergeOrm _mergeOrm;
         private readonly IRealmFlagRepositoryInternal _repository;
-        private bool _isInserted;
+        private readonly RealmObjectWrap<IFlagRealm> _realmObjectWrap;
 
         public Flag(
             ICrudOrm<IFlagRealm> crudOrm,
@@ -22,35 +22,49 @@ namespace BFF.Persistence.Realm.Models.Domain
             IRealmFlagRepositoryInternal repository,
             IRxSchedulerProvider rxSchedulerProvider,
             IFlagRealm realmObject,
-            bool isInserted,
             Color color, 
             string name) : base(rxSchedulerProvider, color, name)
         {
-            RealmObject = realmObject;
-            _crudOrm = crudOrm;
+            _realmObjectWrap = new RealmObjectWrap<IFlagRealm>(
+                realmObject,
+                realm =>
+                {
+                    var ro = new Persistence.Flag();
+                    UpdateRealmObject(ro);
+                    return ro;
+                },
+                UpdateRealmObject,
+                crudOrm);
             _mergeOrm = mergeOrm;
             _repository = repository;
-            _isInserted = isInserted;
+            
+            void UpdateRealmObject(IFlagRealm ro)
+            {
+                ro.Name = Name;
+                ro.Color = Color.ToLong();
+            }
         }
 
-        public IFlagRealm RealmObject { get; }
+        public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public override bool IsInserted => _isInserted;
+        public IFlagRealm RealmObject => _realmObjectWrap.RealmObject;
 
         public override async Task InsertAsync()
         {
-            _isInserted = await _crudOrm.CreateAsync(RealmObject).ConfigureAwait(false);
+            await _realmObjectWrap.InsertAsync().ConfigureAwait(false);
+            await _repository.AddAsync(this).ConfigureAwait(false);
         }
 
-        public override async Task DeleteAsync()
+        public override Task DeleteAsync()
         {
-            await _crudOrm.DeleteAsync(RealmObject).ConfigureAwait(false);
-            _isInserted = false;
+            return _realmObjectWrap.DeleteAsync();
         }
 
         protected override async Task UpdateAsync()
         {
-            await _crudOrm.UpdateAsync(RealmObject).ConfigureAwait(false);
+            await _realmObjectWrap.UpdateAsync().ConfigureAwait(false);
+            _repository.RemoveFromObservableCollection(this);
+            _repository.RemoveFromCache(this);
         }
 
         public override async Task MergeToAsync(IFlag flag)

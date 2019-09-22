@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
@@ -10,14 +11,12 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class Transaction : Model.Models.Transaction, IRealmModel<ITransRealm>
     {
-        private readonly ICrudOrm<ITransRealm> _crudOrm;
-        private bool _isInserted;
+        private readonly RealmObjectWrap<ITransRealm> _realmObjectWrap;
 
         public Transaction(
             ICrudOrm<ITransRealm> crudOrm,
             IRxSchedulerProvider rxSchedulerProvider,
             ITransRealm realmObject,
-            bool isInserted,
             DateTime date,
             IFlag flag,
             string checkNumber,
@@ -26,31 +25,82 @@ namespace BFF.Persistence.Realm.Models.Domain
             ICategoryBase category, 
             string memo, 
             long sum, 
-            bool cleared) : base(rxSchedulerProvider, date, flag, checkNumber, account, payee, category, memo, sum, cleared)
+            bool cleared) 
+            : base(
+                rxSchedulerProvider,
+                date,
+                flag,
+                checkNumber,
+                account,
+                payee,
+                category,
+                memo,
+                sum,
+                cleared)
         {
-            RealmObject = realmObject;
-            _crudOrm = crudOrm;
-            _isInserted = isInserted;
+            _realmObjectWrap = new RealmObjectWrap<ITransRealm>(
+                realmObject,
+                realm =>
+                {
+                    var id = realm.All<Trans>().Count();
+                    var ro = new Trans{ Id = id };
+                    UpdateRealmObject(ro);
+                    return ro;
+                },
+                UpdateRealmObject,
+                crudOrm);
+            
+            void UpdateRealmObject(ITransRealm ro)
+            {
+                ro.Account = 
+                    Account is null
+                        ? null
+                        : (Account as Account)?.RealmObject 
+                          ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
+                ro.Date = Date;
+                ro.Payee =
+                    Payee is null
+                        ? null
+                        : (Payee as Payee)?.RealmObject
+                          ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
+                ro.Category =
+                    Category is null
+                        ? null
+                        : (Category as Category)?.RealmObject
+                          ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
+                ro.CheckNumber = CheckNumber;
+                ro.Flag =
+                    Flag is null
+                        ? null
+                        : (Flag as Flag)?.RealmObject
+                          ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
+                ro.Memo = Memo;
+                ro.Sum = Sum;
+                ro.Cleared = Cleared;
+                ro.Type = TransType.Transaction;
+
+                ro.FromAccount = null;
+                ro.ToAccount = null;
+            }
         }
-        
-        public ITransRealm RealmObject { get; }
 
-        public override bool IsInserted => _isInserted;
+        public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public override async Task InsertAsync()
+        public ITransRealm RealmObject => _realmObjectWrap.RealmObject;
+
+        public override Task InsertAsync()
         {
-            _isInserted = await _crudOrm.CreateAsync(RealmObject).ConfigureAwait(false);
+            return _realmObjectWrap.InsertAsync();
         }
 
-        public override async Task DeleteAsync()
+        public override Task DeleteAsync()
         {
-            await _crudOrm.DeleteAsync(RealmObject).ConfigureAwait(false);
-            _isInserted = false;
+            return _realmObjectWrap.DeleteAsync();
         }
 
-        protected override async Task UpdateAsync()
+        protected override Task UpdateAsync()
         {
-            await _crudOrm.UpdateAsync(RealmObject).ConfigureAwait(false);
+            return _realmObjectWrap.UpdateAsync();
         }
     }
 }

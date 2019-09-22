@@ -38,7 +38,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                 _crudOrm,
                 _rxSchedulerProvider,
                 persistenceModel,
-                true,
                 persistenceModel.Date,
                 persistenceModel.Flag is null
                     ? null

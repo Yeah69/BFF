@@ -27,8 +27,7 @@
         </ResourceDictionary>
     </simpleChildWindow:ChildWindow.Resources>
     <simpleChildWindow:ChildWindow.OverlayBrush>
-        <SolidColorBrush Opacity="0.7"
-                         Color="{DynamicResource BlackColor}" />
+        <SolidColorBrush Opacity="0.7" Color="{DynamicResource BlackColor}" />
     </simpleChildWindow:ChildWindow.OverlayBrush>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -86,18 +85,18 @@
                             Command="{Binding Configuration.Value.ResetProfile}"
                             Content="{lex:Loc Key=General_ResetProfile}"
                             DockPanel.Dock="Left" />
-                    <Button Visibility="{Binding Configuration.Value.SaveToProfile, Converter={x:Static helper:Converters.NullToCollapsed}}"
-                            Margin="2.5"
+                    <Button Margin="2.5"
                             Click="CloseProfileManagementMenu_OnClick"
                             Command="{Binding Configuration.Value.SaveToProfile}"
                             Content="{lex:Loc Key=General_SaveProfile}"
-                            DockPanel.Dock="Left" />
-                    <Button Visibility="{Binding Configuration.Value.RemoveProfile, Converter={x:Static helper:Converters.NullToCollapsed}}"
-                            Margin="2.5"
+                            DockPanel.Dock="Left"
+                            Visibility="{Binding Configuration.Value.SaveToProfile, Converter={x:Static helper:Converters.NullToCollapsed}}" />
+                    <Button Margin="2.5"
                             Click="CloseProfileManagementMenu_OnClick"
                             Command="{Binding Configuration.Value.RemoveProfile}"
                             Content="{lex:Loc Key=General_RemoveProfile}"
-                            DockPanel.Dock="Left" />
+                            DockPanel.Dock="Left"
+                            Visibility="{Binding Configuration.Value.RemoveProfile, Converter={x:Static helper:Converters.NullToCollapsed}}" />
                     <DockPanel LastChildFill="True">
                         <Button Margin="2.5"
                                 Click="CloseProfileManagementMenu_OnClick"
@@ -119,11 +118,11 @@
                     Content="…"
                     DockPanel.Dock="Right" />
 
-            <Button Visibility="{Binding SelectedProfile.Value, Converter={x:Static helper:Converters.NullToCollapsed}}"
-                    Margin="2.5"
+            <Button Margin="2.5"
                     Command="{Binding DeselectProfileCommand}"
                     Content="X"
-                    DockPanel.Dock="Right" />
+                    DockPanel.Dock="Right"
+                    Visibility="{Binding SelectedProfile.Value, Converter={x:Static helper:Converters.NullToCollapsed}}" />
 
             <ComboBox Margin="2.5"
                       VerticalAlignment="Center"
@@ -143,11 +142,11 @@
                    Grid.Column="1"
                    LastChildFill="True">
 
-            <views:StatusCheckMark Visibility="{Binding FileExists.Value, Converter={x:Static helper:Converters.FalseToCollapsed}}"
-                                   Margin="2.5"
+            <views:StatusCheckMark Margin="2.5"
                                    VerticalAlignment="Center"
                                    Condition="{Binding HeaderDoMatch}"
-                                   DockPanel.Dock="Right" />
+                                   DockPanel.Dock="Right"
+                                   Visibility="{Binding FileExists.Value, Converter={x:Static helper:Converters.FalseToCollapsed}}" />
 
             <TextBlock Margin="2.5"
                        VerticalAlignment="Center"
@@ -312,12 +311,12 @@
         <TextBlock Grid.Row="4"
                    Grid.Column="0"
                    Grid.ColumnSpan="2"
-                   Visibility="{Binding ShowItemsError.Value, Converter={x:Static helper:Converters.FalseToCollapsed}}"
                    Margin="2.5"
                    HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch"
                    Background="{StaticResource TransactionBrush}"
-                   Text="{lex:Loc CsvBankStatementImport_ErrorDuringItemsCreation}" />
+                   Text="{lex:Loc CsvBankStatementImport_ErrorDuringItemsCreation}"
+                   Visibility="{Binding ShowItemsError.Value, Converter={x:Static helper:Converters.FalseToCollapsed}}" />
 
         <TextBlock Grid.Row="5"
                    Grid.Column="0"

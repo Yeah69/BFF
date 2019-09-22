@@ -496,10 +496,13 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         private IDataVirtualizingCollection<ITransLikeViewModel> CreateDataVirtualizingCollection()
             => DataVirtualizingCollectionBuilder<ITransLikeViewModel>
                 .Build(pageSize: PageSize)
-                .Hoarding()
                 .NonPreloading()
+                .LeastRecentlyUsed(10, 5)
                 .TaskBasedFetchers(PageFetcher, CountFetcher)
-                .AsyncIndexAccess(_placeholderFactory, _rxSchedulerProvider.Task, _rxSchedulerProvider.UI);
+                .AsyncIndexAccess(
+                    (_, __) => _placeholderFactory(), 
+                    _rxSchedulerProvider.Task, 
+                    _rxSchedulerProvider.UI);
 
         private readonly int PageSize = 100;
         private bool _isOpen;

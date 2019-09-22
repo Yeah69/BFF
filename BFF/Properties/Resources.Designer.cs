@@ -1242,11 +1242,38 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export Target.
+        /// </summary>
+        public static string ImportView_ExportKind {
+            get {
+                return ResourceManager.GetString("ImportView_ExportKind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string ImportView_Import {
             get {
                 return ResourceManager.GetString("ImportView_Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Source.
+        /// </summary>
+        public static string ImportView_ImportKind {
+            get {
+                return ResourceManager.GetString("ImportView_ImportKind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string ImportView_Password {
+            get {
+                return ResourceManager.GetString("ImportView_Password", resourceCulture);
             }
         }
         
@@ -1260,11 +1287,11 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import a YNAB4 CSV-file.
+        ///   Looks up a localized string similar to Import Configuration.
         /// </summary>
-        public static string ImportView_YNAB4 {
+        public static string ImportView_Title {
             get {
-                return ResourceManager.GetString("ImportView_YNAB4", resourceCulture);
+                return ResourceManager.GetString("ImportView_Title", resourceCulture);
             }
         }
         
@@ -1334,7 +1361,7 @@ namespace BFF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to YNAB4-Import.
+        ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string MainWindow_File_Import {
             get {

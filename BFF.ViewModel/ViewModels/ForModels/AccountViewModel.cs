@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -14,7 +13,6 @@ using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.Dialogs;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
-using BFF.ViewModel.ViewModels.ForModels.Utility;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -84,7 +82,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IBffChildWindowManager childWindowManager,
             ITransDataGridColumnManager transDataGridColumnManager,
             IBffSettings bffSettings,
-            Func<Action<IList<ICsvBankStatementImportItemViewModel>>, IImportCsvBankStatementViewModel> importCsvBankStatementFactory,
+            Func<IImportCsvBankStatementViewModel> importCsvBankStatementFactory,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             Func<IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
             Func<IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
@@ -152,35 +150,38 @@ namespace BFF.ViewModel.ViewModels.ForModels
                     .Select(count => count > 0),
                 NewTransList.Count > 0);
 
-            ImportCsvBankStatement = new AsyncRxRelayCommand(async () => await childWindowManager.OpenImportCsvBankStatementDialogAsync(importCsvBankStatementFactory(
-                async items =>
+            ImportCsvBankStatement = new AsyncRxRelayCommand(async () =>
+            {
+                var importCsvBankStatementViewModel = importCsvBankStatementFactory();
+                await childWindowManager.OpenOkCancelDialog(importCsvBankStatementViewModel);
+                foreach (var item in importCsvBankStatementViewModel.Items)
                 {
-                    foreach (var item in items)
+                    var transactionViewModel = transactionViewModelFactory(this);
+
+                    if (item.HasDate)
+                        transactionViewModel.Date = item.Date;
+                    if (item.HasPayee)
                     {
-                        var transactionViewModel = transactionViewModelFactory(this);
-
-                        if (item.HasDate)
-                            transactionViewModel.Date = item.Date;
-                        if (item.HasPayee)
+                        if (payeeService.Value.All.Any(p => p.Name == item.Payee))
+                            transactionViewModel.Payee =
+                                payeeService.Value.All.FirstOrDefault(p => p.Name == item.Payee);
+                        else if (item.CreatePayeeIfNotExisting)
                         {
-                            if (payeeService.Value.All.Any(p => p.Name == item.Payee))
-                                transactionViewModel.Payee = payeeService.Value.All.FirstOrDefault(p => p.Name == item.Payee);
-                            else if (item.CreatePayeeIfNotExisting)
-                            {
-                                IPayee newPayee = payeeFactory();
-                                newPayee.Name = item.Payee.Trim();
-                                await newPayee.InsertAsync();
-                                transactionViewModel.Payee = payeeService.Value.GetViewModel(newPayee);
-                            }
+                            IPayee newPayee = payeeFactory();
+                            newPayee.Name = item.Payee.Trim();
+                            await newPayee.InsertAsync();
+                            transactionViewModel.Payee = payeeService.Value.GetViewModel(newPayee);
                         }
-                        if (item.HasMemo)
-                            transactionViewModel.Memo = item.Memo;
-                        if (item.HasSum.Value)
-                            transactionViewModel.Sum.Value = item.Sum.Value;
-
-                        NewTransList.Add(transactionViewModel);
                     }
-                })));
+
+                    if (item.HasMemo)
+                        transactionViewModel.Memo = item.Memo;
+                    if (item.HasSum.Value)
+                        transactionViewModel.Sum.Value = item.Sum.Value;
+
+                    NewTransList.Add(transactionViewModel);
+                }
+            });
 
             if (BffSettings.OpenAccountTab == Name)
                 IsOpen = true;

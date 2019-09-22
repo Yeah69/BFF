@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BFF.Persistence.Common;
+using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Realm.ORM
 {
@@ -20,6 +21,8 @@ namespace BFF.Persistence.Realm.ORM
             static void Inner(Realms.Realm realm)
             {
                 // Getting the realm instance created is sufficient to create a Realm DB
+
+                realm.Write(() => realm.Add(new DbSetting()));
             }
         }
     }

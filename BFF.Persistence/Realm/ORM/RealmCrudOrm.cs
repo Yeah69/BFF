@@ -22,7 +22,7 @@ namespace BFF.Persistence.Realm.ORM
             _realmOperations = realmOperations;
         }
 
-        public async Task<bool> CreateAsync(T model)
+        public async Task<bool> CreateAsync(Func<Realms.Realm, RealmObject> createNewRealmObject)
         {
             await _realmOperations.RunActionAsync(Inner);
             return true;
@@ -30,10 +30,7 @@ namespace BFF.Persistence.Realm.ORM
             void Inner(Realms.Realm realm)
             {
                 realm.Write(
-                    () =>
-                    {
-                        realm.Add(model as RealmObject);
-                    });
+                    () => realm.Add(createNewRealmObject(realm), true));
             }
         }
 
@@ -67,14 +64,18 @@ namespace BFF.Persistence.Realm.ORM
             }
         }
 
-        public Task UpdateAsync(T model)
+        public Task UpdateAsync(T model, Action updateRealmObject)
         {
             return _realmOperations.RunActionAsync(Inner);
 
             void Inner(Realms.Realm realm)
             {
                 realm.Write(
-                    () => realm.Add(model as RealmObject, update: true));
+                    () =>
+                    {
+                        updateRealmObject();
+                        realm.Add(model as RealmObject, update: true);
+                    });
             }
         }
 

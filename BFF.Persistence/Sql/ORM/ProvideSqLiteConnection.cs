@@ -59,7 +59,7 @@ namespace BFF.Persistence.Sql.ORM
 
         protected override string ConnectionString => $"Data Source={DbPath};";
 
-        public ProvideSqliteConnection(ILoadProjectFromFileConfiguration config) : base(config)
+        public ProvideSqliteConnection(IFileAccessConfiguration config) : base(config)
         {
         }
     }
