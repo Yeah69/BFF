@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using BFF.Model.Models.Structure;
@@ -26,7 +27,7 @@ namespace BFF.Persistence.Realm.Repositories
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Dictionary<TPersistence, TDomain> _cache = new Dictionary<TPersistence, TDomain>();
+        private readonly HashSet<TDomain> _cache = new HashSet<TDomain>();
 
         protected RealmCachingRepositoryBase(ICrudOrm<TPersistence> crudOrm) : base(crudOrm)
         {
@@ -37,31 +38,32 @@ namespace BFF.Persistence.Realm.Repositories
         {
             if (!(dataModel is IRealmModel<TPersistence>)) throw new ArgumentException("Model instance has not the correct type", nameof(dataModel));
 
-            var realmObject = ((IRealmModel<TPersistence>)dataModel).RealmObject;
             var result = await base.AddAsync(dataModel).ConfigureAwait(false);
-            if (!_cache.ContainsValue(dataModel))
-                _cache.Add(realmObject, dataModel);
+            if (!_cache.Contains(dataModel))
+                _cache.Add(dataModel);
             return result;
         }
 
         public override async Task<TDomain> FindAsync(TPersistence realmObject)
         {
-            if (!_cache.ContainsKey(realmObject))
-                _cache.Add(realmObject, await base.FindAsync(realmObject).ConfigureAwait(false));
-            return _cache[realmObject];
+            var dataModel = _cache.FirstOrDefault(dm => ((IRealmModel<TPersistence>) dm)?.RealmObject == realmObject);
+            if (dataModel is null)
+            {
+                dataModel = await base.FindAsync(realmObject).ConfigureAwait(false);
+                _cache.Add(dataModel);
+            }
+            return dataModel;
         }
 
 
-
-        public override async Task<IEnumerable<TDomain>> FindAllAsync()
+        protected override async Task<IEnumerable<TDomain>> FindAllAsync()
         {
             Logger.Debug("Starting to convert all POCOs of type {0}", typeof(TPersistence).Name);
             ICollection<TDomain> ret = new List<TDomain>();
             foreach (TPersistence element in await FindAllInnerAsync().ConfigureAwait(false))
             {
-                if (!_cache.ContainsKey(element))
-                    _cache.Add(element, await ConvertToDomainAsync(element).ConfigureAwait(false));
-                _cache[element].AddTo(ret);
+                var dataModel = await FindAsync(element).ConfigureAwait(false);
+                dataModel.AddTo(ret);
             }
             Logger.Debug("Finished converting all POCOs of type {0}", typeof(TPersistence).Name);
             return ret;
@@ -71,9 +73,8 @@ namespace BFF.Persistence.Realm.Repositories
         {
             if (!(dataModel is IRealmModel<TPersistence>)) throw new ArgumentException("Model instance has not the correct type", nameof(dataModel));
 
-            var realmObject = ((IRealmModel<TPersistence>)dataModel).RealmObject;
-            if (_cache.ContainsValue(dataModel))
-                _cache.Remove(realmObject);
+            if (_cache.Contains(dataModel))
+                _cache.Remove(dataModel);
         }
 
         public void ClearCache()

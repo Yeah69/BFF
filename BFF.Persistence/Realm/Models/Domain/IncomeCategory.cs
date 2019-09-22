@@ -40,10 +40,10 @@ namespace BFF.Persistence.Realm.Models.Domain
             
             void UpdateRealmObject(ICategoryRealm ro)
             {
-                RealmObject.Parent = null;
-                RealmObject.IsIncomeRelevant = true;
-                RealmObject.MonthOffset = MonthOffset;
-                RealmObject.Name = Name;
+                ro.Parent = null;
+                ro.IsIncomeRelevant = true;
+                ro.MonthOffset = MonthOffset;
+                ro.Name = Name;
             }
         }
 
@@ -59,7 +59,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override async Task DeleteAsync()
         {
-            await _realmObjectWrap.DeleteAsync();
+            await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
             _repository.RemoveFromObservableCollection(this);
             _repository.RemoveFromCache(this);
         }

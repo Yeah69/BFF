@@ -108,13 +108,16 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
         #region ViewModel_Part
 
-        protected override Func<int, int, Task<ITransLikeViewModel[]>> PageFetcher =>
-            async (offset, pageSize) => _convertFromTransBaseToTransLikeViewModel
+        protected override async Task<ITransLikeViewModel[]> PageFetcher (int offset, int pageSize)
+        {
+            var transLikeViewModels = _convertFromTransBaseToTransLikeViewModel
                 .Convert(await _summaryAccount.GetTransPageAsync(offset, pageSize), this)
                 .ToArray();
+            return transLikeViewModels;
+        }
 
-        protected override Func<Task<int>> CountFetcher =>
-            async () => (int) await _summaryAccount.GetTransCountAsync();
+        protected override async Task<int> CountFetcher() =>
+            (int) await _summaryAccount.GetTransCountAsync();
 
         protected override long? CalculateNewPartOfIntermediateBalance()
         {

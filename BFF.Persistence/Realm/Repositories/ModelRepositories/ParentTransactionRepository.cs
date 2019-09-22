@@ -11,6 +11,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ITransRealm> _crudOrm;
+        private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IRealmAccountRepositoryInternal> _accountRepository;
         private readonly Lazy<IRealmPayeeRepositoryInternal> _payeeRepository;
         private readonly Lazy<IRealmSubTransactionRepository> _subTransactionRepository;
@@ -19,6 +20,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         public RealmParentTransactionRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ITransRealm> crudOrm,
+            IRealmOperations realmOperations,
             Lazy<IRealmAccountRepositoryInternal> accountRepository,
             Lazy<IRealmPayeeRepositoryInternal> payeeRepository,
             Lazy<IRealmSubTransactionRepository> subTransactionRepository,
@@ -26,37 +28,44 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
+            _realmOperations = realmOperations;
             _accountRepository = accountRepository;
             _payeeRepository = payeeRepository;
             _subTransactionRepository = subTransactionRepository;
             _flagRepository = flagRepository;
         }
 
-        protected override async Task<IParentTransaction> ConvertToDomainAsync(ITransRealm persistenceModel)
+        protected override Task<IParentTransaction> ConvertToDomainAsync(ITransRealm persistenceModel)
         {
-            var parentTransaction = new Models.Domain.ParentTransaction(
-                _crudOrm,
-                _subTransactionRepository.Value,
-                _rxSchedulerProvider,
-                persistenceModel,
-                persistenceModel.Date,
-                persistenceModel.Flag is null
-                    ? null
-                    : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false),
-                persistenceModel.CheckNumber,
-                await _accountRepository.Value.FindAsync(persistenceModel.Account).ConfigureAwait(false),
-                persistenceModel.Payee is null
-                    ? null
-                    : await _payeeRepository.Value.FindAsync(persistenceModel.Payee).ConfigureAwait(false),
-                persistenceModel.Memo,
-                persistenceModel.Cleared);
+            return _realmOperations.RunFuncAsync(InnerAsync);
 
-            foreach (var subTransaction in parentTransaction.SubTransactions)
+            async Task<IParentTransaction> InnerAsync(Realms.Realm _)
             {
-                subTransaction.Parent = parentTransaction;
-            }
+                var parentTransaction = new Models.Domain.ParentTransaction(
+                    _crudOrm,
+                    _subTransactionRepository.Value,
+                    _rxSchedulerProvider,
+                    persistenceModel,
+                    persistenceModel.Date,
+                    persistenceModel.Flag is null
+                        ? null
+                        : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false),
+                    persistenceModel.CheckNumber,
+                    await _accountRepository.Value.FindAsync(persistenceModel.Account).ConfigureAwait(false),
+                    persistenceModel.Payee is null
+                        ? null
+                        : await _payeeRepository.Value.FindAsync(persistenceModel.Payee).ConfigureAwait(false),
+                    persistenceModel.Memo,
+                    persistenceModel.Cleared);
 
-            return parentTransaction;
+                foreach (var subTransaction in parentTransaction.SubTransactions)
+                {
+                    subTransaction.Parent = parentTransaction;
+                }
+
+                return parentTransaction;
+            }
+            
         }
     }
 }

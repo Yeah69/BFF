@@ -211,7 +211,7 @@ namespace BFF.ViewModel.ViewModels
             var temp = _budgetMonths;
             _budgetMonths = await Task.Run(() => CreateBudgetMonths());
             _rxSchedulerProvider.UI.MinimalSchedule(() => OnPropertyChanged(nameof(BudgetMonths)));
-            await Task.Run(() => temp.Dispose());
+            await Task.Run(() => temp?.Dispose());
         }
 
         public IDisposable DeferRefreshUntilDisposal()

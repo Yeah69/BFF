@@ -26,33 +26,40 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<IFlagRealm> _crudOrm;
+        private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IMergeOrm> _mergeOrm;
 
         public RealmFlagRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<IFlagRealm> crudOrm,
+            IRealmOperations realmOperations,
             Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, new FlagComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
+            _realmOperations = realmOperations;
             _mergeOrm = mergeOrm;
         }
 
         protected override Task<IFlag> ConvertToDomainAsync(IFlagRealm persistenceModel)
         {
-            return Task.FromResult<IFlag>(
-                new Models.Domain.Flag(
+            return _realmOperations.RunFuncAsync(InnerAsync);
+
+            IFlag InnerAsync(Realms.Realm _)
+            {
+                return new Models.Domain.Flag(
                     _crudOrm,
                     _mergeOrm.Value,
                     this,
                     _rxSchedulerProvider,
                     persistenceModel,
                     Color.FromArgb(
-                        (byte) (persistenceModel.Color >> 24 & 0xff),
-                        (byte) (persistenceModel.Color >> 16 & 0xff),
-                        (byte) (persistenceModel.Color >> 8 & 0xff),
-                        (byte) (persistenceModel.Color & 0xff)),
-                    persistenceModel.Name));
+                        (byte)(persistenceModel.Color >> 24 & 0xff),
+                        (byte)(persistenceModel.Color >> 16 & 0xff),
+                        (byte)(persistenceModel.Color >> 8 & 0xff),
+                        (byte)(persistenceModel.Color & 0xff)),
+                    persistenceModel.Name);
+            }
         }
     }
 }

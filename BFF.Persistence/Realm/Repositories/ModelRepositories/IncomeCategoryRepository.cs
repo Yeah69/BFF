@@ -26,6 +26,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ICategoryRealm> _crudOrm;
+        private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IMergeOrm> _mergeOrm;
         private readonly Lazy<ICategoryOrm> _categoryOrm;
 
@@ -34,12 +35,14 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         public RealmIncomeCategoryRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ICategoryRealm> crudOrm,
+            IRealmOperations realmOperations,
             Lazy<IMergeOrm> mergeOrm,
             Lazy<ICategoryOrm> categoryOrm)
             : base( rxSchedulerProvider, crudOrm, new IncomeCategoryComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
+            _realmOperations = realmOperations;
             _mergeOrm = mergeOrm;
             _categoryOrm = categoryOrm;
             _onConstructorCompleted.SetResult(Unit.Default);
@@ -48,15 +51,19 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 
         protected override Task<IIncomeCategory> ConvertToDomainAsync(ICategoryRealm persistenceModel)
         {
-            return Task.FromResult<IIncomeCategory>(
-                new Models.Domain.IncomeCategory(
+            return _realmOperations.RunFuncAsync(InnerAsync);
+
+            IIncomeCategory InnerAsync(Realms.Realm _)
+            {
+                return new Models.Domain.IncomeCategory(
                     _crudOrm,
                     _mergeOrm.Value,
                     this,
                     _rxSchedulerProvider,
                     persistenceModel,
                     persistenceModel.Name,
-                    persistenceModel.MonthOffset));
+                    persistenceModel.MonthOffset);
+            }
         }
 
         protected override async Task<IEnumerable<ICategoryRealm>> FindAllInnerAsync()

@@ -25,27 +25,35 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<IPayeeRealm> _crudOrm;
+        private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IMergeOrm> _mergeOrm;
 
         public RealmPayeeRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<IPayeeRealm> crudOrm,
+            IRealmOperations realmOperations,
             Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, new PayeeComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
+            _realmOperations = realmOperations;
             _mergeOrm = mergeOrm;
         }
 
         protected override Task<IPayee> ConvertToDomainAsync(IPayeeRealm persistenceModel)
         {
-            return Task.FromResult<IPayee>(new Models.Domain.Payee(
-                _crudOrm,
-                _mergeOrm.Value,
-                this,
-                _rxSchedulerProvider,
-                persistenceModel,
-                persistenceModel.Name));
+            return _realmOperations.RunFuncAsync(InnerAsync);
+
+            IPayee InnerAsync(Realms.Realm _)
+            {
+                return new Models.Domain.Payee(
+                    _crudOrm,
+                    _mergeOrm.Value,
+                    this,
+                    _rxSchedulerProvider,
+                    persistenceModel,
+                    persistenceModel.Name);
+            }
         }
     }
 }

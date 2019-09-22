@@ -416,10 +416,11 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         {
             if (IsOpen)
             {
-                Task.Run(() => CreateDataVirtualizingCollection())
+                Task.Run(CreateDataVirtualizingCollection)
                     .ContinueWith(async t =>
                     {
                         var temp = _trans;
+                        await (await t).InitializationCompleted;
                         _trans = await t;
                         _rxSchedulerProvider.UI.MinimalSchedule(() =>
                         {
@@ -509,9 +510,9 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         private long? _targetBalance;
         private bool _showEditHeaders;
 
-        protected abstract Func<int, int, Task<ITransLikeViewModel[]>> PageFetcher { get; }
+        protected abstract Task<ITransLikeViewModel[]> PageFetcher(int offset, int pageSize);
 
-        protected abstract Func<Task<int>> CountFetcher { get; }
+        protected abstract Task<int> CountFetcher();
 
         protected abstract long? CalculateNewPartOfIntermediateBalance();
     }

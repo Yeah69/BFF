@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Models.Persistence;
@@ -9,7 +8,7 @@ using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Realm.Repositories
 {
-    internal interface IRealmRepositoryBase<TDomain, TPersistence> : IRealmWriteOnlyRepositoryBase<TDomain>, IRealmDbTableRepository<TDomain, TPersistence>
+    internal interface IRealmRepositoryBase<TDomain, TPersistence> : IRealmWriteOnlyRepositoryBase<TDomain>, IRealmRepository<TDomain, TPersistence>
         where TDomain : class, IDataModel
         where TPersistence : class, IPersistenceModelRealm
     {
@@ -30,7 +29,7 @@ namespace BFF.Persistence.Realm.Repositories
 
         protected virtual Task<IEnumerable<TPersistence>> FindAllInnerAsync() => _crudOrm.ReadAllAsync();
 
-        public virtual async Task<IEnumerable<TDomain>> FindAllAsync()
+        protected virtual async Task<IEnumerable<TDomain>> FindAllAsync()
         {
             return await
                 (await FindAllInnerAsync().ConfigureAwait(false))

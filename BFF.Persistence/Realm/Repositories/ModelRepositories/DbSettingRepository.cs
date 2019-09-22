@@ -12,26 +12,33 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<IDbSettingRealm> _crudOrm;
+        private readonly IRealmOperations _realmOperations;
 
         public RealmDbSettingRepository(
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm<IDbSettingRealm> crudOrm) : base(crudOrm)
+            ICrudOrm<IDbSettingRealm> crudOrm,
+            IRealmOperations realmOperations) : base(crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
+            _realmOperations = realmOperations;
         }
 
         protected override Task<IDbSetting> ConvertToDomainAsync(IDbSettingRealm persistenceModel)
         {
-            return Task.FromResult<IDbSetting>(
-                new Models.Domain.DbSetting(
+            return _realmOperations.RunFuncAsync(InnerAsync);
+
+            IDbSetting InnerAsync(Realms.Realm _)
+            {
+                return new Models.Domain.DbSetting(
                     _crudOrm,
                     _rxSchedulerProvider,
                     persistenceModel)
                 {
                     CurrencyCultureName = persistenceModel.CurrencyCultureName,
                     DateCultureName = persistenceModel.DateCultureName
-                });
+                };
+            }
         }
 
         public async Task<IDbSetting> GetSetting()

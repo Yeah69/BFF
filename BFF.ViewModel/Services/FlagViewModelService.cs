@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.ViewModel.ViewModels.ForModels;
@@ -12,11 +13,15 @@ namespace BFF.ViewModel.Services
 
     internal class FlagViewModelService : CommonPropertyViewModelServiceBase<IFlag, IFlagViewModel>, IFlagViewModelService
     {
-        public FlagViewModelService(IFlagRepository repository, Func<IFlag, IFlagViewModel> factory) : base(repository, factory, true)
+        public FlagViewModelService(
+            IFlagRepository repository, 
+            Func<IFlag, IFlagViewModel> factory,
+            IRxSchedulerProvider rxSchedulerProvider) : base(repository, factory, true)
         {
             All = new TransformingObservableReadOnlyList<IFlag, IFlagViewModel>(
                 repository.All,
-                AddToDictionaries);
+                AddToDictionaries,
+                rxSchedulerProvider.UI);
             AllCollectionInitialized = repository.AllAsync;
         }
     }

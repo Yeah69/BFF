@@ -19,10 +19,9 @@ namespace BFF.Persistence.Sql.Repositories
 
         protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
 
-        public virtual async Task<bool> AddAsync(TDomain dataModel)
+        public virtual Task<bool> AddAsync(TDomain dataModel)
         {
-            await dataModel.InsertAsync().ConfigureAwait(false);
-            return true;
+            return Task.FromResult(true);
         }
 
         public void Dispose()

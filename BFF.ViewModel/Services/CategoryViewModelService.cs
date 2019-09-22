@@ -2,6 +2,7 @@ using System;
 using System.Collections.Specialized;
 using System.Reactive.Linq;
 using BFF.Core.Extensions;
+using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.ViewModel.ViewModels.ForModels;
@@ -19,11 +20,13 @@ namespace BFF.ViewModel.Services
         public CategoryViewModelService(
             ICategoryRepository repository,
             ICategoryViewModelInitializer categoryViewModelInitializer,
-            Func<ICategory, ICategoryViewModel> factory) : base(repository, factory, true)
+            Func<ICategory, ICategoryViewModel> factory,
+            IRxSchedulerProvider rxSchedulerProvider) : base(repository, factory, true)
         {
             All = new TransformingObservableReadOnlyList<ICategory, ICategoryViewModel>(
                 repository.All,
-                AddToDictionaries);
+                AddToDictionaries,
+                rxSchedulerProvider.UI);
             AllCollectionInitialized = repository.AllAsync.ContinueWith(t => {});
             All
                 .ObserveCollectionChanges()

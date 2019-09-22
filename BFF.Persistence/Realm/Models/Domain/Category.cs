@@ -64,7 +64,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override async Task DeleteAsync()
         {
-            await _realmObjectWrap.DeleteAsync();
+            await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
             _repository.RemoveFromObservableCollection(this);
             _repository.RemoveFromCache(this);
 

@@ -11,25 +11,31 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ITransRealm> _crudOrm;
+        private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IRealmAccountRepositoryInternal> _accountRepository;
         private readonly Lazy<IRealmFlagRepositoryInternal> _flagRepository;
 
         public RealmTransferRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ITransRealm> crudOrm,
+            IRealmOperations realmOperations,
             Lazy<IRealmAccountRepositoryInternal> accountRepository,
             Lazy<IRealmFlagRepositoryInternal> flagRepository) : base(crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
+            _realmOperations = realmOperations;
             _accountRepository = accountRepository;
             _flagRepository = flagRepository;
         }
 
-        protected override async Task<ITransfer> ConvertToDomainAsync(ITransRealm persistenceModel)
+        protected override Task<ITransfer> ConvertToDomainAsync(ITransRealm persistenceModel)
         {
-            return 
-                new Models.Domain.Transfer(
+            return _realmOperations.RunFuncAsync(InnerAsync);
+
+            async Task<ITransfer> InnerAsync(Realms.Realm _)
+            {
+                return new Models.Domain.Transfer(
                     _crudOrm,
                     _rxSchedulerProvider,
                     persistenceModel,
@@ -47,6 +53,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                     persistenceModel.Memo,
                     persistenceModel.Sum,
                     persistenceModel.Cleared);
+            }
         }
     }
 }

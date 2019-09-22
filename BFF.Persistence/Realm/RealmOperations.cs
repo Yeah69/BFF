@@ -10,6 +10,8 @@ namespace BFF.Persistence.Realm
     {
         Task RunActionAsync(Action<Realms.Realm> action);
         Task<T> RunFuncAsync<T>(Func<Realms.Realm, T> func);
+        Task RunActionAsync(Func<Realms.Realm, Task> action);
+        Task<T> RunFuncAsync<T>(Func<Realms.Realm, Task<T>> func);
     }
 
     internal class RealmOperations : IDisposable, IRealmOperations
@@ -47,6 +49,29 @@ namespace BFF.Persistence.Realm
             return tcs.Task;
         }
 
+        public Task RunActionAsync(Func<Realms.Realm, Task> action)
+        {
+            var tcs = new TaskCompletionSource<Unit>();
+            _eventLoopScheduler.ScheduleAsync(
+                async (_, __) =>
+                {
+                    var exceptionless = true;
+                    try
+                    {
+                        var realm = _provideConnection.Connection;
+                        await action(realm).ConfigureAwait(false);
+                    }
+                    catch (Exception e)
+                    {
+                        tcs.SetException(e);
+                        exceptionless = false;
+                    }
+                    if (exceptionless)
+                        tcs.SetResult(Unit.Default);
+                });
+            return tcs.Task;
+        }
+
         public Task<T> RunFuncAsync<T>(Func<Realms.Realm, T> func)
         {
             var tcs = new TaskCompletionSource<T>();
@@ -59,6 +84,30 @@ namespace BFF.Persistence.Realm
                     {
                         var realm = _provideConnection.Connection;
                         result = func(realm);
+                    }
+                    catch (Exception e)
+                    {
+                        tcs.SetException(e);
+                        exceptionless = false;
+                    }
+                    if (exceptionless)
+                        tcs.SetResult(result);
+                });
+            return tcs.Task;
+        }
+
+        public Task<T> RunFuncAsync<T>(Func<Realms.Realm, Task<T>> func)
+        {
+            var tcs = new TaskCompletionSource<T>();
+            _eventLoopScheduler.ScheduleAsync(
+                async (_, __) =>
+                {
+                    var exceptionless = true;
+                    T result = default;
+                    try
+                    {
+                        var realm = _provideConnection.Connection;
+                        result = await func(realm).ConfigureAwait(false);
                     }
                     catch (Exception e)
                     {

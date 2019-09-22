@@ -19,18 +19,21 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ISubTransactionRealm> _crudOrm;
+        private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IParentalOrm> _parentalOrm;
         private readonly Lazy<IRealmCategoryBaseRepositoryInternal> _categoryBaseRepository;
 
         public RealmSubTransactionRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ISubTransactionRealm> crudOrm,
+            IRealmOperations realmOperations,
             Lazy<IParentalOrm> parentalOrm,
             Lazy<IRealmCategoryBaseRepositoryInternal> categoryBaseRepository)
             : base(crudOrm)
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
+            _realmOperations = realmOperations;
             _parentalOrm = parentalOrm;
             _categoryBaseRepository = categoryBaseRepository;
         }
@@ -39,17 +42,22 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             await (await _parentalOrm.Value.ReadSubTransactionsOfAsync(parentTransaction).ConfigureAwait(false))
                 .Select(async sti => await ConvertToDomainAsync(sti).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
 
-        protected override async Task<ISubTransaction> ConvertToDomainAsync(ISubTransactionRealm persistenceModel)
+        protected override Task<ISubTransaction> ConvertToDomainAsync(ISubTransactionRealm persistenceModel)
         {
-            return new Models.Domain.SubTransaction(
-                _crudOrm,
-                _rxSchedulerProvider,
-                persistenceModel,
-                persistenceModel.Category is null
-                    ? null
-                    : await _categoryBaseRepository.Value.FindAsync(persistenceModel.Category).ConfigureAwait(false),
-                persistenceModel.Memo,
-                persistenceModel.Sum);
+            return _realmOperations.RunFuncAsync(InnerAsync);
+
+            async Task<ISubTransaction> InnerAsync(Realms.Realm _)
+            {
+                return new Models.Domain.SubTransaction(
+                    _crudOrm,
+                    _rxSchedulerProvider,
+                    persistenceModel,
+                    persistenceModel.Category is null
+                        ? null
+                        : await _categoryBaseRepository.Value.FindAsync(persistenceModel.Category).ConfigureAwait(false),
+                    persistenceModel.Memo,
+                    persistenceModel.Sum);
+            }
         }
     }
 }

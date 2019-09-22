@@ -44,21 +44,22 @@ namespace BFF.Persistence.Realm.Models.Domain
             _subTransactions = new ObservableCollection<ISubTransaction>();
             SubTransactions = new ReadOnlyObservableCollection<ISubTransaction>(_subTransactions);
 
-            subTransactionRepository
-                .GetChildrenOfAsync(RealmObject)
-                .ContinueWith(async t =>
-                {
-                    foreach (var subTransaction in await t.ConfigureAwait(false))
+            if (realmObject != null)
+                subTransactionRepository
+                    .GetChildrenOfAsync(RealmObject)
+                    .ContinueWith(async t =>
                     {
-                        _subTransactions.Add(subTransaction);
-                    }
-                    SubTransactions.ObserveAddChanged().Subscribe(st => st.Parent = this);
+                        foreach (var subTransaction in await t.ConfigureAwait(false))
+                        {
+                            _subTransactions.Add(subTransaction);
+                        }
+                        SubTransactions.ObserveAddChanged().Subscribe(st => st.Parent = this);
 
-                    foreach (var subTransaction in SubTransactions)
-                    {
-                        subTransaction.Parent = this;
-                    }
-                });
+                        foreach (var subTransaction in SubTransactions)
+                        {
+                            subTransaction.Parent = this;
+                        }
+                    });
             
             void UpdateRealmObject(ITransRealm ro)
             {

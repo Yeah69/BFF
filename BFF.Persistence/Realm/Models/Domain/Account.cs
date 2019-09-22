@@ -12,14 +12,14 @@ namespace BFF.Persistence.Realm.Models.Domain
     internal class Account : Model.Models.Account, IRealmModel<IAccountRealm>
     {
         private readonly IAccountOrm _accountOrm;
-        private readonly IRealmAccountRepositoryInternal _accountRepository;
+        private readonly IRealmAccountRepositoryInternal _repository;
         private readonly IRealmTransRepository _transRepository;
         private readonly RealmObjectWrap<IAccountRealm> _realmObjectWrap;
 
         public Account(
             ICrudOrm<IAccountRealm> crudOrm,
             IAccountOrm accountOrm,
-            IRealmAccountRepositoryInternal accountRepository,
+            IRealmAccountRepositoryInternal repository,
             IRealmTransRepository transRepository,
             IRxSchedulerProvider rxSchedulerProvider,
             IAccountRealm realmObject,
@@ -43,7 +43,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                 UpdateRealmObject,
                 crudOrm);
             _accountOrm = accountOrm;
-            _accountRepository = accountRepository;
+            _repository = repository;
             _transRepository = transRepository;
             
             void UpdateRealmObject(IAccountRealm ro)
@@ -61,14 +61,14 @@ namespace BFF.Persistence.Realm.Models.Domain
         public override async Task InsertAsync()
         {
             await _realmObjectWrap.InsertAsync().ConfigureAwait(false);
-            await _accountRepository.AddAsync(this).ConfigureAwait(false);
+            await _repository.AddAsync(this).ConfigureAwait(false);
         }
 
         public override async Task DeleteAsync()
         {
             await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
-            _accountRepository.RemoveFromObservableCollection(this);
-            _accountRepository.RemoveFromCache(this);
+            _repository.RemoveFromObservableCollection(this);
+            _repository.RemoveFromCache(this);
         }
 
         protected override Task UpdateAsync()

@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.ViewModel.ViewModels.ForModels;
@@ -13,11 +14,12 @@ namespace BFF.ViewModel.Services
     internal class PayeeViewModelService : CommonPropertyViewModelServiceBase<IPayee, IPayeeViewModel>, IPayeeViewModelService
     {
 
-        public PayeeViewModelService(IPayeeRepository repository, Func<IPayee, IPayeeViewModel> factory) : base(repository, factory, true)
+        public PayeeViewModelService(IPayeeRepository repository, Func<IPayee, IPayeeViewModel> factory, IRxSchedulerProvider rxSchedulerProvider) : base(repository, factory, true)
         {
             All = new TransformingObservableReadOnlyList<IPayee, IPayeeViewModel>(
                 repository.All,
-                AddToDictionaries);
+                AddToDictionaries,
+                rxSchedulerProvider.UI);
             AllCollectionInitialized = repository.AllAsync;
         }
     }

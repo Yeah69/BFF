@@ -66,7 +66,8 @@ namespace BFF.Persistence.Realm.Models.Domain
                 ro.Category =
                     Category is null
                         ? null
-                        : (Category as Category)?.RealmObject
+                        : (Category as Category)?.RealmObject 
+                          ?? (Category as IncomeCategory)?.RealmObject
                           ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
                 ro.CheckNumber = CheckNumber;
                 ro.Flag =

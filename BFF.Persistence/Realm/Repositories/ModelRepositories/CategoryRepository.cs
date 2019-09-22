@@ -19,18 +19,21 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ICategoryRealm> _crudOrm;
+        private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IMergeOrm> _mergeOrm;
         private readonly Lazy<ICategoryOrm> _categoryOrm;
 
         public RealmCategoryRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ICategoryRealm> crudOrm,
+            IRealmOperations realmOperations,
             Lazy<IMergeOrm> mergeOrm,
             Lazy<ICategoryOrm> categoryOrm) 
             : base(rxSchedulerProvider, crudOrm, new CategoryComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
+            _realmOperations = realmOperations;
             _mergeOrm = mergeOrm;
             _categoryOrm = categoryOrm;
             InitializeAll();
@@ -50,19 +53,23 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             }
         }
 
-        protected override async Task<ICategory> ConvertToDomainAsync(ICategoryRealm persistenceModel)
+        protected override Task<ICategory> ConvertToDomainAsync(ICategoryRealm persistenceModel)
         {
-            return 
-                new Models.Domain.Category(
-                    _crudOrm, 
+            return _realmOperations.RunFuncAsync(InnerAsync);
+
+            async Task<ICategory> InnerAsync(Realms.Realm _)
+            {
+                return new Models.Domain.Category(
+                    _crudOrm,
                     _mergeOrm.Value,
                     this,
                     _rxSchedulerProvider,
                     persistenceModel,
                     persistenceModel.Name,
-                    persistenceModel.Parent is null 
+                    persistenceModel.Parent is null
                         ? null
                         : await FindAsync(persistenceModel.Parent).ConfigureAwait(false));
+            }
         }
 
         protected override Task<IEnumerable<ICategoryRealm>> FindAllInnerAsync() => _categoryOrm.Value.ReadCategoriesAsync();

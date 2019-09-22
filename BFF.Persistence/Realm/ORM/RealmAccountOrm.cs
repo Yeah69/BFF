@@ -164,7 +164,7 @@ namespace BFF.Persistence.Realm.ORM
                 var accountStartingBalanceSum = 0L;
                 foreach (var account in realm
                     .All<Account>()
-                    .Where(a => a.StartingDate < now))
+                    .Where(a => a.StartingDateOffset < now))
                 {
                     accountStartingBalanceSum += account.StartingBalance;
                 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.ViewModel.ViewModels.ForModels;
@@ -14,11 +15,13 @@ namespace BFF.ViewModel.Services
     {
         public AccountViewModelService(
             IAccountRepository repository,
-            Func<IAccount, IAccountViewModel> factory) : base(repository, factory, true)
+            Func<IAccount, IAccountViewModel> factory,
+            IRxSchedulerProvider rxSchedulerProvider) : base(repository, factory, true)
         {
             All = new TransformingObservableReadOnlyList<IAccount, IAccountViewModel>(
                 repository.All,
-                AddToDictionaries);
+                AddToDictionaries,
+                rxSchedulerProvider.UI);
             AllCollectionInitialized = repository.AllAsync;
         }
     }

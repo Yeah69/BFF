@@ -66,7 +66,7 @@ namespace BFF.Persistence.Realm.Repositories
             return _backingObservableCollection;
         }
 
-        public sealed override Task<IEnumerable<TDomain>> FindAllAsync()
+        protected sealed override Task<IEnumerable<TDomain>> FindAllAsync()
         {
             return base.FindAllAsync();
         }

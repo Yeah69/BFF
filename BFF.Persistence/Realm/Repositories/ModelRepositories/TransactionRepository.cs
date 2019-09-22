@@ -11,6 +11,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ITransRealm> _crudOrm;
+        private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IRealmAccountRepositoryInternal> _accountRepository;
         private readonly Lazy<IRealmCategoryBaseRepositoryInternal> _categoryBaseRepository;
         private readonly Lazy<IRealmPayeeRepositoryInternal> _payeeRepository;
@@ -19,6 +20,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         public RealmTransactionRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ITransRealm> crudOrm,
+            IRealmOperations realmOperations,
             Lazy<IRealmAccountRepositoryInternal> accountRepository,
             Lazy<IRealmCategoryBaseRepositoryInternal> categoryBaseRepository,
             Lazy<IRealmPayeeRepositoryInternal> payeeRepository,
@@ -26,33 +28,41 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
+            _realmOperations = realmOperations;
             _accountRepository = accountRepository;
             _categoryBaseRepository = categoryBaseRepository;
             _payeeRepository = payeeRepository;
             _flagRepository = flagRepository;
         }
 
-        protected override async Task<ITransaction> ConvertToDomainAsync(ITransRealm persistenceModel)
+        protected override Task<ITransaction> ConvertToDomainAsync(ITransRealm persistenceModel)
         {
-            return new Models.Domain.Transaction(
-                _crudOrm,
-                _rxSchedulerProvider,
-                persistenceModel,
-                persistenceModel.Date,
-                persistenceModel.Flag is null
-                    ? null
-                    : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false),
-                persistenceModel.CheckNumber,
-                await _accountRepository.Value.FindAsync(persistenceModel.Account).ConfigureAwait(false),
-                persistenceModel.Payee is null
-                    ? null
-                    : await _payeeRepository.Value.FindAsync(persistenceModel.Payee).ConfigureAwait(false),
-                persistenceModel.Category is null
-                    ? null
-                    : await _categoryBaseRepository.Value.FindAsync(persistenceModel.Category).ConfigureAwait(false),
-                persistenceModel.Memo,
-                persistenceModel.Sum,
-                persistenceModel.Cleared);
+            return _realmOperations.RunFuncAsync(InnerAsync);
+
+
+            async Task<ITransaction> InnerAsync(Realms.Realm _)
+            {
+                return new Models.Domain.Transaction(
+                    _crudOrm,
+                    _rxSchedulerProvider,
+                    persistenceModel,
+                    persistenceModel.Date,
+                    persistenceModel.Flag is null
+                        ? null
+                        : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false),
+                    persistenceModel.CheckNumber,
+                    await _accountRepository.Value.FindAsync(persistenceModel.Account).ConfigureAwait(false),
+                    persistenceModel.Payee is null
+                        ? null
+                        : await _payeeRepository.Value.FindAsync(persistenceModel.Payee).ConfigureAwait(false),
+                    persistenceModel.Category is null
+                        ? null
+                        : await _categoryBaseRepository.Value.FindAsync(persistenceModel.Category)
+                            .ConfigureAwait(false),
+                    persistenceModel.Memo,
+                    persistenceModel.Sum,
+                    persistenceModel.Cleared);
+            }
         }
     }
 }
