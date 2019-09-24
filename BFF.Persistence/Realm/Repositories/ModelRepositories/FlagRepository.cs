@@ -33,7 +33,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<IFlagRealm> crudOrm,
             IRealmOperations realmOperations,
-            Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, new FlagComparer())
+            Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, realmOperations, new FlagComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;

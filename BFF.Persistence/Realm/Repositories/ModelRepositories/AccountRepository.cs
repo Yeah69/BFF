@@ -34,7 +34,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             ICrudOrm<IAccountRealm> crudOrm,
             IRealmOperations realmOperations,
             Lazy<IAccountOrm> accountOrm,
-            Lazy<IRealmTransRepository> transRepository) : base(rxSchedulerProvider, crudOrm, new AccountComparer())
+            Lazy<IRealmTransRepository> transRepository) : base(rxSchedulerProvider, crudOrm, realmOperations, new AccountComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;

@@ -25,12 +25,16 @@ namespace BFF.Persistence.Realm.Repositories
         where TDomain : class, IDataModel
         where TPersistence : class, IPersistenceModelRealm
     {
+        private readonly IRealmOperations _realmOperations;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly HashSet<TDomain> _cache = new HashSet<TDomain>();
 
-        protected RealmCachingRepositoryBase(ICrudOrm<TPersistence> crudOrm) : base(crudOrm)
+        protected RealmCachingRepositoryBase(
+            ICrudOrm<TPersistence> crudOrm,
+            IRealmOperations realmOperations) : base(crudOrm)
         {
+            _realmOperations = realmOperations;
             Disposable.Create(ClearCache).AddForDisposalTo(CompositeDisposable);
         }
 
@@ -46,7 +50,10 @@ namespace BFF.Persistence.Realm.Repositories
 
         public override async Task<TDomain> FindAsync(TPersistence realmObject)
         {
-            var dataModel = _cache.FirstOrDefault(dm => ((IRealmModel<TPersistence>) dm)?.RealmObject == realmObject);
+            var dataModel = await _realmOperations
+                .RunFuncAsync(_ =>
+                    _cache.FirstOrDefault(dm => ((IRealmModel<TPersistence>) dm)?.RealmObject?.Equals(realmObject) ?? false))
+                .ConfigureAwait(false);
             if (dataModel is null)
             {
                 dataModel = await base.FindAsync(realmObject).ConfigureAwait(false);

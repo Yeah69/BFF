@@ -38,7 +38,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             IRealmOperations realmOperations,
             Lazy<IMergeOrm> mergeOrm,
             Lazy<ICategoryOrm> categoryOrm)
-            : base( rxSchedulerProvider, crudOrm, new IncomeCategoryComparer())
+            : base( rxSchedulerProvider, crudOrm, realmOperations, new IncomeCategoryComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;

@@ -32,7 +32,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<IPayeeRealm> crudOrm,
             IRealmOperations realmOperations,
-            Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, new PayeeComparer())
+            Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, realmOperations, new PayeeComparer())
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;

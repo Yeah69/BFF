@@ -48,7 +48,8 @@ namespace BFF.Persistence.Realm.Repositories
         protected RealmObservableRepositoryBase(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<TPersistence> crudOrm,
-            Comparer<TDomain> comparer) : base(crudOrm)
+            IRealmOperations realmOperations,
+            Comparer<TDomain> comparer) : base(crudOrm, realmOperations)
         {
             Disposable.Create(() => _backingObservableCollection.Clear()).AddTo(CompositeDisposable);
             _observeResetAll = new Subject<IEnumerable<TDomain>>().AddForDisposalTo(CompositeDisposable);
