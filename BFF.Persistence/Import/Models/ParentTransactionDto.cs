@@ -14,7 +14,7 @@ namespace BFF.Persistence.Import.Models
 
         public string CheckNumber { get; set; }
 
-        public (string Name, Color Color) Flag { get; set; }
+        public (string Name, Color Color)? Flag { get; set; }
 
         public string Memo { get; set; }
 

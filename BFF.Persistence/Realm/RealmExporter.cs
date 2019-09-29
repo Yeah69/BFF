@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
@@ -9,7 +10,6 @@ using BFF.Persistence.Import.Models;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM;
 using MoreLinq.Extensions;
-using MrMeeseeks.DataStructures;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Utility;
 using Account = BFF.Persistence.Realm.Models.Persistence.Account;
@@ -79,12 +79,14 @@ namespace BFF.Persistence.Realm
                 .Concat(container.ParentTransactions.Select(pt => pt.Flag))
                 .Concat(container.Transfers.Select(t => t.Flag))
                 .Distinct()
+                .WhereNotNull()
                 .ToDictionary(
                     Basic.Identity,
                     f => (IFlagRealm) new Flag
                     {
-                        Name = f.Name,
-                        Color = f.Color.ToLong()
+                        Name = f?.Name,
+                        Color = f?.Color.ToLong() 
+                                ?? Color.Transparent.ToLong()
                     })
                 .ToReadOnlyDictionary();
 
@@ -146,7 +148,7 @@ namespace BFF.Persistence.Realm
                             Date = transactionDto.Date,
                             Payee = payeeDictionary[transactionDto.Payee],
                             Category = categoryDictionary[transactionDto.Category],
-                            Flag = flagDictionary[transactionDto.Flag],
+                            Flag = transactionDto.Flag is null ? null : flagDictionary[transactionDto.Flag],
                             CheckNumber = transactionDto.CheckNumber,
                             Memo = transactionDto.Memo,
                             Sum = transactionDto.Sum,
@@ -165,7 +167,7 @@ namespace BFF.Persistence.Realm
                                     FromAccount = accountDictionary[transferDto.FromAccount],
                                     ToAccount = accountDictionary[transferDto.ToAccount],
                                     Date = transferDto.Date,
-                                    Flag = flagDictionary[transferDto.Flag],
+                                    Flag = transferDto.Flag is null ? null : flagDictionary[transferDto.Flag],
                                     CheckNumber = transferDto.CheckNumber,
                                     Memo = transferDto.Memo,
                                     Sum = transferDto.Sum,
@@ -186,7 +188,7 @@ namespace BFF.Persistence.Realm
                                     Account = accountDictionary[parentTransactionDto.Account],
                                     Date = parentTransactionDto.Date,
                                     Payee = payeeDictionary[parentTransactionDto.Payee],
-                                    Flag = flagDictionary[parentTransactionDto.Flag],
+                                    Flag = parentTransactionDto.Flag is null ? null : flagDictionary[parentTransactionDto.Flag],
                                     CheckNumber = parentTransactionDto.CheckNumber,
                                     Memo = parentTransactionDto.Memo,
                                     Cleared = parentTransactionDto.Cleared,

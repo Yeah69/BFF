@@ -19,7 +19,7 @@ namespace BFF.Persistence.Import
             string fromAccount,
             string toAccount,
             string checkNumber,
-            (string, Color) flag,
+            (string, Color)? flag,
             string memo,
             long sum,
             bool cleared);
@@ -30,7 +30,7 @@ namespace BFF.Persistence.Import
             string payee,
             CategoryDto category,
             string checkNumber,
-            (string, Color) flag,
+            (string, Color)? flag,
             string memo,
             long sum,
             bool cleared);
@@ -40,7 +40,7 @@ namespace BFF.Persistence.Import
             string account,
             string payee,
             string checkNumber,
-            (string, Color) flag,
+            (string, Color)? flag,
             string memo,
             bool cleared,
             IEnumerable<(CategoryDto Category, string Memo, long Sum)> subTransactions);
@@ -87,7 +87,7 @@ namespace BFF.Persistence.Import
             string fromAccount,
             string toAccount,
             string checkNumber,
-            (string, Color) flag,
+            (string, Color)? flag,
             string memo,
             long sum,
             bool cleared)
@@ -113,7 +113,7 @@ namespace BFF.Persistence.Import
             string payee,
             CategoryDto category,
             string checkNumber,
-            (string, Color) flag,
+            (string, Color)? flag,
             string memo,
             long sum,
             bool cleared)
@@ -138,7 +138,7 @@ namespace BFF.Persistence.Import
             string account,
             string payee,
             string checkNumber,
-            (string, Color) flag,
+            (string, Color)? flag,
             string memo,
             bool cleared,
             IEnumerable<(CategoryDto Category, string Memo, long Sum)> subTransactions)

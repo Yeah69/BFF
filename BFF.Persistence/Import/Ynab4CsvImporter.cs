@@ -279,20 +279,18 @@ namespace BFF.Persistence.Import
             return ParseBudgetCsvInner();
         }
 
-        private static (string, Color) FlagNameToColorNumber(string name)
+        private static (string, Color)? FlagNameToColorNumber(string name)
         {
-            var color = name switch
+            return name switch
                 {
-                    "Red" => Color.FromArgb(0xff, 0xff, 0x00, 0x00),
-                    "Green" => Color.FromArgb(0xff, 0x00, 0xff, 0x00),
-                    "Blue" => Color.FromArgb(0xff, 0x00, 0x00, 0xff),
-                    "Orange" => Color.FromArgb(0xff, 0xff, 0xa5, 0x00),
-                    "Yellow" => Color.FromArgb(0xff, 0xff, 0xff, 0x00),
-                    "Purple" => Color.FromArgb(0xff, 0x55, 0x1a, 0x8b),
-                    _ => Color.FromArgb(0x00, 0xff, 0xff, 0xff)
+                    "Red" => (name, Color.FromArgb(0xff, 0xff, 0x00, 0x00)),
+                    "Green" => (name, Color.FromArgb(0xff, 0x00, 0xff, 0x00)),
+                    "Blue" => (name, Color.FromArgb(0xff, 0x00, 0x00, 0xff)),
+                    "Orange" => (name, Color.FromArgb(0xff, 0xff, 0xa5, 0x00)),
+                    "Yellow" => (name, Color.FromArgb(0xff, 0xff, 0xff, 0x00)),
+                    "Purple" => (name, Color.FromArgb(0xff, 0x55, 0x1a, 0x8b)),
+                    _ => ((string, Color)?) null
                 };
-
-            return (name, color);
         }
 
         private CategoryDto GetOrCreateCategory(string master, string sub)
