@@ -45,9 +45,8 @@ namespace BFF.Persistence.Realm.ORM
                                 && t.AccountRef == account
                                 && t.Cleared))
                 {
-                    subTransactionsSum += realm
-                        .All<SubTransaction>()
-                        .Where(st => st.ParentRef == parentTransaction)
+                    subTransactionsSum += parentTransaction
+                        .SubTransactions
                         .ToList()
                         .Sum(st => st.Sum);
                 }
@@ -86,9 +85,8 @@ namespace BFF.Persistence.Realm.ORM
                                 && t.DateOffset <= now
                                 && t.Cleared))
                 {
-                    subTransactionsSum += realm
-                        .All<SubTransaction>()
-                        .Where(st => st.ParentRef == parentTransaction)
+                    subTransactionsSum += parentTransaction
+                        .SubTransactions
                         .ToList()
                         .Sum(st => st.Sum);
                 }
@@ -114,9 +112,8 @@ namespace BFF.Persistence.Realm.ORM
                     .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
                                 && t.Cleared))
                 {
-                    subTransactionsSum += realm
-                        .All<SubTransaction>()
-                        .Where(st => st.ParentRef == parentTransaction)
+                    subTransactionsSum += parentTransaction
+                        .SubTransactions
                         .ToList()
                         .Sum(st => st.Sum);
                 }
@@ -154,9 +151,8 @@ namespace BFF.Persistence.Realm.ORM
                                 && t.DateOffset <= now
                                 && t.Cleared))
                 {
-                    subTransactionsSum += realm
-                        .All<SubTransaction>()
-                        .Where(st => st.ParentRef == parentTransaction)
+                    subTransactionsSum += parentTransaction
+                        .SubTransactions
                         .ToList()
                         .Sum(st => st.Sum);
                 }
@@ -200,9 +196,8 @@ namespace BFF.Persistence.Realm.ORM
                                 && t.AccountRef == account
                                 && !t.Cleared))
                 {
-                    subTransactionsSum += realm
-                        .All<SubTransaction>()
-                        .Where(st => st.ParentRef == parentTransaction)
+                    subTransactionsSum += parentTransaction
+                        .SubTransactions
                         .ToList()
                         .Sum(st => st.Sum);
                 }
@@ -242,9 +237,8 @@ namespace BFF.Persistence.Realm.ORM
                                 && t.DateOffset <= now
                                 && !t.Cleared))
                 {
-                    subTransactionsSum += realm
-                        .All<SubTransaction>()
-                        .Where(st => st.ParentRef == parentTransaction)
+                    subTransactionsSum += parentTransaction
+                        .SubTransactions
                         .ToList()
                         .Sum(st => st.Sum);
                 }
@@ -270,9 +264,8 @@ namespace BFF.Persistence.Realm.ORM
                     .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
                                 && !t.Cleared))
                 {
-                    subTransactionsSum += realm
-                        .All<SubTransaction>()
-                        .Where(st => st.ParentRef == parentTransaction)
+                    subTransactionsSum += parentTransaction
+                        .SubTransactions
                         .ToList()
                         .Sum(st => st.Sum);
                 }
@@ -300,9 +293,8 @@ namespace BFF.Persistence.Realm.ORM
                                 && t.DateOffset <= now
                                 && !t.Cleared))
                 {
-                    subTransactionsSum += realm
-                        .All<SubTransaction>()
-                        .Where(st => st.ParentRef == parentTransaction)
+                    subTransactionsSum += parentTransaction
+                        .SubTransactions
                         .ToList()
                         .Sum(st => st.Sum);
                 }

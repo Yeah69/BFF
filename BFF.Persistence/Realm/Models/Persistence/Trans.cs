@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using BFF.Core.Helper;
 using Realms;
 
@@ -15,6 +17,7 @@ namespace BFF.Persistence.Realm.Models.Persistence
         IAccountRealm ToAccount { get; set; }
         IAccountRealm FromAccount { get; set; }
         TransType Type { get; set; }
+        IEnumerable<ISubTransactionRealm> SubTransactions { get; }
     }
     
     internal class Trans : RealmObject, ITransRealm
@@ -52,6 +55,12 @@ namespace BFF.Persistence.Realm.Models.Persistence
         public int TypeIndex { get; set; }
         [Ignored]
         public TransType Type { get => (TransType)TypeIndex; set => TypeIndex = (int)value; }
+
+        [Backlink(nameof(SubTransaction.ParentRef))]
+        public IQueryable<SubTransaction> SubTransactionsRef { get; }
+
+        [Ignored]
+        public IEnumerable<ISubTransactionRealm> SubTransactions => SubTransactionsRef;
 
         public override bool Equals(object obj)
         {

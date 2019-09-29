@@ -25,8 +25,7 @@ namespace BFF.Persistence.Realm.ORM
 
             IEnumerable<ISubTransactionRealm> Inner(Realms.Realm realm)
             {
-                return realm.All<SubTransaction>()
-                    .Where(st => st.ParentRef == parentTransaction);
+                return parentTransaction.SubTransactions;
             }
         }
     }
