@@ -93,7 +93,7 @@ namespace BFF.Persistence.Realm
             var realmCategoryId = 0;
             var categoryDictionary = new Dictionary<CategoryDto, ICategoryRealm>();
 
-            var rootCategories = container
+            var categories = container
                 .Categories
                 .Select<ICategoryRealm>((categoryDto, resultChildren) =>
                 {
@@ -239,7 +239,7 @@ namespace BFF.Persistence.Realm
             {
                 Accounts = accountDictionary.Values.ToReadOnlyList(),
                 Payees = payeeDictionary.Values.ToReadOnlyList(),
-                RootCategories = rootCategories,
+                Categories = categories,
                 IncomeCategories = incomeCategories,
                 Flags = flagDictionary.Values.ToReadOnlyList(),
                 Trans = transList,
@@ -252,7 +252,7 @@ namespace BFF.Persistence.Realm
         {
             public IReadOnlyList<IAccountRealm> Accounts { get; set; }
             public IReadOnlyList<IPayeeRealm> Payees { get; set; }
-            public IReadOnlyList<ICategoryRealm> RootCategories { get; set; }
+            public IReadOnlyList<ICategoryRealm> Categories { get; set; }
             public IReadOnlyList<ICategoryRealm> IncomeCategories { get; set; }
             public IReadOnlyList<IFlagRealm> Flags { get; set; }
             public IReadOnlyList<ITransRealm> Trans { get; set; }

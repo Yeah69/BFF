@@ -5,6 +5,6 @@ namespace BFF.Persistence.Realm.ORM.Interfaces
 {
     public interface IExportingOrm
     {
-        Task PopulateDatabaseAsync(IRealmExportContainerData sqliteExportContainer);
+        Task PopulateDatabaseAsync(IRealmExportContainerData exportContainer);
     }
 }

@@ -18,7 +18,7 @@ namespace BFF.Persistence.Realm.ORM
             _realmOperations = realmOperations;
         }
 
-        public Task PopulateDatabaseAsync(IRealmExportContainerData sqliteExportContainer)
+        public Task PopulateDatabaseAsync(IRealmExportContainerData exportContainer)
         {
             return _realmOperations.RunActionAsync(Inner);
 
@@ -27,15 +27,22 @@ namespace BFF.Persistence.Realm.ORM
 
                 realm.Write(() =>
                 {
-                    sqliteExportContainer.Accounts.ForEach(a => realm.Add(a as RealmObject, update: false));
-                    sqliteExportContainer.Payees.ForEach(p => realm.Add(p as RealmObject, update: false));
-                    sqliteExportContainer.RootCategories.ForEach(mc => realm.Add(mc as RealmObject, update: false));
-                    sqliteExportContainer.IncomeCategories.ForEach(ic => realm.Add(ic as RealmObject, update: false));
-                    sqliteExportContainer.Flags.ForEach(f => realm.Add(f as RealmObject, update: false));
-                    sqliteExportContainer.Trans.ForEach(t => realm.Add(t as RealmObject, update: false));
-                    sqliteExportContainer.SubTransactions.ForEach(st => realm.Add(st as RealmObject, update: false));
-                    sqliteExportContainer.BudgetEntries.ForEach(be => realm.Add(be as RealmObject, update: false));
-                    realm.Add(new DbSetting());
+                    exportContainer.Accounts.ForEach(a => realm.Add(a as RealmObject, update: false));
+                    exportContainer.Payees.ForEach(p => realm.Add(p as RealmObject, update: false));
+                    exportContainer.Categories.ForEach(mc => realm.Add(mc as RealmObject, update: false));
+                    exportContainer.IncomeCategories.ForEach(ic => realm.Add(ic as RealmObject, update: false));
+                    exportContainer.Flags.ForEach(f => realm.Add(f as RealmObject, update: false));
+                    exportContainer.Trans.ForEach(t => realm.Add(t as RealmObject, update: false));
+                    exportContainer.SubTransactions.ForEach(st => realm.Add(st as RealmObject, update: false));
+                    exportContainer.BudgetEntries.ForEach(be => realm.Add(be as RealmObject, update: false));
+                    var dbSetting = new DbSetting
+                    {
+                        NextSubTransactionId = exportContainer.SubTransactions.Count,
+                        NextTransId = exportContainer.Trans.Count,
+                        NextCategoryId = exportContainer.IncomeCategories.Count + exportContainer.Categories.Count,
+                        NextBudgetEntryId = exportContainer.BudgetEntries.Count
+                    };
+                    realm.Add(dbSetting);
                 });
             }
         }

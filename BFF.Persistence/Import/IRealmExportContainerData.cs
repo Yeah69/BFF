@@ -7,7 +7,7 @@ namespace BFF.Persistence.Import
     {
         IReadOnlyList<IAccountRealm> Accounts { get; }
         IReadOnlyList<IPayeeRealm> Payees { get; }
-        IReadOnlyList<ICategoryRealm> RootCategories { get; }
+        IReadOnlyList<ICategoryRealm> Categories { get; }
         IReadOnlyList<ICategoryRealm> IncomeCategories { get; }
         IReadOnlyList<IFlagRealm> Flags { get; }
         IReadOnlyList<ITransRealm> Trans { get; }
