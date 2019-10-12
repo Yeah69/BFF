@@ -2,29 +2,18 @@ using Realms;
 
 namespace BFF.Persistence.Realm.Models.Persistence
 {
-    public interface ISubTransactionRealm : IUniqueIdPersistenceModelRealm, IHaveCategoryRealm
-    {
-        ITransRealm Parent { get; set; }
-        string Memo { get; set; }
-        long Sum { get; set; }
-    }
-    
-    internal class SubTransaction : RealmObject, ISubTransactionRealm
+    internal class SubTransaction : RealmObject, IUniqueIdPersistenceModelRealm
     {
         [PrimaryKey]
         public int Id { get; set; }
-        public Trans ParentRef { get; set; }
-        [Ignored]
-        public ITransRealm Parent { get => ParentRef; set => ParentRef = value as Trans; }
-        public Category CategoryRef { get; set; }
-        [Ignored]
-        public ICategoryRealm Category { get => CategoryRef; set => CategoryRef = value as Category; }
+        public Trans Parent { get; set; }
+        public Category Category { get; set; }
         public string Memo { get; set; }
         public long Sum { get; set; }
 
         public override bool Equals(object obj)
         {
-            if (obj is null || !(obj is ISubTransactionRealm other)) return false;
+            if (obj is null || !(obj is SubTransaction other)) return false;
             return Id == other.Id;
         }
 

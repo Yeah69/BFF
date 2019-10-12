@@ -2,27 +2,26 @@
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
-using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
-    internal class Payee : Model.Models.Payee, IRealmModel<IPayeeRealm>
+    internal class Payee : Model.Models.Payee, IRealmModel<Persistence.Payee>
     {
         private readonly IMergeOrm _mergeOrm;
         private readonly IRealmPayeeRepositoryInternal _repository;
-        private readonly RealmObjectWrap<IPayeeRealm> _realmObjectWrap;
+        private readonly RealmObjectWrap<Persistence.Payee> _realmObjectWrap;
 
         public Payee(
-            ICrudOrm<IPayeeRealm> crudOrm,
+            ICrudOrm<Persistence.Payee> crudOrm,
             IMergeOrm mergeOrm,
             IRealmPayeeRepositoryInternal repository,
             IRxSchedulerProvider rxSchedulerProvider,
-            IPayeeRealm realmObject,
+            Persistence.Payee realmObject,
             string name) : base(rxSchedulerProvider, name)
         {
-            _realmObjectWrap = new RealmObjectWrap<IPayeeRealm>(
+            _realmObjectWrap = new RealmObjectWrap<Persistence.Payee>(
                 realmObject,
                 realm =>
                 {
@@ -36,7 +35,7 @@ namespace BFF.Persistence.Realm.Models.Domain
             _mergeOrm = mergeOrm;
             _repository = repository;
             
-            void UpdateRealmObject(IPayeeRealm ro)
+            void UpdateRealmObject(Persistence.Payee ro)
             {
                 ro.Name = Name;
             }
@@ -44,7 +43,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public IPayeeRealm RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.Payee RealmObject => _realmObjectWrap.RealmObject;
 
         public override async Task InsertAsync()
         {

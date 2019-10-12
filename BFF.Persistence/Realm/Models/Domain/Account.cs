@@ -3,26 +3,25 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
-using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
-    internal class Account : Model.Models.Account, IRealmModel<IAccountRealm>
+    internal class Account : Model.Models.Account, IRealmModel<Persistence.Account>
     {
         private readonly IAccountOrm _accountOrm;
         private readonly IRealmAccountRepositoryInternal _repository;
         private readonly IRealmTransRepository _transRepository;
-        private readonly RealmObjectWrap<IAccountRealm> _realmObjectWrap;
+        private readonly RealmObjectWrap<Persistence.Account> _realmObjectWrap;
 
         public Account(
-            ICrudOrm<IAccountRealm> crudOrm,
+            ICrudOrm<Persistence.Account> crudOrm,
             IAccountOrm accountOrm,
             IRealmAccountRepositoryInternal repository,
             IRealmTransRepository transRepository,
             IRxSchedulerProvider rxSchedulerProvider,
-            IAccountRealm realmObject,
+            Persistence.Account realmObject,
             DateTime startingDate, 
             string name, 
             long startingBalance) 
@@ -32,7 +31,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                 name, 
                 startingBalance)
         {
-            _realmObjectWrap = new RealmObjectWrap<IAccountRealm>(
+            _realmObjectWrap = new RealmObjectWrap<Persistence.Account>(
                 realmObject,
                 realm =>
                 {
@@ -46,17 +45,17 @@ namespace BFF.Persistence.Realm.Models.Domain
             _repository = repository;
             _transRepository = transRepository;
             
-            void UpdateRealmObject(IAccountRealm ro)
+            void UpdateRealmObject(Persistence.Account ro)
             {
                 ro.Name = Name;
                 ro.StartingBalance = StartingBalance;
-                ro.StartingDate = StartingDate;
+                ro.StartingDate = new DateTimeOffset(StartingDate, TimeSpan.Zero);
             }
         }
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public IAccountRealm RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.Account RealmObject => _realmObjectWrap.RealmObject;
 
         public override async Task InsertAsync()
         {

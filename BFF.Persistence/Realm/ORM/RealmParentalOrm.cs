@@ -17,12 +17,12 @@ namespace BFF.Persistence.Realm.ORM
             _realmOperations = realmOperations;
         }
 
-        public Task<IEnumerable<ISubTransactionRealm>> ReadSubTransactionsOfAsync([NotNull]ITransRealm parentTransaction)
+        public Task<IEnumerable<SubTransaction>> ReadSubTransactionsOfAsync([NotNull]Trans parentTransaction)
         {
             parentTransaction = parentTransaction ?? throw new ArgumentNullException(nameof(parentTransaction));
             return _realmOperations.RunFuncAsync(Inner);
 
-            IEnumerable<ISubTransactionRealm> Inner(Realms.Realm realm)
+            IEnumerable<SubTransaction> Inner(Realms.Realm realm)
             {
                 return parentTransaction.SubTransactions;
             }

@@ -7,17 +7,17 @@ using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
-    internal sealed class RealmTransferRepository : RealmRepositoryBase<ITransfer, ITransRealm>
+    internal sealed class RealmTransferRepository : RealmRepositoryBase<ITransfer, Trans>
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly ICrudOrm<ITransRealm> _crudOrm;
+        private readonly ICrudOrm<Trans> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IRealmAccountRepositoryInternal> _accountRepository;
         private readonly Lazy<IRealmFlagRepositoryInternal> _flagRepository;
 
         public RealmTransferRepository(
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm<ITransRealm> crudOrm,
+            ICrudOrm<Trans> crudOrm,
             IRealmOperations realmOperations,
             Lazy<IRealmAccountRepositoryInternal> accountRepository,
             Lazy<IRealmFlagRepositoryInternal> flagRepository) : base(crudOrm)
@@ -29,7 +29,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             _flagRepository = flagRepository;
         }
 
-        protected override Task<ITransfer> ConvertToDomainAsync(ITransRealm persistenceModel)
+        protected override Task<ITransfer> ConvertToDomainAsync(Trans persistenceModel)
         {
             return _realmOperations.RunFuncAsync(InnerAsync);
 
@@ -39,7 +39,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                     _crudOrm,
                     _rxSchedulerProvider,
                     persistenceModel,
-                    persistenceModel.Date,
+                    persistenceModel.Date.UtcDateTime,
                     persistenceModel.Flag is null
                         ? null
                         : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false),

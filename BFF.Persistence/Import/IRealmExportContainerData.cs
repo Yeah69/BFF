@@ -3,15 +3,15 @@ using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Import
 {
-    public interface IRealmExportContainerData
+    internal interface IRealmExportContainerData
     {
-        IReadOnlyList<IAccountRealm> Accounts { get; }
-        IReadOnlyList<IPayeeRealm> Payees { get; }
-        IReadOnlyList<ICategoryRealm> Categories { get; }
-        IReadOnlyList<ICategoryRealm> IncomeCategories { get; }
-        IReadOnlyList<IFlagRealm> Flags { get; }
-        IReadOnlyList<ITransRealm> Trans { get; }
-        IReadOnlyList<ISubTransactionRealm> SubTransactions { get; }
-        IReadOnlyList<IBudgetEntryRealm> BudgetEntries { get; }
+        IReadOnlyList<Account> Accounts { get; }
+        IReadOnlyList<Payee> Payees { get; }
+        IReadOnlyList<Category> Categories { get; }
+        IReadOnlyList<Category> IncomeCategories { get; }
+        IReadOnlyList<Flag> Flags { get; }
+        IReadOnlyList<Trans> Trans { get; }
+        IReadOnlyList<SubTransaction> SubTransactions { get; }
+        IReadOnlyList<BudgetEntry> BudgetEntries { get; }
     }
 }

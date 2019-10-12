@@ -9,14 +9,14 @@ using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
-    internal class Transaction : Model.Models.Transaction, IRealmModel<ITransRealm>
+    internal class Transaction : Model.Models.Transaction, IRealmModel<Trans>
     {
-        private readonly RealmObjectWrap<ITransRealm> _realmObjectWrap;
+        private readonly RealmObjectWrap<Trans> _realmObjectWrap;
 
         public Transaction(
-            ICrudOrm<ITransRealm> crudOrm,
+            ICrudOrm<Trans> crudOrm,
             IRxSchedulerProvider rxSchedulerProvider,
-            ITransRealm realmObject,
+            Trans realmObject,
             DateTime date,
             IFlag flag,
             string checkNumber,
@@ -38,7 +38,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                 sum,
                 cleared)
         {
-            _realmObjectWrap = new RealmObjectWrap<ITransRealm>(
+            _realmObjectWrap = new RealmObjectWrap<Trans>(
                 realmObject,
                 realm =>
                 {
@@ -52,14 +52,14 @@ namespace BFF.Persistence.Realm.Models.Domain
                 UpdateRealmObject,
                 crudOrm);
             
-            void UpdateRealmObject(ITransRealm ro)
+            void UpdateRealmObject(Trans ro)
             {
                 ro.Account = 
                     Account is null
                         ? null
                         : (Account as Account)?.RealmObject 
                           ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
-                ro.Date = Date;
+                ro.Date = new DateTimeOffset(Date, TimeSpan.Zero);
                 ro.Payee =
                     Payee is null
                         ? null
@@ -80,7 +80,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                 ro.Memo = Memo;
                 ro.Sum = Sum;
                 ro.Cleared = Cleared;
-                ro.Type = TransType.Transaction;
+                ro.TypeIndex = (int) TransType.Transaction;
 
                 ro.FromAccount = null;
                 ro.ToAccount = null;
@@ -89,7 +89,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public ITransRealm RealmObject => _realmObjectWrap.RealmObject;
+        public Trans RealmObject => _realmObjectWrap.RealmObject;
 
         public override Task InsertAsync()
         {

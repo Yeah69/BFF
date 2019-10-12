@@ -11,16 +11,16 @@ using Reactive.Bindings.Extensions;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
-    internal sealed class ParentTransaction : Model.Models.ParentTransaction, IRealmModel<ITransRealm>
+    internal sealed class ParentTransaction : Model.Models.ParentTransaction, IRealmModel<Trans>
     {
         private readonly ObservableCollection<ISubTransaction> _subTransactions;
-        private readonly RealmObjectWrap<ITransRealm> _realmObjectWrap;
+        private readonly RealmObjectWrap<Trans> _realmObjectWrap;
 
         public ParentTransaction(
-            ICrudOrm<ITransRealm> crudOrm,
+            ICrudOrm<Trans> crudOrm,
             IRealmSubTransactionRepository subTransactionRepository,
             IRxSchedulerProvider rxSchedulerProvider,
-            ITransRealm realmObject,
+            Trans realmObject,
             DateTime date, 
             IFlag flag,
             string checkNumber, 
@@ -29,7 +29,7 @@ namespace BFF.Persistence.Realm.Models.Domain
             string memo, 
             bool cleared) : base(rxSchedulerProvider, date, flag, checkNumber, account, payee, memo, cleared)
         {
-            _realmObjectWrap = new RealmObjectWrap<ITransRealm>(
+            _realmObjectWrap = new RealmObjectWrap<Trans>(
                 realmObject,
                 realm =>
                 {
@@ -63,14 +63,14 @@ namespace BFF.Persistence.Realm.Models.Domain
                         }
                     });
             
-            void UpdateRealmObject(ITransRealm ro)
+            void UpdateRealmObject(Trans ro)
             {
                 ro.Account =
                     Account is null
                         ? null
                         : (Account as Account)?.RealmObject
                           ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
-                ro.Date = Date;
+                ro.Date = new DateTimeOffset(Date, TimeSpan.Zero);
                 ro.Payee =
                     Payee is null
                         ? null
@@ -84,7 +84,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                           ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
                 ro.Memo = Memo;
                 ro.Cleared = Cleared;
-                ro.Type = TransType.ParentTransaction;
+                ro.TypeIndex = (int) TransType.ParentTransaction;
 
                 ro.FromAccount = null;
                 ro.ToAccount = null;
@@ -95,7 +95,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public ITransRealm RealmObject => _realmObjectWrap.RealmObject;
+        public Trans RealmObject => _realmObjectWrap.RealmObject;
 
         public override Task InsertAsync()
         {

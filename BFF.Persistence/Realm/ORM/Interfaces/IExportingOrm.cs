@@ -3,7 +3,7 @@ using BFF.Persistence.Import;
 
 namespace BFF.Persistence.Realm.ORM.Interfaces
 {
-    public interface IExportingOrm
+    internal interface IExportingOrm
     {
         Task PopulateDatabaseAsync(IRealmExportContainerData exportContainer);
     }

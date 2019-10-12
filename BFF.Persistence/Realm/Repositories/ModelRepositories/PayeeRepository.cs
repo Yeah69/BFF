@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
-using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
@@ -17,20 +16,20 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         }
     }
 
-    internal interface IRealmPayeeRepositoryInternal : IPayeeRepository, IRealmObservableRepositoryBaseInternal<IPayee, IPayeeRealm>
+    internal interface IRealmPayeeRepositoryInternal : IPayeeRepository, IRealmObservableRepositoryBaseInternal<IPayee, Models.Persistence.Payee>
     {
     }
 
-    internal sealed class RealmPayeeRepository : RealmObservableRepositoryBase<IPayee, IPayeeRealm>, IRealmPayeeRepositoryInternal
+    internal sealed class RealmPayeeRepository : RealmObservableRepositoryBase<IPayee, Models.Persistence.Payee>, IRealmPayeeRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly ICrudOrm<IPayeeRealm> _crudOrm;
+        private readonly ICrudOrm<Models.Persistence.Payee> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IMergeOrm> _mergeOrm;
 
         public RealmPayeeRepository(
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm<IPayeeRealm> crudOrm,
+            ICrudOrm<Models.Persistence.Payee> crudOrm,
             IRealmOperations realmOperations,
             Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, realmOperations, new PayeeComparer())
         {
@@ -40,7 +39,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             _mergeOrm = mergeOrm;
         }
 
-        protected override Task<IPayee> ConvertToDomainAsync(IPayeeRealm persistenceModel)
+        protected override Task<IPayee> ConvertToDomainAsync(Models.Persistence.Payee persistenceModel)
         {
             return _realmOperations.RunFuncAsync(InnerAsync);
 

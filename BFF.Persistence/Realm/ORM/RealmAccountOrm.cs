@@ -17,7 +17,7 @@ namespace BFF.Persistence.Realm.ORM
             _realmOperations = realmOperations;
         }
 
-        public Task<long?> GetClearedBalanceAsync(IAccountRealm account)
+        public Task<long?> GetClearedBalanceAsync(Account account)
         {
             return _realmOperations.RunFuncAsync(Inner);
 
@@ -26,15 +26,15 @@ namespace BFF.Persistence.Realm.ORM
                 var transactionsAndToTransfersSum = realm
                     .All<Trans>()
                     .Where(t => t.Cleared
-                                && (t.TypeIndex == (int) TransType.Transaction && t.AccountRef == account
-                                    || t.TypeIndex == (int) TransType.Transfer && t.ToAccountRef == account))
+                                && (t.TypeIndex == (int) TransType.Transaction && t.Account == account
+                                    || t.TypeIndex == (int) TransType.Transfer && t.ToAccount == account))
                     .ToList()
                     .Sum(t => t.Sum);
                 var fromTransfersSum = realm
                     .All<Trans>()
                     .Where(t => t.Cleared
                                 && t.TypeIndex == (int)TransType.Transfer 
-                                && t.FromAccountRef == account)
+                                && t.FromAccount == account)
                     .ToList()
                     .Sum(t => t.Sum);
 
@@ -42,7 +42,7 @@ namespace BFF.Persistence.Realm.ORM
                 foreach (var parentTransaction in realm
                     .All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                                && t.AccountRef == account
+                                && t.Account == account
                                 && t.Cleared))
                 {
                     subTransactionsSum += parentTransaction
@@ -54,7 +54,7 @@ namespace BFF.Persistence.Realm.ORM
             }
         }
 
-        public Task<long?> GetClearedBalanceUntilNowAsync(IAccountRealm account)
+        public Task<long?> GetClearedBalanceUntilNowAsync(Account account)
         {
             return _realmOperations.RunFuncAsync(Inner);
 
@@ -64,16 +64,16 @@ namespace BFF.Persistence.Realm.ORM
                 var transactionsAndToTransfersSum = realm
                     .All<Trans>()
                     .Where(t => t.Cleared 
-                                && t.DateOffset <= now
-                                && (t.TypeIndex == (int)TransType.Transaction && t.AccountRef == account
-                                  || t.TypeIndex == (int)TransType.Transfer && t.ToAccountRef == account))
+                                && t.Date <= now
+                                && (t.TypeIndex == (int)TransType.Transaction && t.Account == account
+                                  || t.TypeIndex == (int)TransType.Transfer && t.ToAccount == account))
                     .ToList()
                     .Sum(t => t.Sum);
                 var fromTransfersSum = realm
                     .All<Trans>()
                     .Where(t => t.Cleared 
-                                && t.DateOffset <= now
-                                && t.TypeIndex == (int)TransType.Transfer && t.FromAccountRef == account)
+                                && t.Date <= now
+                                && t.TypeIndex == (int)TransType.Transfer && t.FromAccount == account)
                     .ToList()
                     .Sum(t => t.Sum);
 
@@ -81,8 +81,8 @@ namespace BFF.Persistence.Realm.ORM
                 foreach (var parentTransaction in realm
                     .All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                                && t.AccountRef == account
-                                && t.DateOffset <= now
+                                && t.Account == account
+                                && t.Date <= now
                                 && t.Cleared))
                 {
                     subTransactionsSum += parentTransaction
@@ -139,7 +139,7 @@ namespace BFF.Persistence.Realm.ORM
                 var transactionsAndToTransfersSum = realm
                     .All<Trans>()
                     .Where(t => t.Cleared 
-                                && t.DateOffset <= now 
+                                && t.Date <= now 
                                 && t.TypeIndex == (int)TransType.Transaction)
                     .ToList()
                     .Sum(st => st.Sum);
@@ -148,7 +148,7 @@ namespace BFF.Persistence.Realm.ORM
                 foreach (var parentTransaction in realm
                     .All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                                && t.DateOffset <= now
+                                && t.Date <= now
                                 && t.Cleared))
                 {
                     subTransactionsSum += parentTransaction
@@ -160,7 +160,7 @@ namespace BFF.Persistence.Realm.ORM
                 var accountStartingBalanceSum = 0L;
                 foreach (var account in realm
                     .All<Account>()
-                    .Where(a => a.StartingDateOffset < now))
+                    .Where(a => a.StartingDate < now))
                 {
                     accountStartingBalanceSum += account.StartingBalance;
                 }
@@ -168,7 +168,7 @@ namespace BFF.Persistence.Realm.ORM
             }
         }
 
-        public Task<long?> GetUnclearedBalanceAsync(IAccountRealm account)
+        public Task<long?> GetUnclearedBalanceAsync(Account account)
         {
             return _realmOperations.RunFuncAsync(Inner);
 
@@ -177,15 +177,15 @@ namespace BFF.Persistence.Realm.ORM
                 var transactionsAndToTransfersSum = realm
                     .All<Trans>()
                     .Where(t => !t.Cleared
-                                && (t.TypeIndex == (int)TransType.Transaction && t.AccountRef == account
-                                    || t.TypeIndex == (int)TransType.Transfer && t.ToAccountRef == account))
+                                && (t.TypeIndex == (int)TransType.Transaction && t.Account == account
+                                    || t.TypeIndex == (int)TransType.Transfer && t.ToAccount == account))
                     .ToList()
                     .Sum(t => t.Sum);
                 var fromTransfersSum = realm
                     .All<Trans>()
                     .Where(t => !t.Cleared
                                 && t.TypeIndex == (int)TransType.Transfer 
-                                && t.FromAccountRef == account)
+                                && t.FromAccount == account)
                     .ToList()
                     .Sum(t => t.Sum);
 
@@ -193,7 +193,7 @@ namespace BFF.Persistence.Realm.ORM
                 foreach (var parentTransaction in realm
                     .All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                                && t.AccountRef == account
+                                && t.Account == account
                                 && !t.Cleared))
                 {
                     subTransactionsSum += parentTransaction
@@ -205,7 +205,7 @@ namespace BFF.Persistence.Realm.ORM
             }
         }
 
-        public Task<long?> GetUnclearedBalanceUntilNowAsync(IAccountRealm account)
+        public Task<long?> GetUnclearedBalanceUntilNowAsync(Account account)
         {
             return _realmOperations.RunFuncAsync(Inner);
 
@@ -215,17 +215,17 @@ namespace BFF.Persistence.Realm.ORM
                 var transactionsAndToTransfersSum = realm
                     .All<Trans>()
                     .Where(t => !t.Cleared 
-                                && t.DateOffset <= now
-                                && (t.TypeIndex == (int)TransType.Transaction && t.AccountRef == account
-                                   || t.TypeIndex == (int)TransType.Transfer && t.ToAccountRef == account))
+                                && t.Date <= now
+                                && (t.TypeIndex == (int)TransType.Transaction && t.Account == account
+                                   || t.TypeIndex == (int)TransType.Transfer && t.ToAccount == account))
                     .ToList()
                     .Sum(t => t.Sum);
                 var fromTransfersSum = realm
                     .All<Trans>()
                     .Where(t => !t.Cleared 
-                                && t.DateOffset <= now
+                                && t.Date <= now
                                 && t.TypeIndex == (int)TransType.Transfer 
-                                && t.FromAccountRef == account)
+                                && t.FromAccount == account)
                     .ToList()
                     .Sum(t => t.Sum);
 
@@ -233,8 +233,8 @@ namespace BFF.Persistence.Realm.ORM
                 foreach (var parentTransaction in realm
                     .All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                                && t.AccountRef == account
-                                && t.DateOffset <= now
+                                && t.Account == account
+                                && t.Date <= now
                                 && !t.Cleared))
                 {
                     subTransactionsSum += parentTransaction
@@ -282,7 +282,7 @@ namespace BFF.Persistence.Realm.ORM
                 var now = DateTimeOffset.UtcNow;
                 var transactionsAndToTransfersSum = realm
                     .All<Trans>()
-                    .Where(t => !t.Cleared && t.DateOffset <= now && t.TypeIndex == (int)TransType.Transaction)
+                    .Where(t => !t.Cleared && t.Date <= now && t.TypeIndex == (int)TransType.Transaction)
                     .ToList()
                     .Sum(t => t.Sum);
 
@@ -290,7 +290,7 @@ namespace BFF.Persistence.Realm.ORM
                 foreach (var parentTransaction in realm
                     .All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                                && t.DateOffset <= now
+                                && t.Date <= now
                                 && !t.Cleared))
                 {
                     subTransactionsSum += parentTransaction

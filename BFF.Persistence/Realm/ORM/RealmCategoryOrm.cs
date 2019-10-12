@@ -16,21 +16,21 @@ namespace BFF.Persistence.Realm.ORM
             _realmOperations = realmOperations;
         }
 
-        public Task<IEnumerable<ICategoryRealm>> ReadCategoriesAsync()
+        public Task<IEnumerable<Category>> ReadCategoriesAsync()
         {
             return _realmOperations.RunFuncAsync(Inner);
 
-            static IEnumerable<ICategoryRealm> Inner(Realms.Realm realm)
+            static IEnumerable<Category> Inner(Realms.Realm realm)
             {
                 return realm.All<Category>().Where(c => !c.IsIncomeRelevant);
             }
         }
 
-        public Task<IEnumerable<ICategoryRealm>> ReadIncomeCategoriesAsync()
+        public Task<IEnumerable<Category>> ReadIncomeCategoriesAsync()
         {
             return _realmOperations.RunFuncAsync(Inner);
 
-            static IEnumerable<ICategoryRealm> Inner(Realms.Realm realm)
+            static IEnumerable<Category> Inner(Realms.Realm realm)
             {
                 return realm.All<Category>().Where(c => c.IsIncomeRelevant);
             }

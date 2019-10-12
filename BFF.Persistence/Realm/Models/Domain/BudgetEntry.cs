@@ -5,30 +5,29 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
-using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
 using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
-    internal class BudgetEntry : Model.Models.BudgetEntry, IRealmModel<IBudgetEntryRealm>
+    internal class BudgetEntry : Model.Models.BudgetEntry, IRealmModel<Persistence.BudgetEntry>
     {
         private readonly IRealmTransRepository _transRepository;
-        private readonly RealmObjectWrap<IBudgetEntryRealm> _realmObjectWrap;
+        private readonly RealmObjectWrap<Persistence.BudgetEntry> _realmObjectWrap;
 
         public BudgetEntry(
-            ICrudOrm<IBudgetEntryRealm> crudOrm,
+            ICrudOrm<Persistence.BudgetEntry> crudOrm,
             IRealmTransRepository transRepository,
             IRxSchedulerProvider rxSchedulerProvider,
-            IBudgetEntryRealm realmObject,
+            Persistence.BudgetEntry realmObject,
             DateTime month,
             ICategory category, 
             long budget, 
             long outflow, 
             long balance) : base(rxSchedulerProvider, month, category, budget, outflow, balance)
         {
-            _realmObjectWrap = new RealmObjectWrap<IBudgetEntryRealm>(
+            _realmObjectWrap = new RealmObjectWrap<Persistence.BudgetEntry>(
                 realmObject,
                 realm =>
                 {
@@ -43,21 +42,21 @@ namespace BFF.Persistence.Realm.Models.Domain
                 crudOrm);
             _transRepository = transRepository;
             
-            void UpdateRealmObject(IBudgetEntryRealm ro)
+            void UpdateRealmObject(Persistence.BudgetEntry ro)
             {
                 ro.Category = 
                     Category is null 
                         ? null 
                         : (Category as Category)?.RealmObject 
                           ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
-                ro.Month = Month;
+                ro.Month = new DateTimeOffset(Month, TimeSpan.Zero);
                 ro.Budget = Budget;
             }
         }
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public IBudgetEntryRealm RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.BudgetEntry RealmObject => _realmObjectWrap.RealmObject;
 
         public override Task InsertAsync()
         {

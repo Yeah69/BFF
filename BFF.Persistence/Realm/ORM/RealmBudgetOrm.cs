@@ -43,7 +43,7 @@ namespace BFF.Persistence.Realm.ORM
                 var initialCacheEntriesForCategories = categories
                     .Select(c =>
                     {
-                        var budgetCacheEntry = c.BudgetCacheEntriesRef
+                        var budgetCacheEntry = c.BudgetCacheEntries
                             .Where(bce => bce.Month < currentYear)
                             .OrderBy(bce => bce.Month)
                             .LastOrDefault();
@@ -64,25 +64,25 @@ namespace BFF.Persistence.Realm.ORM
                 var categoryToInitialBalance = initialCacheEntriesForCategories.ToDictionary(t => t.Category, t => Math.Max(0L, t.Balance));
 
                 var categoryToBudgetEntryLookup = realm.All<BudgetEntry>()
-                    .Where(be => be.MonthOffset >= currentYear && be.MonthOffset < nextYear)
+                    .Where(be => be.Month >= currentYear && be.Month < nextYear)
                     .ToArray()
-                    .ToLookup(be => be.CategoryRef);
+                    .ToLookup(be => be.Category);
 
                 var categoryToTransactionLookup = realm.All<Trans>()
                     .Where(t => t.TypeIndex == (int) TransType.Transaction 
-                                && t.DateOffset >= currentYear
-                                && t.DateOffset < nextYear
-                                && t.CategoryRef != null)
+                                && t.Date >= currentYear
+                                && t.Date < nextYear
+                                && t.Category != null)
                     .ToArray()
-                    .ToLookup(t => t.CategoryRef);
+                    .ToLookup(t => t.Category);
 
                 var categoryToSubTransactionLookup = realm.All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                                && t.DateOffset >= currentYear
-                                && t.DateOffset < nextYear)
+                                && t.Date >= currentYear
+                                && t.Date < nextYear)
                     .ToArray()
-                    .SelectMany(pt => pt.SubTransactionsRef.ToArray().Select(st => (pt, st)))
-                    .ToLookup(t => t.st.CategoryRef);
+                    .SelectMany(pt => pt.SubTransactions.ToArray().Select(st => (pt, st)))
+                    .ToLookup(t => t.st.Category);
 
                 var budgetEntriesPerMonth = categories
                     .SelectMany(c =>
@@ -127,25 +127,25 @@ namespace BFF.Persistence.Realm.ORM
 
                 var danglingTransfersPerMonth = realm.All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.Transfer
-                                && (t.FromAccountRef == null && t.ToAccountRef != null || t.ToAccountRef == null && t.FromAccountRef != null)
-                                && t.DateOffset >= currentYear && t.DateOffset < nextYear)
+                                && (t.FromAccount == null && t.ToAccount != null || t.ToAccount == null && t.FromAccount != null)
+                                && t.Date >= currentYear && t.Date < nextYear)
                     .ToArray()
                     .Select(t => (Month: new DateTime(t.Date.Year, t.Date.Month, 1),
-                        Sum: t.FromAccountRef is null ? -1L * t.Sum : t.Sum))
+                        Sum: t.FromAccount is null ? -1L * t.Sum : t.Sum))
                     .GroupBy(t => t.Month, t => t.Sum)
                     .ToDictionary(g => g.Key, g => g.Sum());
 
                 var unassignedTransactionsPerMonth = realm.All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.Transaction
-                                && t.CategoryRef == null
-                                && t.DateOffset >= currentYear && t.DateOffset < nextYear)
+                                && t.Category == null
+                                && t.Date >= currentYear && t.Date < nextYear)
                     .ToArray()
                     .Select(t => (Month: new DateTime(t.Date.Year, t.Date.Month, 1), t.Sum))
                     .Concat(realm.All<Trans>()
                         .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                                    && t.DateOffset >= currentYear && t.DateOffset < nextYear)
+                                    && t.Date >= currentYear && t.Date < nextYear)
                         .ToArray()
-                        .SelectMany(t => t.SubTransactionsRef.Where(st => st.CategoryRef == null), (t, st) => (Month: new DateTime(t.Date.Year, t.Date.Month, 1), st.Sum)))
+                        .SelectMany(t => t.SubTransactions.Where(st => st.Category == null), (t, st) => (Month: new DateTime(t.Date.Year, t.Date.Month, 1), st.Sum)))
                     .GroupBy(t => t.Month, t => t.Sum)
                     .ToDictionary(g => g.Key, g => g.Sum());
 
@@ -154,35 +154,35 @@ namespace BFF.Persistence.Realm.ORM
                     .ToArray()
                     .SelectMany(c =>
                     {
-                        var offsetCurrentYear = new DateTimeOffset(new DateTime(currentYear.Year, currentYear.Month, 1).OffsetMonthBy(-1 * c.MonthOffset), TimeSpan.Zero);
-                        var offsetNextYear = new DateTimeOffset(new DateTime(nextYear.Year, nextYear.Month, 1).OffsetMonthBy(-1 * c.MonthOffset), TimeSpan.Zero);
+                        var offsetCurrentYear = new DateTimeOffset(new DateTime(currentYear.Year, currentYear.Month, 1).OffsetMonthBy(-1 * c.Month), TimeSpan.Zero);
+                        var offsetNextYear = new DateTimeOffset(new DateTime(nextYear.Year, nextYear.Month, 1).OffsetMonthBy(-1 * c.Month), TimeSpan.Zero);
                         var transactions = realm.All<Trans>()
                             .Where(t => t.TypeIndex == (int) TransType.Transaction 
-                                        && t.CategoryRef == c 
-                                        && t.DateOffset >= offsetCurrentYear 
-                                        && t.DateOffset < offsetNextYear)
+                                        && t.Category == c 
+                                        && t.Date >= offsetCurrentYear 
+                                        && t.Date < offsetNextYear)
                             .ToArray()
                             .Select(t =>
                             {
-                                var offsetDate = new DateTime(t.DateOffset.Year, t.DateOffset.Month, 1).OffsetMonthBy(c.MonthOffset);
+                                var offsetDate = new DateTime(t.Date.Year, t.Date.Month, 1).OffsetMonthBy(c.Month);
                                 return (offsetDate, t.Sum);
                             });
                         var subTransactions = realm.All<Trans>()
                             .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                                        && t.DateOffset >= offsetCurrentYear
-                                        && t.DateOffset < offsetNextYear)
+                                        && t.Date >= offsetCurrentYear
+                                        && t.Date < offsetNextYear)
                             .ToArray()
                             .SelectMany(t =>
                             {
-                                var offsetDate = new DateTime(t.DateOffset.Year, t.DateOffset.Month, 1).OffsetMonthBy(c.MonthOffset);
-                                return t.SubTransactionsRef.Where(st => st.CategoryRef == c).ToArray().Select(st => (offsetDate, st.Sum));
+                                var offsetDate = new DateTime(t.Date.Year, t.Date.Month, 1).OffsetMonthBy(c.Month);
+                                return t.SubTransactions.Where(st => st.Category == c).ToArray().Select(st => (offsetDate, st.Sum));
                             });
                         return transactions.Concat(subTransactions);
                     })
                     .Concat(realm.All<Account>()
-                        .Where(a => a.StartingDateOffset >= currentYear && a.StartingDateOffset < nextYear)
+                        .Where(a => a.StartingDate >= currentYear && a.StartingDate < nextYear)
                         .ToArray()
-                        .Select(a => (offsetDate: new DateTime(a.StartingDateOffset.Year, a.StartingDateOffset.Month, 1), Sum: a.StartingBalance)))
+                        .Select(a => (offsetDate: new DateTime(a.StartingDate.Year, a.StartingDate.Month, 1), Sum: a.StartingBalance)))
                     .GroupBy(t => t.offsetDate, t => t.Sum)
                     .ToDictionary(g => g.Key, g => g.Sum());
 
@@ -199,49 +199,10 @@ namespace BFF.Persistence.Realm.ORM
                     (previous, current) => previous - current.TotalBudget + current.TotalNegativeBalance);
 
                 var initialNotBudgetedOrOverbudgeted =
-                    //// Total previous income
-                    //realm.All<Category>()
-                    //.Where(c => c.IsIncomeRelevant)
-                    //.ToArray()
-                    //.Select(c =>
-                    //{
-                    //    var offsetCurrentYear = new DateTimeOffset(new DateTime(currentYear.Year, currentYear.Month, 1).OffsetMonthBy(-1 * c.MonthOffset), TimeSpan.Zero);
-                    //    var transactionsSum = realm.All<Trans>()
-                    //        .Where(t => t.TypeIndex == (int)TransType.Transaction
-                    //                    && t.CategoryRef == c
-                    //                    && t.DateOffset < offsetCurrentYear)
-                    //        .ToArray()
-                    //        .Sum(t =>t.Sum);
-                    //    var subTransactionsSum = realm.All<Trans>()
-                    //        .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                    //                    && t.DateOffset < offsetCurrentYear)
-                    //        .ToArray()
-                    //        .Sum(t => t.SubTransactionsRef.Where(st => st.CategoryRef == c).ToArray().Sum(st => st.Sum));
-                    //    return transactionsSum + subTransactionsSum;
-                    //})
-                    //.Sum()
-                    //// Total previous account starting-balances
-                    //+ realm.All<Account>()
-                    //    .Where(a => a.StartingDateOffset < currentYear)
-                    //    .ToArray()
-                    //    .Sum(a => a.StartingBalance)
-                    //// Total previous unassigned transaction sums
-                    //+ realm.All<Trans>()
-                    //    .Where(t => t.TypeIndex == (int)TransType.Transaction
-                    //                && t.CategoryRef == null
-                    //                && t.DateOffset < currentYear)
-                    //    .ToArray()
-                    //    .Sum(t => t.Sum)
-                    //// Total previous dangling transfer sums
-                    //+ realm.All<Trans>()
-                    //    .Where(t => t.TypeIndex == (int)TransType.Transfer
-                    //                && (t.FromAccountRef == null && t.ToAccountRef != null || t.ToAccountRef == null && t.FromAccountRef != null)
-                    //                && t.DateOffset < currentYear)
-                    //    .ToArray()
-                    //    .Sum(t => t.FromAccountRef is null ? -1L * t.Sum : t.Sum)
                     totalGlobalPotMoney
-                    // Total previous budget and negative balances
                     + expensesFromCategoryPots
+                    // Subtract "initialOverspentInPreviousMonth" because it will be used in the budget month and is included in "expensesFromCategoryPots"
+                    // hence, it would be accounted two times otherwise
                     - initialOverspentInPreviousMonth;
 
 

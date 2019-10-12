@@ -4,28 +4,27 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Extensions;
-using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
-    internal class Flag : Model.Models.Flag, IRealmModel<IFlagRealm>
+    internal class Flag : Model.Models.Flag, IRealmModel<Persistence.Flag>
     {
         private readonly IMergeOrm _mergeOrm;
         private readonly IRealmFlagRepositoryInternal _repository;
-        private readonly RealmObjectWrap<IFlagRealm> _realmObjectWrap;
+        private readonly RealmObjectWrap<Persistence.Flag> _realmObjectWrap;
 
         public Flag(
-            ICrudOrm<IFlagRealm> crudOrm,
+            ICrudOrm<Persistence.Flag> crudOrm,
             IMergeOrm mergeOrm,
             IRealmFlagRepositoryInternal repository,
             IRxSchedulerProvider rxSchedulerProvider,
-            IFlagRealm realmObject,
+            Persistence.Flag realmObject,
             Color color, 
             string name) : base(rxSchedulerProvider, color, name)
         {
-            _realmObjectWrap = new RealmObjectWrap<IFlagRealm>(
+            _realmObjectWrap = new RealmObjectWrap<Persistence.Flag>(
                 realmObject,
                 realm =>
                 {
@@ -38,7 +37,7 @@ namespace BFF.Persistence.Realm.Models.Domain
             _mergeOrm = mergeOrm;
             _repository = repository;
             
-            void UpdateRealmObject(IFlagRealm ro)
+            void UpdateRealmObject(Persistence.Flag ro)
             {
                 ro.Name = Name;
                 ro.Color = Color.ToLong();
@@ -47,7 +46,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public IFlagRealm RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.Flag RealmObject => _realmObjectWrap.RealmObject;
 
         public override async Task InsertAsync()
         {

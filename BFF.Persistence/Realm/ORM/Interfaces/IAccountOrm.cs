@@ -4,14 +4,14 @@ using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Realm.ORM.Interfaces
 {
-    public interface IAccountOrm : IOncePerBackend
+    internal interface IAccountOrm : IOncePerBackend
     {
-        Task<long?> GetClearedBalanceAsync(IAccountRealm account);
-        Task<long?> GetClearedBalanceUntilNowAsync(IAccountRealm account);
+        Task<long?> GetClearedBalanceAsync(Account account);
+        Task<long?> GetClearedBalanceUntilNowAsync(Account account);
         Task<long?> GetClearedOverallBalanceAsync();
         Task<long?> GetClearedOverallBalanceUntilNowAsync();
-        Task<long?> GetUnclearedBalanceAsync(IAccountRealm account);
-        Task<long?> GetUnclearedBalanceUntilNowAsync(IAccountRealm account);
+        Task<long?> GetUnclearedBalanceAsync(Account account);
+        Task<long?> GetUnclearedBalanceUntilNowAsync(Account account);
         Task<long?> GetUnclearedOverallBalanceAsync();
         Task<long?> GetUnclearedOverallBalanceUntilNowAsync();
     }

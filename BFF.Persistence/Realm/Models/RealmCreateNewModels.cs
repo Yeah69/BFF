@@ -6,6 +6,13 @@ using BFF.Model.Repositories;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
+using Account = BFF.Persistence.Realm.Models.Persistence.Account;
+using BudgetEntry = BFF.Persistence.Realm.Models.Persistence.BudgetEntry;
+using Category = BFF.Persistence.Realm.Models.Persistence.Category;
+using DbSetting = BFF.Persistence.Realm.Models.Persistence.DbSetting;
+using Flag = BFF.Persistence.Realm.Models.Persistence.Flag;
+using Payee = BFF.Persistence.Realm.Models.Persistence.Payee;
+using SubTransaction = BFF.Persistence.Realm.Models.Persistence.SubTransaction;
 
 namespace BFF.Persistence.Realm.Models
 {
@@ -15,14 +22,14 @@ namespace BFF.Persistence.Realm.Models
 
     internal class RealmCreateNewModels : IRealmCreateNewModels
     {
-        private readonly Lazy<RealmCrudOrm<ITransRealm>> _transCrudOrm;
-        private readonly Lazy<RealmCrudOrm<ISubTransactionRealm>> _subTransactionCrudOrm;
-        private readonly Lazy<RealmCrudOrm<IAccountRealm>> _accountCrudOrm;
-        private readonly Lazy<RealmCrudOrm<IPayeeRealm>> _payeeCrudOrm;
-        private readonly Lazy<RealmCrudOrm<ICategoryRealm>> _categoryCrudOrm;
-        private readonly Lazy<RealmCrudOrm<IFlagRealm>> _flagCrudOrm;
-        private readonly Lazy<RealmCrudOrm<IBudgetEntryRealm>> _budgetEntryCrudOrm;
-        private readonly Lazy<RealmCrudOrm<IDbSettingRealm>> _dbSettingCrudOrm;
+        private readonly Lazy<RealmCrudOrm<Trans>> _transCrudOrm;
+        private readonly Lazy<RealmCrudOrm<SubTransaction>> _subTransactionCrudOrm;
+        private readonly Lazy<RealmCrudOrm<Account>> _accountCrudOrm;
+        private readonly Lazy<RealmCrudOrm<Payee>> _payeeCrudOrm;
+        private readonly Lazy<RealmCrudOrm<Category>> _categoryCrudOrm;
+        private readonly Lazy<RealmCrudOrm<Flag>> _flagCrudOrm;
+        private readonly Lazy<RealmCrudOrm<BudgetEntry>> _budgetEntryCrudOrm;
+        private readonly Lazy<RealmCrudOrm<DbSetting>> _dbSettingCrudOrm;
         private readonly Lazy<RealmMergeOrm> _mergeOrm;
         private readonly Lazy<RealmSubTransactionRepository> _subTransactionRepository;
         private readonly Lazy<RealmAccountOrm> _accountOrm;
@@ -36,14 +43,14 @@ namespace BFF.Persistence.Realm.Models
         private readonly ILastSetDate _lastSetDate;
 
         public RealmCreateNewModels(
-            Lazy<RealmCrudOrm<ITransRealm>> transCrudOrm,
-            Lazy<RealmCrudOrm<ISubTransactionRealm>> subTransactionCrudOrm,
-            Lazy<RealmCrudOrm<IAccountRealm>> accountCrudOrm,
-            Lazy<RealmCrudOrm<IPayeeRealm>> payeeCrudOrm,
-            Lazy<RealmCrudOrm<ICategoryRealm>> categoryCrudOrm,
-            Lazy<RealmCrudOrm<IFlagRealm>> flagCrudOrm,
-            Lazy<RealmCrudOrm<IBudgetEntryRealm>> budgetEntryCrudOrm,
-            Lazy<RealmCrudOrm<IDbSettingRealm>> dbSettingCrudOrm,
+            Lazy<RealmCrudOrm<Trans>> transCrudOrm,
+            Lazy<RealmCrudOrm<SubTransaction>> subTransactionCrudOrm,
+            Lazy<RealmCrudOrm<Account>> accountCrudOrm,
+            Lazy<RealmCrudOrm<Payee>> payeeCrudOrm,
+            Lazy<RealmCrudOrm<Category>> categoryCrudOrm,
+            Lazy<RealmCrudOrm<Flag>> flagCrudOrm,
+            Lazy<RealmCrudOrm<BudgetEntry>> budgetEntryCrudOrm,
+            Lazy<RealmCrudOrm<DbSetting>> dbSettingCrudOrm,
             Lazy<RealmMergeOrm> mergeOrm,
             Lazy<RealmSubTransactionRepository> subTransactionRepository,
             Lazy<RealmAccountOrm> accountOrm,

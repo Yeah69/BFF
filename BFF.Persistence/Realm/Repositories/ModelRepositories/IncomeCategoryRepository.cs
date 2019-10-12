@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
-using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
@@ -18,14 +17,14 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             StringComparer.Create(CultureInfo.InvariantCulture, false).Compare(x?.Name, y?.Name);
     }
 
-    internal interface IRealmIncomeCategoryRepositoryInternal : IIncomeCategoryRepository, IRealmObservableRepositoryBaseInternal<IIncomeCategory, ICategoryRealm>
+    internal interface IRealmIncomeCategoryRepositoryInternal : IIncomeCategoryRepository, IRealmObservableRepositoryBaseInternal<IIncomeCategory, Models.Persistence.Category>
     {
     }
 
-    internal sealed class RealmIncomeCategoryRepository : RealmObservableRepositoryBase<IIncomeCategory, ICategoryRealm>, IRealmIncomeCategoryRepositoryInternal
+    internal sealed class RealmIncomeCategoryRepository : RealmObservableRepositoryBase<IIncomeCategory, Models.Persistence.Category>, IRealmIncomeCategoryRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly ICrudOrm<ICategoryRealm> _crudOrm;
+        private readonly ICrudOrm<Models.Persistence.Category> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IMergeOrm> _mergeOrm;
         private readonly Lazy<ICategoryOrm> _categoryOrm;
@@ -34,7 +33,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 
         public RealmIncomeCategoryRepository(
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm<ICategoryRealm> crudOrm,
+            ICrudOrm<Models.Persistence.Category> crudOrm,
             IRealmOperations realmOperations,
             Lazy<IMergeOrm> mergeOrm,
             Lazy<ICategoryOrm> categoryOrm)
@@ -49,7 +48,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         }
 
 
-        protected override Task<IIncomeCategory> ConvertToDomainAsync(ICategoryRealm persistenceModel)
+        protected override Task<IIncomeCategory> ConvertToDomainAsync(Models.Persistence.Category persistenceModel)
         {
             return _realmOperations.RunFuncAsync(InnerAsync);
 
@@ -62,11 +61,11 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                     _rxSchedulerProvider,
                     persistenceModel,
                     persistenceModel.Name,
-                    persistenceModel.MonthOffset);
+                    persistenceModel.Month);
             }
         }
 
-        protected override async Task<IEnumerable<ICategoryRealm>> FindAllInnerAsync()
+        protected override async Task<IEnumerable<Models.Persistence.Category>> FindAllInnerAsync()
         {
             await _onConstructorCompleted.Task.ConfigureAwait(false);
             return await _categoryOrm.Value.ReadIncomeCategoriesAsync().ConfigureAwait(false);

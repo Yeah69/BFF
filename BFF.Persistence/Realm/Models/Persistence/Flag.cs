@@ -2,12 +2,7 @@
 
 namespace BFF.Persistence.Realm.Models.Persistence
 {
-    public interface IFlagRealm : IUniquelyNamedPersistenceModelRealm
-    {
-        long Color { get; set; }
-    }
-    
-    internal class Flag : RealmObject, IFlagRealm
+    internal class Flag : RealmObject, IUniquelyNamedPersistenceModelRealm
     {
         [PrimaryKey]
         public string Name { get; set; }
@@ -15,7 +10,7 @@ namespace BFF.Persistence.Realm.Models.Persistence
 
         public override bool Equals(object obj)
         {
-            if (obj is null || !(obj is IFlagRealm other)) return false;
+            if (obj is null || !(obj is Flag other)) return false;
             return Name == other.Name;
         }
 

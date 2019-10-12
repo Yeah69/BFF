@@ -5,9 +5,9 @@ using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Realm.ORM.Interfaces
 {
-    public interface ICategoryOrm : IOncePerBackend
+    internal interface ICategoryOrm : IOncePerBackend
     {
-        Task<IEnumerable<ICategoryRealm>> ReadCategoriesAsync();
-        Task<IEnumerable<ICategoryRealm>> ReadIncomeCategoriesAsync();
+        Task<IEnumerable<Category>> ReadCategoriesAsync();
+        Task<IEnumerable<Category>> ReadIncomeCategoriesAsync();
     }
 }

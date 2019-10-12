@@ -2,13 +2,7 @@ using Realms;
 
 namespace BFF.Persistence.Realm.Models.Persistence
 {
-    public interface IDbSettingRealm : IUniqueIdPersistenceModelRealm
-    {
-        string CurrencyCultureName { get; set; }
-        string DateCultureName { get; set; }
-    }
-    
-    internal class DbSetting : RealmObject, IDbSettingRealm
+    internal class DbSetting : RealmObject, IUniqueIdPersistenceModelRealm
     {
         [PrimaryKey]
         public int Id { get; set; } = 0;
@@ -21,7 +15,7 @@ namespace BFF.Persistence.Realm.Models.Persistence
 
         public override bool Equals(object obj)
         {
-            if (obj is null || !(obj is IDbSettingRealm other)) return false;
+            if (obj is null || !(obj is DbSetting other)) return false;
             return Id == other.Id;
         }
 

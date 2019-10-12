@@ -22,7 +22,7 @@ namespace BFF.Persistence.Realm.ORM
             _realmOperations = realmOperations;
         }
 
-        public Task MergePayeeAsync([NotNull]IPayeeRealm from, [NotNull]IPayeeRealm to)
+        public Task MergePayeeAsync([NotNull]Payee from, [NotNull]Payee to)
         {
             from = from ?? throw new ArgumentNullException(nameof(from));
             to = to ?? throw new ArgumentNullException(nameof(to));
@@ -35,7 +35,7 @@ namespace BFF.Persistence.Realm.ORM
                 {
                     realm
                         .All<Trans>()
-                        .Where(t => t.PayeeRef == from)
+                        .Where(t => t.Payee == from)
                         .ForEach(t =>
                         {
                             t.Payee = to;
@@ -46,7 +46,7 @@ namespace BFF.Persistence.Realm.ORM
             }
         }
 
-        public Task MergeFlagAsync([NotNull]IFlagRealm from, [NotNull]IFlagRealm to)
+        public Task MergeFlagAsync([NotNull]Flag from, [NotNull]Flag to)
         {
             from = from ?? throw new ArgumentNullException(nameof(from));
             to = to ?? throw new ArgumentNullException(nameof(to));
@@ -59,7 +59,7 @@ namespace BFF.Persistence.Realm.ORM
                 {
                     realm
                         .All<Trans>()
-                        .Where(t => t.FlagRef == from)
+                        .Where(t => t.Flag == from)
                         .ForEach(t =>
                         {
                             t.Flag = to;
@@ -70,7 +70,7 @@ namespace BFF.Persistence.Realm.ORM
             }
         }
 
-        public Task MergeCategoryAsync([NotNull]ICategoryRealm from, [NotNull]ICategoryRealm to)
+        public Task MergeCategoryAsync([NotNull]Category from, [NotNull]Category to)
         {
             from = from ?? throw new ArgumentNullException(nameof(from));
             to = to ?? throw new ArgumentNullException(nameof(to));
@@ -83,7 +83,7 @@ namespace BFF.Persistence.Realm.ORM
                 {
                     realm
                         .All<Trans>()
-                        .Where(t => t.CategoryRef == from)
+                        .Where(t => t.Category == from)
                         .ForEach(t =>
                         {
                             t.Category = to;

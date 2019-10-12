@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 using BFF.Model.Models.Structure;
-using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
 
-    internal interface IRealmCategoryBaseRepositoryInternal : IRealmReadOnlyRepository<ICategoryBase, ICategoryRealm>
+    internal interface IRealmCategoryBaseRepositoryInternal : IRealmReadOnlyRepository<ICategoryBase, Models.Persistence.Category>
     {
     }
 
@@ -20,7 +19,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             _incomeCategoryRepository = incomeCategoryRepository;
         }
 
-        public async Task<ICategoryBase> FindAsync(ICategoryRealm realmObject)
+        public async Task<ICategoryBase> FindAsync(Models.Persistence.Category realmObject)
         {
             return realmObject.IsIncomeRelevant
                 ? await _incomeCategoryRepository.FindAsync(realmObject).ConfigureAwait(false)

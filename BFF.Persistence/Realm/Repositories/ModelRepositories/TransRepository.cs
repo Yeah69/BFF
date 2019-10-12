@@ -14,7 +14,7 @@ using IncomeCategory = BFF.Persistence.Realm.Models.Domain.IncomeCategory;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
-    public interface IRealmTransRepository
+    internal interface IRealmTransRepository
     {
         Task<IEnumerable<ITransBase>> GetFromMonthAsync(DateTime month);
         Task<IEnumerable<ITransBase>> GetFromMonthAndCategoryAsync(DateTime month, ICategoryBase category);
@@ -23,7 +23,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         Task<long> GetCountAsync(IAccount specifyingObject);
     }
 
-    internal sealed class RealmTransRepository : RealmRepositoryBase<ITransBase, ITransRealm>, IRealmTransRepository
+    internal sealed class RealmTransRepository : RealmRepositoryBase<ITransBase, Trans>, IRealmTransRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly Lazy<IRealmAccountRepositoryInternal> _accountRepository;
@@ -31,7 +31,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         private readonly Lazy<IRealmPayeeRepositoryInternal> _payeeRepository;
         private readonly Lazy<IRealmFlagRepositoryInternal> _flagRepository;
         private readonly Lazy<IRealmSubTransactionRepository> _subTransactionsRepository;
-        private readonly ICrudOrm<ITransRealm> _crudOrm;
+        private readonly ICrudOrm<Trans> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<ITransOrm> _transOrm;
 
@@ -42,7 +42,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             Lazy<IRealmPayeeRepositoryInternal> payeeRepository,
             Lazy<IRealmFlagRepositoryInternal> flagRepository,
             Lazy<IRealmSubTransactionRepository> subTransactionsRepository, 
-            ICrudOrm<ITransRealm> crudOrm,
+            ICrudOrm<Trans> crudOrm,
             IRealmOperations realmOperations,
             Lazy<ITransOrm> transOrm)
             : base(crudOrm)
@@ -60,7 +60,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 
         public async Task<IEnumerable<ITransBase>> GetPageAsync(int offset, int pageSize, IAccount specifyingObject)
         {
-            Task<IEnumerable<ITransRealm>> elements;
+            Task<IEnumerable<Trans>> elements;
             if (specifyingObject is ISummaryAccount)
             {
                 elements = _transOrm.Value.GetPageFromSummaryAccountAsync(offset, pageSize);
@@ -140,17 +140,17 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                 .ConfigureAwait(false);
         }
 
-        protected override Task<ITransBase> ConvertToDomainAsync(ITransRealm persistenceModel)
+        protected override Task<ITransBase> ConvertToDomainAsync(Trans persistenceModel)
         {
             return _realmOperations.RunFuncAsync(InnerAsync);
 
             async Task<ITransBase> InnerAsync(Realms.Realm _)
             {
                 ITransBase ret;
-                switch (persistenceModel.Type)
+                switch ((TransType) persistenceModel.TypeIndex)
                 {
                     case TransType.Transaction:
-                        ret = new Models.Domain.Transaction(_crudOrm, _rxSchedulerProvider, persistenceModel, persistenceModel.Date, persistenceModel.Flag is null
+                        ret = new Models.Domain.Transaction(_crudOrm, _rxSchedulerProvider, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
                             ? null
                             : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false), persistenceModel.CheckNumber, await _accountRepository.Value.FindAsync(persistenceModel.Account).ConfigureAwait(false), persistenceModel.Payee is null
                             ? null
@@ -159,7 +159,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                             : await _categoryBaseRepository.Value.FindAsync(persistenceModel.Category).ConfigureAwait(false), persistenceModel.Memo, persistenceModel.Sum, persistenceModel.Cleared);
                         break;
                     case TransType.Transfer:
-                        ret = new Models.Domain.Transfer(_crudOrm, _rxSchedulerProvider, persistenceModel, persistenceModel.Date, persistenceModel.Flag is null
+                        ret = new Models.Domain.Transfer(_crudOrm, _rxSchedulerProvider, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
                             ? null
                             : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false), persistenceModel.CheckNumber, persistenceModel.FromAccount is null
                             ? null
@@ -168,7 +168,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                             : await _accountRepository.Value.FindAsync(persistenceModel.ToAccount).ConfigureAwait(false), persistenceModel.Memo, persistenceModel.Sum, persistenceModel.Cleared);
                         break;
                     case TransType.ParentTransaction:
-                        ret = new Models.Domain.ParentTransaction(_crudOrm, _subTransactionsRepository.Value, _rxSchedulerProvider, persistenceModel, persistenceModel.Date, persistenceModel.Flag is null
+                        ret = new Models.Domain.ParentTransaction(_crudOrm, _subTransactionsRepository.Value, _rxSchedulerProvider, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
                             ? null
                             : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false), persistenceModel.CheckNumber, await _accountRepository.Value.FindAsync(persistenceModel.Account).ConfigureAwait(false), persistenceModel.Payee is null
                             ? null

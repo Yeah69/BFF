@@ -52,11 +52,11 @@ namespace BFF.Persistence.Realm
                 .Distinct()
                 .ToDictionary(
                     Basic.Identity,
-                    accountName => (IAccountRealm) new Account
+                    accountName => new Account
                     {
                         Name = accountName,
                         StartingBalance = container.AccountStartingBalances[accountName],
-                        StartingDate = container.AccountStartingDates[accountName]
+                        StartingDate = new DateTimeOffset(container.AccountStartingDates[accountName], TimeSpan.Zero)
                     })
                 .ToReadOnlyDictionary();
 
@@ -67,7 +67,7 @@ namespace BFF.Persistence.Realm
                 .Distinct()
                 .ToDictionary(
                     Basic.Identity,
-                    payeeName => (IPayeeRealm) new Payee
+                    payeeName => new Payee
                     {
                         Name = payeeName
                     })
@@ -82,7 +82,7 @@ namespace BFF.Persistence.Realm
                 .WhereNotNull()
                 .ToDictionary(
                     Basic.Identity,
-                    f => (IFlagRealm) new Flag
+                    f => new Flag
                     {
                         Name = f?.Name,
                         Color = f?.Color.ToLong() 
@@ -91,18 +91,18 @@ namespace BFF.Persistence.Realm
                 .ToReadOnlyDictionary();
 
             var realmCategoryId = 0;
-            var categoryDictionary = new Dictionary<CategoryDto, ICategoryRealm>();
+            var categoryDictionary = new Dictionary<CategoryDto, Category>();
 
             var categories = container
                 .Categories
-                .Select<ICategoryRealm>((categoryDto, resultChildren) =>
+                .Select<Category>((categoryDto, resultChildren) =>
                 {
-                    var category = (ICategoryRealm)new Category
+                    var category = new Category
                     {
                         Id = realmCategoryId++,
                         Name = categoryDto.Name,
                         IsIncomeRelevant = false,
-                        MonthOffset = default,
+                        Month = default,
                     };
                     foreach (var child in resultChildren)
                     {
@@ -121,13 +121,13 @@ namespace BFF.Persistence.Realm
                 .Select(
                     categoryDto =>
                     {
-                        var category = (ICategoryRealm) new Category
+                        var category = new Category
                         {
                             Id = realmCategoryId++,
                             Name = categoryDto.Name,
                             Parent = null,
                             IsIncomeRelevant = true,
-                            MonthOffset = categoryDto.IncomeMonthOffset,
+                            Month = categoryDto.IncomeMonthOffset,
                         };
                         categoryDictionary[categoryDto] = category;
                         return category;
@@ -135,17 +135,17 @@ namespace BFF.Persistence.Realm
                 .ToReadOnlyList();
 
             var realmTransId = 0;
-            var subTransactionDtoToRealmParentDictionary = new Dictionary<SubTransactionDto, ITransRealm>();
+            var subTransactionDtoToRealmParentDictionary = new Dictionary<SubTransactionDto, Trans>();
 
             var transList =
                 container
                     .Transactions
                     .Select(transactionDto =>
-                        (ITransRealm) new Trans
+                        new Trans
                         {
                             Id = realmTransId++,
                             Account = accountDictionary[transactionDto.Account],
-                            Date = transactionDto.Date,
+                            Date = new DateTimeOffset(transactionDto.Date, TimeSpan.Zero),
                             Payee = payeeDictionary[transactionDto.Payee],
                             Category = categoryDictionary[transactionDto.Category],
                             Flag = transactionDto.Flag is null ? null : flagDictionary[transactionDto.Flag],
@@ -153,7 +153,7 @@ namespace BFF.Persistence.Realm
                             Memo = transactionDto.Memo,
                             Sum = transactionDto.Sum,
                             Cleared = transactionDto.Cleared,
-                            Type = TransType.Transaction,
+                            TypeIndex = (int) TransType.Transaction,
                             ToAccount = default,
                             FromAccount = default
                         })
@@ -161,18 +161,18 @@ namespace BFF.Persistence.Realm
                         container
                             .Transfers
                             .Select(transferDto =>
-                                (ITransRealm)new Trans
+                                new Trans
                                 {
                                     Id = realmTransId++,
                                     FromAccount = accountDictionary[transferDto.FromAccount],
                                     ToAccount = accountDictionary[transferDto.ToAccount],
-                                    Date = transferDto.Date,
+                                    Date = new DateTimeOffset(transferDto.Date, TimeSpan.Zero),
                                     Flag = transferDto.Flag is null ? null : flagDictionary[transferDto.Flag],
                                     CheckNumber = transferDto.CheckNumber,
                                     Memo = transferDto.Memo,
                                     Sum = transferDto.Sum,
                                     Cleared = transferDto.Cleared,
-                                    Type = TransType.Transfer,
+                                    TypeIndex = (int) TransType.Transfer,
                                     Account = default,
                                     Payee = default,
                                     Category = default
@@ -182,17 +182,17 @@ namespace BFF.Persistence.Realm
                             .ParentTransactions
                             .Select(parentTransactionDto =>
                             {
-                                var parentTransaction = (ITransRealm) new Trans
+                                var parentTransaction = new Trans
                                 {
                                     Id = realmTransId++,
                                     Account = accountDictionary[parentTransactionDto.Account],
-                                    Date = parentTransactionDto.Date,
+                                    Date = new DateTimeOffset(parentTransactionDto.Date, TimeSpan.Zero),
                                     Payee = payeeDictionary[parentTransactionDto.Payee],
                                     Flag = parentTransactionDto.Flag is null ? null : flagDictionary[parentTransactionDto.Flag],
                                     CheckNumber = parentTransactionDto.CheckNumber,
                                     Memo = parentTransactionDto.Memo,
                                     Cleared = parentTransactionDto.Cleared,
-                                    Type = TransType.ParentTransaction,
+                                    TypeIndex = (int) TransType.ParentTransaction,
                                     ToAccount = default,
                                     FromAccount = default,
                                     Category = default,
@@ -210,7 +210,7 @@ namespace BFF.Persistence.Realm
                     .ParentTransactions
                     .SelectMany(pt => pt.SubTransactions)
                     .Select(subTransactionDto =>
-                        (ISubTransactionRealm) new SubTransaction
+                        new SubTransaction
                         {
                             Id = realmSubTransactionId++,
                             Parent = subTransactionDtoToRealmParentDictionary[subTransactionDto],
@@ -226,11 +226,11 @@ namespace BFF.Persistence.Realm
                     .BudgetEntries
                     .Where(be => be.Budget != 0)
                     .Select(budgetEntryDto =>
-                        (IBudgetEntryRealm) new BudgetEntry
+                        new BudgetEntry
                         {
                             Id = realmBudgetEntryId++,
                             Category = categoryDictionary[budgetEntryDto.Category],
-                            Month = budgetEntryDto.Month,
+                            Month = new DateTimeOffset(budgetEntryDto.Month, TimeSpan.Zero),
                             Budget = budgetEntryDto.Budget
                         })
                     .ToReadOnlyList();
@@ -250,14 +250,14 @@ namespace BFF.Persistence.Realm
 
         private class RealmExportContainer : IRealmExportContainerData
         {
-            public IReadOnlyList<IAccountRealm> Accounts { get; set; }
-            public IReadOnlyList<IPayeeRealm> Payees { get; set; }
-            public IReadOnlyList<ICategoryRealm> Categories { get; set; }
-            public IReadOnlyList<ICategoryRealm> IncomeCategories { get; set; }
-            public IReadOnlyList<IFlagRealm> Flags { get; set; }
-            public IReadOnlyList<ITransRealm> Trans { get; set; }
-            public IReadOnlyList<ISubTransactionRealm> SubTransactions { get; set; }
-            public IReadOnlyList<IBudgetEntryRealm> BudgetEntries { get; set; }
+            public IReadOnlyList<Account> Accounts { get; set; }
+            public IReadOnlyList<Payee> Payees { get; set; }
+            public IReadOnlyList<Category> Categories { get; set; }
+            public IReadOnlyList<Category> IncomeCategories { get; set; }
+            public IReadOnlyList<Flag> Flags { get; set; }
+            public IReadOnlyList<Trans> Trans { get; set; }
+            public IReadOnlyList<SubTransaction> SubTransactions { get; set; }
+            public IReadOnlyList<BudgetEntry> BudgetEntries { get; set; }
         }
 
         public void Dispose()

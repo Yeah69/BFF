@@ -3,29 +3,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
-using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
 using MoreLinq;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
-    internal class Category : Model.Models.Category, IRealmModel<ICategoryRealm>
+    internal class Category : Model.Models.Category, IRealmModel<Persistence.Category>
     {
         private readonly IMergeOrm _mergeOrm;
         private readonly IRealmCategoryRepositoryInternal _repository;
-        private readonly RealmObjectWrap<ICategoryRealm> _realmObjectWrap;
+        private readonly RealmObjectWrap<Persistence.Category> _realmObjectWrap;
 
         public Category(
-            ICrudOrm<ICategoryRealm> crudOrm,
+            ICrudOrm<Persistence.Category> crudOrm,
             IMergeOrm mergeOrm,
             IRealmCategoryRepositoryInternal repository,
             IRxSchedulerProvider rxSchedulerProvider,
-            ICategoryRealm realmObject,
+            Persistence.Category realmObject,
             string name, 
             ICategory parent) : base(rxSchedulerProvider, name, parent)
         {
-            _realmObjectWrap = new RealmObjectWrap<ICategoryRealm>(
+            _realmObjectWrap = new RealmObjectWrap<Persistence.Category>(
                 realmObject,
                 realm =>
                 {
@@ -41,7 +40,7 @@ namespace BFF.Persistence.Realm.Models.Domain
             _mergeOrm = mergeOrm;
             _repository = repository;
             
-            void UpdateRealmObject(ICategoryRealm ro)
+            void UpdateRealmObject(Persistence.Category ro)
             {
                 ro.Parent =
                     Parent is null 
@@ -49,14 +48,14 @@ namespace BFF.Persistence.Realm.Models.Domain
                         : (Parent as Category)?.RealmObject
                           ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
                 ro.IsIncomeRelevant = false;
-                ro.MonthOffset = 0;
+                ro.Month = 0;
                 ro.Name = Name;
             }
         }
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public ICategoryRealm RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.Category RealmObject => _realmObjectWrap.RealmObject;
 
         public override async Task InsertAsync()
         {

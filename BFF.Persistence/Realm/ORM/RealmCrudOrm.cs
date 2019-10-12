@@ -42,21 +42,21 @@ namespace BFF.Persistence.Realm.ORM
             {
                 switch (true)
                 {
-                    case true when typeof(T) == typeof(IAccountRealm):
+                    case true when typeof(T) == typeof(Account):
                         return realm.All<Account>().ToList().OfType<T>();
-                    case true when typeof(T) == typeof(IPayeeRealm):
+                    case true when typeof(T) == typeof(Payee):
                         return realm.All<Payee>().ToList().OfType<T>();
-                    case true when typeof(T) == typeof(ICategoryRealm):
+                    case true when typeof(T) == typeof(Category):
                         return realm.All<Category>().ToList().OfType<T>();
-                    case true when typeof(T) == typeof(IFlagRealm):
+                    case true when typeof(T) == typeof(Flag):
                         return realm.All<Flag>().ToList().OfType<T>();
-                    case true when typeof(T) == typeof(ITransRealm):
+                    case true when typeof(T) == typeof(Trans):
                         return realm.All<Trans>().ToList().OfType<T>();
-                    case true when typeof(T) == typeof(ISubTransactionRealm):
+                    case true when typeof(T) == typeof(SubTransaction):
                         return realm.All<SubTransaction>().ToList().OfType<T>();
-                    case true when typeof(T) == typeof(IBudgetEntryRealm):
+                    case true when typeof(T) == typeof(BudgetEntry):
                         return realm.All<BudgetEntry>().ToList().OfType<T>();
-                    case true when typeof(T) == typeof(IDbSettingRealm):
+                    case true when typeof(T) == typeof(DbSetting):
                         return realm.All<DbSetting>().ToList().OfType<T>();
                     default:
                         throw new ArgumentException("Unexpected generic type!", nameof(T));
@@ -87,16 +87,16 @@ namespace BFF.Persistence.Realm.ORM
             {
                 switch (model)
                 {
-                    case IAccountRealm account:
+                    case Account account:
                         _provideConnection.Backup($"BeforeDeletionOfAccount{account.Name}");
                         break;
-                    case ICategoryRealm category:
+                    case Category category:
                         _provideConnection.Backup($"BeforeDeletionOfCategory{category.Name}");
                         break;
-                    case IPayeeRealm payee:
+                    case Payee payee:
                         _provideConnection.Backup($"BeforeDeletionOfPayee{payee.Name}");
                         break;
-                    case IFlagRealm flag:
+                    case Flag flag:
                         _provideConnection.Backup($"BeforeDeletionOfFlag{flag.Name}");
                         break;
                 }

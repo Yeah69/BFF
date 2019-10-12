@@ -10,22 +10,22 @@ using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
-    public interface IRealmSubTransactionRepository
+    internal interface IRealmSubTransactionRepository
     {
-        Task<IEnumerable<ISubTransaction>> GetChildrenOfAsync(ITransRealm parentTransaction);
+        Task<IEnumerable<ISubTransaction>> GetChildrenOfAsync(Trans parentTransaction);
     }
 
-    internal sealed class RealmSubTransactionRepository : RealmRepositoryBase<ISubTransaction, ISubTransactionRealm>, IRealmSubTransactionRepository
+    internal sealed class RealmSubTransactionRepository : RealmRepositoryBase<ISubTransaction, Models.Persistence.SubTransaction>, IRealmSubTransactionRepository
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly ICrudOrm<ISubTransactionRealm> _crudOrm;
+        private readonly ICrudOrm<Models.Persistence.SubTransaction> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IParentalOrm> _parentalOrm;
         private readonly Lazy<IRealmCategoryBaseRepositoryInternal> _categoryBaseRepository;
 
         public RealmSubTransactionRepository(
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm<ISubTransactionRealm> crudOrm,
+            ICrudOrm<Models.Persistence.SubTransaction> crudOrm,
             IRealmOperations realmOperations,
             Lazy<IParentalOrm> parentalOrm,
             Lazy<IRealmCategoryBaseRepositoryInternal> categoryBaseRepository)
@@ -38,11 +38,11 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             _categoryBaseRepository = categoryBaseRepository;
         }
 
-        public async Task<IEnumerable<ISubTransaction>> GetChildrenOfAsync(ITransRealm parentTransaction) =>
+        public async Task<IEnumerable<ISubTransaction>> GetChildrenOfAsync(Trans parentTransaction) =>
             await (await _parentalOrm.Value.ReadSubTransactionsOfAsync(parentTransaction).ConfigureAwait(false))
                 .Select(async sti => await ConvertToDomainAsync(sti).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
 
-        protected override Task<ISubTransaction> ConvertToDomainAsync(ISubTransactionRealm persistenceModel)
+        protected override Task<ISubTransaction> ConvertToDomainAsync(Models.Persistence.SubTransaction persistenceModel)
         {
             return _realmOperations.RunFuncAsync(InnerAsync);
 

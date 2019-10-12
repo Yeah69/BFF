@@ -6,15 +6,15 @@ using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Realm.ORM.Interfaces
 {
-    public interface ITransOrm : IOncePerBackend
+    internal interface ITransOrm : IOncePerBackend
     {
-        Task<IEnumerable<ITransRealm>> GetPageFromSpecificAccountAsync(int offset, int pageSize, IAccountRealm account);
-        Task<IEnumerable<ITransRealm>> GetPageFromSummaryAccountAsync(int offset, int pageSize);
-        Task<IEnumerable<ITransRealm>> GetFromMonthAsync(DateTime month);
-        Task<IEnumerable<ITransRealm>> GetFromMonthAndCategoryAsync(DateTime month, ICategoryRealm category);
-        Task<IEnumerable<ITransRealm>> GetFromMonthAndCategoriesAsync(DateTime month, ICategoryRealm[] categories);
+        Task<IEnumerable<Trans>> GetPageFromSpecificAccountAsync(int offset, int pageSize, Account account);
+        Task<IEnumerable<Trans>> GetPageFromSummaryAccountAsync(int offset, int pageSize);
+        Task<IEnumerable<Trans>> GetFromMonthAsync(DateTime month);
+        Task<IEnumerable<Trans>> GetFromMonthAndCategoryAsync(DateTime month, Category category);
+        Task<IEnumerable<Trans>> GetFromMonthAndCategoriesAsync(DateTime month, Category[] categories);
 
-        Task<long> GetCountFromSpecificAccountAsync(IAccountRealm account);
+        Task<long> GetCountFromSpecificAccountAsync(Account account);
         Task<long> GetCountFromSummaryAccountAsync();
     }
 }

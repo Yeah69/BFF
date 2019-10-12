@@ -5,8 +5,8 @@ using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Realm.ORM.Interfaces
 {
-    public interface IParentalOrm : IOncePerBackend
+    internal interface IParentalOrm : IOncePerBackend
     {
-        Task<IEnumerable<ISubTransactionRealm>> ReadSubTransactionsOfAsync(ITransRealm parentTransaction);
+        Task<IEnumerable<SubTransaction>> ReadSubTransactionsOfAsync(Trans parentTransaction);
     }
 }

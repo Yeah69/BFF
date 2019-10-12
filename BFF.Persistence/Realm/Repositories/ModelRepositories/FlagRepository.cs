@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
-using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
@@ -18,20 +17,20 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         }
     }
 
-    internal interface IRealmFlagRepositoryInternal : IFlagRepository, IRealmObservableRepositoryBaseInternal<IFlag, IFlagRealm>
+    internal interface IRealmFlagRepositoryInternal : IFlagRepository, IRealmObservableRepositoryBaseInternal<IFlag, Models.Persistence.Flag>
     {
     }
 
-    internal sealed class RealmFlagRepository : RealmObservableRepositoryBase<IFlag, IFlagRealm>, IRealmFlagRepositoryInternal
+    internal sealed class RealmFlagRepository : RealmObservableRepositoryBase<IFlag, Models.Persistence.Flag>, IRealmFlagRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly ICrudOrm<IFlagRealm> _crudOrm;
+        private readonly ICrudOrm<Models.Persistence.Flag> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IMergeOrm> _mergeOrm;
 
         public RealmFlagRepository(
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm<IFlagRealm> crudOrm,
+            ICrudOrm<Models.Persistence.Flag> crudOrm,
             IRealmOperations realmOperations,
             Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, realmOperations, new FlagComparer())
         {
@@ -41,7 +40,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             _mergeOrm = mergeOrm;
         }
 
-        protected override Task<IFlag> ConvertToDomainAsync(IFlagRealm persistenceModel)
+        protected override Task<IFlag> ConvertToDomainAsync(Models.Persistence.Flag persistenceModel)
         {
             return _realmOperations.RunFuncAsync(InnerAsync);
 

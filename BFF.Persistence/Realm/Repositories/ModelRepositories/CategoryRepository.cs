@@ -5,27 +5,26 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
-using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
-    internal interface IRealmCategoryRepositoryInternal : ICategoryRepository, IRealmObservableRepositoryBaseInternal<ICategory, ICategoryRealm>
+    internal interface IRealmCategoryRepositoryInternal : ICategoryRepository, IRealmObservableRepositoryBaseInternal<ICategory, Models.Persistence.Category>
     {
         void InitializeAll();
     }
 
-    internal sealed class RealmCategoryRepository : RealmObservableRepositoryBase<ICategory, ICategoryRealm>, IRealmCategoryRepositoryInternal
+    internal sealed class RealmCategoryRepository : RealmObservableRepositoryBase<ICategory, Models.Persistence.Category>, IRealmCategoryRepositoryInternal
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly ICrudOrm<ICategoryRealm> _crudOrm;
+        private readonly ICrudOrm<Models.Persistence.Category> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IMergeOrm> _mergeOrm;
         private readonly Lazy<ICategoryOrm> _categoryOrm;
 
         public RealmCategoryRepository(
             IRxSchedulerProvider rxSchedulerProvider,
-            ICrudOrm<ICategoryRealm> crudOrm,
+            ICrudOrm<Models.Persistence.Category> crudOrm,
             IRealmOperations realmOperations,
             Lazy<IMergeOrm> mergeOrm,
             Lazy<ICategoryOrm> categoryOrm) 
@@ -53,7 +52,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             }
         }
 
-        protected override Task<ICategory> ConvertToDomainAsync(ICategoryRealm persistenceModel)
+        protected override Task<ICategory> ConvertToDomainAsync(Models.Persistence.Category persistenceModel)
         {
             return _realmOperations.RunFuncAsync(InnerAsync);
 
@@ -72,6 +71,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             }
         }
 
-        protected override Task<IEnumerable<ICategoryRealm>> FindAllInnerAsync() => _categoryOrm.Value.ReadCategoriesAsync();
+        protected override Task<IEnumerable<Models.Persistence.Category>> FindAllInnerAsync() => _categoryOrm.Value.ReadCategoriesAsync();
     }
 }

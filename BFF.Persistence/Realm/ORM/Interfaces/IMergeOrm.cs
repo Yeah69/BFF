@@ -4,10 +4,10 @@ using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Realm.ORM.Interfaces
 {
-    public interface IMergeOrm : IOncePerBackend
+    internal interface IMergeOrm : IOncePerBackend
     {
-        Task MergePayeeAsync(IPayeeRealm from, IPayeeRealm to);
-        Task MergeFlagAsync(IFlagRealm from, IFlagRealm to);
-        Task MergeCategoryAsync(ICategoryRealm from, ICategoryRealm to);
+        Task MergePayeeAsync(Payee from, Payee to);
+        Task MergeFlagAsync(Flag from, Flag to);
+        Task MergeCategoryAsync(Category from, Category to);
     }
 }

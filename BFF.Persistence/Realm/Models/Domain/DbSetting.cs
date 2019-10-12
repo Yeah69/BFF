@@ -1,20 +1,19 @@
 ﻿using System.Threading.Tasks;
 using BFF.Core.Helper;
-using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
-    internal class DbSetting : Model.Models.DbSetting, IRealmModel<IDbSettingRealm>
+    internal class DbSetting : Model.Models.DbSetting, IRealmModel<Persistence.DbSetting>
     {
-        private readonly RealmObjectWrap<IDbSettingRealm> _realmObjectWrap;
+        private readonly RealmObjectWrap<Persistence.DbSetting> _realmObjectWrap;
 
         public DbSetting(
-            ICrudOrm<IDbSettingRealm> crudOrm,
+            ICrudOrm<Persistence.DbSetting> crudOrm,
             IRxSchedulerProvider rxSchedulerProvider,
-            IDbSettingRealm realmObject) : base(rxSchedulerProvider)
+            Persistence.DbSetting realmObject) : base(rxSchedulerProvider)
         {
-            _realmObjectWrap = new RealmObjectWrap<IDbSettingRealm>(
+            _realmObjectWrap = new RealmObjectWrap<Persistence.DbSetting>(
                 realmObject,
                 realm =>
                 {
@@ -25,7 +24,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                 UpdateRealmObject,
                 crudOrm);
             
-            void UpdateRealmObject(IDbSettingRealm ro)
+            void UpdateRealmObject(Persistence.DbSetting ro)
             {
                 ro.CurrencyCultureName = CurrencyCultureName;
                 ro.DateCultureName = DateCultureName;
@@ -34,7 +33,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public IDbSettingRealm RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.DbSetting RealmObject => _realmObjectWrap.RealmObject;
 
         public override Task InsertAsync()
         {

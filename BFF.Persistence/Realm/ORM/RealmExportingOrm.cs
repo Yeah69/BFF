@@ -54,19 +54,19 @@ namespace BFF.Persistence.Realm.ORM
                     var categoryGroupedBudgetEntries = exportContainer
                         .BudgetEntries 
                         .GroupBy(
-                            be => be.Category as Category, 
+                            be => be.Category, 
                             be => (Month: new DateTimeOffset(be.Month.Year, be.Month.Month, 1, 0, 0, 0, TimeSpan.Zero), be.Budget));
                     var categoryGroupedTransactions = exportContainer
                         .Trans
-                        .Where(t => t.Type == TransType.Transaction && t.Category != null && !t.Category.IsIncomeRelevant)
-                        .Select(t => (t.Category, Month: new DateTimeOffset(t.Date.Year, t.Date.Month, 1, 0, 0, 0, TimeSpan.Zero), t.Sum))
+                        .Where(t => t.TypeIndex == (int) TransType.Transaction && t.Category != null && !t.Category.IsIncomeRelevant)
+                        .Select(t => (CategoryRef: t.Category, Month: new DateTimeOffset(t.Date.Year, t.Date.Month, 1, 0, 0, 0, TimeSpan.Zero), t.Sum))
                         .Concat(
                             exportContainer
                                 .SubTransactions
                                 .Where(st => !st.Category.IsIncomeRelevant)
-                                .Select(st => (st.Category, Month: new DateTimeOffset(st.Parent.Date.Year, st.Parent.Date.Month, 1, 0, 0, 0, TimeSpan.Zero), st.Sum)))
+                                .Select(st => (CategoryRef: st.Category, Month: new DateTimeOffset(st.Parent.Date.Year, st.Parent.Date.Month, 1, 0, 0, 0, TimeSpan.Zero), st.Sum)))
                         .GroupBy(
-                            t => t.Category as Category,
+                            t => t.CategoryRef,
                             t => (t.Month, t.Sum));
 
                     categoryGroupedBudgetEntries
@@ -95,13 +95,13 @@ namespace BFF.Persistence.Realm.ORM
                                 TimeSpan.Zero), a.StartingBalance))
                         // Unassigned Transactions and income transactions
                         .Concat(exportContainer.Trans
-                            .Where(t => t.Type == TransType.Transaction && (t.Category is null || t.Category.IsIncomeRelevant))
+                            .Where(t => t.TypeIndex == (int) TransType.Transaction && (t.Category is null || t.Category.IsIncomeRelevant))
                             .Select(t =>
                             {
-                                if (t.Category is null || t.Category.MonthOffset == 0)
+                                if (t.Category is null || t.Category.Month == 0)
                                     return (Month: new DateTimeOffset(t.Date.Year, t.Date.Month, 1, 0, 0, 0, TimeSpan.Zero),
                                         t.Sum);
-                                var offsetMonth = t.Date.OffsetMonthBy(t.Category.MonthOffset);
+                                var offsetMonth = t.Date.OffsetMonthBy(t.Category.Month);
                                 return (Month: new DateTimeOffset(offsetMonth.Year, offsetMonth.Month, 1, 0, 0, 0, TimeSpan.Zero),
                                         t.Sum);
                             }))
@@ -110,16 +110,16 @@ namespace BFF.Persistence.Realm.ORM
                             .Where(st => st.Category is null || st.Category.IsIncomeRelevant)
                             .Select(st =>
                             {
-                                if (st.Category is null || st.Category.MonthOffset == 0)
+                                if (st.Category is null || st.Category.Month == 0)
                                     return (Month: new DateTimeOffset(st.Parent.Date.Year, st.Parent.Date.Month, 1, 0, 0, 0, TimeSpan.Zero),
                                         st.Sum);
-                                var offsetMonth = st.Parent.Date.OffsetMonthBy(st.Category.MonthOffset);
+                                var offsetMonth = st.Parent.Date.OffsetMonthBy(st.Category.Month);
                                 return (Month: new DateTimeOffset(offsetMonth.Year, offsetMonth.Month, 1, 0, 0, 0, TimeSpan.Zero),
                                     st.Sum);
                             }))
                         // Dangling transfers
                         .Concat(exportContainer.Trans
-                            .Where(t => t.Type == TransType.Transfer && (t.ToAccount is null && t.FromAccount != null || t.FromAccount is null && t.ToAccount != null))
+                            .Where(t => t.TypeIndex == (int) TransType.Transfer && (t.ToAccount is null && t.FromAccount != null || t.FromAccount is null && t.ToAccount != null))
                             .Select(t => (Month: new DateTimeOffset(t.Date.Year, t.Date.Month, 1, 0, 0, 0, TimeSpan.Zero), t.ToAccount is null ? -1L * t.Sum : t.Sum)))
                         .GroupBy(t => t.Month, t => t.Item2)
                         .OrderBy(g => g.Key)

@@ -3,24 +3,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
-using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
-    internal class SubTransaction : Model.Models.SubTransaction, IRealmModel<ISubTransactionRealm>
+    internal class SubTransaction : Model.Models.SubTransaction, IRealmModel<Persistence.SubTransaction>
     {
-        private readonly RealmObjectWrap<ISubTransactionRealm> _realmObjectWrap;
+        private readonly RealmObjectWrap<Persistence.SubTransaction> _realmObjectWrap;
 
         public SubTransaction(
-            ICrudOrm<ISubTransactionRealm> crudOrm,
+            ICrudOrm<Persistence.SubTransaction> crudOrm,
             IRxSchedulerProvider rxSchedulerProvider,
-            ISubTransactionRealm realmObject,
+            Persistence.SubTransaction realmObject,
             ICategoryBase category,
             string memo, 
             long sum) : base(rxSchedulerProvider, category, memo, sum)
         {
-            _realmObjectWrap = new RealmObjectWrap<ISubTransactionRealm>(
+            _realmObjectWrap = new RealmObjectWrap<Persistence.SubTransaction>(
                 realmObject,
                 realm =>
                 {
@@ -34,7 +33,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                 UpdateRealmObject,
                 crudOrm);
             
-            void UpdateRealmObject(ISubTransactionRealm ro)
+            void UpdateRealmObject(Persistence.SubTransaction ro)
             {
                 ro.Parent = 
                     Parent is null
@@ -54,7 +53,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public ISubTransactionRealm RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.SubTransaction RealmObject => _realmObjectWrap.RealmObject;
 
         public override Task InsertAsync()
         {
