@@ -1,3 +1,4 @@
+using System.Linq;
 using Realms;
 
 namespace BFF.Persistence.Realm.Models.Persistence
@@ -20,6 +21,9 @@ namespace BFF.Persistence.Realm.Models.Persistence
         public string Name { get; set; }
         public bool IsIncomeRelevant { get; set; }
         public int MonthOffset { get; set; }
+
+        [Backlink(nameof(BudgetCacheEntry.Category))]
+        public IQueryable<BudgetCacheEntry> BudgetCacheEntriesRef { get; }
 
         public override bool Equals(object obj)
         {

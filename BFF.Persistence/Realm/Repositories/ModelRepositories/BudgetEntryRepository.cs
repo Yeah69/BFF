@@ -4,12 +4,13 @@ using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
+using JetBrains.Annotations;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
     public interface IRealmBudgetEntryRepository
     {
-        Task<IBudgetEntry> Convert(IBudgetEntryRealm budgetEntry, long outflow, long balance);
+        Task<IBudgetEntry> Convert([CanBeNull] IBudgetEntryRealm budgetEntry, ICategoryRealm category, DateTime month, long budget, long outflow, long balance);
     }
 
     internal sealed class RealmBudgetEntryRepository : RealmWriteOnlyRepositoryBase<IBudgetEntry>, IRealmBudgetEntryRepository
@@ -34,7 +35,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             _transRepository = transRepository;
         }
 
-        public Task<IBudgetEntry> Convert(IBudgetEntryRealm persistenceModel, long outflow, long balance)
+        public Task<IBudgetEntry> Convert(IBudgetEntryRealm budgetEntry, ICategoryRealm category, DateTime month, long budget, long outflow, long balance)
         {
             return _realmOperations.RunFuncAsync(InnerAsync);
 
@@ -44,10 +45,10 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                     _crudOrm,
                     _transRepository.Value,
                     _rxSchedulerProvider,
-                    persistenceModel,
-                    persistenceModel.Month,
-                    await _categoryRepository.Value.FindAsync(persistenceModel.Category).ConfigureAwait(false),
-                    persistenceModel.Budget,
+                    budgetEntry,
+                    month,
+                    await _categoryRepository.Value.FindAsync(category).ConfigureAwait(false),
+                    budget,
                     outflow,
                     balance);
             }

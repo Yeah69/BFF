@@ -319,7 +319,7 @@ SELECT Total(Sum) FROM
 
                 budgetEntriesPerMonth = monthRange
                     .Select(m =>
-                        (m: m, groupedBudgetEntriesPerMonth.ContainsKey(m)
+                        (m, groupedBudgetEntriesPerMonth.ContainsKey(m)
                             ? (IList<(IBudgetEntrySql Entry, long Outflow, long Balance)>)groupedBudgetEntriesPerMonth[m].ToList()
                             : new List<(IBudgetEntrySql Entry, long Outflow, long Balance)>()))
                     .ToDictionary(vt => vt.m, vt => vt.Item2);
@@ -338,13 +338,13 @@ SELECT Total(Sum) FROM
                             }) ?? 0L;
                         }
 
-                        return (m: m, incomeSum: incomeSum);
+                        return (m, incomeSum);
                     })
                     .ToDictionary(kvp => kvp.m, kvp => kvp.incomeSum);
 
                 danglingTransfersPerMonth = monthRange
                     .Select(m =>
-                        (m: m, DanglingTransferSum: connection.QueryFirstOrDefault<long?>(DanglingTransferQuery, new
+                        (m, DanglingTransferSum: connection.QueryFirstOrDefault<long?>(DanglingTransferQuery, new
                         {
                             Year = $"{m.Year:0000}",
                             Month = $"{m.Month:00}"
@@ -353,7 +353,7 @@ SELECT Total(Sum) FROM
 
                 unassignedTransactionsPerMonth = monthRange
                     .Select(m =>
-                        (m: m, UnassignedTransactionsSum: connection.QueryFirstOrDefault<long?>(UnassignedTransactionsQuery, new
+                        (m, UnassignedTransactionsSum: connection.QueryFirstOrDefault<long?>(UnassignedTransactionsQuery, new
                         {
                             Year = $"{m.Year:0000}",
                             Month = $"{m.Month:00}"

@@ -22,14 +22,11 @@
                 <ResourceDictionary Source="/Resources/TransDataGridResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <helper:BindingProxy x:Key="ParentAccountColumnVisibility"
-                                 Data="{Binding DataContext.Owner, ElementName=LayoutRoot, Converter={x:Static helper:Converters.OfTypeToCollapsed}, ConverterParameter={x:Type forModels:IAccountViewModel}, FallbackValue={x:Static Visibility.Collapsed}}" />
+            <helper:BindingProxy x:Key="ParentAccountColumnVisibility" Data="{Binding DataContext.Owner, ElementName=LayoutRoot, Converter={x:Static helper:Converters.OfTypeToCollapsed}, ConverterParameter={x:Type forModels:IAccountViewModel}, FallbackValue={x:Static Visibility.Collapsed}}" />
 
-            <helper:BindingProxy x:Key="FlagColumnVisibility"
-                                 Data="{Binding DataContext.TransDataGridColumnManager.ShowFlags.Value, ElementName=Root, Converter={x:Static helper:Converters.FalseToCollapsed}, FallbackValue={x:Static Visibility.Collapsed}}" />
+            <helper:BindingProxy x:Key="FlagColumnVisibility" Data="{Binding DataContext.TransDataGridColumnManager.ShowFlags.Value, ElementName=Root, Converter={x:Static helper:Converters.FalseToCollapsed}, FallbackValue={x:Static Visibility.Collapsed}}" />
 
-            <helper:BindingProxy x:Key="CheckNumberColumnVisibility"
-                                 Data="{Binding DataContext.TransDataGridColumnManager.ShowCheckNumbers.Value, ElementName=Root, Converter={x:Static helper:Converters.FalseToCollapsed}, FallbackValue={x:Static Visibility.Collapsed}}" />
+            <helper:BindingProxy x:Key="CheckNumberColumnVisibility" Data="{Binding DataContext.TransDataGridColumnManager.ShowCheckNumbers.Value, ElementName=Root, Converter={x:Static helper:Converters.FalseToCollapsed}, FallbackValue={x:Static Visibility.Collapsed}}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
@@ -47,8 +44,7 @@
             <DataGrid.Resources />
             <DataGrid.Columns>
                 <!--  Symbol  -->
-                <DataGridTemplateColumn x:Name="SymbolColumn"
-                                        Header="{lex:Loc AccountView_Header_SymbolAbbr}">
+                <DataGridTemplateColumn x:Name="SymbolColumn" Header="{lex:Loc AccountView_Header_SymbolAbbr}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <iconPacks:PackIconMaterial Foreground="{DynamicResource TransactionBrush}"
@@ -58,30 +54,29 @@
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.HeaderTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}"
-                                       ToolTip="{lex:Loc AccountView_Header_SymbolAbbr_Tooltip}" />
+                            <TextBlock Text="{Binding}" ToolTip="{lex:Loc AccountView_Header_SymbolAbbr_Tooltip}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
                 </DataGridTemplateColumn>
                 <!--  Account  -->
                 <DataGridTemplateColumn x:Name="AccountColumn"
-                                        Visibility="{Binding Data, Source={StaticResource ParentAccountColumnVisibility}}"
                                         CellTemplate="{StaticResource AccountEditingColumnTemplate}"
-                                        Header="{lex:Loc AccountView_Header_Account}" />
+                                        Header="{lex:Loc AccountView_Header_Account}"
+                                        Visibility="{Binding Data, Source={StaticResource ParentAccountColumnVisibility}}" />
                 <!--  Date  -->
                 <DataGridTemplateColumn x:Name="DateColumn"
                                         CellTemplate="{StaticResource DateEditingColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_Date}" />
                 <!--  Flag  -->
                 <DataGridTemplateColumn x:Name="FlagColumn"
-                                        Visibility="{Binding Data, Source={StaticResource FlagColumnVisibility}}"
                                         CellTemplate="{StaticResource FlagEditingColumnTemplate}"
-                                        Header="{lex:Loc AccountView_Header_Flag}" />
+                                        Header="{lex:Loc AccountView_Header_Flag}"
+                                        Visibility="{Binding Data, Source={StaticResource FlagColumnVisibility}}" />
                 <!--  CheckNumber  -->
                 <DataGridTemplateColumn x:Name="CheckNumberColumn"
-                                        Visibility="{Binding Data, Source={StaticResource CheckNumberColumnVisibility}}"
                                         CellTemplate="{StaticResource CheckNumberEditingColumnTemplate}"
-                                        Header="{lex:Loc AccountView_Header_CheckNumber}" />
+                                        Header="{lex:Loc AccountView_Header_CheckNumber}"
+                                        Visibility="{Binding Data, Source={StaticResource CheckNumberColumnVisibility}}" />
                 <!--  Payee  -->
                 <DataGridTemplateColumn x:Name="PayeeColumn"
                                         CellTemplate="{StaticResource PayeeEditingColumnTemplate}"
@@ -170,17 +165,16 @@
                         </DataGrid>
                         <!--  Buttons  -->
                         <DockPanel Background="{DynamicResource WhiteBrush}">
-                            <Button Command="{Binding NewSubTransactionCommand}"
-                                    ToolTip="New Subelement">
+                            <Button Command="{Binding NewSubTransactionCommand}" ToolTip="New Subelement">
                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                             Height="{StaticResource IconSize}"
                                                             Foreground="{DynamicResource BlackColorBrush}"
                                                             Kind="{StaticResource AddIcon}" />
                             </Button>
-                            <Button Visibility="{Binding IsInserted, Converter={x:Static helper:Converters.FalseToCollapsed}}"
-                                    HorizontalAlignment="Right"
+                            <Button HorizontalAlignment="Right"
                                     Command="{Binding ApplyCommand}"
-                                    ToolTip="Add to the table">
+                                    ToolTip="Add to the table"
+                                    Visibility="{Binding IsInserted, Converter={x:Static helper:Converters.FalseToCollapsed}}">
                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                             Height="{StaticResource IconSize}"
                                                             Foreground="{DynamicResource BlackColorBrush}"
@@ -205,10 +199,10 @@
                                                           Suffix=:}" />
                             <TextBlock Grid.Row="1"
                                        Grid.Column="0"
-                                       Visibility="{Binding NewSubTransactions.Count, Converter={x:Static helper:Converters.IntGreaterThanZeroVisibleElseCollapsed}}"
                                        Margin="2.5"
                                        Text="{lex:LocText Key=ParentTransEditingView_IntermediateSum,
-                                                          Suffix=:}" />
+                                                          Suffix=:}"
+                                       Visibility="{Binding NewSubTransactions.Count, Converter={x:Static helper:Converters.IntGreaterThanZeroVisibleElseCollapsed}}" />
                             <TextBlock Grid.Row="2"
                                        Grid.Column="0"
                                        Margin="2.5"
@@ -222,11 +216,11 @@
                                        Text="{Binding Sum.Value, Converter={x:Static helper:Converters.SumToString}}" />
                             <TextBlock Grid.Row="1"
                                        Grid.Column="1"
-                                       Visibility="{Binding NewSubTransactions.Count, Converter={x:Static helper:Converters.IntGreaterThanZeroVisibleElseCollapsed}}"
                                        Margin="2.5"
                                        HorizontalAlignment="Right"
                                        Foreground="{Binding IntermediateSum.Value, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
-                                       Text="{Binding IntermediateSum.Value, Converter={x:Static helper:Converters.SumToString}}" />
+                                       Text="{Binding IntermediateSum.Value, Converter={x:Static helper:Converters.SumToString}}"
+                                       Visibility="{Binding NewSubTransactions.Count, Converter={x:Static helper:Converters.IntGreaterThanZeroVisibleElseCollapsed}}" />
                             <TextBlock Grid.Row="2"
                                        Grid.Column="1"
                                        Margin="2.5"
@@ -239,14 +233,10 @@
             </ContentControl.ContentTemplate>
             <ContentControl.Width>
                 <MultiBinding Converter="{x:Static helper:Converters.WidthsToDouble}">
-                    <Binding ElementName="CategoryColumn"
-                             Path="Width" />
-                    <Binding ElementName="MemoColumn"
-                             Path="Width" />
-                    <Binding ElementName="SumColumn"
-                             Path="Width" />
-                    <Binding ElementName="ClearedColumn"
-                             Path="Width" />
+                    <Binding ElementName="CategoryColumn" Path="Width" />
+                    <Binding ElementName="MemoColumn" Path="Width" />
+                    <Binding ElementName="SumColumn" Path="Width" />
+                    <Binding ElementName="ClearedColumn" Path="Width" />
                 </MultiBinding>
             </ContentControl.Width>
         </ContentControl>

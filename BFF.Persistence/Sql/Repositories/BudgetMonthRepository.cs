@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.Persistence.Sql.Models.Domain;

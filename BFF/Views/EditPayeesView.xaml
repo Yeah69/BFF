@@ -33,14 +33,12 @@
                     <DataGridTemplateColumn Header="{lex:Loc General_Name}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock d:DataContext="{d:DesignInstance forModels:IPayeeViewModel}"
-                                           Text="{Binding Name}" />
+                                <TextBlock d:DataContext="{d:DesignInstance forModels:IPayeeViewModel}" Text="{Binding Name}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
-                                <TextBox d:DataContext="{d:DesignInstance forModels:IPayeeViewModel}"
-                                         Text="{Binding Name, Mode=TwoWay}" />
+                                <TextBox d:DataContext="{d:DesignInstance forModels:IPayeeViewModel}" Text="{Binding Name, Mode=TwoWay}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
@@ -56,8 +54,7 @@
                         </DataGridTemplateColumn.HeaderTemplate>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button dd:DragDrop.IsDragSource="True"
-                                        Style="{StaticResource ButtonVisibleOnMouseOverDataGridRow}">
+                                <Button dd:DragDrop.IsDragSource="True" Style="{StaticResource ButtonVisibleOnMouseOverDataGridRow}">
                                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                 Height="{StaticResource IconSize}"
                                                                 Foreground="{DynamicResource BlackBrush}"
@@ -96,8 +93,7 @@
                        FontSize="{StaticResource BigTitleFontSize}"
                        Text="{lex:Loc Payee_CreateNew}" />
 
-            <views:NewPayeeView HorizontalAlignment="Stretch"
-                                DataContext="{Binding NewPayeeViewModel}" />
+            <views:NewPayeeView HorizontalAlignment="Stretch" DataContext="{Binding NewPayeeViewModel}" />
         </StackPanel>
     </ScrollViewer>
 </UserControl>

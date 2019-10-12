@@ -58,28 +58,30 @@ namespace BFF.Persistence.Import
                     _dtoImportContainerBuilder.SetAccountStartingBalance(ynabTransaction.Account, ynabTransaction.Inflow - ynabTransaction.Outflow);
                     _dtoImportContainerBuilder.TrySetAccountStartingDate(ynabTransaction.Account, ynabTransaction.Date);
                 }
-
-                Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Memo);
-                if (splitMatch.Success)
-                {
-                    ProcessSplitTransactions(ynabTransactions, ynabTransaction, splitMatch);
-                }
                 else
                 {
-                    Match transferMatch = TransferPayeeRegex.Match(ynabTransaction.Payee);
-                    if (transferMatch.Success)
-                        AddTransfer(ynabTransaction);
+                    Match splitMatch = SplitMemoRegex.Match(ynabTransaction.Memo);
+                    if (splitMatch.Success)
+                    {
+                        ProcessSplitTransactions(ynabTransactions, ynabTransaction, splitMatch);
+                    }
                     else
-                        _dtoImportContainerBuilder.AddAsTransaction(
-                            DateTime.SpecifyKind(ynabTransaction.Date, DateTimeKind.Utc),
-                            ynabTransaction.Account,
-                            ynabTransaction.ParsePayeeFromPayee(),
-                            GetOrCreateCategory(ynabTransaction.MasterCategory, ynabTransaction.SubCategory),
-                            ynabTransaction.CheckNumber,
-                            FlagNameToColorNumber(ynabTransaction.Flag),
-                            ynabTransaction.Memo,
-                            ynabTransaction.Inflow - ynabTransaction.Outflow,
-                            ynabTransaction.Cleared);
+                    {
+                        Match transferMatch = TransferPayeeRegex.Match(ynabTransaction.Payee);
+                        if (transferMatch.Success)
+                            AddTransfer(ynabTransaction);
+                        else
+                            _dtoImportContainerBuilder.AddAsTransaction(
+                                DateTime.SpecifyKind(ynabTransaction.Date, DateTimeKind.Utc),
+                                ynabTransaction.Account,
+                                ynabTransaction.ParsePayeeFromPayee(),
+                                GetOrCreateCategory(ynabTransaction.MasterCategory, ynabTransaction.SubCategory),
+                                ynabTransaction.CheckNumber,
+                                FlagNameToColorNumber(ynabTransaction.Flag),
+                                ynabTransaction.Memo,
+                                ynabTransaction.Inflow - ynabTransaction.Outflow,
+                                ynabTransaction.Cleared);
+                    }
                 }
             }
         }

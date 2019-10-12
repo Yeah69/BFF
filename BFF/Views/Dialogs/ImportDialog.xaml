@@ -17,7 +17,7 @@
     <dialogs1:BaseMetroDialog.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../../Resources/FileDialogResources.xaml"/>
+                <ResourceDictionary Source="../../Resources/FileDialogResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate DataType="{x:Type import:Ynab4CsvImportViewModel}">
                 <Grid>
@@ -32,13 +32,13 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="2"
-                       Content="{lex:Loc ImportView_YNAB4_Transaction}" />
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Content="{lex:Loc ImportView_YNAB4_Transaction}" />
                     <TextBox x:Name="TransactionTextBox"
-                         Grid.Row="1"
-                         Grid.Column="0"
-                         Margin="5">
+                             Grid.Row="1"
+                             Grid.Column="0"
+                             Margin="5">
                         <TextBox.Text>
                             <Binding Mode="TwoWay" Path="TransactionPath">
                                 <Binding.ValidationRules>
@@ -48,18 +48,18 @@
                         </TextBox.Text>
                     </TextBox>
                     <Button Grid.Row="1"
-                        Grid.Column="1"
-                        Margin="5"
-                        Command="{Binding BrowseTransactionCommand}"
-                        Content="{lex:Loc ImportView_Browse}" />
+                            Grid.Column="1"
+                            Margin="5"
+                            Command="{Binding BrowseTransactionCommand}"
+                            Content="{lex:Loc ImportView_Browse}" />
                     <Label Grid.Row="2"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="2"
-                       Content="{lex:Loc ImportView_YNAB4_Budget}" />
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Content="{lex:Loc ImportView_YNAB4_Budget}" />
                     <TextBox x:Name="BudgetTextBox"
-                         Grid.Row="3"
-                         Grid.Column="0"
-                         Margin="5">
+                             Grid.Row="3"
+                             Grid.Column="0"
+                             Margin="5">
                         <TextBox.Text>
                             <Binding Mode="TwoWay" Path="BudgetPath">
                                 <Binding.ValidationRules>
@@ -69,10 +69,10 @@
                         </TextBox.Text>
                     </TextBox>
                     <Button Grid.Row="3"
-                        Grid.Column="1"
-                        Margin="5"
-                        Command="{Binding BrowseBudgetCommand}"
-                        Content="{lex:Loc ImportView_Browse}" />
+                            Grid.Column="1"
+                            Margin="5"
+                            Command="{Binding BrowseBudgetCommand}"
+                            Content="{lex:Loc ImportView_Browse}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate DataType="{x:Type import:RealmFileExportViewModel}">
@@ -88,14 +88,14 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="2"
-                       Content="{lex:Loc ImportView_SaveFile}" />
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Content="{lex:Loc ImportView_SaveFile}" />
                     <TextBox x:Name="SavePathTextBox"
-                         Grid.Row="1"
-                         Grid.Column="0"
-                         Margin="5"
-                         IsReadOnly="False">
+                             Grid.Row="1"
+                             Grid.Column="0"
+                             Margin="5"
+                             IsReadOnly="False">
                         <TextBox.Text>
                             <Binding Mode="TwoWay" Path="Path">
                                 <Binding.ValidationRules>
@@ -106,17 +106,17 @@
                         </TextBox.Text>
                     </TextBox>
                     <Button Grid.Row="1"
-                        Grid.Column="1"
-                        Margin="5"
-                        Command="{Binding BrowseCommand}"
-                        Content="{lex:Loc ImportView_Browse}" />
+                            Grid.Column="1"
+                            Margin="5"
+                            Command="{Binding BrowseCommand}"
+                            Content="{lex:Loc ImportView_Browse}" />
                     <Label Grid.Row="2"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="2"
-                       Content="{lex:Loc ImportView_Password}" />
-                    <ContentControl Grid.Row="3"
                            Grid.Column="0"
-                           Content="{Binding PasswordConfiguration}" />
+                           Grid.ColumnSpan="2"
+                           Content="{lex:Loc ImportView_Password}" />
+                    <ContentControl Grid.Row="3"
+                                    Grid.Column="0"
+                                    Content="{Binding PasswordConfiguration}" />
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>

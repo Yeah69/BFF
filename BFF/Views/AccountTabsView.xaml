@@ -26,9 +26,9 @@
     </UserControl.Resources>
     <Grid>
         <TabControl Name="AccountsTabControl"
-                    Visibility="{Binding AllAccounts.Count, Converter={x:Static helper:Converters.IntGreaterThanZeroVisibleElseCollapsed}}"
                     Margin="10"
-                    controls:TabControlHelper.Underlined="TabItems">
+                    controls:TabControlHelper.Underlined="TabItems"
+                    Visibility="{Binding AllAccounts.Count, Converter={x:Static helper:Converters.IntGreaterThanZeroVisibleElseCollapsed}}">
             <TabControl.Resources>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
             </TabControl.Resources>
@@ -54,8 +54,7 @@
                     </attachedBehaviors:AdditionalTabItemsBehavior.ContentTemplate>
                 </attachedBehaviors:AdditionalTabItemsBehavior>
             </i:Interaction.Behaviors>
-            <TabItem x:Name="SummaryAccountTab"
-                     IsSelected="{Binding SummaryAccountViewModel.IsOpen}">
+            <TabItem x:Name="SummaryAccountTab" IsSelected="{Binding SummaryAccountViewModel.IsOpen}">
                 <TabItem.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -87,19 +86,16 @@
                         </StackPanel>
                     </DataTemplate>
                 </TabItem.HeaderTemplate>
-                <views:NewAccountView Width="500"
-                                      DataContext="{Binding NewAccountViewModel}" />
+                <views:NewAccountView Width="500" DataContext="{Binding NewAccountViewModel}" />
             </TabItem>
         </TabControl>
 
-        <StackPanel Visibility="{Binding AllAccounts.Count, Converter={x:Static helper:Converters.IntEqualToZeroVisibleElseCollapsed}}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-            <TextBlock FontSize="{StaticResource BigTitleFontSize}"
-                       Text="{lex:Loc Account_CreateNew}" />
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="{Binding AllAccounts.Count, Converter={x:Static helper:Converters.IntEqualToZeroVisibleElseCollapsed}}">
+            <TextBlock FontSize="{StaticResource BigTitleFontSize}" Text="{lex:Loc Account_CreateNew}" />
 
-            <views:NewAccountView Width="500"
-                                  DataContext="{Binding NewAccountViewModel}" />
+            <views:NewAccountView Width="500" DataContext="{Binding NewAccountViewModel}" />
         </StackPanel>
     </Grid>
 </UserControl>
