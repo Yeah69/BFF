@@ -25,9 +25,16 @@ namespace BFF.ViewModel.Services
         {
             All = new TransformingObservableReadOnlyList<ICategory, ICategoryViewModel>(
                 repository.All,
-                AddToDictionaries,
+                category =>
+                {
+                    var categoryViewModel = AddToDictionaries(category);
+                    categoryViewModelInitializer.Initialize(categoryViewModel);
+                    return categoryViewModel;
+                },
                 rxSchedulerProvider.UI);
-            AllCollectionInitialized = repository.AllAsync.ContinueWith(t => {});
+            AllCollectionInitialized = repository
+                .AllAsync
+                .ContinueWith(t => { });
             All
                 .ObserveCollectionChanges()
                 .Where(e => e.EventArgs.Action == NotifyCollectionChangedAction.Reset)

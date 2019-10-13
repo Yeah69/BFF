@@ -23,8 +23,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// </summary>
         ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
 
-        Task CategoriesInitialized { get; }
-
         /// <summary>
         /// The Parent
         /// </summary>
@@ -50,7 +48,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
         private readonly IAccountViewModelService _accountViewModelService;
         private readonly Lazy<IBudgetOverviewViewModel> _budgetOverviewViewModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly TaskCompletionSource<Unit> _categoriesInitialization;
 
         internal class CategoryViewModelInitializer : ICategoryViewModelInitializer
         {
@@ -77,9 +74,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
             {
                 if (categoryViewModel is CategoryViewModel viewModel)
                 {
-                    //viewModel.Categories =
-                    //    viewModel._category.Categories.ToReadOnlyReactiveCollection(_service.Value.GetViewModel).AddTo(viewModel.CompositeDisposable);
-
                     viewModel.Parent = _service.Value.GetViewModel(viewModel._category.Parent);
                     viewModel._category
                         .ObservePropertyChanges(nameof(viewModel._category.Parent))
@@ -97,9 +91,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// <summary>
         /// The Child-Categories
         /// </summary>
-        public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; private set; }
-
-        public Task CategoriesInitialized { get; }
+        public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
 
         /// <summary>
         /// The Parent
@@ -204,15 +196,16 @@ namespace BFF.ViewModel.ViewModels.ForModels
             _category = category;
             Categories =
                 _category.Categories.ToReadOnlyReactiveCollection(service.Value.GetViewModel).AddTo(CompositeDisposable);
+            _category.ObservePropertyChanges(nameof(_category.Parent))
+                .Select(_ => Parent = service.Value.GetViewModel(_category.Parent))
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(Parent)));
             _summaryAccountViewModel = summaryAccountViewModel;
             _localizer = localizer;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _accountViewModelService = accountViewModelService;
             _budgetOverviewViewModel = budgetOverviewViewModel;
             _rxSchedulerProvider = rxSchedulerProvider;
-            _categoriesInitialization = new TaskCompletionSource<Unit>();
-            CategoriesInitialized = _categoriesInitialization.Task;
-            _categoriesInitialization.SetResult(Unit.Default);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             _realmOperations = realmOperations;
             _mergeOrm = mergeOrm;
             _categoryOrm = categoryOrm;
-            InitializeAll();
+            this.AllAsync.ContinueWith(_ => InitializeAll());
         }
 
         public void InitializeAll()

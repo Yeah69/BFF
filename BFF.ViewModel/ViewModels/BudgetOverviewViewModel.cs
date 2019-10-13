@@ -248,7 +248,6 @@ namespace BFF.ViewModel.ViewModels
                             var categoriesToBudgetEntries = bmvm.BudgetEntries.ToDictionary(bevm => bevm.Category, bevm => bevm);
                             foreach (var bevm in bmvm.BudgetEntries)
                             {
-                                await bevm.Category.CategoriesInitialized.ConfigureAwait(false);
                                 bevm.Children = bevm
                                     .Category
                                     .Categories
@@ -258,7 +257,7 @@ namespace BFF.ViewModel.ViewModels
 
                         return budgetMonthViewModels;
                     },
-                    async () => await Task.FromResult(LastMonthIndex))
+                    () => Task.FromResult(LastMonthIndex))
                 .SyncIndexAccess();
         }
 

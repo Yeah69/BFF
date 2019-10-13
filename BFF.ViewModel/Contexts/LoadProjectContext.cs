@@ -19,7 +19,6 @@ namespace BFF.ViewModel.Contexts
             // dependencies
             Func<IAccountViewModelService> accountViewModelService,
             Func<ICategoryViewModelService> categoryViewModelService,
-            Func<ICategoryViewModelInitializer> categoryViewModelInitializer,
             Func<IIncomeCategoryViewModelService> incomeCategoryViewModelService,
             Func<IPayeeViewModelService> payeeViewModelService,
             Func<IFlagViewModelService> flagViewModelService,
@@ -32,8 +31,7 @@ namespace BFF.ViewModel.Contexts
             _disposeContext = disposeContext;
             _lazyLoadedProjectTopLevelViewModelComposition = lazyLoadedProjectTopLevelViewModelComposition;
             accountViewModelService();
-            var viewModelService = categoryViewModelService();
-            viewModelService.AllCollectionInitialized.ContinueWith(_ => categoryViewModelInitializer().Initialize(viewModelService.All));
+            categoryViewModelService();
             incomeCategoryViewModelService();
             payeeViewModelService();
             flagViewModelService();
