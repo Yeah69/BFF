@@ -20,7 +20,7 @@ namespace BFF.Views
         {
             void UpdateSlaveCount(int newCount)
             {
-                //BudgetEntriesData.DisplayCount = newCount;
+                BudgetEntriesData.DisplayCount = newCount;
                 BudgetMonthHeaders.DisplayCount = newCount;
                 e.Handled = true;
             }

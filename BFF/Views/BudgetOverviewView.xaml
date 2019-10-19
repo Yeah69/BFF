@@ -561,7 +561,8 @@
                 <attachedBehaviors:ScrollViewerSync GroupName="BudgetOverview" />
             </i:Interaction.Behaviors>
         </ListBox>
-        <userControls:UniformList Grid.Row="1"
+        <userControls:UniformList x:Name="BudgetEntriesData"
+                                  Grid.Row="1"
                                   Grid.Column="2"
                                   DisplayCount="5"
                                   ItemsSource="{Binding BudgetMonths}"

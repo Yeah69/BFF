@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using BFF.Core.Extensions;
 using BFF.Core.Persistence;
 using BFF.Persistence.Contexts;
 using BFF.Persistence.Import.Models;
@@ -209,14 +210,16 @@ namespace BFF.Persistence.Import
         {
             if (ynabBudgetEntries is null) throw new ArgumentNullException(nameof(ynabBudgetEntries));
 
-            ynabBudgetEntries.ForEach(ybe =>
-            {
-                var month = DateTime.ParseExact(ybe.Month, "MMMM yyyy", CultureInfo.GetCultureInfo("de-DE")); // TODO make this customizable + exception handling
-                _dtoImportContainerBuilder.AddBudgetEntry(
-                    DateTime.SpecifyKind(month, DateTimeKind.Utc),
-                    GetOrCreateCategory(ybe.MasterCategory, ybe.SubCategory),
-                    ybe.Budgeted);
-            });
+            ynabBudgetEntries
+                .Where(ybe => ybe.MasterCategory != "Uncategorized Transactions")
+                .ForEach(ybe =>
+                {
+                    var month = DateTime.ParseExact(ybe.Month, "MMMM yyyy", CultureInfo.GetCultureInfo("de-DE")); // TODO make this customizable + exception handling
+                    _dtoImportContainerBuilder.AddBudgetEntry(
+                        DateTime.SpecifyKind(month, DateTimeKind.Utc),
+                        GetOrCreateCategory(ybe.MasterCategory, ybe.SubCategory),
+                        ybe.Budgeted);
+                });
         }
 
         private static List<Ynab4Transaction> ParseTransactionCsv(string filePath)
