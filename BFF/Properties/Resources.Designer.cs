@@ -1533,6 +1533,15 @@ namespace BFF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save new budget plan to:.
+        /// </summary>
+        public static string SaveNewBudgetPlanTo {
+            get {
+                return ResourceManager.GetString("SaveNewBudgetPlanTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Accents.
         /// </summary>
         public static string Settings_Accents {

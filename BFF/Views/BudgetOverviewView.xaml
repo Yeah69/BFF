@@ -29,18 +29,13 @@
                 <ResourceDictionary Source="/Resources/TransDataGridResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
-                   TargetType="{x:Type ListBoxItem}">
+            <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
                 <Style.Triggers>
-                    <Trigger Property="ItemsControl.AlternationIndex"
-                             Value="0">
-                        <Setter Property="Background"
-                                Value="{DynamicResource WhiteBrush}" />
+                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                        <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
                     </Trigger>
-                    <Trigger Property="ItemsControl.AlternationIndex"
-                             Value="1">
-                        <Setter Property="Background"
-                                Value="{DynamicResource AlternatingRowBrush}" />
+                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                        <Setter Property="Background" Value="{DynamicResource AlternatingRowBrush}" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -48,25 +43,18 @@
             <Style x:Key="NonEditableBudgetEntryCell"
                    BasedOn="{StaticResource {x:Type TextBlock}}"
                    TargetType="{x:Type TextBlock}">
-                <Setter Property="VerticalAlignment"
-                        Value="Center" />
-                <Setter Property="Text"
-                        Value="{Binding Converter={x:Static helper:Converters.SumToString}}" />
-                <Setter Property="TextAlignment"
-                        Value="Right" />
-                <Setter Property="Foreground"
-                        Value="{Binding Converter={x:Static helper:Converters.SumToSolidColorBrush}}" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Text" Value="{Binding Converter={x:Static helper:Converters.SumToString}}" />
+                <Setter Property="TextAlignment" Value="Right" />
+                <Setter Property="Foreground" Value="{Binding Converter={x:Static helper:Converters.SumToSolidColorBrush}}" />
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding}"
-                                 Value="0">
-                        <Setter Property="Foreground"
-                                Value="{DynamicResource OpaqueZeroBrush}" />
+                    <DataTrigger Binding="{Binding}" Value="0">
+                        <Setter Property="Foreground" Value="{DynamicResource OpaqueZeroBrush}" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
 
-            <DataTemplate x:Key="AssociatedElementsDataGrid"
-                          DataType="{x:Type utility:ILazyTransLikeViewModels}">
+            <DataTemplate x:Key="AssociatedElementsDataGrid" DataType="{x:Type utility:ILazyTransLikeViewModels}">
                 <Border Style="{StaticResource PopupBorder}">
                     <DataGrid Margin="2.5"
                               HorizontalScrollBarVisibility="Disabled"
@@ -78,12 +66,10 @@
                         <DataGrid.Resources />
                         <DataGrid.Columns>
                             <!--  Symbol  -->
-                            <DataGridTemplateColumn CellTemplate="{StaticResource SymbolColumnTemplate}"
-                                                    Header="{lex:Loc AccountView_Header_SymbolAbbr}">
+                            <DataGridTemplateColumn CellTemplate="{StaticResource SymbolColumnTemplate}" Header="{lex:Loc AccountView_Header_SymbolAbbr}">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding}"
-                                                   ToolTip="{lex:Loc AccountView_Header_SymbolAbbr_Tooltip}" />
+                                        <TextBlock Text="{Binding}" ToolTip="{lex:Loc AccountView_Header_SymbolAbbr_Tooltip}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
                             </DataGridTemplateColumn>
@@ -96,15 +82,15 @@
                                                     Header="{lex:Loc AccountView_Header_Date}"
                                                     SortMemberPath="Date" />
                             <!--  Flag  -->
-                            <DataGridTemplateColumn Visibility="{Binding DataContext.TransDataGridColumnManager.ShowFlags.Value, Source={x:Reference Root}, Converter={x:Static helper:Converters.FalseToCollapsed}}"
-                                                    CellTemplate="{StaticResource FlagColumnTemplate}"
+                            <DataGridTemplateColumn CellTemplate="{StaticResource FlagColumnTemplate}"
                                                     Header="{lex:Loc AccountView_Header_Flag}"
-                                                    SortMemberPath="Flag.Name" />
+                                                    SortMemberPath="Flag.Name"
+                                                    Visibility="{Binding DataContext.TransDataGridColumnManager.ShowFlags.Value, Source={x:Reference Root}, Converter={x:Static helper:Converters.FalseToCollapsed}}" />
                             <!--  CheckNumber  -->
-                            <DataGridTemplateColumn Visibility="{Binding DataContext.TransDataGridColumnManager.ShowCheckNumbers.Value, Source={x:Reference Root}, Converter={x:Static helper:Converters.FalseToCollapsed}}"
-                                                    CellTemplate="{StaticResource CheckNumberColumnTemplate}"
+                            <DataGridTemplateColumn CellTemplate="{StaticResource CheckNumberColumnTemplate}"
                                                     Header="{lex:Loc AccountView_Header_CheckNumber}"
-                                                    SortMemberPath="CheckNumber" />
+                                                    SortMemberPath="CheckNumber"
+                                                    Visibility="{Binding DataContext.TransDataGridColumnManager.ShowCheckNumbers.Value, Source={x:Reference Root}, Converter={x:Static helper:Converters.FalseToCollapsed}}" />
                             <!--  Payee  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource PayeeColumnTemplate}"
                                                     Header="{lex:Loc AccountView_Header_Payee}"
@@ -140,8 +126,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"
-                              MinWidth="150" />
+            <ColumnDefinition Width="200" MinWidth="150" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -190,17 +175,13 @@
                       ResizeBehavior="PreviousAndNext"
                       ResizeDirection="Columns">
             <GridSplitter.Style>
-                <Style BasedOn="{StaticResource {x:Type GridSplitter}}"
-                       TargetType="{x:Type GridSplitter}">
+                <Style BasedOn="{StaticResource {x:Type GridSplitter}}" TargetType="{x:Type GridSplitter}">
                     <Style.Triggers>
-                        <Trigger Property="IsMouseOver"
-                                 Value="True">
-                            <Setter Property="Background"
-                                    Value="{DynamicResource AccentColorBrush}" />
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
                         </Trigger>
                     </Style.Triggers>
-                    <Setter Property="Background"
-                            Value="Transparent" />
+                    <Setter Property="Background" Value="Transparent" />
                 </Style>
             </GridSplitter.Style>
         </GridSplitter>
@@ -235,37 +216,26 @@
                                     <iconPacks:PackIconMaterial.ContextMenu>
                                         <ContextMenu Placement="Bottom">
                                             <MenuItem Header="{Binding DataContext.BudgetMonthMenuTitles.EmptyCellsHeader, Source={x:Reference Root}}">
-                                                <MenuItem Command="{Binding EmptyCellsBudgetLastMonth}"
-                                                          Header="{Binding DataContext.BudgetMonthMenuTitles.BudgetLastMonth, Source={x:Reference Root}}" />
-                                                <MenuItem Command="{Binding EmptyCellsOutflowsLastMonth}"
-                                                          Header="{Binding DataContext.BudgetMonthMenuTitles.OutflowsLastMonth, Source={x:Reference Root}}" />
-                                                <MenuItem Command="{Binding EmptyCellsAvgOutflowsLastThreeMonths}"
-                                                          Header="{Binding DataContext.BudgetMonthMenuTitles.AvgOutflowLastThreeMonths, Source={x:Reference Root}}" />
-                                                <MenuItem Command="{Binding EmptyCellsAvgOutflowsLastYear}"
-                                                          Header="{Binding DataContext.BudgetMonthMenuTitles.AvgOutflowsLastYear, Source={x:Reference Root}}" />
-                                                <MenuItem Command="{Binding EmptyCellsBalanceToZero}"
-                                                          Header="{Binding DataContext.BudgetMonthMenuTitles.BalanceToZero, Source={x:Reference Root}}" />
+                                                <MenuItem Command="{Binding EmptyCellsBudgetLastMonth}" Header="{Binding DataContext.BudgetMonthMenuTitles.BudgetLastMonth, Source={x:Reference Root}}" />
+                                                <MenuItem Command="{Binding EmptyCellsOutflowsLastMonth}" Header="{Binding DataContext.BudgetMonthMenuTitles.OutflowsLastMonth, Source={x:Reference Root}}" />
+                                                <MenuItem Command="{Binding EmptyCellsAvgOutflowsLastThreeMonths}" Header="{Binding DataContext.BudgetMonthMenuTitles.AvgOutflowLastThreeMonths, Source={x:Reference Root}}" />
+                                                <MenuItem Command="{Binding EmptyCellsAvgOutflowsLastYear}" Header="{Binding DataContext.BudgetMonthMenuTitles.AvgOutflowsLastYear, Source={x:Reference Root}}" />
+                                                <MenuItem Command="{Binding EmptyCellsBalanceToZero}" Header="{Binding DataContext.BudgetMonthMenuTitles.BalanceToZero, Source={x:Reference Root}}" />
                                             </MenuItem>
                                             <MenuItem Header="{Binding DataContext.BudgetMonthMenuTitles.AllCellsHeader, Source={x:Reference Root}}">
-                                                <MenuItem Command="{Binding AllCellsZero}"
-                                                          Header="{Binding DataContext.BudgetMonthMenuTitles.Zero, Source={x:Reference Root}}" />
+                                                <MenuItem Command="{Binding AllCellsZero}" Header="{Binding DataContext.BudgetMonthMenuTitles.Zero, Source={x:Reference Root}}" />
                                             </MenuItem>
                                         </ContextMenu>
                                     </iconPacks:PackIconMaterial.ContextMenu>
                                     <iconPacks:PackIconMaterial.Style>
                                         <Style TargetType="{x:Type iconPacks:PackIconMaterial}">
-                                            <Setter Property="Visibility"
-                                                    Value="Collapsed" />
+                                            <Setter Property="Visibility" Value="Collapsed" />
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"
-                                                             Value="True">
-                                                    <Setter Property="Visibility"
-                                                            Value="Visible" />
+                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Border}}}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible" />
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding ContextMenu.IsOpen, RelativeSource={RelativeSource Self}}"
-                                                             Value="True">
-                                                    <Setter Property="Visibility"
-                                                            Value="Visible" />
+                                                <DataTrigger Binding="{Binding ContextMenu.IsOpen, RelativeSource={RelativeSource Self}}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -277,14 +247,11 @@
                                                BasedOn="{StaticResource {x:Type TextBlock}}"
                                                TargetType="{x:Type TextBlock}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Month, Converter={x:Static helper:Converters.IsCurrentMonth}}"
-                                                             Value="True">
-                                                    <Setter Property="Foreground"
-                                                            Value="{DynamicResource AccentColorBrush}" />
+                                                <DataTrigger Binding="{Binding Month, Converter={x:Static helper:Converters.IsCurrentMonth}}" Value="True">
+                                                    <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
                                                 </DataTrigger>
                                             </Style.Triggers>
-                                            <Setter Property="Foreground"
-                                                    Value="{DynamicResource BlackBrush}" />
+                                            <Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
                                         </Style>
                                     </StackPanel.Resources>
                                     <TextBlock Margin="0,0,0,5"
@@ -316,13 +283,11 @@
                                             <ContentControl.Style>
                                                 <Style TargetType="{x:Type ContentControl}">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding NotBudgetedInPreviousMonth, Converter={x:Static helper:Converters.LongLesserThanZero}}"
-                                                                     Value="True">
+                                                        <DataTrigger Binding="{Binding NotBudgetedInPreviousMonth, Converter={x:Static helper:Converters.LongLesserThanZero}}" Value="True">
                                                             <Setter Property="ContentTemplate">
                                                                 <Setter.Value>
                                                                     <DataTemplate>
-                                                                        <TextBlock Text="{lex:Loc Budgeting_Overbudgeted}"
-                                                                                   ToolTip="{lex:Loc Budgeting_OverbudgetedExplanation}" />
+                                                                        <TextBlock Text="{lex:Loc Budgeting_Overbudgeted}" ToolTip="{lex:Loc Budgeting_OverbudgetedExplanation}" />
                                                                     </DataTemplate>
                                                                 </Setter.Value>
                                                             </Setter>
@@ -331,8 +296,7 @@
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
                                                             <DataTemplate>
-                                                                <TextBlock Text="{lex:Loc Budgeting_NotBudgeted}"
-                                                                           ToolTip="{lex:Loc Budgeting_NotBudgetedExplanation}" />
+                                                                <TextBlock Text="{lex:Loc Budgeting_NotBudgeted}" ToolTip="{lex:Loc Budgeting_NotBudgetedExplanation}" />
                                                             </DataTemplate>
                                                         </Setter.Value>
                                                     </Setter>
@@ -385,21 +349,17 @@
                                                    PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
                                                    StaysOpen="False">
                                                 <i:Interaction.Behaviors>
-                                                    <attachedBehaviors:PopupCommands ClosedCommand="{Binding AssociatedIncomeTransElementsViewModel.ClearLazyElements}"
-                                                                                     OpenedCommand="{Binding AssociatedIncomeTransElementsViewModel.LoadLazyElements}" />
+                                                    <attachedBehaviors:PopupCommands ClosedCommand="{Binding AssociatedIncomeTransElementsViewModel.ClearLazyElements}" OpenedCommand="{Binding AssociatedIncomeTransElementsViewModel.LoadLazyElements}" />
                                                 </i:Interaction.Behaviors>
                                                 <ContentControl Content="{Binding AssociatedIncomeTransElementsViewModel}">
                                                     <ContentControl.Style>
                                                         <Style TargetType="{x:Type ContentControl}">
                                                             <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                                                             Value="True">
-                                                                    <Setter Property="ContentTemplate"
-                                                                            Value="{StaticResource AssociatedElementsDataGrid}" />
+                                                                <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}" Value="True">
+                                                                    <Setter Property="ContentTemplate" Value="{StaticResource AssociatedElementsDataGrid}" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
-                                                            <Setter Property="ContentTemplate"
-                                                                    Value="{StaticResource EmptyDataTemplate}" />
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource EmptyDataTemplate}" />
                                                         </Style>
                                                     </ContentControl.Style>
                                                 </ContentControl>
@@ -417,28 +377,28 @@
                                                    TextAlignment="Right" />
                                         <TextBlock Grid.Row="4"
                                                    Grid.Column="0"
-                                                   Visibility="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}"
                                                    Text="{lex:Loc Budgeting_UnassignedTransactions}"
                                                    TextTrimming="CharacterEllipsis"
-                                                   ToolTip="{lex:Loc Budgeting_UnassignedTransactionsExplanation}" />
+                                                   ToolTip="{lex:Loc Budgeting_UnassignedTransactionsExplanation}"
+                                                   Visibility="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}" />
                                         <TextBlock Grid.Row="4"
                                                    Grid.Column="1"
-                                                   Visibility="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}"
                                                    Foreground="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
                                                    Text="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static helper:Converters.SumToString}}"
-                                                   TextAlignment="Right" />
+                                                   TextAlignment="Right"
+                                                   Visibility="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}" />
                                         <TextBlock Grid.Row="5"
                                                    Grid.Column="0"
-                                                   Visibility="{Binding DanglingTransferForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}"
                                                    Text="{lex:Loc Budgeting_OneSidedTransfers}"
                                                    TextTrimming="CharacterEllipsis"
-                                                   ToolTip="{lex:Loc Budgeting_OneSidedTransfersExplanation}" />
+                                                   ToolTip="{lex:Loc Budgeting_OneSidedTransfersExplanation}"
+                                                   Visibility="{Binding DanglingTransferForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}" />
                                         <TextBlock Grid.Row="5"
                                                    Grid.Column="1"
-                                                   Visibility="{Binding DanglingTransferForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}"
                                                    Foreground="{Binding DanglingTransferForThisMonth, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
                                                    Text="{Binding DanglingTransferForThisMonth, Converter={x:Static helper:Converters.SumToString}}"
-                                                   TextAlignment="Right" />
+                                                   TextAlignment="Right"
+                                                   Visibility="{Binding DanglingTransferForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}" />
                                     </Grid>
                                     <TextBlock Margin="0,5,0,0"
                                                HorizontalAlignment="Center"
@@ -451,8 +411,7 @@
                                         <ContentControl.Style>
                                             <Style TargetType="{x:Type ContentControl}">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding AvailableToBudget, Converter={x:Static helper:Converters.LongLesserThanZero}}"
-                                                                 Value="True">
+                                                    <DataTrigger Binding="{Binding AvailableToBudget, Converter={x:Static helper:Converters.LongLesserThanZero}}" Value="True">
                                                         <Setter Property="ContentTemplate">
                                                             <Setter.Value>
                                                                 <DataTemplate>
@@ -484,19 +443,14 @@
                                 d:DataContext="{d:DesignInstance viewModels:IBudgetMonthViewModel}"
                                 BorderBrush="{DynamicResource AccentColorBrush}"
                                 BorderThickness="1">
-                            <UniformGrid Columns="3"
-                                         Rows="2">
-                                <TextBlock Text="{lex:Loc Budgeting_Budgeted}"
-                                           TextAlignment="Right" />
-                                <TextBlock Text="{lex:Loc Budgeting_Outflows}"
-                                           TextAlignment="Right" />
-                                <TextBlock Text="{lex:Loc Budgeting_Balance}"
-                                           TextAlignment="Right" />
+                            <UniformGrid Columns="3" Rows="2">
+                                <TextBlock Text="{lex:Loc Budgeting_Budgeted}" TextAlignment="Right" />
+                                <TextBlock Text="{lex:Loc Budgeting_Outflows}" TextAlignment="Right" />
+                                <TextBlock Text="{lex:Loc Budgeting_Balance}" TextAlignment="Right" />
                                 <TextBlock Foreground="{Binding BudgetedThisMonthPositive, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
                                            Text="{Binding BudgetedThisMonthPositive, Converter={x:Static helper:Converters.SumToString}}"
                                            TextAlignment="Right" />
-                                <Grid Background="Transparent"
-                                      Tag="{Binding}">
+                                <Grid Background="Transparent" Tag="{Binding}">
                                     <i:Interaction.Behaviors>
                                         <attachedBehaviors:FrameworkElementClickBehavior Click="MonthOutflowCell_OnClick" />
                                     </i:Interaction.Behaviors>
@@ -513,21 +467,17 @@
                                            PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
                                            StaysOpen="False">
                                         <i:Interaction.Behaviors>
-                                            <attachedBehaviors:PopupCommands ClosedCommand="{Binding AssociatedTransElementsViewModel.ClearLazyElements}"
-                                                                             OpenedCommand="{Binding AssociatedTransElementsViewModel.LoadLazyElements}" />
+                                            <attachedBehaviors:PopupCommands ClosedCommand="{Binding AssociatedTransElementsViewModel.ClearLazyElements}" OpenedCommand="{Binding AssociatedTransElementsViewModel.LoadLazyElements}" />
                                         </i:Interaction.Behaviors>
                                         <ContentControl Content="{Binding AssociatedTransElementsViewModel}">
                                             <ContentControl.Style>
                                                 <Style TargetType="{x:Type ContentControl}">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                                                     Value="True">
-                                                            <Setter Property="ContentTemplate"
-                                                                    Value="{StaticResource AssociatedElementsDataGrid}" />
+                                                        <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}" Value="True">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource AssociatedElementsDataGrid}" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
-                                                    <Setter Property="ContentTemplate"
-                                                            Value="{StaticResource EmptyDataTemplate}" />
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource EmptyDataTemplate}" />
                                                 </Style>
                                             </ContentControl.Style>
                                         </ContentControl>
@@ -582,184 +532,221 @@
                              VirtualizingStackPanel.VirtualizationMode="Recycling">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel>
-                                    <UniformGrid Visibility="{Binding IsChecked, Source={x:Reference AggregateSwitch}, Converter={x:Static helper:Converters.TrueToCollapsed}}"
-                                                 d:DataContext="{d:DesignInstance forModels:IBudgetEntryViewModel}"
-                                                 Columns="3">
-                                        <Grid Background="Transparent">
+                                <UniformGrid d:DataContext="{d:DesignInstance forModels:IBudgetEntryViewModel}" Columns="3">
+                                    <ContentControl Content="{Binding}">
+                                        <ContentControl.Style>
+                                            <Style TargetType="{x:Type ContentControl}">
+                                                <Setter Property="ContentTemplate">
+                                                    <Setter.Value>
+                                                        <DataTemplate>
+                                                            <Grid Background="Transparent">
 
-                                            <TextBox Height="25"
-                                                     MinHeight="25"
-                                                     Margin="-5,0,-6,0"
-                                                     Padding="0"
-                                                     HorizontalContentAlignment="Right"
-                                                     attachedBehaviors:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"
-                                                     Text="{Binding Budget, Converter={x:Static helper:Converters.SumToString}}"
-                                                     TextAlignment="Right">
-                                                <TextBox.Style>
-                                                    <Style BasedOn="{StaticResource {x:Type TextBox}}"
-                                                           TargetType="{x:Type TextBox}">
+                                                                <TextBox Height="25"
+                                                                         MinHeight="25"
+                                                                         Margin="-5,0,-6,0"
+                                                                         Padding="0"
+                                                                         HorizontalContentAlignment="Right"
+                                                                         attachedBehaviors:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"
+                                                                         Text="{Binding Budget, Converter={x:Static helper:Converters.SumToString}}"
+                                                                         TextAlignment="Right">
+                                                                    <TextBox.Style>
+                                                                        <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
+                                                                            <Style.Triggers>
+                                                                                <Trigger Property="IsReadOnly" Value="True">
+                                                                                    <Setter Property="BorderBrush" Value="Transparent" />
+                                                                                    <Setter Property="Background" Value="Transparent" />
+                                                                                </Trigger>
+                                                                                <Trigger Property="IsFocused" Value="True">
+                                                                                    <Setter Property="IsReadOnly" Value="False" />
+                                                                                </Trigger>
+                                                                                <DataTrigger Binding="{Binding Budget}" Value="0">
+                                                                                    <Setter Property="Foreground" Value="{DynamicResource OpaqueZeroBrush}" />
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                            <Setter Property="IsReadOnly" Value="True" />
+                                                                            <Setter Property="Foreground" Value="{Binding Budget, Converter={x:Static helper:Converters.SumToSolidColorBrush}}" />
+                                                                        </Style>
+                                                                    </TextBox.Style>
+                                                                </TextBox>
+                                                                <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
+                                                                                            Height="{StaticResource IconSize}"
+                                                                                            Margin="0"
+                                                                                            Padding="0"
+                                                                                            HorizontalAlignment="Left"
+                                                                                            VerticalAlignment="Center"
+                                                                                            Background="Transparent"
+                                                                                            Foreground="{DynamicResource AccentColorBrush}"
+                                                                                            Kind="DotsHorizontal">
+                                                                    <i:Interaction.Behaviors>
+                                                                        <attachedBehaviors:FrameworkElementClickBehavior Click="BudgetEntryMenu_OnClick" />
+                                                                    </i:Interaction.Behaviors>
+                                                                    <iconPacks:PackIconMaterial.ContextMenu>
+                                                                        <ContextMenu Placement="Bottom">
+                                                                            <MenuItem Command="{Binding BudgetLastMonth}" Header="{Binding DataContext.BudgetMonthMenuTitles.BudgetLastMonth, Source={x:Reference Root}}" />
+                                                                            <MenuItem Command="{Binding OutflowsLastMonth}" Header="{Binding DataContext.BudgetMonthMenuTitles.OutflowsLastMonth, Source={x:Reference Root}}" />
+                                                                            <MenuItem Command="{Binding AvgOutflowsLastThreeMonths}" Header="{Binding DataContext.BudgetMonthMenuTitles.AvgOutflowLastThreeMonths, Source={x:Reference Root}}" />
+                                                                            <MenuItem Command="{Binding AvgOutflowsLastYear}" Header="{Binding DataContext.BudgetMonthMenuTitles.AvgOutflowsLastYear, Source={x:Reference Root}}" />
+                                                                            <MenuItem Command="{Binding BalanceToZero}" Header="{Binding DataContext.BudgetMonthMenuTitles.BalanceToZero, Source={x:Reference Root}}" />
+                                                                            <MenuItem Command="{Binding Zero}" Header="{Binding DataContext.BudgetMonthMenuTitles.Zero, Source={x:Reference Root}}" />
+                                                                        </ContextMenu>
+                                                                    </iconPacks:PackIconMaterial.ContextMenu>
+                                                                    <iconPacks:PackIconMaterial.Style>
+                                                                        <Style TargetType="{x:Type iconPacks:PackIconMaterial}">
+                                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}" Value="True">
+                                                                                    <Setter Property="Visibility" Value="Visible" />
+                                                                                </DataTrigger>
+                                                                                <DataTrigger Binding="{Binding ContextMenu.IsOpen, RelativeSource={RelativeSource Self}}" Value="True">
+                                                                                    <Setter Property="Visibility" Value="Visible" />
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </iconPacks:PackIconMaterial.Style>
+                                                                </iconPacks:PackIconMaterial>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsChecked, Source={x:Reference AggregateSwitch}}" Value="True">
+                                                        <Setter Property="ContentTemplate">
+                                                            <Setter.Value>
+                                                                <DataTemplate>
+                                                                    <TextBlock DataContext="{Binding AggregatedBudget}" Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                                                </DataTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ContentControl.Style>
+                                    </ContentControl>
+                                    <Grid Background="Transparent" Tag="{Binding}">
+                                        <i:Interaction.Behaviors>
+                                            <attachedBehaviors:FrameworkElementClickBehavior Click="OutflowCell_OnClick" />
+                                        </i:Interaction.Behaviors>
+
+                                        <ContentControl Content="{Binding}">
+                                            <ContentControl.Style>
+                                                <Style TargetType="{x:Type ContentControl}">
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <TextBlock DataContext="{Binding Outflow}" Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsChecked, Source={x:Reference AggregateSwitch}}" Value="True">
+                                                            <Setter Property="ContentTemplate">
+                                                                <Setter.Value>
+                                                                    <DataTemplate>
+                                                                        <TextBlock DataContext="{Binding AggregatedOutflow}" Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                                                    </DataTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ContentControl.Style>
+                                        </ContentControl>
+
+
+                                        <Popup Width="1000"
+                                               MaxHeight="500"
+                                               d:DataContext="{d:DesignInstance Type=forModels:IBudgetEntryViewModel}"
+                                               DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}"
+                                               IsOpen="{Binding AssociatedTransElementsViewModel.OpenFlag}"
+                                               PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
+                                               StaysOpen="False">
+                                            <Popup.Style>
+                                                <Style TargetType="{x:Type Popup}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsOpen" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Popup.Style>
+                                            <i:Interaction.Behaviors>
+                                                <attachedBehaviors:PopupCommands ClosedCommand="{Binding AssociatedTransElementsViewModel.ClearLazyElements}" OpenedCommand="{Binding AssociatedTransElementsViewModel.LoadLazyElements}" />
+                                            </i:Interaction.Behaviors>
+                                            <ContentControl Content="{Binding AssociatedTransElementsViewModel}">
+                                                <ContentControl.Style>
+                                                    <Style TargetType="{x:Type ContentControl}">
                                                         <Style.Triggers>
-                                                            <Trigger Property="IsReadOnly"
-                                                                     Value="True">
-                                                                <Setter Property="BorderBrush"
-                                                                        Value="Transparent" />
-                                                                <Setter Property="Background"
-                                                                        Value="Transparent" />
-                                                            </Trigger>
-                                                            <Trigger Property="IsFocused"
-                                                                     Value="True">
-                                                                <Setter Property="IsReadOnly"
-                                                                        Value="False" />
-                                                            </Trigger>
-                                                            <DataTrigger Binding="{Binding Budget}"
-                                                                         Value="0">
-                                                                <Setter Property="Foreground"
-                                                                        Value="{DynamicResource OpaqueZeroBrush}" />
+                                                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}" Value="True">
+                                                                <Setter Property="ContentTemplate" Value="{StaticResource AssociatedElementsDataGrid}" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
-                                                        <Setter Property="IsReadOnly"
-                                                                Value="True" />
-                                                        <Setter Property="Foreground"
-                                                                Value="{Binding Budget, Converter={x:Static helper:Converters.SumToSolidColorBrush}}" />
+                                                        <Setter Property="ContentTemplate" Value="{StaticResource EmptyDataTemplate}" />
                                                     </Style>
-                                                </TextBox.Style>
-                                            </TextBox>
-                                            <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
-                                                                        Height="{StaticResource IconSize}"
-                                                                        Margin="0"
-                                                                        Padding="0"
-                                                                        HorizontalAlignment="Left"
-                                                                        VerticalAlignment="Center"
-                                                                        Background="Transparent"
-                                                                        Foreground="{DynamicResource AccentColorBrush}"
-                                                                        Kind="DotsHorizontal">
-                                                <i:Interaction.Behaviors>
-                                                    <attachedBehaviors:FrameworkElementClickBehavior Click="BudgetEntryMenu_OnClick" />
-                                                </i:Interaction.Behaviors>
-                                                <iconPacks:PackIconMaterial.ContextMenu>
-                                                    <ContextMenu Placement="Bottom">
-                                                        <MenuItem Command="{Binding BudgetLastMonth}"
-                                                                  Header="{Binding DataContext.BudgetMonthMenuTitles.BudgetLastMonth, Source={x:Reference Root}}" />
-                                                        <MenuItem Command="{Binding OutflowsLastMonth}"
-                                                                  Header="{Binding DataContext.BudgetMonthMenuTitles.OutflowsLastMonth, Source={x:Reference Root}}" />
-                                                        <MenuItem Command="{Binding AvgOutflowsLastThreeMonths}"
-                                                                  Header="{Binding DataContext.BudgetMonthMenuTitles.AvgOutflowLastThreeMonths, Source={x:Reference Root}}" />
-                                                        <MenuItem Command="{Binding AvgOutflowsLastYear}"
-                                                                  Header="{Binding DataContext.BudgetMonthMenuTitles.AvgOutflowsLastYear, Source={x:Reference Root}}" />
-                                                        <MenuItem Command="{Binding BalanceToZero}"
-                                                                  Header="{Binding DataContext.BudgetMonthMenuTitles.BalanceToZero, Source={x:Reference Root}}" />
-                                                        <MenuItem Command="{Binding Zero}"
-                                                                  Header="{Binding DataContext.BudgetMonthMenuTitles.Zero, Source={x:Reference Root}}" />
-                                                    </ContextMenu>
-                                                </iconPacks:PackIconMaterial.ContextMenu>
-                                                <iconPacks:PackIconMaterial.Style>
-                                                    <Style TargetType="{x:Type iconPacks:PackIconMaterial}">
-                                                        <Setter Property="Visibility"
-                                                                Value="Collapsed" />
+                                                </ContentControl.Style>
+                                            </ContentControl>
+                                        </Popup>
+
+                                        <Popup Width="1000"
+                                               MaxHeight="500"
+                                               d:DataContext="{d:DesignInstance Type=forModels:IBudgetEntryViewModel}"
+                                               DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}"
+                                               IsOpen="{Binding AssociatedAggregatedTransElementsViewModel.OpenFlag}"
+                                               PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
+                                               StaysOpen="False">
+                                            <Popup.Style>
+                                                <Style TargetType="{x:Type Popup}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsOpen" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Popup.Style>
+                                            <i:Interaction.Behaviors>
+                                                <attachedBehaviors:PopupCommands ClosedCommand="{Binding AssociatedAggregatedTransElementsViewModel.ClearLazyElements}" OpenedCommand="{Binding AssociatedAggregatedTransElementsViewModel.LoadLazyElements}" />
+                                            </i:Interaction.Behaviors>
+                                            <ContentControl Content="{Binding AssociatedAggregatedTransElementsViewModel}">
+                                                <ContentControl.Style>
+                                                    <Style TargetType="{x:Type ContentControl}">
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
-                                                                         Value="True">
-                                                                <Setter Property="Visibility"
-                                                                        Value="Visible" />
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding ContextMenu.IsOpen, RelativeSource={RelativeSource Self}}"
-                                                                         Value="True">
-                                                                <Setter Property="Visibility"
-                                                                        Value="Visible" />
+                                                            <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}" Value="True">
+                                                                <Setter Property="ContentTemplate" Value="{StaticResource AssociatedElementsDataGrid}" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
+                                                        <Setter Property="ContentTemplate" Value="{StaticResource EmptyDataTemplate}" />
                                                     </Style>
-                                                </iconPacks:PackIconMaterial.Style>
-                                            </iconPacks:PackIconMaterial>
-                                        </Grid>
+                                                </ContentControl.Style>
+                                            </ContentControl>
+                                        </Popup>
+                                    </Grid>
 
-                                        <Grid Background="Transparent"
-                                              Tag="{Binding}">
-                                            <i:Interaction.Behaviors>
-                                                <attachedBehaviors:FrameworkElementClickBehavior Click="OutflowCell_OnClick" />
-                                            </i:Interaction.Behaviors>
-
-                                            <TextBlock DataContext="{Binding Outflow}"
-                                                       Style="{StaticResource NonEditableBudgetEntryCell}" />
-
-                                            <Popup Width="1000"
-                                                   MaxHeight="500"
-                                                   d:DataContext="{d:DesignInstance Type=forModels:IBudgetEntryViewModel}"
-                                                   DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}"
-                                                   IsOpen="{Binding AssociatedTransElementsViewModel.OpenFlag}"
-                                                   PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
-                                                   StaysOpen="False">
-                                                <i:Interaction.Behaviors>
-                                                    <attachedBehaviors:PopupCommands ClosedCommand="{Binding AssociatedTransElementsViewModel.ClearLazyElements}"
-                                                                                     OpenedCommand="{Binding AssociatedTransElementsViewModel.LoadLazyElements}" />
-                                                </i:Interaction.Behaviors>
-                                                <ContentControl Content="{Binding AssociatedTransElementsViewModel}">
-                                                    <ContentControl.Style>
-                                                        <Style TargetType="{x:Type ContentControl}">
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                                                             Value="True">
-                                                                    <Setter Property="ContentTemplate"
-                                                                            Value="{StaticResource AssociatedElementsDataGrid}" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                            <Setter Property="ContentTemplate"
-                                                                    Value="{StaticResource EmptyDataTemplate}" />
-                                                        </Style>
-                                                    </ContentControl.Style>
-                                                </ContentControl>
-                                            </Popup>
-                                        </Grid>
-                                        <TextBlock DataContext="{Binding Balance}"
-                                                   Style="{StaticResource NonEditableBudgetEntryCell}" />
-                                    </UniformGrid>
-                                    <UniformGrid Visibility="{Binding IsChecked, Source={x:Reference AggregateSwitch}, Converter={x:Static helper:Converters.FalseToCollapsed}}"
-                                                 d:DataContext="{d:DesignInstance forModels:IBudgetEntryViewModel}"
-                                                 Columns="3">
-                                        <TextBlock DataContext="{Binding AggregatedBudget}"
-                                                   Style="{StaticResource NonEditableBudgetEntryCell}" />
-                                        <Grid Background="Transparent"
-                                              Tag="{Binding}">
-                                            <i:Interaction.Behaviors>
-                                                <attachedBehaviors:FrameworkElementClickBehavior Click="AggregatedOutflowCell_OnClick" />
-                                            </i:Interaction.Behaviors>
-
-                                            <TextBlock DataContext="{Binding AggregatedOutflow}"
-                                                       Style="{StaticResource NonEditableBudgetEntryCell}" />
-
-                                            <Popup Width="1000"
-                                                   MaxHeight="500"
-                                                   d:DataContext="{d:DesignInstance Type=forModels:IBudgetEntryViewModel}"
-                                                   DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}"
-                                                   IsOpen="{Binding AssociatedAggregatedTransElementsViewModel.OpenFlag}"
-                                                   PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
-                                                   StaysOpen="False">
-                                                <i:Interaction.Behaviors>
-                                                    <attachedBehaviors:PopupCommands ClosedCommand="{Binding AssociatedAggregatedTransElementsViewModel.ClearLazyElements}"
-                                                                                     OpenedCommand="{Binding AssociatedAggregatedTransElementsViewModel.LoadLazyElements}" />
-                                                </i:Interaction.Behaviors>
-                                                <ContentControl Content="{Binding AssociatedAggregatedTransElementsViewModel}">
-                                                    <ContentControl.Style>
-                                                        <Style TargetType="{x:Type ContentControl}">
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsOpen, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
-                                                                             Value="True">
-                                                                    <Setter Property="ContentTemplate"
-                                                                            Value="{StaticResource AssociatedElementsDataGrid}" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                            <Setter Property="ContentTemplate"
-                                                                    Value="{StaticResource EmptyDataTemplate}" />
-                                                        </Style>
-                                                    </ContentControl.Style>
-                                                </ContentControl>
-                                            </Popup>
-                                        </Grid>
-                                        <TextBlock DataContext="{Binding AggregatedBalance}"
-                                                   Style="{StaticResource NonEditableBudgetEntryCell}" />
-                                    </UniformGrid>
-                                </StackPanel>
+                                    <ContentControl Content="{Binding}">
+                                        <ContentControl.Style>
+                                            <Style TargetType="{x:Type ContentControl}">
+                                                <Setter Property="ContentTemplate">
+                                                    <Setter.Value>
+                                                        <DataTemplate>
+                                                            <TextBlock DataContext="{Binding Balance}" Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                                        </DataTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsChecked, Source={x:Reference AggregateSwitch}}" Value="True">
+                                                        <Setter Property="ContentTemplate">
+                                                            <Setter.Value>
+                                                                <DataTemplate>
+                                                                    <TextBlock DataContext="{Binding AggregatedBalance}" Style="{StaticResource NonEditableBudgetEntryCell}" />
+                                                                </DataTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ContentControl.Style>
+                                    </ContentControl>
+                                </UniformGrid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                         <i:Interaction.Behaviors>

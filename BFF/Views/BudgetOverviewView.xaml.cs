@@ -61,13 +61,12 @@ namespace BFF.Views
         private void OutflowCell_OnClick(object sender, EventArgs e)
         {
             if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetEntryViewModel budgetEntry)
-                budgetEntry.AssociatedTransElementsViewModel.OpenFlag = true;
-        }
-
-        private void AggregatedOutflowCell_OnClick(object sender, EventArgs e)
-        {
-            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetEntryViewModel budgetEntry)
-                budgetEntry.AssociatedAggregatedTransElementsViewModel.OpenFlag = true;
+            {
+                if (AggregateSwitch.IsChecked == true)
+                    budgetEntry.AssociatedAggregatedTransElementsViewModel.OpenFlag = true;
+                else
+                    budgetEntry.AssociatedTransElementsViewModel.OpenFlag = true;
+            }
         }
 
         private void MonthOutflowCell_OnClick(object sender, EventArgs e)

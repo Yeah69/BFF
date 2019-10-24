@@ -25,7 +25,7 @@
                       lex:ResxLocalizationProvider.DefaultDictionary="Resources"
                       BorderBrush="{DynamicResource AccentColorBrush}"
                       BorderThickness="2"
-                      Icon="../../logo_quadratic.ico"
+                      Icon="../../Yeah69Logo.ico"
                       Left="{Binding X, Mode=TwoWay}"
                       LeftWindowCommandsOverlayBehavior="Never"
                       ResizeMode="CanResizeWithGrip"
@@ -397,9 +397,7 @@
                                     <hm:HamburgerMenuItem Header="{Binding TopLevelViewModelComposition.AccountTabsViewModel.SummaryAccountViewModel.TotalBalanceUntilNow}"
                                                           HeaderTemplate="{StaticResource AccountsHeaderTemplate}"
                                                           IsSelected="{Binding TopLevelViewModelComposition.AccountTabsViewModel.IsOpen.Value}">
-                                        <hm:HamburgerMenuItem.Content>
-                                            <views:AccountTabsView HorizontalContentAlignment="Stretch" DataContext="{Binding TopLevelViewModelComposition.AccountTabsViewModel}" />
-                                        </hm:HamburgerMenuItem.Content>
+                                        <views:AccountTabsView HorizontalContentAlignment="Stretch" DataContext="{Binding TopLevelViewModelComposition.AccountTabsViewModel}" />
                                         <hm:HamburgerMenuItem.Icon>
                                             <Viewbox Margin="10">
                                                 <iconPacks:PackIconOcticons Kind="CreditCard" />
