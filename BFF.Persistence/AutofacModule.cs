@@ -244,6 +244,11 @@ namespace BFF.Persistence
                 .AsSelf()
                 .As(typeof(Realm.ORM.Interfaces.ICrudOrm<>))
                 .InstancePerMatchingLifetimeScope(LifetimeScopeTagsForOrmRegistrations);
+
+            builder.RegisterType<UpdateBudgetCache>()
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .SingleInstance();
         }
     }
 }

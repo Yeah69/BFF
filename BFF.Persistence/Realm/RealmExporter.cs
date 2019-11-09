@@ -102,7 +102,7 @@ namespace BFF.Persistence.Realm
                         Id = realmCategoryId++,
                         Name = categoryDto.Name,
                         IsIncomeRelevant = false,
-                        Month = default,
+                        IncomeMonthOffset = default,
                     };
                     foreach (var child in resultChildren)
                     {
@@ -127,7 +127,7 @@ namespace BFF.Persistence.Realm
                             Name = categoryDto.Name,
                             Parent = null,
                             IsIncomeRelevant = true,
-                            Month = categoryDto.IncomeMonthOffset,
+                            IncomeMonthOffset = categoryDto.IncomeMonthOffset,
                         };
                         categoryDictionary[categoryDto] = category;
                         return category;

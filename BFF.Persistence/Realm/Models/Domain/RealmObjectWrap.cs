@@ -27,7 +27,7 @@ namespace BFF.Persistence.Realm.Models.Domain
             RealmObject = realmObject;
             _createRealmObject = createRealmObject ?? throw new ArgumentNullException(nameof(createRealmObject));
             _updateRealmObject = updateRealmObject ?? throw new ArgumentNullException(nameof(updateRealmObject));
-            _crudOrm = crudOrm ?? throw  new ArgumentNullException(nameof(crudOrm));
+            _crudOrm = crudOrm ?? throw new ArgumentNullException(nameof(crudOrm));
         }
         
         public bool IsInserted => RealmObject != null;
@@ -48,12 +48,12 @@ namespace BFF.Persistence.Realm.Models.Domain
             }
         }
 
-        public async Task UpdateAsync()
+        public Task UpdateAsync()
         {
-            if (IsInserted.Not()) return;
+            return IsInserted.Not() 
+                ? Task.CompletedTask 
+                : _crudOrm.UpdateAsync(RealmObject, UpdateRealmObject);
 
-            await _crudOrm.UpdateAsync(RealmObject, UpdateRealmObject).ConfigureAwait(false);
-            
             void UpdateRealmObject() => _updateRealmObject(RealmObject);
         }
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
+using BFF.Persistence.Realm.ORM;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
 using MrMeeseeks.Extensions;
@@ -13,11 +14,13 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class BudgetEntry : Model.Models.BudgetEntry, IRealmModel<Persistence.BudgetEntry>
     {
+        private readonly IUpdateBudgetCache _updateBudgetCache;
         private readonly IRealmTransRepository _transRepository;
         private readonly RealmObjectWrap<Persistence.BudgetEntry> _realmObjectWrap;
 
         public BudgetEntry(
             ICrudOrm<Persistence.BudgetEntry> crudOrm,
+            IUpdateBudgetCache updateBudgetCache,
             IRealmTransRepository transRepository,
             IRxSchedulerProvider rxSchedulerProvider,
             Persistence.BudgetEntry realmObject,
@@ -40,6 +43,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                 },
                 UpdateRealmObject,
                 crudOrm);
+            _updateBudgetCache = updateBudgetCache;
             _transRepository = transRepository;
             
             void UpdateRealmObject(Persistence.BudgetEntry ro)
@@ -58,19 +62,37 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public Persistence.BudgetEntry RealmObject => _realmObjectWrap.RealmObject;
 
-        public override Task InsertAsync()
+        public override async Task InsertAsync()
         {
-            return _realmObjectWrap.InsertAsync();
+            await _realmObjectWrap.InsertAsync().ConfigureAwait(false);
+            if (_realmObjectWrap.RealmObject != null)
+                await _updateBudgetCache.OnBudgetEntryChange(
+                    _realmObjectWrap.RealmObject.Category,
+                    _realmObjectWrap.RealmObject.Month)
+                    .ConfigureAwait(false);
         }
 
-        public override Task DeleteAsync()
+        public override async Task DeleteAsync()
         {
-            return _realmObjectWrap.DeleteAsync();
+            var temp = _realmObjectWrap.RealmObject;
+            await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
+            if (temp != null)
+                await _updateBudgetCache.OnBudgetEntryChange(
+                        temp.Category,
+                        temp.Month)
+                    .ConfigureAwait(false);
+
         }
 
-        protected override Task UpdateAsync()
+        protected override async Task UpdateAsync()
         {
-            return _realmObjectWrap.UpdateAsync();
+            var tempBudget = _realmObjectWrap.RealmObject?.Budget;
+            await _realmObjectWrap.UpdateAsync().ConfigureAwait(false);
+            if (tempBudget != Budget && _realmObjectWrap.RealmObject != null)
+                await _updateBudgetCache.OnBudgetEntryChange(
+                        _realmObjectWrap.RealmObject.Category,
+                        _realmObjectWrap.RealmObject.Month)
+                    .ConfigureAwait(false);
         }
 
         public override Task<IEnumerable<ITransBase>> GetAssociatedTransAsync()

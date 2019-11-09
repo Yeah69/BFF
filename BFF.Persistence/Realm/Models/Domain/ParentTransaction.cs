@@ -102,9 +102,14 @@ namespace BFF.Persistence.Realm.Models.Domain
             return _realmObjectWrap.InsertAsync();
         }
 
-        public override Task DeleteAsync()
+        public override async Task DeleteAsync()
         {
-            return _realmObjectWrap.DeleteAsync();
+            foreach (var subTransaction in SubTransactions)
+            {
+                await subTransaction.DeleteAsync().ConfigureAwait(false);
+            }
+
+            await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
         }
 
         protected override Task UpdateAsync()

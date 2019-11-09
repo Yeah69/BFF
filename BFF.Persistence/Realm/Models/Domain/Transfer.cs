@@ -4,16 +4,19 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Realm.Models.Persistence;
+using BFF.Persistence.Realm.ORM;
 using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class Transfer : Model.Models.Transfer, IRealmModel<Trans>
     {
+        private readonly IUpdateBudgetCache _updateBudgetCache;
         private readonly RealmObjectWrap<Trans> _realmObjectWrap;
 
         public Transfer(
             ICrudOrm<Trans> crudOrm,
+            IUpdateBudgetCache updateBudgetCache,
             IRxSchedulerProvider rxSchedulerProvider,
             Trans realmObject,
             DateTime date,
@@ -25,6 +28,7 @@ namespace BFF.Persistence.Realm.Models.Domain
             long sum,
             bool cleared) : base(rxSchedulerProvider, date, flag, checkNumber, fromAccount, toAccount, memo, sum, cleared)
         {
+            _updateBudgetCache = updateBudgetCache;
             _realmObjectWrap = new RealmObjectWrap<Trans>(
                 realmObject,
                 realm =>
@@ -73,19 +77,60 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public Trans RealmObject => _realmObjectWrap.RealmObject;
 
-        public override Task InsertAsync()
+        public override async Task InsertAsync()
         {
-            return _realmObjectWrap.InsertAsync();
+            await _realmObjectWrap.InsertAsync().ConfigureAwait(false);
+            var temp = _realmObjectWrap.RealmObject;
+            if (temp != null)
+            {
+                var month = new DateTimeOffset(
+                    temp.Date.Year,
+                    temp.Date.Month,
+                    1, 0, 0, 0, TimeSpan.Zero);
+                await _updateBudgetCache.OnTransferInsertOrDeleteAsync(temp.FromAccount, temp.ToAccount, month)
+                    .ConfigureAwait(false);
+            }
         }
 
-        public override Task DeleteAsync()
+        public override async Task DeleteAsync()
         {
-            return _realmObjectWrap.DeleteAsync();
+            var temp = _realmObjectWrap.RealmObject;
+            await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
+            if (temp != null)
+            {
+                var month = new DateTimeOffset(
+                    temp.Date.Year,
+                    temp.Date.Month,
+                    1, 0, 0, 0, TimeSpan.Zero);
+                await _updateBudgetCache.OnTransferInsertOrDeleteAsync(temp.FromAccount, temp.ToAccount, month)
+                    .ConfigureAwait(false);
+            }
+
         }
 
-        protected override Task UpdateAsync()
+        protected override async Task UpdateAsync()
         {
-            return _realmObjectWrap.UpdateAsync();
+            var beforeFromAccount = _realmObjectWrap.RealmObject?.FromAccount;
+            var beforeToAccount = _realmObjectWrap.RealmObject?.FromAccount;
+            var beforeDate = _realmObjectWrap.RealmObject?.Date;
+            var beforeSum = _realmObjectWrap.RealmObject?.Sum;
+            // The change already occured for the domain model but wasn't yet updated in the realm object
+            var afterFromAccount = (FromAccount as Account)?.RealmObject;
+            var afterToAccount = (ToAccount as Account)?.RealmObject;
+            var afterDate = new DateTimeOffset(Date, TimeSpan.Zero);
+            var afterSum = Sum;
+            await _realmObjectWrap.UpdateAsync().ConfigureAwait(false);
+            if (beforeDate is null) return;
+            await _updateBudgetCache.OnTransferUpdateAsync(
+                beforeFromAccount,
+                beforeToAccount,
+                beforeDate.Value,
+                beforeSum.Value,
+                afterFromAccount,
+                afterToAccount,
+                afterDate,
+                afterSum)
+                .ConfigureAwait(false);
         }
     }
 }

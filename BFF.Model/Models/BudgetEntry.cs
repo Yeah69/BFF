@@ -32,8 +32,8 @@ namespace BFF.Model.Models
             Month = month;
             Category = category;
             _budget = budget;
-            _outflow = outflow;
-            _balance = balance;
+            Outflow = outflow;
+            Balance = balance;
         }
 
         public DateTime Month { get; }
@@ -69,33 +69,9 @@ namespace BFF.Model.Models
             }
         }
 
-        private long _outflow;
+        public long Outflow { get; }
 
-        public long Outflow
-        {
-            get => _outflow;
-            set
-            {
-                if (_outflow == value) return;
-
-                _outflow = value;
-                UpdateAndNotify();
-            }
-        }
-
-        private long _balance;
-
-        public long Balance
-        {
-            get => _balance;
-            set
-            {
-                if (_balance == value) return;
-
-                _balance = value;
-                UpdateAndNotify();
-            }
-        }
+        public long Balance { get; }
 
         public abstract Task<IEnumerable<ITransBase>> GetAssociatedTransAsync();
 

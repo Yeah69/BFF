@@ -5,16 +5,19 @@ using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Realm.Models.Persistence;
+using BFF.Persistence.Realm.ORM;
 using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class Transaction : Model.Models.Transaction, IRealmModel<Trans>
     {
+        private readonly IUpdateBudgetCache _updateBudgetCache;
         private readonly RealmObjectWrap<Trans> _realmObjectWrap;
 
         public Transaction(
             ICrudOrm<Trans> crudOrm,
+            IUpdateBudgetCache updateBudgetCache,
             IRxSchedulerProvider rxSchedulerProvider,
             Trans realmObject,
             DateTime date,
@@ -38,6 +41,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                 sum,
                 cleared)
         {
+            _updateBudgetCache = updateBudgetCache;
             _realmObjectWrap = new RealmObjectWrap<Trans>(
                 realmObject,
                 realm =>
@@ -68,7 +72,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                 ro.Category =
                     Category is null
                         ? null
-                        : (Category as Category)?.RealmObject 
+                        : (Category as Category)?.RealmObject
                           ?? (Category as IncomeCategory)?.RealmObject
                           ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
                 ro.CheckNumber = CheckNumber;
@@ -91,19 +95,40 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public Trans RealmObject => _realmObjectWrap.RealmObject;
 
-        public override Task InsertAsync()
+        public override async Task InsertAsync()
         {
-            return _realmObjectWrap.InsertAsync();
+            await _realmObjectWrap.InsertAsync().ConfigureAwait(false);
+            if (_realmObjectWrap.RealmObject != null)
+                await _updateBudgetCache.OnTransactionInsertOrDeleteAsync(
+                    _realmObjectWrap.RealmObject.Category,
+                    _realmObjectWrap.RealmObject.Date).ConfigureAwait(false);
         }
 
-        public override Task DeleteAsync()
+        public override async Task DeleteAsync()
         {
-            return _realmObjectWrap.DeleteAsync();
+            var temp = _realmObjectWrap.RealmObject;
+            await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
+            if (temp != null)
+                await _updateBudgetCache.OnTransactionInsertOrDeleteAsync(
+                    temp.Category, 
+                    temp.Date).ConfigureAwait(false);
+
         }
 
-        protected override Task UpdateAsync()
+        protected override async Task UpdateAsync()
         {
-            return _realmObjectWrap.UpdateAsync();
+            var beforeCategory = _realmObjectWrap.RealmObject?.Category;
+            var beforeDate = _realmObjectWrap.RealmObject?.Date;
+            var beforeSum = _realmObjectWrap.RealmObject?.Sum;
+            // The change already occured for the domain model but wasn't yet updated in the realm object
+            var afterCategory = (Category as Category)?.RealmObject;
+            var afterDate = new DateTimeOffset(Date, TimeSpan.Zero);
+            var afterSum = Sum;
+            await _realmObjectWrap.UpdateAsync().ConfigureAwait(false);
+            if (beforeDate is null) return;
+            await _updateBudgetCache 
+                .OnTransactionUpdateAsync(beforeCategory, beforeDate.Value, beforeSum.Value, afterCategory, afterDate, afterSum)
+                .ConfigureAwait(false);
         }
     }
 }

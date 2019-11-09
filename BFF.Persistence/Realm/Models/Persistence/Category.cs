@@ -10,10 +10,16 @@ namespace BFF.Persistence.Realm.Models.Persistence
         public Category Parent { get; set; }
         public string Name { get; set; }
         public bool IsIncomeRelevant { get; set; }
-        public int Month { get; set; }
+        public int IncomeMonthOffset { get; set; }
 
         [Backlink(nameof(BudgetCacheEntry.Category))]
         public IQueryable<BudgetCacheEntry> BudgetCacheEntries { get; }
+
+        [Backlink(nameof(Trans.Category))]
+        public IQueryable<Trans> Transactions { get; }
+
+        [Backlink(nameof(SubTransaction.Category))]
+        public IQueryable<SubTransaction> SubTransactions { get; }
 
         public override bool Equals(object obj)
         {
