@@ -94,15 +94,17 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override async Task DeleteAsync()
         {
-            var temp = _realmObjectWrap.RealmObject;
+            var tempFromAccount = _realmObjectWrap.RealmObject?.FromAccount;
+            var tempToAccount = _realmObjectWrap.RealmObject?.ToAccount;
+            var tempDate = _realmObjectWrap.RealmObject?.Date;
             await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
-            if (temp != null)
+            if (tempFromAccount != null)
             {
                 var month = new DateTimeOffset(
-                    temp.Date.Year,
-                    temp.Date.Month,
+                    tempDate.Value.Year,
+                    tempDate.Value.Month,
                     1, 0, 0, 0, TimeSpan.Zero);
-                await _updateBudgetCache.OnTransferInsertOrDeleteAsync(temp.FromAccount, temp.ToAccount, month)
+                await _updateBudgetCache.OnTransferInsertOrDeleteAsync(tempFromAccount, tempToAccount, month)
                     .ConfigureAwait(false);
             }
 

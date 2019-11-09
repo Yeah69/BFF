@@ -70,12 +70,13 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override async Task DeleteAsync()
         {
-            var temp = _realmObjectWrap.RealmObject;
+            var tempCategory = _realmObjectWrap.RealmObject?.Category;
+            var tempDate = _realmObjectWrap.RealmObject?.Parent?.Date;
             await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
-            if (temp != null)
+            if (tempCategory != null)
                 await _updateBudgetCache.OnTransactionInsertOrDeleteAsync(
-                    temp.Category,
-                    temp.Parent.Date).ConfigureAwait(false);
+                    tempCategory,
+                    tempDate.Value).ConfigureAwait(false);
 
         }
 

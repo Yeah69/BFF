@@ -74,12 +74,13 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override async Task DeleteAsync()
         {
-            var temp = _realmObjectWrap.RealmObject;
+            var tempCategory = _realmObjectWrap.RealmObject?.Category;
+            var tempMonth = _realmObjectWrap.RealmObject?.Month;
             await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
-            if (temp != null)
+            if (tempCategory != null)
                 await _updateBudgetCache.OnBudgetEntryChange(
-                        temp.Category,
-                        temp.Month)
+                        tempCategory,
+                        tempMonth.Value)
                     .ConfigureAwait(false);
 
         }
