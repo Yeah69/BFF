@@ -12,9 +12,6 @@ namespace BFF.Persistence.Realm.Models.Persistence
         public bool IsIncomeRelevant { get; set; }
         public int IncomeMonthOffset { get; set; }
 
-        [Backlink(nameof(BudgetCacheEntry.Category))]
-        public IQueryable<BudgetCacheEntry> BudgetCacheEntries { get; }
-
         [Backlink(nameof(Trans.Category))]
         public IQueryable<Trans> Transactions { get; }
 

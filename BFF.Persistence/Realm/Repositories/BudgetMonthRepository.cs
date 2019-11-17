@@ -31,8 +31,10 @@ namespace BFF.Persistence.Realm.Repositories
 
         public async Task<IList<IBudgetMonth>> FindAsync(int year)
         {
-            var budgetBlock = await _budgetOrm.Value.FindAsync(
-                year).ConfigureAwait(false);
+            var budgetBlock = await _budgetOrm
+                .Value
+                .FindAsync(year)
+                .ConfigureAwait(false);
 
             long currentNotBudgetedOrOverbudgeted = budgetBlock.InitialNotBudgetedOrOverbudgeted;
             long currentOverspentInPreviousMonth = budgetBlock.InitialOverspentInPreviousMonth;

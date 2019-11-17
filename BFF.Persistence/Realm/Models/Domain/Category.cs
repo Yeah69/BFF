@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
-using BFF.Persistence.Realm.ORM;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
 using MoreLinq;
@@ -12,14 +11,12 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class Category : Model.Models.Category, IRealmModel<Persistence.Category>
     {
-        private readonly IUpdateBudgetCache _updateBudgetCache;
         private readonly IMergeOrm _mergeOrm;
         private readonly IRealmCategoryRepositoryInternal _repository;
         private readonly RealmObjectWrap<Persistence.Category> _realmObjectWrap;
 
         public Category(
             ICrudOrm<Persistence.Category> crudOrm,
-            IUpdateBudgetCache updateBudgetCache,
             IMergeOrm mergeOrm,
             IRealmCategoryRepositoryInternal repository,
             IRxSchedulerProvider rxSchedulerProvider,
@@ -40,7 +37,6 @@ namespace BFF.Persistence.Realm.Models.Domain
                 },
                 UpdateRealmObject,
                 crudOrm);
-            _updateBudgetCache = updateBudgetCache;
             _mergeOrm = mergeOrm;
             _repository = repository;
             
@@ -69,9 +65,6 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override async Task DeleteAsync()
         {
-            await _updateBudgetCache
-                .OnCategoryDeletion(_realmObjectWrap.RealmObject)
-                .ConfigureAwait(false);
             await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
             _repository.RemoveFromObservableCollection(this);
             _repository.RemoveFromCache(this);
@@ -96,16 +89,10 @@ namespace BFF.Persistence.Realm.Models.Domain
                     while (category.Categories.Any(t => t.Name == $"{f.Name}{++i}")) ;
                     f.Name = $"{f.Name}{i}";
                 });
-            await _updateBudgetCache
-                .OnCategoryDeletion(_realmObjectWrap.RealmObject)
-                .ConfigureAwait(false); 
             var categoryRealmObject = ((Category)category).RealmObject;
             await _mergeOrm.MergeCategoryAsync(
                 RealmObject,
                 categoryRealmObject)
-                .ConfigureAwait(false);
-            await _updateBudgetCache
-                .OnCategoryMergeForTarget(categoryRealmObject)
                 .ConfigureAwait(false);
             _repository.ClearCache();
             await _repository.ResetAll().ConfigureAwait(false);

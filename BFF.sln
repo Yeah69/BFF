@@ -25,8 +25,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.Persistence.Proxy", "BF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MrMeeseeks", "..\MrMeeseeks\MrMeeseeks\MrMeeseeks.csproj", "{3980BC29-589F-492D-B31A-37E1FD34C6F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BFF.Persistence.Test", "BFF.Persistence.Test\BFF.Persistence.Test.csproj", "{AD992833-6345-4ABC-8E00-37050B116891}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,18 +59,14 @@ Global
 		{3980BC29-589F-492D-B31A-37E1FD34C6F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3980BC29-589F-492D-B31A-37E1FD34C6F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3980BC29-589F-492D-B31A-37E1FD34C6F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD992833-6345-4ABC-8E00-37050B116891}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD992833-6345-4ABC-8E00-37050B116891}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD992833-6345-4ABC-8E00-37050B116891}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD992833-6345-4ABC-8E00-37050B116891}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_CodeReferences = {"Items":[{"Expression":"\\W($File.$Key)\\W","Extensions":".cs,.xaml,.cshtml","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"ResourceManager.GetString\\(\"($Key)\"\\)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"typeof\\((\\w+\\.)*($File)\\).+\"($Key)\"|\"($Key)\".+typeof\\((\\w+\\.)*($File)\\)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"\\W($Key)\\W","Extensions":".vb","IsCaseSensitive":false,"SingleLineComment":"'"},{"Expression":"\\W($File::$Key)\\W","Extensions":".cpp,.c,.hxx,.h","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"&lt;%\\$\\s+Resources:\\s*($File)\\s*,\\s*($Key)\\s*%&gt;","Extensions":".aspx,.ascx,.master","IsCaseSensitive":true,"SingleLineComment":null},{"Expression":"StringResourceKey\\.($Key)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"\"($Key)\".Localize<.*>\\(\\)","Extensions":".cs","IsCaseSensitive":false,"SingleLineComment":null}]}
-		RESX_ResXSortingComparison = Ordinal
-		RESX_SortFileContentOnSave = True
 		SolutionGuid = {CB48FD93-B139-482F-AECA-4F0ED2800AAA}
+		RESX_SortFileContentOnSave = True
+		RESX_ResXSortingComparison = Ordinal
+		RESX_CodeReferences = {"Items":[{"Expression":"\\W($File.$Key)\\W","Extensions":".cs,.xaml,.cshtml","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"ResourceManager.GetString\\(\"($Key)\"\\)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"typeof\\((\\w+\\.)*($File)\\).+\"($Key)\"|\"($Key)\".+typeof\\((\\w+\\.)*($File)\\)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"\\W($Key)\\W","Extensions":".vb","IsCaseSensitive":false,"SingleLineComment":"'"},{"Expression":"\\W($File::$Key)\\W","Extensions":".cpp,.c,.hxx,.h","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"&lt;%\\$\\s+Resources:\\s*($File)\\s*,\\s*($Key)\\s*%&gt;","Extensions":".aspx,.ascx,.master","IsCaseSensitive":true,"SingleLineComment":null},{"Expression":"StringResourceKey\\.($Key)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"\"($Key)\".Localize<.*>\\(\\)","Extensions":".cs","IsCaseSensitive":false,"SingleLineComment":null}]}
 	EndGlobalSection
 EndGlobal

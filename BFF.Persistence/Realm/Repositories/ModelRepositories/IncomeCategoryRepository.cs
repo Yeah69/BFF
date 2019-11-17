@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
-using BFF.Persistence.Realm.ORM;
 using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
@@ -26,7 +25,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<Models.Persistence.Category> _crudOrm;
-        private readonly IUpdateBudgetCache _updateBudgetCache;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IMergeOrm> _mergeOrm;
         private readonly Lazy<ICategoryOrm> _categoryOrm;
@@ -36,7 +34,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         public RealmIncomeCategoryRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<Models.Persistence.Category> crudOrm,
-            IUpdateBudgetCache updateBudgetCache,
             IRealmOperations realmOperations,
             Lazy<IMergeOrm> mergeOrm,
             Lazy<ICategoryOrm> categoryOrm)
@@ -44,7 +41,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
-            _updateBudgetCache = updateBudgetCache;
             _realmOperations = realmOperations;
             _mergeOrm = mergeOrm;
             _categoryOrm = categoryOrm;
@@ -60,7 +56,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             {
                 return new Models.Domain.IncomeCategory(
                     _crudOrm,
-                    _updateBudgetCache,
                     _mergeOrm.Value,
                     this,
                     _rxSchedulerProvider,

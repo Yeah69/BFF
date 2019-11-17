@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Realm.Models.Persistence;
-using BFF.Persistence.Realm.ORM;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using MrMeeseeks.Extensions;
 
@@ -20,7 +19,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<Models.Persistence.SubTransaction> _crudOrm;
-        private readonly IUpdateBudgetCache _updateBudgetCache;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IParentalOrm> _parentalOrm;
         private readonly Lazy<IRealmCategoryBaseRepositoryInternal> _categoryBaseRepository;
@@ -28,7 +26,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         public RealmSubTransactionRepository(
             IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<Models.Persistence.SubTransaction> crudOrm,
-            IUpdateBudgetCache updateBudgetCache,
             IRealmOperations realmOperations,
             Lazy<IParentalOrm> parentalOrm,
             Lazy<IRealmCategoryBaseRepositoryInternal> categoryBaseRepository)
@@ -36,7 +33,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         {
             _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
-            _updateBudgetCache = updateBudgetCache;
             _realmOperations = realmOperations;
             _parentalOrm = parentalOrm;
             _categoryBaseRepository = categoryBaseRepository;
@@ -54,7 +50,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             {
                 return new Models.Domain.SubTransaction(
                     _crudOrm,
-                    _updateBudgetCache,
                     _rxSchedulerProvider,
                     persistenceModel,
                     persistenceModel.Category is null

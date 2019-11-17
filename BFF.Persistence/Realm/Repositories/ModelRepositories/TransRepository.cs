@@ -6,7 +6,6 @@ using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Realm.Models.Persistence;
-using BFF.Persistence.Realm.ORM;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using MrMeeseeks.Extensions;
 using Account = BFF.Persistence.Realm.Models.Domain.Account;
@@ -33,7 +32,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         private readonly Lazy<IRealmFlagRepositoryInternal> _flagRepository;
         private readonly Lazy<IRealmSubTransactionRepository> _subTransactionsRepository;
         private readonly ICrudOrm<Trans> _crudOrm;
-        private readonly IUpdateBudgetCache _updateBudgetCache;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<ITransOrm> _transOrm;
 
@@ -45,7 +43,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             Lazy<IRealmFlagRepositoryInternal> flagRepository,
             Lazy<IRealmSubTransactionRepository> subTransactionsRepository, 
             ICrudOrm<Trans> crudOrm,
-            IUpdateBudgetCache updateBudgetCache,
             IRealmOperations realmOperations,
             Lazy<ITransOrm> transOrm)
             : base(crudOrm)
@@ -56,7 +53,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             _payeeRepository = payeeRepository;
             _subTransactionsRepository = subTransactionsRepository;
             _crudOrm = crudOrm;
-            _updateBudgetCache = updateBudgetCache;
             _realmOperations = realmOperations;
             _transOrm = transOrm;
             _flagRepository = flagRepository;
@@ -154,7 +150,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                 switch ((TransType) persistenceModel.TypeIndex)
                 {
                     case TransType.Transaction:
-                        ret = new Models.Domain.Transaction(_crudOrm, _updateBudgetCache, _rxSchedulerProvider, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
+                        ret = new Models.Domain.Transaction(_crudOrm, _rxSchedulerProvider, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
                             ? null
                             : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false), persistenceModel.CheckNumber, await _accountRepository.Value.FindAsync(persistenceModel.Account).ConfigureAwait(false), persistenceModel.Payee is null
                             ? null
@@ -163,7 +159,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                             : await _categoryBaseRepository.Value.FindAsync(persistenceModel.Category).ConfigureAwait(false), persistenceModel.Memo, persistenceModel.Sum, persistenceModel.Cleared);
                         break;
                     case TransType.Transfer:
-                        ret = new Models.Domain.Transfer(_crudOrm, _updateBudgetCache, _rxSchedulerProvider, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
+                        ret = new Models.Domain.Transfer(_crudOrm, _rxSchedulerProvider, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
                             ? null
                             : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false), persistenceModel.CheckNumber, persistenceModel.FromAccount is null
                             ? null
@@ -179,7 +175,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                             : await _payeeRepository.Value.FindAsync(persistenceModel.Payee).ConfigureAwait(false), persistenceModel.Memo, persistenceModel.Cleared);
                         break;
                     default:
-                        ret = new Models.Domain.Transaction(_crudOrm, _updateBudgetCache, _rxSchedulerProvider, null, DateTime.Today, null, "", null, null, null, "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR", 0L, false);
+                        ret = new Models.Domain.Transaction(_crudOrm, _rxSchedulerProvider, null, DateTime.Today, null, "", null, null, null, "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR", 0L, false);
                         break;
                 }
 

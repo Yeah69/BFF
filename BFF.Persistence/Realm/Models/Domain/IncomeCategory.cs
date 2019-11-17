@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
-using BFF.Persistence.Realm.ORM;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
 
@@ -11,14 +10,12 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class IncomeCategory : Model.Models.IncomeCategory, IRealmModel<Persistence.Category>
     {
-        private readonly IUpdateBudgetCache _updateBudgetCache;
         private readonly IMergeOrm _mergeOrm;
         private readonly IRealmIncomeCategoryRepositoryInternal _repository;
         private readonly RealmObjectWrap<Persistence.Category> _realmObjectWrap;
 
         public IncomeCategory(
             ICrudOrm<Persistence.Category> crudOrm,
-            IUpdateBudgetCache updateBudgetCache,
             IMergeOrm mergeOrm,
             IRealmIncomeCategoryRepositoryInternal repository,
             IRxSchedulerProvider rxSchedulerProvider,
@@ -39,7 +36,6 @@ namespace BFF.Persistence.Realm.Models.Domain
                 },
                 UpdateRealmObject,
                 crudOrm);
-            _updateBudgetCache = updateBudgetCache;
             _mergeOrm = mergeOrm;
             _repository = repository;
             
@@ -64,45 +60,25 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override async Task DeleteAsync()
         {
-            await _updateBudgetCache
-                .OnCategoryDeletion(_realmObjectWrap.RealmObject)
-                .ConfigureAwait(false);
             await _realmObjectWrap.DeleteAsync().ConfigureAwait(false);
             _repository.RemoveFromObservableCollection(this);
             _repository.RemoveFromCache(this);
 
         }
 
-        protected override async Task UpdateAsync()
+        protected override Task UpdateAsync()
         {
-            var beforeIncomeMonthOffset = _realmObjectWrap.RealmObject?.IncomeMonthOffset;
-            var afterIncomeMonthOffset = MonthOffset;
-            await _realmObjectWrap.UpdateAsync().ConfigureAwait(false);
-            if (beforeIncomeMonthOffset != null)
-            {
-                await _updateBudgetCache
-                    .OnIncomeCategoryChange(
-                        _realmObjectWrap.RealmObject, 
-                        beforeIncomeMonthOffset.Value, 
-                        afterIncomeMonthOffset)
-                    .ConfigureAwait(false);
-            }
+            return _realmObjectWrap.UpdateAsync();
         }
 
         public override async Task MergeToAsync(IIncomeCategory category)
         {
             if (!(category is IncomeCategory)) throw new ArgumentException("Cannot merge if other part isn't from same backend", nameof(category));
 
-            await _updateBudgetCache
-                .OnCategoryDeletion(_realmObjectWrap.RealmObject)
-                .ConfigureAwait(false);
             var incomeCategoryRealmObject = ((IncomeCategory)category).RealmObject;
             await _mergeOrm.MergeCategoryAsync(
                     RealmObject,
                     incomeCategoryRealmObject)
-                .ConfigureAwait(false);
-            await _updateBudgetCache
-                .OnCategoryMergeForTarget(incomeCategoryRealmObject)
                 .ConfigureAwait(false);
             _repository.RemoveFromObservableCollection(this);
             _repository.RemoveFromCache(this);

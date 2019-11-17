@@ -31,7 +31,6 @@ namespace BFF.Persistence.Realm.Models
         private readonly Lazy<RealmCrudOrm<BudgetEntry>> _budgetEntryCrudOrm;
         private readonly Lazy<RealmCrudOrm<DbSetting>> _dbSettingCrudOrm;
         private readonly Lazy<RealmMergeOrm> _mergeOrm;
-        private readonly Lazy<UpdateBudgetCache> _updateBudgetCache;
         private readonly Lazy<RealmSubTransactionRepository> _subTransactionRepository;
         private readonly Lazy<RealmAccountOrm> _accountOrm;
         private readonly Lazy<RealmTransRepository> _transRepository;
@@ -53,7 +52,6 @@ namespace BFF.Persistence.Realm.Models
             Lazy<RealmCrudOrm<BudgetEntry>> budgetEntryCrudOrm,
             Lazy<RealmCrudOrm<DbSetting>> dbSettingCrudOrm,
             Lazy<RealmMergeOrm> mergeOrm,
-            Lazy<UpdateBudgetCache> updateBudgetCache,
             Lazy<RealmSubTransactionRepository> subTransactionRepository,
             Lazy<RealmAccountOrm> accountOrm,
             Lazy<RealmTransRepository> transRepository,
@@ -74,7 +72,6 @@ namespace BFF.Persistence.Realm.Models
             _budgetEntryCrudOrm = budgetEntryCrudOrm;
             _dbSettingCrudOrm = dbSettingCrudOrm;
             _mergeOrm = mergeOrm;
-            _updateBudgetCache = updateBudgetCache;
             _subTransactionRepository = subTransactionRepository;
             _accountOrm = accountOrm;
             _transRepository = transRepository;
@@ -91,7 +88,6 @@ namespace BFF.Persistence.Realm.Models
         {
             return new Domain.Transaction(
                 _transCrudOrm.Value, 
-                _updateBudgetCache.Value,
                 _rxSchedulerProvider,
                 null, 
                 _lastSetDate.Date,
@@ -109,7 +105,6 @@ namespace BFF.Persistence.Realm.Models
         {
             return new Domain.Transfer(
                 _transCrudOrm.Value,
-                _updateBudgetCache.Value,
                 _rxSchedulerProvider,
                 null,
                 _lastSetDate.Date,
@@ -142,7 +137,6 @@ namespace BFF.Persistence.Realm.Models
         {
             return new Domain.SubTransaction(
                 _subTransactionCrudOrm.Value,
-                _updateBudgetCache.Value,
                 _rxSchedulerProvider,
                 null,
                 null,
@@ -154,7 +148,6 @@ namespace BFF.Persistence.Realm.Models
         {
             return new Domain.Account(
                 _accountCrudOrm.Value,
-                _updateBudgetCache.Value,
                 _accountOrm.Value,
                 _accountRepository.Value,
                 _transRepository.Value,
@@ -180,7 +173,6 @@ namespace BFF.Persistence.Realm.Models
         {
             return new Domain.Category(
                 _categoryCrudOrm.Value,
-                _updateBudgetCache.Value,
                 _mergeOrm.Value,
                 _categoryRepository.Value,
                 _rxSchedulerProvider,
@@ -193,7 +185,6 @@ namespace BFF.Persistence.Realm.Models
         {
             return new Domain.IncomeCategory(
                 _categoryCrudOrm.Value,
-                _updateBudgetCache.Value,
                 _mergeOrm.Value,
                 _incomeCategoryRepository.Value,
                 _rxSchedulerProvider,
@@ -226,7 +217,6 @@ namespace BFF.Persistence.Realm.Models
         {
             return new Domain.BudgetEntry(
                 _budgetEntryCrudOrm.Value,
-                _updateBudgetCache.Value,
                 _transRepository.Value,
                 _rxSchedulerProvider,
                 null,
