@@ -10,7 +10,6 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:userControls="clr-namespace:BFF.UserControls"
              xmlns:utility="clr-namespace:BFF.ViewModel.ViewModels.ForModels.Utility;assembly=BFF.ViewModel"
              xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
              x:Name="Root"
@@ -167,6 +166,23 @@
                               OnLabel="{lex:Loc General_Yes}"
                               ToolTip="{lex:Loc ToolTip_BudgetOverview_Aggregates}" />
         </DockPanel>
+        <ListBox Grid.Row="1"
+                 Grid.Column="0"
+                 Margin="5"
+                 Padding="5"
+                 HorizontalAlignment="Stretch"
+                 AlternationCount="2"
+                 BorderBrush="{DynamicResource AccentColorBrush}"
+                 BorderThickness="1"
+                 ItemTemplate="{StaticResource IndentedCategoryItemTemplate}"
+                 ItemsSource="{Binding Categories}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                 SelectedIndex="{Binding SelectedIndex}">
+            <i:Interaction.Behaviors>
+                <attachedBehaviors:ScrollViewerSync GroupName="BudgetOverview" />
+            </i:Interaction.Behaviors>
+        </ListBox>
         <GridSplitter Grid.Row="0"
                       Grid.RowSpan="2"
                       Grid.Column="1"
@@ -185,15 +201,12 @@
                 </Style>
             </GridSplitter.Style>
         </GridSplitter>
-        <userControls:UniformList x:Name="BudgetMonthHeaders"
-                                  Grid.Row="0"
-                                  Grid.Column="2"
-                                  VerticalAlignment="Stretch"
-                                  DisplayCount="5"
-                                  ItemsSource="{Binding BudgetMonths}"
-                                  StartIndex="{Binding CurrentMonthStartIndex}">
-            <userControls:UniformList.ItemTemplate>
-                <DataTemplate>
+        <Grid x:Name="BudgetMonthHeaders"
+              Grid.Row="0"
+              Grid.Column="2"
+              VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <DataTemplate DataType="{x:Type viewModels:BudgetMonthViewModel}">
                     <StackPanel>
                         <Border Margin="5"
                                 Padding="5"
@@ -490,35 +503,113 @@
                         </Border>
                     </StackPanel>
                 </DataTemplate>
-            </userControls:UniformList.ItemTemplate>
-        </userControls:UniformList>
-        <ListBox Grid.Row="1"
-                 Grid.Column="0"
-                 Margin="5"
-                 Padding="5"
-                 HorizontalAlignment="Stretch"
-                 AlternationCount="2"
-                 BorderBrush="{DynamicResource AccentColorBrush}"
-                 BorderThickness="1"
-                 ItemTemplate="{StaticResource IndentedCategoryItemTemplate}"
-                 ItemsSource="{Binding Categories}"
-                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                 ScrollViewer.VerticalScrollBarVisibility="Visible"
-                 SelectedIndex="{Binding SelectedIndex}"
-                 VirtualizingStackPanel.IsVirtualizing="True"
-                 VirtualizingStackPanel.VirtualizationMode="Recycling">
-            <i:Interaction.Behaviors>
-                <attachedBehaviors:ScrollViewerSync GroupName="BudgetOverview" />
-            </i:Interaction.Behaviors>
-        </ListBox>
-        <userControls:UniformList x:Name="BudgetEntriesData"
-                                  Grid.Row="1"
-                                  Grid.Column="2"
-                                  DisplayCount="5"
-                                  ItemsSource="{Binding BudgetMonths}"
-                                  StartIndex="{Binding CurrentMonthStartIndex}">
-            <userControls:UniformList.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:BudgetMonthViewModelPlaceholder}">
+                    <StackPanel>
+                        <Border Margin="5"
+                                Padding="5"
+                                d:DataContext="{d:DesignInstance viewModels:IBudgetMonthViewModel}"
+                                Background="Transparent"
+                                BorderBrush="{DynamicResource AccentColorBrush}"
+                                BorderThickness="1">
+                            <Grid>
+                                <StackPanel>
+                                    <StackPanel.Resources>
+                                        <Style x:Key="CurrentMonthMarking"
+                                               BasedOn="{StaticResource {x:Type TextBlock}}"
+                                               TargetType="{x:Type TextBlock}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Month, Converter={x:Static helper:Converters.IsCurrentMonth}}" Value="True">
+                                                    <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                            <Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <TextBlock Margin="0,0,0,5"
+                                               HorizontalAlignment="Center"
+                                               FontSize="25"
+                                               Style="{StaticResource CurrentMonthMarking}"
+                                               Text="{Binding Month, Converter={x:Static helper:Converters.LocalizedMonthShort}}" />
+                                    <TextBlock Margin="0,0,0,5"
+                                               HorizontalAlignment="Center"
+                                               FontSize="10"
+                                               Style="{StaticResource CurrentMonthMarking}"
+                                               Text="{Binding Month, StringFormat=yyyy}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0"
+                                                   Grid.Column="1"
+                                                   Text=" " />
+                                        <TextBlock Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   Text=" " />
+                                        <TextBlock Grid.Row="2"
+                                                   Grid.Column="1"
+                                                   Text=" " />
+                                        <TextBlock Grid.Row="3"
+                                                   Grid.Column="1"
+                                                   Text=" " />
+                                        <TextBlock Grid.Row="4"
+                                                   Grid.Column="1"
+                                                   Text=" " />
+                                        <TextBlock Grid.Row="5"
+                                                   Grid.Column="1"
+                                                   Text=" " />
+                                    </Grid>
+                                    <TextBlock Margin="0,5,0,0"
+                                               HorizontalAlignment="Center"
+                                               FontSize="25"
+                                               Text=" " />
+                                    <TextBlock FontSize="10"
+                                               ToolTip=" " />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <Border Margin="5"
+                                Padding="10,5,5,5"
+                                d:DataContext="{d:DesignInstance viewModels:IBudgetMonthViewModel}"
+                                BorderBrush="{DynamicResource AccentColorBrush}"
+                                BorderThickness="1">
+                            <UniformGrid Columns="3" Rows="2">
+                                <TextBlock Text=" " />
+                                <TextBlock Text=" " />
+                                <TextBlock Text=" " />
+                                <TextBlock Text=" " />
+                                <Grid Background="Transparent" Tag="{Binding}">
+                                    <TextBlock Text=" " />
+                                </Grid>
+                                <TextBlock Text=" " />
+                            </UniformGrid>
+                        </Border>
+                    </StackPanel>
+                </DataTemplate>
+            </Grid.Resources>
+            <ListBox VerticalAlignment="Stretch"
+                     ItemsSource="{Binding BudgetMonths}"
+                     Visibility="{Binding ShowBudgetMonths, Converter={x:Static helper:Converters.FalseToCollapsed}}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="5" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </Grid>
+        <Grid x:Name="BudgetEntriesData"
+              Grid.Row="1"
+              Grid.Column="2">
+            <Grid.Resources>
+                <DataTemplate DataType="{x:Type viewModels:BudgetMonthViewModel}">
                     <ListBox Margin="5"
                              Padding="5"
                              d:DataContext="{d:DesignInstance viewModels:IBudgetMonthViewModel}"
@@ -527,9 +618,7 @@
                              BorderThickness="1"
                              ItemsSource="{Binding BudgetEntries}"
                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                             SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference Root}}"
-                             VirtualizingStackPanel.IsVirtualizing="True"
-                             VirtualizingStackPanel.VirtualizationMode="Recycling">
+                             SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference Root}}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <UniformGrid d:DataContext="{d:DesignInstance forModels:IBudgetEntryViewModel}" Columns="3">
@@ -754,7 +843,33 @@
                         </i:Interaction.Behaviors>
                     </ListBox>
                 </DataTemplate>
-            </userControls:UniformList.ItemTemplate>
-        </userControls:UniformList>
+                <DataTemplate DataType="{x:Type viewModels:BudgetMonthViewModelPlaceholder}">
+                    <ListBox Margin="5"
+                             Padding="5"
+                             d:DataContext="{d:DesignInstance viewModels:IBudgetMonthViewModel}"
+                             AlternationCount="2"
+                             BorderBrush="{DynamicResource AccentColorBrush}"
+                             BorderThickness="1"
+                             ItemsSource="{Binding BudgetEntries}"
+                             ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                             SelectedIndex="{Binding DataContext.SelectedIndex, Source={x:Reference Root}}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate/>
+                        </ListBox.ItemTemplate>
+                        <i:Interaction.Behaviors>
+                            <attachedBehaviors:ScrollViewerSync GroupName="BudgetOverview" />
+                        </i:Interaction.Behaviors>
+                    </ListBox>
+                </DataTemplate>
+            </Grid.Resources>
+            <ListBox ItemsSource="{Binding BudgetMonths}"
+                     Visibility="{Binding ShowBudgetMonths, Converter={x:Static helper:Converters.FalseToCollapsed}}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="5" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </Grid>
     </Grid>
 </UserControl>

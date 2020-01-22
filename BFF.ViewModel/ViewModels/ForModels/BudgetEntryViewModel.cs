@@ -137,9 +137,9 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             Children = new List<IBudgetEntryViewModel>();
 
-            AggregatedBudget = Budget + Children.Sum(bevm => bevm.AggregatedBudget);
-            AggregatedBalance = Balance + Children.Sum(bevm => bevm.AggregatedBalance);
-            AggregatedOutflow = Outflow + Children.Sum(bevm => bevm.AggregatedOutflow);
+            AggregatedBudget = Budget;
+            AggregatedBalance = Balance;
+            AggregatedOutflow = Outflow;
 
             var updatesFromChildren = new SerialDisposable().AddForDisposalTo(CompositeDisposable);
 

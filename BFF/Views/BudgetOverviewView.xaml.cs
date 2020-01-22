@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using BFF.AttachedBehaviors;
 using BFF.ViewModel.ViewModels;
@@ -20,8 +22,8 @@ namespace BFF.Views
         {
             void UpdateSlaveCount(int newCount)
             {
-                BudgetEntriesData.DisplayCount = newCount;
-                BudgetMonthHeaders.DisplayCount = newCount;
+                //BudgetEntriesData.DisplayCount = newCount;
+                //BudgetMonthHeaders.DisplayCount = newCount;
                 e.Handled = true;
             }
 
@@ -97,6 +99,25 @@ namespace BFF.Views
                 fecb.Parent.ContextMenu.PlacementTarget = fecb.Parent;
                 fecb.Parent.ContextMenu.IsOpen = true;
             }
+        }
+    }
+
+    public class BudgetMonthItemDataTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate Content { get; set; }
+
+        public DataTemplate Placeholder { get; set; }
+
+        private static DataTemplate Empty { get; } = new DataTemplate();
+
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            return item switch
+            {
+                BudgetMonthViewModel _ => Content,
+                BudgetMonthViewModelPlaceholder _ => Placeholder,
+                _ => Empty
+            };
         }
     }
 }

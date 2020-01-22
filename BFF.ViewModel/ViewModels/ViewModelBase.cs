@@ -9,7 +9,7 @@ using MrMeeseeks.Utility;
 
 namespace BFF.ViewModel.ViewModels
 {
-    public interface IViewModel
+    public interface IViewModel : IObservableObject
     {
     }
 
@@ -41,7 +41,7 @@ namespace BFF.ViewModel.ViewModels
 
         protected void ClearErrors([CallerMemberName] string propertyName = null)
         {
-            if (_errors.ContainsKey(propertyName))
+            if (propertyName != null && _errors.ContainsKey(propertyName))
                 _errors.Remove(propertyName);
         }
 

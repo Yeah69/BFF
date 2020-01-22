@@ -115,6 +115,8 @@ namespace BFF.ViewModel
                 };
             });
 
+            builder.RegisterType<BudgetEntryViewModel>().AsImplementedInterfaces();
+
             builder.RegisterModule(new Model.AutofacModule());
         }
     }

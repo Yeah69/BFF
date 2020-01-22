@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
-using BFF.DataVirtualizingCollection;
-using BFF.DataVirtualizingCollection.DataVirtualizingCollections;
+using BFF.DataVirtualizingCollection.SlidingWindow;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
@@ -20,14 +19,15 @@ using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
 using MrMeeseeks.Extensions;
 using MuVaViMo;
-using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
 namespace BFF.ViewModel.ViewModels
 {
     public interface IBudgetOverviewViewModel
     {
-        IList<IBudgetMonthViewModel> BudgetMonths { get; }
+        ISlidingWindow<IBudgetMonthViewModel> BudgetMonths { get; }
+
+        bool ShowBudgetMonths { get; }
 
         IBudgetMonthViewModel CurrentBudgetMonth { get; }
 
@@ -50,7 +50,7 @@ namespace BFF.ViewModel.ViewModels
 
         IBudgetMonthViewModel GetBudgetMonthViewModel(DateTime month);
 
-        ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
+        IObservableReadOnlyList<ICategoryViewModel> Categories { get; }
 
         IBudgetMonthMenuTitles BudgetMonthMenuTitles { get; }
     }
@@ -69,14 +69,27 @@ namespace BFF.ViewModel.ViewModels
         private bool _isOpen;
         private bool _canRefresh = true;
         private DateTime _selectedMonth;
-        private IDataVirtualizingCollection<IBudgetMonthViewModel> _budgetMonths;
+        private ISlidingWindow<IBudgetMonthViewModel> _budgetMonths;
+        private bool _showBudgetMonths;
 
-        public IList<IBudgetMonthViewModel> BudgetMonths =>
+        public ISlidingWindow<IBudgetMonthViewModel> BudgetMonths =>
             _budgetMonths ??= CreateBudgetMonths();
 
-        public IBudgetMonthViewModel CurrentBudgetMonth => BudgetMonths[MonthToIndex(DateTime.Now)];
+        public bool ShowBudgetMonths
+        {
+            get => _showBudgetMonths;
+            private set
+            {
+                if (value == _showBudgetMonths) return;
 
-        public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
+                _showBudgetMonths = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IBudgetMonthViewModel CurrentBudgetMonth => null; // BudgetMonths[MonthToIndex(DateTime.Now)];
+
+        public IObservableReadOnlyList<ICategoryViewModel> Categories { get; }
         public IBudgetMonthMenuTitles BudgetMonthMenuTitles { get; }
 
         public int SelectedIndex
@@ -157,8 +170,7 @@ namespace BFF.ViewModel.ViewModels
             Categories =
                 categoryRepository
                     .All
-                    .ToReadOnlyObservableCollection()
-                    .ToReadOnlyReactiveCollection(categoryViewModelService.GetViewModel);
+                    .Transform(categoryViewModelService.GetViewModel);
 
             CurrentMonthStartIndex = MonthToIndex(DateTime.Now) - 1;
 
@@ -168,12 +180,11 @@ namespace BFF.ViewModel.ViewModels
 
             IncreaseMonthStartIndex = currentMonthStartIndexChanges
                 .Select(i => i < LastMonthIndex - 1)
-                .ToRxRelayCommand(() => CurrentMonthStartIndex = CurrentMonthStartIndex + 1)
+                .ToRxRelayCommand(() => _budgetMonths.SlideRight())
                 .AddTo(_compositeDisposable);
             DecreaseMonthStartIndex = currentMonthStartIndexChanges
                 .Select(i => i < LastMonthIndex - 1)
-                .ToRxRelayCommand(
-                    () => CurrentMonthStartIndex = CurrentMonthStartIndex - 1)
+                .ToRxRelayCommand(() => _budgetMonths.SlideLeft())
                 .AddTo(_compositeDisposable);
 
             IsOpen = _bffSettings.OpenMainTab == "BudgetOverview";
@@ -208,10 +219,13 @@ namespace BFF.ViewModel.ViewModels
         public async Task Refresh()
         {
             if (_canRefresh.Not()) return;
+            ShowBudgetMonths = false;
             var temp = _budgetMonths;
-            _budgetMonths = await Task.Run(() => CreateBudgetMonths());
+            _budgetMonths = await Task.Run(CreateBudgetMonths).ConfigureAwait(false);
+            await _budgetMonths.InitializationCompleted.ConfigureAwait(false);
+            ShowBudgetMonths = true;
             _rxSchedulerProvider.UI.MinimalSchedule(() => OnPropertyChanged(nameof(BudgetMonths)));
-            await Task.Run(() => temp?.Dispose());
+            await Task.Run(() => temp?.Dispose()).ConfigureAwait(false);
         }
 
         public IDisposable DeferRefreshUntilDisposal()
@@ -227,13 +241,13 @@ namespace BFF.ViewModel.ViewModels
         public IBudgetMonthViewModel GetBudgetMonthViewModel(DateTime month)
         {
             var index = MonthToIndex(month);
-            return index < 0 ? null : BudgetMonths[index];
+            return index < 0 ? null : ((IList<IBudgetMonthViewModel>)BudgetMonths)[index];
         }
 
-        private IDataVirtualizingCollection<IBudgetMonthViewModel> CreateBudgetMonths()
+        private ISlidingWindow<IBudgetMonthViewModel> CreateBudgetMonths()
         {
-            return DataVirtualizingCollectionBuilder<IBudgetMonthViewModel>
-                .Build(pageSize: 12)
+            return SlidingWindowBuilder<IBudgetMonthViewModel>
+                .Build(pageSize: 12, initialOffset: MonthToIndex(DateTime.Now) - 1, windowSize: 5, notificationScheduler: _rxSchedulerProvider.UI)
                 .NonPreloading()
                 .Hoarding()
                 .TaskBasedFetchers(
@@ -258,7 +272,10 @@ namespace BFF.ViewModel.ViewModels
                         return budgetMonthViewModels;
                     },
                     () => Task.FromResult(LastMonthIndex))
-                .SyncIndexAccess();
+                .AsyncIndexAccess(
+                    (pageKey, pageIndex) => 
+                        new BudgetMonthViewModelPlaceholder(IndexToMonth(pageKey * 12 + pageIndex), Categories.Count),
+                    _rxSchedulerProvider.Task);
         }
 
         private static DateTime IndexToMonth(int index)

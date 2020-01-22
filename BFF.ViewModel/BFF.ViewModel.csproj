@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BFF.DataVirtualizingCollection\BFF.DataVirtualizingCollection\BFF.DataVirtualizingCollection.csproj" />
     <ProjectReference Include="..\..\MrMeeseeks\MrMeeseeks\MrMeeseeks.csproj" />
     <ProjectReference Include="..\BFF.Core\BFF.Core.csproj" />
     <ProjectReference Include="..\BFF.Model\BFF.Model.csproj" />

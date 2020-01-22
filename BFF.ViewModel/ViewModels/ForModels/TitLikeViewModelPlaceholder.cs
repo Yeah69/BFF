@@ -8,7 +8,7 @@ using Reactive.Bindings;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
-    public interface ITransLikeViewModelPlaceholder : ITransLikeViewModel
+    public interface ITransLikeViewModelPlaceholder : ITransLikeViewModel // ToDo is it necessary that the placeholder implements the whole interface
     {
     }
 
@@ -58,14 +58,14 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
         public Task InsertAsync()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public bool IsInsertable() => false;
 
         public Task DeleteAsync()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         #endregion
