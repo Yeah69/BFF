@@ -64,10 +64,10 @@ namespace BFF.Views
         {
             if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetEntryViewModel budgetEntry)
             {
-                if (AggregateSwitch.IsChecked == true)
-                    budgetEntry.AssociatedAggregatedTransElementsViewModel.OpenFlag = true;
-                else
-                    budgetEntry.AssociatedTransElementsViewModel.OpenFlag = true;
+                //if (AggregateSwitch.IsChecked == true)
+                //    budgetEntry.AssociatedAggregatedTransElementsViewModel.OpenFlag = true;
+                //else
+                //    budgetEntry.AssociatedTransElementsViewModel.OpenFlag = true;
             }
         }
 

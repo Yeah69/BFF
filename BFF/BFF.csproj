@@ -113,6 +113,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AttachedBehaviors\DynamicTableDataGridBehavior.cs" />
     <Compile Include="AutofacBootstrapper.cs" />
     <Compile Include="Helper\BffSaveFileDialog.cs" />
     <Compile Include="Helper\BffOpenFileDialog.cs" />

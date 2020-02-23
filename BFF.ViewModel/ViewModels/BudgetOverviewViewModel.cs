@@ -53,6 +53,8 @@ namespace BFF.ViewModel.ViewModels
         IObservableReadOnlyList<ICategoryViewModel> Categories { get; }
 
         IBudgetMonthMenuTitles BudgetMonthMenuTitles { get; }
+
+        ITableViewModel<IBudgetMonthViewModel, ICategoryViewModel, IBudgetEntryViewModel> Table { get; }
     }
 
     internal class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IOncePerBackend, IDisposable
@@ -91,6 +93,9 @@ namespace BFF.ViewModel.ViewModels
 
         public IObservableReadOnlyList<ICategoryViewModel> Categories { get; }
         public IBudgetMonthMenuTitles BudgetMonthMenuTitles { get; }
+        public ITableViewModel<IBudgetMonthViewModel, ICategoryViewModel, IBudgetEntryViewModel> Table { get;
+            private set;
+        }
 
         public int SelectedIndex
         {
@@ -172,7 +177,7 @@ namespace BFF.ViewModel.ViewModels
                     .All
                     .Transform(categoryViewModelService.GetViewModel);
 
-            CurrentMonthStartIndex = MonthToIndex(DateTime.Now) - 1;
+            CurrentMonthStartIndex = MonthToIndex(DateTime.Now) - 41;
 
             var currentMonthStartIndexChanges = this
                 .ObservePropertyChanges(nameof(CurrentMonthStartIndex))
@@ -214,6 +219,7 @@ namespace BFF.ViewModel.ViewModels
             Disposable
                 .Create(() => _budgetMonths?.Dispose())
                 .AddTo(_compositeDisposable);
+            this.Refresh();
         }
 
         public async Task Refresh()
@@ -223,8 +229,13 @@ namespace BFF.ViewModel.ViewModels
             var temp = _budgetMonths;
             _budgetMonths = await Task.Run(CreateBudgetMonths).ConfigureAwait(false);
             await _budgetMonths.InitializationCompleted.ConfigureAwait(false);
+            Table = new BudgetOverviewTableViewModel(_budgetMonths, _rxSchedulerProvider);
             ShowBudgetMonths = true;
-            _rxSchedulerProvider.UI.MinimalSchedule(() => OnPropertyChanged(nameof(BudgetMonths)));
+            _rxSchedulerProvider.UI.MinimalSchedule(() =>
+            {
+                OnPropertyChanged(nameof(BudgetMonths));
+                OnPropertyChanged(nameof(Table));
+            });
             await Task.Run(() => temp?.Dispose()).ConfigureAwait(false);
         }
 
