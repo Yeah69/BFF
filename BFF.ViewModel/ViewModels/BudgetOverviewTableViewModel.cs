@@ -1,14 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using BFF.Core.Extensions;
+using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.DataVirtualizingCollection.SlidingWindow;
+using BFF.Model.Models;
+using BFF.Model.Repositories;
+using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using MrMeeseeks.Extensions;
+using MuVaViMo;
 
 namespace BFF.ViewModel.ViewModels
 {
@@ -19,52 +21,63 @@ namespace BFF.ViewModel.ViewModels
         IBudgetOverviewTableViewModel,
         IDisposable
     {
-        private readonly ISlidingWindow<IBudgetMonthViewModel> _budgetMonthSlidingWindow;
-
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private ISlidingWindow<IBudgetMonthViewModel> _budgetMonths;
 
         public BudgetOverviewTableViewModel(
-            // parameters
-            ISlidingWindow<IBudgetMonthViewModel> budgetMonthSlidingWindow,
-
+            // parameter
+            (int ColumnCount, int MonthOffset) initial,
+            
             // dependencies
-            IRxSchedulerProvider rxSchedulerProvider)
+            IRxSchedulerProvider rxSchedulerProvider,
+            ICategoryViewModelService categoryViewModelService,
+            IBudgetMonthRepository budgetMonthRepository,
+            Func<IBudgetMonth, IBudgetMonthViewModel> budgetMonthViewModelFactory)
         {
-            _budgetMonthSlidingWindow = budgetMonthSlidingWindow;
+            Rows = categoryViewModelService
+                .All
+                .Transform(cvm => 
+                    new BudgetOverviewTableRowViewModel(
+                        cvm, 
+                        initial));
+            
+            _budgetMonths = SlidingWindowBuilder<IBudgetMonthViewModel>
+                .Build(pageSize: 12, initialOffset: initial.MonthOffset, windowSize: initial.ColumnCount, notificationScheduler: rxSchedulerProvider.UI)
+                .NonPreloading()
+                .Hoarding()
+                .TaskBasedFetchers(
+                    async (offset, pageSize) =>
+                    {
+                        var budgetMonthViewModels = await Task.Run(async () => (await budgetMonthRepository.FindAsync(BudgetOverviewViewModel.IndexToMonth(offset).Year).ConfigureAwait(false))
+                            .Select(budgetMonthViewModelFactory)
+                            .ToArray()).ConfigureAwait(false);
 
-            _budgetMonthSlidingWindow
-                .ObservePropertyChanges(nameof(ICollection.Count))
-                .ObserveOn(rxSchedulerProvider.UI)
-                .Subscribe(_ => 
-                {
-                    OnPropertyChanged(nameof(ColumnCount));
-                    RefreshRows();
-                })
-                .AddForDisposalTo(_compositeDisposable);
+                        // foreach (var bmvm in budgetMonthViewModels)
+                        // {
+                        //     var categoriesToBudgetEntries = bmvm.BudgetEntries.ToDictionary(bevm => bevm.Category, bevm => bevm);
+                        //     foreach (var bevm in bmvm.BudgetEntries)
+                        //     {
+                        //         bevm.Children = bevm
+                        //             .Category
+                        //             .Categories
+                        //             .Select(cvm => categoriesToBudgetEntries[cvm]).ToList();
+                        //     }
+                        // }
 
-            _budgetMonthSlidingWindow
-                .ObserveCollectionChanges()
-                .Subscribe(_ => RefreshRows())
-                .AddForDisposalTo(_compositeDisposable);
+                        return budgetMonthViewModels;
+                    },
+                    () => Task.FromResult(DateTimeExtensions.CountOfMonths()))
+                .AsyncIndexAccess(
+                    (pageKey, pageIndex) => 
+                        new BudgetMonthViewModelPlaceholder(BudgetOverviewViewModel.IndexToMonth(pageKey * 12 + pageIndex)),
+                    rxSchedulerProvider.Task);
 
-            void RefreshRows()
-            {
-                Rows = budgetMonthSlidingWindow
-                    .Select((budgetMonth, i) => (budgetMonth, i))
-                    .SelectMany(t => t.budgetMonth.BudgetEntries.Select(budgetEntry => (budgetEntry, t.i)))
-                    .GroupBy(t => t.budgetEntry.Category)
-                    .Select(g =>
-                        new BudgetOverviewTableRowViewModel(g.Key,
-                            g.OrderBy(t => t.i).Select(t => t.budgetEntry).ToArray()))
-                    .ToReadOnlyList();
-                OnPropertyChanged(nameof(ColumnHeaders));
-                OnPropertyChanged(nameof(Rows));
-            }
+            ColumnCount = initial.ColumnCount;
         }
 
-        public IReadOnlyList<IBudgetMonthViewModel> ColumnHeaders => _budgetMonthSlidingWindow;
-        public IReadOnlyList<ITableRowViewModel<ICategoryViewModel, IBudgetEntryViewModel>> Rows { get; private set; }
-        public int ColumnCount => ((ICollection)_budgetMonthSlidingWindow).Count;
+        public IReadOnlyList<IBudgetMonthViewModel> ColumnHeaders => _budgetMonths;
+        public IReadOnlyList<ITableRowViewModel<ICategoryViewModel, IBudgetEntryViewModel>> Rows { get; }
+        public int ColumnCount { get; }
 
         public void Dispose()
         {
@@ -74,18 +87,18 @@ namespace BFF.ViewModel.ViewModels
 
     internal class BudgetOverviewTableRowViewModel : ITableRowViewModel<ICategoryViewModel, IBudgetEntryViewModel>
     {
-        private readonly IBudgetEntryViewModel[] _budgetEntryViewModels;
+        private readonly IBudgetCategoryViewModel _budgetCategoryViewModel;
 
         public BudgetOverviewTableRowViewModel(
             ICategoryViewModel rowHeader,
-            IBudgetEntryViewModel[] budgetEntryViewModels)
+            (int EntryCount, int MonthOffset) initial)
         {
-            _budgetEntryViewModels = budgetEntryViewModels;
             RowHeader = rowHeader;
+            _budgetCategoryViewModel = rowHeader.CreateBudgetCategory(initial.EntryCount, initial.MonthOffset);
         }
 
         public ICategoryViewModel RowHeader { get; }
 
-        public IBudgetEntryViewModel this[int index] => _budgetEntryViewModels[index];
+        public IBudgetEntryViewModel this[int index] => ((IReadOnlyList<IBudgetEntryViewModel>) _budgetCategoryViewModel.BudgetEntries)[index];
     }
 }

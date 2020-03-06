@@ -31,6 +31,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
         void MergeTo(ICategoryViewModel target);
 
         bool CanMergeTo(ICategoryViewModel target);
+
+        IBudgetCategoryViewModel CreateBudgetCategory(int initialEntryCount, int initialMonthOffset);
     }
 
     public interface ICategoryViewModelInitializer
@@ -47,6 +49,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
         private readonly IAccountViewModelService _accountViewModelService;
         private readonly Lazy<IBudgetOverviewViewModel> _budgetOverviewViewModel;
+        private readonly Func<ICategory, IBudgetCategory> _budgetCategoryFactory;
+        private readonly Func<IBudgetCategory, (int EntryCount, int MonthOffset), IBudgetCategoryViewModel> _budgetCategoryViewModelFactory;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
 
         internal class CategoryViewModelInitializer : ICategoryViewModelInitializer
@@ -159,6 +163,11 @@ namespace BFF.ViewModel.ViewModels.ForModels
                    && !categoryViewModel._category.IsMyAncestor(_category);
         }
 
+        public IBudgetCategoryViewModel CreateBudgetCategory(int initialEntryCount, int initialMonthOffset)
+        {
+            return _budgetCategoryViewModelFactory(_budgetCategoryFactory(_category), (initialEntryCount, initialMonthOffset));
+        }
+
         public override string FullName => $"{(Parent != null ? $"{Parent.FullName}." : "")}{Name}";
 
         public override IEnumerable<ICategoryBaseViewModel> FullChainOfCategories
@@ -191,6 +200,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IMainBffDialogCoordinator mainBffDialogCoordinator,
             IAccountViewModelService accountViewModelService,
             Lazy<IBudgetOverviewViewModel> budgetOverviewViewModel,
+            Func<ICategory, IBudgetCategory> budgetCategoryFactory,
+            Func<IBudgetCategory, (int EntryCount, int MonthOffset), IBudgetCategoryViewModel> budgetCategoryViewModelFactory,
             IRxSchedulerProvider rxSchedulerProvider) : base(category, rxSchedulerProvider)
         {
             _category = category;
@@ -205,6 +216,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _accountViewModelService = accountViewModelService;
             _budgetOverviewViewModel = budgetOverviewViewModel;
+            _budgetCategoryFactory = budgetCategoryFactory;
+            _budgetCategoryViewModelFactory = budgetCategoryViewModelFactory;
             _rxSchedulerProvider = rxSchedulerProvider;
         }
     }

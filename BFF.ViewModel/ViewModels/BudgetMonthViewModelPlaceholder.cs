@@ -11,17 +11,10 @@ namespace BFF.ViewModel.ViewModels
     internal class BudgetMonthViewModelPlaceholder : IBudgetMonthViewModel
     {
         internal BudgetMonthViewModelPlaceholder(
-            DateTime month,
-            int budgetEntriesCount)
+            DateTime month)
         {
             Month = month;
-            BudgetEntries = Enumerable
-                .Range(0, budgetEntriesCount)
-                .Select(_ => BudgetEntryViewModelPlaceholder.Instance)
-                .ToReadOnlyReactiveCollection(Observable.Never<CollectionChanged<IBudgetEntryViewModel>>());
         }
-
-        public ReadOnlyReactiveCollection<IBudgetEntryViewModel> BudgetEntries { get; }
         public DateTime Month { get; }
         public long NotBudgetedInPreviousMonth => 0L;
         public long OverspentInPreviousMonth => 0L;

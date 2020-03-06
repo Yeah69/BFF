@@ -15,17 +15,17 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
         public Task InsertAsync()
         {
-            throw new NotSupportedException();
+            return Task.CompletedTask;
         }
 
         public bool IsInsertable()
         {
-            throw new NotSupportedException();
+            return false;
         }
 
         public Task DeleteAsync()
         {
-            throw new NotSupportedException();
+            return Task.CompletedTask;
         }
 
         public IRxRelayCommand DeleteCommand => null;

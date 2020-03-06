@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -25,8 +23,6 @@ namespace BFF.ViewModel.ViewModels
 {
     public interface IBudgetOverviewViewModel
     {
-        ISlidingWindow<IBudgetMonthViewModel> BudgetMonths { get; }
-
         bool ShowBudgetMonths { get; }
 
         IBudgetMonthViewModel CurrentBudgetMonth { get; }
@@ -47,8 +43,6 @@ namespace BFF.ViewModel.ViewModels
         Task Refresh();
 
         IDisposable DeferRefreshUntilDisposal();
-
-        IBudgetMonthViewModel GetBudgetMonthViewModel(DateTime month);
 
         IObservableReadOnlyList<ICategoryViewModel> Categories { get; }
 
@@ -74,9 +68,6 @@ namespace BFF.ViewModel.ViewModels
         private ISlidingWindow<IBudgetMonthViewModel> _budgetMonths;
         private bool _showBudgetMonths;
 
-        public ISlidingWindow<IBudgetMonthViewModel> BudgetMonths =>
-            _budgetMonths ??= CreateBudgetMonths();
-
         public bool ShowBudgetMonths
         {
             get => _showBudgetMonths;
@@ -93,9 +84,7 @@ namespace BFF.ViewModel.ViewModels
 
         public IObservableReadOnlyList<ICategoryViewModel> Categories { get; }
         public IBudgetMonthMenuTitles BudgetMonthMenuTitles { get; }
-        public ITableViewModel<IBudgetMonthViewModel, ICategoryViewModel, IBudgetEntryViewModel> Table { get;
-            private set;
-        }
+        public ITableViewModel<IBudgetMonthViewModel, ICategoryViewModel, IBudgetEntryViewModel> Table { get; }
 
         public int SelectedIndex
         {
@@ -153,6 +142,7 @@ namespace BFF.ViewModel.ViewModels
         public ITransDataGridColumnManager TransDataGridColumnManager { get; }
 
         public BudgetOverviewViewModel(
+            Func<(int ColumnCount, int MonthOffset), IBudgetOverviewTableViewModel> budgetOverviewTableViewModel,
             IBudgetMonthRepository budgetMonthRepository,
             ICultureManager cultureManager,
             IBffSettings bffSettings,
@@ -192,6 +182,8 @@ namespace BFF.ViewModel.ViewModels
                 .ToRxRelayCommand(() => _budgetMonths.SlideLeft())
                 .AddTo(_compositeDisposable);
 
+            Table = budgetOverviewTableViewModel((5, CurrentMonthStartIndex - 1));
+
             IsOpen = _bffSettings.OpenMainTab == "BudgetOverview";
 
             this
@@ -227,13 +219,10 @@ namespace BFF.ViewModel.ViewModels
             if (_canRefresh.Not()) return;
             ShowBudgetMonths = false;
             var temp = _budgetMonths;
-            _budgetMonths = await Task.Run(CreateBudgetMonths).ConfigureAwait(false);
-            await _budgetMonths.InitializationCompleted.ConfigureAwait(false);
-            Table = new BudgetOverviewTableViewModel(_budgetMonths, _rxSchedulerProvider);
+            //await _budgetMonths.InitializationCompleted.ConfigureAwait(false);
             ShowBudgetMonths = true;
             _rxSchedulerProvider.UI.MinimalSchedule(() =>
             {
-                OnPropertyChanged(nameof(BudgetMonths));
                 OnPropertyChanged(nameof(Table));
             });
             await Task.Run(() => temp?.Dispose()).ConfigureAwait(false);
@@ -249,47 +238,7 @@ namespace BFF.ViewModel.ViewModels
             });
         }
 
-        public IBudgetMonthViewModel GetBudgetMonthViewModel(DateTime month)
-        {
-            var index = MonthToIndex(month);
-            return index < 0 ? null : ((IList<IBudgetMonthViewModel>)BudgetMonths)[index];
-        }
-
-        private ISlidingWindow<IBudgetMonthViewModel> CreateBudgetMonths()
-        {
-            return SlidingWindowBuilder<IBudgetMonthViewModel>
-                .Build(pageSize: 12, initialOffset: MonthToIndex(DateTime.Now) - 1, windowSize: 5, notificationScheduler: _rxSchedulerProvider.UI)
-                .NonPreloading()
-                .Hoarding()
-                .TaskBasedFetchers(
-                    async (offset, pageSize) =>
-                    {
-                        var budgetMonthViewModels = await Task.Run(async () => (await _budgetMonthRepository.FindAsync(IndexToMonth(offset).Year).ConfigureAwait(false))
-                            .Select(bm => _budgetMonthViewModelFactory(bm))
-                            .ToArray()).ConfigureAwait(false);
-
-                        foreach (var bmvm in budgetMonthViewModels)
-                        {
-                            var categoriesToBudgetEntries = bmvm.BudgetEntries.ToDictionary(bevm => bevm.Category, bevm => bevm);
-                            foreach (var bevm in bmvm.BudgetEntries)
-                            {
-                                bevm.Children = bevm
-                                    .Category
-                                    .Categories
-                                    .Select(cvm => categoriesToBudgetEntries[cvm]).ToList();
-                            }
-                        }
-
-                        return budgetMonthViewModels;
-                    },
-                    () => Task.FromResult(LastMonthIndex))
-                .AsyncIndexAccess(
-                    (pageKey, pageIndex) => 
-                        new BudgetMonthViewModelPlaceholder(IndexToMonth(pageKey * 12 + pageIndex), Categories.Count),
-                    _rxSchedulerProvider.Task);
-        }
-
-        private static DateTime IndexToMonth(int index)
+        public static DateTime IndexToMonth(int index)
         {
             int year = index / 12 + 1;
             int month = index % 12 + 1;
@@ -297,7 +246,7 @@ namespace BFF.ViewModel.ViewModels
             return new DateTime(year, month, 1);
         }
 
-        private static int MonthToIndex(DateTime month)
+        public static int MonthToIndex(DateTime month)
         {
             return (month.Year - 1) * 12 + month.Month - 1;
         }

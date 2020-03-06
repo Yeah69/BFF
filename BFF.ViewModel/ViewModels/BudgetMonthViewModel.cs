@@ -8,7 +8,6 @@ using BFF.Core.IoC;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
 using BFF.ViewModel.Helper;
-using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
@@ -20,7 +19,6 @@ namespace BFF.ViewModel.ViewModels
 {
     public interface IBudgetMonthViewModel
     {
-        ReadOnlyReactiveCollection<IBudgetEntryViewModel> BudgetEntries { get; }
         DateTime Month { get; }
         long NotBudgetedInPreviousMonth { get; }
         long OverspentInPreviousMonth { get; }
@@ -58,11 +56,9 @@ namespace BFF.ViewModel.ViewModels
             IBudgetMonth budgetMonth,
             IBudgetOverviewViewModel budgetOverviewViewModel,
             Func<Func<Task<IEnumerable<ITransLikeViewModel>>>, ILazyTransLikeViewModels> lazyTransLikeViewModelsFactory,
-            IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
-            IBudgetEntryViewModelService budgetEntryViewModelService)
+            IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel)
         {
             _budgetMonth = budgetMonth;
-            BudgetEntries = budgetMonth.BudgetEntries.ToReadOnlyReactiveCollection(budgetEntryViewModelService.GetViewModel).AddTo(_compositeDisposable);
 
             budgetMonth
                 .ObservePropertyChanges(nameof(budgetMonth.Month))
@@ -124,102 +120,104 @@ namespace BFF.ViewModel.ViewModels
 
             EmptyCellsBudgetLastMonth = new RxRelayCommand(() =>
             {
-                using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
                 {
-                    var lastMonthCategoriesToBudget = budgetOverviewViewModel
-                        .GetBudgetMonthViewModel(Month.PreviousMonth())
-                        .BudgetEntries
-                        .ToDictionary(bevm => bevm.Category, bevm => bevm);
-                    foreach (var budgetEntryViewModel in BudgetEntries)
-                    {
-                        if (budgetEntryViewModel.Budget == 0
-                            && lastMonthCategoriesToBudget
-                                .ContainsKey(budgetEntryViewModel.Category))
-                            budgetEntryViewModel.Budget =
-                                lastMonthCategoriesToBudget[budgetEntryViewModel.Category].Budget;
-                    }
+                    // using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
+                    // {
+                    //     var lastMonthCategoriesToBudget = budgetOverviewViewModel
+                    //         .GetBudgetMonthViewModel(Month.PreviousMonth())
+                    //         .BudgetEntries
+                    //         .ToDictionary(bevm => bevm.Category, bevm => bevm);
+                    //     foreach (var budgetEntryViewModel in BudgetEntries)
+                    //     {
+                    //         if (budgetEntryViewModel.Budget == 0
+                    //             && lastMonthCategoriesToBudget
+                    //                 .ContainsKey(budgetEntryViewModel.Category))
+                    //             budgetEntryViewModel.Budget =
+                    //                 lastMonthCategoriesToBudget[budgetEntryViewModel.Category].Budget;
+                    //     }
+                    // }
                 }
             })
                 .AddForDisposalTo(_compositeDisposable);
 
             EmptyCellsOutflowsLastMonth = new RxRelayCommand(() =>
             {
-                using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
-                {
-                    var lastMonthCategoriesToBudget = budgetOverviewViewModel
-                        .GetBudgetMonthViewModel(Month.PreviousMonth())
-                        ?.BudgetEntries
-                        .ToDictionary(bevm => bevm.Category, bevm => bevm) 
-                            ?? new Dictionary<ICategoryViewModel, IBudgetEntryViewModel>();
-                    foreach (var budgetEntryViewModel in BudgetEntries)
-                    {
-                        if (budgetEntryViewModel.Budget == 0
-                            && lastMonthCategoriesToBudget
-                                .ContainsKey(budgetEntryViewModel.Category))
-                            budgetEntryViewModel.Budget =
-                                lastMonthCategoriesToBudget[budgetEntryViewModel.Category].Outflow * -1;
-                    }
-                }
+                // using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
+                // {
+                //     var lastMonthCategoriesToBudget = budgetOverviewViewModel
+                //         .GetBudgetMonthViewModel(Month.PreviousMonth())
+                //         ?.BudgetEntries
+                //         .ToDictionary(bevm => bevm.Category, bevm => bevm) 
+                //             ?? new Dictionary<ICategoryViewModel, IBudgetEntryViewModel>();
+                //     foreach (var budgetEntryViewModel in BudgetEntries)
+                //     {
+                //         if (budgetEntryViewModel.Budget == 0
+                //             && lastMonthCategoriesToBudget
+                //                 .ContainsKey(budgetEntryViewModel.Category))
+                //             budgetEntryViewModel.Budget =
+                //                 lastMonthCategoriesToBudget[budgetEntryViewModel.Category].Outflow * -1;
+                //     }
+                // }
             })
                 .AddForDisposalTo(_compositeDisposable);
 
             EmptyCellsAvgOutflowsLastThreeMonths = new RxRelayCommand(() =>
             {
-                using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
-                {
-                    var budgetMonths = new List<IBudgetMonthViewModel>();
-                    var currentMonth = Month.PreviousMonth();
-                    for (int i = 0; i < 3; i++)
-                    {
-                        var currentBudget = budgetOverviewViewModel.GetBudgetMonthViewModel(currentMonth);
-                        if (currentBudget is null) break;
-                        budgetMonths.Add(currentBudget);
-                        currentMonth = currentMonth.PreviousMonth();
-                    }
-
-                    var categoryToAverage = budgetMonths
-                        .SelectMany(bmvm => bmvm.BudgetEntries)
-                        .GroupBy(bevm => bevm.Category)
-                        .ToDictionary(g => g.Key, g => (long)g.Average(bevm => bevm.Outflow));
-                    foreach (var budgetEntryViewModel in BudgetEntries)
-                    {
-                        if (budgetEntryViewModel.Budget == 0
-                            && categoryToAverage
-                                .ContainsKey(budgetEntryViewModel.Category))
-                            budgetEntryViewModel.Budget =
-                                categoryToAverage[budgetEntryViewModel.Category] * -1;
-                    }
-                }
+                // using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
+                // {
+                //     var budgetMonths = new List<IBudgetMonthViewModel>();
+                //     var currentMonth = Month.PreviousMonth();
+                //     for (int i = 0; i < 3; i++)
+                //     {
+                //         var currentBudget = budgetOverviewViewModel.GetBudgetMonthViewModel(currentMonth);
+                //         if (currentBudget is null) break;
+                //         budgetMonths.Add(currentBudget);
+                //         currentMonth = currentMonth.PreviousMonth();
+                //     }
+                //
+                //     var categoryToAverage = budgetMonths
+                //         .SelectMany(bmvm => bmvm.BudgetEntries)
+                //         .GroupBy(bevm => bevm.Category)
+                //         .ToDictionary(g => g.Key, g => (long)g.Average(bevm => bevm.Outflow));
+                //     foreach (var budgetEntryViewModel in BudgetEntries)
+                //     {
+                //         if (budgetEntryViewModel.Budget == 0
+                //             && categoryToAverage
+                //                 .ContainsKey(budgetEntryViewModel.Category))
+                //             budgetEntryViewModel.Budget =
+                //                 categoryToAverage[budgetEntryViewModel.Category] * -1;
+                //     }
+                // }
             })
                 .AddForDisposalTo(_compositeDisposable);
 
             EmptyCellsAvgOutflowsLastYear = new RxRelayCommand(() =>
             {
-                using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
-                {
-                    var budgetMonths = new List<IBudgetMonthViewModel>();
-                    var currentMonth = Month.PreviousMonth();
-                    for (int i = 0; i < 12; i++)
-                    {
-                        var currentBudget = budgetOverviewViewModel.GetBudgetMonthViewModel(currentMonth);
-                        if (currentBudget is null) break;
-                        budgetMonths.Add(currentBudget);
-                        currentMonth = currentMonth.PreviousMonth();
-                    }
-
-                    var categoryToAverage = budgetMonths
-                        .SelectMany(bmvm => bmvm.BudgetEntries)
-                        .GroupBy(bevm => bevm.Category)
-                        .ToDictionary(g => g.Key, g => (long)g.Average(bevm => bevm.Outflow));
-                    foreach (var budgetEntryViewModel in BudgetEntries)
-                    {
-                        if (budgetEntryViewModel.Budget == 0
-                            && categoryToAverage
-                                .ContainsKey(budgetEntryViewModel.Category))
-                            budgetEntryViewModel.Budget =
-                                categoryToAverage[budgetEntryViewModel.Category] * -1;
-                    }
-                }
+                // using (budgetOverviewViewModel.DeferRefreshUntilDisposal())
+                // {
+                //     var budgetMonths = new List<IBudgetMonthViewModel>();
+                //     var currentMonth = Month.PreviousMonth();
+                //     for (int i = 0; i < 12; i++)
+                //     {
+                //         var currentBudget = budgetOverviewViewModel.GetBudgetMonthViewModel(currentMonth);
+                //         if (currentBudget is null) break;
+                //         budgetMonths.Add(currentBudget);
+                //         currentMonth = currentMonth.PreviousMonth();
+                //     }
+                //
+                //     var categoryToAverage = budgetMonths
+                //         .SelectMany(bmvm => bmvm.BudgetEntries)
+                //         .GroupBy(bevm => bevm.Category)
+                //         .ToDictionary(g => g.Key, g => (long)g.Average(bevm => bevm.Outflow));
+                //     foreach (var budgetEntryViewModel in BudgetEntries)
+                //     {
+                //         if (budgetEntryViewModel.Budget == 0
+                //             && categoryToAverage
+                //                 .ContainsKey(budgetEntryViewModel.Category))
+                //             budgetEntryViewModel.Budget =
+                //                 categoryToAverage[budgetEntryViewModel.Category] * -1;
+                //     }
+                // }
             })
                 .AddForDisposalTo(_compositeDisposable);
 

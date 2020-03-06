@@ -182,65 +182,65 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             BudgetLastMonth = new RxRelayCommand(() =>
                 {
-                    var previousBudgetMonth = budgetOverviewViewModel
-                        .Value
-                        .GetBudgetMonthViewModel(Month.PreviousMonth())
-                        .BudgetEntries
-                        .FirstOrDefault(bevm => bevm.Category == Category);
-                    if (previousBudgetMonth != null)
-                        Budget = previousBudgetMonth.Budget;
+                    // var previousBudgetMonth = budgetOverviewViewModel
+                    //     .Value
+                    //     .GetBudgetMonthViewModel(Month.PreviousMonth())
+                    //     .BudgetEntries
+                    //     .FirstOrDefault(bevm => bevm.Category == Category);
+                    // if (previousBudgetMonth != null)
+                    //     Budget = previousBudgetMonth.Budget;
                 })
                 .AddForDisposalTo(CompositeDisposable);
 
             OutflowsLastMonth = new RxRelayCommand(() =>
                 {
-                    var previousBudgetMonth = budgetOverviewViewModel
-                        .Value
-                        .GetBudgetMonthViewModel(Month.PreviousMonth())
-                        .BudgetEntries
-                        .FirstOrDefault(bevm => bevm.Category == Category);
-                    if (previousBudgetMonth != null)
-                        Budget = previousBudgetMonth.Outflow * -1;
+                    // var previousBudgetMonth = budgetOverviewViewModel
+                    //     .Value
+                    //     .GetBudgetMonthViewModel(Month.PreviousMonth())
+                    //     .BudgetEntries
+                    //     .FirstOrDefault(bevm => bevm.Category == Category);
+                    // if (previousBudgetMonth != null)
+                    //     Budget = previousBudgetMonth.Outflow * -1;
                 })
                 .AddForDisposalTo(CompositeDisposable);
 
             AvgOutflowsLastThreeMonths = new RxRelayCommand(() =>
                 {
-                    var budgetEntries = new List<IBudgetEntryViewModel>();
-                    var currentMonth = Month.PreviousMonth();
-                    for (int i = 0; i < 3; i++)
-                    {
-                        var currentBudget = budgetOverviewViewModel
-                            .Value
-                            .GetBudgetMonthViewModel(currentMonth);
-                        if (currentBudget is null) break;
-                        var budgetEntryViewModel = currentBudget.BudgetEntries.SingleOrDefault(bevm => bevm.Category == Category);
-                        if(budgetEntryViewModel != null)
-                            budgetEntries.Add(budgetEntryViewModel);
-                        currentMonth = currentMonth.PreviousMonth();
-                    }
-
-                    Budget = budgetEntries.Sum(bevm => bevm.Outflow) / -3L;
+                    // var budgetEntries = new List<IBudgetEntryViewModel>();
+                    // var currentMonth = Month.PreviousMonth();
+                    // for (int i = 0; i < 3; i++)
+                    // {
+                    //     var currentBudget = budgetOverviewViewModel
+                    //         .Value
+                    //         .GetBudgetMonthViewModel(currentMonth);
+                    //     if (currentBudget is null) break;
+                    //     var budgetEntryViewModel = currentBudget.BudgetEntries.SingleOrDefault(bevm => bevm.Category == Category);
+                    //     if(budgetEntryViewModel != null)
+                    //         budgetEntries.Add(budgetEntryViewModel);
+                    //     currentMonth = currentMonth.PreviousMonth();
+                    // }
+                    //
+                    // Budget = budgetEntries.Sum(bevm => bevm.Outflow) / -3L;
                 })
                 .AddForDisposalTo(CompositeDisposable);
 
             AvgOutflowsLastYear = new RxRelayCommand(() =>
             {
-                var budgetEntries = new List<IBudgetEntryViewModel>();
-                var currentMonth = Month.PreviousMonth();
-                for (int i = 0; i < 12; i++)
-                {
-                    var currentBudget = budgetOverviewViewModel
-                        .Value
-                        .GetBudgetMonthViewModel(currentMonth);
-                    if (currentBudget is null) break;
-                    var budgetEntryViewModel = currentBudget.BudgetEntries.SingleOrDefault(bevm => bevm.Category == Category);
-                    if (budgetEntryViewModel != null)
-                        budgetEntries.Add(budgetEntryViewModel);
-                    currentMonth = currentMonth.PreviousMonth();
-                }
-
-                Budget = budgetEntries.Sum(bevm => bevm.Outflow) / -12L;
+                // var budgetEntries = new List<IBudgetEntryViewModel>();
+                // var currentMonth = Month.PreviousMonth();
+                // for (int i = 0; i < 12; i++)
+                // {
+                //     var currentBudget = budgetOverviewViewModel
+                //         .Value
+                //         .GetBudgetMonthViewModel(currentMonth);
+                //     if (currentBudget is null) break;
+                //     var budgetEntryViewModel = currentBudget.BudgetEntries.SingleOrDefault(bevm => bevm.Category == Category);
+                //     if (budgetEntryViewModel != null)
+                //         budgetEntries.Add(budgetEntryViewModel);
+                //     currentMonth = currentMonth.PreviousMonth();
+                // }
+                //
+                // Budget = budgetEntries.Sum(bevm => bevm.Outflow) / -12L;
             })
                 .AddForDisposalTo(CompositeDisposable);
 

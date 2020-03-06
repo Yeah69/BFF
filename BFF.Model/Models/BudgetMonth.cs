@@ -12,7 +12,6 @@ namespace BFF.Model.Models
 
     public interface IBudgetMonth : INotifyPropertyChanged
     {
-        ObservableCollection<IBudgetEntry> BudgetEntries { get; }
         DateTime Month { get; }
         long NotBudgetedInPreviousMonth { get; }
         long OverspentInPreviousMonth { get; }
@@ -44,11 +43,11 @@ namespace BFF.Model.Models
             IncomeForThisMonth = incomeForThisMonth;
             DanglingTransferForThisMonth = danglingTransferForThisMonth;
             UnassignedTransactionSumForThisMonth = unassignedTransactionSumForThisMonth;
-            BudgetEntries = new ObservableCollection<IBudgetEntry>(budgetEntries.OrderBy(be => be.Category, new CategoryComparer()));
+            var _budgetEntries = new ObservableCollection<IBudgetEntry>(budgetEntries.OrderBy(be => be.Category, new CategoryComparer()));
 
-            BudgetedThisMonth = - BudgetEntries.Sum(be => be.Budget);
-            Outflows = BudgetEntries.Sum(be => be.Outflow);
-            Balance = BudgetEntries.Sum(be => be.Balance);
+            BudgetedThisMonth = - _budgetEntries.Sum(be => be.Budget);
+            Outflows = _budgetEntries.Sum(be => be.Outflow);
+            Balance = _budgetEntries.Sum(be => be.Balance);
 
             AvailableToBudget = NotBudgetedInPreviousMonth +
                 OverspentInPreviousMonth +
@@ -58,7 +57,6 @@ namespace BFF.Model.Models
                 UnassignedTransactionSumForThisMonth;
         }
 
-        public ObservableCollection<IBudgetEntry> BudgetEntries { get; }
         public DateTime Month { get; }
         public long NotBudgetedInPreviousMonth { get; }
         public long OverspentInPreviousMonth { get; }
@@ -72,10 +70,5 @@ namespace BFF.Model.Models
 
         public abstract Task<IEnumerable<ITransBase>> GetAssociatedTransAsync();
         public abstract Task<IEnumerable<ITransBase>> GetAssociatedTransForIncomeCategoriesAsync();
-
-        public override string ToString()
-        {
-            return $"{nameof(BudgetEntries)}: {BudgetEntries}, {nameof(Month)}: {Month}, {nameof(NotBudgetedInPreviousMonth)}: {NotBudgetedInPreviousMonth}, {nameof(OverspentInPreviousMonth)}: {OverspentInPreviousMonth}, {nameof(IncomeForThisMonth)}: {IncomeForThisMonth}, {nameof(DanglingTransferForThisMonth)}: {DanglingTransferForThisMonth}, {nameof(BudgetedThisMonth)}: {BudgetedThisMonth}, {nameof(AvailableToBudget)}: {AvailableToBudget}, {nameof(Outflows)}: {Outflows}, {nameof(Balance)}: {Balance}";
-        }
     }
 }
