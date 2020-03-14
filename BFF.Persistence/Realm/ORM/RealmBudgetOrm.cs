@@ -314,7 +314,7 @@ namespace BFF.Persistence.Realm.ORM
             var monthsOfYear = Enumerable
                 .Range(0, 11)
                 .Scan(
-                    new DateTime(year, 1, 1), 
+                    new DateTimeOffset(year, 1, 1, 0, 0, 0, TimeSpan.Zero), 
                     (dt, _) => dt.NextMonth())
                 .ToArray();
 
@@ -344,15 +344,18 @@ namespace BFF.Persistence.Realm.ORM
                                 && t.Date >= currentYear
                                 && t.Date < nextYear)
                     .ToArray()
-                    .Where(pt => pt.Category == category)
-                    .SelectMany(pt => pt.SubTransactions.ToArray().Select(st => (pt, st)))
+                    .SelectMany(pt => 
+                        pt.SubTransactions
+                            .Where(st => st.Category == category)
+                            .ToArray()
+                            .Select(st => (pt, st)))
                     .ToArray();
 
                 var transactionOutflows = transactions
-                    .GroupBy(t => new DateTime(t.Date.Year, t.Date.Month, 1), t => t.Sum)
+                    .GroupBy(t => new DateTimeOffset(t.Date.Year, t.Date.Month, 1, 0, 0, 0, TimeSpan.Zero), t => t.Sum)
                     .ToDictionary(g => g.Key, g => g.Sum());
                 var subTransactionOutflows = subTransactions
-                    .GroupBy(t => new DateTime(t.pt.Date.Year, t.pt.Date.Month, 1), t => t.st.Sum)
+                    .GroupBy(t => new DateTimeOffset(t.pt.Date.Year, t.pt.Date.Month, 1, 0, 0, 0, TimeSpan.Zero), t => t.st.Sum)
                     .ToDictionary(g => g.Key, g => g.Sum());
 
                 var currentBalance = initialBalance;
@@ -367,7 +370,7 @@ namespace BFF.Persistence.Realm.ORM
                     var outflow = transactionOutflow + subTransactionOutflow;
                     var balance = currentBalance + budget + outflow;
 
-                    list.Add((budgetEntry, month, budget, outflow, balance));
+                    list.Add((budgetEntry, new DateTime(month.Year, month.Month, month.Day), budget, outflow, balance));
                     currentBalance = Math.Max(0L, balance);
                 }
 
@@ -398,9 +401,9 @@ namespace BFF.Persistence.Realm.ORM
                     .Select(t => (Month: new DateTimeOffset(t.Date.Year, t.Date.Month, 1, 0, 0, 0, TimeSpan.Zero), t.Sum))
                     .Concat(realm
                         .All<SubTransaction>()
+                        .Where(st => st.Category == category)
                         .ToList()
-                        .Where(st => st.Parent.Date < untilMonth
-                            && st.Parent.Category == category)
+                        .Where(st => st.Parent.Date < untilMonth)
                         .Select(st => (
                             Month: new DateTimeOffset(st.Parent.Date.Year, st.Parent.Date.Month, 1, 0, 0, 0, TimeSpan.Zero),
                             st.Sum)))
@@ -411,7 +414,7 @@ namespace BFF.Persistence.Realm.ORM
                         transactions,
                         b => b.Month,
                         o => o.Month,
-                        (month, bs, os) => (Month: month, Budget: bs.Select(b => b.Budget).FirstOrDefault(), Outflow: (os.Any() ? os.Select(o => o.Sum).Sum() : 0L)))
+                        (month, bs, os) => (Month: month, Budget: bs.Select(b => b.Budget).FirstOrDefault(), Outflow: os.Any() ? os.Select(o => o.Sum).Sum() : 0L))
                     .OrderBy(t => t.Month)
                     .Aggregate((Month: DateTimeOffset.MinValue, Balance: 0L, TotalBudget: 0L, TotalNegativeBalance: 0L), (previous, current) =>
                     {

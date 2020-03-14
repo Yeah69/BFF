@@ -28,7 +28,7 @@ namespace BFF.Persistence.Realm.Models.Domain
         {
             var realmCategory = (_category as Category)?.RealmObject;
             return await (await _budgetOrm.FindAsync(year, realmCategory).ConfigureAwait(false))
-                .Select(t => _budgetEntryRepository.Convert(t.Entry, realmCategory, t.Month, t.Budget, t.Outflow, t.Budget))
+                .Select(t => _budgetEntryRepository.Convert(t.Entry, realmCategory, t.Month, t.Budget, t.Outflow, t.Balance))
                 .ToAwaitableEnumerable()
                 .ConfigureAwait(false);
         }

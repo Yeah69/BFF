@@ -142,7 +142,7 @@ namespace BFF.AttachedBehaviors
                             columnDataGridTemplateColumn.SetValue(DataGridColumn.HeaderTemplateProperty, columnHeaderDataTemplate);
                         
                             var cellContentControl = new FrameworkElementFactory(typeof(ContentControl));
-                            cellContentControl.SetBinding(ContentControl.ContentProperty, new Binding($"Item[{i}]"));
+                            cellContentControl.SetBinding(ContentControl.ContentProperty, new Binding($"{nameof(ITableRowViewModel<object, object>.Cells)}.Item[{i}]"));
                             cellContentControl.SetValue(ContentControl.ContentTemplateProperty, CellTemplate);
                             var cellDataTemplate = new DataTemplate { VisualTree = cellContentControl };
 

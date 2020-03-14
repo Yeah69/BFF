@@ -40,15 +40,18 @@ namespace BFF.ViewModel.ViewModels
                     new BudgetOverviewTableRowViewModel(
                         cvm, 
                         initial));
-            
+
             _budgetMonths = SlidingWindowBuilder<IBudgetMonthViewModel>
-                .Build(pageSize: 12, initialOffset: initial.MonthOffset, windowSize: initial.ColumnCount, notificationScheduler: rxSchedulerProvider.UI)
+                .Build(pageSize: 12, initialOffset: initial.MonthOffset, windowSize: initial.ColumnCount,
+                    notificationScheduler: rxSchedulerProvider.UI)
                 .NonPreloading()
                 .Hoarding()
                 .TaskBasedFetchers(
                     async (offset, pageSize) =>
                     {
-                        var budgetMonthViewModels = await Task.Run(async () => (await budgetMonthRepository.FindAsync(BudgetOverviewViewModel.IndexToMonth(offset).Year).ConfigureAwait(false))
+                        var budgetMonthViewModels = await Task.Run(async () =>
+                            (await budgetMonthRepository.FindAsync(BudgetOverviewViewModel.IndexToMonth(offset).Year)
+                                .ConfigureAwait(false))
                             .Select(budgetMonthViewModelFactory)
                             .ToArray()).ConfigureAwait(false);
 
@@ -67,10 +70,12 @@ namespace BFF.ViewModel.ViewModels
                         return budgetMonthViewModels;
                     },
                     () => Task.FromResult(DateTimeExtensions.CountOfMonths()))
-                .AsyncIndexAccess(
-                    (pageKey, pageIndex) => 
-                        new BudgetMonthViewModelPlaceholder(BudgetOverviewViewModel.IndexToMonth(pageKey * 12 + pageIndex)),
-                    rxSchedulerProvider.Task);
+                .SyncIndexAccess()
+                // .AsyncIndexAccess(
+                //     (pageKey, pageIndex) => 
+                //         new BudgetMonthViewModelPlaceholder(BudgetOverviewViewModel.IndexToMonth(pageKey * 12 + pageIndex)),
+                //     rxSchedulerProvider.Task)
+                .AddForDisposalTo(_compositeDisposable);
 
             ColumnCount = initial.ColumnCount;
         }
@@ -99,6 +104,6 @@ namespace BFF.ViewModel.ViewModels
 
         public ICategoryViewModel RowHeader { get; }
 
-        public IBudgetEntryViewModel this[int index] => ((IReadOnlyList<IBudgetEntryViewModel>) _budgetCategoryViewModel.BudgetEntries)[index];
+        public IReadOnlyList<IBudgetEntryViewModel> Cells => _budgetCategoryViewModel.BudgetEntries;
     }
 }

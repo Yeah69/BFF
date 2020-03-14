@@ -6,7 +6,7 @@ namespace BFF.ViewModel.ViewModels
     {
         TRowHeader RowHeader { get; }
 
-        TCell this[int index] { get; }
+        IReadOnlyList<TCell> Cells { get; }
     }
 
     public interface ITableViewModel<out TColumnHeader, out TRowHeader, out TCell>

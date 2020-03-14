@@ -36,7 +36,7 @@ namespace BFF.ViewModel.ViewModels
 
             BudgetEntries = SlidingWindowBuilder<IBudgetEntryViewModel>
                 .Build(initial.EntryCount, initial.MonthOffset, rxSchedulerProvider.UI, 12)
-                .Preloading()
+                .NonPreloading()
                 .LeastRecentlyUsed(4)
                 .TaskBasedFetchers(
                     async (page, _) =>
@@ -50,7 +50,8 @@ namespace BFF.ViewModel.ViewModels
                             (DateTime.MaxValue.Year - DateTime.MinValue.Year - 2) * 12
                             + 12 - DateTime.MinValue.Month - 1 +
                             DateTime.MaxValue.Month))
-                .AsyncIndexAccess((_, __) => BudgetEntryViewModelPlaceholder.Instance, rxSchedulerProvider.Task)
+                .SyncIndexAccess()
+                //.AsyncIndexAccess((_, __) => BudgetEntryViewModelPlaceholder.Instance, rxSchedulerProvider.Task)
                 .AddForDisposalTo(_compositeDisposable);
         }
 
