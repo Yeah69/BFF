@@ -83,11 +83,11 @@ namespace BFF
 
             builder.RegisterType<MainWindow>().AsSelf().SingleInstance();
 
-            builder.RegisterModule(new Core.AutofacModule());
+            builder.RegisterModule(new Core.AutoFacModule());
 
-            builder.RegisterModule(new ViewModel.AutofacModule());
+            builder.RegisterModule(new ViewModel.AutoFacModule());
 
-            builder.RegisterModule(new Persistence.Proxy.AutofacModule());
+            builder.RegisterModule(new Persistence.Proxy.AutoFacModule());
 
             _rootScope = builder.Build();
         }

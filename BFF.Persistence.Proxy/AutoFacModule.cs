@@ -2,13 +2,13 @@
 
 namespace BFF.Persistence.Proxy
 {
-    public class AutofacModule : Module
+    public class AutoFacModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
 
-            builder.RegisterModule(new Persistence.AutofacModule());
+            builder.RegisterModule(new Persistence.AutoFacModule());
         }
     }
 }

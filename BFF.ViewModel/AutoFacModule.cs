@@ -14,7 +14,7 @@ using Module = Autofac.Module;
 
 namespace BFF.ViewModel
 {
-    public class AutofacModule : Module
+    public class AutoFacModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -117,7 +117,7 @@ namespace BFF.ViewModel
 
             builder.RegisterType<BudgetEntryViewModel>().AsImplementedInterfaces();
 
-            builder.RegisterModule(new Model.AutofacModule());
+            builder.RegisterModule(new Model.AutoFacModule());
         }
     }
 }

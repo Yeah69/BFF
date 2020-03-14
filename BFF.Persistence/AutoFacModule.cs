@@ -19,7 +19,7 @@ using Module = Autofac.Module;
 
 namespace BFF.Persistence
 {
-    public class AutofacModule : Module
+    public class AutoFacModule : Module
     {
         private static readonly object[] LifetimeScopeTagsForOrmRegistrations = 
         {

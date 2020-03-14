@@ -1,16 +1,12 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System.Diagnostics;
 using Autofac;
-using BFF.Core.Extensions;
+using System.Reflection;
 using BFF.Core.IoC;
 using Module = Autofac.Module;
 
-namespace BFF.Model
+namespace BFF.Core
 {
-    public class AutofacModule : Module
+    public class AutoFacModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -58,7 +54,7 @@ namespace BFF.Model
                     var isAssignable = typeof(ITransient).IsAssignableFrom(t);
                     if (isAssignable)
                     {
-                        Debug.WriteLine("Transient - " + t.Name);
+                        Debug.WriteLine("Transient view model - " + t.Name);
                     }
 
                     return isAssignable;

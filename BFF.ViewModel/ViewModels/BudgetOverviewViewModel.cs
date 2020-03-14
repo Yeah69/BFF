@@ -6,17 +6,12 @@ using System.Threading.Tasks;
 using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
-using BFF.DataVirtualizingCollection.SlidingWindow;
-using BFF.Model.Models;
-using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
-using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
 using MrMeeseeks.Extensions;
-using MuVaViMo;
 using Reactive.Bindings.Extensions;
 
 namespace BFF.ViewModel.ViewModels
@@ -27,16 +22,9 @@ namespace BFF.ViewModel.ViewModels
 
         IBudgetMonthViewModel CurrentBudgetMonth { get; }
 
-        int CurrentMonthStartIndex { get; }
-
         bool IsOpen { get; set; }
-        int SelectedIndex { get; set; }
 
         DateTime SelectedMonth { get; set; }
-
-        IRxRelayCommand IncreaseMonthStartIndex { get; }
-
-        IRxRelayCommand DecreaseMonthStartIndex { get; }
 
         ITransDataGridColumnManager TransDataGridColumnManager { get; }
 
@@ -44,20 +32,15 @@ namespace BFF.ViewModel.ViewModels
 
         IDisposable DeferRefreshUntilDisposal();
 
-        IObservableReadOnlyList<ICategoryViewModel> Categories { get; }
-
         IBudgetMonthMenuTitles BudgetMonthMenuTitles { get; }
 
-        ITableViewModel<IBudgetMonthViewModel, ICategoryViewModel, IBudgetEntryViewModel> Table { get; }
+        IBudgetOverviewTableViewModel Table { get; }
     }
 
     internal class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IOncePerBackend, IDisposable
     {
-        private static readonly int LastMonthIndex = MonthToIndex(DateTime.MaxValue);
 
-        private readonly IBudgetMonthRepository _budgetMonthRepository;
         private readonly IBffSettings _bffSettings;
-        private readonly Func<IBudgetMonth, IBudgetMonthViewModel> _budgetMonthViewModelFactory;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
         private int _selectedIndex;
@@ -65,7 +48,6 @@ namespace BFF.ViewModel.ViewModels
         private bool _isOpen;
         private bool _canRefresh = true;
         private DateTime _selectedMonth;
-        private ISlidingWindow<IBudgetMonthViewModel> _budgetMonths;
         private bool _showBudgetMonths;
 
         public bool ShowBudgetMonths
@@ -81,10 +63,8 @@ namespace BFF.ViewModel.ViewModels
         }
 
         public IBudgetMonthViewModel CurrentBudgetMonth => null; // BudgetMonths[MonthToIndex(DateTime.Now)];
-
-        public IObservableReadOnlyList<ICategoryViewModel> Categories { get; }
         public IBudgetMonthMenuTitles BudgetMonthMenuTitles { get; }
-        public ITableViewModel<IBudgetMonthViewModel, ICategoryViewModel, IBudgetEntryViewModel> Table { get; }
+        public IBudgetOverviewTableViewModel Table { get; }
 
         public int SelectedIndex
         {
@@ -135,54 +115,27 @@ namespace BFF.ViewModel.ViewModels
                 }
             }
         }
-
-        public IRxRelayCommand IncreaseMonthStartIndex { get; }
-
-        public IRxRelayCommand DecreaseMonthStartIndex { get; }
+        
         public ITransDataGridColumnManager TransDataGridColumnManager { get; }
 
         public BudgetOverviewViewModel(
-            Func<(int ColumnCount, int MonthOffset), IBudgetOverviewTableViewModel> budgetOverviewTableViewModel,
-            IBudgetMonthRepository budgetMonthRepository,
+            Func<IBudgetOverviewTableViewModel> budgetOverviewTableViewModel,
             ICultureManager cultureManager,
             IBffSettings bffSettings,
-            Func<IBudgetMonth, IBudgetMonthViewModel> budgetMonthViewModelFactory,
             IBudgetMonthMenuTitles budgetMonthMenuTitles,
             ITransDataGridColumnManager transDataGridColumnManager,
-            IRxSchedulerProvider rxSchedulerProvider,
-            ICategoryViewModelService categoryViewModelService,
-            ICategoryRepository categoryRepository)
+            IRxSchedulerProvider rxSchedulerProvider)
         {
             BudgetMonthMenuTitles = budgetMonthMenuTitles;
             TransDataGridColumnManager = transDataGridColumnManager;
-            _budgetMonthRepository = budgetMonthRepository;
             _bffSettings = bffSettings;
-            _budgetMonthViewModelFactory = budgetMonthViewModelFactory;
             _rxSchedulerProvider = rxSchedulerProvider;
 
             SelectedIndex = -1;
 
-            Categories =
-                categoryRepository
-                    .All
-                    .Transform(categoryViewModelService.GetViewModel);
-
             CurrentMonthStartIndex = MonthToIndex(DateTime.Now) - 41;
 
-            var currentMonthStartIndexChanges = this
-                .ObservePropertyChanges(nameof(CurrentMonthStartIndex))
-                .Select(_ => CurrentMonthStartIndex);
-
-            IncreaseMonthStartIndex = currentMonthStartIndexChanges
-                .Select(i => i < LastMonthIndex - 1)
-                .ToRxRelayCommand(() => _budgetMonths.SlideRight())
-                .AddTo(_compositeDisposable);
-            DecreaseMonthStartIndex = currentMonthStartIndexChanges
-                .Select(i => i < LastMonthIndex - 1)
-                .ToRxRelayCommand(() => _budgetMonths.SlideLeft())
-                .AddTo(_compositeDisposable);
-
-            Table = budgetOverviewTableViewModel((5, CurrentMonthStartIndex - 1));
+            Table = budgetOverviewTableViewModel();
 
             IsOpen = _bffSettings.OpenMainTab == "BudgetOverview";
 
@@ -208,24 +161,21 @@ namespace BFF.ViewModel.ViewModels
                 }
             }).AddTo(_compositeDisposable);
 
-            Disposable
-                .Create(() => _budgetMonths?.Dispose())
-                .AddTo(_compositeDisposable);
-            this.Refresh();
+            //this.Refresh();
         }
 
         public async Task Refresh()
         {
             if (_canRefresh.Not()) return;
             ShowBudgetMonths = false;
-            var temp = _budgetMonths;
+            //var temp = _budgetMonths;
             //await _budgetMonths.InitializationCompleted.ConfigureAwait(false);
             ShowBudgetMonths = true;
             _rxSchedulerProvider.UI.MinimalSchedule(() =>
             {
                 OnPropertyChanged(nameof(Table));
             });
-            await Task.Run(() => temp?.Dispose()).ConfigureAwait(false);
+            //await Task.Run(() => temp?.Dispose()).ConfigureAwait(false);
         }
 
         public IDisposable DeferRefreshUntilDisposal()

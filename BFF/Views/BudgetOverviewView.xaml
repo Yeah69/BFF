@@ -1393,14 +1393,14 @@
                         </DataTemplate>
                     </attachedBehaviors:DynamicTableDataGridBehavior.ColumnHeaderTemplate>
                     <attachedBehaviors:DynamicTableDataGridBehavior.CornerHeaderTemplate>
-                        <DataTemplate>
+                        <DataTemplate DataType="{x:Type viewModels:IBudgetOverviewViewModel}">
                             <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <DockPanel HorizontalAlignment="Stretch"
                                            VerticalAlignment="Top"
                                            DockPanel.Dock="Top"
                                            LastChildFill="True">
                                     <Button Margin="5"
-                                            Command="{Binding IncreaseMonthStartIndex}"
+                                            Command="{Binding Table.IncreaseMonthStartIndex}"
                                             DockPanel.Dock="Right"
                                             ToolTip="{lex:Loc ToolTip_BudgetOverview_ShiftMonthForward}">
                                         <iconPacks:PackIconModern Width="{StaticResource IconSize}"
@@ -1408,7 +1408,7 @@
                                                                   Kind="ChevronRight" />
                                     </Button>
                                     <Button Margin="5"
-                                            Command="{Binding DecreaseMonthStartIndex}"
+                                            Command="{Binding Table.DecreaseMonthStartIndex}"
                                             DockPanel.Dock="Left"
                                             ToolTip="{lex:Loc ToolTip_BudgetOverview_ShiftMonthBackward}">
                                         <iconPacks:PackIconModern Width="{StaticResource IconSize}"
