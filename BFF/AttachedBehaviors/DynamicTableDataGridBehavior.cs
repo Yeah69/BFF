@@ -107,8 +107,7 @@ namespace BFF.AttachedBehaviors
                     if (AssociatedObject.DataContext is null || Table is null) return;
 
                     SetupRowHeaderColumn(AssociatedObject);
-
-                    //AssociatedObject.SetBinding(ItemsControl.ItemsSourceProperty, Table.Rows);
+                    SetupRemainingColumns(AssociatedObject);
 
                     void SetupRowHeaderColumn(DataGrid dataGrid)
                     {
@@ -120,6 +119,8 @@ namespace BFF.AttachedBehaviors
 
                         var rowHeaderColumnDataGridTemplateColumn = new DataGridTemplateColumn();
                         rowHeaderColumnDataGridTemplateColumn.SetValue(DataGridColumn.HeaderTemplateProperty, cornerHeaderDataTemplate);
+                        rowHeaderColumnDataGridTemplateColumn.SetValue(DataGridColumn.WidthProperty, DataGridLength.SizeToHeader);
+                        rowHeaderColumnDataGridTemplateColumn.SetValue(DataGridColumn.CanUserResizeProperty, true);
                         
                         var rowHeaderContentControl = new FrameworkElementFactory(typeof(ContentControl));
                         rowHeaderContentControl.SetBinding(ContentControl.ContentProperty, new Binding("RowHeader"));
@@ -129,7 +130,10 @@ namespace BFF.AttachedBehaviors
                         rowHeaderColumnDataGridTemplateColumn.SetValue(DataGridTemplateColumn.CellTemplateProperty, rowHeaderDataTemplate);
 
                         dataGrid.Columns.Add(rowHeaderColumnDataGridTemplateColumn);
+                    }
 
+                    void SetupRemainingColumns(DataGrid dataGrid)
+                    {
                         for (var i = 0; i < Table.ColumnCount; i++)
                         {
                             var columnHeaderContentControl = new FrameworkElementFactory(typeof(ContentControl));
@@ -140,6 +144,8 @@ namespace BFF.AttachedBehaviors
 
                             var columnDataGridTemplateColumn = new DataGridTemplateColumn();
                             columnDataGridTemplateColumn.SetValue(DataGridColumn.HeaderTemplateProperty, columnHeaderDataTemplate);
+                            columnDataGridTemplateColumn.SetValue(DataGridColumn.WidthProperty, new DataGridLength(1.0, DataGridLengthUnitType.Star));
+                            columnDataGridTemplateColumn.SetValue(DataGridColumn.CanUserResizeProperty, false);
                         
                             var cellContentControl = new FrameworkElementFactory(typeof(ContentControl));
                             cellContentControl.SetBinding(ContentControl.ContentProperty, new Binding($"{nameof(ITableRowViewModel<object, object>.Cells)}.Item[{i}]"));
