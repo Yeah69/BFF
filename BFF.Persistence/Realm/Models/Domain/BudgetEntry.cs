@@ -17,15 +17,31 @@ namespace BFF.Persistence.Realm.Models.Domain
         private readonly RealmObjectWrap<Persistence.BudgetEntry> _realmObjectWrap;
 
         public BudgetEntry(
-            ICrudOrm<Persistence.BudgetEntry> crudOrm,
-            IRealmTransRepository transRepository,
-            IRxSchedulerProvider rxSchedulerProvider,
+            // parameters
             Persistence.BudgetEntry realmObject,
             DateTime month,
             ICategory category, 
             long budget, 
             long outflow, 
-            long balance) : base(rxSchedulerProvider, month, category, budget, outflow, balance)
+            long balance,
+            long aggregatedBudget,
+            long aggregatedOutflow,
+            long aggregatedBalance,
+            
+            // dependencies
+            ICrudOrm<Persistence.BudgetEntry> crudOrm,
+            IRealmTransRepository transRepository,
+            IRxSchedulerProvider rxSchedulerProvider) 
+            : base(
+                month, 
+                category, 
+                budget,
+                outflow, 
+                balance, 
+                aggregatedBudget, 
+                aggregatedOutflow, 
+                aggregatedBalance, 
+                rxSchedulerProvider)
         {
             _realmObjectWrap = new RealmObjectWrap<Persistence.BudgetEntry>(
                 realmObject,

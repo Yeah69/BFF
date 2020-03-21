@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
@@ -18,15 +17,28 @@ namespace BFF.Persistence.Sql.Models.Domain
         private readonly ISqliteTransRepository _transRepository;
 
         public BudgetEntry(
-            ICrudOrm<IBudgetEntrySql> crudOrm, 
-            ISqliteTransRepository transRepository,
-            IRxSchedulerProvider rxSchedulerProvider,
             long id,
             DateTime month,
             ICategory category, 
             long budget, 
             long outflow, 
-            long balance) : base(rxSchedulerProvider, month, category, budget, outflow, balance)
+            long balance,
+            long aggregatedBudget,
+            long aggregatedOutflow,
+            long aggregatedBalance,
+            ICrudOrm<IBudgetEntrySql> crudOrm, 
+            ISqliteTransRepository transRepository,
+            IRxSchedulerProvider rxSchedulerProvider) 
+            : base(
+                month, 
+                category, 
+                budget, 
+                outflow, 
+                balance,
+                aggregatedBudget,
+                aggregatedOutflow, 
+                aggregatedBalance, 
+                rxSchedulerProvider)
         {
             Id = id;
             _crudOrm = crudOrm;

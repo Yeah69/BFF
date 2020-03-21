@@ -9,11 +9,12 @@ namespace BFF.Model.Models
 {
     public interface IBudgetEntry : IDataModel
     {
-        ICategory Category { get; }
-        DateTime Month { get; }
         long Budget { get; set; }
         long Outflow { get; }
         long Balance { get; }
+        long AggregatedBudget { get; }
+        long AggregatedOutflow { get; }
+        long AggregatedBalance { get; }
         Task<IEnumerable<ITransBase>> GetAssociatedTransAsync();
         Task<IEnumerable<ITransBase>> GetAssociatedTransIncludingSubCategoriesAsync();
     }
@@ -21,12 +22,18 @@ namespace BFF.Model.Models
     public abstract class BudgetEntry : DataModel, IBudgetEntry
     {
         public BudgetEntry(
-            IRxSchedulerProvider rxSchedulerProvider,
+            // parameters
             DateTime month,
             ICategory category,
             long budget,
             long outflow,
-            long balance)
+            long balance,
+            long aggregatedBudget,
+            long aggregatedOutflow,
+            long aggregatedBalance,
+            
+            // dependencies
+            IRxSchedulerProvider rxSchedulerProvider)
             : base(rxSchedulerProvider)
         {
             Month = month;
@@ -34,11 +41,14 @@ namespace BFF.Model.Models
             _budget = budget;
             Outflow = outflow;
             Balance = balance;
+            AggregatedBudget = aggregatedBudget;
+            AggregatedOutflow = aggregatedOutflow;
+            AggregatedBalance = aggregatedBalance;
         }
 
-        public DateTime Month { get; }
+        protected DateTime Month { get; }
 
-        public ICategory Category { get; }
+        protected ICategory Category { get; }
 
         private long _budget;
 
@@ -72,6 +82,12 @@ namespace BFF.Model.Models
         public long Outflow { get; }
 
         public long Balance { get; }
+        
+        public long AggregatedBudget { get; }
+        
+        public long AggregatedOutflow { get; }
+        
+        public long AggregatedBalance { get; }
 
         public abstract Task<IEnumerable<ITransBase>> GetAssociatedTransAsync();
 

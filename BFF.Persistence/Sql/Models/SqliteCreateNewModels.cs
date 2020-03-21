@@ -198,18 +198,29 @@ namespace BFF.Persistence.Sql.Models
                 _rxSchedulerProvider);
         }
 
-        public IBudgetEntry CreateBudgetEntry(DateTime month, ICategory category, long budget, long outflow, long balance)
+        public IBudgetEntry CreateBudgetEntry(
+            DateTime month, 
+            ICategory category, 
+            long budget, 
+            long outflow, 
+            long balance,
+            long aggregatedBudget,
+            long aggregatedOutflow,
+            long aggregatedBalance)
         {
             return new Domain.BudgetEntry(
-                _budgetEntryCrudOrm.Value,
-                _transRepository.Value,
-                _rxSchedulerProvider,
                 0L,
                 month,
                 category,
                 budget,
                 outflow,
-                balance);
+                balance,
+                aggregatedBudget,
+                aggregatedOutflow,
+                aggregatedBalance,
+                _budgetEntryCrudOrm.Value,
+                _transRepository.Value,
+                _rxSchedulerProvider);
         }
     }
 }

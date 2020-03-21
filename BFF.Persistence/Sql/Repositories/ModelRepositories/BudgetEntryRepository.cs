@@ -9,7 +9,13 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
     public interface ISqliteBudgetEntryRepository
     {
-        Task<IBudgetEntry> Convert(IBudgetEntrySql budgetEntry, long outflow, long balance);
+        Task<IBudgetEntry> Convert(
+            IBudgetEntrySql budgetEntry, 
+            long outflow, 
+            long balance,
+            long aggregatedBudget,
+            long aggregatedOutflow,
+            long aggregatedBalance);
     }
 
     internal sealed class SqliteBudgetEntryRepository : SqliteWriteOnlyRepositoryBase<IBudgetEntry>, ISqliteBudgetEntryRepository
@@ -31,18 +37,27 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
             _transRepository = transRepository;
         }
 
-        public async Task<IBudgetEntry> Convert(IBudgetEntrySql persistenceModel, long outflow, long balance)
+        public async Task<IBudgetEntry> Convert(
+            IBudgetEntrySql persistenceModel, 
+            long outflow,
+            long balance,
+            long aggregatedBudget,
+            long aggregatedOutflow,
+            long aggregatedBalance)
         {
             return new Models.Domain.BudgetEntry(
-                _crudOrm,
-                _transRepository.Value,
-                _rxSchedulerProvider,
                 persistenceModel.Id,
                 persistenceModel.Month,
                 await _categoryRepository.Value.FindAsync(persistenceModel.CategoryId ?? 0L).ConfigureAwait(false),
                 persistenceModel.Budget,
                 outflow,
-                balance);
+                balance,
+                aggregatedBudget,
+                aggregatedOutflow,
+                aggregatedBalance,
+                _crudOrm,
+                _transRepository.Value,
+                _rxSchedulerProvider);
         }
     }
 }

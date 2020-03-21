@@ -7,13 +7,11 @@ using BFF.Model.Repositories;
 using BFF.Persistence.Sql.Models.Domain;
 using BFF.Persistence.Sql.ORM.Interfaces;
 using BFF.Persistence.Sql.Repositories.ModelRepositories;
-using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Sql.Repositories
 {
     internal class SqliteBudgetMonthRepository : IBudgetMonthRepository
     {
-        private readonly Lazy<ISqliteBudgetEntryRepository> _budgetEntryRepository;
         private readonly Lazy<ICategoryRepository> _categoryRepository;
         private readonly Lazy<IIncomeCategoryRepository> _incomeCategoryRepository;
         private readonly Lazy<IAccountRepository> _accountRepository;
@@ -21,14 +19,12 @@ namespace BFF.Persistence.Sql.Repositories
         private readonly Lazy<IBudgetOrm> _budgetOrm;
 
         public SqliteBudgetMonthRepository(
-            Lazy<ISqliteBudgetEntryRepository> budgetEntryRepository,
             Lazy<ICategoryRepository> categoryRepository,
             Lazy<IIncomeCategoryRepository> incomeCategoryRepository,
             Lazy<IAccountRepository> accountRepository,
             Lazy<ISqliteTransRepository> transRepository,
             Lazy<IBudgetOrm> budgetOrm)
         {
-            _budgetEntryRepository = budgetEntryRepository;
             _categoryRepository = categoryRepository;
             _incomeCategoryRepository = incomeCategoryRepository;
             _accountRepository = accountRepository;
@@ -48,19 +44,14 @@ namespace BFF.Persistence.Sql.Repositories
 
             var budgetMonths = new List<IBudgetMonth>();
 
-            foreach (var monthWithBudgetEntries in _.BudgetEntriesPerMonth.OrderBy(kvp => kvp.Key))
+            foreach (var monthWithBudgetEntries in _.BudgetDataPerMonth.OrderBy(kvp => kvp.Key))
             {
                 var newBudgetMonth =
                     new Models.Domain.BudgetMonth(
                         _transRepository.Value,
                         _incomeCategoryRepository.Value,
                         month: monthWithBudgetEntries.Key,
-                        budgetEntries: 
-                            await monthWithBudgetEntries
-                                .Value
-                                .Select(async g => await _budgetEntryRepository.Value.Convert(g.Entry, g.Outflow, g.Balance).ConfigureAwait(false))
-                                .ToAwaitableEnumerable()
-                                .ConfigureAwait(false),
+                        budgetData:  (monthWithBudgetEntries.Value.Budget, monthWithBudgetEntries.Value.Outflow, monthWithBudgetEntries.Value.Balance),
                         overspentInPreviousMonth: currentOverspentInPreviousMonth,
                         notBudgetedInPreviousMonth: currentNotBudgetedOrOverbudgeted,
                         incomeForThisMonth: _.IncomesPerMonth[monthWithBudgetEntries.Key]
@@ -74,10 +65,7 @@ namespace BFF.Persistence.Sql.Repositories
                         unassignedTransactionSumForThisMonth: _.UnassignedTransactionsPerMonth[monthWithBudgetEntries.Key]);
                 budgetMonths.Add(newBudgetMonth);
                 currentNotBudgetedOrOverbudgeted = newBudgetMonth.AvailableToBudget;
-                currentOverspentInPreviousMonth = monthWithBudgetEntries
-                    .Value
-                    .Where(be => be.Balance < 0)
-                    .Sum(be => be.Balance);
+                currentOverspentInPreviousMonth = monthWithBudgetEntries.Value.Overspend;
             }
             return budgetMonths;
         }

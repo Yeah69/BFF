@@ -10,7 +10,6 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class BudgetCategory : Model.Models.BudgetCategory
     {
-        private readonly ICategory _category;
         private readonly IBudgetOrm _budgetOrm;
         private readonly IRealmBudgetEntryRepository _budgetEntryRepository;
 
@@ -19,16 +18,25 @@ namespace BFF.Persistence.Realm.Models.Domain
             IBudgetOrm budgetOrm,
             IRealmBudgetEntryRepository budgetEntryRepository) : base(category)
         {
-            _category = category;
             _budgetOrm = budgetOrm;
             _budgetEntryRepository = budgetEntryRepository;
         }
 
         public override async Task<IEnumerable<IBudgetEntry>> GetBudgetEntriesFor(int year)
         {
-            var realmCategory = (_category as Category)?.RealmObject;
+            var realmCategory = (Category as Category)?.RealmObject;
             return await (await _budgetOrm.FindAsync(year, realmCategory).ConfigureAwait(false))
-                .Select(t => _budgetEntryRepository.Convert(t.Entry, realmCategory, t.Month, t.Budget, t.Outflow, t.Balance))
+                .Select(t => 
+                    _budgetEntryRepository.Convert(
+                        t.Entry, 
+                        realmCategory, 
+                        t.Data.Month,
+                        t.Data.Budget, 
+                        t.Data.Outflow,
+                        t.Data.Balance,
+                        t.Data.AggregatedBudget,
+                        t.Data.AggregatedOutflow,
+                        t.Data.AggregatedBalance))
                 .ToAwaitableEnumerable()
                 .ConfigureAwait(false);
         }

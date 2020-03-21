@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -10,7 +7,6 @@ using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.ViewModel.Helper;
-using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
 using MrMeeseeks.Extensions;
@@ -19,12 +15,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
 {
     public interface IBudgetEntryViewModel : IDataModelViewModel
     {
-        /// <summary>
-        /// Each SubTransaction can be budgeted to a category.
-        /// </summary>
-        ICategoryViewModel Category { get; }
-
-        DateTime Month { get; }
         long Budget { get; set; }
         long Outflow { get; }
         long Balance { get; }
@@ -32,8 +22,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
         long AggregatedBudget { get; }
         long AggregatedOutflow { get; }
         long AggregatedBalance { get; }
-
-        IReadOnlyList<IBudgetEntryViewModel> Children { get; set; }
 
         ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
 
@@ -55,31 +43,18 @@ namespace BFF.ViewModel.ViewModels.ForModels
     internal class BudgetEntryViewModel : DataModelViewModel, IBudgetEntryViewModel
     {
         private readonly IBudgetEntry _budgetEntry;
-        private IReadOnlyList<IBudgetEntryViewModel> _children;
         
-        public ICategoryViewModel Category { get; private set; }
-        public DateTime Month => _budgetEntry.Month;
         public long Budget
         {
             get => _budgetEntry.Budget;
             set => _budgetEntry.Budget = value;
         }
+        
         public long Outflow => _budgetEntry.Outflow;
         public long Balance => _budgetEntry.Balance;
-        public long AggregatedBudget { get; private set; }
-        public long AggregatedOutflow { get; private set; }
-        public long AggregatedBalance { get; private set; }
-
-        public IReadOnlyList<IBudgetEntryViewModel> Children
-        {
-            get => _children;
-            set
-            {
-                if (Equals(_children, value)) return; 
-                _children = value;
-                OnPropertyChanged();
-            }
-        }
+        public long AggregatedBudget => _budgetEntry.AggregatedBudget;
+        public long AggregatedOutflow => _budgetEntry.AggregatedOutflow;
+        public long AggregatedBalance => _budgetEntry.AggregatedBalance;
 
         public ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
         public ILazyTransLikeViewModels AssociatedAggregatedTransElementsViewModel { get; }
@@ -95,23 +70,9 @@ namespace BFF.ViewModel.ViewModels.ForModels
             Lazy<IBudgetOverviewViewModel> budgetOverviewViewModel,
             Func<Func<Task<IEnumerable<ITransLikeViewModel>>>, ILazyTransLikeViewModels> lazyTransLikeViewModelsFactory, 
             IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
-            ICategoryViewModelService categoryViewModelService,
             IRxSchedulerProvider rxSchedulerProvider) : base(budgetEntry, rxSchedulerProvider)
         {
             _budgetEntry = budgetEntry;
-            Category = categoryViewModelService.GetViewModel(budgetEntry.Category);
-            budgetEntry
-                .ObservePropertyChanges(nameof(IBudgetEntry.Category))
-                .Do(_ => Category = categoryViewModelService.GetViewModel(budgetEntry.Category))
-                .ObserveOn(rxSchedulerProvider.UI)
-                .Subscribe(_ => OnPropertyChanged(nameof(Category)))
-                .AddForDisposalTo(CompositeDisposable);
-
-            budgetEntry
-                .ObservePropertyChanges(nameof(IBudgetEntry.Month))
-                .ObserveOn(rxSchedulerProvider.UI)
-                .Subscribe(_ => OnPropertyChanged(nameof(Month)))
-                .AddForDisposalTo(CompositeDisposable);
 
             var observeBudgetChanges = budgetEntry.ObservePropertyChanges(nameof(IBudgetEntry.Budget));
             observeBudgetChanges
@@ -134,41 +95,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Balance)))
                 .AddForDisposalTo(CompositeDisposable);
-
-            Children = new List<IBudgetEntryViewModel>();
-
-            AggregatedBudget = Budget;
-            AggregatedBalance = Balance;
-            AggregatedOutflow = Outflow;
-
-            var updatesFromChildren = new SerialDisposable().AddForDisposalTo(CompositeDisposable);
-
-            var updateAggregates = Observer.Create<Unit>(_ =>
-            {
-                AggregatedBudget = Budget + Children.Sum(bevm => bevm.AggregatedBudget);
-                AggregatedBalance = Balance + Children.Sum(bevm => bevm.AggregatedBalance);
-                AggregatedOutflow = Outflow + Children.Sum(bevm => bevm.AggregatedOutflow);
-                OnPropertyChanged(nameof(AggregatedBudget));
-                OnPropertyChanged(nameof(AggregatedBalance));
-                OnPropertyChanged(nameof(AggregatedOutflow));
-            });
-
-            this.ObservePropertyChanges(nameof(Children))
-                .Do(_ =>
-                    {
-                        updatesFromChildren.Disposable = Children
-                            .Select(bevm =>
-                                bevm.ObservePropertyChanges(nameof(AggregatedBudget)))
-                            .Concat(Children
-                                .Select(bevm =>
-                                    bevm.ObservePropertyChanges(nameof(AggregatedOutflow))))
-                            .Concat(Children
-                                .Select(bevm =>
-                                    bevm.ObservePropertyChanges(nameof(AggregatedBalance)))).Merge().Subscribe(updateAggregates);
-                    })
-                .ObserveOn(rxSchedulerProvider.UI)
-                .Subscribe(updateAggregates)
-                .AddTo(CompositeDisposable);
 
             AssociatedTransElementsViewModel = lazyTransLikeViewModelsFactory(async () =>
                 convertFromTransBaseToTransLikeViewModel.Convert(

@@ -14,7 +14,6 @@ namespace BFF.ViewModel.ViewModels
 {
     public interface IBudgetCategoryViewModel
     {
-        ICategoryViewModel Category { get; }
         ISlidingWindow<IBudgetEntryViewModel> BudgetEntries { get; }
     }
 
@@ -28,12 +27,9 @@ namespace BFF.ViewModel.ViewModels
             (int EntryCount, int MonthOffset) initial,
             
             // dependencies
-            ICategoryViewModelService categoryViewModelService,
             IBudgetEntryViewModelService budgetEntryViewModelService,
             IRxSchedulerProvider rxSchedulerProvider)
         {
-            Category = categoryViewModelService.GetViewModel(budgetCategory.Category);
-
             BudgetEntries = SlidingWindowBuilder<IBudgetEntryViewModel>
                 .Build(initial.EntryCount, initial.MonthOffset, rxSchedulerProvider.UI, 12)
                 .Preloading()
@@ -50,12 +46,9 @@ namespace BFF.ViewModel.ViewModels
                             (DateTime.MaxValue.Year - DateTime.MinValue.Year - 2) * 12
                             + 12 - DateTime.MinValue.Month - 1 +
                             DateTime.MaxValue.Month))
-                //.SyncIndexAccess()
                 .AsyncIndexAccess((_, __) => BudgetEntryViewModelPlaceholder.Instance, rxSchedulerProvider.Task)
                 .AddForDisposalTo(_compositeDisposable);
         }
-
-        public ICategoryViewModel Category { get; }
         
         public ISlidingWindow<IBudgetEntryViewModel> BudgetEntries { get; }
 

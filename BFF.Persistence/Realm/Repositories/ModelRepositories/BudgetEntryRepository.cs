@@ -9,7 +9,16 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
     internal interface IRealmBudgetEntryRepository
     {
-        Task<IBudgetEntry> Convert([CanBeNull] Models.Persistence.BudgetEntry budgetEntry, Models.Persistence.Category category, DateTime month, long budget, long outflow, long balance);
+        Task<IBudgetEntry> Convert(
+            [CanBeNull] Models.Persistence.BudgetEntry budgetEntry,
+            Models.Persistence.Category category, 
+            DateTime month, 
+            long budget, 
+            long outflow, 
+            long balance,
+            long aggregatedBudget,
+            long aggregatedOutflow,
+            long aggregatedBalance);
     }
 
     internal sealed class RealmBudgetEntryRepository : RealmWriteOnlyRepositoryBase<IBudgetEntry>, IRealmBudgetEntryRepository
@@ -34,22 +43,34 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             _transRepository = transRepository;
         }
 
-        public Task<IBudgetEntry> Convert(Models.Persistence.BudgetEntry budgetEntry, Models.Persistence.Category category, DateTime month, long budget, long outflow, long balance)
+        public Task<IBudgetEntry> Convert(
+            Models.Persistence.BudgetEntry budgetEntry, 
+            Models.Persistence.Category category,
+            DateTime month,
+            long budget, 
+            long outflow, 
+            long balance,
+            long aggregatedBudget,
+            long aggregatedOutflow,
+            long aggregatedBalance)
         {
             return _realmOperations.RunFuncAsync(InnerAsync);
 
             async Task<IBudgetEntry> InnerAsync(Realms.Realm _)
             {
                 return new Models.Domain.BudgetEntry(
-                    _crudOrm,
-                    _transRepository.Value,
-                    _rxSchedulerProvider,
                     budgetEntry,
                     month,
                     await _categoryRepository.Value.FindAsync(category).ConfigureAwait(false),
                     budget,
                     outflow,
-                    balance);
+                    balance,
+                    aggregatedBudget,
+                    aggregatedOutflow,
+                    aggregatedBalance,
+                    _crudOrm,
+                    _transRepository.Value,
+                    _rxSchedulerProvider);
             }
         }
     }

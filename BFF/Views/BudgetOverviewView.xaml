@@ -117,6 +117,8 @@
                     </DataGrid>
                 </Border>
             </DataTemplate>
+            
+            <helper:BindingProxy x:Key="ShowAggregatesProxy" Data="{Binding Table.ShowAggregates}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel>
@@ -879,7 +881,7 @@
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type forModels:BudgetEntryViewModel}">
-                                        <UniformGrid d:DataContext="{d:DesignInstance forModels:IBudgetEntryViewModel}" Columns="3">
+                                        <UniformGrid Columns="3">
                                             <ContentControl Content="{Binding}">
                                                 <ContentControl.Style>
                                                     <Style TargetType="{x:Type ContentControl}">
@@ -890,8 +892,6 @@
 
                                                                         <TextBox Height="25"
                                                                                  MinHeight="25"
-                                                                                 Margin="-5,0,-6,0"
-                                                                                 Padding="0"
                                                                                  HorizontalContentAlignment="Right"
                                                                                  attachedBehaviors:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"
                                                                                  Text="{Binding Budget, Converter={x:Static helper:Converters.SumToString}}"
@@ -956,7 +956,7 @@
                                                             </Setter.Value>
                                                         </Setter>
                                                         <Style.Triggers>
-                                                            <!--<DataTrigger Binding="{Binding IsChecked, Source={x:Reference AggregateSwitch}}" Value="True">
+                                                            <DataTrigger Binding="{Binding Data, Source={StaticResource ShowAggregatesProxy}}" Value="True">
                                                                 <Setter Property="ContentTemplate">
                                                                     <Setter.Value>
                                                                         <DataTemplate>
@@ -964,7 +964,7 @@
                                                                         </DataTemplate>
                                                                     </Setter.Value>
                                                                 </Setter>
-                                                            </DataTrigger>-->
+                                                            </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
                                                 </ContentControl.Style>
@@ -985,7 +985,7 @@
                                                                 </Setter.Value>
                                                             </Setter>
                                                             <Style.Triggers>
-                                                                <!--<DataTrigger Binding="{Binding IsChecked, Source={x:Reference AggregateSwitch}}" Value="True">
+                                                                <DataTrigger Binding="{Binding Data, Source={StaticResource ShowAggregatesProxy}}" Value="True">
                                                                     <Setter Property="ContentTemplate">
                                                                         <Setter.Value>
                                                                             <DataTemplate>
@@ -993,7 +993,7 @@
                                                                             </DataTemplate>
                                                                         </Setter.Value>
                                                                     </Setter>
-                                                                </DataTrigger>-->
+                                                                </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
                                                     </ContentControl.Style>
@@ -1080,7 +1080,7 @@
                                                             </Setter.Value>
                                                         </Setter>
                                                         <Style.Triggers>
-                                                            <!--<DataTrigger Binding="{Binding IsChecked, Source={x:Reference AggregateSwitch}}" Value="True">
+                                                            <DataTrigger Binding="{Binding Data, Source={StaticResource ShowAggregatesProxy}}" Value="True">
                                                                 <Setter Property="ContentTemplate">
                                                                     <Setter.Value>
                                                                         <DataTemplate>
@@ -1088,7 +1088,7 @@
                                                                         </DataTemplate>
                                                                     </Setter.Value>
                                                                 </Setter>
-                                                            </DataTrigger>-->
+                                                            </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
                                                 </ContentControl.Style>
@@ -1531,6 +1531,7 @@
                                 <mah:ToggleSwitch x:Name="AggregateSwitch"
                                                   VerticalAlignment="Bottom"
                                                   DockPanel.Dock="Bottom"
+                                                  IsChecked="{Binding Data, Source={StaticResource ShowAggregatesProxy}}"
                                                   Header="{lex:Loc Budgeting_ShowAggregates}"
                                                   OffLabel="{lex:Loc General_No}"
                                                   OnLabel="{lex:Loc General_Yes}"

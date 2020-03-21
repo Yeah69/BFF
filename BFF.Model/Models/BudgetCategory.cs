@@ -6,8 +6,6 @@ namespace BFF.Model.Models
 {
     public interface IBudgetCategory
     {
-        ICategory Category { get; }
-        
         Task<IEnumerable<IBudgetEntry>> GetBudgetEntriesFor(int year);
     }
     
@@ -18,7 +16,7 @@ namespace BFF.Model.Models
             Category = category;
         }
         
-        public ICategory Category { get; }
+        protected ICategory Category { get; }
 
         public abstract Task<IEnumerable<IBudgetEntry>> GetBudgetEntriesFor(int year);
     }

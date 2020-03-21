@@ -18,6 +18,9 @@ namespace BFF.Persistence.Realm.Models.Persistence
         [Backlink(nameof(SubTransaction.Category))]
         public IQueryable<SubTransaction> SubTransactions { get; }
 
+        [Backlink(nameof(Parent))]
+        public IQueryable<Category> Categories { get; }
+
         public override bool Equals(object obj)
         {
             if (obj is null || !(obj is Category other)) return false;

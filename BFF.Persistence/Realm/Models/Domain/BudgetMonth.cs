@@ -20,12 +20,12 @@ namespace BFF.Persistence.Realm.Models.Domain
             IRealmTransRepository transRepository,
             IIncomeCategoryRepository incomeCategoryRepository,
             DateTime month, 
-            IEnumerable<IBudgetEntry> budgetEntries, 
+            (long Budget, long Outflow, long Balance) budgetData, 
             long overspentInPreviousMonth, 
             long notBudgetedInPreviousMonth, 
             long incomeForThisMonth,
             long danglingTransferForThisMonth,
-            long unassignedTransactionSumForThisMonth) : base(month, budgetEntries, overspentInPreviousMonth, notBudgetedInPreviousMonth, incomeForThisMonth, danglingTransferForThisMonth, unassignedTransactionSumForThisMonth)
+            long unassignedTransactionSumForThisMonth) : base(month, budgetData, overspentInPreviousMonth, notBudgetedInPreviousMonth, incomeForThisMonth, danglingTransferForThisMonth, unassignedTransactionSumForThisMonth)
         {
             _transRepository = transRepository;
             _incomeCategoryRepository = incomeCategoryRepository;

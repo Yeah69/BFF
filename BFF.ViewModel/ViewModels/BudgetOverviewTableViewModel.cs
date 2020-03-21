@@ -25,6 +25,8 @@ namespace BFF.ViewModel.ViewModels
         IRxRelayCommand IncreaseMonthStartIndex { get; }
 
         IRxRelayCommand DecreaseMonthStartIndex { get; }
+        
+        bool ShowAggregates { get; set; }
     }
     public interface
         IBudgetOverviewTableRowViewModel : ITableRowViewModel<ICategoryViewModel, IBudgetEntryViewModel>
@@ -44,6 +46,7 @@ namespace BFF.ViewModel.ViewModels
         private readonly ISlidingWindow<IBudgetMonthViewModel> _budgetMonths;
 
         private int _currentMonthStartIndex = BudgetOverviewViewModel.MonthToIndex(DateTime.Now) - 41;
+        private bool _showAggregates;
 
         public BudgetOverviewTableViewModel(
             IRxSchedulerProvider rxSchedulerProvider,
@@ -68,30 +71,13 @@ namespace BFF.ViewModel.ViewModels
                 .Preloading()
                 .Hoarding()
                 .TaskBasedFetchers(
-                    async (offset, pageSize) =>
-                    {
-                        var budgetMonthViewModels = await Task.Run(async () =>
+                    (offset, pageSize) => 
+                        Task.Run(async () =>
                             (await budgetMonthRepository.FindAsync(BudgetOverviewViewModel.IndexToMonth(offset).Year)
                                 .ConfigureAwait(false))
                             .Select(budgetMonthViewModelFactory)
-                            .ToArray()).ConfigureAwait(false);
-
-                        // foreach (var bmvm in budgetMonthViewModels)
-                        // {
-                        //     var categoriesToBudgetEntries = bmvm.BudgetEntries.ToDictionary(bevm => bevm.Category, bevm => bevm);
-                        //     foreach (var bevm in bmvm.BudgetEntries)
-                        //     {
-                        //         bevm.Children = bevm
-                        //             .Category
-                        //             .Categories
-                        //             .Select(cvm => categoriesToBudgetEntries[cvm]).ToList();
-                        //     }
-                        // }
-
-                        return budgetMonthViewModels;
-                    },
+                            .ToArray()),
                     () => Task.FromResult(DateTimeExtensions.CountOfMonths()))
-                //.SyncIndexAccess()
                 .AsyncIndexAccess(
                      (pageKey, pageIndex) => 
                          new BudgetMonthViewModelPlaceholder(BudgetOverviewViewModel.IndexToMonth(pageKey * 12 + pageIndex)),
@@ -143,6 +129,17 @@ namespace BFF.ViewModel.ViewModels
         public IRxRelayCommand IncreaseMonthStartIndex { get; }
         
         public IRxRelayCommand DecreaseMonthStartIndex { get; }
+
+        public bool ShowAggregates
+        {
+            get => _showAggregates;
+            set
+            {
+                if (_showAggregates == value) return;
+                _showAggregates = value;
+                OnPropertyChanged();
+            }
+        }
     }
 
     internal class BudgetOverviewTableRowViewModel : IBudgetOverviewTableRowViewModel

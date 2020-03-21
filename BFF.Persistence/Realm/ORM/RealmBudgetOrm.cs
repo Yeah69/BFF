@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
+using BFF.Persistence.Common;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using MoreLinq.Extensions;
@@ -19,6 +21,8 @@ namespace BFF.Persistence.Realm.ORM
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IRealmOperations _realmOperations;
+        
+        private readonly BudgetDataCache _cache = new BudgetDataCache();
 
         public RealmBudgetOrm(
             IRealmOperations realmOperations)
@@ -90,7 +94,7 @@ namespace BFF.Persistence.Realm.ORM
                             : new Dictionary<DateTime, long>();
 
                         var currentBalance = initialBalance;
-                        var list = new List<(DateTime Month, (BudgetEntry Entry, Category Category, long Budget, long Outflow, long Balance) Tuple)>();
+                        var list = new List<(DateTime Month, (long Budget, long Outflow, long Balance) Tuple)>();
                         foreach (var month in monthsOfYear)
                         {
                             var budgetEntry = budgetEntries.TryGetValue(month, out var be) ? be : null;
@@ -101,14 +105,21 @@ namespace BFF.Persistence.Realm.ORM
                             var outflow = transactionOutflow + subTransactionOutflow;
                             var balance = currentBalance + budget + outflow;
 
-                            list.Add((month, (budgetEntry, c, budget, outflow, balance)));
+                            list.Add((month, (budget, outflow, balance)));
                             currentBalance = Math.Max(0L, balance);
                         }
 
                         return list.ToReadOnlyList();
                     })
                     .GroupBy(t => t.Month, t => t.Tuple)
-                    .ToDictionary(g => g.Key, g => g.ToReadOnlyList());
+                    .ToDictionary(g => g.Key, g =>
+                    {
+                        return (
+                            g.Sum(be => be.Budget),
+                            g.Sum(be => be.Outflow),
+                            g.Sum(be => be.Budget), 
+                            g.Sum(be => Math.Min(0, be.Balance)));
+                    });
 
 
                 var danglingTransfersPerMonth = realm.All<Trans>()
@@ -193,7 +204,7 @@ namespace BFF.Persistence.Realm.ORM
 
                 return new BudgetBlock
                 {
-                    BudgetEntriesPerMonth = budgetEntriesPerMonth,
+                    BudgetDataPerMonth = budgetEntriesPerMonth,
                     IncomesPerMonth = incomesPerMonth,
                     DanglingTransfersPerMonth = danglingTransfersPerMonth,
                     UnassignedTransactionsPerMonth = unassignedTransactionsPerMonth,
@@ -307,10 +318,8 @@ namespace BFF.Persistence.Realm.ORM
             }
         }
 
-        public Task<IReadOnlyList<(BudgetEntry Entry, DateTime Month, long Budget, long Outflow, long Balance)>> FindAsync(int year, Category category)
+        public Task<IReadOnlyList<(BudgetEntry Entry, BudgetEntryData Data)>> FindAsync(int year, Category category)
         {
-            var currentYear = new DateTimeOffset(year, 1, 1, 0, 0, 0, TimeSpan.Zero);
-
             var monthsOfYear = Enumerable
                 .Range(0, 11)
                 .Scan(
@@ -318,11 +327,65 @@ namespace BFF.Persistence.Realm.ORM
                     (dt, _) => dt.NextMonth())
                 .ToArray();
 
-            var nextYear = new DateTimeOffset(year + 1, 1, 1, 0, 0, 0, TimeSpan.Zero);
             return _realmOperations.RunFuncAsync(realm =>
             {
                 var queryStart = DateTime.Now;
-                var initialCacheEntries = GetInitialValues(realm, currentYear);
+                
+                var list = new List<(BudgetEntry Entry, BudgetEntryData Data)>();
+                foreach (var month in monthsOfYear)
+                {
+                    (BudgetEntry budgetEntry, long budget, long outflow, long balance) = _cache.GetFor(category, month.Year, month.Month, realm);
+                    
+                    (long aggregatedBudget, long aggregatedOutflow, long aggregatedBalance) = category
+                        .IterateTreeBreadthFirst(c => c.Categories)
+                        .Select(c => _cache.GetFor(c, month.Year, month.Month, realm))
+                        .Aggregate((0L, 0L, 0L), (prev, cur) => (prev.Item1 + cur.Budget, prev.Item2 + cur.Outflow, prev.Item3 + cur.Balance));
+                    
+                    list.Add(
+                        (budgetEntry, 
+                            new BudgetEntryData
+                            {
+                                Month = new DateTime(month.Year, month.Month, month.Day),
+                                Budget = budget,
+                                Outflow = outflow,
+                                Balance = balance,
+                                AggregatedBudget = aggregatedBudget,
+                                AggregatedOutflow = aggregatedOutflow,
+                                AggregatedBalance = aggregatedBalance
+                            }));
+                }
+
+                var queryDuration = DateTime.Now - queryStart;
+                Logger.Debug($"Budget Query Duration: {queryDuration.ToString()}");
+                
+                return list.ToReadOnlyList();
+            });
+        }
+
+        private class BudgetDataCache
+        {
+            private readonly Dictionary<(Category Category, int Year, int Month), (BudgetEntry Entry, long Budget, long Outflow, long Balance)> _cache =
+                new Dictionary<(Category Category, int Year, int Month), (BudgetEntry Entry, long Budget, long Outflow, long Balance)>();
+
+            public (BudgetEntry Entry, long Budget, long Outflow, long Balance) GetFor(Category category, int yearNumber, int monthNumber, Realms.Realm realm)
+            {
+                if (_cache.TryGetValue((category, yearNumber, monthNumber), out var data))
+                {
+                    return data;
+                }
+                
+                var currentYear = new DateTimeOffset(yearNumber, 1, 1, 0, 0, 0, TimeSpan.Zero);
+
+                var monthsOfYear = Enumerable
+                    .Range(0, 11)
+                    .Scan(
+                        new DateTimeOffset(yearNumber, 1, 1, 0, 0, 0, TimeSpan.Zero), 
+                        (dt, _) => dt.NextMonth())
+                    .ToArray();
+
+                var nextYear = new DateTimeOffset(yearNumber + 1, 1, 1, 0, 0, 0, TimeSpan.Zero);
+                
+                var initialCacheEntries = GetInitialValues(realm, category, currentYear);
 
                 var initialBalance = Math.Max(0L, initialCacheEntries.Balance);
 
@@ -359,7 +422,6 @@ namespace BFF.Persistence.Realm.ORM
                     .ToDictionary(g => g.Key, g => g.Sum());
 
                 var currentBalance = initialBalance;
-                var list = new List<(BudgetEntry Entry, DateTime Month, long Budget, long Outflow, long Balance)>();
                 foreach (var month in monthsOfYear)
                 {
                     var budgetEntry = budgetEntries.TryGetValue(month, out var be) ? be : null;
@@ -370,18 +432,16 @@ namespace BFF.Persistence.Realm.ORM
                     var outflow = transactionOutflow + subTransactionOutflow;
                     var balance = currentBalance + budget + outflow;
 
-                    list.Add((budgetEntry, new DateTime(month.Year, month.Month, month.Day), budget, outflow, balance));
+                    _cache[(category, month.Year, month.Month)] = (budgetEntry, budget, outflow, balance);
                     currentBalance = Math.Max(0L, balance);
                 }
-
-                var queryDuration = DateTime.Now - queryStart;
-                Logger.Debug($"Budget Query Duration: {queryDuration.ToString()}");
                 
-                return list.ToReadOnlyList();
-            });
-
-            (DateTimeOffset LastMonth, long Balance, long TotalBudget, long TotalNegativeBalance) GetInitialValues(
+                return _cache[(category, yearNumber, monthNumber)];
+            }
+            
+            private (DateTimeOffset LastMonth, long Balance, long TotalBudget, long TotalNegativeBalance) GetInitialValues(
             Realms.Realm realm,
+            Category category,
             DateTimeOffset untilMonth)
             {
                 var budgetEntries = realm
@@ -432,22 +492,22 @@ namespace BFF.Persistence.Realm.ORM
         }
     }
 
-    public class BudgetBlock
+    public struct BudgetBlock
     {
-        internal IDictionary<DateTime, IReadOnlyList<(BudgetEntry Entry, Category Category, long Budget, long Outflow, long Balance)>> BudgetEntriesPerMonth
+        internal IDictionary<DateTime, (long Budget, long Outflow, long Balance, long Overspend)> BudgetDataPerMonth
         {
             get;
             set;
         }
 
-        public long InitialNotBudgetedOrOverbudgeted { get; set; }
+        internal long InitialNotBudgetedOrOverbudgeted { get; set; }
 
-        public long InitialOverspentInPreviousMonth { get; set; }
+        internal long InitialOverspentInPreviousMonth { get; set; }
 
-        public IDictionary<DateTime, long> IncomesPerMonth { get; set; }
+        internal IDictionary<DateTime, long> IncomesPerMonth { get; set; }
 
-        public IDictionary<DateTime, long> DanglingTransfersPerMonth { get; set; }
+        internal IDictionary<DateTime, long> DanglingTransfersPerMonth { get; set; }
 
-        public IDictionary<DateTime, long> UnassignedTransactionsPerMonth { get; set; }
+        internal IDictionary<DateTime, long> UnassignedTransactionsPerMonth { get; set; }
     }
 }

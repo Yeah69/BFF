@@ -16,6 +16,14 @@ namespace BFF.Model.Repositories
         IIncomeCategory CreateIncomeCategory();
         IFlag CreateFlag();
         IDbSetting CreateDbSetting();
-        IBudgetEntry CreateBudgetEntry(DateTime month, ICategory category, long budget, long outflow, long balance);
+        IBudgetEntry CreateBudgetEntry(
+            DateTime month, 
+            ICategory category, 
+            long budget,
+            long outflow,
+            long balance,
+            long aggregatedBudget,
+            long aggregatedOutflow,
+            long aggregatedBalance);
     }
 }

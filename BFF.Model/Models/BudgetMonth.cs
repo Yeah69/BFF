@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
@@ -30,7 +28,7 @@ namespace BFF.Model.Models
     {
         public BudgetMonth(
             DateTime month,
-            IEnumerable<IBudgetEntry> budgetEntries, 
+            (long Budget, long Outflow, long Balance) budgetData, 
             long overspentInPreviousMonth,
             long notBudgetedInPreviousMonth,
             long incomeForThisMonth,
@@ -43,11 +41,10 @@ namespace BFF.Model.Models
             IncomeForThisMonth = incomeForThisMonth;
             DanglingTransferForThisMonth = danglingTransferForThisMonth;
             UnassignedTransactionSumForThisMonth = unassignedTransactionSumForThisMonth;
-            var _budgetEntries = new ObservableCollection<IBudgetEntry>(budgetEntries.OrderBy(be => be.Category, new CategoryComparer()));
 
-            BudgetedThisMonth = - _budgetEntries.Sum(be => be.Budget);
-            Outflows = _budgetEntries.Sum(be => be.Outflow);
-            Balance = _budgetEntries.Sum(be => be.Balance);
+            BudgetedThisMonth = - budgetData.Budget;
+            Outflows = budgetData.Outflow;
+            Balance = budgetData.Balance;
 
             AvailableToBudget = NotBudgetedInPreviousMonth +
                 OverspentInPreviousMonth +

@@ -27,6 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MrMeeseeks", "..\MrMeeseeks
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.DataVirtualizingCollection", "..\BFF.DataVirtualizingCollection\BFF.DataVirtualizingCollection\BFF.DataVirtualizingCollection.csproj", "{6F721294-17D0-4E48-A45B-E902CEB7D674}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B6FC2D7-CF56-41A7-80DF-29C3710BE169}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,9 +75,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_CodeReferences = {"Items":[{"Expression":"\\W($File.$Key)\\W","Extensions":".cs,.xaml,.cshtml","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"ResourceManager.GetString\\(\"($Key)\"\\)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"typeof\\((\\w+\\.)*($File)\\).+\"($Key)\"|\"($Key)\".+typeof\\((\\w+\\.)*($File)\\)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"\\W($Key)\\W","Extensions":".vb","IsCaseSensitive":false,"SingleLineComment":"'"},{"Expression":"\\W($File::$Key)\\W","Extensions":".cpp,.c,.hxx,.h","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"&lt;%\\$\\s+Resources:\\s*($File)\\s*,\\s*($Key)\\s*%&gt;","Extensions":".aspx,.ascx,.master","IsCaseSensitive":true,"SingleLineComment":null},{"Expression":"StringResourceKey\\.($Key)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"\"($Key)\".Localize<.*>\\(\\)","Extensions":".cs","IsCaseSensitive":false,"SingleLineComment":null}]}
-		RESX_ResXSortingComparison = Ordinal
-		RESX_SortFileContentOnSave = True
 		SolutionGuid = {CB48FD93-B139-482F-AECA-4F0ED2800AAA}
+		RESX_SortFileContentOnSave = True
+		RESX_ResXSortingComparison = Ordinal
+		RESX_CodeReferences = {"Items":[{"Expression":"\\W($File.$Key)\\W","Extensions":".cs,.xaml,.cshtml","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"ResourceManager.GetString\\(\"($Key)\"\\)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"typeof\\((\\w+\\.)*($File)\\).+\"($Key)\"|\"($Key)\".+typeof\\((\\w+\\.)*($File)\\)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"\\W($Key)\\W","Extensions":".vb","IsCaseSensitive":false,"SingleLineComment":"'"},{"Expression":"\\W($File::$Key)\\W","Extensions":".cpp,.c,.hxx,.h","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"&lt;%\\$\\s+Resources:\\s*($File)\\s*,\\s*($Key)\\s*%&gt;","Extensions":".aspx,.ascx,.master","IsCaseSensitive":true,"SingleLineComment":null},{"Expression":"StringResourceKey\\.($Key)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"\"($Key)\".Localize<.*>\\(\\)","Extensions":".cs","IsCaseSensitive":false,"SingleLineComment":null}]}
 	EndGlobalSection
 EndGlobal

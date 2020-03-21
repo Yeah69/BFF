@@ -213,18 +213,29 @@ namespace BFF.Persistence.Realm.Models
                 null);
         }
 
-        public IBudgetEntry CreateBudgetEntry(DateTime month, ICategory category, long budget, long outflow, long balance)
+        public IBudgetEntry CreateBudgetEntry(
+            DateTime month, 
+            ICategory category, 
+            long budget, 
+            long outflow, 
+            long balance,
+            long aggregatedBudget,
+            long aggregatedOutflow,
+            long aggregatedBalance)
         {
             return new Domain.BudgetEntry(
-                _budgetEntryCrudOrm.Value,
-                _transRepository.Value,
-                _rxSchedulerProvider,
                 null,
                 month,
                 category,
                 budget,
                 outflow,
-                balance);
+                balance,
+                aggregatedBudget,
+                aggregatedOutflow,
+                aggregatedBalance,
+                _budgetEntryCrudOrm.Value,
+                _transRepository.Value,
+                _rxSchedulerProvider);
         }
     }
 }
