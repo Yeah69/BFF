@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
+using BFF.Model;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Realm.ORM.Interfaces;
@@ -13,6 +13,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal class BudgetEntry : Model.Models.BudgetEntry, IRealmModel<Persistence.BudgetEntry>
     {
+        private readonly IBudgetOrm _budgetOrm;
         private readonly IRealmTransRepository _transRepository;
         private readonly RealmObjectWrap<Persistence.BudgetEntry> _realmObjectWrap;
 
@@ -30,8 +31,10 @@ namespace BFF.Persistence.Realm.Models.Domain
             
             // dependencies
             ICrudOrm<Persistence.BudgetEntry> crudOrm,
+            IBudgetOrm budgetOrm,
             IRealmTransRepository transRepository,
-            IRxSchedulerProvider rxSchedulerProvider) 
+            IClearBudgetCache clearBudgetCache,
+            IUpdateBudgetCategory updateBudgetCategory) 
             : base(
                 month, 
                 category, 
@@ -41,7 +44,8 @@ namespace BFF.Persistence.Realm.Models.Domain
                 aggregatedBudget, 
                 aggregatedOutflow, 
                 aggregatedBalance, 
-                rxSchedulerProvider)
+                clearBudgetCache,
+                updateBudgetCategory)
         {
             _realmObjectWrap = new RealmObjectWrap<Persistence.BudgetEntry>(
                 realmObject,
@@ -56,6 +60,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                 },
                 UpdateRealmObject,
                 crudOrm);
+            _budgetOrm = budgetOrm;
             _transRepository = transRepository;
             
             void UpdateRealmObject(Persistence.BudgetEntry ro)
@@ -65,7 +70,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                         ? null 
                         : (Category as Category)?.RealmObject 
                           ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
-                ro.Month = new DateTimeOffset(Month, TimeSpan.Zero);
+                ro.MonthIndex = Month.ToMonthIndex();
                 ro.Budget = Budget;
             }
         }
@@ -98,6 +103,16 @@ namespace BFF.Persistence.Realm.Models.Domain
         public override Task<IEnumerable<ITransBase>> GetAssociatedTransIncludingSubCategoriesAsync()
         {
             return _transRepository.GetFromMonthAndCategoriesAsync(Month, Category.IterateTreeBreadthFirst(c => c.Categories));
+        }
+
+        protected override Task<long> AverageBudgetOfLastMonths(int monthCount)
+        {
+            return _budgetOrm.GetAverageBudgetOfLastMonths(this.Month.ToMonthIndex(), ((Category) this.Category).RealmObject, monthCount);
+        }
+
+        protected override Task<long> AverageOutflowOfLastMonths(int monthCount)
+        {
+            return _budgetOrm.GetAverageOutflowOfLastMonths(this.Month.ToMonthIndex(), ((Category) this.Category).RealmObject, monthCount);
         }
     }
 }

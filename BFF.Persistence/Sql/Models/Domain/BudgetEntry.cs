@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
+using BFF.Model;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Sql.Models.Persistence;
@@ -28,7 +28,8 @@ namespace BFF.Persistence.Sql.Models.Domain
             long aggregatedBalance,
             ICrudOrm<IBudgetEntrySql> crudOrm, 
             ISqliteTransRepository transRepository,
-            IRxSchedulerProvider rxSchedulerProvider) 
+            IClearBudgetCache clearBudgetCache,
+            IUpdateBudgetCategory updateBudgetCategory) 
             : base(
                 month, 
                 category, 
@@ -38,7 +39,8 @@ namespace BFF.Persistence.Sql.Models.Domain
                 aggregatedBudget,
                 aggregatedOutflow, 
                 aggregatedBalance, 
-                rxSchedulerProvider)
+                clearBudgetCache,
+                updateBudgetCategory)
         {
             Id = id;
             _crudOrm = crudOrm;
@@ -85,6 +87,16 @@ namespace BFF.Persistence.Sql.Models.Domain
         public override Task<IEnumerable<ITransBase>> GetAssociatedTransIncludingSubCategoriesAsync()
         {
             return _transRepository.GetFromMonthAndCategoriesAsync(Month, Category.IterateTreeBreadthFirst(c => c.Categories));
+        }
+
+        protected override Task<long> AverageBudgetOfLastMonths(int monthCount)
+        {
+            throw new NotSupportedException("Not supported yet or ever!");
+        }
+
+        protected override Task<long> AverageOutflowOfLastMonths(int monthCount)
+        {
+            throw new NotSupportedException("Not supported yet or ever!");
         }
     }
 }

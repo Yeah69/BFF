@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 
 namespace BFF.Model.Models
@@ -59,11 +58,10 @@ namespace BFF.Model.Models
         public abstract Task<long> GetTransCountAsync();
 
         public Account(
-            IRxSchedulerProvider rxSchedulerProvider,
             DateTime startingDate, 
             string name, 
             long startingBalance) 
-            : base(rxSchedulerProvider, name)
+            : base(name)
         {
             _startingBalance = startingBalance;
             _startingDate = startingDate;

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.ViewModel.Services;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using MuVaViMo;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Structure
@@ -88,7 +88,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
 
             _account = _accountViewModelService.GetViewModel(transactionBase.Account);
             transactionBase
-                .ObservePropertyChanges(nameof(transactionBase.Account))
+                .ObservePropertyChanged(nameof(transactionBase.Account))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ =>
                 {
@@ -106,19 +106,19 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 Account = specificAccount;
 
             transactionBase
-                .ObservePropertyChanges(nameof(transactionBase.Account))
+                .ObservePropertyChanged(nameof(transactionBase.Account))
                 .SkipLast(1)
                 .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transactionBase.Account)))
                 .AddForDisposalTo(CompositeDisposable);
 
             transactionBase
-                .ObservePropertyChanges(nameof(transactionBase.Account))
+                .ObservePropertyChanged(nameof(transactionBase.Account))
                 .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transactionBase.Account)))
                 .AddForDisposalTo(CompositeDisposable);
 
             _payee = _payeeViewModelService.GetViewModel(transactionBase.Payee);
             transactionBase
-                .ObservePropertyChanges(nameof(transactionBase.Payee))
+                .ObservePropertyChanged(nameof(transactionBase.Payee))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ =>
                 {

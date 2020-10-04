@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
+using BFF.Model;
 using BFF.Model.Models;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using JetBrains.Annotations;
@@ -23,24 +23,30 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 
     internal sealed class RealmBudgetEntryRepository : RealmWriteOnlyRepositoryBase<IBudgetEntry>, IRealmBudgetEntryRepository
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<Models.Persistence.BudgetEntry> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IRealmCategoryRepositoryInternal> _categoryRepository;
         private readonly Lazy<IRealmTransRepository> _transRepository;
+        private readonly Lazy<IBudgetOrm> _budgetOrm;
+        private readonly IClearBudgetCache _clearBudgetCache;
+        private readonly IUpdateBudgetCategory _updateBudgetCategory;
 
         public RealmBudgetEntryRepository(
-            IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<Models.Persistence.BudgetEntry> crudOrm,
             IRealmOperations realmOperations,
             Lazy<IRealmCategoryRepositoryInternal> categoryRepository,
-            Lazy<IRealmTransRepository> transRepository)
+            Lazy<IRealmTransRepository> transRepository,
+            Lazy<IBudgetOrm> budgetOrm,
+            IClearBudgetCache clearBudgetCache,
+            IUpdateBudgetCategory updateBudgetCategory)
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _realmOperations = realmOperations;
             _categoryRepository = categoryRepository;
             _transRepository = transRepository;
+            _budgetOrm = budgetOrm;
+            _clearBudgetCache = clearBudgetCache;
+            _updateBudgetCategory = updateBudgetCategory;
         }
 
         public Task<IBudgetEntry> Convert(
@@ -69,8 +75,10 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                     aggregatedOutflow,
                     aggregatedBalance,
                     _crudOrm,
+                    _budgetOrm.Value,
                     _transRepository.Value,
-                    _rxSchedulerProvider);
+                    _clearBudgetCache,
+                    _updateBudgetCategory);
             }
         }
     }

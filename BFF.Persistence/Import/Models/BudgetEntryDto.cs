@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace BFF.Persistence.Import.Models
+﻿namespace BFF.Persistence.Import.Models
 {
     internal class BudgetEntryDto
     {
-        public DateTime Month { get; set; }
+        public int MonthIndex { get; set; }
 
         public CategoryDto Category { get; set; }
 

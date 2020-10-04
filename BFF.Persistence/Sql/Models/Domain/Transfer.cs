@@ -13,7 +13,6 @@ namespace BFF.Persistence.Sql.Models.Domain
 
         public Transfer(
             ICrudOrm<ITransSql> crudOrm,
-            IRxSchedulerProvider rxSchedulerProvider,
             long id,
             DateTime date,
             IFlag flag, 
@@ -22,7 +21,7 @@ namespace BFF.Persistence.Sql.Models.Domain
             IAccount toAccount,
             string memo, 
             long sum,
-            bool cleared) : base(rxSchedulerProvider, date, flag, checkNumber, fromAccount, toAccount, memo, sum, cleared)
+            bool cleared) : base(date, flag, checkNumber, fromAccount, toAccount, memo, sum, cleared)
         {
             Id = id;
             _crudOrm = crudOrm;

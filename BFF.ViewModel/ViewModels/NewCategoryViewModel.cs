@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Windows.Input;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models;
@@ -12,6 +11,7 @@ using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -110,8 +110,6 @@ namespace BFF.ViewModel.ViewModels
                     OnPropertyChanged(nameof(Name));
                     ClearErrors(nameof(Name));
                     OnErrorChanged(nameof(Name));
-
-                    await budgetOverviewViewModel.Refresh();
                 })
                 .AddTo(_compositeDisposable);
 
@@ -133,7 +131,7 @@ namespace BFF.ViewModel.ViewModels
             MonthOffset = new ReactiveProperty<int>(mode: ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(_compositeDisposable);
 
-            this.ObservePropertyChanges(nameof(Name))
+            this.ObservePropertyChanged(nameof(Name))
                 .Subscribe(_ => (Parent as ReactiveProperty<ICategoryViewModel>)?.ForceValidate())
                 .AddTo(_compositeDisposable);
             Parent

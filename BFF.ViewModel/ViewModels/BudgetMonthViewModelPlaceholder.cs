@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Linq;
-using System.Reactive.Linq;
+using System.Threading;
 using BFF.ViewModel.Helper;
-using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
-using Reactive.Bindings;
 
 namespace BFF.ViewModel.ViewModels
 {
-    internal class BudgetMonthViewModelPlaceholder : IBudgetMonthViewModel
+    public class BudgetMonthViewModelPlaceholder : IBudgetMonthViewModel
     {
         internal BudgetMonthViewModelPlaceholder(
             DateTime month)
@@ -16,6 +13,9 @@ namespace BFF.ViewModel.ViewModels
             Month = month;
         }
         public DateTime Month { get; }
+
+        public string MonthName =>
+            Thread.CurrentThread.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(this.Month.Month);
         public long NotBudgetedInPreviousMonth => 0L;
         public long OverspentInPreviousMonth => 0L;
         public long IncomeForThisMonth => 0L;

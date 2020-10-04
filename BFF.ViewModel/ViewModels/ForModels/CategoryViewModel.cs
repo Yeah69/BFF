@@ -5,12 +5,12 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using MoreLinq;
+using MrMeeseeks.Reactive.Extensions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -48,7 +48,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
         private readonly ILocalizer _localizer;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
         private readonly IAccountViewModelService _accountViewModelService;
-        private readonly Lazy<IBudgetOverviewViewModel> _budgetOverviewViewModel;
         private readonly Func<ICategory, IBudgetCategory> _budgetCategoryFactory;
         private readonly Func<IBudgetCategory, (int EntryCount, int MonthOffset), IBudgetCategoryViewModel> _budgetCategoryViewModelFactory;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
@@ -80,7 +79,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 {
                     viewModel.Parent = _service.Value.GetViewModel(viewModel._category.Parent);
                     viewModel._category
-                        .ObservePropertyChanges(nameof(viewModel._category.Parent))
+                        .ObservePropertyChanged(nameof(viewModel._category.Parent))
                         .ObserveOn(_rxSchedulerProvider.UI)
                         .Subscribe(_ =>
                         {
@@ -120,8 +119,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
                         _accountViewModelService.All.ForEach(avm => avm.RefreshTransCollection());
                         _summaryAccountViewModel.RefreshTransCollection();
                     }
-
-                    await _budgetOverviewViewModel.Value.Refresh();
 
                     source.SetResult(Unit.Default);
                 });
@@ -199,7 +196,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
             ILocalizer localizer,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
             IAccountViewModelService accountViewModelService,
-            Lazy<IBudgetOverviewViewModel> budgetOverviewViewModel,
             Func<ICategory, IBudgetCategory> budgetCategoryFactory,
             Func<IBudgetCategory, (int EntryCount, int MonthOffset), IBudgetCategoryViewModel> budgetCategoryViewModelFactory,
             IRxSchedulerProvider rxSchedulerProvider) : base(category, rxSchedulerProvider)
@@ -207,7 +203,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             _category = category;
             Categories =
                 _category.Categories.ToReadOnlyReactiveCollection(service.Value.GetViewModel).AddTo(CompositeDisposable);
-            _category.ObservePropertyChanges(nameof(_category.Parent))
+            _category.ObservePropertyChanged(nameof(_category.Parent))
                 .Select(_ => Parent = service.Value.GetViewModel(_category.Parent))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Parent)));
@@ -215,7 +211,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
             _localizer = localizer;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _accountViewModelService = accountViewModelService;
-            _budgetOverviewViewModel = budgetOverviewViewModel;
             _budgetCategoryFactory = budgetCategoryFactory;
             _budgetCategoryViewModelFactory = budgetCategoryViewModelFactory;
             _rxSchedulerProvider = rxSchedulerProvider;

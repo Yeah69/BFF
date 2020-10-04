@@ -70,6 +70,11 @@ namespace BFF.Persistence.Sql.Repositories
             return budgetMonths;
         }
 
+        public Task<long> GetAvailableToBudgetOfCurrentMonth()
+        {
+            return Task.FromResult(0L);
+        }
+
         public void Dispose()
         {
         }

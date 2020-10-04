@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using BFF.Core.Helper;
+using BFF.Model;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.Persistence.Realm.Models.Persistence;
@@ -39,8 +40,10 @@ namespace BFF.Persistence.Realm.Models
         private readonly Lazy<RealmCategoryRepository> _categoryRepository;
         private readonly Lazy<RealmIncomeCategoryRepository> _incomeCategoryRepository;
         private readonly Lazy<RealmFlagRepository> _flagRepository;
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly Lazy<RealmBudgetOrm> _budgetOrm;
         private readonly ILastSetDate _lastSetDate;
+        private readonly IClearBudgetCache _clearBudgetCache;
+        private readonly IUpdateBudgetCategory _updateBudgetCategory;
 
         public RealmCreateNewModels(
             Lazy<RealmCrudOrm<Trans>> transCrudOrm,
@@ -60,8 +63,10 @@ namespace BFF.Persistence.Realm.Models
             Lazy<RealmCategoryRepository> categoryRepository,
             Lazy<RealmIncomeCategoryRepository> incomeCategoryRepository,
             Lazy<RealmFlagRepository> flagRepository,
-            IRxSchedulerProvider rxSchedulerProvider,
-            ILastSetDate lastSetDate)
+            Lazy<RealmBudgetOrm> budgetOrm,
+            ILastSetDate lastSetDate,
+            IClearBudgetCache clearBudgetCache,
+            IUpdateBudgetCategory updateBudgetCategory)
         {
             _transCrudOrm = transCrudOrm;
             _subTransactionCrudOrm = subTransactionCrudOrm;
@@ -80,15 +85,16 @@ namespace BFF.Persistence.Realm.Models
             _categoryRepository = categoryRepository;
             _incomeCategoryRepository = incomeCategoryRepository;
             _flagRepository = flagRepository;
-            _rxSchedulerProvider = rxSchedulerProvider;
+            _budgetOrm = budgetOrm;
             _lastSetDate = lastSetDate;
+            _clearBudgetCache = clearBudgetCache;
+            _updateBudgetCategory = updateBudgetCategory;
         }
 
         public ITransaction CreateTransaction()
         {
             return new Domain.Transaction(
                 _transCrudOrm.Value, 
-                _rxSchedulerProvider,
                 null, 
                 _lastSetDate.Date,
                 null,
@@ -105,7 +111,6 @@ namespace BFF.Persistence.Realm.Models
         {
             return new Domain.Transfer(
                 _transCrudOrm.Value,
-                _rxSchedulerProvider,
                 null,
                 _lastSetDate.Date,
                 null,
@@ -122,7 +127,6 @@ namespace BFF.Persistence.Realm.Models
             return new Domain.ParentTransaction(
                 _transCrudOrm.Value,
                 _subTransactionRepository.Value,
-                _rxSchedulerProvider,
                 null,
                 _lastSetDate.Date,
                 null,
@@ -137,7 +141,6 @@ namespace BFF.Persistence.Realm.Models
         {
             return new Domain.SubTransaction(
                 _subTransactionCrudOrm.Value,
-                _rxSchedulerProvider,
                 null,
                 null,
                 "",
@@ -151,7 +154,6 @@ namespace BFF.Persistence.Realm.Models
                 _accountOrm.Value,
                 _accountRepository.Value,
                 _transRepository.Value,
-                _rxSchedulerProvider,
                 null,
                 _lastSetDate.Date,
                 "",
@@ -164,7 +166,6 @@ namespace BFF.Persistence.Realm.Models
                 _payeeCrudOrm.Value,
                 _mergeOrm.Value,
                 _payeeRepository.Value,
-                _rxSchedulerProvider,
                 null,
                 "");
         }
@@ -175,7 +176,6 @@ namespace BFF.Persistence.Realm.Models
                 _categoryCrudOrm.Value,
                 _mergeOrm.Value,
                 _categoryRepository.Value,
-                _rxSchedulerProvider,
                 null,
                 "",
                 null);
@@ -187,7 +187,6 @@ namespace BFF.Persistence.Realm.Models
                 _categoryCrudOrm.Value,
                 _mergeOrm.Value,
                 _incomeCategoryRepository.Value,
-                _rxSchedulerProvider,
                 null,
                 "",
                 0);
@@ -199,7 +198,6 @@ namespace BFF.Persistence.Realm.Models
                 _flagCrudOrm.Value,
                 _mergeOrm.Value,
                 _flagRepository.Value,
-                _rxSchedulerProvider,
                 null,
                 Color.BlueViolet,
                 "");
@@ -209,7 +207,6 @@ namespace BFF.Persistence.Realm.Models
         {
             return new Domain.DbSetting(
                 _dbSettingCrudOrm.Value,
-                _rxSchedulerProvider,
                 null);
         }
 
@@ -234,8 +231,10 @@ namespace BFF.Persistence.Realm.Models
                 aggregatedOutflow,
                 aggregatedBalance,
                 _budgetEntryCrudOrm.Value,
+                _budgetOrm.Value,
                 _transRepository.Value,
-                _rxSchedulerProvider);
+                _clearBudgetCache,
+                _updateBudgetCategory);
         }
     }
 }

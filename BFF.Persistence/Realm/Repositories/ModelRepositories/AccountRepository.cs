@@ -22,7 +22,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 
     internal sealed class RealmAccountRepository : RealmObservableRepositoryBase<IAccount, Models.Persistence.Account>, IRealmAccountRepositoryInternal
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<Models.Persistence.Account> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IAccountOrm> _accountOrm;
@@ -35,7 +34,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             Lazy<IAccountOrm> accountOrm,
             Lazy<IRealmTransRepository> transRepository) : base(rxSchedulerProvider, crudOrm, realmOperations, new AccountComparer())
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _realmOperations = realmOperations;
             _accountOrm = accountOrm;
@@ -53,7 +51,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                     _accountOrm.Value,
                     this,
                     _transRepository.Value,
-                    _rxSchedulerProvider,
                     persistenceModel,
                     persistenceModel.StartingDate.UtcDateTime,
                     persistenceModel.Name,

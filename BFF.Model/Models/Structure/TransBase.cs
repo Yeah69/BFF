@@ -1,5 +1,4 @@
 ﻿using System;
-using BFF.Core.Helper;
 
 namespace BFF.Model.Models.Structure
 {
@@ -49,7 +48,6 @@ namespace BFF.Model.Models.Structure
             set
             {
                 if (_date == value) return;
-                var previousDate = _date;
                 _date = value;
                 UpdateAndNotify();
             }
@@ -67,12 +65,11 @@ namespace BFF.Model.Models.Structure
         }
         
         protected TransBase(
-            IRxSchedulerProvider rxSchedulerProvider,
             IFlag flag,
             string checkNumber,
             DateTime date,
             string memo,
-            bool cleared) : base(rxSchedulerProvider, memo)
+            bool cleared) : base(memo)
         {
             _flag = flag;
             _checkNumber = checkNumber;

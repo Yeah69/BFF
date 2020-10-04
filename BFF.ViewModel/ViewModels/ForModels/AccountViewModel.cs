@@ -4,7 +4,6 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.ViewModel.Extensions;
@@ -13,6 +12,7 @@ using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.Dialogs;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.Reactive.Extensions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -33,7 +33,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     /// <summary>
     /// Trans' can be added to an Account
     /// </summary>
-    internal class AccountViewModel : AccountBaseViewModel, IAccountViewModel, IImportCsvBankStatement
+    internal sealed class AccountViewModel : AccountBaseViewModel, IAccountViewModel, IImportCsvBankStatement
     {
         private readonly IAccount _account;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
@@ -92,6 +92,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 accountViewModelService,
                 rxSchedulerProvider,
                 placeholderFactory,
+                convertFromTransBaseToTransLikeViewModel,
                 bffSettings,
                 cultureManager,
                 transDataGridColumnManager)
@@ -110,7 +111,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             StartingBalanceEdit = createSumEdit(StartingBalance);
 
             account
-                .ObservePropertyChanges(nameof(account.StartingBalance))
+                .ObservePropertyChanged(nameof(account.StartingBalance))
                 .Subscribe(_ =>
                 {
                     summaryAccountViewModel.RefreshStartingBalance();
@@ -119,7 +120,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .AddTo(CompositeDisposable);
 
             account
-                .ObservePropertyChanges(nameof(account.StartingBalance))
+                .ObservePropertyChanged(nameof(account.StartingBalance))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(StartingBalance)))
                 .AddTo(CompositeDisposable);
@@ -186,17 +187,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
             if (BffSettings.OpenAccountTab == Name)
                 IsOpen = true;
         }
-
-        protected override async Task<ITransLikeViewModel[]> PageFetcher (int offset, int pageSize)
-        {
-            var transLikeViewModels = _convertFromTransBaseToTransLikeViewModel
-                .Convert(await _account.GetTransPageAsync(offset, pageSize), this)
-                .ToArray();
-            return transLikeViewModels;
-        }
-
-        protected override async Task<int> CountFetcher ()
-            => (int) await _account.GetTransCountAsync();
 
         protected override long? CalculateNewPartOfIntermediateBalance()
         {

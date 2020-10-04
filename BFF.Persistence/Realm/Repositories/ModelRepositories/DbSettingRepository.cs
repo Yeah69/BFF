@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.Persistence.Realm.ORM.Interfaces;
@@ -9,16 +8,13 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
     internal sealed class RealmDbSettingRepository : RealmRepositoryBase<IDbSetting, Models.Persistence.DbSetting>, IDbSettingRepository
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<Models.Persistence.DbSetting> _crudOrm;
         private readonly IRealmOperations _realmOperations;
 
         public RealmDbSettingRepository(
-            IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<Models.Persistence.DbSetting> crudOrm,
             IRealmOperations realmOperations) : base(crudOrm)
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _realmOperations = realmOperations;
         }
@@ -31,7 +27,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             {
                 return new Models.Domain.DbSetting(
                     _crudOrm,
-                    _rxSchedulerProvider,
                     persistenceModel)
                 {
                     CurrencyCultureName = persistenceModel.CurrencyCultureName,

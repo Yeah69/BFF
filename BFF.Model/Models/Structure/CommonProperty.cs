@@ -1,6 +1,4 @@
-﻿using BFF.Core.Helper;
-
-namespace BFF.Model.Models.Structure
+﻿namespace BFF.Model.Models.Structure
 {
     public interface ICommonProperty : IDataModel
     {
@@ -40,9 +38,8 @@ namespace BFF.Model.Models.Structure
             return Name;
         }
 
-        protected CommonProperty( 
-            IRxSchedulerProvider rxSchedulerProvider,
-            string name) : base(rxSchedulerProvider)
+        protected CommonProperty(
+            string name)
         {
             _name = name;
         }

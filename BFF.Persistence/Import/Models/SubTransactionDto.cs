@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace BFF.Persistence.Import.Models
+﻿namespace BFF.Persistence.Import.Models
 {
     internal class SubTransactionDto
     {

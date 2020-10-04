@@ -25,7 +25,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 
     internal sealed class RealmTransRepository : RealmRepositoryBase<ITransBase, Trans>, IRealmTransRepository
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly Lazy<IRealmAccountRepositoryInternal> _accountRepository;
         private readonly Lazy<IRealmCategoryBaseRepositoryInternal> _categoryBaseRepository;
         private readonly Lazy<IRealmPayeeRepositoryInternal> _payeeRepository;
@@ -36,7 +35,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         private readonly Lazy<ITransOrm> _transOrm;
 
         public RealmTransRepository(
-            IRxSchedulerProvider rxSchedulerProvider,
             Lazy<IRealmAccountRepositoryInternal> accountRepository,
             Lazy<IRealmCategoryBaseRepositoryInternal> categoryBaseRepository,
             Lazy<IRealmPayeeRepositoryInternal> payeeRepository,
@@ -47,7 +45,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             Lazy<ITransOrm> transOrm)
             : base(crudOrm)
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _accountRepository = accountRepository;
             _categoryBaseRepository = categoryBaseRepository;
             _payeeRepository = payeeRepository;
@@ -150,7 +147,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                 switch ((TransType) persistenceModel.TypeIndex)
                 {
                     case TransType.Transaction:
-                        ret = new Models.Domain.Transaction(_crudOrm, _rxSchedulerProvider, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
+                        ret = new Models.Domain.Transaction(_crudOrm, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
                             ? null
                             : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false), persistenceModel.CheckNumber, await _accountRepository.Value.FindAsync(persistenceModel.Account).ConfigureAwait(false), persistenceModel.Payee is null
                             ? null
@@ -159,7 +156,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                             : await _categoryBaseRepository.Value.FindAsync(persistenceModel.Category).ConfigureAwait(false), persistenceModel.Memo, persistenceModel.Sum, persistenceModel.Cleared);
                         break;
                     case TransType.Transfer:
-                        ret = new Models.Domain.Transfer(_crudOrm, _rxSchedulerProvider, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
+                        ret = new Models.Domain.Transfer(_crudOrm, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
                             ? null
                             : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false), persistenceModel.CheckNumber, persistenceModel.FromAccount is null
                             ? null
@@ -168,14 +165,14 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                             : await _accountRepository.Value.FindAsync(persistenceModel.ToAccount).ConfigureAwait(false), persistenceModel.Memo, persistenceModel.Sum, persistenceModel.Cleared);
                         break;
                     case TransType.ParentTransaction:
-                        ret = new Models.Domain.ParentTransaction(_crudOrm, _subTransactionsRepository.Value, _rxSchedulerProvider, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
+                        ret = new Models.Domain.ParentTransaction(_crudOrm, _subTransactionsRepository.Value, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
                             ? null
                             : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false), persistenceModel.CheckNumber, await _accountRepository.Value.FindAsync(persistenceModel.Account).ConfigureAwait(false), persistenceModel.Payee is null
                             ? null
                             : await _payeeRepository.Value.FindAsync(persistenceModel.Payee).ConfigureAwait(false), persistenceModel.Memo, persistenceModel.Cleared);
                         break;
                     default:
-                        ret = new Models.Domain.Transaction(_crudOrm, _rxSchedulerProvider, null, DateTime.Today, null, "", null, null, null, "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR", 0L, false);
+                        ret = new Models.Domain.Transaction(_crudOrm, null, DateTime.Today, null, "", null, null, null, "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR", 0L, false);
                         break;
                 }
 

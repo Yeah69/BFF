@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Realm.Models.Persistence;
-using BFF.Persistence.Realm.ORM;
 using BFF.Persistence.Realm.ORM.Interfaces;
+using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
@@ -15,7 +15,6 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public Transfer(
             ICrudOrm<Trans> crudOrm,
-            IRxSchedulerProvider rxSchedulerProvider,
             Trans realmObject,
             DateTime date,
             IFlag flag, 
@@ -24,7 +23,7 @@ namespace BFF.Persistence.Realm.Models.Domain
             IAccount toAccount,
             string memo, 
             long sum,
-            bool cleared) : base(rxSchedulerProvider, date, flag, checkNumber, fromAccount, toAccount, memo, sum, cleared)
+            bool cleared) : base(date, flag, checkNumber, fromAccount, toAccount, memo, sum, cleared)
         {
             _realmObjectWrap = new RealmObjectWrap<Trans>(
                 realmObject,
@@ -52,7 +51,8 @@ namespace BFF.Persistence.Realm.Models.Domain
                         ? null
                         : (ToAccount as Account)?.RealmObject
                           ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
-                ro.Date = new DateTimeOffset(Date, TimeSpan.Zero);
+                ro.Date = new DateTimeOffset(Date.Year, Date.Month, Date.Day, Date.Hour, Date.Minute, Date.Second, Date.Millisecond, TimeSpan.Zero);
+                ro.MonthIndex = ro.Date.ToMonthIndex();
                 ro.CheckNumber = CheckNumber;
                 ro.Flag =
                     Flag is null

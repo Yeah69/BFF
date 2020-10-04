@@ -1,4 +1,3 @@
-using System;
 using Realms;
 
 namespace BFF.Persistence.Realm.Models.Persistence
@@ -8,7 +7,7 @@ namespace BFF.Persistence.Realm.Models.Persistence
         [PrimaryKey]
         public int Id { get; set; }
         public Category Category { get; set; }
-        public DateTimeOffset Month { get; set; }
+        public int MonthIndex { get; set; }
         public long Budget { get; set; }
 
         public override bool Equals(object obj)

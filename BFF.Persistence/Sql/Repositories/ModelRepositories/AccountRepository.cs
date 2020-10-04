@@ -23,7 +23,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 
     internal sealed class SqliteAccountRepository : SqliteObservableRepositoryBase<IAccount, IAccountSql>, ISqliteAccountRepositoryInternal
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<IAccountSql> _crudOrm;
         private readonly Lazy<IAccountOrm> _accountOrm;
         private readonly Lazy<ISqliteTransRepository> _transRepository;
@@ -34,7 +33,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
             Lazy<IAccountOrm> accountOrm,
             Lazy<ISqliteTransRepository> transRepository) : base(rxSchedulerProvider, crudOrm, new AccountComparer())
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _accountOrm = accountOrm;
             _transRepository = transRepository;
@@ -46,7 +44,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
                     _crudOrm,
                     _accountOrm.Value,
                     _transRepository.Value,
-                    _rxSchedulerProvider,
                     persistenceModel.Id,
                     persistenceModel.StartingDate,
                     persistenceModel.Name,

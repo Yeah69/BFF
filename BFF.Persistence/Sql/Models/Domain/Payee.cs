@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
@@ -18,9 +17,8 @@ namespace BFF.Persistence.Sql.Models.Domain
             ICrudOrm<IPayeeSql> crudOrm,
             IMergeOrm mergeOrm,
             ISqlitePayeeRepositoryInternal repository,
-            IRxSchedulerProvider rxSchedulerProvider,
             long id,
-            string name) : base(rxSchedulerProvider, name)
+            string name) : base(name)
         {
             Id = id;
             _crudOrm = crudOrm;

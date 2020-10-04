@@ -15,7 +15,7 @@ using MrMeeseeks.Extensions;
 
 namespace BFF.ViewModel.Managers
 {
-    public interface ICultureManager
+    public interface ICultureManager : IOncePerBackend
     {
         IObservable<CultureMessage> RefreshSignal { get; }
 
@@ -26,7 +26,7 @@ namespace BFF.ViewModel.Managers
         bool ShowLongDate { get; set; }
     }
 
-    internal abstract class CultureManagerBase : ObservableObject, ICultureManager, IOncePerBackend, IDisposable
+    internal abstract class CultureManagerBase : ObservableObject, ICultureManager, IDisposable
     {
         private readonly IBffSettings _bffSettings;
         private readonly ISetupLocalizationFramework _setupLocalizationFramework;

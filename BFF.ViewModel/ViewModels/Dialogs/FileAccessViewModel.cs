@@ -15,7 +15,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         IFileAccessConfiguration GenerateConfiguration();
     }
 
-    internal abstract class FileAccessViewModel : OkCancelDialogViewModel
+    public abstract class FileAccessViewModel : OkCancelDialogViewModel
     {
         private readonly Func<IPasswordProtectedFileAccessViewModel> _passwordProtectedFileAccessViewModelFactory;
         private readonly ICreateFileAccessConfiguration _createFileAccessConfiguration;

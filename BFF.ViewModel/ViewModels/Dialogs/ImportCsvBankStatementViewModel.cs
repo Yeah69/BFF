@@ -14,6 +14,7 @@ using BFF.Model.Models.Utility;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using MuVaViMo;
 using org.mariuszgromada.math.mxparser;
 using Reactive.Bindings;
@@ -217,14 +218,14 @@ namespace BFF.ViewModel.ViewModels.Dialogs
 
                             return createItem( 
                                 (date,
-                                payeeString.IsNullOrWhiteSpace() 
+                                payeeString.IsWhitespace() 
                                     ? null 
                                     : payeeString,
                                 Configuration.Value.ShouldCreateNewPayeeIfNotExisting.Value,
-                                memoString.IsNullOrWhiteSpace()
+                                memoString.IsWhitespace()
                                     ? null 
                                     : memoString,
-                                sumString.IsNullOrWhiteSpace()
+                                sumString.IsWhitespace()
                                     ? (long?) null
                                     : (int)new Expression(sumString).calculate()) );
                         }).ToList();

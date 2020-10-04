@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
@@ -14,8 +13,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public SummaryAccount(
             IAccountOrm accountOrm,
-            IRealmTransRepository transRepository,
-            IRxSchedulerProvider rxSchedulerProvider) : base(rxSchedulerProvider)
+            IRealmTransRepository transRepository)
         {
             _accountOrm = accountOrm;
             _transRepository = transRepository;

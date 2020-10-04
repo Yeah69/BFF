@@ -1,5 +1,4 @@
 ﻿using System;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 
 namespace BFF.Model.Models
@@ -63,7 +62,6 @@ namespace BFF.Model.Models
         }
 
         public Transfer(
-            IRxSchedulerProvider rxSchedulerProvider,
             DateTime date,
             IFlag flag,
             string checkNumber,
@@ -72,7 +70,7 @@ namespace BFF.Model.Models
             string memo,
             long sum,
             bool cleared)
-            : base(rxSchedulerProvider, flag, checkNumber, date, memo, cleared)
+            : base(flag, checkNumber, date, memo, cleared)
         {
             _fromAccount = fromAccount;
             _toAccount = toAccount;

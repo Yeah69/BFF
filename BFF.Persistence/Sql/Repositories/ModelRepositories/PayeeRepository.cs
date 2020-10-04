@@ -23,7 +23,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 
     internal sealed class SqlitePayeeRepository : SqliteObservableRepositoryBase<IPayee, IPayeeSql>, ISqlitePayeeRepositoryInternal
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<IPayeeSql> _crudOrm;
         private readonly Lazy<IMergeOrm> _mergeOrm;
 
@@ -32,7 +31,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
             ICrudOrm<IPayeeSql> crudOrm,
             Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, new PayeeComparer())
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _mergeOrm = mergeOrm;
         }
@@ -43,7 +41,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
                 _crudOrm,
                 _mergeOrm.Value,
                 this,
-                _rxSchedulerProvider,
                 persistenceModel.Id,
                 persistenceModel.Name));
         }

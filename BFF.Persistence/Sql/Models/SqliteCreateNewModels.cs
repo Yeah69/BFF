@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using BFF.Core.Helper;
+using BFF.Model;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.Persistence.Sql.Models.Persistence;
@@ -28,8 +29,9 @@ namespace BFF.Persistence.Sql.Models
         private readonly Lazy<ISqliteIncomeCategoryRepositoryInternal> _incomeCategoryRepository;
         private readonly Lazy<ISqliteFlagRepositoryInternal> _flagRepository;
         private readonly Lazy<IMergeOrm> _mergeOrm;
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ILastSetDate _lastSetDate;
+        private readonly IClearBudgetCache _clearBudgetCache;
+        private readonly IUpdateBudgetCategory _updateBudgetCategory;
 
         public SqliteCreateNewModels(
             Lazy<DapperCrudOrm<ITransSql>> transCrudOrm,
@@ -48,8 +50,9 @@ namespace BFF.Persistence.Sql.Models
             Lazy<ISqliteIncomeCategoryRepositoryInternal> incomeCategoryRepository,
             Lazy<ISqliteFlagRepositoryInternal> flagRepository,
             Lazy<IMergeOrm> mergeOrm,
-            IRxSchedulerProvider rxSchedulerProvider,
-            ILastSetDate lastSetDate)
+            ILastSetDate lastSetDate,
+            IClearBudgetCache clearBudgetCache,
+            IUpdateBudgetCategory updateBudgetCategory)
         {
             _transCrudOrm = transCrudOrm;
             _subTransactionCrudOrm = subTransactionCrudOrm;
@@ -66,8 +69,9 @@ namespace BFF.Persistence.Sql.Models
             _incomeCategoryRepository = incomeCategoryRepository;
             _flagRepository = flagRepository;
             _mergeOrm = mergeOrm;
-            _rxSchedulerProvider = rxSchedulerProvider;
             _lastSetDate = lastSetDate;
+            _clearBudgetCache = clearBudgetCache;
+            _updateBudgetCategory = updateBudgetCategory;
             _budgetEntryCrudOrm = budgetEntryCrudOrm;
         }
 
@@ -75,7 +79,6 @@ namespace BFF.Persistence.Sql.Models
         {
             return new Domain.Transaction(
                 _transCrudOrm.Value, 
-                _rxSchedulerProvider,
                 0L,
                 _lastSetDate.Date,
                 null,
@@ -92,7 +95,6 @@ namespace BFF.Persistence.Sql.Models
         {
             return new Domain.Transfer(
                 _transCrudOrm.Value,
-                _rxSchedulerProvider,
                 0L,
                 _lastSetDate.Date,
                 null,
@@ -109,7 +111,6 @@ namespace BFF.Persistence.Sql.Models
             return new Domain.ParentTransaction(
                 _transCrudOrm.Value,
                 _subTransactionRepository.Value,
-                _rxSchedulerProvider,
                 0L,
                 _lastSetDate.Date,
                 null,
@@ -124,7 +125,6 @@ namespace BFF.Persistence.Sql.Models
         {
             return new Domain.SubTransaction(
                 _subTransactionCrudOrm.Value,
-                _rxSchedulerProvider,
                 0L,
                 null,
                 "",
@@ -137,7 +137,6 @@ namespace BFF.Persistence.Sql.Models
                 _accountCrudOrm.Value,
                 _accountOrm.Value,
                 _transRepository.Value,
-                _rxSchedulerProvider,
                 0L,
                 _lastSetDate.Date,
                 "",
@@ -150,7 +149,6 @@ namespace BFF.Persistence.Sql.Models
                 _payeeCrudOrm.Value,
                 _mergeOrm.Value,
                 _payeeRepository.Value,
-                _rxSchedulerProvider,
                 0L,
                 "");
         }
@@ -161,7 +159,6 @@ namespace BFF.Persistence.Sql.Models
                 _categoryCrudOrm.Value,
                 _mergeOrm.Value,
                 _categoryRepository.Value,
-                _rxSchedulerProvider,
                 0L,
                 "",
                 null);
@@ -173,7 +170,6 @@ namespace BFF.Persistence.Sql.Models
                 _categoryCrudOrm.Value,
                 _mergeOrm.Value,
                 _incomeCategoryRepository.Value,
-                _rxSchedulerProvider,
                 0L,
                 "",
                 0);
@@ -185,7 +181,6 @@ namespace BFF.Persistence.Sql.Models
                 _flagCrudOrm.Value,
                 _mergeOrm.Value,
                 _flagRepository.Value,
-                _rxSchedulerProvider,
                 0L,
                 Color.BlueViolet,
                 "");
@@ -194,8 +189,7 @@ namespace BFF.Persistence.Sql.Models
         public IDbSetting CreateDbSetting()
         {
             return new Domain.DbSetting(
-                _dbSettingCrudOrm.Value,
-                _rxSchedulerProvider);
+                _dbSettingCrudOrm.Value);
         }
 
         public IBudgetEntry CreateBudgetEntry(
@@ -220,7 +214,8 @@ namespace BFF.Persistence.Sql.Models
                 aggregatedBalance,
                 _budgetEntryCrudOrm.Value,
                 _transRepository.Value,
-                _rxSchedulerProvider);
+                _clearBudgetCache,
+                _updateBudgetCategory);
         }
     }
 }

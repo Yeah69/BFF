@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reactive.Linq;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.ViewModel.Extensions;
@@ -9,6 +8,7 @@ using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -66,7 +66,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             _category = _categoryViewModelService.GetViewModel(transaction.Category);
             transaction
-                .ObservePropertyChanges(nameof(transaction.Category))
+                .ObservePropertyChanged(nameof(transaction.Category))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ =>
                 {
@@ -81,7 +81,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .AddTo(CompositeDisposable);
 
             this
-                .ObservePropertyChanges(nameof(Category))
+                .ObservePropertyChanged(nameof(Category))
                 .Subscribe(_ => SumSign = Category is IncomeCategoryViewModel ? Sign.Plus : Sign.Minus)
                 .AddTo(CompositeDisposable);
 
@@ -93,7 +93,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             transaction
-                .ObservePropertyChanges(nameof(transaction.Sum))
+                .ObservePropertyChanged(nameof(transaction.Sum))
                 .Where(_ => transaction.IsInserted)
                 .Subscribe(sum => NotifyRelevantAccountsToRefreshBalance())
                 .AddTo(CompositeDisposable);

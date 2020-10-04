@@ -8,7 +8,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         string Password { get; set; }
     }
 
-    internal class PasswordProtectedFileAccessViewModel : ViewModelBase, IPasswordProtectedFileAccessViewModel
+    public class PasswordProtectedFileAccessViewModel : ViewModelBase, IPasswordProtectedFileAccessViewModel
     {
         private bool _isEncryptionActive = false;
         private string _password = null;

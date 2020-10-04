@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BFF", "BFF\BFF.csproj", "{C3840DDB-2348-4CC6-9D64-442FA4F1C329}"
-	ProjectSection(ProjectDependencies) = postProject
-		{D184DA4A-4A83-4CFD-8210-6B206F93D3B7} = {D184DA4A-4A83-4CFD-8210-6B206F93D3B7}
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.Core", "BFF.Core\BFF.Core.csproj", "{8077914F-0322-42DC-A08D-745C40C90059}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.Persistence", "BFF.Persistence\BFF.Persistence.csproj", "{D184DA4A-4A83-4CFD-8210-6B206F93D3B7}"
@@ -23,14 +18,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Icon", "Icon", "{DE4B0D4B-C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.Persistence.Proxy", "BFF.Persistence.Proxy\BFF.Persistence.Proxy.csproj", "{A7639BC2-2BC1-4F79-92DA-979753DA8842}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MrMeeseeks", "..\MrMeeseeks\MrMeeseeks\MrMeeseeks.csproj", "{3980BC29-589F-492D-B31A-37E1FD34C6F0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.DataVirtualizingCollection", "..\BFF.DataVirtualizingCollection\BFF.DataVirtualizingCollection\BFF.DataVirtualizingCollection.csproj", "{6F721294-17D0-4E48-A45B-E902CEB7D674}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B6FC2D7-CF56-41A7-80DF-29C3710BE169}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BFF", "BFF\BFF.csproj", "{C3840DDB-2348-4CC6-9D64-442FA4F1C329}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,10 +31,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C3840DDB-2348-4CC6-9D64-442FA4F1C329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3840DDB-2348-4CC6-9D64-442FA4F1C329}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3840DDB-2348-4CC6-9D64-442FA4F1C329}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3840DDB-2348-4CC6-9D64-442FA4F1C329}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8077914F-0322-42DC-A08D-745C40C90059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8077914F-0322-42DC-A08D-745C40C90059}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8077914F-0322-42DC-A08D-745C40C90059}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -62,14 +51,10 @@ Global
 		{A7639BC2-2BC1-4F79-92DA-979753DA8842}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7639BC2-2BC1-4F79-92DA-979753DA8842}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7639BC2-2BC1-4F79-92DA-979753DA8842}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3980BC29-589F-492D-B31A-37E1FD34C6F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3980BC29-589F-492D-B31A-37E1FD34C6F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3980BC29-589F-492D-B31A-37E1FD34C6F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3980BC29-589F-492D-B31A-37E1FD34C6F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6F721294-17D0-4E48-A45B-E902CEB7D674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F721294-17D0-4E48-A45B-E902CEB7D674}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6F721294-17D0-4E48-A45B-E902CEB7D674}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F721294-17D0-4E48-A45B-E902CEB7D674}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3840DDB-2348-4CC6-9D64-442FA4F1C329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3840DDB-2348-4CC6-9D64-442FA4F1C329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3840DDB-2348-4CC6-9D64-442FA4F1C329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3840DDB-2348-4CC6-9D64-442FA4F1C329}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

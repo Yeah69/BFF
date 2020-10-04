@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
@@ -9,18 +8,15 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
     internal sealed class SqliteTransferRepository : SqliteRepositoryBase<ITransfer, ITransSql>
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ITransSql> _crudOrm;
         private readonly Lazy<ISqliteAccountRepositoryInternal> _accountRepository;
         private readonly Lazy<ISqliteFlagRepositoryInternal> _flagRepository;
 
         public SqliteTransferRepository(
-            IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ITransSql> crudOrm,
             Lazy<ISqliteAccountRepositoryInternal> accountRepository,
             Lazy<ISqliteFlagRepositoryInternal> flagRepository) : base(crudOrm)
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _accountRepository = accountRepository;
             _flagRepository = flagRepository;
@@ -31,7 +27,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
             return 
                 new Models.Domain.Transfer(
                     _crudOrm,
-                    _rxSchedulerProvider,
                     persistenceModel.Id,
                     persistenceModel.Date,
                     persistenceModel.FlagId is null

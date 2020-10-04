@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
 
@@ -10,8 +9,7 @@ namespace BFF.Persistence.Sql.Models.Domain
         private readonly ICrudOrm<IDbSettingSql> _crudOrm;
 
         public DbSetting(
-            ICrudOrm<IDbSettingSql> crudOrm,
-            IRxSchedulerProvider rxSchedulerProvider) : base(rxSchedulerProvider)
+            ICrudOrm<IDbSettingSql> crudOrm)
         {
             _crudOrm = crudOrm;
         }

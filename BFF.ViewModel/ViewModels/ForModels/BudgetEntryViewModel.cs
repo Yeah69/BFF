@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.ViewModel.Helper;
+using BFF.ViewModel.Managers;
+using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -38,12 +40,16 @@ namespace BFF.ViewModel.ViewModels.ForModels
         ICommand BalanceToZero { get; }
 
         ICommand Zero { get; }
+
+        Task SetBudgetToAverageBudgetOfLastMonths(int monthCount);
+        
+        Task SetBudgetToAverageOutflowOfLastMonths(int monthCount);
     }
 
     internal class BudgetEntryViewModel : DataModelViewModel, IBudgetEntryViewModel
     {
         private readonly IBudgetEntry _budgetEntry;
-        
+
         public long Budget
         {
             get => _budgetEntry.Budget;
@@ -64,34 +70,45 @@ namespace BFF.ViewModel.ViewModels.ForModels
         public ICommand AvgOutflowsLastYear { get; }
         public ICommand BalanceToZero { get; }
         public ICommand Zero { get; }
+        
+        public async Task SetBudgetToAverageBudgetOfLastMonths(int monthCount) => 
+            await _budgetEntry.SetBudgetToAverageBudgetOfLastMonths(monthCount).ConfigureAwait(false);
+
+        public async Task SetBudgetToAverageOutflowOfLastMonths(int monthCount) => 
+            await _budgetEntry.SetBudgetToAverageOutflowOfLastMonths(monthCount).ConfigureAwait(false);
 
         public BudgetEntryViewModel(
+            // parameters
             IBudgetEntry budgetEntry,
-            Lazy<IBudgetOverviewViewModel> budgetOverviewViewModel,
+            
+            // dependencies
+            ICategoryViewModelService categoryViewModelService,
+            IBudgetRefreshes budgetRefreshes,
             Func<Func<Task<IEnumerable<ITransLikeViewModel>>>, ILazyTransLikeViewModels> lazyTransLikeViewModelsFactory, 
             IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
             IRxSchedulerProvider rxSchedulerProvider) : base(budgetEntry, rxSchedulerProvider)
         {
             _budgetEntry = budgetEntry;
+            var category = categoryViewModelService.GetViewModel(budgetEntry.Category);
 
-            var observeBudgetChanges = budgetEntry.ObservePropertyChanges(nameof(IBudgetEntry.Budget));
+            var observeBudgetChanges = budgetEntry.ObservePropertyChanged(nameof(IBudgetEntry.Budget));
             observeBudgetChanges
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Budget)))
                 .AddForDisposalTo(CompositeDisposable);
 
             observeBudgetChanges
-                .Subscribe(async _ => await Task.Factory.StartNew(budgetOverviewViewModel.Value.Refresh))
+                .Subscribe(_ => budgetRefreshes.Refresh(category))
                 .AddForDisposalTo(CompositeDisposable);
 
             budgetEntry
-                .ObservePropertyChanges(nameof(IBudgetEntry.Outflow))
+                .ObservePropertyChanged(nameof(IBudgetEntry.Outflow))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Outflow)))
                 .AddForDisposalTo(CompositeDisposable);
 
             budgetEntry
-                .ObservePropertyChanges(nameof(IBudgetEntry.Balance))
+                .ObservePropertyChanged(nameof(IBudgetEntry.Balance))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Balance)))
                 .AddForDisposalTo(CompositeDisposable);
@@ -106,80 +123,26 @@ namespace BFF.ViewModel.ViewModels.ForModels
                     await budgetEntry.GetAssociatedTransIncludingSubCategoriesAsync(), null))
                 .AddForDisposalTo(CompositeDisposable);
 
-            BudgetLastMonth = new RxRelayCommand(() =>
-                {
-                    // var previousBudgetMonth = budgetOverviewViewModel
-                    //     .Value
-                    //     .GetBudgetMonthViewModel(Month.PreviousMonth())
-                    //     .BudgetEntries
-                    //     .FirstOrDefault(bevm => bevm.Category == Category);
-                    // if (previousBudgetMonth != null)
-                    //     Budget = previousBudgetMonth.Budget;
-                })
+            BudgetLastMonth = new RxRelayCommand(
+                    async () => await SetBudgetToAverageBudgetOfLastMonths(1).ConfigureAwait(false))
                 .AddForDisposalTo(CompositeDisposable);
 
-            OutflowsLastMonth = new RxRelayCommand(() =>
-                {
-                    // var previousBudgetMonth = budgetOverviewViewModel
-                    //     .Value
-                    //     .GetBudgetMonthViewModel(Month.PreviousMonth())
-                    //     .BudgetEntries
-                    //     .FirstOrDefault(bevm => bevm.Category == Category);
-                    // if (previousBudgetMonth != null)
-                    //     Budget = previousBudgetMonth.Outflow * -1;
-                })
+            OutflowsLastMonth = new RxRelayCommand(
+                    async () => await SetBudgetToAverageOutflowOfLastMonths(1).ConfigureAwait(false))
                 .AddForDisposalTo(CompositeDisposable);
 
-            AvgOutflowsLastThreeMonths = new RxRelayCommand(() =>
-                {
-                    // var budgetEntries = new List<IBudgetEntryViewModel>();
-                    // var currentMonth = Month.PreviousMonth();
-                    // for (int i = 0; i < 3; i++)
-                    // {
-                    //     var currentBudget = budgetOverviewViewModel
-                    //         .Value
-                    //         .GetBudgetMonthViewModel(currentMonth);
-                    //     if (currentBudget is null) break;
-                    //     var budgetEntryViewModel = currentBudget.BudgetEntries.SingleOrDefault(bevm => bevm.Category == Category);
-                    //     if(budgetEntryViewModel != null)
-                    //         budgetEntries.Add(budgetEntryViewModel);
-                    //     currentMonth = currentMonth.PreviousMonth();
-                    // }
-                    //
-                    // Budget = budgetEntries.Sum(bevm => bevm.Outflow) / -3L;
-                })
+            AvgOutflowsLastThreeMonths = new RxRelayCommand(
+                    async () => await SetBudgetToAverageOutflowOfLastMonths(3).ConfigureAwait(false))
                 .AddForDisposalTo(CompositeDisposable);
 
-            AvgOutflowsLastYear = new RxRelayCommand(() =>
-            {
-                // var budgetEntries = new List<IBudgetEntryViewModel>();
-                // var currentMonth = Month.PreviousMonth();
-                // for (int i = 0; i < 12; i++)
-                // {
-                //     var currentBudget = budgetOverviewViewModel
-                //         .Value
-                //         .GetBudgetMonthViewModel(currentMonth);
-                //     if (currentBudget is null) break;
-                //     var budgetEntryViewModel = currentBudget.BudgetEntries.SingleOrDefault(bevm => bevm.Category == Category);
-                //     if (budgetEntryViewModel != null)
-                //         budgetEntries.Add(budgetEntryViewModel);
-                //     currentMonth = currentMonth.PreviousMonth();
-                // }
-                //
-                // Budget = budgetEntries.Sum(bevm => bevm.Outflow) / -12L;
-            })
+            AvgOutflowsLastYear = new RxRelayCommand(
+                    async () => await SetBudgetToAverageOutflowOfLastMonths(12).ConfigureAwait(false))
                 .AddForDisposalTo(CompositeDisposable);
 
-            BalanceToZero = new RxRelayCommand(() =>
-            {
-                Budget -= Balance;
-            })
+            BalanceToZero = new RxRelayCommand(() => Budget -= Balance)
                 .AddForDisposalTo(CompositeDisposable);
 
-            Zero = new RxRelayCommand(() =>
-            {
-                Budget = 0;
-            })
+            Zero = new RxRelayCommand(() => Budget = 0)
             .AddForDisposalTo(CompositeDisposable);
         }
     }

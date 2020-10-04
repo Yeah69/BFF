@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
@@ -19,7 +18,7 @@ namespace BFF.ViewModel.ViewModels
 
     internal sealed class BudgetCategoryViewModel : ViewModelBase, IBudgetCategoryViewModel, IDisposable, ITransient
     {
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly IDisposable _disposable;
 
         public BudgetCategoryViewModel(
             // parameter
@@ -30,14 +29,19 @@ namespace BFF.ViewModel.ViewModels
             IBudgetEntryViewModelService budgetEntryViewModelService,
             IRxSchedulerProvider rxSchedulerProvider)
         {
-            BudgetEntries = SlidingWindowBuilder<IBudgetEntryViewModel>
-                .Build(initial.EntryCount, initial.MonthOffset, rxSchedulerProvider.UI, 12)
-                .Preloading()
+            BudgetEntries = SlidingWindowBuilder
+                .Build<IBudgetEntryViewModel>(
+                    initial.EntryCount, 
+                    initial.MonthOffset, 
+                    12,
+                    rxSchedulerProvider.UI,
+                    rxSchedulerProvider.Task)
+                .Preloading((_, __) => BudgetEntryViewModelPlaceholder.Instance)
                 .LeastRecentlyUsed(4)
                 .TaskBasedFetchers(
                     async (page, _) =>
                         (await budgetCategory
-                            .GetBudgetEntriesFor(BudgetOverviewViewModel.IndexToMonth(page).Year)
+                            .GetBudgetEntriesFor(DateTimeExtensions.FromMonthIndex(page).Year)
                             .ConfigureAwait(false))
                         .Select(budgetEntryViewModelService.GetViewModel)
                         .ToArray(),
@@ -46,15 +50,15 @@ namespace BFF.ViewModel.ViewModels
                             (DateTime.MaxValue.Year - DateTime.MinValue.Year - 2) * 12
                             + 12 - DateTime.MinValue.Month - 1 +
                             DateTime.MaxValue.Month))
-                .AsyncIndexAccess((_, __) => BudgetEntryViewModelPlaceholder.Instance, rxSchedulerProvider.Task)
-                .AddForDisposalTo(_compositeDisposable);
+                .AsyncIndexAccess((_, __) => BudgetEntryViewModelPlaceholder.Instance);
+            _disposable = BudgetEntries;
         }
         
         public ISlidingWindow<IBudgetEntryViewModel> BudgetEntries { get; }
 
         public void Dispose()
         {
-            _compositeDisposable.Dispose();
+            _disposable.Dispose();
         }
     }
 }

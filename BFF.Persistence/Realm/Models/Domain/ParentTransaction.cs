@@ -7,6 +7,7 @@ using BFF.Model.Models;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
+using MrMeeseeks.Extensions;
 using Reactive.Bindings.Extensions;
 
 namespace BFF.Persistence.Realm.Models.Domain
@@ -19,7 +20,6 @@ namespace BFF.Persistence.Realm.Models.Domain
         public ParentTransaction(
             ICrudOrm<Trans> crudOrm,
             IRealmSubTransactionRepository subTransactionRepository,
-            IRxSchedulerProvider rxSchedulerProvider,
             Trans realmObject,
             DateTime date, 
             IFlag flag,
@@ -27,7 +27,7 @@ namespace BFF.Persistence.Realm.Models.Domain
             IAccount account, 
             IPayee payee,
             string memo, 
-            bool cleared) : base(rxSchedulerProvider, date, flag, checkNumber, account, payee, memo, cleared)
+            bool cleared) : base(date, flag, checkNumber, account, payee, memo, cleared)
         {
             _realmObjectWrap = new RealmObjectWrap<Trans>(
                 realmObject,
@@ -70,7 +70,8 @@ namespace BFF.Persistence.Realm.Models.Domain
                         ? null
                         : (Account as Account)?.RealmObject
                           ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
-                ro.Date = new DateTimeOffset(Date, TimeSpan.Zero);
+                ro.Date = new DateTimeOffset(Date.Year, Date.Month, Date.Day, Date.Hour, Date.Minute, Date.Second, Date.Millisecond, TimeSpan.Zero);
+                ro.MonthIndex = ro.Date.ToMonthIndex();
                 ro.Payee =
                     Payee is null
                         ? null

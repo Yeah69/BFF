@@ -10,5 +10,12 @@ namespace BFF.Persistence.Realm.ORM.Interfaces
     {
         Task<BudgetBlock> FindAsync(int year);
         Task<IReadOnlyList<(BudgetEntry Entry, BudgetEntryData Data)>> FindAsync(int year, Category category);
+
+        Task<long> GetAverageBudgetOfLastMonths(int currentMonthIndex, Category category, int monthCount);
+        Task<long> GetAverageOutflowOfLastMonths(int currentMonthIndex, Category category, int monthCount);
+        Task SetEmptyBudgetEntriesToAvgBudget(int monthIndex, int monthCount);
+        Task SetEmptyBudgetEntriesToAvgOutflow(int monthIndex, int monthCount);
+        Task SetEmptyBudgetEntriesToBalanceZero(int monthIndex);
+        Task SetAllBudgetEntriesToZero(int monthIndex);
     }
 }

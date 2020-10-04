@@ -20,7 +20,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
 
     
 
-    internal abstract class OkCancelDialogViewModel : DialogViewModel, IOkCancelDialogViewModel
+    public abstract class OkCancelDialogViewModel : DialogViewModel, IOkCancelDialogViewModel
     {
         public OkCancelDialogViewModel()
         {

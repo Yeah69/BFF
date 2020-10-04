@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.Persistence.Sql.Models.Persistence;
@@ -9,14 +8,11 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
     internal sealed class SqliteDbSettingRepository : SqliteRepositoryBase<IDbSetting, IDbSettingSql>, IDbSettingRepository
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<IDbSettingSql> _crudOrm;
 
         public SqliteDbSettingRepository(
-            IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<IDbSettingSql> crudOrm) : base(crudOrm)
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
         }
 
@@ -24,8 +20,7 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
         {
             return Task.FromResult<IDbSetting>(
                 new Models.Domain.DbSetting(
-                    _crudOrm,
-                    _rxSchedulerProvider)
+                    _crudOrm)
                 {
                     CurrencyCultureName = persistenceModel.CurrencyCultureName,
                     DateCultureName = persistenceModel.DateCultureName

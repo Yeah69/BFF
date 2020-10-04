@@ -7,7 +7,6 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models.Utility;
 using BFF.ViewModel.Extensions;
@@ -58,7 +57,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
         {
             bool NewProfileCondition(string name)
             {
-                return !name.IsNullOrWhiteSpace() && profileManager.Profiles.All(p => p.Name != name.Trim());
+                return !name.IsNullOrWhitespace() && profileManager.Profiles.All(p => p.Name != name.Trim());
             }
 
             Name = profile.ToReadOnlyReactivePropertyAsSynchronized(p => p.Name,
@@ -181,7 +180,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
         {
             bool NewProfileCondition(string name)
             {
-                return !name.IsNullOrWhiteSpace() && profileManager.Profiles.All(p => p.Name != name.Trim());
+                return !name.IsWhitespace() && profileManager.Profiles.All(p => p.Name != name.Trim());
             }
 
             bool NotSameCountOrZero(IEnumerable<string> lines, char delimiter)

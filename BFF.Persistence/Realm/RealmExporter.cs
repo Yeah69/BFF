@@ -56,7 +56,8 @@ namespace BFF.Persistence.Realm
                     {
                         Name = accountName,
                         StartingBalance = container.AccountStartingBalances[accountName],
-                        StartingDate = new DateTimeOffset(container.AccountStartingDates[accountName], TimeSpan.Zero)
+                        StartingDate = ToDateTimeOffset(container.AccountStartingDates[accountName]),
+                        StartingMonthIndex = container.AccountStartingDates[accountName].ToMonthIndex()
                     })
                 .ToReadOnlyDictionary();
 
@@ -145,7 +146,8 @@ namespace BFF.Persistence.Realm
                         {
                             Id = realmTransId++,
                             Account = accountDictionary[transactionDto.Account],
-                            Date = new DateTimeOffset(transactionDto.Date, TimeSpan.Zero),
+                            Date = ToDateTimeOffset(transactionDto.Date),
+                            MonthIndex = transactionDto.Date.ToMonthIndex(),
                             Payee = payeeDictionary[transactionDto.Payee],
                             Category = categoryDictionary[transactionDto.Category],
                             Flag = transactionDto.Flag is null ? null : flagDictionary[transactionDto.Flag],
@@ -166,7 +168,8 @@ namespace BFF.Persistence.Realm
                                     Id = realmTransId++,
                                     FromAccount = accountDictionary[transferDto.FromAccount],
                                     ToAccount = accountDictionary[transferDto.ToAccount],
-                                    Date = new DateTimeOffset(transferDto.Date, TimeSpan.Zero),
+                                    Date = ToDateTimeOffset(transferDto.Date),
+                                    MonthIndex = ToDateTimeOffset(transferDto.Date).ToMonthIndex(),
                                     Flag = transferDto.Flag is null ? null : flagDictionary[transferDto.Flag],
                                     CheckNumber = transferDto.CheckNumber,
                                     Memo = transferDto.Memo,
@@ -186,7 +189,8 @@ namespace BFF.Persistence.Realm
                                 {
                                     Id = realmTransId++,
                                     Account = accountDictionary[parentTransactionDto.Account],
-                                    Date = new DateTimeOffset(parentTransactionDto.Date, TimeSpan.Zero),
+                                    Date = ToDateTimeOffset(parentTransactionDto.Date),
+                                    MonthIndex = ToDateTimeOffset(parentTransactionDto.Date).ToMonthIndex(),
                                     Payee = payeeDictionary[parentTransactionDto.Payee],
                                     Flag = parentTransactionDto.Flag is null ? null : flagDictionary[parentTransactionDto.Flag],
                                     CheckNumber = parentTransactionDto.CheckNumber,
@@ -230,7 +234,7 @@ namespace BFF.Persistence.Realm
                         {
                             Id = realmBudgetEntryId++,
                             Category = categoryDictionary[budgetEntryDto.Category],
-                            Month = new DateTimeOffset(budgetEntryDto.Month, TimeSpan.Zero),
+                            MonthIndex = budgetEntryDto.MonthIndex,
                             Budget = budgetEntryDto.Budget
                         })
                     .ToReadOnlyList();
@@ -246,6 +250,17 @@ namespace BFF.Persistence.Realm
                 SubTransactions = subTransactions,
                 BudgetEntries = budgetEntries
             };
+
+            static DateTimeOffset ToDateTimeOffset(DateTime dateTime) =>
+                new DateTimeOffset(
+                    dateTime.Year, 
+                    dateTime.Month, 
+                    dateTime.Day, 
+                    dateTime.Hour, 
+                    dateTime.Minute, 
+                    dateTime.Second, 
+                    dateTime.Millisecond, 
+                    TimeSpan.Zero);
         }
 
         private class RealmExportContainer : IRealmExportContainerData

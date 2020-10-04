@@ -16,7 +16,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 
     internal sealed class RealmCategoryRepository : RealmObservableRepositoryBase<ICategory, Models.Persistence.Category>, IRealmCategoryRepositoryInternal
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<Models.Persistence.Category> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IMergeOrm> _mergeOrm;
@@ -30,7 +29,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             Lazy<ICategoryOrm> categoryOrm) 
             : base(rxSchedulerProvider, crudOrm, realmOperations, new CategoryComparer())
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _realmOperations = realmOperations;
             _mergeOrm = mergeOrm;
@@ -62,7 +60,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                     _crudOrm,
                     _mergeOrm.Value,
                     this,
-                    _rxSchedulerProvider,
                     persistenceModel,
                     persistenceModel.Name,
                     persistenceModel.Parent is null

@@ -1,6 +1,4 @@
-﻿using BFF.Core.Helper;
-
-namespace BFF.Model.Models.Structure
+﻿namespace BFF.Model.Models.Structure
 {
     public interface ITransLike : IDataModel
     {
@@ -23,8 +21,7 @@ namespace BFF.Model.Models.Structure
         }
         
         protected TransLike(
-            IRxSchedulerProvider rxSchedulerProvider,
-            string memo) : base(rxSchedulerProvider)
+            string memo)
         {
             _memo = memo ?? _memo;
         }

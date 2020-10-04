@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Disposables;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using MuVaViMo;
 using Reactive.Bindings;
 
@@ -56,7 +56,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
         IRxRelayCommand DismissSum { get; }
     }
 
-    internal class CsvBankStatementImportItemViewModel : ViewModelBase, ICsvBankStatementImportItemViewModel
+    public class CsvBankStatementImportItemViewModel : ViewModelBase, ICsvBankStatementImportItemViewModel
     {
         private readonly IBffSettings _bffSettings;
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
@@ -91,7 +91,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
                 .AddForDisposalTo(_compositeDisposable);
 
             this
-                .ObservePropertyChanges(nameof(Payee))
+                .ObservePropertyChanged(nameof(Payee))
                 .Subscribe(_ => PayeeExists = payeeService.All.Any(payee => payee.Name == Payee))
                 .AddForDisposalTo(_compositeDisposable);
 

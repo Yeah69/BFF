@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
@@ -24,7 +23,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 
     internal sealed class SqliteTransRepository : SqliteRepositoryBase<ITransBase, ITransSql>, ISqliteTransRepository
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly Lazy<ISqliteAccountRepositoryInternal> _accountRepository;
         private readonly Lazy<ISqliteCategoryBaseRepositoryInternal> _categoryBaseRepository;
         private readonly Lazy<ISqlitePayeeRepositoryInternal> _payeeRepository;
@@ -34,7 +32,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
         private readonly Lazy<ITransOrm> _transOrm;
 
         public SqliteTransRepository(
-            IRxSchedulerProvider rxSchedulerProvider,
             Lazy<ISqliteAccountRepositoryInternal> accountRepository,
             Lazy<ISqliteCategoryBaseRepositoryInternal> categoryBaseRepository,
             Lazy<ISqlitePayeeRepositoryInternal> payeeRepository,
@@ -44,7 +41,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
             Lazy<ITransOrm> transOrm)
             : base(crudOrm)
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _accountRepository = accountRepository;
             _categoryBaseRepository = categoryBaseRepository;
             _payeeRepository = payeeRepository;
@@ -122,7 +118,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
                 case TransType.Transaction:
                     ret = new Models.Domain.Transaction(
                         _crudOrm,
-                        _rxSchedulerProvider,
                         persistenceModel.Id,
                         persistenceModel.Date,
                         persistenceModel.FlagId is null
@@ -143,7 +138,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
                 case TransType.Transfer:
                     ret = new Models.Domain.Transfer(
                         _crudOrm,
-                        _rxSchedulerProvider,
                         persistenceModel.Id,
                         persistenceModel.Date,
                         persistenceModel.FlagId is null
@@ -164,7 +158,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
                     ret = new Models.Domain.ParentTransaction(
                         _crudOrm,
                         _subTransactionsRepository.Value,
-                        _rxSchedulerProvider,
                         persistenceModel.Id,
                         persistenceModel.Date,
                         persistenceModel.FlagId is null
@@ -181,7 +174,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
                 default:
                     ret = new Models.Domain.Transaction(
                             _crudOrm,
-                            _rxSchedulerProvider,
                             -69,
                             DateTime.Today,
                             null,

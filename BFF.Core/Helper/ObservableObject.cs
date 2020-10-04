@@ -13,5 +13,20 @@ namespace BFF.Core.Helper
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        protected void OnPropertyChanged(params string[] propertyNames)
+        {
+            foreach (string propertyName in propertyNames)
+            {
+                OnPropertyChanged(propertyName);
+            }
+        }
+
+        protected void SetIfChangedAndRaise<T>(ref T field, T value,[CallerMemberName] string propertyName = null)
+        {
+            if (ReferenceEquals(field, value)) return;
+            field = value;
+            OnPropertyChanged(propertyName);
+        }
     }
 }

@@ -186,7 +186,7 @@ namespace BFF.Persistence.Import
         {
             _budgetEntries.Add(new BudgetEntryDto
             {
-                Month = month,
+                MonthIndex = month.ToMonthIndex(),
                 Category = category,
                 Budget = budget
             });

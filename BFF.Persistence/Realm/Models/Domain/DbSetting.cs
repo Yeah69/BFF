@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Models.Domain
@@ -10,8 +9,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public DbSetting(
             ICrudOrm<Persistence.DbSetting> crudOrm,
-            IRxSchedulerProvider rxSchedulerProvider,
-            Persistence.DbSetting realmObject) : base(rxSchedulerProvider)
+            Persistence.DbSetting realmObject)
         {
             _realmObjectWrap = new RealmObjectWrap<Persistence.DbSetting>(
                 realmObject,

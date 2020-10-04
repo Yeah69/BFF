@@ -7,7 +7,6 @@ using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
-using BFF.Core.Extensions;
 using BFF.Extensions;
 using MrMeeseeks.Extensions;
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Model.Models;
 using BFF.Model.Models.Structure;
 using BFF.Model.Repositories;
 using BFF.Persistence.Sql.Repositories.ModelRepositories;
@@ -57,6 +56,26 @@ namespace BFF.Persistence.Sql.Models.Domain
                 .SelectMany(Basic.Identity)
                 .OrderBy(tb => tb.Date)
                 .ToList();
+        }
+
+        public override Task EmptyBudgetEntriesToAvgBudget(int monthCount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task EmptyBudgetEntriesToAvgOutflow(int monthCount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task EmptyBudgetEntriesToBalanceZero()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task AllBudgetEntriesToZero()
+        {
+            throw new NotImplementedException();
         }
     }
 }

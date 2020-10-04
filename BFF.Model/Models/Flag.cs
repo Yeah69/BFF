@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 
 namespace BFF.Model.Models
@@ -17,9 +16,8 @@ namespace BFF.Model.Models
         private Color _color;
 
         public Flag(
-            IRxSchedulerProvider rxSchedulerProvider, 
             Color color, 
-            string name) : base(rxSchedulerProvider, name)
+            string name) : base(name)
         {
             _color = color;
         }

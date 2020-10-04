@@ -1,5 +1,4 @@
 ﻿using System;
-using BFF.Core.Helper;
 
 namespace BFF.Model.Models.Structure
 {
@@ -38,7 +37,6 @@ namespace BFF.Model.Models.Structure
         }
 
         protected TransactionBase(
-            IRxSchedulerProvider rxSchedulerProvider,
             IFlag flag,
             string checkNumber,
             DateTime date,
@@ -46,7 +44,7 @@ namespace BFF.Model.Models.Structure
             IPayee payee,
             string memo,
             bool cleared)
-            : base(rxSchedulerProvider, flag, checkNumber, date, memo, cleared)
+            : base(flag, checkNumber, date, memo, cleared)
         {
             _account = account;
             _payee = payee;

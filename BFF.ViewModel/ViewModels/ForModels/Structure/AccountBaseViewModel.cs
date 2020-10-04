@@ -19,6 +19,7 @@ using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using MoreLinq;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -108,18 +109,19 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         void ReplaceNewTrans(ITransLikeViewModel replaced, ITransLikeViewModel replacement);
     }
 
-    internal abstract class AccountBaseViewModel : CommonPropertyViewModel, IVirtualizedRefresh, IAccountBaseViewModel
+    internal abstract class AccountBaseViewModel : CommonPropertyViewModel, IAccountBaseViewModel
     {
+        private readonly IAccount _account;
         private readonly Lazy<IAccountViewModelService> _accountViewModelService;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly Func<ITransLikeViewModelPlaceholder> _placeholderFactory;
+        private readonly IConvertFromTransBaseToTransLikeViewModel _convertFromTransBaseToTransLikeViewModel;
         protected readonly IBffSettings BffSettings;
         private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
         private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
         private readonly Subject<Unit> _refreshBalance = new Subject<Unit>();
         private readonly Subject<Unit> _refreshBalanceUntilNow = new Subject<Unit>();
 
-        private IDataVirtualizingCollection<ITransLikeViewModel> _trans;
 
         /// <summary>
         /// Starting balance of the Account
@@ -129,7 +131,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         /// <summary>
         /// Lazy loaded collection of Trans' belonging to this Account.
         /// </summary>
-        public IDataVirtualizingCollection<ITransLikeViewModel> Trans => _trans ??= CreateDataVirtualizingCollection();
+        public IDataVirtualizingCollection<ITransLikeViewModel> Trans { get; }
 
         public bool TransIsEmpty => ((ICollection)Trans).Count == 0;
 
@@ -237,41 +239,51 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             Lazy<IAccountViewModelService> accountViewModelService,
             IRxSchedulerProvider rxSchedulerProvider,
             Func<ITransLikeViewModelPlaceholder> placeholderFactory,
+            IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
             IBffSettings bffSettings,
             IBackendCultureManager cultureManager,
             ITransDataGridColumnManager transDataGridColumnManager) : base(account, rxSchedulerProvider)
         {
+            _account = account;
             _accountViewModelService = accountViewModelService;
             _rxSchedulerProvider = rxSchedulerProvider;
             _placeholderFactory = placeholderFactory;
+            _convertFromTransBaseToTransLikeViewModel = convertFromTransBaseToTransLikeViewModel;
             BffSettings = bffSettings;
             TransDataGridColumnManager = transDataGridColumnManager;
 
-            _refreshBalance.AddTo(CompositeDisposable);
-            _refreshBalanceUntilNow.AddTo(CompositeDisposable);
+            _refreshBalance.AddForDisposalTo(CompositeDisposable);
+            _refreshBalanceUntilNow.AddForDisposalTo(CompositeDisposable);
+
+            Trans = CreateDataVirtualizingCollection().AddForDisposalTo(CompositeDisposable);
+            Trans.ObservePropertyChanged(nameof(ICollection.Count))
+                .ObserveOn(_rxSchedulerProvider.UI)
+                .Subscribe(_ => OnPropertyChanged(nameof(TransIsEmpty)));
 
             cultureManager.RefreshSignal.Subscribe(message =>
             {
                 switch (message)
                 {
                     case CultureMessage.Refresh:
-                        OnPropertyChanged(nameof(StartingBalance));
-                        OnPropertyChanged(nameof(ClearedBalance));
-                        OnPropertyChanged(nameof(UnclearedBalance));
-                        OnPropertyChanged(nameof(TotalBalance));
-                        OnPropertyChanged(nameof(ClearedBalanceUntilNow));
-                        OnPropertyChanged(nameof(UnclearedBalanceUntilNow));
-                        OnPropertyChanged(nameof(TotalBalanceUntilNow));
+                        OnPropertyChanged(
+                            nameof(StartingBalance),
+                            nameof(ClearedBalance),
+                            nameof(UnclearedBalance),
+                            nameof(TotalBalance),
+                            nameof(ClearedBalanceUntilNow),
+                            nameof(UnclearedBalanceUntilNow),
+                            nameof(TotalBalanceUntilNow));
                         RefreshTransCollection();
                         break;
                     case CultureMessage.RefreshCurrency:
-                        OnPropertyChanged(nameof(StartingBalance));
-                        OnPropertyChanged(nameof(ClearedBalance));
-                        OnPropertyChanged(nameof(UnclearedBalance));
-                        OnPropertyChanged(nameof(TotalBalance));
-                        OnPropertyChanged(nameof(ClearedBalanceUntilNow));
-                        OnPropertyChanged(nameof(UnclearedBalanceUntilNow));
-                        OnPropertyChanged(nameof(TotalBalanceUntilNow));
+                        OnPropertyChanged(
+                            nameof(StartingBalance),
+                            nameof(ClearedBalance),
+                            nameof(UnclearedBalance),
+                            nameof(TotalBalance),
+                            nameof(ClearedBalanceUntilNow),
+                            nameof(UnclearedBalanceUntilNow),
+                            nameof(TotalBalanceUntilNow));
                         RefreshTransCollection();
                         break;
                     case CultureMessage.RefreshDate:
@@ -282,11 +294,11 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                         throw new InvalidEnumArgumentException();
 
                 }
-            }).AddTo(CompositeDisposable);
+            }).AddForDisposalTo(CompositeDisposable);
 
             IsOpen = false;
 
-            _removeRequestSubscriptions.AddTo(CompositeDisposable);
+            _removeRequestSubscriptions.AddForDisposalTo(CompositeDisposable);
             _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
             NewTransList.ObserveAddChanged().Subscribe(t =>
             {
@@ -294,7 +306,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                     .Take(1)
                     .Subscribe(_ => NewTransList.Remove(t))
                     .AddTo(_currentRemoveRequestSubscriptions);
-            }).AddTo(CompositeDisposable);
+            }).AddForDisposalTo(CompositeDisposable);
 
             _refreshBalance
                 .ObserveOn(rxSchedulerProvider.Task)
@@ -307,20 +319,20 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 {
                     ClearedBalance = b[0];
                     UnclearedBalance = b[1];
-                    OnPropertyChanged(nameof(ClearedBalance));
-                    OnPropertyChanged(nameof(UnclearedBalance));
-                    OnPropertyChanged(nameof(TotalBalance));
+                    OnPropertyChanged(
+                        nameof(ClearedBalance),
+                        nameof(UnclearedBalance),
+                        nameof(TotalBalance));
                     if (TargetBalance == TotalBalance && NewTransList.Count == 0)
                     {
                         MissingSum = null;
                         TargetBalance = null;
                         OnPropertyChanged(nameof(MissingSum));
                     }
-                }).AddTo(CompositeDisposable);
+                }).AddForDisposalTo(CompositeDisposable);
 
             _refreshBalanceUntilNow
                 .ObserveOn(rxSchedulerProvider.Task)
-                .Where(_ => IsOpen)
                 .SelectMany(_ => Task.WhenAll(
                     account.GetClearedBalanceUntilNowAsync(),
                     account.GetUnclearedBalanceUntilNowAsync()))
@@ -329,17 +341,17 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 {
                     ClearedBalanceUntilNow = bun[0];
                     UnclearedBalanceUntilNow = bun[1];
-                    OnPropertyChanged(nameof(ClearedBalanceUntilNow));
-                    OnPropertyChanged(nameof(UnclearedBalanceUntilNow));
-                    OnPropertyChanged(nameof(TotalBalanceUntilNow));
-                }).AddTo(CompositeDisposable);
+                    OnPropertyChanged(
+                        nameof(ClearedBalanceUntilNow),
+                        nameof(UnclearedBalanceUntilNow),
+                        nameof(TotalBalanceUntilNow));
+                }).AddForDisposalTo(CompositeDisposable);
             
             EmitOnSumRelatedChanges(NewTransList)
-                .Merge(this.ObservePropertyChanges(nameof(TargetBalance)))
-                .Merge(this.ObservePropertyChanges(nameof(TotalBalance)))
+                .Merge(this.ObservePropertyChanged(nameof(TargetBalance), nameof(TotalBalance)).SelectUnit())
                 .Select(_ => CalculateNewPartOfIntermediateBalance())
                 .Subscribe(DoTargetBalanceSystem)
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             var serialDisposable = new SerialDisposable().AddForDisposalTo(CompositeDisposable);
 
@@ -349,41 +361,28 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 .Subscribe(_ => serialDisposable.Disposable =
                     NewTransList
                         .OfType<ParentTransactionViewModel>()
-                        .Select(ptvm => ptvm.TotalSum.ObservePropertyChanges(nameof(IReactiveProperty<long>.Value)))
+                        .Select(ptvm => ptvm.TotalSum.ObservePropertyChanged(nameof(IReactiveProperty<long>.Value)))
                         .Merge()
                         .Select(__ => CalculateNewPartOfIntermediateBalance())
                         .Subscribe(DoTargetBalanceSystem))
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
             NewTransList
-                .ObservePropertyChanges(nameof(NewTransList.Count))
-                .Merge(TransDataGridColumnManager.ObservePropertyChanges(nameof(TransDataGridColumnManager.NeverShowEditHeaders)))
+                .ObservePropertyChanged(nameof(NewTransList.Count))
+                .Merge(TransDataGridColumnManager.ObservePropertyChanged(nameof(TransDataGridColumnManager.NeverShowEditHeaders)))
                 .Subscribe(_ => ShowEditHeaders = NewTransList.Count > 0 && !TransDataGridColumnManager.NeverShowEditHeaders)
-                .AddTo(CompositeDisposable);
+                .AddForDisposalTo(CompositeDisposable);
 
-            StartTargetingBalance = new RxRelayCommand(() =>
-            {
-                TargetBalance = TotalBalance;
-            });
+            StartTargetingBalance = new RxRelayCommand(() => TargetBalance = TotalBalance);
 
-            AbortTargetingBalance = new RxRelayCommand(() =>
-            {
-                TargetBalance = null;
-            });
+            AbortTargetingBalance = new RxRelayCommand(() => TargetBalance = null);
 
-            Disposable.Create(() =>
-            {
-                _trans?.Dispose();
-            }).AddTo(CompositeDisposable);
-
-            IObservable<Unit> EmitOnSumRelatedChanges(ObservableCollection<ITransLikeViewModel> collection)
-            {
-                return collection
+            static IObservable<Unit> EmitOnSumRelatedChanges(ObservableCollection<ITransLikeViewModel> collection) =>
+                collection
                     .ObserveCollectionChanges().Select(_ => Unit.Default)
                     .Merge(collection
-                    .ObserveElementObservableProperty(st => st.Sum)
-                    .Select(_ => Unit.Default));
-            }
+                        .ObserveElementObservableProperty(st => st.Sum)
+                        .Select(_ => Unit.Default));
 
             void DoTargetBalanceSystem(long? ib)
             {
@@ -396,8 +395,9 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 {
                     MissingSum = null;
                 }
-                OnPropertyChanged(nameof(IntermediateBalance));
-                OnPropertyChanged(nameof(MissingSum));
+                OnPropertyChanged(
+                    nameof(IntermediateBalance),
+                    nameof(MissingSum));
             }
 
         }
@@ -413,25 +413,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
 
         public void RefreshTransCollection()
         {
-            if (IsOpen)
-            {
-                Task.Run(CreateDataVirtualizingCollection)
-                    .ContinueWith(async t =>
-                    {
-                        var temp = _trans;
-                        await (await t).InitializationCompleted;
-                        _trans = await t;
-                        _rxSchedulerProvider.UI.MinimalSchedule(() =>
-                        {
-                            OnPreVirtualizedRefresh();
-                            OnPropertyChanged(nameof(Trans));
-                            OnPropertyChanged(nameof(TransIsEmpty));
-                            OnPostVirtualizedRefresh();
-                            Task.Run(() => temp?.Dispose());
-                        });
-
-                    });
-            }
+            if (IsOpen) Task.Run(() => Trans.Reset());
         }
 
         public void ReplaceNewTrans(ITransLikeViewModel replaced, ITransLikeViewModel replacement)
@@ -466,52 +448,33 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             }
         }
 
-        /// <summary>
-        /// Invoked right before the Trans' are refreshed.
-        /// </summary>
-        public virtual event EventHandler PreVirtualizedRefresh;
-
-        /// <summary>
-        /// Invoked right before the Trans' are refreshed.
-        /// </summary>
-        public void OnPreVirtualizedRefresh()
-        {
-            PreVirtualizedRefresh?.Invoke(this, new EventArgs());
-        }
-
-        /// <summary>
-        /// Invoked right after the Trans' are refreshed.
-        /// </summary>
-        public virtual event EventHandler PostVirtualizedRefresh;
-
-        /// <summary>
-        /// Invoked right after the Trans' are refreshed.
-        /// </summary>
-        public void OnPostVirtualizedRefresh()
-        {
-            PostVirtualizedRefresh?.Invoke(this, new EventArgs());
-        }
-
 
         private IDataVirtualizingCollection<ITransLikeViewModel> CreateDataVirtualizingCollection()
-            => DataVirtualizingCollectionBuilder<ITransLikeViewModel>
-                .Build(pageSize: PageSize)
+            => DataVirtualizingCollectionBuilder
+                .Build<ITransLikeViewModel>(
+                    PageSize, 
+                    _rxSchedulerProvider.UI, 
+                    _rxSchedulerProvider.Task)
                 .NonPreloading()
                 .LeastRecentlyUsed(10, 5)
                 .TaskBasedFetchers(PageFetcher, CountFetcher)
-                .AsyncIndexAccess(
-                    (_, __) => _placeholderFactory(), 
-                    _rxSchedulerProvider.Task, 
-                    _rxSchedulerProvider.UI);
+                .AsyncIndexAccess((_, __) => _placeholderFactory());
 
         private readonly int PageSize = 100;
         private bool _isOpen;
         private long? _targetBalance;
         private bool _showEditHeaders;
 
-        protected abstract Task<ITransLikeViewModel[]> PageFetcher(int offset, int pageSize);
+        private async Task<ITransLikeViewModel[]> PageFetcher (int offset, int pageSize)
+        {
+            var transLikeViewModels = _convertFromTransBaseToTransLikeViewModel
+                .Convert(await _account.GetTransPageAsync(offset, pageSize), this)
+                .ToArray();
+            return transLikeViewModels;
+        }
 
-        protected abstract Task<int> CountFetcher();
+        private async Task<int> CountFetcher() =>
+            (int) await _account.GetTransCountAsync();
 
         protected abstract long? CalculateNewPartOfIntermediateBalance();
     }

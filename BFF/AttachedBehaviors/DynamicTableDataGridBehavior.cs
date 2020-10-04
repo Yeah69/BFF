@@ -7,8 +7,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interactivity;
-using BFF.Core.Extensions;
 using BFF.ViewModel.ViewModels;
+using MrMeeseeks.Reactive.Extensions;
 
 namespace BFF.AttachedBehaviors
 {
@@ -98,7 +98,7 @@ namespace BFF.AttachedBehaviors
             Observable.FromEventPattern<DependencyPropertyChangedEventArgs>(
                 AssociatedObject,
                 nameof(AssociatedObject.DataContextChanged))
-                .ToUnitObservable()
+                .SelectUnit()
                 .Merge(_onTableChanged)
                 .Subscribe(_ =>
                 {

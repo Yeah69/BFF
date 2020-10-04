@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
@@ -13,11 +12,10 @@ namespace BFF.Persistence.Sql.Models.Domain
 
         public SubTransaction(
             ICrudOrm<ISubTransactionSql> crudOrm,
-            IRxSchedulerProvider rxSchedulerProvider,
             long id,
             ICategoryBase category,
             string memo, 
-            long sum) : base(rxSchedulerProvider, category, memo, sum)
+            long sum) : base(category, memo, sum)
         {
             Id = id;
             _crudOrm = crudOrm;

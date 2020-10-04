@@ -2,10 +2,8 @@
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Windows.Input;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
-using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;

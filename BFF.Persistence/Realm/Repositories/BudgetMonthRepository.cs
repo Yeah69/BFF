@@ -6,6 +6,7 @@ using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
+using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Realm.Repositories
 {
@@ -41,20 +42,27 @@ namespace BFF.Persistence.Realm.Repositories
             {
                 var newBudgetMonth =
                     new Models.Domain.BudgetMonth(
-                        _transRepository.Value,
-                        _incomeCategoryRepository.Value,
-                        month: monthBudgetData.Key,
+                        month: DateTimeExtensions.FromMonthIndex(monthBudgetData.Key),
                         budgetData: (monthBudgetData.Value.Budget, monthBudgetData.Value.Outflow, monthBudgetData.Value.Balance),
                         overspentInPreviousMonth: currentOverspentInPreviousMonth,
                         notBudgetedInPreviousMonth: currentNotBudgetedOrOverbudgeted,
                         incomeForThisMonth: budgetBlock.IncomesPerMonth.TryGetValue(monthBudgetData.Key, out var income) ? income : 0L,
                         danglingTransferForThisMonth: budgetBlock.DanglingTransfersPerMonth.TryGetValue(monthBudgetData.Key, out var dangling) ? dangling : 0L,
-                        unassignedTransactionSumForThisMonth: budgetBlock.UnassignedTransactionsPerMonth.TryGetValue(monthBudgetData.Key, out var unassigned) ? unassigned : 0L);
+                        unassignedTransactionSumForThisMonth: budgetBlock.UnassignedTransactionsPerMonth.TryGetValue(monthBudgetData.Key, out var unassigned) ? unassigned : 0L,
+                        _transRepository.Value,
+                        _incomeCategoryRepository.Value,
+                        _budgetOrm.Value);
                 budgetMonths.Add(newBudgetMonth);
                 currentNotBudgetedOrOverbudgeted = newBudgetMonth.AvailableToBudget;
                 currentOverspentInPreviousMonth = monthBudgetData.Value.Overspend;
             }
             return budgetMonths;
+        }
+
+        public async Task<long> GetAvailableToBudgetOfCurrentMonth()
+        {
+            var now = DateTime.Now;
+            return (await this.FindAsync(now.Year).ConfigureAwait(false))[now.Month - 1].AvailableToBudget;
         }
 
         public void Dispose()

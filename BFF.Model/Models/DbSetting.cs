@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 
 namespace BFF.Model.Models
@@ -66,8 +65,7 @@ namespace BFF.Model.Models
             }
         }
 
-        public DbSetting(
-            IRxSchedulerProvider rxSchedulerProvider) : base(rxSchedulerProvider)
+        public DbSetting()
         {
             _currencyCulture = CultureInfo.GetCultureInfo("de-DE");
             _dateCulture = CultureInfo.GetCultureInfo("de-DE");

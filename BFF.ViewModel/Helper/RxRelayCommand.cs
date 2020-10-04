@@ -96,7 +96,7 @@ namespace BFF.ViewModel.Helper
         public void Dispose() => _canExecuteSubscription.Dispose();
     }
 
-    internal sealed class AsyncRxRelayCommand : RxRelayCommand<object>, IRxRelayCommand
+    internal sealed class AsyncRxRelayCommand : AsyncRxRelayCommand<object>, IRxRelayCommand
     {
         private AsyncRxRelayCommand(IObservable<bool> canExecute, bool initialCanExecute = true) : base(canExecute, initialCanExecute)
         {

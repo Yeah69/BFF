@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models;
@@ -28,9 +27,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     /// </summary>
     internal class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel, IOncePerBackend
     {
-        private readonly ISummaryAccount _summaryAccount;
         private readonly Lazy<IAccountViewModelService> _service;
-        private readonly IConvertFromTransBaseToTransLikeViewModel _convertFromTransBaseToTransLikeViewModel;
 
         /// <summary>
         /// Starting balance of the Account
@@ -60,13 +57,12 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 service,
                 rxSchedulerProvider,
                 placeholderFactory,
+                convertFromTransBaseToTransLikeViewModel,
                 bffSettings,
                 cultureManager,
                 transDataGridColumnManager)
         {
-            _summaryAccount = summaryAccount;
             _service = service;
-            _convertFromTransBaseToTransLikeViewModel = convertFromTransBaseToTransLikeViewModel;
 
             if(string.IsNullOrWhiteSpace(bffSettings.OpenAccountTab))
                 IsOpen = true;
@@ -104,20 +100,10 @@ namespace BFF.ViewModel.ViewModels.ForModels
             ImportCsvBankStatement = new RxRelayCommand(() => {}).AddTo(CompositeDisposable);
 
             RefreshStartingBalance();
+            RefreshBalance();
         }
 
         #region ViewModel_Part
-
-        protected override async Task<ITransLikeViewModel[]> PageFetcher (int offset, int pageSize)
-        {
-            var transLikeViewModels = _convertFromTransBaseToTransLikeViewModel
-                .Convert(await _summaryAccount.GetTransPageAsync(offset, pageSize), this)
-                .ToArray();
-            return transLikeViewModels;
-        }
-
-        protected override async Task<int> CountFetcher() =>
-            (int) await _summaryAccount.GetTransCountAsync();
 
         protected override long? CalculateNewPartOfIntermediateBalance()
         {

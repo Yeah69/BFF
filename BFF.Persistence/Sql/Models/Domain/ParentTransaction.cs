@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
@@ -20,7 +19,6 @@ namespace BFF.Persistence.Sql.Models.Domain
         public ParentTransaction(
             ICrudOrm<ITransSql> crudOrm,
             ISqliteSubTransactionRepository subTransactionRepository,
-            IRxSchedulerProvider rxSchedulerProvider, 
             long id,
             DateTime date, 
             IFlag flag,
@@ -28,7 +26,7 @@ namespace BFF.Persistence.Sql.Models.Domain
             IAccount account, 
             IPayee payee,
             string memo, 
-            bool cleared) : base(rxSchedulerProvider, date, flag, checkNumber, account, payee, memo, cleared)
+            bool cleared) : base(date, flag, checkNumber, account, payee, memo, cleared)
         {
             Id = id;
             _crudOrm = crudOrm;

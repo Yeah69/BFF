@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Reactive.Linq;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -38,7 +38,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             _category = _categoryViewModelService.GetViewModel(subTransaction.Category);
             subTransaction
-                .ObservePropertyChanges(nameof(subTransaction.Category))
+                .ObservePropertyChanged(nameof(subTransaction.Category))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ =>
                 {

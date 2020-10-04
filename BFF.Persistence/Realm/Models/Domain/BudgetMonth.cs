@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Model.Models;
 using BFF.Model.Models.Structure;
 using BFF.Model.Repositories;
+using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Utility;
@@ -15,20 +15,34 @@ namespace BFF.Persistence.Realm.Models.Domain
     {
         private readonly IRealmTransRepository _transRepository;
         private readonly IIncomeCategoryRepository _incomeCategoryRepository;
+        private readonly IBudgetOrm _budgetOrm;
 
         public BudgetMonth(
-            IRealmTransRepository transRepository,
-            IIncomeCategoryRepository incomeCategoryRepository,
+            // parameter
             DateTime month, 
             (long Budget, long Outflow, long Balance) budgetData, 
             long overspentInPreviousMonth, 
             long notBudgetedInPreviousMonth, 
             long incomeForThisMonth,
             long danglingTransferForThisMonth,
-            long unassignedTransactionSumForThisMonth) : base(month, budgetData, overspentInPreviousMonth, notBudgetedInPreviousMonth, incomeForThisMonth, danglingTransferForThisMonth, unassignedTransactionSumForThisMonth)
+            long unassignedTransactionSumForThisMonth,
+            
+            // dependencies
+            IRealmTransRepository transRepository,
+            IIncomeCategoryRepository incomeCategoryRepository,
+            IBudgetOrm budgetOrm) 
+            : base(
+                month, 
+                budgetData, 
+                overspentInPreviousMonth, 
+                notBudgetedInPreviousMonth, 
+                incomeForThisMonth, 
+                danglingTransferForThisMonth, 
+                unassignedTransactionSumForThisMonth)
         {
             _transRepository = transRepository;
             _incomeCategoryRepository = incomeCategoryRepository;
+            _budgetOrm = budgetOrm;
         }
 
         public override Task<IEnumerable<ITransBase>> GetAssociatedTransAsync()
@@ -50,5 +64,16 @@ namespace BFF.Persistence.Realm.Models.Domain
                 .OrderBy(tb => tb.Date)
                 .ToList();
         }
+
+        public override Task EmptyBudgetEntriesToAvgBudget(int monthCount) => 
+            _budgetOrm.SetEmptyBudgetEntriesToAvgBudget(this.Month.ToMonthIndex(), monthCount);
+
+        public override Task EmptyBudgetEntriesToAvgOutflow(int monthCount) => 
+            _budgetOrm.SetEmptyBudgetEntriesToAvgOutflow(this.Month.ToMonthIndex(), monthCount);
+
+        public override Task EmptyBudgetEntriesToBalanceZero() => 
+            _budgetOrm.SetEmptyBudgetEntriesToBalanceZero(this.Month.ToMonthIndex());
+        public override Task AllBudgetEntriesToZero() => 
+            _budgetOrm.SetAllBudgetEntriesToZero(this.Month.ToMonthIndex());
     }
 }

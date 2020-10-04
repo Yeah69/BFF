@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
@@ -17,9 +16,8 @@ namespace BFF.Persistence.Realm.Models.Domain
             ICrudOrm<Persistence.Payee> crudOrm,
             IMergeOrm mergeOrm,
             IRealmPayeeRepositoryInternal repository,
-            IRxSchedulerProvider rxSchedulerProvider,
             Persistence.Payee realmObject,
-            string name) : base(rxSchedulerProvider, name)
+            string name) : base(name)
         {
             _realmObjectWrap = new RealmObjectWrap<Persistence.Payee>(
                 realmObject,

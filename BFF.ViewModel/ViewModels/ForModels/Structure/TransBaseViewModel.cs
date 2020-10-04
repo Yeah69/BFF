@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Reactive.Linq;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
+using MrMeeseeks.Reactive.Extensions;
 using MuVaViMo;
 using Reactive.Bindings.Extensions;
 
@@ -101,7 +101,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
 
             _flag = _flagViewModelService.GetViewModel(transBase.Flag);
             transBase
-                .ObservePropertyChanges(nameof(transBase.Flag))
+                .ObservePropertyChanged(nameof(transBase.Flag))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ =>
                 {
@@ -113,13 +113,13 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             RemoveFlag = new RxRelayCommand(() => Flag = null).AddTo(CompositeDisposable);
 
             transBase
-                .ObservePropertyChanges(nameof(transBase.CheckNumber))
+                .ObservePropertyChanged(nameof(transBase.CheckNumber))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(CheckNumber)))
                 .AddTo(CompositeDisposable);
 
             transBase
-                .ObservePropertyChanges(nameof(transBase.Date))
+                .ObservePropertyChanged(nameof(transBase.Date))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ =>
                 {
@@ -129,13 +129,13 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 .AddTo(CompositeDisposable);
 
             transBase
-                .ObservePropertyChanges(nameof(transBase.Date))
+                .ObservePropertyChanged(nameof(transBase.Date))
                 .Where(_ => transBase.IsInserted)
                 .Subscribe(_ => NotifyRelevantAccountsToRefreshTrans())
                 .AddTo(CompositeDisposable);
             
             transBase
-                .ObservePropertyChanges(nameof(transBase.Cleared))
+                .ObservePropertyChanged(nameof(transBase.Cleared))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ =>
                 {

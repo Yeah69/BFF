@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 
 namespace BFF.Model.Models
@@ -91,9 +90,8 @@ namespace BFF.Model.Models
         public ReadOnlyObservableCollection<ICategory> Categories { get; }
 
         public Category(
-            IRxSchedulerProvider rxSchedulerProvider, 
             string name,
-            ICategory parent) : base(rxSchedulerProvider, name)
+            ICategory parent) : base(name)
         {
             _parent = parent;
             Categories = new ReadOnlyObservableCollection<ICategory>(_categories);

@@ -9,6 +9,7 @@ namespace BFF.Persistence.Realm.Models.Persistence
         public string Name { get; set; }
         public long StartingBalance { get; set; }
         public DateTimeOffset StartingDate { get; set; }
+        public int StartingMonthIndex { get; set; }
 
         public override bool Equals(object obj)
         {

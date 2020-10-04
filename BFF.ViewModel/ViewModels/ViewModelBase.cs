@@ -13,7 +13,7 @@ namespace BFF.ViewModel.ViewModels
     {
     }
 
-    internal abstract class ViewModelBase : ObservableObject, IViewModel
+    public abstract class ViewModelBase : ObservableObject, IViewModel
     {
     }
 
@@ -21,7 +21,7 @@ namespace BFF.ViewModel.ViewModels
     {
     }
 
-    internal abstract class NotifyingErrorViewModelBase : ViewModelBase, INotifyingErrorViewModel
+    public abstract class NotifyingErrorViewModelBase : ViewModelBase, INotifyingErrorViewModel
     {
         private readonly IDictionary<string, IEnumerable<string>> _errors = new Dictionary<string, IEnumerable<string>>();
 

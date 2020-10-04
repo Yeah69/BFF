@@ -4,8 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using BFF.DataVirtualizingCollection.DataVirtualizingCollection;
 using BFF.Extensions;
-using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 
@@ -20,7 +20,7 @@ namespace BFF.Views
 
         public static readonly DependencyProperty AccountViewModelProperty = DependencyProperty.Register(
             nameof(AccountViewModel), typeof(IAccountBaseViewModel), typeof(TransDataGrid), 
-            new PropertyMetadata(default(IAccountBaseViewModel), OnAccountViewModelChanged));
+            new PropertyMetadata(default(IAccountBaseViewModel)));
 
         public IAccountBaseViewModel AccountViewModel
         {
@@ -29,12 +29,12 @@ namespace BFF.Views
         }
 
         public static readonly DependencyProperty TransListProperty = DependencyProperty.Register(
-            nameof(TransList), typeof(IEnumerable), typeof(TransDataGrid),
-            new PropertyMetadata(default(IEnumerable)));
+            nameof(TransList), typeof(IDataVirtualizingCollection), typeof(TransDataGrid),
+            new PropertyMetadata(default(IDataVirtualizingCollection)));
 
-        public IEnumerable TransList
+        public IDataVirtualizingCollection TransList
         {
-            get => (IEnumerable) GetValue(TransListProperty);
+            get => (IDataVirtualizingCollection) GetValue(TransListProperty);
             set => SetValue(TransListProperty, value);
         }
 
@@ -207,43 +207,6 @@ namespace BFF.Views
         public TransDataGrid()
         {
             InitializeComponent();
-        }
-
-        private static void OnAccountViewModelChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
-        {
-            IVirtualizedRefresh oldAccount = (IVirtualizedRefresh) args.OldValue;
-            if (oldAccount != null)
-            {
-                oldAccount.PreVirtualizedRefresh -= ((TransDataGrid)sender).PreVirtualizedRefresh;
-                oldAccount.PostVirtualizedRefresh -= ((TransDataGrid)sender).PostVirtualizedRefresh;
-            }
-            IVirtualizedRefresh newAccount = (IVirtualizedRefresh) args.NewValue;
-            if (newAccount != null)
-            {
-                newAccount.PreVirtualizedRefresh += ((TransDataGrid)sender).PreVirtualizedRefresh;
-                newAccount.PostVirtualizedRefresh += ((TransDataGrid)sender).PostVirtualizedRefresh;
-            }
-        }
-
-        private int _previousPosition;
-
-        private void PreVirtualizedRefresh(object sender, EventArgs args)
-        {
-            _previousPosition = TransGrid.SelectedIndex;
-            TransGrid.UnselectAllCells();
-        }
-
-        private void PostVirtualizedRefresh(object sender, EventArgs args)
-        {
-            if(TransGrid.Items.Count > _previousPosition)
-            {
-                if(_previousPosition != -1)
-                {
-                    TransGrid.CurrentItem = TransGrid.Items[_previousPosition];
-                    TransGrid.ScrollIntoView(TransGrid.CurrentItem);
-                }
-                TransGrid.SelectedIndex = _previousPosition;
-            }
         }
 
         private void TransGrid_OnInitialized(object sender, EventArgs e)

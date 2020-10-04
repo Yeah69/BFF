@@ -4,7 +4,6 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.ViewModel.Helper;
@@ -12,6 +11,7 @@ using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MoreLinq;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -47,7 +47,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             _rxSchedulerProvider = rxSchedulerProvider;
 
             flag
-                .ObservePropertyChanges(nameof(flag.Color))
+                .ObservePropertyChanged(nameof(flag.Color))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Color)))
                 .AddForDisposalTo(CompositeDisposable);

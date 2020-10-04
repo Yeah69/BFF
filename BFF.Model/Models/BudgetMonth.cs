@@ -22,6 +22,10 @@ namespace BFF.Model.Models
         long Balance { get; }
         Task<IEnumerable<ITransBase>> GetAssociatedTransAsync();
         Task<IEnumerable<ITransBase>> GetAssociatedTransForIncomeCategoriesAsync();
+        Task EmptyBudgetEntriesToAvgBudget(int monthCount);
+        Task EmptyBudgetEntriesToAvgOutflow(int monthCount);
+        Task EmptyBudgetEntriesToBalanceZero();
+        Task AllBudgetEntriesToZero();
     }
 
     public abstract class BudgetMonth : ObservableObject, IBudgetMonth
@@ -67,5 +71,9 @@ namespace BFF.Model.Models
 
         public abstract Task<IEnumerable<ITransBase>> GetAssociatedTransAsync();
         public abstract Task<IEnumerable<ITransBase>> GetAssociatedTransForIncomeCategoriesAsync();
+        public abstract Task EmptyBudgetEntriesToAvgBudget(int monthCount);
+        public abstract Task EmptyBudgetEntriesToAvgOutflow(int monthCount);
+        public abstract Task EmptyBudgetEntriesToBalanceZero();
+        public abstract Task AllBudgetEntriesToZero();
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Realm.ORM.Interfaces;
 
@@ -13,11 +12,10 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public SubTransaction(
             ICrudOrm<Persistence.SubTransaction> crudOrm,
-            IRxSchedulerProvider rxSchedulerProvider,
             Persistence.SubTransaction realmObject,
             ICategoryBase category,
             string memo, 
-            long sum) : base(rxSchedulerProvider, category, memo, sum)
+            long sum) : base(category, memo, sum)
         {
             _realmObjectWrap = new RealmObjectWrap<Persistence.SubTransaction>(
                 realmObject,

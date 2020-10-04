@@ -1,6 +1,4 @@
-﻿using BFF.Core.Helper;
-
-namespace BFF.Model.Models.Structure
+﻿namespace BFF.Model.Models.Structure
 {
     public interface ICategoryBase : ICommonProperty
     {
@@ -8,9 +6,7 @@ namespace BFF.Model.Models.Structure
 
     public abstract class CategoryBase : CommonProperty, ICategoryBase
     {
-        protected CategoryBase(
-            IRxSchedulerProvider rxSchedulerProvider,
-            string name) : base(rxSchedulerProvider, name)
+        protected CategoryBase(string name) : base(name)
         {
         }
     }

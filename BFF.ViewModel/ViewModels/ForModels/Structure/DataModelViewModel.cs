@@ -3,17 +3,17 @@ using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using Reactive.Bindings.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Structure
 {
-    public interface IDataModelViewModel : INotifyingErrorViewModel, INotifyPropertyChanged
+    public interface IDataModelViewModel : INotifyingErrorViewModel
     {
         Task InsertAsync();
 
@@ -41,7 +41,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             _rxSchedulerProvider = rxSchedulerProvider;
 
             dataModel
-                .ObservePropertyChanges(nameof(IDataModel.IsInserted))
+                .ObservePropertyChanged(nameof(IDataModel.IsInserted))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(IsInserted)))
                 .AddTo(CompositeDisposable);
@@ -55,8 +55,6 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         }
 
         public virtual bool IsInsertable() => _dataModel.IsInserted.Not();
-        
-        protected virtual void OnUpdate() {}
         
         public virtual Task DeleteAsync()
         {

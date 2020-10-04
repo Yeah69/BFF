@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Reactive.Linq;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Structure
 {
@@ -22,7 +22,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         {
             _commonProperty = commonProperty;
             commonProperty
-                .ObservePropertyChanges(nameof(commonProperty.Name))
+                .ObservePropertyChanged(nameof(commonProperty.Name))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Name)))
                 .AddForDisposalTo(CompositeDisposable);

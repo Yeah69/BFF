@@ -22,7 +22,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 
     internal sealed class RealmPayeeRepository : RealmObservableRepositoryBase<IPayee, Models.Persistence.Payee>, IRealmPayeeRepositoryInternal
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<Models.Persistence.Payee> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IMergeOrm> _mergeOrm;
@@ -33,7 +32,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             IRealmOperations realmOperations,
             Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, realmOperations, new PayeeComparer())
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _realmOperations = realmOperations;
             _mergeOrm = mergeOrm;
@@ -49,7 +47,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                     _crudOrm,
                     _mergeOrm.Value,
                     this,
-                    _rxSchedulerProvider,
                     persistenceModel,
                     persistenceModel.Name);
             }

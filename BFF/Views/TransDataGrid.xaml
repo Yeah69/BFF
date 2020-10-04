@@ -41,6 +41,7 @@
                   Grid.Row="0"
                   HorizontalScrollBarVisibility="Disabled"
                   ItemsSource="{Binding TransList, ElementName=Root}"
+                  SelectedIndex="{Binding TransList.SelectedIndex, ElementName=Root}"
                   Loaded="TransGrid_OnInitialized"
                   RowStyle="{StaticResource DefaultRowStyle}"
                   ScrollViewer.IsDeferredScrollingEnabled="True"

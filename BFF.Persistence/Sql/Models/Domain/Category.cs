@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
@@ -20,10 +19,9 @@ namespace BFF.Persistence.Sql.Models.Domain
             ICrudOrm<ICategorySql> crudOrm,
             IMergeOrm mergeOrm,
             ISqliteCategoryRepositoryInternal repository,
-            IRxSchedulerProvider rxSchedulerProvider,
             long id,
             string name, 
-            ICategory parent) : base(rxSchedulerProvider, name, parent)
+            ICategory parent) : base(name, parent)
         {
             Id = id;
             _crudOrm = crudOrm;

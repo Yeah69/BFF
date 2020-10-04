@@ -1,75 +1,80 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
+using BFF.Model;
 using BFF.Persistence.Common;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using MoreLinq.Extensions;
 using MrMeeseeks.Extensions;
-using NLog;
 using Account = BFF.Persistence.Realm.Models.Persistence.Account;
 using BudgetEntry = BFF.Persistence.Realm.Models.Persistence.BudgetEntry;
 using Category = BFF.Persistence.Realm.Models.Persistence.Category;
 
 namespace BFF.Persistence.Realm.ORM
 {
-    internal class RealmBudgetOrm : IBudgetOrm
+    internal class RealmBudgetOrm : IBudgetOrm, IDisposable
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private readonly IRealmOperations _realmOperations;
-        
+        private readonly IClearBudgetCache _clearBudgetCache;
+
         private readonly BudgetDataCache _cache = new BudgetDataCache();
+        
+        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
         public RealmBudgetOrm(
-            IRealmOperations realmOperations)
+            IRealmOperations realmOperations,
+            IObserveClearBudgetCache observeBudgetCache,
+            IClearBudgetCache clearBudgetCache)
         {
             _realmOperations = realmOperations;
+            _clearBudgetCache = clearBudgetCache;
+            observeBudgetCache.Observe.Subscribe(_ => _cache.Clear()).AddForDisposalTo(_compositeDisposable);
+            Disposable.Create(() => _cache.Clear()).AddForDisposalTo(_compositeDisposable);
         }
 
         public Task<BudgetBlock> FindAsync(int year)
         {
-            var currentYear = new DateTimeOffset(year, 1, 1, 0, 0, 0, TimeSpan.Zero);
+            var currentYearMonthIndex = new DateTimeOffset(year, 1, 1, 0, 0, 0, TimeSpan.Zero).ToMonthIndex();
 
-            var monthsOfYear = Enumerable
+            var nextYearMonthIndex = new DateTimeOffset(year + 1, 1, 1, 0, 0, 0, TimeSpan.Zero).ToMonthIndex();
+
+            var monthIndicesOfYear = Enumerable
                 .Range(0, 11)
                 .Scan(
-                    new DateTime(year, 1, 1), 
-                    (dt, _) => dt.NextMonth())
+                    currentYearMonthIndex, 
+                    (prev, _) => prev + 1)
                 .ToArray();
-
-            var nextYear = new DateTimeOffset(year + 1, 1, 1, 0, 0, 0, TimeSpan.Zero);
             return _realmOperations.RunFuncAsync(realm =>
             {
-                var queryStart = DateTime.Now;
                 var categories = realm.All<Category>()
                     .Where(c => !c.IsIncomeRelevant)
                     .ToArray(); 
-                var initialCacheEntriesForCategories = GetInitialCategoryValues(realm, currentYear)
+                var initialCacheEntriesForCategories = GetInitialCategoryValues(realm, currentYearMonthIndex)
                     .ToArray();
 
                 var categoryToInitialBalance = initialCacheEntriesForCategories.ToDictionary(t => t.Category, t => Math.Max(0L, t.Balance));
 
                 var categoryToBudgetEntryLookup = realm.All<BudgetEntry>()
-                    .Where(be => be.Month >= currentYear && be.Month < nextYear)
+                    .Where(be => be.MonthIndex >= currentYearMonthIndex && be.MonthIndex < nextYearMonthIndex)
                     .ToArray()
                     .ToLookup(be => be.Category);
 
                 var categoryToTransactionLookup = realm.All<Trans>()
                     .Where(t => t.TypeIndex == (int) TransType.Transaction 
-                                && t.Date >= currentYear
-                                && t.Date < nextYear
+                                && t.MonthIndex >= currentYearMonthIndex
+                                && t.MonthIndex < nextYearMonthIndex
                                 && t.Category != null)
                     .ToArray()
                     .ToLookup(t => t.Category);
 
                 var categoryToSubTransactionLookup = realm.All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                                && t.Date >= currentYear
-                                && t.Date < nextYear)
+                                && t.MonthIndex >= currentYearMonthIndex
+                                && t.MonthIndex < nextYearMonthIndex)
                     .ToArray()
                     .SelectMany(pt => pt.SubTransactions.ToArray().Select(st => (pt, st)))
                     .ToLookup(t => t.st.Category);
@@ -80,38 +85,38 @@ namespace BFF.Persistence.Realm.ORM
                         var initialBalance = categoryToInitialBalance.TryGetValue(c, out var ib) ? ib : 0L;
                         var budgetEntries = categoryToBudgetEntryLookup.Contains(c) 
                             ? categoryToBudgetEntryLookup[c]
-                                .ToDictionary(be => new DateTime(be.Month.Year, be.Month.Month, 1))
-                            : new Dictionary<DateTime, BudgetEntry>();
+                                .ToDictionary(be => be.MonthIndex)
+                            : new Dictionary<int, BudgetEntry>();
                         var transactionOutflows = categoryToTransactionLookup.Contains(c)
                             ? categoryToTransactionLookup[c]
-                                .GroupBy(t => new DateTime(t.Date.Year, t.Date.Month, 1), t => t.Sum)
+                                .GroupBy(t => t.MonthIndex, t => t.Sum)
                                 .ToDictionary(g => g.Key, g => g.Sum())
-                            : new Dictionary<DateTime, long>();
+                            : new Dictionary<int, long>();
                         var subTransactionOutflows = categoryToSubTransactionLookup.Contains(c)
                             ? categoryToSubTransactionLookup[c]
-                                .GroupBy(t => new DateTime(t.pt.Date.Year, t.pt.Date.Month, 1), t => t.st.Sum)
+                                .GroupBy(t => t.pt.MonthIndex, t => t.st.Sum)
                                 .ToDictionary(g => g.Key, g => g.Sum())
-                            : new Dictionary<DateTime, long>();
+                            : new Dictionary<int, long>();
 
                         var currentBalance = initialBalance;
-                        var list = new List<(DateTime Month, (long Budget, long Outflow, long Balance) Tuple)>();
-                        foreach (var month in monthsOfYear)
+                        var list = new List<(int MonthIndex, (long Budget, long Outflow, long Balance) Tuple)>();
+                        foreach (var monthIndex in monthIndicesOfYear)
                         {
-                            var budgetEntry = budgetEntries.TryGetValue(month, out var be) ? be : null;
-                            var transactionOutflow = transactionOutflows.TryGetValue(month, out var tOut) ? tOut : 0L;
-                            var subTransactionOutflow = subTransactionOutflows.TryGetValue(month, out var stOut) ? stOut : 0L;
+                            var budgetEntry = budgetEntries.TryGetValue(monthIndex, out var be) ? be : null;
+                            var transactionOutflow = transactionOutflows.TryGetValue(monthIndex, out var tOut) ? tOut : 0L;
+                            var subTransactionOutflow = subTransactionOutflows.TryGetValue(monthIndex, out var stOut) ? stOut : 0L;
 
                             var budget = budgetEntry?.Budget ?? 0L;
                             var outflow = transactionOutflow + subTransactionOutflow;
                             var balance = currentBalance + budget + outflow;
 
-                            list.Add((month, (budget, outflow, balance)));
+                            list.Add((monthIndex, (budget, outflow, balance)));
                             currentBalance = Math.Max(0L, balance);
                         }
 
                         return list.ToReadOnlyList();
                     })
-                    .GroupBy(t => t.Month, t => t.Tuple)
+                    .GroupBy(t => t.MonthIndex, t => t.Tuple)
                     .ToDictionary(g => g.Key, g =>
                     {
                         return (
@@ -125,25 +130,25 @@ namespace BFF.Persistence.Realm.ORM
                 var danglingTransfersPerMonth = realm.All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.Transfer
                                 && (t.FromAccount == null && t.ToAccount != null || t.ToAccount == null && t.FromAccount != null)
-                                && t.Date >= currentYear && t.Date < nextYear)
+                                && t.MonthIndex >= currentYearMonthIndex && t.MonthIndex < nextYearMonthIndex)
                     .ToArray()
-                    .Select(t => (Month: new DateTime(t.Date.Year, t.Date.Month, 1),
-                        Sum: t.FromAccount is null ? -1L * t.Sum : t.Sum))
-                    .GroupBy(t => t.Month, t => t.Sum)
+                    .Select(t => (t.MonthIndex, Sum: t.FromAccount is null ? -1L * t.Sum : t.Sum))
+                    .GroupBy(t => t.MonthIndex, t => t.Sum)
                     .ToDictionary(g => g.Key, g => g.Sum());
 
                 var unassignedTransactionsPerMonth = realm.All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.Transaction
                                 && t.Category == null
-                                && t.Date >= currentYear && t.Date < nextYear)
+                                && t.MonthIndex >= currentYearMonthIndex && t.MonthIndex < nextYearMonthIndex)
                     .ToArray()
-                    .Select(t => (Month: new DateTime(t.Date.Year, t.Date.Month, 1), t.Sum))
+                    .Select(t => (t.MonthIndex, t.Sum))
                     .Concat(realm.All<Trans>()
                         .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                                    && t.Date >= currentYear && t.Date < nextYear)
+                                    && t.MonthIndex >= currentYearMonthIndex && t.MonthIndex < nextYearMonthIndex)
                         .ToArray()
-                        .SelectMany(t => t.SubTransactions.Where(st => st.Category == null), (t, st) => (Month: new DateTime(t.Date.Year, t.Date.Month, 1), st.Sum)))
-                    .GroupBy(t => t.Month, t => t.Sum)
+                        .SelectMany(t => t.SubTransactions
+                            .Where(st => st.Category == null), (t, st) => (t.MonthIndex, st.Sum)))
+                    .GroupBy(t => t.MonthIndex, t => t.Sum)
                     .ToDictionary(g => g.Key, g => g.Sum());
 
                 var incomesPerMonth = realm.All<Category>()
@@ -151,56 +156,52 @@ namespace BFF.Persistence.Realm.ORM
                     .ToArray()
                     .SelectMany(c =>
                     {
-                        var offsetCurrentYear = new DateTimeOffset(new DateTime(currentYear.Year, currentYear.Month, 1).OffsetMonthBy(-1 * c.IncomeMonthOffset), TimeSpan.Zero);
-                        var offsetNextYear = new DateTimeOffset(new DateTime(nextYear.Year, nextYear.Month, 1).OffsetMonthBy(-1 * c.IncomeMonthOffset), TimeSpan.Zero);
+                        var offsetCurrentYear = currentYearMonthIndex - c.IncomeMonthOffset;
+                        var offsetNextYear = nextYearMonthIndex - c.IncomeMonthOffset;
                         var transactions = realm.All<Trans>()
                             .Where(t => t.TypeIndex == (int) TransType.Transaction 
                                         && t.Category == c 
-                                        && t.Date >= offsetCurrentYear 
-                                        && t.Date < offsetNextYear)
+                                        && t.MonthIndex >= offsetCurrentYear 
+                                        && t.MonthIndex < offsetNextYear)
                             .ToArray()
-                            .Select(t =>
-                            {
-                                var offsetDate = new DateTime(t.Date.Year, t.Date.Month, 1).OffsetMonthBy(c.IncomeMonthOffset);
-                                return (offsetDate, t.Sum);
-                            });
+                            .Select(t => (offsetMonthIndex: t.MonthIndex + c.IncomeMonthOffset, t.Sum));
                         var subTransactions = realm.All<Trans>()
                             .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                                        && t.Date >= offsetCurrentYear
-                                        && t.Date < offsetNextYear)
+                                        && t.MonthIndex >= offsetCurrentYear
+                                        && t.MonthIndex < offsetNextYear)
                             .ToArray()
                             .SelectMany(t =>
                             {
-                                var offsetDate = new DateTime(t.Date.Year, t.Date.Month, 1).OffsetMonthBy(c.IncomeMonthOffset);
-                                return t.SubTransactions.Where(st => st.Category == c).ToArray().Select(st => (offsetDate, st.Sum));
+                                var offsetDate = t.MonthIndex + c.IncomeMonthOffset;
+                                return t.SubTransactions
+                                    .Where(st => st.Category == c)
+                                    .ToArray()
+                                    .Select(st => (offsetMonthIndex: offsetDate, st.Sum));
                             });
                         return transactions.Concat(subTransactions);
                     })
                     .Concat(realm.All<Account>()
-                        .Where(a => a.StartingDate >= currentYear && a.StartingDate < nextYear)
+                        .Where(a => a.StartingMonthIndex >= currentYearMonthIndex && a.StartingMonthIndex < nextYearMonthIndex)
                         .ToArray()
-                        .Select(a => (offsetDate: new DateTime(a.StartingDate.Year, a.StartingDate.Month, 1), Sum: a.StartingBalance)))
-                    .GroupBy(t => t.offsetDate, t => t.Sum)
+                        .Select(a => (offsetMonthIndex: a.StartingMonthIndex, Sum: a.StartingBalance)))
+                    .GroupBy(t => t.offsetMonthIndex, t => t.Sum)
                     .ToDictionary(g => g.Key, g => g.Sum());
 
                 var initialOverspentInPreviousMonth = initialCacheEntriesForCategories
-                    .Where(t => t.LastMonth.Year == currentYear.Year - 1 && t.LastMonth.Month == 12 && t.Balance < 0)
+                    .Where(t => t.LastMonthIndex == currentYearMonthIndex - 1 && t.Balance < 0)
                     .Sum(t => t.Balance);
 
-                var totalGlobalPotMoney = CalculateGlobalPot(realm, currentYear);
+                var totalGlobalPotMoney = CalculateGlobalPot(realm, currentYearMonthIndex);
 
                 var expensesFromCategoryPots = initialCacheEntriesForCategories.Aggregate(0L,
                     (previous, current) => previous - current.TotalBudget + current.TotalNegativeBalance);
 
-                var initialNotBudgetedOrOverbudgeted =
+                var initialNotBudgetedOrOverBudgeted =
                     totalGlobalPotMoney
                     + expensesFromCategoryPots
                     // Subtract "initialOverspentInPreviousMonth" because it will be used in the budget month and is included in "expensesFromCategoryPots"
                     // hence, it would be accounted two times otherwise
                     - initialOverspentInPreviousMonth;
-
-                var queryDuration = DateTime.Now - queryStart;
-                Logger.Debug($"Budget Query Duration: {queryDuration.ToString()}");
 
                 return new BudgetBlock
                 {
@@ -208,33 +209,33 @@ namespace BFF.Persistence.Realm.ORM
                     IncomesPerMonth = incomesPerMonth,
                     DanglingTransfersPerMonth = danglingTransfersPerMonth,
                     UnassignedTransactionsPerMonth = unassignedTransactionsPerMonth,
-                    InitialNotBudgetedOrOverbudgeted = initialNotBudgetedOrOverbudgeted,
+                    InitialNotBudgetedOrOverbudgeted = initialNotBudgetedOrOverBudgeted,
                     InitialOverspentInPreviousMonth = initialOverspentInPreviousMonth
                 };
             });
 
-            IEnumerable<(Category Category, DateTimeOffset LastMonth, long Balance, long TotalBudget, long TotalNegativeBalance)> GetInitialCategoryValues(
+            IEnumerable<(Category Category, int LastMonthIndex, long Balance, long TotalBudget, long TotalNegativeBalance)> GetInitialCategoryValues(
             Realms.Realm realm,
-            DateTimeOffset untilMonth)
+            int untilMonth)
             {
                 var budgetEntries = realm
                         .All<BudgetEntry>()
-                        .Where(be => be.Month < untilMonth)
+                        .Where(be => be.MonthIndex < untilMonth)
                         .ToList()
-                        .Select(be => (be.Category, Month: new DateTimeOffset(be.Month.Year, be.Month.Month, 1, 0, 0, 0, TimeSpan.Zero), be.Budget))
+                        .Select(be => (be.Category, be.MonthIndex, be.Budget))
                         .ToList();
                 
                 var transactions = realm
                     .All<Trans>()
-                    .Where(t => t.TypeIndex == (int)TransType.Transaction && t.Date < untilMonth)
+                    .Where(t => t.TypeIndex == (int)TransType.Transaction && t.MonthIndex < untilMonth)
                     .ToList()
-                    .Select(t => (t.Category, Month: new DateTimeOffset(t.Date.Year, t.Date.Month, 1, 0, 0, 0, TimeSpan.Zero), t.Sum))
+                    .Select(t => (t.Category, t.MonthIndex, t.Sum))
                     .Concat(realm
                         .All<SubTransaction>()
                         .ToList()
-                        .Where(st => st.Parent.Date < untilMonth)
+                        .Where(st => st.Parent.MonthIndex < untilMonth)
                         .Select(st => (st.Category,
-                            Month: new DateTimeOffset(st.Parent.Date.Year, st.Parent.Date.Month, 1, 0, 0, 0, TimeSpan.Zero),
+                            st.Parent.MonthIndex,
                             st.Sum)))
                     .ToList();
 
@@ -247,11 +248,11 @@ namespace BFF.Persistence.Realm.ORM
                         var (m, balance, totalBudget, totalNegativeBalance) = budgets
                             .FullGroupJoin(
                                 outflows,
-                                b => b.Month,
-                                o => o.Month,
+                                b => b.MonthIndex,
+                                o => o.MonthIndex,
                                 (month, bs, os) => (Month: month, Budget: bs.Select(b => b.Budget).FirstOrDefault(), Outflow: (os.Any() ? os.Select(o => o.Sum).Sum() : 0L)))
                             .OrderBy(t => t.Month)
-                            .Aggregate((Month: DateTimeOffset.MinValue, Balance: 0L, TotalBudget: 0L, TotalNegativeBalance: 0L), (previous, current) =>
+                            .Aggregate((Month: 0, Balance: 0L, TotalBudget: 0L, TotalNegativeBalance: 0L), (previous, current) =>
                             {
                                 var currentBalance = Math.Max(0L, previous.Balance) + current.Budget + current.Outflow;
                                 return (
@@ -266,17 +267,17 @@ namespace BFF.Persistence.Realm.ORM
                     });
             }
 
-            long CalculateGlobalPot(Realms.Realm realm, DateTimeOffset month)
+            long CalculateGlobalPot(Realms.Realm realm, int monthIndex)
             {
                 return realm.All<Account>()
-                    .Where(a => a.StartingDate < month)
+                    .Where(a => a.StartingMonthIndex < monthIndex)
                     .ToList()
                     // Account starting balances
                     .Select(a => a.StartingBalance)
                     // Unassigned Transactions
                     .Concat(realm.All<Trans>()
                         .Where(t => t.TypeIndex == (int)TransType.Transaction
-                                    && t.Date < month
+                                    && t.MonthIndex < monthIndex
                                     && t.Category == null)
                         .ToList()
                         .Select(t => t.Sum))
@@ -284,7 +285,7 @@ namespace BFF.Persistence.Realm.ORM
                     .Concat(realm.All<SubTransaction>()
                         .Where(st => st.Category == null)
                         .ToList()
-                        .Where(st => st.Parent.Date < month)
+                        .Where(st => st.Parent.MonthIndex < monthIndex)
                         .Select(st => st.Sum))
                     // Income Transactions and SubTransactions
                     .Concat(realm.All<Category>()
@@ -293,23 +294,23 @@ namespace BFF.Persistence.Realm.ORM
                         .GroupBy(c => c.IncomeMonthOffset)
                         .SelectMany(g =>
                         {
-                            var offsetMontOffset = month.OffsetMonthBy(-1 * g.Key);
+                            var offsetMontOffset = monthIndex - g.Key;
                             return g.SelectMany(c => c
                                     .Transactions
-                                    .Where(t => t.Date < offsetMontOffset)
+                                    .Where(t => t.MonthIndex < offsetMontOffset)
                                     .ToList()
                                     .Select(t => t.Sum))
                                 .Concat(g.SelectMany(c => c
                                     .SubTransactions
                                     .ToList()
-                                    .Where(st => st.Parent.Date < offsetMontOffset)
+                                    .Where(st => st.Parent.MonthIndex < offsetMontOffset)
                                     .Select(st => st.Sum)));
                         }))
                     // Dangling transfers
                     .Concat(realm
                         .All<Trans>()
                         .Where(t => t.TypeIndex == (int)TransType.Transfer
-                                    && t.Date < month
+                                    && t.MonthIndex < monthIndex
                                     && (t.ToAccount == null && t.FromAccount != null ||
                                      t.FromAccount == null && t.ToAccount != null))
                         .ToList()
@@ -318,7 +319,10 @@ namespace BFF.Persistence.Realm.ORM
             }
         }
 
-        public Task<IReadOnlyList<(BudgetEntry Entry, BudgetEntryData Data)>> FindAsync(int year, Category category)
+        public Task<IReadOnlyList<(BudgetEntry Entry, BudgetEntryData Data)>> FindAsync(int year, Category category) => 
+            _realmOperations.RunFuncAsync(realm => FindAsyncInner(realm, year, category));
+
+        private IReadOnlyList<(BudgetEntry Entry, BudgetEntryData Data)> FindAsyncInner(Realms.Realm realm, int year, Category category)
         {
             var monthsOfYear = Enumerable
                 .Range(0, 11)
@@ -326,40 +330,164 @@ namespace BFF.Persistence.Realm.ORM
                     new DateTimeOffset(year, 1, 1, 0, 0, 0, TimeSpan.Zero), 
                     (dt, _) => dt.NextMonth())
                 .ToArray();
-
-            return _realmOperations.RunFuncAsync(realm =>
+            
+            var list = new List<(BudgetEntry Entry, BudgetEntryData Data)>();
+            foreach (var month in monthsOfYear)
             {
-                var queryStart = DateTime.Now;
+                (BudgetEntry budgetEntry, long budget, long outflow, long balance) = _cache.GetFor(category, month.Year, month.Month, realm);
+                    
+                (long aggregatedBudget, long aggregatedOutflow, long aggregatedBalance) = category
+                    .IterateTreeBreadthFirst(c => c.Categories)
+                    .Select(c => _cache.GetFor(c, month.Year, month.Month, realm))
+                    .Aggregate((0L, 0L, 0L), (prev, cur) => (prev.Item1 + cur.Budget, prev.Item2 + cur.Outflow, prev.Item3 + cur.Balance));
+                    
+                list.Add(
+                    (budgetEntry, 
+                        new BudgetEntryData
+                        {
+                            Month = new DateTime(month.Year, month.Month, month.Day),
+                            Budget = budget,
+                            Outflow = outflow,
+                            Balance = balance,
+                            AggregatedBudget = aggregatedBudget,
+                            AggregatedOutflow = aggregatedOutflow,
+                            AggregatedBalance = aggregatedBalance
+                        }));
+            }
                 
-                var list = new List<(BudgetEntry Entry, BudgetEntryData Data)>();
-                foreach (var month in monthsOfYear)
+            return list.ToReadOnlyList();
+        }
+
+        public Task<long> GetAverageBudgetOfLastMonths(int currentMonthIndex, Category category, int monthCount) => 
+            _realmOperations.RunFuncAsync(realm => 
+                GetAverageBudgetOfLastMonthsInner(realm, currentMonthIndex, category, monthCount));
+
+        private static long GetAverageBudgetOfLastMonthsInner(
+            Realms.Realm realm,
+            int currentMonthIndex, 
+            Category category,
+            int monthCount)
+        {
+            var firstMonthIndex = currentMonthIndex - monthCount;
+
+            return realm.All<BudgetEntry>()
+                .Where(be =>
+                    be.Category == category && be.MonthIndex >= firstMonthIndex && be.MonthIndex < currentMonthIndex)
+                .ToList()
+                .Select(be => be.Budget)
+                .Sum() / monthCount;
+        }
+
+        public Task<long> GetAverageOutflowOfLastMonths(int currentMonthIndex, Category category, int monthCount) => 
+            _realmOperations.RunFuncAsync(realm => 
+                GetAverageOutflowOfLastMonthsInner(realm, currentMonthIndex, category, monthCount));
+
+        private static long GetAverageOutflowOfLastMonthsInner(
+            Realms.Realm realm,
+            int currentMonthIndex,
+            Category category, 
+            int monthCount)
+        {
+            var firstMonthIndex = currentMonthIndex - monthCount;
+
+            var trans = realm.All<Trans>()
+                .Where(t =>
+                    t.Category == category && t.MonthIndex >= firstMonthIndex && t.MonthIndex < currentMonthIndex)
+                .ToList();
+
+            var transSum = trans
+                .Where(t => t.TypeIndex == (int) TransType.Transaction)
+                .Select(t => t.Sum)
+                .Sum();
+
+            var subTransSum = trans
+                .Where(t => t.TypeIndex == (int)TransType.ParentTransaction)
+                .SelectMany(t => t.SubTransactions)
+                .ToList()
+                .Select(st => st.Sum)
+                .Sum();
+
+            return (transSum + subTransSum) / monthCount;
+        }
+
+        public Task SetEmptyBudgetEntriesToAvgBudget(int monthIndex, int monthCount)
+        {
+            return SetEmptyBudgetEntriesToTemplate(monthIndex, Func);
+
+            IEnumerable<(Category, long)> Func(IEnumerable<Category> categories, Realms.Realm realm) => categories
+                .Select(c => (Category: c, Budget: GetAverageBudgetOfLastMonthsInner(realm, monthIndex, c, monthCount)))
+                .Where(t => t.Budget > 0);
+        }
+
+        public Task SetEmptyBudgetEntriesToAvgOutflow(int monthIndex, int monthCount)
+        {
+            return SetEmptyBudgetEntriesToTemplate(monthIndex, Func);
+
+            IEnumerable<(Category, long)> Func(IEnumerable<Category> categories, Realms.Realm realm) => categories
+                .Select(c => (Category: c, Budget: -1 * GetAverageOutflowOfLastMonthsInner(realm, monthIndex, c, monthCount)))
+                .Where(t => t.Budget != 0);
+        }
+
+        public Task SetEmptyBudgetEntriesToBalanceZero(int monthIndex)
+        {
+            DateTime dateTime = DateTimeExtensions.FromMonthIndex(monthIndex);
+            return SetEmptyBudgetEntriesToTemplate(monthIndex, Func);
+
+            IEnumerable<(Category, long)> Func(IEnumerable<Category> categories, Realms.Realm realm) => categories
+                .Select(c =>
                 {
-                    (BudgetEntry budgetEntry, long budget, long outflow, long balance) = _cache.GetFor(category, month.Year, month.Month, realm);
-                    
-                    (long aggregatedBudget, long aggregatedOutflow, long aggregatedBalance) = category
-                        .IterateTreeBreadthFirst(c => c.Categories)
-                        .Select(c => _cache.GetFor(c, month.Year, month.Month, realm))
-                        .Aggregate((0L, 0L, 0L), (prev, cur) => (prev.Item1 + cur.Budget, prev.Item2 + cur.Outflow, prev.Item3 + cur.Balance));
-                    
-                    list.Add(
-                        (budgetEntry, 
-                            new BudgetEntryData
-                            {
-                                Month = new DateTime(month.Year, month.Month, month.Day),
-                                Budget = budget,
-                                Outflow = outflow,
-                                Balance = balance,
-                                AggregatedBudget = aggregatedBudget,
-                                AggregatedOutflow = aggregatedOutflow,
-                                AggregatedBalance = aggregatedBalance
-                            }));
+                    var relevantData = FindAsyncInner(realm, dateTime.Year, c)[dateTime.Month - 1].Data;
+                    return (Category: c, Budget: relevantData.Budget - relevantData.Balance);
+                });
+        }
+
+        private Task SetEmptyBudgetEntriesToTemplate(int monthIndex, Func<IEnumerable<Category>, Realms.Realm, IEnumerable<(Category, long)>> func)
+        {
+            return _realmOperations.RunActionAsync(realm =>
+            {
+                var dbSetting = realm.All<DbSetting>().First();
+                var nextId = dbSetting.NextBudgetEntryId;
+
+                foreach ((Category category, long budget) in func(CategoriesWithEmptyBudgetEntry(realm, monthIndex), realm))
+                {
+                    var ro = new BudgetEntry{ Id = nextId++, Budget = budget, Category = category, MonthIndex = monthIndex};
+                    realm.Write(() => realm.Add(ro));
                 }
 
-                var queryDuration = DateTime.Now - queryStart;
-                Logger.Debug($"Budget Query Duration: {queryDuration.ToString()}");
-                
-                return list.ToReadOnlyList();
+                realm.Write(() =>
+                {
+                    dbSetting.NextBudgetEntryId = nextId;
+                    realm.Add(dbSetting, true);
+                });
+                _clearBudgetCache.Clear();
             });
+            
+            static IReadOnlyList<Category> CategoriesWithEmptyBudgetEntry(Realms.Realm realm, int monthIndex)
+            {
+                var allCategories = realm.All<Category>().ToList();
+
+                var categoriesToExclude = realm
+                    .All<BudgetEntry>()
+                    .Where(be => be.MonthIndex == monthIndex)
+                    .ToList()
+                    .Select(be => be.Category)
+                    .ToList();
+
+                return allCategories.Except(categoriesToExclude).ToList();
+            }
+        }
+
+        public Task SetAllBudgetEntriesToZero(int monthIndex)
+        {
+            return _realmOperations.RunActionAsync(realm =>
+                realm.Write(() =>
+                {
+                    realm.RemoveRange(
+                        realm
+                            .All<BudgetEntry>()
+                            .Where(be => be.MonthIndex == monthIndex));
+                    _clearBudgetCache.Clear();
+                }));
         }
 
         private class BudgetDataCache
@@ -374,38 +502,36 @@ namespace BFF.Persistence.Realm.ORM
                     return data;
                 }
                 
-                var currentYear = new DateTimeOffset(yearNumber, 1, 1, 0, 0, 0, TimeSpan.Zero);
+                var currentYearMonthIndex = new DateTimeOffset(yearNumber, 1, 1, 0, 0, 0, TimeSpan.Zero).ToMonthIndex();
 
-                var monthsOfYear = Enumerable
+                var nextYearMonthIndex = new DateTimeOffset(yearNumber + 1, 1, 1, 0, 0, 0, TimeSpan.Zero).ToMonthIndex();
+
+                var monthIndicesOfYear = Enumerable
                     .Range(0, 11)
-                    .Scan(
-                        new DateTimeOffset(yearNumber, 1, 1, 0, 0, 0, TimeSpan.Zero), 
-                        (dt, _) => dt.NextMonth())
+                    .Scan(currentYearMonthIndex, (index, _) => index + 1)
                     .ToArray();
-
-                var nextYear = new DateTimeOffset(yearNumber + 1, 1, 1, 0, 0, 0, TimeSpan.Zero);
                 
-                var initialCacheEntries = GetInitialValues(realm, category, currentYear);
+                var initialCacheEntries = GetInitialValues(realm, category, currentYearMonthIndex);
 
                 var initialBalance = Math.Max(0L, initialCacheEntries.Balance);
 
                 var budgetEntries = realm.All<BudgetEntry>()
-                    .Where(be => be.Month >= currentYear 
-                                 && be.Month < nextYear
+                    .Where(be => be.MonthIndex >= currentYearMonthIndex 
+                                 && be.MonthIndex < nextYearMonthIndex
                                  && be.Category == category)
-                    .ToDictionary(be => be.Month, be => be);
+                    .ToDictionary(be => be.MonthIndex, be => be);
 
                 var transactions = realm.All<Trans>()
                     .Where(t => t.TypeIndex == (int) TransType.Transaction 
-                                && t.Date >= currentYear
-                                && t.Date < nextYear
+                                && t.MonthIndex >= currentYearMonthIndex
+                                && t.MonthIndex < nextYearMonthIndex
                                 && t.Category == category)
                     .ToArray();
 
                 var subTransactions = realm.All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.ParentTransaction
-                                && t.Date >= currentYear
-                                && t.Date < nextYear)
+                                && t.MonthIndex >= currentYearMonthIndex
+                                && t.MonthIndex < nextYearMonthIndex)
                     .ToArray()
                     .SelectMany(pt => 
                         pt.SubTransactions
@@ -415,22 +541,24 @@ namespace BFF.Persistence.Realm.ORM
                     .ToArray();
 
                 var transactionOutflows = transactions
-                    .GroupBy(t => new DateTimeOffset(t.Date.Year, t.Date.Month, 1, 0, 0, 0, TimeSpan.Zero), t => t.Sum)
+                    .GroupBy(t => t.MonthIndex, t => t.Sum)
                     .ToDictionary(g => g.Key, g => g.Sum());
                 var subTransactionOutflows = subTransactions
-                    .GroupBy(t => new DateTimeOffset(t.pt.Date.Year, t.pt.Date.Month, 1, 0, 0, 0, TimeSpan.Zero), t => t.st.Sum)
+                    .GroupBy(t => t.pt.MonthIndex, t => t.st.Sum)
                     .ToDictionary(g => g.Key, g => g.Sum());
 
                 var currentBalance = initialBalance;
-                foreach (var month in monthsOfYear)
+                foreach (var monthIndex in monthIndicesOfYear)
                 {
-                    var budgetEntry = budgetEntries.TryGetValue(month, out var be) ? be : null;
-                    var transactionOutflow = transactionOutflows.TryGetValue(month, out var tOut) ? tOut : 0L;
-                    var subTransactionOutflow = subTransactionOutflows.TryGetValue(month, out var stOut) ? stOut : 0L;
+                    var budgetEntry = budgetEntries.TryGetValue(monthIndex, out var be) ? be : null;
+                    var transactionOutflow = transactionOutflows.TryGetValue(monthIndex, out var tOut) ? tOut : 0L;
+                    var subTransactionOutflow = subTransactionOutflows.TryGetValue(monthIndex, out var stOut) ? stOut : 0L;
 
                     var budget = budgetEntry?.Budget ?? 0L;
                     var outflow = transactionOutflow + subTransactionOutflow;
                     var balance = currentBalance + budget + outflow;
+
+                    var month = DateTimeOffsetExtensions.FromMonthIndex(monthIndex);
 
                     _cache[(category, month.Year, month.Month)] = (budgetEntry, budget, outflow, balance);
                     currentBalance = Math.Max(0L, balance);
@@ -438,49 +566,53 @@ namespace BFF.Persistence.Realm.ORM
                 
                 return _cache[(category, yearNumber, monthNumber)];
             }
+
+            public void Clear()
+            {
+                _cache.Clear();
+            }
             
-            private (DateTimeOffset LastMonth, long Balance, long TotalBudget, long TotalNegativeBalance) GetInitialValues(
+            private static (int LastMonthIndex, long Balance, long TotalBudget, long TotalNegativeBalance) GetInitialValues(
             Realms.Realm realm,
             Category category,
-            DateTimeOffset untilMonth)
+            int untilMonthIndex)
             {
                 var budgetEntries = realm
                         .All<BudgetEntry>()
-                        .Where(be => be.Month < untilMonth
+                        .Where(be => be.MonthIndex < untilMonthIndex
                             && be.Category == category)
                         .ToList()
-                        .Select(be => (Month: new DateTimeOffset(be.Month.Year, be.Month.Month, 1, 0, 0, 0, TimeSpan.Zero), be.Budget))
+                        .Select(be => (be.MonthIndex, be.Budget))
                         .ToList();
                 
                 var transactions = realm
                     .All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.Transaction 
-                                && t.Date < untilMonth
+                                && t.MonthIndex < untilMonthIndex
                                 && t.Category == category)
                     .ToList()
-                    .Select(t => (Month: new DateTimeOffset(t.Date.Year, t.Date.Month, 1, 0, 0, 0, TimeSpan.Zero), t.Sum))
+                    .Select(t => (t.MonthIndex, t.Sum))
                     .Concat(realm
                         .All<SubTransaction>()
                         .Where(st => st.Category == category)
                         .ToList()
-                        .Where(st => st.Parent.Date < untilMonth)
-                        .Select(st => (
-                            Month: new DateTimeOffset(st.Parent.Date.Year, st.Parent.Date.Month, 1, 0, 0, 0, TimeSpan.Zero),
-                            st.Sum)))
+                        .Where(st => st.Parent.MonthIndex < untilMonthIndex)
+                        .Select(st => (st.Parent.MonthIndex, st.Sum)))
                     .ToList();
                 
                 var (m, balance, totalBudget, totalNegativeBalance) = budgetEntries
                     .FullGroupJoin(
                         transactions,
-                        b => b.Month,
-                        o => o.Month,
-                        (month, bs, os) => (Month: month, Budget: bs.Select(b => b.Budget).FirstOrDefault(), Outflow: os.Any() ? os.Select(o => o.Sum).Sum() : 0L))
-                    .OrderBy(t => t.Month)
-                    .Aggregate((Month: DateTimeOffset.MinValue, Balance: 0L, TotalBudget: 0L, TotalNegativeBalance: 0L), (previous, current) =>
+                        b => b.MonthIndex,
+                        o => o.MonthIndex,
+                        (monthIndex, bs, os) => 
+                            (MonthIndex: monthIndex, Budget: bs.Select(b => b.Budget).FirstOrDefault(), Outflow: os.Any() ? os.Select(o => o.Sum).Sum() : 0L))
+                    .OrderBy(t => t.MonthIndex)
+                    .Aggregate((DateTimeOffset.MinValue.ToMonthIndex(), Balance: 0L, TotalBudget: 0L, TotalNegativeBalance: 0L), (previous, current) =>
                     {
                         var currentBalance = Math.Max(0L, previous.Balance) + current.Budget + current.Outflow;
                         return (
-                            current.Month,
+                            current.MonthIndex,
                             Balance: currentBalance,
                             TotalBudget: previous.TotalBudget + current.Budget,
                             TotalNegativeBalance:
@@ -490,11 +622,19 @@ namespace BFF.Persistence.Realm.ORM
                 return (m, balance, totalBudget, totalNegativeBalance);
             }
         }
+
+        public void Dispose()
+        {
+            _compositeDisposable?.Dispose();
+        }
     }
 
     public struct BudgetBlock
     {
-        internal IDictionary<DateTime, (long Budget, long Outflow, long Balance, long Overspend)> BudgetDataPerMonth
+        /// <summary>
+        /// Key is month index.
+        /// </summary>
+        internal IDictionary<int, (long Budget, long Outflow, long Balance, long Overspend)> BudgetDataPerMonth
         {
             get;
             set;
@@ -504,10 +644,19 @@ namespace BFF.Persistence.Realm.ORM
 
         internal long InitialOverspentInPreviousMonth { get; set; }
 
-        internal IDictionary<DateTime, long> IncomesPerMonth { get; set; }
+        /// <summary>
+        /// Key is month index.
+        /// </summary>
+        internal IDictionary<int, long> IncomesPerMonth { get; set; }
 
-        internal IDictionary<DateTime, long> DanglingTransfersPerMonth { get; set; }
+        /// <summary>
+        /// Key is month index.
+        /// </summary>
+        internal IDictionary<int, long> DanglingTransfersPerMonth { get; set; }
 
-        internal IDictionary<DateTime, long> UnassignedTransactionsPerMonth { get; set; }
+        /// <summary>
+        /// Key is month index.
+        /// </summary>
+        internal IDictionary<int, long> UnassignedTransactionsPerMonth { get; set; }
     }
 }

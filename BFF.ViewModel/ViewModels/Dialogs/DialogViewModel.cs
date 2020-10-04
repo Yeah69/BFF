@@ -9,7 +9,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         IReactiveProperty IsOpen { get; }
     }
 
-    internal abstract class DialogViewModel : ViewModelBase, IDialogViewModel
+    public abstract class DialogViewModel : ViewModelBase, IDialogViewModel
     {
         protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
 

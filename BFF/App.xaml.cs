@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
@@ -6,6 +7,7 @@ using BFF.Views;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using MrMeeseeks;
 using NLog;
 
 namespace BFF
@@ -19,6 +21,8 @@ namespace BFF
 
         public App()
         {
+            Box.PushButton(Task.Delay(TimeSpan.FromMinutes(1)));
+            
             Logger.Trace("Initializing App");
             InitializeComponent();
 

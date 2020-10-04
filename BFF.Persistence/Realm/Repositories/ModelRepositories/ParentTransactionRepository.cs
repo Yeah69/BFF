@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
@@ -9,7 +8,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
     internal sealed class RealmParentTransactionRepository : RealmRepositoryBase<IParentTransaction, Trans>
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<Trans> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IRealmAccountRepositoryInternal> _accountRepository;
@@ -18,7 +16,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         private readonly Lazy<IRealmFlagRepositoryInternal> _flagRepository;
 
         public RealmParentTransactionRepository(
-            IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<Trans> crudOrm,
             IRealmOperations realmOperations,
             Lazy<IRealmAccountRepositoryInternal> accountRepository,
@@ -26,7 +23,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             Lazy<IRealmSubTransactionRepository> subTransactionRepository,
             Lazy<IRealmFlagRepositoryInternal> flagRepository) : base(crudOrm)
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _realmOperations = realmOperations;
             _accountRepository = accountRepository;
@@ -44,7 +40,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                 var parentTransaction = new Models.Domain.ParentTransaction(
                     _crudOrm,
                     _subTransactionRepository.Value,
-                    _rxSchedulerProvider,
                     persistenceModel,
                     persistenceModel.Date.UtcDateTime,
                     persistenceModel.Flag is null

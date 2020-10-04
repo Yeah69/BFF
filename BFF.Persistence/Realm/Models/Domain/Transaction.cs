@@ -6,6 +6,7 @@ using BFF.Model.Models;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
+using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
@@ -15,7 +16,6 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public Transaction(
             ICrudOrm<Trans> crudOrm,
-            IRxSchedulerProvider rxSchedulerProvider,
             Trans realmObject,
             DateTime date,
             IFlag flag,
@@ -27,7 +27,6 @@ namespace BFF.Persistence.Realm.Models.Domain
             long sum, 
             bool cleared) 
             : base(
-                rxSchedulerProvider,
                 date,
                 flag,
                 checkNumber,
@@ -59,7 +58,8 @@ namespace BFF.Persistence.Realm.Models.Domain
                         ? null
                         : (Account as Account)?.RealmObject 
                           ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
-                ro.Date = new DateTimeOffset(Date, TimeSpan.Zero);
+                ro.Date = new DateTimeOffset(Date.Year, Date.Month, Date.Day, Date.Hour, Date.Minute, Date.Second, Date.Millisecond, TimeSpan.Zero);
+                ro.MonthIndex = ro.Date.ToMonthIndex();
                 ro.Payee =
                     Payee is null
                         ? null

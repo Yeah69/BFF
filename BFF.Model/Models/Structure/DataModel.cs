@@ -17,14 +17,6 @@ namespace BFF.Model.Models.Structure
 
     public abstract class DataModel : ObservableObject, IDataModel
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
-
-        protected DataModel(
-            IRxSchedulerProvider rxSchedulerProvider)
-        {
-            _rxSchedulerProvider = rxSchedulerProvider;
-        }
-
         public abstract bool IsInserted { get; }
 
         public abstract Task InsertAsync();
@@ -36,7 +28,6 @@ namespace BFF.Model.Models.Structure
         protected Task UpdateAndNotify([CallerMemberName] string propertyName = "") => 
             Task.Run(UpdateAsync)
                 .ToObservable()
-                .ObserveOn(_rxSchedulerProvider.UI)
                 .Do(_ => OnPropertyChanged(propertyName))
                 .ToTask();
     }

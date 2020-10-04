@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using BFF.Core.IoC;
 
 namespace BFF.Core.Helper
 {

@@ -24,7 +24,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 
     internal sealed class SqliteFlagRepository : SqliteObservableRepositoryBase<IFlag, IFlagSql>, ISqliteFlagRepositoryInternal
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<IFlagSql> _crudOrm;
         private readonly Lazy<IMergeOrm> _mergeOrm;
 
@@ -33,7 +32,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
             ICrudOrm<IFlagSql> crudOrm,
             Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, new FlagComparer())
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _mergeOrm = mergeOrm;
         }
@@ -45,7 +43,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
                     _crudOrm,
                     _mergeOrm.Value,
                     this,
-                    _rxSchedulerProvider,
                     persistenceModel.Id,
                     Color.FromArgb(
                         (byte) (persistenceModel.Color >> 24 & 0xff),

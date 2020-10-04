@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
@@ -9,7 +8,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
     internal sealed class SqliteParentTransactionRepository : SqliteRepositoryBase<IParentTransaction, ITransSql>
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ITransSql> _crudOrm;
         private readonly Lazy<ISqliteAccountRepositoryInternal> _accountRepository;
         private readonly Lazy<ISqlitePayeeRepositoryInternal> _payeeRepository;
@@ -17,14 +15,12 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
         private readonly Lazy<ISqliteFlagRepositoryInternal> _flagRepository;
 
         public SqliteParentTransactionRepository(
-            IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<ITransSql> crudOrm,
             Lazy<ISqliteAccountRepositoryInternal> accountRepository,
             Lazy<ISqlitePayeeRepositoryInternal> payeeRepository,
             Lazy<ISqliteSubTransactionRepository> subTransactionRepository,
             Lazy<ISqliteFlagRepositoryInternal> flagRepository) : base(crudOrm)
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _accountRepository = accountRepository;
             _payeeRepository = payeeRepository;
@@ -37,7 +33,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
             var parentTransaction = new Models.Domain.ParentTransaction(
                 _crudOrm,
                 _subTransactionRepository.Value,
-                _rxSchedulerProvider,
                 persistenceModel.Id,
                 persistenceModel.Date,
                 persistenceModel.FlagId is null

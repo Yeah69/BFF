@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 
 namespace BFF.Model.Models
@@ -17,7 +16,6 @@ namespace BFF.Model.Models
     public abstract class ParentTransaction : TransactionBase, IParentTransaction
     {
         public ParentTransaction(
-            IRxSchedulerProvider rxSchedulerProvider,
             DateTime date,
             IFlag flag,
             string checkNumber,
@@ -25,7 +23,7 @@ namespace BFF.Model.Models
             IPayee payee,
             string memo,
             bool cleared)
-            : base(rxSchedulerProvider, flag, checkNumber, date, account, payee, memo, cleared)
+            : base(flag, checkNumber, date, account, payee, memo, cleared)
         {
         }
 

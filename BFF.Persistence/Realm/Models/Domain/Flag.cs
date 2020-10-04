@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Extensions;
 using BFF.Persistence.Realm.ORM.Interfaces;
@@ -19,10 +18,9 @@ namespace BFF.Persistence.Realm.Models.Domain
             ICrudOrm<Persistence.Flag> crudOrm,
             IMergeOrm mergeOrm,
             IRealmFlagRepositoryInternal repository,
-            IRxSchedulerProvider rxSchedulerProvider,
             Persistence.Flag realmObject,
             Color color, 
-            string name) : base(rxSchedulerProvider, color, name)
+            string name) : base(color, name)
         {
             _realmObjectWrap = new RealmObjectWrap<Persistence.Flag>(
                 realmObject,

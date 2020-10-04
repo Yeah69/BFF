@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
@@ -19,10 +18,9 @@ namespace BFF.Persistence.Realm.Models.Domain
             ICrudOrm<Persistence.Category> crudOrm,
             IMergeOrm mergeOrm,
             IRealmCategoryRepositoryInternal repository,
-            IRxSchedulerProvider rxSchedulerProvider,
             Persistence.Category realmObject,
             string name, 
-            ICategory parent) : base(rxSchedulerProvider, name, parent)
+            ICategory parent) : base(name, parent)
         {
             _realmObjectWrap = new RealmObjectWrap<Persistence.Category>(
                 realmObject,

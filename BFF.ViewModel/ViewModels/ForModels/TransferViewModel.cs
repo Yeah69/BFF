@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.ViewModel.Extensions;
@@ -10,6 +9,7 @@ using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -101,7 +101,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             _fromAccount = _accountViewModelService.GetViewModel(transfer.FromAccount);
             transfer
-                .ObservePropertyChanges(nameof(transfer.FromAccount))
+                .ObservePropertyChanged(nameof(transfer.FromAccount))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ =>
                 {
@@ -117,7 +117,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             _toAccount = _accountViewModelService.GetViewModel(transfer.ToAccount);
             transfer
-                .ObservePropertyChanges(nameof(transfer.ToAccount))
+                .ObservePropertyChanged(nameof(transfer.ToAccount))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ =>
                 {
@@ -135,27 +135,27 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 FromAccount = specificAccount;
 
             transfer
-                .ObservePropertyChanges(nameof(transfer.FromAccount))
+                .ObservePropertyChanged(nameof(transfer.FromAccount))
                 .SkipLast(1)
                 .Where(_ => transfer.IsInserted)
                 .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.FromAccount)))
                 .AddTo(CompositeDisposable);
 
             transfer
-                .ObservePropertyChanges(nameof(transfer.FromAccount))
+                .ObservePropertyChanged(nameof(transfer.FromAccount))
                 .Where(_ => transfer.IsInserted)
                 .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.FromAccount)))
                 .AddTo(CompositeDisposable);
 
             transfer
-                .ObservePropertyChanges(nameof(transfer.ToAccount))
+                .ObservePropertyChanged(nameof(transfer.ToAccount))
                 .SkipLast(1)
                 .Where(_ => transfer.IsInserted)
                 .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.ToAccount)))
                 .AddTo(CompositeDisposable);
 
             transfer
-                .ObservePropertyChanges(nameof(transfer.ToAccount))
+                .ObservePropertyChanged(nameof(transfer.ToAccount))
                 .Where(_ => transfer.IsInserted)
                 .Subscribe(_ => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transfer.ToAccount)))
                 .AddTo(CompositeDisposable);
@@ -168,7 +168,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
 
             transfer
-                .ObservePropertyChanges(nameof(transfer.Sum))
+                .ObservePropertyChanged(nameof(transfer.Sum))
                 .Where(_ => transfer.IsInserted)
                 .Subscribe(sum =>
                 {

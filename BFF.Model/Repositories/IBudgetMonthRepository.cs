@@ -9,5 +9,7 @@ namespace BFF.Model.Repositories
     public interface IBudgetMonthRepository : IDisposable, IOncePerBackend
     {
         Task<IList<IBudgetMonth>> FindAsync(int year);
+
+        Task<long> GetAvailableToBudgetOfCurrentMonth();
     }
 }

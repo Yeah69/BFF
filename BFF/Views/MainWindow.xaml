@@ -41,7 +41,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type controls:HamburgerMenuGlyphItem}">
+                    <DataTemplate x:Key="MenuItemTemplate"
+                                  DataType="{x:Type controls:HamburgerMenuGlyphItem}">
                         <Grid Height="48">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="48" />
@@ -73,9 +74,11 @@
                              Width="400"
                              Header="{lex:Loc MainWindow_Settings}"
                              Position="Right">
-                <StackPanel Margin="10" Orientation="Vertical">
+                <StackPanel Margin="10"
+                            Orientation="Vertical">
                     <Label Content="{lex:LocText Settings_Theme, Suffix=:}" />
-                    <ComboBox Name="ThemeCombo" SelectionChanged="ThemeCombo_SelectionChanged">
+                    <ComboBox Name="ThemeCombo"
+                              SelectionChanged="ThemeCombo_SelectionChanged">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="views:ThemeWrap">
                                 <StackPanel Orientation="Horizontal">
@@ -90,7 +93,8 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <Label Content="{lex:LocText Settings_Accents, Suffix=:}" />
-                    <ComboBox Name="AccentCombo" SelectionChanged="AccentCombo_SelectionChanged">
+                    <ComboBox Name="AccentCombo"
+                              SelectionChanged="AccentCombo_SelectionChanged">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="views:AccentWrap">
                                 <StackPanel Orientation="Horizontal">
@@ -105,7 +109,8 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <Label Content="{lex:LocText Settings_Language, Suffix=:}" />
-                    <ComboBox x:Name="LanguageCombo" SelectedItem="{Binding LanguageCulture, Mode=TwoWay}">
+                    <ComboBox x:Name="LanguageCombo"
+                              SelectedItem="{Binding LanguageCulture, Mode=TwoWay}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="globalization:CultureInfo">
                                 <StackPanel Orientation="Horizontal">
@@ -115,7 +120,9 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Label Content="{lex:LocText Settings_Currency, Suffix=:}" Visibility="{Binding CultureManager, Converter={x:Static helper:Converters.NullToCollapsed}}" />
+                    <Label Content="{lex:LocText Settings_Currency,
+                                                 Suffix=:}"
+                           Visibility="{Binding CultureManager, Converter={x:Static helper:Converters.NullToCollapsed}}" />
                     <ComboBox x:Name="CurrencyCombo"
                               SelectedItem="{Binding CultureManager.CurrencyCulture, Mode=TwoWay}"
                               Style="{StaticResource VirtualisedMetroComboBox}"
@@ -158,7 +165,9 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Label Content="{lex:LocText Settings_Date, Suffix=:}" Visibility="{Binding CultureManager, Converter={x:Static helper:Converters.NullToCollapsed}}" />
+                    <Label Content="{lex:LocText Settings_Date,
+                                                 Suffix=:}"
+                           Visibility="{Binding CultureManager, Converter={x:Static helper:Converters.NullToCollapsed}}" />
                     <ComboBox x:Name="DateCombo"
                               SelectedItem="{Binding CultureManager.DateCulture, Mode=TwoWay}"
                               Style="{StaticResource VirtualisedMetroComboBox}"
@@ -218,7 +227,8 @@
             <controls:Flyout Name="FileFlyout"
                              Header="{lex:Loc MainWindow_File}"
                              Position="Left">
-                <StackPanel Margin="10" Orientation="Vertical">
+                <StackPanel Margin="10"
+                            Orientation="Vertical">
                     <Button Margin="10,5,10,5"
                             Click="Close_FileFlyout"
                             Command="{Binding NewBudgetPlanCommand}"
@@ -244,7 +254,8 @@
                     <ContentControl.Style>
                         <Style TargetType="{x:Type ContentControl}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding OpenParentTransaction.Value, Converter={x:Static helper:Converters.IsNotNull}}" Value="True">
+                                <DataTrigger Binding="{Binding OpenParentTransaction.Value, Converter={x:Static helper:Converters.IsNotNull}}"
+                                             Value="True">
                                     <Setter Property="ContentTemplate">
                                         <Setter.Value>
                                             <DataTemplate>
@@ -263,7 +274,8 @@
             <controls:Flyout x:Name="EditAccountsFlyout"
                              IsModal="True"
                              Position="Right">
-                <ContentControl Margin="10" Visibility="{Binding TopLevelViewModelComposition.EditAccountsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}">
+                <ContentControl Margin="10"
+                                Visibility="{Binding TopLevelViewModelComposition.EditAccountsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}">
                     <views:EditAccountsView DataContext="{Binding TopLevelViewModelComposition.EditAccountsViewModel}" />
                 </ContentControl>
             </controls:Flyout>
@@ -271,7 +283,8 @@
             <controls:Flyout x:Name="EditCategoriesFlyout"
                              IsModal="True"
                              Position="Right">
-                <ContentControl Margin="10" Visibility="{Binding TopLevelViewModelComposition.EditCategoriesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}">
+                <ContentControl Margin="10"
+                                Visibility="{Binding TopLevelViewModelComposition.EditCategoriesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}">
                     <views:EditCategoriesView DataContext="{Binding TopLevelViewModelComposition.EditCategoriesViewModel}" />
                 </ContentControl>
             </controls:Flyout>
@@ -279,7 +292,8 @@
             <controls:Flyout x:Name="EditPayeesFlyout"
                              IsModal="True"
                              Position="Right">
-                <ContentControl Margin="10" Visibility="{Binding TopLevelViewModelComposition.EditPayeesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}">
+                <ContentControl Margin="10"
+                                Visibility="{Binding TopLevelViewModelComposition.EditPayeesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}">
                     <views:EditPayeesView DataContext="{Binding TopLevelViewModelComposition.EditPayeesViewModel}" />
                 </ContentControl>
             </controls:Flyout>
@@ -287,7 +301,8 @@
             <controls:Flyout x:Name="EditFlagsFlyout"
                              IsModal="True"
                              Position="Right">
-                <ContentControl Margin="10" Visibility="{Binding TopLevelViewModelComposition.EditFlagsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}">
+                <ContentControl Margin="10"
+                                Visibility="{Binding TopLevelViewModelComposition.EditFlagsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}">
                     <views:EditFlagsView DataContext="{Binding TopLevelViewModelComposition.EditFlagsViewModel}" />
                 </ContentControl>
             </controls:Flyout>
@@ -296,7 +311,8 @@
 
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands>
-            <Button Click="FileButt_Click" Content="{lex:Loc MainWindow_File}" />
+            <Button Click="FileButt_Click"
+                    Content="{lex:Loc MainWindow_File}" />
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
 
@@ -319,7 +335,8 @@
                                             Height="{StaticResource IconSize}"
                                             Kind="{StaticResource SettingsIcon}" />
             </Button>
-            <Button Content="{lex:Loc MainWindow_About}" Visibility="Collapsed" />
+            <Button Content="{lex:Loc MainWindow_About}"
+                    Visibility="Collapsed" />
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 
@@ -327,11 +344,14 @@
         <ProgressBar DockPanel.Dock="Bottom"
                      IsIndeterminate="True"
                      Visibility="{x:Static bff:App.IsDebug}" />
-        <ContentControl Content="{Binding}" DockPanel.Dock="Top">
+        <ContentControl Content="{Binding}"
+                        DockPanel.Dock="Top">
             <ContentControl.Style>
-                <Style BasedOn="{StaticResource {x:Type ContentControl}}" TargetType="{x:Type ContentControl}">
+                <Style BasedOn="{StaticResource {x:Type ContentControl}}"
+                       TargetType="{x:Type ContentControl}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsEmpty}" Value="True">
+                        <DataTrigger Binding="{Binding IsEmpty}"
+                                     Value="True">
                             <Setter Property="ContentTemplate">
                                 <Setter.Value>
                                     <DataTemplate>
@@ -397,14 +417,15 @@
                                     <hm:HamburgerMenuItem Header="{Binding TopLevelViewModelComposition.AccountTabsViewModel.SummaryAccountViewModel.TotalBalanceUntilNow}"
                                                           HeaderTemplate="{StaticResource AccountsHeaderTemplate}"
                                                           IsSelected="{Binding TopLevelViewModelComposition.AccountTabsViewModel.IsOpen.Value}">
-                                        <views:AccountTabsView HorizontalContentAlignment="Stretch" DataContext="{Binding TopLevelViewModelComposition.AccountTabsViewModel}" />
+                                        <views:AccountTabsView HorizontalContentAlignment="Stretch"
+                                                               DataContext="{Binding TopLevelViewModelComposition.AccountTabsViewModel}" />
                                         <hm:HamburgerMenuItem.Icon>
                                             <Viewbox Margin="10">
                                                 <iconPacks:PackIconOcticons Kind="CreditCard" />
                                             </Viewbox>
                                         </hm:HamburgerMenuItem.Icon>
                                     </hm:HamburgerMenuItem>
-                                    <hm:HamburgerMenuItem Header="{Binding TopLevelViewModelComposition.BudgetOverviewViewModel.CurrentBudgetMonth.AvailableToBudget}"
+                                    <hm:HamburgerMenuItem Header="{Binding TopLevelViewModelComposition.BudgetOverviewViewModel.Table.AvailableToBudgetInCurrentMonth}"
                                                           HeaderTemplate="{StaticResource BudgetHeaderTemplate}"
                                                           IsSelected="{Binding TopLevelViewModelComposition.BudgetOverviewViewModel.IsOpen}">
                                         <views:BudgetOverviewView DataContext="{Binding TopLevelViewModelComposition.BudgetOverviewViewModel}" />

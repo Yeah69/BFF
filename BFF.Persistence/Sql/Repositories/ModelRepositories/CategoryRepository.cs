@@ -17,7 +17,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 
     internal sealed class SqliteCategoryRepository : SqliteObservableRepositoryBase<ICategory, ICategorySql>, ISqliteCategoryRepositoryInternal
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ICategorySql> _crudOrm;
         private readonly Lazy<IMergeOrm> _mergeOrm;
         private readonly Lazy<ICategoryOrm> _categoryOrm;
@@ -29,7 +28,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
             Lazy<ICategoryOrm> categoryOrm) 
             : base(rxSchedulerProvider, crudOrm, new CategoryComparer())
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _mergeOrm = mergeOrm;
             _categoryOrm = categoryOrm;
@@ -57,7 +55,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
                     _crudOrm, 
                     _mergeOrm.Value,
                     this,
-                    _rxSchedulerProvider,
                     persistenceModel.Id,
                     persistenceModel.Name,
                     persistenceModel.ParentId != null ? await FindAsync((long)persistenceModel.ParentId).ConfigureAwait(false) : null);

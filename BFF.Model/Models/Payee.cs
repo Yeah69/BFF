@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 
 namespace BFF.Model.Models
@@ -13,8 +12,7 @@ namespace BFF.Model.Models
     {
 
         public Payee(
-            IRxSchedulerProvider rxSchedulerProvider, 
-            string name) : base(rxSchedulerProvider, name)
+            string name) : base(name)
         {
         }
 

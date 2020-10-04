@@ -23,7 +23,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 
     internal sealed class RealmFlagRepository : RealmObservableRepositoryBase<IFlag, Models.Persistence.Flag>, IRealmFlagRepositoryInternal
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<Models.Persistence.Flag> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IMergeOrm> _mergeOrm;
@@ -34,7 +33,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             IRealmOperations realmOperations,
             Lazy<IMergeOrm> mergeOrm) : base(rxSchedulerProvider, crudOrm, realmOperations, new FlagComparer())
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _realmOperations = realmOperations;
             _mergeOrm = mergeOrm;
@@ -50,7 +48,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                     _crudOrm,
                     _mergeOrm.Value,
                     this,
-                    _rxSchedulerProvider,
                     persistenceModel,
                     Color.FromArgb(
                         (byte)(persistenceModel.Color >> 24 & 0xff),

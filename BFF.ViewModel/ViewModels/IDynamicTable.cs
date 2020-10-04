@@ -2,19 +2,23 @@
 
 namespace BFF.ViewModel.ViewModels
 {
-    public interface ITableRowViewModel<out TRowHeader, out TCell>
+    public interface ITableRowViewModel<TRowHeader, TCell>
     {
         TRowHeader RowHeader { get; }
 
-        IReadOnlyList<TCell> Cells { get; }
+        IList<TCell> Cells { get; }
+
+        void Reset();
     }
 
-    public interface ITableViewModel<out TColumnHeader, out TRowHeader, out TCell>
+    public interface ITableViewModel<TColumnHeader, TRowHeader, TCell>
     {
-        IReadOnlyList<TColumnHeader> ColumnHeaders { get; }
+        IList<TColumnHeader> ColumnHeaders { get; }
 
         IReadOnlyList<ITableRowViewModel<TRowHeader, TCell>> Rows { get; }
 
         int ColumnCount { get; }
+
+        void Reset();
     }
 }

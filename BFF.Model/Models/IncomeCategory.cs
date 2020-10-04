@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 
 namespace BFF.Model.Models
@@ -29,9 +28,8 @@ namespace BFF.Model.Models
         public abstract Task MergeToAsync(IIncomeCategory incomeCategory);
 
         public IncomeCategory( 
-            IRxSchedulerProvider rxSchedulerProvider, 
             string name, 
-            int monthOffset) : base(rxSchedulerProvider, name)
+            int monthOffset) : base(name)
         {
             _monthOffset = monthOffset;
         }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
@@ -17,21 +16,18 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 
     internal sealed class RealmSubTransactionRepository : RealmRepositoryBase<ISubTransaction, Models.Persistence.SubTransaction>, IRealmSubTransactionRepository
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<Models.Persistence.SubTransaction> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<IParentalOrm> _parentalOrm;
         private readonly Lazy<IRealmCategoryBaseRepositoryInternal> _categoryBaseRepository;
 
         public RealmSubTransactionRepository(
-            IRxSchedulerProvider rxSchedulerProvider,
             ICrudOrm<Models.Persistence.SubTransaction> crudOrm,
             IRealmOperations realmOperations,
             Lazy<IParentalOrm> parentalOrm,
             Lazy<IRealmCategoryBaseRepositoryInternal> categoryBaseRepository)
             : base(crudOrm)
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _realmOperations = realmOperations;
             _parentalOrm = parentalOrm;
@@ -50,7 +46,6 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             {
                 return new Models.Domain.SubTransaction(
                     _crudOrm,
-                    _rxSchedulerProvider,
                     persistenceModel,
                     persistenceModel.Category is null
                         ? null

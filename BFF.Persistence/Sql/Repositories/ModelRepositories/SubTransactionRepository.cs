@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Sql.Models.Persistence;
@@ -18,7 +17,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 
     internal sealed class SqliteSubTransactionRepository : SqliteRepositoryBase<ISubTransaction, ISubTransactionSql>, ISqliteSubTransactionRepository
     {
-        private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly ICrudOrm<ISubTransactionSql> _crudOrm;
         private readonly Lazy<IParentalOrm> _parentalOrm;
         private readonly Lazy<ISqliteCategoryBaseRepositoryInternal> _categoryBaseRepository;
@@ -30,7 +28,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
             Lazy<ISqliteCategoryBaseRepositoryInternal> categoryBaseRepository)
             : base(crudOrm)
         {
-            _rxSchedulerProvider = rxSchedulerProvider;
             _crudOrm = crudOrm;
             _parentalOrm = parentalOrm;
             _categoryBaseRepository = categoryBaseRepository;
@@ -44,7 +41,6 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
         {
             return new Models.Domain.SubTransaction(
                 _crudOrm,
-                _rxSchedulerProvider,
                 persistenceModel.Id,
                 persistenceModel.CategoryId is null
                     ? null

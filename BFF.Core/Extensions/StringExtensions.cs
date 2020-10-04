@@ -8,11 +8,6 @@ namespace BFF.Core.Extensions
 {
     public static class StringExtensions
     {
-
-        public static bool IsNullOrWhiteSpace(this string @this) => String.IsNullOrWhiteSpace(@this);
-
-        public static bool IsNullOrEmpty(this string @this) => String.IsNullOrEmpty(@this);
-
         private static readonly Regex MatchAllIllegalFilePathCharacters = new Regex(
             $"[{Regex.Escape(new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars()))}]");
 

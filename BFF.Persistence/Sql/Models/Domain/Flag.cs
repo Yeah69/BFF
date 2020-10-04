@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
@@ -19,10 +18,9 @@ namespace BFF.Persistence.Sql.Models.Domain
             ICrudOrm<IFlagSql> crudOrm,
             IMergeOrm mergeOrm,
             ISqliteFlagRepositoryInternal repository,
-            IRxSchedulerProvider rxSchedulerProvider,
             long id,
             Color color, 
-            string name) : base(rxSchedulerProvider, color, name)
+            string name) : base(color, name)
         {
             Id = id;
             _crudOrm = crudOrm;

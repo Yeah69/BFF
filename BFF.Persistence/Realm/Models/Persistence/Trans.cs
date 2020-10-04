@@ -14,6 +14,7 @@ namespace BFF.Persistence.Realm.Models.Persistence
         public Payee Payee { get; set; }
         public Category Category { get; set; }
         public DateTimeOffset Date { get; set; }
+        public int MonthIndex { get; set; }
         public string Memo { get; set; }
         public long Sum { get; set; }
         public bool Cleared { get; set; }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
@@ -19,11 +18,10 @@ namespace BFF.Persistence.Sql.Models.Domain
             ICrudOrm<IAccountSql> crudOrm,
             IAccountOrm accountOrm,
             ISqliteTransRepository transRepository,
-            IRxSchedulerProvider rxSchedulerProvider,
             long id,
             DateTime startingDate, 
             string name, 
-            long startingBalance) : base(rxSchedulerProvider, startingDate, name, startingBalance)
+            long startingBalance) : base(startingDate, name, startingBalance)
         {
             Id = id;
             _crudOrm = crudOrm;

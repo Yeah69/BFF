@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace BFF.ViewModel.ViewModels.Import
 {
-    internal class Ynab4CsvImportViewModel : ViewModelBase, IImportViewModel
+    public class Ynab4CsvImportViewModel : ViewModelBase, IImportViewModel
     {
         private readonly Func<(string TransactionPath, string BudgetPath), IYnab4CsvImportConfiguration> _importingConfigurationFactory;
 

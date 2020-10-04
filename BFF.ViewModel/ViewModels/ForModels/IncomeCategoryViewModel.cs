@@ -4,13 +4,13 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using MoreLinq;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -61,7 +61,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             _rxSchedulerProvider = rxSchedulerProvider;
 
             category
-                .ObservePropertyChanges(nameof(category.MonthOffset))
+                .ObservePropertyChanged(nameof(category.MonthOffset))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(MonthOffset)))
                 .AddForDisposalTo(CompositeDisposable);

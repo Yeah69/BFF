@@ -14,7 +14,6 @@ namespace BFF.Persistence.Sql.Models.Domain
 
         public Transaction(
             ICrudOrm<ITransSql> crudOrm,
-            IRxSchedulerProvider rxSchedulerProvider,
             long id,
             DateTime date,
             IFlag flag,
@@ -24,7 +23,7 @@ namespace BFF.Persistence.Sql.Models.Domain
             ICategoryBase category, 
             string memo, 
             long sum, 
-            bool cleared) : base(rxSchedulerProvider, date, flag, checkNumber, account, payee, category, memo, sum, cleared)
+            bool cleared) : base(date, flag, checkNumber, account, payee, category, memo, sum, cleared)
         {
             Id = id;
             _crudOrm = crudOrm;

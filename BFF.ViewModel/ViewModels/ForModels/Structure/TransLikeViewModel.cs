@@ -2,11 +2,11 @@
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models.Structure;
 using BFF.ViewModel.Helper;
+using MrMeeseeks.Reactive.Extensions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -85,7 +85,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             _removeRequestSubject.AddTo(CompositeDisposable);
 
             transLike
-                .ObservePropertyChanges(nameof(transLike.Memo))
+                .ObservePropertyChanged(nameof(transLike.Memo))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Memo)))
                 .AddTo(CompositeDisposable);

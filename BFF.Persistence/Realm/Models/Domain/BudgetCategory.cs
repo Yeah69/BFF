@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BFF.Model;
 using BFF.Model.Models;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
@@ -12,14 +13,20 @@ namespace BFF.Persistence.Realm.Models.Domain
     {
         private readonly IBudgetOrm _budgetOrm;
         private readonly IRealmBudgetEntryRepository _budgetEntryRepository;
+        private readonly IObserveUpdateBudgetCategory _observeUpdateBudgetCategory;
 
         public BudgetCategory(
+            // parameters
             ICategory category,
+            
+            // dependencies
             IBudgetOrm budgetOrm,
-            IRealmBudgetEntryRepository budgetEntryRepository) : base(category)
+            IRealmBudgetEntryRepository budgetEntryRepository,
+            IObserveUpdateBudgetCategory observeUpdateBudgetCategory) : base(category, observeUpdateBudgetCategory)
         {
             _budgetOrm = budgetOrm;
             _budgetEntryRepository = budgetEntryRepository;
+            _observeUpdateBudgetCategory = observeUpdateBudgetCategory;
         }
 
         public override async Task<IEnumerable<IBudgetEntry>> GetBudgetEntriesFor(int year)

@@ -6,7 +6,6 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
@@ -14,6 +13,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.Reactive.Extensions;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -220,7 +220,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                         NotifyRelevantAccountsToRefreshTrans();
                     },
                     SubTransactions
-                        .ObservePropertyChanges(nameof(SubTransactions.Count))
+                        .ObservePropertyChanged(nameof(SubTransactions.Count))
                         .Select(_ => SubTransactions.Count >= 1))
                 .AddTo(CompositeDisposable);
 

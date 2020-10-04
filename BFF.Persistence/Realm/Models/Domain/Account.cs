@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
+using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
@@ -20,13 +20,11 @@ namespace BFF.Persistence.Realm.Models.Domain
             IAccountOrm accountOrm,
             IRealmAccountRepositoryInternal repository,
             IRealmTransRepository transRepository,
-            IRxSchedulerProvider rxSchedulerProvider,
             Persistence.Account realmObject,
             DateTime startingDate, 
             string name, 
             long startingBalance) 
             : base(
-                rxSchedulerProvider, 
                 startingDate,
                 name, 
                 startingBalance)
@@ -50,6 +48,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                 ro.Name = Name;
                 ro.StartingBalance = StartingBalance;
                 ro.StartingDate = new DateTimeOffset(StartingDate, TimeSpan.Zero);
+                ro.StartingMonthIndex = ro.StartingDate.ToMonthIndex();
             }
         }
 

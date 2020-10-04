@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.DataVirtualizingCollection.SlidingWindow;
@@ -11,28 +11,35 @@ using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
+using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using MuVaViMo;
 
 namespace BFF.ViewModel.ViewModels
 {
     public interface
-        IBudgetOverviewTableViewModel : ITableViewModel<IBudgetMonthViewModel, ICategoryViewModel, IBudgetEntryViewModel>
+        IBudgetOverviewTableViewModel : ITableViewModel<IBudgetMonthViewModel, ICategoryViewModel, IBudgetEntryViewModel>, IObservableObject
     {
+        public long AvailableToBudgetInCurrentMonth { get; }
 
         IRxRelayCommand IncreaseMonthStartIndex { get; }
 
         IRxRelayCommand DecreaseMonthStartIndex { get; }
         
         bool ShowAggregates { get; set; }
+        
+        IMonthViewModel SelectedMonthViewModel { get; }
+        
+        IReadOnlyList<IMonthViewModel> MonthViewModels { get; }
+        
+        int SelectedYear { get; }
     }
     public interface
-        IBudgetOverviewTableRowViewModel : ITableRowViewModel<ICategoryViewModel, IBudgetEntryViewModel>
+        IBudgetOverviewTableRowViewModel : ITableRowViewModel<ICategoryViewModel, IBudgetEntryViewModel>, IObservableObject
     {
-        void SlideLeft();
-        void SlideRight();
         void JumpTo(int index);
     }
 
@@ -40,90 +47,156 @@ namespace BFF.ViewModel.ViewModels
         IBudgetOverviewTableViewModel,
         IDisposable
     {
-        private static readonly int LastMonthIndex = BudgetOverviewViewModel.MonthToIndex(DateTime.MaxValue);
+        private static readonly int LastMonthIndex = DateTime.MaxValue.ToMonthIndex();
         
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
         private readonly ISlidingWindow<IBudgetMonthViewModel> _budgetMonths;
 
-        private int _currentMonthStartIndex = BudgetOverviewViewModel.MonthToIndex(DateTime.Now) - 41;
+        private int _monthIndexOffset;
         private bool _showAggregates;
+        private readonly IObservableReadOnlyList<IBudgetOverviewTableRowViewModel> _rows;
 
         public BudgetOverviewTableViewModel(
             IRxSchedulerProvider rxSchedulerProvider,
+            Func<int, IMonthViewModel> monthViewModelFactory,
             ICategoryViewModelService categoryViewModelService,
+            IBackendCultureManager cultureManager,
             IBudgetMonthRepository budgetMonthRepository,
-            Func<IBudgetMonth, IBudgetMonthViewModel> budgetMonthViewModelFactory)
+            IBudgetRefreshes budgetRefreshes,
+            Func<IBudgetMonth, IBudgetMonthViewModel> budgetMonthViewModelFactory,
+            Func<ICategoryViewModel, (int EntryCount, int MonthOffset), IBudgetOverviewTableRowViewModel> budgetOverviewTableRowViewModelFactory)
         {
-            ColumnCount = 5;
+            this.MonthViewModels = Enumerable.Range(1, 12).Select(monthViewModelFactory).ToReadOnlyList();
             
-            var rows = categoryViewModelService
+            ColumnCount = 5;
+            _monthIndexOffset = DateTime.Now.ToMonthIndex() - 41;
+            
+            _rows = categoryViewModelService
                 .All
                 .Transform(cvm => 
-                    new BudgetOverviewTableRowViewModel(
+                    budgetOverviewTableRowViewModelFactory(
                         cvm,
-                        (ColumnCount, _currentMonthStartIndex)));
+                        (ColumnCount, MonthIndexOffset)));
 
-            Rows = rows;
-
-            _budgetMonths = SlidingWindowBuilder<IBudgetMonthViewModel>
-                .Build(pageSize: 12, initialOffset: _currentMonthStartIndex, windowSize: ColumnCount,
-                    notificationScheduler: rxSchedulerProvider.UI)
-                .Preloading()
+            _budgetMonths = SlidingWindowBuilder
+                .Build<IBudgetMonthViewModel>(
+                    pageSize: 12, 
+                    initialOffset: MonthIndexOffset, 
+                    windowSize: ColumnCount,
+                    notificationScheduler: rxSchedulerProvider.UI,
+                    backgroundScheduler: rxSchedulerProvider.Task)
+                .Preloading((pageKey, pageIndex) =>
+                    new BudgetMonthViewModelPlaceholder(DateTimeExtensions.FromMonthIndex(pageKey * 12 + pageIndex)))
                 .Hoarding()
                 .TaskBasedFetchers(
                     (offset, pageSize) => 
                         Task.Run(async () =>
-                            (await budgetMonthRepository.FindAsync(BudgetOverviewViewModel.IndexToMonth(offset).Year)
+                            (await budgetMonthRepository.FindAsync(DateTimeExtensions.FromMonthIndex(offset).Year)
                                 .ConfigureAwait(false))
                             .Select(budgetMonthViewModelFactory)
                             .ToArray()),
-                    () => Task.FromResult(DateTimeExtensions.CountOfMonths()))
+                    () => Task.FromResult(DateTimeExtensions.CountOfMonths))
                 .AsyncIndexAccess(
                      (pageKey, pageIndex) => 
-                         new BudgetMonthViewModelPlaceholder(BudgetOverviewViewModel.IndexToMonth(pageKey * 12 + pageIndex)),
-                     rxSchedulerProvider.Task)
-                .AddForDisposalTo(_compositeDisposable);
-
-            ISubject<int> currentMonthStartIndexChanged = new Subject<int>().AddForDisposalTo(_compositeDisposable);
-            
-            IncreaseMonthStartIndex = currentMonthStartIndexChanged
-                .Select(i => i < LastMonthIndex - ColumnCount + 1)
-                .ToRxRelayCommand(() =>
-                {
-                    _budgetMonths.SlideRight();
-                    foreach (var row in rows)
-                    {
-                        row.SlideRight();
-                    }
-
-                    _currentMonthStartIndex++;
-                    currentMonthStartIndexChanged.OnNext(_currentMonthStartIndex);
-                })
+                         new BudgetMonthViewModelPlaceholder(DateTimeExtensions.FromMonthIndex(pageKey * 12 + pageIndex)))
                 .AddForDisposalTo(_compositeDisposable);
             
-            DecreaseMonthStartIndex = currentMonthStartIndexChanged
-                .Select(i => i > 0)
-                .ToRxRelayCommand(() =>
-                {
-                    _budgetMonths.SlideLeft();
-                    foreach (var row in rows)
-                    {
-                        row.SlideLeft();
-                    }
-
-                    _currentMonthStartIndex--;
-                    currentMonthStartIndexChanged.OnNext(_currentMonthStartIndex);
-                })
+            IncreaseMonthStartIndex = this.ObservePropertyChanged(nameof(MonthIndexOffset))
+                .Select(_ => MonthIndexOffset < LastMonthIndex - ColumnCount + 1)
+                .ToRxRelayCommand(() => MonthIndexOffset++)
                 .AddForDisposalTo(_compositeDisposable);
+            
+            DecreaseMonthStartIndex = this.ObservePropertyChanged(nameof(MonthIndexOffset))
+                .Select(_ => MonthIndexOffset > 0)
+                .ToRxRelayCommand(() => MonthIndexOffset--)
+                .AddForDisposalTo(_compositeDisposable);
+
+            budgetRefreshes
+                .ObserveHeadersRefreshes
+                .Subscribe(_ => _budgetMonths.Reset())
+                .AddForDisposalTo(_compositeDisposable);
+
+            budgetRefreshes
+                .ObserveCompleteRefreshes
+                .Subscribe(_ => Reset())
+                .AddForDisposalTo(_compositeDisposable);
+
+            budgetRefreshes
+                .ObserveHeadersRefreshes
+                .Merge(budgetRefreshes.ObserveCompleteRefreshes)
+                .SelectMany(_ => budgetMonthRepository.GetAvailableToBudgetOfCurrentMonth())
+                .ObserveOn(rxSchedulerProvider.UI)
+                .Subscribe(availableToBudgetInCurrentMonth =>
+                    AvailableToBudgetInCurrentMonth = availableToBudgetInCurrentMonth);
+
+            cultureManager.RefreshSignal.Subscribe(message =>
+            {
+                switch (message)
+                {
+                    case CultureMessage.Refresh:
+                        break;
+                    case CultureMessage.RefreshDate:
+                    case CultureMessage.RefreshCurrency:
+                        this.Reset();
+                        break;
+                    default:
+                        throw new InvalidEnumArgumentException();
+                }
+            }).AddTo(_compositeDisposable);
+
+            SetAvailableToBudgetInCurrentMonth();
+
+            async Task SetAvailableToBudgetInCurrentMonth() => 
+                AvailableToBudgetInCurrentMonth = await budgetMonthRepository.GetAvailableToBudgetOfCurrentMonth();
         }
 
-        public IReadOnlyList<IBudgetMonthViewModel> ColumnHeaders => _budgetMonths;
-        public IReadOnlyList<ITableRowViewModel<ICategoryViewModel, IBudgetEntryViewModel>> Rows { get; }
+        public IMonthViewModel SelectedMonthViewModel
+        {
+            get => this.MonthViewModels[this.MonthIndexOffset % 12];
+            set => this.MonthIndexOffset = (this.SelectedYear - 1) * 12 + value.Number - 1;
+        }
+        
+        public IReadOnlyList<IMonthViewModel> MonthViewModels { get; }
+        public int SelectedYear 
+        {
+            get => this.MonthIndexOffset / 12 + 1;
+            set => this.MonthIndexOffset = (value - 1) * 12 + this.SelectedMonthViewModel.Number - 1;
+        }
+
+        public IList<IBudgetMonthViewModel> ColumnHeaders => _budgetMonths;
+        public IReadOnlyList<ITableRowViewModel<ICategoryViewModel, IBudgetEntryViewModel>> Rows => 
+            this._rows;
         public int ColumnCount { get; }
 
-        public void Dispose()
-        {
+        public void Dispose() => 
             _compositeDisposable.Dispose();
+
+        public int MonthIndexOffset
+        {
+            get => _monthIndexOffset;
+            set
+            {
+                JumpTo(value);
+                SetIfChangedAndRaise(ref _monthIndexOffset, value);
+                
+                void JumpTo(int index)
+                {
+                    _budgetMonths.JumpTo(index);
+                    foreach (var row in _rows)
+                    {
+                        row.JumpTo(index);
+                    }
+                }
+                OnPropertyChanged(nameof(SelectedYear), nameof(SelectedMonthViewModel));
+            }
+        }
+
+        private long _availableToBudgetInCurrentMonth;
+        
+        public long AvailableToBudgetInCurrentMonth 
+        { 
+            get => _availableToBudgetInCurrentMonth; 
+            private set => SetIfChangedAndRaise(ref _availableToBudgetInCurrentMonth, value); 
         }
 
         public IRxRelayCommand IncreaseMonthStartIndex { get; }
@@ -133,43 +206,51 @@ namespace BFF.ViewModel.ViewModels
         public bool ShowAggregates
         {
             get => _showAggregates;
-            set
+            set => SetIfChangedAndRaise(ref _showAggregates, value);
+        }
+
+        public void Reset()
+        {
+            _budgetMonths.Reset();
+            foreach (var row in this.Rows)
             {
-                if (_showAggregates == value) return;
-                _showAggregates = value;
-                OnPropertyChanged();
+                row.Reset();
             }
         }
     }
 
-    internal class BudgetOverviewTableRowViewModel : IBudgetOverviewTableRowViewModel
+    internal class BudgetOverviewTableRowViewModel : ObservableObject, IBudgetOverviewTableRowViewModel, IDisposable
     {
         private readonly IBudgetCategoryViewModel _budgetCategoryViewModel;
 
+        private readonly IDisposable _compositeDisposable;
+
         public BudgetOverviewTableRowViewModel(
+            // parameters
             ICategoryViewModel rowHeader,
-            (int EntryCount, int MonthOffset) initial)
+            (int EntryCount, int MonthOffset) initial,
+            
+            // dependencies
+            IBudgetRefreshes budgetRefreshes)
         {
             RowHeader = rowHeader;
             _budgetCategoryViewModel = rowHeader.CreateBudgetCategory(initial.EntryCount, initial.MonthOffset);
+
+            _compositeDisposable = budgetRefreshes.ObserveCategoryRefreshes(rowHeader).Subscribe(_ => this.Reset());
         }
 
         public ICategoryViewModel RowHeader { get; }
 
-        public IReadOnlyList<IBudgetEntryViewModel> Cells => _budgetCategoryViewModel.BudgetEntries;
-        public void SlideLeft()
-        {
-            _budgetCategoryViewModel.BudgetEntries.SlideLeft();
-        }
+        public IList<IBudgetEntryViewModel> Cells => 
+            _budgetCategoryViewModel.BudgetEntries;
 
-        public void SlideRight()
-        {
-            _budgetCategoryViewModel.BudgetEntries.SlideRight();
-        }
-
-        public void JumpTo(int index)
-        {
+        public void JumpTo(int index) => 
             _budgetCategoryViewModel.BudgetEntries.JumpTo(index);
-        }
+
+        public void Reset() => 
+            _budgetCategoryViewModel.BudgetEntries.Reset();
+
+        public void Dispose() => 
+            _compositeDisposable.Dispose();
     }
 }

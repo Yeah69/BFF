@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using MrMeeseeks.Extensions;
 
@@ -9,6 +8,7 @@ namespace BFF.Model.Models
 {
     public interface IBudgetEntry : IDataModel
     {
+        ICategory Category { get; }
         long Budget { get; set; }
         long Outflow { get; }
         long Balance { get; }
@@ -17,6 +17,9 @@ namespace BFF.Model.Models
         long AggregatedBalance { get; }
         Task<IEnumerable<ITransBase>> GetAssociatedTransAsync();
         Task<IEnumerable<ITransBase>> GetAssociatedTransIncludingSubCategoriesAsync();
+
+        Task SetBudgetToAverageBudgetOfLastMonths(int monthCount);
+        Task SetBudgetToAverageOutflowOfLastMonths(int monthCount);
     }
 
     public abstract class BudgetEntry : DataModel, IBudgetEntry
@@ -33,12 +36,15 @@ namespace BFF.Model.Models
             long aggregatedBalance,
             
             // dependencies
-            IRxSchedulerProvider rxSchedulerProvider)
-            : base(rxSchedulerProvider)
+            IClearBudgetCache clearBudgetCache,
+            IUpdateBudgetCategory updateBudgetCategory)
+            : base()
         {
             Month = month;
             Category = category;
             _budget = budget;
+            _clearBudgetCache = clearBudgetCache;
+            _updateBudgetCategory = updateBudgetCategory;
             Outflow = outflow;
             Balance = balance;
             AggregatedBudget = aggregatedBudget;
@@ -48,9 +54,11 @@ namespace BFF.Model.Models
 
         protected DateTime Month { get; }
 
-        protected ICategory Category { get; }
+        public ICategory Category { get; }
 
         private long _budget;
+        private readonly IClearBudgetCache _clearBudgetCache;
+        private readonly IUpdateBudgetCategory _updateBudgetCategory;
 
         public long Budget
         {
@@ -76,6 +84,8 @@ namespace BFF.Model.Models
                     _budget = value;
                     UpdateAndNotify();
                 }
+                _clearBudgetCache.Clear();
+                _updateBudgetCategory.UpdateCategory(Category);
             }
         }
 
@@ -92,10 +102,17 @@ namespace BFF.Model.Models
         public abstract Task<IEnumerable<ITransBase>> GetAssociatedTransAsync();
 
         public abstract Task<IEnumerable<ITransBase>> GetAssociatedTransIncludingSubCategoriesAsync();
-
-        public override string ToString()
+        public async Task SetBudgetToAverageBudgetOfLastMonths(int monthCount)
         {
-            return $"{nameof(Month)}: {Month}, {nameof(Category)}: {Category}, {nameof(Budget)}: {Budget}, {nameof(Outflow)}: {Outflow}, {nameof(Balance)}: {Balance}";
+            Budget = await AverageBudgetOfLastMonths(monthCount).ConfigureAwait(false);
         }
+
+        public async Task SetBudgetToAverageOutflowOfLastMonths(int monthCount)
+        {
+            Budget = - await AverageOutflowOfLastMonths(monthCount).ConfigureAwait(false);
+        }
+
+        protected abstract Task<long> AverageBudgetOfLastMonths(int monthCount);
+        protected abstract Task<long> AverageOutflowOfLastMonths(int monthCount);
     }
 }

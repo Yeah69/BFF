@@ -47,5 +47,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
         public ICommand AvgOutflowsLastYear => null;
         public ICommand BalanceToZero => null;
         public ICommand Zero => null;
+        public Task SetBudgetToAverageBudgetOfLastMonths(int monthCount) => Task.CompletedTask;
+
+        public Task SetBudgetToAverageOutflowOfLastMonths(int monthCount) => Task.CompletedTask;
     }
 }

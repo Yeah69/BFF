@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 
 namespace BFF.Model.Models
@@ -18,11 +17,10 @@ namespace BFF.Model.Models
         private long _sum;
         
         public SubTransaction(
-            IRxSchedulerProvider rxSchedulerProvider,
             ICategoryBase category,
             string memo,
             long sum) 
-            : base(rxSchedulerProvider, memo)
+            : base(memo)
         {
             _category = category;
             _sum = sum;
