@@ -33,10 +33,14 @@
                 <TextBlock Text="{Binding}" />
             </DataTemplate>
 
-            <SolidColorBrush x:Key="TransactionBrush" Color="DarkOrange" />
-            <SolidColorBrush x:Key="IncomeBrush" Color="LimeGreen" />
-            <SolidColorBrush x:Key="TransferBrush" Color="RoyalBlue" />
-            <SolidColorBrush x:Key="NeutralBrush" Color="DimGray" />
+            <SolidColorBrush x:Key="TransactionBrush"
+                             Color="DarkOrange" />
+            <SolidColorBrush x:Key="IncomeBrush"
+                             Color="LimeGreen" />
+            <SolidColorBrush x:Key="TransferBrush"
+                             Color="RoyalBlue" />
+            <SolidColorBrush x:Key="NeutralBrush"
+                             Color="DimGray" />
 
             <system:Double x:Key="IconSize">
                 16.0
@@ -64,7 +68,7 @@
                 CreditCardMultiple
             </iconPacks:PackIconMaterialKind>
             <iconPacks:PackIconMaterialKind x:Key="SettingsIcon">
-                Settings
+                Cog
             </iconPacks:PackIconMaterialKind>
 
             <Style x:Key="BffGeneralButtonStyle"
@@ -72,23 +76,29 @@
                    TargetType="{x:Type Button}">
                 <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
             </Style>
-            <Style BasedOn="{StaticResource BffGeneralButtonStyle}" TargetType="{x:Type Button}" />
+            <Style BasedOn="{StaticResource BffGeneralButtonStyle}"
+                   TargetType="{x:Type Button}" />
 
-            <Style x:Key="CellTextBlock" TargetType="TextBlock">
+            <Style x:Key="CellTextBlock"
+                   TargetType="TextBlock">
                 <Setter Property="Padding" Value="5,0,0,0" />
                 <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
 
-            <DataTemplate x:Key="SumEditTemplate" DataType="{x:Type viewModels:ISumEditViewModel}">
-                <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
+            <DataTemplate x:Key="SumEditTemplate"
+                          DataType="{x:Type viewModels:ISumEditViewModel}">
+                <DockPanel HorizontalAlignment="Stretch"
+                           LastChildFill="True">
                     <ToggleButton MinWidth="20"
                                   Padding="5,0"
                                   Command="{Binding ToggleSign}"
                                   DockPanel.Dock="Left">
                         <ToggleButton.Style>
-                            <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
+                            <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+                                   TargetType="{x:Type ToggleButton}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SumSign}" Value="{x:Static viewModleHelper:Sign.Plus}">
+                                    <DataTrigger Binding="{Binding SumSign}"
+                                                 Value="{x:Static viewModleHelper:Sign.Plus}">
                                         <Setter Property="Background" Value="{StaticResource IncomeBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -120,14 +130,16 @@
             </DataTemplate>
 
             <DataTemplate x:Key="IndentedCategoryItemTemplate">
-                <StackPanel d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}" Orientation="Horizontal">
+                <StackPanel d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}"
+                            Orientation="Horizontal">
                     <Rectangle Width="4"
                                Height="16"
                                Margin="{Binding Depth, Converter={x:Static helper:Converters.CategoryDepthToMargin}}">
                         <Rectangle.Style>
                             <Style TargetType="{x:Type Rectangle}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}" Value="True">
+                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}"
+                                                 Value="True">
                                         <Setter Property="Fill" Value="{StaticResource IncomeBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -140,14 +152,16 @@
             </DataTemplate>
 
             <DataTemplate x:Key="IndentedCategoryEditingItemTemplate">
-                <StackPanel d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}" Orientation="Horizontal">
+                <StackPanel d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}"
+                            Orientation="Horizontal">
                     <Rectangle Width="4"
                                Height="16"
                                Margin="{Binding Depth, Converter={x:Static helper:Converters.CategoryDepthToMargin}}">
                         <Rectangle.Style>
                             <Style TargetType="{x:Type Rectangle}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}" Value="True">
+                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}"
+                                                 Value="True">
                                         <Setter Property="Fill" Value="{StaticResource IncomeBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -160,14 +174,16 @@
             </DataTemplate>
 
             <DataTemplate x:Key="CategoryItemTemplate">
-                <StackPanel d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}" Orientation="Horizontal">
+                <StackPanel d:DataContext="{d:DesignInstance forModels:ICategoryViewModel}"
+                            Orientation="Horizontal">
                     <Rectangle Width="4"
                                Height="16"
                                Margin="0,0,5,0">
                         <Rectangle.Style>
                             <Style TargetType="{x:Type Rectangle}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}" Value="True">
+                                    <DataTrigger Binding="{Binding Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}"
+                                                 Value="True">
                                         <Setter Property="Fill" Value="{StaticResource IncomeBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -175,11 +191,13 @@
                             </Style>
                         </Rectangle.Style>
                     </Rectangle>
-                    <TextBlock Margin="0,0,5,0" Text="{Binding Name}" />
+                    <TextBlock Margin="0,0,5,0"
+                               Text="{Binding Name}" />
                 </StackPanel>
             </DataTemplate>
 
-            <Style x:Key="CellIconMaterial" TargetType="iconPacks:PackIconMaterial">
+            <Style x:Key="CellIconMaterial"
+                   TargetType="iconPacks:PackIconMaterial">
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Height" Value="{StaticResource IconSize}" />
                 <Setter Property="Width" Value="{StaticResource IconSize}" />
@@ -190,7 +208,8 @@
                    TargetType="{x:Type Button}">
                 <Setter Property="Visibility" Value="Hidden" />
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}" Value="True">
+                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                 Value="True">
                         <Setter Property="Visibility" Value="Visible" />
                     </DataTrigger>
                 </Style.Triggers>
@@ -234,7 +253,8 @@
 
             <DataTemplate x:Key="FlagEditTemplate">
                 <Grid d:DataContext="{d:DesignInstance forModels:IFlagViewModel}">
-                    <Popup x:Name="Popup" StaysOpen="False">
+                    <Popup x:Name="Popup"
+                           StaysOpen="False">
                         <views:ColorPickerView Brush="{Binding Color, Mode=TwoWay, Converter={x:Static helper:Converters.ColorToBrush}}" />
                     </Popup>
 
@@ -251,7 +271,8 @@
                 </Grid>
             </DataTemplate>
 
-            <Style x:Key="PopupBorder" TargetType="Border">
+            <Style x:Key="PopupBorder"
+                   TargetType="Border">
                 <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}" />
                 <Setter Property="BorderThickness" Value="2" />

@@ -82,6 +82,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
 
             void RefreshAnAccountViewModel(IAccountViewModel account)
             {
+                if (this.IsInserted.Not()) return;
                 account?.RefreshTransCollection();
                 account?.RefreshBalance();
             }

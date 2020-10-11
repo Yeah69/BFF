@@ -41,6 +41,8 @@ namespace BFF.ViewModel.ViewModels
         IBudgetOverviewTableRowViewModel : ITableRowViewModel<ICategoryViewModel, IBudgetEntryViewModel>, IObservableObject
     {
         void JumpTo(int index);
+
+        void SetWindowSizeTo(int size);
     }
 
     internal class BudgetOverviewTableViewModel : ObservableObject,
@@ -68,7 +70,7 @@ namespace BFF.ViewModel.ViewModels
         {
             this.MonthViewModels = Enumerable.Range(1, 12).Select(monthViewModelFactory).ToReadOnlyList();
             
-            ColumnCount = 5;
+            _columnCount = 5;
             _monthIndexOffset = DateTime.Now.ToMonthIndex() - 41;
             
             _rows = categoryViewModelService
@@ -76,13 +78,13 @@ namespace BFF.ViewModel.ViewModels
                 .Transform(cvm => 
                     budgetOverviewTableRowViewModelFactory(
                         cvm,
-                        (ColumnCount, MonthIndexOffset)));
+                        (_columnCount, MonthIndexOffset)));
 
             _budgetMonths = SlidingWindowBuilder
                 .Build<IBudgetMonthViewModel>(
                     pageSize: 12, 
                     initialOffset: MonthIndexOffset, 
-                    windowSize: ColumnCount,
+                    windowSize: _columnCount,
                     notificationScheduler: rxSchedulerProvider.UI,
                     backgroundScheduler: rxSchedulerProvider.Task)
                 .Preloading((pageKey, pageIndex) =>
@@ -101,7 +103,7 @@ namespace BFF.ViewModel.ViewModels
                          new BudgetMonthViewModelPlaceholder(DateTimeExtensions.FromMonthIndex(pageKey * 12 + pageIndex)))
                 .AddForDisposalTo(_compositeDisposable);
             
-            IncreaseMonthStartIndex = this.ObservePropertyChanged(nameof(MonthIndexOffset))
+            IncreaseMonthStartIndex = this.ObservePropertyChanged(nameof(MonthIndexOffset), nameof(ColumnCount))
                 .Select(_ => MonthIndexOffset < LastMonthIndex - ColumnCount + 1)
                 .ToRxRelayCommand(() => MonthIndexOffset++)
                 .AddForDisposalTo(_compositeDisposable);
@@ -166,7 +168,25 @@ namespace BFF.ViewModel.ViewModels
         public IList<IBudgetMonthViewModel> ColumnHeaders => _budgetMonths;
         public IReadOnlyList<ITableRowViewModel<ICategoryViewModel, IBudgetEntryViewModel>> Rows => 
             this._rows;
-        public int ColumnCount { get; }
+
+        public int ColumnCount
+        {
+            get => _columnCount;
+            set
+            {
+                if (value == _columnCount) return;
+                _columnCount = Math.Max(MinColumnCount, Math.Min(MaxColumnCount, value));
+                if (MonthIndexOffset + ColumnCount > LastMonthIndex)
+                    MonthIndexOffset = LastMonthIndex - ColumnCount;
+                _budgetMonths.SetWindowSizeTo(_columnCount);
+                foreach (var row in _rows)
+                    row.SetWindowSizeTo(_columnCount);
+                OnPropertyChanged();
+            }
+        }
+
+        public int MinColumnCount => 1;
+        public int MaxColumnCount => 10;
 
         public void Dispose() => 
             _compositeDisposable.Dispose();
@@ -192,7 +212,8 @@ namespace BFF.ViewModel.ViewModels
         }
 
         private long _availableToBudgetInCurrentMonth;
-        
+        private int _columnCount;
+
         public long AvailableToBudgetInCurrentMonth 
         { 
             get => _availableToBudgetInCurrentMonth; 
@@ -246,6 +267,9 @@ namespace BFF.ViewModel.ViewModels
 
         public void JumpTo(int index) => 
             _budgetCategoryViewModel.BudgetEntries.JumpTo(index);
+
+        public void SetWindowSizeTo(int size) => 
+            _budgetCategoryViewModel.BudgetEntries.SetWindowSizeTo(size);
 
         public void Reset() => 
             _budgetCategoryViewModel.BudgetEntries.Reset();

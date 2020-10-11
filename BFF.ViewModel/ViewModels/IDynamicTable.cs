@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BFF.ViewModel.Helper;
 
 namespace BFF.ViewModel.ViewModels
 {
@@ -17,7 +18,11 @@ namespace BFF.ViewModel.ViewModels
 
         IReadOnlyList<ITableRowViewModel<TRowHeader, TCell>> Rows { get; }
 
-        int ColumnCount { get; }
+        int ColumnCount { get; set; }
+        
+        int MinColumnCount { get; }
+        
+        int MaxColumnCount { get; }
 
         void Reset();
     }

@@ -131,7 +131,8 @@
         <DataGrid DockPanel.Dock="Bottom"
                   ItemsSource="{Binding Table.Rows}">
             <i:Interaction.Behaviors>
-                <attachedBehaviors:DynamicTableDataGridBehavior RowHeaderTemplate="{StaticResource IndentedCategoryItemTemplate}"
+                <attachedBehaviors:DynamicTableDataGridBehavior ColumnCount="{Binding Table.ColumnCount}"
+                                                                RowHeaderTemplate="{StaticResource IndentedCategoryItemTemplate}"
                                                                 Table="{Binding Table}">
                     <attachedBehaviors:DynamicTableDataGridBehavior.CellTemplate>
                         <DataTemplate>
@@ -855,6 +856,13 @@
                                                                   Height="{StaticResource IconSize}"
                                                                   Kind="ChevronRight" />
                                     </Button>
+                                    <iconPacks:PackIconBoxIcons HorizontalAlignment="Center"
+                                                                VerticalAlignment="Center"
+                                                                Kind="RegularColumns" />
+                                    <mah:NumericUpDown Margin="5"
+                                                       Maximum="{Binding Table.MaxColumnCount}"
+                                                       Minimum="{Binding Table.MinColumnCount}"
+                                                       Value="{Binding Table.ColumnCount}" />
                                 </UniformGrid>
                                 <mah:ToggleSwitch x:Name="AggregateSwitch"
                                                   VerticalAlignment="Bottom"
