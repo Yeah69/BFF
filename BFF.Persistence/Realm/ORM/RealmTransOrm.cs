@@ -7,6 +7,7 @@ using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using JetBrains.Annotations;
 using MoreLinq;
+using MrMeeseeks.Extensions;
 using Realms;
 
 namespace BFF.Persistence.Realm.ORM
@@ -71,61 +72,6 @@ namespace BFF.Persistence.Realm.ORM
             }
         }
 
-        public Task<IEnumerable<Trans>> GetFromMonthAsync(DateTime month)
-        {
-            return _realmOperations.RunFuncAsync(Inner);
-
-            IEnumerable<Trans> Inner(Realms.Realm realm)
-            {
-                var utcMonth = DateTime.SpecifyKind(month, DateTimeKind.Utc);
-                var query = realm
-                    .All<Trans>()
-                    .Where(t => t.Date == utcMonth)
-                    .OrderBy(t => t.Date)
-                    .ThenByDescending(t => t.Sum);
-
-                return query;
-            }
-        }
-
-        public Task<IEnumerable<Trans>> GetFromMonthAndCategoryAsync(
-            DateTime month,
-            [NotNull]Category category)
-        {
-            category = category ?? throw new ArgumentNullException(nameof(category));
-            return _realmOperations.RunFuncAsync(Inner);
-
-            IEnumerable<Trans> Inner(Realms.Realm realm)
-            {
-                var utcMonth = DateTime.SpecifyKind(month, DateTimeKind.Utc);
-                var query = realm
-                    .All<Trans>()
-                    .Where(t => t.Date == utcMonth && t.Category == category)
-                    .OrderBy(t => t.Date)
-                    .ThenByDescending(t => t.Sum);
-
-                return query;
-            }
-        }
-
-        public Task<IEnumerable<Trans>> GetFromMonthAndCategoriesAsync(DateTime month, Category[] categories)
-        {
-            return _realmOperations.RunFuncAsync(Inner);
-
-            IEnumerable<Trans> Inner(Realms.Realm realm)
-            {
-                var categoriesIdSet = categories.ToHashSet();
-                var utcMonth = DateTime.SpecifyKind(month, DateTimeKind.Utc);
-                var query = realm
-                    .All<Trans>()
-                    .Where(t => t.Date == utcMonth && categoriesIdSet.Contains(t.Category))
-                    .OrderBy(t => t.Date)
-                    .ThenByDescending(t => t.Sum);
-
-                return query;
-            }
-        }
-
         public Task<long> GetCountFromSpecificAccountAsync(Account account)
         {
             return _realmOperations.RunFuncAsync(Inner);
@@ -147,6 +93,63 @@ namespace BFF.Persistence.Realm.ORM
             long Inner(Realms.Realm realm)
             {
                 return realm.All<Trans>().Count();
+            }
+        }
+
+        public Task<IEnumerable<Trans>> GetFromMonthAsync(DateTime month)
+        {
+            return _realmOperations.RunFuncAsync(Inner);
+
+            IEnumerable<Trans> Inner(Realms.Realm realm)
+            {
+                var utcMonth = month.ToMonthIndex();
+                var query = realm
+                    .All<Trans>()
+                    .Where(t => t.MonthIndex == utcMonth)
+                    .OrderBy(t => t.Date)
+                    .ThenByDescending(t => t.Sum);
+
+                return query;
+            }
+        }
+
+        public Task<IEnumerable<Trans>> GetFromMonthAndCategoryAsync(
+            DateTime month,
+            [NotNull]Category category)
+        {
+            category = category ?? throw new ArgumentNullException(nameof(category));
+            return _realmOperations.RunFuncAsync(Inner);
+
+            IEnumerable<Trans> Inner(Realms.Realm realm)
+            {
+                var utcMonth = month.ToMonthIndex();
+                var query = realm
+                    .All<Trans>()
+                    .Where(t => t.MonthIndex == utcMonth && t.Category == category)
+                    .OrderBy(t => t.Date)
+                    .ThenByDescending(t => t.Sum);
+
+                return query;
+            }
+        }
+
+        public Task<IEnumerable<Trans>> GetFromMonthAndCategoriesAsync(DateTime month, Category[] categories)
+        {
+            return _realmOperations.RunFuncAsync(Inner);
+
+            IEnumerable<Trans> Inner(Realms.Realm realm)
+            {
+                var categoriesIdSet = categories.ToHashSet();
+                var utcMonth = month.ToMonthIndex();
+                var query = realm
+                    .All<Trans>()
+                    .Where(t => t.MonthIndex == utcMonth)
+                    .OrderBy(t => t.Date)
+                    .ThenByDescending(t => t.Sum)
+                    .ToList()
+                    .Where(t => categoriesIdSet.Contains(t.Category));
+
+                return query;
             }
         }
     }

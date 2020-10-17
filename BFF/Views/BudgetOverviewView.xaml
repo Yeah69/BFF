@@ -16,7 +16,6 @@
              d:DataContext="{d:DesignInstance Type=viewModels:IBudgetOverviewViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
-             PreviewKeyDown="OnPreviewKeyDown"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -124,7 +123,7 @@
             </DataTemplate>
 
             <helper:BindingProxy x:Key="ShowAggregatesProxy"
-                                 Data="{Binding Table.ShowAggregates}" />
+                                 Data="{Binding Table.ShowAggregates, Mode=TwoWay}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel>
@@ -588,11 +587,6 @@
                                                                        Text="{lex:Loc Budgeting_Income}"
                                                                        TextTrimming="CharacterEllipsis"
                                                                        ToolTip="{lex:Loc Budgeting_IncomeExplanation}" />
-                                                            <TextBlock Grid.Row="2"
-                                                                       Grid.Column="1"
-                                                                       Foreground="{Binding IncomeForThisMonth, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
-                                                                       Text="{Binding IncomeForThisMonth, Converter={x:Static helper:Converters.SumToString}}"
-                                                                       TextAlignment="Right" />
 
                                                             <Grid Grid.Row="2"
                                                                   Grid.Column="1"
@@ -868,7 +862,7 @@
                                                   VerticalAlignment="Bottom"
                                                   DockPanel.Dock="Bottom"
                                                   Header="{lex:Loc Budgeting_ShowAggregates}"
-                                                  IsChecked="{Binding Data, Source={StaticResource ShowAggregatesProxy}}"
+                                                  IsChecked="{Binding Data, Mode=TwoWay, Source={StaticResource ShowAggregatesProxy}}"
                                                   OffLabel="{lex:Loc General_No}"
                                                   OnLabel="{lex:Loc General_Yes}"
                                                   ToolTip="{lex:Loc ToolTip_BudgetOverview_Aggregates}" />
