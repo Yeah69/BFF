@@ -59,7 +59,7 @@
                                         CellTemplate="{StaticResource SymbolColumnTemplate}"
                                         Header="{lex:Loc AccountView_Header_SymbolAbbr}">
                     <DataGridTemplateColumn.HeaderStyle>
-                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                        <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip">
                                 <Setter.Value>
@@ -109,7 +109,7 @@
                                         SortMemberPath="Account.Name"
                                         Visibility="{Binding Data, Source={StaticResource AccountColumnVisibility}}">
                     <DataGridTemplateColumn.HeaderStyle>
-                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                        <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip" Value="{lex:BLoc ToolTip_TransGrid_Header_Account}" />
                         </Style>
@@ -122,7 +122,7 @@
                                         Header="{lex:Loc AccountView_Header_Date}"
                                         SortMemberPath="Date">
                     <DataGridTemplateColumn.HeaderStyle>
-                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                        <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip" Value="{lex:BLoc ToolTip_TransGrid_Header_Date}" />
                         </Style>
@@ -136,7 +136,7 @@
                                         SortMemberPath="Flag.Name"
                                         Visibility="{Binding Data, Source={StaticResource FlagColumnVisibility}}">
                     <DataGridTemplateColumn.HeaderStyle>
-                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                        <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip" Value="{lex:BLoc ToolTip_TransGrid_Header_Flag}" />
                         </Style>
@@ -150,7 +150,7 @@
                                         SortMemberPath="CheckNumber"
                                         Visibility="{Binding Data, Source={StaticResource CheckNumberColumnVisibility}}">
                     <DataGridTemplateColumn.HeaderStyle>
-                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                        <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip" Value="{lex:BLoc ToolTip_TransGrid_Header_CheckNumber}" />
                         </Style>
@@ -163,7 +163,7 @@
                                         Header="{lex:Loc AccountView_Header_Payee}"
                                         SortMemberPath="Payee.Name">
                     <DataGridTemplateColumn.HeaderStyle>
-                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                        <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip" Value="{lex:BLoc ToolTip_TransGrid_Header_Payee}" />
                         </Style>
@@ -176,7 +176,7 @@
                                         Header="{lex:Loc AccountView_Header_Category}"
                                         SortMemberPath="Category.Name">
                     <DataGridTemplateColumn.HeaderStyle>
-                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                        <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip" Value="{lex:BLoc ToolTip_TransGrid_Header_Category}" />
                         </Style>
@@ -190,7 +190,7 @@
                                         Header="{lex:Loc AccountView_Header_Memo}"
                                         SortMemberPath="Memo">
                     <DataGridTemplateColumn.HeaderStyle>
-                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                        <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip" Value="{lex:BLoc ToolTip_TransGrid_Header_Memo}" />
                         </Style>
@@ -204,7 +204,7 @@
                                         IsReadOnly="False"
                                         SortMemberPath="Sum">
                     <DataGridTemplateColumn.HeaderStyle>
-                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                        <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip" Value="{lex:BLoc ToolTip_TransGrid_Header_Sum}" />
                         </Style>
@@ -217,7 +217,7 @@
                                         IsReadOnly="True"
                                         SortMemberPath="Cleared">
                     <DataGridTemplateColumn.HeaderStyle>
-                        <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                        <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="ToolTip" Value="{lex:BLoc ToolTip_TransGrid_Header_Cleared}" />
                         </Style>

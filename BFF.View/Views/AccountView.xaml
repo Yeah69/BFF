@@ -23,15 +23,15 @@
                       DataType="{x:Type structure1:IAccountBaseViewModel}">
             <UniformGrid HorizontalAlignment="Right"
                          Columns="4">
-                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,0,1,0" />
-                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,0,1,0">
                     <TextBlock Margin="5"
                                Text="{lex:Loc AccountView_Balance_Cleared}"
                                TextAlignment="Left" />
                 </Border>
-                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,0,1,0">
                     <TextBlock Margin="5"
                                Text="{lex:Loc AccountView_Balance_Uncleared}" />
@@ -41,26 +41,26 @@
 
 
 
-                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
                     <TextBlock Margin="5"
                                Text="{lex:Loc AccountView_Balance_Current}" />
                 </Border>
-                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
                     <TextBlock Margin="5"
                                HorizontalAlignment="Right"
                                Foreground="{Binding ClearedBalanceUntilNow, Converter={x:Static helper:Converters.NullableSumToSolidColorBrush}}"
                                Text="{Binding ClearedBalanceUntilNow, Converter={x:Static helper:Converters.NullableSumToString}}" />
                 </Border>
-                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
                     <TextBlock Margin="5"
                                HorizontalAlignment="Right"
                                Foreground="{Binding UnclearedBalanceUntilNow, Converter={x:Static helper:Converters.NullableSumToSolidColorBrush}}"
                                Text="{Binding UnclearedBalanceUntilNow, Converter={x:Static helper:Converters.NullableSumToString}}" />
                 </Border>
-                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,0,0">
                     <TextBlock Margin="5"
                                HorizontalAlignment="Right"
@@ -69,26 +69,26 @@
                 </Border>
 
 
-                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
                     <TextBlock Margin="5"
                                Text="{lex:Loc AccountView_Balance_All}" />
                 </Border>
-                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
                     <TextBlock Margin="5"
                                HorizontalAlignment="Right"
                                Foreground="{Binding ClearedBalance, Converter={x:Static helper:Converters.NullableSumToSolidColorBrush}}"
                                Text="{Binding ClearedBalance, Converter={x:Static helper:Converters.NullableSumToString}}" />
                 </Border>
-                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
                     <TextBlock Margin="5"
                                HorizontalAlignment="Right"
                                Foreground="{Binding UnclearedBalance, Converter={x:Static helper:Converters.NullableSumToSolidColorBrush}}"
                                Text="{Binding UnclearedBalance, Converter={x:Static helper:Converters.NullableSumToString}}" />
                 </Border>
-                <Border BorderBrush="{StaticResource AccentColorBrush}"
+                <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,0,0">
                     <TextBlock Margin="5"
                                HorizontalAlignment="Right"

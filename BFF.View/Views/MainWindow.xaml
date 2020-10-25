@@ -23,7 +23,7 @@
                       lex:ResxLocalizationProvider.DefaultAssembly="BFF.View"
                       lex:ResxLocalizationProvider.DefaultDictionary="Texts"
                       dialogs:DialogParticipation.Register="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"
-                      BorderBrush="{DynamicResource AccentColorBrush}"
+                      BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
                       BorderThickness="2"
                       Icon="../../Yeah69Logo.ico"
                       Left="{Binding X, Mode=TwoWay}"
@@ -86,10 +86,10 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Ellipse Width="15"
                                              Height="15"
-                                             Fill="{Binding WhiteBrush}"
-                                             Stroke="{DynamicResource BlackBrush}"
+                                             Fill="{Binding Brush}"
+                                             Stroke="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                              StrokeThickness="1" />
-                                    <Label Content="{Binding Path=Theme.Name}" />
+                                    <Label Content="{Binding Path=Name}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
@@ -101,14 +101,14 @@
                     <ComboBox Name="AccentCombo"
                               SelectionChanged="AccentCombo_SelectionChanged">
                         <ComboBox.ItemTemplate>
-                            <DataTemplate DataType="views:AccentWrap">
+                            <DataTemplate DataType="views:ThemeWrap">
                                 <StackPanel Orientation="Horizontal">
                                     <Ellipse Width="15"
                                              Height="15"
-                                             Fill="{Binding AccentColorBrush}"
-                                             Stroke="{DynamicResource BlackBrush}"
+                                             Fill="{Binding Brush}"
+                                             Stroke="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                              StrokeThickness="1" />
-                                    <Label Content="{Binding Path=Accent.Name}" />
+                                    <Label Content="{Binding Path=Name}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
@@ -134,7 +134,7 @@
                     </TextBlock>
                     <ComboBox x:Name="CurrencyCombo"
                               SelectedItem="{Binding CultureManager.CurrencyCulture, Mode=TwoWay}"
-                              Style="{StaticResource VirtualisedMetroComboBox}"
+                              Style="{StaticResource MahApps.Styles.ComboBox.Virtualized}"
                               Visibility="{Binding CultureManager, Converter={x:Static helper:Converters.NullToCollapsed}}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="globalization:CultureInfo">
@@ -182,7 +182,7 @@
                     </TextBlock>
                     <ComboBox x:Name="DateCombo"
                               SelectedItem="{Binding CultureManager.DateCulture, Mode=TwoWay}"
-                              Style="{StaticResource VirtualisedMetroComboBox}"
+                              Style="{StaticResource MahApps.Styles.ComboBox.Virtualized}"
                               Visibility="{Binding CultureManager, Converter={x:Static helper:Converters.NullToCollapsed}}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="globalization:CultureInfo">

@@ -17,13 +17,12 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.tabcontrol.xaml" />
                 <ResourceDictionary Source="Resources/HamburgerMenu.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
@@ -72,7 +71,7 @@
             </iconPacks:PackIconMaterialKind>
 
             <Style x:Key="BffGeneralButtonStyle"
-                   BasedOn="{StaticResource SquareButtonStyle}"
+                   BasedOn="{StaticResource MahApps.Styles.Button.Square}"
                    TargetType="{x:Type Button}">
                 <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
             </Style>
@@ -143,7 +142,7 @@
                                         <Setter Property="Fill" Value="{StaticResource IncomeBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
-                                <Setter Property="Fill" Value="{DynamicResource AccentColorBrush}" />
+                                <Setter Property="Fill" Value="{DynamicResource MahApps.Brushes.Accent}" />
                             </Style>
                         </Rectangle.Style>
                     </Rectangle>
@@ -165,7 +164,7 @@
                                         <Setter Property="Fill" Value="{StaticResource IncomeBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
-                                <Setter Property="Fill" Value="{DynamicResource AccentColorBrush}" />
+                                <Setter Property="Fill" Value="{DynamicResource MahApps.Brushes.Accent}" />
                             </Style>
                         </Rectangle.Style>
                     </Rectangle>
@@ -187,7 +186,7 @@
                                         <Setter Property="Fill" Value="{StaticResource IncomeBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
-                                <Setter Property="Fill" Value="{DynamicResource AccentColorBrush}" />
+                                <Setter Property="Fill" Value="{DynamicResource MahApps.Brushes.Accent}" />
                             </Style>
                         </Rectangle.Style>
                     </Rectangle>
@@ -273,8 +272,8 @@
 
             <Style x:Key="PopupBorder"
                    TargetType="Border">
-                <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}" />
+                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
                 <Setter Property="BorderThickness" Value="2" />
             </Style>
 

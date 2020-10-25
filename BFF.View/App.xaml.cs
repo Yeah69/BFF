@@ -4,11 +4,10 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
 using BFF.View.Views;
-using MahApps.Metro;
+using ControlzEx.Theming;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using NLog;
-using WPFLocalizeExtension.Engine;
 using WPFLocalizeExtension.Providers;
 
 namespace BFF.View
@@ -53,32 +52,34 @@ namespace BFF.View
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            void SetColorsDependingOnTheChosenTheme(AppTheme theme)
+            void SetColorsDependingOnTheChosenTheme(Theme theme)
             {
                 switch (theme.Name)
                 {
                     case "BaseLight":
-                        Resources["AlternatingRowBrush"] = Resources["GrayBrush8"];
-                        Resources["OpaqueZeroBrush"] = Resources["GrayBrush6"];
+                        Resources["AlternatingRowBrush"] = Resources["MahApps.Brushes.Gray8"];
+                        Resources["OpaqueZeroBrush"] = Resources["MahApps.Brushes.Gray6"];
                         break;
                     case "BaseDark":
-                        Resources["AlternatingRowBrush"] = Resources["GrayBrush8"];
-                        Resources["OpaqueZeroBrush"] = Resources["GrayBrush9"];
+                        Resources["AlternatingRowBrush"] = Resources["MahApps.Brushes.Gray8"];
+                        Resources["OpaqueZeroBrush"] = Resources["MahApps.Brushes.Gray9"];
                         break;
                 }
             }
 
-            void ThemeManagerOnIsThemeChanged(object s, OnThemeChangedEventArgs args)
+            void ThemeManagerOnIsThemeChanged(object s, ThemeChangedEventArgs args)
             {
-                SetColorsDependingOnTheChosenTheme(args.AppTheme);
+                SetColorsDependingOnTheChosenTheme(args.NewTheme);
             }
 
-            ThemeManager.IsThemeChanged += ThemeManagerOnIsThemeChanged;
-            Accent initialAccent = ThemeManager.GetAccent(BFF.Properties.Settings.Default.MahApps_Accent);
-            AppTheme initialAppTheme = ThemeManager.GetAppTheme(BFF.Properties.Settings.Default.MahApps_AppTheme);
+            ThemeManager.Current.ThemeChanged += ThemeManagerOnIsThemeChanged;
 
-            SetColorsDependingOnTheChosenTheme(initialAppTheme);
-            ThemeManager.ChangeAppStyle(Current, initialAccent, initialAppTheme);
+            var initialTheme = ThemeManager.Current.GetTheme(
+                BFF.Properties.Settings.Default.MahApps_AppTheme,
+                BFF.Properties.Settings.Default.MahApps_Accent);
+
+            SetColorsDependingOnTheChosenTheme(initialTheme);
+            ThemeManager.Current.ChangeTheme(this, initialTheme ?? throw new NullReferenceException());
             
             Logger.Info("BFF started. (Version: {0})", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
         }

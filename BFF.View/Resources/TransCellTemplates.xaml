@@ -442,7 +442,7 @@
                                Text="{Binding Account.Name}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                    <TextBlock Foreground="{DynamicResource GrayBrush4}"
+                    <TextBlock Foreground="{DynamicResource MahApps.Brushes.Gray4}"
                                Style="{StaticResource CellTextBlock}"
                                Text="{lex:Loc AccountView_Column_Transfer}" />
                 </DataTemplate>
@@ -469,7 +469,7 @@
                     </ComboBox>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
-                    <TextBlock Foreground="{DynamicResource GrayBrush4}"
+                    <TextBlock Foreground="{DynamicResource MahApps.Brushes.Gray4}"
                                Style="{StaticResource CellTextBlock}"
                                Text="{lex:Loc AccountView_Column_Transfer}" />
                 </DataTemplate>
@@ -732,7 +732,7 @@
                         <TextBlock Style="{StaticResource CellTextBlock}"
                                    Text="{Binding FromAccount.Name}" />
                         <iconPacks:PackIconMaterial Background="Transparent"
-                                                    Foreground="{DynamicResource GrayBrush4}"
+                                                    Foreground="{DynamicResource MahApps.Brushes.Gray4}"
                                                     Kind="{StaticResource TransactionIcon}"
                                                     Style="{StaticResource CellIconMaterial}"
                                                     ToolTip="{lex:Loc ToolTip_Symbol_FromAccount}" />
@@ -901,7 +901,7 @@
                                      Visibility="{Binding SubTransactions, Converter={x:Static helper:Converters.NoneToCollapsed}}" />
                         </Button.ToolTip>
                         <iconPacks:PackIconMaterial Margin="5,0,0,0"
-                                                    Foreground="{DynamicResource GrayBrush4}"
+                                                    Foreground="{DynamicResource MahApps.Brushes.Gray4}"
                                                     Kind="{StaticResource ParentIcon}"
                                                     Style="{StaticResource CellIconMaterial}" />
                     </Button>
@@ -911,7 +911,7 @@
                         <TextBlock Style="{StaticResource CellTextBlock}"
                                    Text="{Binding ToAccount.Name}" />
                         <iconPacks:PackIconMaterial Background="Transparent"
-                                                    Foreground="{DynamicResource GrayBrush4}"
+                                                    Foreground="{DynamicResource MahApps.Brushes.Gray4}"
                                                     IsTabStop="True"
                                                     Kind="{StaticResource IncomeIcon}"
                                                     Style="{StaticResource CellIconMaterial}"
@@ -1011,7 +1011,7 @@
                                      Visibility="{Binding SubTransactions, Converter={x:Static helper:Converters.NoneToCollapsed}}" />
                         </Button.ToolTip>
                         <iconPacks:PackIconMaterial Margin="5,0,0,0"
-                                                    Foreground="{DynamicResource GrayBrush4}"
+                                                    Foreground="{DynamicResource MahApps.Brushes.Gray4}"
                                                     Kind="{StaticResource ParentIcon}"
                                                     Style="{StaticResource CellIconMaterial}" />
                     </Button>
@@ -1049,7 +1049,7 @@
                                StaysOpen="False">
                             <Border MinWidth="50"
                                     Padding="0"
-                                    BorderBrush="{StaticResource AccentColorBrush}"
+                                    BorderBrush="{StaticResource 	MahApps.Brushes.Accent}"
                                     BorderThickness="1">
                                 <views:NewCategoryView DataContext="{Binding NewCategoryViewModel}"
                                                        OnAddClicked="ClosePopup_OnClick"
@@ -1096,7 +1096,7 @@
     <DataTemplate x:Key="ParentCategoryEditingColumnTemplate"
                   DataType="{x:Type forModels:ParentTransactionViewModel}">
         <iconPacks:PackIconMaterial Margin="5,0,0,0"
-                                    Foreground="{DynamicResource GrayBrush4}"
+                                    Foreground="{DynamicResource MahApps.Brushes.Gray4}"
                                     Kind="{StaticResource ParentIcon}"
                                     Style="{StaticResource CellIconMaterial}" />
     </DataTemplate>
@@ -1446,7 +1446,7 @@
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
                                                 Background="Transparent"
-                                                Foreground="{DynamicResource AccentColorBrush}"
+                                                Foreground="{DynamicResource 	MahApps.Brushes.Accent}"
                                                 Kind="DotsHorizontal"
                                                 Visibility="{Binding IsMouseOver, Converter={x:Static helper:Converters.FalseToCollapsed}, RelativeSource={RelativeSource AncestorType=DataGridRow}}">
                         <b:Interaction.Behaviors>

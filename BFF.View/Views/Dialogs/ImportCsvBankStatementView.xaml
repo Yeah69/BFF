@@ -162,7 +162,7 @@
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
                   mah:ControlsHelper.ContentCharacterCasing="Normal"
-                  Background="{DynamicResource WhiteBrush}"
+                  Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
                   BorderThickness="0"
                   Header="{lex:Loc Common_Configuration}">
             <Grid>
@@ -209,7 +209,7 @@
                               DockPanel.Dock="Right"
                               Grid.IsSharedSizeScope="True"
                               SelectedItem="{Binding Configuration.Value.DateLocalization.Value}"
-                              Style="{StaticResource VirtualisedMetroComboBox}">
+                              Style="{StaticResource MahApps.Styles.ComboBox.Virtualized}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="globalization:CultureInfo">
                                 <Grid>
@@ -283,7 +283,7 @@
                               DockPanel.Dock="Right"
                               Grid.IsSharedSizeScope="True"
                               SelectedItem="{Binding Configuration.Value.SumLocalization.Value}"
-                              Style="{StaticResource VirtualisedMetroComboBox}">
+                              Style="{StaticResource MahApps.Styles.ComboBox.Virtualized}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="globalization:CultureInfo">
                                 <Grid>

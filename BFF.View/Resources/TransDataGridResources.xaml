@@ -11,7 +11,7 @@
             <MenuItem.Icon>
                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"
-                                            Foreground="{StaticResource BlackBrush}"
+                                            Foreground="{StaticResource MahApps.Brushes.ThemeForeground}"
                                             Kind="{StaticResource RemoveFromTableIcon}" />
             </MenuItem.Icon>
         </MenuItem>
@@ -22,25 +22,25 @@
             <MenuItem.Icon>
                 <iconPacks:PackIconOcticons Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"
-                                            Foreground="{StaticResource BlackBrush}"
+                                            Foreground="{StaticResource MahApps.Brushes.ThemeForeground}"
                                             Kind="{StaticResource RemoveNotInsertedIcon}" />
             </MenuItem.Icon>
         </MenuItem>
     </ContextMenu>
 
     <Style x:Key="DefaultRowStyle"
-           BasedOn="{StaticResource MetroDataGridRow}"
+           BasedOn="{StaticResource 	MahApps.Styles.DataGridRow}"
            TargetType="{x:Type DataGridRow}">
         <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
     </Style>
 
     <Style x:Key="DefaultNewRowStyle"
-           BasedOn="{StaticResource MetroDataGridRow}"
+           BasedOn="{StaticResource 	MahApps.Styles.DataGridRow}"
            TargetType="{x:Type DataGridRow}">
         <Setter Property="ContextMenu" Value="{StaticResource NewRowMenu}" />
     </Style>
 
-    <Style BasedOn="{StaticResource MetroDataGridCell}" TargetType="{x:Type DataGridCell}">
+    <Style BasedOn="{StaticResource 	MahApps.Styles.DataGridCell}" TargetType="{x:Type DataGridCell}">
         <Setter Property="IsTabStop" Value="False" />
     </Style>
 
@@ -48,7 +48,7 @@
         <Setter Property="IsTabStop" Value="False" />
     </Style>
 
-    <Style BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
+    <Style BasedOn="{StaticResource MahApps.Styles.DataGrid}" TargetType="{x:Type DataGrid}">
         <Setter Property="AlternatingRowBackground" Value="{DynamicResource AlternatingRowBrush}" />
         <Setter Property="AutoGenerateColumns" Value="False" />
         <Setter Property="CanUserSortColumns" Value="False" />

@@ -19,6 +19,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.buttons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.combobox.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -28,10 +29,8 @@
         <TabControl Name="AccountsTabControl"
                     Margin="10"
                     controls:TabControlHelper.Underlined="TabItems"
+                    Style="{StaticResource MahApps.Styles.TabControl.Animated}"
                     Visibility="{Binding AllAccounts.Count, Converter={x:Static helper:Converters.IntGreaterThanZeroVisibleElseCollapsed}}">
-            <TabControl.Resources>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
-            </TabControl.Resources>
             <b:Interaction.Behaviors>
                 <attachedBehaviors:AdditionalTabItemsBehavior IsSelectedMemberPath="IsOpen"
                                                               ItemsSource="{Binding AllAccounts}"

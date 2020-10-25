@@ -21,7 +21,7 @@
             </TextBlock>
             <TextBox x:Name="FocusMe"
                      MinWidth="50"
-                     BorderBrush="{StaticResource AccentColorBrush}"
+                     BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                      DockPanel.Dock="Right"
                      Focusable="True"
                      Text="{Binding PayeeText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

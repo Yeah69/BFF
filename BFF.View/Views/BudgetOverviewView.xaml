@@ -31,7 +31,7 @@
                    TargetType="{x:Type ListBoxItem}">
                 <Style.Triggers>
                     <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                        <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
+                        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.ThemeBackground}" />
                     </Trigger>
                     <Trigger Property="ItemsControl.AlternationIndex" Value="1">
                         <Setter Property="Background" Value="{DynamicResource AlternatingRowBrush}" />
@@ -137,7 +137,7 @@
                         <DataTemplate>
                             <Border HorizontalAlignment="Stretch"
                                     VerticalAlignment="Stretch"
-                                    BorderBrush="{StaticResource AccentColorBrush}"
+                                    BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                                     BorderThickness="2,0,0,0">
                                 <ContentControl Content="{Binding}">
                                     <ContentControl.Resources>
@@ -185,7 +185,7 @@
                                                                                                         HorizontalAlignment="Left"
                                                                                                         VerticalAlignment="Center"
                                                                                                         Background="Transparent"
-                                                                                                        Foreground="{DynamicResource AccentColorBrush}"
+                                                                                                        Foreground="{DynamicResource MahApps.Brushes.Accent}"
                                                                                                         Kind="DotsHorizontal">
                                                                                 <i:Interaction.Behaviors>
                                                                                     <attachedBehaviors:FrameworkElementClickBehavior Click="BudgetEntryMenu_OnClick" />
@@ -390,7 +390,7 @@
                             <Border Margin="-10,0,0,0"
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Stretch"
-                                    BorderBrush="{StaticResource AccentColorBrush}"
+                                    BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                                     BorderThickness="2,0,0,0">
                                 <ContentControl Content="{Binding}">
                                     <ContentControl.Resources>
@@ -460,7 +460,7 @@
                                                                                 HorizontalAlignment="Right"
                                                                                 VerticalAlignment="Top"
                                                                                 Background="Transparent"
-                                                                                Foreground="{DynamicResource AccentColorBrush}"
+                                                                                Foreground="{DynamicResource MahApps.Brushes.Accent}"
                                                                                 Kind="DotsVertical">
                                                         <i:Interaction.Behaviors>
                                                             <attachedBehaviors:FrameworkElementClickBehavior Click="MonthDataHeaderMenu_OnClick" />
@@ -509,10 +509,10 @@
                                                                 <Style.Triggers>
                                                                     <DataTrigger Binding="{Binding Month, Converter={x:Static helper:Converters.IsCurrentMonth}}"
                                                                                  Value="True">
-                                                                        <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                                                                        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
                                                                     </DataTrigger>
                                                                 </Style.Triggers>
-                                                                <Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
+                                                                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
                                                             </Style>
                                                         </StackPanel.Resources>
                                                         <TextBlock Margin="0,0,0,5"
@@ -540,7 +540,7 @@
                                                             </Grid.RowDefinitions>
                                                             <ContentControl Grid.Row="0"
                                                                             Grid.Column="0"
-                                                                            Foreground="{DynamicResource BlackBrush}">
+                                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
                                                                 <ContentControl.Style>
                                                                     <Style TargetType="{x:Type ContentControl}">
                                                                         <Style.Triggers>
@@ -663,7 +663,7 @@
                                                         </Grid>
                                                         <ContentControl Margin="0,5,0,0"
                                                                         HorizontalAlignment="Center"
-                                                                        Foreground="{DynamicResource BlackBrush}">
+                                                                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}">
                                                             <ContentControl.Style>
                                                                 <Style TargetType="{x:Type ContentControl}">
                                                                     <Style.Triggers>
@@ -736,10 +736,10 @@
                                                                 <Style.Triggers>
                                                                     <DataTrigger Binding="{Binding Month, Converter={x:Static helper:Converters.IsCurrentMonth}}"
                                                                                  Value="True">
-                                                                        <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                                                                        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
                                                                     </DataTrigger>
                                                                 </Style.Triggers>
-                                                                <Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
+                                                                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
                                                             </Style>
                                                         </StackPanel.Resources>
                                                         <TextBlock Margin="0,0,0,5"
@@ -768,7 +768,7 @@
 
                                                             <TextBlock Grid.Row="0"
                                                                        Grid.Column="0"
-                                                                       Foreground="{DynamicResource BlackBrush}"
+                                                                       Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                        Text="{lex:Loc Budgeting_NotBudgeted}"
                                                                        ToolTip="{lex:Loc Budgeting_NotBudgetedExplanation}" />
                                                             <TextBlock Grid.Row="1"
@@ -802,7 +802,7 @@
                                                         <TextBlock Margin="0,5,0,0"
                                                                    HorizontalAlignment="Center"
                                                                    FontSize="10"
-                                                                   Foreground="{DynamicResource BlackBrush}"
+                                                                   Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                    Text="{lex:Loc Budgeting_Available}"
                                                                    ToolTip="{lex:Loc Budgeting_AvailableExplanation}" />
                                                         <TextBlock Margin="0,5,0,0"
@@ -862,9 +862,9 @@
                                                   VerticalAlignment="Bottom"
                                                   DockPanel.Dock="Bottom"
                                                   Header="{lex:Loc Budgeting_ShowAggregates}"
-                                                  IsChecked="{Binding Data, Mode=TwoWay, Source={StaticResource ShowAggregatesProxy}}"
-                                                  OffLabel="{lex:Loc General_No}"
-                                                  OnLabel="{lex:Loc General_Yes}"
+                                                  IsOn="{Binding Data, Mode=TwoWay, Source={StaticResource ShowAggregatesProxy}}"
+                                                  OffContent="{lex:Loc General_No}"
+                                                  OnContent="{lex:Loc General_Yes}"
                                                   ToolTip="{lex:Loc ToolTip_BudgetOverview_Aggregates}" />
                             </DockPanel>
                         </DataTemplate>
@@ -872,7 +872,7 @@
                 </attachedBehaviors:DynamicTableDataGridBehavior>
             </i:Interaction.Behaviors>
             <DataGrid.ColumnHeaderStyle>
-                <Style BasedOn="{StaticResource MetroDataGridColumnHeader}"
+                <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                        TargetType="{x:Type DataGridColumnHeader}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                     <Setter Property="VerticalContentAlignment" Value="Stretch" />

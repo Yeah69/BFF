@@ -36,7 +36,7 @@
                      Grid.Row="0"
                      Grid.Column="1"
                      MinWidth="50"
-                     BorderBrush="{StaticResource AccentColorBrush}"
+                     BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                      DockPanel.Dock="Right"
                      Focusable="True"
                      Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

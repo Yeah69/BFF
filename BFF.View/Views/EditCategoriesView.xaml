@@ -48,7 +48,7 @@
                             <DataTemplate>
                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                             Height="{StaticResource IconSize}"
-                                                            Foreground="{DynamicResource BlackBrush}"
+                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                             Kind="CallMerge"
                                                             ToolTip="{lex:Loc ToolTip_MergeToCategory}" />
                             </DataTemplate>
@@ -59,7 +59,7 @@
                                         Style="{StaticResource ButtonVisibleOnMouseOverDataGridRow}">
                                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                 Height="{StaticResource IconSize}"
-                                                                Foreground="{DynamicResource BlackBrush}"
+                                                                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                 Kind="CallMerge" />
                                 </Button>
                             </DataTemplate>
@@ -70,7 +70,7 @@
                             <DataTemplate>
                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                             Height="{StaticResource IconSize}"
-                                                            Foreground="{DynamicResource BlackBrush}"
+                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                             Kind="{StaticResource RemoveFromTableIcon}"
                                                             ToolTip="{lex:Loc ToolTip_DeleteRow}" />
                             </DataTemplate>
@@ -83,7 +83,7 @@
                                         Style="{StaticResource ButtonVisibleOnMouseOverDataGridRow}">
                                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                 Height="{StaticResource IconSize}"
-                                                                Foreground="{DynamicResource BlackBrush}"
+                                                                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                 Kind="{StaticResource RemoveFromTableIcon}" />
                                 </Button>
                             </DataTemplate>
@@ -129,7 +129,7 @@
                             <DataTemplate>
                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                             Height="{StaticResource IconSize}"
-                                                            Foreground="{DynamicResource BlackBrush}"
+                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                             Kind="CallMerge"
                                                             ToolTip="{lex:Loc ToolTip_MergeToIncomeCategory}" />
                             </DataTemplate>
@@ -140,7 +140,7 @@
                                         Style="{StaticResource ButtonVisibleOnMouseOverDataGridRow}">
                                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                 Height="{StaticResource IconSize}"
-                                                                Foreground="{DynamicResource BlackBrush}"
+                                                                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                 Kind="CallMerge" />
                                 </Button>
                             </DataTemplate>
@@ -151,7 +151,7 @@
                             <DataTemplate>
                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                             Height="{StaticResource IconSize}"
-                                                            Foreground="{DynamicResource BlackBrush}"
+                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                             Kind="{StaticResource RemoveFromTableIcon}"
                                                             ToolTip="{lex:Loc ToolTip_DeleteRow}" />
                             </DataTemplate>
@@ -163,7 +163,7 @@
                                         Style="{StaticResource ButtonVisibleOnMouseOverDataGridRow}">
                                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                 Height="{StaticResource IconSize}"
-                                                                Foreground="{DynamicResource BlackBrush}"
+                                                                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                 Kind="{StaticResource RemoveFromTableIcon}" />
                                 </Button>
                             </DataTemplate>

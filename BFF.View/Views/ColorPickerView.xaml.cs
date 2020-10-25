@@ -190,11 +190,11 @@ namespace BFF.View.Views
         {
             InitializeComponent();
 
-            _swatchPointerOuter.SetResourceReference(Shape.StrokeProperty, "WhiteBrush");
-            _swatchPointerInner.SetResourceReference(Shape.StrokeProperty, "AccentColorBrush");
+            _swatchPointerOuter.SetResourceReference(Shape.StrokeProperty, "MahApps.Brushes.ThemeBackground");
+            _swatchPointerInner.SetResourceReference(Shape.StrokeProperty, "MahApps.Brushes.Accent");
 
-            _alphaPointerOuter.SetResourceReference(Shape.StrokeProperty, "WhiteBrush");
-            _alphaPointerInner.SetResourceReference(Shape.StrokeProperty, "AccentColorBrush");
+            _alphaPointerOuter.SetResourceReference(Shape.StrokeProperty, "MahApps.Brushes.ThemeBackground");
+            _alphaPointerInner.SetResourceReference(Shape.StrokeProperty, "MahApps.Brushes.Accent");
 
             for (int i = 0; i < 360; i++)
             {

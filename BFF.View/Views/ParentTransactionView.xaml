@@ -169,7 +169,7 @@
                             </DataGrid.Columns>
                         </DataGrid>
                         <!--  Buttons  -->
-                        <DockPanel Background="{DynamicResource WhiteBrush}">
+                        <DockPanel Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
                             <Button Command="{Binding NewSubTransactionCommand}"
                                     ToolTip="New Subelement">
                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"

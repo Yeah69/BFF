@@ -11,7 +11,7 @@
     <Border DataContext="{Binding ElementName=UserControl}">
         <StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Border BorderBrush="{DynamicResource BlackBrush}"
+                <Border BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
                         BorderThickness="1">
                     <Canvas x:Name="Swatch"
                             Width="360"
@@ -19,7 +19,7 @@
                             PreviewMouseDown="Swatch_OnPreviewMouseDown" />
                 </Border>
 
-                <Border BorderBrush="{DynamicResource BlackBrush}"
+                <Border BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
                         BorderThickness="1">
                     <Canvas x:Name="HueScale"
                             Width="20"
@@ -31,7 +31,7 @@
                                    Height="12"
                                    Panel.ZIndex="2"
                                    Fill="Transparent"
-                                   Stroke="{DynamicResource WhiteBrush}"
+                                   Stroke="{DynamicResource MahApps.Brushes.ThemeBackground}"
                                    StrokeThickness="2" />
                         <Rectangle x:Name="HuePointerInner"
                                    Canvas.Left="3"
@@ -39,7 +39,7 @@
                                    Height="8"
                                    Panel.ZIndex="3"
                                    Fill="Transparent"
-                                   Stroke="{DynamicResource AccentColorBrush}"
+                                   Stroke="{DynamicResource MahApps.Brushes.Accent}"
                                    StrokeThickness="2" />
                     </Canvas>
                 </Border>
@@ -47,7 +47,7 @@
 
             <StackPanel Orientation="Horizontal">
 
-                <Border BorderBrush="{DynamicResource BlackBrush}"
+                <Border BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
                         BorderThickness="1">
                     <Canvas x:Name="AlphaScale"
                             Width="360"
@@ -66,7 +66,7 @@
                     </Canvas>
                 </Border>
 
-                <Border BorderBrush="{DynamicResource BlackBrush}"
+                <Border BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
                         BorderThickness="1">
                     <Canvas Width="20"
                             Height="20"

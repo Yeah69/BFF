@@ -51,7 +51,7 @@
                             <DataTemplate>
                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                             Height="{StaticResource IconSize}"
-                                                            Foreground="{DynamicResource BlackBrush}"
+                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                             Kind="CallMerge"
                                                             ToolTip="{lex:Loc ToolTip_MergeToFlag}" />
                             </DataTemplate>
@@ -62,7 +62,7 @@
                                         Style="{StaticResource ButtonVisibleOnMouseOverDataGridRow}">
                                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                 Height="{StaticResource IconSize}"
-                                                                Foreground="{DynamicResource BlackBrush}"
+                                                                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                 Kind="CallMerge" />
                                 </Button>
                             </DataTemplate>
@@ -73,7 +73,7 @@
                             <DataTemplate>
                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                             Height="{StaticResource IconSize}"
-                                                            Foreground="{DynamicResource BlackBrush}"
+                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                             Kind="{StaticResource RemoveFromTableIcon}"
                                                             ToolTip="{lex:Loc ToolTip_DeleteRow}" />
                             </DataTemplate>
@@ -85,7 +85,7 @@
                                         Style="{StaticResource ButtonVisibleOnMouseOverDataGridRow}">
                                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                 Height="{StaticResource IconSize}"
-                                                                Foreground="{StaticResource BlackBrush}"
+                                                                Foreground="{StaticResource MahApps.Brushes.ThemeForeground}"
                                                                 Kind="{StaticResource RemoveFromTableIcon}" />
                                 </Button>
                             </DataTemplate>

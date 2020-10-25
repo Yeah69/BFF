@@ -82,7 +82,7 @@
                                         Command="{Binding DeleteCommand}">
                                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                 Height="{StaticResource IconSize}"
-                                                                Foreground="{StaticResource BlackBrush}"
+                                                                Foreground="{StaticResource MahApps.Brushes.ThemeForeground}"
                                                                 Kind="{StaticResource RemoveFromTableIcon}" />
                                 </Button>
                             </DataTemplate>

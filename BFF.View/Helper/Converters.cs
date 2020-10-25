@@ -37,7 +37,7 @@ namespace BFF.View.Helper
             (SolidColorBrush) Application.Current.TryFindResource("TransferBrush") ?? Brushes.RoyalBlue;
 
         private static SolidColorBrush NeutralForegroundBrush =>
-            (SolidColorBrush) Application.Current.TryFindResource("BlackBrush") ?? Brushes.Black;
+            (SolidColorBrush) Application.Current.TryFindResource("MahApps.Brushes.ThemeForeground") ?? Brushes.Black;
 
         //Single Value Converters
 

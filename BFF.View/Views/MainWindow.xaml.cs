@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,9 +9,9 @@ using BFF.Properties;
 using BFF.View.Views.Dialogs;
 using BFF.ViewModel.ViewModels;
 using BFF.ViewModel.ViewModels.Import;
-using MahApps.Metro;
+using ControlzEx.Theming;
 using MahApps.Metro.Controls.Dialogs;
-using WPFLocalizeExtension.Engine;
+using MrMeeseeks.Extensions;
 using WPFLocalizeExtension.Providers;
 
 namespace BFF.View.Views
@@ -53,29 +52,32 @@ namespace BFF.View.Views
 
             void InitializeAppThemeAndAccentComboBoxes()
             {
-                AppTheme initialAppTheme = ThemeManager.GetAppTheme(Settings.Default.MahApps_AppTheme);
-                Accent initialAccent = ThemeManager.GetAccent(Settings.Default.MahApps_Accent);
-                foreach (AppTheme theme in ThemeManager.AppThemes.OrderBy(x => x.Name))
+                Theme? initialTheme = ThemeManager.Current.GetTheme(Settings.Default.MahApps_AppTheme, Settings.Default.MahApps_Accent);
+                foreach (var theme in 
+                    ThemeManager
+                        .Current
+                        .BaseColors
+                        .Select(c => ThemeManager.Current.GetTheme(c, "Blue"))
+                        .WhereNotNull()
+                        .Select(theme => new ThemeWrap(theme.BaseColorScheme, (SolidColorBrush)theme.Resources["MahApps.Brushes.ThemeBackground"]))
+                        .OrderBy(x => x.Name))
                 {
-                    ThemeWrap current = new ThemeWrap
-                    {
-                        Theme = theme,
-                        WhiteBrush = (SolidColorBrush)theme.Resources["WhiteBrush"]
-                    };
-                    ThemeCombo.Items.Add(current);
-                    if (theme == initialAppTheme)
-                        ThemeCombo.SelectedItem = current;
+                    ThemeCombo.Items.Add(theme);
+                    if (theme.Name == initialTheme?.BaseColorScheme)
+                        ThemeCombo.SelectedItem = theme;
                 }
-                foreach (Accent accent in ThemeManager.Accents.OrderBy(x => x.Name))
+                foreach (var theme in 
+                    ThemeManager
+                        .Current
+                        .ColorSchemes
+                        .Select(c => ThemeManager.Current.GetTheme("Dark", c))
+                        .WhereNotNull()
+                        .Select(theme => new ThemeWrap(theme.ColorScheme, (SolidColorBrush)theme.Resources["MahApps.Brushes.Accent"]))
+                        .OrderBy(x => x.Name))
                 {
-                    AccentWrap current = new AccentWrap
-                    {
-                        Accent = accent,
-                        AccentColorBrush = (SolidColorBrush)accent.Resources["AccentColorBrush"]
-                    };
-                    AccentCombo.Items.Add(current);
-                    if (accent == initialAccent)
-                        AccentCombo.SelectedItem = current;
+                    AccentCombo.Items.Add(theme);
+                    if (theme.Name == initialTheme?.ColorScheme)
+                        AccentCombo.SelectedItem = theme;
                 }
             }
         }
@@ -87,17 +89,19 @@ namespace BFF.View.Views
 
         private void ThemeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Accent accent = ThemeManager.GetAccent(Settings.Default.MahApps_Accent);
-            ThemeManager.ChangeAppStyle(Application.Current, accent, ((ThemeWrap)ThemeCombo.SelectedItem).Theme);
-            Settings.Default.MahApps_AppTheme = ((ThemeWrap)ThemeCombo.SelectedItem).Theme.Name;
+            var baseColorScheme = ((ThemeWrap)ThemeCombo.SelectedItem).Name;
+            var theme = ThemeManager.Current.GetTheme(baseColorScheme, Settings.Default.MahApps_Accent);
+            ThemeManager.Current.ChangeTheme(Application.Current, theme ?? throw new NullReferenceException());
+            Settings.Default.MahApps_AppTheme = baseColorScheme;
             Settings.Default.Save();
         }
 
         private void AccentCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            AppTheme theme = ThemeManager.GetAppTheme(Settings.Default.MahApps_AppTheme);
-            ThemeManager.ChangeAppStyle(Application.Current, ((AccentWrap)AccentCombo.SelectedItem).Accent, theme);
-            Settings.Default.MahApps_Accent = ((AccentWrap)AccentCombo.SelectedItem).Accent.Name;
+            var colorScheme = ((ThemeWrap)AccentCombo.SelectedItem).Name;
+            var theme = ThemeManager.Current.GetTheme(Settings.Default.MahApps_AppTheme, colorScheme);
+            ThemeManager.Current.ChangeTheme(Application.Current, theme ?? throw new NullReferenceException());
+            Settings.Default.MahApps_Accent = colorScheme;
             Settings.Default.Save();
         }
 
@@ -151,18 +155,18 @@ namespace BFF.View.Views
 
     internal class ThemeWrap
     {
-        public AppTheme Theme { get; set; }
-        public SolidColorBrush WhiteBrush { get; set; }
+        public ThemeWrap(string name, SolidColorBrush brush)
+        {
+            Name = name;
+            Brush = brush;
+        }
+
+        public string Name { get; }
+        public SolidColorBrush Brush { get; }
 
         public override string ToString()
         {
-            return Theme.Name;
+            return Name;
         }
-    }
-
-    internal class AccentWrap
-    {
-        public Accent Accent { get; set; }
-        public SolidColorBrush AccentColorBrush { get; set; }
     }
 }
