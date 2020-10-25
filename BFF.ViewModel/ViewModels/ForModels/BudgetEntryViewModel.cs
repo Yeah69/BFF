@@ -46,7 +46,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         Task SetBudgetToAverageOutflowOfLastMonths(int monthCount);
     }
 
-    internal class BudgetEntryViewModel : DataModelViewModel, IBudgetEntryViewModel
+    public class BudgetEntryViewModel : DataModelViewModel, IBudgetEntryViewModel
     {
         private readonly IBudgetEntry _budgetEntry;
 

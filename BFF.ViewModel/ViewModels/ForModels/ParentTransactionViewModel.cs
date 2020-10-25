@@ -61,7 +61,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model ParentTransaction.
     /// </summary>
-    internal sealed class ParentTransactionViewModel : TransactionBaseViewModel, IParentTransactionViewModel
+    public sealed class ParentTransactionViewModel : TransactionBaseViewModel, IParentTransactionViewModel
     {
         private readonly IBffSettings _bffSettings;
         public ITransDataGridColumnManager TransDataGridColumnManager { get; }

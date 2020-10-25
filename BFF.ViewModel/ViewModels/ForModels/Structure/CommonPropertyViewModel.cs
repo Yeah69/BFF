@@ -12,7 +12,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         string Name { get; set; }
     }
 
-    internal abstract class CommonPropertyViewModel : DataModelViewModel, ICommonPropertyViewModel
+    public abstract class CommonPropertyViewModel : DataModelViewModel, ICommonPropertyViewModel
     {
         private readonly ICommonProperty _commonProperty;
 

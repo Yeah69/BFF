@@ -7,7 +7,7 @@ namespace BFF.ViewModel.ViewModels
 {
     public class BudgetMonthViewModelPlaceholder : IBudgetMonthViewModel
     {
-        internal BudgetMonthViewModelPlaceholder(
+        public BudgetMonthViewModelPlaceholder(
             DateTime month)
         {
             Month = month;

@@ -7,7 +7,7 @@ using BFF.ViewModel.ViewModels.ForModels.Utility;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
-    internal class BudgetEntryViewModelPlaceholder : NotifyingErrorViewModelBase, IBudgetEntryViewModel
+    public class BudgetEntryViewModelPlaceholder : NotifyingErrorViewModelBase, IBudgetEntryViewModel
     {
         internal static BudgetEntryViewModelPlaceholder Instance => new BudgetEntryViewModelPlaceholder();
 

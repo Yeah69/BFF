@@ -22,7 +22,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
     /// <summary>
     /// Base class for ViewModels of the models Transaction, Income, ParentTransaction and ParentIncome.
     /// </summary>
-    internal abstract class TransactionBaseViewModel : TransBaseViewModel, ITransactionBaseViewModel
+    public abstract class TransactionBaseViewModel : TransBaseViewModel, ITransactionBaseViewModel
     {
         private readonly ITransactionBase _transactionBase;
         private readonly IAccountViewModelService _accountViewModelService;

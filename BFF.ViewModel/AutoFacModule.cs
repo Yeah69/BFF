@@ -26,6 +26,7 @@ namespace BFF.ViewModel
             };
 
             builder.RegisterAssemblyTypes(assemblies)
+                .Where(t => t != typeof(BudgetEntryViewModelPlaceholder))
                 .AsImplementedInterfaces()
                 .AsSelf();
 
@@ -69,6 +70,11 @@ namespace BFF.ViewModel
                 })
                 .AsImplementedInterfaces()
                 .ExternallyOwned();
+
+            builder.RegisterInstance(BudgetEntryViewModelPlaceholder.Instance)
+                .As<BudgetEntryViewModelPlaceholder>()
+                .AsSelf()
+                .SingleInstance();
 
             builder.RegisterType<MainWindowViewModel>().As<IMainWindowViewModel>().SingleInstance();
 

@@ -13,7 +13,7 @@ namespace BFF.ViewModel.Helper
     {
     }
 
-    internal class RxRelayCommand<T> : IRxRelayCommand<T>
+    public class RxRelayCommand<T> : IRxRelayCommand<T>
     {
         protected Action<T> ExecuteAction;
         private readonly IDisposable _canExecuteSubscription;
@@ -48,7 +48,7 @@ namespace BFF.ViewModel.Helper
         public void Dispose() => _canExecuteSubscription.Dispose();
     }
 
-    internal sealed class RxRelayCommand : RxRelayCommand<object>, IRxRelayCommand
+    public sealed class RxRelayCommand : RxRelayCommand<object>, IRxRelayCommand
     {
         private RxRelayCommand(IObservable<bool> canExecute, bool initialCanExecute = true) : base(canExecute, initialCanExecute)
         {

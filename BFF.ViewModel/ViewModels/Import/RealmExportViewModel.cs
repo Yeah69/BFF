@@ -6,7 +6,7 @@ using BFF.ViewModel.ViewModels.Dialogs;
 
 namespace BFF.ViewModel.ViewModels.Import
 {
-    internal class RealmFileExportViewModel : ViewModelBase, IExportViewModel
+    public class RealmFileExportViewModel : ViewModelBase, IExportViewModel
     {
         private readonly Func<(string Path, string Password), IRealmExportConfiguration> _exportingConfigurationFactory;
         private string _path;

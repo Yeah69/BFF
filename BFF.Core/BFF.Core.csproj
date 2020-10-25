@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.9.4" />
+    <PackageReference Include="Autofac" Version="6.0.0" />
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
     <PackageReference Include="morelinq" Version="3.3.2" />
-    <PackageReference Include="MrMeeseeks" Version="69.0.9" />
+    <PackageReference Include="MrMeeseeks" Version="69.0.10" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
     <PackageReference Include="System.Reactive.Interfaces" Version="4.2.0" />
   </ItemGroup>

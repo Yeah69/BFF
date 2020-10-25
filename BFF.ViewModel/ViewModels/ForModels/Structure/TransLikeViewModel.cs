@@ -35,7 +35,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         void NotifyErrorsIfAny();
     }
 
-    internal abstract class TransLikeViewModel : DataModelViewModel, ITransLikeViewModel, ITransient
+    public abstract class TransLikeViewModel : DataModelViewModel, ITransLikeViewModel, ITransient
     {
         private readonly ITransLike _transLike;
         private readonly Subject<Unit> _removeRequestSubject = new Subject<Unit>();

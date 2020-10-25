@@ -39,6 +39,15 @@ namespace BFF.Persistence
             };
 
             builder.RegisterAssemblyTypes(assemblies)
+                .Where(t =>
+                {
+                    if (t.Name.StartsWith("BFFPersistence_ProcessedByFody") || t.Name.StartsWith("RealmModuleInitializer"))
+                    {
+                        return false;
+                    }
+
+                    return true;
+                })
                 .AsImplementedInterfaces()
                 .AsSelf();
 

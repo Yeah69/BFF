@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -26,7 +25,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         bool IsInserted { get; }
     }
 
-    internal abstract class DataModelViewModel : NotifyingErrorViewModelBase, IDataModelViewModel, IDisposable
+    public abstract class DataModelViewModel : NotifyingErrorViewModelBase, IDataModelViewModel, IDisposable
     {
         private readonly IDataModel _dataModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;

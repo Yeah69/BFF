@@ -23,7 +23,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         bool CanMergeTo(IIncomeCategoryViewModel target);
     }
 
-    internal class IncomeCategoryViewModel : CategoryBaseViewModel, IIncomeCategoryViewModel
+    public class IncomeCategoryViewModel : CategoryBaseViewModel, IIncomeCategoryViewModel
     {
         private readonly IIncomeCategory _incomeCategory;
         private readonly ILocalizer _localizer;

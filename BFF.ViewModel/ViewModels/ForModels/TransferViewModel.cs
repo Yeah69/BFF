@@ -37,7 +37,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model Transfer.
     /// </summary>
-    internal sealed class TransferViewModel : TransBaseViewModel, ITransferViewModel
+    public sealed class TransferViewModel : TransBaseViewModel, ITransferViewModel
     {
         private readonly ITransfer _transfer;
         private readonly IAccountViewModelService _accountViewModelService;

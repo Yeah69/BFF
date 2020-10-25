@@ -24,7 +24,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     /// <summary>
     /// The ViewModel of the Model Transaction.
     /// </summary>
-    internal sealed class TransactionViewModel : TransactionBaseViewModel, ITransactionViewModel
+    public sealed class TransactionViewModel : TransactionBaseViewModel, ITransactionViewModel
     {
         private readonly ITransaction _transaction;
         private readonly ILocalizer _localizer;
