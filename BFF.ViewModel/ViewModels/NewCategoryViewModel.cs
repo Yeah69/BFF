@@ -20,9 +20,9 @@ namespace BFF.ViewModel.ViewModels
 {
     public interface INewCategoryViewModel
     {
-        string Name { get; set; }
+        string? Name { get; set; }
 
-        IReactiveProperty<ICategoryViewModel> Parent { get; }
+        IReactiveProperty<ICategoryViewModel?> Parent { get; }
 
         IReactiveProperty<bool> IsIncomeRelevant { get; }
 
@@ -32,11 +32,11 @@ namespace BFF.ViewModel.ViewModels
 
         ICommand DeselectParentCommand { get; }
 
-        IObservableReadOnlyList<ICategoryViewModel> AllPotentialParents { get; }
+        IObservableReadOnlyList<ICategoryViewModel>? AllPotentialParents { get; }
 
         IObservableReadOnlyList<ICategoryBaseViewModel> All { get; }
 
-        IHaveCategoryViewModel CurrentCategoryOwner { get; set; }
+        IHaveCategoryViewModel? CurrentCategoryOwner { get; set; }
     }
 
     internal sealed class NewCategoryViewModel : NotifyingErrorViewModelBase, INewCategoryViewModel, IOncePerBackend, IDisposable
@@ -47,7 +47,7 @@ namespace BFF.ViewModel.ViewModels
         private readonly ICategoryBaseViewModelService _categoryBaseViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
-        private string _name;
+        private string? _name;
 
         public NewCategoryViewModel(
             ICreateNewModels createNewModels,
@@ -55,17 +55,16 @@ namespace BFF.ViewModel.ViewModels
             ICategoryViewModelInitializer categoryViewModelInitializer,
             ICategoryViewModelService categoryViewModelService,
             IIncomeCategoryViewModelService incomeCategoryViewModelService,
-            IBudgetOverviewViewModel budgetOverviewViewModel,
             ICategoryBaseViewModelService categoryBaseViewModelService)
         {
-            bool ValidateNewCategoryRelationCondition(string text, ICategoryViewModel parent)
+            bool ValidateNewCategoryRelationCondition(string? text, ICategoryViewModel? parent)
             {
-                if(IsIncomeRelevant?.Value ?? false)
+                if(IsIncomeRelevant.Value)
                     return incomeCategoryViewModelService.All.All(icvm => icvm.Name != text);
                 return parent is null && AllPotentialParents.Where(cvw => cvw.Parent is null).All(cvm => cvm.Name != text) ||
                        parent != null && parent.Categories.All(cvm => cvm != null && cvm.Name != text);
             }
-            string ValidateNewCategoryRelationParent(string text, ICategoryViewModel parent)
+            string? ValidateNewCategoryRelationParent(string? text, ICategoryViewModel? parent)
             {
                 return ValidateNewCategoryRelationCondition(text, parent)
                     ? null
@@ -85,7 +84,7 @@ namespace BFF.ViewModel.ViewModels
                     if (IsIncomeRelevant.Value)
                     {
                         IIncomeCategory newCategory = createNewModels.CreateIncomeCategory();
-                        newCategory.Name = Name.Trim();
+                        newCategory.Name = Name?.Trim() ?? String.Empty;
                         newCategory.MonthOffset = MonthOffset.Value;
                         await newCategory.InsertAsync();
                         if (CurrentCategoryOwner != null)
@@ -96,11 +95,11 @@ namespace BFF.ViewModel.ViewModels
                     {
                         ICategory newCategory = createNewModels.CreateCategory();
                         newCategory.Parent = _categoryViewModelService.GetModel(Parent.Value);
-                        newCategory.Name = Name.Trim();
+                        newCategory.Name = Name?.Trim() ?? String.Empty;
                         newCategory.Parent?.AddCategory(newCategory);
                         await newCategory.InsertAsync();
                         OnPropertyChanged(nameof(AllPotentialParents));
-                        var categoryViewModel = _categoryViewModelService.GetViewModel(newCategory);
+                        var categoryViewModel = _categoryViewModelService.GetViewModel(newCategory) ?? throw new NullReferenceException("Shouldn't be null");
                         categoryViewModelInitializer.Initialize(categoryViewModel);
                         if (CurrentCategoryOwner != null)
                             CurrentCategoryOwner.Category = categoryViewModel;
@@ -114,10 +113,6 @@ namespace BFF.ViewModel.ViewModels
                 .AddTo(_compositeDisposable);
 
             DeselectParentCommand = new RxRelayCommand(() => Parent.Value = null);
-            
-            Parent = new ReactiveProperty<ICategoryViewModel>(mode: ReactivePropertyMode.DistinctUntilChanged)
-                .SetValidateNotifyError(parent => ValidateNewCategoryRelationParent(Name, parent))
-                .AddTo(_compositeDisposable);
 
             IsIncomeRelevant = new ReactiveProperty<bool>(mode: ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(_compositeDisposable);
@@ -127,6 +122,10 @@ namespace BFF.ViewModel.ViewModels
                 (Parent as ReactiveProperty<ICategoryViewModel>)?.ForceValidate();
                 ValidateName();
             }).AddTo(_compositeDisposable);
+            
+            Parent = new ReactiveProperty<ICategoryViewModel?>(mode: ReactivePropertyMode.DistinctUntilChanged)
+                .SetValidateNotifyError(parent => ValidateNewCategoryRelationParent(Name, parent))
+                .AddTo(_compositeDisposable);
        
             MonthOffset = new ReactiveProperty<int>(mode: ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(_compositeDisposable);
@@ -142,7 +141,7 @@ namespace BFF.ViewModel.ViewModels
         /// <summary>
         /// User input of the to be searched or to be created Category.
         /// </summary>
-        public string Name
+        public string? Name
         {
             get => _name;
             set
@@ -157,7 +156,7 @@ namespace BFF.ViewModel.ViewModels
         /// <summary>
         /// The ParentCategory to which the new Category should be added.
         /// </summary>
-        public IReactiveProperty<ICategoryViewModel> Parent { get; }
+        public IReactiveProperty<ICategoryViewModel?> Parent { get; }
 
         public IReactiveProperty<bool> IsIncomeRelevant { get; }
         public IReactiveProperty<int> MonthOffset { get; }
@@ -172,15 +171,15 @@ namespace BFF.ViewModel.ViewModels
         /// <summary>
         /// All currently available Categories.
         /// </summary>
-        public IObservableReadOnlyList<ICategoryViewModel> AllPotentialParents => _categoryViewModelService.All;
+        public IObservableReadOnlyList<ICategoryViewModel>? AllPotentialParents => _categoryViewModelService.All;
 
         public IObservableReadOnlyList<ICategoryBaseViewModel> All => _categoryBaseViewModelService.All;
 
-        public IHaveCategoryViewModel CurrentCategoryOwner { get; set; }
+        public IHaveCategoryViewModel? CurrentCategoryOwner { get; set; }
 
         public void Dispose()
         {
-            _compositeDisposable?.Dispose();
+            _compositeDisposable.Dispose();
         }
 
         private bool ValidateName()

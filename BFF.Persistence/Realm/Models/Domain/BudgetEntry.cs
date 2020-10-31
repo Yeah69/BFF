@@ -19,7 +19,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public BudgetEntry(
             // parameters
-            Persistence.BudgetEntry realmObject,
+            Persistence.BudgetEntry? realmObject,
             DateTime month,
             ICategory category, 
             long budget, 
@@ -66,10 +66,8 @@ namespace BFF.Persistence.Realm.Models.Domain
             void UpdateRealmObject(Persistence.BudgetEntry ro)
             {
                 ro.Category = 
-                    Category is null 
-                        ? null 
-                        : (Category as Category)?.RealmObject 
-                          ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
+                    (Category as Category)?.RealmObject
+                        ?? throw new ArgumentException("Model objects from different backends shouldn't be mixed");
                 ro.MonthIndex = Month.ToMonthIndex();
                 ro.Budget = Budget;
             }
@@ -77,7 +75,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public Persistence.BudgetEntry RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.BudgetEntry? RealmObject => _realmObjectWrap.RealmObject;
 
         public override Task InsertAsync()
         {
@@ -97,22 +95,30 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override Task<IEnumerable<ITransBase>> GetAssociatedTransAsync()
         {
-            return _transRepository.GetFromMonthAndCategoryAsync(Month, Category);
+            return _transRepository.GetFromMonthAndCategoryAsync(Month, Category ?? throw new NullReferenceException("Shouldn't be null at that point"));
         }
 
         public override Task<IEnumerable<ITransBase>> GetAssociatedTransIncludingSubCategoriesAsync()
         {
-            return _transRepository.GetFromMonthAndCategoriesAsync(Month, Category.IterateTreeBreadthFirst(c => c.Categories));
+            return _transRepository.GetFromMonthAndCategoriesAsync(
+                Month, 
+                Category.IterateTreeBreadthFirst(c => c.Categories));
         }
 
         protected override Task<long> AverageBudgetOfLastMonths(int monthCount)
         {
-            return _budgetOrm.GetAverageBudgetOfLastMonths(this.Month.ToMonthIndex(), ((Category) this.Category).RealmObject, monthCount);
+            return _budgetOrm.GetAverageBudgetOfLastMonths(
+                this.Month.ToMonthIndex(), 
+                (this.Category as Category)?.RealmObject ?? throw new InvalidCastException("Should be the Realm type, but isn't."),
+                monthCount);
         }
 
         protected override Task<long> AverageOutflowOfLastMonths(int monthCount)
         {
-            return _budgetOrm.GetAverageOutflowOfLastMonths(this.Month.ToMonthIndex(), ((Category) this.Category).RealmObject, monthCount);
+            return _budgetOrm.GetAverageOutflowOfLastMonths(
+                this.Month.ToMonthIndex(),
+                (this.Category as Category)?.RealmObject ?? throw new InvalidCastException("Should be the Realm type, but isn't."),
+                monthCount);
         }
     }
 }

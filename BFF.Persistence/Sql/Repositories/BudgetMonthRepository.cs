@@ -37,7 +37,7 @@ namespace BFF.Persistence.Sql.Repositories
             var _ = await _budgetOrm.Value.FindAsync(
                 year,
                 (await _categoryRepository.Value.AllAsync.ConfigureAwait(false)).OfType<ISqlModel>().Select(c => c.Id).ToArray(),
-                (await _incomeCategoryRepository.Value.AllAsync.ConfigureAwait(false)).OfType<ISqlModel>().Select(ic => (ic.Id, (ic as IIncomeCategory).MonthOffset)).ToArray()).ConfigureAwait(false);
+                (await _incomeCategoryRepository.Value.AllAsync.ConfigureAwait(false)).OfType<ISqlModel>().Select(ic => (ic.Id, (ic as IIncomeCategory ?? throw new NullReferenceException("Shouldn't be null")).MonthOffset)).ToArray()).ConfigureAwait(false);
 
             long currentNotBudgetedOrOverbudgeted = _.InitialNotBudgetedOrOverbudgeted;
             long currentOverspentInPreviousMonth = _.InitialOverspentInPreviousMonth;

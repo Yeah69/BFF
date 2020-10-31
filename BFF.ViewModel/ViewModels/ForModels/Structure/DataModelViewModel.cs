@@ -20,7 +20,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         
         Task DeleteAsync();
 
-        IRxRelayCommand DeleteCommand { get; }
+        IRxRelayCommand? DeleteCommand { get; }
 
         bool IsInserted { get; }
     }

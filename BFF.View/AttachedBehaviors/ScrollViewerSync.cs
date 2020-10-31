@@ -14,7 +14,7 @@ namespace BFF.View.AttachedBehaviors
 {
     public class ScrollViewerSync : Behavior<FrameworkElement>
     {
-        private static readonly IDictionary<string, IList<ScrollViewer>> GroupNameToScrollViewers = new Dictionary<string, IList<ScrollViewer>>();
+        private static readonly IDictionary<string, IList<ScrollViewer?>> GroupNameToScrollViewers = new Dictionary<string, IList<ScrollViewer?>>();
         private static readonly IDictionary<string, double> GroupNameToScrollPosition = new Dictionary<string, double>();
 
         private static readonly IScheduler
@@ -40,7 +40,7 @@ namespace BFF.View.AttachedBehaviors
                 {
                     string key = (string)args.NewValue;
                     if (!GroupNameToScrollViewers.ContainsKey(key))
-                        GroupNameToScrollViewers[key] = new List<ScrollViewer>();
+                        GroupNameToScrollViewers[key] = new List<ScrollViewer?>();
                     if(!GroupNameToScrollViewers[key].Contains(associatedScrollViewer))
                         GroupNameToScrollViewers[key].Add(associatedScrollViewer);
                 }
@@ -52,9 +52,9 @@ namespace BFF.View.AttachedBehaviors
             set => SetValue(GroupNameProperty, value);
         }
 
-        private CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private CompositeDisposable? _compositeDisposable = new CompositeDisposable();
 
-        private ScrollViewer _associatedScrollViewer;
+        private ScrollViewer? _associatedScrollViewer;
 
         protected override void OnAttached()
         {
@@ -65,8 +65,10 @@ namespace BFF.View.AttachedBehaviors
 
                 _associatedScrollViewer = AssociatedObject.GetDescendantByType<ScrollViewer>();
 
+                if (_associatedScrollViewer is null) return;
+
                 if (!GroupNameToScrollViewers.ContainsKey(GroupName))
-                    GroupNameToScrollViewers[GroupName] = new List<ScrollViewer>();
+                    GroupNameToScrollViewers[GroupName] = new List<ScrollViewer?>();
                 if (!GroupNameToScrollPosition.ContainsKey(GroupName))
                     GroupNameToScrollPosition[GroupName] = 0;
                 if (!GroupNameToScrollViewers[GroupName].Contains(_associatedScrollViewer))

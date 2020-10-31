@@ -15,7 +15,7 @@ namespace BFF.ViewModel.Helper
 
     public class RxRelayCommand<T> : IRxRelayCommand<T>
     {
-        protected Action<T> ExecuteAction;
+        protected Action<T>? ExecuteAction;
         private readonly IDisposable _canExecuteSubscription;
         private bool _canExecute;
 
@@ -41,9 +41,9 @@ namespace BFF.ViewModel.Helper
 
         public bool CanExecute(object parameter) => _canExecute;
 
-        public void Execute(object parameter) => ExecuteAction((T) parameter);
+        public void Execute(object parameter) => ExecuteAction?.Invoke((T) parameter);
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 
         public void Dispose() => _canExecuteSubscription.Dispose();
     }
@@ -63,7 +63,7 @@ namespace BFF.ViewModel.Helper
 
     internal class AsyncRxRelayCommand<T> : IRxRelayCommand<T>
     {
-        protected Func<T, Task> ExecuteAction;
+        protected Func<T, Task>? ExecuteAction;
         private readonly IDisposable _canExecuteSubscription;
         private bool _canExecute;
 
@@ -89,9 +89,9 @@ namespace BFF.ViewModel.Helper
 
         public bool CanExecute(object parameter) => _canExecute;
 
-        public void Execute(object parameter) => ExecuteAction((T) parameter);
+        public void Execute(object parameter) => ExecuteAction?.Invoke((T) parameter);
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 
         public void Dispose() => _canExecuteSubscription.Dispose();
     }

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Windows.Markup;
-using JetBrains.Annotations;
 
 namespace BFF.View.Helper
 {
@@ -11,12 +10,7 @@ namespace BFF.View.Helper
         private Type _enumType;
 
 
-        public EnumerationExtension([NotNull] Type enumType)
-        {
-            enumType = enumType ?? throw new ArgumentNullException(nameof(enumType));
-
-            EnumType = enumType;
-        }
+        public EnumerationExtension(Type enumType) => _enumType = enumType;
 
         public Type EnumType
         {
@@ -44,15 +38,15 @@ namespace BFF.View.Helper
                 select new EnumerationMember
                 {
                     Value = enumValue,
-                    Description = GetDescription(enumValue)
+                    Description = GetDescription(enumValue) ?? String.Empty
                 }).ToArray();
         }
 
-        private string GetDescription(object enumValue)
+        private string? GetDescription(object enumValue)
         {
             return EnumType
-                .GetField(enumValue.ToString())
-                .GetCustomAttributes(typeof(EnumMemberAttribute), false)
+                .GetField(enumValue.ToString() ?? String.Empty)
+                ?.GetCustomAttributes(typeof(EnumMemberAttribute), false)
                 .FirstOrDefault() is EnumMemberAttribute enumMemberAttribute
                 ? enumMemberAttribute.Value
                 : enumValue.ToString();
@@ -60,8 +54,8 @@ namespace BFF.View.Helper
 
         public class EnumerationMember
         {
-            public string Description { get; set; }
-            public object Value { get; set; }
+            public string Description { get; set; } = String.Empty;
+            public object Value { get; set; } = new object();
         }
     }
 }

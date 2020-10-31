@@ -5,11 +5,11 @@ namespace BFF.View.Extensions
 {
     public static class DataGridRowExtensions
     {
-        public static DataGridCell GetCell(this DataGridRow rowContainer, int column)
+        public static DataGridCell? GetCell(this DataGridRow rowContainer, int column)
         {
-            return rowContainer?
-                .FindVisualChild<DataGridCellsPresenter>()?
-                .ItemContainerGenerator
+            return rowContainer
+                .FindVisualChild<DataGridCellsPresenter>()
+                ?.ItemContainerGenerator
                 .ContainerFromIndex(column) as DataGridCell;
         }
     }

@@ -16,9 +16,9 @@ namespace BFF.ViewModel.ViewModels
         ISlidingWindow<IBudgetEntryViewModel> BudgetEntries { get; }
     }
 
-    internal sealed class BudgetCategoryViewModel : ViewModelBase, IBudgetCategoryViewModel, IDisposable, ITransient
+    internal sealed class BudgetCategoryViewModel : ViewModelBase, IBudgetCategoryViewModel, IAsyncDisposable, ITransient
     {
-        private readonly IDisposable _disposable;
+        private readonly IAsyncDisposable _disposable;
 
         public BudgetCategoryViewModel(
             // parameter
@@ -44,6 +44,7 @@ namespace BFF.ViewModel.ViewModels
                             .GetBudgetEntriesFor(DateTimeExtensions.FromMonthIndex(page).Year)
                             .ConfigureAwait(false))
                         .Select(budgetEntryViewModelService.GetViewModel)
+                        .WhereNotNullRef()
                         .ToArray(),
                     () =>
                         Task.FromResult(
@@ -56,9 +57,6 @@ namespace BFF.ViewModel.ViewModels
         
         public ISlidingWindow<IBudgetEntryViewModel> BudgetEntries { get; }
 
-        public void Dispose()
-        {
-            _disposable.Dispose();
-        }
+        public ValueTask DisposeAsync() => _disposable.DisposeAsync();
     }
 }

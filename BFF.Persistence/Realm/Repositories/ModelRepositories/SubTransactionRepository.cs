@@ -45,13 +45,13 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             async Task<ISubTransaction> InnerAsync(Realms.Realm _)
             {
                 return new Models.Domain.SubTransaction(
-                    _crudOrm,
                     persistenceModel,
                     persistenceModel.Category is null
                         ? null
                         : await _categoryBaseRepository.Value.FindAsync(persistenceModel.Category).ConfigureAwait(false),
                     persistenceModel.Memo,
-                    persistenceModel.Sum);
+                    persistenceModel.Sum,
+                    _crudOrm);
             }
         }
     }

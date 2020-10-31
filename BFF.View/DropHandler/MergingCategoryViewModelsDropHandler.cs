@@ -12,10 +12,6 @@ namespace BFF.View.DropHandler
 
         public static IDropTarget Instance => Lazy.Value;
 
-        public MergingCategoryViewModelsDropHandler()
-        {
-        }
-
         public void DragOver(IDropInfo dropInfo)
         {
             if (dropInfo.Data is ICategoryViewModel sourceItem 
@@ -30,9 +26,9 @@ namespace BFF.View.DropHandler
 
         public void Drop(IDropInfo dropInfo)
         {
-            ICategoryViewModel sourceItem = dropInfo.Data as ICategoryViewModel;
-            ICategoryViewModel targetItem = dropInfo.TargetItem as ICategoryViewModel;
-            sourceItem?.MergeTo(targetItem);
+            if (dropInfo.Data is ICategoryViewModel sourceItem 
+                && dropInfo.TargetItem is ICategoryViewModel targetItem)
+                sourceItem.MergeTo(targetItem);
         }
     }
 }

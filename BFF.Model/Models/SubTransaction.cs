@@ -5,19 +5,19 @@ namespace BFF.Model.Models
 {
     public interface ISubTransaction : ITransLike, IHaveCategory
     {
-        IParentTransaction Parent { get; set; }
+        IParentTransaction? Parent { get; set; }
         
         long Sum { get; set; }
     }
 
     public abstract class SubTransaction : TransLike, ISubTransaction
     {
-        private IParentTransaction _parent;
-        private ICategoryBase _category;
+        private IParentTransaction? _parent;
+        private ICategoryBase? _category;
         private long _sum;
         
         public SubTransaction(
-            ICategoryBase category,
+            ICategoryBase? category,
             string memo,
             long sum) 
             : base(memo)
@@ -26,7 +26,7 @@ namespace BFF.Model.Models
             _sum = sum;
         }
 
-        public IParentTransaction Parent
+        public IParentTransaction? Parent
         {
             get => _parent;
             set
@@ -37,7 +37,7 @@ namespace BFF.Model.Models
             }
         }
         
-        public ICategoryBase Category
+        public ICategoryBase? Category
         {
             get => _category;
             set
@@ -66,13 +66,13 @@ namespace BFF.Model.Models
 
         public override Task InsertAsync()
         {
-            Parent.AddSubElement(this);
+            Parent?.AddSubElement(this);
             return Task.CompletedTask;
         }
 
         public override Task DeleteAsync()
         {
-            Parent.RemoveSubElement(this);
+            Parent?.RemoveSubElement(this);
             return Task.CompletedTask;
         }
     }

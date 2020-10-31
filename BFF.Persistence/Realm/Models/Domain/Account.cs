@@ -16,14 +16,17 @@ namespace BFF.Persistence.Realm.Models.Domain
         private readonly RealmObjectWrap<Persistence.Account> _realmObjectWrap;
 
         public Account(
+            // parameters
+            Persistence.Account? realmObject,
+            DateTime startingDate, 
+            string name, 
+            long startingBalance,
+            
+            // dependencies
             ICrudOrm<Persistence.Account> crudOrm,
             IAccountOrm accountOrm,
             IRealmAccountRepositoryInternal repository,
-            IRealmTransRepository transRepository,
-            Persistence.Account realmObject,
-            DateTime startingDate, 
-            string name, 
-            long startingBalance) 
+            IRealmTransRepository transRepository) 
             : base(
                 startingDate,
                 name, 
@@ -54,7 +57,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public Persistence.Account RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.Account? RealmObject => _realmObjectWrap.RealmObject;
 
         public override async Task InsertAsync()
         {
@@ -76,22 +79,22 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override Task<long?> GetClearedBalanceAsync()
         {
-            return _accountOrm.GetClearedBalanceAsync(RealmObject);
+            return _accountOrm.GetClearedBalanceAsync(RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"));
         }
 
         public override Task<long?> GetClearedBalanceUntilNowAsync()
         {
-            return _accountOrm.GetClearedBalanceUntilNowAsync(RealmObject);
+            return _accountOrm.GetClearedBalanceUntilNowAsync(RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"));
         }
 
         public override Task<long?> GetUnclearedBalanceAsync()
         {
-            return _accountOrm.GetUnclearedBalanceAsync(RealmObject);
+            return _accountOrm.GetUnclearedBalanceAsync(RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"));
         }
 
         public override Task<long?> GetUnclearedBalanceUntilNowAsync()
         {
-            return _accountOrm.GetUnclearedBalanceUntilNowAsync(RealmObject);
+            return _accountOrm.GetUnclearedBalanceUntilNowAsync(RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"));
         }
 
         public override Task<IEnumerable<ITransBase>> GetTransPageAsync(int offset, int pageSize)

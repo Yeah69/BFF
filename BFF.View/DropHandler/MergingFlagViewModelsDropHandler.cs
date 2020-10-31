@@ -12,10 +12,6 @@ namespace BFF.View.DropHandler
 
         public static IDropTarget Instance => Lazy.Value;
 
-        public MergingFlagViewModelsDropHandler()
-        {
-        }
-
         public void DragOver(IDropInfo dropInfo)
         {
             if (dropInfo.Data is IFlagViewModel sourceItem 
@@ -30,9 +26,9 @@ namespace BFF.View.DropHandler
 
         public void Drop(IDropInfo dropInfo)
         {
-            IFlagViewModel sourceItem = dropInfo.Data as IFlagViewModel;
-            IFlagViewModel targetItem = dropInfo.TargetItem as IFlagViewModel;
-            sourceItem?.MergeTo(targetItem);
+            if (dropInfo.Data is IFlagViewModel sourceItem 
+                && dropInfo.TargetItem is IFlagViewModel targetItem)
+                sourceItem.MergeTo(targetItem);
         }
     }
 }

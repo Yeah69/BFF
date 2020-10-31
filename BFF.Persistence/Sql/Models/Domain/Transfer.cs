@@ -15,10 +15,10 @@ namespace BFF.Persistence.Sql.Models.Domain
             ICrudOrm<ITransSql> crudOrm,
             long id,
             DateTime date,
-            IFlag flag, 
+            IFlag? flag, 
             string checkNumber, 
-            IAccount fromAccount,
-            IAccount toAccount,
+            IAccount? fromAccount,
+            IAccount? toAccount,
             string memo, 
             long sum,
             bool cleared) : base(date, flag, checkNumber, fromAccount, toAccount, memo, sum, cleared)

@@ -15,17 +15,20 @@ namespace BFF.Persistence.Realm.Models.Domain
         private readonly RealmObjectWrap<Trans> _realmObjectWrap;
 
         public Transaction(
-            ICrudOrm<Trans> crudOrm,
-            Trans realmObject,
+            // parameters
+            Trans? realmObject,
             DateTime date,
-            IFlag flag,
+            IFlag? flag,
             string checkNumber,
-            IAccount account,
-            IPayee payee, 
-            ICategoryBase category, 
+            IAccount? account,
+            IPayee? payee, 
+            ICategoryBase? category, 
             string memo, 
             long sum, 
-            bool cleared) 
+            bool cleared,
+            
+            // dependencies
+            ICrudOrm<Trans> crudOrm) 
             : base(
                 date,
                 flag,
@@ -89,7 +92,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public Trans RealmObject => _realmObjectWrap.RealmObject;
+        public Trans? RealmObject => _realmObjectWrap.RealmObject;
 
         public override Task InsertAsync()
         {

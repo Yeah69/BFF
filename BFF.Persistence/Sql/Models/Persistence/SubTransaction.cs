@@ -1,3 +1,4 @@
+using System;
 using Dapper.Contrib.Extensions;
 
 namespace BFF.Persistence.Sql.Models.Persistence
@@ -15,7 +16,7 @@ namespace BFF.Persistence.Sql.Models.Persistence
         public long Id { get; set; }
         public long ParentId { get; set; }
         public long? CategoryId { get; set; }
-        public string Memo { get; set; }
+        public string Memo { get; set; } = String.Empty;
         public long Sum { get; set; }
     }
 }

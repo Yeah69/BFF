@@ -16,7 +16,7 @@ namespace BFF.View.Resources
             InitializeComponent();
         }
         
-        private IInputElement _focusedBeforeOpen;
+        private IInputElement? _focusedBeforeOpen;
 
         private void OpenPopup_OnClick(object sender, RoutedEventArgs e)
         {
@@ -92,12 +92,12 @@ namespace BFF.View.Resources
         {
             if (!(sender is FrameworkElementClickBehavior fecb)) return;
 
-            var tryFindParent = fecb.Parent?.TryFindParent<DataGridRow>();
+            var tryFindParent = fecb.Parent.TryFindParent<DataGridRow>();
             var parentContextMenu = tryFindParent?.ContextMenu;
             
             if(parentContextMenu != null)
             {
-                parentContextMenu.DataContext = tryFindParent.DataContext;
+                parentContextMenu.DataContext = tryFindParent?.DataContext;
                 parentContextMenu.IsOpen = true;
             }
         }

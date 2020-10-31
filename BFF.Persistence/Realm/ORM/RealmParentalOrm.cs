@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
@@ -24,7 +25,7 @@ namespace BFF.Persistence.Realm.ORM
 
             IEnumerable<SubTransaction> Inner(Realms.Realm realm)
             {
-                return parentTransaction.SubTransactions;
+                return parentTransaction.SubTransactions ?? Enumerable.Empty<SubTransaction>();
             }
         }
     }

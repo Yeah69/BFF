@@ -40,8 +40,8 @@ namespace BFF.Model.Models
                 .Where(c => 
                     MoreLinq
                         .MoreEnumerable
-                        .Generate(c, cat => cat?.Parent)
-                        .TakeWhileNotNull()
+                        .Generate<ICategory?>(c, cat => cat?.Parent)
+                        .TakeWhileNotNullRef()
                         .Any(cat => cat == Category))
                 .SelectUnit();
         

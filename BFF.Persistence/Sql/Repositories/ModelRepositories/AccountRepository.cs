@@ -13,7 +13,7 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
     {
         public override int Compare(IAccount x, IAccount y)
         {
-            return Comparer<string>.Default.Compare(x?.Name, y?.Name);
+            return Comparer<string>.Default.Compare(x.Name, y.Name);
         }
     }
 

@@ -2,6 +2,6 @@
 {
     public interface IHaveCategory
     {
-        ICategoryBase Category { get; set; }
+        ICategoryBase? Category { get; set; }
     }
 }

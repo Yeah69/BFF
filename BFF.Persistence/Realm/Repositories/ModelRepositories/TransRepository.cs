@@ -69,7 +69,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                 elements = _transOrm.Value.GetPageFromSpecificAccountAsync(
                     offset, 
                     pageSize,
-                    account.RealmObject);
+                    account.RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"));
             }
 
             return await (await elements.ConfigureAwait(false))
@@ -88,7 +88,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                 if (!(specifyingObject is Account account)) throw new ArgumentException("Model instance has not the correct type", nameof(specifyingObject));
                 
                 result = _transOrm.Value.GetCountFromSpecificAccountAsync(
-                    account.RealmObject);
+                    account.RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"));
             }
             return await result.ConfigureAwait(false);
         }
@@ -108,7 +108,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                     Category cat => cat.RealmObject,
                     IncomeCategory cat => cat.RealmObject,
                     _ => throw new Exception("Unexpected")
-                };
+                } ?? throw new NullReferenceException("Shouldn't be null at that point");
             return await (await _transOrm.Value.GetFromMonthAndCategoryAsync(month, id).ConfigureAwait(false))
                 .Select(async t => await ConvertToDomainAsync(t).ConfigureAwait(false)).ToAwaitableEnumerable().ConfigureAwait(false);
         }
@@ -127,7 +127,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                                     Category cat => cat.RealmObject,
                                     IncomeCategory cat => cat.RealmObject,
                                     _ => throw new Exception("Unexpected")
-                                })
+                                } ?? throw new NullReferenceException("Shouldn't be null at that point"))
                             .ToArray())
                     .ConfigureAwait(false))
                 .Select(async t => 
@@ -143,38 +143,74 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 
             async Task<ITransBase> InnerAsync(Realms.Realm _)
             {
-                ITransBase ret;
-                switch ((TransType) persistenceModel.TypeIndex)
+                ITransBase ret = (TransType)persistenceModel.TypeIndex switch
                 {
-                    case TransType.Transaction:
-                        ret = new Models.Domain.Transaction(_crudOrm, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
+                    TransType.Transaction => new Models.Domain.Transaction(
+                        persistenceModel,
+                        persistenceModel.Date.UtcDateTime,
+                        persistenceModel.Flag is null
                             ? null
-                            : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false), persistenceModel.CheckNumber, await _accountRepository.Value.FindAsync(persistenceModel.Account).ConfigureAwait(false), persistenceModel.Payee is null
+                            : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false),
+                        persistenceModel.CheckNumber ?? String.Empty,
+                        await _accountRepository.Value.FindAsync(persistenceModel.Account ?? throw new NullReferenceException("Shouldn't be null at that point")).ConfigureAwait(false),
+                        persistenceModel.Payee is null
                             ? null
-                            : await _payeeRepository.Value.FindAsync(persistenceModel.Payee).ConfigureAwait(false), persistenceModel.Category is null
+                            : await _payeeRepository.Value.FindAsync(persistenceModel.Payee).ConfigureAwait(false),
+                        persistenceModel.Category is null
                             ? null
-                            : await _categoryBaseRepository.Value.FindAsync(persistenceModel.Category).ConfigureAwait(false), persistenceModel.Memo, persistenceModel.Sum, persistenceModel.Cleared);
-                        break;
-                    case TransType.Transfer:
-                        ret = new Models.Domain.Transfer(_crudOrm, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
+                            : await _categoryBaseRepository.Value.FindAsync(persistenceModel.Category)
+                                .ConfigureAwait(false), 
+                        persistenceModel.Memo ?? String.Empty, 
+                        persistenceModel.Sum,
+                        persistenceModel.Cleared,
+                        _crudOrm),
+                    TransType.Transfer => new Models.Domain.Transfer(
+                        persistenceModel,
+                        persistenceModel.Date.UtcDateTime,
+                        persistenceModel.Flag is null
                             ? null
-                            : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false), persistenceModel.CheckNumber, persistenceModel.FromAccount is null
+                            : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false),
+                        persistenceModel.CheckNumber ?? String.Empty,
+                        persistenceModel.FromAccount is null
                             ? null
-                            : await _accountRepository.Value.FindAsync(persistenceModel.FromAccount).ConfigureAwait(false), persistenceModel.ToAccount is null
+                            : await _accountRepository.Value.FindAsync(persistenceModel.FromAccount)
+                                .ConfigureAwait(false),
+                        persistenceModel.ToAccount is null
                             ? null
-                            : await _accountRepository.Value.FindAsync(persistenceModel.ToAccount).ConfigureAwait(false), persistenceModel.Memo, persistenceModel.Sum, persistenceModel.Cleared);
-                        break;
-                    case TransType.ParentTransaction:
-                        ret = new Models.Domain.ParentTransaction(_crudOrm, _subTransactionsRepository.Value, persistenceModel, persistenceModel.Date.UtcDateTime, persistenceModel.Flag is null
+                            : await _accountRepository.Value.FindAsync(persistenceModel.ToAccount)
+                                .ConfigureAwait(false),
+                        persistenceModel.Memo ?? String.Empty,
+                        persistenceModel.Sum,
+                        persistenceModel.Cleared,
+                        _crudOrm),
+                    TransType.ParentTransaction => new Models.Domain.ParentTransaction(
+                        persistenceModel, 
+                        persistenceModel.Date.UtcDateTime,
+                        persistenceModel.Flag is null
                             ? null
-                            : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false), persistenceModel.CheckNumber, await _accountRepository.Value.FindAsync(persistenceModel.Account).ConfigureAwait(false), persistenceModel.Payee is null
+                            : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false),
+                        persistenceModel.CheckNumber ?? String.Empty,
+                        await _accountRepository.Value.FindAsync(persistenceModel.Account ?? throw new NullReferenceException("Shouldn't be null at that point")).ConfigureAwait(false),
+                        persistenceModel.Payee is null
                             ? null
-                            : await _payeeRepository.Value.FindAsync(persistenceModel.Payee).ConfigureAwait(false), persistenceModel.Memo, persistenceModel.Cleared);
-                        break;
-                    default:
-                        ret = new Models.Domain.Transaction(_crudOrm, null, DateTime.Today, null, "", null, null, null, "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR", 0L, false);
-                        break;
-                }
+                            : await _payeeRepository.Value.FindAsync(persistenceModel.Payee).ConfigureAwait(false),
+                        persistenceModel.Memo ?? String.Empty, 
+                        persistenceModel.Cleared,
+                        _crudOrm,
+                        _subTransactionsRepository.Value),
+                    _ => new Models.Domain.Transaction(
+                        null,
+                        DateTime.Today, 
+                        null, 
+                        "", 
+                        null, 
+                        null, 
+                        null,
+                        "ERROR ERROR In the custom mapping ERROR ERROR ERROR ERROR", 
+                        0L, 
+                        false,
+                        _crudOrm)
+                };
 
                 return ret;
             }

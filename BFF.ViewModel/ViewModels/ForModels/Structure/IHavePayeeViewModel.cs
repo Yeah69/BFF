@@ -2,7 +2,7 @@
 {
     public interface IHavePayeeViewModel
     {
-        IPayeeViewModel Payee { get; set; }
+        IPayeeViewModel? Payee { get; set; }
 
         INewPayeeViewModel NewPayeeViewModel { get; }
     }

@@ -7,15 +7,15 @@ namespace BFF.Persistence.Import.Models
     {
         public DateTime Date { get; set; }
 
-        public string FromAccount { get; set; }
+        public string FromAccount { get; set; } = string.Empty;
 
-        public string ToAccount { get; set; }
+        public string ToAccount { get; set; } = string.Empty;
 
-        public string CheckNumber { get; set; }
+        public string CheckNumber { get; set; } = string.Empty;
 
         public (string Name, Color Color)? Flag { get; set; }
 
-        public string Memo { get; set; }
+        public string Memo { get; set; } = string.Empty;
 
         public long Sum { get; set; }
 

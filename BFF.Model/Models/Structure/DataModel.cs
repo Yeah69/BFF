@@ -2,7 +2,7 @@
 using System.Reactive.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
+using MrMeeseeks.Windows;
 
 namespace BFF.Model.Models.Structure
 {

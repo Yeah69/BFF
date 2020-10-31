@@ -13,7 +13,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         public override int Compare(IFlag x, IFlag y)
         {
-            return Comparer<string>.Default.Compare(x?.Name, y?.Name);
+            return Comparer<string>.Default.Compare(x.Name, y.Name);
         }
     }
 
@@ -45,16 +45,16 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             IFlag InnerAsync(Realms.Realm _)
             {
                 return new Models.Domain.Flag(
-                    _crudOrm,
-                    _mergeOrm.Value,
-                    this,
                     persistenceModel,
                     Color.FromArgb(
                         (byte)(persistenceModel.Color >> 24 & 0xff),
                         (byte)(persistenceModel.Color >> 16 & 0xff),
                         (byte)(persistenceModel.Color >> 8 & 0xff),
                         (byte)(persistenceModel.Color & 0xff)),
-                    persistenceModel.Name);
+                    persistenceModel.Name,
+                    _crudOrm,
+                    _mergeOrm.Value,
+                    this);
             }
         }
     }

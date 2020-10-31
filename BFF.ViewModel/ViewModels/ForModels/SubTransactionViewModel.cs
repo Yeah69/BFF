@@ -20,7 +20,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         private readonly ISubTransaction _subTransaction;
         private readonly ILocalizer _localizer;
         private readonly ICategoryBaseViewModelService _categoryViewModelService;
-        private ICategoryBaseViewModel _category;
+        private ICategoryBaseViewModel? _category;
 
         public SubTransactionViewModel(
             ISubTransaction subTransaction,
@@ -64,7 +64,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// <summary>
         /// Each SubTransaction can be budgeted to a category.
         /// </summary>
-        public ICategoryBaseViewModel Category
+        public ICategoryBaseViewModel? Category
         {
             get => _category;
             set => _subTransaction.Category = _categoryViewModelService.GetModel(value);

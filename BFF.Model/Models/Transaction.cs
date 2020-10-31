@@ -10,16 +10,16 @@ namespace BFF.Model.Models
 
     public abstract class Transaction : TransactionBase, ITransaction
     {
-        private ICategoryBase _category;
+        private ICategoryBase? _category;
         private long _sum;
         
         public Transaction(
             DateTime date,
-            IFlag flag,
+            IFlag? flag,
             string checkNumber,
-            IAccount account, 
-            IPayee payee, 
-            ICategoryBase category,
+            IAccount? account, 
+            IPayee? payee, 
+            ICategoryBase? category,
             string memo, 
             long sum, 
             bool cleared)
@@ -29,7 +29,7 @@ namespace BFF.Model.Models
             _sum = sum;
         }
         
-        public ICategoryBase Category
+        public ICategoryBase? Category
         {
             get => _category;
             set

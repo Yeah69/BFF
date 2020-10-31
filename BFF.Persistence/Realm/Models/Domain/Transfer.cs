@@ -14,16 +14,19 @@ namespace BFF.Persistence.Realm.Models.Domain
         private readonly RealmObjectWrap<Trans> _realmObjectWrap;
 
         public Transfer(
-            ICrudOrm<Trans> crudOrm,
-            Trans realmObject,
+            // parameters
+            Trans? realmObject,
             DateTime date,
-            IFlag flag, 
+            IFlag? flag, 
             string checkNumber, 
-            IAccount fromAccount,
-            IAccount toAccount,
+            IAccount? fromAccount,
+            IAccount? toAccount,
             string memo, 
             long sum,
-            bool cleared) : base(date, flag, checkNumber, fromAccount, toAccount, memo, sum, cleared)
+            bool cleared,
+            
+            // dependencies
+            ICrudOrm<Trans> crudOrm) : base(date, flag, checkNumber, fromAccount, toAccount, memo, sum, cleared)
         {
             _realmObjectWrap = new RealmObjectWrap<Trans>(
                 realmObject,
@@ -72,7 +75,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public Trans RealmObject => _realmObjectWrap.RealmObject;
+        public Trans? RealmObject => _realmObjectWrap.RealmObject;
 
         public override Task InsertAsync()
         {

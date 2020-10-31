@@ -17,7 +17,7 @@ namespace BFF.View.Views
             void OnLoaded(object _, RoutedEventArgs __)
             {
                 int offset = 0;
-                DataGridCell cell;
+                DataGridCell? cell;
                 while ((cell = e.Row.GetCell(offset++)) is null) { } // Collapsed columns are null
                 cell.Focus();
                 Keyboard.Focus(cell);

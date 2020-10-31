@@ -44,7 +44,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                 var parent = parentSubCategoryGrouping.Key;
                 foreach (var subCategory in parentSubCategoryGrouping)
                 {
-                    parent.AddCategory(subCategory);
+                    parent?.AddCategory(subCategory);
                     subCategory.Parent = parent;
                 }
             }
@@ -57,14 +57,14 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             async Task<ICategory> InnerAsync(Realms.Realm _)
             {
                 return new Models.Domain.Category(
-                    _crudOrm,
-                    _mergeOrm.Value,
-                    this,
                     persistenceModel,
-                    persistenceModel.Name,
+                    persistenceModel.Name ?? String.Empty,
                     persistenceModel.Parent is null
                         ? null
-                        : await FindAsync(persistenceModel.Parent).ConfigureAwait(false));
+                        : await FindAsync(persistenceModel.Parent).ConfigureAwait(false),
+                    _crudOrm,
+                    _mergeOrm.Value,
+                    this);
             }
         }
 

@@ -18,14 +18,14 @@ namespace BFF.Persistence.Sql.Models.Persistence
         [Key]
         public long Id { get; set; }
         public long? FlagId { get; set; }
-        public string CheckNumber { get; set; }
+        public string CheckNumber { get; set; } = String.Empty;
         public long AccountId { get; set; }
         public long? PayeeId { get; set; }
         public long? CategoryId { get; set; }
         public DateTime Date { get; set; }
-        public string Memo { get; set; }
+        public string Memo { get; set; } = String.Empty;
         public long Sum { get; set; }
         public long Cleared { get; set; }
-        public string Type { get; set; }
+        public string Type { get; set; } = String.Empty;
     }
 }

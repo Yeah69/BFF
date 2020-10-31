@@ -52,13 +52,18 @@
       <PackageReference Include="MahApps.Metro.IconPacks" Version="4.5.0" />
       <PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="1.5.0" />
       <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
-      <PackageReference Include="MrMeeseeks" Version="69.0.10" />
-      <PackageReference Include="MrMeeseeks.Reactive" Version="69.0.10" />
+      <PackageReference Include="MinVer" Version="2.3.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="MrMeeseeks" Version="69.0.14" />
+      <PackageReference Include="MrMeeseeks.Reactive" Version="69.0.14" />
       <PackageReference Include="WPFLocalizeExtension" Version="3.8.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\WPFLocalizationExtension\src\WPFLocalizeExtension.csproj" />
+      <ProjectReference Include="..\BFF.Core\BFF.Core.csproj" />
       <ProjectReference Include="..\BFF.Persistence.Proxy\BFF.Persistence.Proxy.csproj" />
       <ProjectReference Include="..\BFF.ViewModel\BFF.ViewModel.csproj" />
     </ItemGroup>

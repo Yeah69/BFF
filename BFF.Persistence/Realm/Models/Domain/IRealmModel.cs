@@ -4,6 +4,6 @@ namespace BFF.Persistence.Realm.Models.Domain
 {
     internal interface IRealmModel<T> where T : class, IPersistenceModelRealm
     {
-        T RealmObject { get; }
+        T? RealmObject { get; }
     }
 }

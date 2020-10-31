@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,7 +14,6 @@ namespace BFF.Persistence.Realm.Models.Domain
     {
         private readonly IBudgetOrm _budgetOrm;
         private readonly IRealmBudgetEntryRepository _budgetEntryRepository;
-        private readonly IObserveUpdateBudgetCategory _observeUpdateBudgetCategory;
 
         public BudgetCategory(
             // parameters
@@ -26,12 +26,11 @@ namespace BFF.Persistence.Realm.Models.Domain
         {
             _budgetOrm = budgetOrm;
             _budgetEntryRepository = budgetEntryRepository;
-            _observeUpdateBudgetCategory = observeUpdateBudgetCategory;
         }
 
         public override async Task<IEnumerable<IBudgetEntry>> GetBudgetEntriesFor(int year)
         {
-            var realmCategory = (Category as Category)?.RealmObject;
+            var realmCategory = (Category as Category)?.RealmObject ?? throw new InvalidCastException("Should be the Realm type, but isn't.");
             return await (await _budgetOrm.FindAsync(year, realmCategory).ConfigureAwait(false))
                 .Select(t => 
                     _budgetEntryRepository.Convert(

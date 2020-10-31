@@ -11,7 +11,7 @@ namespace BFF.View.Extensions
             return dependencyObject;
         }
 
-        public static T FindVisualChild<T>(this DependencyObject dependencyObject) where T : DependencyObject
+        public static T? FindVisualChild<T>(this DependencyObject dependencyObject) where T : DependencyObject
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(dependencyObject); i++)
             {
@@ -19,7 +19,7 @@ namespace BFF.View.Extensions
                 if (child is T t)
                     return t;
 
-                T childOfChild = FindVisualChild<T>(child);
+                T? childOfChild = FindVisualChild<T>(child);
                 if (childOfChild != null)
                     return childOfChild;
             }

@@ -17,10 +17,10 @@ namespace BFF.Model.Models
     {
         public ParentTransaction(
             DateTime date,
-            IFlag flag,
+            IFlag? flag,
             string checkNumber,
-            IAccount account,
-            IPayee payee,
+            IAccount? account,
+            IPayee? payee,
             string memo,
             bool cleared)
             : base(flag, checkNumber, date, account, payee, memo, cleared)

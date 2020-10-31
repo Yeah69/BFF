@@ -7,7 +7,7 @@ namespace BFF.View.Views
 {
     public partial class NewFlagView
     {
-        public event EventHandler OnAddClicked;
+        public event EventHandler? OnAddClicked;
 
         public NewFlagView()
         {

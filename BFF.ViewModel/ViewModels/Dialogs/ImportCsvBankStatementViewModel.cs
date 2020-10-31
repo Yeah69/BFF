@@ -8,7 +8,6 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
-using BFF.Core.Extensions;
 using BFF.Core.Helper;
 using BFF.Model.Models.Utility;
 using BFF.ViewModel.Helper;
@@ -28,7 +27,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
 
         IList<ICsvBankStatementImportItemViewModel> Items { get; }
 
-        IReactiveProperty<ICsvBankStatementImportProfileViewModel> SelectedProfile { get; }
+        IReactiveProperty<ICsvBankStatementImportProfileViewModel?> SelectedProfile { get; }
 
         IReactiveProperty<string> FilePath { get; }
         IReadOnlyReactiveProperty<bool>  FileExists { get; }
@@ -53,7 +52,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             IRxSchedulerProvider schedulerProvider,
             IBffSettings bffSettings,
             ILocalizer localizer,
-            Func<(DateTime? Date, string Payee, bool CreatePayeeIfNotExisting, string Memo, long? Sum), ICsvBankStatementImportItemViewModel> createItem,
+            Func<(DateTime? Date, string? Payee, bool CreatePayeeIfNotExisting, string? Memo, long? Sum), ICsvBankStatementImportItemViewModel> createItem,
             ICsvBankStatementProfileManager csvBankStatementProfileManger,
             Func<ICsvBankStatementImportProfile, ICsvBankStatementImportProfileViewModel> profileViewModelFactory)
         {
@@ -61,21 +60,21 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             
             FilePath = new ReactivePropertySlim<string>(
                 "",
-                ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(CompositeDisposable);
+                ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(CompositeDisposable);
 
-            var nonProfileViewModel = nonProfileViewModelFactory(FilePath).AddForDisposalTo(CompositeDisposable);
+            var nonProfileViewModel = nonProfileViewModelFactory(FilePath).CompositeDisposalWith(CompositeDisposable);
             Configuration = new ReactivePropertySlim<ICsvBankStatementImportNonProfileViewModel>(nonProfileViewModel, ReactivePropertyMode.DistinctUntilChanged);
 
-            SelectedProfile = new ReactivePropertySlim<ICsvBankStatementImportProfileViewModel>(Profiles.FirstOrDefault(cbsipvm => cbsipvm.Name.Value == bffSettings.SelectedCsvProfile), ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(CompositeDisposable);
+            SelectedProfile = new ReactivePropertySlim<ICsvBankStatementImportProfileViewModel?>(Profiles.FirstOrDefault(cbsipvm => cbsipvm.Name.Value == bffSettings.SelectedCsvProfile), ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(CompositeDisposable);
             SelectedProfile
                 .Subscribe(sp =>
                 {
                     Configuration.Value = sp ?? nonProfileViewModel;
-                    bffSettings.SelectedCsvProfile = !(sp is ICsvBankStatementImportProfileViewModel cbsipvm)
+                    bffSettings.SelectedCsvProfile = !(sp is { } cbsipvm)
                         ? null
                         : cbsipvm.Name.Value;
                 })
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
             
 
@@ -84,15 +83,15 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                 .Where(cc => cc.Action == NotifyCollectionChangedAction.Add)
                 .Select(cc => cc.Value)
                 .Subscribe(pvm => SelectedProfile.Value = pvm)
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
             FileExists = new ReadOnlyReactivePropertySlim<bool>(
                 FilePath.Select(File.Exists), 
-                mode: ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(CompositeDisposable);
+                mode: ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(CompositeDisposable);
 
             Header = new ReadOnlyReactivePropertySlim<string>(
                 FilePath.Select(path => File.Exists(path) ? File.ReadLines(path, Encoding.Default).FirstOrDefault() : ""), 
-                mode: ReactivePropertyMode.DistinctUntilChanged).AddForDisposalTo(CompositeDisposable);
+                mode: ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(CompositeDisposable);
 
             Configuration.Select(_ => Unit.Default)
                 .Merge(FilePath.Select(_ => Unit.Default))
@@ -104,20 +103,20 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                     Items = items;
                     OnPropertyChanged(nameof(Items));
                 })
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
             Configuration
                 .ObserveOn(schedulerProvider.UI)
                 .Subscribe(items => OnPropertyChanged(nameof(HeaderDoMatch)))
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
             Header
                 .ObserveOn(schedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(HeaderDoMatch)))
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
-            SerialDisposable configurationPropertyChanges = new SerialDisposable().AddForDisposalTo(CompositeDisposable);
-            SerialDisposable configurationHeaderChanges = new SerialDisposable().AddForDisposalTo(CompositeDisposable);
+            SerialDisposable configurationPropertyChanges = new SerialDisposable().CompositeDisposalWith(CompositeDisposable);
+            SerialDisposable configurationHeaderChanges = new SerialDisposable().CompositeDisposalWith(CompositeDisposable);
 
             Configuration
                 .Where(configuration => configuration != null)
@@ -142,16 +141,16 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                             Items = items;
                             OnPropertyChanged(nameof(Items));
                         })
-                        .AssignTo(configurationPropertyChanges);
+                        .SerializeDisposalWith(configurationPropertyChanges);
                     configuration.Header
                         .ObserveOn(schedulerProvider.UI)
                         .Subscribe(_ =>
                         {
                             OnPropertyChanged(nameof(HeaderDoMatch));
                         })
-                        .AssignTo(configurationHeaderChanges);
+                        .SerializeDisposalWith(configurationHeaderChanges);
                 })
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
 
             BrowseCsvBankStatementFileCommand = new RxRelayCommand(() =>
@@ -167,10 +166,10 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                         FilePath.Value = bffOpenFileDialog.FileName;
                     }
                 })
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
             DeselectProfileCommand = new RxRelayCommand(() => SelectedProfile.Value = null)
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
             ShowItemsError = new ReactivePropertySlim<bool>(false, ReactivePropertyMode.DistinctUntilChanged);
 
@@ -193,15 +192,16 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                             var payeeString = Configuration.Value.PayeeFormat.Value;
                             var memoString = Configuration.Value.MemoFormat.Value;
                             var sumString = Configuration.Value.SumFormula.Value;
-                            var date = DateTime.TryParse(
-                                segmentValues[Configuration.Value.DateSegment.Value],
-                                Configuration.Value.DateLocalization.Value, 
-                                DateTimeStyles.AllowWhiteSpaces, 
-                                out DateTime dateResult)
-                                ? dateResult
-                                : (DateTime?) null;
+                            var date = Configuration.Value.DateSegment.Value is { } dateSegmentValue
+                                       && DateTime.TryParse(
+                                            segmentValues[dateSegmentValue],
+                                            Configuration.Value.DateLocalization.Value, 
+                                            DateTimeStyles.AllowWhiteSpaces, 
+                                            out DateTime dateResult)
+                                        ? dateResult
+                                        : (DateTime?) null;
 
-                            foreach (var segment in Configuration.Value.Segments.Value)
+                            foreach (var segment in Configuration.Value.Segments.Value ?? Enumerable.Empty<string>())
                             {
                                 payeeString = payeeString.Replace($"{{{segment}}}", segmentValues[segment].Trim('"'));
                                 memoString = memoString.Replace($"{{{segment}}}", segmentValues[segment].Trim('"'));
@@ -210,7 +210,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                                 {
                                     var sumPartParsingSuccess = double.TryParse(segmentValues[segment], NumberStyles.Any, Configuration.Value.SumLocalization.Value, out var sumPartResult);
                                     long sum = (long) Math.Round((sumPartParsingSuccess ? sumPartResult : 0.0) *
-                                                      Math.Pow(10, Configuration.Value.SumLocalization.Value.NumberFormat.CurrencyDecimalDigits));
+                                                      Math.Pow(10, Configuration.Value.SumLocalization.Value?.NumberFormat.CurrencyDecimalDigits ?? 1));
                                     sumString = sumString.Replace($"{{{segment}}}", sum.ToString());
                                 }
 
@@ -243,8 +243,10 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         }
 
         public IObservableReadOnlyList<ICsvBankStatementImportProfileViewModel> Profiles { get; }
-        public IList<ICsvBankStatementImportItemViewModel> Items { get; private set; }
-        public IReactiveProperty<ICsvBankStatementImportProfileViewModel> SelectedProfile { get; }
+
+        public IList<ICsvBankStatementImportItemViewModel> Items { get; private set; } =
+            new List<ICsvBankStatementImportItemViewModel>();
+        public IReactiveProperty<ICsvBankStatementImportProfileViewModel?> SelectedProfile { get; }
         public IReactiveProperty<string> FilePath { get; }
         public IReadOnlyReactiveProperty<bool> FileExists { get; }
         public IReadOnlyReactiveProperty<string> Header { get; }

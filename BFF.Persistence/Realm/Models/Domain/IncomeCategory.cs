@@ -14,12 +14,15 @@ namespace BFF.Persistence.Realm.Models.Domain
         private readonly RealmObjectWrap<Persistence.Category> _realmObjectWrap;
 
         public IncomeCategory(
+            // parameters
+            Persistence.Category? realmObject,
+            string name, 
+            int monthOffset,
+            
+            // dependencies
             ICrudOrm<Persistence.Category> crudOrm,
             IMergeOrm mergeOrm,
-            IRealmIncomeCategoryRepositoryInternal repository,
-            Persistence.Category realmObject,
-            string name, 
-            int monthOffset) : base(name, monthOffset)
+            IRealmIncomeCategoryRepositoryInternal repository) : base(name, monthOffset)
         {
             _realmObjectWrap = new RealmObjectWrap<Persistence.Category>(
                 realmObject,
@@ -48,7 +51,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public Persistence.Category RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.Category? RealmObject => _realmObjectWrap.RealmObject;
 
         public override async Task InsertAsync()
         {
@@ -73,9 +76,9 @@ namespace BFF.Persistence.Realm.Models.Domain
         {
             if (!(category is IncomeCategory)) throw new ArgumentException("Cannot merge if other part isn't from same backend", nameof(category));
 
-            var incomeCategoryRealmObject = ((IncomeCategory)category).RealmObject;
+            var incomeCategoryRealmObject = ((IncomeCategory)category).RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point");
             await _mergeOrm.MergeCategoryAsync(
-                    RealmObject,
+                    RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"),
                     incomeCategoryRealmObject)
                 .ConfigureAwait(false);
             _repository.RemoveFromObservableCollection(this);

@@ -7,7 +7,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
-using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using MuVaViMo;
 
 namespace BFF.ViewModel.ViewModels
@@ -48,7 +48,7 @@ namespace BFF.ViewModel.ViewModels
                         OnPropertyChanged(nameof(IsDateLong));
                         break;
                 }
-            }).AddForDisposalTo(CompositeDisposable);
+            }).CompositeDisposalWith(CompositeDisposable);
         }
 
         public void Dispose()

@@ -78,20 +78,15 @@ namespace BFF.Persistence.Realm
             _eventLoopScheduler.Schedule(
                 () =>
                 {
-                    var exceptionless = true;
-                    T result = default;
                     try
                     {
                         var realm = _provideConnection.Connection;
-                        result = func(realm);
+                        tcs.SetResult(func(realm));
                     }
                     catch (Exception e)
                     {
                         tcs.SetException(e);
-                        exceptionless = false;
                     }
-                    if (exceptionless)
-                        tcs.SetResult(result);
                 });
             return tcs.Task;
         }
@@ -102,27 +97,22 @@ namespace BFF.Persistence.Realm
             _eventLoopScheduler.ScheduleAsync(
                 async (_, __) =>
                 {
-                    var exceptionless = true;
-                    T result = default;
                     try
                     {
                         var realm = _provideConnection.Connection;
-                        result = await func(realm).ConfigureAwait(false);
+                        tcs.SetResult(await func(realm).ConfigureAwait(false));
                     }
                     catch (Exception e)
                     {
                         tcs.SetException(e);
-                        exceptionless = false;
                     }
-                    if (exceptionless)
-                        tcs.SetResult(result);
                 });
             return tcs.Task;
         }
 
         public void Dispose()
         {
-            _eventLoopScheduler?.Dispose();
+            _eventLoopScheduler.Dispose();
         }
     }
 }

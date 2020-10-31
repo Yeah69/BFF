@@ -12,7 +12,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         public override int Compare(IPayee x, IPayee y)
         {
-            return Comparer<string>.Default.Compare(x?.Name, y?.Name);
+            return Comparer<string>.Default.Compare(x.Name, y.Name);
         }
     }
 
@@ -44,11 +44,11 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             IPayee InnerAsync(Realms.Realm _)
             {
                 return new Models.Domain.Payee(
+                    persistenceModel,
+                    persistenceModel.Name,
                     _crudOrm,
                     _mergeOrm.Value,
-                    this,
-                    persistenceModel,
-                    persistenceModel.Name);
+                    this);
             }
         }
     }

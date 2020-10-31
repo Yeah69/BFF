@@ -4,17 +4,17 @@ namespace BFF.Model.Models.Structure
 {
     public interface ITransactionBase : ITransBase
     {
-        IAccount Account { get; set; }
+        IAccount? Account { get; set; }
 
-        IPayee Payee { get; set; }
+        IPayee? Payee { get; set; }
     }
 
     public abstract class TransactionBase : TransBase, ITransactionBase
     {
-        private IAccount _account;
-        private IPayee _payee;
+        private IAccount? _account;
+        private IPayee? _payee;
 
-        public IAccount Account
+        public IAccount? Account
         {
             get => _account;
             set
@@ -25,7 +25,7 @@ namespace BFF.Model.Models.Structure
             }
         }
 
-        public IPayee Payee
+        public IPayee? Payee
         {
             get => _payee;
             set
@@ -37,11 +37,11 @@ namespace BFF.Model.Models.Structure
         }
 
         protected TransactionBase(
-            IFlag flag,
+            IFlag? flag,
             string checkNumber,
             DateTime date,
-            IAccount account,
-            IPayee payee,
+            IAccount? account,
+            IPayee? payee,
             string memo,
             bool cleared)
             : base(flag, checkNumber, date, memo, cleared)

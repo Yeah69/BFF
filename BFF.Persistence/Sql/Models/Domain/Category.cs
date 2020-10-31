@@ -21,7 +21,7 @@ namespace BFF.Persistence.Sql.Models.Domain
             ISqliteCategoryRepositoryInternal repository,
             long id,
             string name, 
-            ICategory parent) : base(name, parent)
+            ICategory? parent) : base(name, parent)
         {
             Id = id;
             _crudOrm = crudOrm;

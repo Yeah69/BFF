@@ -58,7 +58,7 @@ namespace BFF.View.Views
                         .Current
                         .BaseColors
                         .Select(c => ThemeManager.Current.GetTheme(c, "Blue"))
-                        .WhereNotNull()
+                        .WhereNotNullRef()
                         .Select(theme => new ThemeWrap(theme.BaseColorScheme, (SolidColorBrush)theme.Resources["MahApps.Brushes.ThemeBackground"]))
                         .OrderBy(x => x.Name))
                 {
@@ -71,7 +71,7 @@ namespace BFF.View.Views
                         .Current
                         .ColorSchemes
                         .Select(c => ThemeManager.Current.GetTheme("Dark", c))
-                        .WhereNotNull()
+                        .WhereNotNullRef()
                         .Select(theme => new ThemeWrap(theme.ColorScheme, (SolidColorBrush)theme.Resources["MahApps.Brushes.Accent"]))
                         .OrderBy(x => x.Name))
                 {

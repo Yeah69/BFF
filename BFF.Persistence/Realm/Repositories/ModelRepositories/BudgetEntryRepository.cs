@@ -3,14 +3,13 @@ using System.Threading.Tasks;
 using BFF.Model;
 using BFF.Model.Models;
 using BFF.Persistence.Realm.ORM.Interfaces;
-using JetBrains.Annotations;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
     internal interface IRealmBudgetEntryRepository
     {
         Task<IBudgetEntry> Convert(
-            [CanBeNull] Models.Persistence.BudgetEntry budgetEntry,
+            Models.Persistence.BudgetEntry? budgetEntry,
             Models.Persistence.Category category, 
             DateTime month, 
             long budget, 
@@ -50,7 +49,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         }
 
         public Task<IBudgetEntry> Convert(
-            Models.Persistence.BudgetEntry budgetEntry, 
+            Models.Persistence.BudgetEntry? budgetEntry, 
             Models.Persistence.Category category,
             DateTime month,
             long budget, 

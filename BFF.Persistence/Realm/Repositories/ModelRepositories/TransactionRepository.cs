@@ -39,14 +39,13 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             async Task<ITransaction> InnerAsync(Realms.Realm _)
             {
                 return new Models.Domain.Transaction(
-                    _crudOrm,
                     persistenceModel,
                     persistenceModel.Date.UtcDateTime,
                     persistenceModel.Flag is null
                         ? null
                         : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false),
-                    persistenceModel.CheckNumber,
-                    await _accountRepository.Value.FindAsync(persistenceModel.Account).ConfigureAwait(false),
+                    persistenceModel.CheckNumber ?? String.Empty,
+                    await _accountRepository.Value.FindAsync(persistenceModel.Account ?? throw new NullReferenceException("Shouldn't be null at that point")).ConfigureAwait(false),
                     persistenceModel.Payee is null
                         ? null
                         : await _payeeRepository.Value.FindAsync(persistenceModel.Payee).ConfigureAwait(false),
@@ -54,9 +53,10 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                         ? null
                         : await _categoryBaseRepository.Value.FindAsync(persistenceModel.Category)
                             .ConfigureAwait(false),
-                    persistenceModel.Memo,
+                    persistenceModel.Memo ?? String.Empty,
                     persistenceModel.Sum,
-                    persistenceModel.Cleared);
+                    persistenceModel.Cleared,
+                    _crudOrm);
             }
         }
     }

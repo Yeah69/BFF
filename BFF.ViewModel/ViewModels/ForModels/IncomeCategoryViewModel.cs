@@ -9,7 +9,6 @@ using BFF.Model.Models;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using MoreLinq;
-using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels
@@ -64,7 +63,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .ObservePropertyChanged(nameof(category.MonthOffset))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(MonthOffset)))
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
         }
 
         public int MonthOffset { get => _incomeCategory.MonthOffset; set => _incomeCategory.MonthOffset = value; }

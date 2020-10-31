@@ -52,9 +52,9 @@ namespace BFF.View
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            void SetColorsDependingOnTheChosenTheme(Theme theme)
+            void SetColorsDependingOnTheChosenTheme(Theme? theme)
             {
-                switch (theme.Name)
+                switch (theme?.Name)
                 {
                     case "BaseLight":
                         Resources["AlternatingRowBrush"] = Resources["MahApps.Brushes.Gray8"];
@@ -67,7 +67,7 @@ namespace BFF.View
                 }
             }
 
-            void ThemeManagerOnIsThemeChanged(object s, ThemeChangedEventArgs args)
+            void ThemeManagerOnIsThemeChanged(object? s, ThemeChangedEventArgs args)
             {
                 SetColorsDependingOnTheChosenTheme(args.NewTheme);
             }

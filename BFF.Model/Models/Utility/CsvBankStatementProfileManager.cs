@@ -23,7 +23,7 @@ namespace BFF.Model.Models.Utility
         ICsvBankStatementImportProfile Create(
             string header,
             char delimiter,
-            string dateSegment,
+            string? dateSegment,
             string dateFormat,
             string payeeFormat,
             bool shouldCreateNewPayeeIfNotExisting,
@@ -56,7 +56,7 @@ namespace BFF.Model.Models.Utility
 
         public void Remove(string name)
         {
-            if (_profiles.FirstOrDefault(p => p.Name == name) is ICsvBankStatementImportProfile profile)
+            if (_profiles.FirstOrDefault(p => p.Name == name) is { } profile)
             {
                 _profiles.Remove(profile);
                 Save();
@@ -66,7 +66,7 @@ namespace BFF.Model.Models.Utility
         public ICsvBankStatementImportProfile Create(
             string header, 
             char delimiter,
-            string dateSegment,
+            string? dateSegment,
             string dateFormat, 
             string payeeFormat,
             bool shouldCreateNewPayeeIfNotExisting,

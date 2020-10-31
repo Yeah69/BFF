@@ -5,20 +5,20 @@ namespace BFF.Model.Models
 {
     public interface ITransfer : ITransBase
     {
-        IAccount FromAccount { get; set; }
+        IAccount? FromAccount { get; set; }
         
-        IAccount ToAccount { get; set; }
+        IAccount? ToAccount { get; set; }
         
         long Sum { get; set; }
     }
 
     public  abstract class Transfer : TransBase, ITransfer
     {
-        private IAccount _fromAccount;
-        private IAccount _toAccount;
+        private IAccount? _fromAccount;
+        private IAccount? _toAccount;
         private long _sum;
         
-        public IAccount FromAccount
+        public IAccount? FromAccount
         {
             get => _fromAccount;
             set
@@ -34,7 +34,7 @@ namespace BFF.Model.Models
             }
         }
         
-        public IAccount ToAccount
+        public IAccount? ToAccount
         {
             get => _toAccount;
             set
@@ -63,10 +63,10 @@ namespace BFF.Model.Models
 
         public Transfer(
             DateTime date,
-            IFlag flag,
+            IFlag? flag,
             string checkNumber,
-            IAccount fromAccount,
-            IAccount toAccount,
+            IAccount? fromAccount,
+            IAccount? toAccount,
             string memo,
             long sum,
             bool cleared)

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
+using MrMeeseeks.Windows;
 
 namespace BFF.Model.Models
 {

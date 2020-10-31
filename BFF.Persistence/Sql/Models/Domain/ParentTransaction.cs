@@ -21,17 +21,18 @@ namespace BFF.Persistence.Sql.Models.Domain
             ISqliteSubTransactionRepository subTransactionRepository,
             long id,
             DateTime date, 
-            IFlag flag,
+            IFlag? flag,
             string checkNumber, 
-            IAccount account, 
-            IPayee payee,
+            IAccount? account, 
+            IPayee? payee,
             string memo, 
             bool cleared) : base(date, flag, checkNumber, account, payee, memo, cleared)
         {
             Id = id;
             _crudOrm = crudOrm;
 
-            SubTransactions = new ReadOnlyObservableCollection<ISubTransaction>(new ObservableCollection<ISubTransaction>());
+            _subTransactions = new ObservableCollection<ISubTransaction>();
+            SubTransactions = new ReadOnlyObservableCollection<ISubTransaction>(_subTransactions);
 
             subTransactionRepository
                 .GetChildrenOfAsync(id)
@@ -71,8 +72,8 @@ namespace BFF.Persistence.Sql.Models.Domain
         private ITransSql CreatePersistenceObject()
         {
             if (!(Account is Account)
-                && (Flag != null || !(Flag is Flag))
-                && (Payee != null || !(Payee is Payee)))
+                || (Flag != null && !(Flag is Flag))
+                || (Payee != null && !(Payee is Payee)))
                 throw new ArgumentException("Cannot create persistence object if parts are from another backend");
 
             return new Trans

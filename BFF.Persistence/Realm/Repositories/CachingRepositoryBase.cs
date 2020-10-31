@@ -8,6 +8,7 @@ using BFF.Persistence.Realm.Models.Domain;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Models.Persistence;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using NLog;
 
 namespace BFF.Persistence.Realm.Repositories
@@ -35,7 +36,7 @@ namespace BFF.Persistence.Realm.Repositories
             IRealmOperations realmOperations) : base(crudOrm)
         {
             _realmOperations = realmOperations;
-            Disposable.Create(ClearCache).AddForDisposalTo(CompositeDisposable);
+            Disposable.Create(ClearCache).CompositeDisposalWith(CompositeDisposable);
         }
 
         public override async Task<bool> AddAsync(TDomain dataModel)
@@ -52,7 +53,7 @@ namespace BFF.Persistence.Realm.Repositories
         {
             var dataModel = await _realmOperations
                 .RunFuncAsync(_ =>
-                    _cache.FirstOrDefault(dm => ((IRealmModel<TPersistence>) dm)?.RealmObject?.Equals(realmObject) ?? false))
+                    _cache.FirstOrDefault(dm => ((IRealmModel<TPersistence>) dm).RealmObject?.Equals(realmObject) ?? false))
                 .ConfigureAwait(false);
             if (dataModel is null)
             {

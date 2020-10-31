@@ -47,7 +47,7 @@ namespace BFF.Model.Models
         /// <summary>
         /// Id of Parent
         /// </summary>
-        ICategory Parent { get; set; }
+        ICategory? Parent { get; set; }
 
         void SetParentWithoutUpdateToBackend(ICategory newParent);
 
@@ -64,13 +64,13 @@ namespace BFF.Model.Models
 
     public abstract class Category : CategoryBase, ICategory
     {
-        private ICategory _parent;
+        private ICategory? _parent;
         private readonly ObservableCollection<ICategory> _categories = new ObservableCollection<ICategory>();
 
         /// <summary>
         /// Id of Parent
         /// </summary>
-        public ICategory Parent
+        public ICategory? Parent
         {
             get => _parent;
             set
@@ -91,7 +91,7 @@ namespace BFF.Model.Models
 
         public Category(
             string name,
-            ICategory parent) : base(name)
+            ICategory? parent) : base(name)
         {
             _parent = parent;
             Categories = new ReadOnlyObservableCollection<ICategory>(_categories);
@@ -123,7 +123,7 @@ namespace BFF.Model.Models
 
         public override Task DeleteAsync()
         {
-            Parent.RemoveCategory(this);
+            Parent?.RemoveCategory(this);
             return Task.CompletedTask;
         }
     }

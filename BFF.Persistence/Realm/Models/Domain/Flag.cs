@@ -15,12 +15,15 @@ namespace BFF.Persistence.Realm.Models.Domain
         private readonly RealmObjectWrap<Persistence.Flag> _realmObjectWrap;
 
         public Flag(
+            // parameter
+            Persistence.Flag? realmObject,
+            Color color, 
+            string name,
+            
+            // dependencies
             ICrudOrm<Persistence.Flag> crudOrm,
             IMergeOrm mergeOrm,
-            IRealmFlagRepositoryInternal repository,
-            Persistence.Flag realmObject,
-            Color color, 
-            string name) : base(color, name)
+            IRealmFlagRepositoryInternal repository) : base(color, name)
         {
             _realmObjectWrap = new RealmObjectWrap<Persistence.Flag>(
                 realmObject,
@@ -44,7 +47,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public Persistence.Flag RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.Flag? RealmObject => _realmObjectWrap.RealmObject;
 
         public override async Task InsertAsync()
         {
@@ -69,8 +72,8 @@ namespace BFF.Persistence.Realm.Models.Domain
             if (!(flag is Flag)) throw new ArgumentException("Cannot merge if other part isn't from same backend", nameof(flag));
 
             await _mergeOrm.MergeFlagAsync(
-                    RealmObject,
-                    ((Flag)flag).RealmObject)
+                    RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"),
+                    ((Flag)flag).RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"))
                 .ConfigureAwait(false);
             _repository.RemoveFromObservableCollection(this);
             _repository.RemoveFromCache(this);

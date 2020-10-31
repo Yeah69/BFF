@@ -15,7 +15,8 @@ namespace BFF.ViewModel.Extensions
             Expression<Func<TSubject, TProperty>> propertySelector,
             ReactivePropertyMode mode = ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
             bool ignoreValidationErrorValue = false)
-            where TSubject : INotifyPropertyChanged =>
+            where TSubject : INotifyPropertyChanged
+            where TProperty : notnull =>
             ToReadOnlyReactivePropertyAsSynchronized(subject, propertySelector, ReactivePropertyScheduler.Default, mode, ignoreValidationErrorValue);
 
         public static ReadOnlyReactiveProperty<TProperty> ToReadOnlyReactivePropertyAsSynchronized<TSubject, TProperty>(
@@ -25,11 +26,12 @@ namespace BFF.ViewModel.Extensions
             ReactivePropertyMode mode = ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
             bool ignoreValidationErrorValue = false)
             where TSubject : INotifyPropertyChanged
+            where TProperty : notnull
         {
-            var result = subject.ObserveProperty(propertySelector)
-                .ToReadOnlyReactiveProperty(eventScheduler: raiseEventScheduler, mode: mode);
+            ReadOnlyReactiveProperty<TProperty>? result = subject.ObserveProperty(propertySelector)
+                .ToReadOnlyReactiveProperty<TProperty>(eventScheduler: raiseEventScheduler, mode: mode);
 
-            return result;
+            return result ?? throw new NullReferenceException();
         }
         
         private static IObservable<TProperty> ObserveProperty<TSubject, TProperty>(
@@ -61,14 +63,15 @@ namespace BFF.ViewModel.Extensions
             ReactivePropertyMode mode = ReactivePropertyMode.DistinctUntilChanged | ReactivePropertyMode.RaiseLatestValueOnSubscribe,
             bool ignoreValidationErrorValue = false)
             where TSubject : INotifyPropertyChanged
+            where TProperty : notnull
         {
-            var result = subject.ObserveProperty(propertyName, getter)
-                .ToReactiveProperty(raiseEventScheduler, mode: mode);
+            ReactiveProperty<TProperty>? result = subject.ObserveProperty(propertyName, getter)
+                .ToReactiveProperty<TProperty>(raiseEventScheduler, mode: mode);
             result
                 .Where(_ => !ignoreValidationErrorValue || !result.HasErrors)
                 .Subscribe(setter);
 
-            return result;
+            return result ?? throw new NullReferenceException();
         }
     }
 }

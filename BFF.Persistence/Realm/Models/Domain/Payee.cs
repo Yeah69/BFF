@@ -13,11 +13,14 @@ namespace BFF.Persistence.Realm.Models.Domain
         private readonly RealmObjectWrap<Persistence.Payee> _realmObjectWrap;
 
         public Payee(
+            // parameters
+            Persistence.Payee? realmObject,
+            string name,
+            
+            // dependencies
             ICrudOrm<Persistence.Payee> crudOrm,
             IMergeOrm mergeOrm,
-            IRealmPayeeRepositoryInternal repository,
-            Persistence.Payee realmObject,
-            string name) : base(name)
+            IRealmPayeeRepositoryInternal repository) : base(name)
         {
             _realmObjectWrap = new RealmObjectWrap<Persistence.Payee>(
                 realmObject,
@@ -41,7 +44,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public Persistence.Payee RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.Payee? RealmObject => _realmObjectWrap.RealmObject;
 
         public override async Task InsertAsync()
         {
@@ -66,8 +69,8 @@ namespace BFF.Persistence.Realm.Models.Domain
             if (!(payee is Payee)) throw new ArgumentException("Cannot merge if other part isn't from same backend", nameof(payee));
 
             await _mergeOrm.MergePayeeAsync(
-                    RealmObject,
-                    ((Payee)payee).RealmObject)
+                    RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"),
+                    ((Payee)payee).RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"))
                 .ConfigureAwait(false);
             _repository.RemoveFromObservableCollection(this);
             _repository.RemoveFromCache(this);

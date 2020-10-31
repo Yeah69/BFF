@@ -30,7 +30,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         public IRxRelayCommand ToggleSign { get; }
         public IObservable<Unit> RemoveRequests => Observable.Never<Unit>();
         public IRxRelayCommand RemoveCommand { get; }
-        public IAccountBaseViewModel Owner => null;
+        public IAccountBaseViewModel? Owner => null;
         public void NotifyErrorsIfAny()
         {
         }

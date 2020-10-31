@@ -8,8 +8,11 @@ namespace BFF.Persistence.Realm.Models.Domain
         private readonly RealmObjectWrap<Persistence.DbSetting> _realmObjectWrap;
 
         public DbSetting(
-            ICrudOrm<Persistence.DbSetting> crudOrm,
-            Persistence.DbSetting realmObject)
+            // parameters
+            Persistence.DbSetting? realmObject,
+            
+            // dependencies
+            ICrudOrm<Persistence.DbSetting> crudOrm)
         {
             _realmObjectWrap = new RealmObjectWrap<Persistence.DbSetting>(
                 realmObject,
@@ -31,7 +34,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public Persistence.DbSetting RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.DbSetting? RealmObject => _realmObjectWrap.RealmObject;
 
         public override Task InsertAsync()
         {

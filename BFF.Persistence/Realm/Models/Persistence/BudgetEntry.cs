@@ -6,7 +6,7 @@ namespace BFF.Persistence.Realm.Models.Persistence
     {
         [PrimaryKey]
         public int Id { get; set; }
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
         public int MonthIndex { get; set; }
         public long Budget { get; set; }
 

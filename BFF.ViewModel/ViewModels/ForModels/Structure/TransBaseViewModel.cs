@@ -12,9 +12,9 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
 {
     public interface ITransBaseViewModel : ITransLikeViewModel
     {
-        IObservableReadOnlyList<IFlagViewModel> AllFlags { get; }
+        IObservableReadOnlyList<IFlagViewModel>? AllFlags { get; }
 
-        IFlagViewModel Flag { get; set; }
+        IFlagViewModel? Flag { get; set; }
 
         IRxRelayCommand RemoveFlag { get; }
 
@@ -42,10 +42,10 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
     {
         private readonly ITransBase _transBase;
         private readonly IFlagViewModelService _flagViewModelService;
-        private IFlagViewModel _flag;
-        public IObservableReadOnlyList<IFlagViewModel> AllFlags => _flagViewModelService.All;
+        private IFlagViewModel? _flag;
+        public IObservableReadOnlyList<IFlagViewModel>? AllFlags => _flagViewModelService.All;
 
-        public IFlagViewModel Flag
+        public IFlagViewModel? Flag
         {
             get => _flag;
             set => _transBase.Flag = _flagViewModelService.GetModel(value);

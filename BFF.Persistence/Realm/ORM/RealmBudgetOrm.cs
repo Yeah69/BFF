@@ -10,6 +10,7 @@ using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using MoreLinq.Extensions;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using Account = BFF.Persistence.Realm.Models.Persistence.Account;
 using BudgetEntry = BFF.Persistence.Realm.Models.Persistence.BudgetEntry;
 using Category = BFF.Persistence.Realm.Models.Persistence.Category;
@@ -32,8 +33,8 @@ namespace BFF.Persistence.Realm.ORM
         {
             _realmOperations = realmOperations;
             _clearBudgetCache = clearBudgetCache;
-            observeBudgetCache.Observe.Subscribe(_ => _cache.Clear()).AddForDisposalTo(_compositeDisposable);
-            Disposable.Create(() => _cache.Clear()).AddForDisposalTo(_compositeDisposable);
+            observeBudgetCache.Observe.Subscribe(_ => _cache.Clear()).CompositeDisposalWith(_compositeDisposable);
+            Disposable.Create(() => _cache.Clear()).CompositeDisposalWith(_compositeDisposable);
         }
 
         public Task<BudgetBlock> FindAsync(int year)
@@ -214,7 +215,7 @@ namespace BFF.Persistence.Realm.ORM
                 };
             });
 
-            IEnumerable<(Category Category, int LastMonthIndex, long Balance, long TotalBudget, long TotalNegativeBalance)> GetInitialCategoryValues(
+            IEnumerable<(Category? Category, int LastMonthIndex, long Balance, long TotalBudget, long TotalNegativeBalance)> GetInitialCategoryValues(
             Realms.Realm realm,
             int untilMonth)
             {
@@ -225,7 +226,7 @@ namespace BFF.Persistence.Realm.ORM
                         .Select(be => (be.Category, be.MonthIndex, be.Budget))
                         .ToList();
                 
-                var transactions = realm
+                List<(Category? Category, int MonthIndex, long Sum)> transactions = realm
                     .All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.Transaction && t.MonthIndex < untilMonth)
                     .ToList()
@@ -233,9 +234,9 @@ namespace BFF.Persistence.Realm.ORM
                     .Concat(realm
                         .All<SubTransaction>()
                         .ToList()
-                        .Where(st => st.Parent.MonthIndex < untilMonth)
+                        .Where(st => st.Parent?.MonthIndex < untilMonth)
                         .Select(st => (st.Category,
-                            st.Parent.MonthIndex,
+                            st.Parent?.MonthIndex ?? throw new NullReferenceException(),
                             st.Sum)))
                     .ToList();
 
@@ -245,7 +246,7 @@ namespace BFF.Persistence.Realm.ORM
                     t => t.Category,
                     (category, budgets, outflows) =>
                     {
-                        var (m, balance, totalBudget, totalNegativeBalance) = budgets
+                        (int m, long balance, long totalBudget, long totalNegativeBalance) = budgets
                             .FullGroupJoin(
                                 outflows,
                                 b => b.MonthIndex,
@@ -285,7 +286,7 @@ namespace BFF.Persistence.Realm.ORM
                     .Concat(realm.All<SubTransaction>()
                         .Where(st => st.Category == null)
                         .ToList()
-                        .Where(st => st.Parent.MonthIndex < monthIndex)
+                        .Where(st => st.Parent?.MonthIndex < monthIndex)
                         .Select(st => st.Sum))
                     // Income Transactions and SubTransactions
                     .Concat(realm.All<Category>()
@@ -303,7 +304,7 @@ namespace BFF.Persistence.Realm.ORM
                                 .Concat(g.SelectMany(c => c
                                     .SubTransactions
                                     .ToList()
-                                    .Where(st => st.Parent.MonthIndex < offsetMontOffset)
+                                    .Where(st => st.Parent?.MonthIndex < offsetMontOffset)
                                     .Select(st => st.Sum)));
                         }))
                     // Dangling transfers
@@ -319,10 +320,10 @@ namespace BFF.Persistence.Realm.ORM
             }
         }
 
-        public Task<IReadOnlyList<(BudgetEntry Entry, BudgetEntryData Data)>> FindAsync(int year, Category category) => 
+        public Task<IReadOnlyList<(BudgetEntry? Entry, BudgetEntryData Data)>> FindAsync(int year, Category category) => 
             _realmOperations.RunFuncAsync(realm => FindAsyncInner(realm, year, category));
 
-        private IReadOnlyList<(BudgetEntry Entry, BudgetEntryData Data)> FindAsyncInner(Realms.Realm realm, int year, Category category)
+        private IReadOnlyList<(BudgetEntry? Entry, BudgetEntryData Data)> FindAsyncInner(Realms.Realm realm, int year, Category category)
         {
             var monthsOfYear = Enumerable
                 .Range(0, 11)
@@ -331,13 +332,13 @@ namespace BFF.Persistence.Realm.ORM
                     (dt, _) => dt.NextMonth())
                 .ToArray();
             
-            var list = new List<(BudgetEntry Entry, BudgetEntryData Data)>();
+            var list = new List<(BudgetEntry? Entry, BudgetEntryData Data)>();
             foreach (var month in monthsOfYear)
             {
-                (BudgetEntry budgetEntry, long budget, long outflow, long balance) = _cache.GetFor(category, month.Year, month.Month, realm);
+                (BudgetEntry? budgetEntry, long budget, long outflow, long balance) = _cache.GetFor(category, month.Year, month.Month, realm);
                     
                 (long aggregatedBudget, long aggregatedOutflow, long aggregatedBalance) = category
-                    .IterateTreeBreadthFirst(c => c.Categories)
+                    .IterateTreeBreadthFirst(c => c.Categories ?? Enumerable.Empty<Category>())
                     .Select(c => _cache.GetFor(c, month.Year, month.Month, realm))
                     .Aggregate((0L, 0L, 0L), (prev, cur) => (prev.Item1 + cur.Budget, prev.Item2 + cur.Outflow, prev.Item3 + cur.Balance));
                     
@@ -471,6 +472,7 @@ namespace BFF.Persistence.Realm.ORM
                     .Where(be => be.MonthIndex == monthIndex)
                     .ToList()
                     .Select(be => be.Category)
+                    .WhereNotNullRef()
                     .ToList();
 
                 return allCategories.Except(categoriesToExclude).ToList();
@@ -492,10 +494,10 @@ namespace BFF.Persistence.Realm.ORM
 
         private class BudgetDataCache
         {
-            private readonly Dictionary<(Category Category, int Year, int Month), (BudgetEntry Entry, long Budget, long Outflow, long Balance)> _cache =
-                new Dictionary<(Category Category, int Year, int Month), (BudgetEntry Entry, long Budget, long Outflow, long Balance)>();
+            private readonly Dictionary<(Category Category, int Year, int Month), (BudgetEntry? Entry, long Budget, long Outflow, long Balance)> _cache =
+                new Dictionary<(Category Category, int Year, int Month), (BudgetEntry? Entry, long Budget, long Outflow, long Balance)>();
 
-            public (BudgetEntry Entry, long Budget, long Outflow, long Balance) GetFor(Category category, int yearNumber, int monthNumber, Realms.Realm realm)
+            public (BudgetEntry? Entry, long Budget, long Outflow, long Balance) GetFor(Category category, int yearNumber, int monthNumber, Realms.Realm realm)
             {
                 if (_cache.TryGetValue((category, yearNumber, monthNumber), out var data))
                 {
@@ -585,7 +587,7 @@ namespace BFF.Persistence.Realm.ORM
                         .Select(be => (be.MonthIndex, be.Budget))
                         .ToList();
                 
-                var transactions = realm
+                List<(int MonthIndex, long Sum)> transactions = realm
                     .All<Trans>()
                     .Where(t => t.TypeIndex == (int)TransType.Transaction 
                                 && t.MonthIndex < untilMonthIndex
@@ -596,11 +598,11 @@ namespace BFF.Persistence.Realm.ORM
                         .All<SubTransaction>()
                         .Where(st => st.Category == category)
                         .ToList()
-                        .Where(st => st.Parent.MonthIndex < untilMonthIndex)
-                        .Select(st => (st.Parent.MonthIndex, st.Sum)))
+                        .Where(st => st.Parent?.MonthIndex < untilMonthIndex)
+                        .Select(st => (st.Parent?.MonthIndex ?? throw new NullReferenceException(), st.Sum)))
                     .ToList();
                 
-                var (m, balance, totalBudget, totalNegativeBalance) = budgetEntries
+                (int m, long balance, long totalBudget, long totalNegativeBalance) = budgetEntries
                     .FullGroupJoin(
                         transactions,
                         b => b.MonthIndex,
@@ -625,7 +627,7 @@ namespace BFF.Persistence.Realm.ORM
 
         public void Dispose()
         {
-            _compositeDisposable?.Dispose();
+            _compositeDisposable.Dispose();
         }
     }
 

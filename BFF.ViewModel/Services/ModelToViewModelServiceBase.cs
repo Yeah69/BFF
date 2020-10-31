@@ -9,7 +9,7 @@ namespace BFF.ViewModel.Services
         where TDomain : class, IDataModel
         where TViewModel : class, IDataModelViewModel
     {
-        TViewModel GetViewModel(TDomain model);
+        TViewModel? GetViewModel(TDomain? model);
     }
 
     internal abstract class ModelToViewModelServiceBase<TDomain, TViewModel> : IModelToViewModelServiceBase<TDomain, TViewModel>
@@ -26,7 +26,7 @@ namespace BFF.ViewModel.Services
 
         protected abstract TViewModel Create(TDomain model);
 
-        public TViewModel GetViewModel(TDomain model)
+        public TViewModel? GetViewModel(TDomain? model)
         {
             if (model is null) return null;
             

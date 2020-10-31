@@ -31,7 +31,7 @@ namespace BFF.ViewModel.ViewModels.Import
                 if (value == _importOption) return;
                 _importOption = value;
                 OnPropertyChanged();
-                UpdateImportViewModel();
+                ImportViewModel = UpdateImportViewModel();
             }
         }
 
@@ -43,7 +43,7 @@ namespace BFF.ViewModel.ViewModels.Import
                 if (value == _exportOption) return;
                 _exportOption = value;
                 OnPropertyChanged();
-                UpdateExportViewModel();
+                ExportViewModel = UpdateExportViewModel();
             }
         }
 
@@ -86,28 +86,26 @@ namespace BFF.ViewModel.ViewModels.Import
             _ynab4CsvImportViewModelFactory = ynab4CsvImportViewModelFactory;
             _realmFileExportViewModel = realmFileExportViewModel;
 
-            UpdateImportViewModel();
-            UpdateExportViewModel();
+            _importViewModel = UpdateImportViewModel();
+            _exportViewModel = UpdateExportViewModel();
         }
 
-        private void UpdateImportViewModel()
+        private IImportViewModel UpdateImportViewModel()
         {
-            ImportViewModel =
-                ImportOption switch
-                    {
-                        ImportOption.Ynab4Csv => _ynab4CsvImportViewModelFactory(),
-                        _ => throw new ArgumentException("Unexpected import option!")
-                    };
+            return ImportOption switch
+                {
+                    ImportOption.Ynab4Csv => _ynab4CsvImportViewModelFactory(),
+                    _ => throw new ArgumentException("Unexpected import option!")
+                };
         }
 
-        private void UpdateExportViewModel()
+        private IExportViewModel UpdateExportViewModel()
         {
-            ExportViewModel =
-                ExportOption switch
-                    {
-                    ExportOption.RealmFile => _realmFileExportViewModel(),
-                    _ => throw new ArgumentException("Unexpected export option!")
-                    };
+            return ExportOption switch
+                {
+                ExportOption.RealmFile => _realmFileExportViewModel(),
+                _ => throw new ArgumentException("Unexpected export option!")
+                };
         }
     }
 }

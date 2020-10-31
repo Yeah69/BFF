@@ -22,7 +22,7 @@ namespace BFF.Model
 
         public void Dispose()
         {
-            _subject?.Dispose();
+            _subject.Dispose();
         }
 
         public void UpdateCategory(ICategory category)

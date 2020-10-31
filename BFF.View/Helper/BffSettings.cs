@@ -39,7 +39,7 @@ namespace BFF.View.Helper
             }
         }
 
-        public string OpenAccountTab
+        public string? OpenAccountTab
         {
             get => Settings.Default.OpenAccountTab;
             set
@@ -159,7 +159,7 @@ namespace BFF.View.Helper
             }
         }
 
-        public string SelectedCsvProfile
+        public string? SelectedCsvProfile
         {
             get => Settings.Default.SelectedCsvProfile;
             set

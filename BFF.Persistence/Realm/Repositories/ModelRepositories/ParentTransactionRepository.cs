@@ -38,20 +38,20 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             async Task<IParentTransaction> InnerAsync(Realms.Realm _)
             {
                 var parentTransaction = new Models.Domain.ParentTransaction(
-                    _crudOrm,
-                    _subTransactionRepository.Value,
                     persistenceModel,
                     persistenceModel.Date.UtcDateTime,
                     persistenceModel.Flag is null
                         ? null
                         : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false),
-                    persistenceModel.CheckNumber,
-                    await _accountRepository.Value.FindAsync(persistenceModel.Account).ConfigureAwait(false),
+                    persistenceModel.CheckNumber ?? String.Empty,
+                    await _accountRepository.Value.FindAsync(persistenceModel.Account ?? throw new NullReferenceException("Shouldn't be null at that point")).ConfigureAwait(false),
                     persistenceModel.Payee is null
                         ? null
                         : await _payeeRepository.Value.FindAsync(persistenceModel.Payee).ConfigureAwait(false),
-                    persistenceModel.Memo,
-                    persistenceModel.Cleared);
+                    persistenceModel.Memo ?? String.Empty,
+                    persistenceModel.Cleared,
+                    _crudOrm,
+                    _subTransactionRepository.Value);
 
                 foreach (var subTransaction in parentTransaction.SubTransactions)
                 {

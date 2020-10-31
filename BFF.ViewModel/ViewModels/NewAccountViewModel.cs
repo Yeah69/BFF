@@ -21,7 +21,7 @@ namespace BFF.ViewModel.ViewModels
         /// <summary>
         /// User input of to be created Account.
         /// </summary>
-        string Name { get; set; }
+        string? Name { get; set; }
 
         IReactiveProperty<long> StartingBalance { get; }
 
@@ -43,7 +43,7 @@ namespace BFF.ViewModel.ViewModels
 
         protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
 
-        private string _name;
+        private string? _name;
 
         public NewAccountViewModel(
             ICreateNewModels createNewModels,
@@ -65,11 +65,12 @@ namespace BFF.ViewModel.ViewModels
             {
                 if (!ValidateName()) return;
                 var newAccount = createNewModels.CreateAccount();
-                newAccount.Name = Name.Trim();
+                newAccount.Name = Name?.Trim() ?? String.Empty;
                 newAccount.StartingBalance = StartingBalance.Value;
                 newAccount.StartingDate = StartingDate.Value;
                 await newAccount.InsertAsync();
-                viewModelService.GetViewModel(newAccount).IsOpen = true;
+                var newAccountViewModel = viewModelService.GetViewModel(newAccount) ?? throw new NullReferenceException("Shouldn't be null");
+                newAccountViewModel.IsOpen = true;
                 summaryAccountViewModel.RefreshStartingBalance();
                 summaryAccountViewModel.RefreshBalance();
                 _name = "";
@@ -98,7 +99,7 @@ namespace BFF.ViewModel.ViewModels
         /// <summary>
         /// User input of the to be searched or to be created Payee.
         /// </summary>
-        public string Name
+        public string? Name
         {
             get => _name;
             set
@@ -127,18 +128,18 @@ namespace BFF.ViewModel.ViewModels
         /// <summary>
         /// All currently available Accounts.
         /// </summary>
-        public IObservableReadOnlyList<IAccountViewModel> All => _viewModelService.All;
+        public IObservableReadOnlyList<IAccountViewModel>? All => _viewModelService.All;
 
         public void Dispose()
         {
-            CompositeDisposable?.Dispose();
+            CompositeDisposable.Dispose();
         }
 
         private bool ValidateName()
         {
             bool ret;
             if (!string.IsNullOrWhiteSpace(Name) &&
-                All.All(f => f.Name != Name.Trim()))
+                (All?.All(f => f.Name != Name.Trim()) ?? false))
             {
                 ClearErrors(nameof(Name));
                 ret = true;

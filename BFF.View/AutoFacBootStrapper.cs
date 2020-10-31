@@ -12,7 +12,7 @@ namespace BFF.View
 {
     public static class AutofacBootstrapper
     {
-        private static ILifetimeScope _rootScope;
+        private static ILifetimeScope? _rootScope;
 
         static AutofacBootstrapper()
         {
@@ -94,15 +94,13 @@ namespace BFF.View
 
         public static void Stop()
         {
-            _rootScope.Dispose();
+            _rootScope?.Dispose();
         }
 
-        public static T Resolve<T>()
+        public static T Resolve<T>() where T : notnull
         {
             if (_rootScope is null)
-            {
                 throw new Exception("Bootstrapper hasn't been started!");
-            }
 
             return _rootScope.Resolve<T>();
         }

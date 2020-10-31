@@ -11,11 +11,14 @@ namespace BFF.Persistence.Realm.Models.Domain
         private readonly RealmObjectWrap<Persistence.SubTransaction> _realmObjectWrap;
 
         public SubTransaction(
-            ICrudOrm<Persistence.SubTransaction> crudOrm,
-            Persistence.SubTransaction realmObject,
-            ICategoryBase category,
+            // parameters
+            Persistence.SubTransaction? realmObject,
+            ICategoryBase? category,
             string memo, 
-            long sum) : base(category, memo, sum)
+            long sum,
+            
+            // dependencies
+            ICrudOrm<Persistence.SubTransaction> crudOrm) : base(category, memo, sum)
         {
             _realmObjectWrap = new RealmObjectWrap<Persistence.SubTransaction>(
                 realmObject,
@@ -51,7 +54,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public Persistence.SubTransaction RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.SubTransaction? RealmObject => _realmObjectWrap.RealmObject;
 
         public override Task InsertAsync()
         {

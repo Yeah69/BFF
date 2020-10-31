@@ -16,11 +16,11 @@ namespace BFF.Persistence.Sql.Models.Domain
             ICrudOrm<ITransSql> crudOrm,
             long id,
             DateTime date,
-            IFlag flag,
+            IFlag? flag,
             string checkNumber,
-            IAccount account,
-            IPayee payee, 
-            ICategoryBase category, 
+            IAccount? account,
+            IPayee? payee, 
+            ICategoryBase? category, 
             string memo, 
             long sum, 
             bool cleared) : base(date, flag, checkNumber, account, payee, category, memo, sum, cleared)
@@ -51,9 +51,9 @@ namespace BFF.Persistence.Sql.Models.Domain
         private ITransSql CreatePersistenceObject()
         {
             if (!(Account is Account)
-                && (Category != null || !(Category is Category))
-                && (Flag != null || !(Flag is Flag))
-                && (Payee != null || !(Payee is Payee)))
+                || (Category != null && !(Category is Category))
+                || (Flag != null && !(Flag is Flag))
+                || (Payee != null && !(Payee is Payee)))
                 throw new ArgumentException("Cannot create persistence object if parts are from another backend");
 
             return new Trans

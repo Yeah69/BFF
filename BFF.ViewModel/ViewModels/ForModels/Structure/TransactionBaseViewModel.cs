@@ -12,11 +12,11 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
 {
     public interface ITransactionBaseViewModel : ITransBaseViewModel, IHavePayeeViewModel
     {
-        IObservableReadOnlyList<IAccountViewModel> AllAccounts { get; }
+        IObservableReadOnlyList<IAccountViewModel>? AllAccounts { get; }
         /// <summary>
         /// The assigned Account, where this Transaction is registered.
         /// </summary>
-        IAccountViewModel Account { get; set; }
+        IAccountViewModel? Account { get; set; }
     }
 
     /// <summary>
@@ -29,15 +29,15 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         private readonly IPayeeViewModelService _payeeViewModelService;
         private readonly ILocalizer _localizer;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
-        private IAccountViewModel _account;
-        private IPayeeViewModel _payee;
+        private IAccountViewModel? _account;
+        private IPayeeViewModel? _payee;
 
-        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => _accountViewModelService.All;
+        public IObservableReadOnlyList<IAccountViewModel>? AllAccounts => _accountViewModelService.All;
 
         /// <summary>
         /// The assigned Account, where this Transaction is registered.
         /// </summary>
-        public IAccountViewModel Account
+        public IAccountViewModel? Account
         {
             get => _account;
             set => _transactionBase.Account = _accountViewModelService.GetModel(value);
@@ -48,7 +48,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         /// <summary>
         /// Someone or something, who got paid or paid the user by the Transaction.
         /// </summary>
-        public IPayeeViewModel Payee
+        public IPayeeViewModel? Payee
         {
             get => _payee;
             set => _transactionBase.Payee = _payeeViewModelService.GetModel(value);
@@ -80,7 +80,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             _localizer = localizer;
             _summaryAccountViewModel = summaryAccountViewModel;
 
-            void RefreshAnAccountViewModel(IAccountViewModel account)
+            void RefreshAnAccountViewModel(IAccountViewModel? account)
             {
                 if (this.IsInserted.Not()) return;
                 account?.RefreshTransCollection();
@@ -101,7 +101,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                         OnErrorChanged(nameof(Account));
                     }
                 })
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
             if (Account is null && owner is IAccountViewModel specificAccount)
                 Account = specificAccount;
@@ -110,12 +110,12 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 .ObservePropertyChanged(nameof(transactionBase.Account))
                 .SkipLast(1)
                 .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transactionBase.Account)))
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
             transactionBase
                 .ObservePropertyChanged(nameof(transactionBase.Account))
                 .Subscribe(a => RefreshAnAccountViewModel(accountViewModelService.GetViewModel(transactionBase.Account)))
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
             _payee = _payeeViewModelService.GetViewModel(transactionBase.Payee);
             transactionBase
@@ -131,7 +131,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                         OnErrorChanged(nameof(Payee));
                     }
                 })
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
             NewPayeeViewModel = newPayeeViewModel;
         }

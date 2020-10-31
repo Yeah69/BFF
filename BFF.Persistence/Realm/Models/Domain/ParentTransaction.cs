@@ -18,16 +18,19 @@ namespace BFF.Persistence.Realm.Models.Domain
         private readonly RealmObjectWrap<Trans> _realmObjectWrap;
 
         public ParentTransaction(
-            ICrudOrm<Trans> crudOrm,
-            IRealmSubTransactionRepository subTransactionRepository,
-            Trans realmObject,
+            // parameters
+            Trans? realmObject,
             DateTime date, 
-            IFlag flag,
+            IFlag? flag,
             string checkNumber, 
-            IAccount account, 
-            IPayee payee,
+            IAccount? account, 
+            IPayee? payee,
             string memo, 
-            bool cleared) : base(date, flag, checkNumber, account, payee, memo, cleared)
+            bool cleared,
+            
+            // dependencies
+            ICrudOrm<Trans> crudOrm,
+            IRealmSubTransactionRepository subTransactionRepository) : base(date, flag, checkNumber, account, payee, memo, cleared)
         {
             _realmObjectWrap = new RealmObjectWrap<Trans>(
                 realmObject,
@@ -48,7 +51,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
             if (realmObject != null)
                 subTransactionRepository
-                    .GetChildrenOfAsync(RealmObject)
+                    .GetChildrenOfAsync(RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"))
                     .ContinueWith(async t =>
                     {
                         foreach (var subTransaction in await t.ConfigureAwait(false))
@@ -96,7 +99,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public Trans RealmObject => _realmObjectWrap.RealmObject;
+        public Trans? RealmObject => _realmObjectWrap.RealmObject;
 
         public override Task InsertAsync()
         {

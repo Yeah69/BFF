@@ -9,26 +9,26 @@ namespace BFF.ViewModel.Helper
 {
     public interface IConvertFromTransBaseToTransLikeViewModel
     {
-        IEnumerable<ITransLikeViewModel> Convert(IEnumerable<ITransBase> transBases, IAccountBaseViewModel owner);
+        IEnumerable<ITransLikeViewModel> Convert(IEnumerable<ITransBase> transBases, IAccountBaseViewModel? owner);
     }
 
     internal class ConvertFromTransBaseToTransLikeViewModel : IConvertFromTransBaseToTransLikeViewModel
     {
-        private readonly Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> _transactionViewModelFactory;
-        private readonly Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> _parentTransactionViewModelFactory;
-        private readonly Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> _transferViewModelFactory;
+        private readonly Func<ITransaction, IAccountBaseViewModel?, ITransactionViewModel> _transactionViewModelFactory;
+        private readonly Func<IParentTransaction, IAccountBaseViewModel?, IParentTransactionViewModel> _parentTransactionViewModelFactory;
+        private readonly Func<ITransfer, IAccountBaseViewModel?, ITransferViewModel> _transferViewModelFactory;
 
         public ConvertFromTransBaseToTransLikeViewModel(
-            Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
-            Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory,
-            Func<ITransfer, IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory)
+            Func<ITransaction, IAccountBaseViewModel?, ITransactionViewModel> transactionViewModelFactory,
+            Func<IParentTransaction, IAccountBaseViewModel?, IParentTransactionViewModel> parentTransactionViewModelFactory,
+            Func<ITransfer, IAccountBaseViewModel?, ITransferViewModel> transferViewModelFactory)
         {
             _transactionViewModelFactory = transactionViewModelFactory;
             _parentTransactionViewModelFactory = parentTransactionViewModelFactory;
             _transferViewModelFactory = transferViewModelFactory;
         }
 
-        public IEnumerable<ITransLikeViewModel> Convert(IEnumerable<ITransBase> transBases, IAccountBaseViewModel owner)
+        public IEnumerable<ITransLikeViewModel> Convert(IEnumerable<ITransBase> transBases, IAccountBaseViewModel? owner)
         {
             var vmItems = new List<ITransLikeViewModel>();
             foreach (ITransBase transBase in transBases)

@@ -21,12 +21,12 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// <summary>
         /// The Child-Categories
         /// </summary>
-        ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
+        ReadOnlyReactiveCollection<ICategoryViewModel?> Categories { get; }
 
         /// <summary>
         /// The Parent
         /// </summary>
-        ICategoryViewModel Parent { get; }
+        ICategoryViewModel? Parent { get; }
 
         void MergeTo(ICategoryViewModel target);
 
@@ -94,12 +94,12 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// <summary>
         /// The Child-Categories
         /// </summary>
-        public ReadOnlyReactiveCollection<ICategoryViewModel> Categories { get; }
+        public ReadOnlyReactiveCollection<ICategoryViewModel?> Categories { get; }
 
         /// <summary>
         /// The Parent
         /// </summary>
-        public ICategoryViewModel Parent { get; private set; }
+        public ICategoryViewModel? Parent { get; private set; }
 
         public override Task DeleteAsync()
         {

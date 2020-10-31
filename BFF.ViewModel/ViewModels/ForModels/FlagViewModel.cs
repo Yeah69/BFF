@@ -10,7 +10,6 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MoreLinq;
-using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels
@@ -50,7 +49,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .ObservePropertyChanged(nameof(flag.Color))
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Color)))
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
         }
 
         public override Task DeleteAsync()

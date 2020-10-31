@@ -1,6 +1,6 @@
-﻿using BFF.Core.Helper;
-using BFF.ViewModel.Managers;
+﻿using BFF.ViewModel.Managers;
 using BFF.ViewModel.ViewModels;
+using MrMeeseeks.Windows;
 
 namespace BFF.ViewModel.Contexts
 {

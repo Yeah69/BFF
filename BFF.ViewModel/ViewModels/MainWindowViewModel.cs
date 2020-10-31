@@ -23,19 +23,19 @@ namespace BFF.ViewModel.ViewModels
         IRxRelayCommand OpenBudgetPlanCommand { get; }
         IRxRelayCommand CloseBudgetPlanCommand { get; }
         IRxRelayCommand ParentTransactionOnClose { get; }
-        TopLevelViewModelCompositionBase TopLevelViewModelComposition { get; set; }
+        TopLevelViewModelCompositionBase? TopLevelViewModelComposition { get; set; }
         IEmptyViewModel EmptyViewModel { get; }
-        ICultureManager CultureManager { get; }
+        ICultureManager? CultureManager { get; }
         bool IsEmpty { get; }
         CultureInfo LanguageCulture { get; set; }
-        IReadOnlyReactiveProperty<IParentTransactionViewModel> OpenParentTransaction { get; }
+        IReadOnlyReactiveProperty<IParentTransactionViewModel?> OpenParentTransaction { get; }
         bool ParentTransFlyoutOpen { get; set; }
         double Width { get; set; }
         double Height { get; set; }
         double X { get; set; }
         double Y { get; set; }
         BffWindowState WindowState { get; set; }
-        string Title { get; }
+        string? Title { get; }
         ITransDataGridColumnManager TransDataGridColumnManager { get; }
     }
 
@@ -47,8 +47,8 @@ namespace BFF.ViewModel.ViewModels
         private readonly ISetupLocalizationFramework _setupLocalizationFramework;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private string _title;
-        public string Title
+        private string? _title;
+        public string? Title
         {
             get => _title;
             set
@@ -65,7 +65,7 @@ namespace BFF.ViewModel.ViewModels
         public IRxRelayCommand CloseBudgetPlanCommand { get; }
 
         public IRxRelayCommand ParentTransactionOnClose { get; }
-        public TopLevelViewModelCompositionBase TopLevelViewModelComposition
+        public TopLevelViewModelCompositionBase? TopLevelViewModelComposition
         {
             get => _topLevelViewModelComposition;
             set
@@ -76,7 +76,7 @@ namespace BFF.ViewModel.ViewModels
             }
         }
 
-        public ICultureManager CultureManager
+        public ICultureManager? CultureManager
         {
             get => _cultureManager;
             private set
@@ -89,7 +89,7 @@ namespace BFF.ViewModel.ViewModels
 
         public ITransDataGridColumnManager TransDataGridColumnManager { get; }
         public IEmptyViewModel EmptyViewModel { get; set; }
-        public bool IsEmpty => TopLevelViewModelComposition.AccountTabsViewModel is null 
+        public bool IsEmpty => TopLevelViewModelComposition?.AccountTabsViewModel is null 
                                || TopLevelViewModelComposition.BudgetOverviewViewModel is null;
 
         public CultureInfo LanguageCulture
@@ -100,8 +100,8 @@ namespace BFF.ViewModel.ViewModels
                 _bffSettings.Culture_DefaultLanguage = value;
 
                 CultureInfo customCulture = CultureInfo.CreateSpecificCulture(_bffSettings.Culture_DefaultLanguage.Name);
-                customCulture.NumberFormat = CultureManager.CurrencyCulture.NumberFormat;
-                customCulture.DateTimeFormat = CultureManager.DateCulture.DateTimeFormat;
+                customCulture.NumberFormat = CultureManager?.CurrencyCulture.NumberFormat;
+                customCulture.DateTimeFormat = CultureManager?.DateCulture.DateTimeFormat;
 
                 _setupLocalizationFramework.With(customCulture);
                 Thread.CurrentThread.CurrentCulture = customCulture;
@@ -113,9 +113,9 @@ namespace BFF.ViewModel.ViewModels
 
         private const double BorderOffset = 50.0;
 
-        private IParentTransactionViewModel _parentTransViewModel;
+        private IParentTransactionViewModel? _parentTransViewModel;
 
-        public IParentTransactionViewModel ParentTransactionViewModel
+        public IParentTransactionViewModel? ParentTransactionViewModel
         {
             get => _parentTransViewModel;
             set
@@ -127,10 +127,10 @@ namespace BFF.ViewModel.ViewModels
 
         private bool _parentTransFlyoutOpen;
         private readonly SerialDisposable _contextSequence = new SerialDisposable();
-        private ICultureManager _cultureManager;
-        private TopLevelViewModelCompositionBase _topLevelViewModelComposition;
+        private ICultureManager? _cultureManager;
+        private TopLevelViewModelCompositionBase? _topLevelViewModelComposition;
 
-        public IReadOnlyReactiveProperty<IParentTransactionViewModel> OpenParentTransaction { get; }
+        public IReadOnlyReactiveProperty<IParentTransactionViewModel?> OpenParentTransaction { get; }
 
         public bool ParentTransFlyoutOpen
         {
@@ -152,7 +152,6 @@ namespace BFF.ViewModel.ViewModels
             ITransDataGridColumnManager transDataGridColumnManager,
             IBffSettings bffSettings,
             IBffSystemInformation bffSystemInformation,
-            ILocalizer localizer,
             ISetupLocalizationFramework setupLocalizationFramework,
             IParentTransactionFlyoutManager parentTransactionFlyoutManager,
             IEmptyViewModel emptyViewModel)
@@ -190,13 +189,20 @@ namespace BFF.ViewModel.ViewModels
                     var newFileAccessViewModel = newFileAccessViewModelFactory();
                     if (await bffChildWindowManager.OpenOkCancelDialog(newFileAccessViewModel))
                     {
-                        var configuration = newFileAccessViewModel.GenerateConfiguration();
-                        using (var createBackendContext = newBackendContextFactory(configuration))
+                        try
                         {
-                            await createBackendContext
-                                .CreateProjectAsync();
+                            var configuration = newFileAccessViewModel.GenerateConfiguration();
+                            using (var createBackendContext = newBackendContextFactory(configuration))
+                            {
+                                await createBackendContext
+                                    .CreateProjectAsync();
+                            }
+                            Reset(configuration);
                         }
-                        Reset(configuration);
+                        catch (FileNotFoundException e)
+                        {
+                            Console.WriteLine(e); // todo error handling
+                        }
                     }
                 }
             });
@@ -212,8 +218,15 @@ namespace BFF.ViewModel.ViewModels
                     var openFileAccessViewModel = openFileAccessDialogFactory();
                     if (await bffChildWindowManager.OpenOkCancelDialog(openFileAccessViewModel))
                     {
-                        var configuration = openFileAccessViewModel.GenerateConfiguration();
-                        Reset(configuration);
+                        try
+                        {
+                            var configuration = openFileAccessViewModel.GenerateConfiguration();
+                            Reset(configuration);
+                        }
+                        catch (FileNotFoundException e)
+                        {
+                            Console.WriteLine(e); // todo error handling
+                        }
                     }
                 }
             });
@@ -225,7 +238,7 @@ namespace BFF.ViewModel.ViewModels
             Logger.Trace("Initializing done.");
         }
 
-        private void Reset(IFileAccessConfiguration config)
+        private void Reset(IFileAccessConfiguration? config)
         {
             IProjectContext context;
             if (config != null && File.Exists(config.Path))

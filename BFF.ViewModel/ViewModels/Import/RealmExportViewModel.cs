@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using BFF.Core.Helper;
 using BFF.Core.Persistence;
 using BFF.ViewModel.Helper;
@@ -8,10 +9,10 @@ namespace BFF.ViewModel.ViewModels.Import
 {
     public class RealmFileExportViewModel : ViewModelBase, IExportViewModel
     {
-        private readonly Func<(string Path, string Password), IRealmExportConfiguration> _exportingConfigurationFactory;
-        private string _path;
+        private readonly Func<(string Path, string? Password), IRealmExportConfiguration> _exportingConfigurationFactory;
+        private string? _path;
 
-        public string Path
+        public string? Path
         {
             get => _path;
             set
@@ -27,7 +28,7 @@ namespace BFF.ViewModel.ViewModels.Import
         public RealmFileExportViewModel(
             PasswordProtectedFileAccessViewModel passwordProtectedFileAccessViewModel,
             Func<IBffSaveFileDialog> saveFileDialogFactory,
-            Func<(string Path, string Password), IRealmExportConfiguration> exportingConfigurationFactory,
+            Func<(string Path, string? Password), IRealmExportConfiguration> exportingConfigurationFactory,
             IBffSettings bffSettings)
         {
             PasswordConfiguration = passwordProtectedFileAccessViewModel;
@@ -44,7 +45,7 @@ namespace BFF.ViewModel.ViewModels.Import
                 if (bffSaveFileDialog.ShowDialog() == true)
                 {
                     Path = bffSaveFileDialog.FileName;
-                    bffSettings.Import_SavePath = _path;
+                    bffSettings.Import_SavePath = _path ?? throw new FileNotFoundException();
                 }
             });
         }
@@ -53,7 +54,7 @@ namespace BFF.ViewModel.ViewModels.Import
 
         public IExportingConfiguration GenerateConfiguration() =>
             _exportingConfigurationFactory((
-                Path, 
+                Path ?? throw new FileNotFoundException(), 
                 PasswordConfiguration.IsEncryptionActive 
                     ? PasswordConfiguration.Password 
                     : null));

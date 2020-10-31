@@ -14,7 +14,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     public class IncomeCategoryComparer : Comparer<IIncomeCategory>
     {
         public override int Compare(IIncomeCategory x, IIncomeCategory y) => 
-            StringComparer.Create(CultureInfo.InvariantCulture, false).Compare(x?.Name, y?.Name);
+            StringComparer.Create(CultureInfo.InvariantCulture, false).Compare(x.Name, y.Name);
     }
 
     internal interface IRealmIncomeCategoryRepositoryInternal : IIncomeCategoryRepository, IRealmObservableRepositoryBaseInternal<IIncomeCategory, Models.Persistence.Category>
@@ -53,12 +53,12 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             IIncomeCategory InnerAsync(Realms.Realm _)
             {
                 return new Models.Domain.IncomeCategory(
+                    persistenceModel,
+                    persistenceModel.Name ?? String.Empty,
+                    persistenceModel.IncomeMonthOffset,
                     _crudOrm,
                     _mergeOrm.Value,
-                    this,
-                    persistenceModel,
-                    persistenceModel.Name,
-                    persistenceModel.IncomeMonthOffset);
+                    this);
             }
         }
 

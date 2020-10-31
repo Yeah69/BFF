@@ -26,8 +26,8 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             IDbSetting InnerAsync(Realms.Realm _)
             {
                 return new Models.Domain.DbSetting(
-                    _crudOrm,
-                    persistenceModel)
+                    persistenceModel,
+                    _crudOrm)
                 {
                     CurrencyCultureName = persistenceModel.CurrencyCultureName,
                     DateCultureName = persistenceModel.DateCultureName

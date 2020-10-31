@@ -94,7 +94,6 @@ namespace BFF.Persistence.Realm.Models
         public ITransaction CreateTransaction()
         {
             return new Domain.Transaction(
-                _transCrudOrm.Value, 
                 null, 
                 _lastSetDate.Date,
                 null,
@@ -104,13 +103,13 @@ namespace BFF.Persistence.Realm.Models
                 null,
                 "",
                 0L,
-                false);
+                false,
+                _transCrudOrm.Value);
         }
 
         public ITransfer CreateTransfer()
         {
             return new Domain.Transfer(
-                _transCrudOrm.Value,
                 null,
                 _lastSetDate.Date,
                 null,
@@ -119,14 +118,13 @@ namespace BFF.Persistence.Realm.Models
                 null,
                 "",
                 0L,
-                false);
+                false,
+                _transCrudOrm.Value);
         }
 
         public IParentTransaction CreateParentTransfer()
         {
             return new Domain.ParentTransaction(
-                _transCrudOrm.Value,
-                _subTransactionRepository.Value,
                 null,
                 _lastSetDate.Date,
                 null,
@@ -134,80 +132,82 @@ namespace BFF.Persistence.Realm.Models
                 null,
                 null,
                 "",
-                false);
+                false,
+                _transCrudOrm.Value,
+                _subTransactionRepository.Value);
         }
 
         public ISubTransaction CreateSubTransaction()
         {
             return new Domain.SubTransaction(
-                _subTransactionCrudOrm.Value,
                 null,
                 null,
                 "",
-                0L);
+                0L,
+                _subTransactionCrudOrm.Value);
         }
 
         public IAccount CreateAccount()
         {
             return new Domain.Account(
-                _accountCrudOrm.Value,
-                _accountOrm.Value,
-                _accountRepository.Value,
-                _transRepository.Value,
                 null,
                 _lastSetDate.Date,
                 "",
-                0L);
+                0L,
+                _accountCrudOrm.Value,
+                _accountOrm.Value,
+                _accountRepository.Value,
+                _transRepository.Value);
         }
 
         public IPayee CreatePayee()
         {
             return new Domain.Payee(
+                null,
+                "",
                 _payeeCrudOrm.Value,
                 _mergeOrm.Value,
-                _payeeRepository.Value,
-                null,
-                "");
+                _payeeRepository.Value);
         }
 
         public ICategory CreateCategory()
         {
             return new Domain.Category(
-                _categoryCrudOrm.Value,
-                _mergeOrm.Value,
-                _categoryRepository.Value,
                 null,
                 "",
-                null);
+                null,
+                _categoryCrudOrm.Value,
+                _mergeOrm.Value,
+                _categoryRepository.Value);
         }
 
         public IIncomeCategory CreateIncomeCategory()
         {
             return new Domain.IncomeCategory(
-                _categoryCrudOrm.Value,
-                _mergeOrm.Value,
-                _incomeCategoryRepository.Value,
                 null,
                 "",
-                0);
+                0,
+                _categoryCrudOrm.Value,
+                _mergeOrm.Value,
+                _incomeCategoryRepository.Value);
         }
 
         public IFlag CreateFlag()
         {
             return new Domain.Flag(
-                _flagCrudOrm.Value,
-                _mergeOrm.Value,
-                _flagRepository.Value,
                 null,
                 Color.BlueViolet,
-                "");
+                "",
+                _flagCrudOrm.Value,
+                _mergeOrm.Value,
+                _flagRepository.Value);
         }
 
         public IDbSetting CreateDbSetting()
         {
             return new Domain.DbSetting(
-                _dbSettingCrudOrm.Value,
-                null);
+                null,
+                _dbSettingCrudOrm.Value);
         }
 
         public IBudgetEntry CreateBudgetEntry(

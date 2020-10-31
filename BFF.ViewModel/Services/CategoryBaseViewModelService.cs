@@ -26,7 +26,7 @@ namespace BFF.ViewModel.Services
             All = new ConcatenatingObservableReadOnlyList<ICategoryBaseViewModel>(categoryViewModelService.All, incomeCategoryViewModelService.All);
         }
 
-        public ICategoryBase GetModel(ICategoryBaseViewModel viewModel)
+        public ICategoryBase? GetModel(ICategoryBaseViewModel? viewModel)
         {
             switch (viewModel)
             {
@@ -41,7 +41,7 @@ namespace BFF.ViewModel.Services
             }
         }
 
-        public ICategoryBaseViewModel GetViewModel(ICategoryBase model)
+        public ICategoryBaseViewModel? GetViewModel(ICategoryBase? model)
         {
             switch (model)
             {

@@ -43,7 +43,8 @@ namespace BFF.Persistence.Sql.ORM
                     }
                     foreach (CategoryImportWrapper categoryImportWrapper in current.Categories)
                     {
-                        categoryImportWrapper.Category.ParentId = id;
+                        if(categoryImportWrapper.Category is {} category)
+                            category.ParentId = id;
                         categoriesOrder.Enqueue(categoryImportWrapper);
                     }
                 }

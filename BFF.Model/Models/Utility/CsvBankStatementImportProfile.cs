@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using BFF.Core.Helper;
+using MrMeeseeks.Windows;
 
 namespace BFF.Model.Models.Utility
 {
@@ -8,7 +8,7 @@ namespace BFF.Model.Models.Utility
         string Name { get; }
         string Header { get; set; }
         char Delimiter { get; set; }
-        string DateSegment { get; set; }
+        string? DateSegment { get; set; }
         string DateLocalization { get; set; }
         string PayeeFormat { get; set; }
         bool ShouldCreateNewPayeeIfNotExisting { get; set; }
@@ -27,12 +27,12 @@ namespace BFF.Model.Models.Utility
         private string _memoFormat;
         private string _sumFormat;
         private string _sumLocalization;
-        private string _dateSegment;
+        private string? _dateSegment;
 
         public CsvBankStatementImportProfile(
             string header, 
             char delimiter,
-            string dateSegment,
+            string? dateSegment,
             string dateLocalization,
             string payeeFormat,
             bool shouldCreateNewPayeeIfNotExisting,
@@ -77,7 +77,7 @@ namespace BFF.Model.Models.Utility
             }
         }
 
-        public string DateSegment
+        public string? DateSegment
         {
             get => _dateSegment;
             set {

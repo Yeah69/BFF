@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
-using JetBrains.Annotations;
 using MrMeeseeks.Extensions;
 using Realms;
 
@@ -11,18 +10,18 @@ namespace BFF.Persistence.Realm.Models.Domain
     internal class RealmObjectWrap<T> 
         where T : class, IPersistenceModelRealm
     {
-        [NotNull] private readonly Func<Realms.Realm, T> _createRealmObject;
-        [NotNull] private readonly Action<T> _updateRealmObject;
+        private readonly Func<Realms.Realm, T> _createRealmObject;
+        private readonly Action<T> _updateRealmObject;
         private readonly ICrudOrm<T> _crudOrm;
 
         public RealmObjectWrap(
-            // parameter
-            [CanBeNull] T realmObject,
-            [NotNull] Func<Realms.Realm, T> createRealmObject,
-            [NotNull] Action<T> updateRealmObject, 
+            // parameters
+            T? realmObject,
+            Func<Realms.Realm, T> createRealmObject,
+            Action<T> updateRealmObject, 
             
             // dependencies
-            [NotNull] ICrudOrm<T> crudOrm)
+            ICrudOrm<T> crudOrm)
         {
             RealmObject = realmObject;
             _createRealmObject = createRealmObject ?? throw new ArgumentNullException(nameof(createRealmObject));
@@ -32,8 +31,7 @@ namespace BFF.Persistence.Realm.Models.Domain
         
         public bool IsInserted => RealmObject != null;
         
-        [CanBeNull]
-        public T RealmObject { get; private set; }
+        public T? RealmObject { get; private set; }
         
         public async Task InsertAsync()
         {
@@ -44,13 +42,13 @@ namespace BFF.Persistence.Realm.Models.Domain
             RealmObject CreateRealmObject(Realms.Realm realm)
             {
                 RealmObject = _createRealmObject(realm);
-                return RealmObject as RealmObject;
+                return RealmObject as RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point");
             }
         }
 
         public Task UpdateAsync()
         {
-            return IsInserted.Not() 
+            return RealmObject is null
                 ? Task.CompletedTask 
                 : _crudOrm.UpdateAsync(RealmObject, UpdateRealmObject);
 
@@ -59,7 +57,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public async Task DeleteAsync()
         {
-            await _crudOrm.DeleteAsync(RealmObject).ConfigureAwait(false);
+            await _crudOrm.DeleteAsync(RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point")).ConfigureAwait(false);
             RealmObject = null;
         }
     }

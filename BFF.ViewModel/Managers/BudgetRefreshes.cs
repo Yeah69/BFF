@@ -6,7 +6,6 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using BFF.Core.IoC;
 using BFF.ViewModel.ViewModels.ForModels;
-using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
 
 namespace BFF.ViewModel.Managers
@@ -37,8 +36,8 @@ namespace BFF.ViewModel.Managers
 
         public BudgetRefreshes()
         {
-            _monthRefreshes = new Subject<Unit>().AddForDisposalTo(_compositeDisposable);
-            _completeRefreshes = new Subject<Unit>().AddForDisposalTo(_compositeDisposable);
+            _monthRefreshes = new Subject<Unit>().CompositeDisposalWith(_compositeDisposable);
+            _completeRefreshes = new Subject<Unit>().CompositeDisposalWith(_compositeDisposable);
         }
 
         public IObservable<Unit> ObserveCompleteRefreshes => _completeRefreshes.AsObservable();
@@ -65,6 +64,6 @@ namespace BFF.ViewModel.Managers
 
         private Subject<Unit> GetOrAddCategorySubject(ICategoryViewModel category) =>
             _categoryEvents.GetOrAdd(category, c => new Subject<Unit>())
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
     }
 }

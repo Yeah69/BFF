@@ -6,7 +6,7 @@ namespace BFF.View.Views
 {
     public partial class NewPayeeView
     {
-        public event EventHandler OnAddClicked;
+        public event EventHandler? OnAddClicked;
 
         public NewPayeeView()
         {

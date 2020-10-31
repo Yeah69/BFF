@@ -1,16 +1,20 @@
 ﻿using System;
+using System.IO;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using BFF.Core.Helper;
 using BFF.Core.Persistence;
 using BFF.ViewModel.Helper;
-using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 
 namespace BFF.ViewModel.ViewModels.Dialogs
 {
     public interface IFileAccessViewModel : IOkCancelDialogViewModel
     {
         IRxRelayCommand BrowseCommand { get; set; }
-        string Path { get; set; }
-        IPasswordProtectedFileAccessViewModel PasswordConfiguration { get; }
+        string? Path { get; set; }
+        IPasswordProtectedFileAccessViewModel? PasswordConfiguration { get; }
 
         IFileAccessConfiguration GenerateConfiguration();
     }
@@ -26,12 +30,21 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         {
             _passwordProtectedFileAccessViewModelFactory = passwordProtectedFileAccessViewModelFactory;
             _createFileAccessConfiguration = createFileAccessConfiguration;
+            
+            var okCommandCompositeDisposable = new CompositeDisposable().SerializeDisposalWith(OkCommandSerialDisposable);
+            var okCommand = this.ObservePropertyChanged(nameof(Path))
+                .Select(_ => Path is {} path && File.Exists(path))
+                .AsCanExecuteForRxCommand(false)
+                .CompositeDisposalWith(okCommandCompositeDisposable);
+            okCommand.Observe.Subscribe(_ => OnOk()).CompositeDisposalWith(okCommandCompositeDisposable);
+
+            this.OkCommand = okCommand;
         }
 
-        private string _path;
-        private IPasswordProtectedFileAccessViewModel _passwordConfiguration;
+        private string? _path;
+        private IPasswordProtectedFileAccessViewModel? _passwordConfiguration;
 
-        public string Path
+        public string? Path
         {
             get => _path;
             set
@@ -39,7 +52,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                 if (_path == value) return;
                 _path = value;
 
-                PasswordConfiguration = _path.EndsWith(".realm") 
+                PasswordConfiguration = _path?.EndsWith(".realm") ?? false
                     ? _passwordProtectedFileAccessViewModelFactory() 
                     : null;
 
@@ -49,7 +62,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
 
         public abstract IRxRelayCommand BrowseCommand { get; set; }
 
-        public IPasswordProtectedFileAccessViewModel PasswordConfiguration
+        public IPasswordProtectedFileAccessViewModel? PasswordConfiguration
         {
             get => _passwordConfiguration;
             private set
@@ -61,9 +74,11 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         }
         public IFileAccessConfiguration GenerateConfiguration()
         {
-            return PasswordConfiguration is null || PasswordConfiguration.IsEncryptionActive.Not()
-                ? _createFileAccessConfiguration.Create(Path)
-                : _createFileAccessConfiguration.CreateWithEncryption(Path, PasswordConfiguration.Password);
+            if (this.Path is null) throw new FileNotFoundException();
+
+            return PasswordConfiguration is { IsEncryptionActive: true, Password: {} password}
+                ? _createFileAccessConfiguration.CreateWithEncryption(Path, password)
+                : _createFileAccessConfiguration.Create(Path);
         }
     }
 

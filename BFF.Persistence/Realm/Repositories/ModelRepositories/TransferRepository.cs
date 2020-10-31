@@ -32,22 +32,22 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             async Task<ITransfer> InnerAsync(Realms.Realm _)
             {
                 return new Models.Domain.Transfer(
-                    _crudOrm,
                     persistenceModel,
                     persistenceModel.Date.UtcDateTime,
                     persistenceModel.Flag is null
                         ? null
                         : await _flagRepository.Value.FindAsync(persistenceModel.Flag).ConfigureAwait(false),
-                    persistenceModel.CheckNumber,
+                    persistenceModel.CheckNumber ?? String.Empty,
                     persistenceModel.FromAccount is null
                         ? null
                         : await _accountRepository.Value.FindAsync(persistenceModel.FromAccount).ConfigureAwait(false),
                     persistenceModel.ToAccount is null
                         ? null
                         : await _accountRepository.Value.FindAsync(persistenceModel.ToAccount).ConfigureAwait(false),
-                    persistenceModel.Memo,
+                    persistenceModel.Memo ?? String.Empty,
                     persistenceModel.Sum,
-                    persistenceModel.Cleared);
+                    persistenceModel.Cleared,
+                    _crudOrm);
             }
         }
     }

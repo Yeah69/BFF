@@ -22,20 +22,20 @@ namespace BFF.ViewModel.Managers
 
         ITransactionViewModel InsertedToTransactionViewModel(
             IParentTransactionViewModel parentTransactionViewModel, 
-            ICategoryBaseViewModel categoryViewModel);
+            ICategoryBaseViewModel? categoryViewModel);
 
     }
 
     internal class TransTransformingManager : ITransTransformingManager, IOncePerBackend
     {
-        private readonly Func<IAccountBaseViewModel, ITransactionViewModel> _transactionViewModelFactory;
-        private readonly Func<IAccountBaseViewModel, ITransferViewModel> _transferViewModelFactory;
-        private readonly Func<IAccountBaseViewModel, IParentTransactionViewModel> _parentTransactionViewModelFactory;
+        private readonly Func<IAccountBaseViewModel?, ITransactionViewModel> _transactionViewModelFactory;
+        private readonly Func<IAccountBaseViewModel?, ITransferViewModel> _transferViewModelFactory;
+        private readonly Func<IAccountBaseViewModel?, IParentTransactionViewModel> _parentTransactionViewModelFactory;
 
         public TransTransformingManager(
-            Func<IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
-            Func<IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
-            Func<IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory)
+            Func<IAccountBaseViewModel?, ITransactionViewModel> transactionViewModelFactory,
+            Func<IAccountBaseViewModel?, ITransferViewModel> transferViewModelFactory,
+            Func<IAccountBaseViewModel?, IParentTransactionViewModel> parentTransactionViewModelFactory)
         {
             _transactionViewModelFactory = transactionViewModelFactory;
             _transferViewModelFactory = transferViewModelFactory;
@@ -181,7 +181,7 @@ namespace BFF.ViewModel.Managers
 
         public ITransactionViewModel InsertedToTransactionViewModel(
             IParentTransactionViewModel parentTransactionViewModel,
-            ICategoryBaseViewModel categoryViewModel)
+            ICategoryBaseViewModel? categoryViewModel)
         {
             var transactionViewModel = NotInsertedToTransactionViewModel(parentTransactionViewModel);
 

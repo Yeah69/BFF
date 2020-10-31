@@ -2,13 +2,13 @@
 {
     internal class Ynab4BudgetEntry
     {
-        public string Month { get; set; }
+        public string Month { get; set; } = string.Empty;
 
-        public string Category { get; set; }
+        public string Category { get; set; } = string.Empty;
 
-        public string MasterCategory { get; set; }
+        public string MasterCategory { get; set; } = string.Empty;
 
-        public string SubCategory { get; set; }
+        public string SubCategory { get; set; } = string.Empty;
 
         public long Budgeted { get; set; }
 

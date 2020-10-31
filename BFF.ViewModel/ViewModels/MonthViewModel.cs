@@ -3,6 +3,7 @@ using System.ComponentModel;
 using BFF.Core.Helper;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
+using MrMeeseeks.Windows;
 
 namespace BFF.ViewModel.ViewModels
 {

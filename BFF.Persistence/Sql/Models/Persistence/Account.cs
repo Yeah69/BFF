@@ -14,7 +14,7 @@ namespace BFF.Persistence.Sql.Models.Persistence
     {
         [Key]
         public long Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = String.Empty;
         public long StartingBalance { get; set; }
         public DateTime StartingDate { get; set; }
     }

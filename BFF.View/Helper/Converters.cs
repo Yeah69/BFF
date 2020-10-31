@@ -28,16 +28,16 @@ namespace BFF.View.Helper
         private static readonly DateTime DateComboSampleValue = new DateTime(2013, 9, 6);
 
         private static SolidColorBrush TransactionBrush =>
-            (SolidColorBrush) Application.Current.TryFindResource("TransactionBrush") ?? Brushes.DarkOrange;
+            Application.Current.TryFindResource("TransactionBrush") as SolidColorBrush ?? Brushes.DarkOrange;
 
         private static SolidColorBrush IncomeBrush =>
-            (SolidColorBrush) Application.Current.TryFindResource("IncomeBrush") ?? Brushes.LimeGreen;
+            Application.Current.TryFindResource("IncomeBrush") as SolidColorBrush ?? Brushes.LimeGreen;
 
         private static SolidColorBrush TransferBrush =>
-            (SolidColorBrush) Application.Current.TryFindResource("TransferBrush") ?? Brushes.RoyalBlue;
+            Application.Current.TryFindResource("TransferBrush") as SolidColorBrush ?? Brushes.RoyalBlue;
 
         private static SolidColorBrush NeutralForegroundBrush =>
-            (SolidColorBrush) Application.Current.TryFindResource("MahApps.Brushes.ThemeForeground") ?? Brushes.Black;
+            Application.Current.TryFindResource("MahApps.Brushes.ThemeForeground") as SolidColorBrush ?? Brushes.Black;
 
         //Single Value Converters
 
@@ -193,14 +193,14 @@ namespace BFF.View.Helper
         /// True if value is lesser than zero, otherwise false.
         /// </summary>
         public static readonly IValueConverter OfType =
-            ValueConverter.Create<object, bool, Type>(
+            ValueConverter.Create<object?, bool, Type>(
                 e => e.Value?.IsInstanceOfType(e.Parameter) ?? false);
 
         /// <summary>
         /// True if value is lesser than zero, otherwise false.
         /// </summary>
         public static readonly IValueConverter SignToString =
-            ValueConverter.Create<Sign, string>(
+            ValueConverter.Create<Sign, string?>(
                 e => typeof(Sign)
                     .GetMember(e.Value.ToString())[0]
                     .GetCustomAttributes(false)
@@ -216,24 +216,13 @@ namespace BFF.View.Helper
         /// </summary>
         public static readonly IMultiValueConverter WidthsToDouble =
             MultiValueConverter.Create<object, double>(
-                e =>
-                {
-                    double sum = 0.0;
-                    foreach (object value in e.Values)
+                e => 
+                    e.Values.Sum(value => value switch
                     {
-                        switch (value)
-                        {
-                            case DataGridLength _:
-                                sum += ((DataGridLength) value).DisplayValue;
-                                break;
-                            case double _:
-                                sum += (double) value;
-                                break;
-                        }
-                    }
-
-                    return sum;
-                });
+                        DataGridLength length => length.DisplayValue,
+                        double d => d,
+                        _ => 0.0
+                    }));
 
         /// <summary>
         /// Calculates the cumulative length of given element widths and returns the value as a left margin. No convert back function.
@@ -242,19 +231,12 @@ namespace BFF.View.Helper
             MultiValueConverter.Create<object, Thickness>(
                 e =>
                 {
-                    double sum = 0.0;
-                    foreach (object value in e.Values)
+                    double sum = e.Values.Sum(value => value switch
                     {
-                        switch (value)
-                        {
-                            case DataGridLength _:
-                                sum += ((DataGridLength) value).DisplayValue;
-                                break;
-                            case double _:
-                                sum += (double) value;
-                                break;
-                        }
-                    }
+                        DataGridLength length => length.DisplayValue,
+                        double d => d,
+                        _ => 0.0
+                    });
 
                     return new Thickness(sum, 0.0, 0.0, 0.0);
                 });
@@ -303,10 +285,10 @@ namespace BFF.View.Helper
                 });
 
         public static readonly IValueConverter NullToCollapsed =
-            ValueConverter.Create<object, Visibility>(e => e.Value is null ? Visibility.Collapsed : Visibility.Visible);
+            ValueConverter.Create<object?, Visibility>(e => e.Value is null ? Visibility.Collapsed : Visibility.Visible);
 
         public static readonly IValueConverter InverseNullToCollapsed =
-            ValueConverter.Create<object, Visibility>(e => e.Value != null ? Visibility.Collapsed : Visibility.Visible);
+            ValueConverter.Create<object?, Visibility>(e => e.Value != null ? Visibility.Collapsed : Visibility.Visible);
 
         public static readonly IValueConverter NullableLongToCollapsed =
             ValueConverter.Create<long?, Visibility>(e => e.Value is null ? Visibility.Collapsed : Visibility.Visible);
@@ -340,14 +322,14 @@ namespace BFF.View.Helper
         /// Visible if value is of given Type, otherwise Collapsed.
         /// </summary>
         public static readonly IValueConverter NotOfTypeToCollapsed =
-            ValueConverter.Create<object, Visibility, Type>(
+            ValueConverter.Create<object?, Visibility, Type>(
                 e => e.Value?.IsInstanceOfType(e.Parameter) ?? false ? Visibility.Visible : Visibility.Collapsed);
 
         /// <summary>
         /// Visible if value is of given Type, otherwise Collapsed.
         /// </summary>
         public static readonly IValueConverter OfTypeToCollapsed =
-            ValueConverter.Create<object, Visibility, Type>(
+            ValueConverter.Create<object?, Visibility, Type>(
                 e => e.Value?.IsInstanceOfType(e.Parameter) ?? false ? Visibility.Collapsed : Visibility.Visible);
         
         public static readonly IValueConverter AsEnumerable =
@@ -355,11 +337,11 @@ namespace BFF.View.Helper
                 e => new[] { e.Value });
 
         public static readonly IValueConverter IsNull =
-            ValueConverter.Create<object, bool>(
-                e => e.Value != null);
+            ValueConverter.Create<object?, bool>(
+                e => e.Value is null);
 
         public static readonly IValueConverter IsNotNull =
-            ValueConverter.Create<object, bool>(
+            ValueConverter.Create<object?, bool>(
                 e => e.Value != null);
 
         public static readonly IValueConverter NoneToCollapsed =
@@ -431,31 +413,23 @@ namespace BFF.View.Helper
             ValueConverter.Create<BffWindowState, WindowState>(
                 e =>
                 {
-                    switch (e.Value)
+                    return e.Value switch
                     {
-                        case BffWindowState.Normal:
-                            return System.Windows.WindowState.Normal;
-                        case BffWindowState.Minimized:
-                            return System.Windows.WindowState.Minimized;
-                        case BffWindowState.Maximized:
-                            return System.Windows.WindowState.Maximized;
-                        default:
-                            throw new InvalidOperationException("The enum value is unknown!");
-                    }
+                        BffWindowState.Normal => System.Windows.WindowState.Normal,
+                        BffWindowState.Minimized => System.Windows.WindowState.Minimized,
+                        BffWindowState.Maximized => System.Windows.WindowState.Maximized,
+                        _ => throw new InvalidOperationException("The enum value is unknown!")
+                    };
                 },
                 e =>
                 {
-                    switch (Settings.Default.MainWindow_WindowState)
+                    return Settings.Default.MainWindow_WindowState switch
                     {
-                        case System.Windows.WindowState.Normal:
-                            return BffWindowState.Normal;
-                        case System.Windows.WindowState.Minimized:
-                            return BffWindowState.Minimized;
-                        case System.Windows.WindowState.Maximized:
-                            return BffWindowState.Maximized;
-                        default:
-                            throw new InvalidOperationException("The enum value is unknown!");
-                    }
+                        System.Windows.WindowState.Normal => BffWindowState.Normal,
+                        System.Windows.WindowState.Minimized => BffWindowState.Minimized,
+                        System.Windows.WindowState.Maximized => BffWindowState.Maximized,
+                        _ => throw new InvalidOperationException("The enum value is unknown!")
+                    };
                 });
     }
 }

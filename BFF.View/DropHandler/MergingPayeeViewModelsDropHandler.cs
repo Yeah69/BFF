@@ -12,10 +12,6 @@ namespace BFF.View.DropHandler
 
         public static IDropTarget Instance => Lazy.Value;
 
-        public MergingPayeeViewModelsDropHandler()
-        {
-        }
-
         public void DragOver(IDropInfo dropInfo)
         {
             if (dropInfo.Data is IPayeeViewModel sourceItem 
@@ -30,9 +26,9 @@ namespace BFF.View.DropHandler
 
         public void Drop(IDropInfo dropInfo)
         {
-            IPayeeViewModel sourceItem = dropInfo.Data as IPayeeViewModel;
-            IPayeeViewModel targetItem = dropInfo.TargetItem as IPayeeViewModel;
-            sourceItem?.MergeTo(targetItem);
+            if (dropInfo.Data is IPayeeViewModel sourceItem 
+                && dropInfo.TargetItem is IPayeeViewModel targetItem)
+                sourceItem.MergeTo(targetItem);
         }
     }
 }

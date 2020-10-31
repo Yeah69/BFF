@@ -183,7 +183,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                     _newTransactions.Clear();
                     OnPropertyChanged(nameof(Sum));
                     summaryAccountViewModel.RefreshBalance();
-                    Account.RefreshBalance();
+                    Account?.RefreshBalance();
                 }
             }).AddTo(CompositeDisposable);
 

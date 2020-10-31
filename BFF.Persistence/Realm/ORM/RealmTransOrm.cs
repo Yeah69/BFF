@@ -39,7 +39,7 @@ namespace BFF.Persistence.Realm.ORM
                     .OrderBy(t => t.Date)
                     .ThenByDescending(t => t.Sum);
 
-                var collection = query as IRealmCollection<Trans>;
+                var collection = query as IRealmCollection<Trans> ?? throw new NullReferenceException();
                 var ret = new List<Trans>();
                 for (var i = offset; i < offset + pageSize && i < collection.Count; i++)
                 {
@@ -61,7 +61,7 @@ namespace BFF.Persistence.Realm.ORM
                     .OrderBy(t => t.Date)
                     .ThenByDescending(t => t.Sum);
 
-                var collection = query as IRealmCollection<Trans>;
+                var collection = query as IRealmCollection<Trans> ?? throw new NullReferenceException();
                 var ret = new List<Trans>();
                 for (var i = offset; i < offset + pageSize && i < collection.Count; i++)
                 {
@@ -139,7 +139,7 @@ namespace BFF.Persistence.Realm.ORM
 
             IEnumerable<Trans> Inner(Realms.Realm realm)
             {
-                var categoriesIdSet = categories.ToHashSet();
+                var categoriesIdSet = MoreEnumerable.ToHashSet(categories);
                 var utcMonth = month.ToMonthIndex();
                 var query = realm
                     .All<Trans>()
@@ -147,7 +147,7 @@ namespace BFF.Persistence.Realm.ORM
                     .OrderBy(t => t.Date)
                     .ThenByDescending(t => t.Sum)
                     .ToList()
-                    .Where(t => categoriesIdSet.Contains(t.Category));
+                    .Where(t => !(t.Category is null) && categoriesIdSet.Contains(t.Category));
 
                 return query;
             }

@@ -226,11 +226,11 @@ namespace BFF.Persistence.Import
             if (File.Exists(filePath))
             {
                 using var streamReader = new StreamReader(new FileStream(filePath, FileMode.Open));
-                string header = streamReader.ReadLine();
+                string? header = streamReader.ReadLine();
                 if (header != Ynab4Transaction.CsvHeader)
                 {
                     Logger.Error("The file of path '{0}' is not a valid YNAB transactions CSV.", filePath);
-                    return null;
+                    throw new FileFormatException($"The file of path '{filePath}' is not a valid YNAB transactions CSV.");
                 }
                 Logger.Info("Starting to import YNAB transactions from the CSV file.");
                 Stopwatch stopwatch = new Stopwatch();
@@ -246,8 +246,8 @@ namespace BFF.Persistence.Import
             }
             else
             {
-                Logger.Error($"The file of path '{0}' does not exist!", filePath);
-                return null;
+                Logger.Error("The file of path '{0}' does not exist!", filePath);
+                throw new FileNotFoundException($"The file of path '{filePath}' does not exist!");
             }
             return ret;
         }
@@ -264,9 +264,9 @@ namespace BFF.Persistence.Import
                     Logger.Error(fileFormatException, "The budget file does not start with the YNAB budget header line: '{0}'", Ynab4BudgetEntry.CsvHeader);
                     throw fileFormatException;
                 }
-                while (!streamReader.EndOfStream)
+                while (!(streamReader.EndOfStream))
                 {
-                    string line = streamReader.ReadLine();
+                    string? line = streamReader.ReadLine();
                     if (!string.IsNullOrWhiteSpace(line))
                         yield return line;
                 }
@@ -292,7 +292,7 @@ namespace BFF.Persistence.Import
                     "Orange" => (name, Color.FromArgb(0xff, 0xff, 0xa5, 0x00)),
                     "Yellow" => (name, Color.FromArgb(0xff, 0xff, 0xff, 0x00)),
                     "Purple" => (name, Color.FromArgb(0xff, 0x55, 0x1a, 0x8b)),
-                    _ => ((string, Color)?) null
+                    _ => null
                 };
         }
 
@@ -304,7 +304,7 @@ namespace BFF.Persistence.Import
                     IncomeCategoryNextMonthSubName, 1),
                 (_, _) when IsIncomeThisMonth(master, sub) => _dtoImportContainerBuilder.GetOrCreateIncomeCategory(
                     IncomeCategoryThisMonthSubName, 0),
-                (string m, string s) => _dtoImportContainerBuilder.GetOrCreateCategory(new[] { m, s })
+                _ => _dtoImportContainerBuilder.GetOrCreateCategory(new[] { master, sub })
                 };
         }
 

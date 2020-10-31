@@ -16,7 +16,7 @@ namespace BFF.View.AttachedBehaviors
     {
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
-        private ISubject<Unit> _onTableChanged;
+        private ISubject<Unit> _onTableChanged = new Subject<Unit>();
 
         public static readonly DependencyProperty TableProperty = DependencyProperty.Register(
             nameof(Table),
@@ -104,8 +104,6 @@ namespace BFF.View.AttachedBehaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-
-            _onTableChanged = new Subject<Unit>();
 
             Observable.FromEventPattern<DependencyPropertyChangedEventArgs>(
                 AssociatedObject,

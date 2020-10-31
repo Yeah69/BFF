@@ -9,7 +9,7 @@ using BFF.Core.IoC;
 using BFF.Model.Models.Structure;
 using BFF.Model.Repositories;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
-using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using MuVaViMo;
 
 namespace BFF.ViewModel.Services
@@ -19,16 +19,16 @@ namespace BFF.ViewModel.Services
         where TViewModel : class, IDataModelViewModel
     {
 
-        IObservableReadOnlyList<TViewModel> All { get; }
-        Task AllCollectionInitialized { get; }
+        IObservableReadOnlyList<TViewModel>? All { get; }
+        Task? AllCollectionInitialized { get; }
     }
 
     public interface IConvertingViewModelServiceBase<TDomain, TViewModel>
         where TDomain : class, IDataModel
         where TViewModel : class, IDataModelViewModel
     {
-        TViewModel GetViewModel(TDomain model);
-        TDomain GetModel(TViewModel viewModel);
+        TViewModel? GetViewModel(TDomain? model);
+        TDomain? GetModel(TViewModel? viewModel);
     }
 
     internal abstract class CommonPropertyViewModelServiceBase<TDomain, TViewModel> : ICommonPropertyViewModelServiceBase<TDomain, TViewModel>, IDisposable
@@ -44,8 +44,8 @@ namespace BFF.ViewModel.Services
 
         protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
 
-        public IObservableReadOnlyList<TViewModel> All { get; protected set; }
-        public Task AllCollectionInitialized { get; protected set; }
+        public IObservableReadOnlyList<TViewModel>? All { get; protected set; }
+        public Task? AllCollectionInitialized { get; protected set; }
 
         protected CommonPropertyViewModelServiceBase(
             IObservableRepositoryBase<TDomain> repository, 
@@ -72,7 +72,7 @@ namespace BFF.ViewModel.Services
             {
                 ModelToViewModel.Clear();
                 ViewModelToModel.Clear();
-            }).AddForDisposalTo(CompositeDisposable);
+            }).CompositeDisposalWith(CompositeDisposable);
         }
 
         protected TViewModel AddToDictionaries(TDomain model)
@@ -82,7 +82,7 @@ namespace BFF.ViewModel.Services
             return viewModel;
         }
 
-        public virtual TViewModel GetViewModel(TDomain model)
+        public virtual TViewModel? GetViewModel(TDomain? model)
         {
             if(model is null) return null;
             if(!ModelToViewModel.ContainsKey(model))
@@ -91,7 +91,7 @@ namespace BFF.ViewModel.Services
             return ModelToViewModel[model];
         }
 
-        public TDomain GetModel(TViewModel viewModel)
+        public TDomain? GetModel(TViewModel? viewModel)
         {
             if(viewModel is null) return null;
             if(ViewModelToModel.ContainsKey(viewModel))

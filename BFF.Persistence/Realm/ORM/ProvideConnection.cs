@@ -1,4 +1,5 @@
-﻿using BFF.Core.Persistence;
+﻿using System.Linq;
+using BFF.Core.Persistence;
 using BFF.Persistence.Common;
 using BFF.Persistence.Contexts;
 using Org.BouncyCastle.Crypto;
@@ -13,7 +14,7 @@ namespace BFF.Persistence.Realm.ORM
 
     internal class ProvideConnection : ProvideConnectionBase<Realms.Realm>, IProvideRealmConnection
     {
-        private readonly byte[] _hash;
+        private readonly byte[] _hash = {};
 
         public override Realms.Realm Connection
         {
@@ -23,7 +24,7 @@ namespace BFF.Persistence.Realm.ORM
                 {
                     SchemaVersion = 0
                 };
-                if (_hash != null)
+                if (_hash.Any())
                     config.EncryptionKey = _hash;
                 var realm = Realms.Realm.GetInstance(config);
                 return realm;

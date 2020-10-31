@@ -1,5 +1,4 @@
 ﻿using BFF.Core.Persistence;
-using JetBrains.Annotations;
 
 namespace BFF.Persistence.Contexts
 {
@@ -7,13 +6,13 @@ namespace BFF.Persistence.Contexts
     {
         public RealmFileAccessConfiguration(
             string path,
-            [CanBeNull] string password)
+            string? password)
         {
             Path = path;
             Password = password;
         }
 
         public string Path { get; }
-        public string Password { get; }
+        public string? Password { get; }
     }
 }

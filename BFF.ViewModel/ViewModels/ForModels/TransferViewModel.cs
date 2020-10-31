@@ -18,17 +18,17 @@ namespace BFF.ViewModel.ViewModels.ForModels
 {
     public interface ITransferViewModel : ITransBaseViewModel
     {
-        IObservableReadOnlyList<IAccountViewModel> AllAccounts { get; }
+        IObservableReadOnlyList<IAccountViewModel>? AllAccounts { get; }
 
         /// <summary>
         /// The account from where the money is transfered.
         /// </summary>
-        IAccountViewModel FromAccount { get; set; }
+        IAccountViewModel? FromAccount { get; set; }
 
         /// <summary>
         /// The account to where the money is transfered.
         /// </summary>
-        IAccountViewModel ToAccount { get; set; }
+        IAccountViewModel? ToAccount { get; set; }
 
         IRxRelayCommand NonInsertedConvertToTransaction { get; }
         IRxRelayCommand NonInsertedConvertToParentTransaction { get; }
@@ -43,15 +43,15 @@ namespace BFF.ViewModel.ViewModels.ForModels
         private readonly IAccountViewModelService _accountViewModelService;
         private readonly ILocalizer _localizer;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
-        private IAccountViewModel _fromAccount;
-        private IAccountViewModel _toAccount;
+        private IAccountViewModel? _fromAccount;
+        private IAccountViewModel? _toAccount;
 
-        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => _accountViewModelService.All;
+        public IObservableReadOnlyList<IAccountViewModel>? AllAccounts => _accountViewModelService.All;
 
         /// <summary>
         /// The account from where the money is transfered.
         /// </summary>
-        public IAccountViewModel FromAccount
+        public IAccountViewModel? FromAccount
         {
             get => _fromAccount;
             set => _transfer.FromAccount = _accountViewModelService.GetModel(value);
@@ -60,7 +60,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// <summary>
         /// The account to where the money is transferred.
         /// </summary>
-        public IAccountViewModel ToAccount
+        public IAccountViewModel? ToAccount
         {
             get => _toAccount;
             set => _transfer.ToAccount = _accountViewModelService.GetModel(value);
@@ -233,7 +233,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         }
 
 
-        private void RefreshAnAccountViewModel(IAccountBaseViewModel accountViewModel)
+        private void RefreshAnAccountViewModel(IAccountBaseViewModel? accountViewModel)
         {
             accountViewModel?.RefreshTransCollection();
             accountViewModel?.RefreshBalance();

@@ -1,3 +1,4 @@
+using System;
 using Dapper.Contrib.Extensions;
 
 namespace BFF.Persistence.Sql.Models.Persistence
@@ -11,6 +12,6 @@ namespace BFF.Persistence.Sql.Models.Persistence
     {
         [Key]
         public long Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = String.Empty;
     }
 }

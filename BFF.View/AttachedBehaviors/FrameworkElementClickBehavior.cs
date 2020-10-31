@@ -12,7 +12,7 @@ namespace BFF.View.AttachedBehaviors
     {
         protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
 
-        public event EventHandler Click;
+        public event EventHandler? Click;
 
         public FrameworkElement Parent => AssociatedObject;
 

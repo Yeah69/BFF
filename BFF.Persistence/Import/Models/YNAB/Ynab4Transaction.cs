@@ -6,23 +6,23 @@ namespace BFF.Persistence.Import.Models.YNAB
 {
     internal class Ynab4Transaction
     {
-        public string Account { get; set; }
+        public string Account { get; set; } = string.Empty;
 
-        public string Flag { get; set; }
+        public string Flag { get; set; } = string.Empty;
 
-        public string CheckNumber { get; set; }
+        public string CheckNumber { get; set; } = string.Empty;
 
         public DateTime Date { get; set; }
 
-        public string Payee { get; set; }
+        public string Payee { get; set; } = string.Empty;
 
-        public string Category { get; set; }
+        public string Category { get; set; } = string.Empty;
 
-        public string MasterCategory { get; set; }
+        public string MasterCategory { get; set; } = string.Empty;
 
-        public string SubCategory { get; set; }
+        public string SubCategory { get; set; } = string.Empty;
 
-        public string Memo { get; set; }
+        public string Memo { get; set; } = string.Empty;
 
         public long Outflow { get; set; }
 

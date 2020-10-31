@@ -225,7 +225,7 @@ namespace BFF.View.Views
             {
                 // First column (symbol) isn't editable for any Trans-Type, second column (account) isn't editable for transfers
                 int offset = e.Row.DataContext is ITransferViewModel ? 2 : 1;
-                DataGridCell cell;
+                DataGridCell? cell;
                 while ((cell = e.Row.GetCell(offset++)) is null) { }  // Collapsed columns are null
                 cell.Focus();
                 Keyboard.Focus(cell);

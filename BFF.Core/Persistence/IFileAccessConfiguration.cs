@@ -13,7 +13,7 @@
 
     public interface IRealmFileAccessConfiguration : IFileAccessConfiguration
     {
-        string Password { get; }
+        string? Password { get; }
     }
 
     public interface ISqliteFileAccessConfiguration : IFileAccessConfiguration

@@ -42,7 +42,7 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
                 var parent = parentSubCategoryGrouping.Key;
                 foreach (var subCategory in parentSubCategoryGrouping)
                 {
-                    parent.AddCategory(subCategory);
+                    parent?.AddCategory(subCategory);
                     subCategory.Parent = parent;
                 }
             }

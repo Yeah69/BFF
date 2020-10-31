@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Utility
 {
@@ -37,14 +38,14 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
                     if (LazyElements.Any().Not())
                         OpenFlag = false;
                 })
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
             ClearLazyElements = new RxRelayCommand(() =>
                 {
                     LazyElements = Enumerable.Empty<T>();
                     OnPropertyChanged(nameof(LazyElements));
                 })
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
         }
 
         public IEnumerable<T> LazyElements { get; private set; }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
@@ -80,14 +79,13 @@ namespace BFF.Persistence.Realm
                 .Concat(container.ParentTransactions.Select(pt => pt.Flag))
                 .Concat(container.Transfers.Select(t => t.Flag))
                 .Distinct()
-                .WhereNotNull()
+                .WhereNotNullable()
                 .ToDictionary(
                     Basic.Identity,
                     f => new Flag
                     {
-                        Name = f?.Name,
-                        Color = f?.Color.ToLong() 
-                                ?? Color.Transparent.ToLong()
+                        Name = f.Name,
+                        Color = f.Color.ToLong()
                     })
                 .ToReadOnlyDictionary();
 
@@ -149,8 +147,8 @@ namespace BFF.Persistence.Realm
                             Date = ToDateTimeOffset(transactionDto.Date),
                             MonthIndex = transactionDto.Date.ToMonthIndex(),
                             Payee = payeeDictionary[transactionDto.Payee],
-                            Category = categoryDictionary[transactionDto.Category],
-                            Flag = transactionDto.Flag is null ? null : flagDictionary[transactionDto.Flag],
+                            Category = transactionDto.Category is {} category ? categoryDictionary[category] : null,
+                            Flag = transactionDto.Flag is {} flag ? flagDictionary[flag] : null,
                             CheckNumber = transactionDto.CheckNumber,
                             Memo = transactionDto.Memo,
                             Sum = transactionDto.Sum,
@@ -170,7 +168,7 @@ namespace BFF.Persistence.Realm
                                     ToAccount = accountDictionary[transferDto.ToAccount],
                                     Date = ToDateTimeOffset(transferDto.Date),
                                     MonthIndex = ToDateTimeOffset(transferDto.Date).ToMonthIndex(),
-                                    Flag = transferDto.Flag is null ? null : flagDictionary[transferDto.Flag],
+                                    Flag = transferDto.Flag is {} flag ? flagDictionary[flag] : null,
                                     CheckNumber = transferDto.CheckNumber,
                                     Memo = transferDto.Memo,
                                     Sum = transferDto.Sum,
@@ -192,7 +190,7 @@ namespace BFF.Persistence.Realm
                                     Date = ToDateTimeOffset(parentTransactionDto.Date),
                                     MonthIndex = ToDateTimeOffset(parentTransactionDto.Date).ToMonthIndex(),
                                     Payee = payeeDictionary[parentTransactionDto.Payee],
-                                    Flag = parentTransactionDto.Flag is null ? null : flagDictionary[parentTransactionDto.Flag],
+                                    Flag = parentTransactionDto.Flag is {} flag ? flagDictionary[flag] : null,
                                     CheckNumber = parentTransactionDto.CheckNumber,
                                     Memo = parentTransactionDto.Memo,
                                     Cleared = parentTransactionDto.Cleared,
@@ -218,7 +216,7 @@ namespace BFF.Persistence.Realm
                         {
                             Id = realmSubTransactionId++,
                             Parent = subTransactionDtoToRealmParentDictionary[subTransactionDto],
-                            Category = categoryDictionary[subTransactionDto.Category],
+                            Category = subTransactionDto.Category is {} category ? categoryDictionary[category] : null,
                             Memo = subTransactionDto.Memo,
                             Sum = subTransactionDto.Sum
                         })
@@ -233,7 +231,7 @@ namespace BFF.Persistence.Realm
                         new BudgetEntry
                         {
                             Id = realmBudgetEntryId++,
-                            Category = categoryDictionary[budgetEntryDto.Category],
+                            Category = budgetEntryDto.Category is {} category ? categoryDictionary[category] : null,
                             MonthIndex = budgetEntryDto.MonthIndex,
                             Budget = budgetEntryDto.Budget
                         })
@@ -265,14 +263,14 @@ namespace BFF.Persistence.Realm
 
         private class RealmExportContainer : IRealmExportContainerData
         {
-            public IReadOnlyList<Account> Accounts { get; set; }
-            public IReadOnlyList<Payee> Payees { get; set; }
-            public IReadOnlyList<Category> Categories { get; set; }
-            public IReadOnlyList<Category> IncomeCategories { get; set; }
-            public IReadOnlyList<Flag> Flags { get; set; }
-            public IReadOnlyList<Trans> Trans { get; set; }
-            public IReadOnlyList<SubTransaction> SubTransactions { get; set; }
-            public IReadOnlyList<BudgetEntry> BudgetEntries { get; set; }
+            public IReadOnlyList<Account> Accounts { get; set; } = new Account[0];
+            public IReadOnlyList<Payee> Payees { get; set; } = new Payee[0];
+            public IReadOnlyList<Category> Categories { get; set; } = new Category[0];
+            public IReadOnlyList<Category> IncomeCategories { get; set; } = new Category[0];
+            public IReadOnlyList<Flag> Flags { get; set; } = new Flag[0];
+            public IReadOnlyList<Trans> Trans { get; set; } = new Trans[0];
+            public IReadOnlyList<SubTransaction> SubTransactions { get; set; } = new SubTransaction[0];
+            public IReadOnlyList<BudgetEntry> BudgetEntries { get; set; } = new BudgetEntry[0];
         }
 
         public void Dispose()

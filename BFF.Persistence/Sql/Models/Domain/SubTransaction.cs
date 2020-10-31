@@ -13,7 +13,7 @@ namespace BFF.Persistence.Sql.Models.Domain
         public SubTransaction(
             ICrudOrm<ISubTransactionSql> crudOrm,
             long id,
-            ICategoryBase category,
+            ICategoryBase? category,
             string memo, 
             long sum) : base(category, memo, sum)
         {
@@ -43,7 +43,7 @@ namespace BFF.Persistence.Sql.Models.Domain
         private ISubTransactionSql CreatePersistenceObject()
         {
             if (!(Parent is ParentTransaction)
-                && Category != null && !(Category is Category))
+                || Category != null && !(Category is Category))
                 throw new ArgumentException("Cannot create persistence object if parts are from another backend");
 
             return new Persistence.SubTransaction

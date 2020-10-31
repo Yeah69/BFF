@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using BFF.ViewModel.Helper;
 
 namespace BFF.ViewModel.ViewModels
 {

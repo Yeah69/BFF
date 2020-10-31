@@ -16,6 +16,7 @@ using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using MuVaViMo;
 
 namespace BFF.ViewModel.ViewModels
@@ -47,7 +48,8 @@ namespace BFF.ViewModel.ViewModels
 
     internal class BudgetOverviewTableViewModel : ObservableObject,
         IBudgetOverviewTableViewModel,
-        IDisposable
+        IDisposable,
+        IAsyncDisposable
     {
         private static readonly int LastMonthIndex = DateTime.MaxValue.ToMonthIndex();
         
@@ -100,28 +102,27 @@ namespace BFF.ViewModel.ViewModels
                     () => Task.FromResult(DateTimeExtensions.CountOfMonths))
                 .AsyncIndexAccess(
                      (pageKey, pageIndex) => 
-                         new BudgetMonthViewModelPlaceholder(DateTimeExtensions.FromMonthIndex(pageKey * 12 + pageIndex)))
-                .AddForDisposalTo(_compositeDisposable);
+                         new BudgetMonthViewModelPlaceholder(DateTimeExtensions.FromMonthIndex(pageKey * 12 + pageIndex)));
             
             IncreaseMonthStartIndex = this.ObservePropertyChanged(nameof(MonthIndexOffset), nameof(ColumnCount))
                 .Select(_ => MonthIndexOffset < LastMonthIndex - ColumnCount + 1)
                 .ToRxRelayCommand(() => MonthIndexOffset++)
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
             
             DecreaseMonthStartIndex = this.ObservePropertyChanged(nameof(MonthIndexOffset))
                 .Select(_ => MonthIndexOffset > 0)
                 .ToRxRelayCommand(() => MonthIndexOffset--)
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
 
             budgetRefreshes
                 .ObserveHeadersRefreshes
                 .Subscribe(_ => _budgetMonths.Reset())
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
 
             budgetRefreshes
                 .ObserveCompleteRefreshes
                 .Subscribe(_ => Reset())
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
 
             budgetRefreshes
                 .ObserveHeadersRefreshes
@@ -237,6 +238,12 @@ namespace BFF.ViewModel.ViewModels
             {
                 row.Reset();
             }
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            this.Dispose();
+            return _budgetMonths.DisposeAsync();
         }
     }
 

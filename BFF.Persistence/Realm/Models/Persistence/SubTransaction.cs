@@ -1,3 +1,4 @@
+using System;
 using Realms;
 
 namespace BFF.Persistence.Realm.Models.Persistence
@@ -6,14 +7,14 @@ namespace BFF.Persistence.Realm.Models.Persistence
     {
         [PrimaryKey]
         public int Id { get; set; }
-        public Trans Parent { get; set; }
-        public Category Category { get; set; }
-        public string Memo { get; set; }
+        public Trans? Parent { get; set; }
+        public Category? Category { get; set; }
+        public string Memo { get; set; } = String.Empty;
         public long Sum { get; set; }
 
         public override bool Equals(object obj)
         {
-            if (obj is null || !(obj is SubTransaction other)) return false;
+            if (!(obj is SubTransaction other)) return false;
             return Id == other.Id;
         }
 

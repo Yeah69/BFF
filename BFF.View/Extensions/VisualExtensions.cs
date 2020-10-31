@@ -5,7 +5,7 @@ namespace BFF.View.Extensions
 {
     public static class VisualExtensions
     {
-        public static T GetDescendantByType<T>(this Visual element) where T : class
+        public static T? GetDescendantByType<T>(this Visual? element) where T : class
         {
             if (element is null)
             {
@@ -15,7 +15,7 @@ namespace BFF.View.Extensions
             {
                 return element as T;
             }
-            T foundElement = null;
+            T? foundElement = null;
             (element as FrameworkElement)?.ApplyTemplate();
             for (var i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
             {

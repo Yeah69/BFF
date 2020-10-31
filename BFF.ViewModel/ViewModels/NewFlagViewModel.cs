@@ -20,15 +20,15 @@ namespace BFF.ViewModel.ViewModels
 {
     public interface INewFlagViewModel
     {
-        string Text { get; set; }
+        string? Text { get; set; }
 
         IReactiveProperty<Color> Brush { get; }
         
         ICommand AddCommand { get; }
         
-        IObservableReadOnlyList<IFlagViewModel> All { get; }
+        IObservableReadOnlyList<IFlagViewModel>? All { get; }
 
-        IHaveFlagViewModel CurrentOwner { get; set; }
+        IHaveFlagViewModel? CurrentOwner { get; set; }
     }
 
     internal class NewFlagViewModel : NotifyingErrorViewModelBase, INewFlagViewModel, IOncePerBackend, IDisposable
@@ -37,7 +37,7 @@ namespace BFF.ViewModel.ViewModels
         private readonly IFlagViewModelService _flagViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
-        private string _text;
+        private string? _text;
 
         public NewFlagViewModel(
             ICreateNewModels createNewModels,
@@ -54,7 +54,7 @@ namespace BFF.ViewModel.ViewModels
                 if (!ValidateName()) return;
                 IFlag newFlag = createNewModels.CreateFlag();
                 newFlag.Color = Brush.Value;
-                newFlag.Name = Text.Trim();
+                newFlag.Name = Text?.Trim() ?? String.Empty;
                 await newFlag.InsertAsync();
                 if (CurrentOwner != null)
                     CurrentOwner.Flag = _flagViewModelService.GetViewModel(newFlag);
@@ -69,7 +69,7 @@ namespace BFF.ViewModel.ViewModels
         /// <summary>
         /// User input of the to be searched or to be created Payee.
         /// </summary>
-        public string Text
+        public string? Text
         {
             get => _text;
             set
@@ -91,9 +91,9 @@ namespace BFF.ViewModel.ViewModels
         /// <summary>
         /// All currently available Payees.
         /// </summary>
-        public IObservableReadOnlyList<IFlagViewModel> All => _flagViewModelService.All;
+        public IObservableReadOnlyList<IFlagViewModel>? All => _flagViewModelService.All;
 
-        public IHaveFlagViewModel CurrentOwner { get; set; }
+        public IHaveFlagViewModel? CurrentOwner { get; set; }
 
         public void Dispose()
         {

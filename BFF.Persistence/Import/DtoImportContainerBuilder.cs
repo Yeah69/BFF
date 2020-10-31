@@ -7,13 +7,13 @@ namespace BFF.Persistence.Import
 {
     internal class DtoImportContainer
     {
-        public IReadOnlyList<TransactionDto> Transactions { get; set; }
-        public IReadOnlyList<TransferDto> Transfers { get; set; }
-        public IReadOnlyList<ParentTransactionDto> ParentTransactions { get; set; }
-        public IReadOnlyList<BudgetEntryDto> BudgetEntries { get; set; }
-        public Forest<CategoryDto> Categories { get; set; }
-        public IReadOnlyList<CategoryDto> IncomeCategories { get; set; }
-        public IReadOnlyDictionary<string, long> AccountStartingBalances { get; set; }
-        public IReadOnlyDictionary<string, DateTime> AccountStartingDates { get; set; }
+        public IReadOnlyList<TransactionDto> Transactions { get; set; } = new TransactionDto[0];
+        public IReadOnlyList<TransferDto> Transfers { get; set; } = new TransferDto[0];
+        public IReadOnlyList<ParentTransactionDto> ParentTransactions { get; set; } = new ParentTransactionDto[0];
+        public IReadOnlyList<BudgetEntryDto> BudgetEntries { get; set; } = new BudgetEntryDto[0];
+        public Forest<CategoryDto> Categories { get; set; } = new Forest<CategoryDto>();
+        public IReadOnlyList<CategoryDto> IncomeCategories { get; set; } = new CategoryDto[0];
+        public IReadOnlyDictionary<string, long> AccountStartingBalances { get; set; } = new Dictionary<string, long>();
+        public IReadOnlyDictionary<string, DateTime> AccountStartingDates { get; set; } = new Dictionary<string, DateTime>();
     }
 }

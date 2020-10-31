@@ -9,7 +9,7 @@ namespace BFF.Persistence.Realm.ORM.Interfaces
     internal interface IBudgetOrm : IOncePerBackend
     {
         Task<BudgetBlock> FindAsync(int year);
-        Task<IReadOnlyList<(BudgetEntry Entry, BudgetEntryData Data)>> FindAsync(int year, Category category);
+        Task<IReadOnlyList<(BudgetEntry? Entry, BudgetEntryData Data)>> FindAsync(int year, Category category);
 
         Task<long> GetAverageBudgetOfLastMonths(int currentMonthIndex, Category category, int monthCount);
         Task<long> GetAverageOutflowOfLastMonths(int currentMonthIndex, Category category, int monthCount);

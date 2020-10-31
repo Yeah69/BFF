@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using BFF.Core.Helper;
 using BFF.ViewModel.Helper;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using Reactive.Bindings;
 
 namespace BFF.ViewModel.ViewModels
@@ -39,7 +40,7 @@ namespace BFF.ViewModel.ViewModels
                 })
                 .AddTo(_compositeDisposable);
             ToggleSign = new RxRelayCommand(() => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus)
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
         }
 
         public Sign SumSign

@@ -2,7 +2,7 @@
 {
     public interface IHaveCategoryViewModel
     {
-        ICategoryBaseViewModel Category { get; set; }
+        ICategoryBaseViewModel? Category { get; set; }
 
         INewCategoryViewModel NewCategoryViewModel { get; }
     }

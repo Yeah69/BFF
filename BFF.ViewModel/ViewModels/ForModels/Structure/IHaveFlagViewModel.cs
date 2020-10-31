@@ -2,7 +2,7 @@
 {
     public interface IHaveFlagViewModel
     {
-        IFlagViewModel Flag { get; set; }
+        IFlagViewModel? Flag { get; set; }
 
         INewFlagViewModel NewFlagViewModel { get; }
     }

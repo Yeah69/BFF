@@ -18,7 +18,6 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using MoreLinq;
-using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
 using MuVaViMo;
 using Reactive.Bindings;
@@ -109,7 +108,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         void ReplaceNewTrans(ITransLikeViewModel replaced, ITransLikeViewModel replacement);
     }
 
-    internal abstract class AccountBaseViewModel : CommonPropertyViewModel, IAccountBaseViewModel
+    internal abstract class AccountBaseViewModel : CommonPropertyViewModel, IAccountBaseViewModel, IAsyncDisposable
     {
         private readonly IAccount _account;
         private readonly Lazy<IAccountViewModelService> _accountViewModelService;
@@ -190,7 +189,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         /// <summary>
         /// All available Accounts.
         /// </summary>
-        public IObservableReadOnlyList<IAccountViewModel> AllAccounts => _accountViewModelService.Value.All;
+        public IObservableReadOnlyList<IAccountViewModel>? AllAccounts => _accountViewModelService.Value.All;
 
         /// <summary>
         /// Creates a new Transaction.
@@ -252,10 +251,10 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             BffSettings = bffSettings;
             TransDataGridColumnManager = transDataGridColumnManager;
 
-            _refreshBalance.AddForDisposalTo(CompositeDisposable);
-            _refreshBalanceUntilNow.AddForDisposalTo(CompositeDisposable);
+            _refreshBalance.CompositeDisposalWith(CompositeDisposable);
+            _refreshBalanceUntilNow.CompositeDisposalWith(CompositeDisposable);
 
-            Trans = CreateDataVirtualizingCollection().AddForDisposalTo(CompositeDisposable);
+            Trans = CreateDataVirtualizingCollection();
             Trans.ObservePropertyChanged(nameof(ICollection.Count))
                 .ObserveOn(_rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(TransIsEmpty)));
@@ -294,11 +293,11 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                         throw new InvalidEnumArgumentException();
 
                 }
-            }).AddForDisposalTo(CompositeDisposable);
+            }).CompositeDisposalWith(CompositeDisposable);
 
             IsOpen = false;
 
-            _removeRequestSubscriptions.AddForDisposalTo(CompositeDisposable);
+            _removeRequestSubscriptions.CompositeDisposalWith(CompositeDisposable);
             _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
             NewTransList.ObserveAddChanged().Subscribe(t =>
             {
@@ -306,7 +305,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                     .Take(1)
                     .Subscribe(_ => NewTransList.Remove(t))
                     .AddTo(_currentRemoveRequestSubscriptions);
-            }).AddForDisposalTo(CompositeDisposable);
+            }).CompositeDisposalWith(CompositeDisposable);
 
             _refreshBalance
                 .ObserveOn(rxSchedulerProvider.Task)
@@ -329,7 +328,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                         TargetBalance = null;
                         OnPropertyChanged(nameof(MissingSum));
                     }
-                }).AddForDisposalTo(CompositeDisposable);
+                }).CompositeDisposalWith(CompositeDisposable);
 
             _refreshBalanceUntilNow
                 .ObserveOn(rxSchedulerProvider.Task)
@@ -345,15 +344,15 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                         nameof(ClearedBalanceUntilNow),
                         nameof(UnclearedBalanceUntilNow),
                         nameof(TotalBalanceUntilNow));
-                }).AddForDisposalTo(CompositeDisposable);
+                }).CompositeDisposalWith(CompositeDisposable);
             
             EmitOnSumRelatedChanges(NewTransList)
                 .Merge(this.ObservePropertyChanged(nameof(TargetBalance), nameof(TotalBalance)).SelectUnit())
                 .Select(_ => CalculateNewPartOfIntermediateBalance())
                 .Subscribe(DoTargetBalanceSystem)
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
-            var serialDisposable = new SerialDisposable().AddForDisposalTo(CompositeDisposable);
+            var serialDisposable = new SerialDisposable().CompositeDisposalWith(CompositeDisposable);
 
             NewTransList
                 .ObserveCollectionChanges()
@@ -365,13 +364,13 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                         .Merge()
                         .Select(__ => CalculateNewPartOfIntermediateBalance())
                         .Subscribe(DoTargetBalanceSystem))
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
             NewTransList
                 .ObservePropertyChanged(nameof(NewTransList.Count))
                 .Merge(TransDataGridColumnManager.ObservePropertyChanged(nameof(TransDataGridColumnManager.NeverShowEditHeaders)))
                 .Subscribe(_ => ShowEditHeaders = NewTransList.Count > 0 && !TransDataGridColumnManager.NeverShowEditHeaders)
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
 
             StartTargetingBalance = new RxRelayCommand(() => TargetBalance = TotalBalance);
 
@@ -477,5 +476,10 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             (int) await _account.GetTransCountAsync();
 
         protected abstract long? CalculateNewPartOfIntermediateBalance();
+        public ValueTask DisposeAsync()
+        {
+            this.Dispose();
+            return this.Trans.DisposeAsync();
+        }
     }
 }

@@ -14,6 +14,7 @@ using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
 using MoreLinq;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using MrMeeseeks.Utility;
 using MuVaViMo;
 
@@ -37,7 +38,7 @@ namespace BFF.Persistence.Sql.Repositories
         private readonly Comparer<TDomain> _comparer;
         private readonly ISubject<IEnumerable<TDomain>> _observeResetAll;
 
-        private ObservableCollection<TDomain> _backingObservableCollection;
+        private ObservableCollection<TDomain>? _backingObservableCollection;
 
         public IObservableReadOnlyList<TDomain> All { get; }
         public Task<IDeferredObservableReadOnlyList<TDomain>> AllAsync { get; }
@@ -49,8 +50,8 @@ namespace BFF.Persistence.Sql.Repositories
             ICrudOrm<TPersistence> crudOrm, 
             Comparer<TDomain> comparer) : base(crudOrm)
         {
-            Disposable.Create(() => _backingObservableCollection.Clear()).AddTo(CompositeDisposable);
-            _observeResetAll = new Subject<IEnumerable<TDomain>>().AddForDisposalTo(CompositeDisposable);
+            Disposable.Create(() => _backingObservableCollection?.Clear()).AddTo(CompositeDisposable);
+            _observeResetAll = new Subject<IEnumerable<TDomain>>().CompositeDisposalWith(CompositeDisposable);
             _rxSchedulerProvider = rxSchedulerProvider;
             _comparer = comparer;
             var collection = Task.Run(FetchAll).ToObservableReadOnlyList();

@@ -22,23 +22,28 @@ namespace BFF.View.Views
             if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetEntryViewModel budgetEntry
                 && this.DataContext is IBudgetOverviewViewModel budgetOverviewViewModel)
             {
-                if (budgetOverviewViewModel.Table.ShowAggregates)
-                    budgetEntry.AssociatedAggregatedTransElementsViewModel.OpenFlag = true;
-                else
-                    budgetEntry.AssociatedTransElementsViewModel.OpenFlag = true;
+                if (budgetOverviewViewModel.Table.ShowAggregates
+                    && budgetEntry.AssociatedAggregatedTransElementsViewModel is {} associatedAggregatedTransElementsViewModel)
+                    associatedAggregatedTransElementsViewModel.OpenFlag = true;
+                else if (budgetEntry.AssociatedTransElementsViewModel is {} associatedTransElementsViewModel)
+                    associatedTransElementsViewModel.OpenFlag = true;
             }
         }
 
         private void MonthOutflowCell_OnClick(object sender, EventArgs e)
         {
-            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetMonthViewModel budgetEntry)
-                budgetEntry.AssociatedTransElementsViewModel.OpenFlag = true;
+            if (sender is FrameworkElementClickBehavior fecb 
+                && fecb.Parent.DataContext is IBudgetMonthViewModel budgetEntry
+                && budgetEntry.AssociatedTransElementsViewModel is {} associatedTransElementsViewModel)
+                associatedTransElementsViewModel.OpenFlag = true;
         }
 
         private void MonthIncomeCell_OnClick(object sender, EventArgs e)
         {
-            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent.DataContext is IBudgetMonthViewModel budgetEntry)
-                budgetEntry.AssociatedIncomeTransElementsViewModel.OpenFlag = true;
+            if (sender is FrameworkElementClickBehavior fecb 
+                && fecb.Parent.DataContext is IBudgetMonthViewModel budgetEntry
+                && budgetEntry.AssociatedIncomeTransElementsViewModel is {} associatedIncomeTransElementsViewModel)
+                associatedIncomeTransElementsViewModel.OpenFlag = true;
         }
 
         private void MonthDataHeaderMenu_OnClick(object sender, EventArgs e)
@@ -62,9 +67,9 @@ namespace BFF.View.Views
 
     public class BudgetMonthItemDataTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate Content { get; set; }
+        public DataTemplate Content { get; set; } = Empty;
 
-        public DataTemplate Placeholder { get; set; }
+        public DataTemplate Placeholder { get; set; } = Empty;
 
         private static DataTemplate Empty { get; } = new DataTemplate();
 

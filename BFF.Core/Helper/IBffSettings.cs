@@ -10,7 +10,7 @@ namespace BFF.Core.Helper
 
         bool Culture_DefaultDateLong { get; set; }
 
-        string OpenAccountTab { get; set; }
+        string? OpenAccountTab { get; set; }
 
         string Import_YnabCsvTransaction { get; set; }
 
@@ -34,7 +34,7 @@ namespace BFF.Core.Helper
 
         CultureInfo Culture_DefaultLanguage { get; set; }
 
-        string SelectedCsvProfile { get; set; }
+        string? SelectedCsvProfile { get; set; }
 
         string DBLocation { get; set; }
 

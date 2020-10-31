@@ -15,12 +15,15 @@ namespace BFF.Persistence.Realm.Models.Domain
         private readonly RealmObjectWrap<Persistence.Category> _realmObjectWrap;
 
         public Category(
+            // parameters
+            Persistence.Category? realmObject,
+            string name, 
+            ICategory? parent,
+            
+            // dependencies
             ICrudOrm<Persistence.Category> crudOrm,
             IMergeOrm mergeOrm,
-            IRealmCategoryRepositoryInternal repository,
-            Persistence.Category realmObject,
-            string name, 
-            ICategory parent) : base(name, parent)
+            IRealmCategoryRepositoryInternal repository) : base(name, parent)
         {
             _realmObjectWrap = new RealmObjectWrap<Persistence.Category>(
                 realmObject,
@@ -53,7 +56,7 @@ namespace BFF.Persistence.Realm.Models.Domain
 
         public override bool IsInserted => _realmObjectWrap.IsInserted;
 
-        public Persistence.Category RealmObject => _realmObjectWrap.RealmObject;
+        public Persistence.Category? RealmObject => _realmObjectWrap.RealmObject;
 
         public override async Task InsertAsync()
         {
@@ -87,9 +90,9 @@ namespace BFF.Persistence.Realm.Models.Domain
                     while (category.Categories.Any(t => t.Name == $"{f.Name}{++i}")) ;
                     f.Name = $"{f.Name}{i}";
                 });
-            var categoryRealmObject = ((Category)category).RealmObject;
+            var categoryRealmObject = ((Category)category).RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point");
             await _mergeOrm.MergeCategoryAsync(
-                RealmObject,
+                RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"),
                 categoryRealmObject)
                 .ConfigureAwait(false);
             _repository.ClearCache();

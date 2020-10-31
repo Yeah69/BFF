@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading;
-using BFF.ViewModel.Helper;
+using System.Windows.Input;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
+using MrMeeseeks.Windows;
 
 namespace BFF.ViewModel.ViewModels
 {
@@ -26,13 +27,13 @@ namespace BFF.ViewModel.ViewModels
         public long AvailableToBudget => 0L;
         public long Outflows => 0L;
         public long Balance => 0L;
-        public ILazyTransLikeViewModels AssociatedTransElementsViewModel => null;
-        public ILazyTransLikeViewModels AssociatedIncomeTransElementsViewModel => null;
-        public IRxRelayCommand EmptyCellsBudgetLastMonth => null;
-        public IRxRelayCommand EmptyCellsOutflowsLastMonth => null;
-        public IRxRelayCommand EmptyCellsAvgOutflowsLastThreeMonths => null;
-        public IRxRelayCommand EmptyCellsAvgOutflowsLastYear => null;
-        public IRxRelayCommand EmptyCellsBalanceToZero => null;
-        public IRxRelayCommand AllCellsZero => null;
+        public ILazyTransLikeViewModels? AssociatedTransElementsViewModel => null;
+        public ILazyTransLikeViewModels? AssociatedIncomeTransElementsViewModel => null;
+        public ICommand EmptyCellsBudgetLastMonth => RxCommand.CanAlwaysExecuteNeverEmits();
+        public ICommand EmptyCellsOutflowsLastMonth => RxCommand.CanAlwaysExecuteNeverEmits();
+        public ICommand EmptyCellsAvgOutflowsLastThreeMonths => RxCommand.CanAlwaysExecuteNeverEmits();
+        public ICommand EmptyCellsAvgOutflowsLastYear => RxCommand.CanAlwaysExecuteNeverEmits();
+        public ICommand EmptyCellsBalanceToZero => RxCommand.CanAlwaysExecuteNeverEmits();
+        public ICommand AllCellsZero => RxCommand.CanAlwaysExecuteNeverEmits();
     }
 }

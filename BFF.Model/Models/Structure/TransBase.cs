@@ -4,7 +4,7 @@ namespace BFF.Model.Models.Structure
 {
     public interface ITransBase : ITransLike
     {
-        IFlag Flag { get; set; }
+        IFlag? Flag { get; set; }
 
         string CheckNumber { get; set; }
         
@@ -18,9 +18,9 @@ namespace BFF.Model.Models.Structure
         private DateTime _date;
         private bool _cleared;
         private string _checkNumber;
-        private IFlag _flag;
+        private IFlag? _flag;
 
-        public IFlag Flag
+        public IFlag? Flag
         {
             get => _flag;
             set
@@ -65,7 +65,7 @@ namespace BFF.Model.Models.Structure
         }
         
         protected TransBase(
-            IFlag flag,
+            IFlag? flag,
             string checkNumber,
             DateTime date,
             string memo,

@@ -1,8 +1,8 @@
 ﻿using System;
+using System.IO;
 using BFF.Core.Helper;
 using BFF.Core.Persistence;
 using BFF.ViewModel.Helper;
-using JetBrains.Annotations;
 
 namespace BFF.ViewModel.ViewModels.Import
 {
@@ -10,13 +10,13 @@ namespace BFF.ViewModel.ViewModels.Import
     {
         private readonly Func<(string TransactionPath, string BudgetPath), IYnab4CsvImportConfiguration> _importingConfigurationFactory;
 
-        private string _transactionPath;
-        private string _budgetPath;
+        private string? _transactionPath;
+        private string? _budgetPath;
         public IRxRelayCommand BrowseTransactionCommand { get; }
 
         public IRxRelayCommand BrowseBudgetCommand { get; }
 
-        public string TransactionPath
+        public string? TransactionPath
         {
             get => _transactionPath;
             set
@@ -27,7 +27,7 @@ namespace BFF.ViewModel.ViewModels.Import
             }
         }
 
-        public string BudgetPath
+        public string? BudgetPath
         {
             get => _budgetPath;
             set
@@ -39,9 +39,9 @@ namespace BFF.ViewModel.ViewModels.Import
         }
 
         public Ynab4CsvImportViewModel(
-            [NotNull] Func<IBffOpenFileDialog> openFileDialogFactory,
-            [NotNull] Func<(string TransactionPath, string BudgetPath), IYnab4CsvImportConfiguration> importingConfigurationFactory,
-            [NotNull] IBffSettings bffSettings)
+            Func<IBffOpenFileDialog> openFileDialogFactory,
+            Func<(string TransactionPath, string BudgetPath), IYnab4CsvImportConfiguration> importingConfigurationFactory,
+            IBffSettings bffSettings)
         {
             openFileDialogFactory = openFileDialogFactory ?? throw new ArgumentNullException(nameof(openFileDialogFactory));
             importingConfigurationFactory = importingConfigurationFactory ?? throw new ArgumentNullException(nameof(importingConfigurationFactory));
@@ -60,7 +60,7 @@ namespace BFF.ViewModel.ViewModels.Import
                 if (bffOpenFileDialog.ShowDialog() == true)
                 {
                     TransactionPath = bffOpenFileDialog.FileName;
-                    bffSettings.Import_YnabCsvTransaction = _transactionPath;
+                    bffSettings.Import_YnabCsvTransaction = _transactionPath ?? throw new FileNotFoundException();
                 }
             });
 
@@ -74,12 +74,12 @@ namespace BFF.ViewModel.ViewModels.Import
                 if (bffOpenFileDialog.ShowDialog() == true)
                 {
                     BudgetPath = bffOpenFileDialog.FileName;
-                    bffSettings.Import_YnabCsvBudget = _budgetPath;
+                    bffSettings.Import_YnabCsvBudget = _budgetPath ?? throw new FileNotFoundException();
                 }
             });
         }
 
         public IImportingConfiguration GenerateConfiguration() =>
-            _importingConfigurationFactory((TransactionPath, BudgetPath));
+            _importingConfigurationFactory((TransactionPath ?? throw new FileNotFoundException(), BudgetPath ?? throw new FileNotFoundException()));
     }
 }

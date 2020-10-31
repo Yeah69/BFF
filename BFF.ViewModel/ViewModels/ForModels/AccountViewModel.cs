@@ -169,7 +169,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                         else if (item.CreatePayeeIfNotExisting)
                         {
                             IPayee newPayee = payeeFactory();
-                            newPayee.Name = item.Payee.Trim();
+                            newPayee.Name = item.Payee?.Trim() ?? String.Empty;
                             await newPayee.InsertAsync();
                             transactionViewModel.Payee = payeeService.Value.GetViewModel(newPayee);
                         }
@@ -225,7 +225,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                     if (r == BffMessageDialogResult.Affirmative)
                     {
                         await base.DeleteAsync();
-                        foreach (var accountViewModel in AllAccounts)
+                        foreach (var accountViewModel in AllAccounts ?? Enumerable.Empty<IAccountViewModel>())
                         {
                             accountViewModel.RefreshTransCollection();
                             accountViewModel.RefreshBalance();

@@ -9,7 +9,7 @@ namespace BFF.ViewModel.ViewModels
     public interface IAccountTabsViewModel
     {
         INewAccountViewModel NewAccountViewModel { get; }
-        IObservableReadOnlyList<IAccountViewModel> AllAccounts { get; }
+        IObservableReadOnlyList<IAccountViewModel>? AllAccounts { get; }
         ISummaryAccountViewModel SummaryAccountViewModel { get; }
         IReactiveProperty<bool> IsOpen { get; }
     }
@@ -19,7 +19,7 @@ namespace BFF.ViewModel.ViewModels
         private readonly IAccountViewModelService _accountViewModelService;
         private readonly IBffSettings _bffSettings;
 
-        public IObservableReadOnlyList<IAccountViewModel> AllAccounts =>
+        public IObservableReadOnlyList<IAccountViewModel>? AllAccounts =>
             _accountViewModelService.All;
 
         public ISummaryAccountViewModel SummaryAccountViewModel { get; }

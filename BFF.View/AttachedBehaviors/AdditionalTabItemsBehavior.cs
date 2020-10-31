@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Xaml.Behaviors;
@@ -44,9 +45,8 @@ namespace BFF.View.AttachedBehaviors
                     AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + i, isSelectedMemberPath, objectToTabItem);
                     i++;
                 }
-                if (newEnumerable is INotifyCollectionChanged)
+                if (newEnumerable is INotifyCollectionChanged notifyCollection)
                 {
-                    INotifyCollectionChanged notifyCollection = newEnumerable as INotifyCollectionChanged;
                     notifyCollection.CollectionChanged += (o, args) =>
                     {
                         int j;
@@ -54,14 +54,14 @@ namespace BFF.View.AttachedBehaviors
                         {
                             case NotifyCollectionChangedAction.Add:
                                 j = 0;
-                                foreach (object obj in args.NewItems)
+                                foreach (object obj in args.NewItems.OfType<object>())
                                 {
                                     AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + args.NewStartingIndex + j, isSelectedMemberPath, objectToTabItem);
                                     j++;
                                 }
                                 break;
                             case NotifyCollectionChangedAction.Remove:
-                                foreach (object obj in args.OldItems)
+                                foreach (object obj in args.OldItems.OfType<object>())
                                 {
                                     if(objectToTabItem.ContainsKey(obj))
                                     {
@@ -78,10 +78,10 @@ namespace BFF.View.AttachedBehaviors
                                 objectToTabItem.Clear();
                                 if (o != null)
                                 {
-                                    ICollection collection = o as ICollection;
+                                    ICollection? collection = o as ICollection;
                                     j = 0;
                                     if(collection != null)
-                                        foreach (object obj in collection)
+                                        foreach (object obj in collection.OfType<object>())
                                         {
                                             AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + j, isSelectedMemberPath, objectToTabItem);
                                             j++;
@@ -102,7 +102,7 @@ namespace BFF.View.AttachedBehaviors
 
         private static void AddTabItem(
             TabControl tabControl,
-            object obj, 
+            object? obj, 
             DataTemplate headerTemplate, 
             DataTemplate contentTemplate, 
             int index, 

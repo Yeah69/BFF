@@ -5,13 +5,13 @@ namespace BFF.ViewModel.ViewModels.Dialogs
     public interface IPasswordProtectedFileAccessViewModel
     {
         bool IsEncryptionActive { get; set; }
-        string Password { get; set; }
+        string? Password { get; set; }
     }
 
     public class PasswordProtectedFileAccessViewModel : ViewModelBase, IPasswordProtectedFileAccessViewModel
     {
         private bool _isEncryptionActive = false;
-        private string _password = null;
+        private string? _password = null;
 
         public bool IsEncryptionActive
         {
@@ -28,7 +28,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             }
         }
 
-        public string Password
+        public string? Password
         {
             get => _password;
             set

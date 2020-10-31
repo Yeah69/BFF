@@ -12,7 +12,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
         public override int Compare(IAccount x, IAccount y)
         {
-            return Comparer<string>.Default.Compare(x?.Name, y?.Name);
+            return Comparer<string>.Default.Compare(x.Name, y.Name);
         }
     }
 
@@ -47,14 +47,14 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             IAccount InnerAsync(Realms.Realm _)
             {
                 return new Models.Domain.Account(
-                    _crudOrm,
-                    _accountOrm.Value,
-                    this,
-                    _transRepository.Value,
                     persistenceModel,
                     persistenceModel.StartingDate.UtcDateTime,
                     persistenceModel.Name,
-                    persistenceModel.StartingBalance);
+                    persistenceModel.StartingBalance,
+                    _crudOrm,
+                    _accountOrm.Value,
+                    this,
+                    _transRepository.Value);
             }
         }
     }

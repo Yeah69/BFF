@@ -30,7 +30,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
 
         IRxRelayCommand RemoveCommand { get; }
 
-        IAccountBaseViewModel Owner { get; }
+        IAccountBaseViewModel? Owner { get; }
 
         void NotifyErrorsIfAny();
     }
@@ -52,10 +52,10 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
 
         public Sign SumSign
         {
-            get => Sum.Value == 0 ? _sumSign : Sum.Value > 0 ? Sign.Plus : Sign.Minus;
+            get => Sum?.Value == 0 ? _sumSign : Sum?.Value > 0 ? Sign.Plus : Sign.Minus;
             protected set
             {
-                if (value == Sign.Plus && Sum.Value < 0 || value == Sign.Minus && Sum.Value > 0)
+                if (value == Sign.Plus && Sum?.Value < 0 || value == Sign.Minus && Sum?.Value > 0)
                     Sum.Value *= -1;
                 _sumSign = value;
                 OnPropertyChanged();
@@ -64,9 +64,10 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
 
         public long SumAbsolute
         {
-            get => Math.Abs(Sum.Value);
+            get => Math.Abs(Sum?.Value ?? 0);
             set
             {
+                if (Sum is null) return;
                 Sum.Value = (SumSign == Sign.Plus ? 1 : -1) * value;
                 OnPropertyChanged();
             }

@@ -158,8 +158,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             _service
                 .Value
-                .AllCollectionInitialized.ContinueWith(
-                    _ => StartingBalance.Value = _service.Value.All.Sum(account => account.StartingBalance.Value));
+                .AllCollectionInitialized?.ContinueWith(
+                    _ => StartingBalance.Value = _service.Value.All?.Sum(account => account.StartingBalance.Value) ?? 0L);
         }
     }
 }

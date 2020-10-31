@@ -29,7 +29,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
         private readonly ITransaction _transaction;
         private readonly ILocalizer _localizer;
         private readonly ICategoryBaseViewModelService _categoryViewModelService;
-        private ICategoryBaseViewModel _category;
+        private ICategoryBaseViewModel? _category;
+        private readonly IReactiveProperty<long> _sum;
 
         public TransactionViewModel(
             ITransaction transaction,
@@ -85,12 +86,13 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .Subscribe(_ => SumSign = Category is IncomeCategoryViewModel ? Sign.Plus : Sign.Minus)
                 .AddTo(CompositeDisposable);
 
-            Sum = transaction.ToReactivePropertyAsSynchronized(
+            _sum = transaction.ToReactivePropertyAsSynchronized(
                 nameof(transaction.Sum),
                 () => transaction.Sum,
                 s => transaction.Sum = s,
                 rxSchedulerProvider.UI,
-                ReactivePropertyMode.DistinctUntilChanged).AddTo(CompositeDisposable);
+                ReactivePropertyMode.DistinctUntilChanged)
+                .AddTo(CompositeDisposable);
 
             transaction
                 .ObservePropertyChanged(nameof(transaction.Sum))
@@ -125,13 +127,13 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .AddTo(CompositeDisposable);
         }
         
-        public ICategoryBaseViewModel Category
+        public ICategoryBaseViewModel? Category
         {
             get => _category;
             set => _transaction.Category = _categoryViewModelService.GetModel(value);
         }
 
-        public override IReactiveProperty<long> Sum { get; }
+        public override IReactiveProperty<long> Sum => _sum;
 
         public override ISumEditViewModel SumEdit { get; }
 

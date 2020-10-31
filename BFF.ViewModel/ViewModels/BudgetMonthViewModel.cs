@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models;
@@ -12,7 +13,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
-using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 
 namespace BFF.ViewModel.ViewModels
 {
@@ -31,20 +32,20 @@ namespace BFF.ViewModel.ViewModels
         long Outflows { get; }
         long Balance { get; }
 
-        ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
-        ILazyTransLikeViewModels AssociatedIncomeTransElementsViewModel { get; }
+        ILazyTransLikeViewModels? AssociatedTransElementsViewModel { get; }
+        ILazyTransLikeViewModels? AssociatedIncomeTransElementsViewModel { get; }
 
-        IRxRelayCommand EmptyCellsBudgetLastMonth { get; }
+        ICommand EmptyCellsBudgetLastMonth { get; }
 
-        IRxRelayCommand EmptyCellsOutflowsLastMonth { get; }
+        ICommand EmptyCellsOutflowsLastMonth { get; }
 
-        IRxRelayCommand EmptyCellsAvgOutflowsLastThreeMonths { get; }
+        ICommand EmptyCellsAvgOutflowsLastThreeMonths { get; }
 
-        IRxRelayCommand EmptyCellsAvgOutflowsLastYear { get; }
+        ICommand EmptyCellsAvgOutflowsLastYear { get; }
 
-        IRxRelayCommand EmptyCellsBalanceToZero { get; }
+        ICommand EmptyCellsBalanceToZero { get; }
 
-        IRxRelayCommand AllCellsZero { get; }
+        ICommand AllCellsZero { get; }
     }
     
     
@@ -70,55 +71,55 @@ namespace BFF.ViewModel.ViewModels
                         (await budgetMonth.GetAssociatedTransAsync().ConfigureAwait(false))
                         .Where(tb => !(tb is IHaveCategory) || tb is IHaveCategory hc && !(hc.Category is IIncomeCategory)), 
                         null))
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
 
             AssociatedIncomeTransElementsViewModel = lazyTransLikeViewModelsFactory(async () => 
                     convertFromTransBaseToTransLikeViewModel.Convert(
                         await budgetMonth.GetAssociatedTransForIncomeCategoriesAsync(),
                         null))
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
 
             EmptyCellsBudgetLastMonth = new RxRelayCommand(async () =>
                 {
                     await budgetMonth.EmptyBudgetEntriesToAvgBudget(1);
                     budgetRefreshes.RefreshCompletely();
                 })
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
 
             EmptyCellsOutflowsLastMonth = new RxRelayCommand(async () =>
                 {
                     await budgetMonth.EmptyBudgetEntriesToAvgOutflow(1);
                     budgetRefreshes.RefreshCompletely();
                 })
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
 
             EmptyCellsAvgOutflowsLastThreeMonths = new RxRelayCommand(async () =>
                 {
                     await budgetMonth.EmptyBudgetEntriesToAvgOutflow(3);
                     budgetRefreshes.RefreshCompletely();
                 })
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
 
             EmptyCellsAvgOutflowsLastYear = new RxRelayCommand(async () =>
                 {
                     await budgetMonth.EmptyBudgetEntriesToAvgOutflow(12);
                     budgetRefreshes.RefreshCompletely();
                 })
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
 
             EmptyCellsBalanceToZero = new RxRelayCommand(async () =>
                 {
                     await budgetMonth.EmptyBudgetEntriesToBalanceZero();
                     budgetRefreshes.RefreshCompletely();
                 })
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
 
             AllCellsZero = new RxRelayCommand(async () =>
                 {
                     await budgetMonth.AllBudgetEntriesToZero();
                     budgetRefreshes.RefreshCompletely();
                 })
-                .AddForDisposalTo(_compositeDisposable);
+                .CompositeDisposalWith(_compositeDisposable);
         }
         
         public DateTime Month => _budgetMonth.Month;
@@ -142,12 +143,12 @@ namespace BFF.ViewModel.ViewModels
         public long Balance => _budgetMonth.Balance;
         public ILazyTransLikeViewModels AssociatedTransElementsViewModel { get; }
         public ILazyTransLikeViewModels AssociatedIncomeTransElementsViewModel { get; }
-        public IRxRelayCommand EmptyCellsBudgetLastMonth { get; }
-        public IRxRelayCommand EmptyCellsOutflowsLastMonth { get; }
-        public IRxRelayCommand EmptyCellsAvgOutflowsLastThreeMonths { get; }
-        public IRxRelayCommand EmptyCellsAvgOutflowsLastYear { get; }
-        public IRxRelayCommand EmptyCellsBalanceToZero { get; }
-        public IRxRelayCommand AllCellsZero { get; }
+        public ICommand EmptyCellsBudgetLastMonth { get; }
+        public ICommand EmptyCellsOutflowsLastMonth { get; }
+        public ICommand EmptyCellsAvgOutflowsLastThreeMonths { get; }
+        public ICommand EmptyCellsAvgOutflowsLastYear { get; }
+        public ICommand EmptyCellsBalanceToZero { get; }
+        public ICommand AllCellsZero { get; }
 
         public void Dispose()
         {

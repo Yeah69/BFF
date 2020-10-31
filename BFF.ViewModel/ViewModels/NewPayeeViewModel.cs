@@ -20,7 +20,7 @@ namespace BFF.ViewModel.ViewModels
         /// <summary>
         /// User input of the to be searched or to be created Payee.
         /// </summary>
-        string PayeeText { get; set; }
+        string? PayeeText { get; set; }
 
         /// <summary>
         /// Creates a new Payee.
@@ -30,9 +30,9 @@ namespace BFF.ViewModel.ViewModels
         /// <summary>
         /// All currently available Payees.
         /// </summary>
-        IObservableReadOnlyList<IPayeeViewModel> AllPayees { get; }
+        IObservableReadOnlyList<IPayeeViewModel>? AllPayees { get; }
 
-        IHavePayeeViewModel CurrentOwner { get; set; }
+        IHavePayeeViewModel? CurrentOwner { get; set; }
     }
 
     internal class NewPayeeViewModel : NotifyingErrorViewModelBase, INewPayeeViewModel, IOncePerBackend, IDisposable
@@ -41,7 +41,7 @@ namespace BFF.ViewModel.ViewModels
         private readonly IPayeeViewModelService _payeeViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
-        private string _payeeText;
+        private string? _payeeText;
 
         public NewPayeeViewModel(
             ICreateNewModels createNewModels,
@@ -56,7 +56,7 @@ namespace BFF.ViewModel.ViewModels
                 if (!ValidatePayeeName())
                     return;
                 var newPayee = createNewModels.CreatePayee();
-                newPayee.Name = PayeeText.Trim();
+                newPayee.Name = PayeeText?.Trim() ?? String.Empty;
                 await newPayee.InsertAsync();
                 if (CurrentOwner != null)
                     CurrentOwner.Payee = _payeeViewModelService.GetViewModel(newPayee);
@@ -71,7 +71,7 @@ namespace BFF.ViewModel.ViewModels
         /// <summary>
         /// User input of the to be searched or to be created Payee.
         /// </summary>
-        public string PayeeText
+        public string? PayeeText
         {
             get => _payeeText;
             set
@@ -91,13 +91,13 @@ namespace BFF.ViewModel.ViewModels
         /// <summary>
         /// All currently available Payees.
         /// </summary>
-        public IObservableReadOnlyList<IPayeeViewModel> AllPayees => _payeeViewModelService.All;
+        public IObservableReadOnlyList<IPayeeViewModel>? AllPayees => _payeeViewModelService.All;
 
-        public IHavePayeeViewModel CurrentOwner { get; set; }
+        public IHavePayeeViewModel? CurrentOwner { get; set; }
 
         public void Dispose()
         {
-            _compositeDisposable?.Dispose();
+            _compositeDisposable.Dispose();
         }
 
         private bool ValidatePayeeName()

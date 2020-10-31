@@ -1,5 +1,5 @@
 ﻿using System.Reactive.Disposables;
-using MrMeeseeks.Extensions;
+using MrMeeseeks.Reactive.Extensions;
 using Reactive.Bindings;
 
 namespace BFF.ViewModel.ViewModels.Dialogs
@@ -16,7 +16,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         public DialogViewModel()
         {
             IsOpen = new ReactiveProperty<bool>(false, ReactivePropertyMode.DistinctUntilChanged)
-                .AddForDisposalTo(CompositeDisposable);
+                .CompositeDisposalWith(CompositeDisposable);
         }
         public IReactiveProperty IsOpen { get; }
     }

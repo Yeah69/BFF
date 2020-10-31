@@ -22,10 +22,8 @@ namespace BFF.View.AttachedBehaviors
             dp.SetValue(UpdatePropertySourceWhenEnterPressedProperty, value);
         }
 
-        public static DependencyProperty GetUpdatePropertySourceWhenEnterPressed(DependencyObject dp)
-        {
-            return (DependencyProperty) dp.GetValue(UpdatePropertySourceWhenEnterPressedProperty);
-        }
+        public static DependencyProperty? GetUpdatePropertySourceWhenEnterPressed(DependencyObject? dp) => 
+            dp?.GetValue(UpdatePropertySourceWhenEnterPressedProperty) as DependencyProperty;
 
         private static void OnUpdatePropertySourceWhenEnterPressedPropertyChanged(DependencyObject dp,
             DependencyPropertyChangedEventArgs e)
@@ -56,7 +54,7 @@ namespace BFF.View.AttachedBehaviors
 
         static void DoUpdateSource(object source)
         {
-            DependencyProperty property =
+            DependencyProperty? property =
                 GetUpdatePropertySourceWhenEnterPressed(source as DependencyObject);
 
             if (property is null)

@@ -5,9 +5,9 @@ namespace BFF.Persistence.Import
 {
     public class CategoryImportWrapper
     {
-        public ICategorySql Category { get; set; }
+        public ICategorySql? Category { get; set; }
 
-        public CategoryImportWrapper Parent { get; set; }
+        public CategoryImportWrapper? Parent { get; set; }
 
         public IList<CategoryImportWrapper> Categories { get; set; } = new List<CategoryImportWrapper>();
 
