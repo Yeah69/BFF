@@ -52,7 +52,6 @@
                   SelectionMode="Single"
                   SelectionUnit="FullRow"
                   Visibility="{Binding AccountViewModel.TransIsEmpty, Converter={x:Static helper:Converters.TrueToHidden}}">
-            <DataGrid.Resources />
             <DataGrid.Columns>
                 <!--  Symbol  -->
                 <DataGridTemplateColumn x:Name="SymbolColumn"
@@ -283,7 +282,7 @@
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
-                                                Foreground="{DynamicResource BlackColorBrush}"
+                                                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                 Kind="{StaticResource AddIcon}" />
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
@@ -301,7 +300,7 @@
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
-                                                Foreground="{DynamicResource BlackColorBrush}"
+                                                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                 Kind="{StaticResource AddIcon}" />
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
@@ -319,12 +318,12 @@
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
-                                                Foreground="{DynamicResource BlackColorBrush}"
+                                                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                 Kind="{StaticResource AddIcon}" />
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
                                                 Margin="5,0,0,0"
-                                                Foreground="{DynamicResource BlackColorBrush}"
+                                                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                 Kind="{StaticResource ParentIcon}" />
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
@@ -342,7 +341,7 @@
                     Visibility="{Binding ApplyVisibility}">
                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"
-                                            Foreground="{DynamicResource BlackColorBrush}"
+                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                             Kind="{StaticResource AddToTableIcon}" />
             </Button>
         </Grid>
@@ -421,7 +420,7 @@
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                     Height="{StaticResource IconSize}"
-                                                    Foreground="{DynamicResource BlackColorBrush}"
+                                                    Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                     Kind="{StaticResource AddIcon}" />
                         <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                     Height="{StaticResource IconSize}"
@@ -437,7 +436,7 @@
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                     Height="{StaticResource IconSize}"
-                                                    Foreground="{DynamicResource BlackColorBrush}"
+                                                    Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                     Kind="{StaticResource AddIcon}" />
                         <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                     Height="{StaticResource IconSize}"
@@ -453,12 +452,12 @@
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                     Height="{StaticResource IconSize}"
-                                                    Foreground="{DynamicResource BlackColorBrush}"
+                                                    Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                     Kind="{StaticResource AddIcon}" />
                         <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                     Height="{StaticResource IconSize}"
                                                     Margin="5,0,0,0"
-                                                    Foreground="{DynamicResource BlackColorBrush}"
+                                                    Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                     Kind="{StaticResource ParentIcon}" />
                         <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                     Height="{StaticResource IconSize}"
@@ -479,7 +478,7 @@
                         Visibility="{Binding ApplyVisibility}">
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
-                                                Foreground="{DynamicResource BlackColorBrush}"
+                                                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                 Kind="{StaticResource AddToTableIcon}" />
                 </Button>
 

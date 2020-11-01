@@ -37,12 +37,12 @@
                         </Grid.ColumnDefinitions>
                         <Grid x:Name="PART_CHECKBOX">
                             <Rectangle Margin="-6,0"
-                                       Fill="{DynamicResource TransparentWhiteBrush}" />
+                                       Fill="{DynamicResource MahApps.Brushes.Transparent}" />
                             <Border x:Name="normal"
                                     Width="18"
                                     Height="18"
                                     Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                                    BorderBrush="{DynamicResource CheckBoxBrush}"
+                                    BorderBrush="{DynamicResource MahApps.Brushes.CheckBox}"
                                     BorderThickness="1" />
                             <Path x:Name="checkBox"
                                   Width="12"
@@ -60,7 +60,7 @@
                             <Border x:Name="disabled"
                                     Width="18"
                                     Height="18"
-                                    Background="{DynamicResource SemiTransparentWhiteBrush}"
+                                    Background="{DynamicResource 	MahApps.Brushes.SemiTransparent}"
                                     BorderThickness="1"
                                     Opacity="0" />
                         </Grid>
@@ -119,7 +119,7 @@
                                  Value="True">
                             <Setter TargetName="normal"
                                     Property="BorderBrush"
-                                    Value="{DynamicResource HighlightBrush}" />
+                                    Value="{DynamicResource MahApps.Brushes.Highlight}" />
                         </Trigger>
                         <Trigger Property="IsFocused"
                                  Value="True">

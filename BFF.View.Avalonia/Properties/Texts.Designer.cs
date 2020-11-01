@@ -19,10 +19,10 @@ namespace BFF.View.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Texts {
+    public class Texts {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace BFF.View.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BFF.View.Properties.Texts", typeof(Texts).Assembly);
@@ -51,7 +51,7 @@ namespace BFF.View.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Balance.
         /// </summary>
-        internal static string Account_Balance {
+        public static string Account_Balance {
             get {
                 return ResourceManager.GetString("Account_Balance", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Create new Account.
         /// </summary>
-        internal static string Account_CreateNew {
+        public static string Account_CreateNew {
             get {
                 return ResourceManager.GetString("Account_CreateNew", resourceCulture);
             }
@@ -83,7 +83,7 @@ namespace BFF.View.Properties {
         ///
         ///Are you really sure? (A backup will be created automatically, if you would like to rewind the data afterwards).
         /// </summary>
-        internal static string Account_Delete_ConfirmationMessage {
+        public static string Account_Delete_ConfirmationMessage {
             get {
                 return ResourceManager.GetString("Account_Delete_ConfirmationMessage", resourceCulture);
             }
@@ -92,7 +92,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Edit Accounts.
         /// </summary>
-        internal static string Account_Edit {
+        public static string Account_Edit {
             get {
                 return ResourceManager.GetString("Account_Edit", resourceCulture);
             }
@@ -101,7 +101,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Account Name.
         /// </summary>
-        internal static string Account_Name {
+        public static string Account_Name {
             get {
                 return ResourceManager.GetString("Account_Name", resourceCulture);
             }
@@ -110,7 +110,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Starting Balance.
         /// </summary>
-        internal static string Account_StartingBalance {
+        public static string Account_StartingBalance {
             get {
                 return ResourceManager.GetString("Account_StartingBalance", resourceCulture);
             }
@@ -119,7 +119,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Starting Date.
         /// </summary>
-        internal static string Account_StartingDate {
+        public static string Account_StartingDate {
             get {
                 return ResourceManager.GetString("Account_StartingDate", resourceCulture);
             }
@@ -128,7 +128,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to All Accounts.
         /// </summary>
-        internal static string AccountTabsView_AllAccounts {
+        public static string AccountTabsView_AllAccounts {
             get {
                 return ResourceManager.GetString("AccountTabsView_AllAccounts", resourceCulture);
             }
@@ -137,7 +137,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
-        internal static string AccountTabsView_NewAccount_Create {
+        public static string AccountTabsView_NewAccount_Create {
             get {
                 return ResourceManager.GetString("AccountTabsView_NewAccount_Create", resourceCulture);
             }
@@ -146,7 +146,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Abort targeting balance.
         /// </summary>
-        internal static string AccountView_AbortTargetingBalance {
+        public static string AccountView_AbortTargetingBalance {
             get {
                 return ResourceManager.GetString("AccountView_AbortTargetingBalance", resourceCulture);
             }
@@ -155,7 +155,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
-        internal static string AccountView_Balance_All {
+        public static string AccountView_Balance_All {
             get {
                 return ResourceManager.GetString("AccountView_Balance_All", resourceCulture);
             }
@@ -164,7 +164,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Cleared.
         /// </summary>
-        internal static string AccountView_Balance_Cleared {
+        public static string AccountView_Balance_Cleared {
             get {
                 return ResourceManager.GetString("AccountView_Balance_Cleared", resourceCulture);
             }
@@ -173,7 +173,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Current.
         /// </summary>
-        internal static string AccountView_Balance_Current {
+        public static string AccountView_Balance_Current {
             get {
                 return ResourceManager.GetString("AccountView_Balance_Current", resourceCulture);
             }
@@ -182,7 +182,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Total.
         /// </summary>
-        internal static string AccountView_Balance_Total {
+        public static string AccountView_Balance_Total {
             get {
                 return ResourceManager.GetString("AccountView_Balance_Total", resourceCulture);
             }
@@ -191,7 +191,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Uncleared.
         /// </summary>
-        internal static string AccountView_Balance_Uncleared {
+        public static string AccountView_Balance_Uncleared {
             get {
                 return ResourceManager.GetString("AccountView_Balance_Uncleared", resourceCulture);
             }
@@ -200,7 +200,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Transfer.
         /// </summary>
-        internal static string AccountView_Column_Transfer {
+        public static string AccountView_Column_Transfer {
             get {
                 return ResourceManager.GetString("AccountView_Column_Transfer", resourceCulture);
             }
@@ -209,7 +209,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
-        internal static string AccountView_ConMenu_Delete {
+        public static string AccountView_ConMenu_Delete {
             get {
                 return ResourceManager.GetString("AccountView_ConMenu_Delete", resourceCulture);
             }
@@ -218,7 +218,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
-        internal static string AccountView_ConMenu_Remove {
+        public static string AccountView_ConMenu_Remove {
             get {
                 return ResourceManager.GetString("AccountView_ConMenu_Remove", resourceCulture);
             }
@@ -227,7 +227,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Create first account entry.
         /// </summary>
-        internal static string AccountView_FirstEntry {
+        public static string AccountView_FirstEntry {
             get {
                 return ResourceManager.GetString("AccountView_FirstEntry", resourceCulture);
             }
@@ -236,7 +236,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Account.
         /// </summary>
-        internal static string AccountView_Header_Account {
+        public static string AccountView_Header_Account {
             get {
                 return ResourceManager.GetString("AccountView_Header_Account", resourceCulture);
             }
@@ -245,7 +245,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Category.
         /// </summary>
-        internal static string AccountView_Header_Category {
+        public static string AccountView_Header_Category {
             get {
                 return ResourceManager.GetString("AccountView_Header_Category", resourceCulture);
             }
@@ -254,7 +254,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Check Number.
         /// </summary>
-        internal static string AccountView_Header_CheckNumber {
+        public static string AccountView_Header_CheckNumber {
             get {
                 return ResourceManager.GetString("AccountView_Header_CheckNumber", resourceCulture);
             }
@@ -263,7 +263,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Cleared.
         /// </summary>
-        internal static string AccountView_Header_Cleared {
+        public static string AccountView_Header_Cleared {
             get {
                 return ResourceManager.GetString("AccountView_Header_Cleared", resourceCulture);
             }
@@ -272,7 +272,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
-        internal static string AccountView_Header_Date {
+        public static string AccountView_Header_Date {
             get {
                 return ResourceManager.GetString("AccountView_Header_Date", resourceCulture);
             }
@@ -281,7 +281,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to F.
         /// </summary>
-        internal static string AccountView_Header_Flag {
+        public static string AccountView_Header_Flag {
             get {
                 return ResourceManager.GetString("AccountView_Header_Flag", resourceCulture);
             }
@@ -290,7 +290,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Memo.
         /// </summary>
-        internal static string AccountView_Header_Memo {
+        public static string AccountView_Header_Memo {
             get {
                 return ResourceManager.GetString("AccountView_Header_Memo", resourceCulture);
             }
@@ -299,7 +299,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Payee.
         /// </summary>
-        internal static string AccountView_Header_Payee {
+        public static string AccountView_Header_Payee {
             get {
                 return ResourceManager.GetString("AccountView_Header_Payee", resourceCulture);
             }
@@ -308,7 +308,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Sum.
         /// </summary>
-        internal static string AccountView_Header_Sum {
+        public static string AccountView_Header_Sum {
             get {
                 return ResourceManager.GetString("AccountView_Header_Sum", resourceCulture);
             }
@@ -317,7 +317,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to S.
         /// </summary>
-        internal static string AccountView_Header_SymbolAbbr {
+        public static string AccountView_Header_SymbolAbbr {
             get {
                 return ResourceManager.GetString("AccountView_Header_SymbolAbbr", resourceCulture);
             }
@@ -326,7 +326,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Symbol.
         /// </summary>
-        internal static string AccountView_Header_SymbolAbbr_Tooltip {
+        public static string AccountView_Header_SymbolAbbr_Tooltip {
             get {
                 return ResourceManager.GetString("AccountView_Header_SymbolAbbr_Tooltip", resourceCulture);
             }
@@ -335,7 +335,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Intermediate balance.
         /// </summary>
-        internal static string AccountView_IntermediateBalance {
+        public static string AccountView_IntermediateBalance {
             get {
                 return ResourceManager.GetString("AccountView_IntermediateBalance", resourceCulture);
             }
@@ -344,7 +344,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Missing sum.
         /// </summary>
-        internal static string AccountView_MissingSum {
+        public static string AccountView_MissingSum {
             get {
                 return ResourceManager.GetString("AccountView_MissingSum", resourceCulture);
             }
@@ -353,7 +353,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Set target balance.
         /// </summary>
-        internal static string AccountView_SetTargetBalance {
+        public static string AccountView_SetTargetBalance {
             get {
                 return ResourceManager.GetString("AccountView_SetTargetBalance", resourceCulture);
             }
@@ -362,7 +362,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Target balance.
         /// </summary>
-        internal static string AccountView_TargetBalance {
+        public static string AccountView_TargetBalance {
             get {
                 return ResourceManager.GetString("AccountView_TargetBalance", resourceCulture);
             }
@@ -371,7 +371,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Persists currently edited elements to the account.
         /// </summary>
-        internal static string AccountView_ToolTip_AddToTable {
+        public static string AccountView_ToolTip_AddToTable {
             get {
                 return ResourceManager.GetString("AccountView_ToolTip_AddToTable", resourceCulture);
             }
@@ -380,7 +380,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Creates a new split transaction.
         /// </summary>
-        internal static string AccountView_ToolTip_NewParentTransaction {
+        public static string AccountView_ToolTip_NewParentTransaction {
             get {
                 return ResourceManager.GetString("AccountView_ToolTip_NewParentTransaction", resourceCulture);
             }
@@ -389,7 +389,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Creates a new transaction.
         /// </summary>
-        internal static string AccountView_ToolTip_NewTransaction {
+        public static string AccountView_ToolTip_NewTransaction {
             get {
                 return ResourceManager.GetString("AccountView_ToolTip_NewTransaction", resourceCulture);
             }
@@ -398,7 +398,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Creates a new transfer.
         /// </summary>
-        internal static string AccountView_ToolTip_NewTransfer {
+        public static string AccountView_ToolTip_NewTransfer {
             get {
                 return ResourceManager.GetString("AccountView_ToolTip_NewTransfer", resourceCulture);
             }
@@ -407,7 +407,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Available.
         /// </summary>
-        internal static string Budgeting_Available {
+        public static string Budgeting_Available {
             get {
                 return ResourceManager.GetString("Budgeting_Available", resourceCulture);
             }
@@ -416,7 +416,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Amount of money which is available in this month but not assigned to any category yet..
         /// </summary>
-        internal static string Budgeting_AvailableExplanation {
+        public static string Budgeting_AvailableExplanation {
             get {
                 return ResourceManager.GetString("Budgeting_AvailableExplanation", resourceCulture);
             }
@@ -425,7 +425,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Balance.
         /// </summary>
-        internal static string Budgeting_Balance {
+        public static string Budgeting_Balance {
             get {
                 return ResourceManager.GetString("Budgeting_Balance", resourceCulture);
             }
@@ -434,7 +434,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Budgeted.
         /// </summary>
-        internal static string Budgeting_Budgeted {
+        public static string Budgeting_Budgeted {
             get {
                 return ResourceManager.GetString("Budgeting_Budgeted", resourceCulture);
             }
@@ -443,7 +443,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Sum of all amounts of money which are budgeted on a category in this month..
         /// </summary>
-        internal static string Budgeting_BudgetedExplanation {
+        public static string Budgeting_BudgetedExplanation {
             get {
                 return ResourceManager.GetString("Budgeting_BudgetedExplanation", resourceCulture);
             }
@@ -452,7 +452,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Average outflows of the last three months.
         /// </summary>
-        internal static string Budgeting_ContextMenu_AvgOutflowsLastThreeMonths {
+        public static string Budgeting_ContextMenu_AvgOutflowsLastThreeMonths {
             get {
                 return ResourceManager.GetString("Budgeting_ContextMenu_AvgOutflowsLastThreeMonths", resourceCulture);
             }
@@ -461,7 +461,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Average outflows of the last year.
         /// </summary>
-        internal static string Budgeting_ContextMenu_AvgOutflowsLastYear {
+        public static string Budgeting_ContextMenu_AvgOutflowsLastYear {
             get {
                 return ResourceManager.GetString("Budgeting_ContextMenu_AvgOutflowsLastYear", resourceCulture);
             }
@@ -470,7 +470,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Balance to zero.
         /// </summary>
-        internal static string Budgeting_ContextMenu_BalanceToZero {
+        public static string Budgeting_ContextMenu_BalanceToZero {
             get {
                 return ResourceManager.GetString("Budgeting_ContextMenu_BalanceToZero", resourceCulture);
             }
@@ -479,7 +479,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Budget values from last month.
         /// </summary>
-        internal static string Budgeting_ContextMenu_BudgetLastMonth {
+        public static string Budgeting_ContextMenu_BudgetLastMonth {
             get {
                 return ResourceManager.GetString("Budgeting_ContextMenu_BudgetLastMonth", resourceCulture);
             }
@@ -488,7 +488,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Outflows of last month.
         /// </summary>
-        internal static string Budgeting_ContextMenu_OutflowsLastMonth {
+        public static string Budgeting_ContextMenu_OutflowsLastMonth {
             get {
                 return ResourceManager.GetString("Budgeting_ContextMenu_OutflowsLastMonth", resourceCulture);
             }
@@ -497,7 +497,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Zero.
         /// </summary>
-        internal static string Budgeting_ContextMenu_Zero {
+        public static string Budgeting_ContextMenu_Zero {
             get {
                 return ResourceManager.GetString("Budgeting_ContextMenu_Zero", resourceCulture);
             }
@@ -506,7 +506,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Income.
         /// </summary>
-        internal static string Budgeting_Income {
+        public static string Budgeting_Income {
             get {
                 return ResourceManager.GetString("Budgeting_Income", resourceCulture);
             }
@@ -515,7 +515,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Amount of earned money which is assigned for the expenses of this month..
         /// </summary>
-        internal static string Budgeting_IncomeExplanation {
+        public static string Budgeting_IncomeExplanation {
             get {
                 return ResourceManager.GetString("Budgeting_IncomeExplanation", resourceCulture);
             }
@@ -524,7 +524,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Fill all budget cells with:.
         /// </summary>
-        internal static string Budgeting_Month_ContextMenu_AllCellsHeader {
+        public static string Budgeting_Month_ContextMenu_AllCellsHeader {
             get {
                 return ResourceManager.GetString("Budgeting_Month_ContextMenu_AllCellsHeader", resourceCulture);
             }
@@ -533,7 +533,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Fill all empty budget cells with:.
         /// </summary>
-        internal static string Budgeting_Month_ContextMenu_EmptyCellsHeader {
+        public static string Budgeting_Month_ContextMenu_EmptyCellsHeader {
             get {
                 return ResourceManager.GetString("Budgeting_Month_ContextMenu_EmptyCellsHeader", resourceCulture);
             }
@@ -542,7 +542,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Not Budgeted.
         /// </summary>
-        internal static string Budgeting_NotBudgeted {
+        public static string Budgeting_NotBudgeted {
             get {
                 return ResourceManager.GetString("Budgeting_NotBudgeted", resourceCulture);
             }
@@ -551,7 +551,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Amount of money which was available last month but not assigned to any category..
         /// </summary>
-        internal static string Budgeting_NotBudgetedExplanation {
+        public static string Budgeting_NotBudgetedExplanation {
             get {
                 return ResourceManager.GetString("Budgeting_NotBudgetedExplanation", resourceCulture);
             }
@@ -560,7 +560,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to One-Sided Transfers.
         /// </summary>
-        internal static string Budgeting_OneSidedTransfers {
+        public static string Budgeting_OneSidedTransfers {
             get {
                 return ResourceManager.GetString("Budgeting_OneSidedTransfers", resourceCulture);
             }
@@ -569,7 +569,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to One-Sided Transfers may occur after a deletion of an account. They have to be considered, because they are not neutral to the budget..
         /// </summary>
-        internal static string Budgeting_OneSidedTransfersExplanation {
+        public static string Budgeting_OneSidedTransfersExplanation {
             get {
                 return ResourceManager.GetString("Budgeting_OneSidedTransfersExplanation", resourceCulture);
             }
@@ -578,7 +578,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Outflows.
         /// </summary>
-        internal static string Budgeting_Outflows {
+        public static string Budgeting_Outflows {
             get {
                 return ResourceManager.GetString("Budgeting_Outflows", resourceCulture);
             }
@@ -587,7 +587,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Overbudgeted.
         /// </summary>
-        internal static string Budgeting_Overbudgeted {
+        public static string Budgeting_Overbudgeted {
             get {
                 return ResourceManager.GetString("Budgeting_Overbudgeted", resourceCulture);
             }
@@ -596,7 +596,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Amount of money which was missing to satisfy all categories in last month..
         /// </summary>
-        internal static string Budgeting_OverbudgetedExplanation {
+        public static string Budgeting_OverbudgetedExplanation {
             get {
                 return ResourceManager.GetString("Budgeting_OverbudgetedExplanation", resourceCulture);
             }
@@ -605,7 +605,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Amount of money which is missing to satisfy all categories in this month..
         /// </summary>
-        internal static string Budgeting_OverbudgetedThisMonthExplanation {
+        public static string Budgeting_OverbudgetedThisMonthExplanation {
             get {
                 return ResourceManager.GetString("Budgeting_OverbudgetedThisMonthExplanation", resourceCulture);
             }
@@ -614,7 +614,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Overspend.
         /// </summary>
-        internal static string Budgeting_Overspend {
+        public static string Budgeting_Overspend {
             get {
                 return ResourceManager.GetString("Budgeting_Overspend", resourceCulture);
             }
@@ -623,7 +623,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Sum of overspend amounts of money accumulated from all categories in last month..
         /// </summary>
-        internal static string Budgeting_OverspendExplanation {
+        public static string Budgeting_OverspendExplanation {
             get {
                 return ResourceManager.GetString("Budgeting_OverspendExplanation", resourceCulture);
             }
@@ -632,7 +632,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Show Aggregates.
         /// </summary>
-        internal static string Budgeting_ShowAggregates {
+        public static string Budgeting_ShowAggregates {
             get {
                 return ResourceManager.GetString("Budgeting_ShowAggregates", resourceCulture);
             }
@@ -641,7 +641,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Unassigned.
         /// </summary>
-        internal static string Budgeting_UnassignedTransactions {
+        public static string Budgeting_UnassignedTransactions {
             get {
                 return ResourceManager.GetString("Budgeting_UnassignedTransactions", resourceCulture);
             }
@@ -650,7 +650,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The sum of all transactions, which have no category assigned..
         /// </summary>
-        internal static string Budgeting_UnassignedTransactionsExplanation {
+        public static string Budgeting_UnassignedTransactionsExplanation {
             get {
                 return ResourceManager.GetString("Budgeting_UnassignedTransactionsExplanation", resourceCulture);
             }
@@ -659,7 +659,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Create new Category.
         /// </summary>
-        internal static string Category_CreateNew {
+        public static string Category_CreateNew {
             get {
                 return ResourceManager.GetString("Category_CreateNew", resourceCulture);
             }
@@ -668,7 +668,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Color.
         /// </summary>
-        internal static string Color {
+        public static string Color {
             get {
                 return ResourceManager.GetString("Color", resourceCulture);
             }
@@ -677,7 +677,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Configuration.
         /// </summary>
-        internal static string Common_Configuration {
+        public static string Common_Configuration {
             get {
                 return ResourceManager.GetString("Common_Configuration", resourceCulture);
             }
@@ -686,7 +686,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Entries.
         /// </summary>
-        internal static string Common_Entries {
+        public static string Common_Entries {
             get {
                 return ResourceManager.GetString("Common_Entries", resourceCulture);
             }
@@ -695,7 +695,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure that the category &quot;{0}&quot; should be deleted?.
         /// </summary>
-        internal static string ConfirmationDialog_ConfirmCategoryDeletion {
+        public static string ConfirmationDialog_ConfirmCategoryDeletion {
             get {
                 return ResourceManager.GetString("ConfirmationDialog_ConfirmCategoryDeletion", resourceCulture);
             }
@@ -704,7 +704,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure that the category &quot;{0}&quot; should get merged into the category &quot;{1}&quot;?.
         /// </summary>
-        internal static string ConfirmationDialog_ConfirmCategoryMerge {
+        public static string ConfirmationDialog_ConfirmCategoryMerge {
             get {
                 return ResourceManager.GetString("ConfirmationDialog_ConfirmCategoryMerge", resourceCulture);
             }
@@ -713,7 +713,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure that the flag &quot;{0}&quot; should be deleted?.
         /// </summary>
-        internal static string ConfirmationDialog_ConfirmFlagDeletion {
+        public static string ConfirmationDialog_ConfirmFlagDeletion {
             get {
                 return ResourceManager.GetString("ConfirmationDialog_ConfirmFlagDeletion", resourceCulture);
             }
@@ -722,7 +722,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure that the flag &quot;{0}&quot; should get merged into the flag &quot;{1}&quot;?.
         /// </summary>
-        internal static string ConfirmationDialog_ConfirmFlagMerge {
+        public static string ConfirmationDialog_ConfirmFlagMerge {
             get {
                 return ResourceManager.GetString("ConfirmationDialog_ConfirmFlagMerge", resourceCulture);
             }
@@ -731,7 +731,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure that the income category &quot;{0}&quot; should be deleted?.
         /// </summary>
-        internal static string ConfirmationDialog_ConfirmIncomeCategoryDeletion {
+        public static string ConfirmationDialog_ConfirmIncomeCategoryDeletion {
             get {
                 return ResourceManager.GetString("ConfirmationDialog_ConfirmIncomeCategoryDeletion", resourceCulture);
             }
@@ -740,7 +740,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure that the income category &quot;{0}&quot; should get merged into the income category &quot;{1}&quot;?.
         /// </summary>
-        internal static string ConfirmationDialog_ConfirmIncomeCategoryMerge {
+        public static string ConfirmationDialog_ConfirmIncomeCategoryMerge {
             get {
                 return ResourceManager.GetString("ConfirmationDialog_ConfirmIncomeCategoryMerge", resourceCulture);
             }
@@ -749,7 +749,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure that the payee &quot;{0}&quot; should be deleted?.
         /// </summary>
-        internal static string ConfirmationDialog_ConfirmPayeeDeletion {
+        public static string ConfirmationDialog_ConfirmPayeeDeletion {
             get {
                 return ResourceManager.GetString("ConfirmationDialog_ConfirmPayeeDeletion", resourceCulture);
             }
@@ -758,7 +758,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure that the payee &quot;{0}&quot; should get merged into the payee &quot;{1}&quot;?.
         /// </summary>
-        internal static string ConfirmationDialog_ConfirmPayeeMerge {
+        public static string ConfirmationDialog_ConfirmPayeeMerge {
             get {
                 return ResourceManager.GetString("ConfirmationDialog_ConfirmPayeeMerge", resourceCulture);
             }
@@ -767,7 +767,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure?.
         /// </summary>
-        internal static string ConfirmationDialog_Title {
+        public static string ConfirmationDialog_Title {
             get {
                 return ResourceManager.GetString("ConfirmationDialog_Title", resourceCulture);
             }
@@ -776,7 +776,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Create new category.
         /// </summary>
-        internal static string CreateNewCategory {
+        public static string CreateNewCategory {
             get {
                 return ResourceManager.GetString("CreateNewCategory", resourceCulture);
             }
@@ -785,7 +785,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Create new flag.
         /// </summary>
-        internal static string CreateNewFlag {
+        public static string CreateNewFlag {
             get {
                 return ResourceManager.GetString("CreateNewFlag", resourceCulture);
             }
@@ -794,7 +794,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Create new payee.
         /// </summary>
-        internal static string CreateNewPayee {
+        public static string CreateNewPayee {
             get {
                 return ResourceManager.GetString("CreateNewPayee", resourceCulture);
             }
@@ -803,7 +803,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to An error occurred while creating the entries. Check the configuration..
         /// </summary>
-        internal static string CsvBankStatementImport_ErrorDuringItemsCreation {
+        public static string CsvBankStatementImport_ErrorDuringItemsCreation {
             get {
                 return ResourceManager.GetString("CsvBankStatementImport_ErrorDuringItemsCreation", resourceCulture);
             }
@@ -812,7 +812,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Bank Statement.
         /// </summary>
-        internal static string Domain_BankStatement {
+        public static string Domain_BankStatement {
             get {
                 return ResourceManager.GetString("Domain_BankStatement", resourceCulture);
             }
@@ -821,7 +821,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Categories.
         /// </summary>
-        internal static string Domain_Categories {
+        public static string Domain_Categories {
             get {
                 return ResourceManager.GetString("Domain_Categories", resourceCulture);
             }
@@ -830,7 +830,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Flags.
         /// </summary>
-        internal static string Domain_Flags {
+        public static string Domain_Flags {
             get {
                 return ResourceManager.GetString("Domain_Flags", resourceCulture);
             }
@@ -839,7 +839,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Income Categories.
         /// </summary>
-        internal static string Domain_IncomeCategories {
+        public static string Domain_IncomeCategories {
             get {
                 return ResourceManager.GetString("Domain_IncomeCategories", resourceCulture);
             }
@@ -848,7 +848,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Open Bank Statement.
         /// </summary>
-        internal static string Domain_OpenBankStatement {
+        public static string Domain_OpenBankStatement {
             get {
                 return ResourceManager.GetString("Domain_OpenBankStatement", resourceCulture);
             }
@@ -857,7 +857,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Payees.
         /// </summary>
-        internal static string Domain_Payees {
+        public static string Domain_Payees {
             get {
                 return ResourceManager.GetString("Domain_Payees", resourceCulture);
             }
@@ -866,7 +866,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to An account has to be chosen before the entry is inserted..
         /// </summary>
-        internal static string ErrorMessage_AccountHasToBeChosen {
+        public static string ErrorMessage_AccountHasToBeChosen {
             get {
                 return ResourceManager.GetString("ErrorMessage_AccountHasToBeChosen", resourceCulture);
             }
@@ -875,7 +875,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The name of the new category is not allowed to be empty!.
         /// </summary>
-        internal static string ErrorMessageCategoryNameEmpty {
+        public static string ErrorMessageCategoryNameEmpty {
             get {
                 return ResourceManager.GetString("ErrorMessageCategoryNameEmpty", resourceCulture);
             }
@@ -884,7 +884,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to An account has to be chosen..
         /// </summary>
-        internal static string ErrorMessageEmptyAccount {
+        public static string ErrorMessageEmptyAccount {
             get {
                 return ResourceManager.GetString("ErrorMessageEmptyAccount", resourceCulture);
             }
@@ -893,7 +893,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to A category has to be chosen..
         /// </summary>
-        internal static string ErrorMessageEmptyCategory {
+        public static string ErrorMessageEmptyCategory {
             get {
                 return ResourceManager.GetString("ErrorMessageEmptyCategory", resourceCulture);
             }
@@ -902,7 +902,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to A source-account has to be chosen..
         /// </summary>
-        internal static string ErrorMessageEmptyFromAccount {
+        public static string ErrorMessageEmptyFromAccount {
             get {
                 return ResourceManager.GetString("ErrorMessageEmptyFromAccount", resourceCulture);
             }
@@ -911,7 +911,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to A payee has to be chosen..
         /// </summary>
-        internal static string ErrorMessageEmptyPayee {
+        public static string ErrorMessageEmptyPayee {
             get {
                 return ResourceManager.GetString("ErrorMessageEmptyPayee", resourceCulture);
             }
@@ -920,7 +920,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to A target-account has to be chosen..
         /// </summary>
-        internal static string ErrorMessageEmptyToAccount {
+        public static string ErrorMessageEmptyToAccount {
             get {
                 return ResourceManager.GetString("ErrorMessageEmptyToAccount", resourceCulture);
             }
@@ -929,7 +929,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to A new account&apos;s name isn&apos;t allowed to be empty or match a name of the existing accounts!.
         /// </summary>
-        internal static string ErrorMessageWrongAccountName {
+        public static string ErrorMessageWrongAccountName {
             get {
                 return ResourceManager.GetString("ErrorMessageWrongAccountName", resourceCulture);
             }
@@ -938,7 +938,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to This name already exists on the chosen category level!.
         /// </summary>
-        internal static string ErrorMessageWrongCategoryName {
+        public static string ErrorMessageWrongCategoryName {
             get {
                 return ResourceManager.GetString("ErrorMessageWrongCategoryName", resourceCulture);
             }
@@ -947,7 +947,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to This category level already contains a category of chosen name!.
         /// </summary>
-        internal static string ErrorMessageWrongCategoryParent {
+        public static string ErrorMessageWrongCategoryParent {
             get {
                 return ResourceManager.GetString("ErrorMessageWrongCategoryParent", resourceCulture);
             }
@@ -956,7 +956,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The name of a new flag isn&apos;t allowed to be empty or an already existing one..
         /// </summary>
-        internal static string ErrorMessageWrongFlagName {
+        public static string ErrorMessageWrongFlagName {
             get {
                 return ResourceManager.GetString("ErrorMessageWrongFlagName", resourceCulture);
             }
@@ -965,7 +965,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The name of a new payee isn&apos;t allowed to be empty or an already existing one..
         /// </summary>
-        internal static string ErrorMessageWrongPayeeName {
+        public static string ErrorMessageWrongPayeeName {
             get {
                 return ResourceManager.GetString("ErrorMessageWrongPayeeName", resourceCulture);
             }
@@ -974,7 +974,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The file &quot;{0}&quot; could not be found..
         /// </summary>
-        internal static string Exception_FileNotFound {
+        public static string Exception_FileNotFound {
             get {
                 return ResourceManager.GetString("Exception_FileNotFound", resourceCulture);
             }
@@ -983,7 +983,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Create new Flag.
         /// </summary>
-        internal static string Flag_CreateNew {
+        public static string Flag_CreateNew {
             get {
                 return ResourceManager.GetString("Flag_CreateNew", resourceCulture);
             }
@@ -992,7 +992,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Edit Flags.
         /// </summary>
-        internal static string Flag_Edit {
+        public static string Flag_Edit {
             get {
                 return ResourceManager.GetString("Flag_Edit", resourceCulture);
             }
@@ -1001,7 +1001,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
-        internal static string General_Cancel {
+        public static string General_Cancel {
             get {
                 return ResourceManager.GetString("General_Cancel", resourceCulture);
             }
@@ -1010,7 +1010,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Date Format.
         /// </summary>
-        internal static string General_DateFormat {
+        public static string General_DateFormat {
             get {
                 return ResourceManager.GetString("General_DateFormat", resourceCulture);
             }
@@ -1019,7 +1019,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Delimiter.
         /// </summary>
-        internal static string General_Delimiter {
+        public static string General_Delimiter {
             get {
                 return ResourceManager.GetString("General_Delimiter", resourceCulture);
             }
@@ -1028,7 +1028,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to File Path.
         /// </summary>
-        internal static string General_FilePath {
+        public static string General_FilePath {
             get {
                 return ResourceManager.GetString("General_FilePath", resourceCulture);
             }
@@ -1037,7 +1037,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Header.
         /// </summary>
-        internal static string General_Header {
+        public static string General_Header {
             get {
                 return ResourceManager.GetString("General_Header", resourceCulture);
             }
@@ -1046,7 +1046,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Long.
         /// </summary>
-        internal static string General_Long {
+        public static string General_Long {
             get {
                 return ResourceManager.GetString("General_Long", resourceCulture);
             }
@@ -1055,7 +1055,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Memo Format.
         /// </summary>
-        internal static string General_MemoFormat {
+        public static string General_MemoFormat {
             get {
                 return ResourceManager.GetString("General_MemoFormat", resourceCulture);
             }
@@ -1064,7 +1064,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
-        internal static string General_Name {
+        public static string General_Name {
             get {
                 return ResourceManager.GetString("General_Name", resourceCulture);
             }
@@ -1073,7 +1073,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Negative.
         /// </summary>
-        internal static string General_Negative {
+        public static string General_Negative {
             get {
                 return ResourceManager.GetString("General_Negative", resourceCulture);
             }
@@ -1082,7 +1082,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Create new payee if not existing?.
         /// </summary>
-        internal static string General_NewPayeeIfNotExisting {
+        public static string General_NewPayeeIfNotExisting {
             get {
                 return ResourceManager.GetString("General_NewPayeeIfNotExisting", resourceCulture);
             }
@@ -1091,7 +1091,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
-        internal static string General_No {
+        public static string General_No {
             get {
                 return ResourceManager.GetString("General_No", resourceCulture);
             }
@@ -1100,7 +1100,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Okay.
         /// </summary>
-        internal static string General_Okay {
+        public static string General_Okay {
             get {
                 return ResourceManager.GetString("General_Okay", resourceCulture);
             }
@@ -1109,7 +1109,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Payee Format.
         /// </summary>
-        internal static string General_PayeeFormat {
+        public static string General_PayeeFormat {
             get {
                 return ResourceManager.GetString("General_PayeeFormat", resourceCulture);
             }
@@ -1118,7 +1118,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Positive.
         /// </summary>
-        internal static string General_Positive {
+        public static string General_Positive {
             get {
                 return ResourceManager.GetString("General_Positive", resourceCulture);
             }
@@ -1127,7 +1127,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Profile.
         /// </summary>
-        internal static string General_Profile {
+        public static string General_Profile {
             get {
                 return ResourceManager.GetString("General_Profile", resourceCulture);
             }
@@ -1136,7 +1136,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Remove Profile.
         /// </summary>
-        internal static string General_RemoveProfile {
+        public static string General_RemoveProfile {
             get {
                 return ResourceManager.GetString("General_RemoveProfile", resourceCulture);
             }
@@ -1145,7 +1145,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Reset Profile.
         /// </summary>
-        internal static string General_ResetProfile {
+        public static string General_ResetProfile {
             get {
                 return ResourceManager.GetString("General_ResetProfile", resourceCulture);
             }
@@ -1154,7 +1154,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Save new Profile.
         /// </summary>
-        internal static string General_SaveNewProfile {
+        public static string General_SaveNewProfile {
             get {
                 return ResourceManager.GetString("General_SaveNewProfile", resourceCulture);
             }
@@ -1163,7 +1163,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Save Profile.
         /// </summary>
-        internal static string General_SaveProfile {
+        public static string General_SaveProfile {
             get {
                 return ResourceManager.GetString("General_SaveProfile", resourceCulture);
             }
@@ -1172,7 +1172,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Short.
         /// </summary>
-        internal static string General_Short {
+        public static string General_Short {
             get {
                 return ResourceManager.GetString("General_Short", resourceCulture);
             }
@@ -1181,7 +1181,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Sum Format.
         /// </summary>
-        internal static string General_SumFormat {
+        public static string General_SumFormat {
             get {
                 return ResourceManager.GetString("General_SumFormat", resourceCulture);
             }
@@ -1190,7 +1190,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Unassigned.
         /// </summary>
-        internal static string General_Unassigned {
+        public static string General_Unassigned {
             get {
                 return ResourceManager.GetString("General_Unassigned", resourceCulture);
             }
@@ -1199,7 +1199,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
-        internal static string General_Yes {
+        public static string General_Yes {
             get {
                 return ResourceManager.GetString("General_Yes", resourceCulture);
             }
@@ -1208,7 +1208,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Accounts.
         /// </summary>
-        internal static string HamburgerMenu_Accounts {
+        public static string HamburgerMenu_Accounts {
             get {
                 return ResourceManager.GetString("HamburgerMenu_Accounts", resourceCulture);
             }
@@ -1217,7 +1217,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Budget.
         /// </summary>
-        internal static string HamburgerMenu_Budget {
+        public static string HamburgerMenu_Budget {
             get {
                 return ResourceManager.GetString("HamburgerMenu_Budget", resourceCulture);
             }
@@ -1226,7 +1226,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Browse.
         /// </summary>
-        internal static string ImportView_Browse {
+        public static string ImportView_Browse {
             get {
                 return ResourceManager.GetString("ImportView_Browse", resourceCulture);
             }
@@ -1235,7 +1235,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
-        internal static string ImportView_Cancel {
+        public static string ImportView_Cancel {
             get {
                 return ResourceManager.GetString("ImportView_Cancel", resourceCulture);
             }
@@ -1244,7 +1244,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Export Target.
         /// </summary>
-        internal static string ImportView_ExportKind {
+        public static string ImportView_ExportKind {
             get {
                 return ResourceManager.GetString("ImportView_ExportKind", resourceCulture);
             }
@@ -1253,7 +1253,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
-        internal static string ImportView_Import {
+        public static string ImportView_Import {
             get {
                 return ResourceManager.GetString("ImportView_Import", resourceCulture);
             }
@@ -1262,7 +1262,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Import Source.
         /// </summary>
-        internal static string ImportView_ImportKind {
+        public static string ImportView_ImportKind {
             get {
                 return ResourceManager.GetString("ImportView_ImportKind", resourceCulture);
             }
@@ -1271,7 +1271,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
-        internal static string ImportView_Password {
+        public static string ImportView_Password {
             get {
                 return ResourceManager.GetString("ImportView_Password", resourceCulture);
             }
@@ -1280,7 +1280,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Import and save to this path:.
         /// </summary>
-        internal static string ImportView_SaveFile {
+        public static string ImportView_SaveFile {
             get {
                 return ResourceManager.GetString("ImportView_SaveFile", resourceCulture);
             }
@@ -1289,7 +1289,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Import Configuration.
         /// </summary>
-        internal static string ImportView_Title {
+        public static string ImportView_Title {
             get {
                 return ResourceManager.GetString("ImportView_Title", resourceCulture);
             }
@@ -1298,7 +1298,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Path to the YNAB Budget CSV:.
         /// </summary>
-        internal static string ImportView_YNAB4_Budget {
+        public static string ImportView_YNAB4_Budget {
             get {
                 return ResourceManager.GetString("ImportView_YNAB4_Budget", resourceCulture);
             }
@@ -1307,7 +1307,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Path to the YNAB Transaction CSV:.
         /// </summary>
-        internal static string ImportView_YNAB4_Transaction {
+        public static string ImportView_YNAB4_Transaction {
             get {
                 return ResourceManager.GetString("ImportView_YNAB4_Transaction", resourceCulture);
             }
@@ -1316,7 +1316,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Convert to.
         /// </summary>
-        internal static string Label_ConvertTo {
+        public static string Label_ConvertTo {
             get {
                 return ResourceManager.GetString("Label_ConvertTo", resourceCulture);
             }
@@ -1325,7 +1325,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
-        internal static string MainWindow_About {
+        public static string MainWindow_About {
             get {
                 return ResourceManager.GetString("MainWindow_About", resourceCulture);
             }
@@ -1336,7 +1336,7 @@ namespace BFF.View.Properties {
         ///In order to create, open or import a project
         ///open the File-menu in the upper left corner..
         /// </summary>
-        internal static string MainWindow_Empty {
+        public static string MainWindow_Empty {
             get {
                 return ResourceManager.GetString("MainWindow_Empty", resourceCulture);
             }
@@ -1345,7 +1345,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to File.
         /// </summary>
-        internal static string MainWindow_File {
+        public static string MainWindow_File {
             get {
                 return ResourceManager.GetString("MainWindow_File", resourceCulture);
             }
@@ -1354,7 +1354,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
-        internal static string MainWindow_File_Close {
+        public static string MainWindow_File_Close {
             get {
                 return ResourceManager.GetString("MainWindow_File_Close", resourceCulture);
             }
@@ -1363,7 +1363,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
-        internal static string MainWindow_File_Import {
+        public static string MainWindow_File_Import {
             get {
                 return ResourceManager.GetString("MainWindow_File_Import", resourceCulture);
             }
@@ -1372,7 +1372,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
-        internal static string MainWindow_File_New {
+        public static string MainWindow_File_New {
             get {
                 return ResourceManager.GetString("MainWindow_File_New", resourceCulture);
             }
@@ -1381,7 +1381,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Open.
         /// </summary>
-        internal static string MainWindow_File_Open {
+        public static string MainWindow_File_Open {
             get {
                 return ResourceManager.GetString("MainWindow_File_Open", resourceCulture);
             }
@@ -1390,7 +1390,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
-        internal static string MainWindow_Settings {
+        public static string MainWindow_Settings {
             get {
                 return ResourceManager.GetString("MainWindow_Settings", resourceCulture);
             }
@@ -1399,7 +1399,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Name of new category.
         /// </summary>
-        internal static string NameOfNewCategory {
+        public static string NameOfNewCategory {
             get {
                 return ResourceManager.GetString("NameOfNewCategory", resourceCulture);
             }
@@ -1408,7 +1408,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Name of new flag.
         /// </summary>
-        internal static string NameOfNewFlag {
+        public static string NameOfNewFlag {
             get {
                 return ResourceManager.GetString("NameOfNewFlag", resourceCulture);
             }
@@ -1417,7 +1417,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Name of new payee.
         /// </summary>
-        internal static string NameOfNewPayee {
+        public static string NameOfNewPayee {
             get {
                 return ResourceManager.GetString("NameOfNewPayee", resourceCulture);
             }
@@ -1427,7 +1427,7 @@ namespace BFF.View.Properties {
         ///   Looks up a localized string similar to If checked, then an income category is created.
         ///Only transactions assigned to such a category are interpreted as income..
         /// </summary>
-        internal static string NewCategory_IncomeRelevantExplanation {
+        public static string NewCategory_IncomeRelevantExplanation {
             get {
                 return ResourceManager.GetString("NewCategory_IncomeRelevantExplanation", resourceCulture);
             }
@@ -1436,7 +1436,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Income Relevant?.
         /// </summary>
-        internal static string NewCategory_IsIncomeRelevant {
+        public static string NewCategory_IsIncomeRelevant {
             get {
                 return ResourceManager.GetString("NewCategory_IsIncomeRelevant", resourceCulture);
             }
@@ -1445,7 +1445,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Month Offset.
         /// </summary>
-        internal static string NewCategory_MonthOffset {
+        public static string NewCategory_MonthOffset {
             get {
                 return ResourceManager.GetString("NewCategory_MonthOffset", resourceCulture);
             }
@@ -1454,7 +1454,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to BFF budget plan (*.realm)|*.realm|BFF budget plan (*.bffs,*.sqlite)|*bffs;*.sqlite.
         /// </summary>
-        internal static string OpenSaveDialog_Filter {
+        public static string OpenSaveDialog_Filter {
             get {
                 return ResourceManager.GetString("OpenSaveDialog_Filter", resourceCulture);
             }
@@ -1463,7 +1463,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Create a new Budget Plan.
         /// </summary>
-        internal static string OpenSaveDialog_TitleNew {
+        public static string OpenSaveDialog_TitleNew {
             get {
                 return ResourceManager.GetString("OpenSaveDialog_TitleNew", resourceCulture);
             }
@@ -1472,7 +1472,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Open a Budget Plan.
         /// </summary>
-        internal static string OpenSaveDialog_TitleOpen {
+        public static string OpenSaveDialog_TitleOpen {
             get {
                 return ResourceManager.GetString("OpenSaveDialog_TitleOpen", resourceCulture);
             }
@@ -1481,7 +1481,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Current Sum.
         /// </summary>
-        internal static string ParentTransEditingView_CurrentSum {
+        public static string ParentTransEditingView_CurrentSum {
             get {
                 return ResourceManager.GetString("ParentTransEditingView_CurrentSum", resourceCulture);
             }
@@ -1490,7 +1490,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Intermediate sum.
         /// </summary>
-        internal static string ParentTransEditingView_IntermediateSum {
+        public static string ParentTransEditingView_IntermediateSum {
             get {
                 return ResourceManager.GetString("ParentTransEditingView_IntermediateSum", resourceCulture);
             }
@@ -1499,7 +1499,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Missing Sum.
         /// </summary>
-        internal static string ParentTransEditingView_MissingSumWithoutSubs {
+        public static string ParentTransEditingView_MissingSumWithoutSubs {
             get {
                 return ResourceManager.GetString("ParentTransEditingView_MissingSumWithoutSubs", resourceCulture);
             }
@@ -1508,7 +1508,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Missing Sum exlusively unsubmitted entries.
         /// </summary>
-        internal static string ParentTransEditingView_MissingSumWithSubs {
+        public static string ParentTransEditingView_MissingSumWithSubs {
             get {
                 return ResourceManager.GetString("ParentTransEditingView_MissingSumWithSubs", resourceCulture);
             }
@@ -1517,7 +1517,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Create new Payee.
         /// </summary>
-        internal static string Payee_CreateNew {
+        public static string Payee_CreateNew {
             get {
                 return ResourceManager.GetString("Payee_CreateNew", resourceCulture);
             }
@@ -1526,7 +1526,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Edit Payees.
         /// </summary>
-        internal static string Payee_Edit {
+        public static string Payee_Edit {
             get {
                 return ResourceManager.GetString("Payee_Edit", resourceCulture);
             }
@@ -1535,7 +1535,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Save new budget plan to:.
         /// </summary>
-        internal static string SaveNewBudgetPlanTo {
+        public static string SaveNewBudgetPlanTo {
             get {
                 return ResourceManager.GetString("SaveNewBudgetPlanTo", resourceCulture);
             }
@@ -1544,7 +1544,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Accents.
         /// </summary>
-        internal static string Settings_Accents {
+        public static string Settings_Accents {
             get {
                 return ResourceManager.GetString("Settings_Accents", resourceCulture);
             }
@@ -1553,7 +1553,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Always hide column headers of the editing table.
         /// </summary>
-        internal static string Settings_AlwaysHideEditHeaders {
+        public static string Settings_AlwaysHideEditHeaders {
             get {
                 return ResourceManager.GetString("Settings_AlwaysHideEditHeaders", resourceCulture);
             }
@@ -1562,7 +1562,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Currency format.
         /// </summary>
-        internal static string Settings_Currency {
+        public static string Settings_Currency {
             get {
                 return ResourceManager.GetString("Settings_Currency", resourceCulture);
             }
@@ -1571,7 +1571,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Date format.
         /// </summary>
-        internal static string Settings_Date {
+        public static string Settings_Date {
             get {
                 return ResourceManager.GetString("Settings_Date", resourceCulture);
             }
@@ -1580,7 +1580,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
-        internal static string Settings_Language {
+        public static string Settings_Language {
             get {
                 return ResourceManager.GetString("Settings_Language", resourceCulture);
             }
@@ -1589,7 +1589,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Show Check Numbers.
         /// </summary>
-        internal static string Settings_ShowCheckNumbers {
+        public static string Settings_ShowCheckNumbers {
             get {
                 return ResourceManager.GetString("Settings_ShowCheckNumbers", resourceCulture);
             }
@@ -1598,7 +1598,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Show Flags.
         /// </summary>
-        internal static string Settings_ShowFlags {
+        public static string Settings_ShowFlags {
             get {
                 return ResourceManager.GetString("Settings_ShowFlags", resourceCulture);
             }
@@ -1607,7 +1607,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Theme.
         /// </summary>
-        internal static string Settings_Theme {
+        public static string Settings_Theme {
             get {
                 return ResourceManager.GetString("Settings_Theme", resourceCulture);
             }
@@ -1616,7 +1616,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Superior Category.
         /// </summary>
-        internal static string SuperiorCategory {
+        public static string SuperiorCategory {
             get {
                 return ResourceManager.GetString("SuperiorCategory", resourceCulture);
             }
@@ -1626,7 +1626,7 @@ namespace BFF.View.Properties {
         ///   Looks up a localized string similar to The overall balance including entries with a date in future.
         ///See tooltip for better distinction..
         /// </summary>
-        internal static string ToolTip_Account_Balance {
+        public static string ToolTip_Account_Balance {
             get {
                 return ResourceManager.GetString("ToolTip_Account_Balance", resourceCulture);
             }
@@ -1635,7 +1635,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The intermediate balance includes the entries which have to be saved yet..
         /// </summary>
-        internal static string ToolTip_Account_IntermediateBalance {
+        public static string ToolTip_Account_IntermediateBalance {
             get {
                 return ResourceManager.GetString("ToolTip_Account_IntermediateBalance", resourceCulture);
             }
@@ -1644,7 +1644,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The difference of the target balance and the intermediate balance..
         /// </summary>
-        internal static string ToolTip_Account_MissingSum {
+        public static string ToolTip_Account_MissingSum {
             get {
                 return ResourceManager.GetString("ToolTip_Account_MissingSum", resourceCulture);
             }
@@ -1653,7 +1653,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Setting the target balance enables the automatic calculation of the missing sum..
         /// </summary>
-        internal static string ToolTip_Account_SetTargetBalance {
+        public static string ToolTip_Account_SetTargetBalance {
             get {
                 return ResourceManager.GetString("ToolTip_Account_SetTargetBalance", resourceCulture);
             }
@@ -1662,7 +1662,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The balance of the account on the setup starting date..
         /// </summary>
-        internal static string ToolTip_Account_StartingBalance {
+        public static string ToolTip_Account_StartingBalance {
             get {
                 return ResourceManager.GetString("ToolTip_Account_StartingBalance", resourceCulture);
             }
@@ -1671,7 +1671,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to If the aggregation is switched on, then the categories will add the values of their subcategories on top of their own..
         /// </summary>
-        internal static string ToolTip_BudgetOverview_Aggregates {
+        public static string ToolTip_BudgetOverview_Aggregates {
             get {
                 return ResourceManager.GetString("ToolTip_BudgetOverview_Aggregates", resourceCulture);
             }
@@ -1680,7 +1680,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Use this date picker to jump to an arbitrary month (day is irrelevant)..
         /// </summary>
-        internal static string ToolTip_BudgetOverview_JumpToMonth {
+        public static string ToolTip_BudgetOverview_JumpToMonth {
             get {
                 return ResourceManager.GetString("ToolTip_BudgetOverview_JumpToMonth", resourceCulture);
             }
@@ -1689,7 +1689,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Shift one month backward.
         /// </summary>
-        internal static string ToolTip_BudgetOverview_ShiftMonthBackward {
+        public static string ToolTip_BudgetOverview_ShiftMonthBackward {
             get {
                 return ResourceManager.GetString("ToolTip_BudgetOverview_ShiftMonthBackward", resourceCulture);
             }
@@ -1698,7 +1698,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Shift one month forward.
         /// </summary>
-        internal static string ToolTip_BudgetOverview_ShiftMonthForward {
+        public static string ToolTip_BudgetOverview_ShiftMonthForward {
             get {
                 return ResourceManager.GetString("ToolTip_BudgetOverview_ShiftMonthForward", resourceCulture);
             }
@@ -1708,7 +1708,7 @@ namespace BFF.View.Properties {
         ///   Looks up a localized string similar to The month offset  shifts on which month the income is active.
         ///For example a month offset one will shift the income to the next month, minus one to the previous..
         /// </summary>
-        internal static string ToolTip_Category_MonthOffset {
+        public static string ToolTip_Category_MonthOffset {
             get {
                 return ResourceManager.GetString("ToolTip_Category_MonthOffset", resourceCulture);
             }
@@ -1717,7 +1717,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to If a superior category is selected, then the new category will be appended as a subcategory..
         /// </summary>
-        internal static string ToolTip_Category_SuperiorCategory {
+        public static string ToolTip_Category_SuperiorCategory {
             get {
                 return ResourceManager.GetString("ToolTip_Category_SuperiorCategory", resourceCulture);
             }
@@ -1726,7 +1726,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Press the button in this column to delete the element of the corresponding row..
         /// </summary>
-        internal static string ToolTip_DeleteRow {
+        public static string ToolTip_DeleteRow {
             get {
                 return ResourceManager.GetString("ToolTip_DeleteRow", resourceCulture);
             }
@@ -1737,7 +1737,7 @@ namespace BFF.View.Properties {
         ///The target category will get assigned to all account entries of the source category and inherit all the subcategories.
         ///If a pair of the subcategories has the same name, then the subcategory of the  source category is automatically renamed (number is appended)..
         /// </summary>
-        internal static string ToolTip_MergeToCategory {
+        public static string ToolTip_MergeToCategory {
             get {
                 return ResourceManager.GetString("ToolTip_MergeToCategory", resourceCulture);
             }
@@ -1747,7 +1747,7 @@ namespace BFF.View.Properties {
         ///   Looks up a localized string similar to In order to merge one flag to another, drag the merge icon from this column in the source row and drop it on the target row.
         ///The target flag  will get assigned to all account entries of the source flag and keep its color..
         /// </summary>
-        internal static string ToolTip_MergeToFlag {
+        public static string ToolTip_MergeToFlag {
             get {
                 return ResourceManager.GetString("ToolTip_MergeToFlag", resourceCulture);
             }
@@ -1757,7 +1757,7 @@ namespace BFF.View.Properties {
         ///   Looks up a localized string similar to In order to merge one income category to another, drag the merge icon from this column in the source row and drop it on the target row.
         ///The target income category will get assigned to all account entries of the source income category and keep its month offset..
         /// </summary>
-        internal static string ToolTip_MergeToIncomeCategory {
+        public static string ToolTip_MergeToIncomeCategory {
             get {
                 return ResourceManager.GetString("ToolTip_MergeToIncomeCategory", resourceCulture);
             }
@@ -1767,7 +1767,7 @@ namespace BFF.View.Properties {
         ///   Looks up a localized string similar to In order to merge one payee to another, drag the merge icon from this column in the source row and drop it on the target row.
         ///The target payee will get assigned to all account entries of the source payee..
         /// </summary>
-        internal static string ToolTip_MergeToPayee {
+        public static string ToolTip_MergeToPayee {
             get {
                 return ResourceManager.GetString("ToolTip_MergeToPayee", resourceCulture);
             }
@@ -1776,7 +1776,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Source-Account.
         /// </summary>
-        internal static string ToolTip_Symbol_FromAccount {
+        public static string ToolTip_Symbol_FromAccount {
             get {
                 return ResourceManager.GetString("ToolTip_Symbol_FromAccount", resourceCulture);
             }
@@ -1785,7 +1785,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Income-Category.
         /// </summary>
-        internal static string ToolTip_Symbol_IncomeCategory {
+        public static string ToolTip_Symbol_IncomeCategory {
             get {
                 return ResourceManager.GetString("ToolTip_Symbol_IncomeCategory", resourceCulture);
             }
@@ -1794,7 +1794,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Income-Transaction.
         /// </summary>
-        internal static string ToolTip_Symbol_IncomeTransaction {
+        public static string ToolTip_Symbol_IncomeTransaction {
             get {
                 return ResourceManager.GetString("ToolTip_Symbol_IncomeTransaction", resourceCulture);
             }
@@ -1803,7 +1803,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Click in order to see and edit the subtransactions..
         /// </summary>
-        internal static string ToolTip_Symbol_SplitTransaction {
+        public static string ToolTip_Symbol_SplitTransaction {
             get {
                 return ResourceManager.GetString("ToolTip_Symbol_SplitTransaction", resourceCulture);
             }
@@ -1812,7 +1812,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Target-Account.
         /// </summary>
-        internal static string ToolTip_Symbol_ToAccount {
+        public static string ToolTip_Symbol_ToAccount {
             get {
                 return ResourceManager.GetString("ToolTip_Symbol_ToAccount", resourceCulture);
             }
@@ -1821,7 +1821,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Transaction.
         /// </summary>
-        internal static string ToolTip_Symbol_Transaction {
+        public static string ToolTip_Symbol_Transaction {
             get {
                 return ResourceManager.GetString("ToolTip_Symbol_Transaction", resourceCulture);
             }
@@ -1830,7 +1830,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Transfer.
         /// </summary>
-        internal static string ToolTip_Symbol_Transfer {
+        public static string ToolTip_Symbol_Transfer {
             get {
                 return ResourceManager.GetString("ToolTip_Symbol_Transfer", resourceCulture);
             }
@@ -1839,7 +1839,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The account which owns the entry..
         /// </summary>
-        internal static string ToolTip_TransGrid_Header_Account {
+        public static string ToolTip_TransGrid_Header_Account {
             get {
                 return ResourceManager.GetString("ToolTip_TransGrid_Header_Account", resourceCulture);
             }
@@ -1851,7 +1851,7 @@ namespace BFF.View.Properties {
         ///
         ///In case the entry is a transfer, the target-account is filled in here..
         /// </summary>
-        internal static string ToolTip_TransGrid_Header_Category {
+        public static string ToolTip_TransGrid_Header_Category {
             get {
                 return ResourceManager.GetString("ToolTip_TransGrid_Header_Category", resourceCulture);
             }
@@ -1860,7 +1860,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to If necessary the check number can be filled in here..
         /// </summary>
-        internal static string ToolTip_TransGrid_Header_CheckNumber {
+        public static string ToolTip_TransGrid_Header_CheckNumber {
             get {
                 return ResourceManager.GetString("ToolTip_TransGrid_Header_CheckNumber", resourceCulture);
             }
@@ -1870,7 +1870,7 @@ namespace BFF.View.Properties {
         ///   Looks up a localized string similar to This checkmark can be used in order to separate finished entries and entries which still require editing.
         ///The overall sums can be observed in separate manner in the tooltip of the balance..
         /// </summary>
-        internal static string ToolTip_TransGrid_Header_Cleared {
+        public static string ToolTip_TransGrid_Header_Cleared {
             get {
                 return ResourceManager.GetString("ToolTip_TransGrid_Header_Cleared", resourceCulture);
             }
@@ -1879,7 +1879,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The date on which the entry is active..
         /// </summary>
-        internal static string ToolTip_TransGrid_Header_Date {
+        public static string ToolTip_TransGrid_Header_Date {
             get {
                 return ResourceManager.GetString("ToolTip_TransGrid_Header_Date", resourceCulture);
             }
@@ -1888,7 +1888,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to A flag marks an entry visually by color and is completely optional..
         /// </summary>
-        internal static string ToolTip_TransGrid_Header_Flag {
+        public static string ToolTip_TransGrid_Header_Flag {
             get {
                 return ResourceManager.GetString("ToolTip_TransGrid_Header_Flag", resourceCulture);
             }
@@ -1897,7 +1897,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The memo is intended as an arbitrary description of the entry..
         /// </summary>
-        internal static string ToolTip_TransGrid_Header_Memo {
+        public static string ToolTip_TransGrid_Header_Memo {
             get {
                 return ResourceManager.GetString("ToolTip_TransGrid_Header_Memo", resourceCulture);
             }
@@ -1908,7 +1908,7 @@ namespace BFF.View.Properties {
         ///
         ///In case the entry is a transfer, the source-account is filled in here..
         /// </summary>
-        internal static string ToolTip_TransGrid_Header_Payee {
+        public static string ToolTip_TransGrid_Header_Payee {
             get {
                 return ResourceManager.GetString("ToolTip_TransGrid_Header_Payee", resourceCulture);
             }
@@ -1917,7 +1917,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The symbols indicate the type of the account entry..
         /// </summary>
-        internal static string ToolTip_TransGrid_Header_S {
+        public static string ToolTip_TransGrid_Header_S {
             get {
                 return ResourceManager.GetString("ToolTip_TransGrid_Header_S", resourceCulture);
             }
@@ -1926,7 +1926,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to An income entry marks a transaction which is considered as income..
         /// </summary>
-        internal static string ToolTip_TransGrid_Header_S_Income {
+        public static string ToolTip_TransGrid_Header_S_Income {
             get {
                 return ResourceManager.GetString("ToolTip_TransGrid_Header_S_Income", resourceCulture);
             }
@@ -1935,7 +1935,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to A transaction lets money flow out of or into the account..
         /// </summary>
-        internal static string ToolTip_TransGrid_Header_S_Transaction {
+        public static string ToolTip_TransGrid_Header_S_Transaction {
             get {
                 return ResourceManager.GetString("ToolTip_TransGrid_Header_S_Transaction", resourceCulture);
             }
@@ -1944,7 +1944,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to A transfer passes money from one account to another..
         /// </summary>
-        internal static string ToolTip_TransGrid_Header_S_Transfer {
+        public static string ToolTip_TransGrid_Header_S_Transfer {
             get {
                 return ResourceManager.GetString("ToolTip_TransGrid_Header_S_Transfer", resourceCulture);
             }
@@ -1953,7 +1953,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The sum of the entry..
         /// </summary>
-        internal static string ToolTip_TransGrid_Header_Sum {
+        public static string ToolTip_TransGrid_Header_Sum {
             get {
                 return ResourceManager.GetString("ToolTip_TransGrid_Header_Sum", resourceCulture);
             }
@@ -1962,7 +1962,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to This text could not be parsed as a currency!.
         /// </summary>
-        internal static string ValidationRule_Currency {
+        public static string ValidationRule_Currency {
             get {
                 return ResourceManager.GetString("ValidationRule_Currency", resourceCulture);
             }
@@ -1971,7 +1971,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The value is out of range: [ {0} .. {1} ]!.
         /// </summary>
-        internal static string ValidationRule_CurrencyLongRange {
+        public static string ValidationRule_CurrencyLongRange {
             get {
                 return ResourceManager.GetString("ValidationRule_CurrencyLongRange", resourceCulture);
             }
@@ -1980,7 +1980,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to This input field may not be empty!.
         /// </summary>
-        internal static string ValidationRule_NoNull {
+        public static string ValidationRule_NoNull {
             get {
                 return ResourceManager.GetString("ValidationRule_NoNull", resourceCulture);
             }
@@ -1989,7 +1989,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to This file path does not exist!.
         /// </summary>
-        internal static string ValidationRule_NotExistingFilePath {
+        public static string ValidationRule_NotExistingFilePath {
             get {
                 return ResourceManager.GetString("ValidationRule_NotExistingFilePath", resourceCulture);
             }
@@ -1998,7 +1998,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The directory of the save path does not exist!.
         /// </summary>
-        internal static string ValidationRule_NotExistingSavePath {
+        public static string ValidationRule_NotExistingSavePath {
             get {
                 return ResourceManager.GetString("ValidationRule_NotExistingSavePath", resourceCulture);
             }
@@ -2007,7 +2007,7 @@ namespace BFF.View.Properties {
         /// <summary>
         ///   Looks up a localized string similar to The file name of this save path is empty!.
         /// </summary>
-        internal static string ValidationRule_NotExistingSavePath_EmptyName {
+        public static string ValidationRule_NotExistingSavePath_EmptyName {
             get {
                 return ResourceManager.GetString("ValidationRule_NotExistingSavePath_EmptyName", resourceCulture);
             }

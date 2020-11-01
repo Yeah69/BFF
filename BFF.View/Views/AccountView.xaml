@@ -172,7 +172,7 @@
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                 Height="{StaticResource IconSize}"
                                                 Margin="2.5"
-                                                Foreground="{DynamicResource BlackColorBrush}"
+                                                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                 Kind="InformationOutline" />
                 </Grid>
             </Grid>

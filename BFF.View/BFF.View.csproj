@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
         <UseWPF>true</UseWPF>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -62,7 +62,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\WPFLocalizationExtension\src\WPFLocalizeExtension.csproj" />
       <ProjectReference Include="..\BFF.Core\BFF.Core.csproj" />
       <ProjectReference Include="..\BFF.Persistence.Proxy\BFF.Persistence.Proxy.csproj" />
       <ProjectReference Include="..\BFF.ViewModel\BFF.ViewModel.csproj" />
@@ -70,43 +69,20 @@
 
     <ItemGroup>
       <EmbeddedResource Update="Properties\Texts.resx">
-        <Generator>ResxLocalizationProvider</Generator>
+        <Generator>ResXFileCodeGenerator</Generator>
       </EmbeddedResource>
-      <EmbeddedResource Update="Properties\Texts.de-DE.resx">
-        <Generator>ResxLocalizationProvider</Generator>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Properties\Texts.en-US.resx">
-        <Generator>ResxLocalizationProvider</Generator>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Properties\Texts.hu-HU.resx">
-        <Generator>ResxLocalizationProvider</Generator>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Properties\Texts.ru-RU.resx">
-        <Generator>ResxLocalizationProvider</Generator>
-      </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Properties\Texts.ru-RU.Designer.cs">
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Texts.ru-RU.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
-      </Compile>
-      <Compile Update="Properties\Texts.hu-HU.Designer.cs">
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Texts.hu-HU.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
-      </Compile>
-      <Compile Update="Properties\Texts.en-US.Designer.cs">
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Texts.en-US.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
-      </Compile>
-      <Compile Update="Properties\Texts.de-DE.Designer.cs">
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Texts.de-DE.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
-      </Compile>
+      <EmbeddedResource Update="Properties\Texts.de-DE.resx" />
+      <EmbeddedResource Update="Properties\Texts.en-US.resx" />
+      <EmbeddedResource Update="Properties\Texts.hu-HU.resx" />
+      <EmbeddedResource Update="Properties\Texts.ru-RU.resx" />
+      <EmbeddedResource Update="Properties\Texts.es-ES.resx" />
+      <EmbeddedResource Update="Properties\Texts.fr-FR.resx" />
+      <EmbeddedResource Update="Properties\Texts.it-IT.resx" />
+      <EmbeddedResource Update="Properties\Texts.ja.resx" />
+      <EmbeddedResource Update="Properties\Texts.nl-NL.resx" />
+      <EmbeddedResource Update="Properties\Texts.pl-PL.resx" />
+      <EmbeddedResource Update="Properties\Texts.pt-PT.resx" />
+      <EmbeddedResource Update="Properties\Texts.zh.resx" />
     </ItemGroup>
 
 </Project>

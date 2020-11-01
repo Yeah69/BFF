@@ -30,7 +30,7 @@
                 Click="AddButton_OnClick"
                 Command="{Binding AddPayeeCommand}"
                 ToolTip="{lex:Loc CreateNewPayee}">
-            <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
+            <iconPacks:PackIconMaterial Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                         Kind="{StaticResource AddIcon}"
                                         Style="{StaticResource CellIconMaterial}" />
         </Button>

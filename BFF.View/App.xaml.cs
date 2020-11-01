@@ -28,6 +28,14 @@ namespace BFF.View
                     System.Globalization.CultureInfo.GetCultureInfo("en-US"),
                     System.Globalization.CultureInfo.GetCultureInfo("hu-HU"),
                     System.Globalization.CultureInfo.GetCultureInfo("ru-RU"),
+                    System.Globalization.CultureInfo.GetCultureInfo("es-ES"),
+                    System.Globalization.CultureInfo.GetCultureInfo("fr-FR"),
+                    System.Globalization.CultureInfo.GetCultureInfo("it-IT"),
+                    System.Globalization.CultureInfo.GetCultureInfo("ja"),
+                    System.Globalization.CultureInfo.GetCultureInfo("nl-NL"),
+                    System.Globalization.CultureInfo.GetCultureInfo("pl-PL"),
+                    System.Globalization.CultureInfo.GetCultureInfo("pt-PT"),
+                    System.Globalization.CultureInfo.GetCultureInfo("zh"),
                 };
         }
 
@@ -54,23 +62,20 @@ namespace BFF.View
         {
             void SetColorsDependingOnTheChosenTheme(Theme? theme)
             {
-                switch (theme?.Name)
+                switch (theme?.BaseColorScheme)
                 {
-                    case "BaseLight":
+                    case "Light":
                         Resources["AlternatingRowBrush"] = Resources["MahApps.Brushes.Gray8"];
                         Resources["OpaqueZeroBrush"] = Resources["MahApps.Brushes.Gray6"];
                         break;
-                    case "BaseDark":
+                    case "Dark":
                         Resources["AlternatingRowBrush"] = Resources["MahApps.Brushes.Gray8"];
                         Resources["OpaqueZeroBrush"] = Resources["MahApps.Brushes.Gray9"];
                         break;
                 }
             }
 
-            void ThemeManagerOnIsThemeChanged(object? s, ThemeChangedEventArgs args)
-            {
-                SetColorsDependingOnTheChosenTheme(args.NewTheme);
-            }
+            void ThemeManagerOnIsThemeChanged(object? s, ThemeChangedEventArgs args) => SetColorsDependingOnTheChosenTheme(args.NewTheme);
 
             ThemeManager.Current.ThemeChanged += ThemeManagerOnIsThemeChanged;
 

@@ -1,0 +1,790 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>すべてのアカウント</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>作成</value>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>ターゲティングバランスの中止</value>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>すべての</value>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>クリア</value>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>現在の</value>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>合計</value>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>穢れのない</value>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>転送</value>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>除去</value>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>最初のアカウントエントリを作成します。</value>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>アカウント</value>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>カテゴリー</value>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>チェック番号</value>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>クリア</value>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>日付</value>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>F</value>
+    <comment>Abbreviation of Flag or Markierung (German)</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>メモ</value>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>受取人</value>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>和</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>シンボル</value>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>中間バランス</value>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>欠落している合計</value>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>目標バランスの設定</value>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>目標残高</value>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>現在編集中の要素をアカウントに持続させる</value>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>新しいスプリット トランザクションを作成します。</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>新しいトランザクションを作成します。</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>新しい転送を作成します。</value>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>バランス</value>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>新規アカウントの作成</value>
+  </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>これにより、アカウントとその取引がすべて削除され、両面振込が片面振込になり、予算編成におけるアカウント固有の流出が消滅します。
+
+本当に大丈夫ですか？(後からデータを巻き戻したい場合は、自動的にバックアップが作成されます)</value>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>アカウントの編集</value>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>口座名</value>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>スタートバランス</value>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>開始日</value>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>利用可能</value>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>今月中に利用できるが、まだどのカテゴリーにも割り当てられていない金額。</value>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>バランス</value>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>予算</value>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>今月のカテゴリーに予算を計上した金額の合計。</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>過去3ヶ月間の平均流出額</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>過去1年間の平均流出額</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>バランスをゼロに</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>先月の予算値</value>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>先月の流出</value>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>ゼロ</value>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>収入</value>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>今月の経費として割り振られた稼ぎの金額。</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>すべての予算のセルを埋めます。</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>空の予算セルをすべて埋めます。</value>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>予算外</value>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>先月利用可能だったが、どのカテゴリーにも割り当てられていない金額。</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>片面転送</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>片面譲渡は、アカウントの削除後に発生することがあります。それらは予算に対して中立ではないので、考慮しなければなりません。</value>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>流出量</value>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>予算オーバー</value>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>先月の全カテゴリーを満たすために不足していた金額。</value>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>今月の全カテゴリーを満たすために不足している金額。</value>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>オーバースペンド</value>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>先月の全カテゴリーからの使いすぎた金額の合計。</value>
+  </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>アグリゲートを表示</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>割り当てられていない</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>カテゴリーが割り当てられていないすべての取引の合計。</value>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>新しいカテゴリを作成する</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>カラー</value>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>構成</value>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>エントリー</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>カテゴリ「{0}」は削除してもいいのでしょうか？</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>カテゴリ「{0}」がカテゴリ「{1}」にマージされてもいいの？</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>フラグ「{0}」は削除されてもいいのでしょうか？</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>フラグ「{0}」がフラグ「{1}」にマージされてもいいの？</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>所得区分「{0}」は削除しても良いのでしょうか？</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>所得区分「{0}」が所得区分「{1}」に合併されてもいいのか？</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>振込先「{0}」は削除した方がいいのでしょうか？</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>受給者「{0}」が受給者「{1}」に合併されてもいいのか？</value>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>本当ですか？</value>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>新しいカテゴリを作成する</value>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>新しいフラグの作成</value>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>新しい受取人を作成する</value>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>エントリの作成中にエラーが発生しました。設定を確認してください。</value>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>銀行の明細書</value>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>カテゴリー</value>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>国旗</value>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>収入の種類</value>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>オープンバンクステートメント</value>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>受取人</value>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>新しいカテゴリの名前を空にすることはできません!</value>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>アカウントを選択する必要があります。</value>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>カテゴリーを選択する必要があります。</value>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>ソースアカウントを選択する必要があります。</value>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>受給者を選ばなければならない。</value>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>ターゲットアカウントを選択する必要があります。</value>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>新しいアカウントの名前を空にしたり、既存のアカウントの名前と一致させたりすることはできません。</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>この名前は、選択したカテゴリレベルにすでに存在しています!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>このカテゴリレベルには、すでに選ばれた名前のカテゴリが含まれています</value>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>新しいフラグの名前を空にしたり、既存のフラグを使用したりすることはできません。</value>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>新しい受取人の名前を空にしたり、既存の受取人にしたりすることはできません。</value>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>エントリーを挿入する前にアカウントを選択する必要があります。</value>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>ファイル"{0}"が見つかりませんでした。</value>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>新しい旗の作成</value>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>フラグの編集</value>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>日付形式</value>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>デリミタ</value>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>ファイルパス</value>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>ヘッダー</value>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>ロング</value>
+  </data>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>メモ形式</value>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>ネガティブ</value>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>既存の支払い先がない場合、新しい支払い先を作成しますか？</value>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>承知しました</value>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>受取人の形式</value>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>ポジティブ</value>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>プロフィール</value>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>プロフィールの削除</value>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>プロファイルのリセット</value>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>新しいプロファイルを保存</value>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>プロフィールの保存</value>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>ショート</value>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>和算フォーマット</value>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>割り当てられていない</value>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>噫</value>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>アカウント</value>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>予算</value>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>閲覧</value>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>エクスポートターゲット</value>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>輸入</value>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>インポートソース</value>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>パスワード</value>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>このパスにインポートして保存します。</value>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>インポート設定</value>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>YNAB予算CSVへのパス。</value>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>YNABトランザクションCSVへのパス。</value>
+  </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>に変換します。</value>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>について</value>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>予算プロジェクトはまだ読み込まれていません。
+プロジェクトを作成、オープン、インポートするには
+左上のファイルメニューを開きます。</value>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>クローズ</value>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>輸入</value>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>新しい</value>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>開く</value>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>新カテゴリ名</value>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>新旗の名称</value>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>新しい受取人の名前</value>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>チェックを入れると、収入カテゴリーが作成されます。
+そのようなカテゴリに割り当てられたトランザクションのみが収入として解釈されます。</value>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>収入が関係しているのか？</value>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>月のオフセット</value>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>BFF予算案(*.realm)|*.realm|BFF予算案(*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>新しい予算プランを作成する</value>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>予算プランを開く</value>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>現在の合計</value>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>中間和</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>ミッシングサムエクスクルーシブ未提出作品</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>ミッシングサム</value>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>新規受取人の作成</value>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>支払い人の編集</value>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>新しい予算計画を保存します。</value>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>アクセント</value>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>編集テーブルのカラムヘッダを常に非表示にする</value>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>通貨形式</value>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>日付形式</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>言語</value>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>チェック番号の表示</value>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>国旗の表示</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>テーマ</value>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>スーペリアカテゴリー</value>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>将来の日付を持つエントリを含む全体の残高。
+より良い区別のためにツールチップを参照してください。</value>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>中間残高には、まだ保存しなければならない項目が含まれています。</value>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>目標バランスと中間バランスの差。</value>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>目標残高を設定することで、不足分を自動計算できるようになります。</value>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>設定開始日の口座の残高です。</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>アグリゲーションがオンになっている場合、カテゴリは自分のサブカテゴリの値を上に追加します。</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>この日付ピッカーを使って、任意の月にジャンプします（日は関係ありません）。</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>1ヶ月後ろにシフト</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>1ヶ月前倒しシフト</value>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>月のオフセットは、収入がアクティブな月にシフトします。
+例えば、月のオフセット1は次の月に収入をシフトし、前の月にマイナス1となります。</value>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>上位カテゴリが選択されている場合は、新しいカテゴリがサブカテゴリとして追加されます。</value>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>この列のボタンを押すと、対応する行の要素が削除されます。</value>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>あるカテゴリを別のカテゴリにマージするには、ソース行のこの列からマージアイコンをドラッグして、ターゲット行にドロップします。
+ターゲット・カテゴリは、ソース・カテゴリのすべてのアカウント・エントリーに割り当てられ、すべてのサブカテゴリを継承します。
+サブカテゴリのペアが同じ名前を持つ場合、ソースカテゴリのサブカテゴリは自動的に名前が変更されます（番号が付加されます）。</value>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>あるフラグを別のフラグにマージするには、ソース行のこの列からマージアイコンをドラッグして、ターゲット行にドロップします。
+ターゲット・フラグは、ソース・フラグのすべてのアカウント・エントリに割り当てられ、その色が維持されます。</value>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>ある収入カテゴリーを別の収入カテゴリーにマージするには、ソース行のこの列からマージアイコンをドラッグして、ターゲット行にドロップします。
+ターゲットの収入カテゴリーは、ソースの収入カテゴリーのすべての口座に割り当てられ、その月のオフセットが維持されます。</value>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>ある受取人を別の受取人にマージするには、ソース行のこの列からマージアイコンをドラッグして、ターゲット行にドロップします。
+ターゲット・ペイニーは、ソース・ペイニーのすべてのアカウント・エントリーに割り当てられます。</value>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>ソースアカウント</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>収入の種類</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>インカムトランザクション</value>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>クリックすると、サブトランザクションが表示され、編集することができます。</value>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>対象アカウント</value>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>トランザクション</value>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>転送</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>エントリを所有するアカウント。</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
+    <value>カテゴリは、このエントリのあなたの個人的な目的を決定します。
+彼らは多分階層化されているので、全体の階層パスはツールチップに表示されます。
+
+エントリーが振込の場合は、ここに対象口座を記入します。</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>必要に応じて、ここにチェック番号を記入することができます。</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>このチェックマークは、完成した項目とまだ編集が必要な項目を分けるために使用することができます。
+全体の合計は、残高のツールチップで別の方法で観察することができます。</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>エントリがアクティブになっている日付。</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>フラグは、色で視覚的にエントリーをマークするもので、完全に任意です。</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>このメモは、エントリの任意の記述を意図したものです。</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>ここには、このエントリーの有償または有償の方が記入されています。
+
+振込の場合は、ここに振込元口座を記入します。</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>記号は、アカウントエントリの種類を示しています。</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>収入エントリは、収入とみなされる取引をマークします。</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>取引では、お金が口座から出て行ったり、口座に入ったりすることができます。</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>転送は、1つのアカウントから別のアカウントにお金を渡します。</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>エントリーの合計。</value>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>このテキストは通貨として解析できませんでした。</value>
+    <comment>Validation message saying that the text is not validly formated as currency.</comment>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>値が範囲外です。[ {0} .. {1} ]!</value>
+    <comment>Validation message, which tells the long range as currency to the user.</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>この入力フィールドは空ではないかもしれません!</value>
+    <comment>Validation message saying that the property is not allowed to be empty.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>このファイルパスは存在しません。</value>
+    <comment>Validation message saying that file path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>保存パスのディレクトリが存在しません!</value>
+    <comment>Validation message saying that directory of the save path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>この保存パスのファイル名が空です!</value>
+    <comment>Validation message saying that the file name of the save path is empty.</comment>
+  </data>
+</root>

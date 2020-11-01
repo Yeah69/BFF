@@ -87,12 +87,12 @@
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                         Height="{StaticResource IconSize}"
                                                                         Margin="5,0,0,0"
-                                                                        Foreground="{DynamicResource BlackColorBrush}"
+                                                                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                         Kind="ChevronDoubleRight" />
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                         Height="{StaticResource IconSize}"
                                                                         Margin="5,0,0,0"
-                                                                        Foreground="{DynamicResource BlackColorBrush}"
+                                                                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                         Kind="{StaticResource ParentIcon}" />
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                         Height="{StaticResource IconSize}"
@@ -141,7 +141,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                         Height="{StaticResource IconSize}"
-                                                                        Foreground="{DynamicResource BlackColorBrush}"
+                                                                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                         Kind="{StaticResource ParentIcon}" />
                                             <iconPacks:PackIconMaterial Margin="5,0,0,0"
                                                                         Foreground="{DynamicResource TransactionBrush}"
@@ -150,7 +150,7 @@
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                         Height="{StaticResource IconSize}"
                                                                         Margin="5,0,0,0"
-                                                                        Foreground="{DynamicResource BlackColorBrush}"
+                                                                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                         Kind="ChevronDoubleRight" />
                                             <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                         Height="{StaticResource IconSize}"
@@ -218,12 +218,12 @@
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
                                                                             Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                             Kind="ChevronDoubleRight" />
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
                                                                             Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                             Kind="{StaticResource ParentIcon}" />
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
@@ -256,7 +256,7 @@
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
                                                                             Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                             Kind="ChevronDoubleRight" />
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
@@ -306,7 +306,7 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                             Kind="{StaticResource ParentIcon}" />
                                                 <iconPacks:PackIconMaterial Margin="5,0,0,0"
                                                                             Foreground="{DynamicResource TransactionBrush}"
@@ -315,7 +315,7 @@
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
                                                                             Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                             Kind="ChevronDoubleRight" />
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
@@ -331,7 +331,7 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                             Kind="{StaticResource ParentIcon}" />
                                                 <iconPacks:PackIconMaterial Margin="5,0,0,0"
                                                                             Foreground="{DynamicResource TransactionBrush}"
@@ -340,7 +340,7 @@
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
                                                                             Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                             Kind="ChevronDoubleRight" />
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
@@ -381,7 +381,7 @@
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
                                                                             Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                             Kind="ChevronDoubleRight" />
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
@@ -401,12 +401,12 @@
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
                                                                             Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                             Kind="ChevronDoubleRight" />
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
                                                                             Margin="5,0,0,0"
-                                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                                             Kind="{StaticResource ParentIcon}" />
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
@@ -602,7 +602,7 @@
                                 DockPanel.Dock="Right"
                                 TabIndex="1"
                                 ToolTip="{lex:Loc CreateNewFlag}">
-                            <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
+                            <iconPacks:PackIconMaterial Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                         Kind="{StaticResource AddIcon}"
                                                         Style="{StaticResource CellIconMaterial}" />
                         </Button>
@@ -782,7 +782,7 @@
                                 DockPanel.Dock="Right"
                                 TabIndex="1"
                                 ToolTip="{lex:Loc CreateNewPayee}">
-                            <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
+                            <iconPacks:PackIconMaterial Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                         Kind="{StaticResource AddIcon}"
                                                         Style="{StaticResource CellIconMaterial}" />
                         </Button>
@@ -1036,7 +1036,7 @@
                                 DockPanel.Dock="Right"
                                 TabIndex="1"
                                 ToolTip="{lex:Loc CreateNewCategory}">
-                            <iconPacks:PackIconMaterial Foreground="{DynamicResource BlackColorBrush}"
+                            <iconPacks:PackIconMaterial Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                         Kind="{StaticResource AddIcon}"
                                                         Style="{StaticResource CellIconMaterial}" />
                         </Button>

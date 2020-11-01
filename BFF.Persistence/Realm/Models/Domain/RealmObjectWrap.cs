@@ -52,7 +52,7 @@ namespace BFF.Persistence.Realm.Models.Domain
                 ? Task.CompletedTask 
                 : _crudOrm.UpdateAsync(RealmObject, UpdateRealmObject);
 
-            void UpdateRealmObject() => _updateRealmObject(RealmObject);
+            void UpdateRealmObject() => _updateRealmObject(RealmObject ?? throw new NullReferenceException("Shouldn't be null."));
         }
 
         public async Task DeleteAsync()

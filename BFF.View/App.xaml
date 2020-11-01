@@ -9,7 +9,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
-             xmlns:viewModleHelper="clr-namespace:BFF.ViewModel.Helper;assembly=BFF.ViewModel"
+             xmlns:viewModelHelper="clr-namespace:BFF.ViewModel.Helper;assembly=BFF.ViewModel"
              xmlns:views="clr-namespace:BFF.View.Views"
              Startup="Application_Startup"
              mc:Ignorable="d">
@@ -97,7 +97,7 @@
                                    TargetType="{x:Type ToggleButton}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding SumSign}"
-                                                 Value="{x:Static viewModleHelper:Sign.Plus}">
+                                                 Value="{x:Static viewModelHelper:Sign.Plus}">
                                         <Setter Property="Background" Value="{StaticResource IncomeBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>

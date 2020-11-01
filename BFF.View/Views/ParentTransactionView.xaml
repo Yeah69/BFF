@@ -174,7 +174,7 @@
                                     ToolTip="New Subelement">
                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                             Height="{StaticResource IconSize}"
-                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                             Kind="{StaticResource AddIcon}" />
                             </Button>
                             <Button HorizontalAlignment="Right"
@@ -183,7 +183,7 @@
                                     Visibility="{Binding IsInserted, Converter={x:Static helper:Converters.FalseToCollapsed}}">
                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                             Height="{StaticResource IconSize}"
-                                                            Foreground="{DynamicResource BlackColorBrush}"
+                                                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                             Kind="{StaticResource AddToTableIcon}" />
                             </Button>
                         </DockPanel>
