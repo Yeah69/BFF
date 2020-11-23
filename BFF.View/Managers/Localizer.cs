@@ -1,6 +1,6 @@
-﻿using BFF.Core.Helper;
-using BFF.Core.IoC;
+﻿using BFF.Core.IoC;
 using BFF.View.Extensions;
+using BFF.ViewModel.Helper;
 
 namespace BFF.View.Managers
 {

@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using BFF.Core.Helper;
+using BFF.ViewModel.Helper;
 using WPFLocalizeExtension.Engine;
 
 namespace BFF.View.Helper

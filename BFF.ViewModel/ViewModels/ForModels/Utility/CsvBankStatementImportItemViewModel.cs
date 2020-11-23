@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Disposables;
-using BFF.Core.Helper;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using MrMeeseeks.Reactive.Extensions;
@@ -77,8 +76,8 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
             Memo     = configuration.Memo;
             Sum      = new ReactivePropertySlim<long>(configuration.Sum ?? 0L, ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(_compositeDisposable);
             HasDate  = configuration.Date.HasValue;
-            HasPayee = configuration.Payee != null;
-            HasMemo  = configuration.Memo != null;
+            HasPayee = configuration.Payee is not null;
+            HasMemo  = configuration.Memo is not null;
             HasSum   = new ReactivePropertySlim<bool>(configuration.Sum.HasValue, ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(_compositeDisposable);
 
             SumEdit = createSumEdit(Sum).CompositeDisposalWith(_compositeDisposable);

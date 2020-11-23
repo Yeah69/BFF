@@ -122,12 +122,12 @@ namespace BFF.ViewModel.Managers
         {
             var transactionViewModel = _transactionViewModelFactory(transferViewModel.Owner);
 
-            if (transferViewModel.FromAccount != null)
+            if (transferViewModel.FromAccount is not null)
             {
                 transactionViewModel.Account   = transferViewModel.FromAccount;
                 transactionViewModel.Sum.Value = transferViewModel.SumAbsolute * -1L;
             }
-            else if (transferViewModel.ToAccount != null)
+            else if (transferViewModel.ToAccount is not null)
             {
                 transactionViewModel.Account   = transferViewModel.ToAccount;
                 transactionViewModel.Sum.Value = transferViewModel.SumAbsolute;
@@ -151,12 +151,12 @@ namespace BFF.ViewModel.Managers
             parentTransactionViewModel.NewSubTransactionCommand.Execute(null);
             var subTransactionViewModel = parentTransactionViewModel.NewSubTransactions.First();
 
-            if (transferViewModel.FromAccount != null)
+            if (transferViewModel.FromAccount is not null)
             {
                 parentTransactionViewModel.Account = transferViewModel.FromAccount;
                 subTransactionViewModel.Sum.Value = transferViewModel.SumAbsolute * -1L;
             }
-            else if (transferViewModel.ToAccount != null)
+            else if (transferViewModel.ToAccount is not null)
             {
                 parentTransactionViewModel.Account = transferViewModel.ToAccount;
                 subTransactionViewModel.Sum.Value = transferViewModel.SumAbsolute;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
-using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;

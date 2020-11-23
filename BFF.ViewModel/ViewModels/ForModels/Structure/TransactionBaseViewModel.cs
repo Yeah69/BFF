@@ -2,7 +2,9 @@
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
+using BFF.Model.Helper;
 using BFF.Model.Models.Structure;
+using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
@@ -95,7 +97,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 {
                     _account = _accountViewModelService.GetViewModel(transactionBase.Account);
                     OnPropertyChanged(nameof(Account));
-                    if (_account != null)
+                    if (_account is not null)
                     {
                         ClearErrors(nameof(Account));
                         OnErrorChanged(nameof(Account));
@@ -125,7 +127,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 {
                     _payee = _payeeViewModelService.GetViewModel(transactionBase.Payee);
                     OnPropertyChanged(nameof(Payee));
-                    if (_payee != null)
+                    if (_payee is not null)
                     {
                         ClearErrors(nameof(Payee));
                         OnErrorChanged(nameof(Payee));

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using BFF.Core.Persistence;
+using BFF.Model.ImportExport;
 using BFF.Persistence.Common;
 using BFF.Persistence.Contexts;
 using Org.BouncyCastle.Crypto;
@@ -36,7 +36,7 @@ namespace BFF.Persistence.Realm.ORM
         public ProvideConnection(
             IRealmFileAccessConfiguration config) : base(config)
         {
-            if (config.Password != null)
+            if (config.Password is not null)
                 _hash = GetHash(config.Password);
         }
 

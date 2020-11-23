@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows;
-using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Properties;
+using BFF.ViewModel.Helper;
 
 namespace BFF.View.Helper
 {

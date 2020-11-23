@@ -2,8 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
+using BFF.Persistence.Helper;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
@@ -49,7 +49,7 @@ namespace BFF.Persistence.Realm.Models.Domain
             _subTransactions = new ObservableCollection<ISubTransaction>();
             SubTransactions = new ReadOnlyObservableCollection<ISubTransaction>(_subTransactions);
 
-            if (realmObject != null)
+            if (realmObject is not null)
                 subTransactionRepository
                     .GetChildrenOfAsync(RealmObject ?? throw new NullReferenceException("Shouldn't be null at that point"))
                     .ContinueWith(async t =>

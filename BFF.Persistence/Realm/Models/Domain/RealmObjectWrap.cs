@@ -24,12 +24,12 @@ namespace BFF.Persistence.Realm.Models.Domain
             ICrudOrm<T> crudOrm)
         {
             RealmObject = realmObject;
-            _createRealmObject = createRealmObject ?? throw new ArgumentNullException(nameof(createRealmObject));
-            _updateRealmObject = updateRealmObject ?? throw new ArgumentNullException(nameof(updateRealmObject));
-            _crudOrm = crudOrm ?? throw new ArgumentNullException(nameof(crudOrm));
+            _createRealmObject = createRealmObject;
+            _updateRealmObject = updateRealmObject;
+            _crudOrm = crudOrm;
         }
         
-        public bool IsInserted => RealmObject != null;
+        public bool IsInserted => RealmObject is not null;
         
         public T? RealmObject { get; private set; }
         

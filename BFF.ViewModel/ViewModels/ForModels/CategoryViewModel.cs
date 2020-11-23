@@ -165,7 +165,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             return _budgetCategoryViewModelFactory(_budgetCategoryFactory(_category), (initialEntryCount, initialMonthOffset));
         }
 
-        public override string FullName => $"{(Parent != null ? $"{Parent.FullName}." : "")}{Name}";
+        public override string FullName => $"{(Parent is not null ? $"{Parent.FullName}." : "")}{Name}";
 
         public override IEnumerable<ICategoryBaseViewModel> FullChainOfCategories
         {
@@ -173,7 +173,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             {
                 ICategoryViewModel current = this;
                 IList<ICategoryBaseViewModel> temp = new List<ICategoryBaseViewModel> { current };
-                while (current.Parent != null)
+                while (current.Parent is not null)
                 {
                     current = current.Parent;
                     temp.Add(current);

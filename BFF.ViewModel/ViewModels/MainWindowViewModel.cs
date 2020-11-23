@@ -4,9 +4,8 @@ using System.IO;
 using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Core.IoC;
-using BFF.Core.Persistence;
+using BFF.Model.ImportExport;
 using BFF.ViewModel.Contexts;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
@@ -14,6 +13,7 @@ using BFF.ViewModel.ViewModels.Dialogs;
 using BFF.ViewModel.ViewModels.ForModels;
 using NLog;
 using Reactive.Bindings;
+using IProjectContext = BFF.Model.IoC.IProjectContext;
 
 namespace BFF.ViewModel.ViewModels
 {
@@ -144,7 +144,7 @@ namespace BFF.ViewModel.ViewModels
 
         public MainWindowViewModel(
             Func<IFileAccessConfiguration, ILoadProjectContext> loadedProjectContextFactory,
-            Func<IFileAccessConfiguration, ICreateProjectContext> newBackendContextFactory,
+            Func<IFileAccessConfiguration, IProjectContext> newBackendContextFactory,
             Func<IEmptyProjectContext> emptyContextFactory,
             Func<INewFileAccessViewModel> newFileAccessViewModelFactory,
             Func<IOpenFileAccessViewModel> openFileAccessDialogFactory,
@@ -195,7 +195,7 @@ namespace BFF.ViewModel.ViewModels
                             using (var createBackendContext = newBackendContextFactory(configuration))
                             {
                                 await createBackendContext
-                                    .CreateProjectAsync();
+                                    .CreateProject();
                             }
                             Reset(configuration);
                         }
@@ -240,8 +240,8 @@ namespace BFF.ViewModel.ViewModels
 
         private void Reset(IFileAccessConfiguration? config)
         {
-            IProjectContext context;
-            if (config != null && File.Exists(config.Path))
+            Contexts.IProjectContext context;
+            if (config is not null && File.Exists(config.Path))
             {
                 var loadedProjectContext = _loadedProjectContextFactory(config);
                 _contextSequence.Disposable = loadedProjectContext;

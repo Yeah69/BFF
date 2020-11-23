@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
-using JetBrains.Annotations;
 using MoreLinq;
 using Realms;
 
@@ -22,10 +20,8 @@ namespace BFF.Persistence.Realm.ORM
             _realmOperations = realmOperations;
         }
 
-        public Task MergePayeeAsync([NotNull]Payee from, [NotNull]Payee to)
+        public Task MergePayeeAsync(Payee from, Payee to)
         {
-            from = from ?? throw new ArgumentNullException(nameof(from));
-            to = to ?? throw new ArgumentNullException(nameof(to));
             return _realmOperations.RunActionAsync(Inner);
 
             void Inner(Realms.Realm realm)
@@ -46,10 +42,8 @@ namespace BFF.Persistence.Realm.ORM
             }
         }
 
-        public Task MergeFlagAsync([NotNull]Flag from, [NotNull]Flag to)
+        public Task MergeFlagAsync(Flag from, Flag to)
         {
-            from = from ?? throw new ArgumentNullException(nameof(from));
-            to = to ?? throw new ArgumentNullException(nameof(to));
             return _realmOperations.RunActionAsync(Inner);
 
             void Inner(Realms.Realm realm)
@@ -70,10 +64,8 @@ namespace BFF.Persistence.Realm.ORM
             }
         }
 
-        public Task MergeCategoryAsync([NotNull]Category from, [NotNull]Category to)
+        public Task MergeCategoryAsync(Category from, Category to)
         {
-            from = from ?? throw new ArgumentNullException(nameof(from));
-            to = to ?? throw new ArgumentNullException(nameof(to));
             return _realmOperations.RunActionAsync(Inner);
 
             void Inner(Realms.Realm realm)

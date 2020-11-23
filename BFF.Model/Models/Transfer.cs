@@ -24,7 +24,7 @@ namespace BFF.Model.Models
             set
             {
                 if(_fromAccount == value) return;
-                if (value != null && (_toAccount == value || _toAccount is null)) // If value equals ToAccount, then the FromAccount and ToAccount switch values
+                if (value is not null && (_toAccount == value || _toAccount is null)) // If value equals ToAccount, then the FromAccount and ToAccount switch values
                 {
                     _toAccount = _fromAccount;
                     OnPropertyChanged(nameof(ToAccount));
@@ -40,7 +40,7 @@ namespace BFF.Model.Models
             set
             {
                 if (_toAccount == value) return;
-                if (value != null && (_fromAccount == value || _fromAccount is null)) // If value equals ToAccount, then the FromAccount and ToAccount switch values
+                if (value is not null && (_fromAccount == value || _fromAccount is null)) // If value equals ToAccount, then the FromAccount and ToAccount switch values
                 {
                     _fromAccount = _toAccount;
                     OnPropertyChanged(nameof(FromAccount));

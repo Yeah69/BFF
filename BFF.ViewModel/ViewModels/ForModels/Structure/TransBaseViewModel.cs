@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Linq;
 using BFF.Core.Helper;
+using BFF.Model.Helper;
 using BFF.Model.Models.Structure;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;

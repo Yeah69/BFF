@@ -2,6 +2,7 @@
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
+using BFF.Model.Helper;
 using BFF.Model.Models;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
@@ -107,7 +108,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 {
                     _fromAccount = _accountViewModelService.GetViewModel(transfer.FromAccount);
                     OnPropertyChanged(nameof(FromAccount));
-                    if (_fromAccount != null)
+                    if (_fromAccount is not null)
                     {
                         ClearErrors(nameof(FromAccount));
                         OnErrorChanged(nameof(FromAccount));
@@ -123,7 +124,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 {
                     _toAccount = _accountViewModelService.GetViewModel(transfer.ToAccount);
                     OnPropertyChanged(nameof(ToAccount));
-                    if (_toAccount != null)
+                    if (_toAccount is not null)
                     {
                         ClearErrors(nameof(ToAccount));
                         OnErrorChanged(nameof(ToAccount));

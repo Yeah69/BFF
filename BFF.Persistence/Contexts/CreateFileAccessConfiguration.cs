@@ -1,6 +1,6 @@
 ﻿using System;
 using BFF.Core.IoC;
-using BFF.Core.Persistence;
+using BFF.Model.ImportExport;
 
 namespace BFF.Persistence.Contexts
 {

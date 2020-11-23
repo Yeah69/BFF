@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
+using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 {
@@ -44,11 +44,7 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
                     _mergeOrm.Value,
                     this,
                     persistenceModel.Id,
-                    Color.FromArgb(
-                        (byte) (persistenceModel.Color >> 24 & 0xff),
-                        (byte) (persistenceModel.Color >> 16 & 0xff),
-                        (byte) (persistenceModel.Color >> 8 & 0xff),
-                        (byte) (persistenceModel.Color & 0xff)),
+                    persistenceModel.Color.ToColor(),
                     persistenceModel.Name));
         }
     }

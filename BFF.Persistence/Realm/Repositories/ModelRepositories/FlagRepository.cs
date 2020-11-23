@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.Persistence.Realm.ORM.Interfaces;
+using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
@@ -46,11 +46,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             {
                 return new Models.Domain.Flag(
                     persistenceModel,
-                    Color.FromArgb(
-                        (byte)(persistenceModel.Color >> 24 & 0xff),
-                        (byte)(persistenceModel.Color >> 16 & 0xff),
-                        (byte)(persistenceModel.Color >> 8 & 0xff),
-                        (byte)(persistenceModel.Color & 0xff)),
+                    persistenceModel.Color.ToColor(),
                     persistenceModel.Name,
                     _crudOrm,
                     _mergeOrm.Value,

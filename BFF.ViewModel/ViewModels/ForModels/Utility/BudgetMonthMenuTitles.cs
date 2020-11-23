@@ -1,4 +1,4 @@
-﻿using BFF.Core.Helper;
+﻿using BFF.ViewModel.Helper;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Utility
 {

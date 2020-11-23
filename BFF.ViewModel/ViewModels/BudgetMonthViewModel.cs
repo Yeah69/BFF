@@ -5,7 +5,6 @@ using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;

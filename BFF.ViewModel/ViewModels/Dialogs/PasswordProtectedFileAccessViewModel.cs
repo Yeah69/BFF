@@ -35,7 +35,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             {
                 if (value == _password) return;
                 _password = value;
-                if (Password != null) IsEncryptionActive = true;
+                if (Password is not null) IsEncryptionActive = true;
                 OnPropertyChanged();
             }
         }

@@ -33,12 +33,12 @@ namespace BFF.View.AttachedBehaviors
                 return;
             }
 
-            if (e.OldValue != null)
+            if (e.OldValue is not null)
             {
                 element.PreviewKeyDown -= HandlePreviewKeyDown;
             }
 
-            if (e.NewValue != null)
+            if (e.NewValue is not null)
             {
                 element.PreviewKeyDown += HandlePreviewKeyDown;
             }

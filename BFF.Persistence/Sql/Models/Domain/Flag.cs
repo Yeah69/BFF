@@ -5,6 +5,7 @@ using BFF.Model.Models;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
 using BFF.Persistence.Sql.Repositories.ModelRepositories;
+using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Sql.Models.Domain
 {
@@ -59,22 +60,12 @@ namespace BFF.Persistence.Sql.Models.Domain
             _repository.RemoveFromCache(this);
         }
 
-        private IFlagSql CreatePersistenceObject()
-        {
-            long color = Color.A;
-            color = color << 8;
-            color = color + Color.R;
-            color = color << 8;
-            color = color + Color.G;
-            color = color << 8;
-            color = color + Color.B;
-
-            return new Persistence.Flag
+        private IFlagSql CreatePersistenceObject() =>
+            new Persistence.Flag
             {
                 Id = Id,
                 Name = Name,
-                Color = color
+                Color = Color.ToLong()
             };
-        }
     }
 }

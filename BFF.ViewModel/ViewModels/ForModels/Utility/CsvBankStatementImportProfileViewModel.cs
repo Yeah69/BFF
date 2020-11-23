@@ -205,7 +205,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
                 return lines.All(line => count == line.Count(c => c == delimiter));
             }
 
-            Header = new ReactiveProperty<string>(filePath.Select(path => path != null && File.Exists(path) ? File.ReadLines(path, Encoding.Default).FirstOrDefault() : ""),
+            Header = new ReactiveProperty<string>(filePath.Select(path => path is not null && File.Exists(path) ? File.ReadLines(path, Encoding.Default).FirstOrDefault() : ""),
                 mode: ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(_compositeDisposable);
             Delimiter = new ReactiveProperty<char>(
                 Header

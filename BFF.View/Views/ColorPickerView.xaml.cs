@@ -76,7 +76,7 @@ namespace BFF.View.Views
             new PropertyMetadata(default(SolidColorBrush), (o, args) =>
             {
                 var colorPickerView = o as ColorPickerView;
-                if (colorPickerView != null)
+                if (colorPickerView is not null)
                 {
                     colorPickerView.Color = colorPickerView.Brush?.Color ?? Colors.Transparent;
                     colorPickerView.UpdateColorProperties();

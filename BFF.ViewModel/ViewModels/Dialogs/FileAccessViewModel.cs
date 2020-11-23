@@ -2,8 +2,7 @@
 using System.IO;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using BFF.Core.Helper;
-using BFF.Core.Persistence;
+using BFF.Model.ImportExport;
 using BFF.ViewModel.Helper;
 using MrMeeseeks.Reactive.Extensions;
 using MrMeeseeks.Windows;

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using BFF.Core.Extensions;
-using BFF.Core.Persistence;
+using BFF.Model.ImportExport;
 using BFF.Persistence.Contexts;
 
 namespace BFF.Persistence.Common

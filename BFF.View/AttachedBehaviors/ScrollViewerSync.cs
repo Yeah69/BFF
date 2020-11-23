@@ -27,7 +27,7 @@ namespace BFF.View.AttachedBehaviors
             new PropertyMetadata(default(string), (o, args) =>
             {
                 var associatedScrollViewer = (o as ScrollViewerSync)?._associatedScrollViewer;
-                if (args.OldValue != null && 
+                if (args.OldValue is not null && 
                     GroupNameToScrollViewers.ContainsKey((string)args.OldValue) &&
                     GroupNameToScrollViewers[(string)args.OldValue].Contains(associatedScrollViewer))
                 {
@@ -36,7 +36,7 @@ namespace BFF.View.AttachedBehaviors
                     if (GroupNameToScrollViewers[key].Count == 0)
                         GroupNameToScrollViewers.Remove(key);
                 }
-                if (args.NewValue != null)
+                if (args.NewValue is not null)
                 {
                     string key = (string)args.NewValue;
                     if (!GroupNameToScrollViewers.ContainsKey(key))
@@ -79,7 +79,7 @@ namespace BFF.View.AttachedBehaviors
                     .ObserveOn(DispatcherScheduler)
                     .Subscribe(ep =>
                     {
-                        if (GroupName != null
+                        if (GroupName is not null
                             && GroupNameToScrollViewers.ContainsKey(GroupName)
                             && GroupNameToScrollViewers[GroupName].Any())
                         {

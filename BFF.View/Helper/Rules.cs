@@ -12,13 +12,13 @@ namespace BFF.View.Helper
     {
         public static ValidationRule EmptyPayee =
             LambdaConverters.Validator.Create<IPayeeViewModel>(
-                e => e.Value != null
+                e => e.Value is not null
                     ? ValidationResult.ValidResult
                     : new ValidationResult(false, "ErrorMessageEmptyPayee".Localize()));
 
         public static ValidationRule EmptyCategory =
             LambdaConverters.Validator.Create<ICategoryBaseViewModel>(
-                e => e.Value != null
+                e => e.Value is not null
                     ? ValidationResult.ValidResult
                     : new ValidationResult(false, "ErrorMessageEmptyCategory".Localize()));
 
@@ -55,7 +55,7 @@ namespace BFF.View.Helper
 
         public static ValidationRule NoEmptyFileName =
             LambdaConverters.Validator.Create<string>(
-                e => e.Value != null && !string.IsNullOrEmpty(new FileInfo(e.Value).Name)
+                e => e.Value is not null && !string.IsNullOrEmpty(new FileInfo(e.Value).Name)
                     ? ValidationResult.ValidResult
                     : new ValidationResult(false, "ValidationRule_NotExistingSavePath_EmptyName".Localize()));
 
@@ -67,7 +67,7 @@ namespace BFF.View.Helper
 
         public static ValidationRule NotExistingSavePath =
             LambdaConverters.Validator.Create<string>(
-                e => e.Value != null && Directory.Exists(new FileInfo(e.Value).DirectoryName)
+                e => e.Value is not null && Directory.Exists(new FileInfo(e.Value).DirectoryName)
                     ? ValidationResult.ValidResult
                     : new ValidationResult(false, "ValidationRule_NotExistingSavePath".Localize()));
     }

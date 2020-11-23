@@ -1,102 +1,169 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BFF.Model.Import;
+using BFF.Model.Import.Models;
+using System;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using BFF.Persistence.Helper;
 using BFF.Persistence.Import;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
-using Dapper.Contrib.Extensions;
+using MrMeeseeks.DataStructures;
+using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Sql.ORM
 {
-    internal class DapperImportingOrm : IImportingOrm
+    internal class DapperImportingOrm : IImporter
     {
         private readonly IProvideSqliteConnection _provideConnection;
+        private readonly ICrudOrm<IAccountSql> _accountCrudOrm;
+        private readonly ICrudOrm<IBudgetEntrySql> _budgetEntryCrudOrm;
+        private readonly ICrudOrm<ICategorySql> _categoryCrudOrm;
+        private readonly ICrudOrm<IFlagSql> _flagCrudOrm;
+        private readonly ICrudOrm<IPayeeSql> _payeeCrudOrm;
+        private readonly ICrudOrm<ISubTransactionSql> _subTransactionCrudOrm;
+        private readonly ICrudOrm<ITransSql> _transCrudOrm;
 
-        public DapperImportingOrm(IProvideSqliteConnection provideConnection)
+        public DapperImportingOrm(
+            IProvideSqliteConnection provideConnection,
+            ICrudOrm<IAccountSql> accountCrudOrm,
+            ICrudOrm<IBudgetEntrySql> budgetEntryCrudOrm,
+            ICrudOrm<ICategorySql> categoryCrudOrm,
+            ICrudOrm<IFlagSql> flagCrudOrm,
+            ICrudOrm<IPayeeSql> payeeCrudOrm,
+            ICrudOrm<ISubTransactionSql> subTransactionCrudOrm,
+            ICrudOrm<ITransSql> transCrudOrm)
         {
             _provideConnection = provideConnection;
+            _accountCrudOrm = accountCrudOrm;
+            _budgetEntryCrudOrm = budgetEntryCrudOrm;
+            _categoryCrudOrm = categoryCrudOrm;
+            _flagCrudOrm = flagCrudOrm;
+            _payeeCrudOrm = payeeCrudOrm;
+            _subTransactionCrudOrm = subTransactionCrudOrm;
+            _transCrudOrm = transCrudOrm;
         }
 
-        public async Task PopulateDatabaseAsync(ISqliteYnab4CsvImportContainerData sqliteYnab4CsvImportContainer)
+        public async Task<DtoImportContainer> Import()
         {
-            using (TransactionScope transactionScope = new TransactionScope(new TransactionScopeOption(), TimeSpan.FromMinutes(10)))
-            using (IDbConnection connection = _provideConnection.Connection)
-            {
-                var importAssignments = sqliteYnab4CsvImportContainer.ImportAssignments;
+            using TransactionScope transactionScope = new (new TransactionScopeOption(), TimeSpan.FromMinutes(10));
+            using IDbConnection connection = _provideConnection.Connection;
 
-                /*  
-                Hierarchical Category Inserting (which means that the ParentId is set right) is done automatically,
-                because the structure of the imported csv-Entry of Categories allows to get the master category first and
-                then the sub category. Thus, the parents id is known beforehand.
-                */
-                Queue<CategoryImportWrapper> categoriesOrder = new Queue<CategoryImportWrapper>(sqliteYnab4CsvImportContainer.Categories);
-                while (categoriesOrder.Count > 0)
-                {
-                    CategoryImportWrapper current = categoriesOrder.Dequeue();
-                    var id = await connection.InsertAsync(current.Category as Category).ConfigureAwait(false);
-                    foreach (IHaveCategorySql currentTransAssignment in current.TransAssignments)
-                    {
-                        currentTransAssignment.CategoryId = id;
-                    }
-                    foreach (CategoryImportWrapper categoryImportWrapper in current.Categories)
-                    {
-                        if(categoryImportWrapper.Category is {} category)
-                            category.ParentId = id;
-                        categoriesOrder.Enqueue(categoryImportWrapper);
-                    }
-                }
-                foreach (IPayeeSql payee in sqliteYnab4CsvImportContainer.Payees)
-                {
-                    var id = await connection.InsertAsync(payee as Payee).ConfigureAwait(false);
-                    foreach (IHavePayeeSql transIncBase in importAssignments.PayeeToTransactionBase[payee])
-                    {
-                        transIncBase.PayeeId = id;
-                    }
-                }
-                foreach (IFlagSql flag in sqliteYnab4CsvImportContainer.Flags)
-                {
-                    var id = await connection.InsertAsync(flag as Flag).ConfigureAwait(false);
-                    foreach (IHaveFlagSql transBase in importAssignments.FlagToTransBase[flag])
-                    {
-                        transBase.FlagId = id;
-                    }
-                }
-                foreach (IAccountSql account in sqliteYnab4CsvImportContainer.Accounts)
-                {
-                    var id = await connection.InsertAsync(account as Account).ConfigureAwait(false);
-                    foreach (IHaveAccountSql transIncBase in importAssignments.AccountToTransactionBase[account])
-                    {
-                        transIncBase.AccountId = id;
-                    }
-                    foreach (ITransSql transfer in importAssignments.FromAccountToTransfer[account])
-                    {
-                        transfer.PayeeId = id;
-                    }
-                    foreach (ITransSql transfer in importAssignments.ToAccountToTransfer[account])
-                    {
-                        transfer.CategoryId = id;
-                    }
-                }
-                foreach (ITransSql parentTransaction in sqliteYnab4CsvImportContainer.ParentTransactions)
-                {
-                    var id = await connection.InsertAsync(parentTransaction as Trans).ConfigureAwait(false);
-                    foreach (ISubTransactionSql subTransaction in importAssignments.ParentTransactionToSubTransaction[parentTransaction])
-                    {
-                        subTransaction.ParentId = id;
-                    }
-                }
+            var ret = new DtoImportContainer();
 
-                await Task.WhenAll(
-                    connection.InsertAsync(sqliteYnab4CsvImportContainer.Transactions.Cast<Trans>()),
-                    connection.InsertAsync(sqliteYnab4CsvImportContainer.SubTransactions.Cast<SubTransaction>()),
-                    connection.InsertAsync(sqliteYnab4CsvImportContainer.Transfers.Cast<Trans>()),
-                    connection.InsertAsync(sqliteYnab4CsvImportContainer.BudgetEntries.Cast<BudgetEntry>())).ConfigureAwait(false);
+            var accounts = (await _accountCrudOrm.ReadAllAsync().ConfigureAwait(false)).ToList();
+            var flags = (await _flagCrudOrm.ReadAllAsync().ConfigureAwait(false)).ToList();
+            var payees = (await _payeeCrudOrm.ReadAllAsync().ConfigureAwait(false)).ToList();
+            var categories = (await _categoryCrudOrm.ReadAllAsync().ConfigureAwait(false)).ToList();
+            var budgetEntries = (await _budgetEntryCrudOrm.ReadAllAsync().ConfigureAwait(false)).ToList();
+            var trans = (await _transCrudOrm.ReadAllAsync().ConfigureAwait(false)).ToList();
+            var subTransactions = (await _subTransactionCrudOrm.ReadAllAsync().ConfigureAwait(false)).ToList();
 
-                transactionScope.Complete();
-            }
+            transactionScope.Complete();
+            transactionScope.Dispose();
+            connection.Dispose();
+
+            var accountsIdDictionary = accounts.ToDictionary(account => account.Id, account => account.Name);
+            var flagsIdDictionary = flags.ToDictionary(flag => flag.Id, flag => (flag.Name, Color: flag.Color.ToColor()));
+            var payeesIdDictionary = payees.ToDictionary(payee => payee.Id, payee => payee.Name);
+            var categoryIdDictionary = categories
+                .ToDictionary(
+                    c => c.Id, 
+                    c => (
+                        Sql: c, 
+                        Dto: new CategoryDto
+                        {
+                            Name = c.Name,
+                            IsIncomeRelevant = c.IsIncomeRelevant,
+                            IncomeMonthOffset = c.IsIncomeRelevant ? c.MonthOffset : 0
+                        }));
+
+            var categoryIdGrouping = categories
+                .Where(c => c.IsIncomeRelevant.Not())
+                .GroupBy(c => c.ParentId ?? -1, c => c.Id)
+                .ToDictionary(g => g.Key, g => g.ToReadOnlyList());
+            var categoryTrees = categoryIdGrouping[-1]
+                .SelectTree<long, Tree<CategoryDto>>(
+                    id => categoryIdGrouping[id],
+                    (id, children) => new Tree<CategoryDto>(categoryIdDictionary[id].Dto, children))
+                .ToReadOnlyList();
+            
+            var subTransactionGrouping = subTransactions
+                .GroupBy(st => st.ParentId)
+                .ToDictionary(g => g.Key, g => g.ToReadOnlyList());
+
+            ret.AccountStartingBalances = accounts.ToDictionary(account => account.Name, account => account.StartingBalance);
+            ret.AccountStartingDates = accounts.ToDictionary(account => account.Name, account => account.StartingDate);
+            ret.Categories = Forest<CategoryDto>.CreateFromTrees(categoryTrees);
+            ret.IncomeCategories = categoryIdDictionary
+                .Values
+                .Where(t => t.Dto.IsIncomeRelevant)
+                .Select(t => t.Dto)
+                .ToList();
+            ret.BudgetEntries = budgetEntries
+                .Select(be => new BudgetEntryDto
+                {
+                    Budget = be.Budget,
+                    MonthIndex = be.Month.ToMonthIndex(),
+                    Category = be.CategoryId is { } id
+                        ? categoryIdDictionary[id].Dto
+                        : throw new Exception("Impossibruh")
+                })
+                .ToReadOnlyList();
+            ret.Transfers = trans
+                .Where(t => t.Type == nameof(TransType.Transfer))
+                .Select(t => new TransferDto
+                {
+                    Date = t.Date,
+                    FromAccount = t.PayeeId is {} payeeId ? accountsIdDictionary[payeeId] : "",
+                    ToAccount = t.CategoryId is {} categoryId ? accountsIdDictionary[categoryId] : "",
+                    CheckNumber = t.CheckNumber,
+                    Flag = t.FlagId is {} id ? flagsIdDictionary[id] : ((string Name, Color Color)?)null,
+                    Memo = t.Memo,
+                    Sum = t.Sum,
+                    Cleared = t.Cleared == 1
+                })
+                .ToReadOnlyList();
+            ret.Transactions = trans
+                .Where(t => t.Type == nameof(TransType.Transaction))
+                .Select(t => new TransactionDto
+                {
+                    Date = t.Date,
+                    Account = t.AccountId is {} accountId ? accountsIdDictionary[accountId] : "",
+                    Payee = t.PayeeId is {} payeeId ? payeesIdDictionary[payeeId] : "",
+                    Category = t.CategoryId is {} categoryId ? categoryIdDictionary[categoryId].Dto : null,
+                    CheckNumber = t.CheckNumber,
+                    Flag = t.FlagId is {} id ? flagsIdDictionary[id] : ((string Name, Color Color)?)null,
+                    Memo = t.Memo,
+                    Sum = t.Sum,
+                    Cleared = t.Cleared == 1
+                })
+                .ToReadOnlyList();
+            ret.ParentTransactions = trans
+                .Where(t => t.Type == nameof(TransType.ParentTransaction))
+                .Select(t => new ParentTransactionDto
+                {
+                    Date = t.Date,
+                    Account = t.AccountId is {} accountId ? accountsIdDictionary[accountId] : "",
+                    Payee = t.PayeeId is {} payeeId ? payeesIdDictionary[payeeId] : "",
+                    CheckNumber = t.CheckNumber,
+                    Flag = t.FlagId is {} id ? flagsIdDictionary[id] : ((string Name, Color Color)?)null,
+                    Memo = t.Memo,
+                    Cleared = t.Cleared == 1,
+                    SubTransactions = subTransactionGrouping[t.Id]
+                        .Select(st => new SubTransactionDto
+                        {
+                            Category = st.CategoryId is {} categoryId ? categoryIdDictionary[categoryId].Dto : null,
+                            Memo = st.Memo,
+                            Sum = st.Sum
+                        })
+                        .ToReadOnlyList()
+                })
+                .ToReadOnlyList();
+
+            return ret;
         }
     }
 }

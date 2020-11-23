@@ -386,7 +386,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             void DoTargetBalanceSystem(long? ib)
             {
                 IntermediateBalance = ib + TotalBalance;
-                if (TargetBalance != null)
+                if (TargetBalance is not null)
                 {
                     MissingSum = TargetBalance - IntermediateBalance;
                 }

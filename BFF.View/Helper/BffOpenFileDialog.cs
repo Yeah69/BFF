@@ -1,4 +1,4 @@
-﻿using BFF.Core.Helper;
+﻿using BFF.ViewModel.Helper;
 using Microsoft.Win32;
 
 namespace BFF.View.Helper

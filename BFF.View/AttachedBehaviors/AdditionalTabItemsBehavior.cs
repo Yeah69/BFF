@@ -36,7 +36,7 @@ namespace BFF.View.AttachedBehaviors
             int startingIndex = ((AdditionalTabItemsBehavior) sender).StartingIndex;
             string isSelectedMemberPath = ((AdditionalTabItemsBehavior) sender).IsSelectedMemberPath;
             Dictionary<object, TabItem> objectToTabItem = ((AdditionalTabItemsBehavior) sender)._objectToTabItem;
-            if (e.NewValue != null)
+            if (e.NewValue is not null)
             {
                 IEnumerable<object> newEnumerable = (IEnumerable<object>)e.NewValue;
                 int i = 0;
@@ -76,11 +76,11 @@ namespace BFF.View.AttachedBehaviors
                                     if (tabControl.Items.Contains(objectToTabItem[obj]))
                                         tabControl.Items.Remove(objectToTabItem[obj]);
                                 objectToTabItem.Clear();
-                                if (o != null)
+                                if (o is not null)
                                 {
                                     ICollection? collection = o as ICollection;
                                     j = 0;
-                                    if(collection != null)
+                                    if(collection is not null)
                                         foreach (object obj in collection.OfType<object>())
                                         {
                                             AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + j, isSelectedMemberPath, objectToTabItem);
@@ -114,14 +114,14 @@ namespace BFF.View.AttachedBehaviors
                 DataContext = obj,
                 Content = contentTemplate.LoadContent()
             };
-            if (headerTemplate != null)
+            if (headerTemplate is not null)
                 newTabItem.HeaderTemplate = headerTemplate;
             else
                 newTabItem.Header = obj?.ToString() ?? "NULL";
             if(isSelectedMemberPath != default)
                 newTabItem.SetBinding(TabItem.IsSelectedProperty, isSelectedMemberPath);
             tabControl.Items.Insert(index, newTabItem);
-            if(obj != null) objectToTabItem.Add(obj, newTabItem);
+            if(obj is not null) objectToTabItem.Add(obj, newTabItem);
         }
 
         #endregion

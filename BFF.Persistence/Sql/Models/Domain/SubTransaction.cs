@@ -43,7 +43,7 @@ namespace BFF.Persistence.Sql.Models.Domain
         private ISubTransactionSql CreatePersistenceObject()
         {
             if (!(Parent is ParentTransaction)
-                || Category != null && !(Category is Category))
+                || Category is not null && !(Category is Category))
                 throw new ArgumentException("Cannot create persistence object if parts are from another backend");
 
             return new Persistence.SubTransaction

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using BFF.Model.Import;
+using BFF.Model.Import.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
-using BFF.Persistence.Extensions;
+using BFF.Persistence.Helper;
 using BFF.Persistence.Import;
-using BFF.Persistence.Import.Models;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM;
 using MoreLinq.Extensions;
@@ -250,7 +250,7 @@ namespace BFF.Persistence.Realm
             };
 
             static DateTimeOffset ToDateTimeOffset(DateTime dateTime) =>
-                new DateTimeOffset(
+                new (
                     dateTime.Year, 
                     dateTime.Month, 
                     dateTime.Day, 

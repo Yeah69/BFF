@@ -1,9 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -56,8 +57,8 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="MrMeeseeks" Version="69.0.14" />
-      <PackageReference Include="MrMeeseeks.Reactive" Version="69.0.14" />
+      <PackageReference Include="MrMeeseeks" Version="69.0.16" />
+      <PackageReference Include="MrMeeseeks.Reactive" Version="69.0.16" />
       <PackageReference Include="WPFLocalizeExtension" Version="3.8.0" />
     </ItemGroup>
 

@@ -68,7 +68,7 @@ namespace BFF.Persistence.Sql.Models.Domain
 
         private IBudgetEntrySql CreatePersistenceObject()
         {
-            if (Category != null && !(Category is Category)) throw new ArgumentException("Cannot create persistence object if parts are from another backend");
+            if (Category is not null && !(Category is Category)) throw new ArgumentException("Cannot create persistence object if parts are from another backend");
 
             return new Persistence.BudgetEntry
             {

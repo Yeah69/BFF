@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
+using BFF.Persistence.Helper;
 using BFF.Persistence.Realm.Models.Persistence;
 using BFF.Persistence.Realm.ORM.Interfaces;
-using JetBrains.Annotations;
 using MoreLinq;
 using MrMeeseeks.Extensions;
 using Realms;
@@ -115,9 +114,8 @@ namespace BFF.Persistence.Realm.ORM
 
         public Task<IEnumerable<Trans>> GetFromMonthAndCategoryAsync(
             DateTime month,
-            [NotNull]Category category)
+            Category category)
         {
-            category = category ?? throw new ArgumentNullException(nameof(category));
             return _realmOperations.RunFuncAsync(Inner);
 
             IEnumerable<Trans> Inner(Realms.Realm realm)

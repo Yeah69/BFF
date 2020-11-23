@@ -23,7 +23,7 @@
         protected TransLike(
             string memo)
         {
-            _memo = memo ?? _memo;
+            _memo = memo;
         }
 
     }

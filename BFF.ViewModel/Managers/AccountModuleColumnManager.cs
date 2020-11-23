@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Reactive.Disposables;
-using BFF.Core.Helper;
 using BFF.Core.IoC;
+using BFF.ViewModel.Helper;
 using MrMeeseeks.Reactive.Extensions;
 using MrMeeseeks.Windows;
 using Reactive.Bindings;

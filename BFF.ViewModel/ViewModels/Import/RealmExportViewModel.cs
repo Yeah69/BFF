@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
-using BFF.Core.Helper;
-using BFF.Core.Persistence;
+using BFF.Model.ImportExport;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.Dialogs;
 

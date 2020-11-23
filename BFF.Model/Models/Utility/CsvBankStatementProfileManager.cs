@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using BFF.Core.Helper;
 using BFF.Core.IoC;
-using Newtonsoft.Json;
+using BFF.Model.Helper;
 
 namespace BFF.Model.Models.Utility
 {
@@ -35,13 +33,13 @@ namespace BFF.Model.Models.Utility
 
     public class CsvBankStatementProfileManager : ICsvBankStatementProfileManager, ICreateCsvBankStatementImportProfile, IOncePerApplication
     {
-        private readonly IBffSettings _bffSettings;
+        private readonly IManageCsvBankStatementImportProfiles _manageCsvBankStatementImportProfiles;
         private readonly ObservableCollection<ICsvBankStatementImportProfile> _profiles;
 
-        public CsvBankStatementProfileManager(IBffSettings bffSettings)
+        public CsvBankStatementProfileManager(IManageCsvBankStatementImportProfiles manageCsvBankStatementImportProfiles)
         {
-            _bffSettings = bffSettings;
-            var csvBankStatementImportProfiles = JsonConvert.DeserializeObject<List<CsvBankStatementImportProfile>>(_bffSettings.CsvBankStatementImportProfiles );
+            _manageCsvBankStatementImportProfiles = manageCsvBankStatementImportProfiles;
+            var csvBankStatementImportProfiles = _manageCsvBankStatementImportProfiles.LoadProfiles();
             _profiles = new ObservableCollection<ICsvBankStatementImportProfile>(csvBankStatementImportProfiles);
             Profiles = new ReadOnlyObservableCollection<ICsvBankStatementImportProfile>(_profiles);
             (Profiles as INotifyCollectionChanged).CollectionChanged += (sender, args) => { };
@@ -51,7 +49,7 @@ namespace BFF.Model.Models.Utility
 
         public void Save()
         {
-            _bffSettings.CsvBankStatementImportProfiles = JsonConvert.SerializeObject(_profiles.ToList());
+            _manageCsvBankStatementImportProfiles.SaveProfiles(_profiles);
         }
 
         public void Remove(string name)

@@ -36,7 +36,7 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
 
         public void InitializeAll()
         {
-            var groupedByParent = All.GroupBy(c => c.Parent).Where(grouping => grouping.Key != null);
+            var groupedByParent = All.GroupBy(c => c.Parent).Where(grouping => grouping.Key is not null);
             foreach (var parentSubCategoryGrouping in groupedByParent)
             {
                 var parent = parentSubCategoryGrouping.Key;
@@ -57,7 +57,7 @@ namespace BFF.Persistence.Sql.Repositories.ModelRepositories
                     this,
                     persistenceModel.Id,
                     persistenceModel.Name,
-                    persistenceModel.ParentId != null ? await FindAsync((long)persistenceModel.ParentId).ConfigureAwait(false) : null);
+                    persistenceModel.ParentId is not null ? await FindAsync((long)persistenceModel.ParentId).ConfigureAwait(false) : null);
         }
 
         protected override Task<IEnumerable<ICategorySql>> FindAllInnerAsync() => _categoryOrm.Value.ReadCategoriesAsync();

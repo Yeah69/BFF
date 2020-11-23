@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Windows.Input;
-using BFF.Core.Helper;
 using BFF.Model.Repositories;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;

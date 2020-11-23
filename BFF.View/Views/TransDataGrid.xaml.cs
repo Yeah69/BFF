@@ -50,7 +50,7 @@ namespace BFF.View.Views
         public static readonly DependencyProperty NewTransactionCommandProperty = DependencyProperty.Register(
             nameof(NewTransactionCommand), typeof(ICommand), typeof(TransDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
             {
-                ((TransDataGrid)o).NewTransactionVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+                ((TransDataGrid)o).NewTransactionVisibility = args.NewValue is not null ? Visibility.Visible : Visibility.Collapsed;
             }));
 
         public ICommand NewTransactionCommand
@@ -62,7 +62,7 @@ namespace BFF.View.Views
         public static readonly DependencyProperty NewTransferCommandProperty = DependencyProperty.Register(
             nameof(NewTransferCommand), typeof(ICommand), typeof(TransDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
             {
-                ((TransDataGrid)o).NewTransferVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+                ((TransDataGrid)o).NewTransferVisibility = args.NewValue is not null ? Visibility.Visible : Visibility.Collapsed;
             }));
 
         public ICommand NewTransferCommand
@@ -74,7 +74,7 @@ namespace BFF.View.Views
         public static readonly DependencyProperty NewParentTransactionCommandProperty = DependencyProperty.Register(
             nameof(NewParentTransactionCommand), typeof(ICommand), typeof(TransDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
             {
-                ((TransDataGrid)o).NewParentTransactionVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+                ((TransDataGrid)o).NewParentTransactionVisibility = args.NewValue is not null ? Visibility.Visible : Visibility.Collapsed;
             }));
 
         public ICommand NewParentTransactionCommand
@@ -86,7 +86,7 @@ namespace BFF.View.Views
         public static readonly DependencyProperty ApplyCommandProperty = DependencyProperty.Register(
             nameof(ApplyCommand), typeof(ICommand), typeof(TransDataGrid), new PropertyMetadata(default(ICommand), (o, args) =>
             {
-                ((TransDataGrid)o).ApplyVisibility = args.NewValue != null ? Visibility.Visible : Visibility.Collapsed;
+                ((TransDataGrid)o).ApplyVisibility = args.NewValue is not null ? Visibility.Visible : Visibility.Collapsed;
             }));
 
         public ICommand ApplyCommand

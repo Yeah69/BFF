@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BFF.Core.Helper;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
+using BFF.Persistence.Helper;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
 
@@ -51,9 +51,9 @@ namespace BFF.Persistence.Sql.Models.Domain
         private ITransSql CreatePersistenceObject()
         {
             if (!(Account is Account)
-                || (Category != null && !(Category is Category))
-                || (Flag != null && !(Flag is Flag))
-                || (Payee != null && !(Payee is Payee)))
+                || (Category is not null && !(Category is Category))
+                || (Flag is not null && !(Flag is Flag))
+                || (Payee is not null && !(Payee is Payee)))
                 throw new ArgumentException("Cannot create persistence object if parts are from another backend");
 
             return new Trans

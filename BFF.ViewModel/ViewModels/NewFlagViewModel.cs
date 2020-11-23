@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Windows.Input;
-using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
@@ -56,7 +55,7 @@ namespace BFF.ViewModel.ViewModels
                 newFlag.Color = Brush.Value;
                 newFlag.Name = Text?.Trim() ?? String.Empty;
                 await newFlag.InsertAsync();
-                if (CurrentOwner != null)
+                if (CurrentOwner is not null)
                     CurrentOwner.Flag = _flagViewModelService.GetViewModel(newFlag);
                 CurrentOwner = null;
                 _text = "";

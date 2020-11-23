@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Windows.Input;
-using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Repositories;
 using BFF.ViewModel.Helper;
@@ -58,7 +57,7 @@ namespace BFF.ViewModel.ViewModels
                 var newPayee = createNewModels.CreatePayee();
                 newPayee.Name = PayeeText?.Trim() ?? String.Empty;
                 await newPayee.InsertAsync();
-                if (CurrentOwner != null)
+                if (CurrentOwner is not null)
                     CurrentOwner.Payee = _payeeViewModelService.GetViewModel(newPayee);
                 CurrentOwner = null;
                 _payeeText = "";

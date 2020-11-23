@@ -1,4 +1,4 @@
-﻿using BFF.Core.Persistence;
+﻿using BFF.Model.ImportExport;
 
 namespace BFF.ViewModel.ViewModels.Import
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
-using BFF.Core.Helper;
 using BFF.Model;
+using BFF.Model.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.Persistence.Sql.Models.Persistence;

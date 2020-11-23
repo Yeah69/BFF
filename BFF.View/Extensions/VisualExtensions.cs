@@ -21,7 +21,7 @@ namespace BFF.View.Extensions
             {
                 var visual = VisualTreeHelper.GetChild(element, i) as Visual;
                 foundElement = visual.GetDescendantByType<T>();
-                if (foundElement != null)
+                if (foundElement is not null)
                 {
                     break;
                 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
-using BFF.Core.Helper;
-using BFF.Core.Persistence;
+using BFF.Model.ImportExport;
 using BFF.ViewModel.Helper;
 
 namespace BFF.ViewModel.ViewModels.Import
@@ -43,10 +42,6 @@ namespace BFF.ViewModel.ViewModels.Import
             Func<(string TransactionPath, string BudgetPath), IYnab4CsvImportConfiguration> importingConfigurationFactory,
             IBffSettings bffSettings)
         {
-            openFileDialogFactory = openFileDialogFactory ?? throw new ArgumentNullException(nameof(openFileDialogFactory));
-            importingConfigurationFactory = importingConfigurationFactory ?? throw new ArgumentNullException(nameof(importingConfigurationFactory));
-            bffSettings = bffSettings ?? throw new ArgumentNullException(nameof(bffSettings));
-
             _importingConfigurationFactory = importingConfigurationFactory;
             TransactionPath = bffSettings.Import_YnabCsvTransaction;
             BudgetPath = bffSettings.Import_YnabCsvBudget;

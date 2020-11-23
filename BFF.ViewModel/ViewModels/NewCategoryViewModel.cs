@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Windows.Input;
-using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
@@ -62,7 +61,7 @@ namespace BFF.ViewModel.ViewModels
                 if(IsIncomeRelevant.Value)
                     return incomeCategoryViewModelService.All.All(icvm => icvm.Name != text);
                 return parent is null && AllPotentialParents.Where(cvw => cvw.Parent is null).All(cvm => cvm.Name != text) ||
-                       parent != null && parent.Categories.All(cvm => cvm != null && cvm.Name != text);
+                       parent is not null && parent.Categories.All(cvm => cvm is not null && cvm.Name != text);
             }
             string? ValidateNewCategoryRelationParent(string? text, ICategoryViewModel? parent)
             {
@@ -87,7 +86,7 @@ namespace BFF.ViewModel.ViewModels
                         newCategory.Name = Name?.Trim() ?? String.Empty;
                         newCategory.MonthOffset = MonthOffset.Value;
                         await newCategory.InsertAsync();
-                        if (CurrentCategoryOwner != null)
+                        if (CurrentCategoryOwner is not null)
                             CurrentCategoryOwner.Category = incomeCategoryViewModelService.GetViewModel(newCategory);
                         CurrentCategoryOwner = null;
                     }
@@ -101,7 +100,7 @@ namespace BFF.ViewModel.ViewModels
                         OnPropertyChanged(nameof(AllPotentialParents));
                         var categoryViewModel = _categoryViewModelService.GetViewModel(newCategory) ?? throw new NullReferenceException("Shouldn't be null");
                         categoryViewModelInitializer.Initialize(categoryViewModel);
-                        if (CurrentCategoryOwner != null)
+                        if (CurrentCategoryOwner is not null)
                             CurrentCategoryOwner.Category = categoryViewModel;
                         CurrentCategoryOwner = null;
                     }
@@ -208,7 +207,7 @@ namespace BFF.ViewModel.ViewModels
                 if (IsIncomeRelevant?.Value ?? false)
                     return _incomeCategoryViewModelService.All.All(icvm => icvm.Name != Name);
                 return Parent.Value is null && AllPotentialParents.Where(cvw => cvw.Parent is null).All(cvm => cvm.Name != Name) ||
-                       Parent.Value != null && Parent.Value.Categories.All(cvm => cvm != null && cvm.Name != Name);
+                       Parent.Value is not null && Parent.Value.Categories.All(cvm => cvm is not null && cvm.Name != Name);
             }
         }
     }

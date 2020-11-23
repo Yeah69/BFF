@@ -73,7 +73,7 @@ namespace BFF.Persistence.Sql.Models.Domain
 
         private ICategorySql CreatePersistenceObject()
         {
-            if (Parent != null && !(Parent is Category)) throw new ArgumentException("Cannot create persistence object if parts are from another backend");
+            if (Parent is not null && !(Parent is Category)) throw new ArgumentException("Cannot create persistence object if parts are from another backend");
 
             return new Persistence.Category
             {

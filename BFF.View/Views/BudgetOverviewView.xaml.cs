@@ -48,7 +48,7 @@ namespace BFF.View.Views
 
         private void MonthDataHeaderMenu_OnClick(object sender, EventArgs e)
         {
-            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent?.ContextMenu != null)
+            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent?.ContextMenu is not null)
             {
                 fecb.Parent.ContextMenu.PlacementTarget = fecb.Parent;
                 fecb.Parent.ContextMenu.IsOpen = true;
@@ -57,7 +57,7 @@ namespace BFF.View.Views
 
         private void BudgetEntryMenu_OnClick(object sender, EventArgs e)
         {
-            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent?.ContextMenu != null)
+            if (sender is FrameworkElementClickBehavior fecb && fecb.Parent?.ContextMenu is not null)
             {
                 fecb.Parent.ContextMenu.PlacementTarget = fecb.Parent;
                 fecb.Parent.ContextMenu.IsOpen = true;

@@ -50,7 +50,7 @@ namespace BFF.View.Resources
         private void Popup_OnClosed(object sender, EventArgs e)
         {
             _focusedBeforeOpen?.Focus();
-            if (_focusedBeforeOpen != null) Keyboard.Focus(_focusedBeforeOpen);
+            if (_focusedBeforeOpen is not null) Keyboard.Focus(_focusedBeforeOpen);
             _focusedBeforeOpen = null;
         }
 
@@ -95,7 +95,7 @@ namespace BFF.View.Resources
             var tryFindParent = fecb.Parent.TryFindParent<DataGridRow>();
             var parentContextMenu = tryFindParent?.ContextMenu;
             
-            if(parentContextMenu != null)
+            if(parentContextMenu is not null)
             {
                 parentContextMenu.DataContext = tryFindParent?.DataContext;
                 parentContextMenu.IsOpen = true;

@@ -20,7 +20,7 @@ namespace BFF.View.Extensions
                     return t;
 
                 T? childOfChild = FindVisualChild<T>(child);
-                if (childOfChild != null)
+                if (childOfChild is not null)
                     return childOfChild;
             }
             return null;

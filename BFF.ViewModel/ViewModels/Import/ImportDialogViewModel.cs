@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BFF.Core.Persistence;
+using BFF.Model.ImportExport;
 
 namespace BFF.ViewModel.ViewModels.Import
 {
@@ -17,6 +17,7 @@ namespace BFF.ViewModel.ViewModels.Import
     {
         private readonly IImportExport _importExport;
         private readonly Func<Ynab4CsvImportViewModel> _ynab4CsvImportViewModelFactory;
+        private readonly Func<SqliteProjectImportViewModel> _sqliteProjectImportViewModelFactory;
         private readonly Func<RealmFileExportViewModel> _realmFileExportViewModel;
         private ImportOption _importOption;
         private ExportOption _exportOption;
@@ -80,10 +81,12 @@ namespace BFF.ViewModel.ViewModels.Import
         public ImportDialogViewModel(
             IImportExport importExport,
             Func<Ynab4CsvImportViewModel> ynab4CsvImportViewModelFactory,
+            Func<SqliteProjectImportViewModel> sqliteProjectImportViewModelFactory,
             Func<RealmFileExportViewModel> realmFileExportViewModel)
         {
             _importExport = importExport;
             _ynab4CsvImportViewModelFactory = ynab4CsvImportViewModelFactory;
+            _sqliteProjectImportViewModelFactory = sqliteProjectImportViewModelFactory;
             _realmFileExportViewModel = realmFileExportViewModel;
 
             _importViewModel = UpdateImportViewModel();
@@ -95,6 +98,7 @@ namespace BFF.ViewModel.ViewModels.Import
             return ImportOption switch
                 {
                     ImportOption.Ynab4Csv => _ynab4CsvImportViewModelFactory(),
+                    ImportOption.SqliteProject => _sqliteProjectImportViewModelFactory(),
                     _ => throw new ArgumentException("Unexpected import option!")
                 };
         }

@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +12,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="morelinq" Version="3.3.2" />
-    <PackageReference Include="MrMeeseeks" Version="69.0.14" />
+    <PackageReference Include="MrMeeseeks" Version="69.0.16" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
     <PackageReference Include="System.Reactive.Interfaces" Version="4.2.0" />
   </ItemGroup>

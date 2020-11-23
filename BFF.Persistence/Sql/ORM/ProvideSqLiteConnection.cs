@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using BFF.Core.Persistence;
+using BFF.Model.ImportExport;
 using BFF.Persistence.Common;
 using BFF.Persistence.Contexts;
 using Dapper;

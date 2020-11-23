@@ -9,7 +9,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using BFF.Core.Extensions;
-using BFF.Core.Helper;
 using BFF.Properties;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.ForModels;
@@ -270,7 +269,7 @@ namespace BFF.View.Helper
                 e =>
                 {
                     //Transfer in "All Accounts"-Tab
-                    if (e.Values[0] is ISummaryAccountViewModel && e.Values[1] != null && e.Values[2] != null)
+                    if (e.Values[0] is ISummaryAccountViewModel && e.Values[1] is not null && e.Values[2] is not null)
                         return TransferBrush;
                     var account = e.Values[0];
                     //Transfer in FromAccount-Tab
@@ -288,13 +287,13 @@ namespace BFF.View.Helper
             ValueConverter.Create<object?, Visibility>(e => e.Value is null ? Visibility.Collapsed : Visibility.Visible);
 
         public static readonly IValueConverter InverseNullToCollapsed =
-            ValueConverter.Create<object?, Visibility>(e => e.Value != null ? Visibility.Collapsed : Visibility.Visible);
+            ValueConverter.Create<object?, Visibility>(e => e.Value is not null ? Visibility.Collapsed : Visibility.Visible);
 
         public static readonly IValueConverter NullableLongToCollapsed =
             ValueConverter.Create<long?, Visibility>(e => e.Value is null ? Visibility.Collapsed : Visibility.Visible);
 
         public static readonly IValueConverter InverseNullableLongToCollapsed =
-            ValueConverter.Create<long?, Visibility>(e => e.Value != null ? Visibility.Collapsed : Visibility.Visible);
+            ValueConverter.Create<long?, Visibility>(e => e.Value is not null ? Visibility.Collapsed : Visibility.Visible);
 
 
         public static readonly IValueConverter ZeroLongToHidden =
@@ -342,7 +341,7 @@ namespace BFF.View.Helper
 
         public static readonly IValueConverter IsNotNull =
             ValueConverter.Create<object?, bool>(
-                e => e.Value != null);
+                e => e.Value is not null);
 
         public static readonly IValueConverter NoneToCollapsed =
             ValueConverter.Create<IEnumerable, Visibility>(

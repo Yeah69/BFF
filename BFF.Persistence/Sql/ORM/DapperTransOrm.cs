@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
-using BFF.Core.Helper;
+using BFF.Persistence.Helper;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
 using Dapper;

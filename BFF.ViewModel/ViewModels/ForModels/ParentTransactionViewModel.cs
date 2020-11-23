@@ -7,6 +7,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
+using BFF.Model.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.ViewModel.Helper;

@@ -3,6 +3,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
+using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
 using MrMeeseeks.Reactive.Extensions;

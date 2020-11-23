@@ -35,13 +35,13 @@ namespace BFF.ViewModel.ViewModels
 
         protected void SetErrors(IEnumerable<string> errors, [CallerMemberName] string? propertyName = null)
         {
-            if (propertyName != null)
+            if (propertyName is not null)
                 _errors[propertyName] = errors;
         }
 
         protected void ClearErrors([CallerMemberName] string? propertyName = null)
         {
-            if (propertyName != null && _errors.ContainsKey(propertyName))
+            if (propertyName is not null && _errors.ContainsKey(propertyName))
                 _errors.Remove(propertyName);
         }
 

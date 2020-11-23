@@ -60,7 +60,7 @@ namespace BFF.View.UserControls
         {
             InitializeComponent();
 
-            if (ItemsSource != null)
+            if (ItemsSource is not null)
             {
                 for (int i = 0; i < DisplayCount; i++)
                 {

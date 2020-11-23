@@ -93,6 +93,8 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                 FilePath.Select(path => File.Exists(path) ? File.ReadLines(path, Encoding.Default).FirstOrDefault() : ""), 
                 mode: ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(CompositeDisposable);
 
+            ShowItemsError = new ReactivePropertySlim<bool>(false, ReactivePropertyMode.DistinctUntilChanged);
+            
             Configuration.Select(_ => Unit.Default)
                 .Merge(FilePath.Select(_ => Unit.Default))
                 .ObserveOn(schedulerProvider.Task)
@@ -107,7 +109,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
 
             Configuration
                 .ObserveOn(schedulerProvider.UI)
-                .Subscribe(items => OnPropertyChanged(nameof(HeaderDoMatch)))
+                .Subscribe(_ => OnPropertyChanged(nameof(HeaderDoMatch)))
                 .CompositeDisposalWith(CompositeDisposable);
 
             Header
@@ -119,7 +121,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             SerialDisposable configurationHeaderChanges = new SerialDisposable().CompositeDisposalWith(CompositeDisposable);
 
             Configuration
-                .Where(configuration => configuration != null)
+                .Where(configuration => configuration is not null)
                 .ObserveOn(schedulerProvider.UI)
                 .Subscribe(configuration =>
                 {
@@ -171,8 +173,6 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             DeselectProfileCommand = new RxRelayCommand(() => SelectedProfile.Value = null)
                 .CompositeDisposalWith(CompositeDisposable);
 
-            ShowItemsError = new ReactivePropertySlim<bool>(false, ReactivePropertyMode.DistinctUntilChanged);
-
             IList<ICsvBankStatementImportItemViewModel> ExtractItems()
             {
                 IList<ICsvBankStatementImportItemViewModel> ret = new List<ICsvBankStatementImportItemViewModel>();
@@ -181,8 +181,13 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                 {
                     if (FileExists.Value && HeaderDoMatch)
                     {
-                        var indexToSegment = Configuration.Value.Segments.Value.Select((s, i) => (s, i))
-                            .ToDictionary(_ => _.i, _ => _.s);
+                        var indexToSegment = Configuration
+                            .Value
+                            .Segments
+                            .Value
+                            ?.Select((s, i) => (s, i))
+                            .ToDictionary(_ => _.i, _ => _.s)
+                            ?? new Dictionary<int, string>();
                         ret = File.ReadLines(FilePath.Value).Skip(1).Select(line =>
                         {
                             var segmentValues = line
@@ -255,6 +260,6 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         public IRxRelayCommand BrowseCsvBankStatementFileCommand { get; }
         public IRxRelayCommand DeselectProfileCommand { get; }
 
-        public bool HeaderDoMatch => Configuration.Value != null && Header.Value == Configuration.Value.Header.Value;
+        public bool HeaderDoMatch => Configuration.Value is not null && Header.Value == Configuration.Value.Header.Value;
     }
 }

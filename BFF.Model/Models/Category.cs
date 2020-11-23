@@ -14,7 +14,7 @@ namespace BFF.Model.Models
             {
                 IList<ICategory> list = new List<ICategory> { category };
                 ICategory current = category;
-                while (current.Parent != null)
+                while (current.Parent is not null)
                 {
                     current = current.Parent;
                     list.Add(current);
@@ -100,7 +100,7 @@ namespace BFF.Model.Models
         public bool IsMyAncestor(ICategory other)
         {
             var current = Parent;
-            while (current != null)
+            while (current is not null)
             {
                 if (current == other) return true;
                 current = current.Parent;

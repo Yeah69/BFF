@@ -128,7 +128,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             NewTransactionCommand = new RxRelayCommand(() =>
             {
                 var transactionViewModel = transactionViewModelFactory(this);
-                if (MissingSum != null) transactionViewModel.Sum.Value = (long)MissingSum;
+                if (MissingSum is not null) transactionViewModel.Sum.Value = (long)MissingSum;
                 NewTransList.Add(transactionViewModel);
             }).AddTo(CompositeDisposable);
 
@@ -138,7 +138,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             {
                 var parentTransactionViewModel = parentTransactionViewModelFactory(this);
                 NewTransList.Add(parentTransactionViewModel);
-                if (MissingSum != null)
+                if (MissingSum is not null)
                 {
                     parentTransactionViewModel.NewSubTransactionCommand?.Execute(null);
                     parentTransactionViewModel.NewSubTransactions.First().Sum.Value = (long)MissingSum;

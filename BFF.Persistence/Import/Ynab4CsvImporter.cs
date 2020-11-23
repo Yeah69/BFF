@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BFF.Model.Contexts;
+using BFF.Model.Import;
+using BFF.Model.Import.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -6,19 +9,19 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using BFF.Core.Persistence;
-using BFF.Persistence.Import.Models;
+using System.Threading.Tasks;
+using BFF.Model.ImportExport;
 using BFF.Persistence.Import.Models.YNAB;
 using MoreLinq;
 using NLog;
 
 namespace BFF.Persistence.Import
 {
-    internal class Ynab4CsvImporter : IImporter
+    internal class Ynab4CsvImporter : IImportContext
     {
-        private static readonly Regex TransferPayeeRegex = new Regex(@"Transfer : (?<accountName>.+)$", RegexOptions.RightToLeft);
-        private static readonly Regex PayeePartsRegex = new Regex(@"^(?<payeeStr>.+)?(( / )?Transfer : (?<accountName>.+))?$", RegexOptions.RightToLeft);
-        private static readonly Regex SplitMemoRegex = new Regex(@"^\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) ");
+        private static readonly Regex TransferPayeeRegex = new (@"Transfer : (?<accountName>.+)$", RegexOptions.RightToLeft);
+        private static readonly Regex PayeePartsRegex = new (@"^(?<payeeStr>.+)?(( / )?Transfer : (?<accountName>.+))?$", RegexOptions.RightToLeft);
+        private static readonly Regex SplitMemoRegex = new (@"^\(Split (?<splitNumber>\d+)/(?<splitCount>\d+)\) ");
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IDtoImportContainerBuilder _dtoImportContainerBuilder;
@@ -32,7 +35,7 @@ namespace BFF.Persistence.Import
             _ynab4CsvImportConfiguration = ynab4CsvImportConfiguration;
         }
 
-        public DtoImportContainer Import()
+        public Task<DtoImportContainer> Import()
         {
             //First step: Parse CSV data into conversion objects
             Queue<Ynab4Transaction> ynabTransactions = new Queue<Ynab4Transaction>(ParseTransactionCsv(_ynab4CsvImportConfiguration.TransactionPath));
@@ -43,7 +46,7 @@ namespace BFF.Persistence.Import
             ConvertBudgetEntryToNative(budgets);
 
             //Third step: Create new database for imported data
-            return _dtoImportContainerBuilder.BuildContainer();
+            return Task.FromResult(_dtoImportContainerBuilder.BuildContainer());
         }
 
         private void ConvertTransactionsToNative(
@@ -177,7 +180,7 @@ namespace BFF.Persistence.Import
            one time for each Account. Fortunately, the Accounts are processed consecutively.
            That way if one of the Accounts of the Transfer points to an already processed Account,
            then it means that this Transfer is already created and can be skipped. */
-        private readonly List<string> _processedAccountsList = new List<string>();
+        private readonly List<string> _processedAccountsList = new ();
         private void AddTransfer(Ynab4Transaction ynabTransfer)
         {
             if (_processedAccountsList.Count == 0)
@@ -204,10 +207,7 @@ namespace BFF.Persistence.Import
             }
         }
 
-        private void ConvertBudgetEntryToNative(IEnumerable<Ynab4BudgetEntry> ynabBudgetEntries)
-        {
-            if (ynabBudgetEntries is null) throw new ArgumentNullException(nameof(ynabBudgetEntries));
-
+        private void ConvertBudgetEntryToNative(IEnumerable<Ynab4BudgetEntry> ynabBudgetEntries) =>
             ynabBudgetEntries
                 .Where(ybe => ybe.MasterCategory != "Uncategorized Transactions")
                 .ForEach(ybe =>
@@ -218,7 +218,6 @@ namespace BFF.Persistence.Import
                         GetOrCreateCategory(ybe.MasterCategory, ybe.SubCategory),
                         ybe.Budgeted);
                 });
-        }
 
         private static List<Ynab4Transaction> ParseTransactionCsv(string filePath)
         {

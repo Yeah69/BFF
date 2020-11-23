@@ -2,6 +2,7 @@
 using System.Reactive.Linq;
 using BFF.Core.Helper;
 using BFF.Model.Models;
+using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
@@ -44,7 +45,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 {
                     _category = _categoryViewModelService.GetViewModel(subTransaction.Category);
                     OnPropertyChanged(nameof(Category));
-                    if (_category != null)
+                    if (_category is not null)
                     {
                         ClearErrors(nameof(Category));
                         OnErrorChanged(nameof(Category));
