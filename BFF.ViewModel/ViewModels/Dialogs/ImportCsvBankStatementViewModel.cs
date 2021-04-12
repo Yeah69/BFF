@@ -191,7 +191,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                         ret = File.ReadLines(FilePath.Value).Skip(1).Select(line =>
                         {
                             var segmentValues = line
-                                .Split(Configuration.Value.Delimiter.Value)
+                                .Split(Configuration.Value.Delimiter?.Value ?? ' ')
                                 .Select((v, i) => (v, i))
                                 .ToDictionary(_ => indexToSegment[_.i], _ => _.v);
                             var payeeString = Configuration.Value.PayeeFormat.Value;

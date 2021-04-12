@@ -11,13 +11,18 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BFF.Model.ImportExport;
+using BFF.Persistence.Common;
 using BFF.Persistence.Import.Models.YNAB;
 using MoreLinq;
 using NLog;
 
 namespace BFF.Persistence.Import
 {
-    internal class Ynab4CsvImporter : IImportContext
+    public interface IYnab4CsvImporter : IImportContext
+    {
+    }
+
+    internal class Ynab4CsvImporter : IYnab4CsvImporter
     {
         private static readonly Regex TransferPayeeRegex = new (@"Transfer : (?<accountName>.+)$", RegexOptions.RightToLeft);
         private static readonly Regex PayeePartsRegex = new (@"^(?<payeeStr>.+)?(( / )?Transfer : (?<accountName>.+))?$", RegexOptions.RightToLeft);
@@ -26,13 +31,18 @@ namespace BFF.Persistence.Import
 
         private readonly IDtoImportContainerBuilder _dtoImportContainerBuilder;
         private readonly IYnab4CsvImportConfiguration _ynab4CsvImportConfiguration;
+        private readonly IDisposable _cleanUpContext;
 
         public Ynab4CsvImporter(
             IDtoImportContainerBuilder dtoImportContainerBuilder,
-            IYnab4CsvImportConfiguration ynab4CsvImportConfiguration)
+            IYnab4CsvImportConfiguration ynab4CsvImportConfiguration,
+            IDisposable cleanUpContext)
         {
             _dtoImportContainerBuilder = dtoImportContainerBuilder;
             _ynab4CsvImportConfiguration = ynab4CsvImportConfiguration;
+            _cleanUpContext = cleanUpContext;
+
+            Title = ynab4CsvImportConfiguration.TransactionPath;
         }
 
         public Task<DtoImportContainer> Import()
@@ -314,5 +324,16 @@ namespace BFF.Persistence.Import
         private static bool IsIncomeThisMonth(string master, string sub) => master == "Income" && sub == "Available this month";
 
         private static bool IsIncomeNextMonth(string master, string sub) => master == "Income" && sub == "Available next month";
+
+        public void Dispose() => 
+            _cleanUpContext.Dispose();
+
+        public string Title { get; }
+    }
+    
+    internal class Ynab4CsvImportContextFactory : ContextFactoryBase<IYnab4CsvImportConfiguration, IYnab4CsvImporter>
+    {
+        public Ynab4CsvImportContextFactory(Func<IYnab4CsvImportConfiguration, IYnab4CsvImporter> factory) : base(factory)
+        {}
     }
 }

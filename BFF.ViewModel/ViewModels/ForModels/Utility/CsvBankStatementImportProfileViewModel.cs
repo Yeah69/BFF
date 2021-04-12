@@ -21,7 +21,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
     public interface ICsvBankStatementImportNonProfileViewModel : IDisposable
     {
         IReactiveProperty<string> Header { get; }
-        IReactiveProperty<char> Delimiter { get; }
+        IReactiveProperty<char>? Delimiter { get; }
         IReactiveProperty<string?> DateSegment { get; }
         IReactiveProperty<CultureInfo?> DateLocalization { get; }
         IReactiveProperty<string> PayeeFormat { get; }
@@ -210,7 +210,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
             Delimiter = new ReactiveProperty<char>(
                 Header
                     .Where(header => !string.IsNullOrWhiteSpace(header))
-                    .Where(_ => NotSameCountOrZero(File.ReadLines(filePath.Value, Encoding.Default).Take(5), Delimiter.Value))
+                    .Where(_ => NotSameCountOrZero(File.ReadLines(filePath.Value, Encoding.Default).Take(5), Delimiter?.Value ?? ' '))
                     .Select(_ => new[] { ',', ';', '\t' }
                         .FirstOrDefault(
                             delimiter => SameCountAndNotZero(
@@ -268,7 +268,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
             }).CompositeDisposalWith(_compositeDisposable);
         }
         public IReactiveProperty<string> Header { get; }
-        public IReactiveProperty<char> Delimiter { get; }
+        public IReactiveProperty<char>? Delimiter { get; }
         public IReactiveProperty<string?> DateSegment { get; }
         public IReactiveProperty<CultureInfo?> DateLocalization { get; }
         public IReactiveProperty<string> PayeeFormat { get; }

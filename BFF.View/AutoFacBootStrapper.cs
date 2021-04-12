@@ -6,6 +6,7 @@ using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.View.Helper;
 using MahApps.Metro.Controls.Dialogs;
+using System.Reactive.Disposables;
 using MainWindow = BFF.View.Views.MainWindow;
 
 namespace BFF.View
@@ -85,9 +86,12 @@ namespace BFF.View
 
             builder.RegisterModule(new Core.AutoFacModule());
 
+            builder.RegisterModule(new Persistence.Proxy.AutofacModule());
+
             builder.RegisterModule(new ViewModel.AutofacModule());
 
-            builder.RegisterModule(new Persistence.Proxy.AutofacModule());
+            builder.Register(_ => new CompositeDisposable())
+                .InstancePerLifetimeScope();
 
             _rootScope = builder.Build();
         }

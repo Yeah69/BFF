@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace BFF.ViewModel.Contexts
+﻿namespace BFF.ViewModel.Contexts
 {
 
-    public interface ILoadProjectContext : IProjectContext, IDisposable
+    public interface ILoadContextViewModel : IContextViewModel
     {
     }
 }

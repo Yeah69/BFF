@@ -75,6 +75,16 @@ namespace BFF.ViewModel.ViewModels
             _incomeCategoryViewModelService = incomeCategoryViewModelService;
             _categoryBaseViewModelService = categoryBaseViewModelService;
 
+            IsIncomeRelevant = new ReactiveProperty<bool>(mode: ReactivePropertyMode.DistinctUntilChanged)
+                .AddTo(_compositeDisposable);
+            
+            Parent = new ReactiveProperty<ICategoryViewModel?>(mode: ReactivePropertyMode.DistinctUntilChanged)
+                .SetValidateNotifyError(parent => ValidateNewCategoryRelationParent(Name, parent))
+                .AddTo(_compositeDisposable);
+       
+            MonthOffset = new ReactiveProperty<int>(mode: ReactivePropertyMode.DistinctUntilChanged)
+                .AddTo(_compositeDisposable);
+
             AddCommand = new AsyncRxRelayCommand(async () =>
                 {
                     (Parent as ReactiveProperty<ICategoryViewModel>)?.ForceValidate();
@@ -113,21 +123,11 @@ namespace BFF.ViewModel.ViewModels
 
             DeselectParentCommand = new RxRelayCommand(() => Parent.Value = null);
 
-            IsIncomeRelevant = new ReactiveProperty<bool>(mode: ReactivePropertyMode.DistinctUntilChanged)
-                .AddTo(_compositeDisposable);
-
             IsIncomeRelevant.Subscribe(_ =>
             {
                 (Parent as ReactiveProperty<ICategoryViewModel>)?.ForceValidate();
                 ValidateName();
             }).AddTo(_compositeDisposable);
-            
-            Parent = new ReactiveProperty<ICategoryViewModel?>(mode: ReactivePropertyMode.DistinctUntilChanged)
-                .SetValidateNotifyError(parent => ValidateNewCategoryRelationParent(Name, parent))
-                .AddTo(_compositeDisposable);
-       
-            MonthOffset = new ReactiveProperty<int>(mode: ReactivePropertyMode.DistinctUntilChanged)
-                .AddTo(_compositeDisposable);
 
             this.ObservePropertyChanged(nameof(Name))
                 .Subscribe(_ => (Parent as ReactiveProperty<ICategoryViewModel>)?.ForceValidate())
@@ -204,7 +204,7 @@ namespace BFF.ViewModel.ViewModels
 
             bool ValidateNewCategoryRelationCondition()
             {
-                if (IsIncomeRelevant?.Value ?? false)
+                if (IsIncomeRelevant.Value)
                     return _incomeCategoryViewModelService.All.All(icvm => icvm.Name != Name);
                 return Parent.Value is null && AllPotentialParents.Where(cvw => cvw.Parent is null).All(cvm => cvm.Name != Name) ||
                        Parent.Value is not null && Parent.Value.Categories.All(cvm => cvm is not null && cvm.Name != Name);

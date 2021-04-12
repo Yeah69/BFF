@@ -34,7 +34,7 @@ namespace BFF.Persistence.Realm.ORM
         protected override string ConnectionString => DbPath;
 
         public ProvideConnection(
-            IRealmFileAccessConfiguration config) : base(config)
+            IRealmProjectFileAccessConfiguration config) : base(config)
         {
             if (config.Password is not null)
                 _hash = GetHash(config.Password);

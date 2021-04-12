@@ -2,7 +2,7 @@
 {
     internal class Ynab4BudgetEntry
     {
-        internal Ynab4BudgetEntry(
+        public Ynab4BudgetEntry(
             string month,
             string category,
             string masterCategory,

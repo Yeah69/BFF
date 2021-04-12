@@ -1,6 +1,0 @@
-﻿namespace BFF.Model.ImportExport
-{
-    public interface ILoadProjectConfiguration
-    {
-    }
-}

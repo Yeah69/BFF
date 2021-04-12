@@ -4,6 +4,6 @@ namespace BFF.ViewModel.ViewModels.Import
 {
     public interface IImportViewModel
     {
-        IImportingConfiguration GenerateConfiguration();
+        IImportConfiguration GenerateConfiguration();
     }
 }

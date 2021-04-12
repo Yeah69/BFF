@@ -2,7 +2,7 @@
 
 namespace BFF.ViewModel.Contexts
 {
-    public interface IEmptyProjectContext : IProjectContext, IDisposable
+    public interface IEmptyContextViewModel : IContextViewModel
     {
     }
 }

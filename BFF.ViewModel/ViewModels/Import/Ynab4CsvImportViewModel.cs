@@ -74,7 +74,7 @@ namespace BFF.ViewModel.ViewModels.Import
             });
         }
 
-        public IImportingConfiguration GenerateConfiguration() =>
+        public IImportConfiguration GenerateConfiguration() =>
             _importingConfigurationFactory((TransactionPath ?? throw new FileNotFoundException(), BudgetPath ?? throw new FileNotFoundException()));
     }
 }

@@ -2,10 +2,29 @@
 using System.Reflection;
 using Autofac;
 using BFF.Core.IoC;
+using System;
+using System.Collections.Generic;
 using Module = Autofac.Module;
 
 namespace BFF.Model
 {
+    public interface ILifetimeScopeRegistry
+    {
+        void Add(object key, ILifetimeScope lifetimeScope);
+
+        ILifetimeScope Get(object key);
+    }
+
+    internal class LifetimeScopeRegistry : ILifetimeScopeRegistry, IDisposable
+    {
+        private readonly IDictionary<object, ILifetimeScope> _registry = new Dictionary<object, ILifetimeScope>();
+        
+        public void Add(object key, ILifetimeScope lifetimeScope) => _registry[key] = lifetimeScope;
+        public ILifetimeScope Get(object key) => _registry[key];
+
+        public void Dispose() => _registry.Clear();
+    }
+    
     public class AutofacModule : Module
     {
         protected override void Load(ContainerBuilder builder)

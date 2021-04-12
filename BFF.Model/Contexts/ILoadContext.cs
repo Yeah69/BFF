@@ -1,6 +1,6 @@
 ﻿namespace BFF.Model.Contexts
 {
-    public interface ILoadContext
+    public interface ILoadContext : IContext
     {
         void Load();
     }

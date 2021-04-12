@@ -5,12 +5,15 @@ using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
 using BFF.Core.IoC;
+using BFF.Model.Contexts;
 using BFF.Model.ImportExport;
+using BFF.Model.IoC;
 using BFF.ViewModel.Contexts;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.ViewModels.Dialogs;
 using BFF.ViewModel.ViewModels.ForModels;
+using MrMeeseeks.Reactive.Extensions;
 using NLog;
 using Reactive.Bindings;
 using IProjectContext = BFF.Model.IoC.IProjectContext;
@@ -41,8 +44,6 @@ namespace BFF.ViewModel.ViewModels
 
     internal class MainWindowViewModel : ViewModelBase, IMainWindowViewModel, IOncePerApplication //todo IDisposable
     {
-        private readonly Func<IFileAccessConfiguration, ILoadProjectContext> _loadedProjectContextFactory;
-        private readonly Func<IEmptyProjectContext> _emptyContextFactory;
         private readonly IBffSettings _bffSettings;
         private readonly ISetupLocalizationFramework _setupLocalizationFramework;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -51,11 +52,7 @@ namespace BFF.ViewModel.ViewModels
         public string? Title
         {
             get => _title;
-            set
-            {
-                _title = value;
-                OnPropertyChanged();
-            }
+            private set => SetIfChangedAndRaise(ref _title, value);
         }
 
         public IRxRelayCommand NewBudgetPlanCommand { get; }
@@ -79,12 +76,7 @@ namespace BFF.ViewModel.ViewModels
         public ICultureManager? CultureManager
         {
             get => _cultureManager;
-            private set
-            {
-                if (value == _cultureManager) return;
-                _cultureManager = value;
-                OnPropertyChanged();
-            }
+            private set => SetIfChangedAndRaise(ref _cultureManager, value);
         }
 
         public ITransDataGridColumnManager TransDataGridColumnManager { get; }
@@ -118,15 +110,10 @@ namespace BFF.ViewModel.ViewModels
         public IParentTransactionViewModel? ParentTransactionViewModel
         {
             get => _parentTransViewModel;
-            set
-            {
-                _parentTransViewModel = value;
-                OnPropertyChanged();
-            }
+            set => SetIfChangedAndRaise(ref _parentTransViewModel, value);
         }
 
         private bool _parentTransFlyoutOpen;
-        private readonly SerialDisposable _contextSequence = new SerialDisposable();
         private ICultureManager? _cultureManager;
         private TopLevelViewModelCompositionBase? _topLevelViewModelComposition;
 
@@ -135,17 +122,14 @@ namespace BFF.ViewModel.ViewModels
         public bool ParentTransFlyoutOpen
         {
             get => _parentTransFlyoutOpen;
-            set
-            {
-                _parentTransFlyoutOpen = value;
-                OnPropertyChanged();
-            }
+            set => SetIfChangedAndRaise(ref _parentTransFlyoutOpen, value);
         }
 
         public MainWindowViewModel(
-            Func<IFileAccessConfiguration, ILoadProjectContext> loadedProjectContextFactory,
-            Func<IFileAccessConfiguration, IProjectContext> newBackendContextFactory,
-            Func<IEmptyProjectContext> emptyContextFactory,
+            ICurrentProject currentProject,
+            IContextManager contextManager,
+            Func<IContext, ILoadContextViewModel> loadContextViewModelFactory,
+            Func<IEmptyContextViewModel> emptyContextViewModelFactory,
             Func<INewFileAccessViewModel> newFileAccessViewModelFactory,
             Func<IOpenFileAccessViewModel> openFileAccessDialogFactory,
             IBffChildWindowManager bffChildWindowManager,
@@ -154,12 +138,11 @@ namespace BFF.ViewModel.ViewModels
             IBffSystemInformation bffSystemInformation,
             ISetupLocalizationFramework setupLocalizationFramework,
             IParentTransactionFlyoutManager parentTransactionFlyoutManager,
-            IEmptyViewModel emptyViewModel)
+            IEmptyViewModel emptyViewModel,
+            CompositeDisposable compositeDisposable)
         {
             TransDataGridColumnManager = transDataGridColumnManager;
             EmptyViewModel = emptyViewModel;
-            _loadedProjectContextFactory = loadedProjectContextFactory;
-            _emptyContextFactory = emptyContextFactory;
             _bffSettings = bffSettings;
             _setupLocalizationFramework = setupLocalizationFramework;
             Logger.Debug("Initializing …");
@@ -192,11 +175,6 @@ namespace BFF.ViewModel.ViewModels
                         try
                         {
                             var configuration = newFileAccessViewModel.GenerateConfiguration();
-                            using (var createBackendContext = newBackendContextFactory(configuration))
-                            {
-                                await createBackendContext
-                                    .CreateProject();
-                            }
                             Reset(configuration);
                         }
                         catch (FileNotFoundException e)
@@ -235,33 +213,35 @@ namespace BFF.ViewModel.ViewModels
 
             ParentTransactionOnClose = new RxRelayCommand(parentTransactionFlyoutManager.Close);
 
+            currentProject
+                .Current
+                .Subscribe(c =>
+                {
+                    var context = contextManager.Empty == c
+                        ? (IContextViewModel)emptyContextViewModelFactory()
+                        : loadContextViewModelFactory(c);
+
+                    Title = context.Title;
+                    TopLevelViewModelComposition = context.LoadProject();
+                    CultureManager = context.CultureManager;
+
+                    OnPropertyChanged(nameof(IsEmpty));
+                })
+                .CompositeDisposalWith(compositeDisposable);
+
             Logger.Trace("Initializing done.");
-        }
-
-        private void Reset(IFileAccessConfiguration? config)
-        {
-            Contexts.IProjectContext context;
-            if (config is not null && File.Exists(config.Path))
+            
+            void Reset(IProjectFileAccessConfiguration? config)
             {
-                var loadedProjectContext = _loadedProjectContextFactory(config);
-                _contextSequence.Disposable = loadedProjectContext;
-                Title = $"{new FileInfo(config.Path).FullName} - BFF";
-                _bffSettings.DBLocation = config.Path;
-                context = loadedProjectContext;
+                if (config is not null && File.Exists(config.Path))
+                {
+                    currentProject.CreateAndSet(config);
+                }
+                else
+                {
+                    currentProject.Close();
+                }
             }
-            else
-            {
-                var emptyProject = _emptyContextFactory();
-                _contextSequence.Disposable = emptyProject;
-                Title = "BFF";
-                _bffSettings.DBLocation = "";
-                context = emptyProject;
-            }
-
-            TopLevelViewModelComposition = context.LoadProject();
-            CultureManager = context.CultureManager;
-
-            OnPropertyChanged(nameof(IsEmpty));
         }
 
         #region SizeLocationWindowState

@@ -3,8 +3,9 @@ using System.Diagnostics;
 using System.Reflection;
 using Autofac;
 using BFF.Core.IoC;
+using BFF.Model;
+using BFF.Model.Contexts;
 using BFF.Model.ImportExport;
-using BFF.Model.IoC;
 using BFF.Persistence.Contexts;
 using BFF.Persistence.Import;
 using BFF.Persistence.Realm;
@@ -12,6 +13,7 @@ using BFF.Persistence.Realm.Models;
 using BFF.Persistence.Realm.ORM;
 using BFF.Persistence.Realm.Repositories;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
+using BFF.Persistence.Sql;
 using BFF.Persistence.Sql.Models;
 using BFF.Persistence.Sql.ORM;
 using BFF.Persistence.Sql.Repositories;
@@ -85,91 +87,76 @@ namespace BFF.Persistence
                 .AsImplementedInterfaces()
                 .ExternallyOwned();
 
-            builder.Register<Func<string, IFileAccessConfiguration>>(cc =>
+            builder.Register<Func<string, IProjectFileAccessConfiguration>>(_ =>
             {
                 return path =>
                 {
                     if (path.EndsWith(".sqlite") || path.EndsWith(".bffs"))
                     {
-                        return new SqliteFileAccessConfiguration(path);
+                        return new SqliteProjectFileAccessConfiguration(path);
                     }
                     throw new InvalidOperationException("Unknown extension");
                 };
             });
 
-            builder.Register<Func<IFileAccessConfiguration, IProjectContext>>(cc =>
-            {
-                var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
-                return config =>
-                {
-                    var newLifetimeScope = currentLifetimeScope
-                        .BeginLifetimeScope(
-                            cb =>
-                            {
-                                switch (config)
-                                {
-                                    case ISqliteFileAccessConfiguration sqliteConfiguration:
-                                        LoadSqliteRegistrations(cb, sqliteConfiguration);
-                                        break;
-                                    case IRealmFileAccessConfiguration realmConfiguration:
-                                        LoadRealmRegistrations(cb, realmConfiguration);
-                                        break;
-                                    default: throw new ArgumentException("Unsupported configuration", nameof(config));
-                                }
-                            });
-
-                    return newLifetimeScope.Resolve<ProjectContext>(TypedParameter.From((IDisposable)newLifetimeScope));
-                };
-            });
-
-            builder.Register<Func<IImportingConfiguration, IImporter>>(cc =>
+            builder.Register<Func<IImportConfiguration, IImportContext>>(cc =>
             {
                 var ynab4CsvImporterFactory = cc.Resolve<Func<IYnab4CsvImportConfiguration, Ynab4CsvImporter>>();
+                var sqliteContextFactory = cc.Resolve<Func<ISqliteProjectFileAccessConfiguration, SqliteContext>>();
                 return ic =>
                 {
                     switch (ic)
                     {
                         case IYnab4CsvImportConfiguration ynab4:
                             return ynab4CsvImporterFactory(ynab4);
+                        case ISqliteProjectFileAccessConfiguration sqlite:
+                            return sqliteContextFactory(sqlite);
                         default:
                             throw new InvalidOperationException("Unknown import configuration");
                     }
                 };
             });
 
-            builder.Register<Func<IExportingConfiguration, IExporter>>(cc =>
+            builder.Register<Func<IRealmProjectFileAccessConfiguration, IRealmContext>>(cc =>
             {
                 var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
-                return ec =>
+                var lifetimeScopeRegistry = cc.Resolve<ILifetimeScopeRegistry>();
+                return config =>
                 {
-                    switch (ec)
-                    {
-                        case IRealmExportConfiguration realmExportConfiguration:
-                            var loadProjectFromFileConfiguration = 
-                                new RealmFileAccessConfiguration(
-                                    realmExportConfiguration.Path,
-                                    realmExportConfiguration.Password);
-                            var newLifetimeScope = currentLifetimeScope
-                                .BeginLifetimeScope(cb => LoadRealmRegistrations(cb, loadProjectFromFileConfiguration));
+                    var newLifetimeScope = currentLifetimeScope
+                        .BeginLifetimeScope(cb => LoadRealmRegistrations(cb, config));
+                    var context = newLifetimeScope.Resolve<IRealmContext>(TypedParameter.From<IDisposable>(newLifetimeScope));
+                    lifetimeScopeRegistry.Add(context, newLifetimeScope);
+                    return context;
+                };
+            });
 
-                            return newLifetimeScope.Resolve<RealmExporter>(TypedParameter.From<IDisposable>(newLifetimeScope));
-                        default: throw new ArgumentException(nameof(ec));
-                    }
+            builder.Register<Func<ISqliteProjectFileAccessConfiguration, ISqliteContext>>(cc =>
+            {
+                var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
+                var lifetimeScopeRegistry = cc.Resolve<ILifetimeScopeRegistry>();
+                return config =>
+                {
+                    var newLifetimeScope = currentLifetimeScope
+                        .BeginLifetimeScope(cb => LoadSqliteRegistrations(cb, config));
+                    var context = newLifetimeScope.Resolve<ISqliteContext>(TypedParameter.From<IDisposable>(newLifetimeScope));
+                    lifetimeScopeRegistry.Add(context, newLifetimeScope);
+                    return context;
                 };
             });
         }
 
         private void LoadBackendRegistrationsCommon<T>(
             ContainerBuilder builder, 
-            T config) where T : ILoadProjectConfiguration 
+            T config) where T : ILoadConfiguration 
         {
-            builder.Register(cc => config)
+            builder.Register(_ => config)
                 .AsSelf()
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
         }
 
-        private void LoadSqliteRegistrations(ContainerBuilder builder, ISqliteFileAccessConfiguration config)
+        private void LoadSqliteRegistrations(ContainerBuilder builder, ISqliteProjectFileAccessConfiguration config)
         {
             LoadBackendRegistrationsCommon(builder, config);
 
@@ -201,7 +188,7 @@ namespace BFF.Persistence
                 .InstancePerLifetimeScope();
         }
 
-        private void LoadRealmRegistrations(ContainerBuilder builder, IRealmFileAccessConfiguration config)
+        private void LoadRealmRegistrations(ContainerBuilder builder, IRealmProjectFileAccessConfiguration config)
         {
             LoadBackendRegistrationsCommon(builder, config);
 

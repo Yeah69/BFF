@@ -2,9 +2,9 @@
 
 namespace BFF.Persistence.Contexts
 {
-    internal class SqliteFileAccessConfiguration : ISqliteFileAccessConfiguration
+    internal class SqliteProjectFileAccessConfiguration : ISqliteProjectFileAccessConfiguration
     {
-        public SqliteFileAccessConfiguration(
+        public SqliteProjectFileAccessConfiguration(
             string path)
         {
             Path = path;

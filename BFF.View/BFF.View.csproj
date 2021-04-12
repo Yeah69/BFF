@@ -72,17 +72,7 @@
       <EmbeddedResource Update="Properties\Texts.resx">
         <Generator>ResXFileCodeGenerator</Generator>
       </EmbeddedResource>
-      <EmbeddedResource Update="Properties\Texts.de-DE.resx" />
-      <EmbeddedResource Update="Properties\Texts.en-US.resx" />
-      <EmbeddedResource Update="Properties\Texts.hu-HU.resx" />
-      <EmbeddedResource Update="Properties\Texts.ru-RU.resx" />
-      <EmbeddedResource Update="Properties\Texts.es-ES.resx" />
-      <EmbeddedResource Update="Properties\Texts.fr-FR.resx" />
-      <EmbeddedResource Update="Properties\Texts.it-IT.resx" />
       <EmbeddedResource Update="Properties\Texts.ja.resx" />
-      <EmbeddedResource Update="Properties\Texts.nl-NL.resx" />
-      <EmbeddedResource Update="Properties\Texts.pl-PL.resx" />
-      <EmbeddedResource Update="Properties\Texts.pt-PT.resx" />
       <EmbeddedResource Update="Properties\Texts.zh.resx" />
     </ItemGroup>
 

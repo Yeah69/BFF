@@ -18,12 +18,12 @@ using Payee = BFF.Persistence.Realm.Models.Persistence.Payee;
 
 namespace BFF.Persistence.Realm
 {
-    internal interface IExporter
+    internal interface IRealmExporter
     {
-        Task ExportAsync(DtoImportContainer container);
+        Task Export(DtoImportContainer container);
     }
 
-    internal class RealmExporter : IExporter, IDisposable
+    internal class RealmExporter : IRealmExporter, IDisposable
     {
         private readonly RealmExportingOrm _realmExportingOrm;
         private readonly IDisposable _disposeOnDisposal;
@@ -36,7 +36,7 @@ namespace BFF.Persistence.Realm
             _disposeOnDisposal = disposeOnDisposal;
         }
 
-        public Task ExportAsync(DtoImportContainer container)
+        public Task Export(DtoImportContainer container)
         {
             return _realmExportingOrm.PopulateDatabaseAsync(ToRealmExportContainer(container));
         }

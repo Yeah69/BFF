@@ -1,6 +1,6 @@
 ﻿namespace BFF.Model.ImportExport
 {
-    public interface IYnab4CsvImportConfiguration
+    public interface IYnab4CsvImportConfiguration : IImportConfiguration
     {
         string TransactionPath { get; }
 

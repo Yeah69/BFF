@@ -15,7 +15,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         string? Path { get; set; }
         IPasswordProtectedFileAccessViewModel? PasswordConfiguration { get; }
 
-        IFileAccessConfiguration GenerateConfiguration();
+        IProjectFileAccessConfiguration GenerateConfiguration();
     }
 
     public abstract class FileAccessViewModel : OkCancelDialogViewModel
@@ -71,7 +71,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                 OnPropertyChanged();
             }
         }
-        public IFileAccessConfiguration GenerateConfiguration()
+        public IProjectFileAccessConfiguration GenerateConfiguration()
         {
             if (this.Path is null) throw new FileNotFoundException();
 

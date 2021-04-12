@@ -1,6 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using BFF.Model.Contexts;
 using BFF.Model.ImportExport;
+using System;
+using System.Threading.Tasks;
 
 namespace BFF.ViewModel.ViewModels.Import
 {
@@ -15,7 +16,8 @@ namespace BFF.ViewModel.ViewModels.Import
 
     internal class ImportDialogViewModel : ViewModelBase, IImportDialogViewModel
     {
-        private readonly IImportExport _importExport;
+        private readonly Func<IImportConfiguration, IImportContext> _importContextFactory;
+        private readonly Func<IExportConfiguration, IExportContext> _exportContextFactory;
         private readonly Func<Ynab4CsvImportViewModel> _ynab4CsvImportViewModelFactory;
         private readonly Func<SqliteProjectImportViewModel> _sqliteProjectImportViewModelFactory;
         private readonly Func<RealmFileExportViewModel> _realmFileExportViewModel;
@@ -71,20 +73,24 @@ namespace BFF.ViewModel.ViewModels.Import
         }
 
 
-        public Task Import()
+        public async Task Import()
         {
-            return _importExport.ImportExportAsync(
-                ImportViewModel.GenerateConfiguration(),
-                ExportViewModel.GenerateConfiguration());
+            var importContext = _importContextFactory(ImportViewModel.GenerateConfiguration());
+            var exportContext = _exportContextFactory(ExportViewModel.GenerateConfiguration());
+            await exportContext.Export(
+                await importContext.Import().ConfigureAwait(false))
+                .ConfigureAwait(false);
         }
 
         public ImportDialogViewModel(
-            IImportExport importExport,
+            Func<IImportConfiguration, IImportContext> importContextFactory,
+            Func<IExportConfiguration, IExportContext> exportContextFactory,
             Func<Ynab4CsvImportViewModel> ynab4CsvImportViewModelFactory,
             Func<SqliteProjectImportViewModel> sqliteProjectImportViewModelFactory,
             Func<RealmFileExportViewModel> realmFileExportViewModel)
         {
-            _importExport = importExport;
+            _importContextFactory = importContextFactory;
+            _exportContextFactory = exportContextFactory;
             _ynab4CsvImportViewModelFactory = ynab4CsvImportViewModelFactory;
             _sqliteProjectImportViewModelFactory = sqliteProjectImportViewModelFactory;
             _realmFileExportViewModel = realmFileExportViewModel;

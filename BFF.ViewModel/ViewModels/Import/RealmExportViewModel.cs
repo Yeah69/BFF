@@ -1,6 +1,6 @@
-﻿using System;
+﻿using BFF.Model.ImportExport;
+using System;
 using System.IO;
-using BFF.Model.ImportExport;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.Dialogs;
 
@@ -8,7 +8,7 @@ namespace BFF.ViewModel.ViewModels.Import
 {
     public class RealmFileExportViewModel : ViewModelBase, IExportViewModel
     {
-        private readonly Func<(string Path, string? Password), IRealmExportConfiguration> _exportingConfigurationFactory;
+        private readonly Func<(string Path, string? Password), IRealmProjectFileAccessConfiguration> _exportingConfigurationFactory;
         private string? _path;
 
         public string? Path
@@ -27,7 +27,7 @@ namespace BFF.ViewModel.ViewModels.Import
         public RealmFileExportViewModel(
             PasswordProtectedFileAccessViewModel passwordProtectedFileAccessViewModel,
             Func<IBffSaveFileDialog> saveFileDialogFactory,
-            Func<(string Path, string? Password), IRealmExportConfiguration> exportingConfigurationFactory,
+            Func<(string Path, string? Password), IRealmProjectFileAccessConfiguration> exportingConfigurationFactory,
             IBffSettings bffSettings)
         {
             PasswordConfiguration = passwordProtectedFileAccessViewModel;
@@ -51,7 +51,7 @@ namespace BFF.ViewModel.ViewModels.Import
 
         public RxRelayCommand BrowseCommand { get; set; }
 
-        public IExportingConfiguration GenerateConfiguration() =>
+        public IExportConfiguration GenerateConfiguration() =>
             _exportingConfigurationFactory((
                 Path ?? throw new FileNotFoundException(), 
                 PasswordConfiguration.IsEncryptionActive 

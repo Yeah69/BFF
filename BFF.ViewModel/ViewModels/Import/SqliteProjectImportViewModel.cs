@@ -1,13 +1,13 @@
-﻿using System;
+﻿using BFF.Model.ImportExport;
+using System;
 using System.IO;
-using BFF.Model.ImportExport;
 using BFF.ViewModel.Helper;
 
 namespace BFF.ViewModel.ViewModels.Import
 {
     public class SqliteProjectImportViewModel : ViewModelBase, IImportViewModel
     {
-        private readonly Func<string, ISqliteImportConfiguration> _importingConfigurationFactory;
+        private readonly Func<string, ISqliteProjectFileAccessConfiguration> _importingConfigurationFactory;
         private string? _path;
         
         public IRxRelayCommand BrowseCommand { get; }
@@ -25,7 +25,7 @@ namespace BFF.ViewModel.ViewModels.Import
 
         public SqliteProjectImportViewModel(
             Func<IBffOpenFileDialog> openFileDialogFactory,
-            Func<string, ISqliteImportConfiguration> importingConfigurationFactory)
+            Func<string, ISqliteProjectFileAccessConfiguration> importingConfigurationFactory)
         {
             _importingConfigurationFactory = importingConfigurationFactory;
             BrowseCommand = new RxRelayCommand(() =>
@@ -39,7 +39,7 @@ namespace BFF.ViewModel.ViewModels.Import
             });
         }
 
-        public IImportingConfiguration GenerateConfiguration() =>
+        public IImportConfiguration GenerateConfiguration() =>
             _importingConfigurationFactory(Path ?? throw new FileNotFoundException());
     }
 }

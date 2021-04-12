@@ -29,7 +29,7 @@ namespace BFF.Persistence.Common
         protected string DbPath { get; }
         private static string BackupDirectoryPath(string fileName) => $"BFF_{fileName}_Backups";
 
-        protected ProvideConnectionBase(IFileAccessConfiguration config)
+        protected ProvideConnectionBase(IProjectFileAccessConfiguration config)
         {
             DbPath = config.Path;
         }

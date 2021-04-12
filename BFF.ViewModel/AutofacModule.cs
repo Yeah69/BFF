@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Reflection;
 using Autofac;
 using BFF.Core.IoC;
+using BFF.Model;
+using BFF.Model.Contexts;
 using BFF.Model.ImportExport;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
@@ -76,7 +78,10 @@ namespace BFF.ViewModel
                 .AsSelf()
                 .SingleInstance();
 
-            builder.RegisterType<MainWindowViewModel>().As<IMainWindowViewModel>().SingleInstance();
+            builder
+                .RegisterType<MainWindowViewModel>()
+                .As<IMainWindowViewModel>()
+                .SingleInstance();
 
             builder.Register<Func<IAccountBaseViewModel, ITransactionViewModel>>(cc =>
             {
@@ -99,24 +104,22 @@ namespace BFF.ViewModel
                 return abvm => factory(createNewModels.CreateParentTransfer(), abvm);
             }).As<Func<IAccountBaseViewModel, IParentTransactionViewModel>>();
 
-            builder.Register<Func<IFileAccessConfiguration, ILoadProjectContext>>(cc =>
+            builder.Register<Func<IContext, ILoadContextViewModel>>(cc =>
             {
-                var lifetimeScope = cc.Resolve<ILifetimeScope>();
-                return config =>
-                {
-                    var scope = lifetimeScope
-                        .Resolve<Func<IFileAccessConfiguration, ILifetimeScope>>()(config);
-                    return scope.Resolve<ILoadProjectContext>(TypedParameter.From((IDisposable)scope));
-                };
+                var lifetimeScopeRegistry = cc.Resolve<ILifetimeScopeRegistry>();
+                return context => lifetimeScopeRegistry
+                    .Get(context)
+                    .Resolve<ILoadContextViewModel>(
+                        TypedParameter.From(context));
             });
 
-            builder.Register<Func<IEmptyProjectContext>>(cc =>
+            builder.Register<Func<IEmptyContextViewModel>>(cc =>
             {
                 var lifetimeScope = cc.Resolve<ILifetimeScope>();
                 return () =>
                 {
                     var scope = lifetimeScope.BeginLifetimeScope();
-                    return scope.Resolve<IEmptyProjectContext>(TypedParameter.From((IDisposable)scope));
+                    return scope.Resolve<IEmptyContextViewModel>(TypedParameter.From((IDisposable)scope));
                 };
             });
 

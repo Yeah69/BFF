@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using BFF.Persistence.Helper;
-using BFF.Persistence.Import;
 using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
 using MrMeeseeks.DataStructures;
@@ -15,7 +14,12 @@ using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Sql.ORM
 {
-    internal class DapperImportingOrm : IImporter
+    internal interface IDapperImportingOrm
+    {
+        Task<DtoImportContainer> Import();
+    }
+
+    internal class DapperImportingOrm : IDapperImportingOrm
     {
         private readonly IProvideSqliteConnection _provideConnection;
         private readonly ICrudOrm<IAccountSql> _accountCrudOrm;

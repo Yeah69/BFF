@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BFF.Model.Contexts;
+using System;
 using BFF.Model.Models;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
@@ -7,14 +8,13 @@ using BFF.ViewModel.ViewModels.ForModels;
 
 namespace BFF.ViewModel.Contexts
 {
-    internal class LoadProjectContext : ProjectContext, ILoadProjectContext
+    internal class LoadContextViewModel : ContextViewModel, ILoadContextViewModel
     {
-        private readonly IDisposable _disposeContext;
         private readonly Lazy<LoadedProjectTopLevelViewModelComposition> _lazyLoadedProjectTopLevelViewModelComposition;
 
-        public LoadProjectContext(
+        public LoadContextViewModel(
             // parameters
-            IDisposable disposeContext,
+            IContext context, 
 
             // dependencies
             Func<IAccountViewModelService> accountViewModelService,
@@ -28,7 +28,6 @@ namespace BFF.ViewModel.Contexts
             Lazy<LoadedProjectTopLevelViewModelComposition> lazyLoadedProjectTopLevelViewModelComposition)
         {
             CultureManager = cultureManager;
-            _disposeContext = disposeContext;
             _lazyLoadedProjectTopLevelViewModelComposition = lazyLoadedProjectTopLevelViewModelComposition;
             accountViewModelService();
             categoryViewModelService();
@@ -37,18 +36,17 @@ namespace BFF.ViewModel.Contexts
             flagViewModelService();
             summaryAccount();
             summaryAccountViewModel();
+
+            Title = $"{context.Title} - {base.Title}";
         }
 
         public override TopLevelViewModelCompositionBase LoadProject()
         {
             return _lazyLoadedProjectTopLevelViewModelComposition.Value;
         }
-
-        public void Dispose()
-        {
-            _disposeContext?.Dispose();
-        }
-
+        
         public override ICultureManager CultureManager { get; }
+
+        public override string Title { get; }
     }
 }

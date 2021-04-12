@@ -1,9 +1,10 @@
 ﻿using BFF.Model.Import;
+using System.Threading.Tasks;
 
 namespace BFF.Model.Contexts
 {
-    public interface IExportContext
+    public interface IExportContext : IContext
     {
-        void Export(DtoImportContainer container);
+        Task Export(DtoImportContainer container);
     }
 }

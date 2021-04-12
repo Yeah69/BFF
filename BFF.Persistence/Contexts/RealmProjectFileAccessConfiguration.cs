@@ -2,9 +2,9 @@
 
 namespace BFF.Persistence.Contexts
 {
-    internal class RealmFileAccessConfiguration : IRealmFileAccessConfiguration
+    internal class RealmProjectFileAccessConfiguration : IRealmProjectFileAccessConfiguration
     {
-        public RealmFileAccessConfiguration(
+        public RealmProjectFileAccessConfiguration(
             string path,
             string? password)
         {

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace BFF.Model.Contexts
 {
-    public interface IImportContext
+    public interface IImportContext : IContext
     {
         Task<DtoImportContainer> Import();
     }
