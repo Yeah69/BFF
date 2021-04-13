@@ -5,6 +5,7 @@ using BFF.Persistence.Realm.Models.Persistence;
 using MrMeeseeks.DataStructures;
 using MrMeeseeks.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,7 +58,7 @@ namespace BFF.Persistence.Realm.ORM
             var categoryTrees = categories
                 .Where(c => c.IsIncomeRelevant.Not() && c.Parent is null)
                 .SelectTree<Category, Tree<CategoryDto>>(
-                    category => categoryGrouping[category],
+                    category => categoryGrouping.TryGetValue(category, out var children) ? children : new List<Category>(),
                     (category, children) => new Tree<CategoryDto>(categoryDictionary[category], children))
                 .ToReadOnlyList();
             

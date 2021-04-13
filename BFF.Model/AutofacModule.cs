@@ -15,7 +15,7 @@ namespace BFF.Model
         ILifetimeScope Get(object key);
     }
 
-    internal class LifetimeScopeRegistry : ILifetimeScopeRegistry, IDisposable
+    internal class LifetimeScopeRegistry : ILifetimeScopeRegistry, IOncePerApplication, IDisposable
     {
         private readonly IDictionary<object, ILifetimeScope> _registry = new Dictionary<object, ILifetimeScope>();
         

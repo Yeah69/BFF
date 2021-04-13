@@ -23,17 +23,14 @@ namespace BFF.Persistence.Realm
         Task Export(DtoImportContainer container);
     }
 
-    internal class RealmExporter : IRealmExporter, IDisposable
+    internal class RealmExporter : IRealmExporter
     {
         private readonly RealmExportingOrm _realmExportingOrm;
-        private readonly IDisposable _disposeOnDisposal;
 
         public RealmExporter(
-            RealmExportingOrm realmExportingOrm,
-            IDisposable disposeOnDisposal)
+            RealmExportingOrm realmExportingOrm)
         {
             _realmExportingOrm = realmExportingOrm;
-            _disposeOnDisposal = disposeOnDisposal;
         }
 
         public Task Export(DtoImportContainer container)
@@ -271,11 +268,6 @@ namespace BFF.Persistence.Realm
             public IReadOnlyList<Trans> Trans { get; set; } = new Trans[0];
             public IReadOnlyList<SubTransaction> SubTransactions { get; set; } = new SubTransaction[0];
             public IReadOnlyList<BudgetEntry> BudgetEntries { get; set; } = new BudgetEntry[0];
-        }
-
-        public void Dispose()
-        {
-            _disposeOnDisposal.Dispose();
         }
     }
 }

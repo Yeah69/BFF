@@ -16,7 +16,6 @@ using BFF.ViewModel.ViewModels.ForModels;
 using MrMeeseeks.Reactive.Extensions;
 using NLog;
 using Reactive.Bindings;
-using IProjectContext = BFF.Model.IoC.IProjectContext;
 
 namespace BFF.ViewModel.ViewModels
 {
@@ -26,8 +25,7 @@ namespace BFF.ViewModel.ViewModels
         IRxRelayCommand OpenBudgetPlanCommand { get; }
         IRxRelayCommand CloseBudgetPlanCommand { get; }
         IRxRelayCommand ParentTransactionOnClose { get; }
-        TopLevelViewModelCompositionBase? TopLevelViewModelComposition { get; set; }
-        IEmptyViewModel EmptyViewModel { get; }
+        TopLevelViewModelCompositionBase? TopLevelViewModelComposition { get; }
         ICultureManager? CultureManager { get; }
         bool IsEmpty { get; }
         CultureInfo LanguageCulture { get; set; }
@@ -65,12 +63,7 @@ namespace BFF.ViewModel.ViewModels
         public TopLevelViewModelCompositionBase? TopLevelViewModelComposition
         {
             get => _topLevelViewModelComposition;
-            set
-            {
-                if (_topLevelViewModelComposition == value) return;
-                _topLevelViewModelComposition = value;
-                OnPropertyChanged();
-            }
+            private set => SetIfChangedAndRaise(ref _topLevelViewModelComposition, value);
         }
 
         public ICultureManager? CultureManager
@@ -80,7 +73,7 @@ namespace BFF.ViewModel.ViewModels
         }
 
         public ITransDataGridColumnManager TransDataGridColumnManager { get; }
-        public IEmptyViewModel EmptyViewModel { get; set; }
+        
         public bool IsEmpty => TopLevelViewModelComposition?.AccountTabsViewModel is null 
                                || TopLevelViewModelComposition.BudgetOverviewViewModel is null;
 
@@ -138,15 +131,12 @@ namespace BFF.ViewModel.ViewModels
             IBffSystemInformation bffSystemInformation,
             ISetupLocalizationFramework setupLocalizationFramework,
             IParentTransactionFlyoutManager parentTransactionFlyoutManager,
-            IEmptyViewModel emptyViewModel,
             CompositeDisposable compositeDisposable)
         {
             TransDataGridColumnManager = transDataGridColumnManager;
-            EmptyViewModel = emptyViewModel;
             _bffSettings = bffSettings;
             _setupLocalizationFramework = setupLocalizationFramework;
             Logger.Debug("Initializing …");
-            Reset(null); // todo
 
             //If the application is not visible on screen, than reset the default position
             //This might occur when one of multiple monitors is switched off or the screen resolution is changed while BFF is off
@@ -209,7 +199,7 @@ namespace BFF.ViewModel.ViewModels
                 }
             });
 
-            CloseBudgetPlanCommand = new RxRelayCommand(() => Reset(null));
+            CloseBudgetPlanCommand = new RxRelayCommand(currentProject.Close);
 
             ParentTransactionOnClose = new RxRelayCommand(parentTransactionFlyoutManager.Close);
 
@@ -231,9 +221,9 @@ namespace BFF.ViewModel.ViewModels
 
             Logger.Trace("Initializing done.");
             
-            void Reset(IProjectFileAccessConfiguration? config)
+            void Reset(IProjectFileAccessConfiguration config)
             {
-                if (config is not null && File.Exists(config.Path))
+                if (File.Exists(config.Path))
                 {
                     currentProject.CreateAndSet(config);
                 }

@@ -1,3 +1,4 @@
+using BFF.Core.IoC;
 using BFF.Model.Contexts;
 using BFF.Model.Helper;
 using BFF.Model.ImportExport;
@@ -17,7 +18,7 @@ namespace BFF.Model.IoC
         void Close();
     }
     
-    internal class CurrentProject : ICurrentProject
+    internal class CurrentProject : ICurrentProject, IOncePerApplication
     {
         private readonly IContextManager _contextManager;
         private readonly IBffSettingsProxy _bffSettingsProxy;
@@ -27,6 +28,7 @@ namespace BFF.Model.IoC
         public CurrentProject(
             IContextManager contextManager,
             IBffSettingsProxy bffSettingsProxy,
+            ISqlToRealmMigration sqlToRealmMigration,
             CompositeDisposable compositeDisposable)
         {
             _current = new BehaviorSubject<IContext>(contextManager.Empty)
@@ -34,6 +36,7 @@ namespace BFF.Model.IoC
             _serialContext.CompositeDisposalWith(compositeDisposable);
             _contextManager = contextManager;
             _bffSettingsProxy = bffSettingsProxy;
+            //sqlToRealmMigration.JustDoIt();
         }
 
         public IObservable<IContext> Current => _current.AsObservable();

@@ -11,6 +11,7 @@ using BFF.Persistence.Sql.Models.Persistence;
 using BFF.Persistence.Sql.ORM.Interfaces;
 using MrMeeseeks.DataStructures;
 using MrMeeseeks.Extensions;
+using System.Collections.Generic;
 
 namespace BFF.Persistence.Sql.ORM
 {
@@ -90,7 +91,7 @@ namespace BFF.Persistence.Sql.ORM
                 .ToDictionary(g => g.Key, g => g.ToReadOnlyList());
             var categoryTrees = categoryIdGrouping[-1]
                 .SelectTree<long, Tree<CategoryDto>>(
-                    id => categoryIdGrouping[id],
+                    id => categoryIdGrouping.TryGetValue(id, out var children) ? children : new List<long>() ,
                     (id, children) => new Tree<CategoryDto>(categoryIdDictionary[id].Dto, children))
                 .ToReadOnlyList();
             
