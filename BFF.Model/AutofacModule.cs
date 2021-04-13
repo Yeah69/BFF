@@ -2,8 +2,9 @@
 using System.Reflection;
 using Autofac;
 using BFF.Core.IoC;
-using System;
+using MrMeeseeks.Reactive.Extensions;
 using System.Collections.Generic;
+using System.Reactive.Disposables;
 using Module = Autofac.Module;
 
 namespace BFF.Model
@@ -15,14 +16,17 @@ namespace BFF.Model
         ILifetimeScope Get(object key);
     }
 
-    internal class LifetimeScopeRegistry : ILifetimeScopeRegistry, IOncePerApplication, IDisposable
+    internal class LifetimeScopeRegistry : ILifetimeScopeRegistry, IOncePerApplication
     {
         private readonly IDictionary<object, ILifetimeScope> _registry = new Dictionary<object, ILifetimeScope>();
-        
+
+        public LifetimeScopeRegistry(CompositeDisposable compositeDisposable) =>
+            Disposable
+                .Create(_registry, r => r.Clear())
+                .CompositeDisposalWith(compositeDisposable);
+
         public void Add(object key, ILifetimeScope lifetimeScope) => _registry[key] = lifetimeScope;
         public ILifetimeScope Get(object key) => _registry[key];
-
-        public void Dispose() => _registry.Clear();
     }
     
     public class AutofacModule : Module

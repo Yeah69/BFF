@@ -6,7 +6,6 @@ using BFF.Core.IoC;
 using BFF.Model;
 using BFF.Model.Contexts;
 using BFF.Model.ImportExport;
-using BFF.Persistence.Contexts;
 using BFF.Persistence.Import;
 using BFF.Persistence.Realm;
 using BFF.Persistence.Realm.Models;
@@ -87,18 +86,6 @@ namespace BFF.Persistence
                 .AsImplementedInterfaces()
                 .ExternallyOwned();
 
-            builder.Register<Func<string, IProjectFileAccessConfiguration>>(_ =>
-            {
-                return path =>
-                {
-                    if (path.EndsWith(".sqlite") || path.EndsWith(".bffs"))
-                    {
-                        return new SqliteProjectFileAccessConfiguration(path);
-                    }
-                    throw new InvalidOperationException("Unknown extension");
-                };
-            });
-
             builder.Register<Func<IImportConfiguration, IImportContext>>(cc =>
             {
                 var ynab4CsvImporterFactory = cc.Resolve<Func<IYnab4CsvImportConfiguration, Ynab4CsvImporter>>();
@@ -144,11 +131,25 @@ namespace BFF.Persistence
                     return context;
                 };
             });
+
+            builder.Register<Func<IYnab4CsvImportConfiguration, IYnab4CsvImporter>>(cc =>
+            {
+                var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
+                var lifetimeScopeRegistry = cc.Resolve<ILifetimeScopeRegistry>();
+                return config =>
+                {
+                    var newLifetimeScope = currentLifetimeScope.BeginLifetimeScope(
+                        b => LoadBackendRegistrationsCommon(b, config));
+                    var context = newLifetimeScope.Resolve<IYnab4CsvImporter>(TypedParameter.From<IDisposable>(newLifetimeScope));
+                    lifetimeScopeRegistry.Add(context, newLifetimeScope);
+                    return context;
+                };
+            });
         }
 
-        private void LoadBackendRegistrationsCommon<T>(
+        private static void LoadBackendRegistrationsCommon<T>(
             ContainerBuilder builder, 
-            T config) where T : ILoadConfiguration 
+            T config) where T : IConfiguration 
         {
             builder.Register(_ => config)
                 .AsSelf()
