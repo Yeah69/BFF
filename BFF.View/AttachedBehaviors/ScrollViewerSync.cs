@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using BFF.View.Extensions;
 using Microsoft.Xaml.Behaviors;
 using MrMeeseeks.Extensions;
+using System.Windows.Threading;
 
 namespace BFF.View.AttachedBehaviors
 {
@@ -18,7 +19,7 @@ namespace BFF.View.AttachedBehaviors
         private static readonly IDictionary<string, double> GroupNameToScrollPosition = new Dictionary<string, double>();
 
         private static readonly IScheduler
-            DispatcherScheduler = new DispatcherScheduler(Application.Current.Dispatcher);
+            DispatcherScheduler = new SynchronizationContextScheduler(new DispatcherSynchronizationContext(Application.Current.Dispatcher));
 
         public static readonly DependencyProperty GroupNameProperty = DependencyProperty.Register(
             nameof(GroupName),

@@ -1,6 +1,7 @@
 ﻿using System.Reactive.Concurrency;
 using System.Windows;
 using BFF.Core.Helper;
+using System.Windows.Threading;
 
 namespace BFF.View.Helper
 {
@@ -11,7 +12,7 @@ namespace BFF.View.Helper
             TimeBasedOperations = DefaultScheduler.Instance;
             Task = TaskPoolScheduler.Default;
             Thread = NewThreadScheduler.Default;
-            UI = new DispatcherScheduler(Application.Current.Dispatcher);
+            UI = new SynchronizationContextScheduler(new DispatcherSynchronizationContext(Application.Current.Dispatcher));
         }
 
         public IScheduler TimeBasedOperations { get; }

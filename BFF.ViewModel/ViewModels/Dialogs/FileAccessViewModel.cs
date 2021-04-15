@@ -1,47 +1,59 @@
 ﻿using System;
 using System.IO;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using BFF.Model.ImportExport;
 using BFF.ViewModel.Helper;
 using MrMeeseeks.Reactive.Extensions;
 using MrMeeseeks.Windows;
+using System.Reactive.Linq;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.Dialogs
 {
-    public interface IFileAccessViewModel : IOkCancelDialogViewModel
+    public interface IFileAccessViewModel : IMainWindowDialogContentViewModel<IProjectFileAccessConfiguration>
     {
-        IRxRelayCommand BrowseCommand { get; set; }
+        ICommand BrowseCommand { get; }
+        ICommand OkCommand { get; }
         string? Path { get; set; }
-        IPasswordProtectedFileAccessViewModel? PasswordConfiguration { get; }
-
-        IProjectFileAccessConfiguration GenerateConfiguration();
     }
 
-    public abstract class FileAccessViewModel : OkCancelDialogViewModel
+    public abstract class FileAccessViewModel : MainWindowDialogContentViewModel<IProjectFileAccessConfiguration>, IFileAccessViewModel
     {
         private readonly Func<IPasswordProtectedFileAccessViewModel> _passwordProtectedFileAccessViewModelFactory;
-        private readonly ICreateFileAccessConfiguration _createFileAccessConfiguration;
 
         public FileAccessViewModel(
+            // parameter
+            string title,
+            
+            // dependencies
             Func<IPasswordProtectedFileAccessViewModel> passwordProtectedFileAccessViewModelFactory,
-            ICreateFileAccessConfiguration createFileAccessConfiguration)
+            ICreateFileAccessConfiguration createFileAccessConfiguration) : base(title)
         {
             _passwordProtectedFileAccessViewModelFactory = passwordProtectedFileAccessViewModelFactory;
-            _createFileAccessConfiguration = createFileAccessConfiguration;
             
-            var okCommandCompositeDisposable = new CompositeDisposable().SerializeDisposalWith(OkCommandSerialDisposable);
-            var okCommand = this.ObservePropertyChanged(nameof(Path))
-                .Select(_ => Path is {} path && File.Exists(path))
-                .AsCanExecuteForRxCommand(false)
-                .CompositeDisposalWith(okCommandCompositeDisposable);
-            okCommand.Observe.Subscribe(_ => OnOk()).CompositeDisposalWith(okCommandCompositeDisposable);
+            var okCommand = RxCommand.CallerDeterminedCanExecute(this.ObservePropertyChanged(nameof(Path))
+                .Select(_ => Path is { } path && File.Exists(path)));
+
+            okCommand
+                .Observe
+                .Subscribe(_ => TaskCompletionSource.SetResult(GenerateConfiguration()))
+                .CompositeDisposalWith(CompositeDisposable);
 
             this.OkCommand = okCommand;
+            
+            IProjectFileAccessConfiguration GenerateConfiguration()
+            {
+                if (this.Path is null) throw new FileNotFoundException();
+
+                return PasswordConfiguration is { IsEncryptionActive: true, Password: {} password}
+                    ? createFileAccessConfiguration.CreateWithEncryption(Path, password)
+                    : createFileAccessConfiguration.Create(Path);
+            }
         }
 
         private string? _path;
         private IPasswordProtectedFileAccessViewModel? _passwordConfiguration;
+
+        public ICommand OkCommand { get; }
 
         public string? Path
         {
@@ -59,25 +71,12 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             }
         }
 
-        public abstract IRxRelayCommand BrowseCommand { get; set; }
+        public abstract ICommand BrowseCommand { get; }
 
         public IPasswordProtectedFileAccessViewModel? PasswordConfiguration
         {
             get => _passwordConfiguration;
-            private set
-            {
-                if (_passwordConfiguration == value) return;
-                _passwordConfiguration = value;
-                OnPropertyChanged();
-            }
-        }
-        public IProjectFileAccessConfiguration GenerateConfiguration()
-        {
-            if (this.Path is null) throw new FileNotFoundException();
-
-            return PasswordConfiguration is { IsEncryptionActive: true, Password: {} password}
-                ? _createFileAccessConfiguration.CreateWithEncryption(Path, password)
-                : _createFileAccessConfiguration.Create(Path);
+            private set => SetIfChangedAndRaise(ref _passwordConfiguration, value);
         }
     }
 
@@ -85,7 +84,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
     {
     }
 
-    internal sealed class NewFileAccessViewModel : FileAccessViewModel, INewFileAccessViewModel
+    public sealed class NewFileAccessViewModel : FileAccessViewModel, INewFileAccessViewModel
     {
         public NewFileAccessViewModel(
             Func<IPasswordProtectedFileAccessViewModel> passwordProtectedFileAccessViewModelFactory,
@@ -93,6 +92,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             ICreateFileAccessConfiguration createFileAccessConfiguration,
             ILocalizer localizer) 
             : base(
+                localizer.Localize("OpenSaveDialog_TitleNew"),
                 passwordProtectedFileAccessViewModelFactory,
                 createFileAccessConfiguration)
         {
@@ -110,21 +110,23 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             });
         }
 
-        public override IRxRelayCommand BrowseCommand { get; set; }
+        public override ICommand BrowseCommand { get; }
     }
 
     public interface IOpenFileAccessViewModel : IFileAccessViewModel
     {
     }
 
-    internal sealed class OpenFileAccessViewModel : FileAccessViewModel, IOpenFileAccessViewModel
+    public sealed class OpenFileAccessViewModel : FileAccessViewModel, IOpenFileAccessViewModel
     {
         public OpenFileAccessViewModel(
             Func<IPasswordProtectedFileAccessViewModel> passwordProtectedFileAccessViewModelFactory,
             Func<IBffOpenFileDialog> bffOpenFileDialogFactory,
             ICreateFileAccessConfiguration createFileAccessConfiguration,
             ILocalizer localizer)
-            : base(passwordProtectedFileAccessViewModelFactory, 
+            : base(
+                localizer.Localize("OpenSaveDialog_TitleOpen"),
+                passwordProtectedFileAccessViewModelFactory, 
                 createFileAccessConfiguration)
         {
 
@@ -141,6 +143,6 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             });
         }
 
-        public override IRxRelayCommand BrowseCommand { get; set; }
+        public override ICommand BrowseCommand { get; }
     }
 }

@@ -15,7 +15,8 @@ namespace BFF.ViewModel.Helper
         }
 
         public IReadOnlyList<ICsvBankStatementImportProfile> LoadProfiles() => 
-            JsonConvert.DeserializeObject<List<ICsvBankStatementImportProfile>>(_bffSettings.CsvBankStatementImportProfiles);
+            JsonConvert.DeserializeObject<List<ICsvBankStatementImportProfile>>(_bffSettings.CsvBankStatementImportProfiles) 
+            ?? new List<ICsvBankStatementImportProfile>();
 
         public void SaveProfiles(IReadOnlyList<ICsvBankStatementImportProfile> profiles) => 
             _bffSettings.CsvBankStatementImportProfiles = JsonConvert.SerializeObject(profiles);

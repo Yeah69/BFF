@@ -14,14 +14,16 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using MuVaViMo;
 using org.mariuszgromada.math.mxparser;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.Dialogs
 {
-    public interface IImportCsvBankStatementViewModel : IOkCancelDialogViewModel
+    public interface IImportCsvBankStatementViewModel : IMainWindowDialogContentViewModel<IList<ICsvBankStatementImportItemViewModel>>
     {
         IObservableReadOnlyList<ICsvBankStatementImportProfileViewModel> Profiles { get; }
 
@@ -38,12 +40,13 @@ namespace BFF.ViewModel.ViewModels.Dialogs
 
         IReactiveProperty<ICsvBankStatementImportNonProfileViewModel> Configuration { get; }
 
-        IRxRelayCommand BrowseCsvBankStatementFileCommand { get; }
+        ICommand BrowseCsvBankStatementFileCommand { get; }
 
-        IRxRelayCommand DeselectProfileCommand { get; }
+        ICommand DeselectProfileCommand { get; }
+        ICommand OkCommand { get; }
     }
 
-    internal class ImportCsvBankStatementViewModel : OkCancelDialogViewModel, IImportCsvBankStatementViewModel
+    public class ImportCsvBankStatementViewModel : MainWindowDialogContentViewModel<IList<ICsvBankStatementImportItemViewModel>>, IImportCsvBankStatementViewModel
     {
         public ImportCsvBankStatementViewModel(
             Func<IReactiveProperty<string>,
@@ -54,7 +57,8 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             ILocalizer localizer,
             Func<(DateTime? Date, string? Payee, bool CreatePayeeIfNotExisting, string? Memo, long? Sum), ICsvBankStatementImportItemViewModel> createItem,
             ICsvBankStatementProfileManager csvBankStatementProfileManger,
-            Func<ICsvBankStatementImportProfile, ICsvBankStatementImportProfileViewModel> profileViewModelFactory)
+            Func<ICsvBankStatementImportProfile, ICsvBankStatementImportProfileViewModel> profileViewModelFactory) 
+            : base(localizer.Localize(""))
         {
             Profiles = csvBankStatementProfileManger.Profiles.Transform(profileViewModelFactory);
             
@@ -172,6 +176,15 @@ namespace BFF.ViewModel.ViewModels.Dialogs
 
             DeselectProfileCommand = new RxRelayCommand(() => SelectedProfile.Value = null)
                 .CompositeDisposalWith(CompositeDisposable);
+            
+            var okCommand = RxCommand.CanAlwaysExecute().CompositeDisposalWith(CompositeDisposable);
+
+            okCommand
+                .Observe
+                .Subscribe(_ => TaskCompletionSource.SetResult(Items))
+                .CompositeDisposalWith(CompositeDisposable);
+
+            this.OkCommand = okCommand;
 
             IList<ICsvBankStatementImportItemViewModel> ExtractItems()
             {
@@ -257,8 +270,9 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         public IReadOnlyReactiveProperty<string> Header { get; }
         public IReactiveProperty<bool> ShowItemsError { get; }
         public IReactiveProperty<ICsvBankStatementImportNonProfileViewModel> Configuration { get; }
-        public IRxRelayCommand BrowseCsvBankStatementFileCommand { get; }
-        public IRxRelayCommand DeselectProfileCommand { get; }
+        public ICommand BrowseCsvBankStatementFileCommand { get; }
+        public ICommand DeselectProfileCommand { get; }
+        public ICommand OkCommand { get; }
 
         public bool HeaderDoMatch => Configuration.Value is not null && Header.Value == Configuration.Value.Header.Value;
     }

@@ -4,7 +4,6 @@ using System.Reflection;
 using Autofac;
 using BFF.Core.IoC;
 using BFF.Model;
-using BFF.Model.Contexts;
 using BFF.Model.ImportExport;
 using BFF.Persistence.Import;
 using BFF.Persistence.Realm;
@@ -85,24 +84,6 @@ namespace BFF.Persistence
                 })
                 .AsImplementedInterfaces()
                 .ExternallyOwned();
-
-            builder.Register<Func<IImportConfiguration, IImportContext>>(cc =>
-            {
-                var ynab4CsvImporterFactory = cc.Resolve<Func<IYnab4CsvImportConfiguration, Ynab4CsvImporter>>();
-                var sqliteContextFactory = cc.Resolve<Func<ISqliteProjectFileAccessConfiguration, SqliteContext>>();
-                return ic =>
-                {
-                    switch (ic)
-                    {
-                        case IYnab4CsvImportConfiguration ynab4:
-                            return ynab4CsvImporterFactory(ynab4);
-                        case ISqliteProjectFileAccessConfiguration sqlite:
-                            return sqliteContextFactory(sqlite);
-                        default:
-                            throw new InvalidOperationException("Unknown import configuration");
-                    }
-                };
-            });
 
             builder.Register<Func<IRealmProjectFileAccessConfiguration, IRealmContext>>(cc =>
             {

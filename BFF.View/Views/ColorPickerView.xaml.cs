@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using BFF.View.Extensions;
+using System.Windows.Threading;
 
 namespace BFF.View.Views
 {
@@ -19,7 +20,7 @@ namespace BFF.View.Views
     public partial class ColorPickerView
     {
         private static readonly IScheduler
-            DispatcherScheduler = new DispatcherScheduler(Application.Current.Dispatcher);
+            DispatcherScheduler = new SynchronizationContextScheduler(new DispatcherSynchronizationContext(Application.Current.Dispatcher));
 
         private static readonly DependencyProperty RedProperty = DependencyProperty.Register(
             nameof(Red),

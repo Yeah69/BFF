@@ -1,0 +1,30 @@
+﻿<dialogs1:BaseMetroDialog x:Class="BFF.View.Views.Dialogs.MainWindowDialogView"
+                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                          xmlns:dialogs1="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                          xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
+                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                          xmlns:dialogs="clr-namespace:BFF.ViewModel.ViewModels.Dialogs;assembly=BFF.ViewModel"
+                          xmlns:dialogs2="clr-namespace:BFF.View.Views.Dialogs"
+                          Title="{Binding Title}"
+                          d:DataContext="{d:DesignInstance dialogs:IMainWindowDialogViewModel}"
+                          lex:LocalizeDictionary.DesignCulture="en-US"
+                          lex:ResxLocalizationProvider.DefaultAssembly="BFF.View"
+                          lex:ResxLocalizationProvider.DefaultDictionary="Texts"
+                          mc:Ignorable="d">
+    <dialogs1:BaseMetroDialog.Resources>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type dialogs:ImportCsvBankStatementViewModel}">
+                <dialogs2:ImportCsvBankStatementView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type dialogs:NewFileAccessViewModel}">
+                <dialogs2:NewFileAccessDialog />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type dialogs:OpenFileAccessViewModel}">
+                <dialogs2:OpenFileAccessDialog />
+            </DataTemplate>
+        </ResourceDictionary>
+    </dialogs1:BaseMetroDialog.Resources>
+    <ContentControl Content="{Binding Content}" /> 
+</dialogs1:BaseMetroDialog>

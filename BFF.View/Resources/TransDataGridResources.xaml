@@ -3,7 +3,7 @@
                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.datagrid.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.DataGrid.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ContextMenu x:Key="RowMenu">

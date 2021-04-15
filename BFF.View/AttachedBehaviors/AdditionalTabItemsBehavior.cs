@@ -54,14 +54,14 @@ namespace BFF.View.AttachedBehaviors
                         {
                             case NotifyCollectionChangedAction.Add:
                                 j = 0;
-                                foreach (object obj in args.NewItems.OfType<object>())
+                                foreach (object obj in args.NewItems?.OfType<object>() ?? Enumerable.Empty<object>())
                                 {
                                     AddTabItem(tabControl, obj, headerTemplate, contentTemplate, startingIndex + args.NewStartingIndex + j, isSelectedMemberPath, objectToTabItem);
                                     j++;
                                 }
                                 break;
                             case NotifyCollectionChangedAction.Remove:
-                                foreach (object obj in args.OldItems.OfType<object>())
+                                foreach (object obj in args.OldItems?.OfType<object>() ?? Enumerable.Empty<object>())
                                 {
                                     if(objectToTabItem.ContainsKey(obj))
                                     {

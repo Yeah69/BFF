@@ -1,4 +1,4 @@
-﻿<simpleChildWindow:ChildWindow x:Class="BFF.View.Views.Dialogs.ImportCsvBankStatementView"
+﻿<UserControl x:Class="BFF.View.Views.Dialogs.ImportCsvBankStatementView"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,28 +8,16 @@
                                xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
                                xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                               xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
                                xmlns:views="clr-namespace:BFF.View.Views"
                                d:DataContext="{d:DesignInstance dialogs:IImportCsvBankStatementViewModel}"
-                               d:DesignHeight="300"
-                               d:DesignWidth="300"
-                               AllowMove="False"
-                               ChildWindowHeight="700"
-                               CloseButtonCommand="{Binding CancelCommand}"
-                               IsOpen="{Binding IsOpen.Value}"
-                               ShowCloseButton="True"
                                mc:Ignorable="d">
-    <simpleChildWindow:ChildWindow.Resources>
+    <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/TransCellTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </simpleChildWindow:ChildWindow.Resources>
-    <simpleChildWindow:ChildWindow.OverlayBrush>
-        <SolidColorBrush Opacity="0.7"
-                         Color="{DynamicResource BlackColor}" />
-    </simpleChildWindow:ChildWindow.OverlayBrush>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -379,7 +367,7 @@
                     Content="{lex:Loc General_Cancel}" />
         </StackPanel>
     </Grid>
-</simpleChildWindow:ChildWindow>
+</UserControl>
 
 
 

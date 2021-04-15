@@ -4,11 +4,8 @@
     {
     }
 
-    public partial class FileAccessDialog : INewFileAccessDialog
+    public partial class NewFileAccessDialog : INewFileAccessDialog
     {
-        public FileAccessDialog()
-        {
-            InitializeComponent();
-        }
+        public NewFileAccessDialog() => InitializeComponent();
     }
 }

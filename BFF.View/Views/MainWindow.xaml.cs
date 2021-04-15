@@ -122,9 +122,9 @@ namespace BFF.View.Views
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
 
             IImportDialogViewModel importDialogViewModel = _importDialogViewModelFactory();
-            ImportDialog importDialog = new ImportDialog{ DataContext = importDialogViewModel };
-            importDialog.ButtCancel.Click += (o, args) => this.HideMetroDialogAsync(importDialog);
-            importDialog.ButtImport.Click += (o, args) =>
+            var importDialog = new ImportDialog{ DataContext = importDialogViewModel };
+            importDialog.ButtCancel.Click += (_, _) => this.HideMetroDialogAsync(importDialog);
+            importDialog.ButtImport.Click += (_, _) =>
             {
                 this.HideMetroDialogAsync(importDialog);
                 Dispatcher.Invoke(() => importDialogViewModel.Import(), DispatcherPriority.Background);

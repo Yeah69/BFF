@@ -125,10 +125,9 @@ namespace BFF.ViewModel.ViewModels
             Func<IEmptyContextViewModel> emptyContextViewModelFactory,
             Func<INewFileAccessViewModel> newFileAccessViewModelFactory,
             Func<IOpenFileAccessViewModel> openFileAccessDialogFactory,
-            IBffChildWindowManager bffChildWindowManager,
+            Lazy<IMainWindowDialogManager> mainWindowDialogManager,
             ITransDataGridColumnManager transDataGridColumnManager,
             IBffSettings bffSettings,
-            IBffSystemInformation bffSystemInformation,
             ISetupLocalizationFramework setupLocalizationFramework,
             IParentTransactionFlyoutManager parentTransactionFlyoutManager,
             CompositeDisposable compositeDisposable)
@@ -137,17 +136,6 @@ namespace BFF.ViewModel.ViewModels
             _bffSettings = bffSettings;
             _setupLocalizationFramework = setupLocalizationFramework;
             Logger.Debug("Initializing …");
-
-            //If the application is not visible on screen, than reset the default position
-            //This might occur when one of multiple monitors is switched off or the screen resolution is changed while BFF is off
-            if (X - BorderOffset > bffSystemInformation.VirtualScreenRight ||
-                Y - BorderOffset > bffSystemInformation.VirtualScreenBottom ||
-                X + Width - BorderOffset < bffSystemInformation.VirtualScreenLeft ||
-                Y + Height - BorderOffset < bffSystemInformation.VirtualScreenTop)
-            {
-                X = 50.0;
-                Y = 50.0;
-            }
 
             OpenParentTransaction = parentTransactionFlyoutManager.OpenParentTransaction;
 
@@ -160,17 +148,18 @@ namespace BFF.ViewModel.ViewModels
                 async Task InnerAsync()
                 {
                     var newFileAccessViewModel = newFileAccessViewModelFactory();
-                    if (await bffChildWindowManager.OpenOkCancelDialog(newFileAccessViewModel))
+                    try
                     {
-                        try
-                        {
-                            var configuration = newFileAccessViewModel.GenerateConfiguration();
-                            Reset(configuration);
-                        }
-                        catch (FileNotFoundException e)
-                        {
-                            Console.WriteLine(e); // todo error handling
-                        }
+                        var configuration = await mainWindowDialogManager.Value.ShowDialogFor(newFileAccessViewModel);
+                        Reset(configuration);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        // cancellation ignored
+                    }
+                    catch (FileNotFoundException e)
+                    {
+                        Console.WriteLine(e); // todo error handling
                     }
                 }
             });
@@ -184,17 +173,18 @@ namespace BFF.ViewModel.ViewModels
                 async Task InnerAsync()
                 {
                     var openFileAccessViewModel = openFileAccessDialogFactory();
-                    if (await bffChildWindowManager.OpenOkCancelDialog(openFileAccessViewModel))
+                    try
                     {
-                        try
-                        {
-                            var configuration = openFileAccessViewModel.GenerateConfiguration();
-                            Reset(configuration);
-                        }
-                        catch (FileNotFoundException e)
-                        {
-                            Console.WriteLine(e); // todo error handling
-                        }
+                        var configuration = await mainWindowDialogManager.Value.ShowDialogFor(openFileAccessViewModel);
+                        Reset(configuration);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        // cancellation ignored
+                    }
+                    catch (FileNotFoundException e)
+                    {
+                        Console.WriteLine(e); // todo error handling
                     }
                 }
             });

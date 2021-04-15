@@ -39,14 +39,14 @@ namespace BFF.ViewModel.ViewModels
                 .Preloading((_, __) => BudgetEntryViewModelPlaceholder.Instance)
                 .LeastRecentlyUsed(4)
                 .TaskBasedFetchers(
-                    async (page, _) =>
+                    async (page, _, _) =>
                         (await budgetCategory
                             .GetBudgetEntriesFor(DateTimeExtensions.FromMonthIndex(page).Year)
                             .ConfigureAwait(false))
                         .Select(budgetEntryViewModelService.GetViewModel)
                         .WhereNotNullRef()
                         .ToArray(),
-                    () =>
+                    _ =>
                         Task.FromResult(
                             (DateTime.MaxValue.Year - DateTime.MinValue.Year - 2) * 12
                             + 12 - DateTime.MinValue.Month - 1 +

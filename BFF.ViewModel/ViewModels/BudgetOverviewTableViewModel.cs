@@ -93,13 +93,13 @@ namespace BFF.ViewModel.ViewModels
                     new BudgetMonthViewModelPlaceholder(DateTimeExtensions.FromMonthIndex(pageKey * 12 + pageIndex)))
                 .Hoarding()
                 .TaskBasedFetchers(
-                    (offset, pageSize) => 
+                    (offset, pageSize, _) => 
                         Task.Run(async () =>
                             (await budgetMonthRepository.FindAsync(DateTimeExtensions.FromMonthIndex(offset).Year)
                                 .ConfigureAwait(false))
                             .Select(budgetMonthViewModelFactory)
                             .ToArray()),
-                    () => Task.FromResult(DateTimeExtensions.CountOfMonths))
+                    _ => Task.FromResult(DateTimeExtensions.CountOfMonths))
                 .AsyncIndexAccess(
                      (pageKey, pageIndex) => 
                          new BudgetMonthViewModelPlaceholder(DateTimeExtensions.FromMonthIndex(pageKey * 12 + pageIndex)));
@@ -147,7 +147,9 @@ namespace BFF.ViewModel.ViewModels
                 }
             }).AddTo(_compositeDisposable);
 
+#pragma warning disable 4014
             SetAvailableToBudgetInCurrentMonth();
+#pragma warning restore 4014
 
             async Task SetAvailableToBudgetInCurrentMonth() => 
                 AvailableToBudgetInCurrentMonth = await budgetMonthRepository.GetAvailableToBudgetOfCurrentMonth();

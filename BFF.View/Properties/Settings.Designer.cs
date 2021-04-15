@@ -25,7 +25,7 @@ namespace BFF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("BaseDark")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dark")]
         public string MahApps_AppTheme {
             get {
                 return ((string)(this["MahApps_AppTheme"]));

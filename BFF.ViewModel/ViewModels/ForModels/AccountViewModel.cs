@@ -79,7 +79,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IRxSchedulerProvider rxSchedulerProvider,
             IBackendCultureManager cultureManager,
             ILocalizer localizer,
-            IBffChildWindowManager childWindowManager,
+            IMainWindowDialogManager mainWindowDialogManager,
             ITransDataGridColumnManager transDataGridColumnManager,
             IBffSettings bffSettings,
             Func<IImportCsvBankStatementViewModel> importCsvBankStatementFactory,
@@ -154,7 +154,14 @@ namespace BFF.ViewModel.ViewModels.ForModels
             ImportCsvBankStatement = new AsyncRxRelayCommand(async () =>
             {
                 var importCsvBankStatementViewModel = importCsvBankStatementFactory();
-                await childWindowManager.OpenOkCancelDialog(importCsvBankStatementViewModel);
+                try
+                {
+                    await mainWindowDialogManager.ShowDialogFor(importCsvBankStatementViewModel);
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
                 foreach (var item in importCsvBankStatementViewModel.Items)
                 {
                     var transactionViewModel = transactionViewModelFactory(this);

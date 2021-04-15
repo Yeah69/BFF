@@ -22,6 +22,7 @@ using MrMeeseeks.Reactive.Extensions;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using System.Threading;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Structure
 {
@@ -464,7 +465,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         private long? _targetBalance;
         private bool _showEditHeaders;
 
-        private async Task<ITransLikeViewModel[]> PageFetcher (int offset, int pageSize)
+        private async Task<ITransLikeViewModel[]> PageFetcher (int offset, int pageSize, CancellationToken _)
         {
             var transLikeViewModels = _convertFromTransBaseToTransLikeViewModel
                 .Convert(await _account.GetTransPageAsync(offset, pageSize), this)
@@ -472,7 +473,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             return transLikeViewModels;
         }
 
-        private async Task<int> CountFetcher() =>
+        private async Task<int> CountFetcher(CancellationToken _) =>
             (int) await _account.GetTransCountAsync();
 
         protected abstract long? CalculateNewPartOfIntermediateBalance();

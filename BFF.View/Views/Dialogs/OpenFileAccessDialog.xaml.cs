@@ -6,9 +6,6 @@
 
     public partial class OpenFileAccessDialog : IOpenFileAccessDialog
     {
-        public OpenFileAccessDialog()
-        {
-            InitializeComponent();
-        }
+        public OpenFileAccessDialog() => InitializeComponent();
     }
 }
