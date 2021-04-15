@@ -12,7 +12,7 @@
                       xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
                       xmlns:views="clr-namespace:BFF.View.Views"
                       xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
-                      xmlns:hm="clr-namespace:MrMeeseeks.Windows.HamburgerMenu;assembly=MrMeeseeks.Windows.HamburgerMenu"
+                      xmlns:hm="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
                       Title="{Binding Title}"
                       Width="{Binding Width, Mode=TwoWay}"
                       Height="{Binding Height, Mode=TwoWay}"

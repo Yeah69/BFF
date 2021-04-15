@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:helper="clr-namespace:BFF.View.Helper"
-                    xmlns:hm="clr-namespace:MrMeeseeks.Windows.HamburgerMenu;assembly=MrMeeseeks.Windows.HamburgerMenu">
+                    xmlns:hm="clr-namespace:HamburgerMenu;assembly=HamburgerMenu">
     <Style BasedOn="{StaticResource {x:Type hm:HamburgerMenu}}"
            TargetType="{x:Type hm:HamburgerMenu}">
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -132,7 +132,7 @@
                             <Setter TargetName="PART_HamburgerButton" Property="Background" Value="{DynamicResource MahApps.Brushes.Accent3}" />
                         </Trigger>
                         <Trigger SourceName="PART_HamburgerButton" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_HamburgerButton" Property="Background" Value="{DynamicResource 	MahApps.Brushes.Accent}" />
+                            <Setter TargetName="PART_HamburgerButton" Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -198,7 +198,7 @@
                         </Trigger>
                         <Trigger Property="IsSelected" Value="False" />
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="templateRoot" Property="Background" Value="{DynamicResource 	MahApps.Brushes.Accent}" />
+                            <Setter TargetName="templateRoot" Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -8,11 +8,11 @@
     <Style x:Key="BffCheckBox"
            TargetType="CheckBox">
         <Setter Property="Foreground"
-                Value="{DynamicResource LabelTextBrush}" />
+                Value="{DynamicResource MahApps.Colors.ThemeForeground}" />
         <Setter Property="FontSize"
-                Value="{DynamicResource ContentFontSize}" />
+                Value="{DynamicResource MahApps.Font.Size.Content}" />
         <Setter Property="FontFamily"
-                Value="{DynamicResource ContentFontFamily}" />
+                Value="{DynamicResource MahApps.Fonts.Family.Control}" />
         <Setter Property="HorizontalContentAlignment"
                 Value="Left" />
         <Setter Property="VerticalContentAlignment"
@@ -22,9 +22,9 @@
         <Setter Property="BorderThickness"
                 Value="1" />
         <Setter Property="controls:ControlsHelper.FocusBorderBrush"
-                Value="{DynamicResource HighlightBrush}" />
+                Value="{DynamicResource MahApps.Brushes.Highlight}" />
         <Setter Property="controls:ControlsHelper.MouseOverBorderBrush"
-                Value="{DynamicResource CheckBoxMouseOverBrush}" />
+                Value="{DynamicResource MahApps.Brushes.CheckBox.MouseOver}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">

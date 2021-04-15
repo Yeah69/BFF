@@ -44,6 +44,7 @@
     <ItemGroup>
       <PackageReference Include="Autofac" Version="6.1.0" />
       <PackageReference Include="Autofac.Extras.NLog" Version="4.0.0" />
+        <PackageReference Include="BFF.HamburgerMenu" Version="1.0.0" />
       <PackageReference Include="gong-wpf-dragdrop" Version="2.3.2" />
       <PackageReference Include="LambdaConverters" Version="4.0.0" />
       <PackageReference Include="MahApps.Metro" Version="2.4.4" />
@@ -55,7 +56,6 @@
       </PackageReference>
       <PackageReference Include="MrMeeseeks" Version="69.0.17" />
       <PackageReference Include="MrMeeseeks.Reactive" Version="69.0.17" />
-      <PackageReference Include="MrMeeseeks.Windows.HamburgerMenu" Version="69.0.24" />
       <PackageReference Include="WPFLocalizeExtension" Version="3.8.0" />
     </ItemGroup>
 
