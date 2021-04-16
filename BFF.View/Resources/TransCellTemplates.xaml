@@ -622,7 +622,7 @@
                                 DockPanel.Dock="Right"
                                 TabIndex="1">
                             <Button.Style>
-                                <Style BasedOn="{StaticResource {x:Type Button}}"
+                                <Style BasedOn="{StaticResource BffGeneralButtonStyle}"
                                        TargetType="{x:Type Button}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Flag}"

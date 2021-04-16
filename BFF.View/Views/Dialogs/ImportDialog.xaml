@@ -187,7 +187,7 @@
                     Margin="5"
                     Content="{lex:Loc ImportView_Import}">
                 <Button.Style>
-                    <Style BasedOn="{StaticResource {x:Type Button}}"
+                    <Style BasedOn="{StaticResource BffGeneralButtonStyle}"
                            TargetType="{x:Type Button}">
                         <Setter Property="IsEnabled" Value="False" />
                         <Style.Triggers>

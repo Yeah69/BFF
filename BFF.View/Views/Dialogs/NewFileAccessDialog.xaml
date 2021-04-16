@@ -70,7 +70,7 @@
                     Command="{Binding OkCommand}"
                     Content="{lex:Loc General_Okay}">
                 <Button.Style>
-                    <Style BasedOn="{StaticResource {x:Type Button}}"
+                    <Style BasedOn="{StaticResource BffGeneralButtonStyle}"
                            TargetType="{x:Type Button}">
                         <Setter Property="IsEnabled" Value="False" />
                         <Style.Triggers>

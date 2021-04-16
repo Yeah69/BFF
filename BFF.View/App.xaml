@@ -203,7 +203,7 @@
             </Style>
 
             <Style x:Key="ButtonVisibleOnMouseOverDataGridRow"
-                   BasedOn="{StaticResource {x:Type Button}}"
+                   BasedOn="{StaticResource BffGeneralButtonStyle}"
                    TargetType="{x:Type Button}">
                 <Setter Property="Visibility" Value="Hidden" />
                 <Style.Triggers>
