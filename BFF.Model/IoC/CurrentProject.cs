@@ -28,7 +28,6 @@ namespace BFF.Model.IoC
         public CurrentProject(
             IContextManager contextManager,
             IBffSettingsProxy bffSettingsProxy,
-            ISqlToRealmMigration sqlToRealmMigration,
             CompositeDisposable compositeDisposable)
         {
             _current = new BehaviorSubject<IContext>(contextManager.Empty)
@@ -36,7 +35,6 @@ namespace BFF.Model.IoC
             _serialContext.CompositeDisposalWith(compositeDisposable);
             _contextManager = contextManager;
             _bffSettingsProxy = bffSettingsProxy;
-            //sqlToRealmMigration.JustDoIt();
         }
 
         public IObservable<IContext> Current => _current.AsObservable();

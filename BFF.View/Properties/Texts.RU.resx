@@ -1,0 +1,731 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, SystemResources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, SystemResources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Все счета</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Отменить баланс таргетинга</value>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Все</value>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Очищенный</value>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Текущий</value>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Всего</value>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Дядя</value>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Перевод</value>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Создать первую запись учетной записи</value>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>аккаунт</value>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Номер чека</value>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Очищенный</value>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>F</value>
+    <comment>Abbreviation of Flag or Markierung (German)</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Записка</value>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Получатель платежа</value>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Символ</value>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Промежуточный баланс</value>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Пропавшая сумма</value>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Установить целевой баланс</value>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Целевой баланс</value>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Персисты в настоящее время отредактированы элементы учетной записи</value>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Создает новую сплит-транзакцию</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Создает новую сделку</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Создает новый трансфер</value>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Баланс</value>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Создать новый аккаунт</value>
+  </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>Это приведет к удалению счета и всех его операций, двусторонние трансферты станут односторонними, а оттоки по счету при составлении бюджета исчезнут.
+
+Ты действительно уверен? (Резервная копия будет создана автоматически, если вы захотите перемотать данные после этого).</value>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Редактировать аккаунты</value>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Имя аккаунта</value>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Начальный баланс</value>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Дата начала</value>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Имеется на вебсайте .</value>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Сумма денег, которая доступна в этом месяце, но еще не отнесена ни к одной из категорий.</value>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Баланс</value>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Бюджетный</value>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Сумма всех сумм, которые предусмотрены в бюджете по категориям в этом месяце.</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Средние оттоки за последние три месяца</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Средние оттоки за последний год</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Баланс до нуля</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Бюджетные показатели за последний месяц</value>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Оттоки прошлого месяца</value>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Ноль</value>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Доход</value>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Сумма заработанных денег, которая предназначена для расходов этого месяца.</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Заполните все бюджетные ячейки:</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Заполните все пустые бюджетные ячейки:</value>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Не предусмотрено в бюджете</value>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Сумма денег, которая была доступна в прошлом месяце, но не отнесена ни к одной из категорий.</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Односторонние переводы</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Односторонние переводы могут произойти после удаления учетной записи. Их необходимо учитывать, поскольку они не являются нейтральными по отношению к бюджету.</value>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Потоки</value>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Завышенный бюджет</value>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Количество денег, которых не хватало для удовлетворения всех категорий в прошлом месяце.</value>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Количество денег, которых не хватает, чтобы удовлетворить все категории в этом месяце.</value>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Перелив</value>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Сумма перерасхода средств, накопленных по всем категориям за последний месяц.</value>
+  </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Показать агрегаты</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Неприписанный</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Сумма всех операций, которым не присвоена категория.</value>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Создать новую категорию</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Цвет</value>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Конфигурация</value>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Записи</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Вы уверены, что категорию "{0}" следует удалить?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Вы уверены, что категорию "{0}" следует объединить в категорию "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Вы уверены, что флаг "{0}" следует удалить?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Вы уверены, что флаг "{0}" должен быть слит с флагом "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Вы уверены, что категорию дохода "{0}" следует удалить?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Вы уверены, что категорию доходов "{0}" следует объединить в категорию доходов "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Вы уверены, что получатель "{0}" должен быть удален?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Вы уверены, что получатель "{0}" должен быть объединен с получателем "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Ты уверен?</value>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Создать новую категорию</value>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Создать новый флаг</value>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Создать нового получателя платежа</value>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>При создании записей произошла ошибка. Проверьте конфигурацию.</value>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>выписка из банка</value>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Категории</value>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Флаги</value>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Категории доходов</value>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Открытая выписка из банка</value>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Плательщики</value>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Название новой категории не может быть пустым!</value>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Должен быть выбран аккаунт.</value>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Необходимо выбрать категорию.</value>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Должен быть выбран исходный счет.</value>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>Нужно выбрать получателя.</value>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Должен быть выбран целевой счет.</value>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>Имя нового аккаунта не может быть пустым или совпадать с именем существующего аккаунта!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>Это имя уже существует на выбранном уровне категории!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>Этот уровень категории уже содержит категорию выбранного имени!</value>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Имя нового флага не может быть пустым или уже существующим.</value>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Имя нового получателя не может быть пустым или уже существующим.</value>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Перед тем, как вставить запись, необходимо выбрать учетную запись.</value>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>Файл "{0}" не удалось найти.</value>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Создать новый флаг</value>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Редактировать флаги</value>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Отменить</value>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Формат даты</value>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Делимиттер</value>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Путь к файлу</value>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Заголовок</value>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Длинный</value>
+  </data>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Формат записки</value>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Отрицательный</value>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Создать нового получателя платежа, если его нет?</value>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Хорошо</value>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>формат Payee</value>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Положительный</value>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Удалить профиль</value>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>Сброс профиля</value>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Сохранить новый профиль</value>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Сохранить профиль</value>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>Короткий</value>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Формат "Сумма</value>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Неприписанный</value>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Счета</value>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Бюджет</value>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Посмотреть</value>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Отменить</value>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Цель экспорта</value>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Импорт</value>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Источник импорта</value>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Импортируйте и сохраните на этом пути:</value>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Импорт Конфигурация</value>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Путь к CSV бюджета ЯНАБ:</value>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Путь к CSV транзакции YNAB:</value>
+  </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Преобразовать в</value>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>О сайте</value>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>Бюджетный проект еще не загружен.
+Для того, чтобы создать, открыть или импортировать проект
+Откройте Файл-меню в левом верхнем углу.</value>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Импорт</value>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Новый сайт</value>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Открыть</value>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Название новой категории</value>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Название нового флага</value>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Имя нового получателя платежа</value>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Если этот флажок установлен, то создается категория доходов.
+Только операции, отнесенные к такой категории, интерпретируются как доходы.</value>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Зависит от дохода?</value>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Месячный смещение</value>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>Бюджетный план BFF (*.realm)|*.realm|BFF бюджетный план (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Создать новый бюджетный план</value>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Открыть бюджетный план</value>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Текущая сумма</value>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Промежуточная сумма</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Пропущенная сумма эксклюзивно непредставленных записей</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Пропавшая сумма</value>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Создать нового получателя платежа</value>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Редактировать Плательщики</value>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Сохранить новый бюджетный план:</value>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Акценты</value>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Всегда скрывать заголовки столбцов таблицы редактирования</value>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>валютный формат</value>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Формат даты</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Показать контрольные номера</value>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Показать флаги</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Тема</value>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Высшая категория</value>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Общее сальдо, включая записи с датой в будущем.
+См. подсказку для более четкого разграничения.</value>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>Промежуточный баланс включает в себя записи, которые еще предстоит сохранить.</value>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Разница между целевым и промежуточным балансом.</value>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Установка целевого баланса позволяет автоматически рассчитать недостающую сумму.</value>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Баланс счета на дату начала настройки.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Если включена функция агрегирования, то категории будут добавлять значения своих подкатегорий поверх своих собственных.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Используйте этот манипулятор даты для перехода к произвольному месяцу (день не имеет значения).</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Сдвинуть на месяц назад</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Сдвинуть на месяц вперед</value>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Месячный зачет сдвигает, в каком месяце активен доход.
+Например, месячное смещение сдвигает доход на следующий месяц, минус один - на предыдущий.</value>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Если выбрана высшая категория, то новая категория будет добавлена в качестве подкатегории.</value>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Нажмите кнопку в этой колонке для удаления элемента соответствующей строки.</value>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>Для того чтобы объединить одну категорию в другую, перетащите значок слияния из этого столбца в исходной строке и перетащите его в целевую строку.
+Целевая категория будет присвоена всем записям учетной записи категории источника и наследует все подкатегории.
+Если пара подкатегорий имеет одно и то же имя, то подкатегория источника автоматически переименовывается (добавляется номер).</value>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>Для того, чтобы слить один флаг с другим, перетащите значок слияния из этого столбца в исходной строке и перетащите его в целевую строку.
+Флаг назначения будет присвоен всем записям аккаунта флага источника и сохранит его цвет.</value>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>Для того, чтобы объединить одну категорию доходов в другую, перетащите значок слияния из этого столбца в исходной строке и перетащите его в целевую строку.
+Целевая категория доходов будет привязана ко всем записям счета категории "Доходы от источника" и сохранит смещение по месяцам.</value>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>Для того чтобы объединить одного получателя платежа с другим, перетащите значок слияния из этого столбца в исходной строке и бросьте его в целевую строку.
+Целевой получатель будет привязан ко всем записям учетной записи исходного получателя.</value>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Источник-счет</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Категория доходов</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Income-Transaction</value>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Щелкните для просмотра и редактирования подтранзакций.</value>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Целевая аудитория</value>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Сделка</value>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Перевод</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Счет, которому принадлежит запись.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
+    <value>Категория определяет вашу личную цель этой записи.
+Поскольку они, возможно, иерархичны, весь путь иерархии показан во всплывающей подсказке.
+
+Если запись является переводом, то здесь заполняется целевой счет.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>При необходимости здесь можно заполнить контрольный номер.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Эта галочка может быть использована для разделения готовых записей и записей, которые все еще требуют редактирования.
+Общие суммы можно отдельно наблюдать во всплывающей подсказке баланса.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Дата, когда запись активна.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Флаг обозначает запись визуально по цвету и является абсолютно необязательным.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>Записка предназначена для произвольного описания записи.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Оплаченное или оплачивающее лицо этой записи заполняется здесь.
+
+Если запись является переводом, то здесь заполняется исходный счет.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Символы указывают тип записи счета.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>Запись о доходах обозначает сделку, которая считается доходом.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Транзакция позволяет выводить деньги со счета или зачислять их на счет.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>Перевод передает деньги с одного счета на другой.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Сумма записи.</value>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Этот текст не может быть разобран как валюта!</value>
+    <comment>Validation message saying that the text is not validly formated as currency.</comment>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Значение вне диапазона: [ {0} .. {1} ]!</value>
+    <comment>Validation message, which tells the long range as currency to the user.</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Это поле ввода может быть не пустым!</value>
+    <comment>Validation message saying that the property is not allowed to be empty.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Этот путь к файлу не существует!</value>
+    <comment>Validation message saying that file path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Каталог пути сохранения не существует!</value>
+    <comment>Validation message saying that directory of the save path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Имя файла этого пути сохранения пустое!</value>
+    <comment>Validation message saying that the file name of the save path is empty.</comment>
+  </data>
+</root>

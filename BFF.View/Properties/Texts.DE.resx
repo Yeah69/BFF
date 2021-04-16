@@ -1,0 +1,731 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, SystemResources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, SystemResources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Alle Konten</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>erstellen.</value>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Abbruch des Zielabgleichs</value>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Alle</value>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Gelöscht</value>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Aktuell</value>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Gesamt</value>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Ungeklärt</value>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Übertragen</value>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>entfernen</value>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Ersten Kontoeintrag erstellen</value>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Konto</value>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Kategorie</value>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Prüfnummer</value>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Gelöscht</value>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>F</value>
+    <comment>Abbreviation of Flag or Markierung (German)</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Zahlungsempfänger</value>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Summe</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Symbol</value>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Zwischensaldo</value>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Fehlende Summe</value>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Zielsaldo einstellen</value>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Zielsaldo</value>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Übernimmt aktuell bearbeitete Elemente in das Konto</value>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Erzeugt eine neue geteilte Transaktion</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Erzeugt eine neue Transaktion</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Erzeugt eine neue Übertragung</value>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Neues Konto erstellen</value>
+  </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>Dadurch werden das Konto und alle seine Transaktionen gelöscht, zweiseitige Übertragungen werden einseitig, und die kontospezifischen Abflüsse in der Budgetierung verschwinden.
+
+Sind Sie wirklich sicher? (Es wird automatisch ein Backup erstellt, falls Sie die Daten im Nachhinein zurückspulen möchten)</value>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Konten bearbeiten</value>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Konto Name</value>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Startsaldo</value>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Startdatum</value>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Verfügbar</value>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Geldbetrag, der in diesem Monat zur Verfügung steht, aber noch keiner Kategorie zugewiesen ist.</value>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Budgetiert</value>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Summe aller Geldbeträge, die in diesem Monat für eine Kategorie budgetiert sind.</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Durchschnittliche Abflüsse der letzten drei Monate</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Durchschnittliche Abflüsse des letzten Jahres</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Saldo auf Null</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Budgetwerte vom letzten Monat</value>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Abflüsse des letzten Monats</value>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Null</value>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Einkommen</value>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Betrag des verdienten Geldes, der für die Ausgaben dieses Monats vorgesehen ist.</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Füllen Sie alle Budgetzellen mit:</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Füllen Sie alle leeren Budgetzellen mit:</value>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Nicht budgetiert</value>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Geldbetrag, der im letzten Monat verfügbar war, aber keiner Kategorie zugewiesen wurde.</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Einseitige Übertragungen</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Einseitige Übertragungen können nach einer Löschung eines Kontos auftreten. Sie müssen berücksichtigt werden, da sie nicht budgetneutral sind.</value>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Abflüsse</value>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Überbudgetiert</value>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Geldbetrag, der zur Befriedigung aller Kategorien im letzten Monat gefehlt hat.</value>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Geldbetrag, der zur Befriedigung aller Kategorien in diesem Monat fehlt.</value>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Overspill</value>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Summe der Ausgabenüberschreitungen, die im letzten Monat aus allen Kategorien aufgelaufen sind.</value>
+  </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Aggregate anzeigen</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Nicht zugewiesen</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Die Summe aller Transaktionen, denen keine Kategorie zugeordnet ist.</value>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Neue Kategorie erstellen</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Farbe</value>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Konfiguration</value>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Einträge</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Sind Sie sicher, dass die Kategorie "{0}" gelöscht werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Sind Sie sicher, dass die Kategorie "{0}" in die Kategorie "{1}" zusammengeführt werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Sind Sie sicher, dass das Flag "{0}" gelöscht werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Sind Sie sicher, dass der Merker "{0}" mit dem Merker "{1}" zusammengeführt werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Sind Sie sicher, dass die Einkommenskategorie "{0}" gelöscht werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Sind Sie sicher, dass die Einkommenskategorie "{0}" mit der Einkommenskategorie "{1}" zusammengeführt werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Sind Sie sicher, dass der Zahlungsempfänger "{0}" gelöscht werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Sind Sie sicher, dass der Zahlungsempfänger "{0}" mit dem Zahlungsempfänger "{1}" zusammengeführt werden soll?</value>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Sind Sie sicher?</value>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Neue Kategorie erstellen</value>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Neues Flag erstellen</value>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Neuen Zahlungsempfänger anlegen</value>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>Beim Erstellen der Einträge ist ein Fehler aufgetreten. Überprüfen Sie die Konfiguration.</value>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Kontoauszug</value>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Kategorien</value>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Flags</value>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Einkommenskategorien</value>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Kontoauszug öffnen</value>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Zahlungsempfänger</value>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Der Name der neuen Kategorie darf nicht leer sein!</value>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Es muss ein Konto ausgewählt werden.</value>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Es muss eine Kategorie gewählt werden.</value>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Es muss ein Quell-Konto gewählt werden.</value>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>Es muss ein Zahlungsempfänger gewählt werden.</value>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Es muss ein Zielkonto gewählt werden.</value>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>Der Name eines neuen Kontos darf nicht leer sein oder mit einem Namen der bestehenden Konten übereinstimmen!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>Dieser Name existiert bereits auf der gewählten Kategorieebene!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>Diese Kategorieebene enthält bereits eine Kategorie mit dem gewählten Namen!</value>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Der Name eines neuen Merkers darf nicht leer oder ein bereits vorhandener sein.</value>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Der Name eines neuen Zahlungsempfängers darf nicht leer oder ein bereits vorhandener Name sein.</value>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Ein Konto muss ausgewählt werden, bevor der Eintrag eingefügt wird.</value>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>Die Datei "{0}" konnte nicht gefunden werden.</value>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Neues Flag erstellen</value>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Edit Flags</value>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Begrenzer</value>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Datei-Pfad</value>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Kopfzeile</value>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Lang</value>
+  </data>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Memo-Format</value>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Negativ</value>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Neuen Zahlungsempfänger anlegen, falls nicht vorhanden?</value>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Okay</value>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Payee Format</value>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positiv</value>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Profil entfernen</value>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>Profil zurücksetzen</value>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Neues Profil speichern</value>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Profil speichern</value>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>Kurz</value>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Sum Format</value>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Nicht zugewiesen</value>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Konten</value>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Budget</value>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Durchsuchen</value>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Ziel exportieren</value>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Importieren</value>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Quelle importieren</value>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Passwort</value>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Importieren und speichern Sie unter diesem Pfad:</value>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Konfiguration importieren</value>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Pfad zur YNAB-Budget-CSV:</value>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Pfad zur CSV-Datei mit den YNAB-Transaktionen:</value>
+  </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Konvertieren in</value>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>Über</value>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>Es ist noch kein Budgetprojekt geladen.
+Um ein Projekt zu erstellen, zu öffnen oder zu importieren
+öffnen Sie das Datei-Menü in der oberen linken Ecke.</value>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Datei</value>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Importieren</value>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Öffnen Sie</value>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Name der neuen Kategorie</value>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Name der neuen Flagge</value>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Name des neuen Zahlungsempfängers</value>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Wenn diese Option aktiviert ist, wird eine Einkommenskategorie erstellt.
+Nur Transaktionen, die einer solchen Kategorie zugeordnet sind, werden als Einkommen interpretiert.</value>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Einkommensrelevant?</value>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Monat Offset</value>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>BFF-Budgetplan (*.realm)|*.realm|BFF-Budgetplan (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Einen neuen Budgetplan erstellen</value>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Öffnen Sie einen Budgetplan</value>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Aktuelle Summe</value>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Zwischensumme</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Fehlende Summe ausschließlich nicht eingereichte Einträge</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Fehlende Summe</value>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Neuen Zahlungsempfänger anlegen</value>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Zahlungsempfänger bearbeiten</value>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Neuen Budgetplan speichern auf:</value>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Akzente</value>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Spaltenüberschriften der Bearbeitungstabelle immer ausblenden</value>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Währungsformat</value>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Datumsformat</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Schecknummern anzeigen</value>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Flaggen anzeigen</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Übergeordnete Kategorie</value>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Der Gesamtsaldo einschließlich der Einträge mit einem Datum in der Zukunft.
+Siehe Tooltip zur besseren Unterscheidung.</value>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>Die Zwischenbilanz enthält die Einträge, die noch gespeichert werden müssen.</value>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Die Differenz zwischen dem Zielsaldo und dem Zwischensaldo.</value>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Die Einstellung des Zielsaldos ermöglicht die automatische Berechnung der fehlenden Summe.</value>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Der Saldo des Kontos am Startdatum der Einrichtung.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Wenn die Aggregation eingeschaltet ist, dann addieren die Kategorien die Werte ihrer Unterkategorien zu ihren eigenen hinzu.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Mit dieser Datumsauswahl können Sie zu einem beliebigen Monat springen (der Tag ist irrelevant).</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Verschiebung um einen Monat nach hinten</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Einen Monat nach vorne schieben</value>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Der Monatsoffset verschiebt, auf welchen Monat das Einkommen aktiv ist.
+Zum Beispiel verschiebt ein Monatsoffset eins das Einkommen in den nächsten Monat, minus eins in den vorherigen.</value>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Wenn eine übergeordnete Kategorie ausgewählt ist, wird die neue Kategorie als Unterkategorie angehängt.</value>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Drücken Sie die Schaltfläche in dieser Spalte, um das Element der entsprechenden Zeile zu löschen.</value>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>Um eine Kategorie mit einer anderen zu verschmelzen, ziehen Sie das Verschmelzungssymbol aus dieser Spalte in die Quellzeile und legen es in der Zielzeile ab.
+Die Zielkategorie wird allen Kontoeinträgen der Quellkategorie zugewiesen und erbt alle Unterkategorien.
+Wenn ein Paar der Unterkategorien denselben Namen hat, dann wird die Unterkategorie der Quellkategorie automatisch umbenannt (Nummer wird angehängt).</value>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>Um einen Merker mit einem anderen zu verschmelzen, ziehen Sie das Verschmelzungssymbol aus dieser Spalte in die Quellzeile und legen es in der Zielzeile ab.
+Der Zielmerker wird allen Kontoeinträgen des Quellmerkers zugewiesen und behält seine Farbe.</value>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>Um eine Einkommenskategorie mit einer anderen zu verschmelzen, ziehen Sie das Verschmelzungssymbol aus dieser Spalte in die Quellzeile und lassen Sie es in der Zielzeile fallen.
+Die Ziel-Einkommenskategorie wird allen Kontoeinträgen der Quell-Einkommenskategorie zugewiesen und behält ihren Monatsversatz.</value>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>Um einen Zahlungsempfänger mit einem anderen zu verschmelzen, ziehen Sie das Verschmelzungssymbol aus dieser Spalte in die Quellzeile und lassen es auf der Zielzeile fallen.
+Der Ziel-Zahlungsempfänger wird allen Kontoeinträgen des Quell-Zahlungsempfängers zugewiesen.</value>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Quell-Account</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Einkommens-Kategorie</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Einkommen-Transaktion</value>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Klicken Sie darauf, um die Untertransaktionen zu sehen und zu bearbeiten.</value>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Ziel-Account</value>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Transaktion</value>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Übertragen</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Das Konto, das Eigentümer des Eintrags ist.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
+    <value>Die Kategorie bestimmt Ihren persönlichen Zweck dieses Eintrags.
+Da sie möglicherweise hierarchisch sind, wird der gesamte Hierarchiepfad im Tooltip angezeigt.
+
+Handelt es sich bei dem Eintrag um eine Überweisung, wird hier das Zielkonto eingetragen.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Bei Bedarf kann hier die Schecknummer eingetragen werden.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Dieses Häkchen kann verwendet werden, um fertige Einträge und noch zu bearbeitende Einträge zu trennen.
+Die Gesamtsummen können separat im Tooltip der Waage beobachtet werden.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Das Datum, an dem der Eintrag aktiv ist.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Ein Flag kennzeichnet einen Eintrag optisch durch Farbe und ist völlig optional.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>Das Memo ist als willkürliche Beschreibung des Eintrags gedacht.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Hier wird die bezahlte oder die zahlende Person dieses Eintrags eingetragen.
+
+Falls es sich bei dem Eintrag um eine Überweisung handelt, wird hier das Quell-Konto eingetragen.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Die Symbole zeigen die Art der Kontobuchung an.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>Eine Einnahmebuchung markiert eine Transaktion, die als Einnahme betrachtet wird.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Eine Transaktion lässt Geld von oder auf das Konto fließen.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>Bei einer Überweisung wird Geld von einem Konto auf ein anderes übertragen.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Die Summe des Eintrags.</value>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Dieser Text konnte nicht als Währung geparst werden!</value>
+    <comment>Validation message saying that the text is not validly formated as currency.</comment>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Der Wert liegt außerhalb des Bereichs: [ {0} .. {1} ]!</value>
+    <comment>Validation message, which tells the long range as currency to the user.</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Dieses Eingabefeld darf nicht leer sein!</value>
+    <comment>Validation message saying that the property is not allowed to be empty.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Dieser Dateipfad existiert nicht!</value>
+    <comment>Validation message saying that file path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Das Verzeichnis des Speicherpfades existiert nicht!</value>
+    <comment>Validation message saying that directory of the save path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Der Dateiname dieses Speicherpfades ist leer!</value>
+    <comment>Validation message saying that the file name of the save path is empty.</comment>
+  </data>
+</root>

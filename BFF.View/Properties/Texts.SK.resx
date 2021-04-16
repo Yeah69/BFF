@@ -1,0 +1,731 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, SystemResources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, SystemResources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Všetky účty</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Vytvoriť stránku</value>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Prerušenie cielenia rovnováhy</value>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Všetky</value>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Vymazané</value>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Aktuálne</value>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Celkom</value>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Nevyčistené</value>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Prenos</value>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Odstrániť</value>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Odstránenie stránky</value>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Vytvorenie prvého záznamu na účte</value>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Účet</value>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Kategória</value>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Kontrolné číslo</value>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Vymazané</value>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Dátum</value>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>F</value>
+    <comment>Abbreviation of Flag or Markierung (German)</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Príjemca</value>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Suma</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Symbol</value>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Strednodobá rovnováha</value>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Chýbajúca suma</value>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Nastavenie cieľového zostatku</value>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Cieľová bilancia</value>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Zachováva aktuálne upravené prvky na účte</value>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Vytvorí novú rozdelenú transakciu</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Vytvorí novú transakciu</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Vytvorí nový prenos</value>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Bilancia</value>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Vytvoriť nové konto</value>
+  </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>Tým sa vymaže účet a všetky jeho transakcie, z obojstranných prevodov sa stanú jednostranné a v rozpočítaní zaniknú odtoky na konkrétny účet.
+
+Ste si naozaj istí? (Automaticky sa vytvorí záložná kópia, ak by ste chceli údaje dodatočne pretiahnuť).</value>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Úprava účtov</value>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Názov účtu</value>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Počiatočná rovnováha</value>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Dátum začatia</value>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Dostupné na</value>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Suma peňazí, ktorá je v tomto mesiaci k dispozícii, ale ešte nie je priradená k žiadnej kategórii.</value>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Bilancia</value>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Rozpočtované</value>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Suma všetkých peňažných súm, ktoré sú v tomto mesiaci rozpočtované na kategóriu.</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Priemerné odlevy za posledné tri mesiace</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Priemerný odlev za posledný rok</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Rovnováha na nulu</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Rozpočtové hodnoty z minulého mesiaca</value>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Odlevy za posledný mesiac</value>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Zero</value>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Príjmy</value>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Suma zarobených peňazí, ktorá je určená na výdavky v tomto mesiaci.</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Vyplňte všetky bunky rozpočtu:</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Vyplňte všetky prázdne bunky rozpočtu:</value>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Nie je zahrnuté v rozpočte</value>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Suma peňazí, ktorá bola k dispozícii minulý mesiac, ale nebola priradená k žiadnej kategórii.</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Jednostranné prevody</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Po vymazaní účtu môže dôjsť k jednostranným prevodom. Je potrebné ich zvážiť, pretože nie sú neutrálne pre rozpočet.</value>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Odtoky</value>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Prekročenie rozpočtu</value>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Suma peňazí, ktorá chýbala na uspokojenie všetkých kategórií za posledný mesiac.</value>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Suma peňazí, ktorá chýba na uspokojenie všetkých kategórií v tomto mesiaci.</value>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Overspill</value>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Súčet prečerpaných súm peňazí zo všetkých kategórií za posledný mesiac.</value>
+  </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Zobraziť agregáty</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Nepriradené</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Súčet všetkých transakcií, ktoré nemajú priradenú žiadnu kategóriu.</value>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Vytvorenie novej kategórie</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Farba</value>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Konfigurácia</value>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Záznamy</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Ste si istí, že kategória "{0}" by sa mala odstrániť?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Ste si istí, že kategória "{0}" by sa mala zlúčiť do kategórie "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Ste si istí, že príznak "{0}" by sa mal odstrániť?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Ste si istí, že príznak "{0}" by sa mal zlúčiť s príznakom "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Ste si istí, že kategória príjmov "{0}" by sa mala vymazať?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Ste si istí, že kategória príjmov "{0}" by sa mala zlúčiť s kategóriou príjmov "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Ste si istí, že príjemca "{0}" má byť vymazaný?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Ste si istí, že príjemca "{0}" by sa mal zlúčiť s príjemcom "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Ste si istý?</value>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Vytvorenie novej kategórie</value>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Vytvorenie novej vlajky</value>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Vytvorenie nového príjemcu</value>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>Pri vytváraní záznamov došlo k chybe. Skontrolujte konfiguráciu.</value>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Bankový výpis</value>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Kategórie</value>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Vlajky</value>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Kategórie príjmov</value>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Otvorený bankový výpis</value>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Príjemcovia</value>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Názov novej kategórie nesmie byť prázdny!</value>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Je potrebné vybrať účet.</value>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Je potrebné vybrať kategóriu.</value>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Je potrebné vybrať zdrojový účet.</value>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>Je potrebné vybrať príjemcu.</value>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Je potrebné vybrať cieľový účet.</value>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>Názov nového účtu nesmie byť prázdny alebo sa zhodovať s názvom existujúcich účtov!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>Tento názov už existuje na zvolenej úrovni kategórie!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>Táto úroveň kategórie už obsahuje kategóriu so zvoleným názvom!</value>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Názov nového príznaku nesmie byť prázdny alebo už existujúci.</value>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Názov nového príjemcu nesmie byť prázdny alebo už existujúci.</value>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Pred vložením záznamu je potrebné vybrať účet.</value>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>Súbor "{0}" sa nepodarilo nájsť.</value>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Vytvorenie novej vlajky</value>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Úprava príznakov</value>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Zrušiť</value>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Formát dátumu</value>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Oddeľovač</value>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Cesta k súboru</value>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Záhlavie</value>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Dlhé</value>
+  </data>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Formát poznámky</value>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Názov</value>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Negatívne</value>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Vytvoriť nového príjemcu, ak ešte neexistuje?</value>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Nie</value>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Dobre</value>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Formát príjemcu platby</value>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Pozitívne</value>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Odstrániť profil</value>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>Obnovenie profilu</value>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Uložiť nový profil</value>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Uložiť profil</value>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>Krátky</value>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Formát súčtu</value>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Nepriradené</value>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Áno</value>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Účty</value>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Rozpočet</value>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Prehľadávať</value>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Zrušiť</value>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Cieľ vývozu</value>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Zdroj importu</value>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Heslo</value>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Importovať a uložiť do tejto cesty:</value>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Konfigurácia importu</value>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Cesta k CSV rozpočtu YNAB:</value>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Cesta k CSV transakcie YNAB:</value>
+  </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Previesť na</value>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>O stránke</value>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>Zatiaľ nie je načítaný žiadny rozpočtový projekt.
+Ak chcete vytvoriť, otvoriť alebo importovať projekt
+otvorte menu Súbor v ľavom hornom rohu.</value>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Súbor</value>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Zatvoriť</value>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Nový</value>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Otvorte stránku</value>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Nastavenia</value>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Názov novej kategórie</value>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Názov novej vlajky</value>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Názov nového príjemcu</value>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Ak je začiarknuté, vytvorí sa kategória príjmov.
+Iba transakcie priradené do takejto kategórie sa interpretujú ako príjem.</value>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Príjem relevantný?</value>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Mesačný posun</value>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>Plán rozpočtu BFF (*.realm)|*.realm|Plán rozpočtu BFF (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Vytvorenie nového rozpočtového plánu</value>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Otvorenie rozpočtového plánu</value>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Aktuálna suma</value>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Medzisúčet</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Chýbajúca suma Výhradne nepredložené záznamy</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Chýbajúca suma</value>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Vytvorenie nového príjemcu</value>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Upraviť príjemcov</value>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Uložte nový rozpočtový plán do:</value>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Akcenty</value>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Vždy skryť hlavičky stĺpcov tabuľky úprav</value>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Formát meny</value>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Formát dátumu</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Jazyk</value>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Zobraziť kontrolné čísla</value>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Zobraziť vlajky</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Téma</value>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Kategória Superior</value>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Celkový zostatok vrátane položiek s dátumom v budúcnosti.
+Lepšie rozlíšenie nájdete v nápovede k nástroju.</value>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>Priebežný zostatok zahŕňa položky, ktoré sa ešte musia uložiť.</value>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Rozdiel cieľového zostatku a priebežného zostatku.</value>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Nastavenie cieľového zostatku umožňuje automatický výpočet chýbajúcej sumy.</value>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Zostatok na účte k dátumu začiatku nastavenia.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Ak je zapnutá agregácia, kategórie pridajú hodnoty svojich podkategórií k vlastným hodnotám.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Pomocou tohto nástroja na výber dátumu môžete prejsť na ľubovoľný mesiac (deň je irelevantný).</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Posun o mesiac dozadu</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Posun o mesiac dopredu</value>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Započítanie mesiaca sa posúva podľa toho, ktorý mesiac je aktívny.
+Napríklad mesačný zápočet jedna posunie príjem do nasledujúceho mesiaca, mínus jedna do predchádzajúceho.</value>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Ak je vybraná nadradená kategória, nová kategória sa pridá ako podkategória.</value>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Stlačením tlačidla v tomto stĺpci odstránite prvok príslušného riadku.</value>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>Ak chcete zlúčiť jednu kategóriu s inou, potiahnite ikonu zlúčenia z tohto stĺpca v zdrojovom riadku a pustite ju na cieľový riadok.
+Cieľová kategória sa priradí ku všetkým záznamom účtu zdrojovej kategórie a zdedí všetky podkategórie.
+Ak má dvojica podkategórií rovnaký názov, potom sa podkategória zdrojovej kategórie automaticky premenuje (pridá sa číslo).</value>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>Ak chcete zlúčiť jeden príznak s druhým, potiahnite ikonu zlúčenia z tohto stĺpca v zdrojovom riadku a pustite ju na cieľový riadok.
+Cieľový príznak sa priradí ku všetkým záznamom účtu zdrojového príznaku a zachová si svoju farbu.</value>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>Ak chcete zlúčiť jednu kategóriu príjmov s inou, potiahnite ikonu zlúčenia z tohto stĺpca v zdrojovom riadku a pustite ju na cieľový riadok.
+Cieľová kategória príjmov sa priradí ku všetkým účtovným záznamom zdrojovej kategórie príjmov a zachová si svoj mesačný posun.</value>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>Ak chcete zlúčiť jedného príjemcu s iným, potiahnite ikonu zlúčenia z tohto stĺpca v zdrojovom riadku a pustite ju do cieľového riadku.
+Cieľový príjemca sa priradí ku všetkým položkám účtu zdrojového príjemcu.</value>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Zdrojový účet</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Kategória príjmov</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Príjmové transakcie</value>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Kliknutím zobrazíte a upravíte čiastkové transakcie.</value>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Cieľový účet</value>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Transakcia</value>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Prenos</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Účet, ktorý je vlastníkom záznamu.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
+    <value>Kategória určuje váš osobný účel tohto záznamu.
+Pretože sú možno hierarchické, v nápovede sa zobrazuje celá cesta k hierarchii.
+
+V prípade, že je záznam prevodom, je tu vyplnený cieľový účet.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>V prípade potreby tu môžete vyplniť kontrolné číslo.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Toto začiarkavacie políčko môžete použiť na oddelenie hotových záznamov od záznamov, ktoré si ešte vyžadujú úpravy.
+Celkové sumy je možné sledovať samostatne v nápovede k bilancii.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Dátum, ku ktorému je položka aktívna.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Vlajka vizuálne označuje položku farbou a je úplne voliteľná.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>Poznámka má slúžiť ako ľubovoľný opis položky.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Tu sa vyplní platiteľ alebo platiaca osoba tohto záznamu.
+
+V prípade, že ide o prevod, vyplní sa tu zdrojový účet.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Symboly označujú typ účtovného záznamu.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>Zápis príjmu označuje transakciu, ktorá sa považuje za príjem.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Transakcia umožňuje tok peňazí z účtu alebo na účet.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>Prevodom sa peniaze presúvajú z jedného účtu na druhý.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Súčet položky.</value>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Tento text nebolo možné analyzovať ako menu!</value>
+    <comment>Validation message saying that the text is not validly formated as currency.</comment>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Hodnota je mimo rozsahu: [ {0} .. {1} ]!</value>
+    <comment>Validation message, which tells the long range as currency to the user.</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Toto vstupné pole nesmie byť prázdne!</value>
+    <comment>Validation message saying that the property is not allowed to be empty.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Táto cesta k súboru neexistuje!</value>
+    <comment>Validation message saying that file path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Adresár cesty k uloženiu neexistuje!</value>
+    <comment>Validation message saying that directory of the save path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Názov súboru tejto cesty k uloženiu je prázdny!</value>
+    <comment>Validation message saying that the file name of the save path is empty.</comment>
+  </data>
+</root>

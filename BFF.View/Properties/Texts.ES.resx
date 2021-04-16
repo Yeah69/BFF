@@ -59,673 +59,673 @@
     <value>System.Resources.ResXResourceWriter, SystemResources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
   <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value>所有账户</value>
+    <value>Todas las cuentas</value>
   </data>
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
-    <value>创建</value>
+    <value>Crear</value>
   </data>
   <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
-    <value>终止目标平衡</value>
+    <value>Abortar el balance de objetivos</value>
   </data>
   <data name="AccountView_Balance_All" xml:space="preserve">
-    <value>全部</value>
+    <value>Todo</value>
   </data>
   <data name="AccountView_Balance_Cleared" xml:space="preserve">
-    <value>已结清</value>
+    <value>Despejado</value>
   </data>
   <data name="AccountView_Balance_Current" xml:space="preserve">
-    <value>当前</value>
+    <value>Actual</value>
   </data>
   <data name="AccountView_Balance_Total" xml:space="preserve">
-    <value>总数</value>
+    <value>Total</value>
   </data>
   <data name="AccountView_Balance_Uncleared" xml:space="preserve">
-    <value>无名氏</value>
+    <value>No se ha aclarado</value>
   </data>
   <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value>转移</value>
+    <value>Transferencia</value>
   </data>
   <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value>删除</value>
+    <value>Borrar</value>
   </data>
   <data name="AccountView_ConMenu_Remove" xml:space="preserve">
-    <value>移除</value>
+    <value>Eliminar</value>
   </data>
   <data name="AccountView_FirstEntry" xml:space="preserve">
-    <value>创建第一个账户条目</value>
+    <value>Crear el primer asiento de la cuenta</value>
   </data>
   <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>帐户</value>
+    <value>Cuenta</value>
   </data>
   <data name="AccountView_Header_Category" xml:space="preserve">
-    <value>种类</value>
+    <value>Categoría</value>
   </data>
   <data name="AccountView_Header_CheckNumber" xml:space="preserve">
-    <value>检查号码</value>
+    <value>Número de cheque</value>
   </data>
   <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>已结清</value>
+    <value>Despejado</value>
   </data>
   <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>日期</value>
+    <value>Fecha</value>
   </data>
   <data name="AccountView_Header_Flag" xml:space="preserve">
     <value>F</value>
     <comment>Abbreviation of Flag or Markierung (German)</comment>
   </data>
   <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value>备忘录</value>
+    <value>Memo</value>
   </data>
   <data name="AccountView_Header_Payee" xml:space="preserve">
-    <value>收款人</value>
+    <value>Beneficiario</value>
   </data>
   <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>总额</value>
+    <value>Suma</value>
   </data>
   <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
     <value>S</value>
   </data>
   <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
-    <value>符号</value>
+    <value>Símbolo</value>
   </data>
   <data name="AccountView_IntermediateBalance" xml:space="preserve">
-    <value>中间平衡</value>
+    <value>Balance intermedio</value>
   </data>
   <data name="AccountView_MissingSum" xml:space="preserve">
-    <value>缺少的金额</value>
+    <value>Suma perdida</value>
   </data>
   <data name="AccountView_SetTargetBalance" xml:space="preserve">
-    <value>设定目标余额</value>
+    <value>Establecer el balance objetivo</value>
   </data>
   <data name="AccountView_TargetBalance" xml:space="preserve">
-    <value>目标余额</value>
+    <value>Balance de objetivos</value>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>将当前编辑的元素保留到账户中</value>
+    <value>Persiste los elementos editados actualmente en la cuenta</value>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>创建一个新的拆分交易</value>
+    <value>Crea una nueva transacción dividida</value>
   </data>
   <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>创建一个新的交易</value>
+    <value>Crea una nueva transacción</value>
   </data>
   <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>创建一个新的转移</value>
+    <value>Crea una nueva transferencia</value>
   </data>
   <data name="Account_Balance" xml:space="preserve">
-    <value>余额</value>
+    <value>Balance</value>
   </data>
   <data name="Account_CreateNew" xml:space="preserve">
-    <value>创建新账户</value>
+    <value>Crear una nueva cuenta</value>
   </data>
   <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
-    <value>这样就会删除该账户及其所有交易，双面转账将变成单面转账，预算编制中特定账户的流出量也将消失。
+    <value>Esto eliminará la cuenta y todas sus transacciones, las transferencias de dos lados se convertirán en un solo lado, y las salidas específicas de la cuenta en la presupuestación desaparecerán.
 
-你真的确定吗？(如果您想事后回放数据，将自动创建备份)</value>
+¿Está realmente seguro? (Se creará automáticamente una copia de seguridad, por si quiere rebobinar los datos después)</value>
   </data>
   <data name="Account_Edit" xml:space="preserve">
-    <value>编辑账户</value>
+    <value>Editar cuentas</value>
   </data>
   <data name="Account_Name" xml:space="preserve">
-    <value>帐户名称</value>
+    <value>Nombre de la cuenta</value>
   </data>
   <data name="Account_StartingBalance" xml:space="preserve">
-    <value>起始余额</value>
+    <value>Saldo inicial</value>
   </data>
   <data name="Account_StartingDate" xml:space="preserve">
-    <value>开始日期</value>
+    <value>Fecha de inicio</value>
   </data>
   <data name="Budgeting_Available" xml:space="preserve">
-    <value>可提供</value>
+    <value>Disponible</value>
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
-    <value>本月可用但尚未分配到任何类别的资金数额。</value>
+    <value>Cantidad de dinero que está disponible en este mes pero que aún no se ha asignado a ninguna categoría.</value>
   </data>
   <data name="Budgeting_Balance" xml:space="preserve">
-    <value>余额</value>
+    <value>Balance</value>
   </data>
   <data name="Budgeting_Budgeted" xml:space="preserve">
-    <value>预算内</value>
+    <value>Presupuestado</value>
   </data>
   <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
-    <value>本月已编入某类预算的所有金额之和。</value>
+    <value>Suma de todas las cantidades de dinero que se presupuestan en una categoría en este mes.</value>
   </data>
   <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
-    <value>过去三个月的平均流出量</value>
+    <value>Promedio de salidas de los últimos tres meses</value>
   </data>
   <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
-    <value>去年的平均流出量</value>
+    <value>Promedio de salidas del último año</value>
   </data>
   <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
-    <value>余额为零</value>
+    <value>Saldo a cero</value>
   </data>
   <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
-    <value>上个月的预算值</value>
+    <value>Valores presupuestarios del mes pasado</value>
   </data>
   <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
-    <value>上个月的流出量</value>
+    <value>Salidas del último mes</value>
   </data>
   <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value>零</value>
+    <value>Cero</value>
   </data>
   <data name="Budgeting_Income" xml:space="preserve">
-    <value>收入</value>
+    <value>Ingresos</value>
   </data>
   <data name="Budgeting_IncomeExplanation" xml:space="preserve">
-    <value>分配给这个月的开支的挣钱数额。</value>
+    <value>Cantidad de dinero ganado que se asigna para los gastos de este mes.</value>
   </data>
   <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>在所有预算单元格中填入：</value>
+    <value>Rellena todas las celdas del presupuesto con:</value>
   </data>
   <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value>将所有空的预算单元格填入：</value>
+    <value>Rellena todas las celdas de presupuesto vacías con:</value>
   </data>
   <data name="Budgeting_NotBudgeted" xml:space="preserve">
-    <value>未编入预算</value>
+    <value>No presupuestado</value>
   </data>
   <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
-    <value>上月可动用但未分配到任何类别的资金数额。</value>
+    <value>Cantidad de dinero que estuvo disponible el mes pasado pero que no se asignó a ninguna categoría.</value>
   </data>
   <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
-    <value>单面转让</value>
+    <value>Transferencias unilaterales</value>
   </data>
   <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
-    <value>在删除一个账户后，可能会发生单方面的转移。必须加以考虑，因为它们对预算不是中性的。</value>
+    <value>Las transferencias unilaterales pueden producirse tras la supresión de una cuenta. Hay que tenerlas en cuenta, porque no son neutrales para el presupuesto.</value>
   </data>
   <data name="Budgeting_Outflows" xml:space="preserve">
-    <value>流出量</value>
+    <value>Salidas</value>
   </data>
   <data name="Budgeting_Overbudgeted" xml:space="preserve">
-    <value>预算过高</value>
+    <value>Sobrepresupuestado</value>
   </data>
   <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>上个月缺少满足所有类别的资金量。</value>
+    <value>Cantidad de dinero que faltó para satisfacer todas las categorías en el último mes.</value>
   </data>
   <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
-    <value>这个月缺少满足所有类别的资金量。</value>
+    <value>Cantidad de dinero que falta para satisfacer todas las categorías en este mes.</value>
   </data>
   <data name="Budgeting_Overspend" xml:space="preserve">
-    <value>溢出</value>
+    <value>Rebosamiento</value>
   </data>
   <data name="Budgeting_OverspendExplanation" xml:space="preserve">
-    <value>上个月所有类别的超支金额累积起来的总和。</value>
+    <value>Suma de las cantidades de dinero acumuladas en exceso de todas las categorías en el último mes.</value>
   </data>
   <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value>显示总数</value>
+    <value>Mostrar agregados</value>
   </data>
   <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
-    <value>未分配</value>
+    <value>No asignado</value>
   </data>
   <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value>没有指定类别的所有交易的总和。</value>
+    <value>La suma de todas las transacciones que no tienen asignada ninguna categoría.</value>
   </data>
   <data name="Category_CreateNew" xml:space="preserve">
-    <value>创建新类别</value>
+    <value>Crear una nueva categoría</value>
   </data>
   <data name="Color" xml:space="preserve">
-    <value>色彩</value>
+    <value>Color</value>
   </data>
   <data name="Common_Configuration" xml:space="preserve">
-    <value>配置</value>
+    <value>Configuración</value>
   </data>
   <data name="Common_Entries" xml:space="preserve">
-    <value>参赛作品</value>
+    <value>Entradas</value>
   </data>
   <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
-    <value>你确定要删除"{0}"这个类别吗？</value>
+    <value>¿Está seguro de que la categoría "{0}" debe ser eliminada?</value>
   </data>
   <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
-    <value>你确定"{0}"这个类别应该被合并到"{1}"这个类别中吗？</value>
+    <value>¿Está seguro de que la categoría "{0}" debe fusionarse con la categoría "{1}"?</value>
   </data>
   <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
-    <value>你确定要删除"{0}"这个标志吗？</value>
+    <value>¿Está seguro de que la bandera "{0}" debe ser eliminada?</value>
   </data>
   <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
-    <value>你确定标志"{0}"应该被合并到标志"{1}"中吗？</value>
+    <value>¿Está seguro de que la bandera "{0}" debe fusionarse con la bandera "{1}"?</value>
   </data>
   <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value>你确定要删除收入类别"{0}"吗？</value>
+    <value>¿Está seguro de que la categoría de ingresos "{0}" debe ser eliminada?</value>
   </data>
   <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
-    <value>你确定收入类别"{0}"要并入收入类别"{1}"吗？</value>
+    <value>¿Está seguro de que la categoría de ingresos "{0}" debe fusionarse con la categoría de ingresos "{1}"?</value>
   </data>
   <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
-    <value>你确定要删除收款人"{0}"吗？</value>
+    <value>¿Está seguro de que el beneficiario "{0}" debe ser eliminado?</value>
   </data>
   <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
-    <value>你确定收款人"{0}"要并入收款人"{1}"吗？</value>
+    <value>¿Está seguro de que el beneficiario "{0}" debe fusionarse con el beneficiario "{1}"?</value>
   </data>
   <data name="ConfirmationDialog_Title" xml:space="preserve">
-    <value>你确定吗？</value>
+    <value>¿Está seguro?</value>
   </data>
   <data name="CreateNewCategory" xml:space="preserve">
-    <value>创建新类别</value>
+    <value>Crear una nueva categoría</value>
   </data>
   <data name="CreateNewFlag" xml:space="preserve">
-    <value>创建新旗帜</value>
+    <value>Crear una nueva bandera</value>
   </data>
   <data name="CreateNewPayee" xml:space="preserve">
-    <value>创建新的收款人</value>
+    <value>Crear un nuevo beneficiario</value>
   </data>
   <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
-    <value>创建条目时发生错误。检查配置。</value>
+    <value>Se ha producido un error al crear las entradas. Compruebe la configuración.</value>
   </data>
   <data name="Domain_BankStatement" xml:space="preserve">
-    <value>银行对账单</value>
+    <value>Extracto bancario</value>
   </data>
   <data name="Domain_Categories" xml:space="preserve">
-    <value>岚，巗峃，。</value>
+    <value>Categorías</value>
   </data>
   <data name="Domain_Flags" xml:space="preserve">
-    <value>旗帜</value>
+    <value>Banderas</value>
   </data>
   <data name="Domain_IncomeCategories" xml:space="preserve">
-    <value>收入类别</value>
+    <value>Categorías de ingresos</value>
   </data>
   <data name="Domain_OpenBankStatement" xml:space="preserve">
-    <value>开立银行对账单</value>
+    <value>Estado de cuenta bancario abierto</value>
   </data>
   <data name="Domain_Payees" xml:space="preserve">
-    <value>受款人</value>
+    <value>Beneficiarios</value>
   </data>
   <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
-    <value>新的类别名称不允许是空的!</value>
+    <value>El nombre de la nueva categoría no puede estar vacío.</value>
   </data>
   <data name="ErrorMessageEmptyAccount" xml:space="preserve">
-    <value>必须选择一个账户。</value>
+    <value>Hay que elegir una cuenta.</value>
   </data>
   <data name="ErrorMessageEmptyCategory" xml:space="preserve">
-    <value>必须选择一个类别。</value>
+    <value>Hay que elegir una categoría.</value>
   </data>
   <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
-    <value>必须选择一个源账户。</value>
+    <value>Hay que elegir una cuenta de origen.</value>
   </data>
   <data name="ErrorMessageEmptyPayee" xml:space="preserve">
-    <value>必须选择一个收款人。</value>
+    <value>Hay que elegir un beneficiario.</value>
   </data>
   <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
-    <value>必须选择一个目标账户。</value>
+    <value>Hay que elegir una cuenta de destino.</value>
   </data>
   <data name="ErrorMessageWrongAccountName" xml:space="preserve">
-    <value>新账户的名称不允许为空或与现有账户的名称相匹配!</value>
+    <value>El nombre de una nueva cuenta no puede estar vacío o coincidir con un nombre de las cuentas existentes.</value>
   </data>
   <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
-    <value>这个名字已经存在于所选的类别级别上了!</value>
+    <value>¡Este nombre ya existe en el nivel de categoría elegido!</value>
   </data>
   <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value>这个类别级别已经包含了一个所选名称的类别!</value>
+    <value>Este nivel de categoría ya contiene una categoría con el nombre elegido.</value>
   </data>
   <data name="ErrorMessageWrongFlagName" xml:space="preserve">
-    <value>新标志的名称不允许是空的或已经存在的标志。</value>
+    <value>El nombre de una nueva bandera no puede estar vacío o ser uno ya existente.</value>
   </data>
   <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value>新的收款人的名字不允许是空的，也不允许是已经存在的名字。</value>
+    <value>El nombre de un nuevo beneficiario no puede estar vacío o ser uno ya existente.</value>
   </data>
   <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
-    <value>在插入条目之前，必须选择一个账户。</value>
+    <value>Hay que elegir una cuenta antes de insertar la entrada.</value>
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
-    <value>找不到"{0}"这个文件。</value>
+    <value>No se ha podido encontrar el archivo "{0}".</value>
   </data>
   <data name="Flag_CreateNew" xml:space="preserve">
-    <value>创建新旗帜</value>
+    <value>Crear una nueva bandera</value>
   </data>
   <data name="Flag_Edit" xml:space="preserve">
-    <value>编辑旗帜</value>
+    <value>Editar banderas</value>
   </data>
   <data name="General_Cancel" xml:space="preserve">
-    <value>取消</value>
+    <value>Cancelar</value>
   </data>
   <data name="General_DateFormat" xml:space="preserve">
-    <value>日期格式</value>
+    <value>Formato de la fecha</value>
   </data>
   <data name="General_Delimiter" xml:space="preserve">
-    <value>定界符</value>
+    <value>Delimitador</value>
   </data>
   <data name="General_FilePath" xml:space="preserve">
-    <value>文件路径</value>
+    <value>Ruta del archivo</value>
   </data>
   <data name="General_Header" xml:space="preserve">
-    <value>头部</value>
+    <value>Cabecera</value>
   </data>
   <data name="General_Long" xml:space="preserve">
-    <value>长</value>
+    <value>Largo</value>
   </data>
   <data name="General_MemoFormat" xml:space="preserve">
-    <value>备忘录格式</value>
+    <value>Formato de la nota</value>
   </data>
   <data name="General_Name" xml:space="preserve">
-    <value>名称</value>
+    <value>Nombre</value>
   </data>
   <data name="General_Negative" xml:space="preserve">
-    <value>负面的</value>
+    <value>Negativo</value>
   </data>
   <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
-    <value>如果现有的收款人不存在，则创建新的收款人？</value>
+    <value>¿Crear un nuevo beneficiario si no existe?</value>
   </data>
   <data name="General_No" xml:space="preserve">
-    <value>没有</value>
+    <value>No</value>
   </data>
   <data name="General_Okay" xml:space="preserve">
-    <value>好吧，我知道了</value>
+    <value>Vale</value>
   </data>
   <data name="General_PayeeFormat" xml:space="preserve">
-    <value>收款人格式</value>
+    <value>Formato del beneficiario</value>
   </data>
   <data name="General_Positive" xml:space="preserve">
-    <value>积极的</value>
+    <value>Positivo</value>
   </data>
   <data name="General_Profile" xml:space="preserve">
-    <value>简介</value>
+    <value>Perfil</value>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">
-    <value>刪除檔案</value>
+    <value>Eliminar el perfil</value>
   </data>
   <data name="General_ResetProfile" xml:space="preserve">
-    <value>重置配置文件</value>
+    <value>Restablecer perfil</value>
   </data>
   <data name="General_SaveNewProfile" xml:space="preserve">
-    <value>保存新档案</value>
+    <value>Guardar el nuevo perfil</value>
   </data>
   <data name="General_SaveProfile" xml:space="preserve">
-    <value>保存资料</value>
+    <value>Guardar perfil</value>
   </data>
   <data name="General_Short" xml:space="preserve">
-    <value>短</value>
+    <value>Corto</value>
   </data>
   <data name="General_SumFormat" xml:space="preserve">
-    <value>合计格式</value>
+    <value>Formato de la suma</value>
   </data>
   <data name="General_Unassigned" xml:space="preserve">
-    <value>未分配</value>
+    <value>No asignado</value>
   </data>
   <data name="General_Yes" xml:space="preserve">
-    <value>是的，是的</value>
+    <value>Sí</value>
   </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
-    <value>账目</value>
+    <value>Cuentas</value>
   </data>
   <data name="HamburgerMenu_Budget" xml:space="preserve">
-    <value>预算</value>
+    <value>Presupuesto</value>
   </data>
   <data name="ImportView_Browse" xml:space="preserve">
-    <value>浏览</value>
+    <value>Navegue por</value>
   </data>
   <data name="ImportView_Cancel" xml:space="preserve">
-    <value>取消</value>
+    <value>Cancelar</value>
   </data>
   <data name="ImportView_ExportKind" xml:space="preserve">
-    <value>出口目标</value>
+    <value>Objetivo de exportación</value>
   </data>
   <data name="ImportView_Import" xml:space="preserve">
-    <value>进口</value>
+    <value>Importar</value>
   </data>
   <data name="ImportView_ImportKind" xml:space="preserve">
-    <value>进口源</value>
+    <value>Fuente de importación</value>
   </data>
   <data name="ImportView_Password" xml:space="preserve">
-    <value>密码</value>
+    <value>Contraseña</value>
   </data>
   <data name="ImportView_SaveFile" xml:space="preserve">
-    <value>导入并保存到此路径。</value>
+    <value>Importa y guarda en esta ruta:</value>
   </data>
   <data name="ImportView_Title" xml:space="preserve">
-    <value>导入配置</value>
+    <value>Configuración de la importación</value>
   </data>
   <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>进入YNAB预算CSV的路径。</value>
+    <value>Ruta de acceso al CSV del presupuesto de YNAB:</value>
   </data>
   <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>YNAB交易CSV的路径。</value>
+    <value>Ruta de acceso al CSV de transacciones de YNAB:</value>
   </data>
   <data name="Label_ConvertTo" xml:space="preserve">
-    <value>转换为</value>
+    <value>Convertir en</value>
   </data>
   <data name="MainWindow_About" xml:space="preserve">
-    <value>关于我们</value>
+    <value>Acerca de</value>
   </data>
   <data name="MainWindow_Empty" xml:space="preserve">
-    <value>还没有加载预算项目。
-为了创建、打开或导入一个项目
-打开左上角的 "文件 "菜单。</value>
+    <value>Todavía no se ha cargado ningún proyecto presupuestario.
+Para crear, abrir o importar un proyecto
+abra el menú Archivo en la esquina superior izquierda.</value>
   </data>
   <data name="MainWindow_File" xml:space="preserve">
-    <value>文件</value>
+    <value>Archivo</value>
   </data>
   <data name="MainWindow_File_Close" xml:space="preserve">
-    <value>关闭</value>
+    <value>Cerrar</value>
   </data>
   <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>进口</value>
+    <value>Importar</value>
   </data>
   <data name="MainWindow_File_New" xml:space="preserve">
-    <value>新产品</value>
+    <value>Nuevo</value>
   </data>
   <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>开放式</value>
+    <value>Abrir</value>
   </data>
   <data name="MainWindow_Settings" xml:space="preserve">
-    <value>设置</value>
+    <value>Ajustes</value>
   </data>
   <data name="NameOfNewCategory" xml:space="preserve">
-    <value>新类别名称</value>
+    <value>Nombre de la nueva categoría</value>
   </data>
   <data name="NameOfNewFlag" xml:space="preserve">
-    <value>新旗帜的名称</value>
+    <value>Nombre de la nueva bandera</value>
   </data>
   <data name="NameOfNewPayee" xml:space="preserve">
-    <value>新收款人姓名</value>
+    <value>Nombre del nuevo beneficiario</value>
   </data>
   <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value>如果选中，则创建一个收入类别。
-只有分配给这种类别的交易才被解释为收入。</value>
+    <value>Si se marca, se crea una categoría de ingresos.
+Sólo las transacciones asignadas a dicha categoría se interpretan como ingresos.</value>
   </data>
   <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
-    <value>收入相关？</value>
+    <value>¿Ingresos relevantes?</value>
   </data>
   <data name="NewCategory_MonthOffset" xml:space="preserve">
-    <value>月份偏移</value>
+    <value>Compensación del mes</value>
   </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value>BFF预算计划(*.realm)|*.realm|BFF预算计划(*.bffs,*.sqlite)|*bffs;*.sqlite。</value>
+    <value>Plan presupuestario BFF (*.realm)|*.realm|Plan presupuestario BFF (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
   </data>
   <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>创建一个新的预算计划</value>
+    <value>Crear un nuevo plan presupuestario</value>
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
-    <value>打开一个预算计划</value>
+    <value>Abrir un plan presupuestario</value>
   </data>
   <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
-    <value>目前的总和</value>
+    <value>Suma actual</value>
   </data>
   <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
-    <value>中间金额</value>
+    <value>Suma intermedia</value>
   </data>
   <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
-    <value>遗漏的未提交的条目总数</value>
+    <value>Faltan las entradas de Suma, exclusivamente, no presentadas</value>
   </data>
   <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
-    <value>缺少的金额</value>
+    <value>Suma faltante</value>
   </data>
   <data name="Payee_CreateNew" xml:space="preserve">
-    <value>创建新的收款人</value>
+    <value>Crear un nuevo beneficiario</value>
   </data>
   <data name="Payee_Edit" xml:space="preserve">
-    <value>编辑受款人</value>
+    <value>Editar beneficiarios</value>
   </data>
   <data name="SaveNewBudgetPlanTo" xml:space="preserve">
-    <value>将新的预算计划保存到：</value>
+    <value>Guardar el nuevo plan presupuestario para:</value>
   </data>
   <data name="Settings_Accents" xml:space="preserve">
-    <value>重音</value>
+    <value>Acentos</value>
   </data>
   <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
-    <value>总是隐藏编辑表的列头</value>
+    <value>Ocultar siempre las cabeceras de las columnas de la tabla de edición</value>
   </data>
   <data name="Settings_Currency" xml:space="preserve">
-    <value>货币格式</value>
+    <value>Formato de moneda</value>
   </data>
   <data name="Settings_Date" xml:space="preserve">
-    <value>日期格式</value>
+    <value>Formato de la fecha</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>语种</value>
+    <value>Idioma</value>
   </data>
   <data name="Settings_ShowCheckNumbers" xml:space="preserve">
-    <value>显示支票号码</value>
+    <value>Mostrar números de cheques</value>
   </data>
   <data name="Settings_ShowFlags" xml:space="preserve">
-    <value>展示旗帜</value>
+    <value>Mostrar banderas</value>
   </data>
   <data name="Settings_Theme" xml:space="preserve">
-    <value>主题</value>
+    <value>Tema</value>
   </data>
   <data name="SuperiorCategory" xml:space="preserve">
-    <value>高级类</value>
+    <value>Categoría superior</value>
   </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
-    <value>包括未来日期的条目在内的总余额。
-参见工具提示以更好地区分。</value>
+    <value>El saldo global incluyendo las entradas con fecha en el futuro.
+Véase la información sobre herramientas para una mejor distinción.</value>
   </data>
   <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
-    <value>中间余额包括尚未保存的条目。</value>
+    <value>El balance intermedio incluye las entradas que aún no se han guardado.</value>
   </data>
   <data name="ToolTip_Account_MissingSum" xml:space="preserve">
-    <value>目标余额与中间余额之差。</value>
+    <value>La diferencia del saldo objetivo y el saldo intermedio.</value>
   </data>
   <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
-    <value>设置目标余额可以自动计算缺失的金额。</value>
+    <value>La fijación del saldo objetivo permite el cálculo automático de la suma que falta.</value>
   </data>
   <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value>设置开始日的账户余额。</value>
+    <value>El saldo de la cuenta en la fecha de inicio de la configuración.</value>
   </data>
   <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
-    <value>如果开启了聚合功能，那么分类会在自己的子分类基础上增加子分类的值。</value>
+    <value>Si la agregación está activada, las categorías añadirán los valores de sus subcategorías sobre los suyos propios.</value>
   </data>
   <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value>使用这个日期选择器可以跳转到一个任意的月份（与日期无关）。</value>
+    <value>Utilice este selector de fecha para saltar a un mes arbitrario (el día es irrelevante).</value>
   </data>
   <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
-    <value>向后移一个月</value>
+    <value>Desplazamiento de un mes hacia atrás</value>
   </data>
   <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
-    <value>前移一个月</value>
+    <value>Desplazamiento de un mes hacia adelante</value>
   </data>
   <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
-    <value>月份偏移是指收入在哪个月份有效。
-例如，月份偏移1将把收入转移到下个月，减去1将转移到上个月。</value>
+    <value>El desplazamiento de mes se desplaza al mes en el que el ingreso está activo.
+Por ejemplo, un desplazamiento de mes uno desplazará el ingreso al mes siguiente, menos uno al anterior.</value>
   </data>
   <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value>如果选择了一个上级类别，那么新的类别将被附加为一个子类别。</value>
+    <value>Si se selecciona una categoría superior, la nueva categoría se añadirá como subcategoría.</value>
   </data>
   <data name="ToolTip_DeleteRow" xml:space="preserve">
-    <value>按下此列的按钮，可以删除相应行的元素。</value>
+    <value>Pulse el botón de esta columna para eliminar el elemento de la fila correspondiente.</value>
   </data>
   <data name="ToolTip_MergeToCategory" xml:space="preserve">
-    <value>为了将一个类别合并到另一个类别，从源行的这一列中拖动合并图标，然后将其放到目标行。
-目标类别将被分配给源类别的所有账户条目，并继承所有子类别。
-如果一对子类别具有相同的名称，那么源类别的子类别将自动重命名（编号被附加）。</value>
+    <value>Para fusionar una categoría con otra, arrastre el icono de fusión de esta columna en la fila de origen y suéltelo en la fila de destino.
+La categoría de destino se asignará a todas las entradas de cuenta de la categoría de origen y heredará todas las subcategorías.
+Si un par de subcategorías tiene el mismo nombre, la subcategoría de la categoría de origen se renombra automáticamente (se añade un número).</value>
   </data>
   <data name="ToolTip_MergeToFlag" xml:space="preserve">
-    <value>为了将一个标志合并到另一个标志，从源行的这一列中拖动合并图标，然后将其放到目标行上。
-目标旗帜将被分配给源旗帜的所有账户条目并保持其颜色。</value>
+    <value>Para fusionar una bandera con otra, arrastre el icono de fusión de esta columna en la fila de origen y suéltelo en la fila de destino.
+La bandera de destino se asignará a todas las entradas de cuenta de la bandera de origen y mantendrá su color.</value>
   </data>
   <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
-    <value>要将一个收入类别合并到另一个收入类别，请将合并图标从源行的这一列中拖动到目标行。
-目标收入类别将被分配给源收入类别的所有账户条目，并保持其月份偏移。</value>
+    <value>Para fusionar una categoría de ingresos con otra, arrastre el icono de fusión de esta columna en la fila de origen y suéltelo en la fila de destino.
+La categoría de ingresos de destino se asignará a todas las entradas de cuenta de la categoría de ingresos de origen y mantendrá su desplazamiento mensual.</value>
   </data>
   <data name="ToolTip_MergeToPayee" xml:space="preserve">
-    <value>为了将一个收款人合并到另一个收款人，从源行的这一列中拖动合并图标，然后将其放到目标行。
-目标收款人将被分配到源收款人的所有账户条目中。</value>
+    <value>Para fusionar un beneficiario con otro, arrastre el icono de fusión de esta columna en la fila de origen y suéltelo en la fila de destino.
+El beneficiario de destino se asignará a todas las entradas de la cuenta del beneficiario de origen.</value>
   </data>
   <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
-    <value>来源-账户</value>
+    <value>Cuenta de origen</value>
   </data>
   <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
-    <value>收入类别</value>
+    <value>Categoría de ingresos</value>
   </data>
   <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
-    <value>收入-交易</value>
+    <value>Ingresos-Transacciones</value>
   </data>
   <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
-    <value>点击以查看和编辑子交易。</value>
+    <value>Haga clic para ver y editar las subtransacciones.</value>
   </data>
   <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value>目标账户</value>
+    <value>Cuenta de destino</value>
   </data>
   <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
-    <value>交易</value>
+    <value>Transacción</value>
   </data>
   <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
-    <value>转移</value>
+    <value>Transferencia</value>
   </data>
   <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
-    <value>拥有该条目的账户；</value>
+    <value>La cuenta a la que pertenece la entrada.</value>
   </data>
   <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
-    <value>类别决定了你个人对这个条目的目的。
-因为它们可能是分层的，整个层级路径会在工具提示中显示。
+    <value>La categoría determina el propósito personal de esta entrada.
+Debido a que pueden ser jerárquicas, la ruta completa de la jerarquía se muestra en el tooltip.
 
-如果输入的是转账，则在这里填写目标账户。</value>
+En caso de que la entrada sea una transferencia, la cuenta de destino se rellena aquí.</value>
   </data>
   <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
-    <value>如有必要，可在此填写支票号码。</value>
+    <value>Si es necesario, se puede rellenar aquí el número de cheque.</value>
   </data>
   <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
-    <value>此复选标记可用于区分已完成的条目和仍需编辑的条目。
-可以在余额的工具提示中分别观察到总金额。</value>
+    <value>Esta marca de verificación puede utilizarse para separar las entradas terminadas de las que aún requieren edición.
+Las sumas totales pueden observarse de forma separada en la información sobre herramientas de la balanza.</value>
   </data>
   <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
-    <value>该条目的生效日期。</value>
+    <value>La fecha en la que la entrada está activa.</value>
   </data>
   <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
-    <value>旗帜用颜色直观地标记一个条目，完全可以选择。</value>
+    <value>Una bandera marca una entrada visualmente por el color y es completamente opcional.</value>
   </data>
   <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
-    <value>备忘录旨在对条目进行任意描述。</value>
+    <value>La nota pretende ser una descripción arbitraria de la entrada.</value>
   </data>
   <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
-    <value>本条目的付费或付费人在此填写。
+    <value>Aquí se rellena el pago o la persona que paga esta entrada.
 
-如果是转帐，则在这里填写来源账户。</value>
+En caso de que el asiento sea una transferencia, se rellena aquí la cuenta de origen.</value>
   </data>
   <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
-    <value>符号表示账户条目的类型。</value>
+    <value>Los símbolos indican el tipo de anotación en cuenta.</value>
   </data>
   <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
-    <value>收入分录标志着一项被视为收入的交易。</value>
+    <value>Un asiento de ingreso marca una transacción que se considera como ingreso.</value>
   </data>
   <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
-    <value>交易让资金流出或流入账户。</value>
+    <value>Una transacción permite que el dinero salga o entre en la cuenta.</value>
   </data>
   <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
-    <value>转账将钱从一个账户转到另一个账户。</value>
+    <value>Una transferencia pasa dinero de una cuenta a otra.</value>
   </data>
   <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
-    <value>入的总和。</value>
+    <value>La suma de la entrada.</value>
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
-    <value>此文无法解析为货币!</value>
+    <value>¡Este texto no pudo ser analizado como una moneda!</value>
     <comment>Validation message saying that the text is not validly formated as currency.</comment>
   </data>
   <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value>该值超出了范围。[ {0} .. {1} ]!</value>
+    <value>El valor está fuera de rango: ¡[ {0} .. {1} ]!</value>
     <comment>Validation message, which tells the long range as currency to the user.</comment>
   </data>
   <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>这个输入栏可能不是空的!</value>
+    <value>Este campo de entrada no puede estar vacío.</value>
     <comment>Validation message saying that the property is not allowed to be empty.</comment>
   </data>
   <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value>这个文件路径不存在!</value>
+    <value>Esta ruta de archivo no existe.</value>
     <comment>Validation message saying that file path does not exist.</comment>
   </data>
   <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>保存路径的目录不存在!</value>
+    <value>El directorio de la ruta de guardado no existe.</value>
     <comment>Validation message saying that directory of the save path does not exist.</comment>
   </data>
   <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>这个保存路径的文件名是空的!</value>
+    <value>El nombre del archivo de esta ruta de guardado está vacío.</value>
     <comment>Validation message saying that the file name of the save path is empty.</comment>
   </data>
 </root>

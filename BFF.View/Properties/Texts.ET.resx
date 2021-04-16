@@ -1,0 +1,731 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, SystemResources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, SystemResources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Kõik kontod</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Loo</value>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Sihtotstarbelise tasakaalu katkestamine</value>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Kõik</value>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Puhastatud</value>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Praegune</value>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Kokku</value>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Selgitamata</value>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Ülekanne</value>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Kustuta</value>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Eemaldage</value>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Esimese kontokande loomine</value>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Konto</value>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Kategooria</value>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Kontrolli number</value>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Puhastatud</value>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Kuupäev</value>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>F</value>
+    <comment>Abbreviation of Flag or Markierung (German)</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Makse saaja</value>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Sum</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Sümbol</value>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Vahepealne tasakaal</value>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Puuduv summa</value>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Seadke sihttasakaal</value>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Sihtbilanss</value>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Säilitab hetkel redigeeritud elemendid kontole</value>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Loob uue jagatud tehingu</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Loob uue tehingu</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Loob uue ülekande</value>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Saldo</value>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Uue konto loomine</value>
+  </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>Sellega kustutatakse konto ja kõik selle tehingud, kahepoolsed ülekanded muutuvad ühepoolseteks ja eelarves kaduvad kontospetsiifilised väljamaksed.
+
+Kas te olete tõesti kindel? (Automaatselt luuakse varukoopia, kui soovite hiljem andmeid tagasi kerida)</value>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Kontode redigeerimine</value>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Konto nimi</value>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Alustades tasakaalu</value>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Alguskuupäev</value>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Saadaval</value>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Rahasumma, mis on sel kuul olemas, kuid ei ole veel üheski kategoorias määratud.</value>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Saldo</value>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Eelarve</value>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Kõikide rahasummade summa, mis on selles kuus kategooriasse eelarves kirjendatud.</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Viimase kolme kuu keskmine väljavool</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Viimase aasta keskmine väljavool</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Saldo nullile</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Eelmise kuu eelarveväärtused</value>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Eelmise kuu väljavoolud</value>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Zero</value>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Sissetulek</value>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Teenitud raha summa, mis on määratud selle kuu kuludeks.</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Täitke kõik eelarve lahtrid:</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Täitke kõik tühjad eelarve lahtrid:</value>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Ei ole eelarvestatud</value>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Rahasumma, mis oli eelmisel kuul olemas, kuid mida ei ole määratud ühegi kategooria alla.</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Ühepoolsed ülekanded</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Ühepoolsed ülekanded võivad toimuda pärast konto kustutamist. Neid tuleb arvesse võtta, sest need ei ole eelarve suhtes neutraalsed.</value>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Väljavool</value>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Ületatud eelarve</value>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Rahasumma, mis puudus kõigi kategooriate rahuldamiseks eelmisel kuul.</value>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Rahasumma, mis puudub selle kuu kõigi kategooriate rahuldamiseks.</value>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Ülejooksmine</value>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Viimase kuu jooksul kõikidest kategooriatest kogunenud ülekulutatud summade summa.</value>
+  </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Näita agregaate</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Määramata</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Kõikide tehingute summa, millele ei ole määratud kategooriat.</value>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Uue kategooria loomine</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Värv</value>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Konfiguratsioon</value>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Kirjed</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Kas olete kindel, et kategooria "{0}" tuleks kustutada?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Kas olete kindel, et kategooria "{0}" tuleks ühendada kategooriasse "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Kas te olete kindel, et lipukene "{0}" tuleks kustutada?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Kas olete kindel, et lipu "{0}" peaks ühendama lipuga "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Kas olete kindel, et tulukategooria "{0}" tuleks kustutada?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Kas olete kindel, et tulukategooria "{0}" tuleks ühendada tulukategooriaga "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Kas olete kindel, et makse saaja "{0}" tuleks kustutada?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Kas olete kindel, et makse saaja "{0}" tuleks ühendada makse saajaga "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Oled sa kindel?</value>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Uue kategooria loomine</value>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Uue lipu loomine</value>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Uue makse saaja loomine</value>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>Kirjete loomisel tekkis viga. Kontrollige konfiguratsiooni.</value>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Panga väljavõte</value>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Kategooriad</value>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Lipud</value>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Tulukategooriad</value>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Avatud pangakonto väljavõte</value>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Makse saajad</value>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Uue kategooria nimi ei tohi olla tühi!</value>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Tuleb valida konto.</value>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Tuleb valida kategooria.</value>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Tuleb valida allikakonto.</value>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>Tuleb valida makse saaja.</value>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Tuleb valida sihtkonto.</value>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>Uue konto nimi ei tohi olla tühi või kattuda olemasolevate kontode nimega!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>See nimi on valitud kategooria tasandil juba olemas!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>See kategooria tase sisaldab juba valitud kategooria nime!</value>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Uue lipu nimi ei tohi olla tühi või juba olemasolev lipu nimi.</value>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Uue makse saaja nimi ei tohi olla tühi või juba olemasolev nimi.</value>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Enne kande sisestamist tuleb valida konto.</value>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>Faili "{0}" ei leitud.</value>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Uue lipu loomine</value>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Muuda lipud</value>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Tühista</value>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Kuupäeva vorming</value>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Eraldaja</value>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Faili tee</value>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Pealkiri</value>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Pikk</value>
+  </data>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Memo formaat</value>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Nimi</value>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Negatiivne</value>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Looge uus makse saaja, kui see ei ole veel olemas?</value>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Ei</value>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Okei</value>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Makse saaja vorming</value>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positiivne</value>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profiil</value>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Eemalda profiil</value>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>Profiili lähtestamine</value>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Salvesta uus profiil</value>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Salvesta profiil</value>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>Lühike</value>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Summa formaat</value>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Määramata</value>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Jah</value>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Kontod</value>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Eelarve</value>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Sirvi</value>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Tühista</value>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Ekspordi sihtmärk</value>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Impordi allikas</value>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Parool</value>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Importige ja salvestage sellesse teekonda:</value>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Impordi konfiguratsioon</value>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Tee YNABi eelarve CSV-le:</value>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Tee YNABi tehingute CSV-le:</value>
+  </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Teisenda</value>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>kohta</value>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>Eelarveprojekti ei ole veel laaditud.
+Projekti loomiseks, avamiseks või importimiseks
+avage vasakus ülanurgas olev File-menüü.</value>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Faili</value>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Sulge</value>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Uus</value>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Avatud</value>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Seaded</value>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Uue kategooria nimi</value>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Uue lipu nimi</value>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Uue makse saaja nimi</value>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Kui see on märgitud, siis luuakse tulukategooria.
+Ainult sellesse kategooriasse määratud tehinguid tõlgendatakse tuluna.</value>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Sissetulek on oluline?</value>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Kuu Offset</value>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>BFF eelarvekava (*.realm)|*.realm|BFF eelarvekava (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Looge uus eelarvekava</value>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Avage eelarvekava</value>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Praegune summa</value>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Vahepealne summa</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Puuduvad summad Täiendavalt esitamata kanded</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Puuduv summa</value>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Uue makse saaja loomine</value>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Makse saajate redigeerimine</value>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Salvesta uus eelarvekava:</value>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Aktsendid</value>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Peida alati tabeli redigeerimise veeru päised ära</value>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Valuuta formaat</value>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Kuupäeva formaat</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Keel</value>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Näita kontrollnumbreid</value>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Näita lipud</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Teema</value>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Superior kategooria</value>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Üldine saldo, sealhulgas tulevase kuupäevaga kirjed.
+Paremaks eristamiseks vt tööriistavihikut.</value>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>Vahepealne saldo sisaldab kandeid, mis tuleb veel salvestada.</value>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Sihtbilansi ja vahebilansi vahe.</value>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Sihtsaldo määramine võimaldab puuduva summa automaatset arvutamist.</value>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Konto saldo seadistamise alguskuupäeval.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Kui agregeerimine on sisse lülitatud, siis lisavad kategooriad oma alamkategooriate väärtused enda omadele lisaks.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Kasutage seda kuupäeva valijat suvalise kuu juurde hüppamiseks (päev ei ole oluline).</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Nihkuda ühe kuu võrra tahapoole</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Nihkuda ühe kuu võrra ettepoole</value>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Kuu tasaarvestus nihkub selle järgi, millisel kuul tulu on aktiivne.
+Näiteks kuu nihutamine üks nihutab sissetuleku järgmisesse kuusse, miinus üks eelmisesse kuusse.</value>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Kui on valitud ülemine kategooria, siis lisatakse uus kategooria alamkategooriaks.</value>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Vajutage selles veerus olevat nuppu, et kustutada vastava rea element.</value>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>Ühe kategooria ühendamiseks teise kategooriaga lohistage ühendamise ikoon sellest veerust allikarivile ja laske see sihtrivile.
+Sihtkategooria määratakse kõigile lähtekategooria kontokannetele ja pärib kõik alamkategooriad.
+Kui alamkategooriate paaril on sama nimi, siis nimetatakse lähtekategooria alamkategooria automaatselt ümber (lisatakse number).</value>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>Ühe lipu ühendamiseks teise lipuga lohistage ühendamise ikoon sellest veerust allikarivile ja laske see sihtrivile.
+Sihtlipp määratakse kõigile allikalippude kontokirjetele ja säilitab oma värvi.</value>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>Ühe tulukategooria ühendamiseks teise tulukategooriaga lohistage ühendamise ikoon sellest veerust allikarivile ja laske see sihtrivile.
+Siht tulukategooria määratakse kõikidele allikas tulukategooria kontokannetele ja säilitab oma kuu tasaarvelduse.</value>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>Ühe makse saaja ühendamiseks teise makse saajaga lohistage ühendamise ikoon sellest veerust allikarivile ja laske see sihtrivile.
+Sihtmakse saajale määratakse kõik lähtemakse saaja kontokirjed.</value>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Allikas-konto</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Tulukategooria</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Tulu-tehing</value>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Klõpsake, et näha ja redigeerida alamtehinguid.</value>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Target-Account</value>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Tehing</value>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Ülekanne</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Konto, millele kanne kuulub.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
+    <value>Kategooria määrab teie isikliku eesmärgi selle sissekande jaoks.
+Kuna need võivad olla hierarhilised, siis kuvatakse tööriistavihikus kogu hierarhia tee.
+
+Juhul kui kanne on ülekanne, täidetakse siia sihtkonto.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Vajaduse korral võib siin täita ka tšeki numbri.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Seda kontrollmärki saab kasutada selleks, et eristada valmis kirjed ja kirjed, mis vajavad veel redigeerimist.
+Kogusummasid saab eraldi jälgida saldo tööriistakünnises.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Kuupäev, mil kanne on aktiivne.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Lipu tähistab sissekannet visuaalselt värviga ja on täiesti vabatahtlik.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>Memo on mõeldud kirje suvaliseks kirjelduseks.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Siin täidetakse selle kande tasutud või maksev isik.
+
+Kui kanne on ülekanne, täidetakse siia lähtekonto.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Sümbolid näitavad kontokande tüüpi.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>Tulukanne tähistab tehingut, mida loetakse tuluks.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Tehing laseb raha kontolt välja või kontole sisse voolata.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>Ülekandega kantakse raha ühelt kontolt teisele.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Kande summa.</value>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Seda teksti ei saa analüüsida kui valuutat!</value>
+    <comment>Validation message saying that the text is not validly formated as currency.</comment>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Väärtus on väljaspool vahemikku: [ {0} .. {1} ]!</value>
+    <comment>Validation message, which tells the long range as currency to the user.</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>See sisendväli ei tohi olla tühi!</value>
+    <comment>Validation message saying that the property is not allowed to be empty.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Seda faili teekonda ei ole olemas!</value>
+    <comment>Validation message saying that file path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Salvestusraja kataloogi ei ole olemas!</value>
+    <comment>Validation message saying that directory of the save path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Selle salvestusraja failinimi on tühi!</value>
+    <comment>Validation message saying that the file name of the save path is empty.</comment>
+  </data>
+</root>

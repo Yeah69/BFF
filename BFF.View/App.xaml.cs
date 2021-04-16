@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
@@ -8,7 +7,6 @@ using ControlzEx.Theming;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using NLog;
-using WPFLocalizeExtension.Providers;
 
 namespace BFF.View
 {
@@ -18,26 +16,6 @@ namespace BFF.View
     public partial class App
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        static App()
-        {
-            ResxLocalizationProvider.Instance.SearchCultures =
-                new List<System.Globalization.CultureInfo>
-                {
-                    System.Globalization.CultureInfo.GetCultureInfo("de-DE"),
-                    System.Globalization.CultureInfo.GetCultureInfo("en-US"),
-                    System.Globalization.CultureInfo.GetCultureInfo("hu-HU"),
-                    System.Globalization.CultureInfo.GetCultureInfo("ru-RU"),
-                    System.Globalization.CultureInfo.GetCultureInfo("es-ES"),
-                    System.Globalization.CultureInfo.GetCultureInfo("fr-FR"),
-                    System.Globalization.CultureInfo.GetCultureInfo("it-IT"),
-                    System.Globalization.CultureInfo.GetCultureInfo("ja"),
-                    System.Globalization.CultureInfo.GetCultureInfo("nl-NL"),
-                    System.Globalization.CultureInfo.GetCultureInfo("pl-PL"),
-                    System.Globalization.CultureInfo.GetCultureInfo("pt-PT"),
-                    System.Globalization.CultureInfo.GetCultureInfo("zh"),
-                };
-        }
 
         public App()
         {

@@ -1,0 +1,731 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, SystemResources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, SystemResources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Alle konti</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Opret</value>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Afbryd målbalance</value>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Alle</value>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Ryddet</value>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Nuværende</value>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>I alt</value>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Uopklaret</value>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Overførsel</value>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Slet</value>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Fjern</value>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Opret den første konto post</value>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Konto</value>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Kategori</value>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Kontrolnummer</value>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Ryddet</value>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Dato</value>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>F</value>
+    <comment>Abbreviation of Flag or Markierung (German)</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Betalingsmodtager</value>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Sum</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Symbol</value>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Mellemliggende balance</value>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Manglende sum</value>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Fastsættelse af målbalancen</value>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Målsaldo</value>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Bevarer de aktuelt redigerede elementer på kontoen</value>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Opretter en ny opdelt transaktion</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Opretter en ny transaktion</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Opretter en ny overførsel</value>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Opret en ny konto</value>
+  </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>Dette vil slette kontoen og alle dens transaktioner, tosidede overførsler vil blive ensidige, og de kontospecifikke udgående beløb i budgetteringen vil forsvinde.
+
+Er du virkelig sikker? (Der vil automatisk blive oprettet en sikkerhedskopi, hvis du ønsker at spole dataene tilbage efterfølgende)</value>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Rediger konti</value>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Kontoens navn</value>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Startsaldo</value>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Begyndelsesdato</value>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Tilgængelig</value>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Beløb, der er til rådighed i denne måned, men som endnu ikke er tildelt nogen kategori.</value>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Budgetteret</value>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Summen af alle beløb, der er budgetteret på en kategori i denne måned.</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Gennemsnitlig udstrømning i de seneste tre måneder</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Gennemsnitlig udstrømning i det seneste år</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Saldo til nul</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Budgetværdier fra sidste måned</value>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Udbetalinger i sidste måned</value>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Nul</value>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Indkomst</value>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Beløb af tjente penge, som er afsat til månedens udgifter.</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Udfyld alle budgetceller med:</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Udfyld alle tomme budgetceller med:</value>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Ikke opført på budgettet</value>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Beløb, som var til rådighed i sidste måned, men som ikke blev tildelt nogen kategori.</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Ensidige overførsler</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Ensidige overførsler kan finde sted efter sletning af en konto. De skal tages i betragtning, fordi de ikke er budgetneutrale.</value>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Udstrømning</value>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Overbudgetteret</value>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Beløb, der manglede for at opfylde alle kategorier i sidste måned.</value>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Beløb, der mangler for at opfylde alle kategorier i denne måned.</value>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Overspill</value>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Summen af overforbrugte beløb akkumuleret fra alle kategorier i sidste måned.</value>
+  </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Vis aggregater</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Ikke tildelt</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Summen af alle transaktioner, som ikke har fået tildelt nogen kategori.</value>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Opret ny kategori</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Farve</value>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Konfiguration</value>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Indtastninger</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Er du sikker på, at kategorien "{0}" skal slettes?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Er du sikker på, at kategorien "{0}" skal slås sammen med kategorien "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Er du sikker på, at flaget "{0}" skal slettes?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Er du sikker på, at flag "{0}" skal slås sammen med flag "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Er du sikker på, at indkomstkategorien "{0}" skal slettes?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Er du sikker på, at indkomstkategorien "{0}" skal slås sammen med indkomstkategorien "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Er du sikker på, at betalingsmodtageren "{0}" skal slettes?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Er du sikker på, at betalingsmodtageren "{0}" skal slås sammen med betalingsmodtageren "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Er du sikker?</value>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Opret ny kategori</value>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Opret nyt flag</value>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Opret ny betalingsmodtager</value>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>Der opstod en fejl under oprettelsen af posterne. Kontroller konfigurationen.</value>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Bankudtog</value>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Kategorier</value>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Flag</value>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Indkomstkategorier</value>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Åbne kontoudtog</value>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Betalingsmodtagere</value>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Navnet på den nye kategori må ikke være tomt!</value>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Der skal vælges en konto.</value>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Der skal vælges en kategori.</value>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Der skal vælges en kildekonto.</value>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>Der skal vælges en betalingsmodtager.</value>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Der skal vælges en målkonto.</value>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>Navnet på en ny konto må ikke være tomt eller matche et navn fra en eksisterende konto!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>Dette navn findes allerede på det valgte kategoriniveau!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>Dette kategoriniveau indeholder allerede en kategori med det valgte navn!</value>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Navnet på et nyt flag må ikke være tomt eller et allerede eksisterende flag.</value>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Navnet på en ny betalingsmodtager må ikke være tomt eller være et allerede eksisterende navn.</value>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Der skal vælges en konto, før posten indsættes.</value>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>Filen "{0}" kunne ikke findes.</value>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Opret nyt flag</value>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Rediger flag</value>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Annuller</value>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Dato format</value>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Afgrænser</value>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Filsti</value>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Overskrift</value>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Lang</value>
+  </data>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Memoformat</value>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Navn</value>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Negativ</value>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Opret ny betalingsmodtager, hvis den ikke findes?</value>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Nej</value>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Okay</value>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Format for betalingsmodtager</value>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positiv</value>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Fjern profil</value>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>Nulstil profil</value>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Gem ny profil</value>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Gem profil</value>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>Kort</value>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Sumformat</value>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Ikke tildelt</value>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Regnskaber</value>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Budget</value>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Gennemse</value>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Annuller</value>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Mål for eksport</value>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Import kilde</value>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Adgangskode</value>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Importer og gem til denne sti:</value>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Import af konfiguration</value>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Sti til YNAB Budget CSV:</value>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Sti til YNAB Transaction CSV:</value>
+  </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Konverter til</value>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>Om</value>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>Der er endnu ikke indlæst noget budgetprojekt.
+For at oprette, åbne eller importere et projekt
+åbner du File-menuen i øverste venstre hjørne.</value>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Fil</value>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Luk</value>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Ny</value>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Åbn</value>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Indstillinger</value>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Navn på den nye kategori</value>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Navn på det nye flag</value>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Navn på den nye betalingsmodtager</value>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Hvis dette afkrydses, oprettes der en indkomstkategori.
+Kun transaktioner, der er tildelt en sådan kategori, fortolkes som indkomst.</value>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Indkomst relevant?</value>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Måned Offset</value>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>BFF-budgetplan (*.realm)|*.realm|BFF-budgetplan (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Opret en ny budgetplan</value>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Åbn en budgetplan</value>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Nuværende beløb</value>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Mellemliggende sum</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Manglende summen udelukkende ikke indsendte oplysninger</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Manglende sum</value>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Opret ny betalingsmodtager</value>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Rediger betalingsmodtagere</value>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Gem ny budgetplan til:</value>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Accenter</value>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Skjul altid kolonneoverskrifterne i redigeringstabellen</value>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Valutaformat</value>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Datoformat</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Sprog</value>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Vis kontrolnumre</value>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Vis flag</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Superior kategori</value>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Den samlede saldo, herunder posteringer med en dato i fremtiden.
+Se værktøjstip for bedre at skelne.</value>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>Den mellemliggende balance omfatter de posteringer, der endnu ikke er gemt.</value>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Forskellen mellem målbalancen og den foreløbige balance.</value>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Ved at indstille målsaldoen kan det manglende beløb beregnes automatisk.</value>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Kontoens saldo på opsætningsstartdatoen.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Hvis aggregeringen er aktiveret, vil kategorierne tilføje værdierne fra deres underkategorier oven i deres egne.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Brug denne datovælger til at springe til en vilkårlig måned (dagen er irrelevant).</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Skift en måned bagud</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Skift en måned frem</value>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Månedsforskydningen skifter i forhold til den måned, hvor indkomsten er aktiv.
+F.eks. vil en månedsforskydning på 1 flytte indkomsten til den næste måned og minus 1 til den foregående måned.</value>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Hvis der er valgt en overordnet kategori, vil den nye kategori blive tilføjet som en underkategori.</value>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Tryk på knappen i denne kolonne for at slette elementet i den tilsvarende række.</value>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>For at flette en kategori til en anden skal du trække fletteikonet fra denne kolonne i kilderækken og slippe det på målrækken.
+Målkategorien vil blive tildelt alle kontoposter i kildekategorien og arve alle underkategorier.
+Hvis et par af underkategorierne har det samme navn, omdøbes underkategorien i kildekategorien automatisk (nummeret tilføjes).</value>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>For at flette et flag til et andet skal du trække fletteikonet fra denne kolonne i kilderækken og slippe det på målrækken.
+Målflaget vil blive tildelt alle kontoposter i kildeflaget og beholde sin farve.</value>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>For at flette en indkomstkategori sammen med en anden skal du trække ikonet for sammenlægning fra denne kolonne i kilderækken og slippe det på målrækken.
+Målindkomstkategorien vil blive tildelt alle kontoposter i kildeindkomstkategorien og beholder sin månedsforskydning.</value>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>For at flette en betalingsmodtager til en anden skal du trække fletteikonet fra denne kolonne i kilderækken og slippe det på målrækken.
+Målbetalingsmodtageren vil blive tildelt alle kontoposter for kildebetalingsmodtageren.</value>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Kilde-konto</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Indkomstkategori</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Indkomst-transaktioner</value>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Klik for at se og redigere undertransaktionerne.</value>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Målkonto</value>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Transaktion</value>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Overførsel</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Den konto, der ejer posten.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
+    <value>Kategorien bestemmer dit personlige formål med denne post.
+Da de kan være hierarkiske, vises hele hierarkistien i tooltip'et.
+
+Hvis posten er en overførsel, udfyldes målkontoen her.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Hvis det er nødvendigt, kan checknummeret udfyldes her.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Denne markering kan bruges til at adskille færdige posteringer fra posteringer, der stadig skal redigeres.
+De samlede beløb kan ses særskilt i værktøjstipsen for saldoen.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Den dato, hvor posten er aktiv.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Et flag markerer en post visuelt ved hjælp af en farve og er helt valgfrit.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>Notatet er tænkt som en vilkårlig beskrivelse af posten.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Den betalte eller den betalende person for denne post udfyldes her.
+
+Hvis der er tale om en overførsel, udfyldes kildekontoen her.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Symbolerne angiver kontopostens type.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>En indkomstpost markerer en transaktion, der betragtes som en indkomst.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>En transaktion lader penge flyde ud af eller ind på kontoen.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>Ved en overførsel overføres penge fra en konto til en anden.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Summen af posten.</value>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Denne tekst kunne ikke analyseres som en valuta!</value>
+    <comment>Validation message saying that the text is not validly formated as currency.</comment>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Værdien er uden for området: [ {0} .. {1} ]!</value>
+    <comment>Validation message, which tells the long range as currency to the user.</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Dette indtastningsfelt må ikke være tomt!</value>
+    <comment>Validation message saying that the property is not allowed to be empty.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Denne filsti findes ikke!</value>
+    <comment>Validation message saying that file path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Mappen for oplagringsstien findes ikke!</value>
+    <comment>Validation message saying that directory of the save path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Filnavnet for denne oplagringssti er tomt!</value>
+    <comment>Validation message saying that the file name of the save path is empty.</comment>
+  </data>
+</root>

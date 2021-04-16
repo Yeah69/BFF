@@ -1,0 +1,731 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, SystemResources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, SystemResources, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Всички сметки</value>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Създаване на</value>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Прекъсване на баланса за насочване</value>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Всички</value>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Изчистено</value>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Текущ</value>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Общо</value>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Непочистени</value>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Трансфер</value>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Изтриване на</value>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Премахване на</value>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Създаване на първия запис в акаунта</value>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Сметка</value>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Контролен номер</value>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Изчистено</value>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>F</value>
+    <comment>Abbreviation of Flag or Markierung (German)</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Меморандум</value>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Получател на плащането</value>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Сума</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Символ</value>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Междинен баланс</value>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Липсваща сума</value>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Задаване на целеви баланс</value>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Целеви баланс</value>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Запазва текущо редактираните елементи в акаунта</value>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Създава нова разделена транзакция</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Създава нова транзакция</value>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Създава нов трансфер</value>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Баланс</value>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Създаване на нов акаунт</value>
+  </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>По този начин сметката и всички нейни операции ще бъдат заличени, двустранните трансфери ще станат едностранни, а специфичните за сметката изходящи потоци при бюджетирането ще изчезнат.
+
+Наистина ли сте сигурни? (Автоматично ще бъде създадено резервно копие, ако искате да превъртите данните след това)</value>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Редактиране на акаунти</value>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Име на сметката</value>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Начален баланс</value>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Начална дата</value>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Наличен</value>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Сума, която е налична през този месец, но все още не е разпределена към някоя категория.</value>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Баланс</value>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Бюджет</value>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Сума от всички суми, които са заложени в бюджета за дадена категория през този месец.</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Средни изходящи потоци през последните три месеца</value>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Средни изходящи потоци през последната година</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Баланс до нула</value>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Бюджетни стойности от миналия месец</value>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Изходящи потоци за последния месец</value>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Zero</value>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Доходи</value>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Сумата на спечелените пари, която е предназначена за разходите през този месец.</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Попълнете всички бюджетни клетки с:</value>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Запълнете всички празни бюджетни клетки с:</value>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Не е включено в бюджета</value>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Сума, която е била налична през миналия месец, но не е била разпределена към нито една категория.</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Едностранни трансфери</value>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Едностранни преводи могат да се извършват след изтриване на сметка. Те трябва да се вземат предвид, тъй като не са неутрални за бюджета.</value>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Изходящи потоци</value>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Превишаване на бюджета</value>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Сума, която липсва за покриване на всички категории през последния месец.</value>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Сумата, която липсва за удовлетворяване на всички категории през този месец.</value>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Преливане</value>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Сума от надхвърлените суми, натрупани от всички категории през последния месец.</value>
+  </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Показване на агрегати</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Неназначен</value>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Сумата от всички транзакции, които нямат определена категория.</value>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Създаване на нова категория</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Цвят</value>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Конфигурация</value>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Вписвания</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Сигурни ли сте, че категорията "{0}" трябва да бъде изтрита?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Сигурни ли сте, че категорията "{0}" трябва да се слее с категорията "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Сигурни ли сте, че флагът "{0}" трябва да бъде изтрит?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Сигурни ли сте, че флагът "{0}" трябва да се слее с флага "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Сигурни ли сте, че категорията на доходите "{0}" трябва да бъде заличена?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Сигурни ли сте, че категорията на доходите "{0}" трябва да се слее с категорията на доходите "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Сигурни ли сте, че получателят "{0}" трябва да бъде изтрит?</value>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Сигурни ли сте, че получателят "{0}" трябва да се слее с получателя "{1}"?</value>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Сигурни ли сте?</value>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Създаване на нова категория</value>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Създаване на нов флаг</value>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Създаване на нов получател на плащане</value>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>При създаването на записите е възникнала грешка. Проверете конфигурацията.</value>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Банково извлечение</value>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Категории</value>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Флагове</value>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Категории доходи</value>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Отворено банково извлечение</value>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Получатели на плащания</value>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Не е позволено името на новата категория да бъде празно!</value>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Трябва да се избере акаунт.</value>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Трябва да се избере категория.</value>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Трябва да се избере сметка-източник.</value>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>Трябва да се избере получател на плащането.</value>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Трябва да се избере целева сметка.</value>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>Името на новия акаунт не може да бъде празно или да съвпада с името на съществуващите акаунти!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>Това име вече съществува на нивото на избраната категория!</value>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>Това ниво на категория вече съдържа категория с избрано име!</value>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Не е позволено името на нов флаг да бъде празно или вече съществуващо.</value>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Не е позволено името на нов получател да бъде празно или вече съществуващо.</value>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Преди въвеждането на записа трябва да се избере сметка.</value>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>Файлът "{0}" не може да бъде намерен.</value>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Създаване на нов флаг</value>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Редактиране на флагове</value>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Отмяна на</value>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Формат на датата</value>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Разделител</value>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Път на файла</value>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Заглавие</value>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Дълъг</value>
+  </data>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Формат на бележката</value>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Име</value>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Отрицателен</value>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Създаване на нов получател на плащане, ако не съществува?</value>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Не</value>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Добре</value>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Формат на получателя на плащането</value>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Положителен</value>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Профил</value>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Премахване на профил</value>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>Нулиране на профила</value>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Запазване на нов профил</value>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Запазване на профил</value>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>Кратък</value>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Формат на сумата</value>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Неназначен</value>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Сметки</value>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Бюджет</value>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Преглед на</value>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Отмяна на</value>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Цел на износа</value>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Внос</value>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Източник на внос</value>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Парола</value>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Импортирайте и запазете в този път:</value>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Импортиране на конфигурация</value>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Път към CSV на бюджета на YNAB:</value>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Път към CSV файла с транзакциите на YNAB:</value>
+  </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Превръщане в</value>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>За</value>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>Все още няма зареден бюджетен проект.
+За да създадете, отворите или импортирате проект
+отворете менюто File (Файл) в горния ляв ъгъл.</value>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Затвори</value>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Внос</value>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Нов</value>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Отворете</value>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Име на новата категория</value>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Име на новия флаг</value>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Име на новия получател на плащането</value>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Ако е маркирано, се създава категория на дохода.
+Само транзакциите, причислени към такава категория, се интерпретират като приход.</value>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Доходът е от значение?</value>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Отместване на месеца</value>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>Бюджетен план на БФП (*.realm)|*.realm|Бюджетен план на БФП (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Създаване на нов бюджетен план</value>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Отваряне на бюджетен план</value>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Текуща сума</value>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Междинна сума</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Липсваща сума Изключително неподадени вписвания</value>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Липсваща сума</value>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Създаване на нов получател на плащане</value>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Редактиране на получателите на плащания</value>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Запазване на новия бюджетен план в:</value>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Акценти</value>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Винаги скривайте заглавията на колоните в таблицата за редактиране</value>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Формат на валутата</value>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Формат на датата</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Език</value>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Показване на номерата на чековете</value>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Показване на флагове</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Тема</value>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Категория Superior</value>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Общото салдо, включително записите с бъдеща дата.
+Вижте подсказката за по-добро разграничаване.</value>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>Междинното салдо включва записите, които все още не са записани.</value>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Разликата между целевото салдо и междинното салдо.</value>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Задаването на целевото салдо позволява автоматично изчисляване на липсващата сума.</value>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Салдото по сметката към началната дата на настройката.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Ако обобщаването е включено, категориите ще добавят стойностите на своите подкатегории към своите собствени.</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Използвайте този инструмент за избор на дата, за да преминете към произволен месец (денят е без значение).</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Преместване с един месец назад</value>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Преместване с един месец напред</value>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Компенсацията за месеца се променя в зависимост от това кой месец е активен доходът.
+Например при отместване на месеца с единица доходът ще се измести към следващия месец, а с минус единица - към предишния.</value>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Ако е избрана по-висока категория, новата категория ще бъде добавена като подкатегория.</value>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Натиснете бутона в тази колона, за да изтриете елемента от съответния ред.</value>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>За да обедините една категория с друга, плъзнете иконата за обединяване от тази колона в изходния ред и я пуснете в целевия ред.
+Целевата категория ще бъде присвоена към всички записи на акаунти от изходната категория и ще наследи всички подкатегории.
+Ако двойка от подкатегориите има едно и също име, тогава подкатегорията на изходната категория се преименува автоматично (добавя се номер).</value>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>За да обедините един флаг с друг, плъзнете иконата за обединяване от тази колона в изходния ред и я пуснете в целевия ред.
+Целевият флаг ще бъде присвоен към всички записи на сметките на изходния флаг и ще запази цвета си.</value>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>За да обедините една категория доход с друга, плъзнете иконата за обединяване от тази колона в изходния ред и я пуснете в целевия ред.
+Целевата категория на дохода ще бъде присвоена на всички записи по сметките от изходната категория на дохода и ще запази месечното си отместване.</value>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>За да обедините един получател на плащане с друг, плъзнете иконата за обединяване от тази колона в изходния ред и я пуснете в целевия ред.
+Целевото получател ще бъде присвоено към всички записи по сметките на получателя източник.</value>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Източник-сметка</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Категория доходи</value>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Приходи и транзакции</value>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Кликнете, за да видите и редактирате подтранзакциите.</value>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Target-Account</value>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Транзакция</value>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Трансфер</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Акаунтът, на който принадлежи вписването.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
+    <value>Категорията определя личната ви цел на този запис.
+Тъй като те могат да бъдат йерархични, целият път на йерархията се показва в подсказката за инструменти.
+
+В случай че записът е трансфер, тук се попълва целевата сметка.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Ако е необходимо, тук може да се попълни номерът на проверката.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Тази отметка може да се използва за разделяне на завършените записи от записите, които все още се нуждаят от редакция.
+Общите суми могат да бъдат наблюдавани по отделен начин в подсказката за инструменти на баланса.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Датата, на която записът е активен.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Флагът маркира визуално входа с цвят и е напълно незадължителен.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>Бележката е предназначена за произволно описание на записа.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Тук се попълва платецът или платежното лице на този запис.
+
+В случай че записът е превод, тук се попълва сметката на източника.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Символите указват вида на вписването по сметката.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>Записът за приход отбелязва транзакция, която се счита за приход.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Транзакцията позволява на парите да излязат от или да влязат в сметката.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>С превода се прехвърлят пари от една сметка в друга.</value>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Сумата на вписването.</value>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Този текст не може да бъде анализиран като валута!</value>
+    <comment>Validation message saying that the text is not validly formated as currency.</comment>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Стойността е извън обхвата: [ {0} .. {1} ]!</value>
+    <comment>Validation message, which tells the long range as currency to the user.</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Това поле за въвеждане не може да бъде празно!</value>
+    <comment>Validation message saying that the property is not allowed to be empty.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Този път на файла не съществува!</value>
+    <comment>Validation message saying that file path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Директорията на пътя за запис не съществува!</value>
+    <comment>Validation message saying that directory of the save path does not exist.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Името на файла на този път за запис е празно!</value>
+    <comment>Validation message saying that the file name of the save path is empty.</comment>
+  </data>
+</root>

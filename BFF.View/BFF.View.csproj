@@ -69,8 +69,6 @@
       <EmbeddedResource Update="Properties\Texts.resx">
         <Generator>ResXFileCodeGenerator</Generator>
       </EmbeddedResource>
-      <EmbeddedResource Update="Properties\Texts.ja.resx" />
-      <EmbeddedResource Update="Properties\Texts.zh.resx" />
     </ItemGroup>
 
 </Project>
