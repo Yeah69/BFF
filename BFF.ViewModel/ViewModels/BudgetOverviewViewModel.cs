@@ -26,7 +26,7 @@ namespace BFF.ViewModel.ViewModels
     {
         
         private readonly IBffSettings _bffSettings;
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new ();
         private bool _isOpen;
         
         public IBudgetMonthMenuTitles BudgetMonthMenuTitles { get; }

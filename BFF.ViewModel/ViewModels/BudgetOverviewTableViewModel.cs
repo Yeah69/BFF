@@ -73,7 +73,8 @@ namespace BFF.ViewModel.ViewModels
             this.MonthViewModels = Enumerable.Range(1, 12).Select(monthViewModelFactory).ToReadOnlyList();
             
             _columnCount = 5;
-            _monthIndexOffset = DateTime.Now.ToMonthIndex() - 41;
+            var index = DateTime.Now.ToMonthIndex();
+            _monthIndexOffset = index > 1 ? index - 1 : index;
             
             _rows = categoryViewModelService
                 .All
@@ -93,7 +94,7 @@ namespace BFF.ViewModel.ViewModels
                     new BudgetMonthViewModelPlaceholder(DateTimeExtensions.FromMonthIndex(pageKey * 12 + pageIndex)))
                 .Hoarding()
                 .TaskBasedFetchers(
-                    (offset, pageSize, _) => 
+                    (offset, _, _) => 
                         Task.Run(async () =>
                             (await budgetMonthRepository.FindAsync(DateTimeExtensions.FromMonthIndex(offset).Year)
                                 .ConfigureAwait(false))
