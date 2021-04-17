@@ -5,7 +5,7 @@
                           xmlns:dialogs1="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
                           xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                          xmlns:dialogs="clr-namespace:BFF.ViewModel.ViewModels.Dialogs;assembly=ViewModel"
+                          xmlns:dialogs="clr-namespace:BFF.ViewModel.ViewModels.Dialogs;assembly=BFF.ViewModel"
                           xmlns:dialogs2="clr-namespace:BFF.View.Wpf.Views.Dialogs"
                           Title="{Binding Title}"
                           d:DataContext="{d:DesignInstance dialogs:IMainWindowDialogViewModel}"

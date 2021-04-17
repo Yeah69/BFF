@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>BFF.View.Avalonia</RootNamespace>
-    <PackageId>View.Avalonia</PackageId>
+    <AssemblyName>BFF.View.Avalonia</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.1.0" />
@@ -13,7 +13,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\Persistence.Proxy\Persistence.Proxy.csproj" />
     <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
   </ItemGroup>
   <ItemGroup>

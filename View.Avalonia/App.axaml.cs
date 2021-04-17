@@ -15,7 +15,7 @@ namespace BFF.View.Avalonia
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = AutofacBootstrapper.Resolve<IAppContext>().MainWindow;
+                //desktop.MainWindow = AutofacBootstrapper.Resolve<IAppContext>().MainWindow;
             }
 
             base.OnFrameworkInitializationCompleted();

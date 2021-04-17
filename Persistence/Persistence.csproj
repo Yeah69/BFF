@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>BFF.Persistence</RootNamespace>
-    <PackageId>Persistence</PackageId>
+    <AssemblyName>BFF.Persistence</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +15,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="morelinq" Version="3.3.2" />
-    <PackageReference Include="MrMeeseeks" Version="69.0.17" />
+    <PackageReference Include="MrMeeseeks" Version="69.0.24" />
     <PackageReference Include="MuVaViMo" Version="0.4.0" />
     <PackageReference Include="NLog" Version="4.7.9" />
     <PackageReference Include="Portable.BouncyCastle" Version="1.8.10" />

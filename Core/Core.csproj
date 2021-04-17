@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>BFF.Core</RootNamespace>
-    <PackageId>Core</PackageId>
+    <AssemblyName>BFF.Core</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +13,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="morelinq" Version="3.3.2" />
-    <PackageReference Include="MrMeeseeks" Version="69.0.17" />
+    <PackageReference Include="MrMeeseeks" Version="69.0.24" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Reactive.Interfaces" Version="5.0.0" />
   </ItemGroup>

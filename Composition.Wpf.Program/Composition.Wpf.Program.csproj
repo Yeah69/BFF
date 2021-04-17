@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <AssemblyName>BFF</AssemblyName>
+        <RootNamespace>BFF.Composition.Wpf.Program</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ApplicationDefinition Remove="App.xaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Composition\Composition.csproj" />
+      <ProjectReference Include="..\View.Wpf\View.Wpf.csproj" />
+    </ItemGroup>
+</Project>

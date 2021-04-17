@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:dialogs="clr-namespace:BFF.ViewModel.ViewModels.Dialogs;assembly=ViewModel"
+                    xmlns:dialogs="clr-namespace:BFF.ViewModel.ViewModels.Dialogs;assembly=BFF.ViewModel"
                     xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/shared"
                     xmlns:helper="clr-namespace:BFF.View.Wpf.Helper">

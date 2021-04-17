@@ -5,7 +5,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=ViewModel"
+             xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
              xmlns:views="clr-namespace:BFF.View.Wpf.Views"
              xmlns:helper="clr-namespace:BFF.View.Wpf.Helper"
              d:DataContext="{d:DesignInstance viewModels:INewFlagViewModel}"

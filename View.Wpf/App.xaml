@@ -3,14 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:forModels="clr-namespace:BFF.ViewModel.ViewModels.ForModels;assembly=ViewModel"
+             xmlns:forModels="clr-namespace:BFF.ViewModel.ViewModels.ForModels;assembly=BFF.ViewModel"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=ViewModel"
-             xmlns:viewModelHelper="clr-namespace:BFF.ViewModel.Helper;assembly=ViewModel"
+             xmlns:viewModelHelper="clr-namespace:BFF.ViewModel.Helper;assembly=BFF.ViewModel"
              xmlns:helper="clr-namespace:BFF.View.Wpf.Helper"
              xmlns:views="clr-namespace:BFF.View.Wpf.Views"
+             xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
              Startup="Application_Startup"
              mc:Ignorable="d">
     <!--  DispatcherUnhandledException="Application_DispatcherUnhandledException">  -->
@@ -23,7 +23,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Buttons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Combobox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TabControl.xaml" />
-                <ResourceDictionary Source="Resources/HamburgerMenu.xaml" />
+                <ResourceDictionary Source="/BFF.View.Wpf;component/Resources/HamburgerMenu.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate x:Key="EmptyDataTemplate" />

@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
         <TargetFramework>net5.0-windows</TargetFramework>
         <RootNamespace>BFF.View.Wpf</RootNamespace>
@@ -56,14 +55,13 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="MrMeeseeks" Version="69.0.17" />
-      <PackageReference Include="MrMeeseeks.Reactive" Version="69.0.17" />
+      <PackageReference Include="MrMeeseeks" Version="69.0.24" />
+      <PackageReference Include="MrMeeseeks.Reactive" Version="69.0.24" />
       <PackageReference Include="WPFLocalizeExtension" Version="3.8.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Core\Core.csproj" />
-      <ProjectReference Include="..\Persistence.Proxy\Persistence.Proxy.csproj" />
       <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
     </ItemGroup>
 
@@ -73,4 +71,10 @@
       </EmbeddedResource>
     </ItemGroup>
 
+    <ItemGroup>
+        <ApplicationDefinition Remove="App.xaml" />
+        <Page Include="App.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </Page>
+    </ItemGroup>
 </Project>

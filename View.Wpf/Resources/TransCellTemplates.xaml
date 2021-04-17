@@ -2,16 +2,16 @@
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:forModels="clr-namespace:BFF.ViewModel.ViewModels.ForModels;assembly=ViewModel"
+                    xmlns:forModels="clr-namespace:BFF.ViewModel.ViewModels.ForModels;assembly=BFF.ViewModel"
                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
-                    xmlns:structure="clr-namespace:BFF.ViewModel.ViewModels.ForModels.Structure;assembly=ViewModel"
-                    xmlns:utility="clr-namespace:BFF.ViewModel.ViewModels.ForModels.Utility;assembly=ViewModel"
+                    xmlns:structure="clr-namespace:BFF.ViewModel.ViewModels.ForModels.Structure;assembly=BFF.ViewModel"
+                    xmlns:utility="clr-namespace:BFF.ViewModel.ViewModels.ForModels.Utility;assembly=BFF.ViewModel"
                     xmlns:helper="clr-namespace:BFF.View.Wpf.Helper"
                     xmlns:attachedBehaviors="clr-namespace:BFF.View.Wpf.AttachedBehaviors"
                     xmlns:views="clr-namespace:BFF.View.Wpf.Views">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Resources/BFF_ModifiedMAMCheckBox.xaml" />
+        <ResourceDictionary Source="/BFF.View.Wpf;component/Resources/BFF_ModifiedMAMCheckBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="CellContent"

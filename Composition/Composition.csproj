@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <RootNamespace>BFF.Composition</RootNamespace>
+        <AssemblyName>BFF.Composition</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Autofac" Version="6.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Core\Core.csproj" />
+      <ProjectReference Include="..\Model\Model.csproj" />
+      <ProjectReference Include="..\Persistence.Proxy\Persistence.Proxy.csproj" />
+      <ProjectReference Include="..\Persistence\Persistence.csproj" />
+      <ProjectReference Include="..\View.Avalonia\View.Avalonia.csproj" />
+      <ProjectReference Include="..\View.Wpf\View.Wpf.csproj" />
+      <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
+    </ItemGroup>
+
+</Project>

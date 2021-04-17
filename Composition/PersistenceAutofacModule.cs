@@ -1,9 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reflection;
 using Autofac;
-using BFF.Core.IoC;
-using BFF.Model;
 using BFF.Model.ImportExport;
 using BFF.Persistence.Import;
 using BFF.Persistence.Realm;
@@ -16,74 +11,16 @@ using BFF.Persistence.Sql.Models;
 using BFF.Persistence.Sql.ORM;
 using BFF.Persistence.Sql.Repositories;
 using BFF.Persistence.Sql.Repositories.ModelRepositories;
+using System;
 using Module = Autofac.Module;
 
-namespace BFF.Persistence
+namespace BFF.Composition
 {
-    public class AutofacModule : Module
+    public class PersistenceAutofacModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
-
-            var assemblies = new[]
-            {
-                Assembly.GetExecutingAssembly()
-            };
-
-            builder.RegisterAssemblyTypes(assemblies)
-                .Where(t =>
-                {
-                    if (t.Name.StartsWith("Persistence_ProcessedByFody") || t.Name.StartsWith("RealmModuleInitializer"))
-                    {
-                        return false;
-                    }
-
-                    return true;
-                })
-                .AsImplementedInterfaces()
-                .AsSelf();
-
-            builder.RegisterAssemblyTypes(assemblies)
-                .Where(t =>
-                {
-                    var isAssignable = typeof(IOncePerApplication).IsAssignableFrom(t);
-
-                    Debug.WriteLineIf(isAssignable, $"Once Per Application - {t.Name}");
-
-                    return isAssignable;
-                })
-                .AsImplementedInterfaces()
-                .SingleInstance();
-
-            builder.RegisterAssemblyTypes(assemblies)
-                .Where(t =>
-                {
-                    var isAssignable = typeof(IOncePerBackend).IsAssignableFrom(t);
-
-                    Debug.WriteLineIf(isAssignable, $"Once Per LifetimeScope - {t.Name}");
-
-                    return isAssignable;
-                })
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
-
-            // several view model instances are transitory and created on the fly, if these are tracked by the container then they
-            // won't be disposed of in a timely manner
-
-            builder.RegisterAssemblyTypes(assemblies)
-                .Where(t =>
-                {
-                    var isAssignable = typeof(ITransient).IsAssignableFrom(t);
-                    if (isAssignable)
-                    {
-                        Debug.WriteLine("Transient view model - " + t.Name);
-                    }
-
-                    return isAssignable;
-                })
-                .AsImplementedInterfaces()
-                .ExternallyOwned();
 
             builder.Register<Func<IRealmProjectFileAccessConfiguration, IRealmContext>>(cc =>
             {
@@ -143,7 +80,7 @@ namespace BFF.Persistence
             LoadBackendRegistrationsCommon(builder, config);
 
             builder.RegisterTypes(
-                    typeof(Sql.Models.Domain.SummaryAccount),
+                    typeof(Persistence.Sql.Models.Domain.SummaryAccount),
                     typeof(SqliteCreateNewModels),
                     typeof(SqliteAccountRepository),
                     typeof(SqliteBudgetEntryRepository),
@@ -166,7 +103,7 @@ namespace BFF.Persistence
 
             builder.RegisterGeneric(typeof(DapperCrudOrm<>))
                 .AsSelf()
-                .As(typeof(Sql.ORM.Interfaces.ICrudOrm<>))
+                .As(typeof(Persistence.Sql.ORM.Interfaces.ICrudOrm<>))
                 .InstancePerLifetimeScope();
         }
 
@@ -175,7 +112,7 @@ namespace BFF.Persistence
             LoadBackendRegistrationsCommon(builder, config);
 
             builder.RegisterTypes(
-                typeof(Realm.Models.Domain.SummaryAccount),
+                typeof(Persistence.Realm.Models.Domain.SummaryAccount),
                 typeof(RealmCreateNewModels),
                 typeof(RealmAccountRepository),
                 typeof(RealmBudgetEntryRepository),
@@ -200,7 +137,7 @@ namespace BFF.Persistence
 
             builder.RegisterGeneric(typeof(RealmCrudOrm<>))
                 .AsSelf()
-                .As(typeof(Realm.ORM.Interfaces.ICrudOrm<>))
+                .As(typeof(Persistence.Realm.ORM.Interfaces.ICrudOrm<>))
                 .InstancePerLifetimeScope();
         }
     }

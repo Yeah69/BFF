@@ -17,14 +17,13 @@ namespace BFF.View.Wpf
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public App()
+        public App(Lazy<MainWindow> mainWindow)
         {
             Logger.Trace("Initializing App");
             
             InitializeComponent();
 
-            MainWindow mainWindow = AutofacBootstrapper.Resolve<MainWindow>();
-            mainWindow.Show();
+            mainWindow.Value.Show();
         }
 
         public static Visibility IsDebug

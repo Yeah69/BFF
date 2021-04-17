@@ -1,77 +1,21 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reflection;
 using Autofac;
-using BFF.Core.IoC;
-using BFF.Model;
 using BFF.Model.Contexts;
-using BFF.Model.ImportExport;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.ViewModel.Contexts;
 using BFF.ViewModel.ViewModels;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using System;
 using Module = Autofac.Module;
 
-namespace BFF.ViewModel
+namespace BFF.Composition
 {
-    public class AutofacModule : Module
+    public class ViewModelAutofacModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
-
-            var assemblies = new[]
-            {
-                Assembly.GetExecutingAssembly()
-            };
-
-            builder.RegisterAssemblyTypes(assemblies)
-                .Where(t => t != typeof(BudgetEntryViewModelPlaceholder))
-                .AsImplementedInterfaces()
-                .AsSelf();
-
-            builder.RegisterAssemblyTypes(assemblies)
-                .Where(t =>
-                {
-                    var isAssignable = typeof(IOncePerApplication).IsAssignableFrom(t);
-
-                    Debug.WriteLineIf(isAssignable, $"Once Per Application - {t.Name}");
-
-                    return isAssignable;
-                })
-                .AsImplementedInterfaces()
-                .SingleInstance();
-
-            builder.RegisterAssemblyTypes(assemblies)
-                .Where(t =>
-                {
-                    var isAssignable = typeof(IOncePerBackend).IsAssignableFrom(t);
-
-                    Debug.WriteLineIf(isAssignable, $"Once Per LifetimeScope - {t.Name}");
-
-                    return isAssignable;
-                })
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
-
-            // several view model instances are transitory and created on the fly, if these are tracked by the container then they
-            // won't be disposed of in a timely manner
-
-            builder.RegisterAssemblyTypes(assemblies)
-                .Where(t =>
-                {
-                    var isAssignable = typeof(ITransient).IsAssignableFrom(t);
-                    if (isAssignable)
-                    {
-                        Debug.WriteLine("Transient view model - " + t.Name);
-                    }
-
-                    return isAssignable;
-                })
-                .AsImplementedInterfaces()
-                .ExternallyOwned();
 
             builder.RegisterInstance(BudgetEntryViewModelPlaceholder.Instance)
                 .As<BudgetEntryViewModelPlaceholder>()
@@ -124,8 +68,6 @@ namespace BFF.ViewModel
             });
 
             builder.RegisterType<BudgetEntryViewModel>().AsImplementedInterfaces();
-
-            builder.RegisterModule(new Model.AutofacModule());
         }
     }
 }
