@@ -2,6 +2,8 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>BFF.View.Avalonia</RootNamespace>
+    <AssemblyName>BFF.View.Avalonia</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.1.0" />

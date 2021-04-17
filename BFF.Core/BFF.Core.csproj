@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>BFF.Core</RootNamespace>
+    <AssemblyName>BFF.Core</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
