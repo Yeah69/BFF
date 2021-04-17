@@ -14,6 +14,7 @@ using BFF.Model.ImportExport;
 using BFF.Persistence.Common;
 using BFF.Persistence.Import.Models.YNAB;
 using MoreLinq;
+using MrMeeseeks.Extensions;
 using NLog;
 
 namespace BFF.Persistence.Import
@@ -48,7 +49,7 @@ namespace BFF.Persistence.Import
         public Task<DtoImportContainer> Import()
         {
             //First step: Parse CSV data into conversion objects
-            Queue<Ynab4Transaction> ynabTransactions = new Queue<Ynab4Transaction>(ParseTransactionCsv(_ynab4CsvImportConfiguration.TransactionPath));
+            Queue<Ynab4Transaction> ynabTransactions = new(ParseTransactionCsv(_ynab4CsvImportConfiguration.TransactionPath));
             IEnumerable<Ynab4BudgetEntry> budgets = ParseBudgetCsv(_ynab4CsvImportConfiguration.BudgetPath);
 
             //Second step: Convert conversion objects into native models
@@ -231,7 +232,7 @@ namespace BFF.Persistence.Import
 
         private static List<Ynab4Transaction> ParseTransactionCsv(string filePath)
         {
-            List<Ynab4Transaction> ret = new List<Ynab4Transaction>();
+            List<Ynab4Transaction> ret = new();
             if (File.Exists(filePath))
             {
                 using var streamReader = new StreamReader(new FileStream(filePath, FileMode.Open));
@@ -242,11 +243,12 @@ namespace BFF.Persistence.Import
                     throw new FileFormatException($"The file of path '{filePath}' is not a valid YNAB transactions CSV.");
                 }
                 Logger.Info("Starting to import YNAB transactions from the CSV file.");
-                Stopwatch stopwatch = new Stopwatch();
+                Stopwatch stopwatch = new();
                 stopwatch.Start();
-                while (!streamReader.EndOfStream)
+                while (streamReader.EndOfStream.Not() 
+                       && streamReader.ReadLine() is {} line)
                 {
-                    ret.Add(streamReader.ReadLine());
+                    ret.Add(line);
                 }
                 stopwatch.Stop();
                 TimeSpan ts = stopwatch.Elapsed;

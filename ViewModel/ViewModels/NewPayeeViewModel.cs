@@ -39,7 +39,7 @@ namespace BFF.ViewModel.ViewModels
         private readonly ILocalizer _localizer;
         private readonly IPayeeViewModelService _payeeViewModelService;
 
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new();
         private string? _payeeText;
 
         public NewPayeeViewModel(
@@ -103,7 +103,7 @@ namespace BFF.ViewModel.ViewModels
         {
             bool ret;
             if (!string.IsNullOrWhiteSpace(PayeeText) &&
-                AllPayees.All(payee => payee.Name != PayeeText.Trim()))
+                (AllPayees?.All(payee => payee.Name != PayeeText.Trim()) ?? true))
             {
                 ClearErrors(nameof(PayeeText));
                 ret = true;

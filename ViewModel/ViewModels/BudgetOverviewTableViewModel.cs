@@ -53,7 +53,7 @@ namespace BFF.ViewModel.ViewModels
     {
         private static readonly int LastMonthIndex = DateTime.MaxValue.ToMonthIndex();
         
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new();
         private readonly ISlidingWindow<IBudgetMonthViewModel> _budgetMonths;
 
         private int _monthIndexOffset;

@@ -35,7 +35,7 @@ namespace BFF.ViewModel.ViewModels
         private readonly ILocalizer _localizer;
         private readonly IFlagViewModelService _flagViewModelService;
 
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new();
         private string? _text;
 
         public NewFlagViewModel(
@@ -103,7 +103,7 @@ namespace BFF.ViewModel.ViewModels
         {
             bool ret;
             if (!string.IsNullOrWhiteSpace(Text) &&
-                All.All(f => f.Name != Text.Trim()))
+                (All?.All(f => f.Name != Text.Trim()) ?? true))
             {
                 ClearErrors(nameof(Text));
                 ret = true;

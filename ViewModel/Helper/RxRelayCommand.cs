@@ -39,9 +39,13 @@ namespace BFF.ViewModel.Helper
         public RxRelayCommand(Action<T> executeAction, IObservable<bool> canExecute, bool initialCanExecute = true) : this(canExecute, initialCanExecute) 
             => ExecuteAction = executeAction;
 
-        public bool CanExecute(object parameter) => _canExecute;
+        public bool CanExecute(object? parameter) => _canExecute;
 
-        public void Execute(object parameter) => ExecuteAction?.Invoke((T) parameter);
+        public void Execute(object? parameter)
+        {
+            if (parameter is T t)
+                ExecuteAction?.Invoke(t);
+        }
 
         public event EventHandler? CanExecuteChanged;
 
@@ -87,9 +91,13 @@ namespace BFF.ViewModel.Helper
         public AsyncRxRelayCommand(Func<T, Task> executeAction, IObservable<bool> canExecute, bool initialCanExecute = true) : this(canExecute, initialCanExecute) 
             => ExecuteAction = executeAction;
 
-        public bool CanExecute(object parameter) => _canExecute;
+        public bool CanExecute(object? parameter) => _canExecute;
 
-        public void Execute(object parameter) => ExecuteAction?.Invoke((T) parameter);
+        public void Execute(object? parameter)
+        {
+            if (parameter is T t)
+                ExecuteAction?.Invoke(t);
+        }
 
         public event EventHandler? CanExecuteChanged;
 

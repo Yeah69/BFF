@@ -34,7 +34,7 @@ namespace BFF.Persistence.Import.Models.YNAB
 
         public static readonly string CsvHeader = "\"Account\"	\"Flag\"	\"Check Number\"	\"Date\"	\"Payee\"	\"Category\"	\"Master Category\"	\"Sub Category\"	\"Memo\"	\"Outflow\"	\"Inflow\"	\"Cleared\"	\"Running Balance\"";
 
-        private static readonly Regex PayeePartsRegex = new Regex(@"^(?<payeeStr>.+)?(( / )?Transfer : (?<accountName>.+))?$", RegexOptions.RightToLeft);
+        private static readonly Regex PayeePartsRegex = new(@"^(?<payeeStr>.+)?(( / )?Transfer : (?<accountName>.+))?$", RegexOptions.RightToLeft);
 
         private string ParseAccountFromPayee()
         {
@@ -60,7 +60,7 @@ namespace BFF.Persistence.Import.Models.YNAB
         {
             string[] entries = csvLine.Split('\t');
             
-            Ynab4Transaction ret = new Ynab4Transaction
+            Ynab4Transaction ret = new()
             {
                 Account = entries[0].Trim('"'),
                 Flag = entries[1],

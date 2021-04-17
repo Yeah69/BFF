@@ -38,7 +38,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
     public abstract class TransLikeViewModel : DataModelViewModel, ITransLikeViewModel, ITransient
     {
         private readonly ITransLike _transLike;
-        private readonly Subject<Unit> _removeRequestSubject = new Subject<Unit>();
+        private readonly Subject<Unit> _removeRequestSubject = new();
 
         public virtual string Memo
         {

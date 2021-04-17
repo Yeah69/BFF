@@ -19,7 +19,7 @@ namespace BFF.ViewModel.Managers
     internal class ParentTransactionFlyoutManager : IParentTransactionFlyoutManager, IOncePerApplication, IDisposable
     {
         private readonly ReactiveProperty<IParentTransactionViewModel?> _openParentTransactionViewModel;
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new();
         
         public ParentTransactionFlyoutManager()
         {

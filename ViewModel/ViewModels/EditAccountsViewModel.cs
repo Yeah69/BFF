@@ -23,7 +23,7 @@ namespace BFF.ViewModel.ViewModels
     internal class EditAccountsViewModel : ViewModelBase, IEditAccountsViewModel, IDisposable, IOncePerBackend
     {
         private readonly IBffSettings _bffSettings;
-        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
+        protected readonly CompositeDisposable CompositeDisposable = new();
 
         public INewAccountViewModel NewAccountViewModel { get; }
         public ReadOnlyObservableCollection<IAccountViewModel> All { get; }

@@ -10,9 +10,9 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
     public class PayeeComparer : Comparer<IPayee>
     {
-        public override int Compare(IPayee x, IPayee y)
+        public override int Compare(IPayee? x, IPayee? y)
         {
-            return Comparer<string>.Default.Compare(x.Name, y.Name);
+            return Comparer<string>.Default.Compare(x?.Name, y?.Name);
         }
     }
 

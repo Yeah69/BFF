@@ -54,7 +54,7 @@ namespace BFF.Persistence.Realm.ORM
             var categoryGrouping = categories
                 .Where(c => c.IsIncomeRelevant.Not() && c.Parent is not null)
                 .GroupBy(c => c.Parent, c => c)
-                .ToDictionary(g => g.Key, g => g.ToReadOnlyList());
+                .ToDictionary(g => g.Key ?? throw new Exception(), g => g.ToReadOnlyList());
             var categoryTrees = categories
                 .Where(c => c.IsIncomeRelevant.Not() && c.Parent is null)
                 .SelectTree<Category, Tree<CategoryDto>>(
@@ -64,7 +64,7 @@ namespace BFF.Persistence.Realm.ORM
             
             var subTransactionGrouping = subTransactions
                 .GroupBy(st => st.Parent)
-                .ToDictionary(g => g.Key, g => g.ToReadOnlyList());
+                .ToDictionary(g => g.Key ?? throw new Exception(), g => g.ToReadOnlyList());
 
             ret.AccountStartingBalances = accounts.ToDictionary(account => account.Name, account => account.StartingBalance);
             ret.AccountStartingDates = accounts.ToDictionary(account => account.Name, account => account.StartingDate.UtcDateTime);

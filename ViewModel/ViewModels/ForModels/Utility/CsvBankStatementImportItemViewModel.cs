@@ -57,7 +57,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
     public class CsvBankStatementImportItemViewModel : ViewModelBase, ICsvBankStatementImportItemViewModel
     {
         private readonly IBffSettings _bffSettings;
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new();
         private bool _hasDate;
         private bool _hasPayee;
         private bool _hasMemo;

@@ -18,7 +18,7 @@ namespace BFF.Model
     
     internal class UpdateBudgetCategory : IUpdateBudgetCategory, IObserveUpdateBudgetCategory, IDisposable, IOncePerBackend
     {
-        private readonly Subject<ICategory> _subject = new Subject<ICategory>(); 
+        private readonly Subject<ICategory> _subject = new(); 
 
         public void Dispose()
         {

@@ -66,8 +66,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
     {
         private readonly IBffSettings _bffSettings;
         public ITransDataGridColumnManager TransDataGridColumnManager { get; }
-        private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
-        private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
+        private readonly SerialDisposable _removeRequestSubscriptions = new();
+        private CompositeDisposable _currentRemoveRequestSubscriptions = new();
 
         private readonly ObservableCollection<ISubTransactionViewModel> _newTransactions;
 

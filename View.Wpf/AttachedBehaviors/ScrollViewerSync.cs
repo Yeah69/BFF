@@ -53,7 +53,7 @@ namespace BFF.View.Wpf.AttachedBehaviors
             set => SetValue(GroupNameProperty, value);
         }
 
-        private CompositeDisposable? _compositeDisposable = new CompositeDisposable();
+        private CompositeDisposable? _compositeDisposable = new();
 
         private ScrollViewer? _associatedScrollViewer;
 

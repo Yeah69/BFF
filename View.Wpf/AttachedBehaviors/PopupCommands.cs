@@ -11,7 +11,7 @@ namespace BFF.View.Wpf.AttachedBehaviors
 {
     public class PopupCommands : Behavior<Popup>
     {
-        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
+        protected readonly CompositeDisposable CompositeDisposable = new();
 
         public static readonly DependencyProperty OpenedCommandProperty = DependencyProperty.Register(
             nameof(OpenedCommand),

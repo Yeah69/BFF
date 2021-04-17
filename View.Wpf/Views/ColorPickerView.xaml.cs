@@ -185,7 +185,7 @@ namespace BFF.View.Wpf.Views
                 .SetDependencyProperty(Panel.ZIndexProperty, 3)
                 .SetDependencyProperty(Canvas.TopProperty, 3.0);
 
-        private readonly SerialDisposable _adjustmentOperation  = new SerialDisposable();
+        private readonly SerialDisposable _adjustmentOperation  = new();
 
         public ColorPickerView()
         {

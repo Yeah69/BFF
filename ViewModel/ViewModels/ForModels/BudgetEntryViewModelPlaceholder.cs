@@ -10,7 +10,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 {
     public class BudgetEntryViewModelPlaceholder : NotifyingErrorViewModelBase, IBudgetEntryViewModel
     {
-        internal static BudgetEntryViewModelPlaceholder Instance => new BudgetEntryViewModelPlaceholder();
+        internal static BudgetEntryViewModelPlaceholder Instance => new();
 
         private BudgetEntryViewModelPlaceholder() { }
 

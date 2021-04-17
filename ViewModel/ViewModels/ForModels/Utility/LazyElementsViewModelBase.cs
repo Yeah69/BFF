@@ -24,7 +24,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
     internal class LazyElementsViewModelBase<T> : ViewModelBase, ILazyElementsViewModelBase<T>
     {
-        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
+        protected readonly CompositeDisposable CompositeDisposable = new();
         private bool _openFlag;
 
         public LazyElementsViewModelBase(Func<Task<IEnumerable<T>>> elementsFactoryAsync)

@@ -45,7 +45,7 @@ namespace BFF.ViewModel.ViewModels
         private readonly IIncomeCategoryViewModelService _incomeCategoryViewModelService;
         private readonly ICategoryBaseViewModelService _categoryBaseViewModelService;
 
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new();
         private string? _name;
 
         public NewCategoryViewModel(
@@ -59,8 +59,8 @@ namespace BFF.ViewModel.ViewModels
             bool ValidateNewCategoryRelationCondition(string? text, ICategoryViewModel? parent)
             {
                 if(IsIncomeRelevant.Value)
-                    return incomeCategoryViewModelService.All.All(icvm => icvm.Name != text);
-                return parent is null && AllPotentialParents.Where(cvw => cvw.Parent is null).All(cvm => cvm.Name != text) ||
+                    return incomeCategoryViewModelService.All?.All(icvm => icvm.Name != text) ?? true;
+                return parent is null && (AllPotentialParents?.Where(cvw => cvw.Parent is null).All(cvm => cvm.Name != text) ?? true) ||
                        parent is not null && parent.Categories.All(cvm => cvm is not null && cvm.Name != text);
             }
             string? ValidateNewCategoryRelationParent(string? text, ICategoryViewModel? parent)
@@ -205,8 +205,8 @@ namespace BFF.ViewModel.ViewModels
             bool ValidateNewCategoryRelationCondition()
             {
                 if (IsIncomeRelevant.Value)
-                    return _incomeCategoryViewModelService.All.All(icvm => icvm.Name != Name);
-                return Parent.Value is null && AllPotentialParents.Where(cvw => cvw.Parent is null).All(cvm => cvm.Name != Name) ||
+                    return _incomeCategoryViewModelService.All?.All(icvm => icvm.Name != Name) ?? true;
+                return Parent.Value is null && (AllPotentialParents?.Where(cvw => cvw.Parent is null).All(cvm => cvm.Name != Name) ?? true) ||
                        Parent.Value is not null && Parent.Value.Categories.All(cvm => cvm is not null && cvm.Name != Name);
             }
         }

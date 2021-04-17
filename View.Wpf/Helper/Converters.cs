@@ -24,7 +24,7 @@ namespace BFF.View.Wpf.Helper
 
         private static readonly long CurrencyComboSampleValue = 123457869L;
 
-        private static readonly DateTime DateComboSampleValue = new DateTime(2013, 9, 6);
+        private static readonly DateTime DateComboSampleValue = new(2013, 9, 6);
 
         private static SolidColorBrush TransactionBrush =>
             Application.Current.TryFindResource("TransactionBrush") as SolidColorBrush ?? Brushes.DarkOrange;

@@ -8,9 +8,9 @@ namespace BFF.Model.Models
 {
     public class CategoryComparer : Comparer<ICategory>
     {
-        public override int Compare(ICategory x, ICategory y)
+        public override int Compare(ICategory? x, ICategory? y)
         {
-            IList<ICategory> GetParentalPathList(ICategory category)
+            static IList<ICategory> GetParentalPathList(ICategory category)
             {
                 IList<ICategory> list = new List<ICategory> { category };
                 ICategory current = category;
@@ -22,6 +22,10 @@ namespace BFF.Model.Models
 
                 return list.Reverse().ToList();
             }
+
+            if (x is null && y is null) return 0;
+            if (y is null) return -1;
+            if (x is null) return 1;
 
             IList<ICategory> xList = GetParentalPathList(x);
             IList<ICategory> yList = GetParentalPathList(y);
@@ -65,7 +69,7 @@ namespace BFF.Model.Models
     public abstract class Category : CategoryBase, ICategory
     {
         private ICategory? _parent;
-        private readonly ObservableCollection<ICategory> _categories = new ObservableCollection<ICategory>();
+        private readonly ObservableCollection<ICategory> _categories = new();
 
         /// <summary>
         /// Id of Parent

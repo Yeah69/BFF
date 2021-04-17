@@ -65,7 +65,7 @@ namespace BFF.Model.Import
         private readonly IList<BudgetEntryDto> _budgetEntries = new List<BudgetEntryDto>();
         private readonly IDictionary<string, long> _accountStartingBalances = new Dictionary<string, long>();
         private readonly IDictionary<string, DateTime> _accountStartingDates = new Dictionary<string, DateTime>();
-        private readonly Forest<CategoryDto> _categoryForest = new Forest<CategoryDto>();
+        private readonly Forest<CategoryDto> _categoryForest = new();
         private readonly IDictionary<string, CategoryDto> _incomeCategories = new Dictionary<string, CategoryDto>();
 
         public void SetAccountStartingBalance(string name, long balance)
@@ -164,7 +164,7 @@ namespace BFF.Model.Import
             return _categoryForest.GetOrCreate(namePath, Compare, Create).Value;
 
             static bool Compare(CategoryDto category, string name) => Equals(category.Name, name);
-            static CategoryDto Create(string name) => new CategoryDto { Name = name, IncomeMonthOffset = 0, IsIncomeRelevant = false };
+            static CategoryDto Create(string name) => new() { Name = name, IncomeMonthOffset = 0, IsIncomeRelevant = false };
         }
 
         public CategoryDto GetOrCreateIncomeCategory(string name, int monthOffset)
@@ -194,7 +194,7 @@ namespace BFF.Model.Import
 
         public DtoImportContainer BuildContainer()
         {
-            return new DtoImportContainer
+            return new()
             {
                 Transactions = _transactions.ToReadOnlyList(),
                 Transfers = _transfers.ToReadOnlyList(),

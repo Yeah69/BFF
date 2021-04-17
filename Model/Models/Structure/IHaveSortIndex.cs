@@ -9,7 +9,7 @@ namespace BFF.Model.Models.Structure
 
     internal class SortIndexComparer<T> : IComparer<T> where T : class, IHaveSortIndex
     {
-        public int Compare(T x, T y)
+        public int Compare(T? x, T? y)
         {
             if (x == y) return 0;
             if (x is null) return 1;

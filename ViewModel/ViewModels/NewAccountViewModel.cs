@@ -40,7 +40,7 @@ namespace BFF.ViewModel.ViewModels
         private readonly IBffSettings _bffSettings;
         private readonly IAccountViewModelService _viewModelService;
 
-        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
+        protected readonly CompositeDisposable CompositeDisposable = new();
 
         private string? _name;
 

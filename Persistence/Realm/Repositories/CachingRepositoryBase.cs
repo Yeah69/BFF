@@ -29,7 +29,7 @@ namespace BFF.Persistence.Realm.Repositories
         private readonly IRealmOperations _realmOperations;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly HashSet<TDomain> _cache = new HashSet<TDomain>();
+        private readonly HashSet<TDomain> _cache = new();
 
         protected RealmCachingRepositoryBase(
             ICrudOrm<TPersistence> crudOrm,

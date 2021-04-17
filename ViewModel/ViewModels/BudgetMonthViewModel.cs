@@ -53,7 +53,7 @@ namespace BFF.ViewModel.ViewModels
     {
         private readonly IBudgetMonth _budgetMonth;
         private readonly IBffSettings _bffSettings;
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new();
 
         public BudgetMonthViewModel(
             IBudgetMonth budgetMonth,

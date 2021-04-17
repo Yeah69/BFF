@@ -11,7 +11,7 @@ namespace BFF.View.Wpf.AttachedBehaviors
 {
     public class AdditionalTabItemsBehavior : Behavior<TabControl>
     {
-        private readonly Dictionary<object, TabItem> _objectToTabItem = new Dictionary<object, TabItem>();
+        private readonly Dictionary<object, TabItem> _objectToTabItem = new();
 
         #region ItemsSource Property
 
@@ -109,7 +109,7 @@ namespace BFF.View.Wpf.AttachedBehaviors
             string isSelectedMemberPath,
             Dictionary<object, TabItem> objectToTabItem)
         {
-            TabItem newTabItem = new TabItem
+            TabItem newTabItem = new()
             {
                 DataContext = obj,
                 Content = contentTemplate.LoadContent()

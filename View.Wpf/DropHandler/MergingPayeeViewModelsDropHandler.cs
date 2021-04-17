@@ -8,7 +8,7 @@ namespace BFF.View.Wpf.DropHandler
 {
     public class MergingPayeeViewModelsDropHandler : IDropTarget
     {
-        private static readonly Lazy<MergingPayeeViewModelsDropHandler> Lazy = new Lazy<MergingPayeeViewModelsDropHandler>(() => new MergingPayeeViewModelsDropHandler(), LazyThreadSafetyMode.ExecutionAndPublication);
+        private static readonly Lazy<MergingPayeeViewModelsDropHandler> Lazy = new(() => new MergingPayeeViewModelsDropHandler(), LazyThreadSafetyMode.ExecutionAndPublication);
 
         public static IDropTarget Instance => Lazy.Value;
 

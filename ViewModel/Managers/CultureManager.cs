@@ -31,9 +31,9 @@ namespace BFF.ViewModel.Managers
     {
         private readonly IBffSettings _bffSettings;
         private readonly ISetupLocalizationFramework _setupLocalizationFramework;
-        private readonly Subject<CultureMessage> _refreshSignal = new Subject<CultureMessage>();
+        private readonly Subject<CultureMessage> _refreshSignal = new();
 
-        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
+        protected readonly CompositeDisposable CompositeDisposable = new();
 
         protected CultureManagerBase(
             IBffSettings bffSettings,
@@ -123,7 +123,7 @@ namespace BFF.ViewModel.Managers
     internal class BackendCultureManager : CultureManagerBase, IBackendCultureManager
     {
         private readonly IBffSettings _bffSettings;
-        private readonly Subject<Unit> _saveDbSettingsSubject = new Subject<Unit>();
+        private readonly Subject<Unit> _saveDbSettingsSubject = new();
 
         public BackendCultureManager(
             IDbSettingRepository dbSettingRepository,

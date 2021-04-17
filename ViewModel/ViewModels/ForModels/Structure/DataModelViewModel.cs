@@ -30,7 +30,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         private readonly IDataModel _dataModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
 
-        protected CompositeDisposable CompositeDisposable { get; } = new CompositeDisposable();
+        protected CompositeDisposable CompositeDisposable { get; } = new();
         
         protected DataModelViewModel(
             IDataModel dataModel,

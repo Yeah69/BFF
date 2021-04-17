@@ -117,10 +117,10 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         private readonly Func<ITransLikeViewModelPlaceholder> _placeholderFactory;
         private readonly IConvertFromTransBaseToTransLikeViewModel _convertFromTransBaseToTransLikeViewModel;
         protected readonly IBffSettings BffSettings;
-        private readonly SerialDisposable _removeRequestSubscriptions = new SerialDisposable();
-        private CompositeDisposable _currentRemoveRequestSubscriptions = new CompositeDisposable();
-        private readonly Subject<Unit> _refreshBalance = new Subject<Unit>();
-        private readonly Subject<Unit> _refreshBalanceUntilNow = new Subject<Unit>();
+        private readonly SerialDisposable _removeRequestSubscriptions = new();
+        private CompositeDisposable _currentRemoveRequestSubscriptions = new();
+        private readonly Subject<Unit> _refreshBalance = new();
+        private readonly Subject<Unit> _refreshBalanceUntilNow = new();
 
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         /// <summary>
         /// Collection of Trans', which are about to be inserted to this Account.
         /// </summary>
-        public ObservableCollection<ITransLikeViewModel> NewTransList { get; } = new ObservableCollection<ITransLikeViewModel>();
+        public ObservableCollection<ITransLikeViewModel> NewTransList { get; } = new();
 
         public long? ClearedBalance { get; private set; } = 0;
 

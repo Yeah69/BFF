@@ -14,7 +14,7 @@ namespace BFF.View.Wpf.AttachedBehaviors
 {
     public class DynamicTableDataGridBehavior : Behavior<DataGrid>
     {
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new();
 
         private ISubject<Unit> _onTableChanged = new Subject<Unit>();
 

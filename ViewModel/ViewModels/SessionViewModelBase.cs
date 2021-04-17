@@ -7,7 +7,7 @@ namespace BFF.ViewModel.ViewModels
 {
     internal abstract class SessionViewModelBase : ViewModelBase, IDisposable
     {
-        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
+        protected readonly CompositeDisposable CompositeDisposable = new();
 
         protected SessionViewModelBase()
         {

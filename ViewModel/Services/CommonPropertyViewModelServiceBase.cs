@@ -38,11 +38,11 @@ namespace BFF.ViewModel.Services
         private readonly Func<TDomain, TViewModel> _factory;
 
         protected readonly ConcurrentDictionary<TDomain, TViewModel> ModelToViewModel 
-            = new ConcurrentDictionary<TDomain, TViewModel>();
+            = new();
         protected readonly ConcurrentDictionary<TViewModel, TDomain> ViewModelToModel 
-            = new ConcurrentDictionary<TViewModel, TDomain>();
+            = new();
 
-        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
+        protected readonly CompositeDisposable CompositeDisposable = new();
 
         public IObservableReadOnlyList<TViewModel>? All { get; protected set; }
         public Task? AllCollectionInitialized { get; protected set; }

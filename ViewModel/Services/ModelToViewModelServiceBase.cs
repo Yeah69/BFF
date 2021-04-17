@@ -22,7 +22,7 @@ namespace BFF.ViewModel.Services
         /// The Lazy objects prevent from generating one unnecessary ViewModel. Hence, eliminates this problem.
         /// </summary>
         private readonly ConcurrentDictionary<TDomain, Lazy<TViewModel>> _modelToViewModel
-            = new ConcurrentDictionary<TDomain, Lazy<TViewModel>>();
+            = new();
 
         protected abstract TViewModel Create(TDomain model);
 

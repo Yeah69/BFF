@@ -13,8 +13,8 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 
     public class IncomeCategoryComparer : Comparer<IIncomeCategory>
     {
-        public override int Compare(IIncomeCategory x, IIncomeCategory y) => 
-            StringComparer.Create(CultureInfo.InvariantCulture, false).Compare(x.Name, y.Name);
+        public override int Compare(IIncomeCategory? x, IIncomeCategory? y) => 
+            StringComparer.Create(CultureInfo.InvariantCulture, false).Compare(x?.Name, y?.Name);
     }
 
     internal interface IRealmIncomeCategoryRepositoryInternal : IIncomeCategoryRepository, IRealmObservableRepositoryBaseInternal<IIncomeCategory, Models.Persistence.Category>
@@ -28,7 +28,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         private readonly Lazy<IMergeOrm> _mergeOrm;
         private readonly Lazy<ICategoryOrm> _categoryOrm;
 
-        private readonly TaskCompletionSource<Unit> _onConstructorCompleted = new TaskCompletionSource<Unit>();
+        private readonly TaskCompletionSource<Unit> _onConstructorCompleted = new();
 
         public RealmIncomeCategoryRepository(
             IRxSchedulerProvider rxSchedulerProvider,

@@ -17,7 +17,7 @@ namespace BFF.Persistence.Realm.Repositories
         where TDomain : class, IDataModel
     {
 
-        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
+        protected readonly CompositeDisposable CompositeDisposable = new();
 
         public virtual Task<bool> AddAsync(TDomain dataModel)
         {

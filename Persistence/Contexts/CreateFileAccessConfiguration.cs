@@ -8,8 +8,6 @@ namespace BFF.Persistence.Contexts
     {
         public IProjectFileAccessConfiguration Create(string path)
         {
-            if (path.EndsWith(".sqlite") || path.EndsWith(".bffs"))
-                return new SqliteProjectFileAccessConfiguration(path);
             if (path.EndsWith(".realm"))
                 return new RealmProjectFileAccessConfiguration(path, null);
             throw new ArgumentException("Cannot infer BFF file from given path", nameof(path));

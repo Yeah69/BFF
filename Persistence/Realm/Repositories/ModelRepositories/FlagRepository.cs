@@ -11,9 +11,9 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
     public class FlagComparer : Comparer<IFlag>
     {
-        public override int Compare(IFlag x, IFlag y)
+        public override int Compare(IFlag? x, IFlag? y)
         {
-            return Comparer<string>.Default.Compare(x.Name, y.Name);
+            return Comparer<string>.Default.Compare(x?.Name, y?.Name);
         }
     }
 

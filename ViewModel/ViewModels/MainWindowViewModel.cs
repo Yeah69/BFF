@@ -85,8 +85,8 @@ namespace BFF.ViewModel.ViewModels
                 _bffSettings.Culture_DefaultLanguage = value;
 
                 CultureInfo customCulture = CultureInfo.CreateSpecificCulture(_bffSettings.Culture_DefaultLanguage.Name);
-                customCulture.NumberFormat = CultureManager?.CurrencyCulture.NumberFormat;
-                customCulture.DateTimeFormat = CultureManager?.DateCulture.DateTimeFormat;
+                customCulture.NumberFormat = CultureManager?.CurrencyCulture.NumberFormat ?? CultureInfo.InvariantCulture.NumberFormat;
+                customCulture.DateTimeFormat = CultureManager?.DateCulture.DateTimeFormat ?? CultureInfo.InvariantCulture.DateTimeFormat;
 
                 _setupLocalizationFramework.With(customCulture);
                 Thread.CurrentThread.CurrentCulture = customCulture;

@@ -10,7 +10,7 @@ namespace BFF.View.Wpf.AttachedBehaviors
 {
     public class FrameworkElementClickBehavior : Behavior<FrameworkElement>
     {
-        protected readonly CompositeDisposable CompositeDisposable = new CompositeDisposable();
+        protected readonly CompositeDisposable CompositeDisposable = new();
 
         public event EventHandler? Click;
 

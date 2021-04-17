@@ -12,9 +12,11 @@ using MoreLinq.Extensions;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Utility;
 using Account = BFF.Persistence.Realm.Models.Persistence.Account;
+using BudgetEntry = BFF.Persistence.Realm.Models.Persistence.BudgetEntry;
 using Category = BFF.Persistence.Realm.Models.Persistence.Category;
 using Flag = BFF.Persistence.Realm.Models.Persistence.Flag;
 using Payee = BFF.Persistence.Realm.Models.Persistence.Payee;
+using SubTransaction = BFF.Persistence.Realm.Models.Persistence.SubTransaction;
 
 namespace BFF.Persistence.Realm
 {
@@ -207,7 +209,7 @@ namespace BFF.Persistence.Realm
             var subTransactions =
                 container
                     .ParentTransactions
-                    .SelectMany(pt => pt.SubTransactions)
+                    .SelectMany(pt => pt.SubTransactions ?? Enumerable.Empty<SubTransactionDto>())
                     .Select(subTransactionDto =>
                         new SubTransaction
                         {

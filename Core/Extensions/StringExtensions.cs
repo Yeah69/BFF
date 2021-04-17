@@ -8,7 +8,7 @@ namespace BFF.Core.Extensions
 {
     public static class StringExtensions
     {
-        private static readonly Regex MatchAllIllegalFilePathCharacters = new Regex(
+        private static readonly Regex MatchAllIllegalFilePathCharacters = new(
             $"[{Regex.Escape(new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars()))}]");
 
         public static string RemoveIllegalFilePathCharacters(this string @this)

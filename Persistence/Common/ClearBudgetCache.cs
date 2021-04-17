@@ -14,17 +14,11 @@ namespace BFF.Persistence.Common
     
     public class ClearBudgetCache : IClearBudgetCache, IObserveClearBudgetCache, IDisposable, IOncePerBackend
     {
-        private readonly Subject<Unit> _subject = new Subject<Unit>();
+        private readonly Subject<Unit> _subject = new();
 
-        public void Dispose()
-        {
-            _subject?.Dispose();
-        }
+        public void Dispose() => _subject.Dispose();
 
-        public void Clear()
-        {
-            _subject.OnNext(Unit.Default);
-        }
+        public void Clear() => _subject.OnNext(Unit.Default);
 
         public IObservable<Unit> Observe => _subject.AsObservable();
     }

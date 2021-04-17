@@ -55,7 +55,7 @@ namespace BFF.View.Wpf.Helper
         public class EnumerationMember
         {
             public string Description { get; set; } = String.Empty;
-            public object Value { get; set; } = new object();
+            public object Value { get; set; } = new();
         }
     }
 }

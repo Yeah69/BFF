@@ -71,7 +71,7 @@ namespace BFF.View.Wpf.Views
 
         public DataTemplate Placeholder { get; set; } = Empty;
 
-        private static DataTemplate Empty { get; } = new DataTemplate();
+        private static DataTemplate Empty { get; } = new();
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {

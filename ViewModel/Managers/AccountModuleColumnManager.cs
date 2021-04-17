@@ -20,7 +20,7 @@ namespace BFF.ViewModel.Managers
     internal class TransDataGridColumnManager : ObservableObject, ITransDataGridColumnManager, IOncePerApplication, IDisposable
     {
         private readonly IBffSettings _bffSettings;
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new();
         private bool _neverShowEditHeaders;
 
         public TransDataGridColumnManager(IBffSettings bffSettings)

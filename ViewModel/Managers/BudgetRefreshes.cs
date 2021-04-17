@@ -26,13 +26,13 @@ namespace BFF.ViewModel.Managers
     internal class BudgetRefreshes : IBudgetRefreshes, IOncePerBackend, IDisposable
     {
         private readonly ConcurrentDictionary<ICategoryViewModel, Subject<Unit>> _categoryEvents = 
-            new ConcurrentDictionary<ICategoryViewModel, Subject<Unit>>();
+            new();
         
         private readonly Subject<Unit> _monthRefreshes;
 
         private readonly Subject<Unit> _completeRefreshes;
         
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new();
 
         public BudgetRefreshes()
         {

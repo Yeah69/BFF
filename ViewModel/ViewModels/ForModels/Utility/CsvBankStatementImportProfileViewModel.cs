@@ -49,7 +49,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
     internal class CsvBankStatementImportProfileViewModel : ViewModelBase, ICsvBankStatementImportProfileViewModel
     {
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new();
 
         public CsvBankStatementImportProfileViewModel(
             ICsvBankStatementImportProfile profile, 
@@ -171,7 +171,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
     internal class CsvBankStatementImportNonProfileViewModel : ViewModelBase, ICsvBankStatementImportNonProfileViewModel
     {
 
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new();
 
         public CsvBankStatementImportNonProfileViewModel(
             IReactiveProperty<string> filePath, 
@@ -205,7 +205,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
                 return lines.All(line => count == line.Count(c => c == delimiter));
             }
 
-            Header = new ReactiveProperty<string>(filePath.Select(path => path is not null && File.Exists(path) ? File.ReadLines(path, Encoding.Default).FirstOrDefault() : ""),
+            Header = new ReactiveProperty<string>(filePath.Select(path => path is not null && File.Exists(path) ? File.ReadLines(path, Encoding.Default).FirstOrDefault() ?? "" : ""),
                 mode: ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(_compositeDisposable);
             Delimiter = new ReactiveProperty<char>(
                 Header

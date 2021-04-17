@@ -47,8 +47,8 @@ namespace BFF.Persistence.Realm.ORM
                 {
                     subTransactionsSum += parentTransaction
                         .SubTransactions
-                        .ToList()
-                        .Sum(st => st.Sum);
+                        ?.ToList()
+                        .Sum(st => st.Sum) ?? 0L;
                 }
                 return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum + account.StartingBalance;
             }
@@ -87,8 +87,8 @@ namespace BFF.Persistence.Realm.ORM
                 {
                     subTransactionsSum += parentTransaction
                         .SubTransactions
-                        .ToList()
-                        .Sum(st => st.Sum);
+                        ?.ToList()
+                        .Sum(st => st.Sum) ?? 0L;
                 }
                 return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum + (account.StartingDate < now ? account.StartingBalance : 0L);
             }
@@ -114,8 +114,8 @@ namespace BFF.Persistence.Realm.ORM
                 {
                     subTransactionsSum += parentTransaction
                         .SubTransactions
-                        .ToList()
-                        .Sum(st => st.Sum);
+                        ?.ToList()
+                        .Sum(st => st.Sum) ?? 0L;
                 }
 
                 var accountStartingBalanceSum = 0L;
@@ -153,8 +153,8 @@ namespace BFF.Persistence.Realm.ORM
                 {
                     subTransactionsSum += parentTransaction
                         .SubTransactions
-                        .ToList()
-                        .Sum(st => st.Sum);
+                        ?.ToList()
+                        .Sum(st => st.Sum) ?? 0L;
                 }
 
                 var accountStartingBalanceSum = 0L;
@@ -198,8 +198,8 @@ namespace BFF.Persistence.Realm.ORM
                 {
                     subTransactionsSum += parentTransaction
                         .SubTransactions
-                        .ToList()
-                        .Sum(st => st.Sum);
+                        ?.ToList()
+                        .Sum(st => st.Sum) ?? 0L;
                 }
                 return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum;
             }
@@ -239,8 +239,8 @@ namespace BFF.Persistence.Realm.ORM
                 {
                     subTransactionsSum += parentTransaction
                         .SubTransactions
-                        .ToList()
-                        .Sum(st => st.Sum);
+                        ?.ToList()
+                        .Sum(st => st.Sum) ?? 0L;
                 }
                 return transactionsAndToTransfersSum + subTransactionsSum - fromTransfersSum;
             }
@@ -266,8 +266,8 @@ namespace BFF.Persistence.Realm.ORM
                 {
                     subTransactionsSum += parentTransaction
                         .SubTransactions
-                        .ToList()
-                        .Sum(st => st.Sum);
+                        ?.ToList()
+                        .Sum(st => st.Sum) ?? 0L;
                 }
                 return transactionsAndToTransfersSum + subTransactionsSum;
             }
@@ -295,8 +295,8 @@ namespace BFF.Persistence.Realm.ORM
                 {
                     subTransactionsSum += parentTransaction
                         .SubTransactions
-                        .ToList()
-                        .Sum(st => st.Sum);
+                        ?.ToList()
+                        .Sum(st => st.Sum) ?? 0L;
                 }
                 return transactionsAndToTransfersSum + subTransactionsSum;
             }

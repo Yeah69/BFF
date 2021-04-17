@@ -24,7 +24,7 @@ namespace BFF.ViewModel.ViewModels
     {
         private Sign _sumSign = Sign.Minus;
 
-        private readonly CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        private readonly CompositeDisposable _compositeDisposable = new();
 
         public SumEditViewModel(
             IReactiveProperty<long> sum,

@@ -94,7 +94,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                 mode: ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(CompositeDisposable);
 
             Header = new ReadOnlyReactivePropertySlim<string>(
-                FilePath.Select(path => File.Exists(path) ? File.ReadLines(path, Encoding.Default).FirstOrDefault() : ""), 
+                FilePath.Select(path => File.Exists(path) ? File.ReadLines(path, Encoding.Default).FirstOrDefault() ?? "" : ""), 
                 mode: ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(CompositeDisposable);
 
             ShowItemsError = new ReactivePropertySlim<bool>(false, ReactivePropertyMode.DistinctUntilChanged);

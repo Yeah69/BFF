@@ -103,7 +103,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
         public override Task DeleteAsync()
         {
-            TaskCompletionSource<Unit> source = new TaskCompletionSource<Unit>();
+            TaskCompletionSource<Unit> source = new();
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
                     _localizer.Localize("ConfirmationDialog_Title"),

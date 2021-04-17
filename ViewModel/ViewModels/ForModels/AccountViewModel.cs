@@ -170,7 +170,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                         transactionViewModel.Date = item.Date;
                     if (item.HasPayee)
                     {
-                        if (payeeService.Value.All.Any(p => p.Name == item.Payee))
+                        if (payeeService.Value.All?.Any(p => p.Name == item.Payee) ?? false)
                             transactionViewModel.Payee =
                                 payeeService.Value.All.FirstOrDefault(p => p.Name == item.Payee);
                         else if (item.CreatePayeeIfNotExisting)
@@ -219,7 +219,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
         public override Task DeleteAsync()
         {
-            TaskCompletionSource<Unit> source = new TaskCompletionSource<Unit>();
+            TaskCompletionSource<Unit> source = new();
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
                     _localizer.Localize("ConfirmationDialog_Title"),

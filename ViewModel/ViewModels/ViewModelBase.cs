@@ -25,12 +25,12 @@ namespace BFF.ViewModel.ViewModels
     {
         private readonly IDictionary<string, IEnumerable<string>> _errors = new Dictionary<string, IEnumerable<string>>();
 
-        public IEnumerable? GetErrors(string? propertyName)
+        public IEnumerable GetErrors(string? propertyName)
         {
-            if (propertyName is null) return null;
+            if (propertyName is null) return Array.Empty<object>();
             return _errors.TryGetValue(propertyName, out var errors) 
                 ? errors 
-                : null;
+                : Array.Empty<object>();
         }
 
         protected void SetErrors(IEnumerable<string> errors, [CallerMemberName] string? propertyName = null)
