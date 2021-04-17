@@ -6,11 +6,6 @@ using BFF.Persistence.Realm.Models;
 using BFF.Persistence.Realm.ORM;
 using BFF.Persistence.Realm.Repositories;
 using BFF.Persistence.Realm.Repositories.ModelRepositories;
-using BFF.Persistence.Sql;
-using BFF.Persistence.Sql.Models;
-using BFF.Persistence.Sql.ORM;
-using BFF.Persistence.Sql.Repositories;
-using BFF.Persistence.Sql.Repositories.ModelRepositories;
 using System;
 using Module = Autofac.Module;
 
@@ -31,20 +26,6 @@ namespace BFF.Composition
                     var newLifetimeScope = currentLifetimeScope
                         .BeginLifetimeScope(cb => LoadRealmRegistrations(cb, config));
                     var context = newLifetimeScope.Resolve<IRealmContext>(TypedParameter.From<IDisposable>(newLifetimeScope));
-                    lifetimeScopeRegistry.Add(context, newLifetimeScope);
-                    return context;
-                };
-            });
-
-            builder.Register<Func<ISqliteProjectFileAccessConfiguration, ISqliteContext>>(cc =>
-            {
-                var currentLifetimeScope = cc.Resolve<ILifetimeScope>();
-                var lifetimeScopeRegistry = cc.Resolve<ILifetimeScopeRegistry>();
-                return config =>
-                {
-                    var newLifetimeScope = currentLifetimeScope
-                        .BeginLifetimeScope(cb => LoadSqliteRegistrations(cb, config));
-                    var context = newLifetimeScope.Resolve<ISqliteContext>(TypedParameter.From<IDisposable>(newLifetimeScope));
                     lifetimeScopeRegistry.Add(context, newLifetimeScope);
                     return context;
                 };
@@ -72,38 +53,6 @@ namespace BFF.Composition
             builder.Register(_ => config)
                 .AsSelf()
                 .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
-        }
-
-        private void LoadSqliteRegistrations(ContainerBuilder builder, ISqliteProjectFileAccessConfiguration config)
-        {
-            LoadBackendRegistrationsCommon(builder, config);
-
-            builder.RegisterTypes(
-                    typeof(Persistence.Sql.Models.Domain.SummaryAccount),
-                    typeof(SqliteCreateNewModels),
-                    typeof(SqliteAccountRepository),
-                    typeof(SqliteBudgetEntryRepository),
-                    typeof(SqliteCategoryBaseRepository),
-                    typeof(SqliteCategoryRepository),
-                    typeof(SqliteDbSettingRepository),
-                    typeof(SqliteFlagRepository),
-                    typeof(SqliteIncomeCategoryRepository),
-                    typeof(SqliteParentTransactionRepository),
-                    typeof(SqlitePayeeRepository),
-                    typeof(SqliteSubTransactionRepository),
-                    typeof(SqliteTransactionRepository),
-                    typeof(SqliteTransferRepository),
-                    typeof(SqliteTransRepository),
-                    typeof(SqliteBudgetMonthRepository),
-                    typeof(DapperCreateBackendOrm))
-                .AsSelf()
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
-
-            builder.RegisterGeneric(typeof(DapperCrudOrm<>))
-                .AsSelf()
-                .As(typeof(Persistence.Sql.ORM.Interfaces.ICrudOrm<>))
                 .InstancePerLifetimeScope();
         }
 
