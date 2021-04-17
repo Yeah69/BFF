@@ -3,20 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.Core", "BFF.Core\BFF.Core.csproj", "{8077914F-0322-42DC-A08D-745C40C90059}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{8077914F-0322-42DC-A08D-745C40C90059}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.Persistence", "BFF.Persistence\BFF.Persistence.csproj", "{D184DA4A-4A83-4CFD-8210-6B206F93D3B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "Persistence\Persistence.csproj", "{D184DA4A-4A83-4CFD-8210-6B206F93D3B7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.Model", "BFF.Model\BFF.Model.csproj", "{1D45AACF-3966-407A-A5A2-79C37046D502}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{1D45AACF-3966-407A-A5A2-79C37046D502}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.ViewModel", "BFF.ViewModel\BFF.ViewModel.csproj", "{3D2A82AB-5E04-4B30-9992-A5C4612AD2AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ViewModel\ViewModel.csproj", "{3D2A82AB-5E04-4B30-9992-A5C4612AD2AF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Icon", "Icon", "{DE4B0D4B-CBA2-4DB0-89B9-6CFC2CDF7B39}"
 	ProjectSection(SolutionItems) = preProject
 		Icon\Yeah69Logo.ico = Icon\Yeah69Logo.ico
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.Persistence.Proxy", "BFF.Persistence.Proxy\BFF.Persistence.Proxy.csproj", "{A7639BC2-2BC1-4F79-92DA-979753DA8842}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.Proxy", "Persistence.Proxy\Persistence.Proxy.csproj", "{A7639BC2-2BC1-4F79-92DA-979753DA8842}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B6FC2D7-CF56-41A7-80DF-29C3710BE169}"
 	ProjectSection(SolutionItems) = preProject
@@ -24,9 +24,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFF.View", "BFF.View\BFF.View.csproj", "{176AC2C3-EC32-4C86-9608-9A48879DBE44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "View.Wpf", "View.Wpf\View.Wpf.csproj", "{176AC2C3-EC32-4C86-9608-9A48879DBE44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BFF.View.Avalonia", "BFF.View.Avalonia\BFF.View.Avalonia.csproj", "{9F0D6E0E-2508-444E-804E-2C7AD2D836AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View.Avalonia", "View.Avalonia\View.Avalonia.csproj", "{9F0D6E0E-2508-444E-804E-2C7AD2D836AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

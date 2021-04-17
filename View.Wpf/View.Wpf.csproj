@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <UseWPF>true</UseWPF>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <RootNamespace>BFF.View.Wpf</RootNamespace>
+        <AssemblyName>BFF.View.Wpf</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Include="..\..\..\..\.nuget\packages\realm\5.0.1\runtimes\win-x64\native\realm-wrappers.dll">
+        <Link>lib\win32\x64\realm-wrappers.dll</Link>
+      </None>
+      <None Include="..\..\..\..\.nuget\packages\realm\5.0.1\runtimes\win-x86\native\realm-wrappers.dll">
+        <Link>lib\win32\x86\realm-wrappers.dll</Link>
+      </None>
+      <None Update="Properties\Settings.settings">
+        <Generator>SettingsSingleFileGenerator</Generator>
+        <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      </None>
+      <None Update="NLog.config">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <SubType>Designer</SubType>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\..\..\.nuget\packages\sqlitepclraw.lib.e_sqlite3\2.0.0\runtimes\win-arm\native\e_sqlite3.dll">
+        <Link>runtimes\win-arm\native\e_sqlite3.dll</Link>
+      </Content>
+      <Content Include="..\..\..\..\.nuget\packages\sqlitepclraw.lib.e_sqlite3\2.0.0\runtimes\win-x64\native\e_sqlite3.dll">
+        <Link>runtimes\win-x64\native\e_sqlite3.dll</Link>
+      </Content>
+      <Content Include="..\..\..\..\.nuget\packages\sqlitepclraw.lib.e_sqlite3\2.0.0\runtimes\win-x86\native\e_sqlite3.dll">
+        <Link>runtimes\win-x86\native\e_sqlite3.dll</Link>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="FodyWeavers.xml" />
+      <Resource Include="logo_quadratic.ico" />
+      <Resource Include="Yeah69Logo.ico" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Autofac" Version="6.1.0" />
+      <PackageReference Include="Autofac.Extras.NLog" Version="4.0.0" />
+        <PackageReference Include="BFF.HamburgerMenu" Version="1.0.0" />
+      <PackageReference Include="gong-wpf-dragdrop" Version="2.3.2" />
+      <PackageReference Include="LambdaConverters" Version="4.0.0" />
+      <PackageReference Include="MahApps.Metro" Version="2.4.4" />
+      <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />
+      <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
+      <PackageReference Include="MinVer" Version="2.5.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="MrMeeseeks" Version="69.0.17" />
+      <PackageReference Include="MrMeeseeks.Reactive" Version="69.0.17" />
+      <PackageReference Include="WPFLocalizeExtension" Version="3.8.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Core\Core.csproj" />
+      <ProjectReference Include="..\Persistence.Proxy\Persistence.Proxy.csproj" />
+      <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Properties\Texts.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
+
+</Project>
